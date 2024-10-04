@@ -47,8 +47,7 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
                                      const Sample & inputObservations,
                                      const Sample & outputObservations,
                                      const Function & residualFunction,
-                                     const Bool & bayesian
-                                    )
+                                     const Bool bayesian)
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)
@@ -219,7 +218,7 @@ void CalibrationResult::load(Advocate & adv)
   else
   {
     const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
-    bayesian_ = (priorCovariance(0, 0) < SpecFunc::MaxScalar);
+    bayesian_ = (priorCovariance(0, 0) < std::sqrt(SpecFunc::ActualMaxScalar));
     Description colors = DrawableImplementation::BuildDefaultPalette(3);
     priorColor_ = colors[0];
     posteriorColor_ = colors[1];
@@ -579,5 +578,10 @@ GridLayout CalibrationResult::drawResidualsNormalPlot() const
   return grid;
 }
 
+/* Bayesian method accessor */
+Bool CalibrationResult::isBayesian() const
+{
+  return bayesian_;
+}
 
 END_NAMESPACE_OPENTURNS

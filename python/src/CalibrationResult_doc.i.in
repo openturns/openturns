@@ -19,6 +19,8 @@ outputObservations : :class:`~openturns.Sample`
     The sample of output observations.
 residualFunction : :class:`~openturns.Function`
     The residual function.
+bayesian : bool
+    Whether the method is Bayesian
 
 Notes
 -----
@@ -295,3 +297,13 @@ Returns
 -------
 grid : :class:`~openturns.GridLayout`
     Graph array."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::isBayesian
+"Bayesian method accessor.
+
+Returns
+-------
+bayesian : bool
+    Whether the method is Bayesian"

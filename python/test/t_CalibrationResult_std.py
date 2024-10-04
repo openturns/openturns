@@ -38,6 +38,7 @@ algo = ot.GaussianNonLinearCalibration(
 )
 algo.run()
 result = algo.getResult()
+assert result.isBayesian()
 
 # check that the graphs can be produced
 graph1 = result.drawParameterDistributions()
