@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <chrono>
+
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SobolSimulationAlgorithm.hxx"
 #include "openturns/Log.hxx"
@@ -128,6 +130,7 @@ void SobolSimulationAlgorithm::run()
   result_.setTotalOrderIndicesDistribution(Distribution());
 
   Bool stop = false;
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
 
   // We loop if there remains some outer sampling and the coefficient of variation is greater than the limit or has not been computed yet.
   while ((outerSampling < getMaximumOuterSampling()) && !stop)
@@ -148,6 +151,15 @@ void SobolSimulationAlgorithm::run()
       startIndex = endIndex;
       const Sample batchOutputBlockSample(model_(batchInputBlockSample));
       outputSample.add(batchOutputBlockSample);
+
+      std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+      const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+      result_.setTimeDuration(timeDuration);
+      if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      {
+        LOGINFO(OSS() << "Maximum time exceeded");
+        stop = true;
+      }
 
       // callbacks
       if (progressCallback_.first)
