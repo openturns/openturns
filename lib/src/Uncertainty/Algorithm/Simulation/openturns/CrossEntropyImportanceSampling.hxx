@@ -27,11 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/**
- * @class CrossEntropyImportanceSampling
- *
- * CrossEntropyImportanceSampling is some CrossEntropyImportanceSampling type to illustrate how to add some classes in OpenTURNS
- */
+
 class OT_API CrossEntropyImportanceSampling
   : public EventSimulation
 {
@@ -77,8 +73,8 @@ public:
 
 protected:
 
-  /** Function computing the output samples from the input samples*/
-  virtual Sample computeOutputSamples(const Sample & inputSamples) const;
+  /** Limit state accessor */
+  virtual Function getLimitState() const;
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   virtual void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters);

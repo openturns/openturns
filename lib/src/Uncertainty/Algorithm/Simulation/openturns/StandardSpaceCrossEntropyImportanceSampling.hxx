@@ -28,8 +28,6 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class StandardSpaceCrossEntropyImportanceSampling
- *
- * StandardSpaceCrossEntropyImportanceSampling is some StandardSpaceCrossEntropyImportanceSampling type to illustrate how to add some classes in OpenTURNS
  */
 
 
@@ -50,8 +48,8 @@ public:
 
 protected:
 
-  /** Function computing the output samples from the input samples*/
-  Sample computeOutputSamples(const Sample & inputSamples) const override;
+  /** Limit state accessor */
+  Function getLimitState() const override;
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;
