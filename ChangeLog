@@ -27,6 +27,7 @@
  * Deprecated ConditionalDistribution in favor of DeconditionedDistribution
  * Deprecated NegativeBinomial in favor of Polya
  * Deprecated NegativeBinomialFactory in favor of PolyaFactory
+ * Deprecated OptimizationAlgorithm.Build(str) in favor of GetByName
  * Removed EfficientGlobalOptimization.get/setImprovementFactor improvement factor accessors
 
 === Documentation ===

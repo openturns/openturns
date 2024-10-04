@@ -57,7 +57,7 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
 {
   // Initialize optimization solver parameter using the ResourceMap
   String solverName(ResourceMap::GetAsString("MaximumLikelihoodFactory-DefaultOptimizationAlgorithm"));
-  solver_ = OptimizationAlgorithm::Build(solverName);
+  solver_ = OptimizationAlgorithm::GetByName(solverName);
   if (solverName == "TNC")
     solver_.setCheckStatus(false);
   solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumCallsNumber"));

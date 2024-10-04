@@ -412,7 +412,7 @@ Point PointConditionalDistribution::getRealization() const
       OptimizationProblem problemU(objectiveU);
       problemU.setMinimization(false);
       problemU.setBounds(bounds);
-      OptimizationAlgorithm algo(OptimizationAlgorithm::Build(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
+      OptimizationAlgorithm algo(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
       algo.setProblem(problemU);
       algo.setStartingPoint(middle);
       algo.run();

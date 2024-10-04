@@ -52,11 +52,11 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     const Scalar quantileLevel)
   : CrossEntropyImportanceSampling(event, quantileLevel)
   , activeParameters_(activeParameters)
-  , solver_(OptimizationAlgorithm::Build("Cobyla"))
+  , solver_(OptimizationAlgorithm::GetByName("Cobyla"))
 {
   solver_.setCheckStatus(false);
   if (OptimizationAlgorithm::GetAlgorithmNames().contains("LD_LBFGS"))
-    solver_ = OptimizationAlgorithm::Build("LD_LBFGS");
+    solver_ = OptimizationAlgorithm::GetByName("LD_LBFGS");
 
   auxiliaryDistribution_ = auxiliaryDistribution;
   bounds_ = bounds;
