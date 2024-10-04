@@ -45,7 +45,7 @@ static const Factory<GeneralizedExtremeValueFactory> Factory_GeneralizedExtremeV
 GeneralizedExtremeValueFactory::GeneralizedExtremeValueFactory()
   : DistributionFactoryImplementation()
 {
-  solver_ = OptimizationAlgorithm::Build(ResourceMap::GetAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm"));
+  solver_ = OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm"));
   solver_.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedExtremeValueFactory-MaximumCallsNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError"));
