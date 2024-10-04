@@ -68,10 +68,10 @@ void CrossEntropyImportanceSampling::setQuantileLevel(const Scalar & quantileLev
   quantileLevel_ = quantileLevel;
 }
 
-// Compute Output Samples
-Sample CrossEntropyImportanceSampling::computeOutputSamples(const Sample & ) const
+/* Input transformation accessor */
+Function CrossEntropyImportanceSampling::getTransformation() const
 {
-  throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples)";
+  throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::getTransformation";
 }
 
 // Update auxiliary distribution
@@ -109,11 +109,18 @@ void CrossEntropyImportanceSampling::run()
   if (sampleSize < 2)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
-  // Drawing of samples using initial density
-  Sample auxiliaryInputSample = auxiliaryDistribution_.getSample(sampleSize);
+  Sample auxiliaryInputSample(0, initialDistribution_.getDimension());
+  Sample auxiliaryOutputSample(0, 1);
 
-  // Evaluation on limit state function
-  Sample auxiliaryOutputSample = computeOutputSamples(auxiliaryInputSample);
+  for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
+  {
+    const Sample blockSample(auxiliaryDistribution_.getSample(getBlockSize()));
+    auxiliaryInputSample.add(blockSample);
+    auxiliaryOutputSample.add(getEvent().getFunction()(getTransformation()(blockSample)));
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
+  } // for i
 
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
@@ -172,7 +179,7 @@ void CrossEntropyImportanceSampling::run()
     {
       const Sample blockSample(auxiliaryDistribution_.getSample(getBlockSize()));
       auxiliaryInputSample.add(blockSample);
-      auxiliaryOutputSample.add(computeOutputSamples(blockSample));
+      auxiliaryOutputSample.add(getEvent().getFunction()(getTransformation()(blockSample)));
 
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";

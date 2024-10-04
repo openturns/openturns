@@ -62,8 +62,8 @@ public:
 
 protected:
 
-  /** Function computing the output samples from the input samples*/
-  Sample computeOutputSamples(const Sample & inputSamples) const override;
+  /** Input transformation accessor */
+  Function getTransformation() const override;
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;

@@ -57,11 +57,10 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
   auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
 }
 
-// Compute Output Samples
-Sample StandardSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
+/* Input transformation accessor */
+Function StandardSpaceCrossEntropyImportanceSampling::getTransformation() const
 {
-  Sample outputSamples = getEvent().getFunction()(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(inputSamples));
-  return outputSamples;
+  return getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation();
 }
 
 // Update auxiliary distribution

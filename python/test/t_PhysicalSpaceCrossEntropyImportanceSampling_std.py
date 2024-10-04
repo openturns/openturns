@@ -32,7 +32,7 @@ myISphysical.setKeepSample(True)
 myISphysical.setOptimizationAlgorithm(ot.TNC())
 myISphysical.run()
 myResult = myISphysical.getResult()
-assert_almost_equal(myResult.getProbabilityEstimate(), 0.00012452, 1.0e-2, 0.0)
+assert_almost_equal(myResult.getProbabilityEstimate(), 0.000135442, 1.0e-2, 0.0)
 
 # check that the event sample is right
 stepsNumber = myISphysical.getStepsNumber()

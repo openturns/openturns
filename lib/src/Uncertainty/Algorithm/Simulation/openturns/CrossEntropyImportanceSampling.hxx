@@ -77,8 +77,8 @@ public:
 
 protected:
 
-  /** Function computing the output samples from the input samples*/
-  virtual Sample computeOutputSamples(const Sample & inputSamples) const;
+  /** Input transformation accessor */
+  virtual Function getTransformation() const;
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   virtual void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters);

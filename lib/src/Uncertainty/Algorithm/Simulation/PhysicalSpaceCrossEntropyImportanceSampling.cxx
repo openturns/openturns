@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -173,11 +174,10 @@ OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getOptimizati
 }
 
 
-// Compute Output Samples
-Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
+/* Input transformation accessor */
+Function PhysicalSpaceCrossEntropyImportanceSampling::getTransformation() const
 {
-
-  return getEvent().getFunction()(inputSamples);
+  return IdentityFunction(getEvent().getAntecedent().getDistribution().getDimension());
 }
 
 
