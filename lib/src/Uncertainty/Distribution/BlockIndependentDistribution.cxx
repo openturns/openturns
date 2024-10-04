@@ -31,6 +31,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Tuples.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -763,6 +764,37 @@ void BlockIndependentDistribution::computeRange()
   }
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
+
+/* Get the support of a distribution that intersect a given interval */
+Sample BlockIndependentDistribution::getSupport(const Interval & interval) const
+{
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
+  if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Collection<Sample> marginalSupport(size);
+  Indices marginalSize(size);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger j = 0; j < size; ++ j)
+  {
+    const UnsignedInteger marginalDimension = distributionCollection_[j].getDimension();
+    Indices marginalIndices(marginalDimension);
+    marginalIndices.fill(shift);
+    marginalSupport[j] = distributionCollection_[j].getSupport(interval.getMarginal(marginalIndices));
+    marginalSize[j] = marginalSupport[j].getSize();
+  }
+  IndicesCollection tuples(Tuples(marginalSize).generate());
+  Sample support(0, getDimension());
+  for (UnsignedInteger i = 0; i < tuples.getSize(); ++ i)
+  {
+    Point x;
+    for (UnsignedInteger j = 0; j < size; ++ j)
+      x.add(marginalSupport[j][tuples(i, j)]);
+    if (computePDF(x) > 0.0)
+      support.add(x);
+  }
+  return support;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void BlockIndependentDistribution::save(Advocate & adv) const
