@@ -84,6 +84,7 @@ void SubsetSampling::run()
   inputSample_.clear();
   outputSample_.clear();
   dimension_ = getEvent().getAntecedent().getDimension();
+  result_ = SubsetSamplingResult();
 
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
@@ -126,8 +127,11 @@ void SubsetSampling::run()
       currentLevelSample_[i * blockSize + j] = blockSample[j];
     }
 
+    result_.setOuterSampling(i + 1);
+
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    result_.setTimeDuration(timeDuration);
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
       throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
 
@@ -142,9 +146,8 @@ void SubsetSampling::run()
   // as long as the conditional failure domain do not overlap the global one
   Bool stop = !getEvent().getOperator()(getEvent().getThreshold(), currentThreshold) || (currentThreshold == getEvent().getThreshold());
   if (stop)
-  {
     currentThreshold = getEvent().getThreshold();
-  }
+
   thresholdPerStep_.add(currentThreshold);
 
   // compute monte carlo probability estimate
@@ -205,8 +208,6 @@ void SubsetSampling::run()
       break;
     }
 
-    thresholdPerStep_.add(currentThreshold);
-
     // update coefficient of variation
     Scalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
     currentCoVsquare = (1.0 - currentProbabilityEstimate) / (currentProbabilityEstimate * currentLevelSample_.getSize() * 1.0);
@@ -215,9 +216,19 @@ void SubsetSampling::run()
     // update probability estimate
     probabilityEstimate *= currentProbabilityEstimate;
 
+    // compute variance estimate
+    varianceEstimate = coefficientOfVariationSquare * probabilityEstimate * probabilityEstimate;
+
+    thresholdPerStep_.add(currentThreshold);
     gammaPerStep_.add(gamma);
     probabilityEstimatePerStep_.add(probabilityEstimate);
     coefficientOfVariationPerStep_.add(sqrt(coefficientOfVariationSquare));
+
+    if (keepSample_)
+    {
+      inputSample_.add(uToX(currentPointSample_));
+      outputSample_.add(currentLevelSample_);
+    }
 
     // stop if the number of subset steps is too high, else results are not numerically defined anymore
     if (probabilityEstimate < minimumProbability_)
@@ -225,6 +236,7 @@ void SubsetSampling::run()
 
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    result_.setTimeDuration(timeDuration);
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
     {
       LOGINFO("Simulation timeout");
@@ -237,16 +249,7 @@ void SubsetSampling::run()
       stop = true;
     }
 
-    // compute variance estimate
-    varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
-
     ++ numberOfSteps_;
-
-    if (keepSample_)
-    {
-      inputSample_.add(uToX(currentPointSample_));
-      outputSample_.add(currentLevelSample_);
-    }
 
     Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   }
@@ -303,7 +306,7 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
         varianceBlock += 1.0 / blockSize;
       }
     }
-    varianceBlock -= pow(meanBlock, 2.0);
+    varianceBlock -= meanBlock * meanBlock;
 
     // update global mean and variance
     varianceEstimate = (varianceBlock + (size - 1.0) * varianceEstimate) / size + (1.0 - 1.0 / size) * (probabilityEstimate - meanBlock) * (probabilityEstimate - meanBlock) / size;
@@ -348,7 +351,7 @@ Scalar SubsetSampling::computeVarianceGamma(Scalar currentFailureProbability, Sc
   const UnsignedInteger Nc = seedNumber_;
   Matrix IndicatorMatrice(Nc, N / Nc);
   Point correlationSequence(N / Nc - 1);
-  Scalar currentFailureProbability2 = pow(currentFailureProbability, 2.);
+  Scalar currentFailureProbability2 = currentFailureProbability * currentFailureProbability;
   for (UnsignedInteger i = 0; i < N / Nc; ++ i)
   {
     for (UnsignedInteger j = 0; j < Nc; ++ j)
@@ -430,8 +433,11 @@ void SubsetSampling::generatePoints(Scalar threshold)
       }
     }
 
+    result_.setOuterSampling(numberOfSteps_ * getMaximumOuterSampling() + (i + 1));
+
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
+    result_.setTimeDuration(timeDuration);
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
       throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
 
