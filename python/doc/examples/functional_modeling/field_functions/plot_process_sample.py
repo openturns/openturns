@@ -61,14 +61,14 @@ gamma = 8.0
 X0 = [R, C, gamma]
 X_indices = [1, 2, 3]
 f = ot.ParametricFunction(cm.model, X_indices, X0)
-Y = [f(vertices[i])[0] for i in range(N)]
+Y = f(vertices)
 
 # %%
 # Let's visualize this sample of the field.
 
 # %%
 graph = ot.Graph("One realization of the stochastic process", "Strain", "Stress (Pa)", True, "")
-curve = ot.Curve(vertices.asPoint(), Y)
+curve = ot.Curve(vertices, Y)
 graph.add(curve)
 view = viewer.View(graph)
 
@@ -96,7 +96,7 @@ X_samples = X_distribution.getSample(n_samples)
 Y_list = []
 for i in range(n_samples):
     f = ot.ParametricFunction(cm.model, X_indices, X_samples[i, :])
-    Y = [[f(vertices[i])[0]] for i in range(N)]
+    Y = f(vertices)
     Y_list.append(Y)
 
 # %%
@@ -141,9 +141,10 @@ process_sample_variance = process_sample.computeVariance()
 graph = ot.Graph("Sample process mean and realizations", "Strain", "Stress (Pa)", True, "")
 for i in range(n_samples):
     if i == 0:
-        curve = ot.Curve(vertices, Y_list[i], "process samples")
+        label = "process samples"
     else:
-        curve = ot.Curve(vertices, Y_list[i])
+        label = ""
+    curve = ot.Curve(vertices, Y_list[i], label)
     curve.setColor("blue")
     graph.add(curve)
 
