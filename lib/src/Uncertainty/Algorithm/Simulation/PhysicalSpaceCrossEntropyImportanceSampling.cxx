@@ -173,14 +173,6 @@ OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getOptimizati
 }
 
 
-// Compute Output Samples
-Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
-{
-
-  return getEvent().getFunction()(inputSamples);
-}
-
-
 // Update auxiliary distribution
 void PhysicalSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {

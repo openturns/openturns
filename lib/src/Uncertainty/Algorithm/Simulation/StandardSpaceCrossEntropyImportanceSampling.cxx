@@ -21,7 +21,7 @@
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/EventSimulation.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -57,11 +57,10 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
   auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
 }
 
-// Compute Output Samples
-Sample StandardSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
+/* Input transformation accessor */
+Function StandardSpaceCrossEntropyImportanceSampling::getLimitState() const
 {
-  Sample outputSamples = getEvent().getFunction()(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(inputSamples));
-  return outputSamples;
+  return ComposedFunction(getEvent().getFunction(), getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
 }
 
 // Update auxiliary distribution

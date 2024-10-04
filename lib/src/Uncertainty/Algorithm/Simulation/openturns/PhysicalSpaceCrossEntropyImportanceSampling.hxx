@@ -27,12 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/**
- * @class PhysicalSpaceCrossEntropyImportanceSampling
- *
- * PhysicalSpaceCrossEntropyImportanceSampling is some PhysicalSpaceCrossEntropyImportanceSampling type to illustrate how to add some classes in OpenTURNS
- */
-
 
 class OT_API PhysicalSpaceCrossEntropyImportanceSampling
   : public CrossEntropyImportanceSampling
@@ -61,9 +55,6 @@ public:
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
 protected:
-
-  /** Function computing the output samples from the input samples*/
-  Sample computeOutputSamples(const Sample & inputSamples) const override;
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */
   void updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters) override;

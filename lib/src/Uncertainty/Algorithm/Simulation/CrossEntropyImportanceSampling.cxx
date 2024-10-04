@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <chrono>
+
 #include "openturns/CrossEntropyImportanceSampling.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -68,10 +70,10 @@ void CrossEntropyImportanceSampling::setQuantileLevel(const Scalar & quantileLev
   quantileLevel_ = quantileLevel;
 }
 
-// Compute Output Samples
-Sample CrossEntropyImportanceSampling::computeOutputSamples(const Sample & ) const
+/* Input transformation accessor */
+Function CrossEntropyImportanceSampling::getLimitState() const
 {
-  throw NotYetImplementedException(HERE) << "In CrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples)";
+  return getEvent().getFunction();
 }
 
 // Update auxiliary distribution
@@ -96,11 +98,12 @@ void CrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 // Main function that computes the failure probability
 void CrossEntropyImportanceSampling::run()
 {
-
   // First, initialize some parameters
   inputSample_.clear();
   outputSample_.clear();
   thresholdPerStep_.clear();
+  numberOfSteps_ = 0;
+  crossEntropyResult_ = CrossEntropyResult();
 
   // Initialization of auxiliary distribution (in case of multiple runs of algorithms)
   resetAuxiliaryDistribution();
@@ -109,11 +112,31 @@ void CrossEntropyImportanceSampling::run()
   if (sampleSize < 2)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
-  // Drawing of samples using initial density
-  Sample auxiliaryInputSample = auxiliaryDistribution_.getSample(sampleSize);
+  Sample auxiliaryInputSample(0, initialDistribution_.getDimension());
+  Sample auxiliaryOutputSample(0, 1);
 
-  // Evaluation on limit state function
-  Sample auxiliaryOutputSample = computeOutputSamples(auxiliaryInputSample);
+  const Function limitState(getLimitState());
+
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
+  // initial experiment evaluation with the initial distribution
+  for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
+  {
+    const Sample blockSample(auxiliaryDistribution_.getSample(getBlockSize()));
+    auxiliaryInputSample.add(blockSample);
+    auxiliaryOutputSample.add(limitState(blockSample));
+
+    result_.setOuterSampling(i + 1);
+
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    result_.setTimeDuration(timeDuration);
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
+  } // for i
 
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
@@ -141,7 +164,7 @@ void CrossEntropyImportanceSampling::run()
     thresholdPerStep_.add(currentQuantile);
     Indices indiceCritic(0);
 
-    for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++ i)
     {
       const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
       if (weightBool)
@@ -158,12 +181,8 @@ void CrossEntropyImportanceSampling::run()
 
   } // if comparator(currentQuantile, threshold)
 
-  UnsignedInteger iterationNumber  = 0;
-
   while ((comparator(threshold, currentQuantile)) && (currentQuantile != threshold))
   {
-    ++ iterationNumber;
-
     // Drawing of samples using auxiliary density and evaluation on limit state function
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
@@ -172,14 +191,20 @@ void CrossEntropyImportanceSampling::run()
     {
       const Sample blockSample(auxiliaryDistribution_.getSample(getBlockSize()));
       auxiliaryInputSample.add(blockSample);
-      auxiliaryOutputSample.add(computeOutputSamples(blockSample));
+      auxiliaryOutputSample.add(limitState(blockSample));
+
+      result_.setOuterSampling(numberOfSteps_ * getMaximumOuterSampling() + (i + 1));
+
+      std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+      const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+      result_.setTimeDuration(timeDuration);
+      if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+        throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
 
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
     } // for i
 
-
-    ++ numberOfSteps_;
     if (keepSample_)
     {
       inputSample_.add(auxiliaryInputSample);
@@ -199,7 +224,7 @@ void CrossEntropyImportanceSampling::run()
     {
       thresholdPerStep_.add(currentQuantile);
       Indices indiceCritic(0);
-      for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++i)
+      for (UnsignedInteger i = 0; i < auxiliaryInputSample.getSize(); ++ i)
       {
         const Bool weightBool = comparator(auxiliaryOutputSample(i, 0), currentQuantile);
         if (weightBool)
@@ -215,8 +240,9 @@ void CrossEntropyImportanceSampling::run()
       // Update auxiliary Distribution Parameters
       updateAuxiliaryDistribution(auxiliaryDistributionParameters);
 
-
     } // if comparator(currentQuantile, threshold)
+
+    ++ numberOfSteps_;
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";
@@ -261,7 +287,7 @@ void CrossEntropyImportanceSampling::run()
   crossEntropyResult_.setAuxiliaryDistribution(auxiliaryDistribution_);
   crossEntropyResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   crossEntropyResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
-  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber + 1));
+  crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * numberOfSteps_);
   crossEntropyResult_.setBlockSize(getBlockSize());
   crossEntropyResult_.setVarianceEstimate(varianceEstimate);
 }
