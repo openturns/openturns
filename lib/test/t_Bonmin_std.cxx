@@ -47,11 +47,9 @@ int main()
     SymbolicFunction objectiveFunction(inputVariables, objective);
 
     // Definition of bounds
-    const Point variablesLowerBounds(4, 0.0);
-    const Point variablesUpperBounds = {1.0, DBL_MAX, DBL_MAX, 5.0};
-    Collection<UnsignedInteger> variablesFiniteLowerBounds(4, 1);
-    Collection<UnsignedInteger> variablesFiniteUpperBounds = {1, 0, 0, 1};
-    Interval variablesBounds(variablesLowerBounds, variablesUpperBounds, variablesFiniteLowerBounds, variablesFiniteUpperBounds);
+    const Point lowerBounds(4, 0.0);
+    const Point upperBounds = {1.0, 1e6, 1e6, 5.0};
+    const Interval bounds(lowerBounds, upperBounds);
 
     // Definition of inequality constraints:
     // Bonmin constraints are defined as g_l <= g(x) <= g_u
@@ -67,7 +65,7 @@ int main()
 
     // Definition of OptimizationProblem
     OptimizationProblem problem(objectiveFunction);
-    problem.setBounds(variablesBounds);
+    problem.setBounds(bounds);
     problem.setVariablesType(varTypes);
     problem.setInequalityConstraint(inequalityConstraints);
 
