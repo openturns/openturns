@@ -37,8 +37,7 @@ objectiveFun = ot.PythonFunction(4, 1, fourdsoo)
 
 x = [-5, -3, 1, 1]
 
-print("Evaluate f at x=", x)
-print("f(x)=", objectiveFun(x))
+print(f"f(x)={objectiveFun(x)}")
 
 # Define bounds
 bounds = ot.Interval([-5.0, -3.0, 0.0, 0.0], [5.0, 3.0, 1, 1])
@@ -57,20 +56,22 @@ problem.setVariablesType(varTypes)
 problem.setBounds(bounds)
 problem.setMinimization(True)
 
-x0 = [0, 0, 0, 0]
-algo = ot.Bonmin(problem, "B-BB")
+x0 = [0.0] * 4
+algo = ot.Bonmin(problem)
 algo.setStartingPoint(x0)
 algo.setMaximumCallsNumber(10000)
 algo.setMaximumIterationNumber(1000)
-algo.run()
 
-result = algo.getResult()
-x_star = result.getOptimalPoint()
-print("x*=", x_star)
-y_star = result.getOptimalValue()
-neval = result.getCallsNumber()
-print("f(x*)=", y_star, "neval=", neval)
-
-
-# ASSERTION
-ott.assert_almost_equal(x_star, [-5, -3, 1, 1], 5e-4)
+for name in ot.Bonmin.GetAlgorithmNames():
+    if name in ["B-OA", "B-QG", "B-Ecp"]:
+        continue
+    print(f"-- {name} algorithm...")
+    algo.setAlgorithmName(name)
+    algo.run()
+    result = algo.getResult()
+    x_star = result.getOptimalPoint()
+    print(f"x*={x_star}")
+    y_star = result.getOptimalValue()
+    neval = result.getCallsNumber()
+    print(f"f(x*)={y_star} neval={neval}")
+    ott.assert_almost_equal(x_star, [-5, -3, 1, 1], 5e-4)

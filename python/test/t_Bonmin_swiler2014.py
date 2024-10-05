@@ -42,11 +42,11 @@ def swiler2014(x):
 objectiveFun = ot.PythonFunction(3, 1, swiler2014)
 x = [1, 0, 0.25]
 print("Evaluate f at x=", x)
-print("f(x)=", objectiveFun(x))
+print(f"f(x)={objectiveFun(x)}")
 
 # Define OptimizationProblem
 problem = ot.OptimizationProblem(objectiveFun)
-bounds = ot.Interval([0.0, 0.0, 0], [1.0, 1.0, 4])
+bounds = ot.Interval([0.0] * 3, [1.0, 1.0, 4.0])
 varTypes = [
     ot.OptimizationProblemImplementation.INTEGER,
     ot.OptimizationProblemImplementation.CONTINUOUS,
@@ -57,21 +57,23 @@ problem.setVariablesType(varTypes)
 problem.setMinimization(True)
 
 # Define OptimizationAlgorithm
-x0 = [0] * 3
-algo = ot.Bonmin(problem, "B-BB")
+x0 = [0.0] * 3
+algo = ot.Bonmin(problem)
 algo.setStartingPoint(x0)
 algo.setMaximumCallsNumber(10000)
 algo.setMaximumIterationNumber(1000)
-algo.run()
-
-# Retrieve result
-result = algo.getResult()
-x_star = result.getOptimalPoint()
-print("x*=", x_star)
-y_star = result.getOptimalValue()
-neval = result.getCallsNumber()
-print("f(x*)=", y_star, "neval=", neval)
 
 
-# ASSERTIONS
-ott.assert_almost_equal(x_star, [1.0, 0.0, 0.25], 1, 5e-4)
+for name in ot.Bonmin.GetAlgorithmNames():
+    print(f"-- {name} algorithm...")
+    algo.setAlgorithmName(name)
+    algo.run()
+
+    # Retrieve result
+    result = algo.getResult()
+    x_star = result.getOptimalPoint()
+    print(f"x*={x_star}")
+    y_star = result.getOptimalValue()
+    neval = result.getCallsNumber()
+    print(f"f(x*)={y_star} neval={neval}")
+    ott.assert_almost_equal(x_star, [1.0, 0.0, 0.25], 1, 5e-4)
