@@ -35,9 +35,9 @@ int main(int, char *[])
   const Scalar a = 7.0;
   const Scalar b = 0.1;
   // Create the Ishigami function
-  const Description inputVariables = {"xi1", "xi2", "xi3"};
+  const Description inputVariables = {"x1", "x2", "x3"};
   Description formula(1);
-  formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
+  formula[0] = (OSS() << "sin(x1) + (" << a << ") * (sin(x2)) ^ 2 + (" << b << ") * x3^4 * sin(x1)");
   const SymbolicFunction model(inputVariables, formula);
 
   // Create the input distribution
@@ -52,7 +52,7 @@ int main(int, char *[])
   fullprint << productBasis.__str__() << std::endl;
 
   // Create the adaptive strategy
-  const UnsignedInteger degree = 10;
+  const UnsignedInteger degree = 12;
   const UnsignedInteger basisDimension = enumerateFunction.getBasisSizeFromTotalDegree(degree);
   const FixedStrategy adaptiveStrategy(productBasis, basisDimension);
   // Create the result object here in order to test the save/load mechanism outside of the double loop
@@ -77,77 +77,69 @@ int main(int, char *[])
   result = algo.getResult();
   fullprint << result.__str__() << std::endl;
   const UnsignedInteger errorSampleSize = 1000;
-  const Scalar atol = 5.0e-3;
+  const Scalar atol = 1.0e-3;
   fullprint << "atol = " << atol << std::endl;
 
+  // Create list of functions and the corresponding marginal indices
+  Collection<Function> functionCollection;
+  Collection<Indices> listOfConditioningIndices;
   // Condition with respect to X1
-  fullprint << "Condition with respect to X1" << std::endl;
-  const FunctionalChaosResult ceGivenX1(result.getConditionalExpectation({0}));
-  fullprint << ceGivenX1.__str__() << std::endl;
-  const Function functionCEGivenX1(ceGivenX1.getMetaModel());
-  // Exact result Y | Xi1
-  fullprint << "    Exact result Y | Xi1" << std::endl;
-  const Description inputVariablesGivenX1 = {"xi1", "a", "b"};
-  Description formulaGivenX1(1);
-  formulaGivenX1[0] = (OSS() << "a / 2 + (1 + b * pi_^4 / 5) * sin(xi1)");
-  const SymbolicFunction parametricEgivenX1(inputVariablesGivenX1, formulaGivenX1);
-  const Indices indicesABGivenX1({1, 2});
-  const Point parametersABGivenX1({a, b});
-  const ParametricFunction functionEgivenX1Exact(parametricEgivenX1, indicesABGivenX1, parametersABGivenX1);
-  // Compute L2 weighted norm
-  fullprint << "    Compute L2 weighted norm" << std::endl;
-  const Distribution distributionMarginalGivenX1(distribution.getMarginal(0));
-  const MonteCarloExperiment experimentTestGivenX1(distributionMarginalGivenX1, errorSampleSize);
-  const ExperimentIntegration integrationX1(experimentTestGivenX1);
-  const Point errorGivenX1(integrationX1.computeL2Norm(functionCEGivenX1 - functionEgivenX1Exact));
-  fullprint << "    Error = " << errorGivenX1[0] << std::endl;
-  assert(errorGivenX1[0] < atol);
-
+  const SymbolicFunction conditionalExpectationGivenX1({"a", "b", "x1"}, {"a / 2 + (1 + b * pi_^4 / 5) * sin(x1)"});
+  functionCollection.add(conditionalExpectationGivenX1);
+  Indices indices1 = {0};
+  listOfConditioningIndices.add(indices1);
   // Condition with respect to X2
-  fullprint << "Condition with respect to X2" << std::endl;
-  const FunctionalChaosResult ceGivenX2(result.getConditionalExpectation({1}));
-  fullprint << ceGivenX2.__str__() << std::endl;
-  const Function functionCEGivenX2(ceGivenX2.getMetaModel());
-  // Exact result Y | Xi2
-  fullprint << "    Exact result Y | Xi2" << std::endl;
-  const Description inputVariablesGivenX2 = {"xi2", "a", "b"};
-  Description formula2GivenX2(1);
-  formula2GivenX2[0] = (OSS() << "a * sin(xi2)^2");
-  const SymbolicFunction parametricEgivenX2(inputVariablesGivenX2, formula2GivenX2);
-  const Indices indicesABGivenX2({1, 2});
-  const Point parametersABGivenX2({a, b});
-  const ParametricFunction functionEgivenX2Exact(parametricEgivenX2, indicesABGivenX2, parametersABGivenX2);
-  // Compute L2 weighted norm
-  fullprint << "    Compute L2 weighted norm" << std::endl;
-  const Distribution distributionMarginalGivenX2(distribution.getMarginal(1));
-  const MonteCarloExperiment experimentTestGivenX2(distributionMarginalGivenX2, errorSampleSize);
-  const ExperimentIntegration integrationX2(experimentTestGivenX2);
-  const Point errorGivenX2(integrationX2.computeL2Norm(functionCEGivenX2 - functionEgivenX2Exact));
-  fullprint << "    Error = " << errorGivenX2[0] << std::endl;
-  assert(errorGivenX2[0] < atol);
-
+  const SymbolicFunction conditionalExpectationGivenX2({"a", "b", "x2"}, {"a * sin(x2)^2"});
+  functionCollection.add(conditionalExpectationGivenX2);
+  Indices indices2 = {1};
+  listOfConditioningIndices.add(indices2);
   // Condition with respect to X3
-  fullprint << "Condition with respect to X3" << std::endl;
-  const FunctionalChaosResult ceGivenX3(result.getConditionalExpectation({2}));
-  fullprint << ceGivenX3.__str__() << std::endl;
-  const Function functionCEGivenX3(ceGivenX3.getMetaModel());
-  // Exact result Y | Xi3
-  fullprint << "    Exact result Y | Xi3" << std::endl;
-  const Description inputVariablesGivenX3 = {"xi3", "a", "b"};
-  Description formula2GivenX3(1);
-  formula2GivenX3[0] = (OSS() << "a / 2");
-  const SymbolicFunction parametricEgivenX3(inputVariablesGivenX3, formula2GivenX3);
-  const Indices indicesABGivenX3({1, 2});
-  const Point parametersABGivenX3({a, b});
-  ParametricFunction functionEgivenX3Exact(parametricEgivenX3, indicesABGivenX3, parametersABGivenX3);
-  // Compute L2 weighted norm
-  fullprint << "    Compute L2 weighted norm" << std::endl;
-  const Distribution distributionMarginalGivenX3(distribution.getMarginal(2));
-  const MonteCarloExperiment experimentTestGivenX3(distributionMarginalGivenX3, errorSampleSize);
-  const ExperimentIntegration integrationX3(experimentTestGivenX3);
-  const Point errorGivenX3(integrationX3.computeL2Norm(functionCEGivenX3 - functionEgivenX3Exact));
-  fullprint << "    Error = " << errorGivenX3[0] << std::endl;
-  assert(errorGivenX3[0] < atol);
+  const SymbolicFunction conditionalExpectationGivenX3({"a", "b", "x3"}, {"a / 2"});
+  functionCollection.add(conditionalExpectationGivenX3);
+  Indices indices3 = {2};
+  listOfConditioningIndices.add(indices3);
+  // Given X1, X2
+  const SymbolicFunction conditionalExpectationGivenX1X2({"a", "b", "x1", "x2"}, {"a * sin(x2)^2 + (1 + b * pi_^4 / 5) * sin(x1)"});
+  functionCollection.add(conditionalExpectationGivenX1X2);
+  Indices indices01 = {0, 1};
+  listOfConditioningIndices.add(indices01);
+  // Given X1, X3
+  const SymbolicFunction conditionalExpectationGivenX1X3({"a", "b", "x1", "x3"}, {"a / 2 + (1 + b * x3^4) * sin(x1)"});
+  functionCollection.add(conditionalExpectationGivenX1X3);
+  Indices indices02 = {0, 2};
+  listOfConditioningIndices.add(indices02);
+  // Given X2, X3
+  const SymbolicFunction conditionalExpectationGivenX2X3({"a", "b", "x2", "x3"}, {"a * sin(x2)^2"});
+  functionCollection.add(conditionalExpectationGivenX2X3);
+  Indices indices12 = {1, 2};
+  listOfConditioningIndices.add(indices12);
+  // Given X1, X2, X3
+  const SymbolicFunction conditionalExpectationGivenX1X2X3({"a", "b", "x1", "x2", "x3"}, {"sin(x1) + a * (sin(x2)) ^ 2 + b * x3^4 * sin(x1)"});
+  functionCollection.add(conditionalExpectationGivenX1X2X3);
+  Indices indices012 = {0, 1, 2};
+  listOfConditioningIndices.add(indices012);
+  //
+  fullprint << "functionCollection = " << functionCollection << std::endl;
+  fullprint << "listOfConditioningIndices = " << listOfConditioningIndices << std::endl;
+  for (UnsignedInteger k = 0; k < functionCollection.getSize(); ++k)
+  {
+    const Indices indices = listOfConditioningIndices[k];
+    fullprint << "Test #" << k << " / " << functionCollection.getSize() 
+      << ", condition with respect to X" << indices << std::endl;
+    // Conditional expectation of PCE given X
+    const FunctionalChaosResult ceOfPCEGivenX(result.getConditionalExpectation(indices));
+    const Function functionCEGivenX(ceOfPCEGivenX.getMetaModel());
+    // Exact result Y | X
+    const ParametricFunction functionEgivenXExact(functionCollection[k], {0, 1}, {a, b});
+    // Compute L2 error
+    const Distribution distributionMarginalGivenX(distribution.getMarginal(indices));
+    const LowDiscrepancyExperiment qmcExperiment(SobolSequence(), distributionMarginalGivenX, errorSampleSize, true);
+    const ExperimentIntegration integration(qmcExperiment);
+    const Point errorGivenX1(integration.computeL2Norm(functionCEGivenX - functionEgivenXExact));
+    fullprint << "    L2 Error = " << errorGivenX1[0] << std::endl;
+    String errMsg = "Conditional expectation of PCE with respect to " + indices.__str__();
+    assert_condition(errorGivenX1[0] < atol, errMsg);
+  }
 
   return ExitCode::Success;
 }

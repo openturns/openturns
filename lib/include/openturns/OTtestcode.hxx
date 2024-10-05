@@ -429,7 +429,6 @@ void assert_equal(const T & a, const T & b, const String errMsg = "")
   }
 }
 
-
 class DistributionChecker
 {
 public:
@@ -1066,6 +1065,14 @@ private:
   UnsignedInteger cdfSamplingSize_ = 5;
   UnsignedInteger fittingSamplingSize_ = 100;
 };
+
+void assert_condition(const bool & condition, const String errMsg = "")
+{
+  if (!condition)
+  {
+    throw TestFailed(OSS() << "Value " << condition << " is not true :" << " " << errMsg);
+  }
+}
 
 } /* namespace Test */
 

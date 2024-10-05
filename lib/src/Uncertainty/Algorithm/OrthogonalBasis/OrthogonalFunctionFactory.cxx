@@ -100,6 +100,11 @@ Bool OrthogonalFunctionFactory::isOrthogonal() const
   return true;
 }
 
+Bool OrthogonalFunctionFactory::isTensorProduct() const
+{
+  return false;
+}
+
 /* String converter */
 String OrthogonalFunctionFactory::__repr__() const
 {

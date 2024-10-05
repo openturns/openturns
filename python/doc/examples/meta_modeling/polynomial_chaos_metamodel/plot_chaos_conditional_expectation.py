@@ -368,50 +368,6 @@ def computeSparseLeastSquaresFunctionalChaos(
 
 
 # %%
-# The next function plots an output sample Y depending
-# on an input sample X.
-
-
-# %%
-def plotXvsY(sampleX, sampleY):
-    """
-    Plot a Y sample against a X sample on a grid.
-
-    Parameters
-    ----------
-    sampleX : ot.Sample(sampleSize, inputDimension)
-        The input sample.
-    sampleY : ot.Sample(sampleSize, outputDimension)
-        The output sample.
-
-    Returns
-    -------
-    grid: ot.GridLayout(outputDimension, inputDimension)
-        The grid of plots of all projections of Y vs X.
-    """
-    dimX = sampleX.getDimension()
-    dimY = sampleY.getDimension()
-    descriptionX = sampleX.getDescription()
-    descriptionY = sampleY.getDescription()
-    grid = ot.GridLayout(dimY, dimX)
-    for i in range(dimY):
-        for j in range(dimX):
-            graph = ot.Graph("", descriptionX[j], descriptionY[i], True, "")
-            cloud = ot.Cloud(sampleX[:, j], sampleY[:, i])
-            graph.add(cloud)
-            if j == 0:
-                graph.setYTitle(descriptionY[i])
-            else:
-                graph.setYTitle("")
-            if i == dimY - 1:
-                graph.setXTitle(descriptionX[j])
-            else:
-                graph.setXTitle("")
-            grid.setGraph(i, j, graph)
-    return grid
-
-
-# %%
 # In the next cell, we create a training sample from the
 # Ishigami test function.
 # We choose a sample size equal to 1000.
@@ -420,9 +376,9 @@ def plotXvsY(sampleX, sampleY):
 ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
-input_names = im.distributionX.getDescription()
+input_names = im.inputDistribution.getDescription()
 sampleSize = 1000
-inputSample = im.distributionX.getSample(sampleSize)
+inputSample = im.inputDistribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 
 
@@ -450,7 +406,7 @@ chaosResult = computeSparseLeastSquaresFunctionalChaos(
     outputSample,
     multivariateBasis,
     basisSize,
-    im.distributionX,
+    im.inputDistribution,
 )
 print("Selected basis size = ", chaosResult.getIndices().getSize())
 chaosResult
@@ -463,7 +419,7 @@ chaosResult
 # We see that the Ishigami function is particularly non linear.
 
 # %%
-grid = plotXvsY(inputSample, outputSample)
+grid = ot.VisualTest.DrawPairsXY(inputSample, outputSample)
 grid.setTitle(f"n = {sampleSize}")
 view = otv.View(grid, figure_kw={"figsize": (8.0, 3.0)})
 plt.subplots_adjust(wspace=0.4, bottom=0.25)
@@ -500,9 +456,9 @@ print(parametricPCEFunction.getInputDimension())
 # Then we plot the parametric function depending on :math:`X_i`.
 
 # %%
-inputDimension = im.distributionX.getDimension()
+inputDimension = im.inputDistribution.getDimension()
 npPoints = 100
-inputRange = im.distributionX.getRange()
+inputRange = im.inputDistribution.getRange()
 inputLowerBound = inputRange.getLowerBound()
 inputUpperBound = inputRange.getUpperBound()
 # Create the palette with transparency
@@ -512,7 +468,7 @@ r, g, b, a = ot.Drawable.ConvertToRGBA(firstColor)
 newAlpha = 64
 newColor = ot.Drawable.ConvertFromRGBA(r, g, b, newAlpha)
 palette[0] = newColor
-grid = plotXvsY(inputSample, outputSample)
+grid = ot.VisualTest.DrawPairsXY(inputSample, outputSample)
 reducedBasisSize = chaosResult.getCoefficients().getSize()
 grid.setTitle(
     f"n = {sampleSize}, total degree = {totalDegree}, "
@@ -589,9 +545,9 @@ conditionalPCE
 # expectation of the PCE.
 
 # sphinx_gallery_thumbnail_number = 3
-inputDimension = im.distributionX.getDimension()
+inputDimension = im.inputDistribution.getDimension()
 npPoints = 100
-inputRange = im.distributionX.getRange()
+inputRange = im.inputDistribution.getRange()
 inputLowerBound = inputRange.getLowerBound()
 inputUpperBound = inputRange.getUpperBound()
 # Create the palette with transparency
@@ -601,7 +557,7 @@ r, g, b, a = ot.Drawable.ConvertToRGBA(firstColor)
 newAlpha = 64
 newColor = ot.Drawable.ConvertFromRGBA(r, g, b, newAlpha)
 palette[0] = newColor
-grid = plotXvsY(inputSample, outputSample)
+grid = ot.VisualTest.DrawPairsXY(inputSample, outputSample)
 grid.setTitle(f"n = {sampleSize}, total degree = {totalDegree}")
 for i in range(inputDimension):
     graph = grid.getGraph(0, i)

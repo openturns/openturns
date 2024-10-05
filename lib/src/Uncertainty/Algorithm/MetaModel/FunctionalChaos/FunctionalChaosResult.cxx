@@ -318,31 +318,19 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
 {
   // Get marginal input sample and distribution
   const UnsignedInteger inputDimension = inputSample_.getDimension();
-  conditioningIndices.check(inputDimension);
+  if (!conditioningIndices.check(inputDimension))
+    throw InvalidArgumentException(HERE) << "The conditioning indices must be in the range [0, dim-1] and must be different.";
   const Sample inputSampleMarginal(inputSample_.getMarginal(conditioningIndices));
   const Distribution inputDistributionMarginal(distribution_.getMarginal(conditioningIndices));
   
   // Check independence
   if (!distribution_.hasIndependentCopula())
-    throw InvalidArgumentException(HERE) << "This class can only manage an independent copula.";
+    throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for an independent copula.";
 
   // Create the conditioned orthogonal basis
-  const String basicClassName(orthogonalBasis_.getImplementation()->getClassName());
-  OrthogonalBasis orthogonalBasisMarginal;
-  if (basicClassName == "OrthogonalProductPolynomialFactory")
-  {
-    const OrthogonalProductPolynomialFactory* p_basis = dynamic_cast<const OrthogonalProductPolynomialFactory*>(orthogonalBasis_.getImplementation().get());
-    orthogonalBasisMarginal = p_basis->getMarginal(conditioningIndices);
-  }
-  else if (basicClassName != "OrthogonalProductFunctionFactory")
-  {
-    const OrthogonalProductFunctionFactory* p_basis = dynamic_cast<const OrthogonalProductFunctionFactory*>(orthogonalBasis_.getImplementation().get());
-    orthogonalBasisMarginal = p_basis->getMarginal(conditioningIndices);
-  }
-  else
-    throw InvalidArgumentException(HERE) << "This class can only manage an OrthogonalProductPolynomialFactory "
-          << "or an OrthogonalProductFunctionFactory "
-          << "but current basis is" << basicClassName;
+  if (!orthogonalBasis_.getImplementation()->isTensorProduct())
+    throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for a tensor-product basis.";
+  const OrthogonalBasis orthogonalBasisMarginal(orthogonalBasis_.getImplementation()->getMarginal(conditioningIndices));
 
   // Create the active transformation and its inverse
   const Distribution measureMarginal(orthogonalBasisMarginal.getMeasure());
@@ -351,7 +339,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
 
   // Restrict the enumeration function
   const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
-  EnumerateFunction enumerateFunctionMarginal(enumerateFunction.getMarginal(conditioningIndices));
+  const EnumerateFunction enumerateFunctionMarginal(enumerateFunction.getMarginal(conditioningIndices));
 
   // Condition the multi-indices (taking into account for model selection)
   // Get the indices of active multi-indices in the reduced enumeration rule
@@ -377,11 +365,14 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
       UnsignedInteger localIndex = 0;
       for (UnsignedInteger i = 0; i < inputDimension; ++i)
         if (conditioningIndices.contains(i))
+        {
           activeMultiIndex[localIndex] = multiIndex[i];
-      UnsignedInteger activeIndice = enumerateFunctionMarginal.inverse(activeMultiIndex);
+          localIndex++;
+        }
+      const UnsignedInteger activeIndice = enumerateFunctionMarginal.inverse(activeMultiIndex);
       listOfActiveReducedIndices.add(activeIndice);
     }
-  }
+  } // For k in the number of functions
   const UnsignedInteger reducedActiveBasisDimension = listOfActiveReducedIndices.getSize();
 
   // Compute active coefficients

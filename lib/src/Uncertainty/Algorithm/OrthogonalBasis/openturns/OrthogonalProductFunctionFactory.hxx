@@ -67,7 +67,7 @@ public:
   /** Build the Function of the given multi-indices */
   Function build(const Indices & indices) const override;
 
-  /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
+  /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const override;
 
   /** Return the collection of univariate orthogonal polynomial families */
@@ -78,6 +78,8 @@ public:
 
   /** Virtual constructor */
   OrthogonalProductFunctionFactory * clone() const override;
+
+  Bool isTensorProduct() const override;
 
   /** String converter */
   String __repr__() const override;

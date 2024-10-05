@@ -85,6 +85,8 @@ public:
   using OrthogonalFunctionFactory::getMarginal;
   OrthogonalBasis getMarginal(const Indices & indices) const override;
 
+  Bool isTensorProduct() const override;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

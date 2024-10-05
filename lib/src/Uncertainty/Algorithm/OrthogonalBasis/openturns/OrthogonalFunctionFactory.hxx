@@ -64,11 +64,12 @@ public:
   /** Virtual constructor */
   OrthogonalFunctionFactory * clone() const override;
 
-  
   /** Get the function factory corresponding to marginal input indices */
   virtual OrthogonalBasis getMarginal(const Indices & indices) const;
 
   Bool isOrthogonal() const override;
+
+  Bool isTensorProduct() const override;
 
   /** String converter */
   String __repr__() const override;

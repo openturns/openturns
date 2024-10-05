@@ -164,3 +164,16 @@ function : a :class:`~openturns.Function`
 %enddef
 %feature("docstring") OT::BasisImplementation::add
 OT_Basis_add_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_isTensorProduct_doc
+"Tell whether the basis is a tensor product
+
+Returns
+-------
+isTensorProduct : bool
+    `True` if the basis is a tensor product."
+%enddef
+%feature("docstring") OT::BasisImplementation::isTensorProduct
+OT_Basis_isTensorProduct_doc
