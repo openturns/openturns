@@ -394,7 +394,6 @@ def checkPolynomialExactness(
             f"  absolute error = {absoluteError:.3e}"
         )
     ott.assert_almost_equal(expectedIntegral, computedIntegral, rtol, atol)
-    return
 
 
 ot.Log.Show(ot.Log.NONE)

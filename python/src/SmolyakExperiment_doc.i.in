@@ -66,7 +66,7 @@ The tensor product quadrature is:
 
 .. math::
 
-    T_\ell^{(\inputDim)} = Q_{\ell}^{(1)} \otimes ... \otimes Q_{\ell}^{(1)}.
+    T_\ell^{(\inputDim)} = Q_{\ell}^{(1)} \otimes \cdots \otimes Q_{\ell}^{(1)}.
 
 In the previous equation, the marginal quadratures are not necessarily 
 of the same type. 
@@ -153,9 +153,10 @@ This can reduce the number of nodes, which may be particularly efficient when th
 marginal quadrature rule is nested such as, for example, with Fejér or Clenshaw-Curtis
 quadrature rule.
 
-If two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{\inputDim}`,
-associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`, are to be merged,
-then the merged node is
+Assume we want to merge two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{\inputDim}`,
+associated with the two weights :math:`w_1, w_2 \in \mathbb{R}`.
+Let :math:`\vect{x}_1'` be the merged node and :math:`w_1'` the merged weight.
+Then the merged node is
 
 .. math::
 
@@ -172,23 +173,19 @@ If, however, the elementary quadrature rules have nodes which are computed up to
 rounding error, the merging algorithm may not detect that two nodes which are
 close to each other are, indeed, the same.
 This is why rounding errors must be taken into account.
+The criterion is based on a mixed absolute and relative tolerance.
 Let :math:`\epsilon_r, \epsilon_a > 0` be the relative and absolute tolerances.
 These parameters can be set using the :class:`~openturns.ResourceMap` keys
 `SmolyakExperiment-MergeRelativeEpsilon` and `SmolyakExperiment-MergeAbsoluteEpsilon`.
-The criterion is based on a mixed absolute and relative tolerance.
 Two candidate nodes :math:`\vect{x}_1, \vect{x}_2 \in \mathbb{R}^{\inputDim}`
 are close to each other and are to be merged if:
 
 .. math::
 
-    |(x_1)_i - (y_1)_i| \leq \delta_i
+    |(x_1)_i - (x_2)_i| \leq \epsilon_a + \epsilon_r
+        \max\left(\left|(x_1)_i\right|, \left|(x_2)_i\right|\right).
 
-for :math:`i = 1, ..., \inputDim`, where :math:`\delta_i` is equal to:
-
-.. math::
-
-    \delta_i = \epsilon_a + \epsilon_r
-    \max\left(\left|(x_1)_i\right|, \left|(y_1)_i\right|\right).
+for :math:`i = 1, ..., \inputDim`.
 
 If the bounds of the input distribution are either very close to zero
 or very large, then the default settings may not work properly: in this case,
@@ -211,7 +208,9 @@ Consider the tensor product of 1D polynomials:
     p_i \in \mathcal{P}_{m_i}^{(1)}
     \right\}.
 
-Assume that :math:`m_{k_i}` is the polynomial degree of exactness of the :math:`i`-th marginal univariate quadrature rule using :math:`k_i` nodes, for any math:`i \in \{1,...,\inputDim\}`.
+Assume that :math:`m_{k_i}` is the polynomial degree of exactness of the :math:`i`-th 
+marginal univariate quadrature rule using :math:`k_i` nodes, for any 
+:math:`i \in \{1,...,\inputDim\}`.
 Therefore the Smolyak quadrature is exact for all polynomials of the non-classical 
 vector space (see [novak1999]_ theorem 2 page 88 and [peter2019]_ section 5.4 page 2-17):
 

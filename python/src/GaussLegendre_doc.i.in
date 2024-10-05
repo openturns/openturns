@@ -28,12 +28,12 @@ The Gauss-Legendre algorithm approximates the definite integral:
 where :math:`\model: \Rset^\inputDim \mapsto \Rset^\outputDim` is a function and
 :math:`\vect{a}, \vect{b}\in\Rset^\inputDim` are the bounds
 where :math:`a_i \leq b_i` for :math:`i \in \{1, ..., \inputDim\}`.
-For :math:`i \in \{1, ..., \inputDim\}`, let :math:`s_i \in \Nset` be the number
+For :math:`i \in \{1, ..., \inputDim\}`, let :math:`n_i \in \Nset` be the number
 of marginal nodes of the univariate Gauss-Legendre quadrature.
 The algorithm uses a fixed tensorized Gauss-Legendre approximation based
 on the tensor-product Gauss quadrature using
-:math:`s_1, ..., s_\inputDim \in \Nset` marginal nodes.
-In other words, this algorithms uses an anisotropic quadrature rule,
+:math:`n_1, ..., n_\inputDim \in \Nset` marginal nodes.
+In other words, this algorithm uses an anisotropic quadrature rule,
 i.e. the number of nodes in each marginal dimension
 are not necessarily equal.
 
@@ -45,16 +45,16 @@ please use the :class:`~openturns.TensorProductExperiment` class.
 **Quadrature rule**
 
 More precisely, for any marginal index :math:`i \in \{1, ..., \inputDim\}`,
-for any node index :math:`k_i \in \{1, ..., s_i\}`,
+for any node index :math:`k_i \in \{1, ..., n_i\}`,
 let :math:`x^{(i)}_{k_i} \in [a_i, b_i]` be the :math:`k_i`-th node and
-let :math:`w^{(i)}_{k_i} \geq 0` be the associated weight of the 1D
+let :math:`w^{(i)}_{k_i} > 0` be the associated weight of the 1D
 Gauss-Legendre quadrature.
 The approximated integral is:
 
 .. math::
 
     \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}} 
-    \approx \sum_{k_1 = 1}^{s_1} \cdots \sum_{k_\inputDim = 1}^{s_\inputDim} 
+    \approx \sum_{k_1 = 1}^{n_1} \cdots \sum_{k_\inputDim = 1}^{n_\inputDim} 
     \left(\prod_{i=1}^\inputDim w^{(i)}_{k_i}\right)
     \model\left(x^{(1)}_{k_1},\dots,x^{(\inputDim)}_{k_\inputDim}\right).
 
@@ -62,7 +62,7 @@ The total number of nodes is the product of marginal number of nodes:
 
 .. math::
 
-    \prod_{i = 1}^\inputDim s_i.
+    \prod_{i = 1}^\inputDim n_i.
 
 
 **Polynomial exactness**
@@ -88,7 +88,7 @@ polynomials of the vector space:
 
 .. math::
 
-    \bigotimes_{i = 1}^\inputDim \mathcal{P}_{2 s_i - 1}^{(1)}.
+    \bigotimes_{i = 1}^\inputDim \mathcal{P}_{2 n_i - 1}^{(1)}.
 
 See also
 --------
@@ -106,11 +106,14 @@ Create a Gauss-Legendre algorithm in dimension 3 with 2 nodes for :math:`x_1`,
 
 >>> algo = ot.GaussLegendre([2, 4, 5])
 
-Compute the following integral:
+We show how to use this method to evaluate the following integral:
 
 .. math::
 
     \int_{[0,1]^3} x_1^5 x_2^3 x_3^7 d\vect{x}
+
+First, we use the default number of nodes as defined in the
+:class:`~openturns.ResourceMap`.
 
 >>> dimension = 3
 >>> bounds = ot.Interval([0.0] * dimension, [1.0] * dimension)
