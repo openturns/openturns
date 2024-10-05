@@ -26,14 +26,13 @@ constraintFun = ot.SymbolicFunction(
     ["x", "y", "z", "t"], ["-(8*x + 5*y + 3*z + 2*t -10)"]
 )
 x = [0, 1, 1, 1]
-print("Evaluate f at x=", x)
-print("f(x)=", objectiveFun(x))
-print("g(x)=", constraintFun(x))
+print(f"f(x)={objectiveFun(x)}")
+print(f"g(x)={constraintFun(x)}")
 
 # Define problem
 problem = ot.OptimizationProblem(objectiveFun)
 problem.setInequalityConstraint(constraintFun)
-bounds = ot.Interval([0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0])
+bounds = ot.Interval([0.0] * 4, [1.0] * 4)
 problem.setBounds(bounds)
 problem.setMinimization(True)
 problem.setVariablesType(
@@ -46,23 +45,24 @@ problem.setVariablesType(
 )
 
 # Define OptimizationAlgorithm
-x0 = [0.0, 0.0, 0.0, 0.0]
-algo = ot.Bonmin(problem, "B-BB")
+x0 = [0.0] * 4
+algo = ot.Bonmin(problem)
 algo.setStartingPoint(x0)
 algo.setMaximumCallsNumber(10000)
 algo.setMaximumIterationNumber(1000)
-algo.run()
-
-# Retrieve result
-result = algo.getResult()
-x_star = result.getOptimalPoint()
-print("x*=", x_star)
-y_star = result.getOptimalValue()
-neval = result.getCallsNumber()
-print("f(x*)=", y_star, "neval=", neval)
-
-print("g(x*)=", constraintFun(x_star))
 
 
-# ASSERTION
-ott.assert_almost_equal(x_star, [0, 1, 1, 1], 1, 5e-4)
+for name in ot.Bonmin.GetAlgorithmNames():
+    print(f"-- {name} algorithm...")
+    algo.setAlgorithmName(name)
+    algo.run()
+
+    # Retrieve result
+    result = algo.getResult()
+    x_star = result.getOptimalPoint()
+    print("x*=", x_star)
+    y_star = result.getOptimalValue()
+    neval = result.getCallsNumber()
+    print(f"f(x*)={y_star} neval={neval}")
+    print(f"g(x*)={constraintFun(x_star)}")
+    ott.assert_almost_equal(x_star, [0, 1, 1, 1], 1, 5e-4)
