@@ -37,9 +37,9 @@ int main(int, char *[])
   fullprint << "experiment = " << experiment << std::endl;
   Point weights(0);
   const Sample sample(experiment.generateWithWeights(weights));
-  assert(sample.getSize() == size);
-  assert(sample.getDimension() == 4);
-  assert(weights.getDimension() == size);
+  assert_equal(sample.getSize(), size);
+  assert_equal(sample.getDimension(), (UnsignedInteger) 4);
+  assert_equal(weights.getDimension(), size);
   const Scalar atol = 10.0 / std::sqrt(size);
   const Scalar rtol = 0.0;
   const Point meanExact(distribution.getMean());

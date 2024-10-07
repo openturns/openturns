@@ -62,14 +62,14 @@ int main(int, char *[])
 
   fullprint << "Test integrate()" << std::endl;
   const Point ishigamiMeanComputed(integration.integrate(ishigamiFunction));
-  assert(ishigamiMeanComputed.getDimension() == 1);
+  assert_equal(ishigamiMeanComputed.getDimension(), (UnsignedInteger) 1);
   fullprint << "    ishigamiMeanComputed[0] = " << ishigamiMeanComputed[0] << std::endl;
   fullprint << "    mean = " << mean << std::endl;
   assert_almost_equal(ishigamiMeanComputed[0], mean, atolIntegrate);
 
   fullprint << "Test computeL2Norm()" << std::endl;
   const Point centeredIshigamiL2Norm(integration.computeL2Norm(centeredIshigami));
-  assert(centeredIshigamiL2Norm.getDimension() == 1);
+  assert_equal(centeredIshigamiL2Norm.getDimension(), (UnsignedInteger) 1);
   fullprint << "    centeredIshigamiL2Norm[0] = " << centeredIshigamiL2Norm[0] << std::endl;
   fullprint << "    exactL2Norm = " << exactL2Norm << std::endl;
   assert_almost_equal(centeredIshigamiL2Norm[0], exactL2Norm, atolIntegrate);
@@ -83,7 +83,7 @@ int main(int, char *[])
 
   fullprint << "Test computeL2Norm()" << std::endl;
   const Point ishigamiErrorComputed(integration.computeL2Norm(ishigamiFunction - ishigamiPartFunction));
-  assert(ishigamiErrorComputed.getDimension() == 1);
+  assert_equal(ishigamiErrorComputed.getDimension(), (UnsignedInteger) 1);
   Scalar errorExact = std::sqrt(0.5);
   fullprint << "    ishigamiErrorComputed[0] = " << ishigamiErrorComputed[0] << std::endl;
   fullprint << "    errorExact = " << errorExact << std::endl;
