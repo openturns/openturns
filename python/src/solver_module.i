@@ -1,7 +1,6 @@
 // SWIG file solver_module.i
 
 %module(package="openturns", docstring="Solvers.") solver
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

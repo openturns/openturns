@@ -140,7 +140,7 @@ ot.TESTPREAMBLE()
 # Problem parameters
 im = ishigami_function.IshigamiModel()
 
-dimension = im.distributionX.getDimension()
+dimension = im.inputDistribution.getDimension()
 
 # Compute the sample size from number of folds to guarantee a non constant integer
 # number of points per fold
@@ -160,10 +160,10 @@ selectionAlgorithm = (
     ot.PenalizedLeastSquaresAlgorithmFactory()
 )  # Get a full PCE: do not use model selection.
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
-inputSample = im.distributionX.getSample(sampleSize)
+inputSample = im.inputDistribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 algo = ot.FunctionalChaosAlgorithm(
-    inputSample, outputSample, im.distributionX, adaptiveStrategy, projectionStrategy
+    inputSample, outputSample, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 algo.run()
 chaosResult = algo.getResult()
@@ -182,7 +182,7 @@ assert validationLOO.getSplitter().getN() == sampleSize
 mseLOOnaive = computeMSENaiveLOO(
     inputSample,
     outputSample,
-    im.distributionX,
+    im.inputDistribution,
     adaptiveStrategy,
     projectionStrategy,
 )
@@ -221,7 +221,7 @@ print("Analytical KFold MSE = ", mseKFoldAnalytical)
 mseKFoldnaive = computeMSENaiveKFold(
     inputSample,
     outputSample,
-    im.distributionX,
+    im.inputDistribution,
     adaptiveStrategy,
     projectionStrategy,
     kFoldParameter,
@@ -250,10 +250,10 @@ selectionAlgorithm = (
     ot.LeastSquaresMetaModelSelectionFactory()
 )  # Get a sparse PCE (i.e. with model selection).
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
-inputSample = im.distributionX.getSample(sampleSize)
+inputSample = im.inputDistribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 algo = ot.FunctionalChaosAlgorithm(
-    inputSample, outputSample, im.distributionX, adaptiveStrategy, projectionStrategy
+    inputSample, outputSample, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 algo.run()
 chaosResult = algo.getResult()
@@ -269,7 +269,7 @@ print("Analytical LOO MSE = ", mseLOOAnalytical)
 mseLOOnaive = computeMSENaiveLOO(
     inputSample,
     outputSample,
-    im.distributionX,
+    im.inputDistribution,
     adaptiveStrategy,
     projectionStrategy,
 )

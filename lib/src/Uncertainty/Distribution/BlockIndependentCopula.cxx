@@ -130,16 +130,7 @@ void BlockIndependentCopula::setCopulaCollection(const DistributionCollection & 
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs
   setDimension(dimension);
-
-  // avoid description warning with identical entries
-  Description test(description);
-  Description::const_iterator it = std::unique(test.begin(), test.end());
-  if (it != test.end())
-  {
-    description = Description::BuildDefault(dimension_, "X");
-  }
-  setDescription(description);
-
+  setDescription(DeduplicateDecription(description));
   computeRange();
 }
 

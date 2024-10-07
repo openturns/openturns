@@ -83,7 +83,7 @@ Continuous parametric distributions
     TruncatedNormal
 
     :template: classWithPlot.rst_t
-    experimental.TruncatedOverMesh
+    TruncatedOverMesh
 
     :template: Distribution.rst_t
     Uniform
@@ -254,7 +254,7 @@ Refer to :ref:`copula`.
 
     :template: Copula.rst_t
     NormalCopula
-    experimental.StudentCopula
+    StudentCopula
 
 
 Combining and transforming copulas

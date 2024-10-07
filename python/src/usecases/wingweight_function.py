@@ -36,50 +36,57 @@ class WingWeightModel:
     """
     Data class for the Wing weight model.
 
-
     Attributes
     ----------
 
+    dim : int
+        Dimension of the problem, dim = 10
 
-    dim : The dimension of the problem
-          dim = 10
+    Sw : :class:`~openturns.Uniform`
+        Wing area (ft^2)  distribution
+        First marginal, ot.Uniform(150, 200)
 
-    Sw : Wing area (ft^2), :class:`~openturns.Uniform` distribution
-         First marginal, ot.Uniform(150, 200)
+    Wfw : :class:`~openturns.Uniform`
+        Weight of fuel in the wing (lb) distribution
+        Second marginal, ot.Uniform(220, 300)
 
-    Wfw : Weight of fuel in the wing (lb), :class:`~openturns.Uniform` distribution
-         Second marginal, ot.Uniform(220, 300)
-
-    A : Aspect ratio (-), :class:`~openturns.Uniform` distribution
+    A : :class:`~openturns.Uniform`
+        Aspect ratio (-) distribution
         Third marginal, ot.Uniform(6, 10)
 
-    Lambda : Quarter chord sweep (deg), :class:`~openturns.Uniform` distribution
-         Fourth marginal, ot.Uniform(-10, 10)
+    Lambda : :class:`~openturns.Uniform`
+        Quarter chord sweep (deg),  distribution
+        Fourth marginal, ot.Uniform(-10, 10)
 
-    q : Dynamic pressure at cruise (lb/ft^2), :class:`~openturns.Uniform` distribution
-         Fifth marginal, ot.Uniform(16, 45 )
+    q : :class:`~openturns.Uniform`
+        Dynamic pressure at cruise (lb/ft^2) distribution
+        Fifth marginal, ot.Uniform(16, 45 )
 
-    l : Taper ratio (-), :class:`~openturns.Uniform` distribution
-         Sixth marginal, ot.Uniform(0.5, 1)
+    l : :class:`~openturns.Uniform`
+        Taper ratio (-) distribution
+        Sixth marginal, ot.Uniform(0.5, 1)
 
-    tc : Airfoil thickness to chord ratio (-), :class:`~openturns.Uniform` distribution
-         Seventh marginal, ot.Uniform(0.08, 0.18)
+    tc : :class:`~openturns.Uniform`
+        Airfoil thickness to chord ratio (-) distribution
+        Seventh marginal, ot.Uniform(0.08, 0.18)
 
-    Nz : Ultimate load factor (-), :class:`~openturns.Uniform` distribution
-         Eighth marginal, ot.Uniform(2.5, 6)
+    Nz : :class:`~openturns.Uniform`
+        Ultimate load factor (-) distribution
+        Eighth marginal, ot.Uniform(2.5, 6)
 
-    Wdg : Flight design gross weight (lb), :class:`~openturns.Uniform` distribution
-         Nineth marginal, ot.Uniform(1700, 2500)
+    Wdg : :class:`~openturns.Uniform`
+        Flight design gross weight (lb) distribution
+        Nineth marginal, ot.Uniform(1700, 2500)
 
-    Wp : Paint weight (lb/ft^2), :class:`~openturns.Uniform` distribution
-         Tenth marginal, ot.Uniform(0.025, 0.08)
+    Wp : :class:`~openturns.Uniform`
+        Paint weight (lb/ft^2) distribution
+        Tenth marginal, ot.Uniform(0.025, 0.08)
 
-
-    distributionX : :class:`~openturns.JointDistribution`
-                    The joint distribution of the input parameters.
+    inputDistribution : :class:`~openturns.JointDistribution`
+        The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
-               The Wing weight model with Sw, Wfw, A, Lambda, q, l, tc, Nz, Wdg and Wp as variables.
+        The Wing weight model with Sw, Wfw, A, Lambda, q, l, tc, Nz, Wdg and Wp as variables.
 
     Examples
     --------
@@ -133,7 +140,7 @@ class WingWeightModel:
         self.Wp.setName("Wp")
 
         # Input distribution
-        self.distributionX = ot.JointDistribution(
+        self.inputDistribution = ot.JointDistribution(
             [
                 self.Sw,
                 self.Wfw,
@@ -147,7 +154,7 @@ class WingWeightModel:
                 self.Wp,
             ]
         )
-        self.distributionX.setDescription(
+        self.inputDistribution.setDescription(
             ["Sw", "Wfw", "A", "Lambda", "q", "l", "tc", "Nz", "Wdg", "Wp"]
         )
 

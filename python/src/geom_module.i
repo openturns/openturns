@@ -1,7 +1,6 @@
 // SWIG file geom_module.i
 
 %module(package="openturns", docstring="Geometrical classes.") geom
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

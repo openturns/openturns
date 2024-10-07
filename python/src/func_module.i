@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Function primitives.") func
 #pragma SWIG nowarn=302,314,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

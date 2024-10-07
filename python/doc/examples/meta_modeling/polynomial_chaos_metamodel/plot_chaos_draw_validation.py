@@ -24,13 +24,13 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 # The model contains the input distribution :math:`X=(X_1, X_2, X_3)` in
-# `im.distributionX` and the Ishigami function in `im.model`.
+# `im.inputDistribution` and the Ishigami function in `im.model`.
 # We also have access to the input variable names with
-input_names = im.distributionX.getDescription()
+input_names = im.inputDistribution.getDescription()
 
 # %%
 N = 100
-inputTrain = im.distributionX.getSample(N)
+inputTrain = im.inputDistribution.getSample(N)
 outputTrain = im.model(inputTrain)
 
 # %%
@@ -63,7 +63,7 @@ projectionStrategy = ot.LeastSquaresStrategy(
 
 # %%
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+    inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 
 # %%
@@ -80,7 +80,7 @@ metamodel = result.getMetaModel()
 
 # %%
 n_valid = 1000
-inputTest = im.distributionX.getSample(n_valid)
+inputTest = im.inputDistribution.getSample(n_valid)
 outputTest = im.model(inputTest)
 metamodelPredictions = metamodel(inputTest)
 val = ot.MetaModelValidation(outputTest, metamodelPredictions)

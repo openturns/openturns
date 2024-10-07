@@ -72,6 +72,7 @@ private:
 
 // some macros cannot be used in limited API mode; redirect to the stable abi symbols
 #ifdef Py_LIMITED_API
+// Py_LIMITED_API >= 0x03070000 is required for PySlice_Unpack
 #define PySequence_ITEM PySequence_GetItem
 #define PyList_GET_SIZE PyList_Size
 #define PyTuple_GET_SIZE PyTuple_Size
@@ -497,7 +498,8 @@ static inline
 bool
 isAPythonBufferOf(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+  (void) pyObj;
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
@@ -649,7 +651,7 @@ inline
 Point
 convert< _PySequence_, Point >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -719,7 +721,7 @@ inline
 Collection<Complex>
 convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -757,7 +759,7 @@ void handleException()
   if (exception)
   {
     PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_GetExcInfo(&type, &value, &traceback);
 
     String exceptionMessage("Python exception");
 
@@ -783,7 +785,7 @@ void handleException()
       }
     }
 
-    PyErr_Restore(type, value, traceback);
+    PyErr_SetExcInfo(type, value, traceback);
     PyErr_Print();
     throw InternalException(HERE) << exceptionMessage;
   }
@@ -802,7 +804,7 @@ inline
 Sample
 convert< _PySequence_, Sample >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -931,7 +933,7 @@ inline
 Collection< UnsignedInteger >
 convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1002,7 +1004,7 @@ inline
 IndicesCollection
 convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1124,7 +1126,7 @@ inline
 Collection<Scalar>
 convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1170,7 +1172,7 @@ MatrixImplementation*
 convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
 {
   MatrixImplementation *p_implementation = 0;
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1375,7 +1377,7 @@ inline
 TensorImplementation*
 convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1464,7 +1466,7 @@ inline
 ComplexMatrixImplementation*
 convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
 {
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {
@@ -1644,7 +1646,7 @@ ComplexTensorImplementation*
 convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
 {
   ComplexTensorImplementation *p_implementation = 0;
-#ifndef Py_LIMITED_API
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
   {

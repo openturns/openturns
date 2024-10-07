@@ -2,13 +2,12 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 dim = 3
-copula = otexp.StudentCopula(2.5, ot.CorrelationMatrix(dim))
+copula = ot.StudentCopula(2.5, ot.CorrelationMatrix(dim))
 print("Copula ", repr(copula))
 print("Copula ", copula)
 print("Mean ", repr(copula.getMean()))

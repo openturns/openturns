@@ -3796,8 +3796,8 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
   }
   if (isDiscrete())
   {
-    const Sample support(getSupport());
-    const Point probabilities(getProbabilities());
+    const Sample support(getSupport(Interval(xMin, xMax)));
+    const Point probabilities(computePDF(support).getImplementation()->getData());
     const UnsignedInteger size = support.getSize();
     SampleImplementation fullProba(size, 1);
     fullProba.setData(probabilities);
@@ -3810,13 +3810,19 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     const String yName(description_[1]);
     const String title(OSS() << getDescription() << " PDF");
     Graph graph(title, xName, yName, true, "topright", 1, scale);
+    if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
+    {
+      Cloud cloud(support);
+      cloud.setPointStyle(ResourceMap::GetAsString("Distribution-SupportPointStyleDiscretePDF"));
+      graph.add(cloud);
+    }
     const Bool scaleColors = ResourceMap::GetAsBool("Distribution-ScaleColorsDiscretePDF") && (pMin < pMax);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Scalar x = fullProba(i, 1);
-      const Scalar y = fullProba(i, 2);
       const Scalar p = fullProba(i, 0);
       const Scalar eta = std::sqrt(p) * scaling;
+      const Scalar x = fullProba(i, 1);
+      const Scalar y = fullProba(i, 2);
       Sample square(4, 2);
       if (logScaleX)
       {
@@ -3851,11 +3857,6 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
       mark.setColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 1.0));
       mark.setEdgeColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 0.9));
       graph.add(mark);
-    }
-    if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
-    {
-      Cloud cloud(support);
-      graph.add(cloud);
     }
     return graph;
   }
@@ -4047,8 +4048,8 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
   }
   if (isDiscrete())
   {
-    const Sample support(getSupport());
-    const Point probabilities(getProbabilities());
+    const Sample support(getSupport(Interval(xMin, xMax)));
+    const Point probabilities(computePDF(support).getImplementation()->getData());
     const UnsignedInteger size = support.getSize();
     SampleImplementation fullProba(size, 1);
     fullProba.setData(probabilities);
@@ -4061,6 +4062,12 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     const String yName(description_[1]);
     const String title(OSS() << getDescription() << " PDF");
     Graph graph(title, xName, yName, true, "topright", 1, scale);
+    if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
+    {
+      Cloud cloud(support);
+      cloud.setPointStyle(ResourceMap::GetAsString("Distribution-SupportPointStyleDiscretePDF"));
+      graph.add(cloud);
+    }
     const Bool scaleColors = ResourceMap::GetAsBool("Distribution-ScaleColorsDiscretePDF") && (absLogPMin < absLogPMax);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
@@ -4102,11 +4109,6 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
       mark.setColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 1.0));
       mark.setEdgeColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 0.9));
       graph.add(mark);
-    }
-    if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
-    {
-      Cloud cloud(support);
-      graph.add(cloud);
     }
     return graph;
   }
@@ -4809,6 +4811,29 @@ Description DistributionImplementation::getParameterDescription() const
 UnsignedInteger DistributionImplementation::getParameterDimension() const
 {
   return getParameter().getSize();
+}
+
+/* Filter identical entries */
+Description DistributionImplementation::DeduplicateDecription(const Description & description)
+{
+  std::map<String, UnsignedInteger> occurrence;
+  UnsignedInteger idx = 0;
+  Description result(description);
+  for (UnsignedInteger i = 0; i < result.getSize(); ++ i)
+  {
+    const String currentName(result[i]);
+    ++ occurrence[currentName];
+    if (occurrence[currentName] > 1)
+    {
+      // replace duplicate with the first free "XN" name
+      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
+        ++ idx;
+      const String newName(OSS() << "X" << idx);
+      ++ occurrence[newName]; // avoid duplicates with new ones too
+      result[i] = newName;
+    }
+  }
+  return result;
 }
 
 /* Description accessor */

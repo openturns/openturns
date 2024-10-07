@@ -46,7 +46,7 @@ parameters      = [class=PointWithDescription name=X0 dimension=4 description=[m
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,1,4]]
 parameter       = class=Point name=Unnamed dimension=4 values=[2,1.5,1,4]
 parameter desc  = [mu_0,sigma_0,lowerBound,upperBound]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
+marginal 0      = class=TruncatedNormal name=TruncatedNormal dimension=1 mu=2 sigma=1.5 a=1 b=4
 Standard representative= TruncatedNormal(mu = -0.333333, sigma = 1, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[)
 Elliptical =  False
@@ -96,7 +96,7 @@ parameters      = [class=PointWithDescription name=X0 dimension=3 description=[m
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,1,200]]
 parameter       = class=Point name=Unnamed dimension=3 values=[2,1.5,1]
 parameter desc  = [mu_0,sigma_0,lowerBound]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[13.4759] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
+marginal 0      = class=TruncatedNormal name=TruncatedNormal dimension=1 mu=2 sigma=1.5 a=1 b=13.4759
 Standard representative= TruncatedNormal(mu = -0.98995, sigma = 0.0150754, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4])
 Elliptical =  False
@@ -146,7 +146,7 @@ parameters      = [class=PointWithDescription name=X0 dimension=3 description=[m
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,-200,4]]
 parameter       = class=Point name=Unnamed dimension=3 values=[2,1.5,4]
 parameter desc  = [mu_0,sigma_0,upperBound]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-9.47594] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[0] finite upper bound=[1] thresholdRealization=0.5
+marginal 0      = class=TruncatedNormal name=TruncatedNormal dimension=1 mu=2 sigma=1.5 a=-9.47594 b=4
 Standard representative= TruncatedNormal(mu = 0.980392, sigma = 0.0147059, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4])
 Elliptical =  False
@@ -196,7 +196,7 @@ parameters      = [class=PointWithDescription name=X0 dimension=4 description=[m
 parameters (ref)= [class=PointWithDescription name=X0 dimension=4 description=[mu,sigma,a,b] values=[2,1.5,1,4]]
 parameter       = class=Point name=Unnamed dimension=4 values=[2,1.5,1,4]
 parameter desc  = [mu_0,sigma_0,lowerBound,upperBound]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
+marginal 0      = class=TruncatedNormal name=TruncatedNormal dimension=1 mu=2 sigma=1.5 a=1 b=4
 Standard representative= TruncatedNormal(mu = -0.333333, sigma = 1, a = -1, b = 1)
 Distribution  TruncatedDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]]), bounds = [-0.5, 2]
@@ -263,7 +263,7 @@ cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.743105]
 Survival(inverseSurvival)=0.950000
 entropy=0.979345
-Minimum volume interval= [0.537171, 3.03076]
+Minimum volume interval= [0.537168, 3.03076]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.24308} with f=
 MinimumVolumeLevelSetEvaluation(TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[))
@@ -288,7 +288,7 @@ parameters      = [class=PointWithDescription name=X0 dimension=4 description=[b
 parameters (ref)= [class=PointWithDescription name=X0 dimension=3 description=[beta,alpha,gamma] values=[2,3,0]]
 parameter       = class=Point name=Unnamed dimension=4 values=[2,3,0,0]
 parameter desc  = [beta,alpha,gamma,lowerBound]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=WeibullMin name=WeibullMin dimension=1 beta=2 alpha=3 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[6.36519] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
+marginal 0      = class=WeibullMin name=WeibullMin dimension=1 beta=2 alpha=3 gamma=0
 Standard representative= WeibullMin(beta = 1, alpha = 3, gamma = 0)
 d= TruncatedDistribution(Normal(mu = 1, sigma = 2), bounds = [-1, 4]) simplified= TruncatedNormal(mu = 1, sigma = 2, a = -1, b = 4)
 d= TruncatedDistribution(Uniform(a = 1, b = 2), bounds = [0.2, 2.4]) simplified= Uniform(a = 1, b = 2)

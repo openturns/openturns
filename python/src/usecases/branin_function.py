@@ -9,38 +9,38 @@ class BraninModel:
     r"""
     Data class for the Branin test function.
 
-
     Attributes
     ----------
 
-    dim : The dimension of the problem
-          dim=2.
+    dim : int
+        The dimension of the problem, dim=2.
 
-    model : the Branin function
+    model : :class:`~openturns.Function`
+        The Branin function
 
-    trueNoiseFunction : Constant, small noise
-                        :math:`\epsilon=0.1`.
+    trueNoiseFunction : float
+        Constant, small noise :math:`\epsilon=0.1`.
 
-    noiseModel : The noise function
+    noiseModel : :class:`~openturns.Function`
+        The noise function
 
-    lowerbound : `Point` in dimension dim.
-                 Default is 0.0 for each dimension.
+    lowerbound : :class:`~openturns.Point` in dimension dim.
+        Default is 0.0 for each dimension.
 
-    upperbound : `Point` in dimension dim.
-                 Default is 1.0 for each dimension.
+    upperbound : :class:`~openturns.Point` in dimension dim.
+        Default is 1.0 for each dimension.
 
-    xexact1 : `Point`
-              First minima location :math:`[0.123895, 0.818329]`.
+    xexact1 : :class:`~openturns.Point`
+        First minima location :math:`[0.123895, 0.818329]`.
 
-    xexact2 : `Point`
-              Second minima location :math:`[0.542773, 0.151666]`.
+    xexact2 : :class:`~openturns.Point`
+        Second minima location :math:`[0.542773, 0.151666]`.
 
-    xexact3 : `Point`
-              Third minima location :math:`[0.961652, 0.165000]`.
+    xexact3 : :class:`~openturns.Point`
+        Third minima location :math:`[0.961652, 0.165000]`.
 
-    xexact : `Sample`
-             All global minimas location gathered.
-
+    xexact : :class:`~openturns.Sample`
+        All global minimas location gathered.
 
     Examples
     --------

@@ -326,14 +326,14 @@ void FieldToPointFunctionalChaosAlgorithm::run()
     while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
     LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
 
-    const Scalar lambdaCut = eigenValues[K];
+    const Scalar lambdaCut = eigenValues[K - 1];
     for (UnsignedInteger i = 0; i < blockIndices_.getSize(); ++ i)
     {
       UnsignedInteger Ki = 1;// retain at least 1 mode
       Point eigenValuesI(klResultCollection[i].getEigenvalues());
       Scalar selectedVarianceI = eigenValuesI[0];
       const Scalar cumulatedVarianceI = eigenValuesI.norm1();
-      while ((Ki < eigenValuesI.getSize()) && (eigenValuesI[Ki] > lambdaCut))
+      while ((Ki < eigenValuesI.getSize()) && (eigenValuesI[Ki] >= lambdaCut))
       {
         selectedVarianceI += eigenValuesI[Ki];
         ++ Ki;

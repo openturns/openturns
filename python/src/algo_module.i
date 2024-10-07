@@ -1,7 +1,6 @@
 // SWIG file algo_module.i
 
 %module(package="openturns", docstring="Approximation algorithms.") algo
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

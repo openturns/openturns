@@ -1,7 +1,6 @@
 // SWIG file typ_module.i
 
 %module(package="openturns", docstring="Internal data types.") typ
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

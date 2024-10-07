@@ -232,8 +232,9 @@ for j in range(grid.getNbColumns()):
     cdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawCDF()
     pdf_curve.setColors([palette[j]])
     cdf_curve.setColors([palette[j]])
-    pdf_curve.setLegends(["alpha={}".format(alpha)])
-    cdf_curve.setLegends(["alpha={}".format(alpha)])
+    legends = [f"alpha={alpha}"]
+    pdf_curve.setLegends(legends)
+    cdf_curve.setLegends(legends)
     grid.setGraph(0, j, pdf_curve)
     grid.setGraph(1, j, cdf_curve)
 view = View(grid)
@@ -279,6 +280,17 @@ curve.setLineStyle("dashed")
 graph.add(curve)
 cloud = ot.Cloud(ot.Normal(2).getSample(100), "cloud")
 graph.add(cloud)
+view = View(graph)
+
+# contour bug
+outputSample = ot.Uniform().getSample(49)
+x = [[-3.58], [-2.38667], [-1.19333], [0], [1.19333], [2.38667], [3.58]]
+y = [[-3.58], [-2.38667], [-1.19333], [0], [1.19333], [2.38667], [3.58]]
+contour = ot.Contour(x, y, outputSample)
+contour.setLevels([0.0])
+contour.setLabels(["0.0"])
+graph = ot.Graph("", "", "", True)
+graph.add(contour)
 view = View(graph)
 
 view.ShowAll(block=True)

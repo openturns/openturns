@@ -162,7 +162,7 @@ class OpenTURNSPythonFunction:
         return self.__p
 
     def __str__(self):
-        return 'OpenTURNSPythonFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__n, self.__descOut, self.__p)
+        return f"OpenTURNSPythonFunction( {self.__descIn} #{self.__n} ) -> {self.__descOut} #{self.__p}"
 
     def __repr__(self):
         return self.__str__()

@@ -11,8 +11,9 @@ for i, p in enumerate([-1.0, 0.0, 1.0]):
     cdf_curve = distribution.drawCDF().getDrawable(0)
     pdf_curve.setColor(palette[i])
     cdf_curve.setColor(palette[i])
-    pdf_curve.setLegend("xi={}".format(p))
-    cdf_curve.setLegend("xi={}".format(p))
+    legend = f"xi={p}"
+    pdf_curve.setLegend(legend)
+    cdf_curve.setLegend(legend)
     pdf_graph.add(pdf_curve)
     cdf_graph.add(cdf_curve)
 fig = plt.figure(figsize=(10, 4))

@@ -236,7 +236,8 @@ Scalar Normal::computePDF(const Scalar x) const
 Scalar Normal::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension (" << point.getDimension()
+	                                                                      << ") incompatible with the distribution (" << dimension << ").";
   // Special case for dimension 1
   if (dimension == 1) return computePDF(point[0]);
   return EllipticalDistribution::computePDF(point);
@@ -251,7 +252,8 @@ Scalar Normal::computeCDF(const Scalar x) const
 Scalar Normal::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension (" << point.getDimension()
+                                                                              << ") incompatible with the distribution (" << dimension << ").";
   // Special case for dimension 1
   if (dimension == 1) return computeCDF(point[0]);
   // Normalize the point to use the standard form of the multivariate normal distribution
@@ -398,7 +400,8 @@ Scalar Normal::computeComplementaryCDF(const Scalar x) const
 Scalar Normal::computeComplementaryCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension (" << point.getDimension()
+                                                                              << ") incompatible with the distribution (" << dimension << ").";
   // Special case for dimension 1
   if (dimension == 1) return computeComplementaryCDF(point[0]);
   return EllipticalDistribution::computeComplementaryCDF(point);

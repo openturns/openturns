@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.testing import assert_almost_equal
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -28,8 +28,7 @@ kernels.add(ot.Beta(2.0, 2.0, -1.0, 1.0))
 kernels.add(ot.Beta(3.0, 3.0, -1.0, 1.0))
 meanExact = distribution.getMean()
 covarianceExact = distribution.getCovariance()
-for i in range(kernels.getSize()):
-    kernel = kernels[i]
+for kernel in kernels:
     print("kernel=", kernel.getName())
     smoother = ot.KernelSmoothing(kernel)
     smoothed = smoother.build(sample)
@@ -63,6 +62,16 @@ for i in range(kernels.getSize()):
     print(" pdf(exact)=%.6g" % distribution.computePDF(point))
     print(" cdf(smoothed)=%.6g" % pointCDF)
     print(" cdf(exact)=%.6g" % distribution.computeCDF(point))
+
+    # as mixture
+    mixture = smoother.buildAsMixture(sample, smoother.computeSilvermanBandwidth(sample))
+    pointPDF = mixture.computePDF(point)
+    pointCDF = mixture.computeCDF(point)
+    print(" pdf(smoothed)=%.6g" % pointPDF)
+    print(" pdf(exact)=%.6g" % distribution.computePDF(point))
+    print(" cdf(smoothed)=%.6g" % pointCDF)
+    print(" cdf(exact)=%.6g" % distribution.computeCDF(point))
+
 
 # Test for boundary correction
 distributionCollection = ot.DistributionCollection(2)
@@ -242,8 +251,8 @@ for i, distribution in enumerate([ot.LogNormal(0.0, 2.5),
     kernel.setUseLogTransform(True)
     fitted = kernel.build(sample)
     quantile = distribution.computeQuantile(0.25)
-    assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
+    ott.assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
     quantile = distribution.computeQuantile(0.5)
-    assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
+    ott.assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
     quantile = distribution.computeQuantile(0.75)
-    assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)
+    ott.assert_almost_equal(distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05)

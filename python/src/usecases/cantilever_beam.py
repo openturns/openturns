@@ -13,35 +13,39 @@ class CantileverBeam:
     Attributes
     ----------
 
-    dim : The dimension of the problem
-          dim=4.
+    dim : int
+        The dimension of the problem, dim=4.
 
-    E : `Beta` distribution
-        ot.Beta(0.9, 3.5, 65.0e9, 75.0e9)
+    E : :class:`~openturns.Beta`
+        Young's modulus distribution
+        Beta(0.9, 3.5, 65.0e9, 75.0e9)
 
-    F : `LogNormal` distribution
-        ot.LogNormalMuSigma()([300.0, 30.0, 0.0])
+    F : :class:`~openturns.LogNormal`
+        Load distribution
+        LogNormalMuSigma()([300.0, 30.0, 0.0])
 
-    L : `Uniform` distribution
-        ot.Uniform(2.5, 2.6)
+    L : :class:`~openturns.Uniform`
+        Length distribution
+        Uniform(2.5, 2.6)
 
-    I : `Beta` distribution
-        ot.Beta(2.5, 4.0, 1.3e-7, 1.7e-7)
+    II : :class:`~openturns.Beta`
+        Moment of inertia distribution
+        Beta(2.5, 4.0, 1.3e-7, 1.7e-7)
 
-    model : `SymbolicFunction`, the physical model of the cantilever beam.
+    model : :class:`~openturns.SymbolicFunction`
+        The physical model of the cantilever beam.
 
-    R : `CorrelationMatrix`
+    R : :class:`~openturns.CorrelationMatrix`
         Correlation matrix used to define the copula.
 
-    copula : `NormalCopula`
-             Copula of the model.
+    copula : :class:`~openturns.NormalCopula`
+        Copula of the model.
 
-    distribution : `JointDistribution`
-                   The joint distribution of the parameters.
+    distribution : :class:`~openturns.JointDistribution`
+        The joint distribution of the parameters.
 
-    independentDistribution : `JointDistribution`
-                              The joint distribution of the parameters with independent copula.
-
+    independentDistribution : :class:`~openturns.JointDistribution`
+        The joint distribution of the parameters with independent copula.
 
     Examples
     --------

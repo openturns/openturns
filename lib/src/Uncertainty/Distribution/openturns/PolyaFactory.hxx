@@ -48,9 +48,9 @@ public:
   Distribution build(const Sample & sample) const override;
   Distribution build(const Point & parameters) const override;
   Distribution build() const override;
-  Polya buildAsNegativeBinomial(const Sample & sample) const;
-  Polya buildAsNegativeBinomial(const Point & parameters) const;
-  Polya buildAsNegativeBinomial() const;
+  Polya buildAsPolya(const Sample & sample) const;
+  Polya buildAsPolya(const Point & parameters) const;
+  Polya buildAsPolya() const;
 
 }; /* class PolyaFactory */
 

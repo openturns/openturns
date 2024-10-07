@@ -645,6 +645,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
+		      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                       DistributionFactoryLikelihoodResult.i DistributionFactoryLikelihoodResult_doc.i.in
                       ProfileLikelihoodResult.i ProfileLikelihoodResult_doc.i.in
 		      CovariatesResult.i CovariatesResult_doc.i.in
@@ -725,6 +726,8 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       SquaredNormal.i SquaredNormal_doc.i.in
                       Student.i Student_doc.i.in
                       StudentFactory.i StudentFactory_doc.i.in
+                      StudentCopula.i StudentCopula_doc.i.in
+                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                       Trapezoidal.i Trapezoidal_doc.i.in
                       TrapezoidalFactory.i TrapezoidalFactory_doc.i.in
                       Triangular.i Triangular_doc.i.in
@@ -732,6 +735,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedDistribution.i TruncatedDistribution_doc.i.in
                       TruncatedNormal.i TruncatedNormal_doc.i.in
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
+                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UniformMuSigma.i UniformMuSigma_doc.i.in
@@ -1020,12 +1024,8 @@ ot_add_python_module(experimental experimental_module.i
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
-                     StudentCopula.i StudentCopula_doc.i.in
-                     StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
-                     TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
-                     GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in

@@ -7,6 +7,10 @@ Point=  class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(exact)=0.0280502
  cdf(smoothed)=0.279515
  cdf(exact)=0.305529
+ pdf(smoothed)=0.0247621
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.279514
+ cdf(exact)=0.305529
 kernel= Epanechnikov
 kernel bandwidth=[ 1.66591 ,  3.39265 ]
 mean(smoothed)=[ 0.50406 ,  -0.708164 ] mean(exact)=[ 0.5 ,  -0.5 ]
@@ -16,11 +20,19 @@ Point=  class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(exact)=0.0280502
  cdf(smoothed)=0.278675
  cdf(exact)=0.305529
+ pdf(smoothed)=0.0245902
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.278675
+ cdf(exact)=0.305529
 kernel= Uniform
 kernel bandwidth=[ 1.29041 ,  2.62794 ]
 mean(smoothed)=[ 0.50406 ,  -0.708164 ] mean(exact)=[ 0.5 ,  -0.5 ]
 covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.10693,2.78725,2.78725,11.7692]  covariance(exact)= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
 Point=  class=Point name=Unnamed dimension=2 values=[0,0]
+ pdf(smoothed)=0.0235911
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.278627
+ cdf(exact)=0.305529
  pdf(smoothed)=0.0235911
  pdf(exact)=0.0280502
  cdf(smoothed)=0.278627
@@ -34,12 +46,20 @@ Point=  class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(exact)=0.0280502
  cdf(smoothed)=0.278851
  cdf(exact)=0.305529
+ pdf(smoothed)=0.0246934
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.27885
+ cdf(exact)=0.305529
 kernel= Logistic
 kernel bandwidth=[ 0.41075 ,  0.836498 ]
 mean(smoothed)=[ 0.50406 ,  -0.708164 ] mean(exact)=[ 0.5 ,  -0.5 ]
 covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.10693,2.78725,2.78725,11.7692]  covariance(exact)= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
 Point=  class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)=0.0254113
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.280123
+ cdf(exact)=0.305529
+ pdf(smoothed)=0.0254111
  pdf(exact)=0.0280502
  cdf(smoothed)=0.280123
  cdf(exact)=0.305529
@@ -52,12 +72,20 @@ Point=  class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(exact)=0.0280502
  cdf(smoothed)=0.278675
  cdf(exact)=0.305529
+ pdf(smoothed)=0.0245902
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.278675
+ cdf(exact)=0.305529
 kernel= Beta
 kernel bandwidth=[ 1.97113 ,  4.01424 ]
 mean(smoothed)=[ 0.50406 ,  -0.708164 ] mean(exact)=[ 0.5 ,  -0.5 ]
 covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.10693,2.78725,2.78725,11.7692]  covariance(exact)= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
 Point=  class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)=0.0244981
+ pdf(exact)=0.0280502
+ cdf(smoothed)=0.27883
+ cdf(exact)=0.305529
+ pdf(smoothed)=0.024498
  pdf(exact)=0.0280502
  cdf(smoothed)=0.27883
  cdf(exact)=0.305529

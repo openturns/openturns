@@ -9,7 +9,6 @@ class FloodModel:
     r"""
     Data class for the flood model.
 
-
     Parameters
     ----------
 
@@ -38,31 +37,31 @@ class FloodModel:
     Attributes
     ----------
 
-    dim : The dimension of the problem
-        dim=4
+    dim : int
+        The dimension of the problem: dim=4
 
-    Q : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Gumbel` distribution
+    Q : :class:`~openturns.TruncatedDistribution`
         `ot.TruncatedDistribution(ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)`
 
-    Ks : :class:`~openturns.TruncatedDistribution` of a :class:`~openturns.Normal` distribution
+    Ks : :class:`~openturns.TruncatedDistribution`
         `ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0.0, ot.TruncatedDistribution.LOWER)`
 
-    Zv : :class:`~openturns.Uniform` distribution
+    Zv : :class:`~openturns.Uniform`
         `ot.Uniform(49.0, 51.0)`
 
-    Zm : :class:`~openturns.Uniform` distribution
+    Zm : :class:`~openturns.Uniform`
         `ot.Uniform(54.0, 56.0)`
 
-    B : :class:`~openturns.Uniform` distribution
+    B : :class:`~openturns.Uniform`
         `Triangular(295.0, 300.0, 305.0)`
 
-    L : :class:`~openturns.Uniform` distribution
+    L : :class:`~openturns.Uniform`
         `ot.Triangular(4990.0, 5000.0, 5010.0)`
 
-    Hd : :class:`~openturns.Uniform` distribution
+    Hd : :class:`~openturns.Uniform`
         `ot.Uniform(54.0, 56.0)`
 
-    Zb : :class:`~openturns.Uniform` distribution
+    Zb : :class:`~openturns.Uniform`
         The distribution depends on `distributionHdLow`.
 
     model : :class:`~openturns.ParametricFunction`
@@ -75,7 +74,8 @@ class FloodModel:
     distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
-    data : :class:`~openturns.Sample` of size 10 and dimension 2
+    data : :class:`~openturns.Sample`
+        of size 10 and dimension 2
         A data set which contains noisy observations of the flow rate (column 0)
         and the height (column 1).
 
@@ -229,9 +229,9 @@ class FloodModel:
 
         Returns
         -------
-        heightInputDistribution : ot.Distribution(4)
+        heightInputDistribution : :class:`~openturns.Distribution`
             The joint input distribution of (Q, Ks, Zv, Zm).
-        heightModel : ot.Function(4, 1)
+        heightModel : :class:`~openturns.Function`
             The function with (Q, Ks, Zv, Zm) as input and (H) as output.
         """
         parametricModel = ot.ParametricFunction(

@@ -36,20 +36,20 @@ class ChabocheModel:
 
     Attributes
     ----------
-    dim : The dimension of the problem
-        dim=4.
+    dim : int
+        Dimension of the problem, dim=4.
 
     Strain : :class:`~openturns.Uniform` distribution
-        `ot.Uniform(strainMin, strainMax)`
+        `Uniform(strainMin, strainMax)`
 
     R : :class:`~openturns.LogNormal` distribution
-        `ot.LogNormal().setParameter(ot.LogNormalMuSigma()([750.0e6, 11.0e6, 0.0]))`
+        `LogNormal().setParameter(ot.LogNormalMuSigma()([750.0e6, 11.0e6, 0.0]))`
 
     C : :class:`~openturns.Normal` distribution
-        `ot.Normal(2750.0e6, 250.0e6)`
+        `Normal(2750.0e6, 250.0e6)`
 
     Gamma : :class:`~openturns.Normal` distribution
-        `ot.Normal(10.0, 2.0)`
+        `Normal(10.0, 2.0)`
 
     inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
@@ -60,8 +60,8 @@ class ChabocheModel:
         More precisely, we have :math:`\vect{X} = (\epsilon, R,
         C, \gamma)` and  :math:`Y = \sigma`.
 
-    data : :class:`~openturns.Sample` of size 10 and dimension 2
-        A data set which contains noisy observations of the strain (column 0)
+    data : :class:`~openturns.Sample`
+        A data set of size 10 and dimension 2 which contains noisy observations of the strain (column 0)
         and the stress (column 1).
 
     Examples
@@ -94,7 +94,7 @@ class ChabocheModel:
 
         if strainMin >= strainMax:
             raise ValueError(
-                "Strain minimum = %s >= strainMax = %s." % (strainMin, strainMax)
+                f"Strain minimum = {strainMin} >= strainMax = {strainMax}."
             )
         self.strainMin = strainMin
         self.strainMax = strainMax

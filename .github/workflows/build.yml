@@ -12,13 +12,12 @@ jobs:
     - uses: actions/checkout@v4
     - run: |
         brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo cuba nanoflann
-        pip3 install matplotlib "numpy<2" scipy chaospy pandas dill --break-system-packages
+        pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
         cmake \
         -DCMAKE_INSTALL_PREFIX=~/.local \
         -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
         -DUSE_BISON=OFF \
-        -DUSE_CMINPACK=OFF \
         -DFLEX_EXECUTABLE=/opt/homebrew/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/opt/homebrew/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
@@ -38,7 +37,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" "liblapack=*=*netlib" "liblapacke=*=*netlib" mpc boost-cpp libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" "liblapack=*=*netlib" "liblapacke=*=*netlib" mpc boost-cpp libxml2 "hdf5<1.14.4" primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd

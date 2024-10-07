@@ -1,7 +1,6 @@
 // SWIG file optim_module.i
 
 %module(package="openturns", docstring="Optimization routines.") optim
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

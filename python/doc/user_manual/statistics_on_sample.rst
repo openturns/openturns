@@ -141,7 +141,7 @@ Building copulas from samples
     IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
-    experimental.StudentCopulaFactory
+    StudentCopulaFactory
 
 Sensitivity Analysis
 ====================
@@ -239,7 +239,7 @@ Graphical tests
     VisualTest.DrawLowerExtremalDependenceFunction
 
     :template: class.rst_t
-    experimental.GeneralizedExtremeValueValidation
+    GeneralizedExtremeValueValidation
     experimental.GeneralizedParetoValidation
 
 Hypothesis tests
