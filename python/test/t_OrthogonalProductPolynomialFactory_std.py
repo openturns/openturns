@@ -39,3 +39,6 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
 productBasisMarginal = productBasis.getMarginal([0, 2, 4])
 for i in range(20):
     function = productBasisMarginal.build(i)
+
+# Test isTensorProduct()
+assert productBasis.isTensorProduct()

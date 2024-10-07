@@ -66,6 +66,12 @@ public:
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const override;
 
+  /** Get the function factory corresponding to the given input marginal indices */
+  using OrthogonalFunctionFactory::getMarginal;
+  OrthogonalBasis getMarginal(const Indices & indices) const override;
+
+  Bool isTensorProduct() const override;
+
   /** Virtual constructor */
   SoizeGhanemFactory * clone() const override;
 

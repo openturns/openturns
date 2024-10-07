@@ -38,3 +38,16 @@ for soize in factories:
             if abs(value) >= 1.0e-6:
                 M[m, n] = value
     print("M=\n", M)
+
+# Test isTensorProduct(), case True
+sgTensorProduct = ot.SoizeGhanemFactory(ot.JointDistribution(marginals))
+assert sgTensorProduct.isTensorProduct()
+# Test isTensorProduct(), case False
+sgTensorProduct = ot.SoizeGhanemFactory(ot.JointDistribution(marginals, copula))
+assert not sgTensorProduct.isTensorProduct()
+
+# Test getMarginal
+basis = ot.SoizeGhanemFactory(ot.JointDistribution(marginals))
+basisMarginal = basis.getMarginal([0])
+for i in range(20):
+    function = basisMarginal.build(i)

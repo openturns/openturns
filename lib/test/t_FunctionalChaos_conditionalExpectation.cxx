@@ -138,7 +138,7 @@ int main(int, char *[])
     const Point errorGivenX1(integration.computeL2Norm(functionCEGivenX - functionEgivenXExact));
     fullprint << "    L2 Error = " << errorGivenX1[0] << std::endl;
     String errMsg = "Conditional expectation of PCE with respect to " + indices.__str__();
-    assert_condition(errorGivenX1[0] < atol, errMsg);
+    assert_equal(errorGivenX1[0] < atol, true, errMsg);
   }
 
   return ExitCode::Success;

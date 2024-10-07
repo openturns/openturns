@@ -88,6 +88,16 @@ int main(int, char *[])
         }
       fullprint << "M=\n" << M.__str__() << std::endl;
     }
+    // Test isTensorProduct(), case true
+    const JointDistribution inputDistributionIndependent(marginals);
+    const SoizeGhanemFactory sgFactoryTrue(inputDistributionIndependent);
+    const bool isProductTrue = sgFactoryTrue.isTensorProduct();
+    assert_equal(isProductTrue, true, "isTensorProduct must be true");
+    // Test isTensorProduct(), case false
+    const JointDistribution inputDistributionWithDependence(marginals, copula);
+    const SoizeGhanemFactory sgFactoryFalse(inputDistributionWithDependence);
+    const bool isProductFalse = sgFactoryFalse.isTensorProduct();
+    assert_equal(isProductFalse, false, "isTensorProduct must be false");
   }
   catch (TestFailed & ex)
   {

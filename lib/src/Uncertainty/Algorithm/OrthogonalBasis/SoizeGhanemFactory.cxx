@@ -322,6 +322,17 @@ void SoizeGhanemFactory::buildProductPolynomialAndAdaptation(const Bool useCopul
     adaptationFactor_ = Function(SoizeGhanemFactorEvaluation(measure_, marginals, useCopula));
 }
 
+/* Get the function factory corresponding to the input marginal indices */
+OrthogonalBasis SoizeGhanemFactory::getMarginal(const Indices & indices) const
+{
+  return productPolynomial_.getMarginal(indices);
+}
+
+Bool SoizeGhanemFactory::isTensorProduct() const
+{
+  return hasIndependentCopula_;
+}
+
 /* String converter */
 String SoizeGhanemFactory::__repr__() const
 {

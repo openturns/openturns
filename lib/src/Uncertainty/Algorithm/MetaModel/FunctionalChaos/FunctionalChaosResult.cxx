@@ -367,7 +367,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
         if (conditioningIndices.contains(i))
         {
           activeMultiIndex[localIndex] = multiIndex[i];
-          localIndex++;
+          ++localIndex;
         }
       const UnsignedInteger activeIndice = enumerateFunctionMarginal.inverse(activeMultiIndex);
       listOfActiveReducedIndices.add(activeIndice);
@@ -376,11 +376,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   const UnsignedInteger reducedActiveBasisDimension = listOfActiveReducedIndices.getSize();
 
   // Compute active coefficients
-  const UnsignedInteger outputDimension = outputSample_.getDimension();
-  Sample activeCoefficients(reducedActiveBasisDimension, outputDimension);
-  const UnsignedInteger numberOfActiveIndices = listOfActiveIndices.getSize();
-  for (UnsignedInteger k = 0; k < numberOfActiveIndices; ++k)
-    activeCoefficients[k] = alpha_k_[listOfActiveIndices[k]];
+  const Sample activeCoefficients(alpha_k_.select(listOfActiveIndices));
 
   // Get the conditioned functional basis
   Basis activeReducedBasis(0);
