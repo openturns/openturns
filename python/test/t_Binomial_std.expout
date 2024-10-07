@@ -16,6 +16,57 @@ kurtosis= class=Point name=Unnamed dimension=1 values=[2.91746]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.15]
 parameters= [class=PointWithDescription name=X0 dimension=2 description=[n,p] values=[15,0.7]]
 Standard representative= Binomial(n = 15, p = 0.7)
+95.00% bilateral confidence interval  = [7, 14]
+Check on dataset
+row = 0/37, x = 0, n = 10, pr = 0.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
+    computePDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeComplementaryCDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
+row = 1/37, x = 10, n = 10, pr = 0.0, P(X = x) = 0.0, CDF = 1.0, Compl. CDF = 0.0
+    computePDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
+    computeCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeComplementaryCDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
+    computeQuantile. Computed X = 10, expected = 10, diff = 0
+row = 2/37, x = 0, n = 10, pr = 1.0, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
+    computePDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
+    computeCDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
+    computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeQuantile. Computed X = 0, expected = 0, diff = 0
+row = 3/37, x = 10, n = 10, pr = 1.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
+    computePDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeComplementaryCDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
+    computeQuantile. Computed X = 10, expected = 10, diff = 0
+row = 4/37, x = 1, n = 1030, pr = 0.5, P(X = x) = 8.952445602587756e-308, CDF = 8.96113729734744e-308, Compl. CDF = 1.0
+    computePDF. Computed = 8.952445602586738e-308, expected = 8.952445602587756e-308, abs.err. = 1.018e-320
+    computeCDF. Computed = 8.961137297347362e-308, expected = 8.96113729734744e-308, abs.err. = 7.9e-322
+    computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeQuantile. Computed X = 1, expected = 1, diff = 0
+row = 5/37, x = 400, n = 1030, pr = 0.5, P(X = x) = 1.4435068396634365e-13, CDF = 3.897352466243578e-13, Compl. CDF = 0.9999999999996103
+    computePDF. Computed = 1.4435068396634415e-13, expected = 1.4435068396634365e-13, abs.err. = 5.048709793414476e-28
+    computeCDF. Computed = 3.8973524662436084e-13, expected = 3.897352466243578e-13, abs.err. = 3.0292258760486853e-27
+    computeComplementaryCDF. Computed = 0.9999999999996103, expected = 0.9999999999996103, abs.err. = 0.0
+    computeQuantile. Computed X = 400, expected = 400, diff = 0
+row = 6/37, x = 589, n = 1030, pr = 0.5, P(X = x) = 5.835293291163824e-07, CDF = 0.9999983439256698, Compl. CDF = 1.6560743301714625e-06
+    computePDF. Computed = 5.835293291163835e-07, expected = 5.835293291163824e-07, abs.err. = 1.0587911840678754e-21
+    computeCDF. Computed = 0.9999983439256698, expected = 0.9999983439256698, abs.err. = 0.0
+    computeComplementaryCDF. Computed = 1.6560743301714386e-06, expected = 1.6560743301714625e-06, abs.err. = 2.3928680759933985e-20
+    computeQuantile. Computed X = 589, expected = 589, diff = 0
+row = 7/37, x = 1, n = 30, pr = 0.1, P(X = x) = 0.14130386091738736, CDF = 0.18369501919260356, Compl. CDF = 0.8163049808073964
+    computePDF. Computed = 0.14130386091738736, expected = 0.14130386091738736, abs.err. = 0.0
+    computeCDF. Computed = 0.18369501919260367, expected = 0.18369501919260356, abs.err. = 1.1102230246251565e-16
+    computeComplementaryCDF. Computed = 0.8163049808073963, expected = 0.8163049808073964, abs.err. = 1.1102230246251565e-16
+    computeQuantile. Computed X = 1, expected = 1, diff = 0
+row = 8/37, x = 1, n = 50, pr = 0.001, P(X = x) = 0.047607889299150725, CDF = 0.9988135174961821, Compl. CDF = 0.001186482503817932
+    computePDF. Computed = 0.047607889299150725, expected = 0.047607889299150725, abs.err. = 0.0
+    computeCDF. Computed = 0.9988135174961821, expected = 0.9988135174961821, abs.err. = 0.0
+    computeComplementaryCDF. Computed = 0.0011864825038179335, expected = 0.001186482503817932, abs.err. = 1.5178830414797062e-18
+    computeQuantile. Computed X = 1, expected = 1, diff = 0
+row = 9/37, x = 16, n = 30, pr = 0.999, P(X = x) = 1.4311328174833965e-34, CDF = 1.4326623224074817e-34, Compl. CDF = 1.0
+    computePDF. Computed = 1.4311328174833965e-34, expected = 1.4311328174833965e-34, abs.err. = 0.0
+    computeCDF. Computed = 1.432662322407474e-34, expected = 1.4326623224074817e-34, abs.err. = 7.697562365065523e-49
+    computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
+    computeQuantile. Computed X = 17, expected = 16, diff = 1
 95.00% bilateral confidence interval  = [7, 13]
 n=59 k=1 p(k-1)=0.0485 p(k)=0.1991 ok=True
 n=60 k=1 p(k-1)=0.0461 p(k)=0.1916 ok=True
