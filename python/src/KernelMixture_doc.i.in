@@ -16,20 +16,21 @@ Notes
 A *KernelMixture* is a particular *Mixture*: all the weights are identical and
 all the kernels of the combination are of the same
 family. The kernels are centered on the sample points. The multivariate kernel
-is a tensorized product of the same univariate kernel :math:`K`.
+is a tensorized product of the same univariate kernel.
 
 The treatment of such a Mixture has been optimized.
 
 We denote by :math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize) \in \Rset^\inputDim`
 a sample from :math:`\inputRV`.
 
-The probability density function of a :math:`\inputRV` is defined by:
+The probability density function :math:`\inputRV` is defined by:
 
 .. math::
 
     \inputMeasure(\vect{x}) =  \sum_{i=1}^\sampleSize \dfrac{1}{\sampleSize} \prod_{j=1}^\inputDim \dfrac{1}{h^j}k\left(\frac{x^j-s^j_i}{h^j}\right)
 
 where :math:`k` is the kernel pdf.
+
 Examples
 --------
 Create a *KernelMixture*:
