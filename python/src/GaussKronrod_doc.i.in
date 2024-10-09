@@ -12,15 +12,15 @@ GKRule : :class:`~openturns.GaussKronrodRule`
 
 Notes
 -----
-The Gauss-Kronrod algorithm enables to approximate the definite integral:
+We consider a function :math:`f: \Rset \mapsto \Rset^\outputDim` and a domain :math:`\set{D} = [a,b]` where :math:`\vect{a}, \vect{b} \in \Rset`.The Gauss-Kronrod algorithm approximates the definite
+integral:
 
 .. math::
     :label: initIntegral
 
     \int_{a}^b f(t)\di{t}
 
-
-with :math:`f: \Rset \mapsto \Rset^p`, using both Gauss and Kronrod approximations, using the rule
+using both Gauss and Kronrod approximations, using the rule
 defined in :class:`~openturns.GaussKronrodRule`.
 
 The Gauss-Kronrod algorithm evaluates
@@ -68,7 +68,7 @@ where we introduced the scaled function :math:`\tilde{f}_i` on :math:`[-1,1]` de
 
 
 We get the nodes used to compute :eq:`initIntegral` by mapping
-the :math:`(2m+1)` nodes computed by :class:`~openturns.GaussKronrodRule` in :math:`[-1, 1]` according the the particular rule :math:`G_mK_{2m+1}` through each mapping function :math:`\varphi_i` defined in :eq:`mappingGKi`. The associated weights are multiplied by the length of the subinterval :math:`\dfrac{1}{2}(b_i-a_i)`.
+the :math:`2m+1` nodes computed by :class:`~openturns.GaussKronrodRule` in :math:`[-1, 1]` according the the particular rule :math:`G_mK_{2m+1}` through each mapping function :math:`\varphi_i` defined in :eq:`mappingGKi`. The associated weights are multiplied by the length of the subinterval :math:`\dfrac{1}{2}(b_i-a_i)`.
 
 When the function :math:`f: \Rset^d \mapsto \Rset^p` with :math:`d>1`, use the iterated quadrature algorithm of the :class:`~openturns.IteratedQuadrature` class.
 
