@@ -102,6 +102,21 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
+  /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalPDF;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalPDF(const Point & x) const override;
+
+  /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalCDF;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalCDF(const Point & x) const override;
+
+  /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalQuantile;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
+  Point computeSequentialConditionalQuantile(const Point & q) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
