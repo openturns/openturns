@@ -384,9 +384,9 @@ OT_Evaluation_draw_doc
 "Draw the 2D and 1D cross cuts of a 1D output function as a :class:`~openturns.GridLayout`.
 
 Available usages:
-    drawCrossCuts(*centralPoint, xiMin, xiMax, ptNb, withMonoDimCuts, isFilled*)
+    drawCrossCuts(*centralPoint, xiMin, xiMax, ptNb, withMonoDimensionalCuts, isFilled*)
 
-    drawCrossCuts(*centralPoint, xiMin, xiMax, ptNb, vMin, vMax, withMonoDimCuts, isFilled*)
+    drawCrossCuts(*centralPoint, xiMin, xiMax, ptNb, vMin, vMax, withMonoDimensionalCuts, isFilled*)
 
 Parameters
 ----------
@@ -398,8 +398,8 @@ ptNb : int :math:`ptNb > 0`
     The number of points to draw the contours and the curves.
 vMin, vMax : float
     Define the interval used to build the color map for the contours
-withMonoDimCuts : bool
-    withMonoDimCuts indicates whether the mono dimension cuts are drawn or not
+withMonoDimensionalCuts : bool
+    withMonoDimensionalCuts indicates whether the mono dimension cuts are drawn or not
 isFilled : bool
     isFilled indicates whether the contour graphs are filled or not
 

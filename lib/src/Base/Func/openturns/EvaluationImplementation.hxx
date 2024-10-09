@@ -174,7 +174,7 @@ public:
                               const Indices& pointNumber,
                               const Scalar vMin,
                               const Scalar vMax,
-                              const Bool withMonoDimCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimCuts"),
+                              const Bool withMonoDimensionalCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimensionalCuts"),
                               const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const;
 
   /** Draw cross sections of the function assumed to have 1D output (vMin and vMax are calculated) */
@@ -182,7 +182,7 @@ public:
                               const Point& xMin,
                               const Point& xMax,
                               const Indices& pointNumber,
-                              const Bool withMonoDimCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimCuts"),
+                              const Bool withMonoDimensionalCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimensionalCuts"),
                               const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const;
 
   /** Stop callback */

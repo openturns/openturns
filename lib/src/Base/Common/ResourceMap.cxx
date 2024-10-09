@@ -730,7 +730,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Contour-DefaultAlpha", 1.0);
 
   // Cross cuts parameters //
-  addAsBool("CrossCuts-DefaultWithMonoDimCuts", true);
+  addAsBool("CrossCuts-DefaultWithMonoDimensionalCuts", true);
 
   // IntervalMesher parameters //
   addAsBool("IntervalMesher-UseDiamond", false);

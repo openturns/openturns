@@ -114,7 +114,7 @@
   <Contour-DefaultAlpha value_float="1.0"            />
 
   <!-- OT::Cross cuts parameters -->
-  <CrossCuts-DefaultWithMonoDimCuts value_bool="true" />
+  <CrossCuts-DefaultWithMonoDimensionalCuts value_bool="true" />
 
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value_bool="false" />

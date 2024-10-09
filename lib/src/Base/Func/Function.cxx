@@ -418,10 +418,10 @@ GridLayout Function::drawCrossCuts(const Point& centralPoint,
   const Indices& pointNumber,
   const Scalar vMin,
   const Scalar vMax,
-  const Bool withMonoDimCuts,
+  const Bool withMonoDimensionalCuts,
   const Bool isFilled) const
 {
-  return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, vMin, vMax, withMonoDimCuts, isFilled);
+  return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, vMin, vMax, withMonoDimensionalCuts, isFilled);
 }
 
 /** Draw cross sections of the function assumed to have 1D output (vMin and vMax are calculated) */
@@ -429,10 +429,10 @@ GridLayout Function::drawCrossCuts(const Point& centralPoint,
   const Point& xMin,
   const Point& xMax,
   const Indices& pointNumber,
-  const Bool withMonoDimCuts,
+  const Bool withMonoDimensionalCuts,
   const Bool isFilled) const
 {
-  return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimCuts, isFilled);
+  return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimensionalCuts, isFilled);
 }
 
 void Function::setStopCallback(StopCallback callBack, void * state)
