@@ -45,6 +45,7 @@ public:
   SobolSimulationResult(const Distribution & firstOrderIndicesDistribution,
                         const Distribution & totalOrderIndicesDistribution,
                         const UnsignedInteger outerSampling,
+                        const UnsignedInteger experimentSize,
                         const UnsignedInteger blockSize);
 
   /** Virtual constructor */
@@ -59,6 +60,10 @@ public:
   void setTotalOrderIndicesDistribution(const Distribution & totalOrderIndicesDistribution);
   Distribution getFirstOrderIndicesDistribution() const;
   Distribution getTotalOrderIndicesDistribution() const;
+
+  /** Experiment size accessor */
+  void setExperimentSize(const UnsignedInteger experimentSize);
+  UnsignedInteger getExperimentSize() const;
 
   /** String converter */
   String __repr__() const override;
@@ -77,6 +82,9 @@ protected:
   /* The event we are interested in */
   Distribution firstOrderIndicesDistribution_;
   Distribution totalOrderIndicesDistribution_;
+
+  // Internal size of the Sobol' experiment
+  UnsignedInteger experimentSize_ = 0;
 
 }; // class SobolSimulationResult
 

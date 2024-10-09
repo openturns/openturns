@@ -12,7 +12,7 @@ to_dist = ot.Normal(
     [0.0068919, 0.00950876, 0.00204324, 0.0038844],
     ot.CorrelationMatrix(4),
 )
-result = ot.SobolSimulationResult(fo_dist, to_dist, 250, 100)
+result = ot.SobolSimulationResult(fo_dist, to_dist, 250, 100, 1)
 
 graph = result.draw()
 

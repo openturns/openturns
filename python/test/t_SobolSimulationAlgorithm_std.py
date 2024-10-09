@@ -41,10 +41,10 @@ distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * dimension)
 estimator = ot.SaltelliSensitivityAlgorithm()
 estimator.setUseAsymptoticDistribution(True)
 algo = ot.SobolSimulationAlgorithm(distribution, model, estimator)
-algo.setMaximumOuterSampling(250)  # number of iterations
+algo.setMaximumOuterSampling(250)
 # size N of Sobol experiment at each iteration, total size is N*(d+2)
-algo.setBlockSize(10000)
-algo.setBatchSize(97)  # number of points evaluated simultaneously
+algo.setExperimentSize(10000)
+algo.setBlockSize(97)
 algo.setIndexQuantileLevel(0.05)
 algo.setIndexQuantileEpsilon(1e-2)
 # algo.setProgressCallback(progress)

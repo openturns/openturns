@@ -40,10 +40,12 @@ SobolSimulationResult::SobolSimulationResult()
 SobolSimulationResult::SobolSimulationResult(const Distribution & firstOrderIndicesDistribution,
     const Distribution & totalOrderIndicesDistribution,
     const UnsignedInteger outerSampling,
+    const UnsignedInteger experimentSize,
     const UnsignedInteger blockSize)
   : SimulationResult(outerSampling, blockSize)
   , firstOrderIndicesDistribution_(firstOrderIndicesDistribution)
   , totalOrderIndicesDistribution_(totalOrderIndicesDistribution)
+  , experimentSize_(experimentSize)
 {
   // Nothing to do
 }
@@ -86,6 +88,17 @@ Distribution SobolSimulationResult::getTotalOrderIndicesDistribution() const
   return totalOrderIndicesDistribution_;
 }
 
+/* Experiment size accessor */
+void SobolSimulationResult::setExperimentSize(const UnsignedInteger experimentSize)
+{
+  experimentSize_ = experimentSize;
+}
+
+UnsignedInteger SobolSimulationResult::getExperimentSize() const
+{
+  return experimentSize_;
+}
+
 /* String converter */
 String SobolSimulationResult::__repr__() const
 {
@@ -95,6 +108,7 @@ String SobolSimulationResult::__repr__() const
       << "firstOrderIndicesDistribution=" << firstOrderIndicesDistribution_
       << " totalOrderIndicesDistribution=" << totalOrderIndicesDistribution_
       << " outerSampling=" << outerSampling_
+      << " experimentSize=" << experimentSize_
       << " blockSize=" << blockSize_;
   return oss;
 }
@@ -116,6 +130,7 @@ void SobolSimulationResult::save(Advocate & adv) const
   SimulationResult::save(adv);
   adv.saveAttribute("firstOrderIndicesDistribution_", firstOrderIndicesDistribution_);
   adv.saveAttribute("totalOrderIndicesDistribution_", totalOrderIndicesDistribution_);
+  adv.saveAttribute("experimentSize_", experimentSize_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -124,6 +139,14 @@ void SobolSimulationResult::load(Advocate & adv)
   SimulationResult::load(adv);
   adv.loadAttribute("firstOrderIndicesDistribution_", firstOrderIndicesDistribution_);
   adv.loadAttribute("totalOrderIndicesDistribution_", totalOrderIndicesDistribution_);
+  if (adv.hasAttribute("experimentSize_"))
+    adv.loadAttribute("experimentSize_", experimentSize_);
+  else
+  {
+    // in OT<1.24 blockSize_ was used as the experiment size
+    experimentSize_ = blockSize_;
+    blockSize_ = 1;
+  }
 }
 
 END_NAMESPACE_OPENTURNS
