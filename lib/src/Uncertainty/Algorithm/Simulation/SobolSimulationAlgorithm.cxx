@@ -48,11 +48,10 @@ static const Factory<SobolSimulationAlgorithm> Factory_SobolSimulationAlgorithm;
 /** For save/load mechanism */
 SobolSimulationAlgorithm::SobolSimulationAlgorithm()
   : SimulationAlgorithm()
-  , batchSize_(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultBatchSize"))
+  , experimentSize_(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultExperimentSize"))
   , indexQuantileLevel_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel"))
   , indexQuantileEpsilon_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon"))
 {
-  setBlockSize(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultBlockSize"));
 }
 
 /* Constructor with parameters */
@@ -63,11 +62,10 @@ SobolSimulationAlgorithm::SobolSimulationAlgorithm(const Distribution & distribu
   , distribution_(distribution)
   , model_(model)
   , estimator_(estimator)
-  , batchSize_(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultBatchSize"))
+  , experimentSize_(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultExperimentSize"))
   , indexQuantileLevel_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel"))
   , indexQuantileEpsilon_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon"))
 {
-  setBlockSize(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultBlockSize"));
 }
 
 /* Virtual constructor */
@@ -103,8 +101,8 @@ String SobolSimulationAlgorithm::__repr__() const
       << " model=" << model_
       << " estimator=" << estimator_
       << " maximumOuterSampling=" << getMaximumOuterSampling()
-      << " blockSize=" << getBlockSize()
-      << " batchSize=" << batchSize_;
+      << " experimentSize=" << getExperimentSize()
+      << " blockSize=" << blockSize_;
   return oss;
 }
 
@@ -117,6 +115,7 @@ void SobolSimulationAlgorithm::run()
   convergenceStrategy_.setDimension(4 * dimension);
 
   UnsignedInteger outerSampling = 0;
+  const UnsignedInteger experimentSize = getExperimentSize();
   const UnsignedInteger blockSize = getBlockSize();
   Point meanFO;
   Point meanTO;
@@ -124,10 +123,10 @@ void SobolSimulationAlgorithm::run()
   Point varianceTO;
 
   // Initialize the result.
+  result_ = SobolSimulationResult();
   result_.setOuterSampling(outerSampling);
   result_.setBlockSize(blockSize);
-  result_.setFirstOrderIndicesDistribution(Distribution());
-  result_.setTotalOrderIndicesDistribution(Distribution());
+  result_.setExperimentSize(experimentSize);
 
   Bool stop = false;
   std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
@@ -136,21 +135,21 @@ void SobolSimulationAlgorithm::run()
   while ((outerSampling < getMaximumOuterSampling()) && !stop)
   {
     // Perform a block of simulation
-    const SobolIndicesExperiment experiment(distribution_, blockSize, false);
+    const SobolIndicesExperiment experiment(distribution_, experimentSize, false);
     const Sample inputSample(experiment.generate());
     Sample outputSample(0, model_.getOutputDimension());
 
     // Evaluate the output per blocks
-    const UnsignedInteger experimentSize = inputSample.getSize();
-    const UnsignedInteger batchBlocks = std::ceil(experimentSize * 1.0 / batchSize_);
+    const UnsignedInteger totalExperimentSize = inputSample.getSize();
+    const UnsignedInteger blockNumber = std::ceil(totalExperimentSize * 1.0 / blockSize);
     UnsignedInteger startIndex = 0;
-    for (UnsignedInteger batchIndex = 0; (batchIndex < batchBlocks) && !stop; ++ batchIndex)
+    for (UnsignedInteger blockIndex = 0; (blockIndex < blockNumber) && !stop; ++ blockIndex)
     {
-      const UnsignedInteger endIndex = std::min(startIndex + batchSize_, experimentSize);
-      const Sample batchInputBlockSample(inputSample, startIndex, endIndex);
+      const UnsignedInteger endIndex = std::min(startIndex + blockSize, totalExperimentSize);
+      const Sample inputBlock(inputSample, startIndex, endIndex);
       startIndex = endIndex;
-      const Sample batchOutputBlockSample(model_(batchInputBlockSample));
-      outputSample.add(batchOutputBlockSample);
+      const Sample outputBlock(model_(inputBlock));
+      outputSample.add(outputBlock);
 
       std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
       const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
@@ -164,8 +163,8 @@ void SobolSimulationAlgorithm::run()
       // callbacks
       if (progressCallback_.first)
       {
-        // progress in outerSampling loop + batchIndex loop
-        progressCallback_.first((100.0 * (1.0 * outerSampling + batchIndex * 1.0 / batchBlocks)) / getMaximumOuterSampling(), progressCallback_.second);
+        // progress in outerSampling loop + blockIndex loop
+        progressCallback_.first((100.0 * (1.0 * outerSampling + blockIndex * 1.0 / blockNumber)) / getMaximumOuterSampling(), progressCallback_.second);
       }
       if (!stop && stopCallback_.first)
       {
@@ -181,14 +180,14 @@ void SobolSimulationAlgorithm::run()
     }
 
     // Abort if we stopped before completion
-    if (outputSample.getSize() < experimentSize)
+    if (outputSample.getSize() < totalExperimentSize)
       break;
 
     LOGDEBUG(OSS() << "SobolSimulationAlgorithm::run: blockSample=\n" << outputSample);
     ++ outerSampling;
 
     SobolIndicesAlgorithm estimator(estimator_);
-    estimator.setDesign(inputSample, outputSample, blockSize);
+    estimator.setDesign(inputSample, outputSample, experimentSize);
     const Point meanFOBlock(estimator.getAggregatedFirstOrderIndices());
     const Point meanTOBlock(estimator.getAggregatedTotalOrderIndices());
     const Point stddevFOBlock(estimator.getFirstOrderIndicesDistribution().getStandardDeviation());
@@ -348,15 +347,27 @@ SobolIndicesAlgorithm SobolSimulationAlgorithm::getEstimator() const
   return estimator_;
 }
 
-/** Size of evaluation blocks */
-void SobolSimulationAlgorithm::setBatchSize(const UnsignedInteger & batchSize)
+/* Size of experiment accessor */
+void SobolSimulationAlgorithm::setExperimentSize(const UnsignedInteger experimentSize)
 {
-  batchSize_ = batchSize;
+  experimentSize_ = experimentSize;
+}
+
+UnsignedInteger SobolSimulationAlgorithm::getExperimentSize() const
+{
+  return experimentSize_;
+}
+
+void SobolSimulationAlgorithm::setBatchSize(const UnsignedInteger batchSize)
+{
+  LOGWARN("SobolSimulationAlgorithm.setBatchSize is deprecated in favor of setBlockSize (and use setExperimentSize to set the design size instead)");
+  setBlockSize(batchSize);
 }
 
 UnsignedInteger SobolSimulationAlgorithm::getBatchSize() const
 {
-  return batchSize_;
+  LOGWARN("SobolSimulationAlgorithm.getBatchSize is deprecated in favor of getBlockSize (and use getExperimentSize to get the design size)");
+  return getBlockSize();
 }
 
 /* Draw the probability convergence at the given level */
@@ -429,11 +440,11 @@ void SobolSimulationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("distribution_", distribution_);
   adv.saveAttribute("model_", model_);
   adv.saveAttribute("estimator_", estimator_);
-  adv.saveAttribute("batchSize_", batchSize_);
   adv.saveAttribute("indexQuantileEpsilon_", indexQuantileEpsilon_);
   adv.saveAttribute("indexQuantileLevel_", indexQuantileLevel_);
   adv.saveAttribute("smallIndexThreshold_", smallIndexThreshold_);
   adv.saveAttribute("result_", result_);
+  adv.saveAttribute("experimentSize_", experimentSize_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -443,11 +454,19 @@ void SobolSimulationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("model_", model_);
   adv.loadAttribute("estimator_", estimator_);
-  adv.loadAttribute("batchSize_", batchSize_);
   adv.loadAttribute("indexQuantileEpsilon_", indexQuantileEpsilon_);
   adv.loadAttribute("indexQuantileLevel_", indexQuantileLevel_);
   adv.loadAttribute("smallIndexThreshold_", smallIndexThreshold_);
   adv.loadAttribute("result_", result_);
+  if (adv.hasAttribute("experimentSize_"))
+    adv.loadAttribute("experimentSize_", experimentSize_);
+  else if (adv.hasAttribute("batchSize_"))
+  {
+    // in OT<1.24 blockSize_ was used as the experiment size
+    experimentSize_ = blockSize_;
+    // and batchSize_ was the block size
+    adv.loadAttribute("batchSize_", blockSize_);
+  }
 }
 
 

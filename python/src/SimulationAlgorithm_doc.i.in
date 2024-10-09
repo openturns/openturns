@@ -13,7 +13,7 @@ ProbabilitySimulationAlgorithm, ExpectationSimulationAlgorithm"
 Returns
 -------
 blockSize : int
-    Number of terms in the probability simulation estimator grouped together.
+    Number of simultaneous evaluations of the limit-state function.
     It is set by default to 1."
 
 // ---------------------------------------------------------------------
@@ -24,15 +24,17 @@ blockSize : int
 Parameters
 ----------
 blockSize : int, :math:`blockSize \geq 1`
-    Number of terms in the probability simulation estimator grouped together.
+    Number of simultaneous evaluations of the limit-state function.
     It is set by default to 1.
 
 Notes
 -----
-For Monte Carlo, LHS and Importance Sampling methods, this allows one to save space
-while allowing multithreading, when available we recommend
-to use the number of available CPUs; for the Directional Sampling, we recommend
-to set it to 1."
+If the function supports batch evaluations this parameter can be set to the number
+of available CPUs to benefit from parallel execution (multithreading, multiprocessing, ...);
+except for the Directional Sampling, where we recommend to set it to 1.
+It also decides the frequency of the stopping criteria and progress callbacks update
+as they are called once the whole block of fonction evaluations is completed.
+"
 
 // ---------------------------------------------------------------------
 
@@ -62,7 +64,7 @@ coefficient : float
 Returns
 -------
 outerSampling : int
-    Maximum number of groups of terms in the probability simulation estimator."
+    Maximum number of iterations, each iteration performing a block of evaluations."
 
 // ---------------------------------------------------------------------
 
@@ -72,7 +74,7 @@ outerSampling : int
 Parameters
 ----------
 outerSampling : int
-    Maximum number of groups of terms in the probability simulation estimator."
+    Maximum number of iterations, each iteration performing a block of evaluations."
 
 // ---------------------------------------------------------------------
 
