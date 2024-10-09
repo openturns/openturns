@@ -29,6 +29,8 @@
  * Deprecated NegativeBinomialFactory in favor of PolyaFactory
  * Deprecated OptimizationAlgorithm.Build(str) in favor of GetByName
  * Removed EfficientGlobalOptimization.get/setImprovementFactor improvement factor accessors
+ * SobolSimulationAlgorithm.setExperimentSize must be used to set the DOE size instead of setBlockSize
+ * Deprecated SobolSimulationAlgorithm.setBatchSize, use setBlockSize instead
 
 === Documentation ===
  * Copy button for code blocks

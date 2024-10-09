@@ -66,8 +66,12 @@ public:
   void setEstimator(const SobolIndicesAlgorithm & estimator);
   SobolIndicesAlgorithm getEstimator() const;
 
-  /** Size of evaluation blocks */
-  void setBatchSize(const UnsignedInteger & replicationSize);
+  /** Size of design */
+  void setExperimentSize(const UnsignedInteger experimentSize);
+  UnsignedInteger getExperimentSize() const;
+
+  // @deprecated (block size accessor)
+  void setBatchSize(const UnsignedInteger batchSize);
   UnsignedInteger getBatchSize() const;
 
   /** String converter */
@@ -103,18 +107,18 @@ protected:
   // Estimator type
   SobolIndicesAlgorithm estimator_;
 
-  // Size of evaluation blocks
-  UnsignedInteger batchSize_;
+  // Internal size of the Sobol' experiment
+  UnsignedInteger experimentSize_ = 0;
 
   // Result of the simulation
   SobolSimulationResult result_;
 
   // stopping criteria on the indices estimates
-  Scalar indexQuantileLevel_;
-  Scalar indexQuantileEpsilon_;
+  Scalar indexQuantileLevel_ = 0.0;
+  Scalar indexQuantileEpsilon_ = 0.0;
 
   // criterion to discriminate a small/controlled/large index
-  Scalar smallIndexThreshold_;
+  Scalar smallIndexThreshold_ = 0.0;
 
 } ; /* class SobolSimulationAlgorithm */
 

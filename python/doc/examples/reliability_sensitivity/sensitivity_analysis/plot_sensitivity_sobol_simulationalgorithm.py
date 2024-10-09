@@ -71,18 +71,14 @@ model = beam.model
 # ---------------------------
 
 # %%
-# We first create a design of experiments with the `SobolSimulationAlgorithm`.
-# Since we are not interested in second order indices for the moment,
-# we use the default value of the third argument (we will come back to this
-# topic later).
-
-# %%
+# We first create the algorithm from `SobolSimulationAlgorithm` with the Saltelli estimator
+# it will allow one to control the number of evaluations by convergence instead of using a fixed-size experiment
 estimator = ot.SaltelliSensitivityAlgorithm()
 estimator.setUseAsymptoticDistribution(True)
 algo = ot.SobolSimulationAlgorithm(distribution, model, estimator)
 algo.setMaximumOuterSampling(50)  # number of iterations
-algo.setBlockSize(1000)  # size of Sobol experiment at each iteration
-algo.setBatchSize(4)  # number of points evaluated simultaneously
+algo.setExperimentSize(1000)  # size of Sobol experiment at each iteration
+algo.setBlockSize(4)  # number of points evaluated simultaneously
 # algo.setIndexQuantileLevel(0.05)  # alpha
 # algo.setIndexQuantileEpsilon(1e-2)  # epsilon
 algo.run()
