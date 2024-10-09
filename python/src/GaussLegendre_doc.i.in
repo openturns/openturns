@@ -18,7 +18,8 @@ discretization : sequence of int
 
 Notes
 -----
-We consider a function :math:`f: \Rset^d \mapsto \Rset^p` and a domain :math:`\set{D} = [\vect{a}, \vect{b}]`. The Gauss-Legendre algorithm enables to approximate the definite integral:
+We consider a function :math:`f: \Rset^\inputDim \mapsto \Rset^\outputDim` and a domain :math:`\set{D} = [\vect{a}, \vect{b}]` where :math:`\vect{a}, \vect{b} \in \Rset^\inputDim`.
+The Gauss-Legendre algorithm approximates the definite integral:
 
 .. math::
     :label: intInit

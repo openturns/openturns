@@ -409,8 +409,8 @@ view = otv.View(graph_standard_space, square_axes=True)
 # .. math::
 #
 #    P_{FORM} =  \begin{cases}
-#                   E(-\beta_{HL}) & \text{ if }  \vect{0} \notin \set{\widetilde{D}} \\
-#                    E(+\beta_{HL}) & \text{ if }  \vect{0} \in \set{\widetilde{D}}
+#                   E(+\beta_{HL}) & \text{ if }  \vect{0} \in \set{\widetilde{D}} \\
+#                    E(-\beta_{HL}) & \text{ otherwise.}
 #                 \end{cases}
 #
 # where :math:`E(.)` is the marginal cumulative distribution function along any direction of
@@ -448,10 +448,9 @@ print("Probability of failure (FORM) Pf_FORM  = ", pf)
 # .. math::
 #
 #    P_{SORM, Breitung} = \begin{cases}
-#                 E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} & \text{ if }
-#                         \vect{0} \notin \set{\widetilde{D}} \\
-#                    E(+\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} & \text{ if }
-#                          \vect{0} \in \set{\widetilde{D}}
+#                 E(+\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} & \text{ if }
+#                         \vect{0} \in \set{\widetilde{D}} \\
+#                    E(-\beta_{HL}) \prod_{i=1}^{d-1} \dfrac{1}{\sqrt{1+\kappa_i^0}} & \text{ otherwise. }
 #                 \end{cases}
 #
 # and approximates the boundary by the osculating paraboloid at the design point.
