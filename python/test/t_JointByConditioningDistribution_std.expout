@@ -23,3 +23,9 @@ anotherSample covariance= [[  0.0830803    0.000313403  0.0767514   ]
 Point point=  [0.5, 1.5, 1.0]  pdf=0.251589  cdf=0.181637
 Quantile= [0.982796,1.9828,3.87457]
 CDF(quantile)= 0.95
+conditional PDF=1.09340e-01
+conditional CDF=9.08789e-01
+conditional quantile=2.50000e+00
+sequential conditional PDF= [1,1,0.10934]
+sequential conditional CDF( [0.5, 1.5, 2.5] )= [0.5,0.5,0.908789]
+sequential conditional quantile( [0.5,0.5,0.908789] )= [0.5,1.5,2.5]

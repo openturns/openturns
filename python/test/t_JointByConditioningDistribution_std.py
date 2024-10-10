@@ -56,6 +56,26 @@ quantile = distribution.computeQuantile(0.95)
 print("Quantile=", quantile)
 print("CDF(quantile)= %.12g" % distribution.computeCDF(quantile))
 
+x = 2.5
+y = [0.5, 1.5]
+print("conditional PDF=%.5e" % distribution.computeConditionalPDF(x, y))
+condCDF = distribution.computeConditionalCDF(x, y)
+print("conditional CDF=%.5e" % condCDF)
+q = condCDF
+print("conditional quantile=%.5e" % distribution.computeConditionalQuantile(q, y))
+pt = [i + 0.5 for i in range(dim)]
+print(
+    "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt)
+)
+resCDF = distribution.computeSequentialConditionalCDF(pt)
+print("sequential conditional CDF(", pt, ")=", resCDF)
+print(
+    "sequential conditional quantile(",
+    resCDF,
+    ")=",
+    distribution.computeSequentialConditionalQuantile(resCDF),
+)
+
 ot.Log.Show(ot.Log.TRACE)
 checker = ott.DistributionChecker(distribution)
 checker.skipMoments()  # slow
