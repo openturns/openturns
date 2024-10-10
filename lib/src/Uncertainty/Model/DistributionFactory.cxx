@@ -46,6 +46,7 @@
 #include "openturns/GumbelCopulaFactory.hxx"
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
+#include "openturns/IndependentCopulaFactory.hxx"
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/LaplaceFactory.hxx"
 #include "openturns/LogisticFactory.hxx"
@@ -64,6 +65,7 @@
 #include "openturns/SkellamFactory.hxx"
 #include "openturns/SmoothedUniformFactory.hxx"
 #include "openturns/StudentFactory.hxx"
+#include "openturns/StudentCopulaFactory.hxx"
 #include "openturns/TrapezoidalFactory.hxx"
 #include "openturns/TriangularFactory.hxx"
 #include "openturns/TruncatedNormalFactory.hxx"
@@ -126,9 +128,11 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(FarlieGumbelMorgensternCopulaFactory());
   collection.add(FrankCopulaFactory());
   collection.add(GumbelCopulaFactory());
+  collection.add(IndependentCopulaFactory());
   collection.add(NormalCopulaFactory());
   collection.add(NormalFactory());
   collection.add(PlackettCopulaFactory());
+  collection.add(StudentCopulaFactory());
   collection.add(StudentFactory());
   return collection;
 }
