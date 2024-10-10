@@ -63,6 +63,15 @@ Duplicate the same field:
 >>> myField = myProcess.getRealization()
 >>> n = 10
 >>> mySampleFields2 = ot.ProcessSample(n, myField)
+
+We now show how to create a process sample from a collection of samples and a mesh. Here, the distribution at each vertex is considered to be a three-dimensional normal distribution
+
+>>> outputDimension = 3
+>>> sampleSize = 250
+>>> numberOfVertices = myMesh.getVerticesNumber()
+>>> normal = ot.Normal(outputDimension)
+>>> coll=[normal.getSample(numberOfVertices ) for i in range(sampleSize)]
+>>> mySampleFields3 = ot.ProcessSample(myMesh, coll)
 "
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation
