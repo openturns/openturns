@@ -364,6 +364,9 @@ Bibliography
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [novak1999] Novak, E., & Ritter, K. (1999).
+    Simple cubature formulas with high polynomial exactness.
+    Constructive approximation, 15, 499-522.
 .. [park1990] Byeong U. Park and J. S. Marron.
     *Comparison of data-driven bandwidth selectors.*
     Journal of the American Statistical Association, 85(409) :66–72, 1990.
@@ -377,6 +380,10 @@ Bibliography
 .. [peng2014] L. Peng, R. Wang, *Interval Estimation for Bivariate t-Copulas via Kendall's Tau*
     Casualty Actuarial Society, Volume 8/Issue 1, 2014.
     `pdf <https://sas.uwaterloo.ca/~wang/papers/2014PW(Variance).pdf>`__
+.. [peter2019] Jacques Peter, Eric Savin, Itham Salah el Din.
+    Generalized polynomial chaos and stochastic collocation methods
+    for uncertainty quantification in aerodynamics.
+    STO-AVT-326 Uncertainty Quantification in Computational Fluid Dynamics.
 .. [petras2003] Petras, K. (2003). *Smolyak cubature of given polynomial
     degree with few nodes for increasing dimension.* Numerische Mathematik,
     93 (4), 729-753.
