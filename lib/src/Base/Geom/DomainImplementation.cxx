@@ -110,8 +110,8 @@ GridLayout DomainImplementation::draw(const Sample& sample, const String& inColo
     {
       Sample in2DSample(insideSample.getMarginal(Indices({ iX,iY }))), out2DSample(outsideSample.getMarginal(Indices({ iX,iY })));
       Graph graph("", iY + 1 == sample.getDimension() ? (OSS() << "x" << iX).str() : "", iX == 0 ? (OSS() << "x" << iY).str() : "", true);
-      graph.add(Cloud(in2DSample, inColor, "fsquare", "In"));
-      graph.add(Cloud(out2DSample, outColor, "fsquare", "Out"));
+      graph.add(Cloud(in2DSample, inColor, "plus", "In"));
+      graph.add(Cloud(out2DSample, outColor, "plus", "Out"));
       if(iX == 0 && iY == 1)
         graph.setLegendPosition("topright");
       grid.setGraph(iY - 1, iX, graph);
