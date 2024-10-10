@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <chrono>
+
 #include "openturns/NAIS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -146,19 +148,37 @@ void NAIS::run()
   inputSample_.clear();
   outputSample_.clear();
   thresholdPerStep_.clear();
-
   numberOfSteps_ = 0;
+  result_ = NAISResult();
 
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
   if (sampleSize < 2)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
-  // Drawing of samples using initial density
-  Sample auxiliaryInputSample = initialDistribution_.getSample(sampleSize);
-  Point weights;
+  Sample auxiliaryInputSample(0, initialDistribution_.getDimension());
+  Sample auxiliaryOutputSample(0, 1);
 
-  // Evaluation on limit state function
-  Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
+  std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+
+  // initial experiment evaluation with the initial distribution
+  for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
+  {
+    const Sample blockSample(initialDistribution_.getSample(getBlockSize()));
+    auxiliaryInputSample.add(blockSample);
+    auxiliaryOutputSample.add(getEvent().getFunction()(blockSample));
+
+    result_.setOuterSampling(i + 1);
+
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    result_.setTimeDuration(timeDuration);
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
+  } // for i
+
   const ComparisonOperator comparator(getEvent().getOperator());
 
   ++ numberOfSteps_;
@@ -173,8 +193,7 @@ void NAIS::run()
   // Computation of current quantile
   Scalar currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
-
-
+  Point weights;
   Distribution auxiliaryDistribution;
   if (comparator(currentQuantile, getEvent().getThreshold()))
   {
@@ -192,27 +211,30 @@ void NAIS::run()
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
   }
 
-  UnsignedInteger iterationNumber  = 0;
-
   while ((comparator(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
-    ++ iterationNumber ;
-
     // Drawing of samples using auxiliary density and evaluation on limit state function
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
 
-    for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
+    for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
     {
       const Sample blockSample(auxiliaryDistribution.getSample(getBlockSize()));
       auxiliaryInputSample.add(blockSample);
       auxiliaryOutputSample.add(getEvent().getFunction()(blockSample));
 
+      result_.setOuterSampling(numberOfSteps_ * getMaximumOuterSampling() + (i + 1));
+
+      std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+      const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+      result_.setTimeDuration(timeDuration);
+      if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+        throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << getMaximumTimeDuration() << " s)";
+
       if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
         throw InternalException(HERE) << "User stopped simulation";
     }
 
-    ++ numberOfSteps_;
     if (keepSample_)
     {
       inputSample_.add(auxiliaryInputSample);
@@ -238,6 +260,8 @@ void NAIS::run()
       auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
     }
 
+    ++ numberOfSteps_;
+
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";
 
@@ -261,13 +285,13 @@ void NAIS::run()
   Sample logPDFAuxiliaryCritic(auxiliaryDistribution.computeLogPDF(sampleCritic));
 
   Scalar sumPdfCritic = 0.0;
-  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
+  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++ i)
   {
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
   }
   const Scalar failureProbability = sumPdfCritic / sampleSize;
   Scalar varianceCritic = 0.0;
-  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
+  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++ i)
   {
     const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0)) - failureProbability;
     varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
@@ -282,7 +306,7 @@ void NAIS::run()
   naisResult_.setAuxiliaryInputSample(auxiliaryInputSample);
   naisResult_.setAuxiliaryOutputSample(auxiliaryOutputSample);
   naisResult_.setWeights(weights);
-  naisResult_.setOuterSampling(getMaximumOuterSampling() * (iterationNumber + 1));
+  naisResult_.setOuterSampling(getMaximumOuterSampling() * numberOfSteps_);
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
 

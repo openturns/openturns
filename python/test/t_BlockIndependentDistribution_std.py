@@ -57,6 +57,10 @@ print("Quantile      =", quantile)
 print("Quantile (ref)=", ref.computeQuantile(0.5))
 print("CDF(quantile) =%.5f" % distribution.computeCDF(quantile))
 
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()
+
 # Instantiate one distribution object
 R = ot.CorrelationMatrix(3)
 R[0, 1] = 0.5
@@ -84,16 +88,6 @@ print("Independent = ", distribution.hasIndependentCopula())
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
-
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-precision = ot.PlatformInfo.GetNumericalPrecision()
-ot.PlatformInfo.SetNumericalPrecision(4)
-print("covariance=", oneSample.computeCovariance())
-ot.PlatformInfo.SetNumericalPrecision(precision)
 
 # Define a point
 point = [0.3] * distribution.getDimension()
@@ -155,10 +149,7 @@ if distribution.getDimension() <= 2:
     print("beta=%.5f" % beta)
 
 print("entropy     =%.5f" % distribution.computeEntropy())
-print(
-    "entropy (MC)=%.5f"
-    % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0]
-)
+
 mean = distribution.getMean()
 # Ensure mean is [0,0,1,1,1,1,1]
 # Following platform, the value slightly differs
@@ -171,16 +162,6 @@ skewness = distribution.getSkewness()
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
 
-ot.PlatformInfo.SetNumericalPrecision(4)
-covariance = distribution.getCovariance()
-print("covariance=", covariance)
-correlation = distribution.getCorrelation()
-print("correlation=", correlation)
-spearman = distribution.getSpearmanCorrelation()
-print("spearman=", spearman)
-kendall = distribution.getKendallTau()
-print("kendall=", kendall)
-ot.PlatformInfo.SetNumericalPrecision(precision)
 dim = distribution.getDimension()
 x = 0.6
 y = [0.2] * (dim - 1)
@@ -256,3 +237,9 @@ ott.assert_almost_equal(distribution2.getStandardDeviation(), [1, 0])
 # check marginal from a group is not uselessly wrapped in BlockIndependent
 margins = distribution.getMarginal([0, 1])
 ott.assert_almost_equal(margins, collection[0])
+
+# check getSupport
+distribution = ot.BlockIndependentDistribution([ot.Multinomial(5, ot.Point(2, 0.25))] * 2)
+support = distribution.getSupport(ot.Interval([2] * 4, [5] * 4))
+print(support)
+assert support.getSize() == 9

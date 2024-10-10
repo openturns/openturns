@@ -181,6 +181,7 @@ void EventSimulation::run()
 
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    result_.setTimeDuration(timeDuration);
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
     {
       LOGINFO(OSS() << "Maximum time exceeded");
@@ -199,10 +200,6 @@ void EventSimulation::run()
         LOGINFO(OSS() << "Stopped due to user");
     } // stopCallback
   } // while
-
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
-  result_.setTimeDuration(timeDuration);
 }
 
 /* Compute the block sample and the points that realized the event */

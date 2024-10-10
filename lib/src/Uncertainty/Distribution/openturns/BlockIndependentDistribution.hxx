@@ -158,6 +158,10 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
+  /** Get the support of a discrete distribution that intersect a given interval */
+  using DistributionImplementation::getSupport;
+  Sample getSupport(const Interval & interval) const override;
+
   /** Get the shifted moments of the distribution */
   Point getShiftedMoment(const UnsignedInteger n, const Point & shift) const override;
 

@@ -295,3 +295,13 @@ Returns
 -------
 grid : :class:`~openturns.GridLayout`
     Graph array."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::isBayesian
+"Bayesian method accessor.
+
+Returns
+-------
+bayesian : bool
+    Whether the method is Bayesian"

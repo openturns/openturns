@@ -24,9 +24,6 @@ significanceFactor : float
     coefficients.
     Its default value is the `CleaningStrategy-DefaultSignificanceFactor` key of
     the :class:`~openturns.ResourceMap`.
-verbose : bool
-    Used for the online monitoring of the current basis updates (removed or
-    added coefficients).
 
 See also
 --------

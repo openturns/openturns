@@ -675,6 +675,56 @@ Point TruncatedDistribution::getSingularities() const
   return singularities;
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Scalar TruncatedDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeConditionalPDF(x, y);
+
+  return DistributionImplementation::computeConditionalPDF(x, y);
+}
+
+Point TruncatedDistribution::computeSequentialConditionalPDF(const Point & x) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalPDF(x);
+
+  return DistributionImplementation::computeSequentialConditionalPDF(x);
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Scalar TruncatedDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeConditionalCDF(x, y);
+
+  return DistributionImplementation::computeConditionalCDF(x, y);
+}
+
+Point TruncatedDistribution::computeSequentialConditionalCDF(const Point & x) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalCDF(x);
+
+  return DistributionImplementation::computeSequentialConditionalCDF(x);
+}
+
+Scalar TruncatedDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeConditionalQuantile(q, y);
+
+  return DistributionImplementation::computeConditionalQuantile(q, y);
+}
+
+Point TruncatedDistribution::computeSequentialConditionalQuantile(const Point & q) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalQuantile(q);
+
+  return DistributionImplementation::computeSequentialConditionalQuantile(q);
+}
+
 /* Method save() stores the object through the StorageManager */
 void TruncatedDistribution::save(Advocate & adv) const
 {

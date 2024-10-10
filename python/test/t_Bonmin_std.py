@@ -15,19 +15,13 @@ def stop():
 
 
 # List available algorithms
-for algo in ot.Bonmin.GetAlgorithmNames():
-    print(algo)
+print(ot.Bonmin.GetAlgorithmNames())
 
 # Definition of objective function
 objectiveFunction = ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["-x0 -x1 -x2"])
 
 # Definition of variables bounds
-bounds = ot.Interval(
-    [0, 0, 0, 0],
-    [1, 1e308, 1e308, 5],
-    [True, True, True, True],
-    [True, False, False, True],
-)
+bounds = ot.Interval([0] * 4, [1, 1e6, 1e6, 5])
 
 # Definition of constraints
 # Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
@@ -52,19 +46,21 @@ problem.setBounds(bounds)
 problem.setVariablesType(variablesType)
 problem.setInequalityConstraint(h)
 
-bonminAlgorithm = ot.Bonmin(problem, "B-BB")
-bonminAlgorithm.setStartingPoint([0, 0, 0, 0])
-bonminAlgorithm.setMaximumCallsNumber(10000)
-bonminAlgorithm.setMaximumIterationNumber(1000)
-bonminAlgorithm.setProgressCallback(progress)
-bonminAlgorithm.setStopCallback(stop)
+algo = ot.Bonmin(problem)
+algo.setStartingPoint([0.0] * 4)
+algo.setMaximumCallsNumber(10000)
+algo.setMaximumIterationNumber(1000)
+# algo.setProgressCallback(progress)
+# algo.setStopCallback(stop)
 
-for algo in ot.Bonmin.GetAlgorithmNames():
-    print("MINIMIZATION WITH " + algo)
-    bonminAlgorithm.setAlgorithmName(algo)
-    bonminAlgorithm.run()
-    result = bonminAlgorithm.getResult()
-    print(" -- Optimal point = " + result.getOptimalPoint().__str__())
-    print(" -- Optimal value = " + result.getOptimalValue().__str__())
-    print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
+for name in ot.Bonmin.GetAlgorithmNames():
+    print(f"-- {name} algorithm...")
+    algo.setAlgorithmName(name)
+    algo.run()
+    result = algo.getResult()
+    x_star = result.getOptimalPoint()
+    print(f"x*={x_star}")
+    y_star = result.getOptimalValue()
+    neval = result.getCallsNumber()
+    print(f"f(x*)={y_star} neval={neval}")
     ott.assert_almost_equal(result.getOptimalPoint(), [1, 1, 0.5, 0], 1, 1e-2)

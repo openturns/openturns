@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,11 +53,11 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     const Scalar quantileLevel)
   : CrossEntropyImportanceSampling(event, quantileLevel)
   , activeParameters_(activeParameters)
-  , solver_(OptimizationAlgorithm::Build("Cobyla"))
+  , solver_(OptimizationAlgorithm::GetByName("Cobyla"))
 {
   solver_.setCheckStatus(false);
   if (OptimizationAlgorithm::GetAlgorithmNames().contains("LD_LBFGS"))
-    solver_ = OptimizationAlgorithm::Build("LD_LBFGS");
+    solver_ = OptimizationAlgorithm::GetByName("LD_LBFGS");
 
   auxiliaryDistribution_ = auxiliaryDistribution;
   bounds_ = bounds;
@@ -173,11 +174,10 @@ OptimizationAlgorithm PhysicalSpaceCrossEntropyImportanceSampling::getOptimizati
 }
 
 
-// Compute Output Samples
-Sample PhysicalSpaceCrossEntropyImportanceSampling::computeOutputSamples(const Sample & inputSamples) const
+/* Input transformation accessor */
+Function PhysicalSpaceCrossEntropyImportanceSampling::getTransformation() const
 {
-
-  return getEvent().getFunction()(inputSamples);
+  return IdentityFunction(getEvent().getAntecedent().getDistribution().getDimension());
 }
 
 
