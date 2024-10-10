@@ -26,6 +26,7 @@
 #include "openturns/RegularGrid.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/GaussLegendre.hxx"
+#include "openturns/IntervalMesher.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 
@@ -199,12 +200,27 @@ Scalar UniformOverMesh::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   Scalar cdf = 0.0;
-  // Waiting for a better implementation
   const Interval quadrant(Point(getDimension(), -SpecFunc::MaxScalar), point);
   const Interval intersection(quadrant.intersect(getRange()));
-  if (intersection == getRange()) cdf = 1.0;
-  else if (!intersection.isEmpty())
-    cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+  if (intersection.isEmpty())
+    cdf = 0.0;
+  else if (intersection == getRange())
+    cdf = 1.0;
+  else
+  {
+    try
+    {
+      const Mesh intersectionMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(intersection)));
+      const Point intersectionVolumes_(intersectionMesh.computeSimplicesVolume());
+      const Scalar intersectionVolume = std::accumulate(intersectionVolumes_.begin(), intersectionVolumes_.end(), 0.0);
+      cdf = intersectionVolume / meshVolume_;
+    }
+    catch (const NotYetImplementedException &)
+    {
+      // no boost support
+      cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+    }
+  }
   return cdf;
 }
 

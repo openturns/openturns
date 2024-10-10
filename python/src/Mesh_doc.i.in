@@ -693,11 +693,11 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplex = [[0, 2, 1]]
 >>> mesh2d = ot.Mesh(vertices, simplex)
->>> print(mesh2d)
-class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[0,0],[1,0],[1,1]] simplices=[[0,2,1]]
+>>> print(mesh2d.getSimplices())
+[[0,2,1]]
 >>> mesh2d.fixOrientation()
->>> print(mesh2d)
-class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[0,0],[1,0],[1,1]] simplices=[[2,0,1]]"
+>>> print(mesh2d.getSimplices())
+[[2,0,1]]"
 
 // ---------------------------------------------------------------------
 
@@ -738,3 +738,33 @@ Returns
 -------
 upper_bound : :class:`~openturns.Point`
     Max of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::intersect
+"Compute the intersection with another mesh.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Another mesh.
+
+Returns
+-------
+intersection : :class:`~openturns.Mesh`
+    The intersection mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getSubMesh
+"Compute the sub-mesh by filtering simplices.
+
+Parameters
+----------
+simplicesIndices : sequence of int
+    Indices of simplices to retain.
+
+Returns
+-------
+subMesh : :class:`~openturns.Mesh`
+    The sub-mesh."

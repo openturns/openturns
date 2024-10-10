@@ -1,6 +1,6 @@
 dim= 1 2
 description= [u2] [v1,v2]
-mesh= class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=11 dimension=1 description=[t] data=[[0],[0.1],[0.2],[0.3],[0.4],[0.5],[0.6],[0.7],[0.8],[0.9],[1]] simplices=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10]]
+mesh= Mesh(dimension=1, vertices=11, simplices=10)
 y=      [ v1 v2 ]
  0 : [  0  0 ]
  1 : [  5  1 ]
