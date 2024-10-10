@@ -269,6 +269,38 @@ void ParametrizedDistribution::computeRange()
   range_ = distribution_.getRange();
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Scalar ParametrizedDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+{
+  return distribution_.computeConditionalPDF(x, y);
+}
+
+Point ParametrizedDistribution::computeSequentialConditionalPDF(const Point & x) const
+{
+  return distribution_.computeSequentialConditionalPDF(x);
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Scalar ParametrizedDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+{
+  return distribution_.computeConditionalCDF(x, y);
+}
+
+Point ParametrizedDistribution::computeSequentialConditionalCDF(const Point & x) const
+{
+  return distribution_.computeSequentialConditionalCDF(x);
+}
+
+Scalar ParametrizedDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+{
+  return distribution_.computeConditionalQuantile(q, y);
+}
+
+Point ParametrizedDistribution::computeSequentialConditionalQuantile(const Point & q) const
+{
+  return distribution_.computeSequentialConditionalQuantile(q);
+}
+
 /* Method save() stores the object through the StorageManager */
 void ParametrizedDistribution::save(Advocate & adv) const
 {

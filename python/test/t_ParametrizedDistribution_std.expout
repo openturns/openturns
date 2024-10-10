@@ -32,3 +32,7 @@ spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : 0.1, sigma : 0.489898, gamma : -0.5]]
 Standard representative= Gamma(k = 1.5, lambda = 1, gamma = 0)
+conditional PDF=0.903612
+sequential conditional PDF=[0.903612]
+conditional CDF=0.524709
+sequential conditional CDF=[0.524709]
