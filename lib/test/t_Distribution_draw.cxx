@@ -76,12 +76,14 @@ int main(int, char *[])
     // PDF
     distND.drawMarginal1DPDF(2, -4.0, 4.0, 101);
     distND.drawMarginal2DPDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
+    Distribution(distND).getPDF().drawCrossCuts(Point(5, 0.), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), true, false, 0.0, 1.0);
     // log-PDF
     distND.drawMarginal1DLogPDF(2, -4.0, 4.0, 101);
     distND.drawMarginal2DLogPDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     // CDF
     distND.drawMarginal1DCDF(2, -4.0, 4.0, 101);
     distND.drawMarginal2DCDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
+    Distribution(distND).getCDF().drawCrossCuts(Point(5, 0.0), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), false, true, 0.0, 1.0);
     // Quantile
     dist2D.drawQuantile();
     dist2D.drawQuantile(101);

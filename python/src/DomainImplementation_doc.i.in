@@ -75,3 +75,40 @@ dim : int
 OT_Domain_getDimension_doc
 
 // ---------------------------------------------------------------------
+
+%define OT_Domain_draw_doc
+"Draw the 2D projections of the sample, colored according to the membership of each point in the domain.
+The projections grid is return as a :class:`~openturns.GridLayout`.
+
+Parameters
+----------
+sample : N-d sequence of floats
+    Sample with the same dimension as the current domain.
+inColor : str
+    Color used to draw points belonging to the domain.
+outColor : str
+    Color used to draw points not belonging to the domain.
+
+Notes
+-----
+Draws the 2D projections of the sample onto all coordinate pairs in the domain space.
+Each sample is drawn as a small square colored with the color *inColor*
+if it belongs to the domain and with the color *outColor* otherwise.
+
+The limits of the graphs are those of the sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> domain = ot.Interval([-2.0, 1.0, -1], [2., 3., 1.])
+>>> U = ot.Uniform(-3, 4)
+>>> dist = ot.JointDistribution([U, U, U])
+>>> sample = dist.getSample(200)
+>>> grid = domain.draw(sample)
+>>> View(grid).show()"
+%enddef
+%feature("docstring") OT::DomainImplementation::draw
+OT_Domain_draw_doc
+
+// ---------------------------------------------------------------------

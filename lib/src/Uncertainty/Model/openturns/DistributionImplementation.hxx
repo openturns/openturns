@@ -160,6 +160,10 @@ public:
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
+  /** Get function representation of PFD and CDF*/
+  Function getPDF() const;
+  Function getCDF() const;
+
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
   virtual Point  computeDDF(const Point & point) const;
@@ -896,6 +900,13 @@ protected:
     {
       // Nothing to do
     }
+    PDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_distribution_(NULL)
+      , p_shared_distribution_(distribution.clone())
+    {
+      p_distribution_ = p_shared_distribution_.get();
+    }
 
     PDFWrapper * clone() const override
     {
@@ -948,6 +959,7 @@ protected:
 
   private:
     const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   };  // class PDFWrapper
 
   // Class used to wrap the computeLogPDF() method for interpolation purpose
@@ -1018,11 +1030,18 @@ protected:
   class CDFWrapper: public EvaluationImplementation
   {
   public:
-    CDFWrapper(const DistributionImplementation * p_distribution)
+    CDFWrapper(const DistributionImplementation* p_distribution)
       : EvaluationImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do
+    }
+    CDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_distribution_(NULL)
+      , p_shared_distribution_(distribution.clone())
+    {
+      p_distribution_ = p_shared_distribution_.get();
     }
 
     CDFWrapper * clone() const override
@@ -1086,6 +1105,7 @@ protected:
 
   private:
     const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   }; // class CDFWrapper
 
   // Class used to implement the computeQuantile() method efficiently

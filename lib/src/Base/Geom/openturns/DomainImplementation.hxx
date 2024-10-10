@@ -27,6 +27,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+class GridLayout;
+
 /**
  * @class DomainImplementation
  *
@@ -58,6 +60,11 @@ public:
 
   /** Compute the Euclidean distance from given points to the domain */
   virtual Sample computeDistance(const Sample & sample) const;
+
+  /** Draw the sample as a cloud of points in or out of the domain */
+  virtual GridLayout draw(const Sample& sample,
+                     const String& inColor = ResourceMap::GetAsString("Domain-DefaultInColor"),
+                     const String& outColor = ResourceMap::GetAsString("Domain-DefaultOutColor")) const;
 
   /** String converter */
   String __repr__() const override;

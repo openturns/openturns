@@ -70,6 +70,9 @@ int main(int, char *[])
       // Second output as a function of second and third inputs around central point
       Graph graph2D(f.draw(1, 2, 1, centralPoint, Point(2, -5.0), Point(2, 5.0), Indices(2, 21), GraphImplementation::NONE, true));
       fullprint << "graph2D=" << graph2D << std::endl;
+      //Cross cuts
+      GridLayout crossCuts(f.getMarginal(0).drawCrossCuts(centralPoint, Point(3, -5.0), Point(3, 5.0), Indices(3, 10)));
+      fullprint << "crossCuts=" << crossCuts << std::endl;
     }
   }
   catch (TestFailed & ex)

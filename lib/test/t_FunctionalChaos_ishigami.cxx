@@ -117,7 +117,7 @@ int main(int, char *[])
           Bool involvesModelSelection = projectionStrategy.involvesModelSelection() || adaptiveStrategy.getImplementation()->involvesModelSelection();
           assert_equal(involvesModelSelection, involvesModelSelectionPCE);
 
-          if (result.isLeastSquares() && not result.involvesModelSelection())
+          if (result.isLeastSquares() && ! result.involvesModelSelection())
           {
             LeaveOneOutSplitter splitterLOO(samplingSize);
             FunctionalChaosValidation validationLOO(result, splitterLOO);
