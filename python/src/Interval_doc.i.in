@@ -36,7 +36,13 @@ either :math:`-\infty` if bound :math:`i < 0` or :math:`+\infty` if bound
 :math:`i \geq 0`.
 
 It is possible to add or subtract two intervals and multiply an interval by a
-scalar.
+scalar according to the following rules: 
+
+.. math::
+   I_1 + I_2 & = \{ \vect{x} + \vect{y} \, |\, \vect{x} \in I_1, \vect{y} \in I_2\} \\
+   I_1 - I_2 & = \{ \vect{x} - \vect{y} \, |\, \vect{x} \in I_1, \vect{y} \in I_2\} \\
+   \lambda I_1 & = \{ \lambda \vect{x} \, |\, \vect{x} \in I_1 \} \\
+
 
 Examples
 --------
