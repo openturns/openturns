@@ -59,7 +59,7 @@ First, we create the PCE.
 >>> ot.RandomGenerator.SetSeed(0)
 >>> inputDimension = 1
 >>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
->>> distribution = ot.ComposedDistribution([ot.Uniform()] * inputDimension)
+>>> distribution = ot.JointDistribution([ot.Uniform()] * inputDimension)
 >>> polyColl = [0.0] * inputDimension
 >>> for i in range(distribution.getDimension()):
 ...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
@@ -169,7 +169,7 @@ Examples
 >>> import openturns as ot
 >>> im = ishigami_function.IshigamiModel()
 >>> sampleSize = 1000
->>> inputTrain = im.distributionX.getSample(sampleSize)
+>>> inputTrain = im.inputDistribution.getSample(sampleSize)
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 >>> selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
@@ -179,7 +179,7 @@ Examples
 >>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 >>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 >>> chaosAlgo = ot.FunctionalChaosAlgorithm(
-...     inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+...     inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 ... )
 >>> chaosAlgo.run()
 >>> chaosResult = chaosAlgo.getResult()
@@ -262,7 +262,7 @@ Examples
 >>> import math
 >>> im = ishigami_function.IshigamiModel()
 >>> sampleSize = 1000
->>> inputTrain = im.distributionX.getSample(sampleSize)
+>>> inputTrain = im.inputDistribution.getSample(sampleSize)
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 >>> selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
@@ -272,7 +272,7 @@ Examples
 >>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 >>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 >>> chaosAlgo = ot.FunctionalChaosAlgorithm(
-...     inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+...     inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 ... )
 >>> chaosAlgo.run()
 >>> chaosResult = chaosAlgo.getResult()

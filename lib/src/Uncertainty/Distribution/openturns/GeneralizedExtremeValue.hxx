@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The GeneralizedExtremeValue distribution.
  */
 class OT_API GeneralizedExtremeValue
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -51,7 +51,7 @@ public:
   GeneralizedExtremeValue(const Distribution & distribution);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const GeneralizedExtremeValue & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;

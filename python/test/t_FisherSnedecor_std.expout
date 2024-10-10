@@ -3,24 +3,15 @@ Distribution  FisherSnedecor(d1 = 5.5, d2 = 10.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.85322]
-oneSample first= class=Point name=Unnamed dimension=1 values=[2.55996]  last= class=Point name=Unnamed dimension=1 values=[1.06184]
-mean= class=Point name=Unnamed dimension=1 values=[1.24575]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.20146]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 log pdf=-0.659362
 pdf     =0.517181
-pdf (FD)=0.517181
 cdf=0.531405
 ccdf=0.468595
 characteristic function=(0.385738+0.612601j)
 pdf gradient     = class=Point name=Unnamed dimension=2 values=[0.0333323,0.00890862]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.0333323,0.00890862]
 cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.0101307,0.00377782]
 log-pdf gradient     = class=Point name=Unnamed dimension=2 values=[0.0644499,0.0172253]
-log-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.0644499,0.0172253]
 quantile= class=Point name=Unnamed dimension=1 values=[3.2027]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.230549]

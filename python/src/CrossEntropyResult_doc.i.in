@@ -1,10 +1,6 @@
 %feature("docstring") OT::CrossEntropyResult
 "Cross Entropy result.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-    
 See also
 --------
 CrossEntropyImportanceSampling, PhysicalSpaceCrossEntropyImportanceSampling, StandardSpaceCrossEntropyImportanceSampling"

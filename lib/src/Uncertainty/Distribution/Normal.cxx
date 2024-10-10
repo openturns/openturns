@@ -236,7 +236,8 @@ Scalar Normal::computePDF(const Scalar x) const
 Scalar Normal::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension (" << point.getDimension()
+	                                                                      << ") incompatible with the distribution (" << dimension << ").";
   // Special case for dimension 1
   if (dimension == 1) return computePDF(point[0]);
   return EllipticalDistribution::computePDF(point);
@@ -251,7 +252,8 @@ Scalar Normal::computeCDF(const Scalar x) const
 Scalar Normal::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension (" << point.getDimension()
+                                                                              << ") incompatible with the distribution (" << dimension << ").";
   // Special case for dimension 1
   if (dimension == 1) return computeCDF(point[0]);
   // Normalize the point to use the standard form of the multivariate normal distribution
@@ -398,7 +400,8 @@ Scalar Normal::computeComplementaryCDF(const Scalar x) const
 Scalar Normal::computeComplementaryCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension (" << point.getDimension()
+                                                                              << ") incompatible with the distribution (" << dimension << ").";
   // Special case for dimension 1
   if (dimension == 1) return computeComplementaryCDF(point[0]);
   return EllipticalDistribution::computeComplementaryCDF(point);
@@ -425,6 +428,7 @@ Complex Normal::computeCharacteristicFunction(const Point & x) const
 
 Complex Normal::computeLogCharacteristicFunction(const Scalar x) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Normal: cannot use computeCharacteristicFunction with dimension > 1";
   return Complex(-0.5 * sigma_[0] * sigma_[0] * x * x, mean_[0] * x);
 }
 
@@ -477,7 +481,7 @@ Scalar Normal::computeProbability(const Interval & interval) const
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" );
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return ContinuousDistribution::computeProbability(interval);
+    return DistributionImplementation::computeProbability(interval);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");

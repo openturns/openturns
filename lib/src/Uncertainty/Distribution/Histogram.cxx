@@ -35,7 +35,7 @@ static const Factory<Histogram> Factory_Histogram;
 
 /* Default constructor */
 Histogram::Histogram()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , first_(0.0)
   , width_(1)
   , height_(1, 1.0)
@@ -51,7 +51,7 @@ Histogram::Histogram()
 Histogram::Histogram(const Scalar first,
                      const Point & width,
                      const Point & height)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , first_(first)
   , width_(0)
   , height_(0)
@@ -66,7 +66,7 @@ Histogram::Histogram(const Scalar first,
 /* Parameters constructor */
 Histogram::Histogram(const Point & ticks,
                      const Point & frequencies)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , first_(0.0)
   , width_(0)
   , height_(0)
@@ -224,14 +224,14 @@ Complex Histogram::computeCharacteristicFunction(const Scalar x) const
 Point Histogram::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  return ContinuousDistribution::computePDFGradient(point);
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
 Point Histogram::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  return ContinuousDistribution::computeCDFGradient(point);
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */
@@ -637,7 +637,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
 /* Method save() stores the object through the StorageManager */
 void Histogram::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "first_", first_);
   adv.saveAttribute( "width_", width_);
   adv.saveAttribute( "height_", height_);
@@ -648,7 +648,7 @@ void Histogram::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Histogram::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "first_", first_);
   adv.loadAttribute( "width_", width_);
   adv.loadAttribute( "height_", height_);

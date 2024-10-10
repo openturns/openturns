@@ -2729,7 +2729,7 @@ Point RandomMixture::computeCDFGradient(const Point & point) const
     // If alpha < 0.0, compute the complementary CDF
     return distributionCollection_[0].computeCDFGradient((point - constant_) / alpha) * (-1.0);
   } // isAnalytical_
-  return DistributionImplementation::computePDFGradient(point);
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Compute the mean of the RandomMixture */

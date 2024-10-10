@@ -33,7 +33,7 @@ margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
 margin realization= class=Point name=Unnamed dimension=1 values=[0.33856]
-indices= [1,0]
+indices= [1, 0]
 margins= class=MarginalDistribution name=MarginalDistribution dimension=2 distribution=class=MarshallOlkinCopula name=MarshallOlkinCopula dimension=2 alpha=0.5 beta=0.5 indices=[1,0]
 margins CDF=0.125000
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.966383,0.966383]

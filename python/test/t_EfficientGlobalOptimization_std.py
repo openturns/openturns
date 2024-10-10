@@ -44,8 +44,7 @@ kriging.run()
 
 # algo
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
-algo.setMaximumCallsNumber(20)
-algo.setImprovementFactor(0.05)  # stop when improvement is < a% the current optimum
+algo.setMaximumCallsNumber(14)
 algo.setAEITradeoff(0.66744898)
 algo.run()
 result = algo.getResult()
@@ -136,7 +135,6 @@ algo.setMultiStartExperimentSize(
 )  # number of multistart candidates improvement optim
 algo.setMultiStartNumber(20)  # number of multistart points for improvement optim
 algo.setParameterEstimationPeriod(1)  # relearn kriging parameters every X iteration
-algo.setImprovementFactor(1.0)  # improvement stopping criterion factor
 algo.setCorrelationLengthFactor(1.0)  # correlation length stopping criterion factor
 algo.run()
 result = algo.getResult()

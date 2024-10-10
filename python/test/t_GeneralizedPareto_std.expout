@@ -6,17 +6,11 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[1.16226]
 oneSample first= class=Point name=Unnamed dimension=1 values=[0.684665]  last= class=Point name=Unnamed dimension=1 values=[1.68051]
 mean= class=Point name=Unnamed dimension=1 values=[1.74428]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.12783]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.231453]
 pdf     = 0.376111934156
-pdf (FD)= 0.376111934
 cdf= 0.511054485597
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.096439,-0.188281,0.231453]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.096439,-0.188281,0.231453]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.250741,-0.131347,-0.376112]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.250741,-0.131347,-0.376112]
 quantile= class=Point name=Unnamed dimension=1 values=[3.8804]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.576547]
@@ -44,21 +38,15 @@ Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1
 Distribution  GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[2.76806]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.37311]  last= class=Point name=Unnamed dimension=1 values=[2.3084]
-mean= class=Point name=Unnamed dimension=1 values=[1.99864]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.31994]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[0.633808]
+oneSample first= class=Point name=Unnamed dimension=1 values=[5.22134]  last= class=Point name=Unnamed dimension=1 values=[1.0016]
+mean= class=Point name=Unnamed dimension=1 values=[1.97709]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.14949]
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.228185]
 pdf     = 0.342278079355
-pdf (FD)= 0.342278079
 cdf= 0.486582880967
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
 quantile= class=Point name=Unnamed dimension=1 values=[4.9936]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.57694]
@@ -87,21 +75,15 @@ Distribution  GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)
 asPareto= Pareto(beta = 7.5, alpha=5, gamma=-7)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[1.97575]
-oneSample first= class=Point name=Unnamed dimension=1 values=[5.87434]  last= class=Point name=Unnamed dimension=1 values=[0.65915]
-mean= class=Point name=Unnamed dimension=1 values=[2.38187]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.82491]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
+oneRealization= class=Point name=Unnamed dimension=1 values=[0.635009]
+oneSample first= class=Point name=Unnamed dimension=1 values=[7.07521]  last= class=Point name=Unnamed dimension=1 values=[1.01876]
+mean= class=Point name=Unnamed dimension=1 values=[2.33451]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.26239]
 Point=  class=Point name=Unnamed dimension=1 values=[1.5]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.222073]
 pdf     = 0.31460293288
-pdf (FD)= 0.314602933
 cdf= 0.465175014104
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0616868,-0.125946,0.222073]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0616868,-0.125946,0.222073]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.209735,-0.100495,-0.314603]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.209735,-0.100495,-0.314603]
 quantile= class=Point name=Unnamed dimension=1 values=[6.65423]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.577336]

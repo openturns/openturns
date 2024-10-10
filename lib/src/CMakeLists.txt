@@ -102,7 +102,6 @@ if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_parser)
 endif ()
 
-target_link_libraries (OT PUBLIC ${OPENTURNS_LIBRARIES})
 target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 
 target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)

@@ -154,22 +154,23 @@ Point GumbelCopula::computeDDF(const Point & point) const
   const Scalar t63 = t36 * t11;
   result[0] = t7 * t8 * t14 * t17 * t4 * t20 * t26 + t29 * t2 * theta_ * t11 * t13 * t20 * t22 * t35 * t36 - t41 * t8 * t11 * t13 * t17 * t20 * t26 + t41 * t48 * t14 * t51 - 2.0 * t29 * t48 * t22 * t51 * t14 * theta_ - t62 * t35 * t63 / t1 - t62 * t35 * t63 * t13;
 
+  // dpdf/dv is symmetric
   const Scalar t8b = t4 * t4;
-  const Scalar t9b = t7 * t8b;
   const Scalar t10b = std::pow(v, 2.0);
   const Scalar t11b = 1.0 / t10b;
   const Scalar t12b = t3 * t3;
   const Scalar t13b = 1.0 / t12b;
   const Scalar t14b = t11b * t13b;
-  const Scalar t18 = t14b * t17;
-  const Scalar t21 = t2 * t20;
   const Scalar t23b = 1.0 / u;
-  const Scalar t26b = t22 * t23b * t25;
-  const Scalar t33 = t21 * t22;
-  const Scalar t36b = 1.0 / t15 * t23b * t25;
-  const Scalar t40b = t40 * t8b;
-  const Scalar t52 = t29 * t33;
-  result[1] = t9b * t18 * t21 * t26b + t29 * theta_ * t11b * t13b * t33 * t36b - t40b * t11b * t2 * t13b * t17 * t20 * t26b + t40b * t21 * t14b * t23b * t17 * t25 - t52 * t11b / t3 * t36b - t52 * t14b * t36b - 2.0 * t9b * t33 * t18 * t23b * t25 * theta_;
+  const Scalar t25b = 1.0 / t1;
+  const Scalar t26b = t22 * t23b * t25b;
+  const Scalar t29b = t7 * t2;
+  const Scalar t35b = t23b * t25b;
+  const Scalar t41b = t40 * t2;
+  const Scalar t48b = t8b * t20;
+  const Scalar t51b = t23b * t17 * t25b;
+  const Scalar t63b = t36 * t11b;
+  result[1] = t7 * t8b * t14b * t17 * t2 * t20 * t26b + t29b * t4 * theta_ * t11b * t13b * t20 * t22 * t35b * t36 - t41b * t8b * t11b * t13b * t17 * t20 * t26b + t41b * t48b * t14b * t51b - 2.0 * t29b * t48b * t22 * t51b * t14b * theta_ - t62 * t35b * t63b / t3 - t62 * t35b * t63b * t13b;
   return result;
 }
 
@@ -222,7 +223,7 @@ Point GumbelCopula::computePDFGradient(const Point & point) const
   const Scalar v = point[1];
   // A copula has a null PDF gradient outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
-  const Scalar epsilon = ResourceMap::GetAsScalar("DistFunc-Precision");
+  const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
   return Point(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - GumbelCopula(theta_ - epsilon).computePDF(point)) / (2.0 * epsilon));
 }
 

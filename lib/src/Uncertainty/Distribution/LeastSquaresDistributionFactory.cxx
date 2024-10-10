@@ -189,6 +189,9 @@ Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) con
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
 
+  // Quick return if all the parameter values are known
+  if (knownParameterValues_.getSize() == effectiveParameterSize) return knownParameterValues_;
+
   LeastSquaresFactoryResidualEvaluation residualEvaluation(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   Function residual(residualEvaluation.clone());
 
@@ -294,34 +297,10 @@ OptimizationAlgorithm LeastSquaresDistributionFactory::getOptimizationAlgorithm(
   return solver_;
 }
 
-void LeastSquaresDistributionFactory::setKnownParameter(const Point & values,
-    const Indices & indices)
-{
-  if (values.getSize() != indices.getSize())
-    throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
-  if (!indices.check(distribution_.getParameter().getSize()))
-    throw InvalidArgumentException(HERE) << "Know parameters indices must be < parameter dimension";
-  knownParameterValues_ = values;
-  knownParameterIndices_ = indices;
-}
-
-Indices LeastSquaresDistributionFactory::getKnownParameterIndices() const
-{
-  return knownParameterIndices_;
-}
-
-Point LeastSquaresDistributionFactory::getKnownParameterValues() const
-{
-  return knownParameterValues_;
-}
-
-
 /* Method save() stores the object through the StorageManager */
 void LeastSquaresDistributionFactory::save(Advocate & adv) const
 {
   DistributionFactoryImplementation::save(adv);
-  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
-  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
   adv.saveAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }
@@ -330,8 +309,6 @@ void LeastSquaresDistributionFactory::save(Advocate & adv) const
 void LeastSquaresDistributionFactory::load(Advocate & adv)
 {
   DistributionFactoryImplementation::load(adv);
-  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
-  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
   adv.loadAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }

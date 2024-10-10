@@ -52,13 +52,6 @@ for dim in range(1, 5):
     oneRealization = distribution.getRealization()
     print("oneRealization=", repr(oneRealization))
 
-    # Test for sampling
-    size = 10000
-    oneSample = distribution.getSample(size)
-    print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-    print("mean=", repr(oneSample.computeMean()))
-    print("covariance=", repr(oneSample.computeCovariance()))
-
     # Define a point
     point = ot.Point(distribution.getDimension(), 0.5)
     print("Point= ", repr(point))
@@ -69,33 +62,13 @@ for dim in range(1, 5):
     # derivative of PDF with respect to its arguments
     DDF = distribution.computeDDF(point)
     print("ddf     =", repr(cleanPoint(DDF)))
-    # by the finite difference technique
-    ddfFD = ot.Point(dim)
-    for i in range(dim):
-        pointEps = point
-        pointEps[i] += eps
-        ddfFD[i] = distribution.computePDF(pointEps)
-        pointEps[i] -= 2.0 * eps
-        ddfFD[i] -= distribution.computePDF(pointEps)
-        ddfFD[i] /= 2.0 * eps
-    print("ddf (FD)=", repr(cleanPoint(ddfFD)))
+
     # PDF value
     LPDF = distribution.computeLogPDF(point)
     print("log pdf=%.6f" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =%.6f" % PDF)
-    # by the finite difference technique from CDF
-    if dim == 1:
-        print(
-            "pdf (FD)=%.6f"
-            % cleanScalar(
-                (
-                    distribution.computeCDF(point + ot.Point(1, eps))
-                    - distribution.computeCDF(point + ot.Point(1, -eps))
-                )
-                / (2.0 * eps)
-            )
-        )
+
     CF = distribution.computeCharacteristicFunction(point)
     print("characteristic function=%.6f+%.6fi" % (CF.real, CF.imag))
     LCF = distribution.computeLogCharacteristicFunction(point)
@@ -106,31 +79,6 @@ for dim in range(1, 5):
     print("ccdf=%.6f" % CCDF)
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(cleanPoint(PDFgr)))
-    # by the finite difference technique
-    PDFgrFD = ot.Point(2 * dim)
-    for i in range(dim):
-        meanPoint[i] += eps
-        distributionLeft = ot.Normal(meanPoint, sigma, R)
-        meanPoint[i] -= 2.0 * eps
-        distributionRight = ot.Normal(meanPoint, sigma, R)
-        PDFgrFD[i] = (
-            distributionLeft.computePDF(point) - distributionRight.computePDF(point)
-        ) / (2.0 * eps)
-        meanPoint[i] += eps
-    for i in range(dim):
-        sigma[i] += eps
-        distributionLeft = ot.Normal(meanPoint, sigma, R)
-        sigma[i] -= 2.0 * eps
-        distributionRight = ot.Normal(meanPoint, sigma, R)
-        PDFgrFD[dim + i] = (
-            distributionLeft.computePDF(point) - distributionRight.computePDF(point)
-        ) / (2.0 * eps)
-        sigma[i] += eps
-    print("pdf gradient (FD)=", repr(cleanPoint(PDFgrFD)))
-
-    # derivative of the CDF with regards the parameters of the distribution
-    #   CDFgr = distribution.computeCDFGradient( point )
-    #     print "cdf gradient     =" , CDFgr
 
     # quantile
     if dim < 4:
@@ -269,9 +217,7 @@ for dim in range(1, 5):
         print("margin realization=", repr(margin.getRealization()))
     if dim >= 2:
         # Extract a 2-D marginal
-        indices = ot.Indices(2, 0)
-        indices[0] = 1
-        indices[1] = 0
+        indices = [1, 0]
         print("indices=", repr(indices))
         margins = distribution.getMarginal(indices)
         print("margins=", repr(margins))
@@ -288,6 +234,13 @@ for dim in range(1, 5):
     print("invchol=", repr(invChol))
     print("chol*t(chol)=", repr((chol * chol.transpose())))
     ott.assert_almost_equal((chol * invChol), ot.IdentityMatrix(dim))
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    if dim > 2:
+        checker.skipMoments()  # slow
+        checker.skipCorrelation()  # slow
+    checker.run()
 
 # non-spd cov
 dist = ot.Normal(

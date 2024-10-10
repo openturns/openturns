@@ -22,7 +22,7 @@
 #define OPENTURNS_NORMALGAMMA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/BayesDistribution.hxx"
+#include "openturns/JointByConditioningDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The NormalGamma distribution.
  */
 class OT_API NormalGamma
-  : public BayesDistribution
+  : public JointByConditioningDistribution
 {
   CLASSNAME
 
@@ -48,24 +48,24 @@ public:
               const Scalar beta);
 
   /** Comparison operator */
-  using BayesDistribution::operator ==;
+  using JointByConditioningDistribution::operator ==;
   Bool operator ==(const NormalGamma & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Compute the survival function */
-  using ContinuousDistribution::computeSurvivalFunction;
+  using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -123,16 +123,16 @@ public:
 protected:
 
   /** Conditioned distribution accessor */
-  using BayesDistribution::setConditionedDistribution;
-  using BayesDistribution::getConditionedDistribution;
+  using JointByConditioningDistribution::setConditionedDistribution;
+  using JointByConditioningDistribution::getConditionedDistribution;
 
   /** Conditioning distribution accessor */
-  using BayesDistribution::setConditioningDistribution;
-  using BayesDistribution::getConditioningDistribution;
+  using JointByConditioningDistribution::setConditioningDistribution;
+  using JointByConditioningDistribution::getConditioningDistribution;
 
   /** Link function accessor */
-  using BayesDistribution::setLinkFunction;
-  using BayesDistribution::getLinkFunction;
+  using JointByConditioningDistribution::setLinkFunction;
+  using JointByConditioningDistribution::getLinkFunction;
 
 private:
 

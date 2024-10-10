@@ -75,6 +75,7 @@ Gamma GammaFactory::buildAsGamma(const Sample & sample) const
   lambda /= sigma;
   Gamma result(k, lambda, gamma);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

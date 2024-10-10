@@ -4,7 +4,7 @@ Advanced Kriging
 """
 # %%
 #
-# In this example we will build a metamodel using gaussian process regression of the :math:`x\sin(x)` function.
+# In this example we will build a metamodel using Gaussian process regression of the :math:`x\sin(x)` function.
 #
 # We will choose the number of learning points, the basis and the covariance model.
 #
@@ -19,11 +19,11 @@ import openturns.viewer as viewer
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Generate design of experiment
-# -----------------------------
+# Generate design of experiments
+# ------------------------------
 #
 # We create training samples from the function :math:`x\sin(x)`. We can change their number and distribution in the :math:`[0; 10]` range.
-# If the `with_error` boolean is `True`, then the data is computed by adding a gaussian noise to the function values.
+# If the `with_error` boolean is `True`, then the data is computed by adding a Gaussian noise to the function values.
 
 # %%
 dim = 1
@@ -61,14 +61,14 @@ view = viewer.View(graph)
 # Create the Kriging algorithm
 # ----------------------------
 
-# 1. basis
+# 1. Basis
 ot.ResourceMap.SetAsBool(
     "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True
 )
 basis = ot.ConstantBasisFactory(dim).build()
 print(basis)
 
-# 2. covariance model
+# 2. Covariance model
 cov = ot.MaternModel([1.0], [2.5], 1.5)
 print(cov)
 
@@ -87,7 +87,7 @@ algokriging.setOptimizationBounds(ot.Interval([0.1], [1e2]))
 # if we choose not to optimize parameters
 # algokriging.setOptimizeParameters(False)
 
-# 5. run the algorithm
+# 5. Run the algorithm
 algokriging.run()
 
 # %%
@@ -95,7 +95,7 @@ algokriging.run()
 # -------
 
 # %%
-# get some results
+# Get some results
 krigingResult = algokriging.getResult()
 print("residual = ", krigingResult.getResiduals())
 print("R2 = ", krigingResult.getRelativeErrors())
@@ -106,7 +106,7 @@ print(
 print("Optimal trend coefficients = {}".format(krigingResult.getTrendCoefficients()))
 
 # %%
-# get the metamodel
+# Get the metamodel
 krigingMeta = krigingResult.getMetaModel()
 
 n_pts_plot = 1000
@@ -178,7 +178,7 @@ ax.autoscale()
 # ---------------------------------
 
 # %%
-# support for trajectories with training samples removed
+# Support for trajectories with training samples removed
 values = np.linspace(0, 10, 500)
 for xx in x:
     if len(np.argwhere(values == xx)) == 1:

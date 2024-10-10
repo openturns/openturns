@@ -3,12 +3,8 @@ Distribution  Bernoulli(p = 0.7)
 Elliptical =  False
 Continuous =  False
 oneRealization= class=Point name=Unnamed dimension=1 values=[1]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0]  last= class=Point name=Unnamed dimension=1 values=[1]
-mean= class=Point name=Unnamed dimension=1 values=[0.6916]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.213311]
 Point=  class=Point name=Unnamed dimension=1 values=[0]
 pdf     =0.300000
-pdf (FD)=0.300000
 cdf=0.300000
 quantile= class=Point name=Unnamed dimension=1 values=[1]
 cdf(quantile)=1.000000

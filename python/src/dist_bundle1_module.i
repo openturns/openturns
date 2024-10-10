@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle1
 #pragma SWIG nowarn=302,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -75,6 +74,7 @@
 %include WeibullMaxMuSigma.i
 %include GeneralizedExtremeValue.i
 %include GeneralizedExtremeValueFactory.i
+%include GeneralizedExtremeValueValidation.i
 %include GumbelFactory.i
 %include GumbelLambdaGamma.i
 %include GumbelMuSigma.i

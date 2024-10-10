@@ -1,7 +1,6 @@
 // SWIG file common_module.i
 
 %module(package="openturns", docstring="Utility classes.") common
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

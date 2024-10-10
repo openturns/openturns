@@ -25,7 +25,6 @@ Estimate a GEV on the Fremantle sea-levels data
 # which is a proxy for meteorological volatility due to effects such as El Nino.
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 from openturns.usecases import coles
 
 data = coles.Coles().fremantle
@@ -85,7 +84,7 @@ for i in range(3):
 # - the quantile-quantile pot,
 # - the return level plot,
 # - the empirical distribution function.
-validation = otexp.GeneralizedExtremeValueValidation(result_LL, sample)
+validation = ot.GeneralizedExtremeValueValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 

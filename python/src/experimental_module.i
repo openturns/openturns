@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Experimental features.") experimental
 #pragma SWIG nowarn=302,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -65,23 +64,13 @@
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
 
-/* Uncertainty/Algorithm/EventSimulation */
-%include CrossEntropyResult.i
-%include CrossEntropyImportanceSampling.i
-%include StandardSpaceCrossEntropyImportanceSampling.i
-%include PhysicalSpaceCrossEntropyImportanceSampling.i
-
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i
 
 /* Uncertainty/Distribution */
 %include SmoothedUniformFactory.i
-%include StudentCopula.i
-%include StudentCopulaFactory.i
-%include TruncatedOverMesh.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
-%include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosValidation.i

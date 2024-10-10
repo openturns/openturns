@@ -2,7 +2,7 @@
 ==================================================
 
 conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+Distribution  PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -20,7 +20,7 @@ Independent copula=  False
 oneRealization= [0.577515,1.61937]
 Mean point=  [0.408932,1.65873]  pdf=1.6238  cdf=0.26218
 Quantile= [0.946843,1.98454]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -31,7 +31,7 @@ margin PDF= [1.12641]
 margin CDF= [0.541543]
 margin quantile= [0.900147]
 margin realization= [0.2696]
-margin= MarginalDistribution(distribution=PosteriorDistribution(conditional distribution = ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]

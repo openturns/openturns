@@ -21,67 +21,19 @@ print("Elliptical = ", distribution.isElliptical())
 oneRealization = distribution.getRealization()
 print("oneRealization=", repr(oneRealization))
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
-
-size = 100
-for i in range(2):
-    msg = ""
-    if ot.FittingTest.Kolmogorov(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-    size *= 10
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 9.1)
 print("Point= ", repr(point))
 
-# Show PDF and CDF of point
-eps = 1e-5
-max = distribution.getSigma() + distribution.getMu()
-min = distribution.getSigma() - distribution.getMu()
 # derivative of PDF with regards its arguments
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
-# by the finite difference technique
-print(
-    "ddf (FD)=",
-    repr(
-        ot.Point(
-            1,
-            (
-                distribution.computePDF(point + ot.Point(1, eps))
-                - distribution.computePDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps),
-        )
-    ),
-)
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
 print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-# by the finite difference technique from CDF
-print(
-    "pdf (FD)=%.6f"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps)
-    )
-)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -90,47 +42,10 @@ CCDF = distribution.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
-# by the finite difference technique
-PDFgrFD = ot.Point(2)
-PDFgrFD[0] = (
-    ot.SquaredNormal(distribution.getMu() + eps, distribution.getSigma()).computePDF(
-        point
-    )
-    - ot.SquaredNormal(distribution.getMu() - eps, distribution.getSigma()).computePDF(
-        point
-    )
-) / (2.0 * eps)
-PDFgrFD[1] = (
-    ot.SquaredNormal(distribution.getMu(), distribution.getSigma() + eps).computePDF(
-        point
-    )
-    - ot.SquaredNormal(distribution.getMu(), distribution.getSigma() - eps).computePDF(
-        point
-    )
-) / (2.0 * eps)
-print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
-CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (
-    ot.SquaredNormal(distribution.getMu() + eps, distribution.getSigma()).computeCDF(
-        point
-    )
-    - ot.SquaredNormal(distribution.getMu() - eps, distribution.getSigma()).computeCDF(
-        point
-    )
-) / (2.0 * eps)
-CDFgrFD[1] = (
-    ot.SquaredNormal(distribution.getMu(), distribution.getSigma() + eps).computeCDF(
-        point
-    )
-    - ot.SquaredNormal(distribution.getMu(), distribution.getSigma() - eps).computeCDF(
-        point
-    )
-) / (2.0 * eps)
-print("cdf gradient (FD)=", repr(CDFgrFD))
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
@@ -186,8 +101,6 @@ parameters = distribution.getParametersCollection()
 print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
-# computeProba test with bound far away
-p = distribution.computeProbability(
-    ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
-)
-ott.assert_almost_equal(p, 1.0)
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

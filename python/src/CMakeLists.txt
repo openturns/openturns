@@ -530,9 +530,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       DistributionFactory.i DistributionFactory_doc.i.in
                       DistributionParametersImplementation.i DistributionParametersImplementation_doc.i.in
                       DistributionParameters.i DistributionParameters_doc.i.in
-                      ContinuousDistribution.i ContinuousDistribution_doc.i.in
                       EllipticalDistribution.i EllipticalDistribution_doc.i.in
-                      DiscreteDistribution.i DiscreteDistribution_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in
                       IndependentCopula.i IndependentCopula_doc.i.in
@@ -605,7 +603,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i.in
                       ArcsineFactory.i ArcsineFactory_doc.i.in
                       ArcsineMuSigma.i ArcsineMuSigma_doc.i.in
-                      BayesDistribution.i BayesDistribution_doc.i.in
+                      JointByConditioningDistribution.i JointByConditioningDistribution_doc.i.in
                       Bernoulli.i Bernoulli_doc.i.in
                       BernoulliFactory.i BernoulliFactory_doc.i.in
                       EmpiricalBernsteinCopula.i EmpiricalBernsteinCopula_doc.i.in
@@ -645,6 +643,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
+		      GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                       DistributionFactoryLikelihoodResult.i DistributionFactoryLikelihoodResult_doc.i.in
                       ProfileLikelihoodResult.i ProfileLikelihoodResult_doc.i.in
 		      CovariatesResult.i CovariatesResult_doc.i.in
@@ -695,11 +694,11 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i.in
                       MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i.in
                       Mixture.i  Mixture_doc.i.in
-                      ConditionalDistribution.i ConditionalDistribution_doc.i.in
+                      DeconditionedDistribution.i DeconditionedDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
-                      NegativeBinomial.i NegativeBinomial_doc.i.in
-                      NegativeBinomialFactory.i NegativeBinomialFactory_doc.i.in
+                      Polya.i Polya_doc.i.in
+                      PolyaFactory.i PolyaFactory_doc.i.in
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i.in
                       NonCentralStudent.i NonCentralStudent_doc.i.in
                       Normal.i Normal_doc.i.in
@@ -725,6 +724,8 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       SquaredNormal.i SquaredNormal_doc.i.in
                       Student.i Student_doc.i.in
                       StudentFactory.i StudentFactory_doc.i.in
+                      StudentCopula.i StudentCopula_doc.i.in
+                      StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
                       Trapezoidal.i Trapezoidal_doc.i.in
                       TrapezoidalFactory.i TrapezoidalFactory_doc.i.in
                       Triangular.i Triangular_doc.i.in
@@ -732,6 +733,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedDistribution.i TruncatedDistribution_doc.i.in
                       TruncatedNormal.i TruncatedNormal_doc.i.in
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
+                      TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UniformMuSigma.i UniformMuSigma_doc.i.in
@@ -1009,6 +1011,7 @@ ot_add_python_module(uncertainty uncertainty_module.i
                     )
 
 ot_add_python_module(testing testing_module.i
+                     OTtestcode_doc.i.in
                     )
 
 ot_add_python_module(experimental experimental_module.i
@@ -1019,12 +1022,8 @@ ot_add_python_module(experimental experimental_module.i
                      UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
-                     StudentCopula.i StudentCopula_doc.i.in
-                     StudentCopulaFactory.i StudentCopulaFactory_doc.i.in
-                     TruncatedOverMesh.i TruncatedOverMesh_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
-                     GeneralizedExtremeValueValidation.i GeneralizedExtremeValueValidation_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in

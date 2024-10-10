@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -69,7 +70,7 @@ quantile = distribution.computeQuantile(0.95)
 # Test invalid quantile
 try:
     q12 = distribution.computeScalarQuantile(1.2)
-    raise ValueError("Expected a TypeError but got quantile(1.2) = {}".format(q12))
+    raise ValueError(f"Expected a TypeError but got quantile(1.2) = {q12}")
 except TypeError:
     pass
 print("quantile=", quantile)
@@ -167,3 +168,9 @@ print("covariance=", covariance)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipMoments()
+checker.skipCorrelation()
+checker.run()

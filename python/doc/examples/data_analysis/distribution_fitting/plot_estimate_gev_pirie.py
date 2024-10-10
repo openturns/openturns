@@ -23,7 +23,6 @@ Estimate a GEV on the Port Pirie sea-levels data
 # through time.
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 from openturns.usecases import coles
 
 data = coles.Coles().portpirie
@@ -79,7 +78,7 @@ for i in range(3):
 
 # %%
 # At last, we can validate the inference result thanks the 4 usual diagnostic plots.
-validation = otexp.GeneralizedExtremeValueValidation(result_LL, sample)
+validation = ot.GeneralizedExtremeValueValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 

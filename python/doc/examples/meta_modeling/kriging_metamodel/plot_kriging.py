@@ -4,17 +4,17 @@ Kriging : multiple input dimensions
 """
 # %%
 # In this example we are going to create an approximation of a model response using a kriging model.
-# We consider a bidimensional function with gaussian inputs.
-# Then we create a kriging metamodel with a constant basis and a `SquaredExponential` covariance.
+# We consider a bidimensional function with Gaussian inputs.
+# Then we create a kriging metamodel with a constant basis and a :class:`~openturns.SquaredExponential` covariance.
 #
 # We consider the function
 #
 # .. math::
-#    g(X) = \cos(X_1 + X_2)
+#    g(\vect{x}) = \cos(x_1 + x_2)
 #
 #
-# for any :math:`\mathbf{X}\in\mathbb{R}^2`.
-# We assume that :math:`X_1` and :math:`X_2` have a gaussian distribution :
+# for any :math:`\vect{x} \in \Rset^2`.
+# We assume that :math:`X_1` and :math:`X_2` have a Gaussian distribution :
 #
 # .. math::
 #    X_1 \sim \mathcal{N}(0,1) \textrm{ and } X_2 \sim \mathcal{N}(0,1).
@@ -46,7 +46,7 @@ x = distribution.getSample(samplesize)
 y = model(x)
 
 # %%
-# Then we create a kriging metamodel, using a constant trend and a squared exponential covariance model.
+# Then we create a Kriging metamodel, using a constant trend and a squared exponential covariance model.
 
 # %%
 basis = ot.ConstantBasisFactory(dimension).build()
@@ -58,7 +58,7 @@ metamodel = result.getMetaModel()
 
 # %%
 # It is not so easy to visualize a bidimensional function. In order to simplify the graphics, we consider the value of the function at the input :math:`x_{1,ref}=0.5`.
-# This amounts to create a `ParametricFunction` where the first variable :math:`x_1` (at input index 0) is set to :math:`0.5`.
+# This amounts to create a :class:`~openturns.ParametricFunction` where the first variable :math:`x_1` (at input index 0) is set to :math:`0.5`.
 
 # %%
 x1ref = 0.5

@@ -120,16 +120,7 @@ void BlockIndependentDistribution::setDistributionCollection(const DistributionC
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs
   setDimension(dimension);
-
-  // avoid description warning with identical entries
-  Description test(description);
-  Description::const_iterator it = std::unique(test.begin(), test.end());
-  if (it != test.end())
-  {
-    description = Description::BuildDefault(dimension_, "X");
-  }
-  setDescription(description);
-
+  setDescription(DeduplicateDecription(description));
   computeRange();
 }
 
@@ -724,6 +715,19 @@ Point BlockIndependentDistribution::getParameter() const
   for (UnsignedInteger i = 0; i < size; ++i)
     point.add(distributionCollection_[i].getParameter());
   return point;
+}
+
+Description BlockIndependentDistribution::getParameterDescription() const
+{
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Description description;
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++ marginalIndex)
+  {
+    Description marginalParametersDescription(distributionCollection_[marginalIndex].getParameterDescription());
+    for (UnsignedInteger i = 0; i < marginalParametersDescription.getSize(); ++ i)
+      description.add(OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
+  }
+  return description;
 }
 
 void BlockIndependentDistribution::setParameter(const Point & parameter)

@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 # Instantiate one distribution object
 R = ot.CorrelationMatrix(2)
@@ -127,3 +127,7 @@ print(
     ")=",
     copula.computeSequentialConditionalQuantile(resCDF),
 )
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.run()

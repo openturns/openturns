@@ -12,7 +12,7 @@ dimension = 3
 im = ishigami_function.IshigamiModel()
 
 size = 1000
-x = im.distributionX.getSample(size)
+x = im.inputDistribution.getSample(size)
 y = im.model(x)
 
 # To reduce the time needed by the test
@@ -39,10 +39,10 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
 adaptiveStrategy = ot.FixedStrategy(productBasis, basisSize)
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
-x = im.distributionX.getSample(size)
+x = im.inputDistribution.getSample(size)
 y = im.model(x)
 algo = ot.FunctionalChaosAlgorithm(
-    x, y, im.distributionX, adaptiveStrategy, projectionStrategy
+    x, y, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 algo.run()
 result = algo.getResult()

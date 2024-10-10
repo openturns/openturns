@@ -481,24 +481,29 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
         } // On a corner
       } // On an x-boundary
     }
-    Collection< Distribution > atoms((binNumber_ + 1) * (binNumber_ + 1));
-    for (UnsignedInteger j = 0; j <= binNumber_; ++j)
+    Collection< Distribution > atoms;
+    Point weights2;
+    for (UnsignedInteger j = 0; j <= binNumber_; ++ j)
     {
-      Point point(2);
-      point[1] = gridY[j];
-      for (UnsignedInteger i = 0; i <= binNumber_; ++i)
+      Point point = {0.0, gridY[j]};
+      for (UnsignedInteger i = 0; i <= binNumber_; ++ i)
       {
-        point[0] = gridX[i];
-        atoms[i + j * (binNumber_ + 1)] = KernelMixture(kernel_, bandwidth, Sample(1, point));
+        const Scalar weightIJ = weights[i + j * (binNumber_ + 1)];
+        if (weightIJ > 0.0)
+        {
+          point[0] = gridX[i];
+          atoms.add(KernelMixture(kernel_, bandwidth, Sample(1, point)));
+          weights2.add(weightIJ);
+        }
       } // i
     } // j
-    Mixture result(atoms, weights);
+    Mixture result(atoms, weights2);
     result.setDescription(sample.getDescription());
     return result;
   } // 2D binning
   // 1D binning
-  Scalar xMin = sample.getMin()[0];
-  Scalar xMax = sample.getMax()[0];
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
 
   Point weights(binNumber_ + 1);
   Point grid(binNumber_ + 1);
@@ -530,12 +535,15 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
     // The full weight is given to the end points
     else weights[index] += 1.0;
   }
-  Collection< Distribution > atoms(binNumber_ + 1);
+  Collection< Distribution > atoms;
+  Point weights2;
   for (UnsignedInteger i = 0; i <= binNumber_; ++i)
-  {
-    atoms[i] = KernelMixture(kernel_, bandwidth, Sample(1, Point(1, grid[i])));
-  }
-  Mixture result(atoms, weights);
+    if (weights[i] > 0.0)
+    {
+      atoms.add(KernelMixture(kernel_, bandwidth, Sample(1, Point({grid[i]}))));
+      weights2.add(weights[i]);
+    }
+  Mixture result(atoms, weights2);
   result.setDescription(sample.getDescription());
   return result;
 }

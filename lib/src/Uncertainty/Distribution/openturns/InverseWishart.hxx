@@ -22,7 +22,7 @@
 #define OPENTURNS_INVERSEWISHART_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/TriangularMatrix.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The InverseWishart distribution.
  */
 class OT_API InverseWishart
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -47,7 +47,7 @@ public:
                  const Scalar nu);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const InverseWishart & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -69,15 +69,15 @@ public:
   CovarianceMatrix getRealizationAsMatrix() const;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
   Scalar computePDF(const CovarianceMatrix & m) const;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
   Scalar computeLogPDF(const CovarianceMatrix & m) const;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the standard deviation of the distribution */

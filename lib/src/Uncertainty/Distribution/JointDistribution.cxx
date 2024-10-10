@@ -42,6 +42,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/Tuples.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -293,25 +294,7 @@ void JointDistribution::setDistributionCollection(const DistributionCollection &
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-
-  // avoid description warning with identical entries
-  std::map<String, UnsignedInteger> occurrence;
-  UnsignedInteger idx = 0;
-  for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
-  {
-    const String currentName(description[i]);
-    ++ occurrence[currentName];
-    if (occurrence[currentName] > 1)
-    {
-      while (occurrence.find(OSS() << "X" << idx) != occurrence.end())
-        ++ idx;
-      const String newName(OSS() << "X" << idx);
-      ++ occurrence[newName]; // avoid duplicates with new ones too
-      description[i] = newName;
-    }
-  }
-  setDescription(description);
-
+  setDescription(DeduplicateDecription(description));
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
@@ -635,46 +618,61 @@ Scalar JointDistribution::computeProbability(const Interval & interval) const
 /* Get the PDF gradient of the distribution */
 Point JointDistribution::computePDFGradient(const Point & point) const
 {
+  if (!core_.isCopula() || !hasIndependentCopula())
+    return DistributionImplementation::computePDFGradient(point);
+
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   Point gradient;
-  // First, put the gradient according to marginal parameters
   // The marginal parameters are supposed to be independent from one marginal distribution
   // to the others
-  for (UnsignedInteger i = 0; i < dimension; ++i)
+  Point marginalPDF(dimension);
+  Scalar pdf = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    marginalPDF[i] = distributionCollection_[i].computePDF(point[i]);
+    if (marginalPDF[i] == 0.0)
+      return Point(getParameter().getDimension());
+    pdf *= marginalPDF[i];
+  }
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const Point marginalGradient(distributionCollection_[i].computePDFGradient(Point(1, point[i])));
-    const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
-    for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
+    gradient.add(marginalGradient / marginalPDF[i]);
   }
-  const Point coreGradient(core_.computePDFGradient(point));
-  const UnsignedInteger coreParameterDimension = coreGradient.getDimension();
-  // Then, put the gradient according to the core parameters
-  for (UnsignedInteger j = 0; j < coreParameterDimension; ++j) gradient.add(coreGradient[j]);
-  return gradient;
+  return gradient * pdf;
 }
 
 /* Get the CDF gradient of the distribution */
 Point JointDistribution::computeCDFGradient(const Point & point) const
 {
+  if (!core_.isCopula() || !hasIndependentCopula())
+    return DistributionImplementation::computeCDFGradient(point);
+
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   Point gradient;
-  // First, put the gradient according to marginal parameters
   // The marginal parameters are supposed to be independent from one marginal distribution
   // to the others
+  Point marginalCDF(dimension);
+  Scalar cdf = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    marginalCDF[i] = distributionCollection_[i].computeCDF(point[i]);
+    cdf *= marginalCDF[i];
+  }
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Point marginalGradient(distributionCollection_[i].computeCDFGradient(Point(1, point[i])));
-    const UnsignedInteger marginalParameterDimension = marginalGradient.getDimension();
-    for (UnsignedInteger j = 0; j < marginalParameterDimension; ++j) gradient.add(marginalGradient[j]);
+    Point marginalGradient(distributionCollection_[i].getParameter().getDimension());
+    if (marginalCDF[i] > 0.0)
+    {
+      marginalGradient = distributionCollection_[i].computeCDFGradient(Point(1, point[i]));
+      marginalGradient *= cdf / marginalCDF[i];
+    }
+    gradient.add(marginalGradient);
   }
-  const Point coreGradient(core_.computeCDFGradient(point));
-  const UnsignedInteger coreParameterDimension = coreGradient.getDimension();
-  // Then, put the gradient according to the core parameters
-  for (UnsignedInteger j = 0; j < coreParameterDimension; ++j) gradient.add(coreGradient[j]);
   return gradient;
 }
 
@@ -808,6 +806,33 @@ void JointDistribution::computeRange()
   }
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
+
+
+/* Get the support of a distribution that intersect a given interval */
+Sample JointDistribution::getSupport(const Interval & interval) const
+{
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
+  if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
+  Collection<Sample> marginalSupport(getDimension());
+  Indices marginalSize(getDimension());
+  for (UnsignedInteger j = 0; j < getDimension(); ++ j)
+  {
+    marginalSupport[j] = distributionCollection_[j].getSupport(interval.getMarginal(j));
+    marginalSize[j] = marginalSupport[j].getSize();
+  }
+  IndicesCollection tuples(Tuples(marginalSize).generate());
+  Sample support(0, getDimension());
+  for (UnsignedInteger i = 0; i < tuples.getSize(); ++ i)
+  {
+    Point x(getDimension());
+    for (UnsignedInteger j = 0; j < getDimension(); ++ j)
+      x[j] = marginalSupport[j](tuples(i, j), 0);
+    if (computePDF(x) > 0.0)
+      support.add(x);
+  }
+  return support;
+}
+
 
 /* Compute the mean of the distribution. It is cheap if the marginal means are cheap */
 void JointDistribution::computeMean() const

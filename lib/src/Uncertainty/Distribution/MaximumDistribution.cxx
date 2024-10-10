@@ -246,6 +246,21 @@ Bool MaximumDistribution::isIntegral() const
   return distribution_.isIntegral();
 }
 
+Point MaximumDistribution::getParameter() const
+{
+  return distribution_.getParameter();
+}
+
+void MaximumDistribution::setParameter(const Point & parameter)
+{
+  distribution_.setParameter(parameter);
+}
+
+Description MaximumDistribution::getParameterDescription() const
+{
+  return distribution_.getParameterDescription();
+}
+
 /* Method save() stores the object through the StorageManager */
 void MaximumDistribution::save(Advocate & adv) const
 {

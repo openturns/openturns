@@ -33,7 +33,7 @@ static const Factory<Triangular> Factory_Triangular;
 
 /* Default constructor */
 Triangular::Triangular()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(-1.0)
   , m_(0.0)
   , b_(1.0)
@@ -47,7 +47,7 @@ Triangular::Triangular()
 Triangular::Triangular(const Scalar a,
                        const Scalar m,
                        const Scalar b)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(0.0)
   , m_(0.0)
   , b_(0.0)
@@ -247,7 +247,7 @@ Point Triangular::computeCDFGradient(const Point & point) const
     const Scalar fact = xa / (ba * ma);
     cdfGradient[0] = fact * (xm * ba - bx * ma) / (ma * ba);
     cdfGradient[1] = -fact * xa / ma;
-    cdfGradient[2] = -xa / ba;
+    cdfGradient[2] = -xa * xa / (ba * ba * ma);
     return cdfGradient;
   }
   const Scalar fact = bx / (ba * bm);
@@ -425,7 +425,7 @@ Point Triangular::getSingularities() const
 /* Method save() stores the object through the StorageManager */
 void Triangular::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "a_", a_ );
   adv.saveAttribute( "m_", m_ );
   adv.saveAttribute( "b_", b_ );
@@ -434,7 +434,7 @@ void Triangular::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Triangular::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "a_", a_ );
   adv.loadAttribute( "m_", m_ );
   adv.loadAttribute( "b_", b_ );

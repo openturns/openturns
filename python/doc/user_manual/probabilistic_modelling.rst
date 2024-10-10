@@ -83,7 +83,7 @@ Continuous parametric distributions
     TruncatedNormal
 
     :template: classWithPlot.rst_t
-    experimental.TruncatedOverMesh
+    TruncatedOverMesh
 
     :template: Distribution.rst_t
     Uniform
@@ -118,7 +118,7 @@ Discrete parametric distributions
     KPermutationsDistribution
 
     :template: classWithPlot.rst_t
-    NegativeBinomial
+    Polya
 
     :template: Distribution.rst_t
     Poisson
@@ -164,7 +164,7 @@ Combining and transforming distributions
     :toctree: _generated/
     :template: classWithPlot.rst_t
 
-    BayesDistribution
+    JointByConditioningDistribution
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution
@@ -174,7 +174,7 @@ Combining and transforming distributions
     CompositeDistribution
 
     :template: Distribution.rst_t
-    ConditionalDistribution
+    DeconditionedDistribution
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
 
@@ -241,7 +241,7 @@ Refer to :ref:`copula`.
     JoeCopula
     GalambosCopula
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     MarshallOlkinCopula
 
@@ -254,7 +254,7 @@ Refer to :ref:`copula`.
 
     :template: Copula.rst_t
     NormalCopula
-    experimental.StudentCopula
+    StudentCopula
 
 
 Combining and transforming copulas

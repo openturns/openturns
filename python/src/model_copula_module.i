@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Copulas.") model_copula
 #pragma SWIG nowarn=302,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -26,9 +25,7 @@
 %include DistributionParameters.i
 %include DistributionFactoryImplementation.i
 %include DistributionFactory.i
-%include ContinuousDistribution.i
 %include EllipticalDistribution.i
-%include DiscreteDistribution.i
 %include ArchimedeanCopula.i
 %include SklarCopula.i
 

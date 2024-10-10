@@ -22,7 +22,7 @@
 #define OPENTURNS_SQUAREDNORMAL_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The SquaredNormal (gaussian) distribution.
  */
 class OT_API SquaredNormal
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
 
   CLASSNAME
@@ -46,7 +46,7 @@ public:
   SquaredNormal(Scalar mu, Scalar sigma);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const SquaredNormal & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -67,11 +67,11 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the CDF of the SquaredNormal distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the probability content of an interval */

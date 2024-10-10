@@ -59,7 +59,6 @@ PhysicalSpaceCrossEntropyImportanceSampling::PhysicalSpaceCrossEntropyImportance
     solver_ = OptimizationAlgorithm::Build("LD_LBFGS");
 
   auxiliaryDistribution_ = auxiliaryDistribution;
-  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
   bounds_ = bounds;
   initialAuxiliaryDistributionParameters_ = initialAuxiliaryDistributionParameters;
 

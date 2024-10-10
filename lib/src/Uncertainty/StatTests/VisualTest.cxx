@@ -297,6 +297,39 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
   return grid;
 }
 
+/* Draw 2-d projections of a multivariate sample */
+GridLayout VisualTest::DrawPairsXY(const Sample & sampleX, const Sample & sampleY)
+{
+  const UnsignedInteger sampleXDimension = sampleX.getDimension();
+  const UnsignedInteger sampleYDimension = sampleY.getDimension();
+  
+  GridLayout grid(sampleYDimension, sampleXDimension);
+  const Description sampleXDescription(sampleX.getDescription());
+  const Description sampleYDescription(sampleY.getDescription());
+  
+  if (sampleX.getSize() != sampleY.getSize())
+    throw InvalidRangeException(HERE) << "The two samples must have the same size.";
+  
+  for (UnsignedInteger i = 0; i < sampleYDimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < sampleXDimension; ++ j)
+    {
+      Cloud cloud(sampleX.getMarginal(j), sampleY.getMarginal(i));
+     
+      Graph graph("", i == sampleYDimension - 1 ? sampleXDescription[j] : "", j == 0 ? sampleYDescription[i] : "", true, "topright");
+      graph.add(cloud);
+      int location = GraphImplementation::TICKNONE;
+      if (i == sampleYDimension - 1)
+        location |= GraphImplementation::TICKX;
+      if (j == 0)
+        location |= GraphImplementation::TICKY;
+      graph.setTickLocation(static_cast<GraphImplementation::TickLocation>(location));
+      grid.setGraph(i, j, graph);
+    }
+  }
+  return grid;
+}
+
 
 /* Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
 GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)

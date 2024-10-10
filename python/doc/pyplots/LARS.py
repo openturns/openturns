@@ -9,9 +9,9 @@ ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 N = 1000
 g = im.model
-x = im.distributionX.getSample(N)
+x = im.inputDistribution.getSample(N)
 P = x.getDimension()
-marginals = [im.distributionX.getMarginal(i) for i in range(P)]
+marginals = [im.inputDistribution.getMarginal(i) for i in range(P)]
 y = g(x)
 
 # polynomial chaos
@@ -26,7 +26,7 @@ adaptiveStrategy = ot.FixedStrategy(
 )
 projectionStrategy = ot.LeastSquaresStrategy(approximationAlgorithm)
 algo = ot.FunctionalChaosAlgorithm(
-    x, y, im.distributionX, adaptiveStrategy, projectionStrategy
+    x, y, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 algo.run()
 result = algo.getResult()

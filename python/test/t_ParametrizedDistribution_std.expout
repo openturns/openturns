@@ -1,16 +1,11 @@
 Distribution  class=ParametrizedDistribution parameters=class=GammaMuSigma name=Unnamed mu=0.1 sigma=0.489898 gamma=-0.5 distribution=class=Gamma name=Gamma dimension=1 k=1.5 lambda=2.5 gamma=-0.5
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.128566]
-oneSample first= [0.677574]  last= [-0.102762]
-mean= [0.106857]
-covariance= [[ 0.243092 ]]
+oneRealization= [0.281847]
 Point=  [1]
 ddf     = [-0.278355]
-ddf (FD)= -0.278355
 log pdf= -2.05205
 pdf     =0.128471
-pdf (FD)=0.128471
 cdf= 0.942442
 ccdf= 0.0575585
 survival= 0.0575585

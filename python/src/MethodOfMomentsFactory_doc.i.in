@@ -124,50 +124,6 @@ bounds : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MethodOfMomentsFactory::setKnownParameter
-"Accessor to the known parameters.
-
-Parameters
-----------
-values : sequence of float
-    Values of fixed parameters.
-indices : sequence of int
-    Indices of fixed parameters.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
->>> sample = distribution.getSample(10)
->>> orders = [3, 4]  # skewness, kurtosis
->>> factory = ot.MethodOfMomentsFactory(ot.Beta(), orders)
->>> # set (a,b) out of (r, t, a, b)
->>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
->>> inf_distribution = factory.build(sample)"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MethodOfMomentsFactory::getKnownParameterValues
-"Accessor to the known parameters indices.
-
-Returns
--------
-values : :class:`~openturns.Point`
-    Values of fixed parameters."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MethodOfMomentsFactory::getKnownParameterIndices
-"Accessor to the known parameters indices.
-
-Returns
--------
-indices : :class:`~openturns.Indices`
-    Indices of fixed parameters."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MethodOfMomentsFactory::buildFromMoments
 "Build from moments.
 

@@ -35,7 +35,7 @@ static const Factory<Wishart> Factory_Wishart;
 
 /* Default constructor */
 Wishart::Wishart()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , cholesky_()
   , nu_(1.0)
 {
@@ -48,7 +48,7 @@ Wishart::Wishart()
 /* Parameters constructor */
 Wishart::Wishart(const CovarianceMatrix & v,
                  const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , cholesky_()
   , nu_(-1.0)
 {
@@ -210,7 +210,7 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar Wishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  return ContinuousDistribution::computeCDF(point);
+  return DistributionImplementation::computeCDF(point);
 }
 
 /* Compute the mean of the distribution */
@@ -227,6 +227,38 @@ void Wishart::computeMean() const
       ++index;
     }
   isAlreadyComputedMean_ = true;
+}
+
+/* Compute the covariance of the distribution */
+void Wishart::computeCovariance() const
+{
+  // Get the collection of Indices of the random matrix
+  // in the order of the corresponding flattened random vector
+  const UnsignedInteger p = cholesky_.getDimension();
+  Collection<Indices>  matrixIndices;
+  for (UnsignedInteger i = 0; i < p; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      matrixIndices.add(Indices({i, j}));
+    }
+  }
+
+  // Populate the covariance matrix of the flattened random vector
+  const CovarianceMatrix V(getV());
+  covariance_ = CovarianceMatrix(getDimension());
+  for (UnsignedInteger row = 0; row < matrixIndices.getSize(); ++row)
+  {
+    for (UnsignedInteger col = 0; col <= row; ++col)
+    {
+      const UnsignedInteger irow = matrixIndices[row][0];
+      const UnsignedInteger icol = matrixIndices[col][0];
+      const UnsignedInteger jrow = matrixIndices[row][1];
+      const UnsignedInteger jcol = matrixIndices[col][1];
+      covariance_(row, col) = nu_ * (V(irow, jcol) *  V(icol, jrow) + V(irow, icol) * V(jrow, jcol));
+    }
+  }
+  isAlreadyComputedCovariance_ = true;
 }
 
 /* Compute the entropy of the distribution */
@@ -264,48 +296,6 @@ Point Wishart::getStandardDeviation() const
       ++index;
     }
   return sigma;
-}
-
-
-/* Parameters value and description accessor */
-Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
-{
-  PointWithDescription point(getDimension() + 1);
-  Description description(point.getDimension());
-  const UnsignedInteger p = cholesky_.getDimension();
-  UnsignedInteger index = 0;
-  const CovarianceMatrix V(getV());
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      point[index] = V(i, j);
-      description[index] = String(OSS() << "V_" << i << "_" << j);
-      ++index;
-    }
-  point[index] = nu_;
-  description[index] = "nu";
-  point.setDescription(description);
-  PointWithDescriptionCollection parameters(point.getDimension());
-  return parameters;
-}
-
-void Wishart::setParametersCollection(const PointCollection & parametersCollection)
-{
-  const Scalar w = getWeight();
-  const Scalar pReal = 0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5;
-  const UnsignedInteger p = static_cast< UnsignedInteger >(pReal);
-  if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
-  CovarianceMatrix V(p);
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < p; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-    {
-      V(i, j) = parametersCollection[0][index];
-      ++index;
-    }
-  const Scalar nu = parametersCollection[0][index];
-  *this = Wishart(V, nu);
-  setWeight(w);
 }
 
 Point Wishart::getParameter() const
@@ -353,7 +343,8 @@ Description Wishart::getParameterDescription() const
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      description[index] = (OSS() << "v_" << i << "_" << j);
+      description[index] = (OSS() << "V_" << i << "_" << j);
+      ++ index;
     }
   }
   description[index] = "nu";
@@ -416,7 +407,7 @@ void Wishart::update()
 /* Method save() stores the object through the StorageManager */
 void Wishart::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
@@ -425,7 +416,7 @@ void Wishart::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Wishart::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );

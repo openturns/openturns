@@ -60,12 +60,12 @@ Elliptical =  False
 Continuous =  False
 Discrete =  True
 Integral =  True
-oneRealization= [2,3,0]
-oneSample first= [2,3,1]  last= [1,1,0]
-mean= [1.4254,1.434,1.4148]
-covariance= [[  1.22176  -0.210245 -0.186975 ]
- [ -0.210245  1.24377  -0.217845 ]
- [ -0.186975 -0.217845  1.21306  ]]
+oneRealization= [1,1,2]
+oneSample first= [3,2,3]  last= [2,1,2]
+mean= [1.4117,1.444,1.4221]
+covariance= [[  1.22113  -0.212816 -0.220401 ]
+ [ -0.212816  1.25399  -0.210933 ]
+ [ -0.220401 -0.210933  1.20305  ]]
 Point=  [1.0, 1.0, 1.0]
 pdf     =2.50271e-03
 cdf     =1.35956e-01

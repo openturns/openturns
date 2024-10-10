@@ -22,7 +22,7 @@
 #define OPENTURNS_WISHART_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/TriangularMatrix.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The Wishart distribution.
  */
 class OT_API Wishart
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -47,7 +47,7 @@ public:
           const Scalar nu);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Wishart & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -69,15 +69,15 @@ public:
   CovarianceMatrix getRealizationAsMatrix() const;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
   Scalar computePDF(const CovarianceMatrix & m) const;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
   Scalar computeLogPDF(const CovarianceMatrix & m) const;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */
@@ -85,11 +85,6 @@ public:
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
-
-  /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
@@ -123,6 +118,9 @@ private:
 
   /** Compute the mean of the distribution */
   void computeMean() const override;
+
+  /** Compute the covariance of the distribution */
+  void computeCovariance() const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

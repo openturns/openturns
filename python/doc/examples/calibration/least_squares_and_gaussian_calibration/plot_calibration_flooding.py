@@ -168,7 +168,7 @@ print("Physical Model Parameters:", g.getParameterDescription())
 # +-------+-----------+
 # | 1     | Zv        |
 # +-------+-----------+
-# | 3     | Zm        |
+# | 2     | Zm        |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
@@ -468,11 +468,10 @@ def plotDistributionGridPDF(distribution):
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,
-    figure_kw={"figsize": (6.0, 6.0)},
+    figure_kw={"figsize": (9.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plot_space = 0.5
-plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+plt.subplots_adjust(wspace=1.0, hspace=0.5)
 
 # %%
 # Gaussian linear calibration
@@ -591,11 +590,10 @@ plt.subplots_adjust(right=0.8, bottom=0.2)
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,
-    figure_kw={"figsize": (6.0, 6.0)},
+    figure_kw={"figsize": (9.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plot_space = 0.5
-plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+plt.subplots_adjust(wspace=1.0, hspace=0.5)
 
 # %%
 # Gaussian nonlinear calibration
@@ -684,11 +682,10 @@ plt.subplots_adjust(right=0.8, bottom=0.2)
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,
-    figure_kw={"figsize": (6.0, 6.0)},
+    figure_kw={"figsize": (9.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plot_space = 0.5
-plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+plt.subplots_adjust(wspace=1.0, hspace=0.5)
 
 # %%
 # Tuning the posterior distribution estimation
@@ -737,11 +734,10 @@ plt.subplots_adjust(right=0.8, bottom=0.2)
 grid = plotDistributionGridPDF(thetaPosterior)
 view = otv.View(
     grid,
-    figure_kw={"figsize": (6.0, 6.0)},
+    figure_kw={"figsize": (9.0, 6.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-plot_space = 0.5
-plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
+plt.subplots_adjust(wspace=1.0, hspace=0.5)
 
 otv.View.ShowAll()
 

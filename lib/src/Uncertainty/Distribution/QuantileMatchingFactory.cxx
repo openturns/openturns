@@ -242,6 +242,14 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
   if (optimizationBounds_.getDimension() && (optimizationBounds_.getDimension() != probabilities_.getSize()))
     throw InvalidArgumentException(HERE) << "The bounds dimension must match the probabilities size (" << probabilities_.getSize() << ")";
 
+  // Quick return if all the parameter values are known
+  if (knownParameterValues_.getSize() == parameterDimension)
+    {
+      Distribution result(distribution_);
+      result.setParameter(knownParameterValues_);
+      return result;
+    }
+
   // Define evaluation
   const QuantileMatchingEvaluation quantileMatchingWrapper(quantiles, distribution_, probabilities_, knownParameterValues_, knownParameterIndices_);
   Function quantilesObjective(quantileMatchingWrapper.clone());
@@ -329,28 +337,6 @@ Interval QuantileMatchingFactory::getOptimizationBounds() const
   return optimizationBounds_;
 }
 
-void QuantileMatchingFactory::setKnownParameter(const Point & values,
-    const Indices & indices)
-{
-  if (values.getSize() != indices.getSize())
-    throw InvalidArgumentException(HERE) << "Indices and values size must match";
-  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
-  if (!indices.check(parameterDimension))
-    throw InvalidArgumentException(HERE) << "Error: known indices cannot exceed parameter size";
-  knownParameterValues_ = values;
-  knownParameterIndices_ = indices;
-}
-
-Indices QuantileMatchingFactory::getKnownParameterIndices() const
-{
-  return knownParameterIndices_;
-}
-
-Point QuantileMatchingFactory::getKnownParameterValues() const
-{
-  return knownParameterValues_;
-}
-
 void QuantileMatchingFactory::setProbabilities(const Point & probabilities)
 {
   const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
@@ -375,8 +361,6 @@ void QuantileMatchingFactory::save(Advocate & adv) const
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("distribution_", distribution_);
   adv.saveAttribute("probabilities_", probabilities_);
-  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
-  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
 }
 
@@ -386,8 +370,6 @@ void QuantileMatchingFactory::load(Advocate & adv)
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("probabilities_", probabilities_);
-  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
-  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
 }
 

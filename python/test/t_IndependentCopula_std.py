@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -26,18 +27,9 @@ print("hasIndependentCopula = ", copula.hasIndependentCopula())
 oneRealization = copula.getRealization()
 print("oneRealization=", repr(oneRealization))
 
-# Test for sampling
-size = 10000
-oneSample = copula.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
-
 # Define a point
 point = ot.Point(copula.getDimension(), 0.6)
 print("Point= ", repr(point))
-
-# Show PDF and CDF of point
 
 # derivative of PDF with regards its arguments
 DDF = copula.computeDDF(point)
@@ -115,9 +107,7 @@ for i in range(dim):
     print("margin realization=", repr(margin.getRealization()))
 
 # Extract a 2-D marginal
-indices = ot.Indices(2, 0)
-indices[0] = 1
-indices[1] = 0
+indices = [1, 0]
 print("indices=", repr(indices))
 margins = copula.getMarginal(indices)
 print("margins=", repr(margins))
@@ -127,3 +117,7 @@ quantile = margins.computeQuantile(0.95)
 print("margins quantile=", repr(quantile))
 print("margins CDF(quantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.run()

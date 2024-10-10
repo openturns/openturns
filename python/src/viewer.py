@@ -681,7 +681,15 @@ class View:
                 else:
                     contourset = self._ax[0].contour(X, Y, Z, **contour_kw)
                 self._contoursets.append(contourset)
-                if drawable.getDrawLabels() and not contour.isFilled():
+
+                # matplotlib may fail with ValueError exception "RGBA sequence should have length 3 or 4'"
+                # can either disable labels or color map to work around it
+                draw_labels = drawable.getDrawLabels()
+                if draw_labels and len(drawable.getLevels()) == 1 and contour_kw.get("cmap", "") != "" and matplotlib_version >= Version("3.6") and matplotlib_version < Version("3.7"):
+                    warnings.warn("openturns.viewer: disabling contour labels to work around matplotlib 3.6.x issue")
+                    draw_labels = False
+
+                if draw_labels and not contour.isFilled():
                     # Matplotlib does not support labels in filled contours well
                     clabel_kw.setdefault("fontsize", 8)
                     # Use labels
@@ -1119,8 +1127,7 @@ def PlotDesign(
         bounds = ot.Interval(lowerBound, upperBound)
     if bounds.getDimension() != dim:
         raise ValueError(
-            "Dimension of bounds %d do not match the dimension of the sample %d"
-            % (bounds.getDimension(), dim)
+            f"Dimension of bounds ({bounds.getDimension}) do not match the dimension of the sample ({dim})"
         )
 
     # Check the subdivisions
@@ -1129,8 +1136,7 @@ def PlotDesign(
         subdivisions = [size] * dim
     if len(subdivisions) != dim:
         raise ValueError(
-            "Number of subdivisions %d does not match the dimension of the sample %d"
-            % (len(subdivisions), dim)
+            f"Number of subdivisions ({len(subdivisions)}) does not match the dimension of the sample ({dim})"
         )
 
     # Get description

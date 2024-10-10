@@ -14,7 +14,7 @@ Examples
 >>> import openturns.experimental as otexp
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
->>> x = im.distributionX.getSample(100)
+>>> x = im.inputDistribution.getSample(100)
 >>> y = im.model(x)
 >>> algo = otexp.RankSobolSensitivityAlgorithm(x, y)
 >>> indices = algo.getFirstOrderIndices()

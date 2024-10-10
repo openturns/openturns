@@ -33,7 +33,7 @@ static const Factory<Trapezoidal> Factory_Trapezoidal;
 
 /* Default constructor */
 Trapezoidal::Trapezoidal()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(-2.0)
   , b_(-1.0)
   , c_(1.0)
@@ -48,7 +48,7 @@ Trapezoidal::Trapezoidal(const Scalar a,
                          const Scalar b,
                          const Scalar c,
                          const Scalar d)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(a)
   , b_(b)
   , c_(c)
@@ -291,7 +291,7 @@ Point Trapezoidal::computeCDFGradient(const Point & point) const
     cdfGradient[0] = -0.25 * (d_ - x) * (d_ - x) * h_ * h_ / (d_ - c_);
     cdfGradient[1] = -0.25 * (d_ - x) * (d_ - x) * h_ * h_ / (d_ - c_);
     cdfGradient[2] =  0.25 * (d_ - x) * (d_ - x) * (a_ + b_ - 2.0 * c_) * h_ * h_ / ((d_ - c_) * (d_ - c_));
-    cdfGradient[3] = -0.25 * (d_ - x) * (2.0 * a_ * c_ - a_ * d_ - a_ * x + 2.0 * b_ * c_ - b_ * x - 2.0 * c_ * c_ + 2.0 * d_ * x) * h_ * h_ / ((d_ - c_) * (d_ - c_));
+    cdfGradient[3] = ((d_ - c_) * h_ * ((d_ - x) * (d_ - x) * h_ - 4.0 * (d_ - x)) + 2.0 * (d_ - x) * (d_ - x) * h_) / (4.0 * (d_ - c_) * (d_ - c_));
   }
   return cdfGradient;
 }
@@ -568,7 +568,7 @@ Point Trapezoidal::getSingularities() const
 /* Method save() stores the object through the StorageManager */
 void Trapezoidal::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute("a_", a_);
   adv.saveAttribute("b_", b_);
   adv.saveAttribute("c_", c_);
@@ -578,7 +578,7 @@ void Trapezoidal::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Trapezoidal::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute("a_", a_);
   adv.loadAttribute("b_", b_);
   adv.loadAttribute("c_", c_);

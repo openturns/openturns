@@ -223,7 +223,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   computeRange();
   if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
   {
-    // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
+    // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
     Collection<PiecewiseHermiteEvaluation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = interpolation[0];
     cdfApproximation_ = interpolation[1];
@@ -613,8 +613,6 @@ Mixture::PointWithDescriptionCollection Mixture::getParametersCollection() const
       const Description atomDescription(atomParameters.getDescription());
       const UnsignedInteger atomParameterDimension = atomParameters.getDimension();
       // Add the current atom parameters
-      parameters[0].add(p_[i]);
-      description.add(OSS() << "w_" << i);
       for (UnsignedInteger j = 0; j < atomParameterDimension; ++j)
       {
         parameters[0].add(atomParameters[j]);
@@ -667,11 +665,8 @@ Point Mixture::getParameter() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   Point parameter(0);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    parameter.add(p_[i]);
+  for (UnsignedInteger i = 0; i < size; ++ i)
     parameter.add(distributionCollection_[i].getParameter());
-  }
   return parameter;
 }
 
@@ -679,41 +674,31 @@ Description Mixture::getParameterDescription() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   Description description(0);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    description.add(String(OSS() << "w_" << i));
+  for (UnsignedInteger i = 0; i < size; ++ i)
     description.add(distributionCollection_[i].getParameterDescription());
-  }
   return description;
 }
 
 void Mixture::setParameter(const Point & parameter)
 {
-  // Save own weight
-  const Scalar w = getWeight();
   // Get the atom parameters
   const UnsignedInteger size = distributionCollection_.getSize();
   Collection<Distribution> newAtoms(size);
-  Point newWeights(size);
   UnsignedInteger shift = 0;
   const UnsignedInteger parameterSize = parameter.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     Distribution atom(distributionCollection_[i]);
     Point atomParameter(atom.getParameter());
     const UnsignedInteger atomParameterSize = atomParameter.getSize();
-    if (shift + atomParameterSize + 1 > parameterSize) throw InvalidArgumentException(HERE) << "Error: expected at least a parameter of size=" << shift + atomParameterSize + 1 << ", got size=" << parameterSize;
-    // Update the current atom weight
-    newWeights[i] = parameter[shift];
-    ++shift;
+    if (shift + atomParameterSize > parameterSize) throw InvalidArgumentException(HERE) << "Error: expected at least a parameter of size=" << shift + atomParameterSize << ", got size=" << parameterSize;
     // Update the current atom parameter
     std::copy(parameter.begin() + shift, parameter.begin() + shift + atomParameterSize, atomParameter.begin());
     atom.setParameter(atomParameter);
     newAtoms[i] = atom;
     shift += atomParameterSize;
   }
-  *this = Mixture(newAtoms);
-  setWeight(w);
+  setDistributionCollectionWithWeights(newAtoms, Point(p_));
 }
 
 /* Check if the distribution is elliptical */

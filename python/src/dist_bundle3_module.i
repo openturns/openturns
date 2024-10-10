@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle3
 #pragma SWIG nowarn=302,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -38,12 +37,15 @@
 %include SquaredNormal.i
 %include Student.i
 %include StudentFactory.i
+%include StudentCopula.i
+%include StudentCopulaFactory.i
 %include Trapezoidal.i
 %include TrapezoidalFactory.i
 %include Triangular.i
 %include TriangularFactory.i
 %include TruncatedNormal.i
 %include TruncatedNormalFactory.i
+%include TruncatedOverMesh.i
 %include Uniform.i
 %include UniformFactory.i
 %include UniformMuSigma.i

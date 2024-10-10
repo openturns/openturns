@@ -109,6 +109,11 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
 
+  /** Parameters accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
+  Description getParameterDescription() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

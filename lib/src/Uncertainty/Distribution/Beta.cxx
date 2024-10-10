@@ -37,7 +37,7 @@ static const Factory<Beta> Factory_Beta;
 
 /* Default constructor */
 Beta::Beta()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , alpha_(2.0)
   , beta_(2.0)
   , a_(-1.0)
@@ -54,7 +54,7 @@ Beta::Beta(const Scalar alpha,
            const Scalar beta,
            const Scalar a,
            const Scalar b)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , alpha_(0.0)
   , beta_(0.0)
   , a_(a)
@@ -434,7 +434,7 @@ Scalar Beta::getB() const
 /* Method save() stores the object through the StorageManager */
 void Beta::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "a_", a_ );
@@ -445,7 +445,7 @@ void Beta::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Beta::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   if (adv.hasAttribute("r_"))
   {
     LOGINFO("in Beta::load, using old parametrization");

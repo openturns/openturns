@@ -34,7 +34,7 @@ static const Factory<ZipfMandelbrot> Factory_ZipfMandelbrot;
 
 /* Default constructor */
 ZipfMandelbrot::ZipfMandelbrot()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , harmonicNumbers_(0)
 {
   setName("ZipfMandelbrot");
@@ -48,7 +48,7 @@ ZipfMandelbrot::ZipfMandelbrot()
 ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
                                const Scalar q,
                                const Scalar s )
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , harmonicNumbers_(ScalarCollection(0))
   , n_(n)
   , q_(q)
@@ -62,6 +62,24 @@ ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
   setQ(q);
   setS(s);
   computeHarmonicNumbers();
+}
+
+/* Tell if the distribution is continuous */
+Bool ZipfMandelbrot::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool ZipfMandelbrot::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool ZipfMandelbrot::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -203,7 +221,7 @@ void ZipfMandelbrot::computeCovariance() const
 Scalar ZipfMandelbrot::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  return round(DiscreteDistribution::computeScalarQuantile(prob, tail));
+  return round(DistributionImplementation::computeScalarQuantile(prob, tail));
 }
 
 /* Check if the distribution is elliptical */
@@ -321,7 +339,7 @@ Description ZipfMandelbrot::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void ZipfMandelbrot::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "n_", n_ );
   adv.saveAttribute( "q_", q_ );
   adv.saveAttribute( "s_", s_ );
@@ -330,7 +348,7 @@ void ZipfMandelbrot::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ZipfMandelbrot::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "q_", q_ );
   adv.loadAttribute( "s_", s_ );

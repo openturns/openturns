@@ -95,7 +95,7 @@ def compute_sparse_least_squares_chaos(
 
 
 # %%
-# The next function computes the R2 score by splitting the data set
+# The next function computes the :math:`R^2` score by splitting the data set
 # into a training set and a test set.
 
 
@@ -150,6 +150,7 @@ def compute_R2_score_by_splitting(
     val = ot.MetaModelValidation(outputSampleTest, metamodelPredictions)
     r2Score = val.computeR2Score()
     return r2Score
+
 
 # %%
 # The next function computes the mean squared error by K-Fold.
@@ -220,7 +221,7 @@ def computeMSENaiveKFold(
 
 
 # %%
-# The next function computes the R2 score by K-Fold.
+# The next function computes the :math:`R^2` score by K-Fold.
 
 
 def compute_R2_score_by_kfold(
@@ -270,21 +271,75 @@ def compute_R2_score_by_kfold(
         r2Score[i] = 1.0 - mse[i] / sampleVariance[i]
     return r2Score
 
+    """
+    Compute mean squared error by (naive) KFold.
+
+    Parameters
+    ----------
+    inputSample : Sample(size, input_dimension)
+        The inputSample dataset.
+    outputSample : Sample(size, output_dimension)
+        The outputSample dataset.
+    multivariateBasis : multivariateBasis
+        The multivariate chaos multivariateBasis.
+    totalDegree : int
+        The total degree of the chaos polynomial.
+    distribution : Distribution.
+        The distribution of the input variable.
+    kParameter : int, in (2, sampleSize)
+        The parameter K.
+
+    Returns
+    -------
+    mse : Point(output_dimension)
+        The mean squared error.
+    """
+    #
+    sampleSize = inputSample.getSize()
+    outputDimension = outputSample.getDimension()
+    splitter = ot.KFoldSplitter(sampleSize, kParameter)
+    squaredResiduals = ot.Sample(sampleSize, outputDimension)
+    for indicesTrain, indicesTest in splitter:
+        inputSampleTrain, inputSampleTest = (
+            inputSample[indicesTrain],
+            inputSample[indicesTest],
+        )
+        outputSampleTrain, outputSampleTest = (
+            outputSample[indicesTrain],
+            outputSample[indicesTest],
+        )
+        chaosResultKFold = compute_sparse_least_squares_chaos(
+            inputSampleTrain,
+            outputSampleTrain,
+            multivariateBasis,
+            totalDegree,
+            distribution,
+        )
+        metamodelKFold = chaosResultKFold.getMetaModel()
+        predictionsKFold = metamodelKFold(inputSampleTest)
+        residualsKFold = outputSampleTest - predictionsKFold
+        foldSize = indicesTest.getSize()
+        for j in range(outputDimension):
+            for i in range(foldSize):
+                squaredResiduals[indicesTest[i], j] = residualsKFold[i, j] ** 2
+    mse = squaredResiduals.computeMean()
+    return mse
 
 # %%
 # Define the training data set
 # ----------------------------
 
 # %%
-# We start by generating the input and output sample. We use a sample size equal to 1000.
+# We start by generating the input and output samples. We use a sample size equal to 1000.
+
 
 # %%
 im = ishigami_function.IshigamiModel()
-im.distributionX.setDescription(["X0", "X1", "X2"])
+im.inputDistribution.setDescription(["X0", "X1", "X2"])
 im.model.setOutputDescription(["$Y$"])
 ot.RandomGenerator.SetSeed(0)
 sample_size = 500
-X = im.distributionX.getSample(sample_size)
+X = im.inputDistribution.getSample(sample_size)
 print("Input sample:")
 X[:5]
 
@@ -301,13 +356,13 @@ Y[:5]
 # function creates a sparse chaos using regression and the LARS method.
 
 # %%
-dimension = im.distributionX.getDimension()
+dimension = im.inputDistribution.getDimension()
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.distributionX.getMarginal(i) for i in range(dimension)]
+    [im.inputDistribution.getMarginal(i) for i in range(dimension)]
 )
 totalDegree = 5  # Polynomial degree
 result = compute_sparse_least_squares_chaos(
-    X, Y, multivariateBasis, totalDegree, im.distributionX
+    X, Y, multivariateBasis, totalDegree, im.inputDistribution
 )
 result
 
@@ -325,7 +380,7 @@ metamodel = result.getMetaModel()
 # In order to validate our polynomial chaos, we generate an extra pair of
 # input / output samples and use the :class:`~openturns.MetaModelValidation` class.
 test_sample_size = 200  # Size of the validation design of experiments
-inputTest = im.distributionX.getSample(test_sample_size)
+inputTest = im.inputDistribution.getSample(test_sample_size)
 outputTest = im.model(inputTest)
 metamodelPredictions = metamodel(inputTest)
 validation = ot.MetaModelValidation(outputTest, metamodelPredictions)
@@ -370,7 +425,7 @@ scoreSampleSplit = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
     scoreSampleSplit[i] = compute_R2_score_by_splitting(
-        X, Y, multivariateBasis, totalDegree, im.distributionX, split_fraction
+        X, Y, multivariateBasis, totalDegree, im.inputDistribution, split_fraction
     )
     print(f"Degree = {totalDegree}, score = {scoreSampleSplit[i, 0]:.4f}")
 
@@ -406,7 +461,7 @@ scoreSampleKFold = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
     scoreSampleKFold[i] = compute_R2_score_by_kfold(
-        X, Y, multivariateBasis, totalDegree, im.distributionX, kParameter
+        X, Y, multivariateBasis, totalDegree, im.inputDistribution, kParameter
     )
     print(f"Degree = {totalDegree}, score = {scoreSampleKFold[i, 0]:.4f}")
 
@@ -423,7 +478,6 @@ view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 
 # %%
 # Compare the two cross-validation methods.
-# sphinx_gallery_thumbnail_number = 4
 graph = ot.Graph("CV : split vs K-Fold", "Degree", "$R^2$", True)
 cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleSplit)
 cloud.setPointStyle("circle")
@@ -437,6 +491,8 @@ graph.setLegendPosition("topleft")
 graph.setColors(ot.Drawable().BuildDefaultPalette(2))
 graph.setBoundingBox(boundingBox)
 view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
+# sphinx_gallery_thumbnail_number = 4
+
 
 # %%
 # Conclusion

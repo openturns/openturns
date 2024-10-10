@@ -33,7 +33,7 @@ NY = 75
 # We build the graph by calling the `draw` method and display it
 
 # %%
-graph = f.draw([YMin, YMin], [XMax, YMax], [NX, NY])
+graph = f.draw([XMin, YMin], [XMax, YMax], [NX, NY])
 view = viewer.View(graph)
 
 # %%
@@ -122,11 +122,11 @@ corr[0, 1] = 0.2
 copula = ot.NormalCopula(corr)
 x1 = ot.Normal(-1.0, 1)
 x2 = ot.Normal(2, 1)
-x_funk = ot.ComposedDistribution([x1, x2], copula)
+x_funk = ot.JointDistribution([x1, x2], copula)
 
 x1 = ot.Normal(1.0, 1)
 x2 = ot.Normal(-2, 1)
-x_punk = ot.ComposedDistribution([x1, x2], copula)
+x_punk = ot.JointDistribution([x1, x2], copula)
 mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 
 # %%

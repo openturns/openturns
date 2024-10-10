@@ -117,7 +117,7 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model.
+# We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the :class:`~openturns.MaternModel` class to define the covariance model.
 # This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
 
 # %%
@@ -165,7 +165,7 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We see that the Kriging metamodel is interpolating. This is what is meant by *conditioning* a gaussian process.
+# We see that the Kriging metamodel is interpolating. This is what is meant by *conditioning* a Gaussian process.
 #
 # We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`),
 # then the Kriging metamodel is not close to the function :math:`g`.
@@ -177,10 +177,10 @@ view = viewer.View(graph)
 # -------------------------
 
 # %%
-# In order to assess the quality of the metamodel, we can estimate the Kriging variance and compute a 95% confidence interval associated with the conditioned gaussian process.
+# In order to assess the quality of the metamodel, we can estimate the Kriging variance and compute a 95% confidence interval associated with the conditioned Gaussian process.
 #
 # We begin by defining the `alpha` variable containing the complementary of the confidence level than we want to compute.
-# Then we compute the quantile of the gaussian distribution corresponding to `1-alpha/2`. Therefore, the confidence interval is:
+# Then we compute the quantile of the Gaussian distribution corresponding to `1-alpha/2`. Therefore, the confidence interval is:
 #
 # .. math::
 #    P\in\left(X\in\left[q_{\alpha/2},q_{1-\alpha/2}\right]\right)=1-\alpha.

@@ -34,7 +34,7 @@ static const Factory<InverseChiSquare> Factory_InverseChiSquare;
 
 /* Default constructor */
 InverseChiSquare::InverseChiSquare()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(1.0)
   , normalizationFactor_(0.0)
 {
@@ -45,7 +45,7 @@ InverseChiSquare::InverseChiSquare()
 
 /* Parameters constructor */
 InverseChiSquare::InverseChiSquare(const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
@@ -233,13 +233,7 @@ Point InverseChiSquare::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  Point pdfGradient(2);
-  const Scalar x = point[0];
-  if (x <= 0.0) return pdfGradient;
-  const Scalar pdf = computePDF(point);
-  pdfGradient[0] = -(std::log(2.0) + std::log(x) + SpecFunc::DiGamma(0.5 * nu_)) * pdf;
-  pdfGradient[1] = 0.5 * (0.5 / x - nu_) * pdf;
-  return pdfGradient;
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
@@ -247,15 +241,7 @@ Point InverseChiSquare::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  Point cdfGradient(2, 0.0);
-  const Scalar x = point[0];
-  if (x <= 0.0) return cdfGradient;
-  const Scalar lambdaXInverse = 0.5 / x;
-  const Scalar pdf = computePDF(x);
-  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
-  cdfGradient[0] = (DistFunc::pGamma(0.5 * nu_ + eps, lambdaXInverse, true) - DistFunc::pGamma(0.5 * nu_ - eps, lambdaXInverse, true)) / (2.0 * eps);
-  cdfGradient[1] = 0.5 * pdf * x;
-  return cdfGradient;
+  return DistributionImplementation::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */
@@ -334,7 +320,7 @@ Description InverseChiSquare::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void InverseChiSquare::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -342,7 +328,7 @@ void InverseChiSquare::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseChiSquare::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
   computeRange();

@@ -67,3 +67,19 @@ for i in range(len(inputSample)):
     den += outputSample[i].norm()
 error = num / den
 ott.assert_almost_equal(error, 0.0, 1.0e-6, 1.0e-6)
+
+# 2D use case - #2769
+model = ot.SymbolicFunction(["x", "y"], ["cos(x) + sin(y)", "cos(0.5*x) + sin(y)"])
+inputSample = ot.Sample([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0], [0.5, 0.5]])
+outputSample = model(inputSample)
+covarianceModel = ot.TensorizedCovarianceModel([ot.SquaredExponential([1.0, 1.0])] * 2)
+
+algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel)
+algo.run()
+result = algo.getResult()
+vertices = [[0.3, 0.6], [0.4, 0.8]]
+mesh2D = ot.Mesh(vertices)
+process = ot.ConditionedGaussianProcess(result, mesh2D)
+sample = process.getSample(3)
+ott.assert_almost_equal(sample.getSize(), 3, 0, 0)
+ott.assert_almost_equal(sample.getDimension(), 2, 0, 0)

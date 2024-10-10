@@ -18,63 +18,63 @@ class IshigamiModel:
     dim : The dimension of the problem
           dim = 3
 
-    a : Constant
-        a = 7.0
+    a : float
+        Constant: a = 7.0
 
-    b : Constant
-        b = 0.1
+    b : float
+        Constant: b = 0.1
 
-    X1 : `Uniform` distribution
-         First marginal, ot.Uniform(-np.pi, np.pi)
+    X1 : :class:`~openturns.Uniform`
+        First marginal, ot.Uniform(-np.pi, np.pi)
 
-    X2 : `Uniform` distribution
-         Second marginal, ot.Uniform(-np.pi, np.pi)
+    X2 : :class:`~openturns.Uniform`
+        Second marginal, ot.Uniform(-np.pi, np.pi)
 
-    X3 : `Uniform` distribution
-         Third marginal, ot.Uniform(-np.pi, np.pi)
+    X3 : :class:`~openturns.Uniform`
+        Third marginal, ot.Uniform(-np.pi, np.pi)
 
-    distributionX : `JointDistribution`
-                    The joint distribution of the input parameters.
+    inputDistribution : :class:`~openturns.JointDistribution`
+        The joint distribution of the input parameters.
 
-    ishigami : `SymbolicFunction`
-               The Ishigami model with a, b as variables.
+    ishigami : :class:`~openturns.SymbolicFunction`
+        The Ishigami model with a, b as variables.
 
-    model : `ParametricFunction`
-            The Ishigami model with the a=7.0 and b=0.1 parameters fixed.
+    model : :class:`~openturns.ParametricFunction`
+        The Ishigami model with the a=7.0 and b=0.1 parameters fixed.
 
-    expectation : Constant
-                  Expectation of the output variable.
+    expectation : float
+        Expectation of the output variable.
 
-    variance : Constant
-               Variance of the output variable.
+    variance : float
+        Variance of the output variable.
 
-    S1 : Constant
+    S1 : float
          First order Sobol index number 1
 
-    S2 : Constant
+    S2 : float
          First order Sobol index number 2
 
-    S3 : Constant
+    S3 : float
          First order Sobol index number 3
 
-    S12 : Constant
+    S12 : float
           Second order Sobol index for marginals 1 and 2.
 
-    S13 : Constant
+    S13 : float
           Second order Sobol index for marginals 1 and 3.
 
-    S23 : Constant
+    S23 : float
           Second order Sobol index for marginals 2 and 3.
 
-    S123 : Constant
+    S123 : float
 
-    ST1 : Constant
+    ST1 : float
           Total order Sobol index number 1.
 
-    ST2 : Constant
+    ST2 : float
           Total order Sobol index number 2.
 
-    ST3 : Constant
+    ST3 : float
           Total order Sobol index number 3.
 
 
@@ -108,8 +108,8 @@ class IshigamiModel:
         self.X3.setDescription(["X3"])
 
         # Input distribution
-        self.distributionX = ot.JointDistribution([self.X1, self.X2, self.X3])
-        self.distributionX.setDescription(["X1", "X2", "X3"])
+        self.inputDistribution = ot.JointDistribution([self.X1, self.X2, self.X3])
+        self.inputDistribution.setDescription(["X1", "X2", "X3"])
 
         self.ishigami = ot.SymbolicFunction(
             ["X1", "X2", "X3", "a", "b"],

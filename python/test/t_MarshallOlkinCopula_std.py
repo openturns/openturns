@@ -89,9 +89,7 @@ for i in range(dim):
     print("margin realization=", repr(margin.getRealization()))
 
 # Extract a 2-D marginal
-indices = ot.Indices(2, 0)
-indices[0] = 1
-indices[1] = 0
+indices = [1, 0]
 print("indices=", repr(indices))
 margins = copula.getMarginal(indices)
 print("margins=", repr(margins))

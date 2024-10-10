@@ -69,7 +69,7 @@ can be obtained exactly, thanks to the rotation invariance of the standard distr
             \right.
 
 where :math:`\beta` is the Hasofer-Lind reliability index, defined as the distance of the design point
-:math:`P^*` to the origin of the standard space and :math:`E` the marginal cumulative density function
+:math:`P^*` to the origin of the standard space and :math:`E` the marginal cumulative distribution function
 along any direction of
 the spherical distribution in the standard space (refer to :ref:`nataf_transformation` and
 :ref:`rosenblatt_transformation`).

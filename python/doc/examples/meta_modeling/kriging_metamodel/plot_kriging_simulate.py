@@ -3,7 +3,7 @@ Kriging : generate trajectories from a metamodel
 ================================================
 """
 # %%
-# The main goal of this example is to show how to simulate new trajectories from a kriging metamodel.
+# The main goal of this example is to show how to simulate new trajectories from a Kriging metamodel.
 
 # %%
 # Introduction
@@ -32,7 +32,7 @@ Kriging : generate trajectories from a metamodel
 #  :math:`x_i`  1   3   4   6   7.9   11   11.5
 # ============ === === === === ===== ==== ======
 #
-# We are going to consider a kriging metamodel with a
+# We are going to consider a Kriging metamodel with a
 #
 # * constant trend,
 # * a Matern covariance model.
@@ -65,7 +65,7 @@ n_train
 # %%
 # In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments
 # made of a regular grid of 100 points from 0 to 12.
-# Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
+# Then we convert this grid into a :class:`~openturns.Sample` and we compute the outputs of the function on this sample.
 
 # %%
 xmin = 0.0
@@ -111,7 +111,7 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We use the `ConstantBasisFactory` class to define the trend and the `MaternModel` class to define the covariance model.
+# We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the :class:`~openturns.MaternModel` class to define the covariance model.
 # This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
 
 # %%
@@ -133,7 +133,7 @@ y_test_MM = krigeageMM(x_test)
 
 
 # %%
-# The following function plots the kriging data.
+# The following function plots the Kriging data.
 
 
 # %%
@@ -160,13 +160,13 @@ view = viewer.View(graph)
 # Simulate new trajectories
 # -------------------------
 #
-# In order to generate new trajectories of the conditioned gaussian process,
-# we could technically use the `KrigingRandomVector` class, because it provides
+# In order to generate new trajectories of the conditioned Gaussian process,
+# we could technically use the :class:`~openturns.KrigingRandomVector` class, because it provides
 # the `getSample` method that we need.
-# However, the `KrigingRandomVector` class was more specifically designed to
-# create a `RandomVector` so that it can feed, for example, a function which has a field as input argument.
+# However, the :class:`~openturns.KrigingRandomVector` class was more specifically designed to
+# create a :class:`~openturns.RandomVector` so that it can feed, for example, a function which has a field as input argument.
 #
-# This is why we use the `ConditionedGaussianProcess`, which provides a `Process`.
+# This is why we use the :class:`~openturns.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
 
 # %%
 process = ot.ConditionedGaussianProcess(krigingResult, myRegularGrid)
@@ -176,10 +176,10 @@ trajectories = process.getSample(10)
 type(trajectories)
 
 # %%
-# The `getSample` method returns a `ProcessSample`. By comparison, the `getSample` method of a `KrigingRandomVector` would return a `Sample`.
+# The `getSample` method returns a :class:`~openturns.ProcessSample`.
+# By comparison, the `getSample` method of a :class:`~openturns.KrigingRandomVector` would return a :class:`~openturns.Sample`.
 
 # %%
-# sphinx_gallery_thumbnail_number = 3
 graph = trajectories.drawMarginal()
 graph.add(plot_data_test(x_test, y_test))
 graph.add(plot_data_train(x_train, y_train))
@@ -190,6 +190,7 @@ graph.setLegendPosition("upper right")
 graph.setTitle("10 simulated trajectories")
 view = viewer.View(graph)
 plt.show()
+# sphinx_gallery_thumbnail_number = 3
 
 # %%
 # References

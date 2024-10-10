@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_VONMISES_HXX
 #define OPENTURNS_VONMISES_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The VonMises distribution.
  */
 class OT_API VonMises
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -65,13 +65,13 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the distribution */
-  using ContinuousDistribution::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */

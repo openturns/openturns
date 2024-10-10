@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_UNIFORMOVERMESH_HXX
 #define OPENTURNS_UNIFORMOVERMESH_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The UniformOverMesh distribution.
  */
 class OT_API UniformOverMesh
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -78,11 +78,11 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /* Interface specific to UniformOverMesh */

@@ -37,7 +37,7 @@ static const Factory<NonCentralStudent> Factory_NonCentralStudent;
 NonCentralStudent::NonCentralStudent(const Scalar nu,
                                      const Scalar delta,
                                      const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , nu_(0.0)
   , delta_(delta)
   , gamma_(gamma)
@@ -278,7 +278,7 @@ Scalar NonCentralStudent::getGamma() const
 /* Method save() stores the object through the StorageManager */
 void NonCentralStudent::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "delta_", delta_ );
   adv.saveAttribute( "gamma_", gamma_ );
@@ -287,7 +287,7 @@ void NonCentralStudent::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NonCentralStudent::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "delta_", delta_ );
   adv.loadAttribute( "gamma_", gamma_ );

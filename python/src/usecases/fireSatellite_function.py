@@ -13,37 +13,46 @@ class FireSatelliteModel:
     Attributes
     ----------
 
-    dim : Dimension of the problem
-          dim = 9
+    dim : int
+        Dimension of the problem, dim = 9
 
-    H : Altitude (m), :class:`~openturns.TruncatedNormal` distribution
-         First marginal, ot.TruncatedNormal(18e6,1e6,18e6-3e6,18e6+3e6)
+    H : :class:`~openturns.TruncatedNormal`
+        Altitude (m) distribution
+        First marginal, ot.TruncatedNormal(18e6,1e6,18e6-3e6,18e6+3e6)
 
-    Pother : Power other than ACS (W), :class:`~openturns.TruncatedNormal` distribution
-         Second marginal, ot.TruncatedNormal(1000.0,50.0,1000.0-150.0,1000.0+150.0)
+    Pother : :class:`~openturns.TruncatedNormal`
+        Power other than ACS (W) distribution
+        Second marginal, ot.TruncatedNormal(1000.0,50.0,1000.0-150.0,1000.0+150.0)
 
-    Fs : Average solar flux (W/m^2), :class:`~openturns.TruncatedNormal` distribution
-         Third marginal, ot.TruncatedNormal(1400.0,20.0,1400.0-60.0,1400.0+60.0)
+    Fs : :class:`~openturns.TruncatedNormal`
+        Average solar flux (W/m^2) distribution
+        Third marginal, ot.TruncatedNormal(1400.0,20.0,1400.0-60.0,1400.0+60.0)
 
-    theta : Deviation of moment axis (deg), :class:`~openturns.TruncatedNormal` distribution
-         Fourth marginal, ot.TruncatedNormal(15.0,1.0,15.0-3.0,15.0+3.0)
+    theta : :class:`~openturns.TruncatedNormal`
+        Deviation of moment axis (deg) distribution
+        Fourth marginal, ot.TruncatedNormal(15.0,1.0,15.0-3.0,15.0+3.0)
 
-    Lsp : Moment arm for radiation torque (m), :class:`~openturns.TruncatedNormal` distribution
-         Fifth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
+    Lsp : :class:`~openturns.TruncatedNormal`
+        Moment arm for radiation torque (m) distribution
+        Fifth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
 
-    q : Reflectance factor (-), :class:`~openturns.TruncatedNormal` distribution
-         Sixth marginal, ot.TruncatedNormal(0.5,0.1,0.5-0.3,0.5+0.3)
+    q : :class:`~openturns.TruncatedNormal`
+        Reflectance factor (-) distribution
+        Sixth marginal, ot.TruncatedNormal(0.5,0.1,0.5-0.3,0.5+0.3)
 
-    RD : Residual dipole of spacecraft (A.m^2), :class:`~openturns.TruncatedNormal` distribution
-         Seventh marginal, ot.TruncatedNormal(5.0,1.0,5.0-3.0,5.0+3.0)
+    RD : :class:`~openturns.TruncatedNormal`
+        Residual dipole of spacecraft (A.m^2) distribution
+        Seventh marginal, ot.TruncatedNormal(5.0,1.0,5.0-3.0,5.0+3.0)
 
-    Lalpha : Moment arm for aerodynamic torque (m), :class:`~openturns.TruncatedNormal` distribution
-         Eighth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
+    Lalpha : :class:`~openturns.TruncatedNormal`
+        Moment arm for aerodynamic torque (m) distribution
+        Eighth marginal, ot.TruncatedNormal(2.0,0.4,2.0-1.2,2.0+1.2)
 
-    Cd : Drag coefficient (-), :class:`~openturns.TruncatedNormal` distribution
-         Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
+    Cd : :class:`~openturns.TruncatedNormal`
+        Drag coefficient (-) distribution
+        Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
 
-    distributionX : :class:`~openturns.JointDistribution`
+    inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -61,87 +70,86 @@ class FireSatelliteModel:
         The Fire Satellite model retrieving only the  Solar Array Area as output, with H, Pother, Fs, theta, Lsp, q, RD, Lalpha and Cd as variables.
         This function retrieves three outputs : the total torque, the total power and the area of solar array
 
-    c : Speed of light, constant
-        c = 2.9979e8 m/s
+    c : float
+        Speed of light, c = 2.9979e8 m/s
 
-    omega_max : Maximum rotational velocity of reaction wheel, constant
-        omega_max = 6000 rpm
+    omega_max : float
+        Maximum rotational velocity of reaction wheel, omega_max = 6000 rpm
 
-    n : Number of reaction wheels that could be active, constant
-        n = 3
+    n : int
+        Number of reaction wheels that could be active, n = 3
 
-    delta_theta_slew : Slewing time period, constant
-        delta_theta_slew = 760 s
+    delta_theta_slew : float
+        Slewing time period, delta_theta_slew = 760 s
 
-    As : Area reflecting radiation, constant
-        As =  13.85 m^2
+    As : float
+        Area reflecting radiation, As =  13.85 m^2
 
-    i : Sun incidence angle, constant
-        i = 0 deg
+    i : float
+        Sun incidence angle, i = 0 deg
 
-    M :  Magnetic moment of earth, constant
-        M =  7.96e15 A.m^2
+    M : float
+        Magnetic moment of earth, M = 7.96e15 A.m^2
 
-    rho : Atmospheric density, constant
-        rho =  5.1480e-11 kg/m^3
+    rho : float
+        Atmospheric density, rho = 5.1480e-11 kg/m^3
 
-    A : Cross-sectional in flight direction, constant
-        A =  13.85 m^2
+    A : float
+        Cross-sectional in flight direction, A = 13.85 m^2
 
-    Phold : Holding power, constant
-        Phold = 20 W
+    Phold : float
+        Holding power, Phold = 20 W
 
-    mu :  Earth gravity constant
-        mu =  398600.4418e9 m^3/s^2
+    mu : float
+        Earth gravity constant, mu = 398600.4418e9 m^3/s^2
 
-    Id : Inherent degradation of array, constant
-        Id = 0.77
+    Id : float
+        Inherent degradation of array, Id = 0.77
 
-    t : Thickness of solar panels, constant
-        t =  0.005 m
+    t : float
+        Thickness of solar panels, t = 0.005 m
 
-    n_sa : Number of solar arrays, constant
-        n_sa = 3
+    n_sa : int
+        Number of solar arrays, n_sa = 3
 
-    epsilon_deg : Degradation in power production capability, constant
-        epsilon_deg = 0.0375 percent per year
+    epsilon_deg : float
+        Degradation in power production capability, epsilon_deg = 0.0375 percent per year
 
-    LT : Lifetime of spacecraft, constant
-            LT = 15 years
+    LT : float
+        Lifetime of spacecraft, LT = 15 years
 
-    r_lw : Length to width ratio of solar array, constant
-        r_lw =  3
+    r_lw : float
+        Length to width ratio of solar array, r_lw = 3
 
-    D : Distance between panels, constant
-        D = 2 m
+    D : float
+        Distance between panels, D = 2 m
 
-    I_bodyX : Inertia of body, X axis, constant
-        I_bodyX = 6200 kg.m^2
+    I_bodyX : float
+        Inertia of body, X axis, I_bodyX = 6200 kg.m^2
 
-    I_bodyY : Inertia of body, Y axis, constant
-        I_bodyY =  6200 kg.m^2
+    I_bodyY : float
+        Inertia of body, Y axis, I_bodyY =  6200 kg.m^2
 
-    I_bodyZ : Inertia of body, Z axis, constant
-        I_bodyZ =  4700 kg.m^2
+    I_bodyZ : float
+        Inertia of body, Z axis, I_bodyZ =  4700 kg.m^2
 
-    rho_sa : Average mass density to arrays, constant
-        rho_sa =  700 kg.m^3
+    rho_sa : float
+        Average mass density to arrays, rho_sa =  700 kg.m^3
 
-    eta :  Power efficiency, constant
-        eta =  0.22
+    eta : float
+        Power efficiency, eta =  0.22
 
-    phi_target : Target diameter, constant
-        phi_target = 235000 m
+    phi_target : float
+        Target diameter, phi_target = 235000 m
 
-    RE : Earth radius, constant
-        RE = 6378140 m
+    RE : float
+        Earth radius, RE = 6378140 m
 
-    tolFPI : Tolerance on Fixed Point Iteration used in the multidisciplinary analysis
-        tolFPI = 1e-3  (deterministic)
+    tolFPI : float
+        Tolerance on Fixed Point Iteration used in the multidisciplinary analysis, tolFPI = 1e-3
 
-    maxFPIIter : Maximum number of iterations of Fixed Point Iteration used in the multidisciplinary analysis
-        maxFPIIter = 50  (deterministic)
-
+    maxFPIIter : int
+        Maximum number of iterations of Fixed Point Iteration used in the multidisciplinary analysis, maxFPIIter = 50
 
 
     Examples
@@ -185,7 +193,7 @@ class FireSatelliteModel:
         self.Cd = ot.TruncatedNormal(1.0, 0.3, 1.0 - 3 * 0.3, 1.0 + 3 * 0.3)
 
         # Input distribution
-        self.distributionX = ot.JointDistribution(
+        self.inputDistribution = ot.JointDistribution(
             [
                 self.H,
                 self.Pother,
@@ -199,7 +207,7 @@ class FireSatelliteModel:
             ]
         )
 
-        self.distributionX.setDescription(
+        self.inputDistribution.setDescription(
             ["H", "Pother", "Fs", "theta", "Lsp", "q", "RD", "Lalpha", "Cd"]
         )
 

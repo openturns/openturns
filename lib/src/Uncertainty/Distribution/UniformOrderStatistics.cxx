@@ -36,7 +36,7 @@ static const Factory<UniformOrderStatistics> Factory_UniformOrderStatistics;
 
 /* Parameters constructor */
 UniformOrderStatistics::UniformOrderStatistics(const UnsignedInteger dimension)
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("UniformOrderStatistics");
   setDimension(dimension);
@@ -424,7 +424,7 @@ Description UniformOrderStatistics::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void UniformOrderStatistics::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "logNormalization_", logNormalization_ );
   adv.saveAttribute( "vertices_", vertices_ );
   adv.saveAttribute( "simplex_", simplex_ );
@@ -433,7 +433,7 @@ void UniformOrderStatistics::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void UniformOrderStatistics::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "logNormalization_", logNormalization_ );
   adv.loadAttribute( "vertices_", vertices_ );
   adv.loadAttribute( "simplex_", simplex_ );

@@ -15,8 +15,8 @@ Create a customized distribution or copula
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.testing as ott
+import openturns.viewer as otv
 import math as m
 import warnings
 
@@ -97,9 +97,6 @@ class UniformNdPy(ot.PythonDistribution):
     def getMoment(self, n):
         return [-0.1 * n] * len(self.a)
 
-    def getCentralMoment(self, n):
-        return [0.0] * len(self.a)
-
     def computeCharacteristicFunction(self, x):
         if len(self.a) > 1:
             raise ValueError("dim>1")
@@ -128,44 +125,40 @@ class UniformNdPy(ot.PythonDistribution):
         return ot.Distribution(py_dist)
 
     def computeQuantile(self, prob, tail=False):
-        q = 1.0 - prob if tail else prob
-        quantile = self.a
+        p = 1.0 - prob if tail else prob
+        quantile = list(self.a)
         for i in range(len(self.a)):
-            quantile[i] += q * (self.b[i] - self.a[i])
+            quantile[i] += p * (self.b[i] - self.a[i])
         return quantile
 
 
 # %%
 # Let us instantiate the distribution:
-
-# %%
 distribution = ot.Distribution(UniformNdPy([5, 6], [7, 9]))
 
 # %%
 # And plot the CDF:
-
-# %%
 graph = distribution.drawCDF()
 graph.setColors(["blue"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can easily generate sample:
-
-# %%
 distribution.getSample(5)
 
 # %%
 # or compute the mean:
-
-# %%
 distribution.getMean()
 
 # %%
-# Also we can compute the probability contained in an interval :
+# Also we can compute the probability contained in an interval:
+distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
 
 # %%
-distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
-plt.show()
+# Now let us validate our distribution with :class:`openturns.testing.DistributionChecker`
+# It automatically checks the consistency of most services and allows one to check for errors.
+checker = ott.DistributionChecker(distribution)
+checker.run()
+
 # %%
-# And do more (see :class:`~openturns.Distribution` for all methods)
+otv.View.ShowAll()

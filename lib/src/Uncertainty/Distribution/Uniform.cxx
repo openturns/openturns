@@ -34,7 +34,7 @@ static const Factory<Uniform> Factory_Uniform;
 
 /* Default constructor */
 Uniform::Uniform()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(-1.0)
   , b_(1.0)
 {
@@ -46,7 +46,7 @@ Uniform::Uniform()
 /* Parameters constructor */
 Uniform::Uniform(const Scalar a,
                  const Scalar b)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(a)
   , b_(b)
 {
@@ -383,7 +383,7 @@ Scalar Uniform::getB() const
 /* Method save() stores the object through the StorageManager */
 void Uniform::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "a_", a_ );
   adv.saveAttribute( "b_", b_ );
 }
@@ -391,7 +391,7 @@ void Uniform::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Uniform::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "a_", a_ );
   adv.loadAttribute( "b_", b_ );
   computeRange();

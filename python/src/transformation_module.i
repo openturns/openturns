@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Transformations.") transformation
 #pragma SWIG nowarn=302,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

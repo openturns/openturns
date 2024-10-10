@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -31,12 +32,6 @@ size = 10
 oneSample = copula.getSample(size)
 print("oneSample=", repr(oneSample))
 
-# Test for sampling
-size = 10000
-anotherSample = copula.getSample(size)
-print("anotherSample mean=", repr(anotherSample.computeMean()))
-print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
-
 # Define a point
 point = ot.Point(dim, 0.2)
 
@@ -61,27 +56,6 @@ print(
     "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
 )
 print("entropy=%.6f" % copula.computeEntropy())
-
-# Confidence regions
-# interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
-# 0.95)
-# print("Minimum volume interval=", interval)
-# print("threshold=", Point(1, threshold))
-# levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
-# print("Minimum volume level set=", levelSet)
-# print("beta=", Point(1, beta))
-# interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(
-# 0.95)
-# print("Bilateral confidence interval=", interval)
-# print("beta=", Point(1, beta))
-# interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-# 0.95, False)
-# print("Unilateral confidence interval (lower tail)=", interval)
-# print("beta=", Point(1, beta))
-# interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
-# 0.95, True)
-# print("Unilateral confidence interval (upper tail)=", interval)
-# print("beta=", Point(1, beta))
 
 # Test conditional methods
 y = [0.5]
@@ -108,3 +82,9 @@ quantile = ot.Point(margins.computeQuantile(0.95))
 print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.skipMoments()
+checker.skipCorrelation()
+checker.run()

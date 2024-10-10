@@ -459,7 +459,7 @@ Bool MixedHistogramUserDefined::isDiscrete() const
 /* Check if the distribution is integral */
 Bool MixedHistogramUserDefined::isIntegral() const
 {
-  const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const UnsignedInteger size = kind_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -606,6 +606,25 @@ void MixedHistogramUserDefined::setProbabilityTable(const Point & probabilityTab
 Point MixedHistogramUserDefined::getProbabilityTable() const
 {
   return probabilityTable_;
+}
+
+Point MixedHistogramUserDefined::getParameter() const
+{
+  return getProbabilityTable();
+}
+
+void MixedHistogramUserDefined::setParameter(const Point & parameter)
+{
+  setProbabilityTable(parameter);
+}
+
+Description MixedHistogramUserDefined::getParameterDescription() const
+{
+  const UnsignedInteger totalSize = probabilityTable_.getSize();
+  Description description(totalSize);
+  for (UnsignedInteger i = 0; i < totalSize; ++i)
+    description[i] = OSS() << "p_" << i;
+  return description;
 }
 
 /* Conversion as a Mixture */

@@ -54,7 +54,7 @@ assert residuals.norm() < 5e-3, "residual too large"
 kl_results = result.getOutputKLResultCollection()
 n_modes = [len(res.getEigenvalues()) for res in kl_results]
 print(f"n_modes={n_modes}")
-assert sum(n_modes) == 3, "wrong modes"
+assert sum(n_modes) == 4, "wrong modes"
 
 # separate components {0,1} from {2} and rerun
 blockIndices = [[0, 1], [2]]
@@ -81,7 +81,7 @@ for marginalIndex in range(len(blockIndices)):
     print(s1, st)
 ott.assert_almost_equal(
     sensitivity.getFirstOrderIndices(0),
-    [0.457798, 0.447243, 0.0905814, 0.00437806],
+    [0.335365, 0.329868, 0.332842, 0.00192482],
     0.0,
     2e-2,
 )

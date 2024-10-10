@@ -37,7 +37,7 @@ static const Factory<EmpiricalBernsteinCopula> Factory_EmpiricalBernsteinCopula;
 
 /* Default constructor */
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , copulaSample_(0, 1)
   , binNumber_(1)
   , logBetaFactors_(0)
@@ -53,7 +53,7 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
     const UnsignedInteger binNumber,
     const Bool isEmpiricalCopulaSample)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , copulaSample_(0, 1)
   , binNumber_(binNumber)
   , logBetaFactors_(0)
@@ -70,7 +70,7 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
     const UnsignedInteger binNumber,
     const SampleImplementation & logBetaMarginalFactors,
     const SampleImplementation & logFactors)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , copulaSample_(copulaSample)
   , binNumber_(binNumber)
   , logBetaMarginalFactors_(logBetaMarginalFactors)
@@ -684,7 +684,7 @@ Description EmpiricalBernsteinCopula::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void EmpiricalBernsteinCopula::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "copulaSample_", copulaSample_ );
   adv.saveAttribute( "binNumber_", binNumber_ );
 }
@@ -692,7 +692,7 @@ void EmpiricalBernsteinCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void EmpiricalBernsteinCopula::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "copulaSample_", copulaSample_ );
   adv.loadAttribute( "binNumber_", binNumber_ );
   update();

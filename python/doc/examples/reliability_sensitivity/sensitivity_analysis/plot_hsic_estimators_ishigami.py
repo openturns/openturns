@@ -23,7 +23,7 @@ im = ishigami_function.IshigamiModel()
 # %%
 # We generate an input sample of size 100 (and dimension 3).
 size = 100
-X = im.distributionX.getSample(size)
+X = im.inputDistribution.getSample(size)
 
 # %%
 # We compute the output by applying the Ishigami model to the input sample.

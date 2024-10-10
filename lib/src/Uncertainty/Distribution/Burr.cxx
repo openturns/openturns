@@ -32,7 +32,7 @@ static const Factory<Burr> Factory_Burr;
 
 /* Default constructor */
 Burr::Burr()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , c_(1.0)
   , k_(1.0)
 {
@@ -44,7 +44,7 @@ Burr::Burr()
 /* Parameters constructor */
 Burr::Burr(const Scalar c,
            const Scalar k)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , c_(c)
   , k_(0.)
 {
@@ -311,7 +311,7 @@ Scalar Burr::getK() const
 /* Method save() stores the object through the StorageManager */
 void Burr::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "c_", c_ );
   adv.saveAttribute( "k_", k_ );
 }
@@ -319,7 +319,7 @@ void Burr::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Burr::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "c_", c_ );
   adv.loadAttribute( "k_", k_ );
   computeRange();

@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/BernoulliFactory.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Binomial.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -67,7 +67,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar sum = 0.0;
-  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);
@@ -80,6 +80,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   }
   Bernoulli result(sum / size);
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 

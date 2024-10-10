@@ -43,7 +43,7 @@ static const Factory<Multinomial> Factory_Multinomial;
 
 /* Default constructor */
 Multinomial::Multinomial()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
@@ -59,7 +59,7 @@ Multinomial::Multinomial()
 /* Parameters constructor */
 Multinomial::Multinomial(const UnsignedInteger n,
                          const Point & p)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
@@ -71,6 +71,24 @@ Multinomial::Multinomial(const UnsignedInteger n,
   setN( n );
   setP( p );
   computeRange();
+}
+
+/* Tell if the distribution is continuous */
+Bool Multinomial::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Multinomial::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Multinomial::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -864,7 +882,7 @@ Scalar Multinomial::getEta() const
 /* Method save() stores the object through the StorageManager */
 void Multinomial::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "n_", n_ );
   adv.saveAttribute( "p_", p_ );
   adv.saveAttribute( "sumP_", sumP_ );
@@ -877,7 +895,7 @@ void Multinomial::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Multinomial::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "p_", p_ );
   adv.loadAttribute( "sumP_", sumP_ );

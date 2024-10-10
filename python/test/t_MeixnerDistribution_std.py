@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -11,6 +12,7 @@ ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumAbsoluteError", 1.0e-6)
 ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumRelativeError", 1.0e-6)
 ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumConstraintError", 1.0e-6)
 ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumObjectiveError", 1.0e-6)
+
 # Instantiate one distribution object
 distribution = ot.MeixnerDistribution(1.5, 0.5, 2.5, -0.5)
 print("Distribution ", repr(distribution))
@@ -26,23 +28,6 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-size = 100
-for i in range(2):
-    if ot.FittingTest.Kolmogorov(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Kolmogorov test for the generator, sample size=", size, " is ", msg)
-    size *= 10
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", point)
@@ -50,19 +35,9 @@ print("Point= ", point)
 # Show PDF and CDF of point
 LPDF = distribution.computeLogPDF(point)
 print("log pdf=%.6f" % LPDF)
-eps = 1.0e-5
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-print(
-    "pdf (FD)=%.6f"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps)
-    )
-)
+
 print("PDF gradient=", distribution.computePDFGradient(point))
 CDF = distribution.computeCDF(point)
 print("cdf=%.6f" % CDF)
@@ -135,3 +110,7 @@ skewness = distribution.getSkewness()
 print("skewness=", skewness)
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", kurtosis)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

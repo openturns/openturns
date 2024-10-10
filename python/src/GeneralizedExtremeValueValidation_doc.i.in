@@ -1,10 +1,6 @@
 %feature("docstring") OT::GeneralizedExtremeValueValidation
 "Validation of GeneralizedExtremeValue inference.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 result : :class:`~openturns.DistributionFactoryResult`
@@ -14,7 +10,7 @@ sample : 2-d sequence of float
 
 See also
 --------
-openturns.GeneralizedExtremeValueFactory"
+GeneralizedExtremeValueFactory"
 
 // ---------------------------------------------------------------------
 

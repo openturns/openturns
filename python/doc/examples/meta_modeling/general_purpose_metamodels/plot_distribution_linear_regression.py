@@ -15,7 +15,7 @@ Distribution of estimators in linear regression
 # perform a study of the sample distribution of these estimators.
 #
 # In the general linear regression model, the observation error :math:`\epsilon` has the
-# normal distribution :math:`\cN(0, \sigma^2)` where :math:`\sigma > 0`
+# Normal distribution :math:`\cN(0, \sigma^2)` where :math:`\sigma > 0`
 # is the standard deviation.
 # We are interested in the estimators of the variance :math:`\sigma^2`
 # and the standard deviation :math:`\sigma`:

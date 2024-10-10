@@ -3,12 +3,12 @@ Kriging: configure the optimization solver
 ==========================================
 """
 # %%
-# The goal of this example is to show how to fine-tune the optimization solver used to estimate the hyperparameters of the covariance model of the kriging metamodel.
+# The goal of this example is to show how to fine-tune the optimization solver used to estimate the hyperparameters of the covariance model of the Kriging metamodel.
 #
 # Introduction
 # ------------
 #
-# In a kriging metamodel, there are various types of parameters which are estimated from the data.
+# In a Kriging metamodel, there are various types of parameters which are estimated from the data.
 #
 # * The parameters :math:`{\bf \beta}` associated with the deterministic trend. These parameters are computed based on linear least squares.
 # * The parameters of the covariance model.
@@ -32,14 +32,14 @@ Kriging: configure the optimization solver
 # In this case, it might be useful to fine tune the optimization algorithm so that the convergence of the optimization algorithm is, hopefully, improved.
 #
 # Furthermore, there are several situations in which the optimization can be initialized or completely bypassed.
-# Suppose for example that we have already created an initial kriging metamodel with :math:`N` points and we want to add a single new point.
+# Suppose for example that we have already created an initial Kriging metamodel with :math:`N` points and we want to add a single new point.
 #
-# * It might be interesting to initialize the optimization algorithm with the optimum found for the previous kriging metamodel:
+# * It might be interesting to initialize the optimization algorithm with the optimum found for the previous Kriging metamodel:
 #   this may reduce the number of iterations required to maximize the likelihood.
 # * We may as well completely bypass the optimization step: if the previous covariance model was correctly estimated,
 #   the update of the parameters may or may not significantly improve the estimates.
 #
-# This is why the goal of this example is to see how to configure the optimization of the hyperparameters of a kriging metamodel.
+# This is why the goal of this example is to see how to configure the optimization of the hyperparameters of a Kriging metamodel.
 
 # %%
 # Definition of the model
@@ -51,7 +51,7 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We define the symbolic function which evaluates the output Y depending on the inputs E, F, L and I.
+# We define the symbolic function which evaluates the output `Y` depending on the inputs `E`, `F`, `L` and `I`.
 
 # %%
 model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
@@ -60,7 +60,7 @@ model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
 # Then we define the distribution of the input random vector.
 
 # %%
-# Young's modulus E
+# Young's modulus `E`
 E = ot.Beta(0.9, 2.27, 2.5e7, 5.0e7)  # in N/m^2
 E.setDescription("E")
 # Load F
@@ -103,9 +103,9 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class.
+# In order to create the Kriging metamodel, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class.
 # Then we use a squared exponential covariance model.
-# Finally, we use the :class:`~openturns.KrigingAlgorithm` class to create the kriging metamodel,
+# Finally, we use the :class:`~openturns.KrigingAlgorithm` class to create the Kriging metamodel,
 # taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
@@ -274,13 +274,13 @@ result.getTrendCoefficients()
 # Reuse the parameters from a previous optimization
 # -------------------------------------------------
 #
-# In this example, we show how to reuse the optimized parameters of a previous kriging and configure a new one.
+# In this example, we show how to reuse the optimized parameters of a previous Kriging and configure a new one.
 # Furthermore, we disable the optimization so that the parameters of the covariance model are not updated.
 # This make the process of adding a new point very fast:
 # it improves the quality by adding a new point in the design of experiments without paying the price of the update of the covariance model.
 
 # %%
-# Step 1: Run a first kriging algorithm.
+# Step 1: Run a first Kriging algorithm.
 
 # %%
 dimension = myDistribution.getDimension()
@@ -310,7 +310,7 @@ Y_train.add(Y_new)
 Y_train.getSize()
 
 # %%
-# Step 3: Create an updated kriging, using the new point with the old covariance parameters.
+# Step 3: Create an updated Kriging, using the new point with the old covariance parameters.
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
@@ -346,7 +346,7 @@ printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 
 # %%
 # The following example shows how to set the local optimization solver.
-# We choose the SLSQP algorithm from NLOPT.
+# We choose the `SLSQP` algorithm from :class:`~openturns.NLopt`.
 
 # %%
 problem = solver.getProblem()
@@ -372,7 +372,7 @@ printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model
 
 # %%
 # The following example checks the robustness of the optimization of the
-# kriging algorithm with respect to the optimization of the likelihood
+# Kriging algorithm with respect to the optimization of the likelihood
 # function in the covariance model parameters estimation.
 # We use a :class:`~openturns.MultiStart` algorithm in order to avoid to be trapped by a local minimum.
 # Furthermore, we generate the design of experiments using a
@@ -410,7 +410,7 @@ starting_points.getSize()
 
 # %%
 # We can check that the minimum and maximum in the sample correspond to the
-# bounds of the design of experiment.
+# bounds of the design of experiments.
 
 # %%
 print(lbounds, ubounds)

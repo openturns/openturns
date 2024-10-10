@@ -10,7 +10,6 @@ mean= class=Point name=Unnamed dimension=3 values=[1.64038,0.699193,2.03941]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.88439,3.99293,0.644831,3.99293,9.41608,2.09091,0.644831,2.09091,1.58061]
 Point=  class=Point name=Unnamed dimension=3 values=[1,1,1]
 ddf     = class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
-ddf (FD)= class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
 log pdf=-5.135163
 pdf     =0.005886
 conditional PDF0.184614
@@ -21,7 +20,7 @@ sequential conditional CDF( [1.5,2.5,3.5] )= [0.5,0.779219,0.846484]
 sequential conditional quantile( [0.5,0.779219,0.846484] )= [1.5,2.5,3.5]
 cdf=0.115110
 ccdf=0.884890
-pdf gradient= [-0.000262548,0.00105019,-0.00157529,-0.00216602,-0.000875159,-0.00420076,0.00380694,-0.00190347,0.0030193,-0.00081614,0.000827022,-0.00280752,-0.000579459,-0.000384492,0.00124053,-0.00101745,0.00214101,-0.00287825,-0.000115876,9.53309e-05,-0.00037968,2.77364e-05,-5.53358e-05,0.000641018,-0.000441727,0.000684369,-0.000799218]#27
+pdf gradient= [-0.000262548,-0.00216602,0.00105019,-0.000875159,-0.00157529,-0.00420076,0.00380694,-0.00190347,0.0030193,-0.00081614,-0.000579459,0.000827022,-0.000384492,-0.00280752,0.00124053,-0.00101745,0.00214101,-0.00287825,-0.000115876,2.77364e-05,9.53309e-05,-5.53358e-05,-0.00037968,0.000641018,-0.000441727,0.000684369,-0.000799218]#27
 cdf gradient= [-0.027177,-0.00679426,-0.00553193,-0.00276597,-0.0681155,0,0.0205285,0.0360994,0.0238195,-0.00944187,0.00236047,-0.000721539,-0.000120256,-0.0302999,0.0302999,0.00402514,0.027088,0.00545694,-0.00111099,0.000833241,-2.55027e-05,4.25045e-06,-0.00399125,0.00798249,0.000197734,0.00518251,0.000286546]#27
 quantile= class=Point name=Unnamed dimension=3 values=[5.96551,6.93727,4.61725]
 cdf(quantile)=0.950000
@@ -30,8 +29,8 @@ Survival(inverseSurvival)=0.950000
 mean= class=Point name=Unnamed dimension=3 values=[1.5,0.5,2]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,3.66667,0.666667,3.66667,9.66667,2.16667,0.666667,2.16667,1.66667]
 parameters= [class=PointWithDescription name=Normal dimension=2 description=[mu_0,sigma_0] values=[0.5,2],class=PointWithDescription name=Normal dimension=2 description=[mu_0,sigma_0] values=[1.5,2],class=PointWithDescription name=Normal dimension=2 description=[mu_0,sigma_0] values=[2.5,2],class=PointWithDescription name=dependence dimension=9 description=[atom_0_R_1_0,atom_0_R_2_0,atom_0_R_2_1,atom_1_R_1_0,atom_1_R_2_0,atom_1_R_2_1,atom_2_R_1_0,atom_2_R_2_0,atom_2_R_2_1] values=[0.5,0,0.5,0.5,0,0.5,0.5,0,0.5]]
-parameter= [0.333333,0.5,2,-0.5,3,1,1,0.5,0,0.5,0.333333,1.5,2,0.5,3,2,1,0.5,0,0.5,0.333333,2.5,2,1.5,3,3,1,0.5,0,0.5]#30
-parameter description= [w_0,mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,R_1_0,R_2_0,R_2_1,w_1,mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,R_1_0,R_2_0,R_2_1,w_2,mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,R_1_0,R_2_0,R_2_1]#30
+parameter= [0.5,2,-0.5,3,1,1,0.5,0,0.5,1.5,2,0.5,3,2,1,0.5,0,0.5,2.5,2,1.5,3,3,1,0.5,0,0.5]#27
+parameter description= [mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,R_1_0,R_2_0,R_2_1,mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,R_1_0,R_2_0,R_2_1,mu_0,sigma_0,mu_1,sigma_1,mu_2,sigma_2,R_1_0,R_2_0,R_2_1]#27
 Standard representative= Mixture((w = 0.333333, d = Normal(mu = [0.5,-0.5,1], sigma = [2,3,1], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
  [ 0   0.5 1   ]])), (w = 0.333333, d = Normal(mu = [1.5,0.5,2], sigma = [2,3,1], R = [[ 1   0.5 0   ]

@@ -782,7 +782,13 @@ public:
   Scalar getQuantileEpsilon() const;
   void setQuantileEpsilon(const Scalar quantileEpsilon);
 
+  /** Support tolerance accessor for discrete distributions */
+  void setSupportEpsilon(const Scalar epsilon);
+  Scalar getSupportEpsilon() const;
+
 protected:
+  /** Filter identical entries */
+  static Description DeduplicateDecription(const Description & description);
 
   /** Draw the PDF of a discrete distribution */
   virtual Graph drawDiscretePDF(const Scalar xMin,
@@ -878,6 +884,9 @@ protected:
   /** Optimization for the generating function evaluation */
   mutable Bool isAlreadyCreatedGeneratingFunction_;
   mutable UniVariatePolynomial generatingFunction_;
+
+  /** Tolerance to say if a point is in the support of the distribution */
+  Scalar supportEpsilon_ = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
 
 #ifndef SWIG
 
@@ -1017,7 +1026,7 @@ protected:
     const DistributionImplementation * p_distribution_;
   };  // class LogPDFWrapper
 
-  // Structure used to wrap the computeCDF() method for interpolation purpose
+  // Class used to wrap the computeCDF() method for interpolation purpose
   class CDFWrapper: public EvaluationImplementation
   {
   public:
@@ -1099,7 +1108,7 @@ protected:
     DistributionImplementation::Implementation p_shared_distribution_;
   }; // class CDFWrapper
 
-  // Structure used to implement the computeQuantile() method efficiently
+  // Class used to implement the computeQuantile() method efficiently
   class QuantileWrapper: public EvaluationImplementation
   {
   public:
@@ -1181,9 +1190,9 @@ protected:
     const Collection< Pointer<DistributionImplementation> > marginals_;
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
-  }; // struct QuantileWrapper
+  }; // class QuantileWrapper
 
-  // Structure used to implement the computeInverseSurvivalFunction() method efficiently
+  // Class used to implement the computeInverseSurvivalFunction() method efficiently
   class SurvivalFunctionWrapper: public EvaluationImplementation
   {
   public:
@@ -1265,7 +1274,44 @@ protected:
     const Collection< Pointer<DistributionImplementation> > marginals_;
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
-  }; // struct SurvivalFunctionWrapper
+  }; // class SurvivalFunctionWrapper
+
+
+// Class used to implement the computeInverseSurvivalFunction() method efficiently for copulas
+  class DiagonalSurvivalFunctionWrapper: public EvaluationImplementation
+  {
+  public:
+    DiagonalSurvivalFunctionWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    DiagonalSurvivalFunctionWrapper * clone() const override
+    {
+      return new DiagonalSurvivalFunctionWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      const Point inputPoint(p_distribution_->getDimension(), point[0]);
+      return {p_distribution_->computeSurvivalFunction(inputPoint)};
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+  private:
+    const DistributionImplementation * p_distribution_;
+  }; // class DiagonalSurvivalFunctionWrapper
 
   class MinimumVolumeLevelSetEvaluation: public EvaluationImplementation
   {

@@ -35,7 +35,7 @@ static const Factory<Rice> Factory_Rice;
 
 /* Default constructor */
 Rice::Rice()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(-1.0)
   , nu_(-1.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
@@ -50,7 +50,7 @@ Rice::Rice()
 /* Parameters constructor */
 Rice::Rice(const Scalar beta,
            const Scalar nu)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(0.0)
   , nu_(nu)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
@@ -316,7 +316,7 @@ UnsignedInteger Rice::getMaximumIteration() const
 /* Method save() stores the object through the StorageManager */
 void Rice::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "nu_", nu_ );
   adv.saveAttribute( "maximumIteration_", maximumIteration_ );
@@ -325,7 +325,7 @@ void Rice::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Rice::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   if (adv.hasAttribute("sigma_")) // old parameters
     adv.loadAttribute( "sigma_", beta_ );
   else

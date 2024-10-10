@@ -33,7 +33,7 @@ static const Factory<Rayleigh> Factory_Rayleigh;
 
 /* Default constructor */
 Rayleigh::Rayleigh()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(1.0)
   , gamma_(0.0)
 {
@@ -45,7 +45,7 @@ Rayleigh::Rayleigh()
 /* Parameters constructor */
 Rayleigh::Rayleigh(const Scalar beta,
                    const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(0.0)
   , gamma_(gamma)
 {
@@ -329,7 +329,7 @@ Scalar Rayleigh::getGamma() const
 /* Method save() stores the object through the StorageManager */
 void Rayleigh::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "gamma_", gamma_ );
 }
@@ -337,7 +337,7 @@ void Rayleigh::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Rayleigh::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   if (adv.hasAttribute("sigma_")) // old parameter
     adv.loadAttribute( "sigma_", beta_ );
   else

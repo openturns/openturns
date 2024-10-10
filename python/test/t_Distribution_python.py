@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 
@@ -75,8 +76,8 @@ class UniformNdPy(ot.PythonDistribution):
     def getMoment(self, n):
         return [-0.1 * n] * len(self.a)
 
-    def getCentralMoment(self, n):
-        return [0.0] * len(self.a)
+    # def getCentralMoment(self, n):
+    #     return [0.0] * len(self.a)
 
     def computeCharacteristicFunction(self, x):
         if len(self.a) > 1:
@@ -107,15 +108,13 @@ class UniformNdPy(ot.PythonDistribution):
 
     def computeQuantile(self, prob, tail=False):
         p = 1.0 - prob if tail else prob
-        quantile = self.a
+        quantile = list(self.a)
         for i in range(len(self.a)):
             quantile[i] += p * (self.b[i] - self.a[i])
         return quantile
 
     def getParameter(self):
-        param = list(self.a)
-        param.extend(self.b)
-        return param
+        return list(self.a) + list(self.b)
 
     def getParameterDescription(self):
         paramDesc = ["a_" + str(i) for i in range(len(self.a))]
@@ -209,6 +208,13 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.0] * 2, [1.0] * 2)]:
     # quantile
     quantile = myDist.computeQuantile(0.5)
     print("quantile=", quantile)
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(myDist)
+    checker.skipEntropy()  # slow
+    checker.skipMinimumVolumeLevelSet()  # slow
+    checker.skipCharacteristicFunction()  # undefined
+    checker.run()
 
     param = myDist.getParameter()
     print("parameter=", param)

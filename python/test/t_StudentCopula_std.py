@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 dim = 3
-copula = otexp.StudentCopula(2.5, ot.CorrelationMatrix(dim))
+copula = ot.StudentCopula(2.5, ot.CorrelationMatrix(dim))
 print("Copula ", repr(copula))
 print("Copula ", copula)
 print("Mean ", repr(copula.getMean()))
@@ -51,28 +51,6 @@ print("Point = ", repr(point), " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 quantile = copula.computeQuantile(0.5)
 print("Quantile=", repr(quantile))
 print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
-# Get 95% survival function
-# inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
-# print("InverseSurvival=", repr(inverseSurvival))
-# print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
-# print("entropy=%.6f" % copula.computeEntropy())
-
-# Confidence regions
-# interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-# print("Minimum volume interval=", interval)
-# print("threshold=", ot.Point(1, threshold))
-# levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
-# print("Minimum volume level set=", levelSet)
-# print("beta=", ot.Point(1, beta))
-# interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-# print("Bilateral confidence interval=", interval)
-# print("beta=", ot.Point(1, beta))
-# interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-# print("Unilateral confidence interval (lower tail)=", interval)
-# print("beta=", ot.Point(1, beta))
-# interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-# print("Unilateral confidence interval (upper tail)=", interval)
-# print("beta=", ot.Point(1, beta))
 
 # Extract the marginals
 for i in range(dim):
@@ -95,5 +73,7 @@ print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 
-# print("chi=", copula.computeUpperTailDependenceMatrix())
-# print("chiL=", copula.computeLowerTailDependenceMatrix())
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.skipCDF()  # FIXME
+checker.run()

@@ -34,7 +34,7 @@ static const Factory<FisherSnedecor> Factory_FisherSnedecor;
 
 /* Default constructor */
 FisherSnedecor::FisherSnedecor()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , d1_(1.0)
   , d2_(5.0)
   , normalizationFactor_(0.0)
@@ -48,7 +48,7 @@ FisherSnedecor::FisherSnedecor()
 /* Parameters constructor */
 FisherSnedecor::FisherSnedecor(const Scalar d1,
                                const Scalar d2)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , d1_(d1)
   , d2_(0.0)
   , normalizationFactor_(0.0)
@@ -303,7 +303,7 @@ Scalar FisherSnedecor::getD2() const
 /* Method save() stores the object through the StorageManager */
 void FisherSnedecor::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "d1_", d1_ );
   adv.saveAttribute( "d2_", d2_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
@@ -312,7 +312,7 @@ void FisherSnedecor::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void FisherSnedecor::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "d1_", d1_ );
   adv.loadAttribute( "d2_", d2_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );

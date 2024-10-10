@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -19,43 +20,14 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", repr(oneRealization))
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
-
-size = 100
-for i in range(2):
-    msg = ""
-    if ot.FittingTest.Kolmogorov(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-    size *= 10
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", repr(point))
 
 # Show PDF and CDF of point
-eps = 1e-5
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
-print(
-    "pdf (FD)= %.9f"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps),
-    )
-)
+
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 # CF = distribution.computeCharacteristicFunction( point[0] )
@@ -63,30 +35,8 @@ print("cdf= %.12g" % CDF)
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 
-PDFgrFD = ot.Point(2)
-PDFgrFD[0] = (
-    ot.Rice(distribution.getBeta() + eps, distribution.getNu()).computePDF(point)
-    - ot.Rice(distribution.getBeta() - eps, distribution.getNu()).computePDF(point)
-) / (2.0 * eps)
-
-PDFgrFD[1] = (
-    ot.Rice(distribution.getBeta(), distribution.getNu() + eps).computePDF(point)
-    - ot.Rice(distribution.getBeta(), distribution.getNu() - eps).computePDF(point)
-) / (2.0 * eps)
-print("pdf gradient (FD)=", repr(PDFgrFD))
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
-CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (
-    ot.Rice(distribution.getBeta() + eps, distribution.getNu()).computeCDF(point)
-    - ot.Rice(distribution.getBeta() - eps, distribution.getNu()).computeCDF(point)
-) / (2.0 * eps)
-
-CDFgrFD[1] = (
-    ot.Rice(distribution.getBeta(), distribution.getNu() + eps).computeCDF(point)
-    - ot.Rice(distribution.getBeta(), distribution.getNu() - eps).computeCDF(point)
-) / (2.0 * eps)
-print("cdf gradient (FD)=", repr(CDFgrFD))
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", repr(quantile))
 print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
@@ -143,3 +93,10 @@ skewness = distribution.getSkewness()
 print("skewness=", repr(skewness))
 kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipProbability()
+checker.skipEntropy()  # slow
+checker.skipMinimumVolumeLevelSet()  # slow
+checker.run()

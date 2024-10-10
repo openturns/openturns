@@ -33,7 +33,7 @@ static const Factory<Gumbel> Factory_Gumbel;
 
 /* Default constructor */
 Gumbel::Gumbel()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(1.0)
   , gamma_(0.0)
 {
@@ -45,7 +45,7 @@ Gumbel::Gumbel()
 /* Parameters constructor */
 Gumbel::Gumbel(const Scalar beta,
                const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(0.0)
   , gamma_(gamma)
 {
@@ -341,7 +341,7 @@ Scalar Gumbel::getGamma() const
 /* Method save() stores the object through the StorageManager */
 void Gumbel::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "gamma_", gamma_ );
 }
@@ -349,7 +349,7 @@ void Gumbel::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Gumbel::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   if (adv.hasAttribute("alpha_"))
   {
     LOGINFO("in Gumbel::load, using old parametrization");

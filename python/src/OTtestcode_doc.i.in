@@ -1,0 +1,335 @@
+%feature("docstring") OT::Test::assert_almost_equal
+"Raises an exception if two objects are not equal up to desired tolerance.
+
+Similar to numpy.testing.assert_allclose.
+
+Parameters
+----------
+a, b : float, Point, Matrix, Distribution, Mesh, Field or ProcessSample
+    Elements to compare
+rtol : float
+    Relative tolerance, default is 1e-5
+atol : float
+    Absolute tolerance, default is 1e-8
+errMsg : str
+    Error message emitted when comparison fails
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.testing as ott
+>>> dist = ot.Uniform(0.0, 1.0)
+>>> ott.assert_almost_equal(dist.getMean(), [0.5])
+"
+
+// ---------------------------------------------------------------------
+    
+%feature("docstring") OT::Test::DistributionChecker
+"Automates distribution tests.
+
+It helps performing tests to validate :class:`~openturns.Distribution` services:
+
+- Comparison operators
+- PDF: analytical PDF vs finite-difference estimate from CDF
+- Log PDF: verify consistency of PDF and LogPDF values
+- DDF: analytical DDF vs finite-difference estimate from PDF
+- CCDF: verify consistency between CDF and complementary CDF
+- Survival function: verify consistency between survival and CDF values
+- Inverse survival function: verify consistency between inverse survival and survival
+- Quantile function: verify consistency between quantile and CDF values
+- Probability of an interval: verify probabilities of the range, full numerical range
+- Fitting: Pass Kolmogorov or Chi2 test for different sampling sizes
+- Entropy test: verify consistency between analytical entropy and empirical entropy
+- Moments: verify consistency between analytical moments and empirical moments
+- Parameters: verify setParameter/getParameter accessors consistency
+- Gradients: assess PDF/CDF analytical gradients consistency against their finite difference estimates
+- Minimum volume interval: verify the probability of the interval
+- Minimum volume level-set: verify the probability of the level-set
+- Confidence interval: verify the probability of the level-set
+- Characteristic function
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution instance to test.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.testing as ott
+>>> dist = ot.Uniform(0.0, 1.0)
+>>> checker = ott.DistributionChecker(dist)
+>>> ot.Log.Show(ot.Log.TRACE)  # doctest: +SKIP
+>>> checker.run()  # doctest: +SKIP
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::run
+"Run all tests.
+
+The method raises an exception on the first test that fails.
+Enable :class:`~openturns.Log` at `TRACE` level to see more details."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipCDF
+"Disables CDF test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipDDF
+"Disables DDF test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipMoments
+"Disables moments test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipCorrelation
+"Disables Correlation test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipMinimumVolumeLevelSet
+"Disables minimum volume level set test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipMinimumVolumeInterval
+"Disables minimum volume interval test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipConfidenceInterval
+"Disables confidence interval test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipParameters
+"Disables parameters test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipProbability
+"Disables probability test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipCharacteristicFunction
+"Disables characteristic function test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipGeneratingFunction
+"Disables generating function test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipGradient
+"Disables PDF/CDF gradients test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::skipEntropy
+"Disables entropy test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setMomentsSamplingSize
+"Sampling size accessor for moments test.
+
+Parameters
+----------
+momentsSamplingSize : int
+    Sampling size for moments test.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setEntropySamplingSize
+"Sampling size accessor for entropy test.
+
+Parameters
+----------
+entropySamplingSize : int
+    Sampling size for entropy test.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setEntropyTolerance
+"Entropy test tolerance accessor.
+
+Parameters
+----------
+entropyTolerance : float
+    Relative and absolute tolerance of the analytical/empirical entropy comparison.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setDomainSamplingSize
+"Sampling size accessor for domain tests.
+
+Parameters
+----------
+domainSamplingSize : int
+    Sampling size for domain tests (minimum volume interval, level set or confidence intervals).
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setPDFSamplingSize
+"Sampling size accessor for PDF test.
+
+Parameters
+----------
+pdfSamplingSize : int
+    Sampling size for PDF test.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setCDFSamplingSize
+"Sampling size accessor for CDF test.
+
+Parameters
+----------
+cdfSamplingSize : int
+    Sampling size for CDF test.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setCDFTolerance
+"CDF test tolerance accessor.
+
+Parameters
+----------
+cdfTolerance : float
+    Relative and absolute tolerance of the cdf, probability, ccdf and survival tests.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setPDFTolerance
+"PDF test tolerance accessor.
+
+Parameters
+----------
+pdfTolerance : float
+    Relative and absolute tolerance of the pdf.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setDDFTolerance
+"DDF test tolerance accessor.
+
+Parameters
+----------
+ddfTolerance : float
+    Relative and absolute tolerance of the ddf.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setQuantileTolerance
+"Quantile test tolerance accessor.
+
+Parameters
+----------
+quatileTolerance : float
+    Relative and absolute tolerance of the quantile and inverse survival.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setParameterTolerance
+"PDF/CDF parameter gradient test tolerance accessor.
+
+Parameters
+----------
+parameterTolerance : float
+    Relative and absolute tolerance of the PDF/CDF parameter gradient.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setDomainTolerance
+"Domain test tolerance accessor.
+
+Parameters
+----------
+domainTolerance : float
+    Relative and absolute tolerance of the mini volume, level set or confidence interval tests.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setFittingSamplingSize
+"Sampling size accessor for fitting test.
+
+Parameters
+----------
+fittingSamplingSize : int
+    Sampling size for fitting test.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setMeanTolerance
+"Mean test tolerance accessor.
+
+Parameters
+----------
+meanTolerance : float
+    Relative and absolute tolerance of the analytical/empirical mean comparison.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setStandardDeviationTolerance
+"Standard deviation test tolerance accessor.
+
+Parameters
+----------
+standardDeviationTolerance : float
+    Relative and absolute tolerance of the analytical/empirical deviation comparison.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setSkewnessTolerance
+"Skewness test tolerance accessor.
+
+Parameters
+----------
+skewnessTolerance : float
+    Relative and absolute tolerance of the analytical/empirical skewness comparison.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setKurtosisTolerance
+"Kurtosis test tolerance accessor.
+
+Parameters
+----------
+kurtosisTolerance : float
+    Relative and absolute tolerance of the analytical/empirical kurtosis comparison.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionChecker::setCorrelationTolerance
+"Correlation test tolerance accessor.
+
+Parameters
+----------
+correlationTolerance : float
+    Relative and absolute tolerance of the analytical/empirical correlations comparison.
+"

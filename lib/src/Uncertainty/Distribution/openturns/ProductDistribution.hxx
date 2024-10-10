@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTDISTRIBUTION_HXX
 #define OPENTURNS_PRODUCTDISTRIBUTION_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Pointer.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The ProductDistribution distribution.
  */
 class OT_API ProductDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -49,7 +49,7 @@ public:
                       const Distribution & right);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const ProductDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -68,7 +68,7 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Scalar scalar) const override;
   Scalar computePDF(const Point & point) const override;
 private:
@@ -94,7 +94,7 @@ private:
                       const Scalar d) const;
 public:
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
 private:

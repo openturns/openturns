@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -19,30 +20,16 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 12.0)
 print("Point= ", point)
 
 # Show PDF and CDF of point
-eps = 1e-5
 LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.12g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
-print(
-    "pdf (FD)= %.12g"
-    % (
-        distribution.computeCDF(point + ot.Point(1, 0))
-        - distribution.computeCDF(point + ot.Point(1, -1))
-    )
-)
+
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -72,3 +59,7 @@ print("covariance=", covariance)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

@@ -34,7 +34,7 @@ static const Factory<Gamma> Factory_Gamma;
 
 /* Default constructor */
 Gamma::Gamma()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , k_(1.0)
   , lambda_(1.0)
   , gamma_(0.0)
@@ -49,7 +49,7 @@ Gamma::Gamma()
 Gamma::Gamma(const Scalar k,
              const Scalar lambda,
              const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , k_(0.0)
   , lambda_(0.0)
   , gamma_(gamma)
@@ -408,7 +408,7 @@ Description Gamma::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void Gamma::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "gamma_", gamma_ );
@@ -418,7 +418,7 @@ void Gamma::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Gamma::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "gamma_", gamma_ );

@@ -10,18 +10,14 @@ for factory in factories:
     try:
         qm1 = dist.computeQuantile(-1.0)
         raise ValueError(
-            "Expected a TypeError but with dist = {} got quantile(-1) = {}".format(
-                dist, qm1
-            )
+            f"Expected a TypeError but with dist = {dist} got quantile(-1) = {qm1}"
         )
     except TypeError:
         pass
     try:
         q2 = dist.computeQuantile(2.0)
         raise ValueError(
-            "Expected a TypeError but with dist = {} got quantile(2) = {}".format(
-                dist, q2
-            )
+            f"Expected a TypeError but with dist = {dist} got quantile(2) = {q2}"
         )
     except TypeError:
         pass

@@ -37,7 +37,7 @@ static const Factory<KPermutationsDistribution> Factory_KPermutationsDistributio
 
 /* Default constructor */
 KPermutationsDistribution::KPermutationsDistribution()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , k_(0)
   , n_(0)
 {
@@ -48,12 +48,30 @@ KPermutationsDistribution::KPermutationsDistribution()
 /* Parameters constructor */
 KPermutationsDistribution::KPermutationsDistribution(const UnsignedInteger k,
     const UnsignedInteger n)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , k_(0)
   , n_(0)
 {
   setName("KPermutationsDistribution");
   setKN(k, n);
+}
+
+/* Tell if the distribution is continuous */
+Bool KPermutationsDistribution::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool KPermutationsDistribution::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool KPermutationsDistribution::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -257,6 +275,24 @@ void KPermutationsDistribution::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
+Point KPermutationsDistribution::getParameter() const
+{
+  return {static_cast<Scalar>(k_), static_cast<Scalar>(n_)};
+}
+
+void KPermutationsDistribution::setParameter(const Point & parameter)
+{
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  setKN(parameter[0], parameter[1]);
+}
+
+/* Parameters description accessor */
+Description KPermutationsDistribution::getParameterDescription() const
+{
+  return {"k", "n"};
+}
+
+/* Parameters value and description accessor */
 KPermutationsDistribution::PointWithDescriptionCollection KPermutationsDistribution::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
@@ -345,7 +381,7 @@ void KPermutationsDistribution::setKN(const UnsignedInteger k,
 /* Method save() stores the object through the StorageManager */
 void KPermutationsDistribution::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "n_", n_ );
   adv.saveAttribute( "logPDFValue_", logPDFValue_ );
@@ -354,7 +390,7 @@ void KPermutationsDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KPermutationsDistribution::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "logPDFValue_", logPDFValue_ );

@@ -32,12 +32,6 @@ size = 10
 oneSample = copula.getSample(size)
 print("oneSample=", repr(oneSample))
 
-# Test for sampling
-size = 10000
-anotherSample = copula.getSample(size)
-print("anotherSample mean=", repr(anotherSample.computeMean()))
-print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
-
 # Define a point
 point = ot.Point(dim, 0.2)
 
@@ -94,9 +88,7 @@ for i in range(dim):
     print("margin realization=", repr(margin.getRealization()))
 
 # Extract a 2-D marginal
-indices = ot.Indices(2, 0)
-indices[0] = 1
-indices[1] = 0
+indices = [1, 0]
 print("indices=", repr(indices))
 margins = copula.getMarginal(indices)
 print("margins=", repr(margins))
@@ -147,3 +139,7 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     copula.computeQuantile(1.0 - small_p, False), [1.0 - small_p / 2.0] * 2, 1e-5, 0.0
 )
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.run()

@@ -21,42 +21,16 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-
-size = 100
-for i in range(2):
-    msg = ""
-    if ot.FittingTest.ChiSquared(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Chi2 test for the generator, sample size=", size, " is", msg)
-    size *= 10
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 5.0)
 print("Point= ", point)
 
 # Show PDF and CDF of point
-eps = 1e-5
 LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.12g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
-print(
-    "pdf (FD)= %.12g"
-    % (
-        distribution.computeCDF(point + ot.Point(1, 0))
-        - distribution.computeCDF(point + ot.Point(1, -1))
-    )
-)
+
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -90,8 +64,7 @@ print("Standard representative=", distribution.getStandardRepresentative())
 # should not hang when the range is [0] (dirac)
 ot.Hypergeometric(25, 0, 0).computeScalarQuantile(0.6)
 
-# computeProba test with bound far away
-p = distribution.computeProbability(
-    ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
-)
-ott.assert_almost_equal(p, 1.0)
+ot.Log.Show(ot.Log.TRACE)
+ot.RandomGenerator.SetSeed(1)
+checker = ott.DistributionChecker(distribution)
+checker.run()

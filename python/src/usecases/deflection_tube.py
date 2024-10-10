@@ -13,34 +13,40 @@ class DeflectionTube:
     Attributes
     ----------
 
-    dim : Constant, the dimension of the problem.
-        dim=6
+    dim : int
+        The dimension of the problem: dim=6
 
-    model : `SymbolicFunction`
+    model : :class:`~openturns.SymbolicFunction`
         Model of the deflection.
         The model has input dimension 6 and output dimension 3.
         More precisely, we have :math:`\vect{X} = (F, L, a, D, d, E)`
         and  :math:`Y = (y, \theta_L, \theta_R)`.
 
-    XF : `Normal` distribution
-        `ot.Normal(1, 0.1)`
+    XF : :class:`~openturns.Normal`
+        F distribution
+        `Normal(1, 0.1)`
 
-    XE : `Normal` distribution
-        `ot.Normal(200000, 2000)`
+    XE : :class:`~openturns.Normal`
+        E distribution
+        `Normal(200000, 2000)`
 
-    XL : `Dirac` distribution
-        `ot.Dirac(1.5)`
+    XL : :class:`~openturns.Dirac`
+        L distribution
+        `Dirac(1.5)`
 
-    Xa : `Dirac` distribution
-        `ot.Dirac(1.0)`
+    Xa : :class:`~openturns.Dirac`
+        a distribution
+        `Dirac(1.0)`
 
-    XD : `Dirac` distribution
-        `ot.Dirac(0.8)`
+    XD : :class:`~openturns.Dirac`
+        D distribution
+        `Dirac(0.8)`
 
-    Xd : `Dirac` distribution
-        `ot.Dirac(0.1)`
+    Xd : :class:`~openturns.Dirac`
+        d distribution
+        `Dirac(0.1)`
 
-    inputDistribution : `JointDistribution`
+    inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     Examples

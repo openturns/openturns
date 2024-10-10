@@ -116,6 +116,11 @@ public:
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 
+  /** Parameters accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
+  Description getParameterDescription() const override;
+
   /* Interface specific to MixedHistogramUserDefined */
 
   /** Ticks collection accessor */

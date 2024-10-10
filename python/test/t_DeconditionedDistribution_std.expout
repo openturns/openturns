@@ -1,0 +1,183 @@
+##################################################
+method= GaussProduct
+distribution= DeconditionedDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
+Mean  [1.5,2.1]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [1.13528,1.0937]
+oneSample=     [ X0      X1      ]
+0 : [ 1.92068 2.49374 ]
+1 : [ 1.71438 1.87896 ]
+2 : [ 1.8835  1.80748 ]
+3 : [ 1.68457 3.16374 ]
+4 : [ 1.58862 1.53788 ]
+5 : [ 1.21044 2.02765 ]
+6 : [ 1.98184 3.21605 ]
+7 : [ 1.25986 2.2968  ]
+8 : [ 1.11108 1.85243 ]
+9 : [ 1.97898 2.729   ]
+anotherSample mean= [1.50538,2.09375]
+anotherSample covariance= [[  0.0847776   -0.000929088 ]
+ [ -0.000929088  0.74965     ]]
+Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
+Quantile= [1.97468,3.60341]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293386]
+Survival(inverseSurvival)=0.950000
+Unilateral confidence interval (lower tail)= [-1, 1.97468]
+[-1, 3.60341]
+beta= [0.974679]
+Unilateral confidence interval (upper tail)= [1.02532, 1]
+[0.293386, 1]
+beta= [0.974679]
+##################################################
+method= QMC
+distribution= DeconditionedDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
+Mean  [1.5,2.09997]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [1.28994,2.70175]
+oneSample=     [ X0        X1        ]
+0 : [ 1.724     1.349     ]
+1 : [ 1.08472   3.51038   ]
+2 : [ 1.46333   2.69445   ]
+3 : [ 1.84205   2.68757   ]
+4 : [ 1.88905   2.07805   ]
+5 : [ 1.61304   0.0419325 ]
+6 : [ 1.87194   0.394497  ]
+7 : [ 1.34017   2.39098   ]
+8 : [ 1.88327   2.3063    ]
+9 : [ 1.41826   2.7288    ]
+anotherSample mean= [1.50033,2.09473]
+anotherSample covariance= [[ 0.0823686   9.04142e-05 ]
+ [ 9.04142e-05 0.756718    ]]
+Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
+Quantile= [1.97468,3.60334]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293381]
+Survival(inverseSurvival)=0.950000
+Unilateral confidence interval (lower tail)= [-1, 1.97468]
+[-1, 3.60334]
+beta= [0.974679]
+Unilateral confidence interval (upper tail)= [1.02532, 1]
+[0.293381, 1]
+beta= [0.974679]
+##################################################
+method= MC
+distribution= DeconditionedDistribution(X with X|Theta~JointDistribution(Theta), Theta=f(Y), f=id_4, Y~JointDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
+Mean  [1.5,2.10103]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [1.25105,2.80837]
+oneSample=     [ X0      X1      ]
+0 : [ 1.31227 1.91181 ]
+1 : [ 1.85168 1.81568 ]
+2 : [ 1.78838 2.33992 ]
+3 : [ 1.52819 3.33285 ]
+4 : [ 1.89918 2.42515 ]
+5 : [ 1.41437 3.33561 ]
+6 : [ 1.46582 2.14057 ]
+7 : [ 1.71435 2.49255 ]
+8 : [ 1.61359 3.09347 ]
+9 : [ 1.87601 1.21486 ]
+anotherSample mean= [1.49875,2.10847]
+anotherSample covariance= [[ 0.0835088 0.002056  ]
+ [ 0.002056  0.748267  ]]
+Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
+Quantile= [1.97468,3.60826]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293522]
+Survival(inverseSurvival)=0.950000
+Unilateral confidence interval (lower tail)= [-1, 1.97468]
+[-1, 3.60826]
+beta= [0.974679]
+Unilateral confidence interval (upper tail)= [1.02532, 1]
+[0.293522, 1]
+beta= [0.974679]
+conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Parameters  [[a_marginal_0 : 0, b_marginal_0 : 1],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
+Mean  [0.49998]
+Covariance  [[ 2.42797 ]]
+Elliptical distribution=  False
+Elliptical copula=  True
+Independent copula=  True
+oneRealization= [1.35735]
+oneSample=     [ X0         ]
+0 : [  2.15156   ]
+1 : [ -0.0274854 ]
+2 : [ -0.515759  ]
+3 : [  1.33154   ]
+4 : [  3.43509   ]
+5 : [  1.21906   ]
+6 : [  2.84108   ]
+7 : [  3.32709   ]
+8 : [ -1.93128   ]
+9 : [  1.0006    ]
+anotherSample mean= [0.493427]
+anotherSample covariance= [[ 2.39148 ]]
+Zero point=  [0]  pdf=0.253294  cdf=0.368038
+Quantile= [3.05746]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05552]
+Survival(inverseSurvival)=0.950000
+conditioning distribution= JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Parameters  [[n_marginal_0 : 3, p_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
+Mean  [1.5]
+Covariance  [[ 3.09555 ]]
+Elliptical distribution=  False
+Elliptical copula=  True
+Independent copula=  True
+oneRealization= [3.73237]
+oneSample=     [ X0        ]
+0 : [ -0.678003 ]
+1 : [  0.129661 ]
+2 : [  3.15535  ]
+3 : [  1.10271  ]
+4 : [  0.417401 ]
+5 : [  2.75515  ]
+6 : [  2.09963  ]
+7 : [ -1.09533  ]
+8 : [  4.28327  ]
+9 : [ -2.47362  ]
+anotherSample mean= [1.50548]
+anotherSample covariance= [[ 3.0539 ]]
+Zero point=  [0]  pdf=0.156662  cdf=0.192661
+Quantile= [4.38606]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.38606]
+Survival(inverseSurvival)=0.950000
+conditioning distribution= JointDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Parameters  [[point_0_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
+Mean  [0.5]
+Covariance  [[ 2.33541 ]]
+Elliptical distribution=  False
+Elliptical copula=  True
+Independent copula=  True
+oneRealization= [1.58198]
+oneSample=     [ X0        ]
+0 : [  1.62667  ]
+1 : [ -1.68229  ]
+2 : [  4.89959  ]
+3 : [  1.72367  ]
+4 : [ -1.13326  ]
+5 : [  0.177625 ]
+6 : [  1.46685  ]
+7 : [  0.59936  ]
+8 : [  1.59169  ]
+9 : [ -0.94916  ]
+anotherSample mean= [0.52044]
+anotherSample covariance= [[ 2.34821 ]]
+Zero point=  [0]  pdf=0.258471  cdf=0.364815
+Quantile= [3.00756]
+CDF(quantile)= 0.95
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.00756]
+Survival(inverseSurvival)=0.950000

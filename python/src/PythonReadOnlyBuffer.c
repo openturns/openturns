@@ -43,7 +43,7 @@ typedef struct
   BufferView bufferview;
 } Buffer;
 
-#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030B0000)
+#if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
 
 static int
 Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)

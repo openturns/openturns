@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -27,27 +28,6 @@ for dim in range(1, 2):
     # Test for realization of distribution
     oneRealization = distribution.getRealization()
     print("oneRealization=", repr(oneRealization))
-
-    # Test for sampling
-    size = 10000
-    oneSample = distribution.getSample(size)
-    print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-    print("mean=", repr(oneSample.computeMean()))
-    print("covariance=", repr(oneSample.computeCovariance()))
-
-    if dim == 1:
-        size = 100
-        for i in range(2):
-            ot.RandomGenerator.SetSeed(0)
-            msg = ""
-            if ot.FittingTest.Kolmogorov(
-                distribution.getSample(size), distribution
-            ).getBinaryQualityMeasure():
-                msg = "accepted"
-            else:
-                msg = "rejected"
-            print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-            size *= 10
 
     # Define a point
     point = ot.Point(distribution.getDimension(), 0.5 / distribution.getDimension())
@@ -160,9 +140,7 @@ for dim in range(1, 2):
         print("margin realization=", repr(margin.getRealization()))
     if dim >= 2:
         # Extract a 2-D marginal
-        indices = ot.Indices(2, 0)
-        indices[0] = 1
-        indices[1] = 0
+        indices = [1, 0]
         print("indices=", indices)
         margins = distribution.getMarginal(indices)
         print("margins=", margins)
@@ -172,3 +150,10 @@ for dim in range(1, 2):
         print("margins quantile=", repr(quantile))
         print("margins CDF(quantile)= %.6f" % margins.computeCDF(quantile))
         print("margins realization=", repr(margins.getRealization()))
+
+    ot.Log.Show(ot.Log.TRACE)
+    checker = ott.DistributionChecker(distribution)
+    checker.skipCDF()
+    checker.skipGradient()
+    checker.skipMoments()
+    checker.run()

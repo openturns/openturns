@@ -37,7 +37,7 @@ static const Factory<UniformOverMesh> Factory_UniformOverMesh;
 
 /* Default constructor */
 UniformOverMesh::UniformOverMesh()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName( "UniformOverMesh" );
   setMesh(RegularGrid(0.0, 1.0, 2));
@@ -45,7 +45,7 @@ UniformOverMesh::UniformOverMesh()
 
 /* Parameters constructor */
 UniformOverMesh::UniformOverMesh(const Mesh & mesh)
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName( "UniformOverMesh" );
   setMesh(mesh);
@@ -287,7 +287,7 @@ Description UniformOverMesh::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void UniformOverMesh::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mesh_", mesh_ );
   adv.saveAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
 }
@@ -295,7 +295,7 @@ void UniformOverMesh::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void UniformOverMesh::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   Mesh mesh;
   adv.loadAttribute( "mesh_", mesh );
   adv.loadAttribute( "integrationAlgorithm_", integrationAlgorithm_ );

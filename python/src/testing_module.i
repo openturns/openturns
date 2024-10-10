@@ -1,5 +1,4 @@
 %module(package="openturns", docstring="Test routines.") testing
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -25,6 +24,8 @@
 %{
 #include "openturns/OTtestcode.hxx"
 %}
+
+%include OTtestcode_doc.i
 
 %ignore OT::Test::assert_equal;
 %include openturns/OTtestcode.hxx

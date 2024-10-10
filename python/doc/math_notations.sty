@@ -20,8 +20,7 @@
 % The physical model
 \newcommand{\model}{g}
 \newcommand{\inputDim}{d}  % The input dimension of the model
-\newcommand{\outputDim}{d_Y}  % The output dimension of the model
-\newcommand{\inputDomain}{\mathcal{D}}  % Input domain of the model
+\newcommand{\outputDim}{{d_Y}}  % The output dimension of the model
 \newcommand{\metaModel}{\widetilde{\model}}  % The surrogate model
 
 % Probabilistic modeling
@@ -29,11 +28,15 @@
 \newcommand{\outputRV}{\vect{Y}}  % The output random vector of the model
 \newcommand{\inputMeasure}{\mu_{\inputRV}}  % The distribution of the input random vector of the model
 \newcommand{\outputMeasure}{\mu_{\outputRV}}  % The distribution of the output random vector of the model
-% Realization of the random vetor
-\newcommand{\inputReal}{\vect{x}}  % An observation of the input random vector of the model
-\newcommand{\outputReal}{\vect{y}}  % An observation of the output random vector of the model
 \newcommand{\standardRV}{\vect{Z}}  % The standard random vector (e.g. for polynomial chaos expansion)
 \newcommand{\RVU}{\vect{U}}
+
+\newcommand{\pdf}{\inputMeasure(\inputReal)}
+
+% Realization of the random vector
+\newcommand{\inputReal}{\vect{x}}  % An observation of the input random vector of the model
+\newcommand{\outputReal}{\vect{y}}  % An observation of the output random vector of the model
+
 \newcommand{\standardDim}{d_Z}  % The dimension of the standard random vector
 \newcommand{\dimU}{d_U}
 \newcommand{\standardReal}{\vect{z}}  % An observation of the standard random vector
@@ -41,17 +44,15 @@
 \newcommand{\supp}[1] {\operatorname{supp}\left(#1\right)}  % The support of a distribution
 \newcommand{\sampleSize}{n}  % The sample size
 
-\newcommand{\metamodel}{{\widehat{\model}}}
-
 \newcommand{\scalarproduct}[2]{\left\langle #1, #2 \right\rangle}
 
 % A set
 \newcommand{\set}[1]{\mathcal{#1}}
-% The set of standard input random observations
+% The set of standard input variables
 \newcommand{\standardInputSpace}{\set{Z}}
-% The set of physical input random observations
+% The set of physical input variables
 \newcommand{\physicalInputSpace}{\set{X}}
-% The set of physical output random observations
+% The set of physical output variables
 \newcommand{\physicalOutputSpace}{\set{Y}}
 
 % The probability density function of the input random vector
@@ -71,7 +72,6 @@
 \newcommand{\Econd}[2]{{\mathbb E}_{#1}\left[ #2 \right]}
 \newcommand{\Prob}[1]{{\mathbb P}\left( #1 \right)}
 \newcommand{\ProbCond}[2]{{\mathbb P}_{#1}\left( #2 \right)}
-\newcommand{\pdf}{f_{\un{X}}(\un{x})}
 \newcommand{\ech}{\left\{ x_1, \, \dots\,, x_N  \right\}}
 \newcommand{\matcov} {\mathbf C}
 \newcommand{\matcor} {\mathbf R}

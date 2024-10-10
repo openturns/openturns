@@ -33,7 +33,7 @@ static const Factory<Skellam> Factory_Skellam;
 
 /* Default constructor */
 Skellam::Skellam()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , lambda1_(-1.0)
   , lambda2_(-1.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
@@ -47,7 +47,7 @@ Skellam::Skellam()
 /* Parameters constructor */
 Skellam::Skellam(const Scalar lambda1,
                  const Scalar lambda2)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , lambda1_(-1.0)
   , lambda2_(-1.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
@@ -57,6 +57,24 @@ Skellam::Skellam(const Scalar lambda1,
   setDimension( 1 );
   // This call set also the range.
   setLambda1Lambda2(lambda1, lambda2);
+}
+
+/* Tell if the distribution is continuous */
+Bool Skellam::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Skellam::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Skellam::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -317,7 +335,7 @@ UnsignedInteger Skellam::getMaximumIteration() const
 /* Method save() stores the object through the StorageManager */
 void Skellam::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "lambda1_", lambda1_ );
   adv.saveAttribute( "lambda2_", lambda2_ );
   adv.saveAttribute( "maximumIteration_", maximumIteration_ );
@@ -326,7 +344,7 @@ void Skellam::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Skellam::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "lambda1_", lambda1_ );
   adv.loadAttribute( "lambda2_", lambda2_ );
   adv.loadAttribute( "maximumIteration_", maximumIteration_ );

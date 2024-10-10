@@ -22,7 +22,6 @@ Estimate a GEV on the Venice sea-levels data
 # used for all the analyses beased on the largest :math:`r` annual sea-levels for :math:`r \leq 6`.
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 from openturns.usecases import coles
 
 data = coles.Coles().venice
@@ -86,7 +85,7 @@ for i in range(3):
 # - the quantile-quantile pot,
 # - the return level plot,
 # - the empirical distribution function.
-validation = otexp.GeneralizedExtremeValueValidation(result_LL_max, sample)
+validation = ot.GeneralizedExtremeValueValidation(result_LL_max, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 

@@ -1,10 +1,6 @@
 %feature("docstring") OT::StudentCopula
 "Student copula.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 nu : float, :math:`\nu > 0`
@@ -31,16 +27,15 @@ for :math:`(u_1, \cdots, u_n) \in [0, 1]^n`
 
 See also
 --------
-openturns.Student, openturns.SklarCopula
+Student, SklarCopula
 
 Examples
 --------
 Create a distribution:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> R = ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]])
->>> copula = otexp.StudentCopula(2.5, R)
+>>> copula = ot.StudentCopula(2.5, R)
 
 Draw a sample:
 

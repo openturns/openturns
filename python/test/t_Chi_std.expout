@@ -3,22 +3,13 @@ Distribution  Chi(nu = 1.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.66733]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.58636]  last= class=Point name=Unnamed dimension=1 values=[1.02264]
-mean= class=Point name=Unnamed dimension=1 values=[1.04589]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.399002]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.294304]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.294304]
 pdf     = 0.588608409324
-pdf (FD)= 0.588608409
 cdf= 0.527937109835
 characteristic function= (0.433495931529+0.694719223625j)
 pdf gradient     = class=Point name=Unnamed dimension=1 values=[0.115577]
-pdf gradient (FD)= class=Point name=Unnamed dimension=1 values=[0.115577]
 cdf gradient     = class=Point name=Unnamed dimension=1 values=[-0.291714]
-cdf gradient (FD)= class=Point name=Unnamed dimension=1 values=[-0.291714]
 quantile= class=Point name=Unnamed dimension=1 values=[2.23164]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.182299]

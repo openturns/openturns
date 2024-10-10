@@ -182,6 +182,10 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
+  /** Get the support of a discrete distribution that intersect a given interval */
+  using DistributionImplementation::getSupport;
+  Sample getSupport(const Interval & interval) const override;
+
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
 

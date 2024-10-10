@@ -62,7 +62,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   // If the bin number was too high to get only nMin points per bin on average, reduce the number of bins to get only nonempty bins
   Point ticksX(0);
   Point binX(0);
-  const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   UnsignedInteger cumulatedPoints = 0;
   ticksX.add(tableX(0, 0) - epsilon * (1.0 + std::abs(tableX(0, 0))));
 

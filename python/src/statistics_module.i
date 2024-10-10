@@ -1,7 +1,6 @@
 // SWIG file statistics_module.i
 
 %module(package="openturns", docstring="Statistical classes.") statistics
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

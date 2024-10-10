@@ -3,24 +3,15 @@ Distribution  LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.416038]
-oneSample first= class=Point name=Unnamed dimension=1 values=[-0.444936]  last= class=Point name=Unnamed dimension=1 values=[3.12047]
-mean= class=Point name=Unnamed dimension=1 values=[0.609446]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[8.23002]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.12381]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.12381]
 log pdf=-2.168831
 pdf     =0.114311
-pdf (FD)=0.114311
 cdf=0.825615
 ccdf=0.174385
 characteristic function= (0.74087680493-0.0157786395662j)
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
-pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
 quantile= class=Point name=Unnamed dimension=1 values=[3.83742]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.468798]

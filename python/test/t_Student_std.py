@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -38,109 +39,24 @@ for distribution in allDistributions:
     print("mean=", repr(oneSample.computeMean()))
     print("covariance=", repr(oneSample.computeCovariance()))
 
-    if dim == 1:
-        size = 100
-        for i in range(2):
-            msg = ""
-            if ot.FittingTest.Kolmogorov(
-                distribution.getSample(size), distribution
-            ).getBinaryQualityMeasure():
-                msg = "accepted"
-            else:
-                msg = "rejected"
-                print(
-                    "Kolmogorov test for the generator, sample size=", size, " is", msg
-                )
-            size *= 10
-
     # Define a point
     point = ot.Point(distribution.getDimension(), 1.0)
     print("Point= ", repr(point))
 
-    # Show PDF and CDF of point
-    eps = 1e-5
-
     # derivative of PDF with regards its arguments
     DDF = distribution.computeDDF(point)
     print("ddf     =", repr(DDF))
-    # by the finite difference technique
-    if dim == 1:
-        print(
-            "ddf (FD)=",
-            repr(
-                ot.Point(
-                    1,
-                    (
-                        distribution.computePDF(point + ot.Point(1, eps))
-                        - distribution.computePDF(point + ot.Point(1, -eps))
-                    )
-                    / (2.0 * eps),
-                )
-            ),
-        )
 
     # PDF value
     LPDF = distribution.computeLogPDF(point)
     print("log pdf=%.6f" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =%.6f" % PDF)
-    # by the finite difference technique from CDF
-    if dim == 1:
-        print(
-            "pdf (FD)=%.6f"
-            % (
-                (
-                    distribution.computeCDF(point + ot.Point(1, eps))
-                    - distribution.computeCDF(point + ot.Point(1, -eps))
-                )
-                / (2.0 * eps)
-            )
-        )
 
     CDF = distribution.computeCDF(point)
     print("cdf=%.6f" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
     print("ccdf=%.6f" % CCDF)
-    # by the finite difference technique
-    if dim == 1:
-        PDFgrFD = ot.Point(3)
-        PDFgrFD[0] = (
-            ot.Student(
-                distribution.getNu() + eps,
-                distribution.getMu()[0],
-                distribution.getSigma()[0],
-            ).computePDF(point)
-            - ot.Student(
-                distribution.getNu() - eps,
-                distribution.getMu()[0],
-                distribution.getSigma()[0],
-            ).computePDF(point)
-        ) / (2.0 * eps)
-        PDFgrFD[1] = (
-            ot.Student(
-                distribution.getNu(),
-                distribution.getMu()[0] + eps,
-                distribution.getSigma()[0],
-            ).computePDF(point)
-            - ot.Student(
-                distribution.getNu(),
-                distribution.getMu()[0] - eps,
-                distribution.getSigma()[0],
-            ).computePDF(point)
-        ) / (2.0 * eps)
-        PDFgrFD[2] = (
-            ot.Student(
-                distribution.getNu(),
-                distribution.getMu()[0],
-                distribution.getSigma()[0] + eps,
-            ).computePDF(point)
-            - ot.Student(
-                distribution.getNu(),
-                distribution.getMu()[0],
-                distribution.getSigma()[0] - eps,
-            ).computePDF(point)
-        ) / (2.0 * eps)
-        print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
@@ -206,6 +122,7 @@ print(
 )
 densityGeneratorDerivative = distribution.computeDensityGeneratorDerivative(beta)
 print("density generator derivative     =%.6f" % densityGeneratorDerivative)
+eps = 1e-5
 print(
     "density generator derivative (FD)=%.6f"
     % (
@@ -250,3 +167,8 @@ print(
     ")=",
     distribution.computeSequentialConditionalQuantile(resCDF),
 )
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipCorrelation()  # slow
+checker.run()

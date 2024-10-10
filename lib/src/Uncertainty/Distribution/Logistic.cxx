@@ -33,7 +33,7 @@ static const Factory<Logistic> Factory_Logistic;
 
 /* Default constructor */
 Logistic::Logistic()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(0.0)
   , beta_(1.0)
 {
@@ -45,7 +45,7 @@ Logistic::Logistic()
 /* Parameters constructor */
 Logistic::Logistic(const Scalar mu,
                    const Scalar beta)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(mu)
   , beta_(0.0)
 {
@@ -357,7 +357,7 @@ Scalar Logistic::getBeta() const
 /* Method save() stores the object through the StorageManager */
 void Logistic::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "beta_", beta_ );
 }
@@ -365,7 +365,7 @@ void Logistic::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Logistic::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   if (adv.hasAttribute("alpha_")) // old name
     adv.loadAttribute( "alpha_", mu_ );
   else

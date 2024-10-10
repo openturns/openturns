@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 # Instantiate one distribution object
 distribution = ot.VonMises(-0.5, 1.5)
@@ -19,24 +19,6 @@ print("Continuous = ", distribution.isContinuous())
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
 
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
-size = 100
-for i in range(2):
-    print(
-        "Kolmogorov test for the generator, sample size=",
-        size,
-        " is ",
-        ot.FittingTest.Kolmogorov(
-            distribution.getSample(size), distribution
-        ).getBinaryQualityMeasure(),
-    )
-    size *= 10
-
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", point)
@@ -49,16 +31,7 @@ LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.12g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-print(
-    "pdf (FD)=%.6f"
-    % (
-        (
-            distribution.computeCDF(point + [eps])
-            - distribution.computeCDF(point + [-eps])
-        )
-        / (2.0 * eps)
-    )
-)
+
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -71,28 +44,10 @@ LCF = distribution.computeLogCharacteristicFunction(point[0])
 print("log characteristic function=(%.6g, %.6g)" % (LCF.real, LCF.imag))
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", PDFgr)
-PDFgrFD = ot.Point(2)
-PDFgrFD[0] = (
-    ot.VonMises(distribution.getMu() + eps, distribution.getKappa()).computePDF(point)
-    - ot.VonMises(distribution.getMu() - eps, distribution.getKappa()).computePDF(point)
-) / (2.0 * eps)
-PDFgrFD[1] = (
-    ot.VonMises(distribution.getMu(), distribution.getKappa() + eps).computePDF(point)
-    - ot.VonMises(distribution.getMu(), distribution.getKappa() - eps).computePDF(point)
-) / (2.0 * eps)
-print("pdf gradient (FD)=", PDFgrFD)
+
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", CDFgr)
-CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (
-    ot.VonMises(distribution.getMu() + eps, distribution.getKappa()).computeCDF(point)
-    - ot.VonMises(distribution.getMu() - eps, distribution.getKappa()).computeCDF(point)
-) / (2.0 * eps)
-CDFgrFD[1] = (
-    ot.VonMises(distribution.getMu(), distribution.getKappa() + eps).computeCDF(point)
-    - ot.VonMises(distribution.getMu(), distribution.getKappa() - eps).computeCDF(point)
-) / (2.0 * eps)
-print("cdf gradient (FD)=", CDFgrFD)
+
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
@@ -153,3 +108,7 @@ print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
 print("Circular mean=", distribution.getCircularMean())
 print("Circular variance= %.12g" % distribution.getCircularVariance())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

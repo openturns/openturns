@@ -57,7 +57,7 @@ int main(int, char *[])
     // Is this copula continuous ?
     fullprint << "isContinuous" << std::endl;
     bool isContinuous = copula.isContinuous();
-    assert_equal(isContinuous, true);
+    assert_equal(isContinuous, false);
 
     // Is this copula independent ?
     fullprint << "hasIndependentCopula" << std::endl;

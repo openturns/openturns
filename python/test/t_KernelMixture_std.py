@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -56,17 +57,6 @@ eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
 print("ddf (ref)=", repr(distributionRef.computeDDF(point)))
-# by the finite difference technique
-ddfFD = ot.Point(dimension)
-for i in range(dimension):
-    left = ot.Point(point)
-    left[i] += eps
-    right = ot.Point(point)
-    right[i] -= eps
-    ddfFD[i] = (distribution.computePDF(left) - distribution.computePDF(right)) / (
-        2.0 * eps
-    )
-print("ddf (FD)=", repr(ddfFD))
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
@@ -74,18 +64,6 @@ print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 print("pdf (ref)=%.6f" % distributionRef.computePDF(point))
-# by the finite difference technique from CDF
-if dimension == 1:
-    print(
-        "pdf (FD)=%.6f"
-        % (
-            (
-                distribution.computeCDF(point + ot.Point(1, eps))
-                - distribution.computeCDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps)
-        )
-    )
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -178,3 +156,8 @@ parameters = distribution.getParameter()
 print("parameters=", parameters)
 print("parametersDesc=", distribution.getParameterDescription())
 distribution.setParameter(parameters)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipCorrelation()  # slow
+checker.run()

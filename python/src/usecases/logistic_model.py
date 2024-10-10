@@ -49,13 +49,13 @@ class LogisticModel:
         The multiplication factor to scale the population.
         The default is 1.0e6.
 
-    distY0 : :class:`~openturns.Normal` distribution
+    distY0 : :class:`~openturns.Normal`
         `ot.Normal(y0, 0.1 * y0)`
 
-    distA : :class:`~openturns.Normal` distribution
+    distA : :class:`~openturns.Normal`
         `ot.Normal(a, 0.3 * a)`
 
-    distB : :class:`~openturns.Normal` distribution
+    distB : :class:`~openturns.Normal`
         `ot.Normal(b, 0.3 * b)`
 
     distX : :class:`~openturns.JointDistribution`
@@ -67,7 +67,7 @@ class LogisticModel:
         More precisely, we have :math:`\vect{X} = (t_1, ..., t_{22}, a, c)`
         and  :math:`\vect{Y} = (y_1, ..., y_{22})`.
 
-    data : :class:`~openturns.Sample` of size 22 and dimension 2
+    data : :class:`~openturns.Sample`
         A data set containing 22 dates from 1790 to 2000.
         First marginal represents dates and second marginal the population in millions.
 
@@ -144,9 +144,9 @@ class LogisticModel:
             return z
 
         self.model = ot.PythonFunction(24, nbdates, logisticModel)
-        inputLabels = ["t%d" % (i) for i in range(nbdates)]
+        inputLabels = [f"t{i}" for i in range(nbdates)]
         inputLabels.append("a")
         inputLabels.append("c")
-        outputLabels = ["z%d" % (i) for i in range(nbdates)]
+        outputLabels = [f"z{i}" for i in range(nbdates)]
         self.model.setInputDescription(inputLabels)
         self.model.setOutputDescription(outputLabels)

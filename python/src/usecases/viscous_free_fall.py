@@ -28,43 +28,44 @@ class ViscousFreeFall:
     Attributes
     ----------
 
+    dim : int
+        The dimension of the problem, dim=4.
 
-    dim : The dimension of the problem
-          dim=4.
+    outputDimension : int
+        The output dimension of the problem, outputDimension=1.
 
-    outputDimension : The output dimension of the problem
-                      outputDimension=1.
+    tmin : float
+        Minimum time, tmin = 0.0
 
-    tmin : Constant
-           Minimum time, tmin = 0.0
+    tmax : float
+        Maximum time, tmax = 12.0
 
-    tmax : Constant
-           Maximum time, tmax = 12.0
+    gridsize : int
+        Number of time steps, gridsize = 100.
 
-    gridsize : Constant
-               Number of time steps, gridsize = 100.
+    mesh : :class:`~openturns.Mesh`
+        Time grid
 
-    mesh : `IntervalMesher`
+    vertices : :class:`~openturns.Sample`
+        Vertices of the mesh
 
-    vertices : Vertices of the mesh
+    distZ0 : :class:`~openturns.Uniform`
+        Distribution of the initial altitude: `Uniform(100.0, 150.0)`
 
-    distZ0 : `Uniform` distribution of the initial altitude
-             ot.Uniform(100.0, 150.0)
+    distV0 : :class:`~openturns.Normal`
+        Distribution of the initial speed: `Normal(55.0, 10.0)`
 
-    distV0 : `Normal` distribution of the initial speed
-             ot.Normal(55.0, 10.0)
+    distM : :class:`~openturns.Normal`
+        Distribution of the mass: `Normal(80.0, 8.0)`
 
-    distM : `Normal` distribution of the mass
-            ot.Normal(80.0, 8.0)
+    distC : :class:`~openturns.Uniform`
+        Distribution of the drag: `Uniform(0.0, 30.0)`
 
-    distC : `Uniform` distribution of the drag
-            ot.Uniform(0.0, 30.0)
+    distribution : :class:`~openturns.JointDistribution`
+        The joint distribution of the input parameters.
 
-    distribution : `JointDistribution`
-                   The joint distribution of the input parameters.
-
-    model : `PythonPointToFieldFunction`, the exact solution of the fall
-           ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
+    model : :class:`~openturns.PythonPointToFieldFunction`
+        The exact solution of the fall
 
 
     Examples

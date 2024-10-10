@@ -34,7 +34,7 @@ static const Factory<Binomial> Factory_Binomial;
 
 /* Default constructor */
 Binomial::Binomial()
-  : DiscreteDistribution(),
+  : DistributionImplementation(),
     n_(1),
     p_(0.5)
 {
@@ -47,7 +47,7 @@ Binomial::Binomial()
 /* Parameters constructor */
 Binomial::Binomial(const UnsignedInteger n,
                    const Scalar p)
-  : DiscreteDistribution(),
+  : DistributionImplementation(),
     n_(n),
     p_(-1.0)
 {
@@ -56,6 +56,24 @@ Binomial::Binomial(const UnsignedInteger n,
   setP(p);
   // We set the dimension of the Binomial distribution
   setDimension( 1 );
+}
+
+/* Tell if the distribution is continuous */
+Bool Binomial::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Binomial::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Binomial::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -373,7 +391,7 @@ Complex Binomial::computeLogGeneratingFunction(const Complex & z) const
 /* Method save() stores the object through the StorageManager */
 void Binomial::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "n_", n_ );
   adv.saveAttribute( "p_", p_ );
 }
@@ -381,7 +399,7 @@ void Binomial::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Binomial::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "p_", p_ );
   computeRange();

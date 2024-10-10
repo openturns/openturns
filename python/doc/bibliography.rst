@@ -97,6 +97,8 @@ Bibliography
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
     *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
+.. [davis1975] Davis, P.-J. and P.Rabinowitz, P. (1975). *Methods of numerical integration*,
+    Academic Press.
 .. [delmas2006] Delmas, J.F. and Jourdain, B. *Modèles aléatoires: Applications aux
     sciences de l'ingénieur et du vivant* , Berlin, Heidelberg: Springer Berlin Heidelberg (2006).
     *La maîtrise des incertitudes dans un contexte industriel.
@@ -126,6 +128,9 @@ Bibliography
     4th ed., McGraw-Hill, 1983
 .. [dlib2009] Davis E. King, *Dlib-ml: A Machine Learning Toolkit*,
     Journal of Machine Learning Research, 10:1755-1758, 2009.
+.. [dobrolowski2014] Dobrolowski, E. and Kumar, P., *Some properties of the Marshall-Olkin and generalized Cuadras-Augé families of copulas*,
+    The Australian Journal of Mathematical Analysis and Applications, 11(1), 1-13, 2014.
+    `pdf <https://ajmaa.org/searchroot/files/pdf/v11n1/v11i1p2.pdf>`__
 .. [doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
     mimeo, Nuffield College, University of Oxford, 2005.
     `pdf <https://www.doornik.com/research/ziggurat.pdf>`__
@@ -270,6 +275,9 @@ Bibliography
     *Spectral methods for uncertainty quantification: with applications to computational fluid dynamics*. Springer Science & Business Media.
 .. [lemieux2009] Lemieux, C. (2009). *Monte Carlo and Quasi-Monte Carlo Sampling*.
     Springer. Springer Series in Statistics.
+.. [leriche2021] Le Riche, R., & Picheny, V. (2021). *Revisiting Bayesian optimization in the
+    light of the COCO benchmark.* Structural and Multidisciplinary
+    Optimization, 64, 3063-3087.
 .. [liu2006] Liu, R., & Owen, A. B. (2006). *Estimating mean dimensionality of
     analysis of variance decompositions.* Journal of the American Statistical
     Association, 101 (474), 712-721.

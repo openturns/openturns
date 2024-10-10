@@ -5,17 +5,10 @@ Distribution  Histogram(origin = -1.5, {w0 = 1, h0 = 0.0625}, {w1 = 0.7, h1 = 0.
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.19686]
-oneSample first= class=Point name=Unnamed dimension=1 values=[1.92498]  last= class=Point name=Unnamed dimension=1 values=[-0.111859]
-mean= class=Point name=Unnamed dimension=1 values=[0.866401]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.732365]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[0]
-ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
 log pdf=-0.826679
 pdf     =0.437500
-pdf (FD)=0.437500
 cdf=0.543750
 ccdf=0.456250
 quantile= class=Point name=Unnamed dimension=1 values=[2.14]

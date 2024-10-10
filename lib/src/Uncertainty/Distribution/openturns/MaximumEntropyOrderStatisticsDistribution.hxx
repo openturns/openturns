@@ -22,7 +22,7 @@
 #define OPENTURNS_MAXIMUMENTROPYORDERSTATISTICSDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/GaussKronrod.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The maximum entropy order statistics distribution
  */
 class OT_API MaximumEntropyOrderStatisticsDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 
@@ -61,7 +61,7 @@ public:
       const Bool checkMarginals = ResourceMap::GetAsBool("MaximumEntropyOrderStatisticsDistribution-CheckMarginals"));
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const MaximumEntropyOrderStatisticsDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -91,13 +91,13 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
-  using ContinuousDistribution::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -122,7 +122,7 @@ private:
 public:
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Tell if the distribution uses approximations for the exponential terms */
@@ -133,6 +133,11 @@ public:
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
+
+  /** Parameters accessors */
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
+  Description getParameterDescription() const override;
 
   /** Get the kth approximation */
   PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;

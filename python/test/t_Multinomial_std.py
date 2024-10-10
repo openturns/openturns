@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -19,13 +20,6 @@ print("Continuous = ", distribution.isContinuous())
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
-
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
 
 print("support=\n" + str(distribution.getSupport()))
 interval = ot.Interval(
@@ -72,3 +66,9 @@ parameter = distribution.getParameter()
 print("parameter=", repr(parameter))
 print("parameterDesc=", distribution.getParameterDescription())
 distribution.setParameter(parameter)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipMoments()  # slow
+checker.skipCorrelation()  # slow
+checker.run()

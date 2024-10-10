@@ -304,5 +304,5 @@ involvesModelSelection: bool
 Returns
 -------
 residualsSample : :class:`~openturns.Sample`
-    The sample of residuals :math:`r_{ji} = y_{ji} - \metamodel_i(\vect{x^{(j)}})`
+    The sample of residuals :math:`r_{ji} = y_{ji} - \metaModel_i(\vect{x^{(j)}})`
     for :math:`i = 1, ..., n_Y` and :math:`j = 1, ..., n`."

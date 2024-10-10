@@ -4,16 +4,16 @@ Metamodel of a field function
 """
 # %%
 #
-# In this example we are going to create a metamodel of a field function following these steps:
+# In this example we create a metamodel of a field function following these steps:
 #
-# 1. create a field model over an 1-d mesh ;
-# 2. create a Gaussian process ;
+# 1. Create a field model over an 1-d mesh ;
+# 2. Create a Gaussian process ;
 # 3. Karhunen-Loeve decomposition of a process with known covariance function ;
 # 4. Karhunen-Loeve decomposition of a process with known trajectories ;
-# 5. fields projection ;
-# 6. functional chaos decomposition between the coefficients of the input and output processes ;
-# 7. build a metamodel of the whole field model ;
-# 8. validate the metamodel.
+# 5. Fields projection ;
+# 6. Functional chaos decomposition between the coefficients of the input and output processes ;
+# 7. Build a metamodel of the whole field model ;
+# 8. Validate the metamodel.
 #
 
 # %%
@@ -42,7 +42,7 @@ process_X = ot.GaussianProcess(covariance_X, mesh)
 
 
 # %%
-# The next function plots the Karhunen-Loève. modes.
+# The next function plots the Karhunen-Loève modes.
 def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
     graph_modes = scaledKL.drawMarginal()
     graph_modes.setTitle(title + " scaled KL modes")

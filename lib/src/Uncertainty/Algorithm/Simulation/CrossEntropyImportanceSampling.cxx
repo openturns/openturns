@@ -35,7 +35,7 @@ static const Factory<CrossEntropyImportanceSampling> Factory_CrossEntropyImporta
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
   : EventSimulation()
 {
-  // Nothing TO DO
+  // Nothing to do
 }
 
 
@@ -44,15 +44,10 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVecto
     const Scalar quantileLevel)
   : EventSimulation(event.getImplementation()->asComposedEvent())
   , initialDistribution_(getEvent().getAntecedent().getDistribution())
+  , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
-  if (quantileLevel > 1.)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
-
-  if (quantileLevel < 0.)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
-
-
-  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
+  if (!(quantileLevel <= 1.0) || !(quantileLevel >= 0.0))
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling, quantileLevel parameter value should be between 0.0 and 1.0";
 }
 
 /* Virtual constructor */
@@ -111,6 +106,8 @@ void CrossEntropyImportanceSampling::run()
   resetAuxiliaryDistribution();
 
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
+  if (sampleSize < 2)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
   // Drawing of samples using initial density
   Sample auxiliaryInputSample = auxiliaryDistribution_.getSample(sampleSize);
@@ -158,7 +155,8 @@ void CrossEntropyImportanceSampling::run()
 
     // Update auxiliary Distribution Parameters
     updateAuxiliaryDistribution(auxiliaryDistributionParameters);
-  } // if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
+
+  } // if comparator(currentQuantile, threshold)
 
   UnsignedInteger iterationNumber  = 0;
 
@@ -244,26 +242,18 @@ void CrossEntropyImportanceSampling::run()
   const Sample logPDFAuxiliaryCritic(auxiliaryDistribution_.computeLogPDF(inputSampleCritic));
 
   Scalar sumPdfCritic = 0.0;
-  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
-  {
+  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++ i)
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
-  }
+
   const Scalar failureProbability = sumPdfCritic / sampleSize;
   Scalar varianceCritic = 0.0;
-  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
+  for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++ i)
   {
     const Scalar varianceCriticTemporary = std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0)) - failureProbability;
-    varianceCritic += pow(varianceCriticTemporary, 2);
+    varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
   }  // for i
 
   const Scalar variancenonCritic = (sampleSize - indicesCritic.getSize()) * (failureProbability * failureProbability);
-
-
-  if (sampleSize == 1)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
-
-
-
   const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (sampleSize - 1) / sampleSize ;
 
   // Save of data in Simulation crossEntropyResult_ structure

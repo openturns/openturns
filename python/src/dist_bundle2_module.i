@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle2
 #pragma SWIG nowarn=302,509
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -24,7 +23,7 @@
 %include Histogram.i
 %include HistogramFactory.i
 %include Hypergeometric.i
-%include BayesDistribution.i
+%include JointByConditioningDistribution.i
 %include InverseChiSquare.i
 %include InverseGamma.i
 %include InverseNormal.i
@@ -58,11 +57,11 @@
 /* Must be after TruncatedDistribution */
 %include KernelSmoothing.i
 /* Must be after Mixture */
-%include ConditionalDistribution.i
+%include DeconditionedDistribution.i
 %include Multinomial.i
 %include MultinomialFactory.i
-%include NegativeBinomial.i
-%include NegativeBinomialFactory.i
+%include Polya.i
+%include PolyaFactory.i
 %include NonCentralChiSquare.i
 %include NonCentralStudent.i
 %include Normal.i

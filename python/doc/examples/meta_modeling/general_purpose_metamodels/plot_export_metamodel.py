@@ -20,7 +20,7 @@ g = beam.model
 distribution = beam.independentDistribution
 
 # %%
-# Generate a learning sample with MC simulation (or retrieve the design from experimental data).
+# Generate a learning sample with Monte-Carlo simulation (or retrieve the design from experimental data).
 ot.RandomGenerator.SetSeed(0)
 N = 30  # size of the experimental design
 X = distribution.getSample(N)
@@ -34,12 +34,12 @@ assert algo.getResult().getResiduals()[0] < 1e-12
 metamodel = algo.getResult().getMetaModel()
 
 # %%
-# Save the metamodel into a .pkl file for later use
+# Save the metamodel into a `.pkl` file for later use
 with open("metamodel.pkl", "wb") as f:
     pickle.dump(metamodel, f)
 
 # %%
-# Reload the metamodel in another context from the same .pkl
+# Reload the metamodel in another context from the same `.pkl`
 with open("metamodel.pkl", "rb") as f:
     metamodel = pickle.load(f)
 

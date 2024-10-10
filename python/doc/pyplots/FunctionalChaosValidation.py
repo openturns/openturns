@@ -5,7 +5,7 @@ import openturns.experimental as otexp
 
 im = ishigami_function.IshigamiModel()
 sampleSize = 500
-inputTrain = im.distributionX.getSample(sampleSize)
+inputTrain = im.inputDistribution.getSample(sampleSize)
 outputTrain = im.model(inputTrain)
 multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.PenalizedLeastSquaresAlgorithmFactory()
@@ -17,7 +17,7 @@ enumerateFunction = multivariateBasis.getEnumerateFunction()
 basisSize = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy
+    inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
 )
 chaosalgo.run()
 result = chaosalgo.getResult()

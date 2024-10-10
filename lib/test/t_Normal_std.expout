@@ -103,7 +103,7 @@ Inverse survival=class=Point name=Unnamed dimension=2 values=[-1.91633,-3.83266]
 Survival(inverse survival)=0.95
 characteristic function=(0.41686,0)
 log characteristic function=(-0.875,0)
-pdf gradient     =class=Point name=Unnamed dimension=5 values=[0.0405455,0,-0.0608183,-0.0405455,0.0540607]
+pdf gradient     =class=Point name=Unnamed dimension=5 values=[0.0405455,-0.0608183,0,-0.0405455,0.0540607]
 pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[0.0405455,0,-0.0608183,-0.0405455]
 cdf gradient     =class=Point name=Unnamed dimension=5 values=[-0.176033,-0.0880163,-0.12905,-0.0322625,0.162182]
 quantile=class=Point name=Unnamed dimension=2 values=[1.916,3.833]
@@ -199,7 +199,7 @@ Inverse survival=class=Point name=Unnamed dimension=3 values=[-2.07982,-4.15964,
 Survival(inverse survival)=0.95
 characteristic function=(0.063928,0)
 log characteristic function=(-2.75,0)
-pdf gradient     =class=Point name=Unnamed dimension=9 values=[0.00754529,-0.0010779,0.0010779,-0.00916214,-0.00673687,-0.00413195,0.0116772,-0.00458107,0.0123958]
+pdf gradient     =class=Point name=Unnamed dimension=9 values=[0.00754529,-0.00916214,-0.0010779,-0.00673687,0.0010779,-0.00413195,0.0116772,-0.00458107,0.0123958]
 pdf gradient (FD)=class=Point name=Unnamed dimension=6 values=[0.00754529,-0.0010779,0.0010779,-0.00916214,-0.00673687,-0.00413195]
 cdf gradient     =class=Point name=Unnamed dimension=9 values=[-0.133608,-0.0668041,-0.0575624,-0.0143906,-0.0635446,-0.0105908,0.094207,0.0627608,0.121528]
 quantile=class=Point name=Unnamed dimension=3 values=[2.08,4.16,6.239]
@@ -288,7 +288,7 @@ cdf=0.22145
 survival=0.067873
 characteristic function=(0.0019305,0)
 log characteristic function=(-6.25,0)
-pdf gradient     =class=Point name=Unnamed dimension=14 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952,0.00179952,-0.00106747,0.0025429,0.000652724,-0.00130545,0.00195817]
+pdf gradient     =class=Point name=Unnamed dimension=14 values=[0.000951889,-0.00115586,-0.000135984,-0.000849901,0.000135984,-0.000521272,0,-0.000407952,0.00179952,-0.00106747,0.0025429,0.000652724,-0.00130545,0.00195817]
 pdf gradient (FD)=class=Point name=Unnamed dimension=8 values=[0.000951889,-0.000135984,0.000135984,0,-0.00115586,-0.000849901,-0.000521272,-0.000407952]
 entropy=8.2722
 entropy (MC)=8.2708

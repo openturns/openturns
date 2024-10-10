@@ -42,15 +42,15 @@ NAIS::NAIS()
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
            const Scalar quantileLevel)
-  : EventSimulation(event)
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , initialDistribution_(getEvent().getAntecedent().getDistribution())
+  , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
   const Interval range(initialDistribution_.getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
   for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
-    if (rangeUpper[i] || rangeLower[i]) throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution" ;
-  quantileLevel_ = (getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel);
+    if (rangeUpper[i] || rangeLower[i]) throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution";
 }
 
 /* Virtual constructor */
@@ -97,9 +97,9 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   const Point silverman(stdPerComponent * std::pow(neff * (dimensionSample + 2.0) / 4.0, -1.0 / (dimensionSample + 4.0)));
 
   // Computation of auxiliary distribution using ot.Mixture
-  const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
-  Collection<Distribution> collectionOfDistribution(numberOfSample);
-  for (UnsignedInteger i = 0; i < numberOfSample ; ++i)
+  const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
+  Collection<Distribution> collectionOfDistribution(sampleSize);
+  for (UnsignedInteger i = 0; i < sampleSize ; ++i)
   {
     const Point meanNormal(sample[i]);
 
@@ -149,14 +149,17 @@ void NAIS::run()
 
   numberOfSteps_ = 0;
 
-  const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
+  const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
+  if (sampleSize < 2)
+    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
   // Drawing of samples using initial density
-  Sample auxiliaryInputSample = initialDistribution_.getSample(numberOfSample);
+  Sample auxiliaryInputSample = initialDistribution_.getSample(sampleSize);
   Point weights;
 
   // Evaluation on limit state function
   Sample auxiliaryOutputSample(getEvent().getFunction()(auxiliaryInputSample));
+  const ComparisonOperator comparator(getEvent().getOperator());
 
   ++ numberOfSteps_;
 
@@ -173,7 +176,7 @@ void NAIS::run()
 
 
   Distribution auxiliaryDistribution;
-  if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
+  if (comparator(currentQuantile, getEvent().getThreshold()))
   {
     currentQuantile = getEvent().getThreshold();
     thresholdPerStep_.add(currentQuantile);
@@ -191,9 +194,9 @@ void NAIS::run()
 
   UnsignedInteger iterationNumber  = 0;
 
-  while ((getEvent().getOperator()(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
+  while ((comparator(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
-    ++iterationNumber ;
+    ++ iterationNumber ;
 
     // Drawing of samples using auxiliary density and evaluation on limit state function
     auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
@@ -220,7 +223,7 @@ void NAIS::run()
     currentQuantile = auxiliaryOutputSample.computeQuantile(quantileLevel_)[0];
 
     // If failure probability reached, stop the adaptation
-    if (getEvent().getOperator()(currentQuantile, getEvent().getThreshold()))
+    if (comparator(currentQuantile, getEvent().getThreshold()))
     {
       currentQuantile = getEvent().getThreshold();
       thresholdPerStep_.add(currentQuantile);
@@ -245,7 +248,7 @@ void NAIS::run()
   for (UnsignedInteger i = 0; i < auxiliaryOutputSample.getSize(); ++i)
   {
     // Find failure Points
-    if (getEvent().getOperator()(auxiliaryOutputSample(i, 0), getEvent().getThreshold()))
+    if (comparator(auxiliaryOutputSample(i, 0), getEvent().getThreshold()))
       indicesCritic.add(i);
   } // for i
 
@@ -262,7 +265,7 @@ void NAIS::run()
   {
     sumPdfCritic += std::exp(logPDFInitCritic(i, 0) - logPDFAuxiliaryCritic(i, 0));
   }
-  const Scalar failureProbability = sumPdfCritic / numberOfSample;
+  const Scalar failureProbability = sumPdfCritic / sampleSize;
   Scalar varianceCritic = 0.0;
   for(UnsignedInteger i = 0; i < indicesCritic.getSize(); ++i)
   {
@@ -270,8 +273,8 @@ void NAIS::run()
     varianceCritic += varianceCriticTemporary * varianceCriticTemporary;
   }  // for i
 
-  const Scalar variancenonCritic = (numberOfSample - indicesCritic.getSize()) * (failureProbability * failureProbability);
-  const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (numberOfSample - 1) / numberOfSample ;
+  const Scalar variancenonCritic = (sampleSize - indicesCritic.getSize()) * (failureProbability * failureProbability);
+  const Scalar varianceEstimate = (varianceCritic + variancenonCritic) / (sampleSize - 1) / sampleSize ;
 
   // Save of data in Simulation naisResult_ structure
   naisResult_.setProbabilityEstimate(failureProbability);

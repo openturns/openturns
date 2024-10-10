@@ -1,7 +1,6 @@
 // SWIG file graph_module.i
 
 %module(package="openturns", docstring="Graphical output.") graph
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

@@ -85,7 +85,7 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     MultinomialFactory
-    NegativeBinomialFactory
+    PolyaFactory
     NormalFactory
     ParetoFactory
     PoissonFactory
@@ -141,7 +141,7 @@ Building copulas from samples
     IndependentCopulaFactory
     NormalCopulaFactory
     PlackettCopulaFactory
-    experimental.StudentCopulaFactory
+    StudentCopulaFactory
 
 Sensitivity Analysis
 ====================
@@ -223,6 +223,7 @@ Graphical tests
     :template: functionWithPlot.rst_t
 
     VisualTest.DrawPairs
+    VisualTest.DrawPairsXY
     VisualTest.DrawPairsMarginals
     VisualTest.DrawParallelCoordinates
     VisualTest.DrawHenryLine
@@ -238,7 +239,7 @@ Graphical tests
     VisualTest.DrawLowerExtremalDependenceFunction
 
     :template: class.rst_t
-    experimental.GeneralizedExtremeValueValidation
+    GeneralizedExtremeValueValidation
     experimental.GeneralizedParetoValidation
 
 Hypothesis tests

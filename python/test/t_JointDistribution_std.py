@@ -325,3 +325,7 @@ print("Distribution (Markdown) = ")
 print(distribution.__repr_markdown__())
 print("Distribution (HTML) = ")
 print(distribution._repr_html_())
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.run()

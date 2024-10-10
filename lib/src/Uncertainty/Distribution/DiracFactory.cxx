@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/DiracFactory.hxx"
-#include "openturns/DiscreteDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -65,7 +65,7 @@ Dirac DiracFactory::buildAsDirac(const Sample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from an empty sample";
   Point point(sample[0]);
   // Check that all the points are equal up to the discrete distribution support precision
-  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   for (UnsignedInteger i = 1; i < size; ++i) if ((point - sample[i]).norm() > supportEpsilon) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from a sample containing different points";
   Dirac result(point);
   result.setDescription(sample.getDescription());

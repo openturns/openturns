@@ -1,7 +1,6 @@
 // SWIG file diff_module.i
 
 %module(package="openturns", docstring="Differential algorithms.") diff
-//%feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"

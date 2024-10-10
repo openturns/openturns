@@ -22,8 +22,8 @@
 #define OPENTURNS_POSTERIORDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
-#include "openturns/ConditionalDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The PosteriorDistribution distribution.
  */
 class OT_API PosteriorDistribution
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -43,11 +43,11 @@ public:
   PosteriorDistribution();
 
   /** Parameters constructor */
-  PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
+  PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
                         const Sample & observations);
 
   /** Comparison operator */
-  using ContinuousDistribution::operator ==;
+  using DistributionImplementation::operator ==;
   Bool operator ==(const PosteriorDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
@@ -63,24 +63,24 @@ public:
   PosteriorDistribution * clone() const override;
 
   /** Get the PDF of the distribution */
-  using ContinuousDistribution::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using ContinuousDistribution::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
-  using ContinuousDistribution::setParametersCollection;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
 
   /* Interface specific to PosteriorDistribution */
 
-  /** Conditional distribution accessor */
-  void setConditionalDistribution(const ConditionalDistribution & conditionalDistribution);
-  ConditionalDistribution getConditionalDistribution() const;
+  /** Deconditioned distribution accessor */
+  void setDeconditionedDistribution(const DeconditionedDistribution & deconditionedDistribution);
+  DeconditionedDistribution getDeconditionedDistribution() const;
 
   /** Observations accessor */
   void setObservations(const Sample & observations);
@@ -125,8 +125,8 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-  /** The underlying conditional distribution */
-  ConditionalDistribution conditionalDistribution_;
+  /** The underlying deconditioned distribution */
+  DeconditionedDistribution deconditionedDistribution_;
 
   /** The observations */
   Sample observations_;

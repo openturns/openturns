@@ -152,7 +152,7 @@ class OpenTURNSPythonFieldToPointFunction:
         return self.__inputMesh
 
     def __str__(self):
-        return 'OpenTURNSPythonFieldToPointFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__inputDim, self.__descOut, self.__outputDim)
+        return f"OpenTURNSPythonFieldToPointFunction( {self.__descIn} #{self.__inputDim} ) -> {self.__descOut} #{self.__outputDim}"
 
     def __repr__(self):
         return self.__str__()

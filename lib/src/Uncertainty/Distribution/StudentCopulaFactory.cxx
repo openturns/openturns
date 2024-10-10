@@ -94,7 +94,10 @@ StudentCopula StudentCopulaFactory::buildAsStudentCopula(const Sample & sample) 
   const Scalar nuMin = ResourceMap::GetAsScalar("StudentCopulaFactory-NuMin");
   const Scalar nuMax = ResourceMap::GetAsScalar("StudentCopulaFactory-NuMax");
   factory.setOptimizationBounds(Interval(nuMin, nuMax));
-  return buildAsStudentCopula(factory.buildParameter(sample));
+  model.setParameter(factory.buildParameter(sample));
+  model.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &model);
+  return model;
 }
 
 StudentCopula StudentCopulaFactory::buildAsStudentCopula(const Point & parameters) const

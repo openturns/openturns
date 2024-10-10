@@ -32,7 +32,7 @@ static const Factory<Geometric> Factory_Geometric;
 
 /* Default constructor */
 Geometric::Geometric()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , p_(0.5)
 {
   setName( "Geometric" );
@@ -42,7 +42,7 @@ Geometric::Geometric()
 
 /* Parameters constructor */
 Geometric::Geometric(const Scalar p)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , p_(0.)
 {
   setName( "Geometric" );
@@ -50,6 +50,24 @@ Geometric::Geometric(const Scalar p)
   setDimension( 1 );
   // Also sets the range
   setP(p);
+}
+
+/* Tell if the distribution is continuous */
+Bool Geometric::isContinuous() const
+{
+  return false;
+}
+
+/* Tell if the distribution is discrete */
+Bool Geometric::isDiscrete() const
+{
+  return true;
+}
+
+/* Tell if the distribution is integer valued */
+Bool Geometric::isIntegral() const
+{
+  return true;
 }
 
 /* Comparison operator */
@@ -274,14 +292,14 @@ Scalar Geometric::getP() const
 /* Method save() stores the object through the StorageManager */
 void Geometric::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "p_", p_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Geometric::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "p_", p_ );
   computeRange();
 }

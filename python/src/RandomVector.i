@@ -125,7 +125,7 @@ class PythonRandomVector:
         self.__desc = ['x' + str(i) for i in range(dim)]
 
     def __str__(self):
-        return 'PythonRandomVector -> %s #%d' % (self.__desc, self.__dim)
+        return f"PythonRandomVector -> {self.__desc} #{self.__dim}"
 
     def __repr__(self):
         return self.__str__()

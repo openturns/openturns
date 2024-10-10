@@ -110,32 +110,9 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
 {
   const Scalar u = point[0];
   const Scalar v = point[1];
-  const Scalar ualpha = std::pow(u, alpha_);
-  const Scalar vbeta = std::pow(v, beta_);
-  Scalar p;
-  if (ualpha > vbeta)
-  {
-    if (alpha_ == 1.) /* Prevent zero exponent in pow */
-    {
-      p = v;
-    }
-    else
-    {
-      p = std::pow(u, 1 - alpha_) * v;
-    }
-  }
-  else
-  {
-    if (beta_ == 1.) /* Prevent zero exponent in pow */
-    {
-      p = u;
-    }
-    else
-    {
-      p = u * std::pow(v, 1 - beta_);
-    }
-  }
-  return p;
+  const Scalar ualpha = (u == 0.0) ? 1.0 : std::pow(u, alpha_);
+  const Scalar vbeta = (v == 0.0) ? 1.0 : std::pow(v, beta_);
+  return u * v / std::max(ualpha, vbeta);
 }
 
 /* Parameters value accessor */
@@ -283,6 +260,11 @@ Point MarshallOlkinCopula::getRealization() const
     realization[1] = v;
   }
   return realization;
+}
+
+Bool MarshallOlkinCopula::isContinuous() const
+{
+  return (alpha_ == 0.0) && (beta_ == 0.0);
 }
 
 

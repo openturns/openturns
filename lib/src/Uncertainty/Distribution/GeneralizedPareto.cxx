@@ -33,7 +33,7 @@ static const Factory<GeneralizedPareto> Factory_GeneralizedPareto;
 
 /* Default constructor */
 GeneralizedPareto::GeneralizedPareto()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , sigma_(1.0)
   , xi_(0.0)
   , u_(0.0)
@@ -47,7 +47,7 @@ GeneralizedPareto::GeneralizedPareto()
 GeneralizedPareto::GeneralizedPareto(const Scalar sigma,
                                      const Scalar xi,
                                      const Scalar u)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , sigma_(0.0)
   , xi_(xi)
   , u_(u)
@@ -61,7 +61,7 @@ GeneralizedPareto::GeneralizedPareto(const Scalar sigma,
 
 /* Parameters constructor */
 GeneralizedPareto::GeneralizedPareto(const Pareto & pareto)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , sigma_(0.0)
   , xi_(1.0 / pareto.getAlpha())
   , u_(pareto.getGamma() + pareto.getBeta())
@@ -502,7 +502,7 @@ Pareto GeneralizedPareto::asPareto() const
 /* Method save() stores the object through the StorageManager */
 void GeneralizedPareto::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "sigma_", sigma_ );
   adv.saveAttribute( "xi_", xi_ );
   adv.saveAttribute( "u_", u_ );
@@ -511,7 +511,7 @@ void GeneralizedPareto::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void GeneralizedPareto::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "sigma_", sigma_ );
   adv.loadAttribute( "xi_", xi_ );
   if (adv.hasAttribute("u_"))

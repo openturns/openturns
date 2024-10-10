@@ -35,7 +35,7 @@ static const Factory<ProductDistribution> Factory_ProductDistribution;
 
 /* Default constructor */
 ProductDistribution::ProductDistribution()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , p_left_(new Uniform(0.0, 1.0))
   , p_right_(new Uniform(0.0, 1.0))
   , algo_()
@@ -49,7 +49,7 @@ ProductDistribution::ProductDistribution()
 /* Parameters constructor to use when the two bounds are finite */
 ProductDistribution::ProductDistribution(const Distribution & left,
     const Distribution & right)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , p_left_(left.getImplementation())
   , p_right_(right.getImplementation())
   , algo_()
@@ -735,7 +735,7 @@ Complex ProductDistribution::computeCharacteristicFunction(const Scalar x) const
   const Scalar varLeft = p_left_->getCovariance()(0, 0);
   const Scalar varRight = p_right_->getCovariance()(0, 0);
   if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return Complex(1.0, -x * muLeft * muRight);
-  if (std::abs(x) > ResourceMap::GetAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
+  if (std::abs(x) > ResourceMap::GetAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument")) return DistributionImplementation::computeCharacteristicFunction(x);
   const Scalar aLeft = p_left_->getRange().getLowerBound()[0];
   const Scalar bLeft = p_left_->getRange().getUpperBound()[0];
   const CFKernelProductDistribution cfKernel(p_left_, p_right_, x);
@@ -910,7 +910,7 @@ Point ProductDistribution::getSingularities() const
 /* Method save() stores the object through the StorageManager */
 void ProductDistribution::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "left_", *p_left_ );
   adv.saveAttribute( "right_", *p_right_ );
 }
@@ -918,7 +918,7 @@ void ProductDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProductDistribution::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   Distribution left;
   adv.loadAttribute( "left_", left );
   p_left_ = left.getImplementation();

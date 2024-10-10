@@ -34,7 +34,7 @@ static const Factory<WeibullMin> Factory_WeibullMin;
 
 /* Default constructor */
 WeibullMin::WeibullMin()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(1.0)
   , alpha_(1.0)
   , gamma_(0.0)
@@ -48,7 +48,7 @@ WeibullMin::WeibullMin()
 WeibullMin::WeibullMin(const Scalar beta,
                        const Scalar alpha,
                        const Scalar gamma)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , beta_(0.0)
   , alpha_(0.0)
   , gamma_(gamma)
@@ -427,7 +427,7 @@ Scalar WeibullMin::getGamma() const
 /* Method save() stores the object through the StorageManager */
 void WeibullMin::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "gamma_", gamma_ );
@@ -436,7 +436,7 @@ void WeibullMin::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void WeibullMin::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "gamma_", gamma_ );

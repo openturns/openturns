@@ -45,16 +45,16 @@ m = WingWeightModel()
 # This graph allows one to have a first idea of the variations of the function in pair of dimensions.
 # The colors of each contour plot are comparable.
 
-lowerBound = m.distributionX.getRange().getLowerBound()
-upperBound = m.distributionX.getRange().getUpperBound()
+lowerBound = m.inputDistribution.getRange().getLowerBound()
+upperBound = m.inputDistribution.getRange().getUpperBound()
 
 nX = ot.ResourceMap.GetAsUnsignedInteger("Evaluation-DefaultPointNumber")
-description = m.distributionX.getDescription()
+description = m.inputDistribution.getDescription()
 description.add("")
 m.model.setDescription(description)
 m.model.setName("wing weight model")
 grid = m.model.drawCrossCuts(
-    m.distributionX.getMean(),
+    m.inputDistribution.getMean(),
     lowerBound,
     upperBound,
     [nX] * m.model.getInputDimension(),
@@ -71,6 +71,7 @@ view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
 axes = view.getAxes()
 fig = view.getFigure()
 fig.set_size_inches(12, 12)  # reduce the size
+
 # Setup a large colorbar
 fig.colorbar(
     view.getSubviews()[1][0].getContourSets()[0], ax=axes[:-2, -1], fraction=0.3
@@ -93,10 +94,10 @@ fig.subplots_adjust(top=0.99, bottom=0.05, left=0.06, right=0.99)
 #
 # We create the input and output data for the estimation of the different sensitivity coefficients and we get the input variables description:
 
-inputNames = m.distributionX.getDescription()
+inputNames = m.inputDistribution.getDescription()
 
 size = 500
-inputDesign = m.distributionX.getSample(size)
+inputDesign = m.inputDistribution.getSample(size)
 outputDesign = m.model(inputDesign)
 
 # %%
@@ -236,7 +237,7 @@ plt.show()
 
 # %%
 # We create a distribution-based RandomVector.
-X = ot.RandomVector(m.distributionX)
+X = ot.RandomVector(m.inputDistribution)
 
 # %%
 # We create a composite RandomVector Y from X and m.model.
@@ -268,9 +269,9 @@ view = otv.View(graph)
 
 # %%
 sizeSobol = 1000
-sie = ot.SobolIndicesExperiment(m.distributionX, sizeSobol)
+sie = ot.SobolIndicesExperiment(m.inputDistribution, sizeSobol)
 inputDesignSobol = sie.generate()
-inputNames = m.distributionX.getDescription()
+inputNames = m.inputDistribution.getDescription()
 inputDesignSobol.setDescription(inputNames)
 inputDesignSobol.getSize()
 
@@ -312,9 +313,9 @@ view = otv.View(graph)
 # %%
 # We see that several Sobol' indices are negative, that is inconsistent with the theory. Therefore, a larger number of samples is required to get consistent indices
 sizeSobol = 10000
-sie = ot.SobolIndicesExperiment(m.distributionX, sizeSobol)
+sie = ot.SobolIndicesExperiment(m.inputDistribution, sizeSobol)
 inputDesignSobol = sie.generate()
-inputNames = m.distributionX.getDescription()
+inputNames = m.inputDistribution.getDescription()
 inputDesignSobol.setDescription(inputNames)
 inputDesignSobol.getSize()
 outputDesignSobol = m.model(inputDesignSobol)
@@ -337,10 +338,10 @@ view = otv.View(graph)
 # Now, we estimate the Sobol' indices using Polynomial Chaos Expansion.
 # We create a Functional Chaos Expansion.
 sizePCE = 800
-inputDesignPCE = m.distributionX.getSample(sizePCE)
+inputDesignPCE = m.inputDistribution.getSample(sizePCE)
 outputDesignPCE = m.model(inputDesignPCE)
 
-algo = ot.FunctionalChaosAlgorithm(inputDesignPCE, outputDesignPCE, m.distributionX)
+algo = ot.FunctionalChaosAlgorithm(inputDesignPCE, outputDesignPCE, m.inputDistribution)
 
 algo.run()
 result = algo.getResult()
@@ -365,7 +366,7 @@ view = otv.View(graph)
 # Furthermore, first order Sobol' indices can also been estimated in a data-driven way using a rank-based sensitivity algorithm.
 # In such a way, the estimation of sensitivity indices does not involve any surrogate model.
 sizeRankSobol = 800
-inputDesignRankSobol = m.distributionX.getSample(sizeRankSobol)
+inputDesignRankSobol = m.inputDistribution.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
 myRankSobol = otexp.RankSobolSensitivityAlgorithm(
     inputDesignRankSobol, outputDesignankSobol
@@ -393,7 +394,7 @@ view = otv.View(graph)
 # %%
 # We then estimate the HSIC indices using a data-driven approach.
 sizeHSIC = 250
-inputDesignHSIC = m.distributionX.getSample(sizeHSIC)
+inputDesignHSIC = m.inputDistribution.getSample(sizeHSIC)
 outputDesignHSIC = m.model(inputDesignHSIC)
 
 covarianceModelCollection = []

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -70,3 +71,8 @@ print("Marginal (2, 0)=", multivariateUserDefined.getMarginal([2, 0]))
 loi_UD = ot.UserDefined([[350], [358], [360], [353], [364], [355], [349], [351]])
 assert loi_UD.computeCDF([349]) == 0.125, "wrong cdf at min"
 assert loi_UD.computeCDF([364]) == 1.0, "wrong cdf at max"
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.skipParameters()  # probabilities are renormalized so not independent
+checker.run()

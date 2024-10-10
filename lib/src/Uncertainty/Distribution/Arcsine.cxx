@@ -34,7 +34,7 @@ static const Factory<Arcsine> Factory_Arcsine;
 
 /* Default constructor */
 Arcsine::Arcsine()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(-1.0)
   , b_(1.0)
 {
@@ -46,7 +46,7 @@ Arcsine::Arcsine()
 /* Parameters constructor */
 Arcsine::Arcsine(const Scalar a,
                  const Scalar b)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , a_(a)
   , b_(b)
 {
@@ -168,7 +168,7 @@ Scalar Arcsine::computeComplementaryCDF(const Point & point) const
 Complex Arcsine::computeCharacteristicFunction(const Scalar x) const
 {
   //  return std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
-  return std::exp(Complex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
+  return std::exp(Complex(0.0, 0.5 * (a_ + b_) * x)) * j0(0.5 * (b_ - a_) * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -359,7 +359,7 @@ void Arcsine::setAB(const Scalar a,
 /* Method save() stores the object through the StorageManager */
 void Arcsine::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "a_", a_ );
   adv.saveAttribute( "b_", b_ );
 }
@@ -367,7 +367,7 @@ void Arcsine::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Arcsine::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "a_", a_ );
   adv.loadAttribute( "b_", b_ );
   computeRange();

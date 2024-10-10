@@ -33,7 +33,7 @@ static const Factory<InverseNormal> Factory_InverseNormal;
 
 /* Default constructor */
 InverseNormal::InverseNormal()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(1.0)
   , lambda_(1.0)
 {
@@ -45,7 +45,7 @@ InverseNormal::InverseNormal()
 /* Parameters constructor */
 InverseNormal::InverseNormal(const Scalar mu,
                              const Scalar lambda)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(0.0)
   , lambda_(0.0)
 {
@@ -275,7 +275,7 @@ Description InverseNormal::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void InverseNormal::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "lambda_", lambda_ );
 }
@@ -283,7 +283,7 @@ void InverseNormal::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseNormal::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "lambda_", lambda_ );
   computeRange();

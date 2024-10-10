@@ -303,7 +303,7 @@ Parameters
 firstSample : 2-d sequence of float
     First tested sample.
 secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
+    Second tested sample, of dimension 1. This sample should be ordered in increasing order.
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 hypothesis : str
@@ -339,8 +339,8 @@ scalar variable :math:`Y` and the :math:`n`-dimensional one
 where :math:`\epsilon` is the residual.
 
 The Durbin-Watson test checks the autocorrelation of the residuals. It is possible
-to test is the autocorrelation is equal to 0, and less or greater than 0. The
-p-value is computed using a normal approximation with mean and variance of the
+to test is the autocorrelation is equal to 0.
+The p-value is computed using a normal approximation based on the mean and variance of the
 Durbin-Watson test statistic. If the binary quality measure is false, then the
 given autocorrelation hypothesis can be rejected with respect to the given level.
 

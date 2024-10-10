@@ -97,12 +97,6 @@ public:
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const override;
 
-  /** Get the PDF gradient of the distribution */
-  Point computePDFGradient(const Point & point) const override;
-
-  /** Get the CDF gradient of the distribution */
-  Point computeCDFGradient(const Point & point) const override;
-
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;

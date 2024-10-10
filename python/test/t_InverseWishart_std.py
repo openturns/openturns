@@ -230,37 +230,12 @@ eps = 1e-5
 # derivative of PDF with regards its arguments
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
-# by the finite difference technique
-print(
-    "ddf (FD)=",
-    repr(
-        ot.Point(
-            1,
-            (
-                distribution.computePDF(point + ot.Point(1, eps))
-                - distribution.computePDF(point + ot.Point(1, -eps))
-            )
-            / (2.0 * eps),
-        )
-    ),
-)
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
 print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
-# by the finite difference technique from CDF
-print(
-    "pdf (FD)=%.6f"
-    % (
-        (
-            distribution.computeCDF(point + ot.Point(1, eps))
-            - distribution.computeCDF(point + ot.Point(1, -eps))
-        )
-        / (2.0 * eps)
-    )
-)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -269,33 +244,10 @@ CCDF = distribution.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
-# by the finite difference technique
-PDFgrFD = ot.Point(2)
-v00 = distribution.getV()[0, 0]
-nu = distribution.getNu()
-PDFgrFD[0] = (
-    ot.InverseWishart(ot.CorrelationMatrix([[v00]]), nu).computePDF(point)
-    - ot.InverseWishart(ot.CorrelationMatrix([[v00 - eps]]), nu).computePDF(point)
-) / (1.0 * eps)
-PDFgrFD[1] = (
-    ot.InverseWishart(ot.CorrelationMatrix([[v00]]), nu + eps).computePDF(point)
-    - ot.InverseWishart(ot.CorrelationMatrix([[v00]]), nu - eps).computePDF(point)
-) / (2.0 * eps)
-print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
-CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (
-    ot.InverseWishart(ot.CorrelationMatrix([[v00]]), nu).computeCDF(point)
-    - ot.InverseWishart(ot.CorrelationMatrix([[v00 - eps]]), nu).computeCDF(point)
-) / (1.0 * eps)
-CDFgrFD[1] = (
-    ot.InverseWishart(ot.CorrelationMatrix([[v00]]), nu + eps).computeCDF(point)
-    - ot.InverseWishart(ot.CorrelationMatrix([[v00]]), nu - eps).computeCDF(point)
-) / (2.0 * eps)
-print("cdf gradient (FD)=", repr(CDFgrFD))
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
@@ -352,3 +304,11 @@ print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 loadTestsFromTestCase(TestInverseWishartMethods)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(distribution)
+checker.setSkewnessTolerance(1.0)  # converges slowly
+checker.setKurtosisTolerance(1.0)  # converges slowly
+checker.skipEntropy()  # slow
+checker.skipMinimumVolumeLevelSet()  # slow
+checker.run()

@@ -654,7 +654,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   }
   else
   {
-    const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+    const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
     const Sample support(distribution.getSupport());
     // Here we should check that the given sample contains only values in the distribution support
     if (ResourceMap::GetAsBool("FittingTest-ChiSquaredCheckSample"))
@@ -663,7 +663,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
       const Indices indices(proximityAlgorithm.queryScalar(sortedSample.asPoint()));
       for (UnsignedInteger i = 0; i < size; ++i)
         if (std::abs(sortedSample(i, 0) - support(indices[i], 0)) > epsilon)
-          throw InvalidArgumentException(HERE) << "Error: the given sample contains points which are not in the support of the given distribution wrt the absolute precision=" << epsilon << ". Check the keys 'DiscreteDistribution-SupportEpsilon' and 'FittingTest-ChiSquaredCheckSample' in ResourceMap";
+          throw InvalidArgumentException(HERE) << "Error: the given sample contains points which are not in the support of the given distribution wrt the absolute precision=" << epsilon << ". Check the keys 'Distribution-SupportEpsilon' and 'FittingTest-ChiSquaredCheckSample' in ResourceMap";
     } // Check sample
     const Point probabilities(distribution.getProbabilities());
     const Scalar probabilityThreshold = (1.0 * nMin) / size;

@@ -13,43 +13,53 @@ class StiffenedPanel:
     Attributes
     ----------
 
-    dim : Constant, the dimension of the problem.
-        dim=10
+    dim : int
+        The dimension of the problem, dim=10
 
     model : :class:`~openturns.SymbolicFunction`
         Model of the critical shearing load.
         The model has input dimension 10 and output dimension 1.
         More precisely, we have :math:`\vect{X} = (E, \nu, h_c, \ell, f_1, f_2, t, a, b_0, p)`
-        and  :math:`Y = (N_{xy})_{cr}`.
+        and :math:`Y = (N_{xy})_{cr}`.
 
-    E : Young modulus (Pa), :class:`~openturns.TruncatedNormal` distribution
+    E : :class:`~openturns.TruncatedNormal`
+        Young modulus distribution (Pa),
         `ot.TruncatedNormal(110.0e9, 55.0e9, 99.0e9, 121.0e9)`
 
-    nu : Poisson coefficient (-), :class:`~openturns.Uniform` distribution
+    nu : :class:`~openturns.Uniform`
+        Poisson coefficient (-) distribution
         `ot.Uniform(0.3675, 0.3825)`
 
-    h_c : Distance between the mean surface of the hat and the foot of the Stiffener (m), :class:`~openturns.Uniform` distribution
+    h_c : :class:`~openturns.Uniform`
+        Distance between the mean surface of the hat and the foot of the Stiffener (m) distribution
         `ot.Uniform(0.0285, 0.0315)`
 
-    ell : Length of the stiffener flank (m), :class:`~openturns.Uniform` distribution
+    ell : :class:`~openturns.Uniform`
+        Length of the stiffener flank (m) distribution
         `ot.Uniform(0.04655, 0.05145)`
 
-    f_1 : Width of the stiffener foot (m), :class:`~openturns.Uniform` distribution
+    f_1 : :class:`~openturns.Uniform`
+        Width of the stiffener foot (m) distribution
         `ot.Uniform(0.0266, 0.0294)`
 
-    f_2 : Width of the stiffener hat (m), :class:`~openturns.Uniform` distribution
+    f_2 : :class:`~openturns.Uniform`
+        Width of the stiffener hat (m) distribution
         `ot.Uniform(0.00627, 0.00693)`
 
-    t : Thickness of the panel and the stiffener (m), :class:`~openturns.Uniform` distribution
+    t : :class:`~openturns.Uniform`
+        Thickness of the panel and the stiffener (m) distribution
         `ot.Uniform(8.02e-5, 8.181e-5)`
 
-    a : Width of the panel (m), :class:`~openturns.Uniform` distribution
+    a : :class:`~openturns.Uniform`
+        Width of the panel (m)  distribution
         `ot.Uniform(0.6039, 0.6161)`
 
-    b_0 : Distance between two stiffeners (m), :class:`~openturns.Uniform` distribution
+    b_0 : :class:`~openturns.Uniform`
+        Distance between two stiffeners (m) distribution
         `ot.Uniform(0.04455, 0.04545)`
 
-    p : Half-width of the stiffener (m), :class:`~openturns.Uniform` distribution
+    p : :class:`~openturns.Uniform`
+        Half-width of the stiffener (m) distribution
         `ot.Uniform(0.03762, 0.03838)`
 
     distribution : :class:`~openturns.JointDistribution`

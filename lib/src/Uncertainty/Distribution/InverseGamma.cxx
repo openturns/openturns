@@ -34,7 +34,7 @@ static const Factory<InverseGamma> Factory_InverseGamma;
 
 /* Default constructor */
 InverseGamma::InverseGamma()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   setName("InverseGamma");
   setDimension(1);
@@ -44,7 +44,7 @@ InverseGamma::InverseGamma()
 /* Parameters constructor */
 InverseGamma::InverseGamma(const Scalar k,
                            const Scalar lambda)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , k_(0.0)
   , lambda_(0.0)
 {
@@ -365,7 +365,7 @@ Description InverseGamma::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void InverseGamma::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
@@ -374,7 +374,7 @@ void InverseGamma::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseGamma::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );

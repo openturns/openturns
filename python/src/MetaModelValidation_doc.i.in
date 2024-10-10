@@ -40,7 +40,7 @@ Then we validate this metamodel using a test sample.
 >>> x_train = dist.getSample(25)
 >>> y_train = model(x_train)
 >>> total_degree = 3
->>> polynomialCollection = ['x^%d' % (degree) for degree in range(1, total_degree + 1)]
+>>> polynomialCollection = [f'x^{degree + 1}' for degree in range(total_degree)]
 >>> basis = ot.SymbolicFunction(['x'], polynomialCollection)
 >>> designMatrix = basis(x_train)
 >>> myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)

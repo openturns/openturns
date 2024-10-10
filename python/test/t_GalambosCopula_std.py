@@ -127,3 +127,8 @@ quantile = ot.Point(margins.computeQuantile(0.95))
 ott.assert_almost_equal(quantile, [0.971115, 0.971115], 1e-5, 0.0)
 ott.assert_almost_equal(margins.computeCDF(quantile), 0.950000, 1e-4, 0.0)
 ott.assert_almost_equal(margins.getRealization(), [0.915787, 0.243714], 1e-5, 0.0)
+
+ot.Log.Show(ot.Log.TRACE)
+checker = ott.DistributionChecker(copula)
+checker.setMomentsSamplingSize(100000)
+checker.run()

@@ -22,7 +22,7 @@ isCopula= True
 range= [0, 1]
 marginal= class=PythonDistribution name=UniformNdPy
 quantile= [0.5]
-parameter= [0.5,1]
+parameter= [0,1]
 parameter= [0.4,1]
 parameterDesc= [a_0,b_0]
 Cloning distribution
@@ -31,12 +31,12 @@ copy dist parameter= [0.5,1]
 pyDist= PythonDistribution -> #2
 myDist= class=PythonDistribution name=UniformNdPy description=[X0,X1]
 dimension= 2
-realization= [0.92068,0.50304]
-sample= 0 : [ 0.0632061 0.292757  ]
-1 : [ 0.714382  0.383362  ]
-2 : [ 0.373767  0.737268  ]
-3 : [ 0.883503  0.294994  ]
-4 : [ 0.92851   0.820811  ]
+realization= [0.412967,0.584915]
+sample= 0 : [ 0.507654  0.6998    ]
+1 : [ 0.880077  0.22552   ]
+2 : [ 0.0939358 0.462153  ]
+3 : [ 0.21479   0.728932  ]
+4 : [ 0.302963  0.203248  ]
 pdf= 1.0
 cdf= 0.04
 roughness= 42.0
@@ -52,12 +52,12 @@ range= [0, 1]
 [0, 1]
 marginal= class=PythonDistribution name=UniformNdPy
 quantile= [0.5,0.5]
-parameter= [0.5,0.5,1,1]
-parameter= [0.4,0.5,1,1]
+parameter= [0,0,1,1]
+parameter= [0.4,0,1,1]
 parameterDesc= [a_0,a_1,b_0,b_1]
 Cloning distribution
-dist parameter= [0.4,0.5,1,1]
-copy dist parameter= [0.5,0.5,1,1]
+dist parameter= [0.4,0,1,1]
+copy dist parameter= [0.5,0,1,1]
 JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistribution name=UniformNdPy)
 try with another Python distribution
 The construction failed on purpose as class=PythonDistribution name=UniformNdPy is not a copula

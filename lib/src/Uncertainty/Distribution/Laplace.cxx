@@ -33,7 +33,7 @@ static const Factory<Laplace> Factory_Laplace;
 
 /* Default constructor */
 Laplace::Laplace()
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(0.0)
   , lambda_(1.0)
 {
@@ -45,7 +45,7 @@ Laplace::Laplace()
 /* Parameters constructor */
 Laplace::Laplace(const Scalar mu,
                  const Scalar lambda)
-  : ContinuousDistribution()
+  : DistributionImplementation()
   , mu_(mu)
   , lambda_(lambda)
 {
@@ -195,10 +195,10 @@ Point Laplace::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(2, 0.0);
-  const Scalar factor = std::abs(point[0] - mu_) * lambda_;
-  const Scalar expFactor = std::exp(-factor);
+  const Scalar tau = point[0] - mu_;
+  const Scalar expFactor = std::exp(-std::abs(tau) * lambda_);
   cdfGradient[0] = -0.5 * lambda_ * expFactor;
-  cdfGradient[1] = 0.5 * factor / lambda_ * expFactor;
+  cdfGradient[1] = 0.5 * tau * expFactor;
   return cdfGradient;
 }
 
@@ -333,7 +333,7 @@ Point Laplace::getSingularities() const
 /* Method save() stores the object through the StorageManager */
 void Laplace::save(Advocate & adv) const
 {
-  ContinuousDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
   adv.saveAttribute( "lambda_", lambda_ );
 }
@@ -341,7 +341,7 @@ void Laplace::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Laplace::load(Advocate & adv)
 {
-  ContinuousDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "lambda_", lambda_ );
   computeRange();

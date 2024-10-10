@@ -76,6 +76,7 @@ Arcsine ArcsineFactory::buildAsArcsine(const Sample & sample) const
   parameters[1] = standardDeviation;
   Arcsine result(buildAsArcsine(ArcsineMuSigma()(parameters)));
   result.setDescription(sample.getDescription());
+  adaptToKnownParameter(sample, &result);
   return result;
 }
 
