@@ -184,6 +184,16 @@ for testCase in range(len(distribution)):
         referenceDistribution[testCase].getStandardRepresentative(),
     )
 
+    mean = distribution[testCase].getMean()
+    cpdf = distribution[testCase].computeConditionalPDF(mean[0], [])
+    print(f"conditional PDF={cpdf:.6f}")
+    scpdf = distribution[testCase].computeSequentialConditionalPDF(mean)
+    print(f"sequential conditional PDF={scpdf}")
+    ccdf = distribution[testCase].computeConditionalCDF(mean[0], [])
+    print(f"conditional CDF={ccdf:.6f}")
+    sccdf = distribution[testCase].computeSequentialConditionalCDF(mean)
+    print(f"sequential conditional CDF={sccdf}")
+
     ot.Log.Show(ot.Log.TRACE)
     ot.RandomGenerator.SetSeed(1)
     checker = ott.DistributionChecker(distribution[testCase])
