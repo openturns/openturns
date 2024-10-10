@@ -576,7 +576,6 @@ for parameter_index in range(3):
     graph.add(prior_pdf)
     curve_true = ot.Curve([p_true[parameter_index]] * 2, [0.0, bound])
     graph.add(curve_true)
-    graph.setColors(ot.Drawable.BuildDefaultPalette(3))
     graph.setLegends(["Posterior", "Prior", "True value"])
     graph.setXTitle(xlabs[parameter_index])
     grid.setGraph(0, parameter_index, graph)

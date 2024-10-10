@@ -244,12 +244,9 @@ cloud = ot.Cloud([[d] for d in degrees], r2Score[:, 1])
 cloud.setLegend("Output #1")
 cloud.setPointStyle("diamond")
 graph.add(cloud)
-graph.setLegendPosition("upper right")
-view = viewer.View(
-    graph,
-    figure_kw={"figsize": (6.0, 4.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
-)
+graph.setLegendPosition("upper left")
+graph.setLegendCorner([1.0, 1.0])
+view = viewer.View(graph)
 plt.subplots_adjust(right=0.7)
 plt.show()
 

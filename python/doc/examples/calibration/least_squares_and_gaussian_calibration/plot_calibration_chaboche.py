@@ -21,13 +21,11 @@ Parameters to calibrate and observations
 The vector of parameters to calibrate is:
 
 .. math::
-
    \theta = (R,C,\gamma).
 
 We consider a data set where the number of observations is equal to:
 
 .. math::
-
    n = 10.
 
 
