@@ -70,6 +70,9 @@ public:
   /** Tells whether the basis is orthogonal */
   virtual Bool isOrthogonal() const;
 
+  /** Tells whether the basis is a tensor product */
+  virtual Bool isTensorProduct() const;
+
   /** Tells whether the basis is finite */
   virtual Bool isFinite() const;
 

@@ -88,6 +88,10 @@ int main(int, char *[])
       assert_almost_equal(polynomial2(center), computePolynomialValue(indices, center));
     }
 
+    // Test isTensorProduct()
+    const bool isProduct(productBasis.isTensorProduct());
+    assert_equal(isProduct, true, "isTensorProduct must be true");
+
     // Heterogeneous collection
     OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomCollection2(dimension);
     polynomCollection2[0] = LaguerreFactory(2.5);

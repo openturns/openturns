@@ -118,6 +118,10 @@ int main(int, char *[])
       assert_almost_equal(function2(center), computeTripleHaarFunctionValue(indices, center));
     }
 
+    // Test isTensorProduct()
+    const bool isProduct(productBasis.isTensorProduct());
+    assert_equal(isProduct, true, "isTensorProduct must be true");
+
     // Heterogeneous collection
     fullprint << "Heterogeneous collection" << std::endl;
     OrthogonalProductFunctionFactory::FunctionFamilyCollection functionCollection2(dimension);

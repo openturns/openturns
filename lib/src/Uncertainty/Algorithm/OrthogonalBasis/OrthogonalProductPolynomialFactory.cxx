@@ -321,4 +321,9 @@ OrthogonalBasis OrthogonalProductPolynomialFactory::getMarginal(const Indices & 
   return marginalFactory;
 }
 
+Bool OrthogonalProductPolynomialFactory::isTensorProduct() const
+{
+  return true;
+}
+
 END_NAMESPACE_OPENTURNS

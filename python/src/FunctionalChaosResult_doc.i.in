@@ -6,17 +6,17 @@ Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosA
 Parameters
 ----------
 sampleX : 2-d sequence of float
-    Input sample of :math:`\vect{X} \in \mathbb{R}^{n_X}`.
+    Input sample of :math:`\inputRV \in \Rset^{\inputDim}`.
 sampleY : 2-d sequence of float
-    Output sample of :math:`\vect{Y} \in \mathbb{R}^{n_Y}`.
+    Output sample of :math:`\outputRV \in \Rset^{\outputDim}`.
 distribution : :class:`~openturns.Distribution`
-    Distribution of the random vector :math:`\vect{X}`
+    Distribution of the random vector :math:`\inputRV`
 transformation : :class:`~openturns.Function`
-    The function that maps the physical input :math:`\vect{X}` to the 
-    standardized input :math:`\vect{\xi}`.
+    The function that maps the physical input :math:`\inputRV` to the 
+    standardized input :math:`\standardRV`.
 inverseTransformation : :class:`~openturns.Function`
-    The function that maps standardized input :math:`\vect{\xi}` to the 
-    the physical input :math:`\vect{X}`.
+    The function that maps the standardized input :math:`\standardRV` to
+    the physical input :math:`\inputRV`.
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
     The multivariate orthogonal basis.
 indices : sequence of `int`
@@ -25,11 +25,11 @@ alpha_k : 2-d sequence of `float`
     The coefficients of the functional chaos expansion.
 Psi_k : sequence of :class:`~openturns.Function`
     The functions of the multivariate basis selected by the algorithm.
-residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \mathbb{R}^{n_Y}`
+residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \Rset^{\outputDim}`
     For each output component, the residual is the square root of the sum of 
     squared differences between the model and the meta model, divided by the 
     sample size.
-relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \mathbb{R}^{n_Y}`
+relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \Rset^{\outputDim}`
     The relative error is the empirical error divided by the 
     sample variance of the output.
 isLeastSquares : bool
@@ -39,35 +39,35 @@ isModelSelection : bool
 
 Notes
 -----
-Let :math:`n \in \mathbb{N}` be the sample size. 
-Let :math:`n_Y \in \mathbb{N}` be the dimension of the output of the 
+Let :math:`\sampleSize \in \Nset` be the sample size. 
+Let :math:`\outputDim \in \Nset` be the dimension of the output of the 
 physical model. 
-For any :math:`j = 1, ..., n` and any :math:`i = 1, ..., n_Y`, 
-let :math:`y_{j, i} \in \mathbb{R}` be the output of the physical 
-model and let :math:`\hat{y}_{j, i} \in \mathbb{R}` be the output of the 
+For any :math:`j = 1, ..., \sampleSize` and any :math:`i = 1, ..., \outputDim`, 
+let :math:`y_{j, i} \in \Rset` be the output of the physical 
+model and let :math:`\hat{y}_{j, i} \in \Rset` be the output of the 
 metamodel. 
-For any :math:`i = 1, ..., n_Y`, let :math:`\vect{y}_i \in \mathbb{R}^n` be 
-the sample output and let :math:`\hat{\vect{y}}_i \in \mathbb{R}^n` be the 
+For any :math:`i = 1, ..., \outputDim`, let :math:`\outputRV_i \in \Rset^\sampleSize` be 
+the sample output and let :math:`\widehat{\outputRV}_i \in \Rset^\sampleSize` be the 
 output predicted by the metamodel. 
 The marginal residual is:
 
 .. math::
 
-    \hat{r}_i = \frac{\sqrt{SS_i}}{n} 
+    \hat{r}_i = \frac{\sqrt{SS_i}}{\sampleSize} 
 
-for :math:`i = 1, ..., n_Y`, where :math:`SS_i` is the marginal sum of squares:
+for :math:`i = 1, ..., \outputDim`, where :math:`SS_i` is the marginal sum of squares:
 
 .. math::
 
-    SS_i = \sum_{j = 1}^n (y_{j, i} - \hat{y}_{j, i})^2.
+    SS_i = \sum_{j = 1}^\sampleSize (y_{j, i} - \hat{y}_{j, i})^2.
 
 The marginal relative error is:
 
 .. math::
 
-    \widehat{re}_i = \frac{\hat{r}_i / n}{\hat{s}_{Y, i}^2}
+    \widehat{re}_i = \frac{\hat{r}_i / \sampleSize}{\hat{s}_{Y, i}^2}
 
-for :math:`i = 1, ..., n_Y`, where :math:`\hat{s}_{Y, i}^2` is the unbiased 
+for :math:`i = 1, ..., \outputDim`, where :math:`\hat{s}_{Y, i}^2` is the unbiased 
 sample variance of the :math:`i`-th output.
 
 This structure is created by the method `run()` of
@@ -82,17 +82,25 @@ This structure is created by the method `run()` of
 Returns
 -------
 coefficients : 2-d sequence of float
-    Coefficients :math:`(\vect{\alpha_k})_{k \in K}`."
+    Coefficients :math:`(\vect{a_k})_{k \in \set{J}^P_s}`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosResult::getComposedMetaModel
 "Get the composed metamodel.
 
+The composed metamodel is defined on the standard space :math:`\standardInputSpace`. 
+It is defined by the equation:
+
+.. math::
+    \tilde{h}(\standardReal) =  \sum_{k \in \set{J}^P_s} \vect{a}_k \psi_k(\standardReal)
+
+for any :math:`\standardReal \in \standardInputSpace`.
+
 Returns
 -------
 composedMetamodel : :class:`~openturns.Function`
-    :math:`\tilde{f} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k`"
+    The metamodel in the standard space :math:`\standardInputSpace`."
 
 // ---------------------------------------------------------------------
 
@@ -102,7 +110,7 @@ composedMetamodel : :class:`~openturns.Function`
 Returns
 -------
 metamodel : :class:`~openturns.Function`
-    :math:`\tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k \circ T`."
+    :math:`\tilde{g} = \sum_{k \in \set{J}^P_s} \vect{a}_k \psi_k \circ T`."
 
 // ---------------------------------------------------------------------
 
@@ -112,7 +120,7 @@ metamodel : :class:`~openturns.Function`
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Distribution of the  input random vector :math:`\vect{X}`."
+    Distribution of the  input random vector :math:`\inputRV`."
 
 // ---------------------------------------------------------------------
 
@@ -122,7 +130,10 @@ distribution : :class:`~openturns.Distribution`
 Returns
 -------
 indices : :class:`~openturns.Indices`
-    Indices of the elements of the multivariate basis used in the decomposition."
+    Indices :math:`\set{J}^P_s` of the elements of the multivariate basis used in the decomposition.
+    Each integer in this list is the input argument of the :class:`~.openturns.EnumerateFunction`.
+    If a model selection method such as :class:`~.openturns.LARS` is used,
+    these indices are not contiguous."
 
 // ---------------------------------------------------------------------
 
@@ -132,7 +143,7 @@ indices : :class:`~openturns.Indices`
 Returns
 -------
 invTransf : :class:`~openturns.Function`
-     :math:`T^{-1}` such that :math:`T^{-1}(\vect{Z}) = \vect{X}`."
+     :math:`T^{-1}` such that :math:`T(\inputRV) = \standardRV`."
 
 // ---------------------------------------------------------------------
 
@@ -152,7 +163,7 @@ basis : :class:`~openturns.OrthogonalBasis`
 Returns
 -------
 basis : list of :class:`~openturns.Function`
-    Collection of the *K* functions  :math:`(\Psi_k)_{k\in K}`  used in the 
+    Collection of the functions  :math:`(\psi_k)_{k\in \set{J}^P_s}`  used in the 
     decomposition."
 
 // ---------------------------------------------------------------------
@@ -163,7 +174,7 @@ basis : list of :class:`~openturns.Function`
 Returns
 -------
 transformation : :class:`~openturns.Function`
-    Transformation :math:`T` such that :math:`T(\vect{X}) = \vect{Z}`."
+    Transformation :math:`T` such that :math:`T(\inputRV) = \standardRV`."
     
 // ---------------------------------------------------------------------
 
@@ -216,6 +227,143 @@ coefficientsHistory : 2-d sequence of float
     The coefficients values selection history
     Must be of same size as indicesHistory."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getConditionalExpectation
+"Get the conditional expectation of the expansion given one vector input.
+
+This method returns the functional chaos result corresponding to the conditional 
+expectation of the output given an input vector.
+Indeed, the conditional expectation of a polynomial chaos expansion is, again, 
+a polynomial chaos expansion.
+This is possible only if the marginals of the input distribution are independent.
+Otherwise, an exception is generated.
+An example is provided in :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_conditional_expectation`.
+
+We consider the notations introduced in :ref:`functional_chaos`.
+Let :math:`\inputRV \in \Rset^{\inputDim}` be the input and let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
+be a set of marginal indices. 
+Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 
+corresponding to the group of input variables where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
+is the number of input variables in the group.
+Let :math:`\metaModel(\inputRV)` be the polynomial chaos
+expansion of the physical model :math:`\model`.
+This function returns the functional chaos expansion of:
+
+.. math::
+
+    \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right) 
+    = \Expect{\metaModel(\inputRV) | \inputRV_{\vect{u}} = \inputReal_{\vect{u}}}
+
+for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
+
+**Mathematical analysis**
+
+The mathematical derivation is better described in the standard space
+:math:`\standardInputSpace` than in the physical space :math:`\physicalInputSpace` and 
+this is why we consider the former.
+Assume that the basis functions :math:`\{\psi_{\vect{\alpha}}\}_{\vect{\alpha} \in \set{J}^P}` 
+are defined by the tensor product:
+
+.. math::
+
+    \psi_{\vect{\alpha}}(\standardReal)
+    = \prod_{i = 1}^\inputDim \pi_{\alpha_i}^{(i)}(z_i)
+
+for any :math:`\vect{\alpha} \in \set{J}^P` and any 
+:math:`\standardReal \in \standardInputSpace` where 
+:math:`\left\{\pi_k^{(i)}\right\}_{k \geq 0}` is the set of orthonormal  
+polynomials of degree :math:`k` for the :math:`i`-th input marginal. 
+Assume that the PCE to order :math:`P` is:
+
+.. math::
+
+    \widetilde{h}(\standardReal) 
+    = \sum_{\vect{\alpha} \in \set{J}^P} 
+    a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\standardReal)
+
+for any :math:`\standardReal \in \standardInputSpace`. 
+Assume that the input marginals :math:`\{Z_i\}_{i = 1, ..., \inputDim}` are independent. 
+Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` be a group 
+of variables with dimension :math:`\operatorname{card}(\vect{u}) \in \Nset`. 
+Assume that :math:`\standardInputSpace` is the Cartesian product of vectors which 
+have components in the group :math:`\vect{u}` and other components, 
+i.e. assume that:
+
+.. math::
+
+    \standardInputSpace = \standardInputSpace_{\vect{u}} \times \standardInputSpace_{\overline{\vect{u}}}
+
+where :math:`\standardInputSpace_{\vect{u}} \subseteq \Rset^{|\vect{u}|}` 
+and :math:`\standardInputSpace_{\overline{\vect{u}}} \subseteq \Rset^{|\overline{\vect{u}}|}`. 
+Let :math:`\widetilde{h}_{\vect{u}}^{\operatorname{ce}}` be the conditional expectation of the function :math:`\widetilde{h}` 
+given :math:`\standardReal_{\vect{u}}`:
+
+.. math::
+
+    \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
+    = \mathbb{E}_{\standardRV_{\overline{\vect{u}}}} 
+    \left[\widetilde{h}\left(\standardRV\right) | \standardRV_{\vect{u}} 
+    = \standardReal_{\vect{u}}\right]
+
+for any :math:`\standardReal_{\vect{u}} \in \standardInputSpace_{\vect{u}}`. 
+Let :math:`\set{J}_{\vect{u}}^{\operatorname{ce}} \subseteq \set{J}^P` be the 
+set of multi-indices having zero components when the marginal multi-index 
+is not in :math:`\vect{u}`:
+
+.. math::
+
+    \set{J}_{\vect{u}}^{\operatorname{ce}} 
+    = \left\{\vect{\alpha} \in \set{J}^P \; | \; 
+    \alpha_i = 0 \textrm{ if } i \not \in \vect{u}, \; i = 1, ..., \inputDim\right\}.
+
+This set of multi-indices defines the functions that depends on the
+variables in the group :math:`\vect{u}` and *only* them.
+For any :math:`\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}`, let 
+:math:`\psi_{\vect{\alpha}}^{\operatorname{ce}}` be the orthogonal polynomial defined by :
+
+.. math::
+
+    \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
+    = 
+    \begin{cases}
+    \prod_{\substack{i = 1 \\ i \in \vect{u}}}^\inputDim \pi_{\alpha_i}^{(i)} (z_i) & \textrm{if } \alpha_i = 0 \textrm{ for any } i \not \in \vect{u}, \\
+    1 & \textrm{if } \alpha_i = 0 \textrm{ for } i = 1, ..., \inputDim, \\
+    0 & \textrm{otherwise}.
+    \end{cases}
+
+Therefore :
+
+.. math::
+
+    \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
+    = \sum_{\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}}
+    a_{\vect{\alpha}} \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
+
+for any :math:`\standardReal_{\vect{u}} \in \standardInputSpace_{\vect{u}}`.
+Finally, the conditional expectation of the surrogate model is:
+
+.. math::
+  
+  \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right)
+  = \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(T_{\vect{u}}\left(\inputReal_{\vect{u}}\right))
+
+where :math:`\standardRV_{\vect{u}} = T_{\vect{u}}(\inputRV_{\vect{u}})`
+is the corresponding marginal mapping of the iso-probabilistic mapping
+:math:`\standardRV = T(\inputRV)`.
+
+Parameters
+----------
+conditioningIndices : sequence of int in [0, inputDimension - 1]
+    The indices :math:`\vect{u}` of the input random vector to condition.
+
+Returns
+-------
+conditionalPCE : :class:`~openturns.FunctionalChaosResult`
+    The functional chaos result of the conditional expectation.
+    Its input dimension is :math:`\operatorname{card}(\vect{u})` and its output dimension
+    is :math:`\outputDim` (i.e. the output dimension is unchanged)."
+    
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosResult::drawErrorHistory

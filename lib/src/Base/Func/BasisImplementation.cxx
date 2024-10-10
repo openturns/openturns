@@ -97,6 +97,11 @@ Bool BasisImplementation::isOrthogonal() const
   return false;
 }
 
+Bool BasisImplementation::isTensorProduct() const
+{
+  return false;
+}
+
 Bool BasisImplementation::isFinite() const
 {
   return false;
