@@ -37,7 +37,7 @@ static const Factory<CombinationsDistribution> Factory_CombinationsDistribution;
 
 /* Default constructor */
 CombinationsDistribution::CombinationsDistribution()
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , k_(0)
   , n_(0)
 {
@@ -48,7 +48,7 @@ CombinationsDistribution::CombinationsDistribution()
 /* Parameters constructor */
 CombinationsDistribution::CombinationsDistribution(const UnsignedInteger k,
     const UnsignedInteger n)
-  : DiscreteDistribution()
+  : DistributionImplementation()
   , k_(0)
   , n_(0)
 {
@@ -360,6 +360,11 @@ CombinationsDistribution::PointWithDescriptionCollection CombinationsDistributio
   return parameters;
 }
 
+Bool CombinationsDistribution::isDiscrete() const
+{
+  return true;
+}
+
 /* K accessor */
 void CombinationsDistribution::setK(const UnsignedInteger k)
 {
@@ -421,7 +426,7 @@ void CombinationsDistribution::setKN(const UnsignedInteger k,
 /* Method save() stores the object through the StorageManager */
 void CombinationsDistribution::save(Advocate & adv) const
 {
-  DiscreteDistribution::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "k_", k_ );
   adv.saveAttribute( "n_", n_ );
   adv.saveAttribute( "logPDFValue_", logPDFValue_ );
@@ -430,7 +435,7 @@ void CombinationsDistribution::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void CombinationsDistribution::load(Advocate & adv)
 {
-  DiscreteDistribution::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "k_", k_ );
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "logPDFValue_", logPDFValue_ );
