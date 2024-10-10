@@ -46,7 +46,7 @@ Create a bi dimensional mesh as a box:
 >>> myInterval = ot.Interval(lowerBound, upperBound)
 >>> myMesh = myMesher.build(myInterval)
 
-Create a second order normal porcess of dimension 3:
+Create a second order normal process of dimension 3:
 
 >>> amplitude = [5]
 >>> scale = [3, 3]
