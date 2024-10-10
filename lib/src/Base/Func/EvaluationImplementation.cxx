@@ -571,13 +571,8 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point& centralPoint,
   if(!(xMin.getDimension() == inputDimension && xMax.getDimension() == inputDimension && pointNumber.getSize() == inputDimension)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be of dimension " << inputDimension;
   for(UnsignedInteger i = 0; i < inputDimension; ++i)
     if(!(pointNumber[i] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
-  LOGWARN(OSS() << "vMin =" << vMin);
-  LOGWARN(OSS() << "vMax =" << vMax);
   const Bool buildVMinMax = vMax == -SpecFunc::MaxScalar && vMin == -SpecFunc::MaxScalar;
-  LOGWARN(OSS() << "buildVMinMax =" << buildVMinMax);
   Scalar vMinCal = buildVMinMax ? SpecFunc::MaxScalar : vMin, vMaxCal = vMax;
-  LOGWARN(OSS() << "vMinCal =" << vMinCal);
-  LOGWARN(OSS() << "vMaxCal =" << vMaxCal);
   if(!buildVMinMax && !(vMin < vMax))throw InvalidArgumentException(HERE) << "Error: the vMin value must be less than the vMax value";
   //Building component samples
   std::vector<Sample>samples(inputDimension);
