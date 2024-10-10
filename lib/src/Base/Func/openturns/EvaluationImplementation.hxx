@@ -36,6 +36,7 @@
 #include "openturns/Graph.hxx"
 #include "openturns/GridLayout.hxx"
 #include "openturns/AtomicInt.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -172,18 +173,10 @@ public:
                               const Point& xMin,
                               const Point& xMax,
                               const Indices& pointNumber,
-                              const Scalar vMin,
-                              const Scalar vMax,
                               const Bool withMonoDimensionalCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimensionalCuts"),
-                              const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const;
-
-  /** Draw cross sections of the function assumed to have 1D output (vMin and vMax are calculated) */
-  virtual GridLayout drawCrossCuts(const Point& centralPoint,
-                              const Point& xMin,
-                              const Point& xMax,
-                              const Indices& pointNumber,
-                              const Bool withMonoDimensionalCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimensionalCuts"),
-                              const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled")) const;
+                              const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
+                              const Scalar vMin = -SpecFunc::MaxScalar,
+                              const Scalar vMax = -SpecFunc::MaxScalar) const;
 
   /** Stop callback */
   typedef Bool (*StopCallback)(void * state);

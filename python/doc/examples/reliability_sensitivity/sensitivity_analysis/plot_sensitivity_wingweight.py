@@ -2,6 +2,7 @@
 Example of sensitivity analyses on the wing weight model
 =========================================================
 """
+
 # %%
 #
 # This example is a brief overview of the use of the most usual sensitivity analysis techniques and how to call them:
@@ -52,8 +53,16 @@ description = m.distributionX.getDescription()
 description.add("")
 m.model.setDescription(description)
 m.model.setName("wing weight model")
-grid = m.model.drawCrossCuts(m.distributionX.getMean(), lowerBound, upperBound, [nX] * m.model.getInputDimension(),
-                             176.0, 363.0, False, True)
+grid = m.model.drawCrossCuts(
+    m.distributionX.getMean(),
+    lowerBound,
+    upperBound,
+    [nX] * m.model.getInputDimension(),
+    False,
+    True,
+    176.0,
+    363.0,
+)
 grid.setTitle("")
 # Get View object to manipulate the underlying figure
 # Here we decide the colormap and the number of levels used for all contours
@@ -63,7 +72,9 @@ axes = view.getAxes()
 fig = view.getFigure()
 fig.set_size_inches(12, 12)  # reduce the size
 # Setup a large colorbar
-fig.colorbar(view.getSubviews()[1][0].getContourSets()[0], ax=axes[:-2, -1], fraction=0.3)
+fig.colorbar(
+    view.getSubviews()[1][0].getContourSets()[0], ax=axes[:-2, -1], fraction=0.3
+)
 # Hide unwanted axes labels
 for i in range(len(axes)):
     for j in range(i + 1):
