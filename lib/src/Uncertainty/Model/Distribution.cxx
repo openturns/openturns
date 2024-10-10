@@ -373,7 +373,7 @@ Point Distribution::getRealization() const
   return getImplementation()->getRealization();
 }
 
-/* Get a numerical sample whose elements follow the distribution */
+/* Get a sample whose elements follow the distribution */
 Sample Distribution::getSample(const UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);

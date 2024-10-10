@@ -67,7 +67,7 @@ Point UsualRandomVector::getRealization() const
   return distribution_.getRealization();
 }
 
-/* Numerical sample accessor */
+/* Sample accessor */
 Sample UsualRandomVector::getSample(const UnsignedInteger size) const
 {
   Sample sample(distribution_.getSample(size));

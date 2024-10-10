@@ -54,20 +54,23 @@
 %include simulation_module.i
 
 /* Base/Algo */
-%include SimplicialCubature.i
 %include CubaIntegration.i
+%include SimplicialCubature.i
 
 /* Uncertainty/Algorithm/Metamodel */
-%include UserDefinedMetropolisHastings.i
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
+%include UserDefinedMetropolisHastings.i
 
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i
 
 /* Uncertainty/Distribution */
+%include CombinationsDistribution.i
+%include MarginalUniformOrderStatistics.i
+%include PosteriorDistribution.i
 %include SmoothedUniformFactory.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i

@@ -34,7 +34,9 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PointToFieldConnection
  *
- * The class that implement the composition of two numerical math functions implementations.
+ * The class that implement the composition of a PointToFieldFunction
+ * and a FieldFunction of the composition of a PointToFieldFunction and
+ * a functrion.
  */
 class OT_API PointToFieldConnection
   : public PointToFieldFunctionImplementation

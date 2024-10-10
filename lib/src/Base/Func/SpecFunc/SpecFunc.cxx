@@ -1338,6 +1338,14 @@ UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
   return value;
 }
 
+Scalar SpecFunc::LogBinomialCoefficient(const UnsignedInteger n,
+    const UnsignedInteger k)
+{
+  if (k > n) return LowestScalar; // by convention
+  if ((k == n) || (k == 0)) return 0.0;
+  return -LogBeta(k + 1.0, n - k + 1.0) - std::log1p(n);
+}
+
 Scalar SpecFunc::AccurateSum(const Point & v)
 {
 #ifdef OPENTURNS_HAVE_MPFR

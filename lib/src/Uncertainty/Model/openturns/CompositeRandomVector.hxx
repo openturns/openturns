@@ -72,7 +72,7 @@ public:
   Point getRealization() const override;
   Point getFrozenRealization(const Point & fixedPoint) const override;
 
-  /** Numerical sample accessor */
+  /** Sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
   Sample getFrozenSample(const Sample & fixedSample) const override;
 
@@ -105,7 +105,7 @@ protected:
   /** The function the vector is the output */
   Function function_;
 
-  /** The antecedent of the vector through the numerical math function */
+  /** The antecedent of the vector through the function */
   RandomVector antecedent_;
 
 private:

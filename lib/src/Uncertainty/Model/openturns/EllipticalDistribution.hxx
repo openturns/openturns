@@ -38,8 +38,6 @@ class OT_API EllipticalDistribution
 
 public:
 
-  // Numerical precision for computing the quantile
-
   /** Default constructor */
   EllipticalDistribution();
 

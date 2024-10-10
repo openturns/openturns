@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for a constant numerical math hessian implementation
+ *  @brief Class for a constant hessian implementation
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *

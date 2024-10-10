@@ -568,7 +568,7 @@ void DistFunc::rDiscreteSetup(const Point & probabilities,
   } // small and large not empty
   for (; indexLarge < largeSize; ++indexLarge)
     base[large[indexLarge]] = 1.0;
-  // The next loop accurs only due to numerical instability
+  // The next loop occurs only due to numerical instability
   for (; indexSmall < smallSize; ++indexSmall)
     base[small[indexSmall]] = 1.0;
 }

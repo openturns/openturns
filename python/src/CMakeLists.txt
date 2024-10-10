@@ -737,7 +737,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
                       UniformMuSigma.i UniformMuSigma_doc.i.in
-		      UniformOverMesh.i UniformOverMesh_doc.i.in
+		              UniformOverMesh.i UniformOverMesh_doc.i.in
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
@@ -1024,6 +1024,7 @@ ot_add_python_module(experimental experimental_module.i
                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
+                     MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      SimplicialCubature.i SimplicialCubature_doc.i.in
@@ -1035,6 +1036,7 @@ ot_add_python_module(experimental experimental_module.i
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
                      GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
                      GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
+                     CombinationsDistribution.i CombinationsDistribution_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

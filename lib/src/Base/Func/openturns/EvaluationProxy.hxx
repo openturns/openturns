@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class EvaluationProxy
  *
  * This class offers an abstract interface for the implementation
- * of an real numerical mathematical function into the platform.
+ * of an real nfunction into the platform.
  */
 class OT_API EvaluationProxy
   : public EvaluationImplementation

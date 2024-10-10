@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math function implementations
+ *  @brief Class allowing to produce a field which values are a function of the vertices coordinates
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -30,9 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class TrendTransform
  *
- * The class that simulates a dynamical function based on a
- * numerical math function that acts only on the temporal part
- * of a time series.
+ * Class allowing to produce a field which values are a function of the vertices coordinates
  */
 
 class InverseTrendTransform;

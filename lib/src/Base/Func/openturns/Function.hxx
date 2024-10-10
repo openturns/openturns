@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements numerical math functions
+ *  @brief The class that implements functions
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -31,9 +31,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Function
- * @brief Simulates a numerical math function
+ * @brief Simulates a function
  *
- * The class that simulates a numerical math function,
+ * The class that simulates a function,
  * its gradient and its hessian. This class is just an interface
  * to actual implementation objects that can be hot-replaced
  * during computation. Each implementation object refers to

@@ -80,7 +80,7 @@ private:
 
   /** Cached values taken from grid_ */
   Scalar start_ = 0.0;
-  UnsignedInteger N_ = 0.0;
+  UnsignedInteger N_ = 0;
   Scalar step_ = 0.0;
 
 } ; /* class RegularGridEnclosingSimplex */
