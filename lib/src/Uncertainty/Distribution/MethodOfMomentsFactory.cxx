@@ -170,7 +170,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(getOutputDimension(), SpecFunc::MaxScalar);
+      return Point(getOutputDimension(), SpecFunc::Infinity);
     }
 
     // compute moments of conditioned distribution
@@ -193,7 +193,7 @@ public:
     }
     const Scalar sigma2 = distribution.getCovariance()(0, 0);
     if (!(sigma2 > 0.0))
-      return Point(getOutputDimension(), SpecFunc::MaxScalar);
+      return Point(getOutputDimension(), SpecFunc::Infinity);
     return result / sigma2;
   }
 

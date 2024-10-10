@@ -106,7 +106,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
 
   // Here we have to use the double/double version of std::pow to make VC++ happy. Grrr.
   const UnsignedInteger basisSize = static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0 * marginalDegree, 1.0 * dimension)));
-  const Basis basis(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(dimension, LegendreFactory()), HyperbolicAnisotropicEnumerateFunction(dimension, SpecFunc::MaxScalar)));
+  const Basis basis(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(dimension, LegendreFactory()), HyperbolicAnisotropicEnumerateFunction(dimension, SpecFunc::Infinity)));
   for(UnsignedInteger i = 0; i < basisSize; ++i)
   {
     basis_.add(basis.build(i));

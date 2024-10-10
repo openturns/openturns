@@ -891,7 +891,7 @@ Scalar DistFunc::dNonCentralChiSquare(const Scalar nu,
   Scalar pForward = std::exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda));
   Scalar pBackward = pForward;
   Scalar value = pForward;
-  Scalar error = SpecFunc::MaxScalar;
+  Scalar error = SpecFunc::Infinity;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                                               \
@@ -965,7 +965,7 @@ Scalar DistFunc::pNonCentralChiSquare(const Scalar nu,
   Scalar gammaBackward = gammaForward;
   Scalar pBackward = expBackward * gammaBackward;
   Scalar value = pForward;
-  Scalar error = SpecFunc::MaxScalar;
+  Scalar error = SpecFunc::Infinity;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                       \
@@ -1188,8 +1188,8 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
 Scalar DistFunc::qNormal(const Scalar p,
                          const Bool tail)
 {
-  if (p == 0.0) return (tail ?  SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
-  if (p == 1.0) return (tail ? -SpecFunc::MaxScalar :  SpecFunc::MaxScalar);
+  if (p == 0.0) return (tail ?  SpecFunc::Infinity : -SpecFunc::Infinity);
+  if (p == 1.0) return (tail ? -SpecFunc::Infinity :  SpecFunc::Infinity);
 
   static const Scalar a[6] =
   {

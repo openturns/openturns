@@ -191,7 +191,7 @@ void EfficientGlobalOptimization::run()
   LOGINFO(OSS() << "Initial best x=" << optimalPoint << " f(x)=" << optimalValue);
 
   // compute minimum distance between design points to assess the correlation lengths of the metamodel
-  Point minimumDistance(dimension, SpecFunc::MaxScalar);
+  Point minimumDistance(dimension, SpecFunc::Infinity);
   if (!hasNoise)
   {
     for (UnsignedInteger i1 = 0; i1 < size; ++ i1)
@@ -221,7 +221,7 @@ void EfficientGlobalOptimization::run()
     {
       // with noisy objective we don't have access to the real current optimal value
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
-      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
+      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::Infinity : SpecFunc::LowestScalar;
       const Sample mx(metaModelResult.getConditionalMean(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {

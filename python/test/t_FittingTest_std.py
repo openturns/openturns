@@ -135,7 +135,7 @@ for i in range(distributionNumber):
     for j in range(distributionNumber):
         value = ot.FittingTest.BIC(sampleCollection[i], distributionCollection[j], 0)
         # TODO JM: remove the check after the use of infs has been thoroughly tested
-        if value < ot.SpecFunc.MaxScalar:
+        if value < ot.SpecFunc.Infinity:
             resultBIC[i, j] = value
         else:
             resultBIC[i, j] = value * 2.0

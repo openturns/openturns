@@ -150,7 +150,7 @@ void LinearModelAlgorithm::run()
   {
     const Scalar factorOneMinusLeverageI = sigma2 * (1.0 - leverages[i]);
     if (!(factorOneMinusLeverageI > 0))
-      standardizedResiduals(i, 0) = SpecFunc::MaxScalar;
+      standardizedResiduals(i, 0) = SpecFunc::Infinity;
     else
       standardizedResiduals(i, 0) = residualSample(i, 0) / std::sqrt(factorOneMinusLeverageI);
   }

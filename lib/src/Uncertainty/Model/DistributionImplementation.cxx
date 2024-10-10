@@ -2389,9 +2389,9 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   const Scalar p = tail ? 1.0 - prob : prob;
   const CDFWrapper wrapper(this);
   const Function f(bindMethod<CDFWrapper, Point, Point>(wrapper, &CDFWrapper::computeCDF, 1, 1));
-  const Scalar leftTau = (std::isinf(lower) ? -SpecFunc::ActualMaxScalar : lower);
+  const Scalar leftTau = (std::isinf(lower) ? -SpecFunc::MaxScalar : lower);
   const Scalar leftCDF = 0.0;
-  const Scalar rightTau = (std::isinf(upper) ? SpecFunc::ActualMaxScalar : upper);
+  const Scalar rightTau = (std::isinf(upper) ? SpecFunc::MaxScalar : upper);
   const Scalar rightCDF = 1.0;
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   Scalar root = solver.solve(f, p, leftTau, rightTau, leftCDF, rightCDF);
@@ -5270,14 +5270,14 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     bounds.add(0.0);
     values.add(SpecFunc::LowestScalar);
     bounds.add(0.0);
-    values.add(SpecFunc::MaxScalar);
+    values.add(SpecFunc::Infinity);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // For even exponent, the behaviour changes at 0
   bounds.add(0.0);
-  values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
+  values.add(exponent > 0 ? 0.0 : SpecFunc::Infinity);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
   return new CompositeDistribution(toPower, clone(), bounds, values);

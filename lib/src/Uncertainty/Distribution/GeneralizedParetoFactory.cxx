@@ -371,7 +371,7 @@ public:
     Point value(1);
     if (sigma <= 0.0)
     {
-      value[0] = -std::log(SpecFunc::ActualMaxScalar);
+      value[0] = -std::log(SpecFunc::MaxScalar);
       return value;
     }
     Scalar ll = 0.0;
@@ -390,7 +390,7 @@ public:
           const Scalar c1 = xi * zi / sigma;
           if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::ActualMaxScalar);
+            ll += -std::log(SpecFunc::MaxScalar);
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c1);
@@ -422,8 +422,8 @@ DistributionFactoryLikelihoodResult GeneralizedParetoFactory::buildMethodOfLikel
   problem.setMinimization(false);
 
   // sigma > 0
-  const Point lowerBound({SpecFunc::Precision, -SpecFunc::MaxScalar});
-  const Point upperBound(2, SpecFunc::MaxScalar);
+  const Point lowerBound({SpecFunc::Precision, -SpecFunc::Infinity});
+  const Point upperBound(2, SpecFunc::Infinity);
   const Interval::BoolCollection finiteLowerBound({true, false});
   const Interval::BoolCollection finiteUpperBound(2, false);
   problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -541,7 +541,7 @@ public:
 
     // sigma > 0
     const Point lowerBound({SpecFunc::Precision});
-    const Point upperBound({SpecFunc::MaxScalar});
+    const Point upperBound({SpecFunc::Infinity});
     const Interval::BoolCollection finiteLowerBound({true});
     const Interval::BoolCollection finiteUpperBound({false});
     problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -559,7 +559,7 @@ public:
         z.add(Point(1, sample_(i, 0) - u_));
 
     if (z.getSize() < 2)
-      return Point(1, -std::log(SpecFunc::ActualMaxScalar));
+      return Point(1, -std::log(SpecFunc::MaxScalar));
 
     const Scalar sigma0 = std::sqrt(6.0 * z.computeCovariance()(0, 0)) / M_PI;
 
@@ -576,7 +576,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::ActualMaxScalar));
+      return Point(1, -std::log(SpecFunc::MaxScalar));
     }
   }
 
@@ -636,17 +636,17 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildMethodOfXiProfileLikeliho
   if (zMax > mu)
     xiMin = -sigma / (zMax - mu);
   else
-    xiMin = -SpecFunc::MaxScalar;
+    xiMin = -SpecFunc::Infinity;
   Scalar xiMax;
   if (zMin < mu)
     xiMax = sigma / (mu - zMin);
   else
-    xiMax = SpecFunc::MaxScalar;
+    xiMax = SpecFunc::Infinity;
   */
 //   const Scalar uMin = 30-zMin;
 //   const Scalar uMax = 2*zMax+30;
-  const Scalar xiMin = -SpecFunc::MaxScalar;
-  const Scalar xiMax = SpecFunc::MaxScalar;
+  const Scalar xiMin = -SpecFunc::Infinity;
+  const Scalar xiMax = SpecFunc::Infinity;
   ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, xi, xiMin, xiMax);
   return result;
 }
@@ -804,8 +804,8 @@ public:
     shift += xiDim_;
 
     Scalar ll = startingValue_;
-    Scalar minSigma = SpecFunc::ActualMaxScalar;
-    Scalar minC1 = SpecFunc::ActualMaxScalar;
+    Scalar minSigma = SpecFunc::MaxScalar;
+    Scalar minC1 = SpecFunc::MaxScalar;
     for (UnsignedInteger i = 0; i < sample_.getSize(); ++ i)
     {
       const Scalar sigma = sigmaLink_(sigmaT[i])[0];
@@ -825,7 +825,7 @@ public:
           minC1 = std::min(minC1, 1.0 + c1);
           if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::ActualMaxScalar);
+            ll += -std::log(SpecFunc::MaxScalar);
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c1);
@@ -1442,7 +1442,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::ActualMaxScalar));
+      return Point(1, -std::log(SpecFunc::MaxScalar));
     }
   }
 
@@ -1531,8 +1531,8 @@ ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelih
   parameterDistribution.setDescription({"zm", "sigma", "xi"});
   const Scalar logLikelihood = solver.getResult().getOptimalValue()[0];
 
-  const Scalar zmMin = -SpecFunc::MaxScalar;
-  const Scalar zmMax =  SpecFunc::MaxScalar;
+  const Scalar zmMin = -SpecFunc::Infinity;
+  const Scalar zmMax =  SpecFunc::Infinity;
   ProfileLikelihoodResult result(distribution, parameterDistribution, logLikelihood, objective, zm, zmMin, zmMax);
   return result;
 }

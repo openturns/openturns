@@ -219,7 +219,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   {
     // select simplex with biggest abs. error
     UnsignedInteger ID = flatSize;
-    Scalar maxAES = -SpecFunc::MaxScalar;
+    Scalar maxAES = -SpecFunc::Infinity;
     for (UnsignedInteger i = 0; i < flatSize; ++ i)
       for (UnsignedInteger j = 0; j < outputDimension; ++ j)
         if (AES(i, j) > maxAES)

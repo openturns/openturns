@@ -409,7 +409,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     LOGWARN(OSS() << "TNC went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
 
     // penalize it
-    *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+    *f = problem.isMinimization() ? SpecFunc::Infinity : -SpecFunc::Infinity;
     std::memset(g, 0, dimension);
 
     // exit gracefully

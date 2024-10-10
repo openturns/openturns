@@ -142,7 +142,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
-  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
+  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::Infinity), parametersLowerFlags, Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 
   const Point parameters(factory.buildParameter(normalizedSample));

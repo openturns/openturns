@@ -304,7 +304,7 @@ Scalar Polya::computeScalarQuantile(const Scalar prob,
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (tail ? (prob == 1.0) : (prob == 0.0)) return 0.0;
-  if (tail ? (prob == 0.0) : (prob == 1.0)) return SpecFunc::MaxScalar;
+  if (tail ? (prob == 0.0) : (prob == 1.0)) return SpecFunc::Infinity;
   // Initialization by the Cornish-Fisher expansion
   Scalar qNorm = DistFunc::qNormal(prob, tail);
   Scalar gamma1 = getSkewness()[0];

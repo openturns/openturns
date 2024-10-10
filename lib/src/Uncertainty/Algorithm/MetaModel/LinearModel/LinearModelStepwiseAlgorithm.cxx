@@ -209,7 +209,7 @@ struct UpdateForwardFunctor
 
   UpdateForwardFunctor(const Basis & basis, const Indices & indexSet, const Matrix & Xmax, const Matrix & residual, const Matrix & Q)
     : basis_(basis), indexSet_(indexSet), Xmax_(Xmax), residual_(residual), Q_(Q)
-    , criterion_(SpecFunc::MaxScalar), bestIndex_(Xmax.getNbColumns()) {}
+    , criterion_(SpecFunc::Infinity), bestIndex_(Xmax.getNbColumns()) {}
 
   UpdateForwardFunctor(const UpdateForwardFunctor & other, TBBImplementation::Split)
     : basis_(other.basis_), indexSet_(other.indexSet_), Xmax_(other.Xmax_), residual_(other.residual_), Q_(other.Q_)
@@ -320,7 +320,7 @@ struct UpdateBackwardFunctor
                         const Matrix & Y, const Matrix & residual, const Matrix & Q, const Matrix & invRt)
     : basis_(basis), indexSet_(indexSet), columnMaxToCurrent_(columnMaxToCurrent), columnCurrentToMax_(columnCurrentToMax)
     , Y_(Y), residual_(residual), Q_(Q), invRt_(invRt)
-    , criterion_(SpecFunc::MaxScalar), bestIndex_(invRt.getNbColumns()) {}
+    , criterion_(SpecFunc::Infinity), bestIndex_(invRt.getNbColumns()) {}
 
   UpdateBackwardFunctor(const UpdateBackwardFunctor & other, TBBImplementation::Split)
     : basis_(other.basis_), indexSet_(other.indexSet_), columnMaxToCurrent_(other.columnMaxToCurrent_), columnCurrentToMax_(other.columnCurrentToMax_)
@@ -435,7 +435,7 @@ void LinearModelStepwiseAlgorithm::run()
     Lstar = penalty_ * p + computeLogLikelihood();
     LOGDEBUG(OSS() << "Iteration " << iterations << ", current criterion=" << Lstar);
 
-    Scalar LF = SpecFunc::MaxScalar;
+    Scalar LF = SpecFunc::Infinity;
     UnsignedInteger indexF = maxX_.getNbColumns();
     if (direction_ & FORWARD)
     {
@@ -452,7 +452,7 @@ void LinearModelStepwiseAlgorithm::run()
       LF = penalty_ * (p + 1) + size * std::log(updateFunctor.criterion_ / size);
       LOGDEBUG(OSS() << "Best candidate in forward direction is " << indexF << "(" << basis_[indexF] << "), squared residual norm=" << updateFunctor.criterion_ << ", criterion=" << LF);
     }
-    Scalar LB = SpecFunc::MaxScalar;
+    Scalar LB = SpecFunc::Infinity;
     UnsignedInteger indexB = maxX_.getNbColumns();
     if (direction_ & BACKWARD)
     {

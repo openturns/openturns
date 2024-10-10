@@ -332,7 +332,7 @@ private:
       }
       catch(...)
       {
-        return Point(1, SpecFunc::MaxScalar);
+        return Point(1, SpecFunc::Infinity);
       }
     }
 

@@ -110,7 +110,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   Scalar fA = f(Point(1, a))[0];
   Scalar fB = f(Point(1, b))[0];
   const Scalar largeValue = std::sqrt(SpecFunc::MaxScalar);
-  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" );
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("RiceFactory-MaximumIteration");
   UnsignedInteger iteration = 0;
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))

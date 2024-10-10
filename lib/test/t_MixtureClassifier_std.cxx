@@ -59,19 +59,13 @@ int main(int, char *[])
       for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
       {
         const Scalar grade = classifier.grade(inS[i], j);
-        // TODO JM: remove the check after the use of infs has been thoroughly tested
-        fullprint << "inP=" << Point(inS[i]).__str__() << " grade|" << j << "=" << (grade > SpecFunc::LowestScalar ? grade : grade * 2.0) << std::endl;
+        fullprint << "inP=" << Point(inS[i]).__str__() << " grade|" << j << "=" << grade << std::endl;
       }
     }
 
     for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
     {
       Point grades(classifier.grade(inS, Indices(inS.getSize(), j)));
-      for (UnsignedInteger k = 0; k < grades.getDimension(); ++ k)
-      {
-        // TODO JM: remove the check after the use of infs has been thoroughly tested
-        if (grades[k] <= SpecFunc::LowestScalar) grades[k] *= 2.0;
-      }
       fullprint << "grades|" << j << "=" << grades.__str__() << std::endl;
     }
   }

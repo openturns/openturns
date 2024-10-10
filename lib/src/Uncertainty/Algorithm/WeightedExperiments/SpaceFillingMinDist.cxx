@@ -61,7 +61,7 @@ Scalar SpaceFillingMinDist::evaluate(const Sample & sample) const
   const UnsignedInteger dimension(sample.getDimension());
   const Sample normalizedSample(normalize(sample));
   const Scalar* addr_sample = &normalizedSample(0, 0);
-  Scalar minDist = SpecFunc::MaxScalar;
+  Scalar minDist = SpecFunc::Infinity;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar* ptI = addr_sample + dimension * i;

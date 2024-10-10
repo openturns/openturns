@@ -388,7 +388,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
   // Best parameters
   Point bestTheta(0);
   Scalar bestSigma2 = 0.0;
-  Point bestInformationCriteria(3, SpecFunc::MaxScalar);
+  Point bestInformationCriteria(3, SpecFunc::Infinity);
   UnsignedInteger bestP = 0;
   UnsignedInteger bestQ = 0;
 
@@ -445,7 +445,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       else
       {
         LOGWARN(OSS() << "Warning! Unable to compute the corrected AIC criteria, too few data (" << m_ << ") for the model complexity (" << n + 1);
-        currentInformationCriteria[0] = SpecFunc::MaxScalar;
+        currentInformationCriteria[0] = SpecFunc::Infinity;
       }
       // Second, the AIC
       currentInformationCriteria[1] = -2.0 * logLikelihood + 2.0 * (n + 1);

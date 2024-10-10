@@ -217,7 +217,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   const UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   const UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
   Point constraintValue(nbIneqConst + 2 * nbEqConst, -1.0);
-  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::MaxScalar);
+  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::Infinity);
 
   Point outP;
   try
@@ -245,7 +245,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     if (std::isnan(outP[0]))
       throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
 
-    // cobyla freezes when dealing with SpecFunc::MaxScalar
+    // cobyla freezes when dealing with SpecFunc::Infinity
     if (outP[0] > cobylaMaxScalar) outP[0] = cobylaMaxScalar;
     if (outP[0] < -cobylaMaxScalar) outP[0] = -cobylaMaxScalar;
     *f = problem.isMinimization() ? outP[0] : -outP[0];

@@ -64,7 +64,7 @@ Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
         const Scalar delta(ptI[d] - ptJ[d]);
         squaredNorm += delta * delta;
       }
-      if (squaredNorm == 0.0) return SpecFunc::MaxScalar;
+      if (squaredNorm == 0.0) return SpecFunc::Infinity;
       sum += std::exp(-0.5 * p_ * std::log(squaredNorm));
     }
   }

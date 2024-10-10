@@ -79,7 +79,7 @@ Bool DomainUnion::contains(const Point & point) const
 /* Compute the Euclidean distance from a given point to the domain */
 Scalar DomainUnion::computeDistance(const Point & point) const
 {
-  Scalar distance = SpecFunc::MaxScalar;
+  Scalar distance = SpecFunc::Infinity;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++ i)
     distance = std::min(distance, collection_[i].computeDistance(point));
   return distance;

@@ -65,7 +65,7 @@ public:
     , indices_(size)
   {
     // Initialize values_[0] to a valid value
-    values_[0] = SpecFunc::MaxScalar;
+    values_[0] = SpecFunc::Infinity;
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
@@ -77,7 +77,7 @@ public:
       indices_.clear();
       values_.clear();
       size_ = 0;
-      values_[0] = SpecFunc::MaxScalar;
+      values_[0] = SpecFunc::Infinity;
     }
     Point lowerBoundingBox(boundingBox_.getLowerBound());
     Point upperBoundingBox(boundingBox_.getUpperBound());
@@ -464,7 +464,7 @@ UnsignedInteger KDTree::query(const Point & x) const
 #ifdef OPENTURNS_HAVE_NANOFLANN
   return p_implementation_->query(x);
 #else
-  Scalar smallestDistance = SpecFunc::MaxScalar;
+  Scalar smallestDistance = SpecFunc::Infinity;
   Point lowerBoundingBox(boundingBox_.getLowerBound());
   Point upperBoundingBox(boundingBox_.getUpperBound());
   return getNearestNeighbourIndex(1, x, smallestDistance, lowerBoundingBox, upperBoundingBox, 0);

@@ -76,7 +76,7 @@ public:
   Graph drawImportanceFactors() const;
   Graph drawImportanceFactorsRange(const Bool probabilityScale = true,
                                    const Scalar lower = SpecFunc::LowestScalar,
-                                   const Scalar upper = SpecFunc::MaxScalar) const;
+                                   const Scalar upper = SpecFunc::Infinity) const;
 
   /** Input sample accessors */
   Sample getInputSample() const;

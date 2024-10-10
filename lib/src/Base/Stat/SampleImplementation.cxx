@@ -2015,7 +2015,7 @@ Point SampleImplementation::getMax() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
-  Point maxPoint(dimension_, - SpecFunc::MaxScalar);
+  Point maxPoint(dimension_, - SpecFunc::Infinity);
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -2033,7 +2033,7 @@ Point SampleImplementation::getMin() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
-  Point minPoint(dimension_, SpecFunc::MaxScalar);
+  Point minPoint(dimension_, SpecFunc::Infinity);
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
