@@ -579,7 +579,7 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point& centralPoint,
   for(UnsignedInteger iX = 0; iX < inputDimension; iX++)
   {
     UnsignedInteger nX = pointNumber[iX];
-    SampleImplementation sample(nX, 1);
+    Sample sample(nX, 1);
     const Scalar dX = (xMax[iX] - xMin[iX]) / (nX - 1.0);
     for(UnsignedInteger i = 0; i < nX; ++i)
       sample(i, 0) = xMin[iX] + i * dX;

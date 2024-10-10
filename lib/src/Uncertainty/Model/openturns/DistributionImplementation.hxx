@@ -880,8 +880,6 @@ protected:
   mutable UniVariatePolynomial generatingFunction_;
 
 #ifndef SWIG
-  //To allow use of wrappers
-  friend class Distribution;
 
   // Class used to wrap the computePDF() method for interpolation purpose
   class PDFWrapper: public EvaluationImplementation
