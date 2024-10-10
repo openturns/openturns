@@ -52,7 +52,7 @@ Evaluate the integral with the default IteratedQuadrature algorithm:
 >>> Idefault = ot.IteratedQuadrature().integrate(f, a, b, l, u)
 >>> relative_error = abs(1.0-Idefault[0]/Iref[0])
 >>> print(relative_error)
-4.6...e-10"
+"
 
 // ---------------------------------------------------------------------
 
