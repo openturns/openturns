@@ -42,14 +42,14 @@ class ChabocheModel:
     Strain : :class:`~openturns.Uniform` distribution
         `Uniform(strainMin, strainMax)`
 
-    R : :class:`~openturns.Dirac` distribution
-        `Dirac(trueR)`
+    R : :class:`~openturns.LogNormal` distribution
+        `LogNormal().setParameter(ot.LogNormalMuSigma()([750.0e6, 11.0e6, 0.0]))`
 
-    C : :class:`~openturns.Dirac` distribution
-        `Dirac(trueC)`
+    C : :class:`~openturns.Normal` distribution
+        `Normal(2750.0e6, 250.0e6)`
 
-    Gamma : :class:`~openturns.Dirac` distribution
-        `Dirac(trueGamma)`
+    Gamma : :class:`~openturns.Normal` distribution
+        `Normal(10.0, 2.0)`
 
     inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
@@ -102,15 +102,16 @@ class ChabocheModel:
         self.Strain.setDescription(["Strain"])
 
         self.trueR = trueR
-        self.R = ot.Dirac(self.trueR)
+        self.R = ot.LogNormal()
+        self.R.setParameter(ot.LogNormalMuSigma()([750.0e6, 11.0e6, 0.0]))
         self.R.setDescription(["R"])
 
         self.trueC = trueC
-        self.C = ot.Dirac(self.trueC)
+        self.C = ot.Normal(2750.0e6, 250.0e6)
         self.C.setDescription(["C"])
 
         self.trueGamma = trueGamma
-        self.Gamma = ot.Dirac(self.trueGamma)
+        self.Gamma = ot.Normal(10.0, 2.0)
         self.Gamma.setDescription(["Gamma"])
 
         self.inputDistribution = ot.JointDistribution(

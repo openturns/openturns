@@ -29,6 +29,11 @@ The variables have the following distributions and are supposed to be independen
  :math:`\epsilon`  Uniform(a=0, b=0.07).
  ================  ===========================================================
 
+The model can be used in two different contexts:
+
+- model calibration with observations where :math:`R`, :math:`C` and :math:`\gamma` are parameters,
+- uncertainty propagation where :math:`R`, :math:`C` and :math:`\gamma` are random variables.
+
 Thanks to
 ---------
 

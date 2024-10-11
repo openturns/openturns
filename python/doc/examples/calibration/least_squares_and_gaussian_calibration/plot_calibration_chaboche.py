@@ -409,6 +409,9 @@ def plotDistributionGridPDF(distribution):
             else:
                 distributionJI = distribution.getMarginal([j, i])
                 graph = distributionJI.drawPDF()
+                contour = graph.getDrawable(0).getImplementation()
+                contour.setColorBarPosition("")  # Hide color bar
+                graph.setDrawable(contour, 0)
             graph.setLegends([""])
             graph.setTitle("")
             if i < dimension - 1:
