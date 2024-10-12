@@ -1312,11 +1312,12 @@ Description JointDistribution::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   Description description;
+  const Description distributionDescription(getDescription());
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++ marginalIndex)
   {
     Description marginalParametersDescription(distributionCollection_[marginalIndex].getParameterDescription());
     for (UnsignedInteger i = 0; i < marginalParametersDescription.getSize(); ++ i)
-      description.add(OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
+      description.add(OSS() << marginalParametersDescription[i] << "_" << distributionDescription[marginalIndex]);
   }
   if (dimension > 1)
   {

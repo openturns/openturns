@@ -722,11 +722,12 @@ Description BlockIndependentDistribution::getParameterDescription() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   Description description;
+  const Description distributionDescription(getDescription());
   for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++ marginalIndex)
   {
     Description marginalParametersDescription(distributionCollection_[marginalIndex].getParameterDescription());
     for (UnsignedInteger i = 0; i < marginalParametersDescription.getSize(); ++ i)
-      description.add(OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
+      description.add(OSS() << marginalParametersDescription[i] << "_" << distributionDescription[marginalIndex]);
   }
   return description;
 }
