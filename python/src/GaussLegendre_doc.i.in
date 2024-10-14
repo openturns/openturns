@@ -25,17 +25,14 @@ The Gauss-Legendre algorithm approximates the definite integral:
 .. math::
     :label: intInit
 
-    \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}}
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}}
 
 
-where :math:`\model: \Rset^\inputDim \mapsto \Rset^\outputDim` is a function and
-:math:`\vect{a}, \vect{b}\in\Rset^\inputDim` are the bounds
-where :math:`a_i \leq b_i` for :math:`i \in \{1, ..., \inputDim\}`.
-For :math:`i \in \{1, ..., \inputDim\}`, let :math:`n_i \in \Nset` be the number
+For :math:`i \in \{1, ..., \inputDim\}`, let :math:`N_i \in \Nset` be the number
 of marginal nodes of the univariate Gauss-Legendre quadrature.
 The algorithm uses a fixed tensorized Gauss-Legendre approximation based
 on the tensor-product Gauss quadrature using
-:math:`n_1, ..., n_\inputDim \in \Nset` marginal nodes.
+:math:`N_1, ..., N_\inputDim \in \Nset` marginal nodes.
 In other words, this algorithm uses an anisotropic quadrature rule,
 i.e. the number of nodes in each marginal dimension
 are not necessarily equal.
@@ -47,12 +44,8 @@ please use the :class:`~openturns.TensorProductExperiment` class.
 
 **Quadrature rule**
 
-More precisely, for any marginal index :math:`i \in \{1, ..., \inputDim\}`,
-for any node index :math:`k_i \in \{1, ..., n_i\}`,
-let :math:`x^{(i)}_{k_i} \in [a_i, b_i]` be the :math:`k_i`-th node and
-let :math:`w^{(i)}_{k_i} > 0` be the associated weight of the 1D
-Gauss-Legendre quadrature.
-The approximated integral is:
+We detail here the quadrature rule. As integral :eq:`intInit` is computed for each marginal of the integrand function,
+we consider now that :math:`f: \Rset^\inputDim \mapsto \Rset`. The approximated integral is:
 
 .. math::
     :label: approxInt
@@ -60,13 +53,13 @@ The approximated integral is:
     \int_{\vect{a}}^{\vect{b}} f(\vect{t}) \di{\vect{t}} = \sum_{n_1=1}^{N_1} \dots  \sum_{n_d=1}^{N_d}\left( \prod_{i=1}^d w^{N_i}_{n_i}\right) f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
 
 where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` -th node computed from the :math:`N_i` -points Gauss-
-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
+Legendre 1D integration rule and :math:`w^{N_i}_{n_i} > 0` the associated weight.
 
 The total number of nodes is the product of marginal number of nodes:
 
 .. math::
 
-    \prod_{i = 1}^\inputDim n_i.
+    \prod_{i = 1}^\inputDim N_i.
 
 To use that approximation, the integration variables are scaled to the domain :math:`[0,1]^d` with the
 mapping function :math:`\varphi` defined by:
@@ -79,7 +72,7 @@ mapping function :math:`\varphi` defined by:
 
 where each component is :math:`t_i = a_i + (b_i-a_i)x_i` for :math:`1 \leq i \leq d`.
 
-We denote by :math:`|\vect{b}-\vect{a}| = \prod_{i=1}^d (b_i-a_i)` the volume of the domain :math:`[\vect{a},
+Let :math:`|\vect{b}-\vect{a}| = \prod_{i=1}^d (b_i-a_i)` be the volume of the domain :math:`[\vect{a},
 \vect{b}]`. Then, we have:
 
 .. math::
@@ -119,7 +112,7 @@ Using :eq:`scaledFunc` and :eq:`approxIntStandard`, we get:
     & =  \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}(b_i-a_i)\right)
     f\left( a_1 + (b_1-a_1)\tilde{\xi}^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)
     
-Then, the nodes used to compute the approximation :eq:`approxInt` are defined as follows: 
+Then, the nodes used to compute approximation :eq:`approxInt` are defined as follows: 
 
 .. math::
     :label: nodesIntInit
