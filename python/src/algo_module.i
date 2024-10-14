@@ -84,6 +84,7 @@
 %include KarhunenLoeveProjection.i
 %include KarhunenLoeveLifting.i
 %include KarhunenLoeveValidation.i
+%include SimplicialCubature.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

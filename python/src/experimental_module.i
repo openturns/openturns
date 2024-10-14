@@ -54,7 +54,6 @@
 %include simulation_module.i
 
 /* Base/Algo */
-%include SimplicialCubature.i
 %include CubaIntegration.i
 
 /* Uncertainty/Algorithm/Metamodel */
