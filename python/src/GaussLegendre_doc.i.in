@@ -24,6 +24,7 @@ The Gauss-Legendre algorithm approximates the definite integral:
 
 .. math::
     :label: intInit
+
     \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}}
 
 
@@ -55,6 +56,7 @@ The approximated integral is:
 
 .. math::
     :label: approxInt
+
     \int_{\vect{a}}^{\vect{b}} f(\vect{t}) \di{\vect{t}} = \sum_{n_1=1}^{N_1} \dots  \sum_{n_d=1}^{N_d}\left( \prod_{i=1}^d w^{N_i}_{n_i}\right) f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
 
 where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` -th node computed from the :math:`N_i` -points Gauss-
