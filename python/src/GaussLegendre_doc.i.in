@@ -11,16 +11,16 @@ Parameters
 dimension : int, :math:`dimension>0`
     The input dimension of the functions to integrate.
 discretization : sequence of int
-    The number of nodes in each dimension.
-    The sequence must be non-empty and must contain only positive values.
-    The default discretization is stored as the `GaussLegendre-DefaultMarginalIntegrationPointsNumber` :class:`~openturns.ResourceMap` key, which is used for each dimension.
+    The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
+    
+    The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber* in each dimension, see :class:`~openturns.ResourceMap`.
 
 Notes
 -----
-The Gauss-Legendre algorithm approximates the definite integral:
+We consider a function :math:`f: \Rset^d \mapsto \Rset^p` and a domain :math:`\set{D} = [\vect{a}, \vect{b}]`. The Gauss-Legendre algorithm enables to approximate the definite integral:
 
 .. math::
-
+    :label: intInit
     \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}}
 
 
@@ -51,17 +51,70 @@ Gauss-Legendre quadrature.
 The approximated integral is:
 
 .. math::
+    :label: approxInt
+    \int_{\vect{a}}^{\vect{b}} f(\vect{t}) \di{\vect{t}} = \sum_{n_1=1}^{N_1} \dots  \sum_{n_d=1}^{N_d}\left( \prod_{i=1}^d w^{N_i}_{n_i}\right) f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
 
-    \int_{\vect{a}}^\vect{b} \model(\vect{x})\di{\vect{x}} 
-    \approx \sum_{k_1 = 1}^{n_1} \cdots \sum_{k_\inputDim = 1}^{n_\inputDim} 
-    \left(\prod_{i=1}^\inputDim w^{(i)}_{k_i}\right)
-    \model\left(x^{(1)}_{k_1},\dots,x^{(\inputDim)}_{k_\inputDim}\right).
+where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` -th node computed from the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
+
+To use that approximation, the integration variables are scaled to the domain :math:`[0,1]^d` with the mapping function~:math:`\varphi`:
+
+.. math::
+    :label: mapping
+
+    \varphi : & [0,1]^d  \rightarrow [\vect{a}, \vect{b}]\\
+           & \vect{x} \rightarrow \vect{t} = \vect{a} + (\vect{b}-\vect{a}) \vect{x}
+
+where each component is :math:`t_i = a_i + (b_i-a_i)x_i` for :math:`1 \leq i \leq d`.
 
 The total number of nodes is the product of marginal number of nodes:
 
 .. math::
 
     \prod_{i = 1}^\inputDim n_i.
+
+We denote by :math:`|\vect{b}-\vect{a}| = \prod_{i=1}^d (b_i-a_i)` the volume of the domain :math:`[\vect{a}, \vect{b}]`. Then, we have:
+
+.. math::
+    :label: equivInt
+
+    \int_{\vect{a}}^{\vect{b}} f(\vect{t})\di{\vect{t}} & = \int_{[0,1]^d} |\vect{b}-\vect{a}| f\left( \vect{a} + (\vect{b}-\vect{a})\vect{x}\right)\di{\vect{x}} \\
+    & = \int_{[0,1]^d} \tilde{f}(\vect{x})\di{\vect{x}}
+
+where we introduced the scaled function :math:`\tilde{f}` on :math:`[0,1]^d` defined by:
+
+.. math::
+    :label: scaledFunc
+
+    \tilde{f}(\vect{x}) = |\vect{b}-\vect{a}| f \circ \varphi ( \vect{x} )
+
+Then, the Gauss-Legendre quadrature rule is applied to the function :math:`\tilde{f}` defined on :math:`[0,1]^d`. We denote by :math:`\tilde{\xi}^{N_i}_{n_i}` the :math:`n_i` -th node of the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`\tilde{w}^{N_i}_{n_i}` the associated weight. Then we have:
+
+.. math::
+    :label: approxIntStandard
+
+    \int_{[0,1]^d} \tilde{f}(\vect{x})\di{\vect{x}} = \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right)\tilde{f}(\tilde{\xi}^{N_1}_{n_1},\dots,\tilde{\xi}^{N_d}_{n_d})
+
+Using the :eq:`scaledFunc` and :eq:`approxIntStandard`, we get:
+
+.. math::
+    :label: intiInt2
+
+    \int_{\vect{a}}^{\vect{b}} f(\vect{t})\di{\vect{t}} & = \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right) |\vect{b}-\vect{a}| f\left( a_1 + (b_1-a_1)\tilde{\xi}^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)\\
+    & =  \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}(b_i-a_i)\right) f\left( a_1 + (b_1-a_1)\tilde{\xi}^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)
+    
+Then, the nodes used to compute the approximation :eq:`approxInt` are defined as follows: 
+
+.. math::
+    :label: nodesIntInit
+
+    \xi^{N_i}_{n_i} = a_i + (b_i-a_i)\tilde{\xi}^{N_i}_{n_i}
+
+and the weights are: 
+
+.. math::
+    :label: weightsIntInit
+
+    w^{N_i}_{n_i} = (b_i-a_i)\tilde{w}^{N_i}_{n_i}
 
 
 **Polynomial exactness**
@@ -93,6 +146,8 @@ See also
 --------
 GaussProductExperiment, TensorProductExperiment
 
+
+    
 Examples
 --------
 Create a Gauss-Legendre algorithm in dimension 2.
@@ -173,7 +228,7 @@ Examples
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::integrateWithNodes
-"Evaluation of the integral of :math:`f` on an interval.
+"Evaluation of the integral of :math:`f` on an interval with nodes.
 
 Parameters
 ----------
@@ -187,7 +242,11 @@ Returns
 value : :class:`~openturns.Point`
     Approximation of the integral.
 nodes : :class:`~openturns.Sample`.
-    The integration nodes.
+    The integration nodes defined in :eq:`nodesIntInit`.
+    
+Notes
+-----
+The nodes are those associated to the scaled function: :math:`(\xi^{N_i}_{n_i})`.
 
 Examples
 --------
@@ -223,19 +282,29 @@ discretization : :class:`~openturns.Indices`
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::getNodes
-"Accessor to the integration nodes.
+"Accessor to the integration nodes in :math:`[0,1]^d`.
 
 Returns
 -------
 nodes : :class:`~openturns.Sample`
-    The tensorized Gauss-Legendre integration nodes on :math:`[0,1]^\inputDim` where :math:`d>0` is the dimension of the integration algorithm."
+    The tensorized Gauss-Legendre integration nodes on :math:`[0,1]^\inputDim`
+    where :math:`d>0` is the dimension of the integration algorithm.
+    
+Notes
+-----
+The nodes are those associated to the scaled function: :math:`(\tilde{\xi}^{N_i}_{n_i})`."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::getWeights
-"Accessor to the integration weights.
+"Accessor to the integration weights for nodes in :math:`[0,1]^d`.
 
 Returns
 -------
 weights : :class:`~openturns.Point`
-    The tensorized Gauss-Legendre integration weights on :math:`[0,1]^\inputDim` where :math:`d>0` is the dimension of the integration algorithm."
+    The tensorized Gauss-Legendre integration weights on :math:`[0,1]^\inputDim`
+    where :math:`d>0` is the dimension of the integration algorithm.
+    
+Notes
+-----
+The weights are those associated to the scaled function: :math:`(\tilde{w}^{N_i}_{n_i})`."
 
