@@ -38,7 +38,7 @@ Bayesian calibration of hierarchical fission gas release models
 # The authors calibrated the models against measurements from the International Fuel Performance Experiments (IFPE) database.
 # This example follows the procedure described in their paper.
 # Please note however that we are using simplified models, so the results of this page
-# should not be expected to reproduce those of the paper. HAHAH
+# should not be expected to reproduce those of the paper.
 
 import openturns as ot
 from openturns.viewer import View
@@ -64,7 +64,7 @@ ot.RandomGenerator.SetSeed(0)
 # %%
 # Each experiment :math:`i` produced one measurement value,
 # which is used to define the likelihood of the associated model :math:`\model_i`
-# and latent variables :math:`x_{i, \mathrm{diff}}` and :math:`x_{i, \mathrm{crack}})`.
+# and latent variables :math:`x_{i, \mathrm{diff}}` and :math:`x_{i, \mathrm{crack}}`.
 
 likelihoods = [
     ot.Normal(v, fgr.measurement_uncertainty(v)) for v in fgr.measurement_values
@@ -84,7 +84,8 @@ likelihoods = [
 # This choice of prior distributions means that the posterior is partially conjugate.
 # For instance, the conditional posterior distribution of :math:`\mu_{\mathrm{diff}}`
 # (resp. :math:`\mu_{\mathrm{crack}}`)
-# is truncated normal with the following parameters (for :math:`\mu_{\mathrm{crack}}` simply replace :math:`\mathrm{diff}` with :math:`\mathrm{crack}` in what follows) :
+# is a truncated normal distribution with the following parameters
+# (for :math:`\mu_{\mathrm{crack}}` simply replace :math:`\mathrm{diff}` with :math:`\mathrm{crack}` in what follows) :
 #
 # - The truncation parameters are the bounds of the prior uniform distribution.
 # - The mean parameter is :math:`\frac{1}{\sampleSize_{\mathrm{exp}}} \sum_{i=1}^{\sampleSize_{\mathrm{exp}}} x_{\mathrm{diff}, i}`.
@@ -99,7 +100,8 @@ mu_desc = [f"$\\mu$_{{{label}}}" for label in desc]
 # %%
 # The conditional posterior distribution of :math:`\sigma_{\mathrm{diff}}`
 # (resp. :math:`\sigma_{\mathrm{crack}}`)
-# is truncated inverse gamma with the following parameters (for :math:`\sigma_{\mathrm{crack}}` simply replace :math:`\mathrm{diff}` with :math:`\mathrm{crack}` in what follows) :
+# is a truncated inverse gamma distribution with the following parameters
+# (for :math:`\sigma_{\mathrm{crack}}` simply replace :math:`\mathrm{diff}` with :math:`\mathrm{crack}` in what follows) :
 #
 # - The truncation parameters are the truncation parameters of the prior distribution.
 # - The :math:`\lambda` parameter is :math:`\frac{2}{\sum_{i=1}^{\sampleSize_{\mathrm{exp}}} \left(x_{\mathrm{diff}, i} - \mu_{\mathrm{diff}} \right)^2}`.
@@ -279,11 +281,6 @@ support = ot.Interval(
 )
 
 # %%
-# Remove the restriction on the proposal probability of the origin.
-ot.ResourceMap.SetAsScalar("Distribution-QMin", 0.0)
-ot.ResourceMap.SetAsScalar("Distribution-QMax", 1.0)
-
-# %%
 # Create the list of all samplers in the Gibbs algorithm as outlined in the chart below,
 # where direct samplers are represented in green and random walk Metropolis-Hastings samplers in blue.
 #
@@ -308,7 +305,7 @@ samplers = [
 
 # %%
 # We continue with the samplers of :math:`\sigma_{\mathrm{diff}}^2, \sigma_{\mathrm{crack}}^2`.
-# We are alse able to directly sample these conditional distributions.
+# We are also able to directly sample these conditional distributions.
 
 samplers += [
     ot.RandomVectorMetropolisHastings(
@@ -376,7 +373,11 @@ print("Maximum acceptance rate for random walk MH = ", np.max(acceptance[2 * ndi
 # Plot the posterior distribution
 # -------------------------------
 #
-# Represent only the :math:`\mu` and :math:`\sigma` parameters.
+# Please note that the following plots rely on the MCMC sample.
+# Although this is not done in the present example,
+# diagnostics should be run on the MCMC sample to assess the convergence of the Markov chain.
+#
+# We only represent the :math:`\mu` and :math:`\sigma` parameters.
 
 reduced_samples = samples[:, 0:4]
 
@@ -468,7 +469,7 @@ normal_mixture.setDescription(desc)
 # %%
 # Build a collection of random vectors such that the distribution
 # of each is the push-forward of the marginal distribution of :math:`(x_{\mathrm{diff}}, x_{\mathrm{crack}})`
-# defined above through one of the nexp models.
+# defined above through one of the :math:`\sampleSize_{\mathrm{exp}}` models.
 
 rv_normal_mixture = ot.RandomVector(normal_mixture)
 rv_models = [ot.CompositeRandomVector(model, rv_normal_mixture) for model in models]
