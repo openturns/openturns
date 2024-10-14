@@ -90,7 +90,7 @@ Returns
 -------
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF.
-    Default value is :class:`openturns.experimental.CubaIntegration` if available or else :class:`openturns.experimental.SimplicialCubature`."
+    Default value is :class:`openturns.experimental.CubaIntegration` if available or else :class:`openturns.SimplicialCubature`."
 
 // ---------------------------------------------------------------------
 
@@ -101,4 +101,4 @@ Parameters
 ----------
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF.
-    Default value is :class:`openturns.experimental.CubaIntegration` if available or else :class:`openturns.experimental.SimplicialCubature`."
+    Default value is :class:`openturns.experimental.CubaIntegration` if available or else :class:`openturns.SimplicialCubature`."

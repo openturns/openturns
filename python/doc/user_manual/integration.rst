@@ -11,7 +11,7 @@ Integration
     IntegrationAlgorithm
     FilonQuadrature
     experimental.CubaIntegration
-    experimental.SimplicialCubature
+    SimplicialCubature
     experimental.ExperimentIntegration
 
 .. autosummary::

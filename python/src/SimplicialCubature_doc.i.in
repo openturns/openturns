@@ -1,10 +1,6 @@
 %feature("docstring") OT::SimplicialCubature
 "Integration over a mesh.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Notes
 -----
 This is a reimplementation of the method described in [genz2003]_.
@@ -13,11 +9,10 @@ The original matlab file can be found at https://www.math.wsu.edu/faculty/genz/s
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]]
 >>> simplicies = [[0, 1, 2]]
 >>> mesh = ot.Mesh(vertices, simplicies)
->>> algo = otexp.SimplicialCubature()
+>>> algo = ot.SimplicialCubature()
 >>> f = ot.SymbolicFunction(['x1', 'x2'], ['exp(x1 + x2)'])
 >>> value = algo.integrate(f, mesh)"
 
@@ -42,11 +37,10 @@ value : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]]
 >>> simplicies = [[0, 1, 2]]
 >>> mesh = ot.Mesh(vertices, simplicies)
->>> algo = otexp.SimplicialCubature()
+>>> algo = ot.SimplicialCubature()
 >>> f = ot.SymbolicFunction(['x1', 'x2'], ['exp(x1 + x2)'])
 >>> value = algo.integrate(f, mesh)"
 
