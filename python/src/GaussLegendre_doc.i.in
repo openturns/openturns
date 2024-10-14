@@ -13,8 +13,7 @@ dimension : int, :math:`dimension>0`
 discretization : sequence of int
     The number of nodes in each dimension.
     The sequence must be non-empty and must contain only positive values.
-    The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber*
-    in each dimension, see :class:`~openturns.ResourceMap`.
+    The default discretization is stored as the `GaussLegendre-DefaultMarginalIntegrationPointsNumber` :class:`~openturns.ResourceMap` key, which is used for each dimension.
 
 Notes
 -----
