@@ -125,10 +125,11 @@ for dimension in dimension_list:
     graph.add(curve)
     graph_index += 1
 graph.setLogScale(ot.GraphImplementation.LOGY)
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition('upper left')
 view = otv.View(
     graph,
     figure_kw={"figsize": (5.0, 3.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.tight_layout()
 plt.show()
@@ -175,10 +176,11 @@ for dimension in range(1, dimension_max):
     graph.add(curve)
     graph_index += 1
 graph.setLogScale(ot.GraphImplementation.LOGY)
+graph.setLegendCorner([1.0, 1.0])
+graph.setLegendPosition('upper left')
 view = otv.View(
     graph,
     figure_kw={"figsize": (5.0, 3.0)},
-    legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 
 plt.tight_layout()
