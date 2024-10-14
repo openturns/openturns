@@ -289,3 +289,7 @@ solver.setStartingPoint(startingPoint)
 logNormalFactoryWithZeroLocation.setOptimizationAlgorithm(solver)
 fittedDistribution = logNormalFactoryWithZeroLocation.build(sample)
 print("   fittedDistribution = ", fittedDistribution)
+
+# %%
+# Reset altered entries
+ot.ResourceMap.Reload()
