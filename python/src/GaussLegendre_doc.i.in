@@ -13,8 +13,9 @@ dimension : int, :math:`dimension>0`
 discretization : sequence of int
     The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
     
-    The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber* in each dimension,
-    see :class:`~openturns.ResourceMap`.
+    The default discretization is stored as the `GaussLegendre-
+    DefaultMarginalIntegrationPointsNumber` :class:`~openturns.ResourceMap` key,
+    which is used for each dimension.
 
 Notes
 -----
@@ -105,7 +106,7 @@ Then we have:
     \left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right)\tilde{f}(\tilde{\xi}^{N_1}_{n_1},\dots,\tilde{\xi}^{N_d}
     _{n_d})
 
-Using the :eq:`scaledFunc` and :eq:`approxIntStandard`, we get:
+Using :eq:`scaledFunc` and :eq:`approxIntStandard`, we get:
 
 .. math::
     :label: intiInt2

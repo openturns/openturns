@@ -68,7 +68,8 @@ view = otv.View(graph_model, square_axes=True)
 #
 #   Y = \model(\inputRV)
 #
-# We want to estimate the probability :math:`P_f` of the output variable to be greater than a prescribed threshold :math:`s=10` : this is the failure event.
+# We want to estimate the probability :math:`P_f` of the output variable to be greater than a
+# prescribed threshold :math:`s=10` : this is the failure event.
 # This probability is simply expressed for a continuous random vector :math:`\inputRV` as:
 #
 # .. math::
@@ -86,7 +87,7 @@ view = otv.View(graph_model, square_axes=True)
 # of :math:`\inputRV`.
 
 # %%
-# We first define random vectors with the :class:`~openturns.RandomVector`
+# We first define random vectors
 # and the failure event associated to the output random variable.
 vector_X = ot.RandomVector(dist_X)
 vector_Y = ot.CompositeRandomVector(g, vector_X)
@@ -511,7 +512,7 @@ view = otv.View(graph_standard_space)
 #
 #    \kappa(x) = \frac{\ell''(x)}{(1+[\ell'(x)]^2)^{3/2}}.
 #
-# For the osculating parabola of concern we use the gradient and hessian previously computed:
+# For the osculating parabola of concern we use the previously computed gradient and Hessian previously computed:
 #
 curvature = (d2z1_star[0, 0, 0]) / (1 + (dz1_star[0, 0]) ** 2) ** (3 / 2)
 print("Curvature (analytic formula) = ", curvature)

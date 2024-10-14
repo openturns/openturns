@@ -13,7 +13,7 @@ Create a mixture of distributions
 #
 # Let :math:`(\cL_1, \dots, \cL_N)` a collection of distributions and :math:`(\alpha_1, \dots,
 # \alpha_N)` a collection of positive weights such that :math:`\sum_{i=1}^N \alpha_i = 1`.
-# We denote by :math:`\inputRV_i` the random vector whose distribution is :math:`\cL_i`.
+# Let :math:`\inputRV_i` be a random vector whose distribution is :math:`\cL_i`.
 #
 # In the case where all the :math:`\cL_i` have a probability density function :math:`\mu_i`,
 # then the mixture has a probability density function :math:`\inputMeasure` defined by:
@@ -139,7 +139,7 @@ view = otv.View(graph)
 # - :math:`\mathcal{L}_2` is a Generalized Pareto distribution (GPD),
 # - :math:`x_0` is a quantile of high level of :math:`X`.
 #
-# We denote by:
+# Let us define:
 #
 # .. math::
 #    w = \Prob{X \leq x_0}
@@ -195,8 +195,8 @@ print('n(1-w) = ', int(n * (1 - w)))
 # Then we fit a GPD parameterized by :math:`(\sigma, \xi, x_0)`: the
 # threshold is fixed to :math:`x_0`.
 # We use the estimator that maximizes the likelihood.
-# To help the optimisation problem to converge, we start by estimating the 3 parameters
-# :math:`(\sigma, \xi, u)` from the upper sample. Then we fix the threshold to :math:`x_0`
+# To solve the optimisation problem faster, we start by estimating the 3 parameters
+# :math:`(\sigma, \xi, u)` from the upper sample. Then we fix the threshold to :math:`u = x_0`
 # and we estimate the remaining parameters :math:`(\sigma, \xi)` using the previous values of
 # :math:`(\sigma, \xi)` as a starting point to the optimization problem.
 # We visualize the pdf of the GPD.
@@ -234,7 +234,6 @@ g_hist.add(draw_ref)
 g_hist.setLegends(['histogram', 'mixture', '', 'exact dist'])
 g_hist.setTitle(r'Distribution of $X$: Mixture')
 
-# sphinx_gallery_thumbnail_number = 8
 view = otv.View(g_hist)
 
 # We draw here only the mixture distribution to make the comparison easier.
@@ -295,7 +294,7 @@ view = otv.View(graph)
 # - a :class:`~openturns.Poisson`.
 #
 # The resulting distribution is not continuous nor discrete. It not possible to
-# draw the pdf ...
+# draw the pdf...
 
 # %%
 # We define the collection of distributions and the associated weights.
@@ -311,7 +310,7 @@ distribution = ot.Mixture(distributions, weights)
 print(distribution)
 
 # %%
-# We can not draw the probability distribution function as it is not defined.
+# We cannot draw the probability distribution function as it is not defined.
 # But, we can draw the cumulated distribution function.
 graph = distribution.drawCDF()
 graph.setTitle('Mixture of Normal, Poisson')

@@ -93,7 +93,7 @@ nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw in blue the nodes on the graph that contains the iso-lines of the
+# We can draw superimpose the nodes on the graph with the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where the
 # function has its discontinuities.
 cloud_nodes = ot.Cloud(nodes)
@@ -121,7 +121,7 @@ view = otv.View(g)
 # .. math::
 #    I = \int_{\set{D}} f(x,y)\, dxdy.
 #
-# Using Mapple, we obtain the reference value:
+# Using Maple, we obtain the reference value:
 #
 # .. math::
 #    I_{ref} = 3.51961338289448753812591427600
@@ -184,7 +184,7 @@ view = otv.View(g)
 # .. math::
 #    I = \int_{\set{D}} f(x,y)\, dxdy.
 #
-# Using Mapple, we obtain the reference value:
+# Using Maple, we obtain the reference value:
 #
 # .. math::
 #    I_{ref} = -0.548768615494004063851543284777
@@ -200,7 +200,7 @@ def kernel3(x):
 integrand = ot.PythonFunction(2, 1, kernel3)
 
 # %%
-# The domain of integration is defined by the two following functions:
+# The integration domain is defined by the two following functions:
 #
 # .. math::
 #
@@ -231,7 +231,7 @@ def kernel3_insideDomain(x):
 integrand_domain = ot.PythonFunction(2, 1, kernel3_insideDomain)
 a = 2 * m.pi
 b = 4.0
-# here, we ask for more levels than the default number store in :class:`~openturns.ResourceMap`.
+# Here, we increase the default number of levels.
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 30)
 g = integrand_domain.draw([-a, -b], [a, b])
 
@@ -250,6 +250,7 @@ g.setTitle(r'Function $f(x,y) =  cos(2x)sin(1.5y)$')
 g.setXTitle('x')
 g.setYTitle('y')
 view = otv.View(g)
+# sphinx_gallery_thumbnail_number = 4
 
 # %%
 # To get the nodes used to approximate the integral, we need to use a :class:`~openturns.MemoizeFunction`
@@ -265,7 +266,7 @@ nodes = integrand_memoized.getInputHistory()
 print('Nodes : ', nodes)
 
 # %%
-# We can draw in black the nodes on the graph that contains the iso-lines of the
+# We can superimpose the nodes on the graph with the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where
 # the function has fast variations.
 cloud_nodes = ot.Cloud(nodes)

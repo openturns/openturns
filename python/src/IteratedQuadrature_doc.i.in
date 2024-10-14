@@ -22,11 +22,10 @@ with :math:`f: \Rset^n \mapsto \Rset^p`, :math:`l_k, u_k: \Rset^k \mapsto \Rset`
 
 
 Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
-leads to a more precise evaluation of the integral but the cost is
-greater.
+leads to a more precise evaluation of the integral but at a greater cost.
 
 It is recommended to increase the order of the quadrature
-rule and the number of sub intervals if the integrand or one of
+rule and the number of subintervals if the integrand or one of
 the bound functions is smooth but with many oscillations.
 
 When the function :math:`f: \Rset \mapsto \Rset^p` has a scalar input, use the iterated quadrature algorithm of the :class:`~openturns.GaussKronrod` class.
@@ -51,7 +50,6 @@ Evaluate the integral with the default IteratedQuadrature algorithm:
 
 >>> Idefault = ot.IteratedQuadrature().integrate(f, a, b, l, u)
 >>> relative_error = abs(1.0-Idefault[0]/Iref[0])
->>> print(relative_error)
 "
 
 // ---------------------------------------------------------------------

@@ -17,7 +17,7 @@ myGaussKronrodPair : int
 
 Notes
 -----
-We consider a function with :math:`f: \Rset \mapsto \Rset^p`. The Gauss-Kronrod rule
+We consider a function :math:`f: \Rset \mapsto \Rset^p`. The Gauss-Kronrod rule
 :math:`G_mK_{2m+1}` with  :math:`m=2n+1` enables to build two approximations of the definite integral :math:`\int_{-1}^1 f(t)\di{t}` respectively defined by:
 
 .. math::
@@ -80,7 +80,7 @@ otherKronrodNodes : :class:`~openturns.Point`
 "
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussKronrodRule::getOtherKronrodWeights
-"Accessor to the  weights used in the Gauss-Kronrod approximation.
+"Accessor to the weights used in the Gauss-Kronrod approximation.
 
 Returns
 -------
@@ -94,7 +94,7 @@ otherKronrodWeights : :class:`~openturns.Point`
 Returns
 -------
 otherKronrodNodes : :class:`~openturns.Point`
-    The  positive nodes :math:`(\zeta_k)_{1 \leq k \leq m}`.
+    The positive nodes :math:`(\zeta_k)_{1 \leq k \leq m}`.
     
     It contains the positive Gauss nodes as we have :math:`\zeta_{2j}=\xi_j`.
 "

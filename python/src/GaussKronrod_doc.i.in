@@ -12,7 +12,7 @@ GKRule : :class:`~openturns.GaussKronrodRule`
 
 Notes
 -----
-We consider a function :math:`f: \Rset \mapsto \Rset^\outputDim` and a domain :math:`\set{D} = [a,b]` where :math:`\vect{a}, \vect{b} \in \Rset`.The Gauss-Kronrod algorithm approximates the definite
+We consider a function :math:`f: \Rset \mapsto \Rset^\outputDim` and a domain :math:`\set{D} = [a,b]` where :math:`a,b \in \Rset`.The Gauss-Kronrod algorithm approximates the definite
 integral:
 
 .. math::
@@ -24,8 +24,10 @@ using both Gauss and Kronrod approximations, using the rule
 defined in :class:`~openturns.GaussKronrodRule`.
 
 The Gauss-Kronrod algorithm evaluates
-the integral using the Gauss and the Konrod approximations. If the difference between both approximations is
-greater that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with the same
+the integral using the Gauss and the Konrod approximations. If the difference between both
+approximations is
+larger that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with 
+the same
 length. The Gauss-Kronrod algorithm is then applied on both subintervals with the sames rules.
 
 The algorithm is
@@ -107,8 +109,8 @@ ai, bi, ei : :class:`~openturns.Point`;
 
     *ei* the associated error estimation;
     
-    When used as input parameters, their value is an empty :class:`~openturns.Point`
-    which are then fulfilled with the subintervals and the error value.
+    When used as input parameters, they should be empty. They are then respectively filled
+    with the lower and upper bounds of the subintervals, and the error value.
 fi : :class:`~openturns.Sample`
     *fi* is the set of :math:`\int_{ai}^{bi} f(t)\di{t}`
 
