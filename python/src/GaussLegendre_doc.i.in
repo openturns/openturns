@@ -13,7 +13,8 @@ dimension : int, :math:`dimension>0`
 discretization : sequence of int
     The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
     
-    The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber* in each dimension, see :class:`~openturns.ResourceMap`.
+    The default discretization is *GaussLegendre-DefaultMarginalIntegrationPointsNumber* in each dimension,
+    see :class:`~openturns.ResourceMap`.
 
 Notes
 -----
@@ -54,9 +55,17 @@ The approximated integral is:
     :label: approxInt
     \int_{\vect{a}}^{\vect{b}} f(\vect{t}) \di{\vect{t}} = \sum_{n_1=1}^{N_1} \dots  \sum_{n_d=1}^{N_d}\left( \prod_{i=1}^d w^{N_i}_{n_i}\right) f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
 
-where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` -th node computed from the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
+where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i` -th node computed from the :math:`N_i` -points Gauss-
+Legendre 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
 
-To use that approximation, the integration variables are scaled to the domain :math:`[0,1]^d` with the mapping function denoted :math:`\varphi` and defined by:
+The total number of nodes is the product of marginal number of nodes:
+
+.. math::
+
+    \prod_{i = 1}^\inputDim n_i.
+
+To use that approximation, the integration variables are scaled to the domain :math:`[0,1]^d` with the
+mapping function :math:`\varphi` defined by:
 
 .. math::
     :label: mapping
@@ -66,18 +75,14 @@ To use that approximation, the integration variables are scaled to the domain :m
 
 where each component is :math:`t_i = a_i + (b_i-a_i)x_i` for :math:`1 \leq i \leq d`.
 
-The total number of nodes is the product of marginal number of nodes:
-
-.. math::
-
-    \prod_{i = 1}^\inputDim n_i.
-
-We denote by :math:`|\vect{b}-\vect{a}| = \prod_{i=1}^d (b_i-a_i)` the volume of the domain :math:`[\vect{a}, \vect{b}]`. Then, we have:
+We denote by :math:`|\vect{b}-\vect{a}| = \prod_{i=1}^d (b_i-a_i)` the volume of the domain :math:`[\vect{a},
+\vect{b}]`. Then, we have:
 
 .. math::
     :label: equivInt
 
-    \int_{\vect{a}}^{\vect{b}} f(\vect{t})\di{\vect{t}} & = \int_{[0,1]^d} |\vect{b}-\vect{a}| f\left( \vect{a} + (\vect{b}-\vect{a})\vect{x}\right)\di{\vect{x}} \\
+    \int_{\vect{a}}^{\vect{b}} f(\vect{t})\di{\vect{t}} & = \int_{[0,1]^d} |\vect{b}-\vect{a}| f\left(
+    \vect{a} + (\vect{b}-\vect{a})\vect{x}\right)\di{\vect{x}} \\
     & = \int_{[0,1]^d} \tilde{f}(\vect{x})\di{\vect{x}}
 
 where we introduced the scaled function :math:`\tilde{f}` on :math:`[0,1]^d` defined by:
@@ -87,20 +92,28 @@ where we introduced the scaled function :math:`\tilde{f}` on :math:`[0,1]^d` def
 
     \tilde{f}(\vect{x}) = |\vect{b}-\vect{a}| f \circ \varphi ( \vect{x} )
 
-Then, the Gauss-Legendre quadrature rule is applied to the function :math:`\tilde{f}` defined on :math:`[0,1]^d`. We denote by :math:`\tilde{\xi}^{N_i}_{n_i}` the :math:`n_i` -th node of the :math:`N_i` -points Gauss-Legendre 1D integration rule and :math:`\tilde{w}^{N_i}_{n_i}` the associated weight. Then we have:
+Then, the Gauss-Legendre quadrature rule is applied to the function :math:`\tilde{f}` defined on
+:math:`[0,1]^d`. We denote by :math:`\tilde{\xi}^{N_i}_{n_i}` the :math:`n_i` -th node of the :math:`N_i` 
+-points Gauss-Legendre 1D integration rule and :math:`\tilde{w}^{N_i}_{n_i}` the associated weight.
+Then we have:
 
 .. math::
     :label: approxIntStandard
 
-    \int_{[0,1]^d} \tilde{f}(\vect{x})\di{\vect{x}} = \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right)\tilde{f}(\tilde{\xi}^{N_1}_{n_1},\dots,\tilde{\xi}^{N_d}_{n_d})
+    \int_{[0,1]^d} \tilde{f}(\vect{x})\di{\vect{x}} = \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}
+    \left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right)\tilde{f}(\tilde{\xi}^{N_1}_{n_1},\dots,\tilde{\xi}^{N_d}
+    _{n_d})
 
 Using the :eq:`scaledFunc` and :eq:`approxIntStandard`, we get:
 
 .. math::
     :label: intiInt2
 
-    \int_{\vect{a}}^{\vect{b}} f(\vect{t})\di{\vect{t}} & = \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right) |\vect{b}-\vect{a}| f\left( a_1 + (b_1-a_1)\tilde{\xi}^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)\\
-    & =  \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}(b_i-a_i)\right) f\left( a_1 + (b_1-a_1)\tilde{\xi}^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)
+    \int_{\vect{a}}^{\vect{b}} f(\vect{t})\di{\vect{t}} & = \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}
+    \left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}\right) |\vect{b}-\vect{a}| f\left( a_1 + (b_1-a_1)\tilde{\xi}
+    ^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)\\
+    & =  \sum_{n_1=1}^{N_1}\dots  \sum_{n_d=1}^{N_d}\left(\prod_{i=1}^d \tilde{w}^{N_i}_{n_i}(b_i-a_i)\right)
+    f\left( a_1 + (b_1-a_1)\tilde{\xi}^{N_1}_{n_1},\dots,a_d + (b_d-a_d)\tilde{\xi}^{N_d}_{n_d}\right)
     
 Then, the nodes used to compute the approximation :eq:`approxInt` are defined as follows: 
 
