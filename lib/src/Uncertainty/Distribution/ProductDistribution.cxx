@@ -149,7 +149,7 @@ public:
     if (isZero_)
     {
       if (pdf0_ == 0.0) return 0.0;
-      if (absU == 0.0) return SpecFunc::MaxScalar;
+      if (absU == 0.0) return SpecFunc::Infinity;
       return value * pdf0_ / absU;
     }
     // x_ != 0

@@ -28,7 +28,7 @@ namespace
 {
 Scalar debug_squared_minimum_distance(const Point & point, const Sample & sample)
 {
-  Scalar result = SpecFunc::MaxScalar;
+  Scalar result = SpecFunc::Infinity;
   for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
   {
     const Scalar distance2 = Point(sample[i] - point).normSquare();

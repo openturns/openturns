@@ -200,7 +200,7 @@ Scalar UniformOverMesh::computeCDF(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   Scalar cdf = 0.0;
   // Waiting for a better implementation
-  const Interval quadrant(Point(getDimension(), -SpecFunc::MaxScalar), point);
+  const Interval quadrant(Point(getDimension(), -SpecFunc::Infinity), point);
   const Interval intersection(quadrant.intersect(getRange()));
   if (intersection == getRange()) cdf = 1.0;
   else if (!intersection.isEmpty())

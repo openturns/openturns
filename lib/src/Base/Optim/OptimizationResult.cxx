@@ -432,7 +432,7 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   const Sample dataX(getInputSample());
   Sample dataY(getOutputSample().getMarginal(0));
   const UnsignedInteger size = dataY.getSize();
-  Scalar bestY = getProblem().isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  Scalar bestY = getProblem().isMinimization() ? SpecFunc::Infinity : -SpecFunc::Infinity;
   UnsignedInteger firstFeasibleIndex = size;
   const Scalar maximumConstraintError = ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError");
   for (UnsignedInteger i = 0; i < size; ++ i)

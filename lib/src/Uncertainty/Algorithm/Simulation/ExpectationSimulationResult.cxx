@@ -116,7 +116,7 @@ Point ExpectationSimulationResult::getCoefficientOfVariation() const
 /** Distribution of the expectation */
 Distribution ExpectationSimulationResult::getExpectationDistribution() const
 {
-  Scalar minVariance = SpecFunc::MaxScalar;
+  Scalar minVariance = SpecFunc::Infinity;
   for (UnsignedInteger j = 0; j < varianceEstimate_.getDimension(); ++ j)
     if (varianceEstimate_[j] < minVariance)
       minVariance = varianceEstimate_[j];

@@ -163,7 +163,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(getOutputDimension(), SpecFunc::MaxScalar);
+      return Point(getOutputDimension(), SpecFunc::Infinity);
     }
 
     // Compute the residual between the candidate CDF and the empirical CDF

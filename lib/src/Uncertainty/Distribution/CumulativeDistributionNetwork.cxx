@@ -100,7 +100,7 @@ void CumulativeDistributionNetwork::computeRange()
   if (size == 0) return;
   const UnsignedInteger dim = getDimension();
   const Point infiniteLowerBounds(dim, SpecFunc::LowestScalar);
-  const Point infiniteUpperBounds(dim,  SpecFunc::MaxScalar);
+  const Point infiniteUpperBounds(dim,  SpecFunc::Infinity);
   const Interval::BoolCollection infiniteLowerBoundsFlags(dim, false);
   const Interval::BoolCollection infiniteUpperBoundsFlags(dim, false);
   Interval range(infiniteLowerBounds, infiniteUpperBounds, infiniteLowerBoundsFlags, infiniteUpperBoundsFlags);

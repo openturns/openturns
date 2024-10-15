@@ -494,7 +494,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
   const Scalar coefNorm = std::exp(-logCoefNorm - poisLogPDF) / (2.0 * nA);
   Scalar value = coefNorm * computeGlobalPhi(r, a, b).real();
-  Scalar delta = SpecFunc::MaxScalar;
+  Scalar delta = SpecFunc::Infinity;
   Scalar sign2 = -2.0 * coefNorm;
   for (UnsignedInteger k = 1; k < nA; ++k)
   {

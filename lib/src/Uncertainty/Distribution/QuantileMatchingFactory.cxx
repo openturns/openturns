@@ -166,7 +166,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(getOutputDimension(), SpecFunc::MaxScalar);
+      return Point(getOutputDimension(), SpecFunc::Infinity);
     }
 
     // compute deltas between quantiles

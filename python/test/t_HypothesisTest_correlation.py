@@ -61,7 +61,7 @@ print("FullPearsonX0Y=", ot.HypothesisTest.FullPearson(sampleX0, sampleY, 0.10))
 # Probability of the H0 reject zone : 0.10
 print("FullPearsonXY=", ot.HypothesisTest.FullPearson(sampleX, sampleY, 0.10))
 
-# Expected result is SpecFunc::MaxScalar
+# Expected result is SpecFunc::Infinity
 fullPearsonYY = ot.HypothesisTest.FullPearson(sampleY, sampleY, 0.10)[0]
 testStatistic = fullPearsonYY.getStatistic()
-assert testStatistic == ot.SpecFunc.MaxScalar
+assert testStatistic == ot.SpecFunc.Infinity

@@ -89,7 +89,7 @@ class PythonRandomVector:
     ...        self.setParameter(ot.Point(dim))
     ...
     ...    def getRealization(self):
-    ...        dist = ot.SpecFunc.MaxScalar
+    ...        dist = ot.SpecFunc.Infinity
     ...        while dist>self._max_dist:
     ...            candidate = self._normal.getRealization()
     ...            dist = (candidate - self._center).norm()

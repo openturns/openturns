@@ -113,7 +113,7 @@ for n in range(len(allDistributions)):
 
     # computeProba test with bound far away
     p = distribution.computeProbability(
-        ot.Interval(-ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar)
+        ot.Interval(-ot.SpecFunc.Infinity, ot.SpecFunc.Infinity)
     )
     ott.assert_almost_equal(p, 1.0)
 

@@ -21,9 +21,9 @@ def flooding(X):
 
 myFunction = ot.PythonFunction(4, 1, flooding)
 Q = ot.Gumbel(558.0, 1013.0)
-Q = ot.TruncatedDistribution(Q, 0.0, ot.SpecFunc.MaxScalar)
+Q = ot.TruncatedDistribution(Q, 0.0, ot.SpecFunc.Infinity)
 Ks = ot.Normal(30.0, 7.5)
-Ks = ot.TruncatedDistribution(Ks, 0.0, ot.SpecFunc.MaxScalar)
+Ks = ot.TruncatedDistribution(Ks, 0.0, ot.SpecFunc.Infinity)
 Zv = ot.Uniform(49.0, 51.0)
 Zm = ot.Uniform(54.0, 56.0)
 inputX = ot.JointDistribution([Q, Ks, Zv, Zm])

@@ -49,7 +49,7 @@ public:
     , indices_(size)
   {
     // Initialize values_[0] to a valid value
-    values_[0] = SpecFunc::MaxScalar;
+    values_[0] = SpecFunc::Infinity;
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
@@ -61,7 +61,7 @@ public:
       indices_.clear();
       values_.clear();
       size_ = 0;
-      values_[0] = SpecFunc::MaxScalar;
+      values_[0] = SpecFunc::Infinity;
     }
     const UnsignedInteger dimension = points_.getDimension();
     const UnsignedInteger sampleSize = points_.getSize();
@@ -228,7 +228,7 @@ UnsignedInteger NaiveNearestNeighbour::query(const Point & x) const
 {
   const UnsignedInteger size = points_.getSize();
   const UnsignedInteger dimension = points_.getDimension();
-  Scalar smallestDistance = SpecFunc::MaxScalar;
+  Scalar smallestDistance = SpecFunc::Infinity;
   UnsignedInteger bestIndex = size;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
