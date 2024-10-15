@@ -116,6 +116,13 @@ Point CubaIntegration::integrate(const Function & function,
   const int flags = ResourceMap::GetAsUnsignedInteger("CubaIntegration-flags");
   const int seed = ResourceMap::GetAsUnsignedInteger("CubaIntegration-seed"); /* The seed for the pseudo-random-number generator */
 
+  if ((inputDimension < 2) && Description({"cuhre", "divonne"}).contains(algorithmName_))
+    throw InvalidArgumentException(HERE) << "Cuba minimum input dimension for cuhre/divonne is 2, got 1";
+  if (inputDimension > 1024)
+    throw InvalidArgumentException(HERE) << "Cuba maximum input dimension is 1024, got " << inputDimension;
+  if (outputDimension > 1024)
+    throw InvalidArgumentException(HERE) << "Cuba maximum output dimension is 1024, got " << outputDimension;
+
   /* Calling the chosen optimization routine, with specific parameters for each of them */
   if (algorithmName_ == "cuhre")
   {
@@ -184,7 +191,7 @@ Point CubaIntegration::integrate(const Function & function,
   }
 
   if (fail != 0)
-    throw InternalException(HERE) << "Cuba integration failed with error code " << fail << ".";
+    throw InternalException(HERE) << "Cuba integration failed with error code " << fail;
 
   return integral;
 #else
