@@ -68,7 +68,6 @@ params = {
     "TrapezoidalFactory": 1.0,
     "TriangularFactory": 0.025,
     "VonMisesFactory": 0.02,
-    "NegativeBinomialFactory": 0.05,
 }
 
 for factory in factories:
