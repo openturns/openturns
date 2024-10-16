@@ -441,13 +441,17 @@ public:
     checkPrint();
     checkGeneral();
     checkComparison();
-    checkPDF();
-    checkLogPDF();
+    if (enablePDF_)
+    {
+      checkPDF();
+      checkLogPDF();
+    }
     if (enableCDF_)
       checkCDF();
     if (enableDDF_)
       checkDDF();
-    checkComplementaryCDF();
+    if (enableComplementaryCDF_)
+      checkComplementaryCDF();
     checkSurvival();
     checkInverseSurvival();
     checkQuantile();
@@ -476,7 +480,9 @@ public:
       checkGeneratingFunction();
   }
 
+  void skipPDF() { enablePDF_ = false; }
   void skipCDF() { enableCDF_ = false; }
+  void skipComplementaryCDF() { enableComplementaryCDF_ = false; }
   void skipDDF() { enableDDF_ = false; }
   void skipMoments() { enableMoments_ = false; }
   void skipCorrelation() { enableCorrelation_ = false; }
@@ -585,7 +591,7 @@ private:
     {
       const Point x(sample[i]);
       const Scalar pdf = distribution_.computePDF(x);
-      LOGTRACE(OSS() << "pdf=" << pdf);
+      LOGTRACE(OSS() << "x=" << x << " pdf=" << pdf);
       if (!(pdf > 0.0))
         throw TestFailed(OSS() << "pdf(x) failed for " << distribution_);
     }
@@ -666,13 +672,13 @@ private:
       }
     }
   }
-  
+
   void checkComplementaryCDF() const
   {
     if (distribution_.isContinuous() && !distribution_.isCopula() && (distribution_.getDimension() < 4))
     {
       LOGTRACE(OSS() << "checking CCDF...");
-      const Sample sample(distribution_.getSample(5));
+      const Sample sample(distribution_.getSample(cdfSamplingSize_));
       for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
       {
         const Point x(sample[i]);
@@ -1033,7 +1039,9 @@ private:
   DistributionChecker() {}
 
   Distribution distribution_;
+  Bool enablePDF_ = true;
   Bool enableCDF_ = true;
+  Bool enableComplementaryCDF_ = true;
   Bool enableDDF_ = true;
   Bool enableMoments_ = true;
   Scalar meanTolerance_ = 1e-2;
