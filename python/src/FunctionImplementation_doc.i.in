@@ -776,9 +776,7 @@ when all the other components of :math:`\vect{x}` are fixed to the corresponding
 of the *centralPoint* :math:`\vect{c}`. In the first usage, vMin and vMax are evaluated as
 the min and max of all samples of the function value calculated in all cross cuts performed.
 
-- For 1D cross cuts:
-
-OpenTURNS draws the graph:
+For 1D cross cuts the graph shows:
 
 .. math::
     y = f_k^{(i)}(s)
