@@ -88,9 +88,9 @@ CLASSNAMEINIT(DistributionImplementation::CDFWrapper)
 typedef Collection<Distribution>                                      DistributionCollection;
 
 static const Factory<DistributionImplementation> Factory_DistributionImplementation;
-static const Factory<DistributionImplementation::PDFWrapper> Factory_PDFWrapper;
-static const Factory<DistributionImplementation::LogPDFWrapper> Factory_LogPDFWrapper;
-static const Factory<DistributionImplementation::CDFWrapper> Factory_CDFWrapper;
+static const Factory<DistributionImplementation::PDFWrapper> Factory_DistributionImplementation_PDFWrapper;
+static const Factory<DistributionImplementation::LogPDFWrapper> Factory_DistributionImplementation_LogPDFWrapper;
+static const Factory<DistributionImplementation::CDFWrapper> Factory_DistributionImplementation_CDFWrapper;
 
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()
