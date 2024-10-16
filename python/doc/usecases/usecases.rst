@@ -28,3 +28,4 @@ Contents
    coles
    use_case_linthurst
    use_case_stiffened_panel
+   use_case_fission_gas

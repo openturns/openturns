@@ -319,6 +319,7 @@ class View:
                         contour_kw=contour_kw,
                         step_kw=step_kw,
                         clabel_kw=clabel_kw,
+                        scatter_kw=scatter_kw,
                         text_kw=text_kw,
                         legend_kw=legend_kw,
                     )
