@@ -164,7 +164,6 @@ histo = ot.HistogramFactory().build(weibullSample).drawPDF()
 histo.setTitle("Weibull alpha=%s, beta=%s, n=%d" % (alpha, beta, n))
 histo.setLegends(["Sample"])
 wpdf = W.drawPDF()
-wpdf.setColors(["blue"])
 wpdf.setLegends(["Weibull"])
 histo.add(wpdf)
 view = viewer.View(histo)
@@ -219,8 +218,12 @@ for i in range(n):
     curve.setLineStyle("dashed")
     graph.add(curve)
 view = viewer.View(graph)
-plt.show()
+
+# %%
+# Show all the graphs.
+view.ShowAll()
 
 # %%
 # This graphics must be read from the `U` axis on the left to the blue curve (representing the CDF), and down to the `X` axis.
 # We see that the horizontal lines on the `U` axis follow the uniform distribution. On the other hand, the vertical lines (on the `X` axis) follow the Weibull distribution.
+
