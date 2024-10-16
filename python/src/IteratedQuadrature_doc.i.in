@@ -4,15 +4,11 @@
 Parameters
 ----------
 univariateQuadrature : :class:`~openturns.IntegrationAlgorithm`
+
     By default, the integration algorithm is the Gauss-Kronrod
     algorithm (:class:`~openturns.GaussKronrod`)  with the parameters
     `IteratedQuadrature-MaximumSubIntervals`,
     `IteratedQuadrature-MaximumError`, `IteratedQuadrature-Rule` in :class:`~openturns.ResourceMap`.
-    Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
-    leads to a more precise evaluation of the integral but the cost is
-    greater. It is recommended to increase the order of the quadratic
-    rule and the number of sub intervals if the integrand or one of
-    the bound functions is smooth but with many oscillations. 
 
 Notes
 -----
@@ -24,6 +20,15 @@ This class enables to approximate the following integral:
 
 with :math:`f: \Rset^n \mapsto \Rset^p`, :math:`l_k, u_k: \Rset^k \mapsto \Rset` and :math:`n\geq 1`. For :math:`n=1`, there is no bound functions :math:`l_k` and :math:`u_k`.
 
+
+Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
+leads to a more precise evaluation of the integral but at a greater cost.
+
+It is recommended to increase the order of the quadrature
+rule and the number of subintervals if the integrand or one of
+the bound functions is smooth but with many oscillations.
+
+When the function :math:`f: \Rset \mapsto \Rset^p` has a scalar input, use the iterated quadrature algorithm of the :class:`~openturns.GaussKronrod` class.
 
 Examples
 --------
@@ -37,59 +42,15 @@ Create an iterated quadrature algorithm:
 >>> l = [ot.SymbolicFunction(['x'], [' 2+cos(x)'])]
 >>> u = [ot.SymbolicFunction(['x'], ['-2-cos(x)'])]
 
-Draw the graph of the integrand and the bounds:
-
->>> g = ot.Graph('Integration nodes', 'x', 'y', True, 'upper right')
->>> g.add(f.draw([a,a],[b,b]))
->>> curve = l[0].draw(a, b).getDrawable(0)
->>> curve.setLineWidth(2)
->>> curve.setColor('red')
->>> g.add(curve)
->>> curve = u[0].draw(a, b).getDrawable(0)
->>> curve.setLineWidth(2)
->>> curve.setColor('red')
->>> g.add(curve)
-
 Evaluate the integral with high precision:
 
 >>> Iref = ot.IteratedQuadrature(ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))).integrate(f, a, b, l, u)
 
-Evaluate the integral with the default GaussKronrod algorithm, and get
-evaluation points:
-
->>> f = ot.MemoizeFunction(f)
->>> I1 = ot.IteratedQuadrature(ot.GaussKronrod()).integrate(f, a, b, l, u)
->>> sample1 = f.getInputHistory()
->>> print(I1)
-[-25.132...]
->>> n_evals = sample1.getSize()
->>> print(n_evals)
-2116
->>> err = abs(100.0*(1.0-I1[0]/Iref[0]))
->>> print(err)
-2.2...e-14
->>> cloud = ot.Cloud(sample1)
->>> cloud.setPointStyle('fcircle')
->>> cloud.setColor('green')
->>> g.add(cloud)
->>> f.clearHistory()
-
 Evaluate the integral with the default IteratedQuadrature algorithm:
 
->>> I2 = ot.IteratedQuadrature().integrate(f, a, b, l, u)
->>> sample2 = f.getInputHistory()
->>> print(I2)
-[-25.132...]
->>> n_evals = sample2.getSize()
->>> print(n_evals)
-5236
->>> err = abs(100.0*(1.0-I2[0]/Iref[0]))
->>> print(err)
-4.6...e-10
->>> cloud = ot.Cloud(sample2)
->>> cloud.setPointStyle('fcircle')
->>> cloud.setColor('gold')
->>> g.add(cloud)"
+>>> Idefault = ot.IteratedQuadrature().integrate(f, a, b, l, u)
+>>> relative_error = abs(1.0-Idefault[0]/Iref[0])
+"
 
 // ---------------------------------------------------------------------
 

@@ -12,32 +12,67 @@ GKRule : :class:`~openturns.GaussKronrodRule`
 
 Notes
 -----
-The Gauss-Kronrod algorithm enables to approximate the definite integral:
+We consider a function :math:`f: \Rset \mapsto \Rset^\outputDim` and a domain :math:`\set{D} = [a,b]` where :math:`a,b \in \Rset`.The Gauss-Kronrod algorithm approximates the definite
+integral:
 
 .. math::
+    :label: initIntegral
 
     \int_{a}^b f(t)\di{t}
 
+using both Gauss and Kronrod approximations, using the rule
+defined in :class:`~openturns.GaussKronrodRule`.
 
-with :math:`f: \Rset \mapsto \Rset^p`, using both approximations : Gauss and Kronrod ones defined by:
+The Gauss-Kronrod algorithm evaluates
+the integral using the Gauss and the Konrod approximations. If the difference between both
+approximations is
+larger that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with 
+the same
+length. The Gauss-Kronrod algorithm is then applied on both subintervals with the sames rules.
+
+The algorithm is
+iterative until the  difference between both approximations is less that *maximumError*. In that case, the
+integral on the subinterval is approximated by the Kronrod sum.
+
+The subdivision process is limited by
+*maximumSubIntervals* that imposes the maximum number of subintervals.
+
+The final integral is the sum of the integrals evaluated on all the subintervals :math:`[a_i, b_i]` as follows: 
 
 .. math::
 
-    \int_{-1}^1 f(t)\di{t} \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
+    \int_{a}^b f(t)\di{t} = \sum_i \int_{a_i}^{b_i} f(t)\di{t}
 
-and:
+It is possible to get all the subintervals  :math:`[a_i, b_i]` with a particular use of the method :meth:`integrate`.
+
+Note that the integral over each subinterval :math:`[a_i, b_i]` uses the Gauss-Kronrod algorithm where the integrand function is rescaled by the mapping function:
+
+.. math::
+    :label: mappingGKi
+
+    \varphi_i : & [-1,1]  \rightarrow [a_i, b_i]\\
+           & x \rightarrow t = \dfrac{b_i-a_i}{2}x + \dfrac{b_i+a_i}{2}
+
+so that we have:
+
+.. math::
+    :label: sscaledIntegral
+
+    \int_{a_i}^{b_i} f(t)\di{t} & = \int_{-1}^{1} \dfrac{1}{2}(b_i-a_i) f \left(\dfrac{b_i-a_i}{2}x + \dfrac{b_i+a_i}{2}\right) \di{x} \\
+                                & =  \int_{-1}^{1} \tilde{f}_i(x) \di{x} 
+
+where we introduced the scaled function :math:`\tilde{f}_i` on :math:`[-1,1]` defined by:
 
 .. math::
 
-  \int_{-1}^1 f(t)\di{t}\simeq  \alpha_0f(0) + \sum_{k=1}^{m} \alpha_k (f(\zeta_k)+f(-\zeta_k))
-
-where :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
+    \tilde{f}_i(x) =  \dfrac{1}{2}(b_i-a_i) f \circ \varphi_i (x)
 
 
 
-The Gauss-Kronrod algorithm evaluates the integral using the Gauss and the Konrod approximations. If the difference between both approximations is greater that *maximumError*, then the interval :math:`[a,b]` is subdivided into 2 subintervals with the same length. The Gauss-Kronrod algorithm is then applied on both subintervals with the sames rules. The algorithm is iterative until the  difference between both approximations is less that *maximumError*. In that case, the integral on the subinterval is approximated by the Kronrod sum. The subdivision process is limited by *maximumSubIntervals* that imposes the maximum number of subintervals.
+We get the nodes used to compute :eq:`initIntegral` by mapping
+the :math:`2m+1` nodes computed by :class:`~openturns.GaussKronrodRule` in :math:`[-1, 1]` according the the particular rule :math:`G_mK_{2m+1}` through each mapping function :math:`\varphi_i` defined in :eq:`mappingGKi`. The associated weights are multiplied by the length of the subinterval :math:`\dfrac{1}{2}(b_i-a_i)`.
 
-The final integral is the sum of the integrals evaluated on the subintervals.
+When the function :math:`f: \Rset^d \mapsto \Rset^p` with :math:`d>1`, use the iterated quadrature algorithm of the :class:`~openturns.IteratedQuadrature` class.
 
 Examples
 --------
@@ -72,7 +107,10 @@ ai, bi, ei : :class:`~openturns.Point`;
 
     *bi* the corresponding upper bounds; 
 
-    *ei* the associated error estimation. 
+    *ei* the associated error estimation;
+    
+    When used as input parameters, they should be empty. They are then respectively filled
+    with the lower and upper bounds of the subintervals, and the error value.
 fi : :class:`~openturns.Sample`
     *fi* is the set of :math:`\int_{ai}^{bi} f(t)\di{t}`
 

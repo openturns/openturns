@@ -4,28 +4,32 @@
 Parameters
 ----------
 kernel : :class:`~openturns.Distribution`
-    Univariate distribution of the kernel that will be used, :math:`K`.
+    Univariate distribution of the kernel.
 bandwidth : sequence of float
-    Contains the bandwidth in each direction, :math:`(h_1, \dots, h_d)`.
+    Contains the bandwidth in each direction, :math:`(h^1, \dots, h^d)`.
 sample : 2-d sequence of float
     The data on which each kernel is centered,
-    :math:`(\vect{X}_1, \dots, \vect{X}_N) \in \Rset^d`.
+    :math:`(\vect{s}_1, \dots, \vect{s}_n)` of dimension :math:`\inputDim`.
 
 Notes
 -----
 A *KernelMixture* is a particular *Mixture*: all the weights are identical and
-the all the probability density functions of the combination are of the same
-family. They are centered on :math:`N` points. The treatment is optimized.
+all the kernels of the combination are of the same
+family. The kernels are centered on the sample points. The multivariate kernel
+is a tensorized product of the same univariate kernel.
 
-The pdf of a *KernelMixture* is defined by:
+The treatment of such a Mixture has been optimized.
+
+We denote by :math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize) \in \Rset^\inputDim`
+a sample from :math:`\inputRV`.
+
+The probability density function :math:`\inputRV` is defined by:
 
 .. math::
 
-    f(\vect{x}) =  \sum_{i=1}^N \dfrac{1}{N} \Pi_{j=1}^d \dfrac{1}{h_j}K(\frac{x^j-X^j_i}{h})
+    \inputMeasure(\vect{x}) =  \sum_{i=1}^\sampleSize \dfrac{1}{\sampleSize} \prod_{j=1}^\inputDim \dfrac{1}{h^j}k\left(\frac{x^j-s^j_i}{h^j}\right)
 
-where :math:`N` is the number of points in the sample
-:math:`(\vect{X}_1, \dots, \vect{X}_N) \in \Rset^d` and :math:`K` a univariate
-distribution.
+where :math:`k` is the kernel pdf.
 
 Examples
 --------

@@ -17,7 +17,8 @@ myGaussKronrodPair : int
 
 Notes
 -----
-The Gauss-Kronrod rules :math:`G_mK_{2m+1}` with  :math:`m=2n+1` enable to build two approximations of the definite integral :math:`\int_{-1}^1 f(t)\di{t}` defined by:
+We consider a function :math:`f: \Rset \mapsto \Rset^p`. The Gauss-Kronrod rule
+:math:`G_mK_{2m+1}` with  :math:`m=2n+1` enables to build two approximations of the definite integral :math:`\int_{-1}^1 f(t)\di{t}` respectively defined by:
 
 .. math::
 
@@ -31,7 +32,7 @@ and:
 
 We have :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
 
-The rule :math:`G_mK_{2m+1}` combines a :math:`m`-point Gauss rule and a :math:`(2m+1)`-point Kronrod rule (re-using the :math:`m` nodes of the Gauss method). The nodes are defined on :math:`[-1, 1]` and always contain the node 0 when :math:`m`  is odd. 
+The rule :math:`G_mK_{2m+1}` combines a :math:`m`-point Gauss rule and a :math:`(2m+1)`-point Kronrod rule (re-using the :math:`m` nodes of the Gauss method). The nodes are defined on :math:`[-1, 1]` and always contain the node 0 as :math:`m`  is odd. 
 
 Examples
 --------
@@ -79,7 +80,7 @@ otherKronrodNodes : :class:`~openturns.Point`
 "
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussKronrodRule::getOtherKronrodWeights
-"Accessor to the  positive nodes used in the Gauss-Kronrod approximation.
+"Accessor to the weights used in the Gauss-Kronrod approximation.
 
 Returns
 -------
@@ -93,7 +94,8 @@ otherKronrodWeights : :class:`~openturns.Point`
 Returns
 -------
 otherKronrodNodes : :class:`~openturns.Point`
-    The  positive nodes :math:`(\zeta_k)_{1 \leq k \leq m}`
+    The positive nodes :math:`(\zeta_k)_{1 \leq k \leq m}`.
+    
     It contains the positive Gauss nodes as we have :math:`\zeta_{2j}=\xi_j`.
 "
 // ---------------------------------------------------------------------
