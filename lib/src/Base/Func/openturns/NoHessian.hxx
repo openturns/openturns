@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math hessian implementations
+ *  @brief Abstract top-level class for all hessian implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class NoHessian
  *
- * This class offers an interface for an real numerical mathematical hessian
+ * This class offers an interface for an real hessian
  * implementations into the platform. It realizes the computation of the image vector
  * of a vector (aka Point) through the hessian. The
  * hessian may be loaded in an external way through a wrapper.

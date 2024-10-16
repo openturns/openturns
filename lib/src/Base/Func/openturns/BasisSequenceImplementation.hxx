@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A sequence of numerical math function collection
+ *  @brief A sequence of function collection
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class BasisSequenceImplementation
  *
- * A sequence of numerical math function collection.
+ * A sequence of function collection.
  */
 class OT_API BasisSequenceImplementation
   : public PersistentObject

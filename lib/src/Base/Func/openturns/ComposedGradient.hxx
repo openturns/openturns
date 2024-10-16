@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical math functions
+ *  @brief The class that implements the composition between functions
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ComposedGradient
  *
- * The class that implement the composition of two numerical math functions,
+ * The class that implement the composition of two functions,
  * its gradient and its hessian. This class has no implementation class
  */
 class OT_API ComposedGradient

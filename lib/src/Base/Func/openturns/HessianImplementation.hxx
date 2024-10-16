@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math hessian implementations
+ *  @brief Abstract top-level class for all hessian implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -40,7 +40,7 @@ class Hessian;
  * @class HessianImplementation
  *
  * This class offers an abstract interface for the implementation
- * of an real numerical mathematical hessian into the platform.
+ * of a real hessian into the platform.
  */
 class OT_API HessianImplementation
   : public PersistentObject

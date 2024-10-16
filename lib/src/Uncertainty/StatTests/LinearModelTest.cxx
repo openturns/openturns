@@ -425,7 +425,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
 }
 
 
-/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the sample extracted from firstSample (ith coordinate of each point of the sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
 LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
@@ -449,7 +449,7 @@ LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const S
   return resultCollection;
 }
 
-/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the sample extracted from firstSample (ith coordinate of each point of the sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
 LinearModelTest::TestResultCollection LinearModelTest::FullRegression(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
