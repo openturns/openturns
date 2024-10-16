@@ -60,7 +60,7 @@ Examples
 Define a scalar temporal Gaussian process on a mesh of dimension 1:
 
 >>> import openturns as ot
->>> myGrid = ot.RegularGrid(0.0, 1.0, 100)
+>>> myGrid = ot.RegularGrid(0.0, 0.1, 100)
 >>> amplitude=[5.0]
 >>> scale=[0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)
@@ -92,7 +92,6 @@ Estimate the trend function from the field:
 >>> graph = myTrendTransform.getTrendFunction().draw(0.0, 10)
 >>> graph.add(fTrend.draw(0.0, 10))
 >>> graph.add(ot.Cloud(myYField.getMesh().getVertices(), myYField.getValues()))
->>> graph.setColors(['red', 'blue', 'black'])
 >>> graph.setLegends(['estimated trend', 'actual trend', 'sample'])
 >>> graph.setLegendPosition('upper left')
 >>> graph.setTitle('Trend estimation from a field')

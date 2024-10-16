@@ -489,7 +489,6 @@ cloud.setPointStyle("square")
 cloud.setLegend("K-Fold")
 graph.add(cloud)
 graph.setLegendPosition("topleft")
-graph.setColors(ot.Drawable().BuildDefaultPalette(2))
 graph.setBoundingBox(boundingBox)
 view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 # sphinx_gallery_thumbnail_number = 4

@@ -244,9 +244,11 @@ g.add(c)
 c = ot.Curve(times, [[p] for p in values_FORM])
 g.add(c)
 g.setLegends(["MC", "QMC", "FORM"])
-g.setColors(["red", "blue", "black"])
 g.setLegendPosition("upper left")
 g.setXTitle("t")
 g.setYTitle("Outcrossing rate")
 view = View(g)
+
+# %%
+# Display all the graphs
 view.ShowAll()

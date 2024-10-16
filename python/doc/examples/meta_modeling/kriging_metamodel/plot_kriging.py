@@ -83,7 +83,9 @@ graph.setLegendPosition("upper right")
 graph.setTitle("Sample size = %d" % (samplesize))
 graph.setXTitle("X2")
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()
 
 # %%
 # As we can see, the metamodel is quite accurate in this case.

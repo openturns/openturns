@@ -132,4 +132,6 @@ curve.setLineStyle("dashed")
 graph.add(curve)
 graph.setLegendPosition("upper right")
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()

@@ -156,7 +156,6 @@ for i in range(n_samples):
     graph.add(curve)
 
 curve = ot.Curve(vertices, process_sample_mean, "process sample mean")
-curve.setColor("red")
 graph.add(curve)
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)

@@ -64,14 +64,14 @@ xmin = -5.0
 xmax = 5.0
 x1value = 0.5
 parametricModelGraph = ot.ParametricFunction(model, [0], [x1value]).draw(xmin, xmax)
-parametricModelGraph.setColors(["red"])
 graphMetamodel = ot.ParametricFunction(responseSurface, [0], [x1value]).draw(xmin, xmax)
-graphMetamodel.setColors(["blue"])
 parametricModelGraph.add(graphMetamodel)
 parametricModelGraph.setLegends(["Model", "Meta-Model"])
 parametricModelGraph.setLegendPosition("upper right")
 view = viewer.View(parametricModelGraph)
-plt.show()
+
+# %%
+view.ShowAll()
 
 # %%
 # We see that the metamodel is equal to the trend because it takes into account the fact that the mean of the Gaussian process is zero.

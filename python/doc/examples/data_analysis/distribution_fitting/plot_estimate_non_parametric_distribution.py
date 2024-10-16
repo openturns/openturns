@@ -316,7 +316,6 @@ for i, distribution in enumerate(distCollection):
     curve.setLineStyle("dashed")
 
     graph.add(curve)
-    graph.setColors(ot.Drawable.BuildDefaultPalette(3))
     grid.setGraph(i // 3, i % 3, graph)
 
 view = viewer.View(grid)

@@ -65,6 +65,8 @@ truncatedKS = ot.Distribution(ot.TruncatedDistribution(ks, bounds))
 # Draw its PDF
 graph = truncatedKS.drawPDF([-2.5] * dimension, [2.5] * dimension, [256] * dimension)
 graph.add(ot.Cloud(truncatedKS.getSample(200)))
-graph.setColors(["blue", "red"])
 view = viewer.View(graph)
-plt.show()
+
+# %%
+# Display all the graphs
+view.ShowAll()

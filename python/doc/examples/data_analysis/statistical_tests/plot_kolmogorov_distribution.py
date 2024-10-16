@@ -199,12 +199,15 @@ graph = ot.KernelSmoothing().build(sampleD).drawPDF()
 graph.setLegends(["Known parameters"])
 graphP = ot.KernelSmoothing().build(sampleDP).drawPDF()
 graphP.setLegends(["Estimated parameters"])
-graphP.setColors(["blue"])
 graph.add(graphP)
 graph.setTitle("Kolmogorov-Smirnov distribution")
 graph.setXTitle("KS-Statistics")
 view = viewer.View(graph)
-plt.show()
+
+# %%
+# Display the graphs
+view.ShowAll()
+
 
 # %%
 # We see that the distribution of the KS distances when the parameters are

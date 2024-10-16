@@ -10,7 +10,6 @@ for i in range(len(lambdas)):
     boxCoxT = ot.BoxCoxTransform(lambdas[i])
     graph.add(boxCoxT.draw(0.1, 2.1))
 
-graph.setColors(["red", "blue", "black", "green"])
 graph.setLegends(["lambda = " + str(lam) for lam in lambdas])
 graph.setLegendPosition("lower right")
 

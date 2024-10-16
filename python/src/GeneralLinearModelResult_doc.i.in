@@ -82,7 +82,6 @@ Get the meta model:
 >>> graph = ot.Graph()
 >>> graph.add(cloud)
 >>> graph.add(f.draw(0.0, 7.0))
->>> graph.setColors(['black', 'blue', 'red'])
 "
 
 // ---------------------------------------------------------------------

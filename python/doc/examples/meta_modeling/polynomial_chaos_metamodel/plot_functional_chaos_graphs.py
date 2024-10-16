@@ -61,4 +61,6 @@ view = viewer.View(graph)
 # %%
 graph = drawFamily(ot.HermiteFactory())
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()

@@ -245,4 +245,3 @@ for parameter_index in range(2):
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
 
-View.ShowAll()

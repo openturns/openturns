@@ -145,12 +145,15 @@ graph = histogram.drawPDF()
 graph.setLegends(["Q"])
 #
 graphConditionnalQ = conditionnedHistogram.drawPDF()
-graphConditionnalQ.setColors(["blue"])
 graphConditionnalQ.setLegends([r"$Q | S > S_{%s}$" % (alpha)])
 graph.add(graphConditionnalQ)
 view = viewer.View(graph)
 
-plt.show()
+
+# %%
+# Show all the graphs.
+view.ShowAll()
+
 # %%
 # We see that the two histograms are very different.
 # The high values of the input :math:`Q` seem to often lead to a high value of the output :math:`S`.

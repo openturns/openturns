@@ -128,7 +128,11 @@ print("D=", D, ", Index=", index, ", Obs.=", observation)
 # %%
 graph = drawKSDistance(sample, distribution, observation, D, distFactory)
 view = viewer.View(graph)
-plt.show()
+
+
+# %%
+# Display the graphs
+view.ShowAll()
 
 # %%
 # We see that the K.S. statistics is achieved at the observation where the distance
