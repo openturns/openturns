@@ -131,7 +131,6 @@ factory.getBandwidth()
 graph = distribution.drawPDF()
 curve = fit.drawPDF()
 graph.add(curve)
-graph.setColors(["dodgerblue3", "darkorange1"])
 graph.setLegends(["Mixture", "Kernel smoothing"])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
@@ -164,7 +163,6 @@ for i in range(nLen):
     graph.setXTitle("X")
     graph.setTitle("h=%.4f" % (hArray[i]))
     graph.setLegends([""])
-    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
     bounding_box = graph.getBoundingBox()
     upper_bound = bounding_box.getUpperBound()
     upper_bound[1] = 0.5  # Common y-range
@@ -222,7 +220,6 @@ for i in range(nLen):
     graph.setLegends([""])
     graph.setTitle("h=%.4f, %s" % (hArray[i], legends[i]))
     graph.setXTitle("X")
-    graph.setColors(ot.Drawable.BuildDefaultPalette(2))
     if i > 0:
         graph.setYTitle("")
     bounding_box = graph.getBoundingBox()

@@ -303,7 +303,6 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
     grid : ot.GridLayout(1, dimension)
         The prior and posterior PDF for each marginal.
     """
-    palette = ot.Drawable.BuildDefaultPalette(2)
     paramDim = prior.getDimension()
     grid = ot.GridLayout(1, paramDim)
     parameterNames = prior.getDescription()
@@ -328,7 +327,6 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
             graph.setLegends([""])
         if parameter_index > 0:
             graph.setYTitle("")
-        graph.setColors(palette)
         graph.setLegendPosition("upper right")
         grid.setGraph(0, parameter_index, graph)
     grid.setTitle("Bayesian calibration")

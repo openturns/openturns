@@ -206,7 +206,6 @@ uniformSample = sample[:, 1]
 graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" % (alpha, beta, n), "x", "U", True)
 # Add the CDF plot
 curve = W.drawCDF()
-curve.setColors(["blue"])
 graph.add(curve)
 # Plot dashed horizontal & vertical lines
 for i in range(n):

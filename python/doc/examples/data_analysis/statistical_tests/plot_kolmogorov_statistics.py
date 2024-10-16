@@ -93,7 +93,6 @@ def drawKSDistance(sample, distribution, observation, D, distFactory):
     cdf = distribution.drawCDF()
     cdf.setLegends([distname])
     graph.add(cdf)
-    graph.setColors(ot.Drawable.BuildDefaultPalette(3))
     return graph
 
 
@@ -128,7 +127,11 @@ print("D=", D, ", Index=", index, ", Obs.=", observation)
 # %%
 graph = drawKSDistance(sample, distribution, observation, D, distFactory)
 view = viewer.View(graph)
-plt.show()
+
+
+# %%
+# Display the graphs
+view.ShowAll()
 
 # %%
 # We see that the K.S. statistics is achieved at the observation where the distance
