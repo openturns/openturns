@@ -737,4 +737,37 @@ Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
   return result;
 }
 
+/** Draw the sample as a cloud of points in or out of the domain */
+GridLayout VisualTest::DrawInsideOutside(const Domain & domain,
+                                         const Sample & sample,
+                                         const String & inColor,
+                                         const String & outColor)
+{
+  if (!(sample.getDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw sample of dimension=" << sample.getDimension() << " less than 2.";
+  Sample insideSample(0, sample.getDimension()), outsideSample(0, sample.getDimension());
+  for (UnsignedInteger i = 0; i < sample.getSize(); i++)
+  {
+    if (domain.contains(sample[i]))
+      insideSample.add(sample[i]);
+    else
+      outsideSample.add(sample[i]);
+  }
+  GridLayout grid(sample.getDimension() - 1, sample.getDimension() - 1);
+  grid.setTitle("Projections of domain " + domain.getName() + (sample.getName().empty() ? "" : (" tested with sample " + sample.getName())));
+  for (UnsignedInteger iX = 0; iX < sample.getDimension(); iX++)
+  {
+    for (UnsignedInteger iY = iX + 1; iY < sample.getDimension(); iY++)
+    {
+      Sample in2DSample(insideSample.getMarginal(Indices({ iX, iY }))), out2DSample(outsideSample.getMarginal(Indices({ iX, iY })));
+      Graph graph("", iY + 1 == sample.getDimension() ? (OSS() << "x" << iX).str() : "", iX == 0 ? (OSS() << "x" << iY).str() : "", true);
+      graph.add(Cloud(in2DSample, inColor, "plus", "In"));
+      graph.add(Cloud(out2DSample, outColor, "plus", "Out"));
+      if (iX == 0 && iY == 1)
+        graph.setLegendPosition("topright");
+      grid.setGraph(iY - 1, iX, graph);
+    }
+  }
+  return grid;
+}
+
 END_NAMESPACE_OPENTURNS

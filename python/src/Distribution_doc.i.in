@@ -180,6 +180,12 @@ OT_Distribution_getSample_doc
 OT_Distribution_getSampleByInversion_doc
 %feature("docstring") OT::Distribution::getSampleByQMC
 OT_Distribution_getSampleByQMC_doc
+%feature("docstring") OT::Distribution::getPDF
+OT_Distribution_getPDF_doc
+%feature("docstring") OT::Distribution::getLogPDF
+OT_Distribution_getLogPDF_doc
+%feature("docstring") OT::Distribution::getCDF
+OT_Distribution_getCDF_doc
 %feature("docstring") OT::Distribution::getShapeMatrix
 OT_Distribution_getShapeMatrix_doc
 %feature("docstring") OT::Distribution::getSkewness

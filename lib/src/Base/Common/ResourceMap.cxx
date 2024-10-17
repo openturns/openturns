@@ -729,6 +729,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Contour-DefaultExtend", "both");
   addAsScalar("Contour-DefaultAlpha", 1.0);
 
+  // Cross cuts parameters
+  addAsBool("CrossCuts-DefaultWithMonoDimensionalCuts", true);
+
   // IntervalMesher parameters //
   addAsBool("IntervalMesher-UseDiamond", false);
 
@@ -1054,6 +1057,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DomainImplementation parameters
   addAsScalar("Domain-SmallVolume",   1.0e-12);
+  addAsString("Domain-DefaultInColor", "prettyOrange");
+  addAsString("Domain-DefaultOutColor", "prettyBlue");
 
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);

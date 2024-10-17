@@ -98,7 +98,7 @@ OT_Evaluation_getInputDimension_doc
 
 Parameters
 ----------
-indices : int or list of ints
+indices : int or sequence of ints
     Set of indices for which the marginal is extracted.
 
 Returns
@@ -316,7 +316,7 @@ xiMin_xjMin, xiMax_xjMax : sequence of float of dimension 2.
     In the 2D case, define the intervals where the curves are plotted.
 ptNb : int :math:`ptNb > 0`
     The number of points to draw the curves.
-ptNbs : list of int of dimension 2 :math:`ptNbs_k > 0, k=1,2`
+ptNbs : sequence of int of dimension 2 :math:`ptNbs_k > 0, k=1,2`
     The number of points to draw the contour in the 2D case.
 scale : bool
     scale indicates whether the logarithmic scale is used either for one or both axes:
@@ -377,6 +377,79 @@ Examples
 %enddef
 %feature("docstring") OT::EvaluationImplementation::draw
 OT_Evaluation_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_drawCrossCuts_doc
+"Draw the 2D and 1D cross cuts of a 1D output function as a :class:`~openturns.GridLayout`.
+
+Parameters
+----------
+centralPoint : sequence of float
+    Central point with dimension equal to the input dimension of the function.
+xMin, xMax : sequence of float
+    Define the interval where the curve is plotted.
+pointNumber : sequence of int
+    The number of points to draw the contours and the curves.
+withMonoDimensionalCuts : bool, optional
+    withMonoDimensionalCuts indicates whether the mono dimension cuts are drawn or not
+    Default value is specified in the `CrossCuts-DefaultWithMonoDimensionalCuts` ResourceMap key.
+isFilled : bool, optional
+    isFilled indicates whether the contour graphs are filled or not
+    Default value is specified in the `Contour-DefaultIsFilled` ResourceMap key
+vMin, vMax : float, optional
+    Define the interval used to build the color map for the contours
+    If not specified, these values are computed to best fit the graphs.
+    Either specify both values or do not specify any.
+
+Notes
+-----
+We note :math:`f: \Rset^n \rightarrow \Rset^p`
+where :math:`\vect{x} = (x_1, \dots, x_n)` and
+:math:`f(\vect{x}) = (f_1(\vect{x}), \dots, f_p(\vect{x}))`,
+with :math:`n\geq 1` and :math:`p\geq 1`.
+
+In all usages, draw the 1D and 2D cross cuts of
+:math:`f_k: \Rset^n \rightarrow \Rset` as a function of all input coordinates for 1D cuts
+and all couples of coordinates for 2D cuts. Variable coordinates :math:`x_i` are sampled
+regularly using :math:`ptNb[i]` points in the interval :math:`[x_i^{min}, x_i^{max}]`,
+when all the other components of :math:`\vect{x}` are fixed to the corresponding components
+of the *centralPoint* :math:`\vect{c}`. In the first usage, vMin and vMax are evaluated as
+the min and max of all samples of the function value calculated in all cross cuts performed.
+
+- For 1D cross cuts:
+
+OpenTURNS draws the graph:
+
+.. math::
+    y = f_k^{(i)}(s)
+
+for any :math:`s \in [x_i^{min}, x_i^{max}]` where :math:`f_k^{(i)}(s)` is defined by the equation:
+
+.. math::
+    f_k^{(i)}(s) = f_k(c_1, \dots, c_{i-1}, s,  c_{i+1} \dots, c_n).
+
+- For 2D cross cuts:
+
+.. math::
+    y = f_k^{(i,j)}(s, t)
+
+for any :math:`(s, t) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]` where :math:`f_k^{(i,j)}` 
+is defined by the equation:
+
+.. math::
+    f_k^{(i,j)}(s,t) = f_k(c_1, \dots, c_{i-1}, s, c_{i+1}, \dots, c_{j-1}, t,  c_{j+1} \dots, c_n).
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> f = ot.SymbolicFunction(['x0', 'x1', 'x2'], ['sin(1*pi_*x0) + x1 - x2 ^ 2'])
+>>> grid = f.drawCrossCuts([0., 0., 0.], [-3., -3, -3], [3, 3, 3], [100, 20, 20], True, True)
+>>> View(grid).show()"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::drawCrossCuts
+OT_Evaluation_drawCrossCuts_doc
 
 // ---------------------------------------------------------------------
 

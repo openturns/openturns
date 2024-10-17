@@ -115,3 +115,10 @@ theta = copula.getTheta()
 ref = 2.0 - 2.0 ** (1.0 / theta)
 value = graph1.getDrawable(0).getData()[-4, 1]
 ott.assert_almost_equal(value, ref, 1e-2, 1e-3)
+
+# Draw points inside and outside a domain
+domain = ot.Domain(ot.Interval([-2.0, 0.0, -1], [2.0, 3.0, 1.0]))
+U = ot.Uniform(-3, 3)
+dist = ot.JointDistribution([U, U, U])
+grid = ot.VisualTest.DrawInsideOutside(domain, dist.getSample(30))
+print(grid)

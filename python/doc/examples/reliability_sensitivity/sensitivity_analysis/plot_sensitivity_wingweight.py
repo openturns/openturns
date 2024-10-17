@@ -42,66 +42,47 @@ m = WingWeightModel()
 # Let's have a look on 2D cross cuts of the wing weight function.
 # For each 2D cross cut, the other variables are fixed to the input distribution mean values.
 # This graph allows one to have a first idea of the variations of the function in pair of dimensions.
-# The colors of each contour plot are comparable. The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
-
-ot.ResourceMap.SetAsBool("Contour-DefaultIsFilled", True)
-ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 50)
+# The colors of each contour plot are comparable.
 
 lowerBound = m.inputDistribution.getRange().getLowerBound()
 upperBound = m.inputDistribution.getRange().getUpperBound()
 
-grid = ot.GridLayout(m.dim - 1, m.dim - 1)
-for i in range(1, m.dim):
-    for j in range(i):
-        crossCutIndices = []
-        crossCutReferencePoint = []
-        for k in range(m.dim):
-            if k != i and k != j:
-                crossCutIndices.append(k)
-                # Definition of the reference point
-                crossCutReferencePoint.append(m.inputDistribution.getMean()[k])
-
-        # Definition of 2D cross cut function
-        crossCutFunction = ot.ParametricFunction(
-            m.model, crossCutIndices, crossCutReferencePoint
-        )
-        crossCutLowerBound = [lowerBound[j], lowerBound[i]]
-        crossCutUpperBound = [upperBound[j], upperBound[i]]
-
-        # Get and customize the contour plot
-        graph = crossCutFunction.draw(crossCutLowerBound, crossCutUpperBound)
-        graph.setTitle("")
-        contour = graph.getDrawable(0).getImplementation()
-        contour.setVmin(176.0)
-        contour.setVmax(363.0)
-        contour.setColorBarPosition("")  # suppress colorbar of each plot
-        contour.setColorMap("hsv")
-        graph.setDrawable(contour, 0)
-        graph.setXTitle("")
-        graph.setYTitle("")
-        graph.setTickLocation(ot.GraphImplementation.TICKNONE)
-        graph.setGrid(False)
-
-        # Creation of axes title
-        if j == 0:
-            graph.setYTitle(m.inputDistribution.getDescription()[i])
-        if i == 9:
-            graph.setXTitle(m.inputDistribution.getDescription()[j])
-
-        grid.setGraph(i - 1, j, graph)
-
+nX = ot.ResourceMap.GetAsUnsignedInteger("Evaluation-DefaultPointNumber")
+description = m.inputDistribution.getDescription()
+description.add("")
+m.model.setDescription(description)
+m.model.setName("wing weight model")
+grid = m.model.drawCrossCuts(
+    m.inputDistribution.getMean(),
+    lowerBound,
+    upperBound,
+    [nX] * m.model.getInputDimension(),
+    False,
+    True,
+    176.0,
+    363.0,
+)
+grid.setTitle("")
 # Get View object to manipulate the underlying figure
-v = otv.View(grid)
-fig = v.getFigure()
+# Here we decide the colormap and the number of levels used for all contours
+view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
+
+axes = view.getAxes()
+fig = view.getFigure()
 fig.set_size_inches(12, 12)  # reduce the size
 
 # Setup a large colorbar
-axes = v.getAxes()
-colorbar = fig.colorbar(
-    v.getSubviews()[6][2].getContourSets()[0], ax=axes[:, -1], fraction=0.3
+fig.colorbar(
+    view.getSubviews()[1][0].getContourSets()[0], ax=axes[:-2, -1], fraction=0.3
 )
-
-fig.subplots_adjust(top=1.0, bottom=0.0, left=0.0, right=1.0)
+# Hide unwanted axes labels
+for i in range(len(axes)):
+    for j in range(i + 1):
+        if i < len(axes) - 1:
+            axes[i][j].xaxis.set_ticklabels([])
+        if j > 0:
+            axes[i][j].yaxis.set_ticklabels([])
+fig.subplots_adjust(top=0.99, bottom=0.05, left=0.06, right=0.99)
 
 # %%
 # We can see that the variables :math:`t_c, N_z, A, W_{dg}` seem to be influent on the wing weight whereas :math:`\Lambda, \ell, q, W_p, W_{fw}` have less influence on the function.

@@ -270,6 +270,19 @@ Graph Evaluation::draw(const Point & xMin,
   return getImplementation()->draw(xMin, xMax, pointNumber, scale);
 }
 
+/** Draw cross sections of the function assumed to have 1D output */
+GridLayout Evaluation::drawCrossCuts(const Point & centralPoint,
+                                     const Point & xMin,
+                                     const Point & xMax,
+                                     const Indices & pointNumber,
+                                     const Bool withMonoDimensionalCuts,
+                                     const Bool isFilled,
+                                     const Scalar vMin,
+                                     const Scalar vMax) const
+{
+  return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimensionalCuts, isFilled, vMin, vMax);
+}
+
 void Evaluation::setStopCallback(StopCallback callBack, void * state)
 {
   copyOnWrite();

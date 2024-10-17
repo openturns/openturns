@@ -26,6 +26,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/GridLayout.hxx"
+#include "openturns/Domain.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -117,6 +118,12 @@ OT_API Graph DrawUpperTailDependenceFunction(const Sample & data);
 OT_API Graph DrawUpperExtremalDependenceFunction(const Sample & data);
 OT_API Graph DrawLowerTailDependenceFunction(const Sample & data);
 OT_API Graph DrawLowerExtremalDependenceFunction(const Sample & data);
+
+/** Draw the sample as a cloud of points in or out of the domain */
+OT_API GridLayout DrawInsideOutside(const Domain & domain,
+                                    const Sample & sample,
+                                    const String & inColor = ResourceMap::GetAsString("Domain-DefaultInColor"),
+                                    const String & outColor = ResourceMap::GetAsString("Domain-DefaultOutColor"));
 
 } /* VisualTest */
 

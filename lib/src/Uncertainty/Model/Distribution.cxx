@@ -389,6 +389,21 @@ Sample Distribution::getSampleByQMC(const UnsignedInteger size) const
   return getImplementation()->getSampleByQMC(size);
 }
 
+Function Distribution::getPDF() const
+{
+  return getImplementation()->getPDF();
+}
+
+Function Distribution::getLogPDF() const
+{
+  return getImplementation()->getLogPDF();
+}
+
+Function Distribution::getCDF() const
+{
+  return getImplementation()->getCDF();
+}
+
 /* Get the DDF of the distribution */
 Point Distribution::computeDDF(const Point & point) const
 {

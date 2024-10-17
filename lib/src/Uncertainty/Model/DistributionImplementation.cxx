@@ -81,10 +81,16 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionImplementation)
+CLASSNAMEINIT(DistributionImplementation::PDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::LogPDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::CDFWrapper)
 
 typedef Collection<Distribution>                                      DistributionCollection;
 
 static const Factory<DistributionImplementation> Factory_DistributionImplementation;
+static const Factory<DistributionImplementation::PDFWrapper> Factory_DistributionImplementation_PDFWrapper;
+static const Factory<DistributionImplementation::LogPDFWrapper> Factory_DistributionImplementation_LogPDFWrapper;
+static const Factory<DistributionImplementation::CDFWrapper> Factory_DistributionImplementation_CDFWrapper;
 
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()
@@ -646,6 +652,18 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
   returnSample.setName(getName());
   returnSample.setDescription(getDescription());
   return returnSample;
+}
+
+Function DistributionImplementation::getPDF() const {
+  return Function(DistributionImplementation::PDFWrapper(*this));
+}
+
+Function DistributionImplementation::getLogPDF() const {
+  return Function(DistributionImplementation::LogPDFWrapper(*this));
+}
+
+Function DistributionImplementation::getCDF() const {
+  return Function(DistributionImplementation::CDFWrapper(*this));
 }
 
 /* Get the DDF of the distribution */
@@ -5415,6 +5433,49 @@ Scalar DistributionImplementation::getSupportEpsilon() const
 {
   if (!isDiscrete()) throw NotYetImplementedException(HERE) << "Support epsilon defined for discrete distributions only.";
   return supportEpsilon_;
+}
+
+/* Wrapper methods relying on the Distribution class */
+void DistributionImplementation::PDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::PDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::LogPDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::LogPDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::CDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::CDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

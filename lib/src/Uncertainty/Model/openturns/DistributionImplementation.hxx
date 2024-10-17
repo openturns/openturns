@@ -160,6 +160,11 @@ public:
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
+  /** Get function representation of PDF, logPDF and CDF*/
+  Function getPDF() const;
+  Function getLogPDF() const;
+  Function getCDF() const;
+
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
   virtual Point  computeDDF(const Point & point) const;
@@ -886,13 +891,28 @@ protected:
 
 #ifndef SWIG
 
+public:
   // Class used to wrap the computePDF() method for interpolation purpose
   class PDFWrapper: public EvaluationImplementation
   {
+    CLASSNAME
   public:
+    PDFWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
     PDFWrapper(const DistributionImplementation * p_distribution)
       : EvaluationImplementation()
-      , p_distribution_(p_distribution)
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    PDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
     {
       // Nothing to do
     }
@@ -904,17 +924,17 @@ protected:
 
     Point operator() (const Point & point) const override
     {
-      return Point(1, p_distribution_->computePDF(point));
+      return Point(1, p_shared_distribution_->computePDF(point));
     }
 
     Sample operator() (const Sample & sample) const override
     {
-      return p_distribution_->computePDF(sample);
+      return p_shared_distribution_->computePDF(sample);
     }
 
     UnsignedInteger getInputDimension() const override
     {
-      return p_distribution_->getDimension();
+      return p_shared_distribution_->getDimension();
     }
 
     UnsignedInteger getOutputDimension() const override
@@ -924,7 +944,7 @@ protected:
 
     Description getInputDescription() const override
     {
-      return p_distribution_->getDescription();
+      return p_shared_distribution_->getDescription();
     }
 
     Description getOutputDescription() const override
@@ -935,28 +955,48 @@ protected:
     String __repr__() const override
     {
       OSS oss;
-      oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "PDFWrapper(" << p_shared_distribution_->__str__() << ")";
       return oss;
     }
 
     String __str__(const String & ) const override
     {
       OSS oss;
-      oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "PDFWrapper(" << p_shared_distribution_->__str__() << ")";
       return oss;
     }
 
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object from the StorageManager */
+    void load(Advocate & adv) override;
+
   private:
-    const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   };  // class PDFWrapper
 
   // Class used to wrap the computeLogPDF() method for interpolation purpose
   class LogPDFWrapper: public EvaluationImplementation
   {
+    CLASSNAME
   public:
+    LogPDFWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
     LogPDFWrapper(const DistributionImplementation * p_distribution)
       : EvaluationImplementation()
-      , p_distribution_(p_distribution)
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    LogPDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
     {
       // Nothing to do
     }
@@ -968,17 +1008,17 @@ protected:
 
     Point operator() (const Point & point) const override
     {
-      return Point(1, p_distribution_->computeLogPDF(point));
+      return Point(1, p_shared_distribution_->computeLogPDF(point));
     }
 
     Sample operator() (const Sample & sample) const override
     {
-      return p_distribution_->computeLogPDF(sample);
+      return p_shared_distribution_->computeLogPDF(sample);
     }
 
     UnsignedInteger getInputDimension() const override
     {
-      return p_distribution_->getDimension();
+      return p_shared_distribution_->getDimension();
     }
 
     UnsignedInteger getOutputDimension() const override
@@ -988,7 +1028,7 @@ protected:
 
     Description getInputDescription() const override
     {
-      return p_distribution_->getDescription();
+      return p_shared_distribution_->getDescription();
     }
 
     Description getOutputDescription() const override
@@ -999,28 +1039,48 @@ protected:
     String __repr__() const override
     {
       OSS oss;
-      oss << "LogPDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "LogPDFWrapper(" << p_shared_distribution_->__str__() << ")";
       return oss;
     }
 
     String __str__(const String & ) const override
     {
       OSS oss;
-      oss << "LogPDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "LogPDFWrapper(" << p_shared_distribution_->__str__() << ")";
       return oss;
     }
 
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object from the StorageManager */
+    void load(Advocate & adv) override;
+
   private:
-    const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   };  // class LogPDFWrapper
 
   // Class used to wrap the computeCDF() method for interpolation purpose
   class CDFWrapper: public EvaluationImplementation
   {
+    CLASSNAME
   public:
-    CDFWrapper(const DistributionImplementation * p_distribution)
+    CDFWrapper()
       : EvaluationImplementation()
-      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    CDFWrapper(const DistributionImplementation* p_distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    CDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
     {
       // Nothing to do
     }
@@ -1042,17 +1102,17 @@ protected:
 
     Point computeCDF(const Point & point) const
     {
-      return Point(1, p_distribution_->computeCDF(point));
+      return Point(1, p_shared_distribution_->computeCDF(point));
     }
 
     Sample computeCDF(const Sample & sample) const
     {
-      return p_distribution_->computeCDF(sample);
+      return p_shared_distribution_->computeCDF(sample);
     }
 
     UnsignedInteger getInputDimension() const override
     {
-      return p_distribution_->getDimension();
+      return p_shared_distribution_->getDimension();
     }
 
     UnsignedInteger getOutputDimension() const override
@@ -1062,7 +1122,7 @@ protected:
 
     Description getInputDescription() const override
     {
-      return p_distribution_->getDescription();
+      return p_shared_distribution_->getDescription();
     }
 
     Description getOutputDescription() const override
@@ -1073,21 +1133,28 @@ protected:
     String __repr__() const override
     {
       OSS oss;
-      oss << "CDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "CDFWrapper(" << p_shared_distribution_->__str__() << ")";
       return oss;
     }
 
     String __str__(const String & ) const override
     {
       OSS oss;
-      oss << "CDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "CDFWrapper(" << p_shared_distribution_->__str__() << ")";
       return oss;
     }
 
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object from the StorageManager */
+    void load(Advocate & adv) override;
+
   private:
-    const DistributionImplementation * p_distribution_;
+    DistributionImplementation::Implementation p_shared_distribution_;
   }; // class CDFWrapper
 
+protected:
   // Class used to implement the computeQuantile() method efficiently
   class QuantileWrapper: public EvaluationImplementation
   {

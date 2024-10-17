@@ -2529,6 +2529,44 @@ OT_Distribution_getSampleByQMC_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_getPDF_doc
+"Return the PDF as a :class:`~openturns.Function`.
+
+Returns
+-------
+PDF : :class:`~openturns.Function`
+    The PDF of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getPDF
+OT_Distribution_getPDF_doc
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getLogPDF_doc
+"Return the logarithm of the PDF as a :class:`~openturns.Function`.
+
+Returns
+-------
+logPDF : :class:`~openturns.Function`
+    The logarithm of the PDF of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getLogPDF
+OT_Distribution_getLogPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getCDF_doc
+"Return the CDF as a :class:`~openturns.Function`.
+
+Returns
+-------
+CDF : :class:`~openturns.FunctionImplementation`
+    The CDF of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getCDF
+OT_Distribution_getCDF_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_getShapeMatrix_doc
 "Accessor to the shape matrix of the underlying copula if it is elliptical.
 

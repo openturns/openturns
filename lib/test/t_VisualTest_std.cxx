@@ -110,5 +110,14 @@ int main(int, char *[])
     fullprint << "KendallPlot2 = " << kendallPlot2 << std::endl;
   }
 
+  /* Draw points inside and outside a Domain */
+  {
+    Interval domain({-2.0, 0.0, -1}, {2.0, 3.0, 1.0});
+    Uniform U(-3, 4);
+    JointDistribution dist({ U, U, U });
+    GridLayout grid = VisualTest::DrawInsideOutside(domain, dist.getSample(30));
+    fullprint << "Grid=" << grid << std::endl;
+  }
+
   return ExitCode::Success;
 }
