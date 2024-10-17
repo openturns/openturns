@@ -80,7 +80,6 @@ Normal::Normal(const Point & mean,
                            , R
                            , 1.0)
   , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
-  , hasIndependentCopula_(false)
 {
   setName("Normal");
   // Compute the range, the upper class cannot do it.
@@ -102,7 +101,6 @@ Normal::Normal(const Point & mean,
                            , CorrelationMatrix(mean.getDimension())
                            , 1.0)
   , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
-  , hasIndependentCopula_(false)
 {
   setName("Normal");
   UnsignedInteger dimension = mean.getDimension();

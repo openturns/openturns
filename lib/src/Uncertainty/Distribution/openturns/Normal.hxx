@@ -184,10 +184,10 @@ private:
   void checkIndependentCopula();
 
   /** The log normalization factor of the Normal distribution */
-  Scalar logNormalizationFactor_;
+  Scalar logNormalizationFactor_ = 0.0;
 
   /** Store the independence status */
-  Bool hasIndependentCopula_;
+  Bool hasIndependentCopula_ = false;
 
 }; /* class Normal */
 
