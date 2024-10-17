@@ -105,7 +105,8 @@ void MultiStart::run()
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingSample_[i]);
-    // ensure we do not exceed the global budget if the maximum eval number is set
+
+    // ensure we do not exceed the global evaluation budget if the maximum is set
     const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
     if (!remainingEval)
       break;
@@ -113,20 +114,38 @@ void MultiStart::run()
     if (remainingEval < solver.getMaximumCallsNumber())
       solver.setMaximumCallsNumber(remainingEval);
 
+    // ensure we do not exceeed the global time budget if the maximum is set
+    if ((getMaximumTimeDuration() > 0.0) && (solver_.getMaximumTimeDuration() <= 0.0))
+    {
+      const Scalar remainingTime = std::max(getMaximumTimeDuration() - timeDuration, 1e-10);
+      solver.setMaximumTimeDuration(remainingTime);
+    }
+
     try
     {
       solver.run();
-      const OptimizationResult result(solver.getResult());
-      if (!result.getOptimalPoint().getDimension())
+      const OptimizationResult localResult(solver.getResult());
+      if (!localResult.getOptimalPoint().getDimension())
         throw InvalidArgumentException(HERE) << "no feasible point";
       ++ successNumber;
-      LOGDEBUG(OSS() << "Local search succeeded with " << result.getStatusMessage());
+      LOGDEBUG(OSS() << "Local search succeeded with " << localResult.getStatusMessage());
 
-      if (keepResults_) resultCollection_.add(result);
-      result_.store(result.getOptimalPoint(), result.getOptimalValue(),
-                    result.getAbsoluteError(), result.getRelativeError(), result.getResidualError(), result.getConstraintError(),
-                    solver.getMaximumConstraintError());
-      result_.setStatusMessage(result.getStatusMessage());
+      if (keepResults_) resultCollection_.add(localResult);
+
+      // concatenate result
+      const Sample inputHistory(localResult.getInputSample());
+      const Sample outputHistory(localResult.getOutputSample());
+      const Sample absoluteErrorHistory(localResult.getAbsoluteErrorHistory());
+      const Sample relativeErrorHistory(localResult.getRelativeErrorHistory());
+      const Sample residualErrorHistory(localResult.getResidualErrorHistory());
+      const Sample constraintErrorHistory(localResult.getConstraintErrorHistory());
+      const UnsignedInteger localSize = inputHistory.getSize();
+      for (UnsignedInteger k = 0; k < localSize; ++ k)
+      {
+        result_.store(inputHistory[k], outputHistory[k],
+                      absoluteErrorHistory(k, 0), relativeErrorHistory(k, 0), residualErrorHistory(k, 0), constraintErrorHistory(k, 0));
+      }
+      result_.setStatusMessage(localResult.getStatusMessage());
     }
     catch (const Exception & ex)
     {
