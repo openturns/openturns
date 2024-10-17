@@ -99,7 +99,7 @@ void MultiStart::run()
   resultCollection_.clear();
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
-  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
+  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getCallsNumber();
   UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
