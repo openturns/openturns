@@ -2,9 +2,13 @@
 "Student distribution.
 
 Available constructors:
+    Student(*nu, d*)
+
     Student(*nu, mu, sigma*)
 
     Student(*nu, mu, sigma, R*)
+
+    Student(*nu, mu, Sigma*)
 
 Parameters
 ----------
@@ -33,6 +37,9 @@ R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\
 
     Default value is the identity matrix.
 
+Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in  \cM_{d \times d}(\Rset)`
+    Covariance matrix.
+
 Notes
 -----
 Its probability density function is defined as:
@@ -52,7 +59,8 @@ where :math:`\vect{z}=\mat{\Delta}^{-1}\left(\vect{x}-\vect{\mu}\right)`,
 :math:`\mat{\Delta} = \mat{\mathrm{diag}}(\vect{\sigma})` and :math:`\Gamma`
 denotes Euler's Gamma function :meth:`~openturns.SpecFunc.Gamma`.
 
-The matrix :math:`\mat{R}` is symmetric positive definite.
+with :math:`\mat{\Sigma} = \diag(\vect{\sigma}) \mat{R} \diag(\vect{\sigma})`.
+Both :math:`\mat{R}` and :math:`\mat{\Sigma}` are symmetric positive definite.
 
 The first moments of the distribution are:
 
