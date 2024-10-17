@@ -101,8 +101,8 @@ for nDistribution in range(len(coll)):
         "Standard representative=", distribution.getStandardRepresentative().__str__()
     )
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipCorrelation()  # slow
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipCorrelation()  # slow
+    validation.run()
     # Additional tests to make codecov happy
     distribution = ot.MarginalDistribution(fullDistribution, 0)

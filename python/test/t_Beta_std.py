@@ -106,5 +106,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.RandomGenerator.SetSeed(1)
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

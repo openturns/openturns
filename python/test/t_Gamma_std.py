@@ -121,5 +121,5 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
     print("kurtosis=", kurtosis)
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.run()

@@ -134,8 +134,8 @@ print("margin quantile (ref)=", repr(marginRef.computeQuantile(0.95)))
 print("margin realization=", repr(margin.getRealization()))
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(copula)
-checker.run()
+validation = ott.DistributionValidation(copula)
+validation.run()
 
 # tbb nested parallelism issue
 student = ot.Student(3.0, [1.0] * 2, [3.0] * 2, ot.CorrelationMatrix(2))

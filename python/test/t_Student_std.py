@@ -169,6 +169,6 @@ print(
 )
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipCorrelation()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipCorrelation()  # slow
+validation.run()

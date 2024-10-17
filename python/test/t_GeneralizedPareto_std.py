@@ -113,5 +113,5 @@ for xi in [-0.2, 0.0, 0.2]:
 
     ot.Log.Show(ot.Log.TRACE)
     ot.RandomGenerator.SetSeed(1)
-    checker = ott.DistributionChecker(distribution)
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.run()

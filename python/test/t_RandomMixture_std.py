@@ -148,10 +148,10 @@ for testIndex in range(len(testCases)):
     print("beta=", distribution.getBeta())
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipEntropy()  # slow
-    checker.skipMinimumVolumeLevelSet()  # slow
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipEntropy()  # slow
+    validation.skipMinimumVolumeLevelSet()  # slow
+    validation.run()
 
 # Tests of the simplification mechanism
 weights = ot.Point(0)

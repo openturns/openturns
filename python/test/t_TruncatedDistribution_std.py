@@ -196,9 +196,9 @@ for testCase in range(len(distribution)):
 
     ot.Log.Show(ot.Log.TRACE)
     ot.RandomGenerator.SetSeed(1)
-    checker = ott.DistributionChecker(distribution[testCase])
-    checker.skipMinimumVolumeLevelSet()  # slow
-    checker.run()
+    validation = ott.DistributionValidation(distribution[testCase])
+    validation.skipMinimumVolumeLevelSet()  # slow
+    validation.run()
 
 # Check simplification
 candidates = [
