@@ -313,17 +313,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     const Scalar nu = p_student->getNu();
     const UnsignedInteger py = conditioningIndices_.getSize();
     C = CovarianceMatrix((C * std::sqrt((nu + dy) / (nu + py))).getImplementation());
-    // TODO: need a Student(nu, mu, covariance) ctor
-    Point sigma(getDimension());
-    CorrelationMatrix R(getDimension());
-    for (UnsignedInteger i = 0; i < getDimension(); ++ i)
-    {
-      const Scalar cii = C(i, i);
-      sigma[i] = std::sqrt(cii);
-      for (UnsignedInteger j = 0; j < i; ++ j)
-        R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
-    }
-    simplified = Student(nu + py, mu, sigma, R);
+    simplified = Student(nu + py, mu, C);
     return true;
   }
 
