@@ -63,5 +63,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 print("probabilities=", distribution.getProbabilities())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

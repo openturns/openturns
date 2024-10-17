@@ -141,5 +141,5 @@ ott.assert_almost_equal(
 )
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(copula)
-checker.run()
+validation = ott.DistributionValidation(copula)
+validation.run()
