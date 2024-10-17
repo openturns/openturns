@@ -172,3 +172,10 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipCorrelation()  # slow
 validation.run()
+
+# non-spd cov
+dist = ot.Student(
+    4.2,
+    [0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+)
+sample = dist.getSample(10)

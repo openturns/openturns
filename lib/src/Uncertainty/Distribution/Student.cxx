@@ -60,8 +60,6 @@ Student::Student(const Scalar nu,
                  const Scalar mu,
                  const Scalar sigma)
   : EllipticalDistribution(Point(1, mu), Point(1, sigma), CorrelationMatrix(1), -1.0)
-  , nu_(0.0)
-  , studentNormalizationFactor_(0.0)
 {
   setName("Student");
   setDimension(1);
@@ -75,8 +73,6 @@ Student::Student(const Scalar nu,
                  const Point & sigma,
                  const CorrelationMatrix & R)
   : EllipticalDistribution(mu, sigma, R, -1.0)
-  , nu_(0.0)
-  , studentNormalizationFactor_(0.0)
 {
   setName("Student");
   setDimension(mu.getDimension());
@@ -90,6 +86,27 @@ Student::Student(const Scalar nu,
   : Student(nu, mu, sigma, CorrelationMatrix(mu.getDimension()))
 {
   // Nothing to do
+}
+
+Student::Student(const Scalar nu,
+                 const Point & mu,
+                 const CovarianceMatrix & C)
+{
+  const UnsignedInteger dimension = mu.getDimension();
+  if (C.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "The mean vector and the covariance matrix have incompatible dimensions";
+  Point sigma(dimension);
+  CorrelationMatrix R(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Scalar cii = C(i, i);
+    if (!(cii > 0.0))
+      throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+    sigma[i] = std::sqrt(cii);
+    for (UnsignedInteger j = 0; j < i; ++ j)
+      R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+  }
+  *this = Student(nu, mu, sigma, R);
 }
 
 /* Comparison operator */
