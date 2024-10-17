@@ -2,6 +2,8 @@
 "Normal distribution.
 
 Available constructors:
+    Normal(*d*)
+
     Normal(*mu, sigma*)
 
     Normal(*mu, sigma, R*)
