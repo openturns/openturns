@@ -17,7 +17,6 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 def drawFamily(factory, degreeMax=5):
     # Load all the valid colors
-    colorList = ot.Drawable.BuildDefaultPalette(degreeMax)
 
     # Create a fine title
     titleJacobi = factory.__class__.__name__.replace("Factory", "") + " polynomials"
@@ -38,7 +37,6 @@ def drawFamily(factory, degreeMax=5):
         graphJacobi_temp = factory.build(i).draw(xMinJacobi, xMaxJacobi, pointNumber)
         graphJacobi_temp_draw = graphJacobi_temp.getDrawable(0)
         graphJacobi_temp_draw.setLegend("degree " + str(i))
-        graphJacobi_temp_draw.setColor(colorList[i])
         graphJacobi.add(graphJacobi_temp_draw)
     return graphJacobi
 
@@ -63,4 +61,6 @@ view = viewer.View(graph)
 # %%
 graph = drawFamily(ot.HermiteFactory())
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()

@@ -146,4 +146,4 @@ metaModel = ot.PointToFieldConnection(klLiftingFunction, chaosMetamodel)
 ot.ResourceMap.Reload()
 
 # %%
-otv.View.ShowAll()
+ot.View.ShowAll()

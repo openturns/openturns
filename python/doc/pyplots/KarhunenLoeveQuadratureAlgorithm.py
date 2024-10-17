@@ -22,7 +22,6 @@ g.setXTitle(r"$t$")
 g.setYTitle(r"$\sqrt{\lambda_n}\phi_n$")
 for mode in modes:
     g.add(mode.draw(-1.0, 1.0, 256))
-g.setColors(ot.Drawable.BuildDefaultPalette(len(modes)))
 
 fig = plt.figure(figsize=(6, 4))
 axis = fig.add_subplot(111)
