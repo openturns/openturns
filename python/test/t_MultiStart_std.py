@@ -55,3 +55,4 @@ algo.setKeepResults(False)
 algo.run()
 n_local_results_nokeep = algo.getResultCollection().getSize()
 assert n_local_results_nokeep == 0, "n_local_results_nokeep is wrong"
+assert result.getCallsNumber() < 400, "wrong calls number"
