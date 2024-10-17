@@ -122,6 +122,6 @@ for i in range(len(all_cases)):
     print("Distribution from actual distribution=", distribution)
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipMinimumVolumeLevelSet()
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipMinimumVolumeLevelSet()
+    validation.run()

@@ -104,5 +104,5 @@ print("chiL=", copula.computeLowerTailDependenceMatrix())
 
 ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(0)
-checker = ott.DistributionChecker(copula)
-checker.run()
+validation = ott.DistributionValidation(copula)
+validation.run()

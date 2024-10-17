@@ -314,4 +314,4 @@ This module is dedicated to the development in the library.
 
     :template: class.rst_t
 
-    testing.DistributionChecker
+    testing.DistributionValidation

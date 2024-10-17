@@ -116,7 +116,7 @@ print("margins realization=", repr(margins.getRealization()))
 
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(copula)
-checker.skipMoments()  # slow
-checker.skipCorrelation()  # slow
-checker.run()
+validation = ott.DistributionValidation(copula)
+validation.skipMoments()  # slow
+validation.skipCorrelation()  # slow
+validation.run()

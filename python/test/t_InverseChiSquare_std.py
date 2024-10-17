@@ -118,6 +118,6 @@ for n in range(len(allDistributions)):
     ott.assert_almost_equal(p, 1.0)
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipMinimumVolumeLevelSet()
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipMinimumVolumeLevelSet()
+    validation.run()

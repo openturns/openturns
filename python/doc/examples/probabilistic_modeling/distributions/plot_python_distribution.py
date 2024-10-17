@@ -155,9 +155,9 @@ distribution.getMean()
 distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
 
 # %%
-# Now let us validate our distribution with :class:`openturns.testing.DistributionChecker`
+# Now let us validate our distribution with :class:`openturns.testing.DistributionValidation`
 # It automatically checks the consistency of most services and allows one to check for errors.
-checker = ott.DistributionChecker(distribution)
+checker = ott.DistributionValidation(distribution)
 checker.run()
 
 # %%

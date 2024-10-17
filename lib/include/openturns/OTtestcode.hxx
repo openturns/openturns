@@ -430,10 +430,10 @@ void assert_equal(const T & a, const T & b, const String errMsg = "")
 }
 
 
-class DistributionChecker
+class DistributionValidation
 {
 public:
-  explicit DistributionChecker(const Distribution & distribution)
+  explicit DistributionValidation(const Distribution & distribution)
   : distribution_(distribution) {}
 
   void run() const
@@ -1036,7 +1036,7 @@ private:
     }
   }
 
-  DistributionChecker() {}
+  DistributionValidation() {}
 
   Distribution distribution_;
   Bool enablePDF_ = true;

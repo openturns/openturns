@@ -306,9 +306,9 @@ print("Standard representative=", distribution.getStandardRepresentative())
 loadTestsFromTestCase(TestInverseWishartMethods)
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.setSkewnessTolerance(1.0)  # converges slowly
-checker.setKurtosisTolerance(1.0)  # converges slowly
-checker.skipEntropy()  # slow
-checker.skipMinimumVolumeLevelSet()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.setSkewnessTolerance(1.0)  # converges slowly
+validation.setKurtosisTolerance(1.0)  # converges slowly
+validation.skipEntropy()  # slow
+validation.skipMinimumVolumeLevelSet()  # slow
+validation.run()

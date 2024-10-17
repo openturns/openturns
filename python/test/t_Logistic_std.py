@@ -106,6 +106,6 @@ print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipCharacteristicFunction()  # FIXME
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipCharacteristicFunction()  # FIXME
+validation.run()

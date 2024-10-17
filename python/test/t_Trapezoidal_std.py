@@ -132,5 +132,5 @@ for distribution in coll:
     # check only non-degenerate cases
     if len(set(distribution.getParameter())) == 4:
         ot.Log.Show(ot.Log.TRACE)
-        checker = ott.DistributionChecker(distribution)
-        checker.run()
+        validation = ott.DistributionValidation(distribution)
+        validation.run()

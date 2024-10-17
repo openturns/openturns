@@ -236,11 +236,11 @@ for dim in range(1, 5):
     ott.assert_almost_equal((chol * invChol), ot.IdentityMatrix(dim))
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
+    validation = ott.DistributionValidation(distribution)
     if dim > 2:
-        checker.skipMoments()  # slow
-        checker.skipCorrelation()  # slow
-    checker.run()
+        validation.skipMoments()  # slow
+        validation.skipCorrelation()  # slow
+    validation.run()
 
 # non-spd cov
 dist = ot.Normal(

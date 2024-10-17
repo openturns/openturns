@@ -105,5 +105,5 @@ print(f"sequential conditional CDF={sccdf}")
 
 ot.RandomGenerator.SetSeed(2)
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

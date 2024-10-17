@@ -68,7 +68,7 @@ print("parameterDesc=", distribution.getParameterDescription())
 distribution.setParameter(parameter)
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipMoments()  # slow
-checker.skipCorrelation()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipMoments()  # slow
+validation.skipCorrelation()  # slow
+validation.run()

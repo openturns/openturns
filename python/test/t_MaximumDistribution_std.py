@@ -132,10 +132,10 @@ for distribution in coll:
     print("Standard representative=", distribution.getStandardRepresentative())
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipEntropy()  # slow
-    checker.skipMinimumVolumeLevelSet()  # slow
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipEntropy()  # slow
+    validation.skipMinimumVolumeLevelSet()  # slow
+    validation.run()
 
 # Issue #1643
 coll = [ot.Uniform(), ot.Normal()]

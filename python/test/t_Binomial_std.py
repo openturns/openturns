@@ -77,5 +77,5 @@ for n in range(59, 100):
     assert ok
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

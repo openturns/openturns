@@ -96,7 +96,7 @@ print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipProbability()  # FIXME: does not accept inf interval
-checker.skipMinimumVolumeLevelSet()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipProbability()  # FIXME: does not accept inf interval
+validation.skipMinimumVolumeLevelSet()  # slow
+validation.run()

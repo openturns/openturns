@@ -77,5 +77,5 @@ print("margins CDF(quantile)=", margins.computeCDF(quantile))
 print("margins realization=", margins.getRealization())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(copula)
-checker.run()
+validation = ott.DistributionValidation(copula)
+validation.run()
