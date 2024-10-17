@@ -57,6 +57,9 @@ public:
           const Point & sigma,
           const CorrelationMatrix & R);
 
+  Student(const Scalar nu,
+          const Point & mu,
+          const CovarianceMatrix & C);
 
   /** Comparison operator */
   using EllipticalDistribution::operator ==;
@@ -187,10 +190,10 @@ private:
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** The nu of the Student distribution */
-  Scalar nu_;
+  Scalar nu_ = 0.0;
 
   /** Specific normalization factor for the Student distribution */
-  Scalar studentNormalizationFactor_;
+  Scalar studentNormalizationFactor_ = 0.0;
 }; /* class Student */
 
 
