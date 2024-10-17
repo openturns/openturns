@@ -619,6 +619,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       ChiSquareFactory.i ChiSquareFactory_doc.i.in
                       Chi.i Chi_doc.i.in
                       ChiFactory.i ChiFactory_doc.i.in
+                      CombinationsDistribution.i CombinationsDistribution_doc.i.in
                       CompositeDistribution.i CompositeDistribution_doc.i.in
                       Dirac.i Dirac_doc.i.in
                       DiracFactory.i DiracFactory_doc.i.in
@@ -1016,6 +1017,9 @@ ot_add_python_module(testing testing_module.i
 
 ot_add_python_module(experimental experimental_module.i
                      PointConditionalDistribution.i PointConditionalDistribution_doc.i.in
+                     SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i.in
+                     SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i.in
+                     LOLAVoronoi.i LOLAVoronoi_doc.i.in
                      FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
                      FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
