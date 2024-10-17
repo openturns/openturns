@@ -106,8 +106,8 @@ print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.setStandardDeviationTolerance(0.1)  # estimator is slow to converge
-checker.setSkewnessTolerance(0.45)  # estimator is slow to converge
-checker.setCorrelationTolerance(0.1)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.setStandardDeviationTolerance(0.1)  # estimator is slow to converge
+validation.setSkewnessTolerance(0.45)  # estimator is slow to converge
+validation.setCorrelationTolerance(0.1)
+validation.run()

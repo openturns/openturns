@@ -110,5 +110,5 @@ print("Circular mean=", distribution.getCircularMean())
 print("Circular variance= %.12g" % distribution.getCircularVariance())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

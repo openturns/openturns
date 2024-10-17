@@ -97,5 +97,5 @@ print("kurtosis=", repr(kurtosis))
 
 ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(1)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

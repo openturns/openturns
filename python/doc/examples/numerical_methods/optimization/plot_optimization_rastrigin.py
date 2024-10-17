@@ -30,15 +30,15 @@ Optimization of the Rastrigin test function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-import numpy as np
+import openturns.viewer as otv
+import math as m
 
 ot.Log.Show(ot.Log.NONE)
 
 
 def rastriginPy(X):
     A = 10.0
-    delta = [x**2 - A * np.cos(2 * np.pi * x) for x in X]
+    delta = [x**2 - A * m.cos(2 * m.pi * x) for x in X]
     y = A + sum(delta)
     return [y]
 
@@ -77,7 +77,7 @@ graph = rastrigin.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Rastrigin function")
 graph.setLegendPosition("upper left")
 graph.setLegendCorner([1.0, 1.0])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the Rastrigin function has several local minima. However, there is only one single global minimum at :math:`\vect{x}^\star=(0, 0)`.
@@ -112,7 +112,7 @@ cloud.setColor("black")
 graph.add(cloud)
 graph.setLegends([""])
 # sphinx_gallery_thumbnail_number = 2
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the starting points are well spread across the input domain of the function.
@@ -157,14 +157,14 @@ cloud.setColor("black")
 graph.add(cloud)
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # How fast did it find the global minimum?
 
 # %%
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Let us now analyze the :class:`~openturns.MultiStart` process as a whole.
@@ -183,10 +183,11 @@ cloud.setColor("black")
 graph.add(cloud)
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # How many times did all :class:`~openturns.Cobyla` instances combined call `rastrigin`?
+print(rastrigin.getInputHistory().getSize())
 
 # %%
-rastrigin.getInputHistory().getSize()
+otv.View.ShowAll()

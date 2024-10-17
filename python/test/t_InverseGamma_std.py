@@ -118,6 +118,6 @@ for distribution in allDistributions:
     print("kurtosis=", kurtosis)
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipMinimumVolumeLevelSet()
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipMinimumVolumeLevelSet()
+    validation.run()

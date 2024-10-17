@@ -210,11 +210,11 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.0] * 2, [1.0] * 2)]:
     print("quantile=", quantile)
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(myDist)
-    checker.skipEntropy()  # slow
-    checker.skipMinimumVolumeLevelSet()  # slow
-    checker.skipCharacteristicFunction()  # undefined
-    checker.run()
+    validation = ott.DistributionValidation(myDist)
+    validation.skipEntropy()  # slow
+    validation.skipMinimumVolumeLevelSet()  # slow
+    validation.skipCharacteristicFunction()  # undefined
+    validation.run()
 
     param = myDist.getParameter()
     print("parameter=", param)

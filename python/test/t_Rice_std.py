@@ -95,8 +95,8 @@ kurtosis = distribution.getKurtosis()
 print("kurtosis=", repr(kurtosis))
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipProbability()
-checker.skipEntropy()  # slow
-checker.skipMinimumVolumeLevelSet()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipProbability()
+validation.skipEntropy()  # slow
+validation.skipMinimumVolumeLevelSet()  # slow
+validation.run()
