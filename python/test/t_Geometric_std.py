@@ -64,5 +64,5 @@ p = ot.Geometric(0.5).computeProbability(ot.Interval(2, 6))
 assert p == 0.484375, "wrong discrete interval proba"
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

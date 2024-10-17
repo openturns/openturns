@@ -125,8 +125,8 @@ newDistribution = ot.CompositeDistribution(function, antecedent)
 print("newDistribution=", newDistribution)
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipEntropy()  # slow
-checker.skipMinimumVolumeInterval()  # wrong proba
-checker.skipMinimumVolumeLevelSet()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipEntropy()  # slow
+validation.skipMinimumVolumeInterval()  # wrong proba
+validation.skipMinimumVolumeLevelSet()  # slow
+validation.run()

@@ -32,12 +32,12 @@ print("cov=", distribution.getCovariance())
 print("marginal=", distribution.getMarginal([1]))
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipMoments()  # slow
-checker.skipCorrelation()  # slow
-checker.skipGradient()  # slow
-checker.setCDFSamplingSize(1)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipMoments()  # slow
+validation.skipCorrelation()  # slow
+validation.skipGradient()  # slow
+validation.setCDFSamplingSize(1)
+validation.run()
 
 # no conditioning
 distribution = otexp.PointConditionalDistribution(copula, [], [])
@@ -57,13 +57,13 @@ print("marginal=", distribution.getMarginal([1]))
 print("support=", distribution.getSupport())
 assert distribution.isDiscrete(), "wrong isDiscrete"
 ott.assert_almost_equal(distribution.getMean(), [4 / 3] * 2)
-checker = ott.DistributionChecker(distribution)
-checker.skipMoments()  # slow
-checker.skipCorrelation()  # slow
-checker.skipGradient()  # slow
-checker.skipParameters()  # integer parameter
-checker.setCDFSamplingSize(1)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipMoments()  # slow
+validation.skipCorrelation()  # slow
+validation.skipGradient()  # slow
+validation.skipParameters()  # integer parameter
+validation.setCDFSamplingSize(1)
+validation.run()
 
 # special case for Normal
 normal = ot.Normal([0.0] * 3, R)

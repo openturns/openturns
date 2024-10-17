@@ -125,8 +125,8 @@ int main(int, char *[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
     Log::Show(Log::TRACE);
-    DistributionChecker checker(distribution);
-    checker.run();
+    DistributionValidation validation(distribution);
+    validation.run();
   }
   catch (TestFailed & ex)
   {

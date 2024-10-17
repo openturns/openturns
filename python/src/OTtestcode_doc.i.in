@@ -24,7 +24,7 @@ Examples
 
 // ---------------------------------------------------------------------
     
-%feature("docstring") OT::Test::DistributionChecker
+%feature("docstring") OT::Test::DistributionValidation
 "Automates distribution tests.
 
 It helps performing tests to validate :class:`~openturns.Distribution` services:
@@ -58,14 +58,14 @@ Examples
 >>> import openturns as ot
 >>> import openturns.testing as ott
 >>> dist = ot.Uniform(0.0, 1.0)
->>> checker = ott.DistributionChecker(dist)
+>>> checker = ott.DistributionValidation(dist)
 >>> ot.Log.Show(ot.Log.TRACE)  # doctest: +SKIP
 >>> checker.run()  # doctest: +SKIP
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::run
+%feature("docstring") OT::Test::DistributionValidation::run
 "Run all tests.
 
 The method raises an exception on the first test that fails.
@@ -73,72 +73,72 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipCDF
+%feature("docstring") OT::Test::DistributionValidation::skipCDF
 "Disables CDF test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipDDF
+%feature("docstring") OT::Test::DistributionValidation::skipDDF
 "Disables DDF test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipMoments
+%feature("docstring") OT::Test::DistributionValidation::skipMoments
 "Disables moments test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipCorrelation
+%feature("docstring") OT::Test::DistributionValidation::skipCorrelation
 "Disables Correlation test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipMinimumVolumeLevelSet
+%feature("docstring") OT::Test::DistributionValidation::skipMinimumVolumeLevelSet
 "Disables minimum volume level set test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipMinimumVolumeInterval
+%feature("docstring") OT::Test::DistributionValidation::skipMinimumVolumeInterval
 "Disables minimum volume interval test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipConfidenceInterval
+%feature("docstring") OT::Test::DistributionValidation::skipConfidenceInterval
 "Disables confidence interval test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipParameters
+%feature("docstring") OT::Test::DistributionValidation::skipParameters
 "Disables parameters test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipProbability
+%feature("docstring") OT::Test::DistributionValidation::skipProbability
 "Disables probability test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipCharacteristicFunction
+%feature("docstring") OT::Test::DistributionValidation::skipCharacteristicFunction
 "Disables characteristic function test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipGeneratingFunction
+%feature("docstring") OT::Test::DistributionValidation::skipGeneratingFunction
 "Disables generating function test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipGradient
+%feature("docstring") OT::Test::DistributionValidation::skipGradient
 "Disables PDF/CDF gradients test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::skipEntropy
+%feature("docstring") OT::Test::DistributionValidation::skipEntropy
 "Disables entropy test."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setMomentsSamplingSize
+%feature("docstring") OT::Test::DistributionValidation::setMomentsSamplingSize
 "Sampling size accessor for moments test.
 
 Parameters
@@ -149,7 +149,7 @@ momentsSamplingSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setEntropySamplingSize
+%feature("docstring") OT::Test::DistributionValidation::setEntropySamplingSize
 "Sampling size accessor for entropy test.
 
 Parameters
@@ -160,7 +160,7 @@ entropySamplingSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setEntropyTolerance
+%feature("docstring") OT::Test::DistributionValidation::setEntropyTolerance
 "Entropy test tolerance accessor.
 
 Parameters
@@ -171,7 +171,7 @@ entropyTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setDomainSamplingSize
+%feature("docstring") OT::Test::DistributionValidation::setDomainSamplingSize
 "Sampling size accessor for domain tests.
 
 Parameters
@@ -182,7 +182,7 @@ domainSamplingSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setPDFSamplingSize
+%feature("docstring") OT::Test::DistributionValidation::setPDFSamplingSize
 "Sampling size accessor for PDF test.
 
 Parameters
@@ -193,7 +193,7 @@ pdfSamplingSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setCDFSamplingSize
+%feature("docstring") OT::Test::DistributionValidation::setCDFSamplingSize
 "Sampling size accessor for CDF test.
 
 Parameters
@@ -204,7 +204,7 @@ cdfSamplingSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setCDFTolerance
+%feature("docstring") OT::Test::DistributionValidation::setCDFTolerance
 "CDF test tolerance accessor.
 
 Parameters
@@ -215,7 +215,7 @@ cdfTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setPDFTolerance
+%feature("docstring") OT::Test::DistributionValidation::setPDFTolerance
 "PDF test tolerance accessor.
 
 Parameters
@@ -226,7 +226,7 @@ pdfTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setDDFTolerance
+%feature("docstring") OT::Test::DistributionValidation::setDDFTolerance
 "DDF test tolerance accessor.
 
 Parameters
@@ -237,7 +237,7 @@ ddfTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setQuantileTolerance
+%feature("docstring") OT::Test::DistributionValidation::setQuantileTolerance
 "Quantile test tolerance accessor.
 
 Parameters
@@ -248,7 +248,7 @@ quatileTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setParameterTolerance
+%feature("docstring") OT::Test::DistributionValidation::setParameterTolerance
 "PDF/CDF parameter gradient test tolerance accessor.
 
 Parameters
@@ -259,7 +259,7 @@ parameterTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setDomainTolerance
+%feature("docstring") OT::Test::DistributionValidation::setDomainTolerance
 "Domain test tolerance accessor.
 
 Parameters
@@ -270,7 +270,7 @@ domainTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setFittingSamplingSize
+%feature("docstring") OT::Test::DistributionValidation::setFittingSamplingSize
 "Sampling size accessor for fitting test.
 
 Parameters
@@ -281,7 +281,7 @@ fittingSamplingSize : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setMeanTolerance
+%feature("docstring") OT::Test::DistributionValidation::setMeanTolerance
 "Mean test tolerance accessor.
 
 Parameters
@@ -292,7 +292,7 @@ meanTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setStandardDeviationTolerance
+%feature("docstring") OT::Test::DistributionValidation::setStandardDeviationTolerance
 "Standard deviation test tolerance accessor.
 
 Parameters
@@ -303,7 +303,7 @@ standardDeviationTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setSkewnessTolerance
+%feature("docstring") OT::Test::DistributionValidation::setSkewnessTolerance
 "Skewness test tolerance accessor.
 
 Parameters
@@ -314,7 +314,7 @@ skewnessTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setKurtosisTolerance
+%feature("docstring") OT::Test::DistributionValidation::setKurtosisTolerance
 "Kurtosis test tolerance accessor.
 
 Parameters
@@ -325,7 +325,7 @@ kurtosisTolerance : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Test::DistributionChecker::setCorrelationTolerance
+%feature("docstring") OT::Test::DistributionValidation::setCorrelationTolerance
 "Correlation test tolerance accessor.
 
 Parameters

@@ -66,5 +66,5 @@ ot.Hypergeometric(25, 0, 0).computeScalarQuantile(0.6)
 
 ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(1)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()
