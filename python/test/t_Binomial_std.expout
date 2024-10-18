@@ -31,7 +31,7 @@ row = 2/37, x = 0, n = 10, pr = 1.0, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
     computePDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
     computeCDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0, F(X) = 0.0
+    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0000000e+00, F(X) = 0.0000000e+00
 row = 3/37, x = 10, n = 10, pr = 1.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
     computePDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
     computeCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
@@ -41,12 +41,12 @@ row = 4/37, x = 1, n = 1030, pr = 0.5, P(X = x) = 8.952445602587756e-308, CDF = 
     computePDF. Computed = 8.952445602586738e-308, expected = 8.952445602587756e-308, abs.err. = 1.018e-320
     computeCDF. Computed = 8.961137297347362e-308, expected = 8.96113729734744e-308, abs.err. = 7.9e-322
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 1, F(X - 1) = 8.691694759794e-311, F(X) = 8.961137297347362e-308
+    computeQuantile (A). Computed X = 1, F(X - 1) = 8.6916948e-311, F(X) = 8.9611373e-308
 row = 5/37, x = 400, n = 1030, pr = 0.5, P(X = x) = 1.4435068396634365e-13, CDF = 3.897352466243578e-13, Compl. CDF = 0.9999999999996103
     computePDF. Computed = 1.4435068396634415e-13, expected = 1.4435068396634365e-13, abs.err. = 5.048709793414476e-28
     computeCDF. Computed = 3.8973524662436084e-13, expected = 3.897352466243578e-13, abs.err. = 3.0292258760486853e-27
     computeComplementaryCDF. Computed = 0.9999999999996103, expected = 0.9999999999996103, abs.err. = 0.0
-    computeQuantile (A). Computed X = 400, F(X - 1) = 2.4538456265801843e-13, F(X) = 3.8973524662436084e-13
+    computeQuantile (A). Computed X = 400, F(X - 1) = 2.4538456e-13, F(X) = 3.8973525e-13
 row = 6/37, x = 589, n = 1030, pr = 0.5, P(X = x) = 5.835293291163824e-07, CDF = 0.9999983439256698, Compl. CDF = 1.6560743301714625e-06
     computePDF. Computed = 5.835293291163835e-07, expected = 5.835293291163824e-07, abs.err. = 1.0587911840678754e-21
     computeCDF. Computed = 0.9999983439256698, expected = 0.9999983439256698, abs.err. = 0.0
@@ -56,7 +56,7 @@ row = 7/37, x = 1, n = 30, pr = 0.1, P(X = x) = 0.14130386091738736, CDF = 0.183
     computePDF. Computed = 0.14130386091738736, expected = 0.14130386091738736, abs.err. = 0.0
     computeCDF. Computed = 0.18369501919260367, expected = 0.18369501919260356, abs.err. = 1.1102230246251565e-16
     computeComplementaryCDF. Computed = 0.8163049808073963, expected = 0.8163049808073964, abs.err. = 1.1102230246251565e-16
-    computeQuantile (A). Computed X = 1, F(X - 1) = 0.04239115827521624, F(X) = 0.18369501919260367
+    computeQuantile (A). Computed X = 1, F(X - 1) = 4.2391158e-02, F(X) = 1.8369502e-01
 row = 8/37, x = 1, n = 50, pr = 0.001, P(X = x) = 0.047607889299150725, CDF = 0.9988135174961821, Compl. CDF = 0.001186482503817932
     computePDF. Computed = 0.047607889299150725, expected = 0.047607889299150725, abs.err. = 0.0
     computeCDF. Computed = 0.9988135174961821, expected = 0.9988135174961821, abs.err. = 0.0
@@ -66,12 +66,12 @@ row = 9/37, x = 16, n = 30, pr = 0.999, P(X = x) = 1.4311328174833965e-34, CDF =
     computePDF. Computed = 1.4311328174833965e-34, expected = 1.4311328174833965e-34, abs.err. = 0.0
     computeCDF. Computed = 1.432662322407474e-34, expected = 1.4326623224074817e-34, abs.err. = 7.697562365065523e-49
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 16, F(X - 1) = 1.5295049240841977e-37, F(X) = 1.432662322407474e-34
+    computeQuantile (A). Computed X = 16, F(X - 1) = 1.5295049e-37, F(X) = 1.4326623e-34
 row = 10/37, x = 1, n = 240, pr = 0.9999, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
     computePDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
     computeCDF. Computed = 0.0, expected = 0.0, abs.err. = 0.0
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0, F(X) = 0.0
+    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0000000e+00, F(X) = 0.0000000e+00
 row = 11/37, x = 28, n = 100, pr = 0.22, P(X = x) = 0.032924061808075285, CDF = 0.9383900809697512, Compl. CDF = 0.06160991903024881
     computePDF. Computed = 0.03292406180807527, expected = 0.032924061808075285, abs.err. = 1.3877787807814457e-17
     computeCDF. Computed = 0.9383900809697513, expected = 0.9383900809697512, abs.err. = 1.1102230246251565e-16
@@ -81,7 +81,7 @@ row = 12/37, x = 152, n = 1000, pr = 0.71, P(X = x) = 1.3502335695551398e-295, C
     computePDF. Computed = 1.3502335695552932e-295, expected = 1.3502335695551398e-295, abs.err. = 1.534084125103598e-308
     computeCDF. Computed = 1.4566914903506346e-295, expected = 1.4566914903506442e-295, abs.err. = 9.56086423577313e-310
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 152, F(X - 1) = 1.064579207952236e-296, F(X) = 1.4566914903506346e-295
+    computeQuantile (A). Computed X = 152, F(X - 1) = 1.0645792e-296, F(X) = 1.4566915e-295
 row = 13/37, x = 3, n = 1080, pr = 0.001, P(X = x) = 0.07127603460581645, CDF = 0.9757780300552841, Compl. CDF = 0.024221969944715913
     computePDF. Computed = 0.07127603460581641, expected = 0.07127603460581645, abs.err. = 4.163336342344337e-17
     computeCDF. Computed = 0.975778030055284, expected = 0.9757780300552841, abs.err. = 1.1102230246251565e-16
@@ -91,7 +91,7 @@ row = 14/37, x = 0, n = 1030, pr = 0.5, P(X = x) = 8.691694759794e-311, CDF = 8.
     computePDF. Computed = 8.691694759794e-311, expected = 8.691694759794e-311, abs.err. = 0.0
     computeCDF. Computed = 8.691694759794e-311, expected = 8.691694759794e-311, abs.err. = 0.0
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0, F(X) = 8.691694759794e-311
+    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0000000e+00, F(X) = 8.6916948e-311
 row = 15/37, x = 1030, n = 1030, pr = 0.5, P(X = x) = 8.691694759794e-311, CDF = 1.0, Compl. CDF = 0.0
     computePDF. Computed = 8.691694759794e-311, expected = 8.691694759794e-311, abs.err. = 0.0
     computeCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
@@ -101,52 +101,52 @@ row = 16/37, x = 187, n = 1030, pr = 0.5, P(X = x) = 2.305222442510606e-100, CDF
     computePDF. Computed = 2.3052224425105407e-100, expected = 2.305222442510606e-100, abs.err. = 6.547889940274375e-114
     computeCDF. Computed = 2.9597951362079843e-100, expected = 2.9597951362079584e-100, abs.err. = 2.5887006740619622e-114
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 187, F(X - 1) = 6.545726936973506e-101, F(X) = 2.9597951362079843e-100
+    computeQuantile (A). Computed X = 187, F(X - 1) = 6.5457269e-101, F(X) = 2.9597951e-100
 row = 17/37, x = 4, n = 1030, pr = 0.5, P(X = x) = 4.052372710930284e-300, CDF = 4.0682022015213084e-300, Compl. CDF = 1.0
     computePDF. Computed = 4.052372710930284e-300, expected = 4.052372710930284e-300, abs.err. = 0.0
     computeCDF. Computed = 4.068202201521105e-300, expected = 4.0682022015213084e-300, abs.err. = 2.03578971196e-313
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 4, F(X - 1) = 1.582949059027222e-302, F(X) = 4.068202201521105e-300
+    computeQuantile (A). Computed X = 4, F(X - 1) = 1.5829491e-302, F(X) = 4.0682022e-300
 row = 18/37, x = 71, n = 1030, pr = 0.5, P(X = x) = 7.052396863408603e-200, CDF = 7.614904751686653e-200, Compl. CDF = 1.0
     computePDF. Computed = 7.052396863408603e-200, expected = 7.052396863408603e-200, abs.err. = 0.0
     computeCDF. Computed = 7.614904751687976e-200, expected = 7.614904751686653e-200, abs.err. = 1.3227809970559584e-212
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 71, F(X - 1) = 5.6250788827965954e-201, F(X) = 7.614904751687976e-200
+    computeQuantile (A). Computed X = 71, F(X - 1) = 5.6250789e-201, F(X) = 7.6149048e-200
 row = 19/37, x = 280, n = 1030, pr = 0.5, P(X = x) = 1.280342764528666e-50, CDF = 2.037991584857348e-50, Compl. CDF = 1.0
     computePDF. Computed = 1.2803427645287025e-50, expected = 1.280342764528666e-50, abs.err. = 3.6557935821175225e-64
     computeCDF. Computed = 2.0379915848574945e-50, expected = 2.037991584857348e-50, abs.err. = 1.464691324783449e-63
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 280, F(X - 1) = 7.576488203287469e-51, F(X) = 2.0379915848574945e-50
+    computeQuantile (A). Computed X = 280, F(X - 1) = 7.5764882e-51, F(X) = 2.0379916e-50
 row = 20/37, x = 367, n = 1030, pr = 0.5, P(X = x) = 4.78246519228016e-21, CDF = 1.0625330196420556e-20, Compl. CDF = 1.0
     computePDF. Computed = 4.782465192280126e-21, expected = 4.78246519228016e-21, abs.err. = 3.385423730368188e-35
     computeCDF. Computed = 1.0625330196420855e-20, expected = 1.0625330196420556e-20, abs.err. = 2.9942192104145307e-34
     computeComplementaryCDF. Computed = 1.0, expected = 1.0, abs.err. = 0.0
-    computeQuantile (A). Computed X = 367, F(X - 1) = 5.842865004140401e-21, F(X) = 1.0625330196420855e-20
+    computeQuantile (A). Computed X = 367, F(X - 1) = 5.8428650e-21, F(X) = 1.0625330e-20
 row = 21/37, x = 413, n = 1030, pr = 0.5, P(X = x) = 3.7344641140712264e-11, CDF = 1.1085627607135255e-10, Compl. CDF = 0.9999999998891437
     computePDF. Computed = 3.7344641140712264e-11, expected = 3.7344641140712264e-11, abs.err. = 0.0
     computeCDF. Computed = 1.1085627607135436e-10, expected = 1.1085627607135255e-10, abs.err. = 1.809457589959748e-24
     computeComplementaryCDF. Computed = 0.9999999998891437, expected = 0.9999999998891437, abs.err. = 0.0
-    computeQuantile (A). Computed X = 413, F(X - 1) = 7.351163493064047e-11, F(X) = 1.1085627607135436e-10
+    computeQuantile (A). Computed X = 413, F(X - 1) = 7.3511635e-11, F(X) = 1.1085628e-10
 row = 22/37, x = 447, n = 1030, pr = 0.5, P(X = x) = 3.079274333642467e-06, CDF = 1.2646931839564025e-05, Compl. CDF = 0.9999873530681604
     computePDF. Computed = 3.079274333642467e-06, expected = 3.079274333642467e-06, abs.err. = 0.0
     computeCDF. Computed = 1.2646931839564082e-05, expected = 1.2646931839564025e-05, abs.err. = 5.759824041329242e-20
     computeComplementaryCDF. Computed = 0.9999873530681604, expected = 0.9999873530681604, abs.err. = 0.0
-    computeQuantile (A). Computed X = 447, F(X - 1) = 9.567657505921467e-06, F(X) = 1.2646931839564082e-05
+    computeQuantile (A). Computed X = 447, F(X - 1) = 9.5676575e-06, F(X) = 1.2646932e-05
 row = 23/37, x = 478, n = 1030, pr = 0.5, P(X = x) = 0.0017421256529667251, CDF = 0.011442014956264542, Compl. CDF = 0.9885579850437355
     computePDF. Computed = 0.0017421256529667236, expected = 0.0017421256529667251, abs.err. = 1.5178830414797062e-18
     computeCDF. Computed = 0.011442014956264514, expected = 0.011442014956264542, abs.err. = 2.7755575615628914e-17
     computeComplementaryCDF. Computed = 0.9885579850437355, expected = 0.9885579850437355, abs.err. = 0.0
-    computeQuantile (A). Computed X = 478, F(X - 1) = 0.009699889303297862, F(X) = 0.011442014956264514
+    computeQuantile (A). Computed X = 478, F(X - 1) = 9.6998893e-03, F(X) = 1.1442015e-02
 row = 24/37, x = 494, n = 1030, pr = 0.5, P(X = x) = 0.01056289669305525, CDF = 0.10069913185943613, Compl. CDF = 0.8993008681405639
     computePDF. Computed = 0.01056289669305525, expected = 0.01056289669305525, abs.err. = 0.0
     computeCDF. Computed = 0.10069913185943576, expected = 0.10069913185943613, abs.err. = 3.7470027081099033e-16
     computeComplementaryCDF. Computed = 0.8993008681405642, expected = 0.8993008681405639, abs.err. = 3.3306690738754696e-16
-    computeQuantile (A). Computed X = 494, F(X - 1) = 0.09013623516638085, F(X) = 0.10069913185943576
+    computeQuantile (A). Computed X = 494, F(X - 1) = 9.0136235e-02, F(X) = 1.0069913e-01
 row = 25/37, x = 501, n = 1030, pr = 0.5, P(X = x) = 0.016993045111617772, CDF = 0.20009865401157712, Compl. CDF = 0.7999013459884229
     computePDF. Computed = 0.016993045111617772, expected = 0.016993045111617772, abs.err. = 0.0
     computeCDF. Computed = 0.20009865401157723, expected = 0.20009865401157712, abs.err. = 1.1102230246251565e-16
     computeComplementaryCDF. Computed = 0.7999013459884228, expected = 0.7999013459884229, abs.err. = 1.1102230246251565e-16
-    computeQuantile (A). Computed X = 501, F(X - 1) = 0.18310560889996, F(X) = 0.20009865401157723
+    computeQuantile (A). Computed X = 501, F(X - 1) = 1.8310561e-01, F(X) = 2.0009865e-01
 row = 26/37, x = 515, n = 1030, pr = 0.5, P(X = x) = 0.02485512993657447, CDF = 0.5124275649682872, Compl. CDF = 0.48757243503171277
     computePDF. Computed = 0.02485512993657446, expected = 0.02485512993657447, abs.err. = 1.0408340855860843e-17
     computeCDF. Computed = 0.5124275649682871, expected = 0.5124275649682872, abs.err. = 1.1102230246251565e-16

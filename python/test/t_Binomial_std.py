@@ -105,7 +105,7 @@ for i in range(sample_size):
         computed_x = int(distribution.computeQuantile(computed_cdf)[0])
         cdfXM1 = distribution.computeCDF(computed_x - 1)
         cdfX = distribution.computeCDF(computed_x)
-        print(f"    computeQuantile (A). Computed X = {computed_x}, F(X - 1) = {cdfXM1}, F(X) = {cdfX}")
+        print(f"    computeQuantile (A). Computed X = {computed_x}, F(X - 1) = {cdfXM1:.7e}, F(X) = {cdfX:.7e}")
         if computed_cdf == 0.0:
             assert computed_x == 0.0
         else:
