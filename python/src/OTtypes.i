@@ -11,6 +11,16 @@
 %{
 #include "openturns/OT.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
+
+// for SWIG 4.3 compat
+inline PyObject* OT_AppendOutput(PyObject* result, PyObject* obj)
+{
+#if SWIG_VERSION >= 0x040300
+  return SWIG_Python_AppendOutput(result, obj, 1);
+#else
+  return SWIG_Python_AppendOutput(result, obj);
+#endif
+}
 %}
 
 %typemap(in) UnsignedInteger {

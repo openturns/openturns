@@ -2,7 +2,7 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::Point & logLikelihoodOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & logLikelihoodOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Point & logLikelihoodOut %{ $result = OT_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point,  SWIG_POINTER_OWN)); %}
 
 %{
 #include "openturns/GeneralizedExtremeValueFactory.hxx"
