@@ -13,7 +13,6 @@ import openturns as ot
 
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
-ot.ResourceMap.SetAsString("Contour-DefaultColorMap", "viridis")
 
 # %%
 # Generate a sample

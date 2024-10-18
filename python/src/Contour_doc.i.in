@@ -182,7 +182,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.Contour(2,2,ot.Sample(4,1)).getColorMap())
-hsv
+viridis
 
 See Also
 --------
