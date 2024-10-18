@@ -92,8 +92,7 @@ Graph UniVariateFunctionImplementation::draw(const Scalar xMin,
     data(i, 1) = operator()(x);
   }
   Curve curve(data);
-  curve.setLineStyle("solid");
-  curve.setLineWidth(2);
+  curve.setLineWidth(2.0);
   curve.setLegend(getName());
   Graph graph(getName(), "x", "y", true, "topright");
   graph.add(curve);
