@@ -38,6 +38,7 @@
 === Python module ===
  * Cross-cuts of multivariate Functions can be drawn with the drawCrossCut method
  * VisualTest::DrawInsideOutside shows which points in a Sample belong to a given Domain and which do not.
+ * Viridis replaces HSV as default colormap
 
 === Miscellaneous ===
  * The Distribution PDF, logPDF and CDF can be exposed as Function objects using the new getPDF, getLogPDF and getCDF methods, previously they could only be computed on a Point or Sample or else drawn.
