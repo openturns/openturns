@@ -16,7 +16,7 @@
 inline PyObject* OT_AppendOutput(PyObject* result, PyObject* obj)
 {
 #if SWIG_VERSION >= 0x040300
-  return SWIG_AppendOutput(result, obj);
+  return SWIG_Python_AppendOutput(result, obj, 1);
 #else
   return SWIG_Python_AppendOutput(result, obj);
 #endif
