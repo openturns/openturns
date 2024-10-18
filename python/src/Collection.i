@@ -49,7 +49,7 @@ PyObject * __getitem__(PyObject * arg) const
     else
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
-    return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN |  0);
+    return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN);
   }
   else if (PySequence_Check(arg))
   {
@@ -73,7 +73,7 @@ PyObject * __getitem__(PyObject * arg) const
       }
       result[i] = self->at(index);
     }
-    return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN |  0);
+    return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN);
   }
   else if (PyObject_HasAttrString(arg, "__int__"))
   {

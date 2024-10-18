@@ -174,7 +174,7 @@ Sample PythonPointToFieldFunction::operator() (const Point & inP) const
 
   callsNumber_.increment();
 
-  ScopedPyObjectPointer pyInP(SWIG_NewPointerObj(new OT::Point(inP), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN | 0));
+  ScopedPyObjectPointer pyInP(SWIG_NewPointerObj(new OT::Point(inP), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN));
   ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, pyInP.get(), NULL));
   if (result.isNull())
   {
