@@ -1,9 +1,11 @@
 #! /usr/bin/env python
 
+# %%
 import openturns as ot
 import openturns.testing as ott
 import os
 
+# %%
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
@@ -55,6 +57,7 @@ alpha = 0.05
 bounds = distribution.computeBilateralConfidenceInterval(1 - alpha)
 print("%.2f%% bilateral confidence interval" % ((1 - alpha) * 100), " =", bounds)
 
+# %%
 # check survival at upper bound
 distribution = ot.Binomial(10, 1.0)
 assert distribution.computeCDF(10.0) == 1.0
@@ -65,6 +68,7 @@ assert distribution.computeSurvivalFunction(10.0) == 0.0
 distribution = ot.Binomial(3, 0.5)
 assert distribution.computeScalarQuantile(0.9, True) == 0
 
+# %%
 print("Check on dataset")
 separator = ","
 skipped_lines = 13
@@ -98,12 +102,17 @@ for i in range(sample_size):
         # for this particular input.
         continue
     elif expected_cdfp < expected_cdfq:
-        computed_x = int(distribution.computeQuantile(expected_cdfp)[0])
-        print(f"    computeQuantile. Computed X = {computed_x}, expected = {x}, diff = {abs(computed_x - x)}")
-        assert x == computed_x
+        computed_x = int(distribution.computeQuantile(computed_cdf)[0])
+        cdfXM1 = distribution.computeCDF(computed_x - 1)
+        cdfX = distribution.computeCDF(computed_x)
+        print(f"    computeQuantile (A). Computed X = {computed_x}, F(X - 1) = {cdfXM1}, F(X) = {cdfX}")
+        if computed_cdf == 0.0:
+            assert computed_x == 0.0
+        else:
+            assert cdfXM1 < computed_cdf and computed_cdf <= cdfX
     else:
-        computed_x = int(distribution.computeQuantile(expected_cdfq, True)[0])
-        print(f"    computeQuantile. Computed X = {computed_x}, expected = {x}, diff = {abs(computed_x - x)}")
+        computed_x = int(distribution.computeQuantile(computed_ccdf, True)[0])
+        print(f"    computeQuantile (B). Computed X = {computed_x}, expected = {x}, diff = {abs(computed_x - x)}")
         assert x == computed_x
 
 
