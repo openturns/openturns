@@ -722,16 +722,21 @@ class View:
                             format="%.3g",
                         )
                     else:
-                        try:
-                            colorbar = self._fig.colorbar(contourset, format="%.3g")
-                            if contour.getColorBarPosition() != "right":
+                        # do not draw colorbar when Z range has too few values
+                        # https://github.com/matplotlib/matplotlib/issues/23817
+                        nZ = len(set([z[0] for z in drawable.getData()]))
+                        if nZ > 2:
+                            try:
+                                colorbar = self._fig.colorbar(contourset, format="%.3g")
+                                if contour.getColorBarPosition() != "right":
+                                    warnings.warn(
+                                        "-- colorbar location was not used in matplotlib < 3.7.0"
+                                    )
+                            except ZeroDivisionError:
                                 warnings.warn(
-                                    "-- colorbar location was not used in matplotlib < 3.7.0"
+                                    "figure.colorbar likely failed on boundary levels"
                                 )
-                        except ZeroDivisionError:
-                            warnings.warn(
-                                "figure.colorbar likely failed on boundary levels"
-                            )
+
                     if colorbar is not None and contour.getLevels():
                         colorbar.formatter.minor_thresholds = (
                             10.0,
