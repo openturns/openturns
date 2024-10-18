@@ -152,8 +152,8 @@ for dim in range(1, 2):
         print("margins realization=", repr(margins.getRealization()))
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipCDF()
-    checker.skipGradient()
-    checker.skipMoments()
-    checker.run()
+    validation = ott.DistributionValidation(distribution)
+    validation.skipCDF()
+    validation.skipGradient()
+    validation.skipMoments()
+    validation.run()

@@ -167,10 +167,10 @@ print("atoms kept in mixture=", newMixture.getDistributionCollection())
 print("newMixture=", newMixture)
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipMoments()  # slow
-checker.skipCorrelation()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipMoments()  # slow
+validation.skipCorrelation()  # slow
+validation.run()
 
 # check for non stricly increasing CDF: must return the inf of [1, 2]
 distribution = ot.Mixture([ot.Uniform(0.0, 1.0), ot.Uniform(2.0, 3.0)])

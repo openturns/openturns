@@ -152,5 +152,5 @@ print("prob=%.6f" % prob)
 print(ot.NormalCopula(1).getParametersCollection())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(copula)
-checker.run()
+validation = ott.DistributionValidation(copula)
+validation.run()

@@ -100,5 +100,5 @@ p = distribution.computeProbability(
 ott.assert_almost_equal(p, 1.0)
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()

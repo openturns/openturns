@@ -63,10 +63,10 @@ print("kurtosis=", repr(kurtosis))
 print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipCorrelation()  # slow
-# checker.skipMinimumVolumeLevelSet()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipCorrelation()  # slow
+# validation.skipMinimumVolumeLevelSet()  # slow
+validation.run()
 
 
 # higher dimension

@@ -113,8 +113,8 @@ print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipMoments()  # slow
-checker.skipCorrelation()  # slow
-checker.skipParameters()  # slow
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipMoments()  # slow
+validation.skipCorrelation()  # slow
+validation.skipParameters()  # slow
+validation.run()

@@ -73,6 +73,6 @@ assert loi_UD.computeCDF([349]) == 0.125, "wrong cdf at min"
 assert loi_UD.computeCDF([364]) == 1.0, "wrong cdf at max"
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.skipParameters()  # probabilities are renormalized so not independent
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.skipParameters()  # probabilities are renormalized so not independent
+validation.run()

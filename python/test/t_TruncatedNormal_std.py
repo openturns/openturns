@@ -114,13 +114,13 @@ for distribution in [
     print("Standard representative=", distribution.getStandardRepresentative())
 
     ot.Log.Show(ot.Log.TRACE)
-    checker = ott.DistributionChecker(distribution)
-    checker.skipCharacteristicFunction()
-    checker.skipEntropy()  # slow
-    checker.skipMinimumVolumeLevelSet()  # slow
+    validation = ott.DistributionValidation(distribution)
+    validation.skipCharacteristicFunction()
+    validation.skipEntropy()  # slow
+    validation.skipMinimumVolumeLevelSet()  # slow
     if ot.Normal(distribution.getMu(), distribution.getSigma()).computeProbability(distribution.getRange()) < 0.25:
         # when rejection becomes too costly
-        checker.skipMoments()
-        checker.skipCorrelation()
-        checker.skipConfidenceInterval()
-    checker.run()
+        validation.skipMoments()
+        validation.skipCorrelation()
+        validation.skipConfidenceInterval()
+    validation.run()

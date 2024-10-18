@@ -58,8 +58,8 @@ print("Quantile (ref)=", ref.computeQuantile(0.5))
 print("CDF(quantile) =%.5f" % distribution.computeCDF(quantile))
 
 ot.Log.Show(ot.Log.TRACE)
-checker = ott.DistributionChecker(distribution)
-checker.run()
+validation = ott.DistributionValidation(distribution)
+validation.run()
 
 # Instantiate one distribution object
 R = ot.CorrelationMatrix(3)
