@@ -145,37 +145,17 @@ environment of the project.
 Target platforms
 ~~~~~~~~~~~~~~~~
 
-The OpenTURNS platform is meant to carry out uncertainty treatment
+The platform is meant to carry out uncertainty treatment
 studies in a scientific environment. Most of the scientific codes being
-available on Unix platforms, OpenTURNS is naturally designed to run on
+available on Unix platforms, the library is naturally designed to run on
 this family of systems. Unix being a standard with multiple
 implementations, available on different architectures, this gives a wide
 choice of target platforms.
 
-Linux is currently the most attractive Unix system for the OpenTURNS
-project, it was chosen as the main target system for the project’s
-development as well as for the delivery of the different versions.
+The primary development platform is Linux, and the software is known to work on
+various distributions (Debian, Fedora, ...).
 
-The partners involved in the project have each chosen different Linux
-distributions, for technical and historical reasons. Therefore, it was
-decided to support several distributions, a choice that should not be
-seen as final or minimal. The distributions considered here include for
-example this list:
-
-+--------------------+-------------------+
-| **Distribution**   | **Version**       |
-+====================+===================+
-| Debian             | 9 “Stretch”       |
-+--------------------+-------------------+
-| Ubuntu             | 18.04 “Bionic”    |
-+--------------------+-------------------+
-| Windows            | 10                |
-+--------------------+-------------------+
-
-The primary development platform is Linux, and is known to work on
-various other distributions.
-
-The Windows version is obtained by cross-compilation using MinGW-w64.
+The code also supports other platforms such as Windows and MacOS.
 
 .. _dependencies:
 

@@ -1,18 +1,27 @@
 = New Features =
 
-== 1.24 release (in progress) == #release-1.24
+== 1.24rc1 release (2024-10-23) == #release-1.24rc1
 
 === Library ===
 
 ==== Major changes ====
- * Swapped InverseGamma shape/scale parameters: InverseGamma(k, lambda)
  * New Gaussian process regression classes
+ * New method to compute the conditional expectation of a functional chaos expansion
+ * New class to obtain a conditional distribution wrt some components
 
 ==== New classes ====
+ * GaussianProcessFitter, GaussianProcessFitterResult (openturns.experimental)
+ * GaussianProcessRegression, GaussianProcessRegressionResult (openturns.experimental)
+ * GaussianProcessConditionalCovariance (openturns.experimental)
  * PointConditionalDistribution (openturns.experimental)
+ * DistributionValidation (openturns.testing)
 
 ==== API changes ====
  * SmolyakExperiment left the experimental module
+ * GeneralizedExtremeValueValidation left the experimental module
+ * TruncatedOverMesh left the experimental module
+ * StudentCopula left the experimental module
+ * StandardSpaceCrossEntropyImportanceSampling, PhysicalSpaceCrossEntropyImportanceSampling left the experimental module
  * Removed deprecated method Study.printLabels
  * Removed deprecated class TimerCallback
  * Removed deprecated MetaModelValidation(inputSample, outputSample, metaModel) ctor
@@ -31,18 +40,68 @@
  * Removed EfficientGlobalOptimization.get/setImprovementFactor improvement factor accessors
  * SobolSimulationAlgorithm.setExperimentSize must be used to set the DOE size instead of setBlockSize
  * Deprecated SobolSimulationAlgorithm.setBatchSize, use setBlockSize instead
+ * Swapped InverseGamma shape/scale parameters: InverseGamma(k, lambda)
 
 === Documentation ===
  * Copy button for code blocks
  * Added new use case: Fission gas release and example of use
 
 === Python module ===
- * Cross-cuts of multivariate Functions can be drawn with the drawCrossCut method
- * VisualTest::DrawInsideOutside shows which points in a Sample belong to a given Domain and which do not.
- * Viridis replaces HSV as default colormap
+ * Numpy 2 compatibility
+ * Workaround for matplotlib 3.6.x issues
 
 === Miscellaneous ===
  * The Distribution PDF, logPDF and CDF can be exposed as Function objects using the new getPDF, getLogPDF and getCDF methods, previously they could only be computed on a Point or Sample or else drawn.
+ * Added a new constructor Student(nu, mu, Covariance)
+ * Added DistributionValidation class to automate distribution tests
+ * Cross-cuts of multivariate Functions can be drawn with the drawCrossCut method
+ * VisualTest::DrawInsideOutside shows which points in a Sample belong to a given Domain and which do not.
+ * Viridis replaces HSV as default colormap
+ * Add a new method VisualTest::DrawPairsXY to plot X vs Y samples
+ * New OrthogonalFunctionFactory.getMarginal method
+ * New EnumerateFunction.getMarginal method
+ * New FunctionalChaosResult.getConditionalExpectation
+
+=== Bug fixes (total 39) ===
+ * #1077 (Docstrings suggest kwargs are available)
+ * #1179 (The SobolSimulationAlgorithm class has doc issues.)
+ * #1199 (LinearModelTest_LinearModelDurbinWatson does not take the firstSample into account in the actual Durbin-Watson test)
+ * #1203 (SpaceFillingMinDist documentation)
+ * #1241 (Wishart.getCovariance segfault)
+ * #1302 (EGO Example should show convergence)
+ * #1336 (The "Estimate a probability with FORM" example is unclear)
+ * #1417 (The example of the BarPlot graph is too complicated)
+ * #1631 (Missing image)
+ * #1739 (There is no example for a ProcessSample created from a Sample)
+ * #1748 (There is no worked example of the GaussKronrod algorithm)
+ * #1749 (There is no example or feature to plot a (X,Y) sample.)
+ * #1767 (The FORM explained example can be improved)
+ * #2166 (Curious indents on doc)
+ * #2318 (The target-HSIC example provides an incorrect algorithm parameterization)
+ * #2508 (Cobyla claim to support bounds, but does not)
+ * #2549 (SpecFunc.MaxScalar is undocumented)
+ * #2552 (ComputeQuantile for discrete variables)
+ * #2560 (CalibrationResult has no isBayesian() method)
+ * #2565 (give star discrepancy formula)
+ * #2629 (There are duplicate and inconsistent mathematical notations)
+ * #2674 (Add a "copybutton" feature to any code box in the doc)
+ * #2685 (Minor spelling errors in OT 1.23)
+ * #2689 (t_Bonmin_std.py fails on arm64, ppc64, ppc64el)
+ * #2690 (allow finish optimization wo feasible points)
+ * #2694 (InverseGamma and Gamma)
+ * #2706 (Doc "copy" feature is not robust to ellipses)
+ * #2707 (errors in Wilks doc)
+ * #2708 (NegativeBinomialDistribution should be renamed PolyaDistribution)
+ * #2710 (SimplicialCubature to use IntegrationAlgorithm interface)
+ * #2731 (The API help doc of CleaningStrategy is wrong)
+ * #2732 (MixtureClassifier.grade has a wrong error message)
+ * #2755 (The improvement factor of the EfficientGlobalOptimization is useless)
+ * #2761 (The name of the attributes is not consistent in the use cases)
+ * #2769 (Error when using a ConditionedGaussianProcess with output dimension > 1)
+ * #2773 (NAIS and StandardSpaceCrossEntropyImportanceSampling cannot deal with intersections of threshold events)
+ * #2780 (Student from (nu, mu, Covariance) ?)
+ * #2785 (The draw() method requires the same number of points in the X and Y directions)
+ * #2786 (The colors of some examples are broken)
 
 
 == 1.23 release (2024-06-05) == #release-1.23
