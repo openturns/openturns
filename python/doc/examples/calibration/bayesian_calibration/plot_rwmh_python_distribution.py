@@ -2,6 +2,7 @@
 Posterior sampling using a PythonDistribution
 =============================================
 """
+
 # %%
 # In this example we are going to show how to do Bayesian inference using the :class:`~openturns.RandomWalkMetropolisHastings` algorithm
 # in a statistical model defined through a :class:`~openturns.PythonDistribution`.

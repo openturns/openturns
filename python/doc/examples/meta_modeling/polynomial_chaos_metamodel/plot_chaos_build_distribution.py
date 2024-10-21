@@ -2,6 +2,7 @@
 Fit a distribution from an input sample
 =======================================
 """
+
 # %%
 #
 # In this example we show how to use the

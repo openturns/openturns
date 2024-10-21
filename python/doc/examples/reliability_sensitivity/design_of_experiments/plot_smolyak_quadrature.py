@@ -2,6 +2,7 @@
 Use the Smolyak quadrature
 ===========================
 """
+
 # %%
 # The goal of this example is to use Smolyak's quadrature.
 # We create a Smolyak quadrature using a Gauss-Legendre marginal
@@ -325,7 +326,7 @@ curve = drawTensorizedGaussQuadrature(n_max)
 graph.add(curve)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
 graph.setLegendCorner([1.0, 1.0])
-graph.setLegendPosition('upper left')
+graph.setLegendPosition("upper left")
 view = otv.View(
     graph,
     figure_kw={"figsize": (5.0, 3.0)},

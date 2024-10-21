@@ -2,6 +2,7 @@
 Fit a distribution by maximum likelihood
 ========================================
 """
+
 # %%
 # In this example we are going to estimate the parameters of a parametric by generic numerical optimization of the likelihood.
 #

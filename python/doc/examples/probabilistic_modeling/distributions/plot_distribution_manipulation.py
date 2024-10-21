@@ -2,6 +2,7 @@
 Distribution manipulation
 =========================
 """
+
 # %%
 # In this example we are going to exhibit some of the services exposed by the distribution objects:
 #

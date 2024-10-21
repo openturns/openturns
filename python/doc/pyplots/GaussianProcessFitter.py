@@ -5,9 +5,7 @@ from openturns.viewer import View
 f = ot.SymbolicFunction(["x"], ["x * sin(x)"])
 sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
 sampleY = f(sampleX)
-basis = ot.Basis(
-    [ot.SymbolicFunction(["x"], ["1"])]
-)
+basis = ot.Basis([ot.SymbolicFunction(["x"], ["1"])])
 covarianceModel = ot.SquaredExponential([1.0])
 covarianceModel.setActiveParameter([])
 fitter_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)

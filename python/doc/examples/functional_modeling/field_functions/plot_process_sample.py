@@ -2,6 +2,7 @@
 Create a process sample from a sample
 =====================================
 """
+
 # sphinx_gallery_thumbnail_number = 3
 # %%
 
@@ -67,7 +68,9 @@ Y = f(vertices)
 # Let's visualize this sample of the field.
 
 # %%
-graph = ot.Graph("One realization of the stochastic process", "Strain", "Stress (Pa)", True, "")
+graph = ot.Graph(
+    "One realization of the stochastic process", "Strain", "Stress (Pa)", True, ""
+)
 curve = ot.Curve(vertices, Y)
 graph.add(curve)
 view = viewer.View(graph)
@@ -103,7 +106,9 @@ for i in range(n_samples):
 # Let's visualize the 50 resulting samples of the field.
 
 # %%
-graph = ot.Graph("Realizations of the stochastic process", "Strain", "Stress (Pa)", True, "")
+graph = ot.Graph(
+    "Realizations of the stochastic process", "Strain", "Stress (Pa)", True, ""
+)
 for i in range(n_samples):
     curve = ot.Curve(vertices, Y_list[i])
     curve.setColor("blue")
@@ -138,7 +143,9 @@ process_sample_variance = process_sample.computeVariance()
 # Let's visualize the mean of the process sample.
 
 # %%
-graph = ot.Graph("Sample process mean and realizations", "Strain", "Stress (Pa)", True, "")
+graph = ot.Graph(
+    "Sample process mean and realizations", "Strain", "Stress (Pa)", True, ""
+)
 for i in range(n_samples):
     if i == 0:
         label = "process samples"

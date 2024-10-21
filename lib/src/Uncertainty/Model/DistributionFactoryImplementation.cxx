@@ -222,11 +222,11 @@ Point DistributionFactoryImplementation::getKnownParameterValues() const
 void DistributionFactoryImplementation::adaptToKnownParameter(const Sample & sample, DistributionImplementation * distribution) const
 {
   if (knownParameterValues_.getSize() > 0)
-    {
-      MaximumLikelihoodFactory factory(*distribution);
-      factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
-      distribution->setParameter(factory.build(sample).getParameter());
-    }
+  {
+    MaximumLikelihoodFactory factory(*distribution);
+    factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+    distribution->setParameter(factory.build(sample).getParameter());
+  }
 }
 
 /* Method save() stores the object through the StorageManager */

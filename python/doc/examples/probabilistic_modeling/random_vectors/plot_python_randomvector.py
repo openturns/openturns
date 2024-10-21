@@ -2,6 +2,7 @@
 Create a random vector
 ======================
 """
+
 # %%
 # In this example we are going to create a distribution or copula.
 #

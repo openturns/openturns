@@ -244,11 +244,11 @@ Distribution QuantileMatchingFactory::buildFromQuantiles(const Point & quantiles
 
   // Quick return if all the parameter values are known
   if (knownParameterValues_.getSize() == parameterDimension)
-    {
-      Distribution result(distribution_);
-      result.setParameter(knownParameterValues_);
-      return result;
-    }
+  {
+    Distribution result(distribution_);
+    result.setParameter(knownParameterValues_);
+    return result;
+  }
 
   // Define evaluation
   const QuantileMatchingEvaluation quantileMatchingWrapper(quantiles, distribution_, probabilities_, knownParameterValues_, knownParameterIndices_);

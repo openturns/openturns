@@ -13,9 +13,7 @@ ot.PlatformInfo.SetNumericalPrecision(3)
 ot.ResourceMap.SetAsScalar(
     "GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-5
 )
-ot.ResourceMap.SetAsScalar(
-    "GaussianProcessFitter-DefaultOptimizationUpperBound", 100
-)
+ot.ResourceMap.SetAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 100)
 # Data & estimation
 inputDimension = 1
 X = ot.Normal().getSample(100)
@@ -34,8 +32,7 @@ result = algo.getResult()
 metaModel = result.getMetaModel()
 conditionalCovariance = result.getCovarianceModel()
 residual = metaModel(X) - Y
-ott.assert_almost_equal(residual.computeCentralMoment(2), [
-                        1.06e-05], 1e-5, 1e-5)
+ott.assert_almost_equal(residual.computeCentralMoment(2), [1.06e-05], 1e-5, 1e-5)
 ott.assert_almost_equal(
     conditionalCovariance.getParameter(), [0.619144, 0.000937], 5e-3, 1e-3
 )

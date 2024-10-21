@@ -29,6 +29,7 @@ input calibrated variables and observed output variables.
 - :math:`z`: Output. Observed.
 
 """
+
 # %%
 # Analysis of the data
 # --------------------

@@ -2,6 +2,7 @@
 Random generator parametrization
 ================================
 """
+
 # %%
 # The seed of the pseudo random generator is initialized to 0 when the module is imported.
 #

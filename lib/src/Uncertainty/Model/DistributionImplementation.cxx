@@ -654,15 +654,18 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
   return returnSample;
 }
 
-Function DistributionImplementation::getPDF() const {
+Function DistributionImplementation::getPDF() const
+{
   return Function(DistributionImplementation::PDFWrapper(*this));
 }
 
-Function DistributionImplementation::getLogPDF() const {
+Function DistributionImplementation::getLogPDF() const
+{
   return Function(DistributionImplementation::LogPDFWrapper(*this));
 }
 
-Function DistributionImplementation::getCDF() const {
+Function DistributionImplementation::getCDF() const
+{
   return Function(DistributionImplementation::CDFWrapper(*this));
 }
 

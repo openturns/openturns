@@ -2,6 +2,7 @@
 Use case : cantilever beam
 ==========================
 """
+
 import openturns as ot
 
 

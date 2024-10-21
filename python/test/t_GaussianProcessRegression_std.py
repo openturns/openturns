@@ -5,7 +5,9 @@ from openturns.experimental import GaussianProcessRegression, GaussianProcessFit
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.ResourceMap.SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000
+)
 ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 0.5)
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8)
 
@@ -88,7 +90,9 @@ def test_two_inputs_one_output():
     # 4) GPF algorithm
     fit_algo = GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
-    fit_algo.setOptimizationBounds(ot.Interval(inputSample.getMin(), inputSample.getMax()))
+    fit_algo.setOptimizationBounds(
+        ot.Interval(inputSample.getMin(), inputSample.getMax())
+    )
     fit_algo.run()
 
     # perform an evaluation

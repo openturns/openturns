@@ -2,6 +2,7 @@
 Estimate Sobol' indices for the beam by simulation algorithm
 ============================================================
 """
+
 # %%
 #
 # In this example, we estimate the Sobol' indices for the

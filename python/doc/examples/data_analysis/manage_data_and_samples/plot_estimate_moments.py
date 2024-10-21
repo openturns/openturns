@@ -2,6 +2,7 @@
 Estimate moments from sample
 ============================
 """
+
 # %%
 # In this example we are going to estimate statistical moments from a sample, eventually from an output variable of interest.
 

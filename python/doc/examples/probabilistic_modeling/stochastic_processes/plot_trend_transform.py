@@ -2,6 +2,7 @@
 Trend computation
 =================
 """
+
 # %%
 # In this example we are going to estimate a trend from a field.
 #

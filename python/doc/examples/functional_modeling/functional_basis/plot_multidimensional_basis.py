@@ -3,6 +3,7 @@
 Create a multivariate basis of functions from scalar multivariable functions
 ============================================================================
 """
+
 # %%
 # Description
 # ===========

@@ -557,13 +557,13 @@ Graph EvaluationImplementation::draw(const Point & xMin,
 
 /** Draw the cross-cuts of the function supposed to have 1D output */
 GridLayout EvaluationImplementation::drawCrossCuts(const Point & centralPoint,
-                                                   const Point & xMin,
-                                                   const Point & xMax,
-                                                   const Indices& pointNumber,
-                                                   const Bool withMonoDimensionalCuts,
-                                                   const Bool isFilled,
-                                                   const Scalar vMin,
-                                                   const Scalar vMax) const
+    const Point & xMin,
+    const Point & xMax,
+    const Indices& pointNumber,
+    const Bool withMonoDimensionalCuts,
+    const Bool isFilled,
+    const Scalar vMin,
+    const Scalar vMax) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (!(inputDimension >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with input dimension=" << inputDimension << " less than 2 using this method. See the other draw() methods.";

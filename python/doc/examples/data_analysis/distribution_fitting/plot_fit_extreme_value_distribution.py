@@ -3,7 +3,6 @@ Fit an extreme value distribution
 =================================
 """
 
-
 # %%
 import openturns as ot
 import openturns.viewer as viewer

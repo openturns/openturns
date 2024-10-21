@@ -2,6 +2,7 @@
 Simulate an Event
 =================
 """
+
 # %%
 # In this example we are going to define an Event from a scalar variable :math:`Y` in the form:
 #

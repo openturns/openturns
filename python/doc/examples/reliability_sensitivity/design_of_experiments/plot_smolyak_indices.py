@@ -2,6 +2,7 @@
 Plot Smolyak multi-indices
 ==========================
 """
+
 # %%
 # The goal of this example is to plot the multi-indices used in Smolyak's
 # quadrature.

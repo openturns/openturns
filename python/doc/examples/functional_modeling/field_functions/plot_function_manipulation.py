@@ -2,6 +2,7 @@
 Function manipulation
 =====================
 """
+
 # %%
 #
 # In this example we are going to exhibit some of the generic function services such as:

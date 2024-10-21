@@ -2,6 +2,7 @@
 Sequentially adding new points to a Kriging
 ===========================================
 """
+
 # %%
 # In this example, we show how to sequentially add new points to a Kriging in order to improve the predictivity of the metamodel.
 # In order to create simple graphics, we consider a 1-d function.

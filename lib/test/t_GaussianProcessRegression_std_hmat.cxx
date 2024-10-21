@@ -84,12 +84,12 @@ int main(int, char *[])
       // Prediction accuracy
       assert_almost_equal(outputTest, result.getMetaModel()(inputTest), 0.3, 0.0);
     }
-    // Test 2 : 2 inputs, one output    
+    // Test 2 : 2 inputs, one output
     {
       const UnsignedInteger sampleSize = 10;
       const UnsignedInteger dimension = 2;
-      const Description inputDesc ={"x", "y"};
-      const Description outputDesc ={"cos(0.5*x) + sin(y)"};
+      const Description inputDesc = {"x", "y"};
+      const Description outputDesc = {"cos(0.5*x) + sin(y)"};
       const SymbolicFunction model(inputDesc, outputDesc);
 
       const Indices levels = {8, 5};
@@ -109,7 +109,7 @@ int main(int, char *[])
       const Sample outputValidSample(model(inputValidSample));
 
       //Definition of exponential model
-      // The parameters have been calibrated using TNC optimization 
+      // The parameters have been calibrated using TNC optimization
       // and AbsoluteExponential models
       const Point scale = {5.33532, 2.61534};
       const Point amplitude = {1.61536};
@@ -141,8 +141,8 @@ int main(int, char *[])
     }
     // Test 3 : R --> R^2 function
     {
-      const Description inputDesc ={"x"};
-      const Description outputDesc ={"x * sin(x)", "x * cos(x)"};
+      const Description inputDesc = {"x"};
+      const Description outputDesc = {"x * sin(x)", "x * cos(x)"};
       const SymbolicFunction f(inputDesc, outputDesc);
       const UnsignedInteger sampleSize = 8;
       const UnsignedInteger dimension = 1;

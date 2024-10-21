@@ -2,6 +2,7 @@
 Viscous free fall: metamodel of a field function
 ================================================
 """
+
 # %%
 #
 # In this example, we present how to create the metamodel of a field function.

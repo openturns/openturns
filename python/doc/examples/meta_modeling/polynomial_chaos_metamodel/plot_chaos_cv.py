@@ -325,6 +325,7 @@ def compute_R2_score_by_kfold(
     mse = squaredResiduals.computeMean()
     return mse
 
+
 # %%
 # Define the training data set
 # ----------------------------

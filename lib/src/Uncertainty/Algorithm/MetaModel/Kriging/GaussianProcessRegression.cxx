@@ -52,21 +52,21 @@ GaussianProcessRegression::GaussianProcessRegression(const GaussianProcessFitter
   , beta_(0)
   , gaussianProcessFitterResult_(result)
   , result_()
-{ 
+{
   basis_ = gaussianProcessFitterResult_.getBasis();
   beta_ = gaussianProcessFitterResult_.getTrendCoefficients();
 }
 
 /* Constructor */
 GaussianProcessRegression::GaussianProcessRegression(const Sample & inputSample,
-                                                     const Sample & outputSample,
-                                                     const CovarianceModel & covarianceModel,
-                                                     const Function & trendFunction)
-    : MetaModelAlgorithm(inputSample, outputSample), 
-    covarianceModel_(covarianceModel), 
+    const Sample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const Function & trendFunction)
+  : MetaModelAlgorithm(inputSample, outputSample),
+    covarianceModel_(covarianceModel),
     basis_(),
-    beta_(0), 
-    gaussianProcessFitterResult_(), 
+    beta_(0),
+    gaussianProcessFitterResult_(),
     result_()
 {
   // check in/out samples

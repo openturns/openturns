@@ -2,6 +2,7 @@
 Create a mesh
 =============
 """
+
 # %%
 import openturns as ot
 import openturns.viewer as viewer

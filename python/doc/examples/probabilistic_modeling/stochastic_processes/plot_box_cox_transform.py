@@ -2,6 +2,7 @@
 Use the Box-Cox transformation
 ==============================
 """
+
 # %%
 #
 # The objective of this Use Case is to estimate a Box Cox transformation

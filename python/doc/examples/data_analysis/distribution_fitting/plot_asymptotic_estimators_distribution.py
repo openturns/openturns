@@ -2,6 +2,7 @@
 Get the asymptotic distribution of the estimators
 =================================================
 """
+
 # %%
 # In this example we introduce the `buildEstimator` method to obtain the asymptotic distribution of the parameters of a fitted distribution obtained from a `Factory`.
 #

@@ -2,6 +2,7 @@
 Quick start guide to optimization
 =================================
 """
+
 # %%
 #
 # In this example, we perform the optimization of the Rosenbrock test function.

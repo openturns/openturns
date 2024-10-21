@@ -146,7 +146,7 @@ int main(int, char *[])
     // 3rd order Total Sobol
     Point sob_T3(sob_3);
     SymbolicFunction model(inputVariables, formula);
-    
+
     // Default
     const UnsignedInteger defaultEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisThreshold");
 

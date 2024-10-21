@@ -2,6 +2,7 @@
 Transform a distribution
 ========================
 """
+
 # %%
 # In this example we are going to use distribution algebra and distribution transformation via functions.
 

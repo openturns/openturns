@@ -82,7 +82,7 @@ int main(int, char *[])
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
     Point InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
-    assert_almost_equal(InverseSurvival, {0.025832,0.025832}, 1e-4, 0.0);
+    assert_almost_equal(InverseSurvival, {0.025832, 0.025832}, 1e-4, 0.0);
     fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
     Point quantile = copula.computeQuantile( 0.5 );

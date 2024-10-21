@@ -2,6 +2,7 @@
 Use case : the Chaboche mechanical model
 ========================================
 """
+
 import openturns as ot
 import math as m
 

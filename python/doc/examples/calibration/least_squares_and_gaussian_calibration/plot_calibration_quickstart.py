@@ -17,6 +17,7 @@ considered to make an in-depth study of these algorithms.
 The goal of this script is to be relatively small, so please consider reading
 the other examples if this is relevant.
 """
+
 # %%
 # Parameters to calibrate and observations
 # ----------------------------------------

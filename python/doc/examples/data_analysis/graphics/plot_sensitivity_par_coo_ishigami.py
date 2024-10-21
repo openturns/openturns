@@ -2,6 +2,7 @@
 Visualize sensitivity
 =====================
 """
+
 # %%
 # The parallel coordinates graph enables to visualize all the combinations of the input
 # variables which lead to a specific range of the output variable. It is a very simple and cheap tool to visualize sensitivity from the raw data.

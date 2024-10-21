@@ -2,6 +2,7 @@
 Create a full or sparse polynomial chaos expansion
 ==================================================
 """
+
 # %%
 # In this example we create a global approximation of a model using
 # polynomial chaos expansion based on a design of experiments.

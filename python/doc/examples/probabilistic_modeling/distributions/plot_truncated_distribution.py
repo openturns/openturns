@@ -2,6 +2,7 @@
 Truncate a  distribution
 ========================
 """
+
 # %%
 # In this example we are going to define truncated distributions.
 #

@@ -2,6 +2,7 @@
 Create a linear combination of functions
 ========================================
 """
+
 # %%
 # In this example we are going to build a linear combination of several functions.
 #

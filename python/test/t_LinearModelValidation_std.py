@@ -74,9 +74,7 @@ assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 
 # Create KFold validation
 splitterKFold = ot.KFoldSplitter(sampleSize, kFoldParameter)
-validationKFold = otexp.LinearModelValidation(
-    result, splitterKFold
-)
+validationKFold = otexp.LinearModelValidation(result, splitterKFold)
 print(validationKFold)
 
 # Compute analytical KFold MSE

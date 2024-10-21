@@ -2,6 +2,7 @@
 Create a stationary covariance model
 ====================================
 """
+
 # %%
 # This use case illustrates how the User can create a covariance function from parametric models.
 # The library implements the *multivariate Exponential model* as a parametric model for the covariance function where the spatial covariance function :math:`\rho` writes:

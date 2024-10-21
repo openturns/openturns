@@ -2,6 +2,7 @@
 Estimate a multivariate integral with IteratedQuadrature
 ========================================================
 """
+
 # %%
 #
 # Introduction
@@ -47,7 +48,7 @@ ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 
 
 def kernel1(x):
-    if x[0]**2 + x[1]**2 <= 4:
+    if x[0] ** 2 + x[1] ** 2 <= 4:
         return [1.0]
     else:
         return [0.0]
@@ -60,9 +61,9 @@ domain = ot.Interval([-2.0, -2.0], [2.0, 2.0])
 # We draw the iso-lines of the integrand function which is
 # constant equal to 1 inside the circle with radius equal to 2 and equal to 0.0 outside.
 g = integrand.draw([-3.0, -3.0], [3.0, 3.0])
-g.setTitle(r'Function $f(x,y) = 1_{\{x^2+y^2 \leq 4\}}(x,y)$')
-g.setXTitle('x')
-g.setYTitle('y')
+g.setTitle(r"Function $f(x,y) = 1_{\{x^2+y^2 \leq 4\}}(x,y)$")
+g.setXTitle("x")
+g.setYTitle("y")
 view = otv.View(g)
 
 # %%
@@ -87,21 +88,21 @@ integration_algo = ot.IteratedQuadrature(integ_algo)
 # that stores all the calls to the function.
 integrand_memoized = ot.MemoizeFunction(integrand)
 I_value = integration_algo.integrate(integrand_memoized, domain)
-print('I = ', I_value[0])
-print('Exact value = ', 4 * m.pi)
+print("I = ", I_value[0])
+print("Exact value = ", 4 * m.pi)
 nodes = integrand_memoized.getInputHistory()
-print('Nodes : ', nodes)
+print("Nodes : ", nodes)
 
 # %%
 # We can draw superimpose the nodes on the graph with the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where the
 # function has its discontinuities.
 cloud_nodes = ot.Cloud(nodes)
-cloud_nodes.setPointStyle('dot')
-cloud_nodes.setColor('blue')
+cloud_nodes.setPointStyle("dot")
+cloud_nodes.setColor("blue")
 
 g.add(cloud_nodes)
-g.setLegendPosition('')
+g.setLegendPosition("")
 view = otv.View(g)
 
 # %%
@@ -131,7 +132,10 @@ view = otv.View(g)
 
 
 def kernel2(x):
-    return [m.exp(-(x[0]**2 + x[1]**2)) + m.exp(-8 * ((x[0] - 4)**2 + (x[1] - 4)**2))]
+    return [
+        m.exp(-(x[0] ** 2 + x[1] ** 2))
+        + m.exp(-8 * ((x[0] - 4) ** 2 + (x[1] - 4) ** 2))
+    ]
 
 
 integrand = ot.PythonFunction(2, 1, kernel2)
@@ -140,29 +144,29 @@ domain = ot.Interval([-2.0, -2.0], [6.0, 6.0])
 # %%
 # We draw the iso-lines of the integrand function.
 g = integrand.draw([-3.0, -3.0], [7.0, 7.0])
-g.setTitle(r'Function $f(x,y) = e^{-(x^2+y^2)} + e^{-8((x-4)^2+(y-4)^2)} $')
-g.setXTitle('x')
-g.setYTitle('y')
+g.setTitle(r"Function $f(x,y) = e^{-(x^2+y^2)} + e^{-8((x-4)^2+(y-4)^2)} $")
+g.setXTitle("x")
+g.setYTitle("y")
 
 # %%
 # To get the nodes used to approximate the integral, we need to use a :class:`~openturns.MemoizeFunction`
 # that stores all the calls to the function.
 integrand_memoized = ot.MemoizeFunction(integrand)
 I_value = integration_algo.integrate(integrand_memoized, domain)
-print('I = ', I_value[0])
+print("I = ", I_value[0])
 nodes = integrand_memoized.getInputHistory()
-print('Nodes : ', nodes)
+print("Nodes : ", nodes)
 
 # %%
 # We can draw in blue the nodes on the graph that contains the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where the function
 # has fast variations.
 cloud_nodes = ot.Cloud(nodes)
-cloud_nodes.setPointStyle('dot')
-cloud_nodes.setColor('blue')
+cloud_nodes.setPointStyle("dot")
+cloud_nodes.setColor("blue")
 
 g.add(cloud_nodes)
-g.setLegendPosition('')
+g.setLegendPosition("")
 view = otv.View(g)
 
 
@@ -222,7 +226,7 @@ lower_func = ot.SymbolicFunction(["x"], ["-2 - cos(x)"])
 def kernel3_insideDomain(x):
     low_x = lower_func([x[0]])[0]
     up_x = upper_func([x[0]])[0]
-    if x[1] > low_x and x[1] < up_x :
+    if x[1] > low_x and x[1] < up_x:
         return kernel3(x)
     else:
         return [0.0]
@@ -239,16 +243,16 @@ g = integrand_domain.draw([-a, -b], [a, b])
 # We add the bounds of the domain :math:`\set{D}`.
 low_bound = lower_func.draw([-a, -b], [a, b]).getDrawable(0)
 up_bound = upper_func.draw([-a, -b], [a, b]).getDrawable(0)
-low_bound.setColor('red')
+low_bound.setColor("red")
 low_bound.setLineWidth(2)
-up_bound.setColor('red')
+up_bound.setColor("red")
 up_bound.setLineWidth(2)
 
 g.add(low_bound)
 g.add(up_bound)
-g.setTitle(r'Function $f(x,y) =  cos(2x)sin(1.5y)$')
-g.setXTitle('x')
-g.setYTitle('y')
+g.setTitle(r"Function $f(x,y) =  cos(2x)sin(1.5y)$")
+g.setXTitle("x")
+g.setYTitle("y")
 view = otv.View(g)
 # sphinx_gallery_thumbnail_number = 4
 
@@ -259,22 +263,26 @@ integrand_memoized = ot.MemoizeFunction(integrand)
 maximumSubIntervals = 4
 maximumError = 1e-4
 GKRule = ot.GaussKronrodRule(ot.GaussKronrodRule.G7K15)
-integration_algo = ot.IteratedQuadrature(ot.GaussKronrod(maximumSubIntervals, maximumError, GKRule))
-I_value = integration_algo.integrate(integrand_memoized, -a, a, [lower_func], [upper_func])
-print('I = ', I_value[0])
+integration_algo = ot.IteratedQuadrature(
+    ot.GaussKronrod(maximumSubIntervals, maximumError, GKRule)
+)
+I_value = integration_algo.integrate(
+    integrand_memoized, -a, a, [lower_func], [upper_func]
+)
+print("I = ", I_value[0])
 nodes = integrand_memoized.getInputHistory()
-print('Nodes : ', nodes)
+print("Nodes : ", nodes)
 
 # %%
 # We can superimpose the nodes on the graph with the iso-lines of the
 # function :math:`f`. We can see that the algorithm focuses on the nodes where
 # the function has fast variations.
 cloud_nodes = ot.Cloud(nodes)
-cloud_nodes.setPointStyle('dot')
-cloud_nodes.setColor('black')
+cloud_nodes.setPointStyle("dot")
+cloud_nodes.setColor("black")
 
 g.add(cloud_nodes)
-g.setLegendPosition('')
+g.setLegendPosition("")
 view = otv.View(g)
 
 # %%

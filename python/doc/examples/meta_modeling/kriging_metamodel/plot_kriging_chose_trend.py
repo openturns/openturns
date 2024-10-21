@@ -2,6 +2,7 @@
 Kriging: choose a polynomial trend
 ==================================
 """
+
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt
@@ -259,7 +260,7 @@ def plotKrigingConfidenceBounds(krigingResult, x_test, myTransform, color, alpha
 graph.add(plotKrigingConfidenceBounds(result, x_test, myTransform, palette[3]))
 graph.setTitle("1D Kriging with a constant trend")
 graph.setLegendCorner([1.0, 1.0])
-graph.setLegendPosition('upper left')
+graph.setLegendPosition("upper left")
 view = otv.View(
     graph,
     figure_kw={"figsize": (7.0, 3.0)},
@@ -323,7 +324,7 @@ graph.add(plotTrend(x_test, myTrend, myTransform, palette[2]))
 graph.add(plotKrigingConfidenceBounds(result, x_test, myTransform, palette[3]))
 graph.setTitle("1D Kriging with a linear trend")
 graph.setLegendCorner([1.0, 1.0])
-graph.setLegendPosition('upper left')
+graph.setLegendPosition("upper left")
 view = otv.View(
     graph,
     figure_kw={"figsize": (7.0, 3.0)},
@@ -386,7 +387,7 @@ graph.add(plotTrend(x_test, myTrend, myTransform, palette[2]))
 graph.add(plotKrigingConfidenceBounds(result, x_test, myTransform, palette[3]))
 graph.setTitle("1D Kriging with a quadratic trend")
 graph.setLegendCorner([1.0, 1.0])
-graph.setLegendPosition('upper left')
+graph.setLegendPosition("upper left")
 view = otv.View(
     graph,
     figure_kw={"figsize": (7.0, 3.0)},

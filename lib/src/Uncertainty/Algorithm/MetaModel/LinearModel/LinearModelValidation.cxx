@@ -48,38 +48,38 @@ LinearModelValidation::LinearModelValidation(const LinearModelResult & linearMod
 
 /* Parameter constructor */
 LinearModelValidation::LinearModelValidation(const LinearModelResult & linearModelResult,
-                                             const LeaveOneOutSplitter & splitter)
-  : MetaModelValidation(linearModelResult.getOutputSample(), 
-      ComputeMetamodelLeaveOneOutPredictions(linearModelResult, splitter))
+    const LeaveOneOutSplitter & splitter)
+  : MetaModelValidation(linearModelResult.getOutputSample(),
+                        ComputeMetamodelLeaveOneOutPredictions(linearModelResult, splitter))
   , linearModelResult_(linearModelResult)
   , splitter_(splitter)
 {
   const UnsignedInteger sampleSize = linearModelResult_.getSampleResiduals().getSize();
   if ((splitter_.getN() != sampleSize))
-    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN() 
-        << " but the sample size is " << sampleSize;
+    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN()
+                                         << " but the sample size is " << sampleSize;
   if (!ResourceMap::GetAsBool("LinearModelValidation-ModelSelection") && \
-    linearModelResult.involvesModelSelection())
+      linearModelResult.involvesModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
-      << "with a linear model involving model selection";
+                                         << "with a linear model involving model selection";
 }
 
 /* Parameter constructor */
 LinearModelValidation::LinearModelValidation(const LinearModelResult & linearModelResult,
-                                             const KFoldSplitter & splitter)
-  : MetaModelValidation(linearModelResult.getOutputSample(), 
-      ComputeMetamodelKFoldPredictions(linearModelResult, splitter))
+    const KFoldSplitter & splitter)
+  : MetaModelValidation(linearModelResult.getOutputSample(),
+                        ComputeMetamodelKFoldPredictions(linearModelResult, splitter))
   , linearModelResult_(linearModelResult)
   , splitter_(splitter)
 {
   const UnsignedInteger sampleSize = linearModelResult_.getSampleResiduals().getSize();
   if ((splitter_.getN() != sampleSize))
-    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN() 
-        << " but the sample size is " << sampleSize;
+    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN()
+                                         << " but the sample size is " << sampleSize;
   if (!ResourceMap::GetAsBool("LinearModelValidation-ModelSelection") && \
-    linearModelResult.involvesModelSelection())
+      linearModelResult.involvesModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
-      << "with a linear model involving model selection";
+                                         << "with a linear model involving model selection";
 }
 
 /* Virtual constructor */
@@ -100,27 +100,27 @@ String LinearModelValidation::__repr__() const
 
 /* Compute cross-validation predictions */
 Sample LinearModelValidation::ComputeMetamodelLeaveOneOutPredictions(
-    const LinearModelResult & linearModelResult,
-    const LeaveOneOutSplitter & splitter)
+  const LinearModelResult & linearModelResult,
+  const LeaveOneOutSplitter & splitter)
 {
   const Sample outputSample(linearModelResult.getOutputSample());
   const Sample residualsSample(linearModelResult.getSampleResiduals());
   const Point hMatrixDiag(linearModelResult.getLeverages());
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
-    outputSample, residualsSample, hMatrixDiag, splitter));
+                               outputSample, residualsSample, hMatrixDiag, splitter));
   return cvPredictions;
 }
 
 /* Compute cross-validation predictions */
 Sample LinearModelValidation::ComputeMetamodelKFoldPredictions(
-    const LinearModelResult & linearModelResult, 
-    const KFoldSplitter & splitter)
+  const LinearModelResult & linearModelResult,
+  const KFoldSplitter & splitter)
 {
   const Sample outputSample(linearModelResult.getOutputSample());
   const Sample residualsSample(linearModelResult.getSampleResiduals());
   SymmetricMatrix projectionMatrix(linearModelResult.buildMethod().getH());
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelKFoldPredictions(
-    outputSample, residualsSample, projectionMatrix, splitter));
+                               outputSample, residualsSample, projectionMatrix, splitter));
   return cvPredictions;
 }
 

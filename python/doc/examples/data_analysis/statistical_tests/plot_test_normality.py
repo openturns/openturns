@@ -3,7 +3,6 @@ Test Normality
 ==============
 """
 
-
 # %%
 # Normal fitting test using the Henry line
 # ----------------------------------------

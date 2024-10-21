@@ -25,60 +25,60 @@ using namespace OT;
 using namespace OT::Test;
 
 // Compute reference function value from index and point
-Point computeTripleHaarFunctionValue(const UnsignedInteger & index, const Point & point) 
+Point computeTripleHaarFunctionValue(const UnsignedInteger & index, const Point & point)
 {
-    if (point.getDimension() != 3)
-      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
-    const UnsignedInteger dimension = 3;
-    TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionCollection(dimension);
-    functionCollection[0] = HaarWaveletFactory();
-    functionCollection[1] = HaarWaveletFactory();
-    functionCollection[2] = HaarWaveletFactory();
-    const LinearEnumerateFunction enumerate(dimension);
-    const TensorizedUniVariateFunctionFactory factory(functionCollection, enumerate);
-    const Function referenceFunction(factory.build(index));
-    const Point value(referenceFunction(point));
-    return value;
+  if (point.getDimension() != 3)
+    throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+  const UnsignedInteger dimension = 3;
+  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionCollection(dimension);
+  functionCollection[0] = HaarWaveletFactory();
+  functionCollection[1] = HaarWaveletFactory();
+  functionCollection[2] = HaarWaveletFactory();
+  const LinearEnumerateFunction enumerate(dimension);
+  const TensorizedUniVariateFunctionFactory factory(functionCollection, enumerate);
+  const Function referenceFunction(factory.build(index));
+  const Point value(referenceFunction(point));
+  return value;
 }
 
 // Compute reference function value from multi-index and point
-Point computeTripleHaarFunctionValue(const Indices & indices, const Point & point) 
-{    
-    if (point.getDimension() != 3)
-      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
-    const UnsignedInteger dimension = 3;
-    const LinearEnumerateFunction enumerate(dimension);
-    const UnsignedInteger index = enumerate.inverse(indices);
-    const Point value(computeTripleHaarFunctionValue(index, point));
-    return value;
+Point computeTripleHaarFunctionValue(const Indices & indices, const Point & point)
+{
+  if (point.getDimension() != 3)
+    throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+  const UnsignedInteger dimension = 3;
+  const LinearEnumerateFunction enumerate(dimension);
+  const UnsignedInteger index = enumerate.inverse(indices);
+  const Point value(computeTripleHaarFunctionValue(index, point));
+  return value;
 }
 
-Point computeHaarFourierFunctionValue(const UnsignedInteger & index, const Point & point) 
+Point computeHaarFourierFunctionValue(const UnsignedInteger & index, const Point & point)
 {
-    if (point.getDimension() != 3)
-      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
-    const UnsignedInteger dimension = 3;
-    TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionCollection(dimension);
-    functionCollection[0] = HaarWaveletFactory();
-    functionCollection[1] = HaarWaveletFactory();
-    functionCollection[2] = FourierSeriesFactory();
-    const LinearEnumerateFunction enumerate(dimension);
-    const TensorizedUniVariateFunctionFactory factory(functionCollection, enumerate);
-    const Function referenceFunction(factory.build(index));
-    const Point value(referenceFunction(point));
-    return value;
+  if (point.getDimension() != 3)
+    throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+  const UnsignedInteger dimension = 3;
+  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionCollection(dimension);
+  functionCollection[0] = HaarWaveletFactory();
+  functionCollection[1] = HaarWaveletFactory();
+  functionCollection[2] = FourierSeriesFactory();
+  const LinearEnumerateFunction enumerate(dimension);
+  const TensorizedUniVariateFunctionFactory factory(functionCollection, enumerate);
+  const Function referenceFunction(factory.build(index));
+  const Point value(referenceFunction(point));
+  return value;
 }
 
 // Compute reference function value from multi-index and point
-Point computeHaarFourierFunctionValue(const Indices & indices, const Point & point) 
-{    
-    if (point.getDimension() != 3)
-      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
-    const UnsignedInteger dimension = 3;
-    const LinearEnumerateFunction enumerate(dimension);
-    const UnsignedInteger index = enumerate.inverse(indices);
-    const Point value(computeHaarFourierFunctionValue(index, point));
-    return value;
+Point computeHaarFourierFunctionValue(const Indices & indices, const Point & point)
+{
+  if (point.getDimension() != 3)
+    throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+  const UnsignedInteger dimension = 3;
+  const LinearEnumerateFunction enumerate(dimension);
+  const UnsignedInteger index = enumerate.inverse(indices);
+  const Point value(computeHaarFourierFunctionValue(index, point));
+  return value;
 }
 
 
@@ -98,7 +98,7 @@ int main(int, char *[])
     functionCollection[0] = HaarWaveletFactory();
     functionCollection[1] = HaarWaveletFactory();
     functionCollection[2] = HaarWaveletFactory();
-    
+
     // Create linear enumerate function
     fullprint << "Create linear enumerate function" << std::endl;
     LinearEnumerateFunction enumerateFunction(dimension);
@@ -131,7 +131,7 @@ int main(int, char *[])
     OrthogonalProductFunctionFactory productBasis2(functionCollection2);
     fullprint << productBasis2.__str__() << std::endl;
     fullprint << productBasis2.__repr_markdown__() << std::endl;
-    OrthogonalProductFunctionFactory::FunctionFamilyCollection functionCollection4(productBasis2.getFunctionFamilyCollection());  
+    OrthogonalProductFunctionFactory::FunctionFamilyCollection functionCollection4(productBasis2.getFunctionFamilyCollection());
     assert_equal((int) functionCollection4.getSize(), 3);
 
     // Test getMarginal

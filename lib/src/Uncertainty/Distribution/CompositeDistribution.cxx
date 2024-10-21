@@ -137,8 +137,8 @@ class CompositeDistributionDerivativeEvaluation : public EvaluationImplementatio
 {
 public:
   explicit CompositeDistributionDerivativeEvaluation(const Function & function)
-  : EvaluationImplementation()
-  , function_(function)
+    : EvaluationImplementation()
+    , function_(function)
   {}
 
   CompositeDistributionDerivativeEvaluation * clone() const override
@@ -526,15 +526,15 @@ class CompositeDistributionShiftedMomentEvaluation : public EvaluationImplementa
 {
 public:
   CompositeDistributionShiftedMomentEvaluation(const UnsignedInteger n,
-        const Scalar shift,
-        const Distribution & antecedent,
-        const Function & function)
- : EvaluationImplementation()
- , n_(n)
- , shift_(shift)
- , antecedent_(antecedent)
- , function_(function)
- {}
+      const Scalar shift,
+      const Distribution & antecedent,
+      const Function & function)
+    : EvaluationImplementation()
+    , n_(n)
+    , shift_(shift)
+    , antecedent_(antecedent)
+    , function_(function)
+  {}
 
   CompositeDistributionShiftedMomentEvaluation * clone() const override
   {

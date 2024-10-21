@@ -2,6 +2,7 @@
 FAST sensitivity indices
 ========================
 """
+
 # %%
 # This example will demonstrate how to quantify the correlation between the input
 # variables and the output variable of a model using the FAST method,

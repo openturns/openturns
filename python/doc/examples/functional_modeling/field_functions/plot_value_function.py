@@ -2,6 +2,7 @@
 Value function
 ==============
 """
+
 # %%
 # A value function
 # :math:`f_{value}: \mathcal{D} \times \mathbb{R}^d \rightarrow \mathcal{D} \times \mathbb{R}^q` is a

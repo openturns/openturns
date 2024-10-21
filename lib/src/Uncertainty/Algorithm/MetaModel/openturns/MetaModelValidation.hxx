@@ -100,15 +100,15 @@ protected:
 
   /** Compute cross-validation leave-one-out predictions */
   static Sample ComputeMetamodelLeaveOneOutPredictions(const Sample & outputSample,
-                                                       const Sample & residual,
-                                                       const Point & leverages,
-                                                       const LeaveOneOutSplitter & splitter);
+      const Sample & residual,
+      const Point & leverages,
+      const LeaveOneOutSplitter & splitter);
 
   /** Compute cross-validation K-Fold predictions */
   static Sample ComputeMetamodelKFoldPredictions(const Sample & outputSample,
-                                                 const Sample & residual,
-                                                 const SymmetricMatrix & projectionMatrix, 
-                                                 const KFoldSplitter & splitter);
+      const Sample & residual,
+      const SymmetricMatrix & projectionMatrix,
+      const KFoldSplitter & splitter);
 
 private:
 

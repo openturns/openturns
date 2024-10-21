@@ -1,11 +1,17 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.experimental import GaussianProcessRegression, GaussianProcessFitter, GaussianProcessConditionalCovariance
+from openturns.experimental import (
+    GaussianProcessRegression,
+    GaussianProcessFitter,
+    GaussianProcessConditionalCovariance,
+)
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.ResourceMap.SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000
+)
 ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 0.5)
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8)
 
@@ -75,7 +81,7 @@ def test_one_input_one_output():
             [0.04054783, -0.03269184, -0.01891618, 0.00688697, -0.00631173, 0.01059488],
         ]
     )
-    ott.assert_almost_equal(validCovariance - values, nullMatrix, 1.e-5, 1e-6)
+    ott.assert_almost_equal(validCovariance - values, nullMatrix, 1.0e-5, 1e-6)
 
 
 # Test 2
@@ -105,7 +111,9 @@ def test_two_inputs_one_output():
     # 4) GPF algorithm
     fit_algo = GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
-    fit_algo.setOptimizationBounds(ot.Interval(inputSample.getMin(), inputSample.getMax()))
+    fit_algo.setOptimizationBounds(
+        ot.Interval(inputSample.getMin(), inputSample.getMax())
+    )
     fit_algo.run()
 
     # perform an evaluation
@@ -183,9 +191,9 @@ def test_two_outputs():
     )
 
     marginalVariance_0 = gccc.getConditionalMarginalVariance(sampleX, 0)
-    ott.assert_almost_equal(marginalVariance_0, ot.Sample(len(sampleX), 1), 0., 1e-6)
+    ott.assert_almost_equal(marginalVariance_0, ot.Sample(len(sampleX), 1), 0.0, 1e-6)
     marginalVariance_1 = gccc.getConditionalMarginalVariance(sampleX, 1)
-    ott.assert_almost_equal(marginalVariance_1, ot.Sample(len(sampleX), 1), 0., 1e-6)
+    ott.assert_almost_equal(marginalVariance_1, ot.Sample(len(sampleX), 1), 0.0, 1e-6)
 
     # Marginal variance on a specific point
     x = [1.1]
@@ -198,9 +206,9 @@ def test_two_outputs():
     )
     margVarTest_0 = gccc.getConditionalMarginalVariance(x, 0)
     margVarTest_1 = gccc.getConditionalMarginalVariance(x, 1)
-    ott.assert_almost_equal(covTest[0, 0], margVarTest_0, 0., 0)
-    ott.assert_almost_equal(covTest[1, 1], margVarTest_1, 0., 0)
-    ott.assert_almost_equal(covTest, ref_cov_test, 1.e-6, 1e-6)
+    ott.assert_almost_equal(covTest[0, 0], margVarTest_0, 0.0, 0)
+    ott.assert_almost_equal(covTest[1, 1], margVarTest_1, 0.0, 0)
+    ott.assert_almost_equal(covTest, ref_cov_test, 1.0e-6, 1e-6)
 
 
 def test_stationary_fun():
@@ -270,15 +278,57 @@ def test_gpr_no_opt():
 
     values = ot.Matrix(
         [
-            [0.786400318519185, -0.342314710430317, -0.167625132016427, 0.0437937446519361, -0.0291542115306344, 0.0362074153614559],
-            [-0.342314710430317, 0.20307609313608, 0.106429376006901, -0.0313570361766278, 0.0230293899173111, -0.0308930847149105],
-            [-0.167625132016427, 0.106429376006901, 0.0567326538237296, -0.0172648099111221, 0.0130555631357385, -0.0179618049872801],
-            [0.0437937446519361, -0.0313570361766278, -0.0172648099111221, 0.00560441404059731, -0.00450884121944028, 0.00656752917461922],
-            [-0.0291542115306344, 0.0230293899173111, 0.0130555631357385, -0.00450884121944028, 0.00386908619998749, -0.00601186391616793],
-            [0.0362074153614559, -0.0308930847149105, -0.0179618049872801, 0.00656752917461922, -0.00601186391616793, 0.0100243621895402]
+            [
+                0.786400318519185,
+                -0.342314710430317,
+                -0.167625132016427,
+                0.0437937446519361,
+                -0.0291542115306344,
+                0.0362074153614559,
+            ],
+            [
+                -0.342314710430317,
+                0.20307609313608,
+                0.106429376006901,
+                -0.0313570361766278,
+                0.0230293899173111,
+                -0.0308930847149105,
+            ],
+            [
+                -0.167625132016427,
+                0.106429376006901,
+                0.0567326538237296,
+                -0.0172648099111221,
+                0.0130555631357385,
+                -0.0179618049872801,
+            ],
+            [
+                0.0437937446519361,
+                -0.0313570361766278,
+                -0.0172648099111221,
+                0.00560441404059731,
+                -0.00450884121944028,
+                0.00656752917461922,
+            ],
+            [
+                -0.0291542115306344,
+                0.0230293899173111,
+                0.0130555631357385,
+                -0.00450884121944028,
+                0.00386908619998749,
+                -0.00601186391616793,
+            ],
+            [
+                0.0362074153614559,
+                -0.0308930847149105,
+                -0.0179618049872801,
+                0.00656752917461922,
+                -0.00601186391616793,
+                0.0100243621895402,
+            ],
         ]
     )
-    ott.assert_almost_equal(validCovariance - values, nullMatrix, 1.e-8, 1e-8)
+    ott.assert_almost_equal(validCovariance - values, nullMatrix, 1.0e-8, 1e-8)
 
 
 if __name__ == "__main__":

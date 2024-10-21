@@ -2,6 +2,7 @@
 Create unions or intersections of events
 ========================================
 """
+
 # %%
 # Abstract
 # --------

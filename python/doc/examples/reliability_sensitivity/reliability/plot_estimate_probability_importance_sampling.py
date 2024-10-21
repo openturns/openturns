@@ -2,6 +2,7 @@
 Use the Importance Sampling algorithm
 =====================================
 """
+
 # %%
 # In this example we estimate a failure probability with the importance sampling simulation algorithm provided by the `ImportanceSamplingExperiment` class.
 #

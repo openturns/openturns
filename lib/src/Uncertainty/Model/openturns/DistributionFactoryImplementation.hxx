@@ -91,7 +91,7 @@ protected:
 
   /* Fit parameters taking into account known ones */
   void adaptToKnownParameter(const Sample & sample, DistributionImplementation * p_distribution) const;
-  
+
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
 

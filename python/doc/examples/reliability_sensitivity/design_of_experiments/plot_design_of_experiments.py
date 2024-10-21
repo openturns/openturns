@@ -2,6 +2,7 @@
 Various design of experiments
 =============================
 """
+
 # %%
 #
 # The goal of this example is to present several design of experiments available in the library.

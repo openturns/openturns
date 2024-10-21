@@ -2,6 +2,7 @@
 Estimate a flooding probability
 ===============================
 """
+
 # %%
 #
 # In this example, we estimate the probability that the output of a function exceeds a given threshold with the FORM method.

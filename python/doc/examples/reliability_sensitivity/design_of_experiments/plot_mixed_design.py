@@ -2,6 +2,7 @@
 Create mixed deterministic and probabilistic designs of experiments
 ===================================================================
 """
+
 # %%
 #
 # In this example we build a mixed deterministic and probabilistic design of

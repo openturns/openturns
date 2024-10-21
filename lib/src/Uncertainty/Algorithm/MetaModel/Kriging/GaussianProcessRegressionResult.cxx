@@ -31,16 +31,16 @@ static const Factory<GaussianProcessRegressionResult> Factory_GaussianProcessReg
 
 /* Default constructor */
 GaussianProcessRegressionResult::GaussianProcessRegressionResult()
-    : MetaModelResult()
+  : MetaModelResult()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters  */
 GaussianProcessRegressionResult::GaussianProcessRegressionResult(const GaussianProcessFitterResult & result,
-                                                                 const Sample & covarianceCoefficients)
-    : gpfResult_(result),
-      covarianceCoefficients_(covarianceCoefficients)
+    const Sample & covarianceCoefficients)
+  : gpfResult_(result),
+    covarianceCoefficients_(covarianceCoefficients)
 {
   setInputSample(result.getInputSample());
   setOutputSample(result.getOutputSample());

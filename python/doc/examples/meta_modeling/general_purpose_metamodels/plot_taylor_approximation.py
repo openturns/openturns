@@ -2,6 +2,7 @@
 Taylor approximations
 =====================
 """
+
 # %%
 # In this example we build a local approximation of a model using the
 # Taylor decomposition with the :class:`~openturns.LinearTaylor` class.

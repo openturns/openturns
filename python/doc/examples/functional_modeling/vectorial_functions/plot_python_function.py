@@ -2,6 +2,7 @@
 Create a Python function
 ========================
 """
+
 # %%
 # In this example we are going to create a :class:`~openturns.Function` object (ie usable throughout the library) from a pure Python function.
 #

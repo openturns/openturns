@@ -2,6 +2,7 @@
 Bandwidth sensitivity in kernel smoothing
 =========================================
 """
+
 # %%
 #
 # Introduction

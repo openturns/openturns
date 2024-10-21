@@ -48,7 +48,7 @@ sobolSample = sequence.generate(10)
 dimension = 2
 sequence = ot.SobolSequence(dimension)
 pointInsideCircle = 0
-sampleSize = 2 ** 11  # This is significant!
+sampleSize = 2**11  # This is significant!
 for i in range(sampleSize):
     sobolPoint = sequence.generate()
     if sobolPoint.norm() < 1.0:

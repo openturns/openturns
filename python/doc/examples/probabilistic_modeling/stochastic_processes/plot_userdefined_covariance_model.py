@@ -2,6 +2,7 @@
 Create a custom covariance model
 ================================
 """
+
 # %%
 # This example illustrates how the user can define his own covariance model.
 #

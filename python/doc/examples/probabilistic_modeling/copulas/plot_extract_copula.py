@@ -2,6 +2,7 @@
 Extract the copula from a distribution
 ======================================
 """
+
 # %%
 # In this example we are going to retrieve the copula from a multidimensional distribution.
 #

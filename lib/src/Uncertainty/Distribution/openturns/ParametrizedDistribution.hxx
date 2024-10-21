@@ -160,7 +160,7 @@ public:
   using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
-  
+
   /** String converter */
   String __repr__() const override;
 

@@ -2,6 +2,7 @@
 Draw a survival function
 ========================
 """
+
 # sphinx_gallery_thumbnail_number = 9
 # %%
 #

@@ -2,6 +2,7 @@
 Estimate a scalar ARMA process
 ==============================
 """
+
 # %%
 # The objective here is to estimate an ARMA model from a scalar stationary
 # time series using the Whittle estimator and a centered Normal white

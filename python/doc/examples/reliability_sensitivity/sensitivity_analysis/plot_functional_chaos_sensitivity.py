@@ -2,6 +2,7 @@
 Sobol' sensitivity indices from chaos
 =====================================
 """
+
 # %%
 # In this example we are going to compute global sensitivity indices from a functional chaos decomposition.
 #

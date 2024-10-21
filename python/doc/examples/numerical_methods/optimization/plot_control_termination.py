@@ -2,6 +2,7 @@
 Control algorithm termination
 =============================
 """
+
 # %%
 # In this examples we are going to expose ways to control the termination of optimization and simulation algorithms using callbacks.
 #

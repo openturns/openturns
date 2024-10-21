@@ -2,6 +2,7 @@
 Cross Entropy Importance Sampling
 =================================
 """
+
 # %%
 #
 # The objective is to evaluate a failure probability using Cross Entropy Importance Sampling.

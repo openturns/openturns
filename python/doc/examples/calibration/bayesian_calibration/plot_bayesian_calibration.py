@@ -2,6 +2,7 @@
 Bayesian calibration of a computer code
 =======================================
 """
+
 # %%
 # In this example we compute the parameters of a computer model thanks
 # to Bayesian estimation.

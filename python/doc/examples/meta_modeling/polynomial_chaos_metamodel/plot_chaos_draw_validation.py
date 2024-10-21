@@ -2,6 +2,7 @@
 Validate a polynomial chaos
 ===========================
 """
+
 # %%
 #
 # In this example, we show how to perform the validation plot of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.

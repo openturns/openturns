@@ -2,6 +2,7 @@
 Use case : Linthurst data set
 =============================
 """
+
 import openturns as ot
 
 

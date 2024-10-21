@@ -2,6 +2,7 @@
 Generate low discrepancy sequences
 ==================================
 """
+
 # %%
 # In this examples we are going to expose the available low discrepancy sequences in order to approximate some integrals.
 #

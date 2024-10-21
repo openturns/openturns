@@ -2,6 +2,7 @@
 Test the copula
 ===============
 """
+
 # %%
 import openturns as ot
 import openturns.viewer as viewer

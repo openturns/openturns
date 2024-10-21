@@ -2,6 +2,7 @@
 Create a deterministic design of experiments
 ============================================
 """
+
 # %%
 import openturns as ot
 import openturns.viewer as viewer

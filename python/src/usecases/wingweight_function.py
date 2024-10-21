@@ -2,6 +2,7 @@
 Use case : Wing weight test function
 ====================================
 """
+
 import openturns as ot
 import math as m
 

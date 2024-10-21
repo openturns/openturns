@@ -3,6 +3,7 @@
 Increase the input dimension of a function
 ==========================================
 """
+
 # %%
 # Description
 # ===========

@@ -2,6 +2,7 @@
 Add a trend to a process
 ========================
 """
+
 # %%
 # In this example we are going to add a trend to a process.
 #

@@ -2,6 +2,7 @@
 Create a random design of experiments
 =====================================
 """
+
 # %%
 # Abstract
 # --------

@@ -24,8 +24,12 @@ def use_case_1(X, Y):
     cov_amplitude = [0.19575]
     trend_coefficients = [-0.1109, 1.0149]
     result = algo.getResult()
-    ott.assert_almost_equal(result.getCovarianceModel().getAmplitude(), cov_amplitude, 1e-4, 1e-4)
-    ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4)
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getAmplitude(), cov_amplitude, 1e-4, 1e-4
+    )
+    ott.assert_almost_equal(
+        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+    )
 
 
 def use_case_2(X, Y):
@@ -43,8 +47,12 @@ def use_case_2(X, Y):
     cov_amplitude = [1]
     trend_coefficients = [-0.1109, 1.01498]
     result = algo.getResult()
-    ott.assert_almost_equal(result.getCovarianceModel().getAmplitude(), cov_amplitude, 1e-4, 1e-4)
-    ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4)
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getAmplitude(), cov_amplitude, 1e-4, 1e-4
+    )
+    ott.assert_almost_equal(
+        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+    )
 
 
 def use_case_3(X, Y):
@@ -62,9 +70,15 @@ def use_case_3(X, Y):
     cov_param = [0.1327, 0.1956]
     trend_coefficients = [-0.1034, 1.0141]
     result = algo.getResult()
-    assert algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
-    ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4)
-    ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4)
+    assert (
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+    )
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+    )
+    ott.assert_almost_equal(
+        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+    )
 
 
 def use_case_4(X, Y):
@@ -84,9 +98,15 @@ def use_case_4(X, Y):
     cov_param = [0.1327, 0.1956]
     trend_coefficients = [-0.1034, 1.0141]
     result = algo.getResult()
-    assert algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
-    ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4)
-    ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4)
+    assert (
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+    )
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+    )
+    ott.assert_almost_equal(
+        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+    )
 
 
 def use_case_5(X, Y):
@@ -112,9 +132,15 @@ def use_case_5(X, Y):
     cov_param = [0.1327, 0.19068]
     trend_coefficients = [-0.1034, 1.0141]
     result = algo.getResult()
-    assert algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
-    ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4)
-    ott.assert_almost_equal(result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4)
+    assert (
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+    )
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+    )
+    ott.assert_almost_equal(
+        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+    )
 
 
 def use_case_6(X, Y):
@@ -127,8 +153,12 @@ def use_case_6(X, Y):
     algo.run()
     result = algo.getResult()
     cov_param = [15.6, 2.3680]
-    assert algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
-    ott.assert_almost_equal(result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4)
+    assert (
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+    )
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+    )
     ott.assert_almost_equal(result.getTrendCoefficients(), [])
 
 

@@ -25,35 +25,35 @@ using namespace OT;
 using namespace OT::Test;
 
 // Compute reference function value from index and point
-Point computePolynomialValue(const UnsignedInteger & index, const Point & point) 
-{    
-    if (point.getDimension() != 3)
-      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
-    const UnsignedInteger dimension = 3;
-    const LinearEnumerateFunction enumerate(dimension);
-    // Compute the multi-indices using the EnumerateFunction
-    Indices indices(enumerate(index));
-    // Then build the collection of polynomials using the collection of factories
-    ProductPolynomialEvaluation::PolynomialCollection polynomials(dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      polynomials[i] = LegendreFactory().build(indices[i]);
-    }
-    const ProductPolynomialEvaluation product(polynomials);
-    const Point value(product(point));
-    return value;
+Point computePolynomialValue(const UnsignedInteger & index, const Point & point)
+{
+  if (point.getDimension() != 3)
+    throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+  const UnsignedInteger dimension = 3;
+  const LinearEnumerateFunction enumerate(dimension);
+  // Compute the multi-indices using the EnumerateFunction
+  Indices indices(enumerate(index));
+  // Then build the collection of polynomials using the collection of factories
+  ProductPolynomialEvaluation::PolynomialCollection polynomials(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    polynomials[i] = LegendreFactory().build(indices[i]);
+  }
+  const ProductPolynomialEvaluation product(polynomials);
+  const Point value(product(point));
+  return value;
 }
 
 // Compute reference function value from multi-index and point
-Point computePolynomialValue(const Indices & indices, const Point & point) 
-{    
-    if (point.getDimension() != 3)
-      throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
-    const UnsignedInteger dimension = 3;
-    const LinearEnumerateFunction enumerate(dimension);
-    const UnsignedInteger index = enumerate.inverse(indices);
-    const Point value(computePolynomialValue(index, point));
-    return value;
+Point computePolynomialValue(const Indices & indices, const Point & point)
+{
+  if (point.getDimension() != 3)
+    throw InvalidArgumentException(HERE) << "Expected a dimension 3 point, but dimension is " << point.getDimension();
+  const UnsignedInteger dimension = 3;
+  const LinearEnumerateFunction enumerate(dimension);
+  const UnsignedInteger index = enumerate.inverse(indices);
+  const Point value(computePolynomialValue(index, point));
+  return value;
 }
 
 int main(int, char *[])

@@ -42,26 +42,26 @@ GaussianProcessFitterResult::GaussianProcessFitterResult()
 
 /* Constructor with parameters & Cholesky factor */
 GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSample,
-                                                         const Sample & outputSample,
-                                                         const Function & metaModel,
-                                                         const Point & residuals,
-                                                         const Point & relativeErrors,
-                                                         const Matrix & regressionMatrix,
-                                                         const Basis & basis,
-                                                         const Point & trendCoefficients,
-                                                         const CovarianceModel & covarianceModel,
-                                                         const Scalar optimalLogLikelihood,
-                                                         const LinearAlgebra linearAlgebraMethod)
-    : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors),
-      regressionMatrix_(regressionMatrix),
-      basis_(basis),
-      beta_(trendCoefficients),
-      covarianceModel_(covarianceModel),
-      optimalLogLikelihood_(optimalLogLikelihood),
-      linearAlgebraMethod_(linearAlgebraMethod),
-      hasCholeskyFactor_(false),
-      covarianceCholeskyFactor_(),
-      covarianceHMatrix_()
+    const Sample & outputSample,
+    const Function & metaModel,
+    const Point & residuals,
+    const Point & relativeErrors,
+    const Matrix & regressionMatrix,
+    const Basis & basis,
+    const Point & trendCoefficients,
+    const CovarianceModel & covarianceModel,
+    const Scalar optimalLogLikelihood,
+    const LinearAlgebra linearAlgebraMethod)
+  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors),
+    regressionMatrix_(regressionMatrix),
+    basis_(basis),
+    beta_(trendCoefficients),
+    covarianceModel_(covarianceModel),
+    optimalLogLikelihood_(optimalLogLikelihood),
+    linearAlgebraMethod_(linearAlgebraMethod),
+    hasCholeskyFactor_(false),
+    covarianceCholeskyFactor_(),
+    covarianceHMatrix_()
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())

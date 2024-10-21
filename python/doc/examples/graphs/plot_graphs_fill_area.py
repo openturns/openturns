@@ -2,6 +2,7 @@
 How to fill an area
 ===================
 """
+
 # sphinx_gallery_thumbnail_number = 2
 # %%
 

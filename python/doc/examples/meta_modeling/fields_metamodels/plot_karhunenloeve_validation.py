@@ -2,6 +2,7 @@
 Validation of a Karhunen-Loeve decomposition
 ============================================
 """
+
 # %%
 #
 # In this example we are going to assess a Karhunen-Loeve decomposition

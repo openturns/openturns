@@ -2,6 +2,7 @@
 Create a conditional distribution
 =================================
 """
+
 # %%
 
 # %%

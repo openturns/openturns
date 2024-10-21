@@ -137,7 +137,7 @@ int main(int, char *[])
             const Point r2Score(validation.computeR2Score());
             fullprint << "Cross-validation R2 score = " << r2Score << std::endl;
           }
-          
+
           // Post-process the results
           FunctionalChaosRandomVector vector(result);
           Scalar mean = vector.getMean()[0];

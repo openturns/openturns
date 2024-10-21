@@ -2,6 +2,7 @@
 Create a Gaussian process
 =========================
 """
+
 # %%
 import openturns as ot
 import openturns.viewer as viewer

@@ -2,6 +2,7 @@
 Optimization using bonmin
 =========================
 """
+
 # %%
 
 # %%

@@ -2,6 +2,7 @@
 Kriging : draw covariance models
 ================================
 """
+
 import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pylab as plt

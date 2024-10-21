@@ -2,6 +2,7 @@
 Use the Directional Sampling Algorithm
 ======================================
 """
+
 # %%
 # In this example we estimate a failure probability with the directional simulation algorithm provided by the :class:`~openturns.DirectionalSampling` class.
 

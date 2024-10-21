@@ -2,6 +2,7 @@
 Create and draw multivariate distributions
 ==========================================
 """
+
 # %%
 # In this example we create and draw multidimensional distributions.
 import openturns as ot

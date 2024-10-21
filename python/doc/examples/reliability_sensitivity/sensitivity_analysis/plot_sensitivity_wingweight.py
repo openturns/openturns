@@ -2,6 +2,7 @@
 Example of sensitivity analyses on the wing weight model
 =========================================================
 """
+
 # %%
 #
 # This example is a brief overview of the use of the most usual sensitivity analysis techniques and how to call them:

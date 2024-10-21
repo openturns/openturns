@@ -2,6 +2,7 @@
 Define a connection function with a field output
 ================================================
 """
+
 # %%
 # In this example, we define a function which has a vector input and a field output.
 # The goal of this example is to show how to use :class:`~openturns.PointToFieldConnection` class to combine two functions.

@@ -9,7 +9,9 @@ conditionedDistribution = ot.Normal()
 conditioningDistribution = ot.JointDistribution(
     [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
 )
-distribution = ot.JointByConditioningDistribution(conditionedDistribution, conditioningDistribution)
+distribution = ot.JointByConditioningDistribution(
+    conditionedDistribution, conditioningDistribution
+)
 dim = distribution.getDimension()
 print("Distribution ", distribution)
 print("Parameters ", distribution.getParametersCollection())
@@ -64,9 +66,7 @@ print("conditional CDF=%.5e" % condCDF)
 q = condCDF
 print("conditional quantile=%.5e" % distribution.computeConditionalQuantile(q, y))
 pt = [i + 0.5 for i in range(dim)]
-print(
-    "sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt)
-)
+print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(pt))
 resCDF = distribution.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
 print(

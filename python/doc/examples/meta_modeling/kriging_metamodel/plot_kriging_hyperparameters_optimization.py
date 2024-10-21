@@ -2,6 +2,7 @@
 Kriging: configure the optimization solver
 ==========================================
 """
+
 # %%
 # The goal of this example is to show how to fine-tune the optimization solver used to estimate the hyperparameters of the covariance model of the Kriging metamodel.
 #

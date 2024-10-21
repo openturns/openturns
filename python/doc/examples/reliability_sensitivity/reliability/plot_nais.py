@@ -2,6 +2,7 @@
 Non parametric Adaptive Importance Sampling (NAIS)
 ==================================================
 """
+
 # %%
 #
 # The objective is to evaluate a probability from the Non parametric Adaptive Importance Sampling (NAIS) technique.

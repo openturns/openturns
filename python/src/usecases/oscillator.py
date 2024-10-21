@@ -2,6 +2,7 @@
 Use case : two degree-of-fredom primary/secondary damped oscillator
 ===================================================================
 """
+
 import openturns as ot
 
 

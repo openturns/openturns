@@ -2,6 +2,7 @@
 Metamodel of a field function
 =============================
 """
+
 # %%
 #
 # In this example we create a metamodel of a field function following these steps:

@@ -2,6 +2,7 @@
 Compare covariance models
 =========================
 """
+
 # %%
 # The main goal of this example is to briefly review the most important covariance models and compare them in terms of regularity.
 #

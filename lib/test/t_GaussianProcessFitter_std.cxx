@@ -93,7 +93,7 @@ int main(int, char *[])
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1908};      
+      ref = {0.1328, 0.1908};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-2, 1e-2);
       ref = {-0.1034, 1.014};
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);

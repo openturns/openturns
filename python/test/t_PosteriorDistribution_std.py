@@ -25,7 +25,8 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
     distribution = otexp.PosteriorDistribution(
-        ot.DeconditionedDistribution(conditionedDistribution, conditioning), observations
+        ot.DeconditionedDistribution(conditionedDistribution, conditioning),
+        observations,
     )
     dim = distribution.getDimension()
     print("Distribution ", distribution)

@@ -2,6 +2,7 @@
 Quick start guide to distributions
 ==================================
 """
+
 # %%
 # Abstract
 # ---------

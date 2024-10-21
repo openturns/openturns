@@ -2,6 +2,7 @@
 Polynomial chaos graphs
 =======================
 """
+
 # %%
 # In this example we are going to create some graphs useful after the launch of a polynomial chaos algorithm.
 # More precisely, we draw some members of the 1-d polynomial family.

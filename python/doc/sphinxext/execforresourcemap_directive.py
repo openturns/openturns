@@ -9,7 +9,6 @@ from docutils import nodes
 
 
 class execforresourcemap_directive(Directive):
-
     """Execute the specified python code and insert the output into the document"""
 
     has_content = True

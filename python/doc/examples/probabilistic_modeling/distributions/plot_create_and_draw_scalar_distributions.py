@@ -2,6 +2,7 @@
 Create and draw scalar distributions
 ====================================
 """
+
 # %%
 import openturns as ot
 import openturns.viewer as viewer

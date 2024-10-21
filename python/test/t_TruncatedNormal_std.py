@@ -118,7 +118,12 @@ for distribution in [
     validation.skipCharacteristicFunction()
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
-    if ot.Normal(distribution.getMu(), distribution.getSigma()).computeProbability(distribution.getRange()) < 0.25:
+    if (
+        ot.Normal(distribution.getMu(), distribution.getSigma()).computeProbability(
+            distribution.getRange()
+        )
+        < 0.25
+    ):
         # when rejection becomes too costly
         validation.skipMoments()
         validation.skipCorrelation()

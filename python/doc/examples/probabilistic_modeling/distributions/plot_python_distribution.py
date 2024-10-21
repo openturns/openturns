@@ -2,6 +2,7 @@
 Create a customized distribution or copula
 ==========================================
 """
+
 # %%
 # In this example we are going to create a distribution or copula.
 #

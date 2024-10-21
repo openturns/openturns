@@ -2,6 +2,7 @@
 Create a domain event
 =====================
 """
+
 # %%
 # Abstract
 # --------

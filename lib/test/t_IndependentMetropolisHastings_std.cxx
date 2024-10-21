@@ -51,7 +51,7 @@ int main(int, char *[])
     // cf. Wikipedia table of conjugate distributions
     // https://en.wikipedia.org/wiki/Conjugate_prior#Table_of_conjugate_distributions
     Sample X(model.getSample(1));
-    Beta posterior(a + X(0,0), b + n - X(0,0), lower, upper);
+    Beta posterior(a + X(0, 0), b + n - X(0, 0), lower, upper);
 
     // Define IMH sampler
     IndependentMetropolisHastings imh_sampler(prior, {p}, Uniform(-1.0, 1.0), Indices(1));

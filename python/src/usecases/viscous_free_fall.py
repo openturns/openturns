@@ -2,6 +2,7 @@
 Use case : viscous free fall
 ============================
 """
+
 import openturns as ot
 import numpy as np
 

@@ -38,8 +38,17 @@ graph2D = f.draw(
 print("graph2D=", graph2D)
 # Cross cuts
 crossCuts = f.getMarginal(0).drawCrossCuts(
-    centralPoint, ot.Point(3, -5.0), ot.Point(3, 5.0), ot.Indices(3, 10))
+    centralPoint, ot.Point(3, -5.0), ot.Point(3, 5.0), ot.Indices(3, 10)
+)
 print("crossCuts=", crossCuts)
 crossCuts = f.getMarginal(1).drawCrossCuts(
-    centralPoint, ot.Point(3, -5.0), ot.Point(3, 5.0), ot.Indices(3, 3), True, False, -5.0, 3.0)
+    centralPoint,
+    ot.Point(3, -5.0),
+    ot.Point(3, 5.0),
+    ot.Indices(3, 3),
+    True,
+    False,
+    -5.0,
+    3.0,
+)
 print("crossCuts=", crossCuts)

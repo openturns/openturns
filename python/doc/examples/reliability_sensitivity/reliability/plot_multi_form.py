@@ -2,6 +2,7 @@
 Use the FORM algorithm in case of several design points
 =======================================================
 """
+
 # %%
 # Abstract
 # --------

@@ -2,6 +2,7 @@
 Create a discrete Markov chain process
 ======================================
 """
+
 # %%
 # This example details first how to create and manipulate a discrete Markov chain.
 #

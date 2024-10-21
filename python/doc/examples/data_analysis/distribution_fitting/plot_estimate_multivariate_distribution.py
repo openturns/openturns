@@ -2,6 +2,7 @@
 Estimate a multivariate distribution
 ====================================
 """
+
 # %%
 # In this example we are going to estimate a joint distribution from a multivariate sample by fitting marginals and finding a set of copulas.
 #

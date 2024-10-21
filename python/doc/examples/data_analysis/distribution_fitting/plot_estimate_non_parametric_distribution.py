@@ -2,6 +2,7 @@
 Fit a non parametric distribution
 =================================
 """
+
 # %%
 # In this example we are going to estimate a non parametric distribution using the kernel smoothing method.
 # After a short introductory example we focus on a few basic features of the API:
@@ -267,9 +268,16 @@ view = viewer.View(graph)
 
 # %%
 # We consider several distributions which have significant skewness:
-distCollection = [ot.LogNormal(0.0, 2.5), ot.Beta(20000.5, 2.5, 0.0, 1.0), ot.Exponential(),
-                  ot.WeibullMax(1.0, 0.9, 0.0), ot.Mixture([ot.Normal(-1.0, 0.5), ot.Normal(1.0, 1.0)], [0.4, 0.6]),
-                  ot.Mixture([ot.LogNormal(-1.0, 1.0, -1.0), ot.LogNormal(1.0, 1.0, 1.0)], [0.2, 0.8])]
+distCollection = [
+    ot.LogNormal(0.0, 2.5),
+    ot.Beta(20000.5, 2.5, 0.0, 1.0),
+    ot.Exponential(),
+    ot.WeibullMax(1.0, 0.9, 0.0),
+    ot.Mixture([ot.Normal(-1.0, 0.5), ot.Normal(1.0, 1.0)], [0.4, 0.6]),
+    ot.Mixture(
+        [ot.LogNormal(-1.0, 1.0, -1.0), ot.LogNormal(1.0, 1.0, 1.0)], [0.2, 0.8]
+    ),
+]
 
 # %%
 # For each distribution, we do the following steps:

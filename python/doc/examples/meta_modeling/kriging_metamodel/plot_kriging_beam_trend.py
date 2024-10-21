@@ -2,6 +2,7 @@
 Kriging: choose a polynomial trend on the beam model
 ====================================================
 """
+
 # %%
 # The goal of this example is to show how to configure the trend in a Kriging metamodel.
 # This example focuses on three polynomial trends:

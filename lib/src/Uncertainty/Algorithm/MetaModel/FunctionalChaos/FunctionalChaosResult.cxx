@@ -322,7 +322,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
     throw InvalidArgumentException(HERE) << "The conditioning indices must be in the range [0, dim-1] and must be different.";
   const Sample inputSampleMarginal(inputSample_.getMarginal(conditioningIndices));
   const Distribution inputDistributionMarginal(distribution_.getMarginal(conditioningIndices));
-  
+
   // Check independence
   if (!distribution_.hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for an independent copula.";
@@ -389,17 +389,17 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
 
   // Create the conditional expectation PCE
   const FunctionalChaosResult conditionalPCE(
-      inputSampleMarginal,
-      outputSample_,
-      inputDistributionMarginal,
-      transformationMarginal,
-      inverseTransformationMarginal,
-      orthogonalBasisMarginal,
-      listOfActiveReducedIndices,
-      activeCoefficients,
-      activeReducedBasis,
-      residuals_,
-      relativeErrors_
+    inputSampleMarginal,
+    outputSample_,
+    inputDistributionMarginal,
+    transformationMarginal,
+    inverseTransformationMarginal,
+    orthogonalBasisMarginal,
+    listOfActiveReducedIndices,
+    activeCoefficients,
+    activeReducedBasis,
+    residuals_,
+    relativeErrors_
   );
   return conditionalPCE;
 }

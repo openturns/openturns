@@ -66,7 +66,7 @@ public:
 
   /** Result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
-  
+
   /** Get the splitter */
   SplitterImplementation getSplitter() const;
 

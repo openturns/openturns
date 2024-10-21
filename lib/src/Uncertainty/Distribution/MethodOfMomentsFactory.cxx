@@ -272,11 +272,11 @@ Distribution MethodOfMomentsFactory::buildFromMoments(const Point & moments) con
 
   // Quick return if all the parameter values are known
   if (knownParameterValues_.getSize() == parameterDimension)
-    {
-      Distribution result(distribution_);
-      result.setParameter(knownParameterValues_);
-      return result;
-    }
+  {
+    Distribution result(distribution_);
+    result.setParameter(knownParameterValues_);
+    return result;
+  }
 
   // Define evaluation
   const MethodOfMomentsEvaluation methodOfMomentsWrapper(moments, distribution_, momentOrders_, knownParameterValues_, knownParameterIndices_);

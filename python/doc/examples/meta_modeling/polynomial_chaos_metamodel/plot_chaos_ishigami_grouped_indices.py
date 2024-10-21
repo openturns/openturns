@@ -2,6 +2,7 @@
 Compute grouped indices for the Ishigami function
 =================================================
 """
+
 # %%
 #
 # In this example, we compute grouped Sobol' indices for the :ref:`Ishigami function <use-case-ishigami>`.

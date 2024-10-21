@@ -21,5 +21,5 @@ cobweb = ot.VisualTest.DrawParallelCoordinates(
 )
 
 cobweb.setLegendCorner([1.0, 0.0])
-cobweb.setLegendPosition('lower right')
+cobweb.setLegendPosition("lower right")
 View(cobweb, figure_kw={"figsize": (9, 5)})

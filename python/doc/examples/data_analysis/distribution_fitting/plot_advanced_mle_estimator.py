@@ -2,6 +2,7 @@
 Fitting a distribution with customized maximum likelihood
 =========================================================
 """
+
 # %%
 # Introduction
 # ------------

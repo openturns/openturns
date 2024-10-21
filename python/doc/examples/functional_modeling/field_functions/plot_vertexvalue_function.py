@@ -2,6 +2,7 @@
 Vertex value function
 =====================
 """
+
 # %%
 #
 # A vertex value function

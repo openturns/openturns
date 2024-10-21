@@ -2,6 +2,7 @@
 Axial stressed beam : comparing different methods to estimate a probability
 ===========================================================================
 """
+
 # %%
 # In this example, we compare four methods to estimate the probability in the :ref:`axial stressed beam <use-case-stressed-beam>` example :
 #

@@ -2,6 +2,7 @@
 Estimate a GEV on the Fremantle sea-levels data
 ===============================================
 """
+
 # %%
 # In this example, we illustrate various techniques of extreme value modeling applied
 # to the annual maximum sea-levels recorded at Fremantle, near Perth, western Australia, over the period

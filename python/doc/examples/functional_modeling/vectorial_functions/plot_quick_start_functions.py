@@ -2,6 +2,7 @@
 Defining Python and symbolic functions: a quick start introduction to functions
 ===============================================================================
 """
+
 # %%
 # Abstract
 # --------

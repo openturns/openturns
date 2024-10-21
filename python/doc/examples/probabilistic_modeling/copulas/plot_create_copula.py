@@ -2,6 +2,7 @@
 Create a copula
 ===============
 """
+
 # %%
 # In this example we are going to create a Normal copula from a correlation matrix.
 #

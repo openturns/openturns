@@ -87,7 +87,7 @@ int main(int, char *[])
       Point variance(coll.getSize());
       const Point nullVariance(coll.getSize());
       for (UnsignedInteger index = 0; index < coll.getSize(); ++ index)
-        variance[index] = coll[index](0,0);
+        variance[index] = coll[index](0, 0);
 
       assert_almost_equal(variance, nullVariance, 1e-14, 1e-13);
 
@@ -98,22 +98,23 @@ int main(int, char *[])
       // Kriging variance is non-null on validation points
       CovarianceMatrix validCovariance(gccc.getConditionalCovariance(inputTest));
 
-      const Point rowData = {0.81942182, -0.35599947, -0.17488593, 0.04622401, -0.03143555, 0.04054783,\
-                      -0.35599947, 0.20874735, 0.10943841, -0.03236419, 0.02397483, -0.03269184,\
-                      -0.17488593, 0.10943841, 0.05832917, -0.01779918, 0.01355719, -0.01891618,\
-                      0.04622401, -0.03236419, -0.01779918, 0.00578327, -0.00467674, 0.00688697,\
-                      -0.03143555, 0.02397483, 0.01355719, -0.00467674, 0.0040267, -0.00631173,\
-                      0.04054783, -0.03269184, -0.01891618, 0.00688697, -0.00631173, 0.01059488};
-    
+      const Point rowData = {0.81942182, -0.35599947, -0.17488593, 0.04622401, -0.03143555, 0.04054783, \
+                             -0.35599947, 0.20874735, 0.10943841, -0.03236419, 0.02397483, -0.03269184, \
+                             -0.17488593, 0.10943841, 0.05832917, -0.01779918, 0.01355719, -0.01891618, \
+                             0.04622401, -0.03236419, -0.01779918, 0.00578327, -0.00467674, 0.00688697, \
+                             -0.03143555, 0.02397483, 0.01355719, -0.00467674, 0.0040267, -0.00631173, \
+                             0.04054783, -0.03269184, -0.01891618, 0.00688697, -0.00631173, 0.01059488
+                            };
+
       Matrix values(sampleSize, sampleSize, rowData);
 
       assert_almost_equal(validCovariance - values.transpose(), nullMatrix, 1.e-5, 1e-6);
     }
-    // Test 2 : 2 inputs, one output    
+    // Test 2 : 2 inputs, one output
     {
       const UnsignedInteger dimension = 2;
-      const Description inputDesc ={"x", "y"};
-      const Description outputDesc ={"cos(0.5*x) + sin(y)"};
+      const Description inputDesc = {"x", "y"};
+      const Description outputDesc = {"cos(0.5*x) + sin(y)"};
       const SymbolicFunction model(inputDesc, outputDesc);
 
       const Indices levels = {8, 5};
@@ -125,7 +126,7 @@ int main(int, char *[])
       const Sample outputSample(model(inputSample));
 
       //Definition of exponential model
-      // The parameters have been calibrated using Cobyla optimization 
+      // The parameters have been calibrated using Cobyla optimization
       // and AbsoluteExponential models
       const Point scale = {5.33532, 2.61534};
       const Point amplitude = {1.61536};
@@ -158,19 +159,19 @@ int main(int, char *[])
       Point variance(condMargCov.getSize());
       const Point nullVariance(condMargCov.getSize());
       for (UnsignedInteger index = 0; index < condMargCov.getSize(); ++index)
-        variance[index] = condMargCov[index](0,0);
+        variance[index] = condMargCov[index](0, 0);
 
       assert_almost_equal(variance, nullVariance, 1e-14, 1e-13);
 
       // Variance per marginal
-      assert_almost_equal(gccc.getConditionalMarginalVariance(inputSample),\
+      assert_almost_equal(gccc.getConditionalMarginalVariance(inputSample), \
                           Sample(inputSample.getSize(), 1), 1e-14, 1e-13);
 
     }
     // Test 3 : R --> R^2 function
     {
-      const Description inputDesc ={"x"};
-      const Description outputDesc ={"x * sin(x)", "x * cos(x)"};
+      const Description inputDesc = {"x"};
+      const Description outputDesc = {"x * sin(x)", "x * cos(x)"};
       const SymbolicFunction f(inputDesc, outputDesc);
       const UnsignedInteger sampleSize = 8;
       const UnsignedInteger dimension = 1;
@@ -210,8 +211,9 @@ int main(int, char *[])
       // Kriging variance is 0 on learning points
       GaussianProcessConditionalCovariance gccc(result);
 
-      const Point rowData = {4.4527, 0.0, 8.34404, 0.0, 0.0, 2.8883, 0.0, 5.41246,\
-                             8.34404, 0.0, 15.7824, 0.0, 0.0, 5.41246, 0.0, 10.2375};
+      const Point rowData = {4.4527, 0.0, 8.34404, 0.0, 0.0, 2.8883, 0.0, 5.41246, \
+                             8.34404, 0.0, 15.7824, 0.0, 0.0, 5.41246, 0.0, 10.2375
+                            };
       const Matrix reference_covariance(4, 4, rowData);
       const SquareMatrix nullMatrix(4);
       const Point pointOfInterest = {9.5, 10.0};
@@ -297,7 +299,7 @@ int main(int, char *[])
       Point variance(coll.getSize());
       const Point nullVariance(coll.getSize());
       for (UnsignedInteger index = 0; index < coll.getSize(); ++ index)
-        variance[index] = coll[index](0,0);
+        variance[index] = coll[index](0, 0);
 
       assert_almost_equal(variance, nullVariance, 1e-14, 1e-13);
 
@@ -308,13 +310,14 @@ int main(int, char *[])
       // Kriging variance is non-null on validation points
       CovarianceMatrix validCovariance(gccc.getConditionalCovariance(inputTest));
 
-      const Point rowData = {0.786400318519185, -0.342314710430317, -0.167625132016427, 0.0437937446519361, -0.0291542115306344, 0.0362074153614559,\
-            -0.342314710430317, 0.20307609313608, 0.106429376006901, -0.0313570361766278, 0.0230293899173111, -0.0308930847149105,\
-            -0.167625132016427, 0.106429376006901, 0.0567326538237296, -0.0172648099111221, 0.0130555631357385, -0.0179618049872801,\
-            0.0437937446519361, -0.0313570361766278, -0.0172648099111221, 0.00560441404059731, -0.00450884121944028, 0.00656752917461922,\
-            -0.0291542115306344, 0.0230293899173111, 0.0130555631357385, -0.00450884121944028, 0.00386908619998749, -0.00601186391616793,\
-            0.0362074153614559, -0.0308930847149105, -0.0179618049872801, 0.00656752917461922, -0.00601186391616793, 0.0100243621895402};
-    
+      const Point rowData = {0.786400318519185, -0.342314710430317, -0.167625132016427, 0.0437937446519361, -0.0291542115306344, 0.0362074153614559, \
+                             -0.342314710430317, 0.20307609313608, 0.106429376006901, -0.0313570361766278, 0.0230293899173111, -0.0308930847149105, \
+                             -0.167625132016427, 0.106429376006901, 0.0567326538237296, -0.0172648099111221, 0.0130555631357385, -0.0179618049872801, \
+                             0.0437937446519361, -0.0313570361766278, -0.0172648099111221, 0.00560441404059731, -0.00450884121944028, 0.00656752917461922, \
+                             -0.0291542115306344, 0.0230293899173111, 0.0130555631357385, -0.00450884121944028, 0.00386908619998749, -0.00601186391616793, \
+                             0.0362074153614559, -0.0308930847149105, -0.0179618049872801, 0.00656752917461922, -0.00601186391616793, 0.0100243621895402
+                            };
+
       const Matrix values(sampleSize, sampleSize, rowData);
       assert_almost_equal(validCovariance - values.transpose(), nullMatrix, 1.e-8, 1e-8);
     }

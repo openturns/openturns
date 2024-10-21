@@ -355,7 +355,7 @@ void Pagmo::run()
 
   // most algorithms do not support constraints but they can be emulated (by penalization for example)
   const Bool emulatedConstraints = (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
-                                    && !Description({"gaco", "ihs"}).contains(getAlgorithmName());
+                                   && !Description({"gaco", "ihs"}).contains(getAlgorithmName());
   if (emulatedConstraints)
   {
     const String unconstrainMethod = ResourceMap::GetAsString("Pagmo-UnconstrainMethod");

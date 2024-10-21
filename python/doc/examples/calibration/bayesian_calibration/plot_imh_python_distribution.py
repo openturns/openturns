@@ -9,6 +9,7 @@ using Metropolis-Hastings algorithms.
 
 This example is drawn from [1].
 """
+
 # %%
 # Draw the unnormalized probability density
 # -----------------------------------------

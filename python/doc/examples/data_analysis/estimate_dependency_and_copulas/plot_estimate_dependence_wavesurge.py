@@ -2,6 +2,7 @@
 Estimate tail dependence coefficients on the wave-surge data
 ============================================================
 """
+
 # %%
 # In this example we estimate the tail dependence coefficient of a bivariate sample
 # applied to the concurrent measurements of two oceanographic variables (wave and surge heights) at a single location off south-west England.

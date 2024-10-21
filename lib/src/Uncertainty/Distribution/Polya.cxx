@@ -46,7 +46,7 @@ Polya::Polya()
 
 /* Parameters constructor */
 Polya::Polya(const Scalar r,
-                                   const Scalar p)
+             const Scalar p)
   : DistributionImplementation()
   , r_(r)
   , p_(p)
@@ -298,7 +298,7 @@ void Polya::computeRange()
 
 /* Get the quantile of the distribution */
 Scalar Polya::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                    const Bool tail) const
 {
   LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
   if (!((prob >= 0.0) && (prob <= 1.0)))

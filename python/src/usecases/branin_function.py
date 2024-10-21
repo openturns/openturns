@@ -2,6 +2,7 @@
 Use case : Branin test function
 ===============================
 """
+
 import openturns as ot
 
 

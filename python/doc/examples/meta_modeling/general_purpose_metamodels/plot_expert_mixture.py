@@ -2,6 +2,7 @@
 Mixture of experts
 ==================
 """
+
 # %%
 # In this example we are going to approximate a piece wise continuous function using an expert mixture of metamodels.
 #

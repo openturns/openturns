@@ -2,6 +2,7 @@
 Use case : stiffened panel
 ==========================
 """
+
 import openturns as ot
 
 

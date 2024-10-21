@@ -2,6 +2,7 @@
 Estimate Sobol' indices for the Ishigami function by a sampling method: a quick start guide to sensitivity analysis
 ===================================================================================================================
 """
+
 # %%
 #
 # In this example, we estimate the Sobol' indices for the

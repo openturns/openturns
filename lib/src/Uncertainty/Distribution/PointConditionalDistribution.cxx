@@ -68,7 +68,7 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
   if (conditioningIndices.getSize() != conditioningValues.getSize())
     throw InvalidArgumentException(HERE) << "Conditioning indices/values sizes do not match, got " << conditioningIndices.getSize() << "/" << conditioningValues.getSize();
   if (!conditioningIndices.check(fullDimension))
-    throw InvalidArgumentException(HERE) << "Conditioning vector indices (" << conditioningIndices << ") must be less than conditioned distribution dimension (" << fullDimension <<" )";
+    throw InvalidArgumentException(HERE) << "Conditioning vector indices (" << conditioningIndices << ") must be less than conditioned distribution dimension (" << fullDimension << " )";
 
   // it is ok to condition continuous marginals by a discrete one and vice-versa
   const Distribution marginalConditioned(distribution.getMarginal(conditioningIndices.complement(fullDimension)));
@@ -143,7 +143,7 @@ PointConditionalDistribution * PointConditionalDistribution::clone() const
 
 class PointConditionalDistributionUBoundEvaluation : public EvaluationImplementation
 {
-  public:
+public:
   PointConditionalDistributionUBoundEvaluation(const Distribution & distribution, const Scalar r)
     : EvaluationImplementation()
     , distribution_(distribution)
@@ -181,7 +181,7 @@ private:
 
 class PointConditionalDistributionVBoundEvaluation : public EvaluationImplementation
 {
-  public:
+public:
   PointConditionalDistributionVBoundEvaluation(const Distribution & distribution, const Scalar r)
     : EvaluationImplementation()
     , distribution_(distribution)
