@@ -420,7 +420,6 @@ _ = View(full_grid)
 # Finally superimpose contour plots of the KDE-estimated 2D marginal PDFs on the pairplots.
 
 ot.ResourceMap.SetAsBool("Contour-DefaultIsFilled", True)
-ot.ResourceMap.SetAsString("Contour-DefaultColorMap", "viridis")
 
 # sphinx_gallery_thumbnail_number = 3
 for i in range(1, full_grid.getNbRows()):
