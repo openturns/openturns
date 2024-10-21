@@ -299,14 +299,12 @@ optAlgInd = ot.MultiStart(ot.Cobyla(), initSampleInd)
 
 # %%
 # In order to assess their respective robustness with regards to the training data set,
-# we repeat the experiments 10 times with different training of size 72,
+# we repeat the experiments 3 times with different training of size 72,
 # and compute each time the normalized prediction Root Mean Squared Error (RMSE) on a
 # test data set of size 1000.
-
-# %%
 rmseLVList = []
 rmseIndList = []
-for rep in range(5):
+for rep in range(3):
     # Generate the normalized training data set
     x = dist.getSample(72)
     y = fun(x)
@@ -314,7 +312,7 @@ for rep in range(5):
     yMin = y.getMin()
     y = (y - yMin) / (yMin - yMax)
 
-    # Initialize  and parameterize the optimization algorithm
+    # Initialize and parameterize the optimization algorithm
     initSampleLV = initDistLV.getSample(10)
     optAlgLV = ot.MultiStart(ot.Cobyla(), initSampleLV)
 
