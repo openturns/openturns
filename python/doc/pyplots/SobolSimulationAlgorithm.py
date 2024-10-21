@@ -27,9 +27,9 @@ estimator.setUseAsymptoticDistribution(True)
 # algorithm
 algo = ot.SobolSimulationAlgorithm(distribution, model, estimator)
 algo.setMaximumOuterSampling(250)  # number of iterations
-algo.setBlockSize(100)  # size of Sobol experiment at each iteration
-algo.setBatchSize(4)  # number of points evaluated simultaneously
-# alpha: cirteria checks whether CIs are small enough
+algo.setExperimentSize(100)
+algo.setBlockSize(4)
+# alpha: criteria checks whether CIs are small enough
 algo.setIndexQuantileLevel(0.05)
 # epsilon: criteria checks whether CIs are tight enough
 algo.setIndexQuantileEpsilon(1e-2)
