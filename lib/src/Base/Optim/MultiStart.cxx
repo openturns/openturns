@@ -104,22 +104,16 @@ void MultiStart::run()
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
+    LOGDEBUG(OSS() << "Running local search " << (i + 1) << "/" << size << " x0=" << Point(startingSample_[i]).__str__() << " calls=" << callsNumber << "/" << getMaximumCallsNumber());
     solver.setStartingPoint(startingSample_[i]);
 
-    // ensure we do not exceed the global evaluation budget if the maximum is set
-    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
-    if (!remainingEval)
-      break;
-    LOGDEBUG(OSS() << "Running local search " << (i + 1) << "/" << size << " x0=" << Point(startingSample_[i]).__str__() << " calls=" << callsNumber << "/" << getMaximumCallsNumber());
-    if (remainingEval < solver.getMaximumCallsNumber())
-      solver.setMaximumCallsNumber(remainingEval);
+    // ensure we do not exceed the global evaluation budget
+    const UnsignedInteger remainingCallsNumber = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
+    solver.setMaximumCallsNumber(std::min(remainingCallsNumber, solver_.getMaximumCallsNumber()));
 
-    // ensure we do not exceeed the global time budget if the maximum is set
-    if ((getMaximumTimeDuration() > 0.0) && (solver_.getMaximumTimeDuration() <= 0.0))
-    {
-      const Scalar remainingTime = std::max(getMaximumTimeDuration() - timeDuration, 1e-10);
-      solver.setMaximumTimeDuration(remainingTime);
-    }
+    // ensure we do not exceeed the global time budget
+    const Scalar remainingTimeDuration = (getMaximumTimeDuration() > 0.0) ? std::max(getMaximumTimeDuration() - timeDuration, 1e-10) : SpecFunc::ActualMaxScalar;
+    solver.setMaximumTimeDuration((solver_.getMaximumTimeDuration() > 0.0) ? std::min(remainingTimeDuration, solver_.getMaximumTimeDuration()) : remainingTimeDuration);
 
     try
     {
@@ -153,10 +147,24 @@ void MultiStart::run()
     }
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    result_.setTimeDuration(timeDuration);
 
     callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
-    if ((callsNumber > getMaximumCallsNumber()) || ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration())))
+    result_.setCallsNumber(callsNumber);
+
+    if (callsNumber > getMaximumCallsNumber())
+    {
+      result_.setStatus(OptimizationResult::MAXIMUMCALLS);
+      result_.setStatusMessage(OSS() << "MultiStart reaches maximum calls number after " << callsNumber << " calls");
       break;
+    }
+
+    if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+    {
+      result_.setStatus(OptimizationResult::TIMEOUT);
+      result_.setStatusMessage(OSS() << "MultiStart optimization timeout after " << timeDuration << "s");
+      break;
+    }
 
     // callbacks
     if (progressCallback_.first)
@@ -173,13 +181,14 @@ void MultiStart::run()
       }
     }
   }
-  result_.setCallsNumber(callsNumber);
-  result_.setTimeDuration(timeDuration);
 
   if (!(successNumber > 0))
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    throw InternalException(HERE) << "None of the local searches succeeded.";
+    if (getCheckStatus())
+      throw InternalException(HERE) << "MultiStart: None of the local searches succeeded.";
+    else
+      LOGWARN(OSS() << "MultiStart: None of the local searches succeeded.");
   }
   LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
 }
