@@ -13,7 +13,8 @@ Subset Sampling
 #   g(X)= 20-(x_1-x_2)^2-8(x_1+x_2-4)^3
 #   \end{align*}
 #
-# and the input random vector :math:`X = (X_1, X_2)` which follows a Normal distribution with independent components, and identical marginals with 0.25 mean and unit variance:
+# and the input random vector :math:`X = (X_1, X_2)` which follows a Normal distribution with independent components,
+# and identical marginals with 0.25 mean and unit variance:
 #
 # .. math::
 #   \begin{align*}
@@ -172,7 +173,7 @@ _ = View(graph)
 # Draw the frontiers only
 # -----------------------
 #
-# The following graph enables to understand the progresison of the algorithm:
+# The following graph enables to understand the progression of the algorithm:
 
 # %%
 graph = ot.Graph()
