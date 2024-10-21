@@ -20,8 +20,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_FINITEDIFFERENCE_HXX
-#define OPENTURNS_FINITEDIFFERENCE_HXX
+#ifndef OPENTURNS_FINITEDIFFERENCEHESSIAN_HXX
+#define OPENTURNS_FINITEDIFFERENCEHESSIAN_HXX
 
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/Evaluation.hxx"
@@ -114,4 +114,4 @@ protected:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_FINITEDIFFERENCE_HXX */
+#endif /* OPENTURNS_FINITEDIFFERENCEHESSIAN_HXX */

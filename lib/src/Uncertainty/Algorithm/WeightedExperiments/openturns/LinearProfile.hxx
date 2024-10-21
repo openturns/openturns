@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_OPTIMALLINEARPROFILE_HXX
-#define OPENTURNS_OPTIMALLINEARPROFILE_HXX
+#ifndef OPENTURNS_LINEARPROFILE_HXX
+#define OPENTURNS_LINEARPROFILE_HXX
 
 #include "openturns/TemperatureProfileImplementation.hxx"
 
@@ -62,4 +62,4 @@ private:
 
 } /* namespace OT */
 
-#endif /* OT_OPTIMALLINEARPROFILE_HXX */
+#endif /* OT_LINEARPROFILE_HXX */

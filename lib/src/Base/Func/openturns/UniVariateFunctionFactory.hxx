@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_UNIVARIATEFUNCTIONFACTORY
-#define OPENTURNS_UNIVARIATEFUNCTIONFACTORY
+#ifndef OPENTURNS_UNIVARIATEFUNCTIONFACTORY_HXX
+#define OPENTURNS_UNIVARIATEFUNCTIONFACTORY_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
@@ -76,4 +76,4 @@ protected:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_UNIVARIATEFUNCTIONFACTORY */
+#endif /* OPENTURNS_UNIVARIATEFUNCTIONFACTORY_HXX */

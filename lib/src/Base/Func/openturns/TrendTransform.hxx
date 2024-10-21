@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_TRENDTRANSOFORM_HXX
-#define OPENTURNS_TRENDTRANSOFORM_HXX
+#ifndef OPENTURNS_TRENDTRANSFORM_HXX
+#define OPENTURNS_TRENDTRANSFORM_HXX
 
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/Function.hxx"
@@ -81,4 +81,4 @@ public:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_TRENDTRANSOFORM_HXX */
+#endif /* OPENTURNS_TRENDTRANSFORM_HXX */

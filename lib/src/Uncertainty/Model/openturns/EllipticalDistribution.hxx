@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX
-#define OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_ELLIPTICALDISTRIBUTION_HXX
+#define OPENTURNS_ELLIPTICALDISTRIBUTION_HXX
 
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/CorrelationMatrix.hxx"
@@ -250,5 +250,5 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ELLIPTICALDISTRIBUTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_ELLIPTICALDISTRIBUTION_HXX */
 

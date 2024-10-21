@@ -19,8 +19,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_HAMMINGFILTER_HXX
-#define OPENTURNS_HAMMINGFILTER_HXX
+#ifndef OPENTURNS_HAMMING_HXX
+#define OPENTURNS_HAMMING_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FilteringWindowsImplementation.hxx"
@@ -65,4 +65,4 @@ public:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_HAMMINGFILTER_HXX */
+#endif /* OPENTURNS_HAMMING_HXX */

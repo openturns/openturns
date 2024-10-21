@@ -20,8 +20,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_KARHUNENLOEVEQuadratureALGORITHM_HXX
-#define OPENTURNS_KARHUNENLOEVEQuadratureALGORITHM_HXX
+#ifndef OPENTURNS_KARHUNENLOEVEQUADRATUREALGORITHM_HXX
+#define OPENTURNS_KARHUNENLOEVEQUADRATUREALGORITHM_HXX
 
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
 #include "openturns/Domain.hxx"
@@ -119,4 +119,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_KARHUNENLOEVEQuadratureALGORITHM_HXX */
+#endif /* OPENTURNS_KARHUNENLOEVEQUADRATUREALGORITHM_HXX */

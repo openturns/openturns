@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_MONOMIALFUNCTIONFACTORY
-#define OPENTURNS_MONOMIALFUNCTIONFACTORY
+#ifndef OPENTURNS_MONOMIALFUNCTIONFACTORY_HXX
+#define OPENTURNS_MONOMIALFUNCTIONFACTORY_HXX
 
 #include "openturns/UniVariateFunctionFactory.hxx"
 #include "openturns/MonomialFunction.hxx"
@@ -66,4 +66,4 @@ public:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_MONOMIALFUNCTIONFACTORY */
+#endif /* OPENTURNS_MONOMIALFUNCTIONFACTORY_HXX */
