@@ -591,7 +591,7 @@ Point DistributionImplementation::getRealization() const
   return getRealizationByInversion();
 }
 
-/* Get a numerical sample whose elements follow the distributionImplementation */
+/* Get a sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 {
   SampleImplementation returnSample(size, dimension_);
@@ -613,7 +613,7 @@ Point DistributionImplementation::getRealizationByInversion() const
   return getSampleByInversion(1)[0];
 }
 
-/* Get a numerical sample whose elements follow the distributionImplementation */
+/* Get a sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
 {
   SampleImplementation returnSample(size, dimension_);

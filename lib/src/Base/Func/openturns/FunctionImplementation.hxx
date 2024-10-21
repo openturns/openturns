@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math function implementations
+ *  @brief Abstract top-level class for all function implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -42,7 +42,7 @@ class Function;
 /**
  * @class FunctionImplementation
  *
- * The class that simulates a numerical math function,
+ * The class that simulates a function,
  * its gradient and its hessian. This class is just an interface
  * to actual implementation objects that can be hot-replaced
  * during computation. Each implementation object refers to
@@ -229,13 +229,13 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  /** A pointer on the actual numerical math function implementation */
+  /** A pointer on the actual function implementation */
   Evaluation evaluation_;
 
-  /** A pointer on the actual numerical math gradient implementation */
+  /** A pointer on the actual gradient implementation */
   Gradient gradient_;
 
-  /** A pointer on the actual numerical math hessian implementation */
+  /** A pointer on the actual hessian implementation */
   Hessian hessian_;
 
 protected:

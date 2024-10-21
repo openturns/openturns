@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements quadratic numerical math functions.
+ *  @brief The class that implements quadratic functions.
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
-#define OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
+#ifndef OPENTURNS_QUADRATICFUNCTION_HXX
+#define OPENTURNS_QUADRATICFUNCTION_HXX
 
 #include "openturns/Function.hxx"
 #include "openturns/Point.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class QuadraticFunction
  *
- * The class that simulates a linear numerical math function,
+ * The class that simulates a quadratic function,
  * its gradient and its hessian. This class is just an interface
  * to actual implementation objects that can be hot-replaced
  * during computation. Each implementation object refers to
@@ -68,4 +68,4 @@ public:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX */
+#endif /* OPENTURNS_QUADRATICFUNCTION_HXX */

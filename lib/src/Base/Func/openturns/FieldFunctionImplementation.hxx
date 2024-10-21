@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math function implementations
+ *  @brief Abstract top-level class for all function implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *

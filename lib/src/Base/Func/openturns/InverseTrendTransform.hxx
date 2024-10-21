@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math function implementations
+ *  @brief Class allowing to subtract the value of a given function
+ *         to the values of a field at each node of the associated mesh
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +19,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_INVERSETRENDTRANSOFORM_HXX
-#define OPENTURNS_INVERSETRENDTRANSOFORM_HXX
+#ifndef OPENTURNS_INVERSETRENDTRANSFORM_HXX
+#define OPENTURNS_INVERSETRENDTRANSFORM_HXX
 
 
 #include "openturns/VertexValueFunction.hxx"
@@ -31,9 +32,8 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class InverseTrendTransform
  *
- * The class that simulates a dynamical function based on a
- * numerical math function that acts only on the mesh part
- * of a field.
+ * Class allowing to subtract the value of a given function
+ * to the values of a field at each node of the associated mesh
  */
 
 class TrendTransform;
@@ -79,4 +79,4 @@ public:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_INVERSETRENDTRANSOFORM_HXX */
+#endif /* OPENTURNS_INVERSETRENDTRANSFORM_HXX */

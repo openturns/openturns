@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for the creation of a numerical math hessian implementation
- *         form a numerical math evaluation implementation by using centered
+ *  @brief Class for the creation of a hessian implementation
+ *         form an evaluation implementation by using centered
  *         finite difference formula.
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -37,10 +37,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class CenteredFiniteDifferenceHessian
- * @brief This class is for the creation of a numerical math hessian implementation
+ * @brief This class is for the creation of a hessian implementation
  *
- * This class is for the creation of a numerical math hessian implementation
- * form a numerical math evaluation implementation by using centered
+ * This class is for the creation of a hessian implementation
+ * form a evaluation implementation by using centered
  * finite difference formula
  */
 class OT_API CenteredFiniteDifferenceHessian

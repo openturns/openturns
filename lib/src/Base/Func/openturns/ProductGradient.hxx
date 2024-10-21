@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical math functions
+ *  @brief The class that implements the gradient of the product of two functions
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -33,8 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ProductGradient
  *
- * The class that implement the composition of two numerical math functions,
- * its gradient and its hessian. This class has no implementation class
+ * The class that implements the gradient of the product of two functions
  */
 class OT_API ProductGradient
   : public GradientImplementation

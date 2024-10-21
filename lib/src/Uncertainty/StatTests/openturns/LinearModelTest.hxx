@@ -97,13 +97,13 @@ OT_API TestResult LinearModelDurbinWatson(const Sample & firstSample,
     const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
     const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
-/** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The t-test is used. */
+/** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the sample extracted from firstSample (ith coordinate of each point of the sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar samples is significant. It is based on the deviation analysis of the regression. The t-test is used. */
 OT_API TestResultCollection PartialRegression(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
     const Scalar level = 0.05);
 
-/** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The t-test is used. */
+/** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the sample extracted from firstSample (ith coordinate of each point of the sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests ifthe regression model between two scalar samples is significant. It is based on the deviation analysis of the regression. The t-test is used. */
 OT_API TestResultCollection FullRegression(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level = 0.05);

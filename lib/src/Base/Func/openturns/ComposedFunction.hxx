@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements composed numerical math functions
+ *  @brief The class that implements composed functions
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *

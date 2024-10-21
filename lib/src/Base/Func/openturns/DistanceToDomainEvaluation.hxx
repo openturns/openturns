@@ -1,7 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical
- *        math functions implementations
+ *  @brief The class that computes the distance to a domain as a function
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,8 +19,8 @@
  *
  */
 
-#ifndef OPENTURNS_DISTANCETODOMAINNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_DISTANCETODOMAINNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_DISTANCETODOMAINEVALUATION_HXX
+#define OPENTURNS_DISTANCETODOMAINEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Domain.hxx"
@@ -34,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DistanceToDomainEvaluation
  *
- * The class that implement the composition of two numerical math functions implementations.
+ * The class that computes the distance to a domain as a function
  */
 class OT_API DistanceToDomainEvaluation
   : public EvaluationImplementation
@@ -84,4 +83,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_DISTANCETODOMAINNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_DISTANCETODOMAINEVALUATION_HXX */

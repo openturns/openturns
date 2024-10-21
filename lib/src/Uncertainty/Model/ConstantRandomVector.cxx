@@ -87,7 +87,7 @@ Point ConstantRandomVector::getRealization() const
   return point_;
 }
 
-/* Numerical sample accessor */
+/* Sample accessor */
 Sample ConstantRandomVector::getSample(const UnsignedInteger size) const
 {
   Sample sample(size, point_);

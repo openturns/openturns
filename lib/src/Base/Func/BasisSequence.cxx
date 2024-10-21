@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A sequence of numerical math function collection
+ *  @brief A sequence of function collection
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *

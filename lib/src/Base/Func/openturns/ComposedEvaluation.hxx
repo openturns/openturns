@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical
- *        math functions implementations
+ *  @brief The class that implements the composition between
+ *         functions implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_COMPOSEDFUNCTIONIMPLEMENTATION_HXX
+#define OPENTURNS_COMPOSEDFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/Evaluation.hxx"
 
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ComposedEvaluation
  *
- * The class that implement the composition of two numerical math functions implementations.
+ * The class that implement the composition of two functions implementations.
  */
 class OT_API ComposedEvaluation
   : public EvaluationImplementation
@@ -120,4 +120,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_COMPOSEDFUNCTIONIMPLEMENTATION_HXX */

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical
- *        math functions implementations
+ *  @brief The class that implements the composition between
+ *         functions implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_INDICATOREVALUATION_HXX
+#define OPENTURNS_INDICATOREVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Domain.hxx"
@@ -84,4 +84,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_INDICATOREVALUATION_HXX */
