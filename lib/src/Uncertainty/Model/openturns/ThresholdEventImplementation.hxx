@@ -82,7 +82,7 @@ public:
   Point getRealization() const override;
   Point getFrozenRealization(const Point & fixedPoint) const override;
 
-  /** Numerical sample accessor */
+  /** Sample accessor */
   Sample getSample(const UnsignedInteger size) const override;
   Sample getFrozenSample(const Sample & fixedSample) const override;
 

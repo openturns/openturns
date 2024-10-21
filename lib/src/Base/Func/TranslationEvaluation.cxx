@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief Class for a numerical math function implementation
+ * @brief Class for a function implementation
  *        of the form y = constant + x
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca

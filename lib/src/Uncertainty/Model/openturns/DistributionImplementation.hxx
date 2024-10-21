@@ -155,7 +155,7 @@ protected:
   virtual Point getRealizationByInversion() const;
 
 public:
-  /** Get a numerical sample whose elements follow the distributionImplementation */
+  /** Get a Sample whose elements follow the distributionImplementation */
   virtual Sample getSample(const UnsignedInteger size) const;
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math function implementations
+ *  @brief Abstract top-level class for all function implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class VertexValueFunction
  *
  * The class that simulates a dynamical function based on a
- * numerical math function that acts only on the temporal part
+ * function that acts only on the temporal part
  * of a time series.
  */
 class OT_API VertexValueFunction

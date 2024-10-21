@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief Abstract top-level class for all numerical math function implementations
+ * @brief Abstract top-level class for all function implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -47,7 +47,7 @@ class Evaluation;
  * @class EvaluationImplementation
  *
  * This class offers an abstract interface for the implementation
- * of an real numerical mathematical function into the platform.
+ * of an real function into the platform.
  */
 class OT_API EvaluationImplementation
   : public PersistentObject

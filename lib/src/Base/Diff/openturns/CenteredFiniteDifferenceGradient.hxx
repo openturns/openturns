@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for the creation of a numerical math gradient implementation
- *         form a numerical math evaluation implementation by using centered
+ *  @brief Class for the creation of a gradient implementation
+ *         form an evaluation implementation by using centered
  *         finite difference formula.
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -35,10 +35,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class CenteredFiniteDifferenceGradient
- * @brief This class is for the creation of a numerical math gradient implementation
+ * @brief This class is for the creation of a gradient implementation
  *
- * This class is for the creation of a numerical math gradient implementation
- * form a numerical math evaluation implementation by using centered
+ * This class is for the creation of a gradient implementation
+ * form an evaluation implementation by using centered
  * finite difference formula
  */
 class OT_API CenteredFiniteDifferenceGradient

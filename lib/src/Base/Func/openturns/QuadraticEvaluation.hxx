@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for a quadratic numerical math function implementation
+ *  @brief Class for a quadratic function implementation
  *        of the form y = constant + <linear, x-c> + <<quadratic, x-c>, x-c>
- *        where constant is a dim(y) numerical point, c a dim(x) numerical
+ *        where constant is a dim(y) point, c a dim(x)
  *        point, linear is a dim(x) by dim(y) matrix, quadratic is a
  *        dim(x) by dim(x) by dim(y) symmetric tensor and <linear, x>
  *        means Transpose(linear).x, <quadratic, x> means
@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class QuadraticEvaluation
  *
- * This class offers an interface for an real numerical mathematical evaluation
+ * This class offers an interface for an real evaluation
  * implementations into the platform. It realizes the computation of the image vector
  * of a vector (aka Point) through the evaluation. The
  * evaluation may be loaded in an external way through a wrapper.

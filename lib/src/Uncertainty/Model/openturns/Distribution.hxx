@@ -136,7 +136,7 @@ public:
   /** Get one realization of the distribution */
   Point getRealization() const;
 
-  /** Get a numerical sample whose elements follow the distribution */
+  /** Get a sample whose elements follow the distribution */
   Sample getSample(const UnsignedInteger size) const;
   Sample getSampleByInversion(const UnsignedInteger size) const;
   Sample getSampleByQMC(const UnsignedInteger size) const;

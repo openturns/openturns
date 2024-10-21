@@ -95,7 +95,7 @@ Point RandomVectorImplementation::getFrozenRealization(const Point & fixedPoint)
   return fixedPoint;
 }
 
-/* Numerical sample accessor */
+/* Sample accessor */
 Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
   Sample result(size, getDimension());

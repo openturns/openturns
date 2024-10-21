@@ -1,7 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical
- *        math functions implementations
+ *  @brief The class that implements the product between functions implementations
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OPENTURNS_PRODUCTNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_PRODUCTNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_PRODUCTFUNCTIONIMPLEMENTATION_HXX
+#define OPENTURNS_PRODUCTFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Evaluation.hxx"
@@ -30,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ProductEvaluation
  *
- * The class that implement the composition of two numerical math functions implementations.
+ * The class that implement the product of two functions implementations.
  */
 class OT_API ProductEvaluation
   : public EvaluationImplementation
@@ -96,4 +95,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PRODUCTNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_PRODUCTFUNCTIONIMPLEMENTATION_HXX */

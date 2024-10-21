@@ -66,8 +66,8 @@ Curve::Curve(const Sample & dataX,
   : DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getSize();
-  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical samples with different size.";
-  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical samples of dimension greater than 1.";
+  if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two samples with different size.";
+  if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two samples of dimension greater than 1.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -86,7 +86,7 @@ Curve::Curve(const Point & dataX,
   : DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getDimension();
-  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical points with different dimensions.";
+  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two points with different dimensions.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {

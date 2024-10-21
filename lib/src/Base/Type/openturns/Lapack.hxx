@@ -29,7 +29,7 @@ BEGIN_C_DECLS
     y := alpha*x + y */
 void daxpy_(int *n, double *alpha, double *x, int *incx, double *y, int *incy);
 
-/** Function dscal is to be used to compute the product of a matrix by a numerical scalar
+/** Function dscal is to be used to compute the product of a matrix by a scalar
     x := alpha*x */
 void dscal_(int *n, double *alpha, double *x, int *incx);
 
@@ -53,15 +53,15 @@ void drotg_(double *a, double *b, double *c, double *s);
 /** Function drot is to be used to apply a Givens rotation defined by (c, s) to a sequence of 2D points (x_i, y_i), i=0..n-1. The transformation is done in-place. */
 void drot_(int *n, double *x, int *incx, double *y, int *incy, double *c, double *s);
 
-/** Function dgemv is to be used to compute the product of a matrix with a vector (numerical point)
+/** Function dgemv is to be used to compute the product of a matrix with a vector (point)
     y := alpha*A(trans)*x + beta*y */
 void dgemv_(char *trans, int *m, int *n, double *alpha, double *a, int *lda, double *x, int *incx, double *beta, double *y, int *incy, int *ltrans);
 
-/** Function dsymv is to be used to compute the product of a matrix with a vector (numerical point);  optimization for symmetric matrices
+/** Function dsymv is to be used to compute the product of a matrix with a vector (point);  optimization for symmetric matrices
     y := alpha*A(trans)*x + beta*y */
 void dsymv_(char *uplo, int *n, double *alpha, double *a, int *lda, double *x, int *incx, double *beta, double *y, int *incy, int *luplo);
 
-/** Function dspmv is to be used to compute the product of a matrix with a vector (numerical point);  optimization for positive definite matrices
+/** Function dspmv is to be used to compute the product of a matrix with a vector (point);  optimization for positive definite matrices
     y := alpha*A*x + beta*y */
 void dspmv_(char *uplo, int *n, double *alpha, double *a, double *x, int *incx, double *beta, double *y, int *incy, int *luplo);
 
@@ -124,7 +124,7 @@ void dtrsm_(char *side, char *uplo, char *transa, char *diag, int *m, int *n, do
 void dgesdd_(char *jobz, int *m, int *n, double *A, int *lda, double *S, double *U, int *ldu, double *VT, int *ldvt, double *work, int *lwork, int *iwork, int *info, int *ljobz);
 
 /** Function dtrmv is to be used to compute the product of a triangular
-    (upper or lower) matrix with a vector (numerical point) */
+    (upper or lower) matrix with a vector (point) */
 void dtrmv_(char *uplo, char *trans, char *diag, int *n, double *A, int *lda, double *X, int *incx, int *luplo, int *ltrans, int *ldiag);
 
 /** Function dtrmm is to be used to compute the product of a triangular (upper or lower) matrix with another matrix  */
@@ -136,7 +136,7 @@ void dtrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, dou
     y := alpha*x + y */
 void zaxpy_(int *n, std::complex<double> *alpha, std::complex<double> *x, int *incx, std::complex<double> *y, int *incy);
 
-/** Function zscal is to be used to compute the product of a complex matrix by a numerical complex
+/** Function zscal is to be used to compute the product of a complex matrix by a complex
     x := alpha*x */
 void zscal_(int *n, std::complex<double> *alpha, std::complex<double> *x, int *incx);
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical math hessians
+ *  @brief The class that implements the composition between hessians
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ProductHessian
  *
- * The class that implement the composition of two numerical math hessians
+ * The class that implement the composition of two hessians
  */
 class OT_API ProductHessian
   : public HessianImplementation

@@ -42,52 +42,52 @@ namespace FittingTest
 typedef Collection<DistributionFactory> DistributionFactoryCollection;
 typedef Collection<Distribution>        DistributionCollection;
 
-/** Best model for a given numerical sample by AIC */
+/** Best model for a given sample by AIC */
 OT_API Distribution BestModelAIC(const Sample &sample,
                                  const DistributionFactoryCollection &factoryCollection,
                                  Scalar &bestAICOut);
 
-/** Best model for a given numerical sample by AIC */
+/** Best model for a given sample by AIC */
 OT_API Distribution BestModelAIC(const Sample &sample,
                                  const DistributionCollection &distributionCollection,
                                  Scalar &bestAICOut);
 
-/** Best model for a given numerical sample by AICc */
+/** Best model for a given sample by AICc */
 OT_API Distribution BestModelAICC(const Sample &sample,
                                   const DistributionFactoryCollection &factoryCollection,
                                   Scalar &bestAICOut);
 
-/** Best model for a given numerical sample by AICc */
+/** Best model for a given sample by AICc */
 OT_API Distribution BestModelAICC(const Sample &sample,
                                   const DistributionCollection &distributionCollection,
                                   Scalar &bestAICOut);
 
-/** Best model for a given numerical sample by BIC */
+/** Best model for a given sample by BIC */
 OT_API Distribution BestModelBIC(const Sample  & sample,
                                  const DistributionFactoryCollection & factoryCollection,
                                  Scalar & bestBICOut);
 
-/** Best model for a given numerical sample by BIC */
+/** Best model for a given sample by BIC */
 OT_API Distribution BestModelBIC(const Sample  & sample,
                                  const DistributionCollection & distributionCollection,
                                  Scalar & bestBICOut);
 
-/** Best model for a given numerical sample by Lilliefors */
+/** Best model for a given sample by Lilliefors */
 OT_API Distribution BestModelLilliefors(const Sample  & sample,
                                         const DistributionFactoryCollection & factoryCollection,
                                         TestResult & bestResultOut);
 
-/** Best model for a given numerical sample by Kolmogorov */
+/** Best model for a given sample by Kolmogorov */
 OT_API Distribution BestModelKolmogorov(const Sample  & sample,
                                         const DistributionCollection & distributionCollection,
                                         TestResult & bestResultOut);
 
-/** Best model for a given numerical sample by ChiSquared */
+/** Best model for a given sample by ChiSquared */
 OT_API Distribution BestModelChiSquared(const Sample  & sample,
                                         const DistributionFactoryCollection & factoryCollection,
                                         TestResult & bestResultOut);
 
-/** Best model for a given numerical sample by ChiSquared */
+/** Best model for a given sample by ChiSquared */
 OT_API Distribution BestModelChiSquared(const Sample  & sample,
                                         const DistributionCollection & distributionCollection,
                                         TestResult & bestResultOut);

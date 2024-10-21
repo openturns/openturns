@@ -102,7 +102,7 @@ Point DomainEvent::getFrozenRealization(const Point & fixedPoint) const
   return Point(1, domain_.contains(CompositeRandomVector::getFrozenRealization(fixedPoint)));
 }
 
-/* Numerical sample accessor */
+/* Sample accessor */
 Sample DomainEvent::getSample(const UnsignedInteger size) const
 {
   // First, compute a sample of the event antecedent

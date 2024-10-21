@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class LARS
  *
- * A sequence of numerical math function collection.
+ * A sequence of function collection.
  */
 class OT_API LARS
   : public BasisSequenceFactoryImplementation

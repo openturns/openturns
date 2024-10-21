@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The interface class that implements numerical math functions
+ *  @brief The interface class that implements hessians
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Hessian
  *
  * This class offers an abstract interface for the implementation
- * of a real numerical mathematical Hessian into the platform.
+ * of a real Hessian into the platform.
  */
 class OT_API Hessian
   : public TypedInterfaceObject<HessianImplementation>

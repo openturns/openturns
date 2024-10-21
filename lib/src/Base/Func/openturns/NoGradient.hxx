@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for all numerical math gradient implementations
+ *  @brief Class for undefined gradients
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -31,10 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class NoGradient
  *
- * This class offers an interface for an real numerical mathematical gradient
- * implementations into the platform. It realizes the computation of the image vector
- * of a vector (aka Point) through the gradient. The
- * gradient may be loaded in an external way through a wrapper.
+ * Class to implement the undefined gradients
  */
 class OT_API NoGradient
   : public GradientImplementation

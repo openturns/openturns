@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements the composition between numerical
- *         math functions implementations or a point to field function
+ *  @brief The class that implements the composition between
+ *         functions implementations or a point to field function
  *         and a field to point function
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PointToPointEvaluation
  *
- * The class that implement the composition of two numerical math functions implementations or a field to point and a point to field function.
+ * The class that implement the composition of two functions or a field to point and a point to field function.
  */
 class OT_API PointToPointEvaluation
   : public EvaluationImplementation

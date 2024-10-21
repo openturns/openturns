@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- * @brief Class for a linear numerical math function implementation
+ * @brief Class for a linear function implementation
  *        of the form y = constant + <linear, x - c> where c is a
- *        dim(x) numerical point, linear a dim(x) by dim(y) matrix
+ *        dim(x) point, linear a dim(x) by dim(y) matrix
  *        and  <linear, x - c> means Transpose(linear).(x - c)
  *
  *  Copyright 2005-2024 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -22,8 +22,8 @@
  *
  */
 
-#ifndef OPENTURNS_LINEARNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_LINEARNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_LINEAREVALUATION_HXX
+#define OPENTURNS_LINEAREVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Point.hxx"
@@ -106,4 +106,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LINEARNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_LINEAREVALUATION_HXX */
