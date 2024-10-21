@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef OPENTURNS_LINEARMODELMETAMODEL_HXX
-#define OPENTURNS_LINEARMODELMETAMODEL_HXX
+#ifndef OPENTURNS_OTLINEARMODEL_HXX
+#define OPENTURNS_OTLINEARMODEL_HXX
 
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/LinearModelAlgorithm.hxx"
@@ -28,4 +28,4 @@
 #include "openturns/LinearModelAnalysis.hxx"
 #include "openturns/LinearModelValidation.hxx"
 
-#endif /* OPENTURNS_LINEARMODELMETAMODEL_HXX */
+#endif /* OPENTURNS_OTLINEARMODEL_HXX */

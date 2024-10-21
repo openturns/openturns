@@ -17,8 +17,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_IsotropicCovarianceModel_HXX
-#define OPENTURNS_IsotropicCovarianceModel_HXX
+#ifndef OPENTURNS_ISOTROPICCOVARIANCEMODEL_HXX
+#define OPENTURNS_ISOTROPICCOVARIANCEMODEL_HXX
 
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/CovarianceModelImplementation.hxx"
