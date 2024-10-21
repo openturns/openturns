@@ -97,14 +97,14 @@ void EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(const Samp
   const UnsignedInteger nrSimplices = simplices_.getSize();
   lowerBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
   upperBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
-  Point lower(dimension, SpecFunc::MaxScalar);
-  Point upper(dimension, - SpecFunc::MaxScalar);
+  Point lower(dimension, SpecFunc::Infinity);
+  Point upper(dimension, - SpecFunc::Infinity);
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
     for(UnsignedInteger k = 0; k < dimension; ++k)
     {
-      lower[k] = SpecFunc::MaxScalar;
-      upper[k] = - SpecFunc::MaxScalar;
+      lower[k] = SpecFunc::Infinity;
+      upper[k] = - SpecFunc::Infinity;
     }
     for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
     {

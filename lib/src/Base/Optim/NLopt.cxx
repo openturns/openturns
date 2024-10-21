@@ -248,7 +248,7 @@ void NLopt::run()
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       if (!finiteLowerBound[i]) lb[i] = SpecFunc::LowestScalar;
-      if (!finiteUpperBound[i]) ub[i] =  SpecFunc::MaxScalar;
+      if (!finiteUpperBound[i]) ub[i] =  SpecFunc::Infinity;
     }
     opt.set_lower_bounds(lb);
     opt.set_upper_bounds(ub);

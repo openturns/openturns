@@ -28,7 +28,7 @@ namespace
 {
 UnsignedInteger debug_squared_minimum_distance(const Point & point, const Sample & sample)
 {
-  Scalar result = SpecFunc::MaxScalar;
+  Scalar result = SpecFunc::Infinity;
   UnsignedInteger bestIndex = sample.getSize();
   for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
   {

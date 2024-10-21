@@ -593,7 +593,7 @@ void Dlib::run()
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       if (!finiteLowerBound[i]) lb(i) = SpecFunc::LowestScalar;
-      if (!finiteUpperBound[i]) ub(i) =  SpecFunc::MaxScalar;
+      if (!finiteUpperBound[i]) ub(i) =  SpecFunc::Infinity;
     }
   }
   else
@@ -601,7 +601,7 @@ void Dlib::run()
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       lb(i) = SpecFunc::LowestScalar;
-      ub(i) = SpecFunc::MaxScalar;
+      ub(i) = SpecFunc::Infinity;
     }
   }
 

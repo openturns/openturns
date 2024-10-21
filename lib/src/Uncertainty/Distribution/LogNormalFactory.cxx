@@ -96,7 +96,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
   Scalar left = right - step;
   Scalar constraintLeft = f(Point(1, left))[0];
   // First, the bracketing interval. We should find a change of sign within [Xmin-sigma, Xmin], else use another estimator
-  while ((constraintLeft < 0.0) == (constraintRight < 0.0) && (step < std::sqrt(SpecFunc::MaxScalar)))
+  while ((constraintLeft < 0.0) == (constraintRight < 0.0) && (step < std::sqrt(SpecFunc::Infinity)))
   {
     right = left;
     constraintRight = constraintLeft;

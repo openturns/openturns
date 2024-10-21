@@ -273,7 +273,7 @@ UnsignedInteger BernsteinCopulaFactory::FindBestBinNumberSequential(const Functi
     const UnsignedInteger mMin,
     const UnsignedInteger mMax)
 {
-  Scalar bestMValue = SpecFunc::MaxScalar;
+  Scalar bestMValue = SpecFunc::Infinity;
   UnsignedInteger bestM = 0;
   for (UnsignedInteger m = mMin; m < mMax; ++m)
   {

@@ -212,7 +212,7 @@ Scalar TruncatedOverMesh::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   Scalar cdf = 0.0;
-  const Interval quadrant(Point(getDimension(), -SpecFunc::MaxScalar), point);
+  const Interval quadrant(Point(getDimension(), -SpecFunc::Infinity), point);
   const Interval intersection(quadrant.intersect(getRange()));
   if (intersection.isEmpty())
     cdf = 0.0;

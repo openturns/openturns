@@ -147,7 +147,7 @@ int main(int, char *[])
       resultBIC(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
       // In the context of this test, inf and 1.79769e+308 are considered equal
       // TODO JM: remove the check after the use of infs has been thoroughly tested
-      if (resultBIC(i, j) >= SpecFunc::ActualMaxScalar) resultBIC(i, j) *= 2.0;
+      if (resultBIC(i, j) >= SpecFunc::MaxScalar) resultBIC(i, j) *= 2.0;
     }
   }
   fullprint << "resultBIC=" << resultBIC << std::endl;

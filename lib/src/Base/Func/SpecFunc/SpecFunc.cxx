@@ -338,7 +338,7 @@ Scalar SpecFunc::BesselK(const Scalar nu,
   if (std::abs(x) < 1e-8) return 0.5 * std::exp(LogGamma(nu) - nu * std::log(0.5 * x));
   if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * std::exp(-x);
   const Scalar logK = LogBesselK(nu, x);
-  if (logK >= LogMaxScalar) return MaxScalar;
+  if (logK >= LogMaxScalar) return Infinity;
   return std::exp(logK);
 #endif
 }
@@ -542,7 +542,7 @@ Scalar SpecFunc::Factorial(const UnsignedInteger n)
 {
   if (n < LogMaxScalar) return std::exp(LogFactorial(n));
   throw InternalException(HERE) << "Error: n=" << n << " is too large for n! to fit into the return type";
-  return MaxScalar;
+  return Infinity;
 }
 
 // Gamma function: Gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt

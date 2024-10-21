@@ -79,7 +79,7 @@ Bool DomainDisjunctiveUnion::contains(const Point & point) const
 /* Compute the Euclidean distance from a given point to the domain */
 Scalar DomainDisjunctiveUnion::computeDistance(const Point & point) const
 {
-  Scalar best = SpecFunc::MaxScalar;
+  Scalar best = SpecFunc::Infinity;
   UnsignedInteger count = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++ i)
   {

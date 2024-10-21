@@ -80,7 +80,7 @@ KernelSmoothing::KernelSmoothing(const Distribution & kernel,
   , boundingOption_(boundaryCorrection ? BOTH : NONE)
   , lowerBound_(SpecFunc::LowestScalar)
   , automaticLowerBound_(true)
-  , upperBound_(SpecFunc::MaxScalar)
+  , upperBound_(SpecFunc::Infinity)
   , automaticUpperBound_(true)
 {
   setName("KernelSmoothing");
@@ -578,8 +578,8 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   const Scalar lower = kernel_.getRange().getLowerBound()[0];
   const Scalar upper = kernel_.getRange().getUpperBound()[0];
   UnsignedInteger size = sample.getSize();
-  const Bool doLower = ((boundingOption_ == LOWER)  || (boundingOption_ == BOTH)) && (xMin > -0.5 * SpecFunc::MaxScalar + h * lower);
-  const Bool doUpper = ((boundingOption_ == UPPER) || (boundingOption_ == BOTH)) && (xMax <  0.5 * SpecFunc::MaxScalar + h * upper);
+  const Bool doLower = ((boundingOption_ == LOWER)  || (boundingOption_ == BOTH)) && (xMin > -0.5 * SpecFunc::Infinity + h * lower);
+  const Bool doUpper = ((boundingOption_ == UPPER) || (boundingOption_ == BOTH)) && (xMax <  0.5 * SpecFunc::Infinity + h * upper);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     const Scalar x = newSampleData[i];

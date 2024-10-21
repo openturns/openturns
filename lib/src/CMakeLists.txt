@@ -141,8 +141,3 @@ if (UNIX AND BUILD_SHARED_LIBS)
   install (FILES libOT-gdb.py DESTINATION ${OPENTURNS_DATA_PATH}/gdb/auto-load/${LIBRARY_PATH} RENAME ${OT_GDB_PY})
 endif ()
 
-# Option to build with INF as SpecFunc::MaxScalar
-option (OPENTURNS_MAXSCALAR_IS_INF "Set MaxScalar=inf" ON)
-if (OPENTURNS_MAXSCALAR_IS_INF)
-  target_compile_definitions(OT PUBLIC OPENTURNS_MAXSCALAR_IS_INF)
-endif ()

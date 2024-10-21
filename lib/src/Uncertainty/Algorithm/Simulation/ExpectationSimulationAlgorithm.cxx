@@ -165,7 +165,7 @@ void ExpectationSimulationAlgorithm::run()
     Bool covOk = true;
     for (UnsignedInteger j = 0; (j < dimension) && covOk; ++ j)
       covOk = (coefficientOfVariation[j] > 0.0);
-    const Scalar coefficientOfVariationCriterion = covOk ? computeCriterion(coefficientOfVariationCriterionType_, coefficientOfVariation) : SpecFunc::MaxScalar;
+    const Scalar coefficientOfVariationCriterion = covOk ? computeCriterion(coefficientOfVariationCriterionType_, coefficientOfVariation) : SpecFunc::Infinity;
 
     // decide whether we should stop
     if (!stop && (coefficientOfVariationCriterion <= getMaximumCoefficientOfVariation()))
@@ -234,7 +234,7 @@ Scalar ExpectationSimulationAlgorithm::computeCriterion(const String & criterion
 
   if (criterionType == "NONE")
   {
-    criterion = SpecFunc::MaxScalar;
+    criterion = SpecFunc::Infinity;
   }
   else if (criterionType == "MAX")
   {

@@ -322,7 +322,7 @@ Scalar gamstar(const Scalar x)
   // gamma(x)/(exp(-x+(x-0.5)*ln(x))/sqrt(2pi)
   if (x >= 3.0) return exp(SpecFunc::GammaCorrection(x));
   if (x > 0.0) return SpecFunc::Gamma(x) / (exp(-x + (x - 0.5) * log(x)) * SpecFunc::SQRT2PI);
-  return SpecFunc::MaxScalar;
+  return SpecFunc::Infinity;
 } // gamstar
 
 Scalar fractio(const Scalar x,

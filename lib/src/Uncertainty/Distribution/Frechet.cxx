@@ -104,7 +104,7 @@ Scalar Frechet::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  if (tail ? (prob == 0.0) : (prob == 1.0)) return SpecFunc::MaxScalar;
+  if (tail ? (prob == 0.0) : (prob == 1.0)) return SpecFunc::Infinity;
   return gamma_ + beta_ * std::pow(-std::log(tail ? 1.0 - prob : prob), -1.0 / alpha_);
 }
 

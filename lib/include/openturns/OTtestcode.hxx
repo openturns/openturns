@@ -747,7 +747,7 @@ private:
       LOGTRACE(OSS() << "proba(range)=" << proba1);
       assert_almost_equal(proba1, 1.0, cdfTolerance_, cdfTolerance_, "proba(range) " + distribution_.__repr__());
 
-      const Scalar proba2 = distribution_.computeProbability(Interval(-SpecFunc::MaxScalar, SpecFunc::MaxScalar));
+      const Scalar proba2 = distribution_.computeProbability(Interval(-SpecFunc::Infinity, SpecFunc::Infinity));
       LOGTRACE(OSS() << "proba(R)=" << proba2);
       assert_almost_equal(proba2, 1.0, cdfTolerance_, cdfTolerance_, "proba(R) " + distribution_.__repr__());
     }
