@@ -2,6 +2,7 @@
 Estimate a process-based event probability
 ==========================================
 """
+
 # %%
 # The objective of this example is to evaluate the probability of an
 # event based on a stochastic process, using the Monte Carlo estimator.

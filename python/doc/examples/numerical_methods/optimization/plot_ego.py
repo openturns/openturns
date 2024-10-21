@@ -2,6 +2,7 @@
 EfficientGlobalOptimization examples
 ====================================
 """
+
 # %%
 # The EGO algorithm [jones1998]_ is an adaptative optimization method based on
 # kriging.

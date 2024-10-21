@@ -2,6 +2,7 @@
 Create a Monte Carlo design of experiments
 ==========================================
 """
+
 # %%
 
 # %%

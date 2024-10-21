@@ -2,6 +2,7 @@
 Generate random variates by inverting the CDF
 =============================================
 """
+
 # %%
 #
 # Abstract

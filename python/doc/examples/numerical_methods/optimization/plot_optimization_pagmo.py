@@ -2,6 +2,7 @@
 Multi-objective optimization using Pagmo
 ========================================
 """
+
 # %%
 # In this example we are going to explore optimization using the :class:`~openturns.Pagmo` solver.
 

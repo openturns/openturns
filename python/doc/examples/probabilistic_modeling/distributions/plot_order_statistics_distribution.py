@@ -2,6 +2,7 @@
 Create a maximum entropy statistics distribution
 ================================================
 """
+
 # %%
 # In this example we are going to build maximum entropy statistics distribution, which yields ordered realizations:
 #

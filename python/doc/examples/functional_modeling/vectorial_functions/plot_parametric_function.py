@@ -2,6 +2,7 @@
 Create a parametric function
 ============================
 """
+
 # %%
 # In this example, we show how to use the :class:`~openturns.ParametricFunction` class.
 # This is a tool which is very convenient when we perform

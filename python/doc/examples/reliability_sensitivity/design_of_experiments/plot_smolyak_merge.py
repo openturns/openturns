@@ -2,6 +2,7 @@
 Merge nodes in Smolyak quadrature
 =================================
 """
+
 # %%
 # The goal of this example is to see the effect of the merge algorithm in
 # Smolyak's quadrature implemented in :class:`openturns.SmolyakExperiment`.

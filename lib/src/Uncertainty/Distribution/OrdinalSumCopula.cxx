@@ -257,7 +257,7 @@ Point OrdinalSumCopula::computeDDF(const Point & point) const
   if (!isInBlock(point, index)) return Point(dimension, 0.0);
   // The point is in the candidate
   const Point shift(dimension, (index > 0) ? bounds_[index - 1] : 0.0);
-  return std::pow(blockLengths_[index], - 1.0 * dimension) * copulaCollection_[index].computeDDF((point - shift)/ blockLengths_[index]);
+  return std::pow(blockLengths_[index], - 1.0 * dimension) * copulaCollection_[index].computeDDF((point - shift) / blockLengths_[index]);
 }
 
 /* Get the PDF of the OrdinalSumCopula */

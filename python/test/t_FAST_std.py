@@ -13,9 +13,9 @@ inputName = ["X1", "X2", "X3"]
 
 # Test with Ishigami function
 formulaIshigami = ot.Description(outputDimension)
-formulaIshigami[
-    0
-] = "sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)"
+formulaIshigami[0] = (
+    "sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)"
+)
 
 modelIshigami = ot.SymbolicFunction(inputName, formulaIshigami)
 

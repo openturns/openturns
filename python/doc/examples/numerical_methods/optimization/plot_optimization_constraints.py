@@ -2,6 +2,7 @@
 Optimization with constraints
 =============================
 """
+
 # %%
 # In this example we are going to expose methods to solve a generic optimization problem in the form
 #

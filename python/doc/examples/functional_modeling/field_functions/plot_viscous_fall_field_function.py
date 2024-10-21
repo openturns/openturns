@@ -2,6 +2,7 @@
 Define a function with a field output: the viscous free fall example
 ====================================================================
 """
+
 # %%
 # In this example, we define a function which has a vector input and a field output.
 # This is why we use the :class:`~openturns.PythonPointToFieldFunction` class to create the associated function and propagate the uncertainties through it.

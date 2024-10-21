@@ -2,6 +2,7 @@
 Test identical distributions
 ============================
 """
+
 # %%
 
 # %%

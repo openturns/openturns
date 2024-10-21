@@ -20,8 +20,8 @@ ot.Log.Show(ot.Log.NONE)
 # Create the model
 model = ot.SymbolicFunction(
     ["X0", "X1", "X2"],
-    ["1.0 + 2.0 * X0 - 1.0 * X1 + 4.0 * X2",
-     "-2.0 - 3.0 * X0 + 5.0 * X1 - 1.0 * X2"],)
+    ["1.0 + 2.0 * X0 - 1.0 * X1 + 4.0 * X2", "-2.0 - 3.0 * X0 + 5.0 * X1 - 1.0 * X2"],
+)
 
 # %%
 # Create the input data to visualize

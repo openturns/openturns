@@ -66,7 +66,9 @@ listFittingAlgorithm.append(ot.CorrectedLeaveOneOut())
 for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
     fittingAlgorithm = listFittingAlgorithm[fittingAlgorithmIndex]
     adaptiveStrategy = ot.FixedStrategy(productBasis, basisSize)
-    lsSelectionFactory = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), fittingAlgorithm)
+    lsSelectionFactory = ot.LeastSquaresMetaModelSelectionFactory(
+        ot.LARS(), fittingAlgorithm
+    )
     projectionStrategy = ot.LeastSquaresStrategy(lsSelectionFactory)
     experiment = ot.LowDiscrepancyExperiment(
         ot.SobolSequence(), distribution, samplingSize

@@ -2,6 +2,7 @@
 Create your own distribution given its quantile function
 ========================================================
 """
+
 # %%
 
 # %%

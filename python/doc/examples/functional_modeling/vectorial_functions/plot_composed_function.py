@@ -2,6 +2,7 @@
 Create a composed function
 ==========================
 """
+
 # %%
 # In this example we are going to create a composed function :math:`f\circ g`
 #

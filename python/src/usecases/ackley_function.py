@@ -2,6 +2,7 @@
 Use case : Ackley test function
 ===============================
 """
+
 import openturns as ot
 import math as m
 

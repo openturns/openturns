@@ -2,6 +2,7 @@
 Kriging : draw the likelihood
 =============================
 """
+
 # %%
 # Abstract
 # --------

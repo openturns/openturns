@@ -302,20 +302,20 @@ GridLayout VisualTest::DrawPairsXY(const Sample & sampleX, const Sample & sample
 {
   const UnsignedInteger sampleXDimension = sampleX.getDimension();
   const UnsignedInteger sampleYDimension = sampleY.getDimension();
-  
+
   GridLayout grid(sampleYDimension, sampleXDimension);
   const Description sampleXDescription(sampleX.getDescription());
   const Description sampleYDescription(sampleY.getDescription());
-  
+
   if (sampleX.getSize() != sampleY.getSize())
     throw InvalidRangeException(HERE) << "The two samples must have the same size.";
-  
+
   for (UnsignedInteger i = 0; i < sampleYDimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < sampleXDimension; ++ j)
     {
       Cloud cloud(sampleX.getMarginal(j), sampleY.getMarginal(i));
-     
+
       Graph graph("", i == sampleYDimension - 1 ? sampleXDescription[j] : "", j == 0 ? sampleYDescription[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
@@ -739,9 +739,9 @@ Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
 
 /** Draw the sample as a cloud of points in or out of the domain */
 GridLayout VisualTest::DrawInsideOutside(const Domain & domain,
-                                         const Sample & sample,
-                                         const String & inColor,
-                                         const String & outColor)
+    const Sample & sample,
+    const String & inColor,
+    const String & outColor)
 {
   if (!(sample.getDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw sample of dimension=" << sample.getDimension() << " less than 2.";
   Sample insideSample(0, sample.getDimension()), outsideSample(0, sample.getDimension());

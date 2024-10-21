@@ -2,6 +2,7 @@
 The HSIC sensitivity indices: the Ishigami model
 ================================================
 """
+
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import ishigami_function

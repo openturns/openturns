@@ -2,6 +2,7 @@
 Bayesian calibration of hierarchical fission gas release models
 ===============================================================
 """
+
 # %%
 # Introduction
 # ------------

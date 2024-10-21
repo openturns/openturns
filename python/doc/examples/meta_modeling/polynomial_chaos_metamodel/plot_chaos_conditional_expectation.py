@@ -2,6 +2,7 @@
 Conditional expectation of a polynomial chaos expansion
 =======================================================
 """
+
 # %%
 #
 # In this example, we compute the conditional expectation of a polynomial

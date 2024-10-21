@@ -193,9 +193,9 @@ Point PlackettCopula::computePDFGradient(const Point & point) const
     return {0.0};
   if (std::abs(thetaMinus1_) < std::sqrt(SpecFunc::Precision))
     return {0.0};
-  const Scalar tmuv2 = thetaMinus1_*(u - v)*(u - v);
-  const Scalar tm2uv = thetaMinus1_*(-2.0*u*v + u + v);
-  return {0.353553390593274*(-theta_*(tm2uv + 1.0)*std::pow(0.5*thetaMinus1_*tmuv2 + tm2uv + 0.5, 1.5)*(-3.0*u*v + 1.5*u + 1.5*v + 1.5*tmuv2) + (theta_*(-2.0*u*v + u + v) + tm2uv + 1)*std::pow(0.5*thetaMinus1_*tmuv2 + tm2uv + 0.5, 2.5))/std::pow(0.5*thetaMinus1_*tmuv2 + tm2uv + 0.5, 4.0)};
+  const Scalar tmuv2 = thetaMinus1_ * (u - v) * (u - v);
+  const Scalar tm2uv = thetaMinus1_ * (-2.0 * u * v + u + v);
+  return {0.353553390593274 * (-theta_ * (tm2uv + 1.0)*std::pow(0.5 * thetaMinus1_ * tmuv2 + tm2uv + 0.5, 1.5) * (-3.0 * u * v + 1.5 * u + 1.5 * v + 1.5 * tmuv2) + (theta_ * (-2.0 * u * v + u + v) + tm2uv + 1)*std::pow(0.5 * thetaMinus1_ * tmuv2 + tm2uv + 0.5, 2.5)) / std::pow(0.5 * thetaMinus1_ * tmuv2 + tm2uv + 0.5, 4.0)};
 }
 
 /* Get the CDFGradient of the distribution */
@@ -210,9 +210,9 @@ Point PlackettCopula::computeCDFGradient(const Point & point) const
     return {0.0};
   if (std::abs(thetaMinus1_) < std::sqrt(SpecFunc::Precision))
     return {0.0};
-  const Scalar tmupv = thetaMinus1_*(u + v);
+  const Scalar tmupv = thetaMinus1_ * (u + v);
   const Scalar tmuvp1pow2 = 0.25 * std::pow(tmupv + 1.0, 2.0);
-  return {0.5*(thetaMinus1_*(1.0*theta_*u*v + 1.0*u*v*thetaMinus1_ - 0.5*(u + v)*(tmupv + 1.0) + (u + v)*std::sqrt(-theta_*u*v*thetaMinus1_ + tmuvp1pow2)) + 2.0*std::sqrt(-theta_*u*v*thetaMinus1_ + tmuvp1pow2)*(-0.5*tmupv + 1.0*std::sqrt(-theta_*u*v*thetaMinus1_ + tmuvp1pow2) - 0.5))/(thetaMinus1_*thetaMinus1_*std::sqrt(-theta_*u*v*thetaMinus1_ + tmuvp1pow2))};
+  return {0.5 * (thetaMinus1_ * (1.0 * theta_*u * v + 1.0 * u*v * thetaMinus1_ - 0.5 * (u + v) * (tmupv + 1.0) + (u + v)*std::sqrt(-theta_*u*v * thetaMinus1_ + tmuvp1pow2)) + 2.0 * std::sqrt(-theta_*u*v * thetaMinus1_ + tmuvp1pow2) * (-0.5 * tmupv + 1.0 * std::sqrt(-theta_*u*v * thetaMinus1_ + tmuvp1pow2) - 0.5)) / (thetaMinus1_*thetaMinus1_ * std::sqrt(-theta_*u*v * thetaMinus1_ + tmuvp1pow2))};
 }
 
 /* Get the quantile of the distribution */

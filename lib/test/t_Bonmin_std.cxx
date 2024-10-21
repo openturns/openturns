@@ -61,7 +61,8 @@ int main()
     const Indices varTypes = {OT::OptimizationProblemImplementation::BINARY,
                               OT::OptimizationProblemImplementation::CONTINUOUS,
                               OT::OptimizationProblemImplementation::CONTINUOUS,
-                              OT::OptimizationProblemImplementation::INTEGER};
+                              OT::OptimizationProblemImplementation::INTEGER
+                             };
 
     // Definition of OptimizationProblem
     OptimizationProblem problem(objectiveFunction);

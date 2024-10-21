@@ -2,6 +2,7 @@
 Create a process from random vectors and processes
 ==================================================
 """
+
 # %%
 #
 # The objective is to create a process defined from a random vector and a process.

@@ -2,6 +2,7 @@
 Test the design point with the Strong Maximum Test
 ==================================================
 """
+
 # %%
 # In this example we are going to validate a FORM estimation using the Strong Maximum Test.
 #

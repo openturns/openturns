@@ -12,6 +12,7 @@ Examples
 >>> view.save('graph.png', dpi=100)
 >>> view.show()
 """
+
 import openturns as ot
 import numpy as np
 import matplotlib
@@ -92,7 +93,6 @@ class RankNormalize(cls.Normalize):
 
 
 class View:
-
     """
     Create the figure.
 
@@ -213,7 +213,7 @@ class View:
         legend_kw=None,
         add_legend=True,
         square_axes=False,
-        **kwargs
+        **kwargs,
     ):
         if not (
             isinstance(graph, ot.Graph)
@@ -575,14 +575,14 @@ class View:
                     "facecolors" not in polygoncollection_kw_default
                     and "fc" not in polygoncollection_kw_default
                 ):
-                    polygoncollection_kw[
-                        "facecolors"
-                    ] = drawable.getPaletteAsNormalizedRGBA()
+                    polygoncollection_kw["facecolors"] = (
+                        drawable.getPaletteAsNormalizedRGBA()
+                    )
 
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
-                        **polygoncollection_kw
+                        **polygoncollection_kw,
                     )
                 )
 
@@ -658,9 +658,11 @@ class View:
                             "rank": "rank",
                             "linear": cls.Normalize(),
                             "log": cls.LogNorm(),
-                            "symlog": cls.SymLogNorm(linthresh=0.03)
-                            if matplotlib_version < Version("3.2.0")
-                            else cls.SymLogNorm(linthresh=0.03, base=10),
+                            "symlog": (
+                                cls.SymLogNorm(linthresh=0.03)
+                                if matplotlib_version < Version("3.2.0")
+                                else cls.SymLogNorm(linthresh=0.03, base=10)
+                            ),
                         }
                         contour_kw["norm"] = normDict[norm]
                     except KeyError:
@@ -686,8 +688,16 @@ class View:
                 # matplotlib may fail with ValueError exception "RGBA sequence should have length 3 or 4'"
                 # can either disable labels or color map to work around it
                 draw_labels = drawable.getDrawLabels()
-                if draw_labels and len(drawable.getLevels()) == 1 and contour_kw.get("cmap", "") != "" and matplotlib_version >= Version("3.6") and matplotlib_version < Version("3.7"):
-                    warnings.warn("openturns.viewer: disabling contour labels to work around matplotlib 3.6.x issue")
+                if (
+                    draw_labels
+                    and len(drawable.getLevels()) == 1
+                    and contour_kw.get("cmap", "") != ""
+                    and matplotlib_version >= Version("3.6")
+                    and matplotlib_version < Version("3.7")
+                ):
+                    warnings.warn(
+                        "openturns.viewer: disabling contour labels to work around matplotlib 3.6.x issue"
+                    )
                     draw_labels = False
 
                 if draw_labels and not contour.isFilled():
@@ -798,7 +808,7 @@ class View:
                         text,
                         horizontalalignment=horizontal,
                         verticalalignment=vertical,
-                        **text_kw
+                        **text_kw,
                     )
 
             else:

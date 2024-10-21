@@ -2,6 +2,7 @@
 Create a linear least squares model
 ===================================
 """
+
 # %%
 # In this example we are going to create a global approximation of a model
 # response based on a linear function using the :class:`~openturns.LinearLeastSquares` class.

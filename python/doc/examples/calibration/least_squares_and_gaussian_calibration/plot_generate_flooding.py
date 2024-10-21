@@ -15,6 +15,7 @@ In the next part, we will calibrate the parameters using the calibration
 algorithms.
 
 """
+
 # %%
 # Parameters to calibrate
 # -----------------------

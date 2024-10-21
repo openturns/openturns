@@ -24,7 +24,11 @@ projectionStrategy = ot.LeastSquaresStrategy(
 )
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 chaosAlgorithm = ot.FunctionalChaosAlgorithm(
-    inputSample, outputSample, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    inputSample,
+    outputSample,
+    im.inputDistribution,
+    adaptiveStrategy,
+    projectionStrategy,
 )
 chaosAlgorithm.run()
 chaosResult = chaosAlgorithm.getResult()
@@ -72,7 +76,7 @@ listOfParametricFunctions.append(conditionalExpectationGivenX1X2X3)
 listOfConditioningIndices.append([0, 1, 2])
 #
 sampleSizeTest = 10000
-absoluteTolerance = 1.e-3
+absoluteTolerance = 1.0e-3
 print("absoluteTolerance = ", absoluteTolerance)
 for index in range(len(listOfParametricFunctions)):
     conditionalExpectationParametric = listOfParametricFunctions[index]
@@ -81,12 +85,18 @@ for index in range(len(listOfParametricFunctions)):
     conditionalPCE = chaosResult.getConditionalExpectation(conditioningIndices)
     conditionalPCEFunction = conditionalPCE.getMetaModel()
     # Exact conditional expectation
-    conditionalExpectationFunctionExact = ot.ParametricFunction(conditionalExpectationParametric, [0, 1], [im.a, im.b])
+    conditionalExpectationFunctionExact = ot.ParametricFunction(
+        conditionalExpectationParametric, [0, 1], [im.a, im.b]
+    )
     marginalDistribution = im.inputDistribution.getMarginal(conditioningIndices)
     # Compute L2 error between the two functions
-    experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), marginalDistribution, sampleSizeTest, True)
+    experiment = ot.LowDiscrepancyExperiment(
+        ot.SobolSequence(), marginalDistribution, sampleSizeTest, True
+    )
     # experiment = ot.MonteCarloExperiment(marginalDistribution, sampleSizeTest)
     integration = otexp.ExperimentIntegration(experiment)
-    error = integration.computeL2Norm(conditionalPCEFunction - conditionalExpectationFunctionExact)
+    error = integration.computeL2Norm(
+        conditionalPCEFunction - conditionalExpectationFunctionExact
+    )
     print(f"PCE | X{conditioningIndices}, L2 error = ", error[0])
     assert error[0] < absoluteTolerance

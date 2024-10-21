@@ -37,14 +37,14 @@
 #include "openturns/PlatformInfo.hxx"
 
 #ifdef OPENTURNS_HAVE_BOOST
-  #if BOOST_VERSION < 107500
-    #define BOOST_ALLOW_DEPRECATED_HEADERS
-  #endif
-  #include <boost/geometry/algorithms/append.hpp>
-  #include <boost/geometry/algorithms/correct.hpp>
-  #include <boost/geometry/algorithms/intersection.hpp>
-  #include <boost/geometry/geometries/point_xy.hpp>
-  #include <boost/geometry/geometries/polygon.hpp>
+#if BOOST_VERSION < 107500
+#define BOOST_ALLOW_DEPRECATED_HEADERS
+#endif
+#include <boost/geometry/algorithms/append.hpp>
+#include <boost/geometry/algorithms/correct.hpp>
+#include <boost/geometry/algorithms/intersection.hpp>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometries/polygon.hpp>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -524,8 +524,8 @@ String Mesh::__repr__() const
 String Mesh::__str__(const String & ) const
 {
   return OSS() << getClassName() << "(dimension=" << getDimension()
-               << ", vertices=" << vertices_.getSize()
-               << ", simplices=" << simplices_.getSize() << ")";
+         << ", vertices=" << vertices_.getSize()
+         << ", simplices=" << simplices_.getSize() << ")";
 }
 
 /* Drawing method */

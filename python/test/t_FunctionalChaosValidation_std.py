@@ -163,7 +163,11 @@ projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
 inputSample = im.inputDistribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 algo = ot.FunctionalChaosAlgorithm(
-    inputSample, outputSample, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    inputSample,
+    outputSample,
+    im.inputDistribution,
+    adaptiveStrategy,
+    projectionStrategy,
 )
 algo.run()
 chaosResult = algo.getResult()
@@ -171,9 +175,7 @@ chaosResult = algo.getResult()
 #
 print("1. Analytical leave-one-out")
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = otexp.FunctionalChaosValidation(
-    chaosResult, splitterLOO
-)
+validationLOO = otexp.FunctionalChaosValidation(chaosResult, splitterLOO)
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)
 assert validationLOO.getSplitter().getN() == sampleSize
@@ -207,9 +209,7 @@ assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 #
 print("2. Analytical K-Fold")
 splitterKF = ot.KFoldSplitter(sampleSize, kFoldParameter)
-validationKFold = otexp.FunctionalChaosValidation(
-    chaosResult, splitterKF
-)
+validationKFold = otexp.FunctionalChaosValidation(chaosResult, splitterKF)
 print("KFold with K = ", kFoldParameter)
 assert validationKFold.getSplitter().getN() == sampleSize
 
@@ -253,16 +253,18 @@ projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
 inputSample = im.inputDistribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 algo = ot.FunctionalChaosAlgorithm(
-    inputSample, outputSample, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    inputSample,
+    outputSample,
+    im.inputDistribution,
+    adaptiveStrategy,
+    projectionStrategy,
 )
 algo.run()
 chaosResult = algo.getResult()
 
 # Analytical leave-one-out
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = otexp.FunctionalChaosValidation(
-    chaosResult, splitterLOO
-)
+validationLOO = otexp.FunctionalChaosValidation(chaosResult, splitterLOO)
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)
 # Naive leave-one-out

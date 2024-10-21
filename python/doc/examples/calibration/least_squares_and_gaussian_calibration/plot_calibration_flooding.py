@@ -16,6 +16,7 @@ The observations that we use in this study are simulated with the script
 :doc:`Generate flooding model observations
 </auto_calibration/least_squares_and_gaussian_calibration/plot_generate_flooding>`.
 """
+
 # %%
 # Parameters to calibrate and observations
 # ----------------------------------------

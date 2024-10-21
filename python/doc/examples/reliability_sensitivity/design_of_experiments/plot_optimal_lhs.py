@@ -2,6 +2,7 @@
 Optimize an LHS design of experiments
 =====================================
 """
+
 # %%
 # This examples show how to generate optimized LHS experiments according to the different criteria.
 

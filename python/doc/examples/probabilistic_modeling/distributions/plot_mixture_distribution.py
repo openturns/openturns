@@ -2,6 +2,7 @@
 Create a mixture of distributions
 =================================
 """
+
 # %%
 #
 # Introduction
@@ -75,17 +76,17 @@ print(distribution)
 # %%
 # We can draw the probability density function.
 graph = distribution.drawPDF()
-graph.setTitle('Mixture of Triangular, Normal, Uniform')
-graph.setXTitle('x')
-graph.setLegendPosition('')
+graph.setTitle("Mixture of Triangular, Normal, Uniform")
+graph.setXTitle("x")
+graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
 # We can draw the cumulated distribution function.
 graph = distribution.drawCDF()
-graph.setTitle('Mixture of Triangular, Normal, Uniform')
-graph.setXTitle('x')
-graph.setLegendPosition('')
+graph.setTitle("Mixture of Triangular, Normal, Uniform")
+graph.setXTitle("x")
+graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
@@ -109,18 +110,18 @@ print(distribution)
 # %%
 # We can draw the probability density function.
 graph = distribution.drawPDF()
-graph.setTitle('Mixture of Gumbel copula, Clayton copula')
-graph.setXTitle(r'$x_0$')
-graph.setYTitle(r'$x_1$')
-graph.setLegendPosition('')
+graph.setTitle("Mixture of Gumbel copula, Clayton copula")
+graph.setXTitle(r"$x_0$")
+graph.setYTitle(r"$x_1$")
+graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
 # We can draw the cumulated distribution function.
 graph = distribution.drawCDF()
-graph.setTitle('Mixture of Gumbel copula, Clayton copula')
-graph.setXTitle(r'$x_0$')
-graph.setYTitle(r'$x_1$')
+graph.setTitle("Mixture of Gumbel copula, Clayton copula")
+graph.setXTitle(r"$x_0$")
+graph.setYTitle(r"$x_1$")
 view = otv.View(graph)
 
 
@@ -157,10 +158,10 @@ sample_X = X_dist.getSample(n)
 # We build the whole histogram from the sample.
 hist_dist = ot.HistogramFactory().build(sample_X)
 g_hist = hist_dist.drawPDF()
-g_hist.setTitle(r'Empirical distribution of $X$')
-g_hist.setXTitle('x')
-g_hist.setYTitle('pdf')
-g_hist.setLegends(['histogram'])
+g_hist.setTitle(r"Empirical distribution of $X$")
+g_hist.setXTitle("x")
+g_hist.setYTitle("pdf")
+g_hist.setLegends(["histogram"])
 view = otv.View(g_hist)
 
 # %%
@@ -173,10 +174,10 @@ x0 = hist_dist.computeQuantile(w)[0]
 # We visualize it!
 hist_trunc = ot.TruncatedDistribution(hist_dist, x0, ot.TruncatedDistribution.UPPER)
 g_hist_trunc = hist_trunc.drawPDF()
-g_hist_trunc.setTitle(r'Empirical distribution of $X|X \leq $' + "%.3g" % (x0))
-g_hist_trunc.setXTitle('x')
-g_hist_trunc.setYTitle('pdf')
-g_hist_trunc.setLegends(['truncated histogram'])
+g_hist_trunc.setTitle(r"Empirical distribution of $X|X \leq $" + "%.3g" % (x0))
+g_hist_trunc.setXTitle("x")
+g_hist_trunc.setYTitle("pdf")
+g_hist_trunc.setLegends(["truncated histogram"])
 view = otv.View(g_hist_trunc)
 
 # %%
@@ -188,8 +189,8 @@ for i in range(len(sample_X)):
     if sample_X[i, 0] > x0:
         sample_X_upper.add(sample_X[i])
 
-print('Excess number = ', sample_X_upper.getSize())
-print('n(1-w) = ', int(n * (1 - w)))
+print("Excess number = ", sample_X_upper.getSize())
+print("n(1-w) = ", int(n * (1 - w)))
 
 # %%
 # Then we fit a GPD parameterized by :math:`(\sigma, \xi, x_0)`: the
@@ -206,13 +207,13 @@ mlFact = ot.MaximumLikelihoodFactory(gpd_first)
 # we fix the threshold to :math:`x_0`.
 mlFact.setKnownParameter([x0], [2])
 gpd_estimated = mlFact.build(sample_X_upper)
-print('estimated gpd = ', gpd_estimated)
+print("estimated gpd = ", gpd_estimated)
 
 g_gpd = gpd_estimated.drawPDF()
-g_gpd.setTitle(r'Distribution of $X|X \geq $' + "%.3g" % (x0))
-g_gpd.setXTitle('x')
-g_gpd.setYTitle('pdf')
-g_gpd.setLegends(['GPd'])
+g_gpd.setTitle(r"Distribution of $X|X \geq $" + "%.3g" % (x0))
+g_gpd.setXTitle("x")
+g_gpd.setYTitle("pdf")
+g_gpd.setLegends(["GPd"])
 view = otv.View(g_gpd)
 
 # %%
@@ -223,25 +224,25 @@ g_hist.add(mixt_dist.drawPDF())
 
 ord_Max = max(hist_dist.getImplementation().getHeight())
 line = ot.Curve([x0, x0], [0.0, ord_Max])
-line.setColor('red')
-line.setLineStyle('dashed')
+line.setColor("red")
+line.setLineStyle("dashed")
 g_hist.add(line)
 
 draw_ref = X_dist.drawPDF().getDrawable(0)
-draw_ref.setLineStyle('dashed')
+draw_ref.setLineStyle("dashed")
 g_hist.add(draw_ref)
 
-g_hist.setLegends(['histogram', 'mixture', '', 'exact dist'])
-g_hist.setTitle(r'Distribution of $X$: Mixture')
+g_hist.setLegends(["histogram", "mixture", "", "exact dist"])
+g_hist.setTitle(r"Distribution of $X$: Mixture")
 
 view = otv.View(g_hist)
 
 # We draw here only the mixture distribution to make the comparison easier.
 g_mixt = mixt_dist.drawPDF()
-g_mixt.setTitle(r'Mixture distribution of $X$')
-g_mixt.setXTitle('x')
-g_mixt.setYTitle('pdf')
-g_mixt.setLegendPosition('')
+g_mixt.setTitle(r"Mixture distribution of $X$")
+g_mixt.setXTitle("x")
+g_mixt.setYTitle("pdf")
+g_mixt.setLegendPosition("")
 view = otv.View(g_mixt)
 
 
@@ -257,10 +258,7 @@ view = otv.View(g_mixt)
 
 # %%
 # We define the collection of distributions and the associated weights.
-distributions = [
-    ot.Poisson(1.2),
-    ot.Geometric(0.7)
-]
+distributions = [ot.Poisson(1.2), ot.Geometric(0.7)]
 weights = [0.4, 1.0]
 
 # %%
@@ -271,17 +269,17 @@ print(distribution)
 # %%
 # We can draw the probability distribution function.
 graph = distribution.drawPDF()
-graph.setTitle('Mixture of Poisson, Geometric')
-graph.setXTitle('x')
-graph.setLegendPosition('')
+graph.setTitle("Mixture of Poisson, Geometric")
+graph.setXTitle("x")
+graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
 # We can draw the cumulated distribution function.
 graph = distribution.drawCDF()
-graph.setTitle('Mixture of Poisson, Geometric')
-graph.setXTitle('x')
-graph.setLegendPosition('')
+graph.setTitle("Mixture of Poisson, Geometric")
+graph.setXTitle("x")
+graph.setLegendPosition("")
 view = otv.View(graph)
 
 
@@ -298,10 +296,7 @@ view = otv.View(graph)
 
 # %%
 # We define the collection of distributions and the associated weights.
-distributions = [
-    ot.Normal(),
-    ot.Poisson(0.7)
-]
+distributions = [ot.Normal(), ot.Poisson(0.7)]
 weights = [0.4, 1.0]
 
 # %%
@@ -313,9 +308,9 @@ print(distribution)
 # We cannot draw the probability distribution function as it is not defined.
 # But, we can draw the cumulated distribution function.
 graph = distribution.drawCDF()
-graph.setTitle('Mixture of Normal, Poisson')
-graph.setXTitle('x')
-graph.setLegendPosition('')
+graph.setTitle("Mixture of Normal, Poisson")
+graph.setXTitle("x")
+graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%

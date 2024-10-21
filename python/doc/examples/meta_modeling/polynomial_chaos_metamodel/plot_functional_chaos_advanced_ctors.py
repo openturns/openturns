@@ -2,6 +2,7 @@
 Advanced polynomial chaos construction
 ======================================
 """
+
 # %%
 # In this example we are going to expose advanced elements in the construction of a polynomial chaos algorithm:
 #

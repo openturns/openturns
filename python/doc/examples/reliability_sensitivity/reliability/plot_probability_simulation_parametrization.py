@@ -2,6 +2,7 @@
 Specify a simulation algorithm
 ==============================
 """
+
 # %%
 # In this example we are going to parameterize a simulation algorithm:
 #

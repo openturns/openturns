@@ -124,8 +124,8 @@ int main(int, char *[])
   for (UnsignedInteger k = 0; k < functionCollection.getSize(); ++k)
   {
     const Indices indices = listOfConditioningIndices[k];
-    fullprint << "Test #" << k << " / " << functionCollection.getSize() 
-      << ", condition with respect to X" << indices << std::endl;
+    fullprint << "Test #" << k << " / " << functionCollection.getSize()
+              << ", condition with respect to X" << indices << std::endl;
     // Conditional expectation of PCE given X
     const FunctionalChaosResult ceOfPCEGivenX(result.getConditionalExpectation(indices));
     const Function functionCEGivenX(ceOfPCEGivenX.getMetaModel());

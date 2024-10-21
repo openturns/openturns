@@ -2,6 +2,7 @@
 Estimate a GEV on the Port Pirie sea-levels data
 ================================================
 """
+
 # %%
 # In this example, we illustrate various techniques of extreme value modeling applied
 # to the annual maximum sea-levels recorded in Port Pirie, north of Adelaide,

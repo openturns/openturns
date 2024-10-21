@@ -2,6 +2,7 @@
 Estimate a GPD on the daily rainfall data
 =========================================
 """
+
 # %%
 # In this example, we illustrate various techniques of extreme value modeling applied
 # to the daily rainfall accumulations in south-west England, over the period 1914-1962.

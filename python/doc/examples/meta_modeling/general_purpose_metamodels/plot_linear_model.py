@@ -7,6 +7,7 @@ We show how the :class:`~openturns.LinearModelAnalysis` class
 can be used to produce the statistical analysis of the least squares
 regression model.
 """
+
 # %%
 # Introduction
 # ~~~~~~~~~~~~

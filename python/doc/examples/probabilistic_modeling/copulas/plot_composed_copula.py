@@ -2,6 +2,7 @@
 Assemble copulas
 ================
 """
+
 # %%
 # In this example we are going to merge a collection of independent copulas into one.
 #

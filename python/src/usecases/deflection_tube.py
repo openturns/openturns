@@ -2,6 +2,7 @@
 Use case : vertical deflection of a tube
 ========================================
 """
+
 import openturns as ot
 
 

@@ -2,6 +2,7 @@
 Subset Sampling
 ===============
 """
+
 # %%
 #
 # The objective is to evaluate a probability from the Subset sampling technique.

@@ -434,7 +434,7 @@ class DistributionValidation
 {
 public:
   explicit DistributionValidation(const Distribution & distribution)
-  : distribution_(distribution) {}
+    : distribution_(distribution) {}
 
   void run() const
   {
@@ -480,39 +480,138 @@ public:
       checkGeneratingFunction();
   }
 
-  void skipPDF() { enablePDF_ = false; }
-  void skipCDF() { enableCDF_ = false; }
-  void skipComplementaryCDF() { enableComplementaryCDF_ = false; }
-  void skipDDF() { enableDDF_ = false; }
-  void skipMoments() { enableMoments_ = false; }
-  void skipCorrelation() { enableCorrelation_ = false; }
-  void skipMinimumVolumeLevelSet() { enableMinimumVolumeLevelSet_ = false; }
-  void skipMinimumVolumeInterval() { enableMinimumVolumeInterval_ = false; }
-  void skipConfidenceInterval() { enableConfidenceInterval_ = false; }
-  void skipParameters() { enableParameters_ = false; }
-  void skipProbability() { enableProbability_ = false; }
-  void skipCharacteristicFunction() { enableCharacteristicFunction_ = false; }
-  void skipGeneratingFunction() { enableGeneratingFunction_ = false; }
-  void skipGradient() { enableGradient_ = false; }
-  void skipEntropy() { enableEntropy_ = false; }
-  void setEntropyTolerance(const Scalar entropyTolerance) { entropyTolerance_ = entropyTolerance; }
-  void setCDFTolerance(const Scalar cdfTolerance) { cdfTolerance_ = cdfTolerance; }
-  void setPDFTolerance(const Scalar pdfTolerance) { pdfTolerance_ = pdfTolerance; }
-  void setDDFTolerance(const Scalar ddfTolerance) { ddfTolerance_ = ddfTolerance; }
-  void setParameterTolerance(const Scalar parameterTolerance) { parameterTolerance_ = parameterTolerance; }
-  void setQuantileTolerance(const Scalar quantileTolerance) { quantileTolerance_ = quantileTolerance; }
-  void setDomainTolerance(const Scalar domainTolerance) { domainTolerance_ = domainTolerance; }
-  void setEntropySamplingSize(const UnsignedInteger entropySamplingSize) { entropySamplingSize_ = entropySamplingSize; }
-  void setDomainSamplingSize(const UnsignedInteger domainSamplingSize) { domainSamplingSize_ = domainSamplingSize; }
-  void setMeanTolerance (const Scalar meanTolerance) { meanTolerance_ = meanTolerance; }
-  void setStandardDeviationTolerance (const Scalar standardDeviationTolerance) { standardDeviationTolerance_ = standardDeviationTolerance; }
-  void setSkewnessTolerance (const Scalar skewnessTolerance) { skewnessTolerance_ = skewnessTolerance; }
-  void setKurtosisTolerance (const Scalar kurtosisTolerance) { kurtosisTolerance_ = kurtosisTolerance; }
-  void setCorrelationTolerance (const Scalar correlationTolerance) { correlationTolerance_ = correlationTolerance; }
-  void setMomentsSamplingSize(const Scalar momentsSamplingSize) { momentsSamplingSize_ = momentsSamplingSize; }
-  void setPDFSamplingSize(const Scalar pdfSamplingSize) { pdfSamplingSize_ = pdfSamplingSize; }
-  void setCDFSamplingSize(const Scalar cdfSamplingSize) { cdfSamplingSize_ = cdfSamplingSize; }
-  void setFittingSamplingSize(const Scalar fittingSamplingSize) { fittingSamplingSize_ = fittingSamplingSize; }
+  void skipPDF()
+  {
+    enablePDF_ = false;
+  }
+  void skipCDF()
+  {
+    enableCDF_ = false;
+  }
+  void skipComplementaryCDF()
+  {
+    enableComplementaryCDF_ = false;
+  }
+  void skipDDF()
+  {
+    enableDDF_ = false;
+  }
+  void skipMoments()
+  {
+    enableMoments_ = false;
+  }
+  void skipCorrelation()
+  {
+    enableCorrelation_ = false;
+  }
+  void skipMinimumVolumeLevelSet()
+  {
+    enableMinimumVolumeLevelSet_ = false;
+  }
+  void skipMinimumVolumeInterval()
+  {
+    enableMinimumVolumeInterval_ = false;
+  }
+  void skipConfidenceInterval()
+  {
+    enableConfidenceInterval_ = false;
+  }
+  void skipParameters()
+  {
+    enableParameters_ = false;
+  }
+  void skipProbability()
+  {
+    enableProbability_ = false;
+  }
+  void skipCharacteristicFunction()
+  {
+    enableCharacteristicFunction_ = false;
+  }
+  void skipGeneratingFunction()
+  {
+    enableGeneratingFunction_ = false;
+  }
+  void skipGradient()
+  {
+    enableGradient_ = false;
+  }
+  void skipEntropy()
+  {
+    enableEntropy_ = false;
+  }
+  void setEntropyTolerance(const Scalar entropyTolerance)
+  {
+    entropyTolerance_ = entropyTolerance;
+  }
+  void setCDFTolerance(const Scalar cdfTolerance)
+  {
+    cdfTolerance_ = cdfTolerance;
+  }
+  void setPDFTolerance(const Scalar pdfTolerance)
+  {
+    pdfTolerance_ = pdfTolerance;
+  }
+  void setDDFTolerance(const Scalar ddfTolerance)
+  {
+    ddfTolerance_ = ddfTolerance;
+  }
+  void setParameterTolerance(const Scalar parameterTolerance)
+  {
+    parameterTolerance_ = parameterTolerance;
+  }
+  void setQuantileTolerance(const Scalar quantileTolerance)
+  {
+    quantileTolerance_ = quantileTolerance;
+  }
+  void setDomainTolerance(const Scalar domainTolerance)
+  {
+    domainTolerance_ = domainTolerance;
+  }
+  void setEntropySamplingSize(const UnsignedInteger entropySamplingSize)
+  {
+    entropySamplingSize_ = entropySamplingSize;
+  }
+  void setDomainSamplingSize(const UnsignedInteger domainSamplingSize)
+  {
+    domainSamplingSize_ = domainSamplingSize;
+  }
+  void setMeanTolerance (const Scalar meanTolerance)
+  {
+    meanTolerance_ = meanTolerance;
+  }
+  void setStandardDeviationTolerance (const Scalar standardDeviationTolerance)
+  {
+    standardDeviationTolerance_ = standardDeviationTolerance;
+  }
+  void setSkewnessTolerance (const Scalar skewnessTolerance)
+  {
+    skewnessTolerance_ = skewnessTolerance;
+  }
+  void setKurtosisTolerance (const Scalar kurtosisTolerance)
+  {
+    kurtosisTolerance_ = kurtosisTolerance;
+  }
+  void setCorrelationTolerance (const Scalar correlationTolerance)
+  {
+    correlationTolerance_ = correlationTolerance;
+  }
+  void setMomentsSamplingSize(const Scalar momentsSamplingSize)
+  {
+    momentsSamplingSize_ = momentsSamplingSize;
+  }
+  void setPDFSamplingSize(const Scalar pdfSamplingSize)
+  {
+    pdfSamplingSize_ = pdfSamplingSize;
+  }
+  void setCDFSamplingSize(const Scalar cdfSamplingSize)
+  {
+    cdfSamplingSize_ = cdfSamplingSize;
+  }
+  void setFittingSamplingSize(const Scalar fittingSamplingSize)
+  {
+    fittingSamplingSize_ = fittingSamplingSize;
+  }
 
 private:
 
@@ -523,7 +622,7 @@ private:
     LOGTRACE(OSS() << distribution_.__repr_markdown__());
     LOGTRACE(OSS() << distribution_._repr_html_());
   }
-  
+
   void checkGeneral() const
   {
     LOGTRACE(OSS() << "elliptical=" << distribution_.isElliptical());
@@ -535,7 +634,7 @@ private:
     Distribution standardRep(distribution_.getStandardRepresentative());
     LOGTRACE(OSS() << "Standard representative=" << standardRep);
   }
-    
+
   void checkGeneratingFunction() const
   {
     if (distribution_.isDiscrete() && (distribution_.getDimension() == 1))
@@ -582,7 +681,7 @@ private:
     if (!(distribution2 != dirac))
       throw TestFailed(OSS() << "operator!=(other) failed for " << distribution_);
   }
-  
+
   void checkPDF() const
   {
     LOGTRACE(OSS() << "checking PDF...");
@@ -690,7 +789,7 @@ private:
       }
     }
   }
-  
+
   void checkSurvival() const
   {
     if (distribution_.getDimension() == 1)
@@ -728,7 +827,7 @@ private:
       const Scalar cdf1 = distribution_.computeCDF(quantile1);
       LOGTRACE(OSS() << "quantile=" << quantile1 << " cdf=" << cdf1);
       assert_almost_equal(cdf1, 0.95, quantileTolerance_, quantileTolerance_, "quantile " + distribution_.__repr__());
-      
+
       const Point quantile2 = distribution_.computeQuantile(0.95, true);
       if (!distribution_.getRange().contains(quantile2))
         throw TestFailed(OSS() << "quantile not in range for " << distribution_);
@@ -779,7 +878,7 @@ private:
       distributionClone.setParameter(param2);
       const Scalar pdf2 = distributionClone.computePDF(x);
       pdfgrfd[j] = (pdf1 - pdf2) / (2.0 * epsilon);
-      
+
     }
     LOGTRACE(OSS() << "pdfgrad(fd)=" << pdfgrfd.__str__());
     assert_almost_equal(pdfGr, pdfgrfd, parameterTolerance_, parameterTolerance_, "wrong pdf gradient for " + distribution_.__repr__());
@@ -824,7 +923,7 @@ private:
     LOGTRACE(OSS() << "oneRealization=" << x);
     if (x.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong realization dimension for " << distribution_);
-    
+
     if (distribution_.isContinuous())
     {
       if (!distribution_.getRange().contains(x))
@@ -969,7 +1068,7 @@ private:
     if (!parameters.getSize())
       throw TestFailed(OSS() << "null parameter collection size for " << distribution_);
   }
-  
+
   void checkMinimumVolumeInterval() const
   {
     if (distribution_.isContinuous() && (distribution_.getDimension() == 1))

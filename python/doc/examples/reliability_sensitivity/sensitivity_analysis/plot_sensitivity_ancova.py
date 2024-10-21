@@ -2,6 +2,7 @@
 Use the ANCOVA indices
 ======================
 """
+
 # %%
 # In this example we are going to use the ANCOVA decomposition to estimate
 # sensitivity indices from a model with correlated inputs.

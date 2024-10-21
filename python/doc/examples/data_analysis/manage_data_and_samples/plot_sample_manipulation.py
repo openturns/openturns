@@ -2,6 +2,7 @@
 Sample manipulation
 ===================
 """
+
 # %%
 # This example will describe the main statistical functionalities on data through the :class:`~openturns.Sample` object. The Sample is an output variable of interest.
 

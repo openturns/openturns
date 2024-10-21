@@ -2,6 +2,7 @@
 Test independence
 =================
 """
+
 # %%
 import openturns as ot
 

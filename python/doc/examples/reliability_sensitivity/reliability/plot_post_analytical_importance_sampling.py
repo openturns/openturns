@@ -2,6 +2,7 @@
 Use the post-analytical importance sampling algorithm
 =====================================================
 """
+
 # %%
 # In this example we want to estimate the probability to exceed a threshold through the combination of approximation and simulation methods.
 #

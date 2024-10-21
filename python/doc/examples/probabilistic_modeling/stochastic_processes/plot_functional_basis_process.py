@@ -2,6 +2,7 @@
 Create a functional basis process
 =================================
 """
+
 # %%
 # The objective of this example is to define
 # :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic

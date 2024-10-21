@@ -2,6 +2,7 @@
 A quick start guide to graphs
 ==============================
 """
+
 # sphinx_gallery_thumbnail_number = 4
 # %%
 #

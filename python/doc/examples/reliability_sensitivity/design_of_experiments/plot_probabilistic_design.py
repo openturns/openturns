@@ -2,6 +2,7 @@
 Probabilistic design of experiments
 ===================================
 """
+
 # %%
 # In this example we are going to expose the available probabilistic design of experiments generated according to a specified distribution and a specified number of points.
 

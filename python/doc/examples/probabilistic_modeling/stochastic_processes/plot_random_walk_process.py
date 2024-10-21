@@ -2,6 +2,7 @@
 Create a random walk process
 ============================
 """
+
 # %%
 # This example details first how to create and manipulate a random walk.
 #

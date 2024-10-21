@@ -2,6 +2,7 @@
 Example of multi output Kriging on the fire satellite model
 ===========================================================
 """
+
 # %%
 # This example aims to illustrate Kriging metamodel with several outputs on the fire satellite model.
 

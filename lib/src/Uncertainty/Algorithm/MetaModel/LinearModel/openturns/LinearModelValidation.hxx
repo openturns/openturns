@@ -84,14 +84,14 @@ private:
 
   /** Splitter parameter */
   SplitterImplementation splitter_;
-  
+
   /** Compute cross-validation leave-one-out predictions */
-  static Sample ComputeMetamodelLeaveOneOutPredictions(const LinearModelResult & linearModelResult, 
-                                                       const LeaveOneOutSplitter & splitter);
+  static Sample ComputeMetamodelLeaveOneOutPredictions(const LinearModelResult & linearModelResult,
+      const LeaveOneOutSplitter & splitter);
 
   /** Compute cross-validation K-Fold predictions */
-  static Sample ComputeMetamodelKFoldPredictions(const LinearModelResult & linearModelResult, 
-                                                 const KFoldSplitter & splitter);
+  static Sample ComputeMetamodelKFoldPredictions(const LinearModelResult & linearModelResult,
+      const KFoldSplitter & splitter);
 }; /* class LinearModelValidation */
 
 END_NAMESPACE_OPENTURNS

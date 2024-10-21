@@ -2,6 +2,7 @@
 Compute leave-one-out error of a polynomial chaos expansion
 ===========================================================
 """
+
 # %%
 #
 # Introduction

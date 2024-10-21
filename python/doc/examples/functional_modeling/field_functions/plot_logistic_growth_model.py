@@ -2,6 +2,7 @@
 Logistic growth model
 =====================
 """
+
 # %%
 #
 # In this example, we use the :ref:`logistic growth model <use-case-logistic>` in order to show

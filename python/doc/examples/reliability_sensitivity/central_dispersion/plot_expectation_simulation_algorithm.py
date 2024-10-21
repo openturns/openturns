@@ -2,6 +2,7 @@
 Evaluate the mean of a random vector by simulations
 ===================================================
 """
+
 # %%
 # Abstract
 # --------

@@ -2,6 +2,7 @@
 Create an event based on a process
 ==================================
 """
+
 # %%
 # This example gives elements to create an event based on a multivariate stochastic process.
 # Let :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` be a stochastic process

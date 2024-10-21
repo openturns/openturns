@@ -2,6 +2,7 @@
 Estimate a probability with Monte-Carlo on axial stressed beam: a quick start guide to reliability
 ==================================================================================================
 """
+
 # %%
 #
 # The goal of this example is to show a simple practical example of

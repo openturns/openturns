@@ -2,6 +2,7 @@
 Use case : axial stressed beam
 ==============================
 """
+
 import openturns as ot
 
 

@@ -84,7 +84,9 @@ diffSample = outputG - outputEventSample
 assert_almost_equal(diffSample.computeMean(), [0.0])
 
 # from intersection
-paraboloid = ot.SymbolicFunction(['u1', 'u2', 'u3', 'u4', 'u5'], ['- u5 + u1^2 + u2^2 + u3^2 + u4^2'])
+paraboloid = ot.SymbolicFunction(
+    ["u1", "u2", "u3", "u4", "u5"], ["- u5 + u1^2 + u2^2 + u3^2 + u4^2"]
+)
 b = 3.5
 db = 0.02
 dim = 5

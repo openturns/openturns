@@ -272,7 +272,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       throw InvalidArgumentException(HERE) << "Error: invalid value=" << method << " for the key 'LogNormalFactory-EstimationMethod' in ResourceMap";
   }
   adaptToKnownParameter(sample, &result);
-  return result;  
+  return result;
 }
 
 LogNormal LogNormalFactory::buildAsLogNormal(const Point & parameters) const

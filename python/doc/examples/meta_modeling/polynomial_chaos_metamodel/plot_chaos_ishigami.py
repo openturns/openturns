@@ -2,6 +2,7 @@
 Create a polynomial chaos for the Ishigami function: a quick start guide to polynomial chaos
 ============================================================================================
 """
+
 # %%
 #
 # In this example, we create a polynomial chaos for the

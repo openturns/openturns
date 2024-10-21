@@ -2,6 +2,7 @@
 Estimate a GPD on the Dow Jones Index data
 ==========================================
 """
+
 # %%
 # In this example, we illustrate various techniques of extreme value modeling applied
 # to the 5-year series of daily Dow Jones Index closing prices.

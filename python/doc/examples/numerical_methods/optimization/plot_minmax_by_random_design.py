@@ -2,6 +2,7 @@
 Mix/max search and sensitivity from design
 ==========================================
 """
+
 # %%
 #
 # In this example, we are going to evaluate the minimum and maximum values of the output variable of interest from a sample

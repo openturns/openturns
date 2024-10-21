@@ -70,7 +70,7 @@ faureSample = sequence.generate(10)
 dimension = 2
 sequence = ot.FaureSequence(dimension)
 pointInsideCircle = 0
-sampleSize = 3 ** 7  # This is significant!
+sampleSize = 3**7  # This is significant!
 for i in range(sampleSize):
     faurePoint = sequence.generate()
     if faurePoint.norm() < 1.0:

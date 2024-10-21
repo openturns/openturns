@@ -3,6 +3,7 @@
 Increase the output dimension of a function
 ===========================================
 """
+
 # %%
 # Description
 # ===========

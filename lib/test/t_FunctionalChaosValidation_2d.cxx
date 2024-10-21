@@ -90,7 +90,7 @@ int main(int, char *[])
     const Point mseLOOAnalytical(validationLOO.computeMeanSquaredError());
     fullprint << "Analytical LOO MSE = " << mseLOOAnalytical << std::endl;
     assert_equal(validationLOO.getSplitter().getN(), sampleSize);
-    
+
     // Naive leave-one-out
     Sample residualsLOOSample(sampleSize, outputDimension);
     for (UnsignedInteger j = 0; j < sampleSize; ++j)
@@ -117,12 +117,12 @@ int main(int, char *[])
       mseLOOnaive[k] = residualsLOO.normSquare() / sampleSize;
     }
     fullprint << "Naive LOO MSE = " << mseLOOnaive << std::endl;
-    
+
     // Test
     const Scalar rtolLOO = 1.e-10;
     const Scalar atolLOO = 0.0;
     assert_almost_equal(mseLOOAnalytical, mseLOOnaive, rtolLOO, atolLOO);
-    
+
     // Analytical K-Fold
     KFoldSplitter splitterKF(sampleSize, kFoldParameter);
     FunctionalChaosValidation validationKFold(chaosResult, splitterKF);
@@ -160,7 +160,7 @@ int main(int, char *[])
     }
     Point mseKFoldnaive(squaredResidualsKFold.computeMean());
     fullprint << "Naive KFold MSE = " << mseKFoldnaive << std::endl;
-    
+
     // Test
     const Scalar rtolKFold = 1.e-7;
     const Scalar atolKFold = 0.0;

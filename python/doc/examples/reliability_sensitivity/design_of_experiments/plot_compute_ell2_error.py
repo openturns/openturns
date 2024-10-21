@@ -2,6 +2,7 @@
 Compute the L2 error between two functions
 ==========================================
 """
+
 # %%
 
 # %%

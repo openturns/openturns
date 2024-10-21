@@ -2,6 +2,7 @@
 Estimate Sobol' indices for a function with multivariate output
 ===============================================================
 """
+
 # %%
 #
 # In this example, we estimate the Sobol' indices of a function by sampling methods.

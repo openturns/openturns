@@ -49,7 +49,7 @@ int main(int, char *[])
 
     // Simulate data and compute analytical posterior
     Sample X(model.getSample(1));
-    Beta posterior(a + X(0,0), b + n - X(0,0), lower, upper);
+    Beta posterior(a + X(0, 0), b + n - X(0, 0), lower, upper);
 
     // Define IMH sampler
     IndependentMetropolisHastings rvmh_sampler(prior, {p}, Uniform(-1.0, 1.0), Indices(1));
@@ -80,7 +80,7 @@ int main(int, char *[])
     assert_almost_equal(stddev, {1.0}, 0.03, 0.0);
 
     // with link function
-    
+
   }
   catch (TestFailed & ex)
   {

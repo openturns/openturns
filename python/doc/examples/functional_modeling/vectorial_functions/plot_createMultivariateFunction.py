@@ -6,6 +6,7 @@ We can create multivariate functions by different methods. One of the methods is
 multivariate functions. The other one is to create a function having multivariate input using
 the tensor product of univariate functions. In this example, we present both methods.
 """
+
 # %%
 # Description
 # ===========

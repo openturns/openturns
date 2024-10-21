@@ -44,8 +44,8 @@ public:
 
   /** Parameters constructor */
   PointConditionalDistribution(const Distribution & distribution,
-                          const Indices & conditioningIndices,
-                          const Point & conditioningValues);
+                               const Indices & conditioningIndices,
+                               const Point & conditioningValues);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -115,7 +115,7 @@ public:
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const override;
-  
+
   /** Check if the distribution is continuous */
   Bool isContinuous() const override;
 

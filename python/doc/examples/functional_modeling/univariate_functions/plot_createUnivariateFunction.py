@@ -12,6 +12,7 @@ condition to create univariate functions. For example, Legendre polynomials are 
 with respect to the uniform distribution, but the monomials of the canonical polynomial basis
 are not necessarily orthogonal.
 """
+
 # %%
 # Description
 # ===========

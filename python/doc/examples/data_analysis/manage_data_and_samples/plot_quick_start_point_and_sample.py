@@ -2,6 +2,7 @@
 A quick start guide to the `Point` and `Sample` classes
 =======================================================
 """
+
 # %%
 # Abstract
 # --------

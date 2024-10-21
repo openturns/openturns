@@ -345,8 +345,10 @@ def checkPolynomialExactness(
     checkPolynomialExactness(marginalDegrees, level)
     """
     if lowerBound > upperBound:
-        raise ValueError(f"The lower bound {lowerBound} is greater than "
-                         f"the upper bound {upperBound}.")
+        raise ValueError(
+            f"The lower bound {lowerBound} is greater than "
+            f"the upper bound {upperBound}."
+        )
     dimension = len(marginalDegrees)
 
     # Set bounds

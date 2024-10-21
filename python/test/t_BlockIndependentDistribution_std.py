@@ -239,7 +239,9 @@ margins = distribution.getMarginal([0, 1])
 ott.assert_almost_equal(margins, collection[0])
 
 # check getSupport
-distribution = ot.BlockIndependentDistribution([ot.Multinomial(5, ot.Point(2, 0.25))] * 2)
+distribution = ot.BlockIndependentDistribution(
+    [ot.Multinomial(5, ot.Point(2, 0.25))] * 2
+)
 support = distribution.getSupport(ot.Interval([2] * 4, [5] * 4))
 print(support)
 assert support.getSize() == 9

@@ -2,6 +2,7 @@
 Use case : Ishigami test function
 =================================
 """
+
 import openturns as ot
 import math as m
 
@@ -132,9 +133,7 @@ class IshigamiModel:
         self.S2 = (self.a**2 / 8.0) / self.variance
         self.S3 = 0.0
         self.S12 = 0.0
-        self.S13 = (
-            self.b**2 * m.pi**8 / 2.0 * (1.0 / 9.0 - 1.0 / 25.0) / self.variance
-        )
+        self.S13 = self.b**2 * m.pi**8 / 2.0 * (1.0 / 9.0 - 1.0 / 25.0) / self.variance
         self.S23 = 0.0
         self.S123 = 0.0
         self.ST1 = self.S1 + self.S13

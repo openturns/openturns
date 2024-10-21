@@ -59,7 +59,7 @@ int main(int, char *[])
     fullprint << "outputSample=" << outputSample << std::endl;
     LinearModelAlgorithm lmAlgo(inputSample, outputSample);
     LinearModelResult result(lmAlgo.getResult());
-    
+
     // Create LOO validation
     LeaveOneOutSplitter splitterLOO(sampleSize);
     LinearModelValidation validationLOO(result, splitterLOO);
@@ -89,7 +89,7 @@ int main(int, char *[])
     }
     Scalar mseLOOnaive = residualsLOO.normSquare() / sampleSize;
     fullprint << "Naive LOO MSE = " << mseLOOnaive << std::endl;
-    
+
     // Test
     Scalar rtolLOO = 1.e-12;
     Scalar atolLOO = 0.0;
@@ -138,7 +138,7 @@ int main(int, char *[])
     }
     Scalar mseKFoldnaive(residualsKFold.normSquare() / sampleSize);
     fullprint << "Naive KFold MSE = " << mseKFoldnaive << std::endl;
-    
+
     // Test
     Scalar rtolKFold = 1.e-7;
     Scalar atolKFold = 0.0;

@@ -2,6 +2,7 @@
 Create and manipulate an ARMA process
 =====================================
 """
+
 # %%
 # In this example we first create an ARMA process and then manipulate it.
 #

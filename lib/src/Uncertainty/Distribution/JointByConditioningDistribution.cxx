@@ -50,8 +50,8 @@ JointByConditioningDistribution::JointByConditioningDistribution()
 
 /* Parameters constructor */
 JointByConditioningDistribution::JointByConditioningDistribution(const Distribution & conditionedDistribution,
-                                     const Distribution & conditioningDistribution,
-                                     const Function & linkFunction0)
+    const Distribution & conditioningDistribution,
+    const Function & linkFunction0)
   : DistributionImplementation()
 {
   if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
@@ -162,15 +162,16 @@ void JointByConditioningDistribution::setConditionedDistribution(const Distribut
     setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution_, linkFunction_);
 }
 
-namespace {
+namespace
+{
 // Class used to compute the CDF of a JointByConditioning distribution
 class JointByConditioningCDFKernel: public EvaluationImplementation
 {
 public:
   JointByConditioningCDFKernel(const Distribution & conditionedDistribution,
-		 const Distribution & conditioningDistribution,
-		 const Function & linkFunction,
-		 const Point & x)
+                               const Distribution & conditioningDistribution,
+                               const Function & linkFunction,
+                               const Point & x)
     : EvaluationImplementation()
     , conditionedDistribution_(conditionedDistribution)
     , conditioningDistribution_(conditioningDistribution)
@@ -505,7 +506,7 @@ void JointByConditioningDistribution::computeCovariance() const
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar JointByConditioningDistribution::computeConditionalPDF(const Scalar x,
-							      const Point & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -545,7 +546,7 @@ Point JointByConditioningDistribution::computeSequentialConditionalPDF(const Poi
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar JointByConditioningDistribution::computeConditionalCDF(const Scalar x,
-							      const Point & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -585,7 +586,7 @@ Point JointByConditioningDistribution::computeSequentialConditionalCDF(const Poi
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar JointByConditioningDistribution::computeConditionalQuantile(const Scalar q,
-								   const Point & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";

@@ -2,6 +2,7 @@
 Use the Adaptive Directional Stratification Algorithm
 =====================================================
 """
+
 # %%
 # In this example we estimate a failure probability with the adaptive directional simulation algorithm provided by the :class:`~openturns.AdaptiveDirectionalStratification` class.
 

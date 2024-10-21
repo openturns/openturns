@@ -175,10 +175,10 @@ GridLayout MetaModelValidation::drawValidation() const
 
 /* Compute cross-validation predictions */
 Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
-    const Sample & outputSample,
-    const Sample & residual,
-    const Point & hMatrixDiag,
-    const LeaveOneOutSplitter & splitter)
+  const Sample & outputSample,
+  const Sample & residual,
+  const Point & hMatrixDiag,
+  const LeaveOneOutSplitter & splitter)
 {
   // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
@@ -187,31 +187,31 @@ Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
   const UnsignedInteger outputDimension = outputSample.getDimension();
   if (residual.getSize() != sampleSize)
     throw InvalidArgumentException(HERE)
-      << "Error: the residual sample size is: "
-      << residual.getSize() <<
-      " but the output sample size is: " << sampleSize;
+        << "Error: the residual sample size is: "
+        << residual.getSize() <<
+        " but the output sample size is: " << sampleSize;
   if (residual.getDimension() != outputSample.getDimension())
     throw InvalidArgumentException(HERE)
-      << "Error: the output sample dimension is: "
-      << outputSample.getDimension() 
-      << " which is different from the residual output dimension: "
-      << residual.getDimension();
+        << "Error: the output sample dimension is: "
+        << outputSample.getDimension()
+        << " which is different from the residual output dimension: "
+        << residual.getDimension();
   if (splitter.getN() != sampleSize)
     throw InvalidArgumentException(HERE)
-      << "Error: the splitter size is: " << splitter.getSize() << 
-      " but the output sample size is " << sampleSize;
+        << "Error: the splitter size is: " << splitter.getSize() <<
+        " but the output sample size is " << sampleSize;
   if (hMatrixDiag.getDimension() != sampleSize)
     throw InvalidArgumentException(HERE)
-      << "Error: the H matrix diagional dimension is: " << hMatrixDiag.getDimension() << 
-      " but the output sample size is " << sampleSize;
+        << "Error: the H matrix diagional dimension is: " << hMatrixDiag.getDimension() <<
+        " but the output sample size is " << sampleSize;
   Sample cvPredictions(sampleSize, outputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++j)
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
       if (hMatrixDiag[i] == 1.0)
-        throw InvalidArgumentException(HERE) 
-          << "The leverage of observation #" << i
-          << " is equal to 1. Cannot divide by zero.";
+        throw InvalidArgumentException(HERE)
+            << "The leverage of observation #" << i
+            << " is equal to 1. Cannot divide by zero.";
       cvPredictions(i, j) = outputSample(i, j) - residual(i, j) / (1.0 - hMatrixDiag[i]);
     } // For observations indices
   return cvPredictions;
@@ -219,10 +219,10 @@ Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
 
 /* Compute cross-validation predictions */
 Sample MetaModelValidation::ComputeMetamodelKFoldPredictions(
-    const Sample & outputSample,
-    const Sample & residual,
-    const SymmetricMatrix & projectionMatrix, 
-    const KFoldSplitter & splitter)
+  const Sample & outputSample,
+  const Sample & residual,
+  const SymmetricMatrix & projectionMatrix,
+  const KFoldSplitter & splitter)
 {
   // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
@@ -231,23 +231,23 @@ Sample MetaModelValidation::ComputeMetamodelKFoldPredictions(
   const UnsignedInteger outputDimension = outputSample.getDimension();
   if (residual.getSize() != sampleSize)
     throw InvalidArgumentException(HERE)
-      << "Error: the residual sample size is: "
-      << residual.getDimension() << 
-      " but the output sample size is: " << sampleSize;
+        << "Error: the residual sample size is: "
+        << residual.getDimension() <<
+        " but the output sample size is: " << sampleSize;
   if (residual.getDimension() != outputSample.getDimension())
     throw InvalidArgumentException(HERE)
-      << "Error: the output sample dimension is: "
-      << outputSample.getDimension() 
-      << " which is different from the residual output dimension: "
-      << residual.getDimension();
+        << "Error: the output sample dimension is: "
+        << outputSample.getDimension()
+        << " which is different from the residual output dimension: "
+        << residual.getDimension();
   if (splitter.getN() != sampleSize)
     throw InvalidArgumentException(HERE)
-      << "Error: the splitter size is: " << splitter.getSize() << 
-      " but the output sample size is " << sampleSize;
+        << "Error: the splitter size is: " << splitter.getSize() <<
+        " but the output sample size is " << sampleSize;
   if (projectionMatrix.getDimension() != sampleSize)
     throw InvalidArgumentException(HERE)
-      << "Error: the H matrix diagional dimension is: " << projectionMatrix.getDimension() << 
-      " but the output sample size is " << sampleSize;
+        << "Error: the H matrix diagional dimension is: " << projectionMatrix.getDimension() <<
+        " but the output sample size is " << sampleSize;
   Sample cvPredictions(sampleSize, outputDimension);
   UnsignedInteger kParameter = splitter.getSize();
   Indices indicesTest;

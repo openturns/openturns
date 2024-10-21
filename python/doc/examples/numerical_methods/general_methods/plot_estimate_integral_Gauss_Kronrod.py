@@ -132,8 +132,7 @@ ai = ot.Point()
 bi = ot.Point()
 ei = ot.Point()
 fi = ot.Sample()
-computed = algo.integrate(
-    integrand, lowerBound, upperBound, error, ai, bi, fi, ei)
+computed = algo.integrate(integrand, lowerBound, upperBound, error, ai, bi, fi, ei)
 computed[0]
 
 # %%
@@ -148,13 +147,13 @@ error[0]
 #
 # are approximated.
 # The outputs :math:`a_i` and :math:`b_i` contain the subintervals used in the algorithm.
-print('ai:', ai)
-print('bi:', bi)
+print("ai:", ai)
+print("bi:", bi)
 
 # %%s
 # The corresponding value of the integrals are in :math:`f_i`.
 # Since :math:`f` can be a multidimensional point, this is a :class:`~openturns.Sample`, which dimension corresponds to the output dimension of the function :math:`f`.
-print('fi:', fi)
+print("fi:", fi)
 
 # %%
 # The sum of these sub-integrals is the value of the integral:
@@ -163,7 +162,7 @@ sum(fi)[0]
 # %%
 # The estimated error of each integral is in :math:`e_i`:
 number_of_intervals = ai.getDimension()
-print('number of intervals:', number_of_intervals)
+print("number of intervals:", number_of_intervals)
 for i in range(number_of_intervals):
     print(
         f"Integral #{i} : [{ai[i]:.4f}, {bi[i]:.4f}] is {fi[i, 0]:.4f} with error {ei[i]:.3e}"

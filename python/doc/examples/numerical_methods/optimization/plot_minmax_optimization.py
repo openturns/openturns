@@ -2,6 +2,7 @@
 Mix/max search using optimization
 =================================
 """
+
 # %%
 #
 # In this example we are going to evaluate the min and max values of the output variable of interest in a domain using an optimization algorithm.

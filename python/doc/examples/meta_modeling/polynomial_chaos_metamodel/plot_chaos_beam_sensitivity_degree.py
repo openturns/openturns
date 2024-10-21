@@ -2,6 +2,7 @@
 Polynomial chaos is sensitive to the degree
 ===========================================
 """
+
 # %%
 #
 # Introduction
@@ -129,6 +130,7 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     sparsityRate = 1.0 - nbcoeffs / basisSize
     return sparsityRate
 
+
 # %%
 # The following functions compute and plot the :math:`R^2` predictivity coefficients within the validation plot.
 
@@ -241,6 +243,7 @@ def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
 
 # %%
 # The following function uses a boxplot to see the distribution of the :math:`R^2` coefficients.
+
 
 # %%
 def plotR2Boxplots(r2Sample, N):

@@ -2,6 +2,7 @@
 Create the ordinal sum of copulas
 =================================
 """
+
 # %%
 # In this example we are going to create an ordinal sum of copulas.
 

@@ -2,6 +2,7 @@
 Estimate a conditional quantile
 ===============================
 """
+
 # sphinx_gallery_thumbnail_number = 8
 # %%
 # From a multivariate data sample, we estimate a distribution with kernel smoothing.

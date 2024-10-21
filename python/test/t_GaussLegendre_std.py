@@ -110,4 +110,6 @@ experiment = ot.Tuples(maximumMarginalDegrees)
 marginalDegreesList = experiment.generate()
 for i in range(marginalDegreesList.getSize()):
     marginalDegrees = marginalDegreesList[i]
-    checkPolynomialExactness(marginalDegrees, marginalSizes, rtol=1.e-14, verbose=False)
+    checkPolynomialExactness(
+        marginalDegrees, marginalSizes, rtol=1.0e-14, verbose=False
+    )

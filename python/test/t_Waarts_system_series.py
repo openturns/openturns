@@ -22,9 +22,9 @@ inputFunction[0] = "u1"
 inputFunction[1] = "u2"
 
 formulas = ot.Description(1)
-formulas[
-    0
-] = "min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))"
+formulas[0] = (
+    "min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))"
+)
 
 limitState = ot.SymbolicFunction(inputFunction, formulas)
 limitState.setGradient(

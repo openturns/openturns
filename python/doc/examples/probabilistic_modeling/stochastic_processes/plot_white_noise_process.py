@@ -2,6 +2,7 @@
 Create a white noise process
 ============================
 """
+
 # %%
 # This example details how to create and manipulate a white noise.
 # A second order white noise

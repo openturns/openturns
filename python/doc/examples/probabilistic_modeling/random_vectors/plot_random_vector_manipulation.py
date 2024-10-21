@@ -2,6 +2,7 @@
 Create a random vector
 ======================
 """
+
 # %%
 # The :class:`~openturns.RandomVector` object represents the concept of random variable.
 #

@@ -2,6 +2,7 @@
 Combinatorial generators
 ========================
 """
+
 # %%
 # In this example we are going to expose the various design of experiments that allow one to generate all the integer collections satisfying a given combinatorial constraint:
 #

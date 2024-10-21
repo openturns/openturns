@@ -2,6 +2,7 @@
 Create an aggregated function
 =============================
 """
+
 # %%
 # In this example we are going to build a function that stacks all the outputs from several functions
 #

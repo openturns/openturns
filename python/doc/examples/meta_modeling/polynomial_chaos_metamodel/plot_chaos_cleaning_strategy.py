@@ -2,6 +2,7 @@
 Create a sparse chaos by integration
 ====================================
 """
+
 # %%
 #
 # The goal of this example is to show how to create a sparse polynomial chaos
@@ -482,6 +483,7 @@ printCoefficientsTable(result, threshold=1.0e-14)
 # `CleaningStrategy`. It takes into account the number of considered coefficients
 # in the expansion, the number of significant coefficients to keep and the
 # relative factor and returns the :math:`R^2` score.
+
 
 # %%
 def compute_cleaning_PCE(

@@ -2,6 +2,7 @@
 Create a parametric spectral density function
 =============================================
 """
+
 # %%
 # This example illustrates how the User can create a density spectral
 # function from parametric models.

@@ -215,11 +215,11 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
 /* Compute covariance matrix conditionally to observations*/
 CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(const Point & point) const
 {
- const UnsignedInteger inputDimension = point.getDimension();
+  const UnsignedInteger inputDimension = point.getDimension();
   const CovarianceModel covarianceModel(result_.getCovarianceModel());
   if (inputDimension != covarianceModel.getInputDimension())
     throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
-   const Sample pointAsSample(1, point);
+  const Sample pointAsSample(1, point);
   return getConditionalCovariance(pointAsSample);
 }
 

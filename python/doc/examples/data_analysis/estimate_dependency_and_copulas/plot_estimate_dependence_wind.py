@@ -2,6 +2,7 @@
 Estimate tail dependence coefficients on the wind data
 ======================================================
 """
+
 # %%
 # In this example we estimate the tail dependence coefficient of a bivariate sample
 # applied to the corresponding annual maximum wind speeds over the period 1944-1983

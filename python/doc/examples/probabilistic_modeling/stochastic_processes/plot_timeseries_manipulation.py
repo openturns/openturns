@@ -2,6 +2,7 @@
 Manipulate a time series
 ========================
 """
+
 # %%
 # The objective here is to create and manipulate a time series.
 # A time series is a particular field where the mesh :math:`\mathcal{M}` 1-d and regular, eg a time grid :math:`(t_0, \dots, t_{N-1})`.

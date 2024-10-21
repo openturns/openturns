@@ -258,7 +258,7 @@ Point AliMikhailHaqCopula::computePDFGradient(const Point & point) const
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
     return {0.0};
   else
-    return {(3*(u - 1.0)*(v - 1.0)*(theta_*(theta_*(u - 1.0)*(v - 1.0) + (u + 1.0)*(v + 1.0) - 3.0) + 1.0) + (theta_*(u - 1.0)*(v - 1.0) - 1.0)*(-2*theta_*(u - 1.0)*(v - 1.0) - (u + 1.0)*(v + 1.0) + 3.0))/std::pow(theta_*(u - 1.0)*(v - 1.0) - 1.0, 4.0)};
+    return {(3 * (u - 1.0) * (v - 1.0) * (theta_ * (theta_ * (u - 1.0) * (v - 1.0) + (u + 1.0) * (v + 1.0) - 3.0) + 1.0) + (theta_ * (u - 1.0) * (v - 1.0) - 1.0) * (-2 * theta_ * (u - 1.0) * (v - 1.0) - (u + 1.0) * (v + 1.0) + 3.0)) / std::pow(theta_ * (u - 1.0) * (v - 1.0) - 1.0, 4.0)};
 }
 
 /* Get the CDFGradient of the distribution */

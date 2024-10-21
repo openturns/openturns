@@ -2,6 +2,7 @@
 Randomize the lines of a Sample
 ===============================
 """
+
 # %%
 import openturns as ot
 

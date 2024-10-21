@@ -2,6 +2,7 @@
 Use case : logistic model
 =========================
 """
+
 import openturns as ot
 import math
 

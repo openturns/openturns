@@ -2,6 +2,7 @@
 Export a field to VTK
 =====================
 """
+
 # %%
 # The objective here is to create a field and export it as a VTK file.
 # A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \in \mathbb{R}^n`

@@ -2,6 +2,7 @@
 Estimate a multivariate ARMA process
 ====================================
 """
+
 # %%
 # The objective of the Use Case is to estimate a multivariate ARMA model
 # from a stationary time series using the maximum likelihood estimator

@@ -89,7 +89,9 @@ for factory in factories:
                 combinations = ot.Combinations(k, n).generate()
                 for combination in combinations:
                     indices = [int(x) for x in combination]
-                    factory.setKnownParameter([refParameter[i] for i in indices], indices)
+                    factory.setKnownParameter(
+                        [refParameter[i] for i in indices], indices
+                    )
                     res = factory.build(sample)
                     resParameter = res.getParameter()
                     ott.assert_almost_equal(resParameter, refParameter, eps, eps)

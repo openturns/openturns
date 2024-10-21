@@ -2,6 +2,7 @@
 Sort a sample
 =============
 """
+
 # %%
 # In this example we present useful methods of the :class:`~openturns.Sample` object such as marginals extraction and various sorting strategies.
 

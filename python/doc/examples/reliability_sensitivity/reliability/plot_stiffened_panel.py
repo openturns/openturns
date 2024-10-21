@@ -2,6 +2,7 @@
 Estimate a buckling probability
 ===============================
 """
+
 # %%
 #
 # In this example, we estimate the probability that the output of a function

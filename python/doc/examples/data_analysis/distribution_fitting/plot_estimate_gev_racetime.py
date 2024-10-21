@@ -2,6 +2,7 @@
 Estimate a GEV on race times data
 =================================
 """
+
 # %%
 # In this example, we illustrate various techniques of extreme value modeling applied
 # to the fatest annual race times for the women's 1500 meter event over the period 1975-1992.

@@ -2,6 +2,7 @@
 Compare unconditional and conditional histograms
 ================================================
 """
+
 # %%
 # In this example, we compare unconditional and conditional histograms for a
 # simulation.

@@ -84,7 +84,7 @@ int main(int, char *[])
     const Point mseLOOAnalytical(validationLOO.computeMeanSquaredError());
     fullprint << "Analytical LOO MSE = " << mseLOOAnalytical << std::endl;
     assert_equal(validationLOO.getSplitter().getN(), sampleSize);
-    
+
     // Naive leave-one-out
     Point residualsLOO(sampleSize);
     for (UnsignedInteger j = 0; j < sampleSize; ++j)
@@ -107,7 +107,7 @@ int main(int, char *[])
     Point mseLOOnaive(1);
     mseLOOnaive[0] = residualsLOO.normSquare() / sampleSize;
     fullprint << "Naive LOO MSE = " << mseLOOnaive << std::endl;
-    
+
     // Test
     Scalar rtolLOO = 1.e-8;
     Scalar atolLOO = 0.0;
@@ -140,7 +140,7 @@ int main(int, char *[])
     // Compute mean squared error
     const Point mseKFoldAnalytical(validationKFold.computeMeanSquaredError());
     fullprint << "Analytical KFold MSE = " << mseKFoldAnalytical << std::endl;
-    
+
     // Naive KFold
     Point residualsKFold(sampleSize);
     KFoldSplitter splitter(sampleSize, kFoldParameter);
@@ -165,12 +165,12 @@ int main(int, char *[])
     Point mseKFoldnaive(1);
     mseKFoldnaive[0] = residualsKFold.normSquare() / sampleSize;
     fullprint << "Naive KFold MSE = " << mseKFoldnaive << std::endl;
-    
+
     // Test
     Scalar rtolKFold = 1.e-5;
     Scalar atolKFold = 0.0;
     assert_almost_equal(mseKFoldAnalytical, mseKFoldnaive, rtolKFold, atolKFold);
-    
+
     // Check K-Fold R2
     const Point r2ScoreKFold(validationKFold.computeR2Score());
     fullprint << "Analytical K-Fold R2 score = " << r2ScoreKFold << std::endl;

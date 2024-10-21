@@ -2,6 +2,7 @@
 Kriging : quick-start
 =====================
 """
+
 # %%
 # Abstract
 # --------

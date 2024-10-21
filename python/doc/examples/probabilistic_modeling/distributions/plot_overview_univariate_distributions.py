@@ -2,6 +2,7 @@
 Overview of univariate distribution management
 ==============================================
 """
+
 # %%
 # Abstract
 # --------

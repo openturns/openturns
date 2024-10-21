@@ -118,7 +118,7 @@ nb_points = 101
 graph_g = g.draw([0.0, -10.0], [20.0, 10.0], [nb_points] * 2)
 draw_boundary = graph_g.getDrawable(0)
 draw_boundary.setLevels([s])
-draw_boundary.setLegend(r'Boundary $\partial \mathcal{D}$')
+draw_boundary.setLegend(r"Boundary $\partial \mathcal{D}$")
 graph_g.setDrawables([draw_boundary])
 
 # %%
@@ -132,7 +132,7 @@ graph_g.add(text_graph)
 graph_g.setTitle("Failure domain in the physical space")
 graph_g.setXTitle(r"$x_1$")
 graph_g.setYTitle(r"$x_2$")
-graph_g.setLegendPosition('topright')
+graph_g.setLegendPosition("topright")
 
 view = otv.View(graph_g, square_axes=True)
 
@@ -284,7 +284,7 @@ graph_standard_space.setDrawables([draw_boundary_stand_space])
 
 graph_standard_space.setXTitle(r"$z_1$")
 graph_standard_space.setYTitle(r"$z_2$")
-graph_standard_space.setTitle('Failure domain in the standard space')
+graph_standard_space.setTitle("Failure domain in the standard space")
 
 # %%
 # We add some annotations
@@ -358,7 +358,7 @@ cc = ot.Curve(
 cc.setLineStyle("dashed")
 cc.setColor("black")
 graph_standard_space.add(cc)
-graph_standard_space.setLegendPosition('topright')
+graph_standard_space.setLegendPosition("topright")
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
@@ -397,10 +397,10 @@ graph_tangent = linear_proj.getMarginal(0).draw([0.0, 0.0], [7.0, 7.0], [101] * 
 draw_tangent = graph_tangent.getDrawable(0)
 draw_tangent.setLevels([0])
 draw_tangent.setLegend(r"$\mathcal{\Pi}_{z^*}$ (FORM)")
-draw_tangent.setColor('green')
-draw_tangent.setLineStyle('dashed')
+draw_tangent.setColor("green")
+draw_tangent.setLineStyle("dashed")
 graph_standard_space.add(draw_tangent)
-graph_standard_space.setLegendPosition('topright')
+graph_standard_space.setLegendPosition("topright")
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
@@ -475,8 +475,14 @@ z1_star = [design_point_standard_space[0]]
 dz1_star = failure_boundary_standard_space.getGradient().gradient(z1_star)
 d2z1_star = failure_boundary_standard_space.getHessian().hessian(z1_star)
 print("first component of the design point = ", z1_star[0])
-print("second component of the design point = ", failure_boundary_standard_space(z1_star)[0])
-print("value of the hessian of the failure boundary at this abscissa= ", d2z1_star[0, 0, 0])
+print(
+    "second component of the design point = ",
+    failure_boundary_standard_space(z1_star)[0],
+)
+print(
+    "value of the hessian of the failure boundary at this abscissa= ",
+    d2z1_star[0, 0, 0],
+)
 
 
 # %%
@@ -498,7 +504,7 @@ curve_parabola = ot.Curve(z, parabola, r"$\mathcal{P}_{z^*}$ (SORM)")
 curve_parabola.setLineStyle("dashed")
 curve_parabola.setColor("orange")
 graph_standard_space.add(curve_parabola)
-graph_standard_space.setLegendPosition('topright')
+graph_standard_space.setLegendPosition("topright")
 view = otv.View(graph_standard_space)
 
 

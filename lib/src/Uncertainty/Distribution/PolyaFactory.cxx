@@ -51,7 +51,7 @@ struct PolyaFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
   PolyaFactoryParameterConstraint(const Sample & sample,
-      const Scalar mean):
+                                  const Scalar mean):
     sample_(sample),
     mean_(mean)
   {

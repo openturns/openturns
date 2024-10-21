@@ -2,6 +2,7 @@
 Create a quadratic function
 ===========================
 """
+
 # %%
 # In this example we are going to create a quadratic function of the form
 #

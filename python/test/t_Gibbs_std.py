@@ -53,7 +53,9 @@ gibbs = ot.Gibbs([rwmh_sampler, rv_sampler])
 
 # Generate posterior distribution sample
 sampleSize = 10000
-xSample = gibbs.getSample(sampleSize + rwmh_sampler.getBurnIn())[rwmh_sampler.getBurnIn():]
+xSample = gibbs.getSample(sampleSize + rwmh_sampler.getBurnIn())[
+    rwmh_sampler.getBurnIn() :
+]
 
 # Compare empirical to theoretical moments
 

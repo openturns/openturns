@@ -2,6 +2,7 @@
 Use a randomized QMC algorithm
 ==============================
 """
+
 # %%
 # In this example we are going to estimate a failure probability on the :ref:`cantilever beam <use-case-cantilever-beam>`.
 

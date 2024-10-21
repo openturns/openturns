@@ -2,6 +2,7 @@
 Advanced Kriging
 ================
 """
+
 # %%
 #
 # In this example we will build a metamodel using Gaussian process regression of the :math:`x\sin(x)` function.

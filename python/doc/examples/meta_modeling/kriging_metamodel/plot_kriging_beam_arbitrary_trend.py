@@ -2,6 +2,7 @@
 Kriging: choose an arbitrary trend
 ==================================
 """
+
 # %%
 # The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel.
 # In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_chose_trend`

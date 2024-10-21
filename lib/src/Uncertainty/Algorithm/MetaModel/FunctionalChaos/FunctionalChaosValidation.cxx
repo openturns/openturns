@@ -47,42 +47,42 @@ FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult
 
 /* LOO constructor */
 FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult & functionalChaosResult,
-                                                     const LeaveOneOutSplitter & splitter)
+    const LeaveOneOutSplitter & splitter)
   : MetaModelValidation(functionalChaosResult.getOutputSample()
-      , ComputeMetamodelLeaveOneOutPredictions(functionalChaosResult, splitter))
+                        , ComputeMetamodelLeaveOneOutPredictions(functionalChaosResult, splitter))
   , functionalChaosResult_(functionalChaosResult)
   , splitter_ (splitter)
 {
   const UnsignedInteger sampleSize = functionalChaosResult_.getSampleResiduals().getSize();
   if ((splitter_.getN() != sampleSize))
-    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN() 
-        << " but the sample size is " << sampleSize;
+    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN()
+                                         << " but the sample size is " << sampleSize;
   if (!ResourceMap::GetAsBool("FunctionalChaosValidation-ModelSelection") && \
-    functionalChaosResult_.involvesModelSelection())
+      functionalChaosResult_.involvesModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
-      << "with a polynomial chaos expansion involving model selection";
+                                         << "with a polynomial chaos expansion involving model selection";
   if (!functionalChaosResult.isLeastSquares())
-    throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from least squares.";  
+    throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from least squares.";
 }
 
 /* K-Fold constructor */
 FunctionalChaosValidation::FunctionalChaosValidation(const FunctionalChaosResult & functionalChaosResult,
-                                                     const KFoldSplitter & splitter)
+    const KFoldSplitter & splitter)
   : MetaModelValidation(functionalChaosResult.getOutputSample()
-      , ComputeMetamodelKFoldPredictions(functionalChaosResult, splitter))
+                        , ComputeMetamodelKFoldPredictions(functionalChaosResult, splitter))
   , functionalChaosResult_(functionalChaosResult)
   , splitter_ (splitter)
 {
   const UnsignedInteger sampleSize = functionalChaosResult_.getSampleResiduals().getSize();
   if ((splitter_.getN() != sampleSize))
-    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN() 
-        << " but the sample size is " << sampleSize;
+    throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN()
+                                         << " but the sample size is " << sampleSize;
   if (!ResourceMap::GetAsBool("FunctionalChaosValidation-ModelSelection") && \
-    functionalChaosResult_.involvesModelSelection())
+      functionalChaosResult_.involvesModelSelection())
     throw InvalidArgumentException(HERE) << "Cannot perform fast cross-validation "
-      << "with a polynomial chaos expansion involving model selection";
+                                         << "with a polynomial chaos expansion involving model selection";
   if (!functionalChaosResult.isLeastSquares())
-    throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from least squares.";  
+    throw InvalidArgumentException(HERE) << "Error: the polynomial chaos expansion was not computed from least squares.";
 }
 
 /* Virtual constructor */
@@ -115,8 +115,8 @@ SplitterImplementation FunctionalChaosValidation::getSplitter() const
 
 /* Compute cross-validation Leave-One-Out metamodel predictions */
 Sample FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions(
-    const FunctionalChaosResult & functionalChaosResult,
-    const LeaveOneOutSplitter & splitter)
+  const FunctionalChaosResult & functionalChaosResult,
+  const LeaveOneOutSplitter & splitter)
 {
   const Sample outputSample(functionalChaosResult.getOutputSample());
   const Sample residualsSample(functionalChaosResult.getSampleResiduals());
@@ -134,14 +134,14 @@ Sample FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions(
   leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
   const Point hMatrixDiag = leastSquaresMethod.getHDiag();
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
-    outputSample, residualsSample, hMatrixDiag, splitter));
+                               outputSample, residualsSample, hMatrixDiag, splitter));
   return cvPredictions;
 }
 
 /* Compute cross-validation K-Fold metamodel predictions */
 Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
-    const FunctionalChaosResult & functionalChaosResult,
-    const KFoldSplitter & splitter)
+  const FunctionalChaosResult & functionalChaosResult,
+  const KFoldSplitter & splitter)
 {
   const Sample outputSample(functionalChaosResult.getOutputSample());
   const Sample residualsSample(functionalChaosResult.getSampleResiduals());
@@ -159,7 +159,7 @@ Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
   leastSquaresMethod.update(Indices(0), allIndices, Indices(0));
   const SymmetricMatrix projectionMatrix(leastSquaresMethod.getH());
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelKFoldPredictions(
-    outputSample, residualsSample, projectionMatrix, splitter));
+                               outputSample, residualsSample, projectionMatrix, splitter));
   return cvPredictions;
 }
 

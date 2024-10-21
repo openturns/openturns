@@ -2,6 +2,7 @@
 Fit a parametric distribution
 =============================
 """
+
 # %%
 
 

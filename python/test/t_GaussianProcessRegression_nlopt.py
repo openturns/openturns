@@ -79,7 +79,9 @@ def test_two_inputs_one_output():
     # 4) GPF algorithm
     fit_algo = GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
-    fit_algo.setOptimizationBounds(ot.Interval(inputSample.getMin(), inputSample.getMax()))
+    fit_algo.setOptimizationBounds(
+        ot.Interval(inputSample.getMin(), inputSample.getMax())
+    )
     fit_algo.setOptimizationAlgorithm(ot.NLopt("LN_NELDERMEAD"))
     fit_algo.run()
 

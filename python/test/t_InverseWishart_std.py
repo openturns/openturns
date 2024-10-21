@@ -46,7 +46,6 @@ def loadTestsFromTestCase(cls):
 
 
 class TestInverseWishartMethods(ut.TestCase):
-
     """Test case for the class InverseWishart"""
 
     @classmethod

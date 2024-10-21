@@ -252,22 +252,22 @@ Sample KPermutationsDistribution::getSupport(const Interval & interval) const
   const Interval inter(interval.intersect(range_));
   // Common case: get the full support
   if (inter == range_)
-    {
-      Sample result(size, dimension_);
-      for (UnsignedInteger i = 0; i < size; ++i)
-        for (UnsignedInteger j = 0; j < dimension_; ++j)
-            result(i, j) = intResult(i, j);
-      return result;
-    }
+  {
+    Sample result(size, dimension_);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        result(i, j) = intResult(i, j);
+    return result;
+  }
   Sample result(0, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      Point point(dimension_);
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        point[j] = intResult(i, j);
-      if (inter.contains(point))
-        result.add(point);
-    }
+  {
+    Point point(dimension_);
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      point[j] = intResult(i, j);
+    if (inter.contains(point))
+      result.add(point);
+  }
   return result;
 }
 
