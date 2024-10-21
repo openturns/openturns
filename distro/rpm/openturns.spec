@@ -11,12 +11,10 @@
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
 CXXFLAGS="${CXXFLAGS:-%optflags} -fno-lto" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
-%__cmake \\\
--DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \\\
--DBUILD_SHARED_LIBS:BOOL=ON
+%__cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.23rc1
+Version:        1.24rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -31,6 +29,7 @@ BuildRequires:  hdf5-devel
 %endif
 BuildRequires:  boost-devel
 %if 0%{?suse_version}
+BuildRequires:  gcc11-c++
 BuildRequires:  mpc-devel
 BuildRequires:  cblas-devel
 %else
@@ -86,6 +85,7 @@ Requires:       %{name}-libs = %{version}
 %if ! 0%{?centos_version}
 Requires:       python3-dill
 Requires:       python3-psutil
+Requires:       python3-packaging
 %endif
 
 %description -n python3-%{name}
@@ -95,13 +95,13 @@ Python textual interface to OpenTURNS uncertainty library
 %setup -q
 
 %build
+%if 0%{?suse_version}
+export CXX=/usr/bin/g++-11
+%endif
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
        -DSWIG_COMPILE_FLAGS="-O1" \
-%if 0%{?suse_version}
-       -DUSE_CXX17=OFF \
-%endif
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
 make %{?_smp_mflags} OT
 make
@@ -138,6 +138,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} OMP_NUM_THREADS=1 OPENTURNS_NUM_THREADS=1
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Wed Oct 23 2024 Julien Schueller <schueller at phimeca dot com> 1.24-1
+- New upstream release
+
 * Thu May 02 2024 Julien Schueller <schueller at phimeca dot com> 1.23-1
 - New upstream release
 
