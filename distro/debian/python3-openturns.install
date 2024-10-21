@@ -1,5 +1,5 @@
-usr/lib/python3*/*-packages/openturns/*.py
-usr/lib/python3*/*-packages/openturns/*.so
-usr/lib/python3*/*-packages/openturns-*.dist-info/*
-usr/lib/python3*/*-packages/openturns/usecases/*.py
-usr/lib/python3*/*-packages/openturns/usecases/*.csv
+usr/lib/python3/dist-packages/openturns/*.py
+usr/lib/python3/dist-packages/openturns/*.so
+usr/lib/python3/dist-packages/openturns-*.dist-info/*
+usr/lib/python3/dist-packages/openturns/usecases/*.py
+usr/lib/python3/dist-packages/openturns/usecases/*.csv

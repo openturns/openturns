@@ -38,7 +38,8 @@ override_dh_auto_configure:
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-            -DCMAKE_INSTALL_LIBDIR:PATH="/usr/lib/$(DEB_HOST_MULTIARCH)" \
+            -DCMAKE_INSTALL_LIBDIR:PATH=lib/$(DEB_HOST_MULTIARCH) \
+            -DOPENTURNS_PYTHON_MODULE_PATH=lib/python3/dist-packages \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
 	        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
             -DSWIG_COMPILE_FLAGS:STRING='-O1'
