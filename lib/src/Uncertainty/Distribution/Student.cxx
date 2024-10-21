@@ -783,7 +783,7 @@ Scalar Student::computeScalarQuantile(const Scalar prob,
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  if (tail ? (prob >= 1.0 - SpecFunc::ScalarEpsilon) : (prob <= SpecFunc::ScalarEpsilon)) return - SpecFunc::MaxScalar;
+  if (tail ? (prob >= 1.0 - SpecFunc::ScalarEpsilon) : (prob <= SpecFunc::ScalarEpsilon)) return - SpecFunc::Infinity;
   return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, prob, tail);
 }
 

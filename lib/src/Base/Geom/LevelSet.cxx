@@ -114,7 +114,7 @@ public:
   Point operator() (const Point & x) const override
   {
     const UnsignedInteger collSize = collFunc_.getSize();
-    Scalar value = intersection_ ? -SpecFunc::MaxScalar : SpecFunc::MaxScalar;
+    Scalar value = intersection_ ? -SpecFunc::Infinity : SpecFunc::Infinity;
     for (UnsignedInteger j = 0; j < collSize; ++ j)
     {
       const Scalar fx = collFunc_[j](x)[0];
@@ -133,7 +133,7 @@ public:
   {
     const UnsignedInteger size = inS.getSize();
     const UnsignedInteger collSize = collFunc_.getSize();
-    Sample outS(size, Point(getOutputDimension(), intersection_ ? -SpecFunc::MaxScalar : SpecFunc::MaxScalar));
+    Sample outS(size, Point(getOutputDimension(), intersection_ ? -SpecFunc::Infinity : SpecFunc::Infinity));
     Indices todo(size);
     todo.fill();
     for (UnsignedInteger j = 0; j < collSize; ++ j)

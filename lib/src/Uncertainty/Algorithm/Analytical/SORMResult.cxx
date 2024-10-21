@@ -56,9 +56,9 @@ SORMResult::SORMResult(const Point & standardSpaceDesignPoint,
   eventProbabilityBreitung_(-1.0),
   eventProbabilityHohenbichler_(-1.0),
   eventProbabilityTvedt_(-1.0),
-  generalisedReliabilityIndexBreitung_(SpecFunc::MaxScalar),
-  generalisedReliabilityIndexHohenbichler_(SpecFunc::MaxScalar),
-  generalisedReliabilityIndexTvedt_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexBreitung_(SpecFunc::Infinity),
+  generalisedReliabilityIndexHohenbichler_(SpecFunc::Infinity),
+  generalisedReliabilityIndexTvedt_(SpecFunc::Infinity),
   standardDistribution_(limitStateVariable.getImplementation()->getAntecedent().getImplementation()->getDistribution().getStandardDistribution()),
   standardMarginal_(standardDistribution_.getMarginal(0))
 {
@@ -87,9 +87,9 @@ SORMResult::SORMResult():
   eventProbabilityBreitung_(-1.0),
   eventProbabilityHohenbichler_(-1.0),
   eventProbabilityTvedt_(-1.0),
-  generalisedReliabilityIndexBreitung_(SpecFunc::MaxScalar),
-  generalisedReliabilityIndexHohenbichler_(SpecFunc::MaxScalar),
-  generalisedReliabilityIndexTvedt_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexBreitung_(SpecFunc::Infinity),
+  generalisedReliabilityIndexHohenbichler_(SpecFunc::Infinity),
+  generalisedReliabilityIndexTvedt_(SpecFunc::Infinity),
   standardDistribution_(Normal(1)),
   standardMarginal_(Normal(1))
 {
@@ -343,9 +343,9 @@ String SORMResult::__repr__() const
       << " eventProbabilityHohenbichler=" << eventProbabilityHohenbichler_
       << " eventProbabilityTvedt=" << eventProbabilityTvedt_
       // TODO JM: remove the check after the use of infs has been thoroughly tested
-      << " generalisedReliabilityIndexBreitung=" << (generalisedReliabilityIndexBreitung_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexBreitung_ : generalisedReliabilityIndexBreitung_ * 2.0)
-      << " generalisedReliabilityIndexHohenbichler=" << (generalisedReliabilityIndexHohenbichler_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexHohenbichler_ : generalisedReliabilityIndexHohenbichler_ * 2.0)
-      << " generalisedReliabilityIndexTvedt=" << (generalisedReliabilityIndexTvedt_ < SpecFunc::MaxScalar ? generalisedReliabilityIndexTvedt_ : generalisedReliabilityIndexTvedt_ * 2.0)
+      << " generalisedReliabilityIndexBreitung=" << (generalisedReliabilityIndexBreitung_ < SpecFunc::Infinity ? generalisedReliabilityIndexBreitung_ : generalisedReliabilityIndexBreitung_ * 2.0)
+      << " generalisedReliabilityIndexHohenbichler=" << (generalisedReliabilityIndexHohenbichler_ < SpecFunc::Infinity ? generalisedReliabilityIndexHohenbichler_ : generalisedReliabilityIndexHohenbichler_ * 2.0)
+      << " generalisedReliabilityIndexTvedt=" << (generalisedReliabilityIndexTvedt_ < SpecFunc::Infinity ? generalisedReliabilityIndexTvedt_ : generalisedReliabilityIndexTvedt_ * 2.0)
       << " gradientLimitStateFunction_=" << gradientLimitStateFunction_
       << " hessianLimitStateFunction_=" << hessianLimitStateFunction_;
   return oss;

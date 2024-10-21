@@ -112,7 +112,7 @@ void MultiStart::run()
     solver.setMaximumCallsNumber(std::min(remainingCallsNumber, solver_.getMaximumCallsNumber()));
 
     // ensure we do not exceeed the global time budget
-    const Scalar remainingTimeDuration = (getMaximumTimeDuration() > 0.0) ? std::max(getMaximumTimeDuration() - timeDuration, 1e-10) : SpecFunc::ActualMaxScalar;
+    const Scalar remainingTimeDuration = (getMaximumTimeDuration() > 0.0) ? std::max(getMaximumTimeDuration() - timeDuration, 1e-10) : SpecFunc::MaxScalar;
     solver.setMaximumTimeDuration((solver_.getMaximumTimeDuration() > 0.0) ? std::min(remainingTimeDuration, solver_.getMaximumTimeDuration()) : remainingTimeDuration);
 
     try

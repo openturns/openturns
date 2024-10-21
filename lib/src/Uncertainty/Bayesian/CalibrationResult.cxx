@@ -218,7 +218,7 @@ void CalibrationResult::load(Advocate & adv)
   else
   {
     const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
-    bayesian_ = (priorCovariance(0, 0) < std::sqrt(SpecFunc::ActualMaxScalar));
+    bayesian_ = (priorCovariance(0, 0) < std::sqrt(SpecFunc::MaxScalar));
     Description colors = DrawableImplementation::BuildDefaultPalette(3);
     priorColor_ = colors[0];
     posteriorColor_ = colors[1];

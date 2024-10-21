@@ -175,8 +175,8 @@ public:
                                    const Indices & pointNumber,
                                    const Bool withMonoDimensionalCuts = ResourceMap::GetAsBool("CrossCuts-DefaultWithMonoDimensionalCuts"),
                                    const Bool isFilled = ResourceMap::GetAsBool("Contour-DefaultIsFilled"),
-                                   const Scalar vMin = -SpecFunc::MaxScalar,
-                                   const Scalar vMax = -SpecFunc::MaxScalar) const;
+                                   const Scalar vMin = -SpecFunc::Infinity,
+                                   const Scalar vMax = -SpecFunc::Infinity) const;
 
   /** Stop callback */
   typedef Bool (*StopCallback)(void * state);

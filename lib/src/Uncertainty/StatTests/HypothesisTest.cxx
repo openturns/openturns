@@ -198,7 +198,7 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   // statistic value
   Scalar statistic;
   if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
-    statistic = SpecFunc::MaxScalar;
+    statistic = SpecFunc::Infinity;
   else
     statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
   // Here we check if rho is significantly different from 0
@@ -267,7 +267,7 @@ TestResult HypothesisTest::Spearman(const Sample & firstSample,
   // statistic value
   Scalar statistic;
   if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
-    statistic = SpecFunc::MaxScalar;
+    statistic = SpecFunc::Infinity;
   else
     statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
   // Here we check if rho is significantly different from 0
