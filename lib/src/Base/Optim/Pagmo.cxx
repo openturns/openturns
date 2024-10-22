@@ -509,7 +509,7 @@ void Pagmo::run()
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
-#else
+#elif PAGMO_VERSION_NR >= 201900
     if (!emulatedConstraints)
       algorithm_impl.set_bfe(pagmo::bfe{});
 #endif
