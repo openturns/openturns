@@ -22,7 +22,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Box.hxx"
 #include "openturns/Tuples.hxx"
-#include "openturns/SpecFunc.hxx" // for boost.math.round
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -24,7 +24,6 @@
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/SampleImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
 

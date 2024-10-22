@@ -24,7 +24,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/CovarianceMatrix.hxx"
-#include "openturns/TriangularMatrix.hxx"
 #include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -23,7 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SparseMethod.hxx"
-#include "openturns/TriangularMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -28,10 +28,6 @@
 #include "openturns/Collection.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/StandardEvent.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Function.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/AnalyticalResult.hxx"
 
 

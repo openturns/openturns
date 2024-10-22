@@ -25,7 +25,6 @@
 #include "openturns/TestResult.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

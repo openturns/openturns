@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 #define OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/Point.hxx"

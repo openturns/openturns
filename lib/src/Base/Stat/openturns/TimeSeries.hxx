@@ -22,12 +22,8 @@
 #define OPENTURNS_TIMESERIES_HXX
 
 #include "openturns/Point.hxx"
-#include "openturns/Description.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Graph.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/FieldImplementation.hxx"
 #include "openturns/Field.hxx"

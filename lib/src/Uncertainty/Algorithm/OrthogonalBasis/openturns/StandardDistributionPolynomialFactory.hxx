@@ -25,7 +25,6 @@
 
 #include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 #include "openturns/OrthonormalizationAlgorithm.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

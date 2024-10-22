@@ -23,7 +23,6 @@
 #define OPENTURNS_MARGINALEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

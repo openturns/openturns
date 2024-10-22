@@ -22,7 +22,6 @@
 #include <fstream>
 #include "openturns/NormalityTest.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Path.hxx"
 #include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

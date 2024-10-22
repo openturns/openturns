@@ -23,7 +23,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/Field.hxx"
 #include "openturns/ProcessSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -21,7 +21,6 @@
 #include "openturns/Interval.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include <cmath>

@@ -22,6 +22,7 @@
 #include <iterator>
 
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Cloud.hxx"
@@ -30,6 +31,7 @@
 #include "openturns/Box.hxx"
 #include "openturns/MarginalEvaluation.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PointWithDescription.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

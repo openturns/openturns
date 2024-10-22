@@ -24,7 +24,6 @@
 #include "openturns/EnclosingSimplexAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

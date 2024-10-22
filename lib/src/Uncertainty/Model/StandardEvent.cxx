@@ -24,7 +24,6 @@
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/Less.hxx"

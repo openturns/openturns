@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_FFT_HXX
 #define OPENTURNS_FFT_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/FFTImplementation.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 

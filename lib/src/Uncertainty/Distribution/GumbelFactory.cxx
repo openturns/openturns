@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/GumbelFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/GumbelMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

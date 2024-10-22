@@ -22,7 +22,6 @@
 #define OPENTURNS_ARMAFACTORY_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/ARMAFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

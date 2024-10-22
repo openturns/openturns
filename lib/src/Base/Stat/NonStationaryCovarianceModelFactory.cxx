@@ -21,7 +21,6 @@
 #include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/Point.hxx"

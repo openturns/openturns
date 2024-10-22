@@ -20,7 +20,6 @@
  */
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

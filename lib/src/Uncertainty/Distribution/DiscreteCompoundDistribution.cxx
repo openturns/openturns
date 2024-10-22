@@ -24,7 +24,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Poisson.hxx"
 #include "openturns/Bernoulli.hxx"
-#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

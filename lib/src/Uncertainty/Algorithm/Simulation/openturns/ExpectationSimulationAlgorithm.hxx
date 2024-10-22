@@ -24,7 +24,6 @@
 #include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
-#include "openturns/HistoryStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

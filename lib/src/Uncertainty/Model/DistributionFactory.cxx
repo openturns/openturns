@@ -20,8 +20,6 @@
  */
 
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/Description.hxx"
-#include "openturns/Path.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/AliMikhailHaqCopulaFactory.hxx"
 #include "openturns/ArcsineFactory.hxx"

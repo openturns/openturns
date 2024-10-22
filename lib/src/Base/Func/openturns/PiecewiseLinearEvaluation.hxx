@@ -22,9 +22,6 @@
 #define OPENTURNS_PIECEWISELINEAREVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

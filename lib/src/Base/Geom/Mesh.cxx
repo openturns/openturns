@@ -25,7 +25,6 @@
 #include "openturns/Mesh.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Cloud.hxx"

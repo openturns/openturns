@@ -21,7 +21,6 @@
 
 #include <cmath>
 #include "openturns/ArcsineFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/ArcsineMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

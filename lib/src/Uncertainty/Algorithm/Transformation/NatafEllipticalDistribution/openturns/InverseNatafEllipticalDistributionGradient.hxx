@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/SymmetricTensor.hxx"
 #include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

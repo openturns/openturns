@@ -24,7 +24,6 @@
 #include "openturns/OSS.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SampleImplementation.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

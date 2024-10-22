@@ -21,10 +21,7 @@
 #ifndef OPENTURNS_DLIBFUNCTIONS_HXX
 #define OPENTURNS_DLIBFUNCTIONS_HXX
 
-#include "openturns/OSS.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB

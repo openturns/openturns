@@ -35,7 +35,6 @@
 #include "openturns/OSS.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Log.hxx"
 

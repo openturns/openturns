@@ -26,7 +26,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

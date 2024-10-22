@@ -20,7 +20,6 @@
  */
 #include "openturns/FieldFunction.hxx"
 #include "openturns/ValueFunction.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

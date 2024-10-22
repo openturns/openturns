@@ -21,7 +21,6 @@
 #include <cmath>
 
 #include "openturns/Analytical.hxx"
-#include "openturns/Distribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NearestPointProblem.hxx"
 

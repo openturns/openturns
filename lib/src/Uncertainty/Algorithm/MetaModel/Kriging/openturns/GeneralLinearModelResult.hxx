@@ -24,8 +24,6 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Process.hxx"

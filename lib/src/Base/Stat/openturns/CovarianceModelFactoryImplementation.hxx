@@ -24,7 +24,6 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/Point.hxx"
 #include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

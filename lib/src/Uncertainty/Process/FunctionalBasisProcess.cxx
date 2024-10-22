@@ -23,7 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/LinearCombinationFunction.hxx"

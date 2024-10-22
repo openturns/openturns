@@ -24,10 +24,6 @@
 #define OPENTURNS_HSICSTATIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/Point.hxx"

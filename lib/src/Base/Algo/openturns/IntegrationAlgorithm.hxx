@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_INTEGRATIONALGORITHM_HXX
 #define OPENTURNS_INTEGRATIONALGORITHM_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 

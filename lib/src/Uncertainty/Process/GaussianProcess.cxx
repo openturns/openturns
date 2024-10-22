@@ -27,7 +27,6 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/HMatrixFactory.hxx"
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"

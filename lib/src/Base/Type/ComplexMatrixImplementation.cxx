@@ -24,8 +24,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Lapack.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

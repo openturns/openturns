@@ -22,7 +22,6 @@
 #define OPENTURNS_P1LAGRANGEEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/NearestNeighbourAlgorithm.hxx"
 #include "openturns/EnclosingSimplexAlgorithm.hxx"

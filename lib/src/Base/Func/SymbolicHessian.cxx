@@ -25,7 +25,6 @@
 #include "Ev3/parser.h"
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

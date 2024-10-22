@@ -23,6 +23,7 @@
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PointWithDescription.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -25,7 +25,6 @@
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/BernsteinCopulaFactory.hxx"
 

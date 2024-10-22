@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/Mixture.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 

@@ -22,7 +22,6 @@
 #define OPENTURNS_GAUSSIANPROCESS_HXX
 
 #include "openturns/ProcessImplementation.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/HMatrix.hxx"

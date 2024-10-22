@@ -22,7 +22,6 @@
 #include "openturns/LogNormal.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/HermiteFactory.hxx"

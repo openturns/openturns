@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/InverseChiSquare.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

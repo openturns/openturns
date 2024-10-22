@@ -20,7 +20,6 @@
 #include "openturns/LatentVariableModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Polygon.hxx"
 #include "openturns/Text.hxx"
 

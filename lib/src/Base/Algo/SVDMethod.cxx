@@ -21,7 +21,6 @@
 
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/SVDMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

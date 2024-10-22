@@ -22,7 +22,6 @@
 #define OPENTURNS_RANDOMVECTOR_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -23,7 +23,6 @@
 #include "openturns/TrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

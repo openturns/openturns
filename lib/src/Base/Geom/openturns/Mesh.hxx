@@ -22,8 +22,6 @@
 #define OPENTURNS_MESH_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/IndicesCollection.hxx"

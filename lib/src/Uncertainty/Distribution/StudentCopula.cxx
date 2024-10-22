@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/StudentCopula.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Student.hxx"
 

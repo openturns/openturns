@@ -22,7 +22,6 @@
 #include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Matrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Exception.hxx"
 

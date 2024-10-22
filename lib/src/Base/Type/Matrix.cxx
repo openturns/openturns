@@ -22,7 +22,6 @@
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SymmetricMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

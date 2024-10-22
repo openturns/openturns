@@ -23,7 +23,6 @@
 
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/MetaModelResult.hxx"
 

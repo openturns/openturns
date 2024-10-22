@@ -20,7 +20,6 @@
  */
 
 #include "openturns/GumbelFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/GumbelLambdaGamma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

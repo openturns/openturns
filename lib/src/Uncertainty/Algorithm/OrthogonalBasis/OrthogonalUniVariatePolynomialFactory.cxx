@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/Normal.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Lapack.hxx"
 

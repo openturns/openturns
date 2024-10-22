@@ -30,7 +30,6 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/Os.hxx"
 
 #undef GetClassName
 

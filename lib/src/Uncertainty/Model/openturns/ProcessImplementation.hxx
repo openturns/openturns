@@ -22,8 +22,6 @@
 #define OPENTURNS_PROCESSIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Field.hxx"
@@ -31,7 +29,6 @@
 #include "openturns/ProcessSample.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TrendTransform.hxx"
-#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

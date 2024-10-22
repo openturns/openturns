@@ -27,7 +27,6 @@
 #include "openturns/InverseRosenblattEvaluation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/Uniform.hxx"

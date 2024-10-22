@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"

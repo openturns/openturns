@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_SPACEFILLINGMINDIST_HXX
 #define OPENTURNS_SPACEFILLINGMINDIST_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/SpaceFillingImplementation.hxx"
 
 namespace OT

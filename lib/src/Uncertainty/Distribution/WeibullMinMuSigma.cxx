@@ -21,7 +21,6 @@
 
 #include <cmath>
 #include "openturns/WeibullMinFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

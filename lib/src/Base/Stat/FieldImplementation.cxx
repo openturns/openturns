@@ -29,13 +29,10 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/Path.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/PolygonArray.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/PlatformInfo.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

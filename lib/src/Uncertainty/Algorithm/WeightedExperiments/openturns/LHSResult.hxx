@@ -27,7 +27,6 @@
 #include "openturns/LHSResult.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Interval.hxx"
 #include "openturns/Graph.hxx"
 
 namespace OT

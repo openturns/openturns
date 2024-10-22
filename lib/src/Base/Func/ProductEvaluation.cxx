@@ -21,7 +21,7 @@
 
 #include "openturns/ProductEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/PointWithDescription.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

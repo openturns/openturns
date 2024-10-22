@@ -25,7 +25,6 @@
 #include "openturns/Normal.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

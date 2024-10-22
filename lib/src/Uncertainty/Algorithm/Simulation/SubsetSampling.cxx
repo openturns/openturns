@@ -24,7 +24,6 @@
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/Chi.hxx"
 #include "openturns/ChiSquare.hxx"
-#include "openturns/Normal.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/Uniform.hxx"

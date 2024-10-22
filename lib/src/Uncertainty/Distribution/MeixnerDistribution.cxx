@@ -22,7 +22,6 @@
 #include "openturns/MeixnerDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/Brent.hxx"

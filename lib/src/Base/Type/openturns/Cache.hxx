@@ -26,11 +26,9 @@
 #include <sstream>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

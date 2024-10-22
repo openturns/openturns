@@ -21,7 +21,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/Dirac.hxx"
-#include "openturns/SquareMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

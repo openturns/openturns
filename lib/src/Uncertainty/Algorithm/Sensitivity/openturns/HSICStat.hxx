@@ -23,9 +23,6 @@
 #define OPENTURNS_HSICSTAT_HXX
 
 #include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/HSICStatImplementation.hxx"

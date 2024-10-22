@@ -25,7 +25,6 @@
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/SparseMatrix.hxx"
 #include "openturns/HMatrix.hxx"
 #include <algorithm>

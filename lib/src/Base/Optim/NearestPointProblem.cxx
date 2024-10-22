@@ -21,7 +21,6 @@
 #include <cstdlib>
 
 #include "openturns/NearestPointProblem.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/QuadraticFunction.hxx"

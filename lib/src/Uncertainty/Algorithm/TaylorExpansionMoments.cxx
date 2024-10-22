@@ -21,9 +21,7 @@
 #include <iomanip>
 #include "openturns/TaylorExpansionMoments.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/Function.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
 

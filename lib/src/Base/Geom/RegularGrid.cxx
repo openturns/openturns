@@ -21,7 +21,6 @@
 
 #include "openturns/RegularGrid.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

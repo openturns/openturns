@@ -26,7 +26,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

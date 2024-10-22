@@ -29,7 +29,6 @@
 #include "openturns/Lapack.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Sample.hxx"
 

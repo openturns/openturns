@@ -24,7 +24,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/BoxCoxEvaluation.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 #include "openturns/InverseBoxCoxTransform.hxx"

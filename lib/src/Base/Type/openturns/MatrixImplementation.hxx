@@ -22,7 +22,6 @@
 #define OPENTURNS_MATRIXIMPLEMENTATION_HXX
 
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 

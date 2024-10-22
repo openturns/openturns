@@ -22,8 +22,6 @@
 #define OPENTURNS_LINEARMODELANALYSIS_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/TestResult.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/LinearModelResult.hxx"

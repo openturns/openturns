@@ -21,7 +21,6 @@
 
 #include <cmath>
 #include "openturns/BetaFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/BetaMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

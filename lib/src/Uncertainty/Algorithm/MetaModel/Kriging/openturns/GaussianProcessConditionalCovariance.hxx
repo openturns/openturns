@@ -23,9 +23,7 @@
 
 #include "openturns/GaussianProcessRegressionResult.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/Function.hxx"
 #include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

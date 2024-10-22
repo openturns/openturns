@@ -22,7 +22,6 @@
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/KrigingGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"

@@ -22,7 +22,6 @@
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/ExperimentIntegration.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"

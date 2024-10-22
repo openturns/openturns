@@ -23,8 +23,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

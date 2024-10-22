@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_METAMODELVALIDATION_HXX
 #define OPENTURNS_METAMODELVALIDATION_HXX
 
-#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/GridLayout.hxx"
 #include "openturns/LeaveOneOutSplitter.hxx"

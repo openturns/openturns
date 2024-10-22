@@ -22,7 +22,6 @@
 #define OPENTURNS_SPACEFILLING_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/StorageManager.hxx"
 #include "openturns/SpaceFillingImplementation.hxx"
 
 namespace OT

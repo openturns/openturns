@@ -22,7 +22,6 @@
 #define OPENTURNS_EXPERTMIXTURE_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Classifier.hxx"
 #include "openturns/Function.hxx"

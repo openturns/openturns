@@ -26,7 +26,6 @@
 #include "openturns/NoHessian.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

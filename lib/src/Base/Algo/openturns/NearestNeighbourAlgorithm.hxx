@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_NEARESTNEIGHBOURALGORITHM_HXX
 #define OPENTURNS_NEARESTNEIGHBOURALGORITHM_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/NearestNeighbourAlgorithmImplementation.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Sample.hxx"

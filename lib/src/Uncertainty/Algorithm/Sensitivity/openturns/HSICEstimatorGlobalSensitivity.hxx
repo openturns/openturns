@@ -22,15 +22,10 @@
 #ifndef OPENTURNS_HSICESTIMATORGLOBALSENSITIVITY_HXX
 #define OPENTURNS_HSICESTIMATORGLOBALSENSITIVITY_HXX
 
-#include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/HSICEstimatorImplementation.hxx"
 #include "openturns/HSICEstimator.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/Pointer.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

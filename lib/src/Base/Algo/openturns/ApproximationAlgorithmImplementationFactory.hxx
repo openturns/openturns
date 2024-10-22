@@ -25,7 +25,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,6 @@
 
 #include "openturns/PythonGradient.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"

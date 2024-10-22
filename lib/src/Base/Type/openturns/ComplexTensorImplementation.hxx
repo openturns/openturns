@@ -22,7 +22,6 @@
 #define OPENTURNS_COMPLEXTENSORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/Point.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/HermitianMatrix.hxx"
 #include "openturns/TensorImplementation.hxx"

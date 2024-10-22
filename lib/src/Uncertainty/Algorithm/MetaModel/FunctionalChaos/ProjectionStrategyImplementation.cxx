@@ -25,7 +25,6 @@
 #include "openturns/FixedExperiment.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

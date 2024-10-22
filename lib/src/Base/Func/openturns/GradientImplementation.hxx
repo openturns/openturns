@@ -23,12 +23,9 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Tensor.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/AtomicInt.hxx"
 

@@ -21,12 +21,9 @@
 #ifndef OPENTURNS_EXPECTATIONSIMULATIONRESULT_HXX
 #define OPENTURNS_EXPECTATIONSIMULATIONRESULT_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
-#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

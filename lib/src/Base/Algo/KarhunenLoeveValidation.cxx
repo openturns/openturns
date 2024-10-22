@@ -24,7 +24,6 @@
 #include "openturns/KarhunenLoeveReduction.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

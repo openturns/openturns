@@ -20,7 +20,6 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DirectionalSampling.hxx"
-#include "openturns/CorrelationMatrix.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Matrix.hxx"

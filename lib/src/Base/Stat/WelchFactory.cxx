@@ -24,7 +24,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/HermitianMatrix.hxx"
-#include "openturns/Point.hxx"
 #include "openturns/Hamming.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

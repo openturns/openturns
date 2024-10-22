@@ -23,7 +23,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

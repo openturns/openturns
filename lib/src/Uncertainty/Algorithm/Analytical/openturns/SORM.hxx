@@ -22,8 +22,6 @@
 #define OPENTURNS_SORM_HXX
 
 #include "openturns/Analytical.hxx"
-#include "openturns/SquareMatrix.hxx"
-#include "openturns/Distribution.hxx"
 #include "openturns/SORMResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

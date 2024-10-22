@@ -24,7 +24,6 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

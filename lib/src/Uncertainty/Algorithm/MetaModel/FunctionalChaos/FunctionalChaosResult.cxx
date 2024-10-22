@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/FunctionalChaosResult.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

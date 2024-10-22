@@ -20,7 +20,6 @@
  */
 #include "openturns/LinearGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Lapack.hxx"
 
 

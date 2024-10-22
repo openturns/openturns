@@ -26,7 +26,6 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/SobolIndicesExperiment.hxx"

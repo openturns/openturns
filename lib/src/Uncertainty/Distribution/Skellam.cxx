@@ -20,8 +20,6 @@
  */
 #include <cmath>
 #include "openturns/Skellam.hxx"
-#include "openturns/RandomGenerator.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

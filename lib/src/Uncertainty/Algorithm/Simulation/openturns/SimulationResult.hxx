@@ -22,9 +22,6 @@
 #define OPENTURNS_SIMULATIONRESULT_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
-#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

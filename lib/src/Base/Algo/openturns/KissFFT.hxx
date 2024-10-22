@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_KISSFFT_HXX
 #define OPENTURNS_KISSFFT_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/FFTImplementation.hxx"
 
 
