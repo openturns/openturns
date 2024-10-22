@@ -20,7 +20,6 @@
  */
 #include "openturns/Pagmo.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/DatabaseFunction.hxx"
 #include "openturns/RandomGenerator.hxx"

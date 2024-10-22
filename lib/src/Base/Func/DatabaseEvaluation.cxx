@@ -21,9 +21,7 @@
 #include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

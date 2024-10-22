@@ -20,6 +20,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/HMatrixParameters.hxx"
+#include "openturns/ResourceMap.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

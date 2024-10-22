@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/MetropolisHastings.hxx"
-#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

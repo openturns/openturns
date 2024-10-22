@@ -23,7 +23,6 @@
 #include "openturns/SolverImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

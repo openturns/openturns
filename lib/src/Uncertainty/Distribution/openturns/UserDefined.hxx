@@ -23,8 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/PersistentObject.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Distribution.hxx"
 

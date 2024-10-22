@@ -21,7 +21,6 @@
 #include "openturns/ExpertMixture.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

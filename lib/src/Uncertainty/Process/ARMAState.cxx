@@ -21,7 +21,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ARMAState.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

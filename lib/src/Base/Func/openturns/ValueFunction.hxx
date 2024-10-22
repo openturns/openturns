@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_VALUEFUNCTION_HXX
 #define OPENTURNS_VALUEFUNCTION_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Evaluation.hxx"

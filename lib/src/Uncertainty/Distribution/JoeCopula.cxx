@@ -20,10 +20,8 @@
  */
 #include <cmath>
 #include "openturns/JoeCopula.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Brent.hxx"
 

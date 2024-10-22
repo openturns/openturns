@@ -21,10 +21,8 @@
 
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
-#include "openturns/PersistentObject.hxx"
 #include "openturns/HermitianMatrix.hxx"
 #include "openturns/TriangularComplexMatrix.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

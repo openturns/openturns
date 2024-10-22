@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/WeibullMaxFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

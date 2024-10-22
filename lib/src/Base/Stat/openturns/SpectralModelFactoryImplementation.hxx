@@ -24,7 +24,6 @@
 #include "openturns/SpectralModel.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/Point.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FFT.hxx"
 

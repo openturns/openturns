@@ -27,7 +27,6 @@
 
 #include "openturns/QuadraticEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

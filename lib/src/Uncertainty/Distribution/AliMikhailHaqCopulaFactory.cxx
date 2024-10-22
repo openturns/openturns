@@ -22,7 +22,6 @@
 #include <cmath>
 
 #include "openturns/AliMikhailHaqCopulaFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

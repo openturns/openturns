@@ -24,7 +24,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Tuples.hxx"
 #include "openturns/KPermutations.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

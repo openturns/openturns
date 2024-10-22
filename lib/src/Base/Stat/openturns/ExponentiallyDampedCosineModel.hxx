@@ -22,11 +22,8 @@
 #ifndef OPENTURNS_EXPONENTIALLYDAMPEDCOSINEMODEL_HXX
 #define OPENTURNS_EXPONENTIALLYDAMPEDCOSINEMODEL_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/CorrelationMatrix.hxx"
-#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

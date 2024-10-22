@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DickeyFullerTest.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/IdentityMatrix.hxx"

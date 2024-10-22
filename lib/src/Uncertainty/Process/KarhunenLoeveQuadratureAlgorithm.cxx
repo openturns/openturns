@@ -27,7 +27,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/GaussProductExperiment.hxx"

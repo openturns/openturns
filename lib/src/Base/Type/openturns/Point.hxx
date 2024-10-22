@@ -24,7 +24,6 @@
 #include <vector>
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

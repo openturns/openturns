@@ -21,7 +21,6 @@
 #include <cmath>
 #include "openturns/ZipfMandelbrot.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"

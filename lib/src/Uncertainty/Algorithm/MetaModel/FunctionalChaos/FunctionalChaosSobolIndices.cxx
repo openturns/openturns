@@ -23,8 +23,6 @@
 #include "openturns/FunctionalChaosSobolIndices.hxx"
 #include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/EnumerateFunction.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

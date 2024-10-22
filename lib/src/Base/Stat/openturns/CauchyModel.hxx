@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_CAUCHYMODEL_HXX
 #define OPENTURNS_CAUCHYMODEL_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/SpectralModel.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"

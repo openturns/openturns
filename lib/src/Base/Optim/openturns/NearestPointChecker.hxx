@@ -22,7 +22,6 @@
 #define OPENTURNS_NEARESTPOINTCHECKER_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/ComparisonOperator.hxx"

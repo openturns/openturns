@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/HessianImplementation.hxx"
-#include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"

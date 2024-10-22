@@ -22,8 +22,6 @@
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/ResourceMap.hxx"
-#include "openturns/Point.hxx"
 #include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

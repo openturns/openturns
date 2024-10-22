@@ -22,7 +22,6 @@
 #define OPENTURNS_SIMPLICIALCUBATURE_HXX
 
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,7 +23,6 @@
 
 #include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/WeightedExperiment.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

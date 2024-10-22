@@ -27,7 +27,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

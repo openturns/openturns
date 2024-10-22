@@ -21,7 +21,6 @@
 #include <cmath>
 #include "openturns/Chi.hxx"
 #include "openturns/Gamma.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

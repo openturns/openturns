@@ -24,7 +24,6 @@
 #include "openturns/ARMALikelihoodFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ARMACoefficients.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/WhittleFactory.hxx"

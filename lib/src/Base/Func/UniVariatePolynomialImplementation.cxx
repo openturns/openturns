@@ -21,7 +21,6 @@
 #include "openturns/UniVariatePolynomialImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/FFT.hxx"

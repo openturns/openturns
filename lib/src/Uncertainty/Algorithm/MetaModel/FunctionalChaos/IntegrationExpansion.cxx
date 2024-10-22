@@ -25,7 +25,6 @@
 #include "openturns/IntegrationExpansion.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/IdentityFunction.hxx"
 

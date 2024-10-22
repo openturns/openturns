@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/FisherSnedecor.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistFunc.hxx"

@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_ITERATIVEALGORITHMIMPLEMENTATION_HXX
 #define OPENTURNS_ITERATIVEALGORITHMIMPLEMENTATION_HXX
 
-#include "openturns/OSS.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"

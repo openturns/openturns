@@ -22,14 +22,12 @@
 #define OPENTURNS_TRENDFACTORY_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/FittingAlgorithm.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/LARS.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

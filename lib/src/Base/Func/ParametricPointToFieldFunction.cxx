@@ -20,6 +20,7 @@
  */
 #include "openturns/ParametricPointToFieldFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PointWithDescription.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

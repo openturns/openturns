@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_ENCLOSINGSIMPLEXALGORITHM_HXX
 #define OPENTURNS_ENCLOSINGSIMPLEXALGORITHM_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/EnclosingSimplexAlgorithmImplementation.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Sample.hxx"

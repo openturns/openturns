@@ -23,8 +23,6 @@
 #include "openturns/CauchyModel.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Field.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

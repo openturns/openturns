@@ -28,7 +28,6 @@
 #include "openturns/Function.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/WeightedExperiment.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 

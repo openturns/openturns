@@ -21,7 +21,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/WhittleFactoryState.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

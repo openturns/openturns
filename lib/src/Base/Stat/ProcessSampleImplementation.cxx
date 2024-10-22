@@ -26,7 +26,6 @@
 #include "openturns/Drawable.hxx"
 #include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/TBBImplementation.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

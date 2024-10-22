@@ -30,7 +30,6 @@
 #include "Faddeeva.hh"
 #include "openturns/GammaFunctions.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/PlatformInfo.hxx"

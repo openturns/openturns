@@ -22,7 +22,6 @@
 #include "openturns/NaiveEnclosingSimplex.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

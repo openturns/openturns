@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

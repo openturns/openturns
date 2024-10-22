@@ -23,7 +23,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Indices.hxx"

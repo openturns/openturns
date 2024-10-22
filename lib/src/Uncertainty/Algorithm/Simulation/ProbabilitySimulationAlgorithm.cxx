@@ -24,7 +24,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

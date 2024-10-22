@@ -26,7 +26,6 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/GaussKronrod.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

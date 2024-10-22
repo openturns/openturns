@@ -20,7 +20,6 @@
  */
 
 #include "openturns/LogNormalFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/LogNormalMuErrorFactor.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistFunc.hxx"

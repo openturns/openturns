@@ -30,8 +30,6 @@
 #include "openturns/FisherSnedecor.hxx"
 #include "openturns/LinearLeastSquares.hxx"
 #include "openturns/LinearBasisFactory.hxx"
-#include "openturns/Path.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/LinearModelAnalysis.hxx"

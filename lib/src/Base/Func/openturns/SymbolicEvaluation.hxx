@@ -24,7 +24,6 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/SymbolicParser.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

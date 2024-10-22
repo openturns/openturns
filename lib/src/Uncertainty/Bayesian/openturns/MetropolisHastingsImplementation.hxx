@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/HistoryStrategy.hxx"
 

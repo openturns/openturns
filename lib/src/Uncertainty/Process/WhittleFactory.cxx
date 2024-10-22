@@ -25,7 +25,6 @@
 #include "openturns/UserDefinedSpectralModel.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Normal.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"

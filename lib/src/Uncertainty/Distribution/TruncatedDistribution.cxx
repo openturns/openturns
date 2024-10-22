@@ -22,7 +22,6 @@
 #include <cmath>
 
 #include "openturns/TruncatedDistribution.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Exponential.hxx"
 #include "openturns/Normal.hxx"

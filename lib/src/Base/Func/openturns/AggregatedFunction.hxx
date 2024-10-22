@@ -22,9 +22,6 @@
 #define OPENTURNS_AGGREGATEDFUNCTION_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

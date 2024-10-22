@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/OrthogonalUniVariatePolynomial.hxx"
-#include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Exception.hxx"

@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_KRONECKERCOVARIANCEMODEL_HXX
 #define OPENTURNS_KRONECKERCOVARIANCEMODEL_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/CovarianceModelImplementation.hxx"
 

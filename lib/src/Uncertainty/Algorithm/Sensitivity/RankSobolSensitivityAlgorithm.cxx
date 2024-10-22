@@ -25,7 +25,6 @@
 #include "openturns/Text.hxx"
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/TBBImplementation.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/Curve.hxx"
 

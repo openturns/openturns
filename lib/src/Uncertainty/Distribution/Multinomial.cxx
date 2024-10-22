@@ -25,7 +25,6 @@
 #include "openturns/Binomial.hxx"
 #include "openturns/Poisson.hxx"
 #include "openturns/TruncatedDistribution.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Exception.hxx"

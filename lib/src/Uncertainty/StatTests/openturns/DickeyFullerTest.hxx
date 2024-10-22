@@ -23,7 +23,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/TestResult.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/TimeSeries.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

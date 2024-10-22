@@ -24,7 +24,6 @@
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

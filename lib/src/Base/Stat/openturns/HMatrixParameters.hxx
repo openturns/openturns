@@ -24,7 +24,6 @@
 #define OPENTURNS_HMATRIXPARAMETERS_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

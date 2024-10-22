@@ -23,7 +23,6 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

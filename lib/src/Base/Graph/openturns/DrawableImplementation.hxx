@@ -23,7 +23,6 @@
 
 #include <map>
 #include "openturns/Description.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Interval.hxx"

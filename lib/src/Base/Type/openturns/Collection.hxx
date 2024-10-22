@@ -29,7 +29,6 @@
 #include "openturns/OSS.hxx"
 #include "openturns/OStream.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

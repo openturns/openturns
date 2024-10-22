@@ -22,7 +22,6 @@
 #define OPENTURNS_BOUNDARYMESHER_HXX
 
 #include "openturns/LevelSet.hxx"
-#include "openturns/Interval.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/AbdoRackwitz.hxx"

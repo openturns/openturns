@@ -23,7 +23,6 @@
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Process.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ARMACoefficients.hxx"
 #include "openturns/ARMAState.hxx"

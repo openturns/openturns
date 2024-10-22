@@ -25,7 +25,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Interval.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"

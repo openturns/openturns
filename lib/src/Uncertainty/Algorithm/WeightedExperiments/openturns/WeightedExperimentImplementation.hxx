@@ -24,7 +24,6 @@
 #include "openturns/ExperimentImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/Indices.hxx"
 //#include "OrthogonalBasis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

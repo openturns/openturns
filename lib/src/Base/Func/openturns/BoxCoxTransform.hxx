@@ -23,7 +23,6 @@
 
 #include "openturns/Function.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

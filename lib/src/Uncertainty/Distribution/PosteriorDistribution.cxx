@@ -20,8 +20,6 @@
  */
 #include <cmath>
 #include "openturns/PosteriorDistribution.hxx"
-#include "openturns/RandomGenerator.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/GaussLegendre.hxx"

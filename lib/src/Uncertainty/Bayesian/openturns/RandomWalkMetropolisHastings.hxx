@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/MetropolisHastingsImplementation.hxx"
-#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

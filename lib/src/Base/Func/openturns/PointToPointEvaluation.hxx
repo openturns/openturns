@@ -28,6 +28,7 @@
 #include "openturns/Evaluation.hxx"
 #include "openturns/PointToFieldFunction.hxx"
 #include "openturns/FieldToPointFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

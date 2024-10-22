@@ -21,7 +21,6 @@
 #include "openturns/UserDefinedSpectralModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

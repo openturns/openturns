@@ -24,7 +24,6 @@
 
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

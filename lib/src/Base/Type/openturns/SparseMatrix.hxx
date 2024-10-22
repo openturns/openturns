@@ -22,6 +22,7 @@
 #define OPENTURNS_SPARSEMATRIX_HXX
 
 #include "openturns/Matrix.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

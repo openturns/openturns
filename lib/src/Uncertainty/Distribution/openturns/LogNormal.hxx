@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
-#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

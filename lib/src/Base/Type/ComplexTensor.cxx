@@ -20,7 +20,6 @@
  */
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -35,13 +35,11 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Path.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "kendall.h"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Lapack.hxx"
-#include "openturns/Os.hxx"
 
 #include <locale.h>
 #ifdef OPENTURNS_HAVE_XLOCALE_H

@@ -21,7 +21,6 @@
 
 #include <cmath>
 #include "openturns/UniformFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/UniformMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

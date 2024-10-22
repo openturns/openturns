@@ -21,7 +21,6 @@
 #include "openturns/ExponentialModel.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_OPTIMALLHSEXPERIMENT_HXX
 #define OPENTURNS_OPTIMALLHSEXPERIMENT_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/LHSExperiment.hxx"
 #include "openturns/JointDistribution.hxx"

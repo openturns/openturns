@@ -21,9 +21,7 @@
 #include <cstdlib>
 
 #include "openturns/OptimizationProblemImplementation.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SymmetricTensor.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearFunction.hxx"

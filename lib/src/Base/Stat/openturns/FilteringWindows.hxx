@@ -23,7 +23,6 @@
 #define OPENTURNS_FILTERINGWINDOWS_HXX
 
 #include "openturns/FilteringWindowsImplementation.hxx"
-#include "openturns/PersistentObject.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -22,7 +22,6 @@
 
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
 #include "Ev3/expression.h"
 #include "Ev3/parser.h"

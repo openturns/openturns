@@ -23,7 +23,6 @@
 #define OPENTURNS_ENCLOSINGSIMPLEXALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/PersistentCollection.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/IndicesCollection.hxx"

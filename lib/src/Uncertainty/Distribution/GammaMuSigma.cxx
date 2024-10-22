@@ -20,7 +20,6 @@
  */
 
 #include "openturns/GammaFactory.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/GammaMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

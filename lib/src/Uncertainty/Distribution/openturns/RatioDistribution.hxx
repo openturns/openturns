@@ -23,7 +23,6 @@
 
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

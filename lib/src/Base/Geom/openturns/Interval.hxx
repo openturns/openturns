@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_INTERVAL_HXX
 #define OPENTURNS_INTERVAL_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"

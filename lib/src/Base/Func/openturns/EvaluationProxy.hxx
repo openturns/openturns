@@ -24,7 +24,6 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Evaluation.hxx"
-#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

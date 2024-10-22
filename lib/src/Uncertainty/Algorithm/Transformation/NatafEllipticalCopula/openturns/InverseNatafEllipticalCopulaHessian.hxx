@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/HessianImplementation.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"

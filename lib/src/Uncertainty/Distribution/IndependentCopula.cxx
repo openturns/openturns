@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/IndependentCopula.hxx"
-#include "openturns/Normal.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/NatafIndependentCopulaEvaluation.hxx"
 #include "openturns/NatafIndependentCopulaGradient.hxx"

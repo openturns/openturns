@@ -21,7 +21,6 @@
 #include "openturns/Factorial.hxx"
 #include "openturns/Axial.hxx"
 #include "openturns/Composite.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include <cmath>
 

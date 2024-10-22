@@ -26,7 +26,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/HMatrixParameters.hxx"
 

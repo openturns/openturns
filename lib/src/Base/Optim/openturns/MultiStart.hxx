@@ -24,7 +24,6 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Experiment.hxx"
-#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,7 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/GeneralizedExponential.hxx"
 #include "openturns/TBBImplementation.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

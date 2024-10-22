@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/PointToFieldFunction.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

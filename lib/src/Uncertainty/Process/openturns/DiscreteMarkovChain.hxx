@@ -23,10 +23,7 @@
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Process.hxx"
-#include "openturns/Pointer.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/UserDefined.hxx"
 
 

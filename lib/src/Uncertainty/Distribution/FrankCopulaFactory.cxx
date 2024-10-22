@@ -23,7 +23,6 @@
 
 #include "openturns/FrankCopulaFactory.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

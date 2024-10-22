@@ -20,8 +20,6 @@
  */
 #include <cmath>
 #include "openturns/Epanechnikov.hxx"
-#include "openturns/RandomGenerator.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Beta.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

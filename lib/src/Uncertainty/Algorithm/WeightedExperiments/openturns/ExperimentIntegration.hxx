@@ -22,7 +22,6 @@
 #define OPENTURNS_EXPERIMENTINTEGRATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

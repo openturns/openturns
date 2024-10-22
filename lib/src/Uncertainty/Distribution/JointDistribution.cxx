@@ -40,7 +40,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Tuples.hxx"
 

@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/Laplace.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Distribution.hxx"

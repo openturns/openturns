@@ -23,7 +23,6 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/DomainImplementation.hxx"
-#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

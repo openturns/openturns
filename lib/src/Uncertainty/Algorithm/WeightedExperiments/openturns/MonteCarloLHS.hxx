@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_MONTECARLOLHS_HXX
 #define OPENTURNS_MONTECARLOLHS_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/SpaceFilling.hxx"
 #include "openturns/OptimalLHSExperiment.hxx"

@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_SOBOLSIMULATIONRESULT_HXX
 #define OPENTURNS_SOBOLSIMULATIONRESULT_HXX
 
-#include "openturns/PersistentObject.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/Distribution.hxx"
 
