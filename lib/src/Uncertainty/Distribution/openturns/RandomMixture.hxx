@@ -26,7 +26,6 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SphereUniformNorm.hxx"
@@ -305,47 +304,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-private:
-
-  class KolmogorovProjection
-  {
-  public:
-    /** Constructor from a distribution and a data set */
-    KolmogorovProjection(const Sample & dataX,
-                         const Sample & dataY,
-                         const DistributionFactory & factory):
-      dataX_(dataX),
-      dataY_(dataY),
-      factory_(factory) {};
-
-    /** Compute the Kolmogorov distance based on the given data, for a given parameter set */
-    Point computeNorm(const Point & parameters) const
-    {
-      Scalar norm = 0.0;
-      try
-      {
-        const Distribution candidate(factory_.build(PointCollection(1, parameters)));
-        for (UnsignedInteger i = 0; i < dataX_.getSize(); ++i)
-          norm += std::pow(candidate.computeCDF(dataX_(i, 0)) - dataY_(i, 0), 2);
-        return Point(1, norm);
-      }
-      catch(...)
-      {
-        return Point(1, SpecFunc::Infinity);
-      }
-    }
-
-    /** factory accessor */
-    void setDistributionFactory(const DistributionFactory & factory)
-    {
-      factory_ = factory;
-    }
-  private:
-    Sample dataX_;
-    Sample dataY_;
-    DistributionFactory factory_;
-  };
 
 protected:
   /** Compute the numerical range of the distribution given the parameters values */
