@@ -2,12 +2,12 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::Matrix & ROut ($*ltype temp) %{ temp = OT::Matrix(); $1 = &temp; %}
-%typemap(argout) OT::Matrix & ROut %{ $result = OT_AppendOutput($result, SWIG_NewPointerObj(new OT::Matrix(*$1), SWIG_TypeQuery("OT::Matrix *"),  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::Matrix & ROut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Matrix(*$1), SWIG_TypeQuery("OT::Matrix *"),  SWIG_POINTER_OWN)); %}
 
 %apply OT::Matrix & ROut { OT::Matrix & uOut, OT::Matrix & vTOut, OT::Matrix & vOut };
 
 %typemap(in, numinputs=0) OT::ComplexMatrix & vOut ($*ltype temp) %{ temp = OT::ComplexMatrix(); $1 = &temp; %}
-%typemap(argout) OT::ComplexMatrix & vOut %{ $result = OT_AppendOutput($result, SWIG_NewPointerObj(new OT::ComplexMatrix(*$1), SWIG_TypeQuery("OT::ComplexMatrix *"),  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::ComplexMatrix & vOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::ComplexMatrix(*$1), SWIG_TypeQuery("OT::ComplexMatrix *"),  SWIG_POINTER_OWN)); %}
 
 %{
 #include "openturns/Matrix.hxx"

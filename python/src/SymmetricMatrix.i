@@ -2,7 +2,7 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::SquareMatrix & vOut ($*ltype temp) %{ temp = OT::SquareMatrix(); $1 = &temp; %}
-%typemap(argout) OT::SquareMatrix & vOut %{ $result = OT_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareMatrix(*$1), SWIG_TypeQuery("OT::SquareMatrix *"),  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::SquareMatrix & vOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::SquareMatrix(*$1), SWIG_TypeQuery("OT::SquareMatrix *"),  SWIG_POINTER_OWN)); %}
 
 %{
 #include "openturns/SymmetricMatrix.hxx"

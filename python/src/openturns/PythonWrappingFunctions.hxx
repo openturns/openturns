@@ -1908,9 +1908,39 @@ ScopedPyObjectPointer deepCopy(PyObject * pyObj)
   return pyObjDeepCopy;
 }
 
+
+// this is where we go on SIGINT (CTRL-C)
 inline void SignalHandler(int /*signum*/)
 {
-  throw InterruptionException(HERE);
+  // will exit but likely crash the interpreter
+  throw InterruptionException(HERE) << "Exiting on SIGINT";
+}
+
+
+// substitute for SWIG_Python_AppendOutput as API broke with SWIG 4.3
+// and it seems we cannot use SWIG_AppendOutput instead
+inline PyObject* AppendOutput(PyObject* result, PyObject* obj)
+{
+  if (!result) {
+    result = obj;
+  } else if (result == Py_None) {
+    Py_XDECREF(result);
+    result = obj;
+  } else {
+    if (!PyList_Check(result)) {
+      PyObject *o2 = result;
+      result = PyList_New(1);
+      if (result) {
+        PyList_SetItem(result, 0, o2);
+      } else {
+        Py_XDECREF(obj);
+        return o2;
+      }
+    }
+    PyList_Append(result,obj);
+    Py_XDECREF(obj);
+  }
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS
