@@ -20,9 +20,9 @@
  */
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/GaussKronrod.hxx"
-#include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DatabaseFunction.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,6 +57,109 @@ IteratedQuadrature * IteratedQuadrature::clone() const
   return new IteratedQuadrature(*this);
 }
 
+
+// Class to compute in a recursive way a multidimensional integral
+class IteratedQuadraturePartialFunctionWrapper : public FunctionImplementation
+{
+public:
+  /* Default constructor */
+  IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
+                          const Function & function,
+                          const IteratedQuadrature::FunctionCollection & lowerBounds,
+                          const IteratedQuadrature::FunctionCollection & upperBounds)
+    : FunctionImplementation()
+    , quadrature_(quadrature)
+    , function_(function)
+    , lowerBounds_(lowerBounds)
+    , upperBounds_(upperBounds)
+  {
+    // Nothing to do
+  }
+
+  Point operator()(const Point & point) const override
+  {
+    // Create the arguments of the local integration problem
+    const Indices index(1, 0);
+    const ParametricFunction function(function_, index, point);
+    const UnsignedInteger size = lowerBounds_.getSize() - 1;
+    const Scalar a = lowerBounds_[0](point)[0];
+    const Scalar b = upperBounds_[0](point)[0];
+    IteratedQuadrature::FunctionCollection lowerBounds(size);
+    IteratedQuadrature::FunctionCollection upperBounds(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, point);
+      upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, point);
+    }
+    const Point value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
+    for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
+      if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
+    return value;
+  }
+
+  Sample operator()(const Sample & sample) const override
+  {
+    const UnsignedInteger sampleSize = sample.getSize();
+    const UnsignedInteger outputDimension = function_.getOutputDimension();
+    const UnsignedInteger size = lowerBounds_.getSize() - 1;
+    IteratedQuadrature::FunctionCollection lowerBounds(size);
+    IteratedQuadrature::FunctionCollection upperBounds(size);
+    Sample result(sampleSize, outputDimension);
+    const Indices index(1, 0);
+    const Sample sampleA(lowerBounds_[0](sample));
+    const Sample sampleB(upperBounds_[0](sample));
+    for (UnsignedInteger k = 0; k < sampleSize; ++k)
+    {
+      const Point x(sample[k]);
+      // Create the arguments of the local integration problem
+      const ParametricFunction function(function_, index, x);
+      const Scalar a = sampleA(k, 0);
+      const Scalar b = sampleB(k, 0);
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, x);
+        upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, x);
+      } // Loop over bound functions
+      result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
+      for (UnsignedInteger i = 0; i < outputDimension; ++i)
+        if (!SpecFunc::IsNormal(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+    } // Loop over sample points
+    return result;
+  }
+
+  IteratedQuadraturePartialFunctionWrapper * clone() const override
+  {
+    return new IteratedQuadraturePartialFunctionWrapper(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return function_.getOutputDimension();
+  }
+
+  Description getInputDescription() const override
+  {
+    return Description(1, "t");
+  }
+
+  Description getOutputDescription() const override
+  {
+    return function_.getOutputDescription();
+  }
+
+private:
+  const IteratedQuadrature & quadrature_;
+  const Function & function_;
+  const IteratedQuadrature::FunctionCollection & lowerBounds_;
+  const IteratedQuadrature::FunctionCollection & upperBounds_;
+}; // class IteratedQuadraturePartialFunctionWrapper
+
+
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
  */
 Point IteratedQuadrature::integrate(const Function & function,
@@ -85,8 +188,8 @@ Point IteratedQuadrature::integrate(const Function & function,
     } // bounds dimensions
   } // check
   if (inputDimension == 1) return algorithm_.integrate(function, Interval(a, b));
-  // Prepare the integrand using a PartialFunctionWrapper::evaluate
-  const Function partialFunction(PartialFunctionWrapper(*this, function, lowerBounds, upperBounds).clone());
+  // Prepare the integrand using a IteratedQuadraturePartialFunctionWrapper::evaluate
+  const Function partialFunction(IteratedQuadraturePartialFunctionWrapper(*this, function, lowerBounds, upperBounds).clone());
   return algorithm_.integrate(partialFunction, Interval(a, b));
 }
 
