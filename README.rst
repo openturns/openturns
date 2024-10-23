@@ -7,9 +7,6 @@
 .. image:: https://codecov.io/gh/openturns/openturns/graph/badge.svg?token=EczU7Uo18P
     :target: https://codecov.io/gh/openturns/openturns
 
-.. image:: https://badges.gitter.im/openturns/community.svg
-    :target: https://gitter.im/openturns/community
-
 =============================================================================
 OpenTURNS (Open source initiative to Treat Uncertainties, Risks'N Statistics)
 =============================================================================

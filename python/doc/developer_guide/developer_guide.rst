@@ -9,10 +9,10 @@ There are several ways to contribute.
 
 
 Providing us with feedback on your own experience using the software is extremely
-valuable for the other users as well as our developers. There exists many
-channels for you to contact us:
+valuable for the other users as well as our developers.
+There are several channels for you to contact us:
 
-  - Join the `chat <https://gitter.im/openturns/community>`_ or the `forum <https://openturns.discourse.group>`_.
+  - Join the `forum <https://openturns.discourse.group>`_.
   - Bugs can be reported on our `bug tracker <https://github.com/openturns/openturns/issues>`_.
   - Once a year, one of the partners hosts the Users day which is a
     unique occasion for users to meet up and share their experience using the
@@ -20,8 +20,8 @@ channels for you to contact us:
 
 .. note::
 
-    Please consider using the forum or chat first if you have any doubt whether
-    you have bumped into a real bug or not.
+    Please consider using the forum first if you have any doubt whether
+    you have bumped into an bug or not, and check the tracker for similar issues first.
 
 .. toctree::
     :maxdepth: 1
