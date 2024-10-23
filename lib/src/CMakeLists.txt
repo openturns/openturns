@@ -93,8 +93,8 @@ if (NOT BUILD_SHARED_LIBS)
 endif ()
 
 # soversion
-set_target_properties (OT PROPERTIES SOVERSION 0.25)
-set (LIB_VERSION 0.25.0)
+set_target_properties (OT PROPERTIES SOVERSION 0.26)
+set (LIB_VERSION 0.26.0)
 set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
 
 if (BISON_FOUND AND FLEX_FOUND)
