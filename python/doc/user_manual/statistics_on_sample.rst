@@ -237,6 +237,7 @@ Graphical tests
     VisualTest.DrawUpperExtremalDependenceFunction
     VisualTest.DrawLowerTailDependenceFunction
     VisualTest.DrawLowerExtremalDependenceFunction
+    VisualTest.DrawInsideOutside
 
     :template: class.rst_t
     GeneralizedExtremeValueValidation
