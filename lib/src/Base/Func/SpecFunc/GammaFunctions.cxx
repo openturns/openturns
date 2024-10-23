@@ -77,6 +77,8 @@ Scalar RegularizedIncompleteGammaInverse(const Scalar a,
     const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (!(x >= 0.0) || !(x <= 1.0)) throw InvalidArgumentException(HERE) << "Quantile level must be in [0, 1] here x=" << x;
+  if ((!tail && (x >= 1.0)) || (tail && (x <= 0.0))) return SpecFunc::Infinity;
 #ifdef OPENTURNS_HAVE_BOOST
   try
   {
