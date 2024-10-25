@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt primesieve spectra pagmo cuba nanoflann
+        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver cuba dlib bison flex hdf5 ipopt primesieve spectra pagmo nanoflann
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
         cmake \
@@ -21,7 +21,7 @@ jobs:
         -DFLEX_EXECUTABLE=/opt/homebrew/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/opt/homebrew/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
-        -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-deprecated-declarations -Wno-missing-field-initializers" \
+        -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3

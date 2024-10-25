@@ -21,7 +21,6 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage -fuse-ld=mold" \
       -DSWIG_COMPILE_FLAGS="-O1" \
-      -DUSE_SPHINX=OFF \
       -DUSE_HMAT=ON \
       ${source_dir}
 make install
