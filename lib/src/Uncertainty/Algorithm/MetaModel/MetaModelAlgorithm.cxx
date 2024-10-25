@@ -232,7 +232,9 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
     }// else
     marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "Selected distribution = " << marginals[i].getImplementation()->getClassName());
-  }// for i
+  } // for i
+  if (inputDimension == 1)
+    return marginals[0];
 
   // For the dependence structure, we use the Spearman independence test to decide between an independent and a Normal copula.
   Bool isIndependent = true;
