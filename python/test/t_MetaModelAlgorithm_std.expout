@@ -5,35 +5,26 @@ JointDistribution(WeibullMin(beta = 0.626, alpha = 1.25, gamma = -0.496), Gamma(
 JointDistribution(Beta(alpha = 0.495, beta = 0.485, a = 5.2, b = 11.6), Beta(alpha = 0.449, beta = 0.47, a = 5.2, b = 11.6), IndependentCopula(dimension = 2))
 JointDistribution(Normal(mu = 3.02, sigma = 1.99), Normal(mu = 3.03, sigma = 2.05), NormalCopula(R = [[ 1     0.493 ]
  [ 0.493 1     ]]))
-JointDistribution(Uniform(a = -100, b = 1.1e+03))
+Uniform(a = -100, b = 1.1e+03)
 distribution (HTML)
-JointDistribution
+Uniform
 <ul>
-  <li>name=JointDistribution</li>
-  <li>dimension: 1</li>
-  <li>description=[v0]
+  <li>name=Uniform</li>
+  <li>dimension=1</li>
+  <li>weight=1</li>
+  <li>range=[-100, 1.1e+03]</li>
+  <li>description=[v0]</li>
+  <li>isParallel=true</li>
+  <li>isCopula=false</li>
 </ul>
 
-<table>
-  <tr>
-    <th>Index</th>
-    <th>Variable</th>
-    <th>Distribution</th>
-  </tr>
-  <tr>
-    <td>0</td>
-    <td>v0</td>
-    <td>Uniform(a = -100, b = 1.1e+03)</td>
-  </tr>
-</table>
-
 distribution (Markdown)
-JointDistribution
-- name=JointDistribution
+Uniform
+- name=Uniform
 - dimension=1
+- weight=1
+- range=[-100, 1.1e+03]
 - description=[v0]
-
-| Index | Variable | Distribution                   |
-|-------|----------|--------------------------------|
-|     0 |       v0 | Uniform(a = -100, b = 1.1e+03) |
+- isParallel=true
+- isCopula=false
 
