@@ -51,6 +51,5 @@ int main(int, char *[])
     return ExitCode::Error;
   }
 
-
   return ExitCode::Success;
 }
