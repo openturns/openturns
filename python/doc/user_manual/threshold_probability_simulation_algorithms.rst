@@ -81,7 +81,6 @@ Non linear solvers
     Bisection
     Brent
     Secant
-    
 
 Simulation result
 =================

@@ -33,13 +33,13 @@ int main(int, char *[])
   {
     /** Analytical construction */
     Description input = {"x","y"};
-    Description formulas = {"y*x-sin(2*x)","1 + cos(y) + x"};
+    Description formulas = {"y * x - sin(2 * x)","1 + cos(y) + x"};
 
     SymbolicFunction analytical(input, formulas);
     LeastSquaresEquationsSolver myAlgo;
     myAlgo.setResidualError(1e-5);
     fullprint << "myAlgo=" << myAlgo << std::endl;
-    Point startingPoint = {2.0,1.0};
+    Point startingPoint = {2.0, 1.0};
     OSS oss;
     oss.setPrecision(5);
     fullprint << "x=" << String(oss << myAlgo.solve(analytical, startingPoint)) << std::endl;

@@ -80,7 +80,7 @@ public:
 
   /** Solve attempt to find one root to a system of equations function(x) = 0 given a starting point x_0 */
   virtual Point solve(const Function & function,
-                       const Point & startingPoint) const;
+                      const Point & startingPoint) const;
 
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
