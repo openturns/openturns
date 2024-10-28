@@ -441,8 +441,8 @@ Some Linux distros prevent normal users from collecting stats, in that case:
 
 ::
 
-    # echo "-1"  > /proc/sys/kernel/perf_event_paranoid
-    # echo 0 > /proc/sys/kernel/kptr_restrict
+    echo "-1" | sudo tee /proc/sys/kernel/perf_event_paranoid
+    echo "0" | sudo tee /proc/sys/kernel/kptr_restrict
 
 At this point you should be able to generate the graph from the perf data:
 
