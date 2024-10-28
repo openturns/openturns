@@ -22,7 +22,8 @@ openturns.Solver, openturns.OptimizationAlgorithm
 
 Notes
 -----
-LeastSquaresEquationsSolver might fail and not obtain a result lower than the specified threshold, in this case an error is thrown."
+LeastSquaresEquationsSolver might fail and not obtain a result lower than the
+specified threshold, in this case an error is thrown."
 
 // ---------------------------------------------------------------------
 
