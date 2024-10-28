@@ -11,7 +11,7 @@ relError : positive float
     Relative error: distance between the two last successive iterates with
     regards to the last iterate. Default is :math:`10^{-5}`.
 resError : positive float
-    Residual error: threshold for accepting a given solution. It is also used as residual error for the least square optimizer.
+    Residual error: absolute threshold on f(x) for accepting a given solution. It is also used as residual error for the least square optimizer.
     value. Default is :math:`0`.
 maximumFunctionEvaluation : int
     The maximum number of evaluations of the function. Default is :math:`100`.
