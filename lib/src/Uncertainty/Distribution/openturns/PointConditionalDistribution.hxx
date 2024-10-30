@@ -82,6 +82,10 @@ public:
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Get the probability of an interval */
+  using DistributionImplementation::computeProbability;
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
