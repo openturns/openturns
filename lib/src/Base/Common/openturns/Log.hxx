@@ -21,8 +21,13 @@
 #ifndef OPENTURNS_LOG_HXX
 #define OPENTURNS_LOG_HXX
 
+#if defined(_WIN32) && defined(ERROR)
+#undef ERROR
+#endif
+
 #include <fstream>
 #include <map>
+
 #include "openturns/OTprivate.hxx"
 #include "openturns/AtomicInt.hxx"
 #include "openturns/TTY.hxx"
