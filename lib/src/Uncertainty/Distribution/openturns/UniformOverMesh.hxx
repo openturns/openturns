@@ -81,9 +81,9 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
-  /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const override;
+  /** Get the probability content of an interval */
+  using DistributionImplementation::computeProbabilityContinuous;
+  Scalar computeProbabilityContinuous(const Interval & interval) const override;
 
   /* Interface specific to UniformOverMesh */
 
