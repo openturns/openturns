@@ -194,33 +194,32 @@ Scalar UniformOverMesh::computePDF(const Point & point) const
 }
 
 
-/* Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-Scalar UniformOverMesh::computeCDF(const Point & point) const
+/* Get the probability content of an interval */
+Scalar UniformOverMesh::computeProbabilityContinuous(const Interval & interval) const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  Scalar cdf = 0.0;
-  const Interval quadrant(Point(getDimension(), -SpecFunc::Infinity), point);
-  const Interval intersection(quadrant.intersect(getRange()));
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "UniformOverMesh interval must have dimension " << getDimension() << ", got " << interval.getDimension();
+  Scalar probability = 0.0;
+  const Interval intersection(interval.intersect(getRange()));
   if (intersection.isEmpty())
-    cdf = 0.0;
+    probability = 0.0;
   else if (intersection == getRange())
-    cdf = 1.0;
+    probability = 1.0;
   else
   {
     try
     {
       const Mesh intersectionMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(intersection)));
-      const Point intersectionVolumes_(intersectionMesh.computeSimplicesVolume());
-      const Scalar intersectionVolume = std::accumulate(intersectionVolumes_.begin(), intersectionVolumes_.end(), 0.0);
-      cdf = intersectionVolume / meshVolume_;
+      const Point intersectionVolumes(intersectionMesh.computeSimplicesVolume());
+      const Scalar intersectionVolume = std::accumulate(intersectionVolumes.begin(), intersectionVolumes.end(), 0.0);
+      probability = intersectionVolume / meshVolume_;
     }
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+      probability = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
     }
   }
-  return cdf;
+  return probability;
 }
 
 
