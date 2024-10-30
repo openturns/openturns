@@ -55,6 +55,8 @@ TruncatedOverMesh::TruncatedOverMesh(const Distribution & distribution, const Me
 {
   setName("TruncatedOverMesh");
   setMesh(mesh);
+  if (!distribution.isContinuous())
+    throw NotYetImplementedException(HERE) << "TruncatedOverMesh: the distribution must be continuous";
 }
 
 /* Comparison operator */
@@ -207,17 +209,16 @@ Scalar TruncatedOverMesh::computePDF(const Point & point) const
 }
 
 
-/* Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-Scalar TruncatedOverMesh::computeCDF(const Point & point) const
+/** Get the probability content of an interval */
+Scalar TruncatedOverMesh::computeProbabilityContinuous(const Interval & interval) const
 {
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  Scalar cdf = 0.0;
-  const Interval quadrant(Point(getDimension(), -SpecFunc::Infinity), point);
-  const Interval intersection(quadrant.intersect(getRange()));
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "TruncatedOverMesh point must have dimension" << getDimension() << ", got " << interval.getDimension();
+  Scalar probability = 0.0;
+  const Interval intersection(interval.intersect(getRange()));
   if (intersection.isEmpty())
-    cdf = 0.0;
+    probability = 0.0;
   else if (intersection == getRange())
-    cdf = 1.0;
+    probability = 1.0;
   else
   {
     try
@@ -228,15 +229,15 @@ Scalar TruncatedOverMesh::computeCDF(const Point & point) const
       SimplicialCubature integrationAlgorithm;
       const UnsignedInteger setMaximumCallsNumber = ResourceMap::GetAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber");
       integrationAlgorithm.setMaximumCallsNumber(setMaximumCallsNumber);
-      cdf = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), intersectionMesh)[0];
+      probability = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), intersectionMesh)[0];
     }
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      cdf = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+      probability = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
     }
   }
-  return cdf;
+  return probability;
 }
 
 
