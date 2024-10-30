@@ -742,7 +742,6 @@ Scalar DistributionImplementation::computeCDF(const Point & point) const
   if (isContinuous())
   {
     const Interval interval(getRange().getLowerBound(), point);
-    LOGINFO(OSS() << "In DistributionImplementation::computeCDF, using computeProbabilityContinuous(), interval=" << interval.__str__());
     return computeProbabilityContinuous(interval);
   }
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCDF(const Point & point) const";
