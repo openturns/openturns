@@ -754,20 +754,37 @@ Scalar PointConditionalDistribution::computeCDF(const Point & point) const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeCDF(point);
 
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  return computeProbability(Interval(getRange().getLowerBound(), point));
+}
 
-  Scalar cdfValue = 0.0;
-  if (isContinuous())
-  {
-    // Build the relevant parametric function to be integrated over the remaining parameters
-    const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), conditioningIndices_, conditioningValues_);
-    cdfValue = integrationAlgorithm_.integrate(kernel, Interval(getRange().getLowerBound(), point))[0] / std::exp(logNormalizationFactor_);
-  }
+/* Get the probability of an interval */
+Scalar PointConditionalDistribution::computeProbability(const Interval & interval) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeProbability(interval);
+
+  const UnsignedInteger dimension = getDimension();
+  if (interval.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", got " << interval.getDimension();
+
+  Scalar probability = 0.0;
+  const Interval intersection(interval.intersect(getRange()));
+  if (intersection.isEmpty())
+    probability = 0.0;
+  else if (intersection == getRange())
+    probability = 1.0;
   else
-    cdfValue = computeProbabilityDiscrete(Interval(getRange().getLowerBound(), point)) / std::exp(logNormalizationFactor_);
-  return SpecFunc::Clip01(cdfValue);
+  {
+    if (isContinuous())
+    {
+      // Build the relevant parametric function to be integrated over the remaining parameters
+      const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), conditioningIndices_, conditioningValues_);
+      probability = integrationAlgorithm_.integrate(kernel, intersection)[0] / std::exp(logNormalizationFactor_);
+    }
+    else
+      probability = computeProbabilityDiscrete(intersection) / std::exp(logNormalizationFactor_);
+  }
+  return SpecFunc::Clip01(probability);
 }
 
 /* Compute the quantile of the distribution */
