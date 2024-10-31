@@ -65,19 +65,24 @@ public:
    * use storage for it.
    */
   PersistentObject()
-    : p_name_(),
-      id_(0),
-      shadowedId_(id_),
-      studyVisible_(true)
   {}
 
   /** Copy constructor */
   PersistentObject(const PersistentObject & other)
-    : p_name_(other.p_name_),
-      id_(0),
-      shadowedId_(other.shadowedId_),
-      studyVisible_(other.studyVisible_)
+    : p_name_(other.p_name_)
+    , id_(0)
+    , shadowedId_(other.shadowedId_)
+    , studyVisible_(other.studyVisible_)
   {}
+
+  /** Move constructor */
+  PersistentObject(PersistentObject && other) noexcept
+      : p_name_(other.p_name_)
+      , id_(other.id_)
+      , shadowedId_(other.shadowedId_)
+      , studyVisible_(other.studyVisible_)
+    {
+    }
 
   /**
    * Virtual constructor
@@ -94,7 +99,7 @@ public:
   inline
   PersistentObject & operator =(const PersistentObject & other)
   {
-    if (this != &other)   // Other is NOT me, so I can assign it to me
+    if (this != &other)
     {
       p_name_ = other.p_name_;
       studyVisible_ = other.studyVisible_;
@@ -102,6 +107,17 @@ public:
     return *this;
   }
 
+  /** Move assignment */
+  inline
+  PersistentObject & operator=(PersistentObject && other) noexcept
+  {
+    if (this != &other)
+    {
+      p_name_ = other.p_name_;
+      studyVisible_ = other.studyVisible_;
+    }
+    return *this;
+  }
 
   /**
    * Comparison operator
@@ -299,7 +315,7 @@ private:
    * because it allows the chaining of objects even if they are
    * relocated.
    */
-  mutable Id id_;
+  mutable Id id_ = 0;
 
   /**
    * The shadowed id is used when object is reloaded. The object gets
@@ -311,14 +327,14 @@ private:
    * is never seen except by the object factory.
    * @internal
    */
-  mutable Id shadowedId_;
+  mutable Id shadowedId_ = 0;
 
   /**
    * This flag is used by the Study to know if the object should be displayed
    * even if it had been added to the study (in particular, when the object
    * was rebuild from file)
    */
-  Bool studyVisible_;
+  Bool studyVisible_ = true;
 
 }; /* class PersistentObject */
 
