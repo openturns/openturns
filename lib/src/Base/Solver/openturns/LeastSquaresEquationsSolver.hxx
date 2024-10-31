@@ -55,6 +55,10 @@ public:
   using SolverImplementation::solve;
   Point solve(const Function & function,
               const Point & startingPoint) const override;
+  Point solve(const Function & function,
+              const Point & startingPoint,
+              const Interval & bounds) const override;
+
 
 private:
 

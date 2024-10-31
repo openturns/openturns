@@ -94,6 +94,11 @@ public:
   virtual Point solve(const Function & function,
                       const Point & startingPoint) const;
 
+  /** Solve attempt to find one root to a system of equations function(x) = 0 given a starting point x_0 and bounds */
+  virtual Point solve(const Function & function,
+                      const Point & startingPoint,
+                      const Interval & bounds) const;
+
   /** Absolute error accessor */
   void setAbsoluteError(const Scalar absoluteError);
   Scalar getAbsoluteError() const;

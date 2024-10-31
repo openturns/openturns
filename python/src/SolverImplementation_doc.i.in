@@ -184,6 +184,10 @@ infValue, supValue : float, optional
     The values such that :math:`infValue = function(infPoint)`,
     and :math:`supValue = function(supPoint)`.
     :math:`infValue` must be of opposite sign of :math:`supValue`.
+startingPoint : sequence of float
+    Starting point for solving a system of (non linear) equations.
+bounds : :class:`~openturns.Interval`
+    Bounds for searching the solution of the system of equations.
 
 Returns
 -------

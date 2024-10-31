@@ -62,6 +62,8 @@ function : :class:`~openturns.Function`
     The vectorial function of the system of equations :math:`function_i(x) = 0 \forall i \in {1,...,n}` to be solved. Remark that it is an unbounded resolution.
 startingPoint : sequence of floats
     The starting point of the optimization algorithm.
+bounds : :class:`~openturns.Interval`
+    Bounds for searching the solution of the system of equations.
 
 Returns
 -------

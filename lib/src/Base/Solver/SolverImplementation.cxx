@@ -221,6 +221,14 @@ Scalar SolverImplementation::solve(const UniVariateFunction &,
 Point SolverImplementation::solve(const Function &,
                                   const Point &) const
 {
-  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point)";
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &)";
 }
+
+  Point SolverImplementation::solve(const Function &,
+                                    const Point &,
+                                    const Interval &) const
+{
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &, const Interval&)";
+}
+
 END_NAMESPACE_OPENTURNS

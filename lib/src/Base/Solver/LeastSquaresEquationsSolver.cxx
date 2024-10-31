@@ -24,8 +24,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Log.hxx"
-
-#include <cmath>
 #include "openturns/PersistentObjectFactory.hxx"
 
 
@@ -66,8 +64,8 @@ String LeastSquaresEquationsSolver::__repr__() const
   return oss;
 }
 
-/* Solve attempt to find one root to the system of non-linear equations function(x) = 0 given a starting point x with a least square optimization method.
-   The Least Square Optimization method is based on the DLib implementation in OpenTurns.
+/* Solve attempt to find one root to the system of non-linear equations function(x) = 0
+   given a starting point x with a least square optimization method.
 */
 Point LeastSquaresEquationsSolver::solve(const Function & function,
                                          const Point & startingPoint) const
@@ -84,6 +82,35 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
   lsqAlgorithm.setMaximumAbsoluteError(absoluteError);
   lsqAlgorithm.setMaximumRelativeError(relativeError);
   lsqAlgorithm.setMaximumResidualError(residualError); 
+  lsqAlgorithm.run();
+  callsNumber = lsqAlgorithm.getResult().getCallsNumber();
+  callsNumber_ = callsNumber;
+  const Point min_value_obtained = lsqAlgorithm.getResult().getOptimalValue();
+  if (  residualError < min_value_obtained[0]) throw InternalException(HERE) << "Error: solver did not find a solution that satisfies the threshold, here obtained residual=" << min_value_obtained[0];
+  const Point result = lsqAlgorithm.getResult().getOptimalPoint();
+  return result;
+}
+
+/* Solve attempt to find one root to the system of non-linear equations function(x) = 0
+   given a starting point x with a least square optimization method.
+*/
+Point LeastSquaresEquationsSolver::solve(const Function & function,
+                                         const Point & startingPoint,
+                                         const Interval & bounds) const
+{
+  UnsignedInteger callsNumber = 0;
+  const UnsignedInteger maximumCallsNumber = getMaximumCallsNumber();
+  const Scalar absoluteError = getAbsoluteError();
+  const Scalar relativeError = getRelativeError();
+  const Scalar residualError = getResidualError();
+  LeastSquaresProblem lsqProblem(function);
+  lsqProblem.setBounds(bounds);
+  OptimizationAlgorithm lsqAlgorithm = OptimizationAlgorithm().Build(lsqProblem);
+  lsqAlgorithm.setStartingPoint(startingPoint);
+  lsqAlgorithm.setMaximumCallsNumber(maximumCallsNumber);
+  lsqAlgorithm.setMaximumAbsoluteError(absoluteError);
+  lsqAlgorithm.setMaximumRelativeError(relativeError);
+  lsqAlgorithm.setMaximumResidualError(residualError);
   lsqAlgorithm.run();
   callsNumber = lsqAlgorithm.getResult().getCallsNumber();
   callsNumber_ = callsNumber;
