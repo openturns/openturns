@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/SolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -59,8 +60,20 @@ public:
               const Point & startingPoint,
               const Interval & bounds) const override;
 
+  /** optimization accessors */
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm);
+
+  /** save/load */
+  void save(Advocate & adv) const override;
+  void load(Advocate & adv) override;
 
 private:
+  /** Flag to tell to use the default available optimizer */
+  Bool useDefaultOptimizationAlgorithm_ = true;
+
+  /** optimization algorithm */
+  OptimizationAlgorithm algorithm_;
 
 }; /* Class LeastSquaresEquationsSolver */
 

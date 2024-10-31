@@ -74,3 +74,25 @@ Notes
 -----
 LeastSquaresEquationsSolver might fail and not obtain a result lower than the
 specified threshold, in this case an error is thrown."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresEquationsSolver::getOptimizationAlgorithm
+"Get the used algorithm for the optimization.
+
+Returns
+-------
+algorithm : :class:`~openturns.OptimizationAlgorithm`
+    The used optimization algorithm.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresEquationsSolver::setOptimizationAlgorithm
+"Set the used algorithm for the optimization.
+
+Parameters
+----------
+algorithm : :class:`~openturns.OptimizationAlgorithm`
+    The optimization algorithm to be used.
+"

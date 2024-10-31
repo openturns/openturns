@@ -64,6 +64,17 @@ String LeastSquaresEquationsSolver::__repr__() const
   return oss;
 }
 
+void LeastSquaresEquationsSolver::setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm)
+{
+  useDefaultOptimizationAlgorithm_ = false;
+  algorithm_ = algorithm;
+}
+
+OptimizationAlgorithm LeastSquaresEquationsSolver::getOptimizationAlgorithm() const
+{
+  return algorithm_;
+}
+
 /* Solve attempt to find one root to the system of non-linear equations function(x) = 0
    given a starting point x with a least square optimization method.
 */
@@ -76,7 +87,11 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
   const Scalar relativeError = getRelativeError();
   const Scalar residualError = getResidualError();
   LeastSquaresProblem lsqProblem(function);
-  OptimizationAlgorithm lsqAlgorithm = OptimizationAlgorithm().Build(lsqProblem);
+  OptimizationAlgorithm lsqAlgorithm;
+  if (useDefaultOptimizationAlgorithm_)
+    lsqAlgorithm = OptimizationAlgorithm().Build(lsqProblem);
+  else
+    lsqAlgorithm = algorithm_;
   lsqAlgorithm.setStartingPoint(startingPoint);
   lsqAlgorithm.setMaximumCallsNumber(maximumCallsNumber);
   lsqAlgorithm.setMaximumAbsoluteError(absoluteError);
@@ -105,7 +120,11 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
   const Scalar residualError = getResidualError();
   LeastSquaresProblem lsqProblem(function);
   lsqProblem.setBounds(bounds);
-  OptimizationAlgorithm lsqAlgorithm = OptimizationAlgorithm().Build(lsqProblem);
+  OptimizationAlgorithm lsqAlgorithm;
+  if (useDefaultOptimizationAlgorithm_)
+    lsqAlgorithm = OptimizationAlgorithm().Build(lsqProblem);
+  else
+    lsqAlgorithm = algorithm_;
   lsqAlgorithm.setStartingPoint(startingPoint);
   lsqAlgorithm.setMaximumCallsNumber(maximumCallsNumber);
   lsqAlgorithm.setMaximumAbsoluteError(absoluteError);
@@ -118,6 +137,22 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
   if (  residualError < min_value_obtained[0]) throw InternalException(HERE) << "Error: solver did not find a solution that satisfies the threshold, here obtained residual=" << min_value_obtained[0];
   const Point result = lsqAlgorithm.getResult().getOptimalPoint();
   return result;
+}
+
+/* Method save() stores the object through the StorageManager */
+void LeastSquaresEquationsSolver::save(Advocate & adv) const
+{
+  SolverImplementation::save(adv);
+  adv.saveAttribute( "useDefaultOptimizationAlgorithm_", useDefaultOptimizationAlgorithm_ );
+  adv.saveAttribute( "algorithm_", algorithm_ );
+}
+
+/* Method load() reloads the object from the StorageManager */
+void LeastSquaresEquationsSolver::load(Advocate & adv)
+{
+  SolverImplementation::load(adv);
+  adv.loadAttribute( "useDefaultOptimizationAlgorithm_", useDefaultOptimizationAlgorithm_ );
+  adv.loadAttribute( "algorithm_", algorithm_ );
 }
 
 END_NAMESPACE_OPENTURNS
