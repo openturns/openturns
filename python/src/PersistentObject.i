@@ -5,6 +5,7 @@
 %}
 
 %ignore OT::PersistentObject::operator=(const PersistentObject &);
+%ignore OT::PersistentObject::operator=(PersistentObject &&);
 %ignore OT::PersistentObject::is;
 %ignore OT::PersistentObject::getShadowedId;
 %ignore OT::PersistentObject::setShadowedId;
