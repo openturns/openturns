@@ -64,14 +64,6 @@ public:
   /** Constructor with implementation */
   HermitianMatrix(const Implementation & i);
 
-#ifndef SWIG
-  /** Copy constructor, added to solve glitches with inheritance */
-  HermitianMatrix(const HermitianMatrix & other);
-
-  /** Assignment operator */
-  HermitianMatrix & operator=(const HermitianMatrix & rhs);
-#endif
-
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -179,7 +171,7 @@ public:
 private:
 
   /** Check if one needs to symmetrized the internal representation of the tensor */
-  mutable Bool hasBeenHermitianized_;
+  mutable Bool hasBeenHermitianized_ = false;
 
 }
 

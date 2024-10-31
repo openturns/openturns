@@ -32,7 +32,6 @@ CLASSNAMEINIT(HermitianMatrix)
 /* Default constructor */
 HermitianMatrix::HermitianMatrix()
   : SquareComplexMatrix(0)
-  , hasBeenHermitianized_(false)
 {
   // Nothing to do
 }
@@ -41,7 +40,6 @@ HermitianMatrix::HermitianMatrix()
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 HermitianMatrix::HermitianMatrix(const UnsignedInteger dimension)
   : SquareComplexMatrix(dimension, dimension)
-  , hasBeenHermitianized_(false)
 {
   // Nothing to do
 }
@@ -50,28 +48,8 @@ HermitianMatrix::HermitianMatrix(const UnsignedInteger dimension)
 /* Constructor with implementation */
 HermitianMatrix::HermitianMatrix(const Implementation & i)
   : SquareComplexMatrix(i)
-  , hasBeenHermitianized_(false)
 {
   // Nothing to do
-}
-
-/* Copy constructor, added to solve glitches with inheritance */
-HermitianMatrix::HermitianMatrix(const HermitianMatrix & h)
-  : SquareComplexMatrix(static_cast<const SquareComplexMatrix &>(h))
-  , hasBeenHermitianized_(false)
-{
-  // Nothing to do
-}
-
-/* Assignment operator */
-HermitianMatrix & HermitianMatrix::operator=(const HermitianMatrix & rhs)
-{
-  if (this != &rhs)
-  {
-    SquareComplexMatrix::operator=(rhs);
-    hasBeenHermitianized_ = rhs.hasBeenHermitianized_;
-  }
-  return *this;
 }
 
 /* String converter */
