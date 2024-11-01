@@ -100,6 +100,14 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+protected:
+  /** For efficient computation of graph values */
+  Sample computePDFGrid2D(const Sample & x, const Sample & y) const override;
+  Sample computeLogPDFGrid2D(const Sample & x, const Sample & y) const override;
+  Sample computeCDFGrid2D(const Sample & x, const Sample & y) const override;
+  Sample computeCDFMarginalGrid2D(const Sample & x, const Sample & y) const;
+public:
+
   /** Get the logarithm of the PDF of the JointDistribution */
   using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
