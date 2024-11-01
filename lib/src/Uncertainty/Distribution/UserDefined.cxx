@@ -406,6 +406,51 @@ void UserDefined::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
+/* Compute the Spearman correlation of the distribution */
+CorrelationMatrix UserDefined::getSpearmanCorrelation() const
+{
+  const UnsignedInteger size = points_.getSize();
+  const UnsignedInteger dimension = getDimension();
+  Sample rank(size, dimension);
+  // Build the correct weighted ranks and compute its mean along the way
+  Point meanRank(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const Distribution marginalI(getMarginal(i));
+      for (UnsignedInteger k = 0; k < size; ++k)
+	{
+	  rank(k, i) = marginalI.computeCDF(points_(k, i));
+	  meanRank[i] += probabilities_[k] * rank(k, i);
+	} // k
+  } // i
+  // Then, the covariance of the rank
+  CorrelationMatrix spearman(dimension);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const Point xK(rank[k] - meanRank);
+    const Scalar pK = probabilities_[k];
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        spearman(i, j) += pK * xK[i] * xK[j];
+  }  // k
+  // Then, the correlation
+  Point std(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      std[i] = std::sqrt(spearman(i, i));
+      for (UnsignedInteger j = 0; j < i; ++j)
+	spearman(i, j) /= std[i] * std[j];
+      spearman(i, i) = 1.0;
+    }
+  return spearman;
+}
+
+/* Compute the Kendall concordance of the distribution */
+CorrelationMatrix UserDefined::getKendallTau() const
+{
+  return DistributionImplementation::getKendallTau();
+}
+
 /* Parameters value and description accessor */
 UserDefined::PointWithDescriptionCollection UserDefined::getParametersCollection() const
 {
