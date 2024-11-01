@@ -53,6 +53,13 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  /** Roots of the polynomial of degree n */
+  Point getRoots(const UnsignedInteger n) const override;
+
+  /** Nodes and weights of the polynomial of degree n */
+  Point getNodesAndWeights(const UnsignedInteger n,
+                           Point & weightsOut) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
