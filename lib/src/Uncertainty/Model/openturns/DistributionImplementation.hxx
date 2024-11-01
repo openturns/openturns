@@ -179,6 +179,11 @@ public:
 protected:
   virtual Sample computePDFSequential(const Sample & sample) const;
   virtual Sample computePDFParallel(const Sample & sample) const;
+
+  /** For efficient computation of graph values */
+  virtual Sample computePDFGrid2D(const Sample & x, const Sample & y) const;
+  virtual Sample computeLogPDFGrid2D(const Sample & x, const Sample & y) const;
+  virtual Sample computeCDFGrid2D(const Sample & x, const Sample & y) const;
 public:
 
   virtual Scalar computeLogPDF(const Scalar scalar) const;
