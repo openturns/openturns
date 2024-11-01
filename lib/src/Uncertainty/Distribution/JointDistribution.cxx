@@ -514,6 +514,112 @@ Scalar JointDistribution::computePDF(const Point & point) const
   return productPDF;
 }
 
+Sample JointDistribution::computeCDFMarginalGrid2D(const Sample & x, const Sample & y) const
+{
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  Sample uSample(nX * nY, 2);
+  const Distribution mX(getMarginal(0));
+  const Distribution mY(getMarginal(1));
+  Sample cdfX(CDFWrapper(mX.getImplementation().get())(x));
+  Sample cdfY(CDFWrapper(mY.getImplementation().get())(y));
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar uY = cdfY(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar uX = cdfX(i, 0);
+      uSample(index, 0) = uX;
+      uSample(index, 1) = uY;
+      ++ index;
+    } // i
+  } // j
+  return uSample;
+}
+
+Sample JointDistribution::computePDFGrid2D(const Sample & x, const Sample & y) const
+{
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  const Distribution mX(getMarginal(0));
+  const Distribution mY(getMarginal(1));
+  Sample pdfX(PDFWrapper(mX.getImplementation().get())(x));
+  Sample pdfY(PDFWrapper(mY.getImplementation().get())(y));
+  const Sample uSample(computeCDFMarginalGrid2D(x, y));
+  const Sample corePDF(core_.computePDF(uSample));
+  UnsignedInteger index = 0;
+  Sample jointPDF(nX * nY, 1);
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar pY = pdfY(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar pX = pdfX(i, 0);
+      jointPDF(index, 0) = corePDF(index, 0) * pX * pY;
+      ++ index;
+    } // i
+  } // j
+  return jointPDF;
+}
+
+Sample JointDistribution::computeLogPDFGrid2D(const Sample & x, const Sample & y) const
+{
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  const Distribution mX(getMarginal(0));
+  const Distribution mY(getMarginal(1));
+  Sample pdfX(LogPDFWrapper(mX.getImplementation().get())(x));
+  Sample pdfY(LogPDFWrapper(mY.getImplementation().get())(y));
+  const Sample uSample(computeCDFMarginalGrid2D(x, y));
+  const Sample coreLogPDF(core_.computeLogPDF(uSample));
+  UnsignedInteger index = 0;
+  Sample jointLogPDF(nX * nY, 1);
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar pY = pdfY(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar pX = pdfX(i, 0);
+      jointLogPDF(index, 0) = coreLogPDF(index, 0) + pX + pY;
+      ++ index;
+    } // i
+  } // j
+  return jointLogPDF;
+}
+
+Sample JointDistribution::computeCDFGrid2D(const Sample & x, const Sample & y) const
+{
+  if (!hasIndependentCopula())
+  {
+    // general case
+    const Sample uSample(computeCDFMarginalGrid2D(x, y));
+    const Sample jointCDF(core_.computeCDF(uSample));
+    return jointCDF;
+  }
+
+  // independent case
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  const Distribution mX(getMarginal(0));
+  const Distribution mY(getMarginal(1));
+  Sample cdfX(CDFWrapper(mX.getImplementation().get())(x));
+  Sample cdfY(CDFWrapper(mY.getImplementation().get())(y));
+  Sample jointCDF(nX * nY, 1);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar pY = cdfY(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar pX = cdfX(i, 0);
+      jointCDF(index, 0) = pX * pY;
+      ++ index;
+    } // i
+  } // j
+  return jointCDF;
+}
+
 /* Get the logarithm of the PDF of the JointDistribution */
 Scalar JointDistribution::computeLogPDF(const Point & point) const
 {

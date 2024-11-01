@@ -77,6 +77,7 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -3819,6 +3820,66 @@ Graph DistributionImplementation::drawMarginal1DPDF(const UnsignedInteger margin
   return marginalGraph;
 }
 
+Sample DistributionImplementation::computePDFGrid2D(const Sample & x, const Sample & y) const
+{
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  Sample inputSample(nX * nY, 2);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar yJ = y(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar xI = x(i, 0);
+      inputSample(index, 0) = xI;
+      inputSample(index, 1) = yJ;
+      ++ index;
+    } // i
+  } // j
+  return PDFWrapper(this)(inputSample);
+}
+
+Sample DistributionImplementation::computeLogPDFGrid2D(const Sample & x, const Sample & y) const
+{
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  Sample inputSample(nX * nY, 2);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar yJ = y(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar xI = x(i, 0);
+      inputSample(index, 0) = xI;
+      inputSample(index, 1) = yJ;
+      ++ index;
+    } // i
+  } // j
+  return LogPDFWrapper(this)(inputSample);
+}
+
+Sample DistributionImplementation::computeCDFGrid2D(const Sample & x, const Sample & y) const
+{
+  const UnsignedInteger nX = x.getSize();
+  const UnsignedInteger nY = y.getSize();
+  Sample inputSample(nX * nY, 2);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < nY; ++ j)
+  {
+    const Scalar yJ = y(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++ i)
+    {
+      const Scalar xI = x(i, 0);
+      inputSample(index, 0) = xI;
+      inputSample(index, 1) = yJ;
+      ++ index;
+    } // i
+  } // j
+  return CDFWrapper(this)(inputSample);
+}
+
 /* Draw the PDF of the distribution when its dimension is 2 */
 Graph DistributionImplementation::drawPDF(const Point & xMin,
     const Point & xMax,
@@ -3831,10 +3892,17 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>((logScaleX ? 1 : 0) + (logScaleY ? 2 : 0));
   if (isContinuous())
   {
-    Graph graph(PDFWrapper(this).draw(xMin, xMax, pointNumber, scale));
-    graph.setXTitle(description_[0]);
-    graph.setYTitle(description_[1]);
-    graph.setTitle(String(OSS() << getDescription() << " iso-PDF"));
+    // retrieve x/y discretization from a dummy graph
+    const Drawable dummyDrawable(IdentityFunction(2).getMarginal(0).draw(xMin, xMax, pointNumber, scale).getDrawable(0));
+    const Contour *p_contour = dynamic_cast<Contour *>(dummyDrawable.getImplementation().get());
+    if (!p_contour) throw InternalException(HERE) << "Distribution.drawPDF: no contour at index 0";
+    const Sample x(p_contour->getX());
+    const Sample y(p_contour->getY());
+    const Sample z(computePDFGrid2D(x, y));
+    Contour isoValues(x, y, z);
+    isoValues.setDrawLabels(false);
+    Graph graph(getDescription()[0] + " iso-PDF", description_[0], description_[1], true, "upper left", 1.0, scale);
+    graph.add(isoValues);
     return graph;
   }
   if (isDiscrete())
@@ -4083,10 +4151,17 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>((logScaleX ? 1 : 0) + (logScaleY ? 2 : 0));
   if (isContinuous())
   {
-    Graph graph(LogPDFWrapper(this).draw(xMin, xMax, pointNumber, scale));
-    graph.setXTitle(description_[0]);
-    graph.setYTitle(description_[1]);
-    graph.setTitle(String(OSS() << getDescription() << " iso-LogPDF"));
+    // retrieve x/y discretization from a dummy graph
+    const Drawable dummyDrawable(IdentityFunction(2).getMarginal(0).draw(xMin, xMax, pointNumber, scale).getDrawable(0));
+    const Contour *p_contour = dynamic_cast<Contour *>(dummyDrawable.getImplementation().get());
+    if (!p_contour) throw InternalException(HERE) << "Distribution.drawLogPDF: no contour at index 0";
+    const Sample x(p_contour->getX());
+    const Sample y(p_contour->getY());
+    const Sample z(computeLogPDFGrid2D(x, y));
+    Contour isoValues(x, y, z);
+    isoValues.setDrawLabels(false);
+    Graph graph(getDescription()[0] + " iso-LogPDF", description_[0], description_[1], true, "upper left", 1.0, scale);
+    graph.add(isoValues);
     return graph;
   }
   if (isDiscrete())
@@ -4348,10 +4423,17 @@ Graph DistributionImplementation::drawCDF(const Point & xMin,
   if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected pointNumber to be of size 2, here size=" << pointNumber.getSize();
   if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>((logScaleX ? 1 : 0) + (logScaleY ? 2 : 0));
-  Graph graph(CDFWrapper(this).draw(xMin, xMax, pointNumber, scale));
-  graph.setXTitle(description_[0]);
-  graph.setYTitle(description_[1]);
-  graph.setTitle(String(OSS() << getDescription() << " iso-CDF"));
+  // retrieve x/y discretization from a dummy graph
+  const Drawable dummyDrawable(IdentityFunction(2).getMarginal(0).draw(xMin, xMax, pointNumber, scale).getDrawable(0));
+  const Contour *p_contour = dynamic_cast<Contour *>(dummyDrawable.getImplementation().get());
+  if (!p_contour) throw InternalException(HERE) << "Distribution.drawPDF: no contour at index 0";
+  const Sample x(p_contour->getX());
+  const Sample y(p_contour->getY());
+  const Sample z(computeCDFGrid2D(x, y));
+  Contour isoValues(x, y, z);
+  isoValues.setDrawLabels(false);
+  Graph graph(getDescription()[0] + " iso-CDF", description_[0], description_[1], true, "upper left", 1.0, scale);
+  graph.add(isoValues);
   return graph;
 }
 
