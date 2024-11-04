@@ -4,13 +4,6 @@ Use case : the Chaboche mechanical model
 """
 
 import openturns as ot
-import math as m
-
-
-def g(X):
-    strain, R, C, gamma = X
-    stress = R - C * m.expm1(-gamma * strain) / gamma
-    return [stress]
 
 
 class ChabocheModel:
@@ -55,7 +48,7 @@ class ChabocheModel:
     inputDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
-    model : :class:`~openturns.PythonFunction`
+    model : :class:`~openturns.Function`
         The Chaboche mechanical law.
         The model has input dimension 4 and output dimension 1.
         More precisely, we have :math:`\vect{X} = (\epsilon, R,
@@ -119,9 +112,8 @@ class ChabocheModel:
             [self.Strain, self.R, self.C, self.Gamma]
         )
 
-        self.model = ot.PythonFunction(4, 1, g)
-        self.model.setInputDescription(["Strain", "R", "C", "Gamma"])
-        self.model.setOutputDescription(["Sigma"])
+        self.model = ot.SymbolicFunction(["Strain", "R", "C", "Gamma"], ["R - C * expm1(-Gamma * Strain) / Gamma"])
+        self.model.setOutputDescription(["Stress"])
 
         self.data = ot.Sample(
             [
