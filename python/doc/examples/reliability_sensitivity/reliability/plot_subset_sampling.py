@@ -35,7 +35,7 @@ Subset Sampling
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # %%
 # Create the probabilistic model :math:`Y = g(X)`
@@ -43,47 +43,35 @@ from openturns.viewer import View
 
 # %%
 # Create the input random vector :math:`X`:
-
-# %%
 X = ot.RandomVector(ot.Normal([0.25] * 2, [1] * 2, ot.IdentityMatrix(2)))
 
 # %%
 # Create the function :math:`g`:
-
-# %%
 g = ot.SymbolicFunction(["x1", "x2"], ["20-(x1-x2)^2-8*(x1+x2-4)^3"])
 print("function g: ", g)
 
 # %%
 # Create the output random vector :math:`Y = g(X)`:
-
-# %%
 Y = ot.CompositeRandomVector(g, X)
 
 # %%
 # Create the event :math:`\{ Y = g(X) \leq 0 \}`
 # ----------------------------------------------
-
-# %%
-myEvent = ot.ThresholdEvent(Y, ot.LessOrEqual(), 0.0)
+event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 
 # %%
 # Evaluate the probability with the subset sampling technique
 # -----------------------------------------------------------
 
 # %%
-algo = ot.SubsetSampling(myEvent)
+algo = ot.SubsetSampling(event)
 
 # %%
 # In order to get all the inputs and outputs that realize the event, you have to mention it now:
-
-# %%
 algo.setKeepSample(True)
 
 # %%
 # Now you can run the algorithm!
-
-# %%
 algo.run()
 
 # %%
@@ -94,15 +82,11 @@ print("Current coefficient of variation = ", result.getCoefficientOfVariation())
 
 # %%
 # The length of the confidence interval of level :math:`95\%` is:
-
-# %%
 length95 = result.getConfidenceLength()
 print("Confidence length (0.95) = ", result.getConfidenceLength())
 
 # %%
 # which enables to build the confidence interval:
-
-# %%
 print(
     "Confidence interval (0.95) = [",
     proba - length95 / 2,
@@ -113,8 +97,6 @@ print(
 
 # %%
 # You can also get the successive thresholds used by the algorithm:
-
-# %%
 levels = algo.getThresholdPerStep()
 print("Levels of g = ", levels)
 
@@ -135,8 +117,6 @@ for step in range(Ns):
 
 # %%
 # The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
-
-# %%
 graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
@@ -147,45 +127,39 @@ graph.setLegendPosition("lower left")
 
 # %%
 # Add all the subset samples:
-
-# %%
 for i in range(Ns):
     cloud = ot.Cloud(list_subSamples[i])
-    # cloud.setPointStyle("dot")
+    cloud.setPointStyle("dot")
     graph.add(cloud)
 
 # %%
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
-
-# %%
 gIsoLines = g.draw([-3] * 2, [5] * 2, [128] * 2)
 dr = gIsoLines.getDrawable(0)
+dr.setColor("black")
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
-    dr.setLineStyle("solid")
     dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
-    dr.setLineWidth(3)
     graph.add(dr)
 
 # %%
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Draw the frontiers only
 # -----------------------
-#
-# The following graph enables to understand the progression of the algorithm:
 
 # %%
+# The following graph enables to understand the progression of the algorithm:
 graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
+colors = ot.Drawable().BuildDefaultPalette(len(levels))
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
-    dr.setLineStyle("solid")
     dr.setLegend(r"$g(X) = $" + str(round(levels[i], 2)))
-    dr.setLineWidth(3)
+    dr.setColor(colors[i])
     graph.add(dr)
 
 graph.setLegendPosition("lower left")
@@ -193,14 +167,14 @@ graph.setTitle("Subset sampling: thresholds")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")
 
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Get all the input and output points that realized the event
 # -----------------------------------------------------------
-# The following lines are possible only if you have mentioned that you wanted to keep samples with the method *algo.setKeepSample(True)*
 
 # %%
+# The following lines are possible only if you have mentioned that you wanted to keep samples with the method *algo.setKeepSample(True)*
 select = ot.SubsetSampling.EVENT1  # points that realize the event
 step = Ns - 1  # get the working sample from last iteration
 inputEventSample = algo.getInputSample(step, select)
@@ -209,19 +183,18 @@ print("Number of event realizations = ", inputEventSample.getSize())
 
 # %%
 # Draw them! They are all in the event space.
-
-# %%
 graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 cloud = ot.Cloud(inputEventSample)
-cloud.setPointStyle("bullet")
+cloud.setPointStyle("dot")
 graph.add(cloud)
 gIsoLines = g.draw([-3] * 2, [5] * 2, [1000] * 2)
 dr = gIsoLines.getDrawable(0)
 dr.setLevels([0.0])
 dr.setColor("red")
 graph.add(dr)
-_ = View(graph)
+_ = otv.View(graph)
 
-View.ShowAll()
+# %%
+otv.View.ShowAll()
