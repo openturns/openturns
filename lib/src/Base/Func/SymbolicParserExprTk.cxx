@@ -228,15 +228,19 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
   symbol_table.add_function("besselY1", y1);
   for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
   {
-    if (!symbol_table.add_variable(inputVariablesNames_[inputIndex], stack[inputIndex]))
-      throw InvalidArgumentException(HERE) << "Invalid input variable: '"
-                                           << inputVariablesNames_[inputIndex] << "' at index: " << inputIndex;
+    const String varName(inputVariablesNames_[inputIndex]);
+    if (symbol_table.symbol_exists(varName))
+      throw InvalidArgumentException(HERE) << "Variable name '" << varName << "' clobbers an existing symbol";
+    if (!symbol_table.add_variable(varName, stack[inputIndex]))
+      throw InvalidArgumentException(HERE) << "Invalid input variable: '" << varName << "' at index: " << inputIndex;
   }
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
-    if (!symbol_table.add_variable(outputVariablesNames_[outputIndex], stack[inputDimension + outputIndex]))
-      throw InvalidArgumentException(HERE) << "Invalid output variable: '"
-                                           << outputVariablesNames_[outputIndex] << "' at index: " << outputIndex;
+    const String varName(outputVariablesNames_[outputIndex]);
+    if (symbol_table.symbol_exists(varName))
+      throw InvalidArgumentException(HERE) << "Variable name '" << varName << "' clobbers an existing symbol";
+    if (!symbol_table.add_variable(varName, stack[inputDimension + outputIndex]))
+      throw InvalidArgumentException(HERE) << "Invalid output variable: '" << varName << "' at index: " << outputIndex;
   }
   exprtk::parser<Scalar> parser;
   parser.settings().set_max_stack_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth"));
