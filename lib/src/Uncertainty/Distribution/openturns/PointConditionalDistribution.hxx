@@ -210,9 +210,10 @@ private:
   Scalar logNormalizationFactor_ = 0.0;
 
   // for ratio of uniforms method
-  mutable Scalar supU_ = 0.0;
-  mutable Point infV_;
-  mutable Point supV_;
+  Scalar r_ = 1.0;
+  Scalar supU_ = 0.0;
+  Point infV_;
+  Point supV_;
 
   // for discrete sampling using alias method
   Point base_;
