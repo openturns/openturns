@@ -28,7 +28,7 @@ reliability analysis.
 - 2021: (1.17, 1.18) Karhunen-Loeve validation, new covariance models
 - 2022: (1.19, 1.20) HSIC indices, iterative statistics, field chaos/sensitivity
 - 2023: (1.21, 1.22) Cross-Entropy simulation algorithms, Uniform/TruncatedOverMesh distributions
-- 2024: (1.23, 1.24) New GP API, conditional PCE, rank-based Sobol', point-conditional distribution, GEV/GPD services, Cuba integration
+- 2024: (1.23, 1.24) New GP API, conditional PCE, rank-based Sobol', point-conditional distribution, GEV/GPD services, Cuba
 
 People
 ------
