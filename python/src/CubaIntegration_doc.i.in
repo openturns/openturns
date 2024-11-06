@@ -108,7 +108,7 @@ maximumAbsoluteError : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::integration::getAlgorithmName
+%feature("docstring") OT::CubaIntegration::getAlgorithmName
 "Accessor to the name of the integration routine to be used.
 
 Returns
