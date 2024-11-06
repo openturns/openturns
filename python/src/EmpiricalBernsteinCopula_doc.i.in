@@ -1,32 +1,78 @@
 %feature("docstring") OT::EmpiricalBernsteinCopula
-"EmpiricalBernstein copula.
+"Bernstein interpolant based on the empirical copula.
 
 Parameters
 ----------
 sample : :class:`~openturns.Sample`
-    The sample of size :math:`N>0` and dimension :math:`d` from which the empirical copula sample is extracted.
+    A sample of size :math:`\sampleSize>0` and dimension :math:`d`.
     
     Default value is [[0.0], [0.0]].
-binNumber : int, :math:`0<binNumber\leq N`
-    The number of cells into which each dimension of the unit cube :math:`[0, 1]^d` is divided to cluster the empirical copula sample.
+m : int, :math:`0 < m \leq \sampleSize`
+    The number of sub-intervals in which all the edges of the unit cube
+    :math:`[0, 1]^d` are regularly partitioned.
     
     Default value is 1.
-isCopulaSample : bool
-    Flag to tell if the given sample is already an empirical copula sample.
+isRankSample : bool
+    Flag to tell if the given sample is already a normalized rank sample.
     
     Default value is False.
 
 Notes
 -----
-The empirical Bernstein copula is a copula based on the Bernstein approximation built upon a clustering of the empirical copula. It is defined by:
+Let :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` a sample. Let :math:`m` be the bin number.
+
+Case 1: :math:`isRankSample == False`.
+
+In that case, if :math:`m|\sampleSize` is not verified, then a part of the sample is
+removed in order to get a new size :math:`\tilde{\sampleSize}` such that :math:`m|\tilde{\sampleSize}`. At most, :math:`m-1` points are removed from the initial sample. This condition guarantees that the Bernstein interpolant based on the empirical copula is really a copula.
+
+We still denote by  :math:`\sampleSize` the size of the sample used to create the Bernstein interpolant based on the empirical copula.
+
+Let :math:`(\vect{v}_1, \dots, \vect{v}_\sampleSize)` be the associated normalized rank sample defined  by:
 
 .. math::
 
-    C(\vect{u}) = \dfrac{1}{N}\sum_{i=1}^N\prod_{j=1}^d I_{r_j^i,s_j^i}(u_j)
+     \vect{v}_i = \dfrac{1}{\sampleSize} rank(\inputReal_i)
 
-for :math:`\vect{u}\in[0,1]^d`, where :math:`r_j^i=\lceil binNumber U_j^i \rceil`, :math:`binNumber - r_j^i + 1`, :math:`(\vect{U}_i)_{i=1,\dots,N}` is the empirical copula sample associated to *sample* and :math:`I_{a,b}(x)` is the value of the regularized incomplete beta function of parameters :math:`a` and :math:`b` at :math:`x`, see :meth:`~openturns.SpecFunc.RegularizedIncompleteBeta`.
+for all :math:`1 \leq i \leq \sampleSize` where the rank of a vector is the vector of the rank of the components.
 
-This construction leads to an actual copula if and only if :math:`N` is a multiple of :math:`binNumber`. If it is not the case, the last points of the sample are dropped in order to fulfill this condition.
+Let :math:`r_i^j` and :math:`s_i^j` defined by:
+
+.. math::
+
+     r_i^j & = \lfloor m v_i^j \rfloor \\
+     s_i^j & = m-r_i^j+1
+
+for all :math:`1 \leq i \leq \sampleSize` and :math:`1 \leq j \leq d` and where :math:`\lfloor x \rfloor` is
+the largest integer less than or equal to :math:`x`.
+
+Let :math:`B(r_i^j , s_i^j, 0, 1)` be a
+:class:`~openturns.Beta` distribution defined on :math:`[0,1]` parametrized by the shape parameters :math:`r_i^j` and
+:math:`s_i^j`. We denote by :math:`F_{B(r_i^j, s_i^j, 0, 1)}` its cumulated distribution function.
+
+Then the Bernstein interpolant based on the empirical copula is defined by:
+
+.. math::
+    :label: defEmpCopBernstein
+
+    C(\vect{u}) = \dfrac{1}{\sampleSize}\sum_{i=1}^\sampleSize\prod_{j=1}^d F_{B(r_i^j, s_i^j, 0, 1)}(u^j)
+
+for :math:`\vect{u}\in[0,1]^d`.
+
+Case 2: :math:`isRankSample == True`.
+
+In that case, the given sample is assumed to be already a normalized rank sample.
+Even if the bin number :math:`m` does not divide :math:`\sampleSize`, the whole sample is used. The
+Bernstein interpolant based on the empirical copula is still defined by :eq:`defEmpCopBernstein` where :math:`r_i^j`
+and :math:`s_i^j` are computed on the initial sample:
+
+.. math::
+
+     r_i^j & = \lfloor m x_i^j \rfloor \\
+     s_i^j & = m-r_i^j+1
+
+If the condition :math:`m|N` is not verified, then :math:`C` is no longer a copula but still a valid core,
+i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
 
 See also
 --------
@@ -37,11 +83,11 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> copula = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(10), 2, False)
+>>> empBernsteinCop = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(10), 2, False)
 
 Draw a sample:
 
->>> sample = copula.getSample(5)"
+>>> sample = empBernsteinCop.getSample(5)"
 
 // ---------------------------------------------------------------------
 
@@ -51,36 +97,40 @@ Draw a sample:
 Returns
 -------
 sample : :class:`~openturns.Sample`
-    The empirical copula sample of the copula."
+    The empirical copula sample."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::EmpiricalBernsteinCopula::setCopulaSample
-"Set the sample of the copula.
+"Set the sample.
 
 Parameters
 ----------
 sample : 2-d sequence of float
     The sample from which the empirical copula sample is deduced.
-isEmpiricalCopulaSample : bool
-    Flag telling if the given sample is already an empirical copula sample. The default value is *False*."
+isRankSample : bool
+    Flag telling if the given sample is already a normalized rank sample.
+    
+    Default value is *False*."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::EmpiricalBernsteinCopula::getBinNumber
-"Get the bin number of the copula.
+"Get the bin number :math:`m`.
 
 Returns
 -------
-binNumber : int
-    The bin number of the copula."
+m : int, :math:`0 < m \leq \sampleSize`
+    The number of sub-intervals in which all the edges of the unit cube
+    :math:`[0, 1]^d` are regularly partitioned."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::EmpiricalBernsteinCopula::setBinNumber
-"Set the bin number of the copula.
+"Set the bin number :math:`m`.
 
 Parameters
 ----------
-binNumber : int
-    The bin number of the copula. It must be positive and not greater than the copula sample size."
+m : int, :math:`0 < m \leq \sampleSize`
+    The number of sub-intervals in which all the edges of the unit cube
+    :math:`[0, 1]^d` are regularly partitioned."
