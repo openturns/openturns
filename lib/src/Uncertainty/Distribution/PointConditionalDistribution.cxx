@@ -301,6 +301,17 @@ void PointConditionalDistribution::update()
       }
     }
   }
+
+  // cache reordered marginals
+  Indices indices(conditioningIndices_);
+  indices.add(nonConditioningIndices_); // initialized in update()
+  reorderedDistribution_ = distribution_.getMarginal(indices);
+
+  // cache qI
+  Point x(conditioningValues_);
+  x.add(getRange().getLowerBound());
+  conditioningCDF_ = reorderedDistribution_.computeSequentialConditionalCDF(x);
+  conditioningCDF_.resize(conditioningIndices_.getSize());
 }
 
 
@@ -726,7 +737,9 @@ Scalar PointConditionalDistribution::computeConditionalPDF(const Scalar x, const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeConditionalPDF(x, y);
 
-  return DistributionImplementation::computeConditionalPDF(x, y);
+  Point xCond(conditioningValues_);
+  xCond.add(y);
+  return reorderedDistribution_.computeConditionalPDF(x, xCond);
 }
 
 Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point & x) const
@@ -734,7 +747,11 @@ Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point 
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeSequentialConditionalPDF(x);
 
-  return DistributionImplementation::computeSequentialConditionalPDF(x);
+  Point xCond(conditioningValues_);
+  xCond.add(x);
+  Point result(reorderedDistribution_.computeSequentialConditionalPDF(xCond));
+  result.erase(result.begin(), result.begin() + conditioningIndices_.getSize());
+  return result;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -743,15 +760,21 @@ Scalar PointConditionalDistribution::computeConditionalCDF(const Scalar x, const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeConditionalCDF(x, y);
 
-  return DistributionImplementation::computeConditionalCDF(x, y);
+  Point xCond(conditioningValues_);
+  xCond.add(y);
+  return reorderedDistribution_.computeConditionalCDF(x, xCond);
 }
 
-Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point & x) const
+Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point & y) const
 {
   if (useSimplifiedVersion_)
-    return simplifiedVersion_.computeSequentialConditionalCDF(x);
+    return simplifiedVersion_.computeSequentialConditionalCDF(y);
 
-  return DistributionImplementation::computeSequentialConditionalCDF(x);
+  Point xCond(conditioningValues_);
+  xCond.add(y);
+  Point result(reorderedDistribution_.computeSequentialConditionalCDF(xCond));
+  result.erase(result.begin(), result.begin() + conditioningIndices_.getSize());
+  return result;
 }
 
 Scalar PointConditionalDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
@@ -759,7 +782,9 @@ Scalar PointConditionalDistribution::computeConditionalQuantile(const Scalar q, 
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeConditionalQuantile(q, y);
 
-  return DistributionImplementation::computeConditionalQuantile(q, y);
+  Point xCond(conditioningValues_);
+  xCond.add(y);
+  return reorderedDistribution_.computeConditionalQuantile(q, xCond);
 }
 
 Point PointConditionalDistribution::computeSequentialConditionalQuantile(const Point & q) const
@@ -767,7 +792,11 @@ Point PointConditionalDistribution::computeSequentialConditionalQuantile(const P
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeSequentialConditionalQuantile(q);
 
-  return DistributionImplementation::computeSequentialConditionalQuantile(q);
+  Point qCond(conditioningCDF_);
+  qCond.add(q);
+  Point result(reorderedDistribution_.computeSequentialConditionalQuantile(qCond));
+  result.erase(result.begin(), result.begin() + conditioningIndices_.getSize());
+  return result;
 }
 
 Point PointConditionalDistribution::getConditioningValues() const
