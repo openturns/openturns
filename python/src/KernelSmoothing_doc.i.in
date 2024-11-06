@@ -562,7 +562,7 @@ binNumber : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KernelSmoothin::setBinNumber
+%feature("docstring") OT::KernelSmoothing::setBinNumber
 "Accessor to the bin number.
 
 Parameters
