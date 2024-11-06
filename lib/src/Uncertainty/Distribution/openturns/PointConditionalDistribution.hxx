@@ -208,6 +208,8 @@ private:
   Indices nonConditioningIndices_;
   Distribution marginalConditionedDistribution_;
   Scalar logNormalizationFactor_ = 0.0;
+  Distribution reorderedDistribution_;
+  Point conditioningCDF_;
 
   // for ratio of uniforms method
   Scalar r_ = 1.0;
