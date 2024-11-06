@@ -251,6 +251,56 @@ void PointConditionalDistribution::update()
     probabilities_ = computePDF(support_).getImplementation()->getData();
     DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
   }
+
+  // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
+  // r_ is a free parameter, could be optimized to maximize the acceptance ratio
+  const UnsignedInteger dimension = getDimension();
+  if (!useSimplifiedVersion_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension")))
+  {
+    const Interval bounds(getRange());
+    const Point lb(bounds.getLowerBound());
+    const Point ub(bounds.getUpperBound());
+    const Point middle(0.5 * (lb + ub));
+
+    // First, the upper bound on U
+    const Function objectiveU(new PointConditionalDistributionUBoundEvaluation(*this, r_));
+    OptimizationProblem problemU(objectiveU);
+    problemU.setMinimization(false);
+    problemU.setBounds(bounds);
+    OptimizationAlgorithm algo(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
+    algo.setProblem(problemU);
+    algo.setStartingPoint(middle);
+    algo.run();
+    supU_ = std::exp(algo.getResult().getOptimalValue()[0]);
+
+    // Second, the lower and upper bounds on V
+    const Function objectiveV(new PointConditionalDistributionVBoundEvaluation(*this, r_));
+    infV_.resize(dimension);
+    supV_.resize(dimension);
+    const Point zero(dimension, 0.0);
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      const Function objectiveVI(objectiveV.getMarginal(i));
+      OptimizationProblem problemVI(objectiveVI);
+      problemVI.setMinimization(false);
+      if (ub[i] > 0.0)
+      {
+        problemVI.setBounds(Interval(zero, ub));
+        algo.setProblem(problemVI);
+        algo.setStartingPoint(ub * 0.5);
+        algo.run();
+        supV_[i] = std::exp(algo.getResult().getOptimalValue()[0]);
+      }
+      if (lb[i] < 0.0)
+      {
+        problemVI.setBounds(Interval(lb, zero));
+        algo.setProblem(problemVI);
+        algo.setStartingPoint(lb * 0.5);
+        algo.run();
+        infV_[i] = -std::exp(algo.getResult().getOptimalValue()[0]);
+      }
+    }
+  }
 }
 
 
@@ -387,66 +437,16 @@ Point PointConditionalDistribution::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (isContinuous() && dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
   {
-    // the ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
-    // r is a free parameter, could be optimized to maximize the acceptance ratio
-    const Scalar r = 1.0;
-    if (infV_.getDimension() != dimension)
-    {
-      const Interval bounds(getRange());
-      const Point lb(bounds.getLowerBound());
-      const Point ub(bounds.getUpperBound());
-      const Point middle(0.5 * (lb + ub));
-
-      // First, the upper bound on U
-      const Function objectiveU(new PointConditionalDistributionUBoundEvaluation(*this, r));
-      OptimizationProblem problemU(objectiveU);
-      problemU.setMinimization(false);
-      problemU.setBounds(bounds);
-      OptimizationAlgorithm algo(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
-      algo.setProblem(problemU);
-      algo.setStartingPoint(middle);
-      algo.run();
-      supU_ = std::exp(algo.getResult().getOptimalValue()[0]);
-
-      // Second, the lower and upper bounds on V
-      const Function objectiveV(new PointConditionalDistributionVBoundEvaluation(*this, r));
-      infV_.resize(dimension);
-      supV_.resize(dimension);
-      const Point zero(dimension, 0.0);
-      for (UnsignedInteger i = 0; i < dimension; ++ i)
-      {
-        const Function objectiveVI(objectiveV.getMarginal(i));
-        OptimizationProblem problemVI(objectiveVI);
-        problemVI.setMinimization(false);
-        if (ub[i] > 0.0)
-        {
-          problemVI.setBounds(Interval(zero, ub));
-          algo.setProblem(problemVI);
-          algo.setStartingPoint(ub * 0.5);
-          algo.run();
-          supV_[i] = std::exp(algo.getResult().getOptimalValue()[0]);
-        }
-        if (lb[i] < 0.0)
-        {
-          problemVI.setBounds(Interval(lb, zero));
-          algo.setProblem(problemVI);
-          algo.setStartingPoint(lb * 0.5);
-          algo.run();
-          infV_[i] = -std::exp(algo.getResult().getOptimalValue()[0]);
-        }
-      }
-    }
-
     // Now, the sampling using rejection
     Bool accepted = false;
     Point result(dimension);
     while (!accepted)
     {
       const Scalar u = supU_ * RandomGenerator::Generate();
-      const Scalar ur = std::pow(u, r);
+      const Scalar ur = std::pow(u, r_);
       for (UnsignedInteger i = 0; i < dimension; ++ i)
         result[i] = (infV_[i] + (supV_[i] - infV_[i]) * RandomGenerator::Generate()) / ur;
-      accepted = (1.0 + r * dimension) * std::log(u) <= computeLogPDF(result);
+      accepted = (1.0 + r_ * dimension) * std::log(u) <= computeLogPDF(result);
     }
     return result;
   }
