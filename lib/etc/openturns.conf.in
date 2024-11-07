@@ -1076,11 +1076,9 @@
 
   <!-- OT::NonLinearLeastSquaresCalibration parameters -->
   <NonLinearLeastSquaresCalibration-BootstrapSize  value_int="100" />
-  <NonLinearLeastSquaresCalibration-MultiStartSize value_int="100"   />
 
   <!-- OT::GaussianNonLinearCalibration parameters -->
   <GaussianNonLinearCalibration-BootstrapSize  value_int="100" />
-  <GaussianNonLinearCalibration-MultiStartSize value_int="100"   />
 
   <!-- OT::CalibrationResults parameters -->
   <CalibrationResult-xRangeMarginFactor   value_float="0.2"  />
