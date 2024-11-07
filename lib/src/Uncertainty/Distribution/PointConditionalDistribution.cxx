@@ -28,13 +28,15 @@
 #include "openturns/SimplicialCubature.hxx"
 #include "openturns/CubaIntegration.hxx"
 #include "openturns/Tuples.hxx"
+#include "openturns/JointDistribution.hxx"
+#include "openturns/KernelMixture.hxx"
+#include "openturns/Mixture.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/Student.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/DomainEvent.hxx"
 #include "openturns/PlatformInfo.hxx"
-#include "openturns/JointDistribution.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/DistFunc.hxx"
 
@@ -378,9 +380,60 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     return true;
   }
 
+  // Mixture
+  Mixture *p_mixture = dynamic_cast<Mixture *>(distribution_.getImplementation().get());
+  if (p_mixture)
+  {
+    Collection<Distribution> atoms(p_mixture->getDistributionCollection());
+    const UnsignedInteger atomsNumber = atoms.getSize();
+    Point newWeights(p_mixture->getWeights());
+    Collection<Distribution> newAtoms(atomsNumber);
+    for (UnsignedInteger i = 0; i < atomsNumber; ++i)
+    {
+      newWeights[i] *= atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
+      newAtoms[i] = PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_);
+    }
+    simplified = Mixture(newAtoms, newWeights);
+    return true;
+  }
+
+  // Kernel mixture
+  KernelMixture *p_kernel_mixture = dynamic_cast<KernelMixture *>(distribution_.getImplementation().get());
+  if (p_kernel_mixture)
+  {
+    const Distribution kernel(p_kernel_mixture->getKernel());
+    const Point bandwidth(p_kernel_mixture->getBandwidth());
+    const Sample sample(p_kernel_mixture->getInternalSample());
+    const UnsignedInteger sampleSize = sample.getSize();
+    Collection<Distribution> atoms(sampleSize);
+    Point weights(sampleSize, 1.0);
+    const UnsignedInteger dimension = getDimension();
+    const UnsignedInteger conditioningDimension = conditioningIndices_.getSize();
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      Collection<Distribution> atomComponents(dimension);
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        const UnsignedInteger newJ = nonConditioningIndices_[j];
+        const Scalar hJ = bandwidth[newJ];
+        atomComponents[j] = kernel * hJ + sample(i, newJ);
+      } // j
+      atoms[i] = JointDistribution(atomComponents);
+      for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
+      {
+        const UnsignedInteger newJ = conditioningIndices_[j];
+        const Scalar hJ = bandwidth[newJ];
+        const Scalar xJ = conditioningValues_[j];
+        weights[i] *= kernel.computePDF((xJ - sample(i, newJ)) / hJ) / hJ;
+      } // j
+    } // i
+    simplified = Mixture(atoms, weights);
+    return true;
+  }
+
   // Joint
   JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
-  if (p_joint && p_joint->getCore().isCopula())
+  if (p_joint)
   {
     const Collection<Distribution> marginals(p_joint->getDistributionCollection());
     Point coreConditioniningValues(conditioningIndices_.getSize());
