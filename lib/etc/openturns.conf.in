@@ -496,6 +496,7 @@
   <!-- OT::PointConditionalDistribution parameters -->
   <PointConditionalDistribution-CubaAlgorithm value_str="cuhre" />
   <PointConditionalDistribution-OptimizationAlgorithm value_str="Cobyla" />
+  <PointConditionalDistribution-RatioUniformCandidateNumber value_int="10000" />
   <PointConditionalDistribution-SmallDimension value_int="6" />
   <PointConditionalDistribution-UseSimplifiedVersion value_bool="true" />
 
