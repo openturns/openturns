@@ -39,6 +39,7 @@
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -172,7 +173,9 @@ public:
   Point operator()(const Point & inP) const override
   {
     const UnsignedInteger dimension = distribution_.getDimension();
-    return {distribution_.computeLogPDF(inP) / (1.0 + r_ * dimension)};
+    Scalar result = distribution_.computeLogPDF(inP) / (1.0 + r_ * dimension);
+    result = std::max(-SpecFunc::LogMaxScalar, result);
+    return {result};
   }
 
 private:
@@ -213,7 +216,10 @@ public:
     const Scalar value = distribution_.computeLogPDF(inP) * r_ / (1.0 + r_ * dimension);
     Point result(dimension, value);
     for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
       result[i] += std::log(std::abs(inP[i]));
+      result[i] = std::max(-SpecFunc::LogMaxScalar, result[i]);
+    }
     return result;
   }
 
@@ -237,6 +243,7 @@ void PointConditionalDistribution::update()
 
   // enable simplified path
   useSimplifiedVersion_ = hasSimplifiedVersion(simplifiedVersion_);
+  LOGDEBUG(OSS() << "useSimplifiedVersion_=" << useSimplifiedVersion_);
 
   // cache marginal for reuse
   if (!useSimplifiedVersion_)
@@ -262,7 +269,24 @@ void PointConditionalDistribution::update()
     const Interval bounds(getRange());
     const Point lb(bounds.getLowerBound());
     const Point ub(bounds.getUpperBound());
-    const Point middle(0.5 * (lb + ub));
+
+    // find a feasible starting point
+    SobolSequence sequence(dimension);
+    Point start;
+    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber");
+    for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
+    {
+      Point candidate(sequence.generate());
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+        candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
+      if (computePDF(candidate) > 0.0)
+      {
+        start = candidate;
+        break;
+      }
+    }
+    if (!start.getDimension())
+      throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms U sup";
 
     // First, the upper bound on U
     const Function objectiveU(new PointConditionalDistributionUBoundEvaluation(*this, r_));
@@ -271,9 +295,10 @@ void PointConditionalDistribution::update()
     problemU.setBounds(bounds);
     OptimizationAlgorithm algo(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
     algo.setProblem(problemU);
-    algo.setStartingPoint(middle);
+    algo.setStartingPoint(start);
     algo.run();
     supU_ = std::exp(algo.getResult().getOptimalValue()[0]);
+    LOGDEBUG(OSS() << "supU_=" << supU_ << " u*=" << algo.getResult().getOptimalPoint());
 
     // Second, the lower and upper bounds on V
     const Function objectiveV(new PointConditionalDistributionVBoundEvaluation(*this, r_));
@@ -287,19 +312,51 @@ void PointConditionalDistribution::update()
       problemVI.setMinimization(false);
       if (ub[i] > 0.0)
       {
+        // find a feasible starting point in [0, ub]
+        start.clear();
+        for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
+        {
+          Point candidate(sequence.generate());
+          for (UnsignedInteger j = 0; j < dimension; ++ j)
+            candidate[j] = candidate[j] * ub[j];
+          if (computePDF(candidate) > 0.0)
+          {
+            start = candidate;
+            break;
+          }
+        }
+        if (!start.getDimension())
+          throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms V sup";
         problemVI.setBounds(Interval(zero, ub));
         algo.setProblem(problemVI);
-        algo.setStartingPoint(ub * 0.5);
+        algo.setStartingPoint(start);
         algo.run();
         supV_[i] = std::exp(algo.getResult().getOptimalValue()[0]);
+        LOGDEBUG(OSS() << "supV_[" << i << "]=" << supV_[i] << " v*=" << algo.getResult().getOptimalPoint());
       }
       if (lb[i] < 0.0)
       {
+        // find a feasible starting point in [lb, 0]
+        start.clear();
+        for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
+        {
+          Point candidate(sequence.generate());
+          for (UnsignedInteger j = 0; j < dimension; ++ j)
+            candidate[j] = candidate[j] * lb[j];
+          if (computePDF(candidate) > 0.0)
+          {
+            start = candidate;
+            break;
+          }
+        }
+        if (!start.getDimension())
+          throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms V inf";
         problemVI.setBounds(Interval(lb, zero));
         algo.setProblem(problemVI);
-        algo.setStartingPoint(lb * 0.5);
+        algo.setStartingPoint(start);
         algo.run();
         infV_[i] = -std::exp(algo.getResult().getOptimalValue()[0]);
+        LOGDEBUG(OSS() << "infV_[" << i << "]=" << infV_[i] << " v*=" << algo.getResult().getOptimalPoint());
       }
     }
   }
@@ -314,6 +371,7 @@ void PointConditionalDistribution::update()
   x.add(getRange().getLowerBound());
   conditioningCDF_ = reorderedDistribution_.computeSequentialConditionalCDF(x);
   conditioningCDF_.resize(conditioningIndices_.getSize());
+  LOGDEBUG(OSS() << "conditioningCDF_=" << conditioningCDF_);
 }
 
 
