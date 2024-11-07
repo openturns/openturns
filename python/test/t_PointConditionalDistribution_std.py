@@ -88,3 +88,20 @@ distribution = otexp.PointConditionalDistribution(joint, [1], [0.8])
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "JointDistribution", "wrong type"
+
+# special case for Mixture
+mixture = ot.Mixture([ot.Normal(2), ot.Normal(2)], [0.3, 0.7])
+distribution = otexp.PointConditionalDistribution(mixture, [1], [2.0])
+simplified = distribution.getSimplifiedVersion()
+print(simplified)
+assert simplified.getName() == "Mixture", "wrong type"
+
+# special case for KernelMixture
+kernel = ot.Uniform()
+sample = ot.Normal(2).getSample(5)
+bandwidth = [1.0] * 2
+kernelMixture = ot.KernelMixture(kernel, bandwidth, sample)
+distribution = otexp.PointConditionalDistribution(kernelMixture, [1], [1.0])
+simplified = distribution.getSimplifiedVersion()
+print(simplified)
+assert simplified.getName() == "Mixture", "wrong type"
