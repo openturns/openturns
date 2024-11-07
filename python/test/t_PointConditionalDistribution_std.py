@@ -105,3 +105,10 @@ distribution = otexp.PointConditionalDistribution(kernelMixture, [1], [1.0])
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "Mixture", "wrong type"
+
+# ratio of uniform method initialization is harder for Dirichlet
+R = ot.CorrelationMatrix(3, [1.0, 0.5, 0.1, 0.5, 1.0, 0.2, 0.1, 0.2, 1.0])
+core = ot.Dirichlet([1, 2, 3, 4])
+joint = ot.JointDistribution([ot.Exponential()] * 3, core)
+distribution = otexp.PointConditionalDistribution(joint, [1], [2.0])
+sample = distribution.getSample(10)
