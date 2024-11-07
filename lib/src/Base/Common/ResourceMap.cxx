@@ -1697,11 +1697,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // NonLinearLeastSquaresCalibration parameters //
   addAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize", 100);
-  addAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize", 100);
 
   // GaussianNonLinearCalibration parameters //
   addAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 100);
-  addAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize", 100);
 
   // CalibrationResult parameters //
   addAsScalar("CalibrationResult-xRangeMarginFactor", 0.2);
