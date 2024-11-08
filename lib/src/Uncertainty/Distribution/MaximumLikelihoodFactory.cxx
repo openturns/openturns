@@ -166,14 +166,13 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, SpecFunc::LowestScalar);
+      return {-SpecFunc::LogMaxScalar};
     }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handled by distribution_
-    const Sample logPdfSample = distribution.computeLogPDF(sample_);
-    const Scalar logPdf = logPdfSample.computeMean()[0];
-    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LowestScalar;
-    return Point(1, result);
+    result = distribution.computeLogPDF(sample_).computeMean()[0];
+    result = std::max(-SpecFunc::LogMaxScalar, result);
+    return {result};
   }
 
 private:
