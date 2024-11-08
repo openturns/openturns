@@ -58,42 +58,25 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
                              const_cast<char *>("__name__" )));
   setName(convert< _PyString_, String >(name.get()));
 
-  const UnsignedInteger inputDimension  = getInputDimension();
-  const UnsignedInteger outputDimension = getOutputDimension();
-  Description description(inputDimension + outputDimension);
-
-  ScopedPyObjectPointer descIn(PyObject_CallMethod(pyObj_,
-                               const_cast<char *>("getInputDescription"),
-                               const_cast<char *>("()")));
-  if (descIn.get()
-      && PySequence_Check(descIn.get())
-      && (PySequence_Size(descIn.get()) == (SignedInteger)inputDimension))
+  if (PyObject_HasAttrString(pyObj_, "getInputDescription"))
   {
-    Description inputDescription(convert< _PySequence_, Description >(descIn.get()));
-    for (UnsignedInteger i = 0; i < inputDimension; ++ i)
-    {
-      description[i] = inputDescription[i];
-    }
-  }
-  else for (UnsignedInteger i = 0; i < inputDimension; ++ i) description[i] = (OSS() << "x" << i);
-
-
-  ScopedPyObjectPointer descOut(PyObject_CallMethod(pyObj_,
-                                const_cast<char *>("getOutputDescription"),
+    ScopedPyObjectPointer descIn(PyObject_CallMethod(pyObj_,
+                                const_cast<char *>("getInputDescription"),
                                 const_cast<char *>("()")));
-  if (descOut.get()
-      && PySequence_Check(descOut.get())
-      && (PySequence_Size(descOut.get()) == (SignedInteger)outputDimension))
-  {
-    Description outputDescription(convert< _PySequence_, Description >(descOut.get()));
-    for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-    {
-      description[inputDimension + i] = outputDescription[i];
-    }
+    if (descIn.isNull())
+      handleException();
+    setInputDescription(checkAndConvert< _PySequence_, Description >(descIn.get()));
   }
-  else for (UnsignedInteger i = 0; i < outputDimension; ++ i) description[inputDimension + i] = (OSS() << "y" << i);
 
-  setDescription(description);
+  if (PyObject_HasAttrString(pyObj_, "getOutputDescription"))
+  {
+    ScopedPyObjectPointer descOut(PyObject_CallMethod(pyObj_,
+                                  const_cast<char *>("getOutputDescription"),
+                                  const_cast<char *>("()")));
+    if (descOut.isNull())
+      handleException();
+    setOutputDescription(checkAndConvert< _PySequence_, Description >(descOut.get()));
+  }
 }
 
 /* Virtual constructor */
@@ -414,10 +397,14 @@ void PythonEvaluation::initializePythonState()
 /* Accessor for input point dimension */
 UnsignedInteger PythonEvaluation::getInputDimension() const
 {
+  if (!PyObject_HasAttrString(pyObj_, "getInputDimension"))
+    throw InvalidArgumentException(HERE) << "PythonEvaluation: mandatory getInputDimension method is missing";
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  if (result.isNull())
+    handleException();
+  const UnsignedInteger dim = checkAndConvert< _PyInt_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -425,10 +412,14 @@ UnsignedInteger PythonEvaluation::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonEvaluation::getOutputDimension() const
 {
+  if (!PyObject_HasAttrString(pyObj_, "getOutputDimension"))
+    throw InvalidArgumentException(HERE) << "PythonEvaluation: mandatory getOutputDimension method is missing";
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  if (result.isNull())
+    handleException();
+  const UnsignedInteger dim = checkAndConvert< _PyInt_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -440,8 +431,9 @@ Bool PythonEvaluation::isLinear() const
     ScopedPyObjectPointer result( PyObject_CallMethod (pyObj_,
                                   const_cast<char *>("isLinear"),
                                   const_cast<char *>("()")));
-
-    const Bool isLinear = convert< _PyBool_, Bool >(result.get());
+    if (result.isNull())
+      handleException();
+    const Bool isLinear = checkAndConvert< _PyBool_, Bool >(result.get());
     return isLinear;
   }
   else
@@ -461,8 +453,9 @@ Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      indexArg.get(), NULL));
-
-    const Bool varLinear = convert< _PyBool_, Bool >(callResult.get());
+    if (callResult.isNull())
+      handleException();
+    const Bool varLinear = checkAndConvert< _PyBool_, Bool >(callResult.get());
     return varLinear;
   }
   else

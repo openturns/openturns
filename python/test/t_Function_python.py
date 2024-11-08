@@ -177,3 +177,20 @@ f = ot.PythonFunction(0, 3, lambda x: [42.0] * 3)
 x = []
 y = f(x)
 print("y=", y)
+
+
+class BFunction(ot.OpenTURNSPythonFunction):
+    def __init__(self):
+        # super().__init__(3, 1)
+        pass
+
+    def _exec(self, X):
+        return [X[0] + X[1]]
+
+
+bModel = BFunction()
+try:
+    # when super is not called in init, should not crash
+    bFunction = ot.Function(bModel)
+except RuntimeError:
+    print("ok")
