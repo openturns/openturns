@@ -368,12 +368,8 @@ public:
   {
     const Scalar sigma = parameter[0];
     const Scalar xi = parameter[1];
-    Point value(1);
     if (sigma <= 0.0)
-    {
-      value[0] = -std::log(SpecFunc::MaxScalar);
-      return value;
-    }
+      return {-SpecFunc::LogMaxScalar};
     Scalar ll = 0.0;
     UnsignedInteger n = 0;// count the number of x>u
     for (UnsignedInteger i = 0; i < m_; ++ i)
@@ -390,7 +386,7 @@ public:
           const Scalar c1 = xi * zi / sigma;
           if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::MaxScalar);
+            ll += -SpecFunc::LogMaxScalar;
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c1);
@@ -399,8 +395,7 @@ public:
       }
     }
     ll += - 1.0 * n * std::log(sigma);
-    value[0] = ll;
-    return value;
+    return {ll};
   }
 
 private:
@@ -559,7 +554,7 @@ public:
         z.add(Point(1, sample_(i, 0) - u_));
 
     if (z.getSize() < 2)
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return {-SpecFunc::LogMaxScalar};
 
     const Scalar sigma0 = std::sqrt(6.0 * z.computeCovariance()(0, 0)) / M_PI;
 
@@ -576,7 +571,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return {-SpecFunc::LogMaxScalar};
     }
   }
 
@@ -825,7 +820,7 @@ public:
           minC1 = std::min(minC1, 1.0 + c1);
           if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
           {
-            ll += -std::log(SpecFunc::MaxScalar);
+            ll += -SpecFunc::LogMaxScalar;
             continue;
           }
           ll += (-1.0 / xi - 1.0) * std::log1p(c1);
@@ -1442,7 +1437,7 @@ public:
     }
     catch (const Exception &)
     {
-      return Point(1, -std::log(SpecFunc::MaxScalar));
+      return {-SpecFunc::LogMaxScalar};
     }
   }
 
