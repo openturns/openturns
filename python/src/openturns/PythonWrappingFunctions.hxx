@@ -550,10 +550,8 @@ static inline
 void
 check(PyObject * pyObj)
 {
-  if (! isAPython<PYTHON_Type>(pyObj))
-  {
+  if (!pyObj || !isAPython<PYTHON_Type>(pyObj))
     throw InvalidArgumentException(HERE) << "Object passed as argument is not a " << namePython<PYTHON_Type>();
-  }
 }
 
 
