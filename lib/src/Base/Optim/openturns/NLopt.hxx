@@ -102,6 +102,9 @@ private:
   /** NLopt algorithm code */
   static UnsignedInteger GetAlgorithmCode(const String & name);
 
+  /** NLopt version */
+  static UnsignedInteger GetVersion();
+
   /** Compute the objective function of the optimization problem */
   static double ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
 

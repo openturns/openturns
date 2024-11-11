@@ -99,7 +99,7 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | LN_NEWUOA                  | no derivative     | none                        |
 +----------------------------+-------------------+-----------------------------+
-| LN_NEWUOA_BOUND (disabled) | no derivative     | bounds                      |
+| LN_NEWUOA_BOUND            | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+
 | LN_PRAXIS (disabled)       | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+

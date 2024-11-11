@@ -36,6 +36,15 @@ static const Factory<NLopt> Factory_NLopt;
 /* Map to associate algorithm names and codes */
 std::map<String, UnsignedInteger> NLopt::AlgorithmNames_;
 
+UnsignedInteger NLopt::GetVersion()
+{
+  int major = 0, minor = 0, bugfix = 0;
+#ifdef OPENTURNS_HAVE_NLOPT
+  nlopt::version(major, minor, bugfix);
+#endif
+  return major * 100000 + minor * 100 + bugfix;
+}
+
 /* Static method to initialize the algorithm names/codes pairing in nlopt */
 void NLopt::InitializeAlgorithmNames()
 {
@@ -50,7 +59,6 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
   // GD_STOGO/GD_STOGO_RAND: https://github.com/stevengj/nlopt/issues/529
-  // LD_LBFGS_NOCEDAL is not wired
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
   // LN_PRAXIS: https://github.com/stevengj/nlopt/issues/528
   AlgorithmNames_["LD_VAR1"] = nlopt::LD_VAR1;
@@ -67,7 +75,8 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_MMA"] = nlopt::LD_MMA;
   AlgorithmNames_["LN_COBYLA"] = nlopt::LN_COBYLA;
   AlgorithmNames_["LN_NEWUOA"] = nlopt::LN_NEWUOA;
-  // LN_NEWUOA_BOUND: https://github.com/stevengj/nlopt/issues/511
+  if (GetVersion() >= 200900) // https://github.com/stevengj/nlopt/issues/511
+    AlgorithmNames_["LN_NEWUOA_BOUND"] = nlopt::LN_NEWUOA_BOUND;
   AlgorithmNames_["LN_NELDERMEAD"] = nlopt::LN_NELDERMEAD;
   AlgorithmNames_["LN_SBPLX"] = nlopt::LN_SBPLX;
   AlgorithmNames_["LN_AUGLAG"] = nlopt::LN_AUGLAG;
@@ -165,8 +174,15 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   if ((getAlgorithmName() == "LN_NEWUOA") && problem.hasBounds())
     throw InvalidArgumentException(HERE) << "Error: LN_NEWUOA algorithm does not support bounds";
 
-#ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = problem.getDimension();
+  if (Description({"LN_NEWUOA", "LN_NEWUOA_BOUND"}).contains(getAlgorithmName()) && (dimension < 2))
+    throw InvalidArgumentException(HERE) << "Error: LN_NEWUOA algorithm does not support dimension < 2";
+
+  // PRAXIS bounds support is buggy https://github.com/stevengj/nlopt/issues/528
+  if ((getAlgorithmName() == "LN_PRAXIS") && problem.hasBounds() && (GetVersion() < 200900))
+    throw InvalidArgumentException(HERE) << "Error: LN_PRAXIS algorithm does not support bounds";
+
+#ifdef OPENTURNS_HAVE_NLOPT
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);
 
