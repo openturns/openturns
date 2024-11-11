@@ -182,6 +182,9 @@ private:
   Point expandPoint(const Point & point) const;
 
   /* Get the simplified version */
+  void dispatchConditioning(const Collection<Distribution> & distributions, Distribution & simplified) const;
+
+  /* Get the simplified version */
   Bool hasSimplifiedVersion(Distribution & simplified) const;
 
   // decompose elliptical distribution mu/cov

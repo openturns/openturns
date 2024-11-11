@@ -112,3 +112,35 @@ core = ot.Dirichlet([1, 2, 3, 4])
 joint = ot.JointDistribution([ot.Exponential()] * 3, core)
 distribution = otexp.PointConditionalDistribution(joint, [1], [2.0])
 sample = distribution.getSample(10)
+
+# special case for EmpiricalBernsteinCopula
+sample = normal.getSample(10)
+bernstein = ot.EmpiricalBernsteinCopula(sample, 5)
+distribution = otexp.PointConditionalDistribution(bernstein, [1], [0.5])
+simplified = distribution.getSimplifiedVersion()
+print(simplified)
+assert simplified.getName() == "Mixture", "wrong type"
+
+# special case for BlockIndependentDistribution
+blockIndep = ot.BlockIndependentDistribution([normal, student, mixture])
+# test a conditioning which remove the first block, modify the second block and let the last block unchanged
+distribution = otexp.PointConditionalDistribution(blockIndep, [1, 3, 0, 2], [0.5, 0.5, 0.5, 0.5])
+simplified = distribution.getSimplifiedVersion()
+print(simplified)
+assert simplified.getName() == "BlockIndependentDistribution", "wrong type"
+# test a conditioning which remove all but the last block
+# As the last block can be simplified, it is its actual simplification which is used
+distribution = otexp.PointConditionalDistribution(blockIndep, [0, 1, 2, 3, 4, 5, 6], [0.5] * 7)
+simplified = distribution.getSimplifiedVersion()
+print(simplified)
+assert simplified.getName() == "Mixture", "wrong type"
+
+# special case for BlockIndependentCopula
+R = ot.CorrelationMatrix(3)
+R[1, 0] = R[2, 0] = R[2, 1] = 0.9
+blockIndep = ot.BlockIndependentCopula([ot.GumbelCopula(), ot.NormalCopula(R)])
+# test a conditioning which remove the first block, modify the second block and let the last block unchanged
+distribution = otexp.PointConditionalDistribution(blockIndep, [1, 3], [0.4, 0.5])
+simplified = distribution.getSimplifiedVersion()
+print(simplified)
+assert simplified.getName() == "BlockIndependentDistribution", "wrong type"
