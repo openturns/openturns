@@ -724,6 +724,24 @@ Point TruncatedDistribution::computeSequentialConditionalQuantile(const Point & 
   return DistributionImplementation::computeSequentialConditionalQuantile(q);
 }
 
+/* Get the isoprobabilist transformation */
+TruncatedDistribution::IsoProbabilisticTransformation TruncatedDistribution::getIsoProbabilisticTransformation() const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getIsoProbabilisticTransformation();
+
+  return DistributionImplementation::getIsoProbabilisticTransformation();
+}
+
+/* Get the inverse isoprobabilist transformation */
+TruncatedDistribution::InverseIsoProbabilisticTransformation TruncatedDistribution::getInverseIsoProbabilisticTransformation() const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getInverseIsoProbabilisticTransformation();
+
+  return DistributionImplementation::getInverseIsoProbabilisticTransformation();
+}
+
 /* Method save() stores the object through the StorageManager */
 void TruncatedDistribution::save(Advocate & adv) const
 {
