@@ -1027,6 +1027,24 @@ Point PointConditionalDistribution::computeSequentialConditionalQuantile(const P
   return result;
 }
 
+/* Get the isoprobabilist transformation */
+PointConditionalDistribution::IsoProbabilisticTransformation PointConditionalDistribution::getIsoProbabilisticTransformation() const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getIsoProbabilisticTransformation();
+
+  return DistributionImplementation::getIsoProbabilisticTransformation();
+}
+
+/* Get the inverse isoprobabilist transformation */
+PointConditionalDistribution::InverseIsoProbabilisticTransformation PointConditionalDistribution::getInverseIsoProbabilisticTransformation() const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getInverseIsoProbabilisticTransformation();
+
+  return DistributionImplementation::getInverseIsoProbabilisticTransformation();
+}
+
 Point PointConditionalDistribution::getConditioningValues() const
 {
   return conditioningValues_;

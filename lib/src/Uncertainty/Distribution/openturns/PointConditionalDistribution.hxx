@@ -97,6 +97,12 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 
+  /** Get the isoprobabilist transformation */
+  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const override;
+
+  /** Get the inverse isoprobabilist transformation */
+  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const override;
+
   /** Get the quantile of the distribution */
   Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
