@@ -885,7 +885,7 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
   referenceVariance_ = Sample(fullOutputDesign, 0, size).computeVariance();
   for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
     if (!(referenceVariance_[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
+      throw InvalidArgumentException(HERE) << "Cannot compute Sobol indices when output variance is null";
 
   // reset intermediate results
   alreadyComputedIndicesDistribution_ = false;

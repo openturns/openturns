@@ -72,7 +72,7 @@ void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
 
   for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
     if (!(referenceVariance_[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
+      throw InvalidArgumentException(HERE) << "Cannot compute Sobol indices when output variance is null";
 }
 
 
