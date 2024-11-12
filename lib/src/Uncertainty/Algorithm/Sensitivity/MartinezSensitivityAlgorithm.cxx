@@ -86,7 +86,7 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   const Point sigmaA(yA.computeStandardDeviation());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
     if (!(sigmaA[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
+      throw InvalidArgumentException(HERE) << "Cannot compute Sobol indices when output variance is null";
 
   // center sample yA
   yA -= muA;
@@ -96,7 +96,7 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   const Point sigmaB(yB.computeStandardDeviation());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
     if (!(sigmaB[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
+      throw InvalidArgumentException(HERE) << "Cannot compute Sobol indices when output variance is null";
 
   // center-reduce sample yB
   yB -= muB;
@@ -109,7 +109,7 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
     const Point sigmaE(yE.computeStandardDeviation());
     for (UnsignedInteger j = 0; j < outputDimension; ++ j)
       if (!(sigmaE[j] > 0.0))
-        throw InvalidArgumentException(HERE) << "Null output sample variance";
+        throw InvalidArgumentException(HERE) << "Cannot compute Sobol indices when output variance is null";
 
     // center-reduce sample yB
     yE -= muE;
