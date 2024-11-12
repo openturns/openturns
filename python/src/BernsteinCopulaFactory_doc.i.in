@@ -3,7 +3,7 @@
 
 Notes
 -----
-This class provides a non parametric estimator of  the :class:`~openturns.EmpiricalBernsteinCopula`.
+This class builds an :class:`~openturns.EmpiricalBernsteinCopula`, which is a copula under some conditions.
 
 See also
 --------
@@ -12,7 +12,7 @@ DistributionFactory, EmpiricalBernsteinCopula"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::BernsteinCopulaFactory::build
-"Build the nonparametric Bernstein interpolant based on the empirical copula.
+"Build the empirical Bernstein copula.
 
 **Available usages**:
 
@@ -39,17 +39,19 @@ m : int
 Returns
 -------
 core : :class:`~openturns.Distribution`
-    The estimated Bernstein interpolant as a generic distribution.
+    The empirical Bernstein copula as a generic distribution.
 
 Notes
 -----
-The estimated Bernstein interpolant based on the empirical copula is really a copula if :math:`m|N`. Otherwise, it is not a copula but
-still a valid core, i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
+Let :math:`\sampleSize` be the size of the sample. If :math:`m` divides :math:`\sampleSize`, then the
+:class:`~openturns.EmpiricalBernsteinCopula` built from the sample is a 
+copula. Otherwise, the :class:`~openturns.EmpiricalBernsteinCopula` built from the sample is a core, i.e a
+multivariate distribution whose range is included in :math:`[0,1]^d`.
 "
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula
-"Build the nonparametric Bernstein interpolant based on the empirical copula.
+"Build the empirical Bernstein copula as native distribution.
 
 **Available usages**:
 
@@ -77,13 +79,15 @@ m : int
 
 Returns
 -------
-copula : :class:`~openturns.EmpiricalBernsteinCopula`
-    The estimated Bernstein interpolant as a :class:`~openturns.EmpiricalBernsteinCopula`.
+core : :class:`~openturns.EmpiricalBernsteinCopula`
+    The empirical Bernstein copula as a :class:`~openturns.EmpiricalBernsteinCopula`.
 
 Notes
 -----
-The estimated Bernstein interpolant based on the empirical copula is really a copula if :math:`m|N`. Otherwise, it is not a copula but
-still a valid core, i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
+Let :math:`\sampleSize` be the size of the sample. If :math:`m` divides :math:`\sampleSize`, then the
+:class:`~openturns.EmpiricalBernsteinCopula` built from the sample is a 
+copula. Otherwise, the :class:`~openturns.EmpiricalBernsteinCopula` built from the sample is a core, i.e a
+multivariate distribution whose range is included in :math:`[0,1]^d`.
 "
 // ---------------------------------------------------------------------
 
@@ -105,6 +109,10 @@ leading to:
     m = 1+\left\lfloor \sampleSize^{\frac{2}{4+d}} \right\rfloor
 
 where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`, :math:`\sampleSize` the sample size and :math:`d` the sample dimension.
+
+Note that this optimal :math:`m` does not necessarily divide the sample size :math:`\sampleSize`.
+Then, the :class:`~openturns.EmpiricalBernsteinCopula` built from the sample is no longer a copula but still a
+valid core, i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
 "
 
 // ---------------------------------------------------------------------
@@ -137,6 +145,10 @@ If :math:`kFraction>1`, the bin number :math:`m` is given by:
 
 where :math:`\cE^V_k=\left\{\vect{x}_i\in\cE\,|\,i\equiv k \mod kFraction\right\}`
 and :math:`\cE^L_k=\cE \backslash \cE^V_k`.
+
+Note that this optimal :math:`m` does not necessarily divide the sample size :math:`\sampleSize`.
+Then, the :class:`~openturns.EmpiricalBernsteinCopula` built from the sample is no longer a copula but still a
+valid core, i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
 "
 
 // ---------------------------------------------------------------------
@@ -163,6 +175,10 @@ Let :math:`\cE=(\inputReal_1, \dots, \inputReal_\sampleSize)` be the given sampl
 
 where :math:`c_M^{\cE}` is the density function of the :class:`~openturns.EmpiricalBernsteinCopula` associated to the sample :math:`\cE` and the bin number :math:`M`, :math:`\hat{D}_f(c^{\cE}_{M})=\dfrac{1}{N}\sum_{j=1}^Nf\left(\dfrac{1}{\vect{u}_j}\right)` a Monte Carlo estimate of the Csiszar :math:`f` divergence, :math:`\rho_S(c^{\cE}_{M})` the exact Spearman correlation of the empirical Bernstein copula :math:`c^{\cE}_{M}` and :math:`\rho_S({\cE}_{M})` the empirical Spearman correlation of the sample :math:`{\cE}_{M}`.
 
-The parameter :math:`N` is controlled by the *'BernsteinCopulaFactory-SamplingSize'* key in :class:`~openturns.ResourceMap`.
+The parameter :math:`N` is controlled by the *BernsteinCopulaFactory-SamplingSize* key in :class:`~openturns.ResourceMap`.
+
+Note that this optimal :math:`m` does not necessarily divide the sample size :math:`\sampleSize`.
+Then, the :class:`~openturns.EmpiricalBernsteinCopula` built from the sample is no longer a copula but still a
+valid core, i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
 "
 

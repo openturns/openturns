@@ -1,5 +1,5 @@
 %feature("docstring") OT::EmpiricalBernsteinCopula
-"Bernstein interpolant based on the empirical copula.
+"Empirical Bernstein copula.
 
 Parameters
 ----------
@@ -21,18 +21,18 @@ Notes
 -----
 Let :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` a sample. Let :math:`m` be the bin number.
 
-Case 1: :math:`isRankSample == False`.
+Case 1: :math:`isRankSample = False`.
 
 In that case, if :math:`m|\sampleSize` is not verified, then a part of the sample is
-removed in order to get a new size :math:`\tilde{\sampleSize}` such that :math:`m|\tilde{\sampleSize}`. At most, :math:`m-1` points are removed from the initial sample. This condition guarantees that the Bernstein interpolant based on the empirical copula is really a copula.
+removed in order to get a new size :math:`\tilde{\sampleSize}` such that :math:`m|\tilde{\sampleSize}`. At most, :math:`m-1` points are removed from the initial sample. This condition guarantees that the Bernstein interpolant based on the empirical copula is a copula.
 
-We still denote by  :math:`\sampleSize` the size of the sample used to create the Bernstein interpolant based on the empirical copula.
+We still denote by  :math:`\sampleSize` the size of the sample used to create the empirical Bernstein interpolant copula.
 
 Let :math:`(\vect{v}_1, \dots, \vect{v}_\sampleSize)` be the associated normalized rank sample defined  by:
 
 .. math::
 
-     \vect{v}_i = \dfrac{1}{\sampleSize} rank(\inputReal_i)
+     \vect{v}_k = \dfrac{1}{\sampleSize} rank(\inputReal_k)
 
 for all :math:`1 \leq i \leq \sampleSize` where the rank of a vector is the vector of the rank of the components.
 
@@ -50,28 +50,28 @@ Let :math:`B(r_i^j , s_i^j, 0, 1)` be a
 :class:`~openturns.Beta` distribution defined on :math:`[0,1]` parametrized by the shape parameters :math:`r_i^j` and
 :math:`s_i^j`. We denote by :math:`F_{B(r_i^j, s_i^j, 0, 1)}` its cumulated distribution function.
 
-Then the Bernstein interpolant based on the empirical copula is defined by:
+Then the empirical Bernstein copula is defined by:
 
 .. math::
     :label: defEmpCopBernstein
 
-    C(\vect{u}) = \dfrac{1}{\sampleSize}\sum_{i=1}^\sampleSize\prod_{j=1}^d F_{B(r_i^j, s_i^j, 0, 1)}(u^j)
+    C^B_\sampleSize(\vect{u}) = \dfrac{1}{\sampleSize}\sum_{i=1}^\sampleSize\prod_{j=1}^d F_{B(r_i^j, s_i^j, 0, 1)}(u^j)
 
 for :math:`\vect{u}\in[0,1]^d`.
 
-Case 2: :math:`isRankSample == True`.
+Case 2: :math:`isRankSample = True`.
 
 In that case, the given sample is assumed to be already a normalized rank sample.
 Even if the bin number :math:`m` does not divide :math:`\sampleSize`, the whole sample is used. The
-Bernstein interpolant based on the empirical copula is still defined by :eq:`defEmpCopBernstein` where :math:`r_i^j`
-and :math:`s_i^j` are computed on the initial sample:
+empirical Bernstein copula is still defined by :eq:`defEmpCopBernstein` where :math:`r_i^j`
+and :math:`s_i^j` are computed on the initial sample :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)`:
 
 .. math::
 
      r_i^j & = \lfloor m x_i^j \rfloor \\
      s_i^j & = m-r_i^j+1
 
-If the condition :math:`m|N` is not verified, then :math:`C` is no longer a copula but still a valid core,
+If the condition :math:`m|N` is not verified, then :math:`C^B_\sampleSize` is no longer a copula but still a valid core,
 i.e a multivariate distribution whose range is included in :math:`[0,1]^d`.
 
 See also
