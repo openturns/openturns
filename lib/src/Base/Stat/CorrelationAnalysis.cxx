@@ -138,7 +138,7 @@ Point CorrelationAnalysis::ComputeSRC(const Sample & firstSample,
 
   const Scalar stdOutput = secondSample.computeStandardDeviation()[0];
   if (!(stdOutput > 0.0))
-    throw InvalidArgumentException(HERE) << "No output variance";
+    throw InvalidArgumentException(HERE) << "Cannot compute SRC indices when output variance is null";
 
   // Compute the output variance from the regression coefficients
   Point src(firstSample.computeStandardDeviation());
