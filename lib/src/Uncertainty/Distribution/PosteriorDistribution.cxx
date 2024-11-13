@@ -98,15 +98,16 @@ PosteriorDistribution * PosteriorDistribution::clone() const
 }
 
 /* Compute the likelihood of the observations */
-Point PosteriorDistribution::computeLikelihood(const Point & theta) const
+Point PosteriorDistribution::computeLikelihood(const Point & y) const
 {
-  return Point(1, std::exp(computeLogLikelihood(theta)));
+  return Point(1, std::exp(computeLogLikelihood(y)));
 }
 
 /* Compute the log-likelihood of the observations */
-Scalar PosteriorDistribution::computeLogLikelihood(const Point & theta) const
+Scalar PosteriorDistribution::computeLogLikelihood(const Point & y) const
 {
   Distribution conditionedDistribution(deconditionedDistribution_.getConditionedDistribution());
+  const Point theta(deconditionedDistribution_.getLinkFunction()(y));
   conditionedDistribution.setParameter(theta);
   Scalar logLikelihood = 0.0;
   const UnsignedInteger size = observations_.getSize();
@@ -118,15 +119,19 @@ Scalar PosteriorDistribution::computeLogLikelihood(const Point & theta) const
   return logLikelihood;
 }
 
-/* Get the PDF of the distribution */
-Scalar PosteriorDistribution::computePDF(const Point & point) const
+/* Get the log PDF of the distribution */
+Scalar PosteriorDistribution::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const Scalar value = deconditionedDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point);
-  return std::exp(value);
+  return deconditionedDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point);
 }
 
+/* Get the PDF of the distribution */
+Scalar PosteriorDistribution::computePDF(const Point & point) const
+{
+  return std::exp(computeLogPDF(point));
+}
 
 /* Get the CDF of the distribution */
 Scalar PosteriorDistribution::computeCDF(const Point & point) const
