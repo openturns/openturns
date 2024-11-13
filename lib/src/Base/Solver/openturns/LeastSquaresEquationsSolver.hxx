@@ -69,11 +69,8 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  /** Flag to tell to use the default available optimizer */
-  Bool useDefaultOptimizationAlgorithm_ = true;
-
-  /** optimization algorithm */
-  OptimizationAlgorithm algorithm_;
+  /** optimization solver */
+  OptimizationAlgorithm solver_;
 
 }; /* Class LeastSquaresEquationsSolver */
 
