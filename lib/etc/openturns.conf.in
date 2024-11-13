@@ -542,8 +542,6 @@
   <GeneralizedExtremeValueFactory-MaximumConstraintError  value_float="1.0e-5"        />
   <GeneralizedExtremeValueFactory-MaximumObjectiveError   value_float="1.0e-5"        />
   <GeneralizedExtremeValueFactory-MaximumRelativeError    value_float="1.0e-5"        />
-  <GeneralizedExtremeValueFactory-XiSearchLowerBound value_float="-5.0" />
-  <GeneralizedExtremeValueFactory-XiSearchUpperBound value_float="5.0" />
   <GeneralizedExtremeValueFactory-InitializationMethod value_string="Gumbel" />
   <GeneralizedExtremeValueFactory-NormalizationMethod value_string="MinMax" />
   <GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
