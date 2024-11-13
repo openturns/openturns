@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+git config --global --add safe.directory /io
 
 cd /tmp
 mkdir build && cd build
