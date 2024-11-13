@@ -1162,8 +1162,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError", 1.0e-5);
-  addAsScalar("GeneralizedExtremeValueFactory-XiSearchLowerBound", -5.0);
-  addAsScalar("GeneralizedExtremeValueFactory-XiSearchUpperBound", 5.0);
   addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
   addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
   addAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm", "Cobyla");
