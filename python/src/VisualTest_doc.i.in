@@ -741,9 +741,11 @@ Examples
 --------
 >>> import openturns as ot
 >>> from openturns.viewer import View
->>> domain = ot.Interval([-2.0, 1.0, -1], [2., 3., 1.])
->>> U = ot.Uniform(-3, 4)
->>> dist = ot.JointDistribution([U, U, U])
+>>> domain = ot.Interval([-2.0, -1.0, 1.0], [2.0, 1.0, 3.0])
+>>> domain.setName('Cuboid')
+>>> uniform = ot.Uniform(-3.0, 4.0)
+>>> dist = ot.JointDistribution([uniform] * 3)
 >>> sample = dist.getSample(200)
+>>> sample.setName('Uniform')
 >>> grid = ot.VisualTest.DrawInsideOutside(domain, sample)
 >>> View(grid).show()"
