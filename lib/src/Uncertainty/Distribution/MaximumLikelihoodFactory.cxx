@@ -145,7 +145,7 @@ public:
   Point operator() (const Point & parameter) const
   {
     Scalar result = 0.0;
-    // Define conditinned distribution
+    // Define conditioned distribution
     Distribution distribution(distribution_);
     Point effectiveParameter(distribution.getParameter());
     // set unknown values
@@ -239,7 +239,7 @@ public:
 
   Matrix gradient(const Point & parameter) const
   {
-    // Define conditinned distribution
+    // Define conditioned distribution
     Distribution distribution(distribution_);
     Point effectiveParameter(distribution.getParameter());
     // set unknown values
@@ -254,13 +254,25 @@ public:
     {
       effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
     }
-    distribution.setParameter(effectiveParameter);
-    // Matrix result
-    MatrixImplementation result(parameter.getSize(), 1);
+    // provisional result
+    MatrixImplementation result(getInputDimension(), 1);
+    try
+    {
+      distribution.setParameter(effectiveParameter);
+    }
+    catch (const Exception &)
+    {
+      return result;
+    }
+
     // Evaluate the gradient
     const Sample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
     const Point logPdfGradient(logPdfGradientSample.computeMean());
-    // Result as Matrix
+
+    for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
+      if (!SpecFunc::IsNormal(logPdfGradient[j]))
+        return result;
+
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
     return result;
   }
