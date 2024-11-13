@@ -53,22 +53,22 @@ class OT_API XMLDoc
 public:
 
   XMLDoc();
-  XMLDoc( const XMLDoc & other );
-  XMLDoc( const FileName & pathToFile );
+  XMLDoc(const XMLDoc & other);
+  XMLDoc(const FileName & pathToFile);
   XMLDoc(const char * buffer, int size);
   virtual ~XMLDoc();
 
-  XMLDoc & operator =( const XMLDoc & other );
+  XMLDoc & operator =(const XMLDoc & other);
 
   operator xmlDocPtr() const;
 
-  void save( const FileName & fileName ) const;
+  void save(const FileName & fileName) const;
   void setCompressionLevel(const UnsignedInteger compressionLevel);
   String __repr__() const;
 
   Bool hasDTD() const;
   Bool validate() const;
-  Bool validate( const String & name, const FileName & dtd ) const;
+  Bool validate(const FileName & dtd) const;
 };
 
 
@@ -85,10 +85,10 @@ class OT_API XML
 public:
 
   typedef xmlNodePtr Node;
-  typedef std::basic_string<xmlChar> xmlString;
+  typedef const xmlChar* XMLString;
 
   /** Convert XML string to basic string */
-  static String ToString( const xmlString & st );
+  static String ToString(XMLString xst);
 
   /** Returns true if node 'elt' is an XML text node */
   static Bool IsText( const Node & elt );
