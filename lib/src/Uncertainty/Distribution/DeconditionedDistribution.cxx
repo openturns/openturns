@@ -195,7 +195,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   conditionedDistribution_ = conditionedDistribution;
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
-  setDimension(conditioningDimension + conditionedDistribution.getDimension());
+  setDimension(conditionedDistribution.getDimension());
   // Start the discretisation into a Mixture
   // Here, implements some knowledge based selection of the integration method
   // For now, only basic Legendre
