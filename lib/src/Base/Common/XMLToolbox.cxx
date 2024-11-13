@@ -45,15 +45,9 @@ BEGIN_NAMESPACE_OPENTURNS
 #if defined OPENTURNS_HAVE_LIBXML2
 
 static //inline
-String xmlStringToString( const XML::xmlString & xst )
+XML::XMLString StringToXmlString(const String & st)
 {
-  return String(reinterpret_cast<const char*>(xst.c_str()), xst.size());
-}
-
-static //inline
-XML::xmlString StringToXmlString( const String & st )
-{
-  return XML::xmlString(reinterpret_cast<const unsigned char *>(st.c_str()), st.size());
+  return reinterpret_cast<XML::XMLString>(const_cast<char*>(st.c_str()));
 }
 
 
@@ -161,7 +155,7 @@ String XMLDoc::__repr__() const
 
 Bool XMLDoc::hasDTD() const
 {
-  xmlDtdPtr dtd = xmlGetIntSubset( doc_ );
+  xmlDtdPtr dtd = xmlGetIntSubset(doc_);
   return (dtd != NULL);
 }
 
@@ -173,20 +167,19 @@ Bool XMLDoc::validate() const
   {
     validCtxt->error    = reinterpret_cast<xmlValidityErrorFunc>(XML::ErrorHandler);
     validCtxt->warning  = reinterpret_cast<xmlValidityWarningFunc>(XML::WarningHandler);
-    ok = xmlValidateDocument( validCtxt, doc_ );
-    xmlFreeValidCtxt( validCtxt );
+    ok = xmlValidateDocument(validCtxt, doc_);
+    xmlFreeValidCtxt(validCtxt);
   }
   else
     LOGWARN( OSS() << "Internal Error: Can't allocate storage for validation. No validation" );
   return (ok == 1);
 }
 
-Bool XMLDoc::validate(const String & name, const FileName & dtd) const
+Bool XMLDoc::validate(const FileName & dtd) const
 {
   int ok = 0;
-  XML::xmlString aName  = StringToXmlString( name );
-  XML::xmlString aDtd   = StringToXmlString( dtd );
-  xmlDtdPtr theDTD = xmlParseDTD( NULL, aDtd.c_str() );
+  XML::XMLString aDtd = StringToXmlString(dtd);
+  xmlDtdPtr theDTD = xmlParseDTD(NULL, aDtd);
   xmlValidCtxtPtr validCtxt = xmlNewValidCtxt();
   if (validCtxt != NULL)
   {
@@ -197,8 +190,8 @@ Bool XMLDoc::validate(const String & name, const FileName & dtd) const
     xmlFreeValidCtxt( validCtxt );
   }
   else
-    LOGWARN( OSS() << "Internal Error: Can't allocate storage for validation. No validation" );
-  xmlFreeDtd( theDTD );
+    LOGWARN(OSS() << "Internal Error: Can't allocate storage for validation. No validation");
+  xmlFreeDtd(theDTD);
   return (ok == 1);
 }
 
@@ -278,9 +271,9 @@ char * XML::MakeMessage(const char *fmt, va_list args)
 }
 
 
-String XML::ToString(const xmlString & st)
+String XML::ToString(XMLString xst)
 {
-  return xmlStringToString( st );
+  return String(reinterpret_cast<const char*>(xst));
 }
 
 Bool XML::IsText(const Node & elt)
@@ -299,18 +292,18 @@ Bool XML::IsElement(const Node & elt)
 
 Bool XML::IsElement(const Node & elt, const String & name)
 {
-  xmlString aName = StringToXmlString( name );
+  XMLString aName = StringToXmlString( name );
   Bool isElt      = IsElement( elt );
-  return isElt && ( xmlStrcmp( elt->name, aName.c_str() ) == 0 );
+  return isElt && (xmlStrcmp( elt->name, aName) == 0);
 }
 
 
 
 Bool XML::ElementHasAttribute(const Node & elt, const String & name)
 {
-  xmlString aName = StringToXmlString( name );
+  XMLString aName = StringToXmlString(name);
   assert(elt);
-  return xmlHasProp(elt, aName.c_str()) != NULL;
+  return xmlHasProp(elt, aName) != NULL;
 }
 
 
@@ -320,12 +313,12 @@ String XML::GetAttributeByName(const Node & node, const String & name)
   String attrVal;
   if (node)
   {
-    xmlString aName = StringToXmlString( name );
-    if ( xmlHasProp( node, aName.c_str() ) )
+    XMLString aName = StringToXmlString(name);
+    if (xmlHasProp(node, aName))
     {
-      xmlChar * prop = xmlGetProp(node, aName.c_str() );
-      xmlString val = prop;
-      attrVal = xmlStringToString( val );
+      xmlChar * prop = xmlGetProp(node, aName);
+      XMLString val = prop;
+      attrVal = ToString(val);
       xmlFree( prop );
     }
   }
@@ -337,9 +330,9 @@ void XML::SetAttribute(const Node & node, const String & attribute, const String
 {
   if (node)
   {
-    xmlString aAttr  = StringToXmlString( attribute );
-    xmlString aValue = StringToXmlString( value );
-    xmlNewProp( node, aAttr.c_str(), aValue.c_str() );
+    XMLString aAttr  = StringToXmlString(attribute);
+    XMLString aValue = StringToXmlString(value);
+    xmlNewProp(node, aAttr, aValue);
   }
 }
 
@@ -385,8 +378,8 @@ String XML::GetNodeValue(const Node & node)
     {
       if (IsText(cur))
       {
-        xmlString val = cur->content;
-        value = xmlStringToString( val );
+        XMLString val = cur->content;
+        value = ToString(val);
         break;
       }
     }
@@ -400,8 +393,8 @@ String XML::GetNodeName(const Node & node)
   String name;
   if (node)
   {
-    xmlString aName = node->name;
-    name = xmlStringToString( aName );
+    XMLString aName = node->name;
+    name = ToString(aName);
   }
   return name;
 }
@@ -418,8 +411,8 @@ UnsignedInteger XML::GetNodeLineNumber(const Node & node)
 
 XML::Node XML::NewNode(const String & name)
 {
-  xmlString aName = StringToXmlString( name );
-  Node node = xmlNewNode( NULL, aName.c_str() );
+  XMLString aName = StringToXmlString(name);
+  Node node = xmlNewNode(NULL, aName);
   return node;
 }
 
@@ -427,8 +420,8 @@ XML::Node XML::NewNode(const String & name)
 
 XML::Node XML::NewTextNode(const String & value)
 {
-  xmlString aValue = StringToXmlString( value );
-  Node node = xmlNewText( aValue.c_str() );
+  XMLString aValue = StringToXmlString(value);
+  Node node = xmlNewText(aValue);
   return node;
 }
 
@@ -474,9 +467,9 @@ XML::Node XML::GetNextNode( const Node & node )
 
 void XML::SetDTD( const XMLDoc & doc, const String & name, const String & path )
 {
-  xmlString aName = StringToXmlString( name );
-  xmlString aPath = StringToXmlString( path );
-  xmlCreateIntSubset( doc, aName.c_str(), NULL, aPath.c_str() );
+  XMLString aName = StringToXmlString(name);
+  XMLString aPath = StringToXmlString(path);
+  xmlCreateIntSubset( doc, aName, NULL, aPath);
 }
 
 std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node)
@@ -489,11 +482,11 @@ std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node)
   xmlAttrPtr attr = node->properties;
   while(attr)
   {
-    XML::xmlString aName = attr->name;
-    xmlChar * prop = xmlGetProp(node, aName.c_str() );
-    XML::xmlString val = prop;
-    String attrName = xmlStringToString( aName );
-    String attrVal = xmlStringToString( val );
+    XML::XMLString aName = attr->name;
+    xmlChar * prop = xmlGetProp(node, aName);
+    XML::XMLString val = prop;
+    String attrName = XML::ToString(aName);
+    String attrVal = XML::ToString(val);
     os << attrName << "=" << attrVal << " ";
     attr = attr->next;
   }
@@ -510,8 +503,8 @@ std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node)
 
   if (XML::IsText(node))
   {
-    XML::xmlString val = node->content;
-    os << " value='" <<  xmlStringToString( val ) << "'";
+    XML::XMLString val = node->content;
+    os << " value='" <<  XML::ToString(val) << "'";
   }
   return os;
 }
