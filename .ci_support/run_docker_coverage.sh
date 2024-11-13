@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -xe
+git config --global --add safe.directory /io
 
 uid=$1
 gid=$2

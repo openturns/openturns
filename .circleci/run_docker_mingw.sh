@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -xe
+git config --global --add safe.directory /io
 
 if test -d "/io"
 then
