@@ -440,6 +440,7 @@ public:
   {
     checkPrint();
     checkGeneral();
+    checkRealization();
     checkComparison();
     if (enablePDF_)
     {
@@ -633,6 +634,17 @@ private:
 
     Distribution standardRep(distribution_.getStandardRepresentative());
     LOGTRACE(OSS() << "Standard representative=" << standardRep);
+  }
+
+  void checkRealization() const
+  {
+    LOGTRACE(OSS() << "checking realization...");
+    RandomGeneratorState initialState(RandomGenerator::GetState());
+    const Point x(distribution_.getRealization());
+    RandomGenerator::SetState(initialState);
+    LOGTRACE(OSS() << "x=" << x << " dim=" << distribution_.getDimension());
+    if (x.getDimension() != distribution_.getDimension())
+      throw TestFailed(OSS() << "dim(realization)==dimension failed for " << distribution_);
   }
 
   void checkGeneratingFunction() const
