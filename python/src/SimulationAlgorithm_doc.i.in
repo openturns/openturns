@@ -59,7 +59,7 @@ coefficient : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SimulationAlgorithm::getMaximumOuterSampling
-"Accessor to the maximum sample size.
+"Accessor to the maximum iterations number.
 
 Returns
 -------
@@ -69,7 +69,7 @@ outerSampling : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SimulationAlgorithm::setMaximumOuterSampling
-"Accessor to the maximum sample size.
+"Accessor to the maximum iterations number.
 
 Parameters
 ----------
