@@ -31,7 +31,7 @@ OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 20
 
 # coverage
 gcov `find lib/src/ -name "*.gcno"`
-lcov --capture --directory . --output-file coverage.info --include "*.cxx"
+lcov --capture --directory . --output-file coverage.info --include "*.cxx" --exclude "*_wrap.cxx"
 genhtml --output-directory coverage coverage.info
 cp -v coverage.info coverage
 
