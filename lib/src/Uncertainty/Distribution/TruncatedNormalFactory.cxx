@@ -77,7 +77,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   const Scalar b = xMax + delta / (size + 2);
   // Create a method of moments
   const Indices momentOrders = {1, 2}; // mean, variance
-  MethodOfMomentsFactory factory(buildAsTruncatedNormal(), momentOrders);
+  MethodOfMomentsFactory factory(build(), momentOrders);
 
   // Set the bounds as known parameters
   const Point knownParameterValues = {a, b};
@@ -175,7 +175,14 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
 
 TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sample) const
 {
-  return buildMethodOfLikelihoodMaximization(sample);
+  try
+  {
+    return buildMethodOfLikelihoodMaximization(sample);
+  }
+  catch (const Exception &)
+  {
+    return buildMethodOfMoments(sample);
+  }
 }
 
 TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Point & parameters) const
