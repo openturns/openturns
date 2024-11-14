@@ -19,7 +19,7 @@ Subset Sampling
 #
 # .. math::
 #   \begin{align*}
-#   X \sim  \mathcal{N}(\mu = [0.25, 0.25], \sigma = [1,1], cov = I_2)
+#   X \sim  \mathcal{N}(\mu = [0.25, 0.25], \sigma = [1,1], cor = I_2)
 #   \end{align*}
 #
 # We want to evaluate the probability:
