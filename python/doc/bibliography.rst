@@ -442,7 +442,7 @@ Bibliography
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
-.. [segers2016] J. Segers &  M. Sibuya &  H. TsukaharaSen (2016). *The Empirical Beta Copula*, 
+.. [segers2016] J. Segers &  M. Sibuya &  H. TsukaharaSen (2016). *The Empirical Beta Copula*,
    `pdf <https://arxiv.org/pdf/1607.04430>`__
 .. [sen1990] Sen, A., & Srivastava, M. (1990). *Regression analysis: theory, methods, and applications*.
     Springer.
