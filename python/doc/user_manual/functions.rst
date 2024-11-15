@@ -74,7 +74,6 @@ Refer to :ref:`field_function`.
     PointToFieldFunction
     ParametricPointToFieldFunction
     VertexValuePointToFieldFunction
-    PythonFieldFunction
     ValueFunction
     VertexValueFunction
     PythonFieldFunction
@@ -129,7 +128,6 @@ Evaluation functions
     LinearCombinationEvaluation
     LinearEvaluation
     MarginalEvaluation
-    MarginalTransformationEvaluation
     MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
