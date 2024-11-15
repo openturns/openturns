@@ -1119,6 +1119,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
   addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
+  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);

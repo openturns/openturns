@@ -425,20 +425,20 @@ void PointConditionalDistribution::update()
     }
   }
 
-  if (!useSimplifiedVersion_)
-    {
-      // cache reordered marginals
-      Indices indices(conditioningIndices_);
-      indices.add(nonConditioningIndices_); // initialized in update()
-      reorderedDistribution_ = distribution_.getMarginal(indices);
-      
-      // cache qI
-      Point x(conditioningValues_);
-      x.add(getRange().getLowerBound());
-      conditioningCDF_ = reorderedDistribution_.computeSequentialConditionalCDF(x);
-      conditioningCDF_.resize(conditioningIndices_.getSize());
-      LOGDEBUG(OSS() << "conditioningCDF_=" << conditioningCDF_);
-    }
+  if (!useSimplifiedVersion_ && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeTransformation"))
+  {
+    // cache reordered marginals
+    Indices indices(conditioningIndices_);
+    indices.add(nonConditioningIndices_); // initialized in update()
+    reorderedDistribution_ = distribution_.getMarginal(indices);
+
+    // cache qI
+    Point x(conditioningValues_);
+    x.add(getRange().getLowerBound());
+    conditioningCDF_ = reorderedDistribution_.computeSequentialConditionalCDF(x);
+    conditioningCDF_.resize(conditioningIndices_.getSize());
+    LOGDEBUG(OSS() << "conditioningCDF_=" << conditioningCDF_);
+  }
 }
 
 
@@ -965,6 +965,8 @@ Scalar PointConditionalDistribution::computeConditionalPDF(const Scalar x, const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeConditionalPDF(x, y);
 
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
   xCond.add(y);
   return reorderedDistribution_.computeConditionalPDF(x, xCond);
@@ -975,6 +977,8 @@ Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point 
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeSequentialConditionalPDF(x);
 
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
   xCond.add(x);
   Point result(reorderedDistribution_.computeSequentialConditionalPDF(xCond));
@@ -988,6 +992,8 @@ Scalar PointConditionalDistribution::computeConditionalCDF(const Scalar x, const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeConditionalCDF(x, y);
 
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
   xCond.add(y);
   return reorderedDistribution_.computeConditionalCDF(x, xCond);
@@ -998,6 +1004,8 @@ Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point 
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeSequentialConditionalCDF(y);
 
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
   xCond.add(y);
   Point result(reorderedDistribution_.computeSequentialConditionalCDF(xCond));
@@ -1010,6 +1018,8 @@ Scalar PointConditionalDistribution::computeConditionalQuantile(const Scalar q, 
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeConditionalQuantile(q, y);
 
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
   xCond.add(y);
   return reorderedDistribution_.computeConditionalQuantile(q, xCond);
@@ -1020,6 +1030,8 @@ Point PointConditionalDistribution::computeSequentialConditionalQuantile(const P
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeSequentialConditionalQuantile(q);
 
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point qCond(conditioningCDF_);
   qCond.add(q);
   Point result(reorderedDistribution_.computeSequentialConditionalQuantile(qCond));
