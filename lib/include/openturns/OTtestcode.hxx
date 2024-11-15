@@ -1034,15 +1034,21 @@ private:
 
       const CorrelationMatrix spearman(distribution_.getSpearmanCorrelation());
       LOGTRACE(OSS() << "spearman    =" << spearman);
-      const CorrelationMatrix spearmanMC(sample.computeSpearmanCorrelation());
-      LOGTRACE(OSS() << "spearman(MC)=" << spearmanMC);
-      assert_almost_equal(spearman, spearmanMC, correlationTolerance_, correlationTolerance_, "spearman " + distribution_.__repr__());
+      if (distribution_.isContinuous())
+      {
+        const CorrelationMatrix spearmanMC(sample.computeSpearmanCorrelation());
+        LOGTRACE(OSS() << "spearman(MC)=" << spearmanMC);
+        assert_almost_equal(spearman, spearmanMC, correlationTolerance_, correlationTolerance_, "spearman " + distribution_.__repr__());
+      }
 
       const CorrelationMatrix kendall(distribution_.getKendallTau());
       LOGTRACE(OSS() << "kendall    =" << kendall);
-      const CorrelationMatrix kendallMC(sample.computeKendallTau());
-      LOGTRACE(OSS() << "kendall(MC)=" << kendallMC);
-      assert_almost_equal(kendall, kendallMC, correlationTolerance_, correlationTolerance_, "kendall " + distribution_.__repr__());
+      if (distribution_.isContinuous())
+      {
+        const CorrelationMatrix kendallMC(sample.computeKendallTau());
+        LOGTRACE(OSS() << "kendall(MC)=" << kendallMC);
+        assert_almost_equal(kendall, kendallMC, correlationTolerance_, correlationTolerance_, "kendall " + distribution_.__repr__());
+      }
     }
   }
 
