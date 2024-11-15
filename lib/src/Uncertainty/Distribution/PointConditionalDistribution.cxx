@@ -328,7 +328,8 @@ void PointConditionalDistribution::update()
   // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
   // r_ is a free parameter, could be optimized to maximize the acceptance ratio
   const UnsignedInteger dimension = getDimension();
-  if (!useSimplifiedVersion_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension")))
+  if (!useSimplifiedVersion_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
+    && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeSampling"))
   {
     const Interval bounds(getRange());
     const Point lb(bounds.getLowerBound());
@@ -676,6 +677,9 @@ Point PointConditionalDistribution::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (isContinuous() && dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
   {
+    if (!infV_.getSize())
+      throw InvalidArgumentException(HERE) << "Sampling was not initialized";
+
     // Now, the sampling using rejection
     Bool accepted = false;
     Point result(dimension);
