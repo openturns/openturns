@@ -66,8 +66,6 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
     const Point & conditioningValues)
   : DistributionImplementation()
   , distribution_(distribution)
-  , conditioningIndices_(conditioningIndices)
-  , conditioningValues_(conditioningValues)
 {
   setName("PointConditionalDistribution");
   const UnsignedInteger fullDimension = distribution.getDimension();
@@ -76,6 +74,19 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
     throw InvalidArgumentException(HERE) << "Conditioning indices/values sizes do not match, got " << conditioningIndices.getSize() << "/" << conditioningValues.getSize();
   if (!conditioningIndices.check(fullDimension))
     throw InvalidArgumentException(HERE) << "Conditioning vector indices (" << conditioningIndices << ") must be less than conditioned distribution dimension (" << fullDimension << " )";
+
+  // reorder indices/values
+  Indices permutation(conditioningIndices.getSize());
+  permutation.fill();
+  std::sort(permutation.begin(), permutation.end(),
+            [&](const UnsignedInteger & a, const UnsignedInteger & b) { return (conditioningIndices[a] < conditioningIndices[b]); });
+  conditioningIndices_.resize(conditioningIndices.getSize());
+  conditioningValues_.resize(conditioningIndices.getSize());
+  for (UnsignedInteger i = 0; i < conditioningIndices.getSize(); ++ i)
+  {
+    conditioningIndices_[i] = conditioningIndices[permutation[i]];
+    conditioningValues_[i] = conditioningValues[permutation[i]];
+  }
 
   // it is ok to condition continuous marginals by a discrete one and vice-versa
   const Distribution marginalConditioned(distribution.getMarginal(conditioningIndices.complement(fullDimension)));
