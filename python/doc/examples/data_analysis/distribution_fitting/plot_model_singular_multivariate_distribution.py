@@ -107,14 +107,10 @@ marginals = [
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
 
-
 # %%
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
 # In that case, it manages to reproduce its specific feature.
 empBern_copula = ot.BernsteinCopulaFactory().build(sample_Y, N)
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
-
-
-
 viewer.View.ShowAll()
