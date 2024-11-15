@@ -1120,6 +1120,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
   addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
   addAsBool("PointConditionalDistribution-InitializeTransformation", true);
+  addAsBool("PointConditionalDistribution-InitializeSampling", true);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
