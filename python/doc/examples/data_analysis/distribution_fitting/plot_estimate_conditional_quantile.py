@@ -108,7 +108,6 @@ graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-#graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
 # %%
