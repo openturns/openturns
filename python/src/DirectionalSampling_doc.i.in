@@ -84,7 +84,7 @@ Create the event :math:`\cD_f = \{\inputRV \in \Rset^{\inputDim} \, | \,\model(\
 >>> threshold = -3.0
 >>> myEvent = ot.ThresholdEvent(output_RV, ot.Less(), -3.0)
 
-Create the directional sampling algorithm and the convergence criterias: 
+Create the directional sampling algorithm and the convergence criteria: 
 >>> myAlgo = ot.DirectionalSampling(myEvent, ot.MediumSafe(), ot.OrthogonalDirection())
 >>> myAlgo.setMaximumOuterSampling(150)
 >>> myAlgo.setBlockSize(4)

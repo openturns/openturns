@@ -44,6 +44,7 @@ SklarCopula
 Examples
 --------
 Use a copula:
+
 >>> import openturns as ot
 >>> copula = ot.GumbelCopula(2.0)
 >>> marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
@@ -52,18 +53,19 @@ Use a copula:
 Use a non-copula core:
 
 >>> core = ot.Dirichlet([2.0, 1.5, 2.5])
->>> intrumental_marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
->>> distribution = ot.JointDistribution(intrumental_marginals, core)"
+>>> instrumental_marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
+>>> distribution = ot.JointDistribution(instrumental_marginals, core)
+"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::JointDistribution::getDistributionCollection
-"Get the intrumental marginals of the distribution.
+"Get the instrumental marginals of the distribution.
 
 Returns
 -------
 distributions : list of :class:`~openturns.Distribution`
-    List of the intrumental marginals of the distribution.
+    List of the instrumental marginals of the distribution.
 
 Notes
 -----
@@ -73,17 +75,17 @@ the resulting distribution."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::JointDistribution::setDistributionCollection
-"Set the intrumental marginals of the distribution.
+"Set the instrumental marginals of the distribution.
 
 Parameters
 ----------
 distributions : list of :class:`~openturns.Distribution`
-    List of the intrumental marginals of the distribution.
+    List of the instrumental marginals of the distribution.
 
 Notes
 -----
 If the core :math:`K` is a copula, the instrumental marginals are the marginals of
-the resulting distribution.
+the resulting distribution."
 
 // ---------------------------------------------------------------------
 
@@ -129,4 +131,5 @@ Notes
 -----
 A core is a multivariate distribution whose range is
 included in the unit hypercube :math:`[0, 1]^\inputDim`.
-It is not always the copula of the distribution."
+It is not always the copula of the distribution.
+"
