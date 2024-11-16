@@ -76,10 +76,12 @@ graph.add(curve)
 view = viewer.View(graph)
 
 # %%
-# The distribution of the input vector :math:`\vect{X}` is defined.
-
-# %%
-X_distribution = ot.JointDistribution([cm.R, cm.C, cm.Gamma])
+# The distribution of the input vector :math:`\vect{X}` is defined here:
+param_R = ot.LogNormalMuSigma(750e6, 11e6, 0.0)
+dist_R = ot.ParametrizedDistribution(param_R)
+dist_C = ot.Normal(2750e6, 250e6)
+dist_gamma = ot.Normal(10, 2)
+X_distribution = ot.JointDistribution([dist_R, dist_C, dist_gamma])
 
 # %%
 # Generate different samples of the field
@@ -156,6 +158,7 @@ for i in range(n_samples):
     graph.add(curve)
 
 curve = ot.Curve(vertices, process_sample_mean, "process sample mean")
+curve.setColor("red")
 graph.add(curve)
 graph.setLegendPosition("topleft")
 view = viewer.View(graph)

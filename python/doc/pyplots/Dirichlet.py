@@ -17,7 +17,6 @@ for theta in list_theta:
     cdf_curve = distribution.drawCDF()
     pdf_graph.add(pdf_curve)
     cdf_graph.add(cdf_curve)
-cdf_graph.setColors(pdf_graph.getColors())
 legends = [f"theta={theta}" for theta in list_theta]
 pdf_graph.setLegends(legends)
 cdf_graph.setLegends(legends)

@@ -36,4 +36,3 @@ for i, d in enumerate(drs):
 g2.setDrawables(drs)
 g.add(g2)
 View(g)
-
