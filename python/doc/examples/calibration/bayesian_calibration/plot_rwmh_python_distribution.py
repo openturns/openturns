@@ -244,4 +244,3 @@ for parameter_index in range(2):
     graph.setLegends(["Posterior"])
     grid.setGraph(0, parameter_index, graph)
 _ = View(grid)
-

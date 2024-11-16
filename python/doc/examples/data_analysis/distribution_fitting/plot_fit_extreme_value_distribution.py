@@ -194,5 +194,4 @@ view = viewer.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(-1.0, 10.0)
 
-
 plt.show()
