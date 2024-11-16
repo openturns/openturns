@@ -4,22 +4,34 @@
 Parameters
 ----------
 distributions : list of :class:`~openturns.Distribution`
-    List of :math:`n` marginals of the distribution. Each marginal must be of
-    dimension 1.
+    List of :math:`\inputDim` scalar distributions
+    called the *instrumental marginals*.
+    
+    If *core* is a copula, these distributions are the scalar marginal distributions of the
+    joint distribution.
 core : :class:`~openturns.Distribution`, optional
-    A distribution over :math:`[0,1]^\inputDim`. If not mentioned, the core is set to an
-    :class:`~openturns.IndependentCopula` with the same dimension as
-    *distributions*.
+    A distribution over :math:`[0,1]^\inputDim`. 
+    
+    By default, the :class:`~openturns.IndependentCopula` of dimension :math:`\inputDim`.
 
 Notes
 -----
-A JointDistribution is a :math:`n`-dimensional distribution which can be
-written in terms of 1-d distribution functions and a core :math:`K`
-which describes the interaction between the variables. If :math:`K` is a
-copula, then it represents the dependence structure of the joint
-distribution and the given 1-d distributions are its marginal distributions.
-Its cumulative distribution function :math:`F` is defined by the 1-d
-distributions :math:`F_i` and the core :math:`C` through the relation:
+A :class:`~openturns.JointDistribution` is a multivariate distribution of dimension :math:`\inputDim`,
+which is built from:
+
+- :math:`\inputDim` scalar distributions whose cumulative distribution functions are
+  denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
+- and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
+  included in :math:`[0,1]^\inputDim`.
+
+The cumulative distribution function :math:`F` of the resulting distribution is written as:
+
+.. math::
+
+    F(x_1, \cdots, x_\inputDim) = K(F_1(x_1), \cdots, F_\inputDim(x_\inputDim))
+
+If :math:`K` is a copula :math:`C`, then the  instrumental marginals are the marginal distributions
+of the resulting distribution and we get:
 
 .. math::
 
@@ -31,43 +43,47 @@ SklarCopula
 
 Examples
 --------
+Use a copula:
 >>> import openturns as ot
 >>> copula = ot.GumbelCopula(2.0)
 >>> marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
 >>> distribution = ot.JointDistribution(marginals, copula)
 
-Draw a sample:
-
->>> sample = distribution.getSample(5)
-
-Joint distribution based on a non-copula core:
+Use a non-copula core:
 
 >>> core = ot.Dirichlet([2.0, 1.5, 2.5])
->>> distribution = ot.JointDistribution(marginals, core)
-
-Draw a sample:
-
->>> sample = distribution.getSample(5)"
+>>> intrumental_marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
+>>> distribution = ot.JointDistribution(intrumental_marginals, core)"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::JointDistribution::getDistributionCollection
-"Get the marginals of the distribution.
+"Get the intrumental marginals of the distribution.
 
 Returns
 -------
 distributions : list of :class:`~openturns.Distribution`
-    List of the marginals of the distribution."
+    List of the intrumental marginals of the distribution.
+
+Notes
+-----
+If the core :math:`K` is a copula, the instrumental marginals are the marginals of
+the resulting distribution."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::JointDistribution::setDistributionCollection
-"Set the marginals of the distribution.
+"Set the intrumental marginals of the distribution.
 
 Parameters
 ----------
 distributions : list of :class:`~openturns.Distribution`
-    List of the marginals of the distribution."
+    List of the intrumental marginals of the distribution.
+
+Notes
+-----
+If the core :math:`K` is a copula, the instrumental marginals are the marginals of
+the resulting distribution.
 
 // ---------------------------------------------------------------------
 
@@ -77,7 +93,11 @@ distributions : list of :class:`~openturns.Distribution`
 Parameters
 ----------
 copula : :class:`~openturns.Distribution`
-    Copula of the distribution."
+    Copula of the distribution.
+
+Notes
+-----
+In that case, the core :math:`K` is the specified copula."
 
 // ---------------------------------------------------------------------
 
@@ -87,9 +107,13 @@ copula : :class:`~openturns.Distribution`
 Returns
 -------
 core : :class:`~openturns.Distribution`
-    Core of the distribution. A distribution whose range is
-    included in the unit hypercube :math:`[0, 1]^\inputDim` where
-    :math:`\inputDim` is the distribution dimension."
+    Core :math:`K` of the distribution.
+
+Notes
+-----
+A core is a multivariate distribution whose range is
+included in the unit hypercube :math:`[0, 1]^\inputDim`.
+It is not always the copula of the distribution."
 
 // ---------------------------------------------------------------------
 
@@ -99,6 +123,10 @@ core : :class:`~openturns.Distribution`
 Parameters
 ----------
 core : :class:`~openturns.Distribution`
-    Core of the distribution. Any distribution whose range is
-    included in the unit hypercube :math:`[0, 1]^\inputDim` where
-    :math:`\inputDim` is the distribution dimension."
+    Core :math:`K` of the distribution.
+
+Notes
+-----
+A core is a multivariate distribution whose range is
+included in the unit hypercube :math:`[0, 1]^\inputDim`.
+It is not always the copula of the distribution."
