@@ -19,17 +19,17 @@ ot.Log.Show(ot.Log.NONE)
 # In this paragraph we use :class:`~openturns.JointDistribution` class to
 # build a multivariate distribution of dimension :math:`\inputDim`, from:
 #
-#- :math:`\inputDim` scalar distributions whose cumulative distribution functions are
-#  denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
-#- and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
-#  included in :math:`[0,1]^\inputDim`.
+# - :math:`\inputDim` scalar distributions whose cumulative distribution functions are
+#   denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
+# - and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
+#   included in :math:`[0,1]^\inputDim`.
 #
 # First case: the core is a copula
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # In this case, we use a core which is a copula. In that case, the instrumental marginals
 # are the marginals of the multivariate distribution.
 #
-# We first create the marginals of the distribution :
+# We first create the marginals of the distribution:
 #
 #   - a :class:`~openturns.Normal` distribution;
 #   - a :class:`~openturns.Gumbel` distribution
@@ -97,11 +97,11 @@ view = otv.View(graph)
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # In this case, we use a core which is not a copula. In that case, the instrumental marginals
 # are not the marginals of the multivariate distribution.
-# 
-# We first create the instrumental marginals of the distribution :
 #
-#   - a :class:`~openturns.Normal` distribution;
-#   - a :class:`~openturns.Gumbel` distribution
+# We first create the instrumental marginals of the distribution:
+#
+# - a :class:`~openturns.Normal` distribution;
+# - a :class:`~openturns.Gumbel` distribution
 #
 # We use a :class:`~openturns.Dirichlet` as the core.
 inst_marginals = [ot.Normal(), ot.Gumbel()]
@@ -112,7 +112,7 @@ distribution = ot.JointDistribution(inst_marginals, core_dir)
 # We can check here that the instrumental marginals are not the marginal distributions.
 # In the following graphs, we draw the instrumental marginals and the real marginals, obtained with
 # the method :meth:`getMarginal`.
-# First, we draw the probability density functions of each component. 
+# First, we draw the probability density functions of each component.
 graph_PDF_0 = inst_marginals[0].drawPDF()
 graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
 graph_PDF_0.setLegends(['instrumental marg', 'marg'])
@@ -154,15 +154,14 @@ graph_cop.setTitle('Distribution copula and core')
 view = otv.View(graph_cop)
 
 # %%
-# We can draw the PDF of the bivariate distribution:
+# We can draw the PDF of the bivariate distribution.
 graph = distribution.drawPDF()
 view = otv.View(graph)
 
 # %%
-# We also draw the CDF :
+# We also draw the CDF.
 graph = distribution.drawCDF()
 view = otv.View(graph)
-
 
 # %%
 # Use some native multivariate models
@@ -229,7 +228,7 @@ graph = distribution.drawPDF()
 graph.setTitle("User defined PDF")
 
 # %%
-# We can draw a sample from this distribution with the `getSample` method :
+# We can draw a sample from this distribution with the `getSample` method:
 omega = distribution.getSample(100)
 cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from UserDefined distribution")
 graph.add(cloud)
