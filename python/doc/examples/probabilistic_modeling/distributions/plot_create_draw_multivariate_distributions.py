@@ -43,8 +43,9 @@ distribution = ot.JointDistribution(marginals, cop)
 # %%
 # We can check here that the instrumental marginals are really the marginal distributions.
 # In the following graphs, we draw the instrumental marginals and the real marginals, obtained with
-# the method :meth:`getMarginal`.
-# First, we draw the probability density functions of each component. We recall that the :meth:`drawPDF`
+# the method :meth:`~openturns.Distribution.getMarginal`.
+# First, we draw the probability density functions of each component. We recall that the
+# :meth:`~openturns.Distribution.drawPDF`
 # command just generates the graph data. It is the viewer module that enables the actual display.
 graph_PDF_0 = marginals[0].drawPDF()
 graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
@@ -111,7 +112,7 @@ distribution = ot.JointDistribution(inst_marginals, core_dir)
 # %%
 # We can check here that the instrumental marginals are not the marginal distributions.
 # In the following graphs, we draw the instrumental marginals and the real marginals, obtained with
-# the method :meth:`getMarginal`.
+# the method :meth:`~openturns.Distribution.getMarginal`.
 # First, we draw the probability density functions of each component.
 graph_PDF_0 = inst_marginals[0].drawPDF()
 graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
@@ -228,7 +229,7 @@ graph = distribution.drawPDF()
 graph.setTitle("User defined PDF")
 
 # %%
-# We can draw a sample from this distribution with the `getSample` method:
+# We can generate and display a sample from this distribution.
 omega = distribution.getSample(100)
 cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from UserDefined distribution")
 graph.add(cloud)
