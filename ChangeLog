@@ -15,8 +15,6 @@
 === Python module ===
 
 === Miscellaneous ===
- * New Gauss Legendre algorithm to generate weights and nodes, relying on
-	FastGL (https://sourceforge.net/projects/fastgausslegendrequadrature/)
 
 
 
@@ -81,6 +79,8 @@
  * New OrthogonalFunctionFactory.getMarginal method
  * New EnumerateFunction.getMarginal method
  * New FunctionalChaosResult.getConditionalExpectation
+ * New Gauss Legendre algorithm to generate weights and nodes, relying on
+   FastGL (https://sourceforge.net/projects/fastgausslegendrequadrature/)
 
 === Bug fixes (total 39) ===
  * #1077 (Docstrings suggest kwargs are available)
