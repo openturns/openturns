@@ -271,7 +271,7 @@ or least squares.
 
 Returns
 -------
-isLeastSquares: bool
+isLeastSquares : bool
     True if the coefficients are estimated from least squares."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::isLeastSquares
@@ -288,7 +288,7 @@ Model selection can lead to a sparse functional chaos expansion.
 
 Returns
 -------
-involvesModelSelection: bool
+involvesModelSelection : bool
     True if the method involves a model selection method."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::involvesModelSelection

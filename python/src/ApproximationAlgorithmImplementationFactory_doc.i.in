@@ -25,7 +25,7 @@ Model selection leads to a sparse functional chaos expansion.
 
 Returns
 -------
-involvesModelSelection: bool
+involvesModelSelection : bool
     True if the method involves a model selection method."
 
 // ---------------------------------------------------------------------
