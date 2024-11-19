@@ -107,6 +107,6 @@ newGrid : :class:`~openturns.RegularGrid`
 
 Returns
 -------
-answer : boolean
+answer : bool
     The answer is *True* if the *newGrid* directly follows the current one."
 
