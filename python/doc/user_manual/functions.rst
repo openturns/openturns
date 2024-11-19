@@ -83,6 +83,8 @@ Refer to :ref:`field_function`.
     OpenTURNSPythonFieldFunction
     OpenTURNSPythonFieldToPointFunction
     OpenTURNSPythonPointToFieldFunction
+
+    :template: classWithPlot.rst_t
     P1LagrangeInterpolation
 
 Collection of functions
