@@ -102,7 +102,7 @@ graph : :class:`~openturns.Graph`
 
 Parameters
 ----------
-probabilityScale : boolean
+probabilityScale : bool
     Set True if the limits are the probability levels; set False if the limits are
     the thresholds defining the event.
 lower, upper : floats
