@@ -80,12 +80,12 @@ Point= class=Point name=Unnamed dimension=2 values=[1,1]
 ddf     =class=Point name=Unnamed dimension=2 values=[-0.119059,0.0148823]
 log pdf=-3.27982
 pdf     =0.0376351
-cdf=0.482334
-ccdf=0.517666
-survival=0.0364632
-Inverse survival=class=Point name=Unnamed dimension=2 values=[-1.28731,-1.57463]
+cdf=0.482967
+ccdf=0.517033
+survival=0.0345372
+Inverse survival=class=Point name=Unnamed dimension=2 values=[-1.2857,-1.5714]
 Survival(inverse survival)=0.95
-quantile=class=Point name=Unnamed dimension=2 values=[1.28731,3.57463]
+quantile=class=Point name=Unnamed dimension=2 values=[1.2857,3.5714]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.60007,-2.20015] upper bound=class=Point name=Unnamed dimension=2 values=[1.60007,4.20015] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.97216
@@ -96,10 +96,10 @@ Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=
 beta=0.00434109
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.60007,-2.20015] upper bound=class=Point name=Unnamed dimension=2 values=[1.60007,4.20015] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97216
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-933.472,-1865.94] upper bound=class=Point name=Unnamed dimension=2 values=[1.28731,3.57463] finite lower bound=[1,1] finite upper bound=[1,1]
-beta=0.972498
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.28731,-1.57463] upper bound=class=Point name=Unnamed dimension=2 values=[933.472,1867.94] finite lower bound=[1,1] finite upper bound=[1,1]
-beta=0.972498
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-933.472,-1865.94] upper bound=class=Point name=Unnamed dimension=2 values=[1.2857,3.5714] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.972397
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.2857,-1.5714] upper bound=class=Point name=Unnamed dimension=2 values=[933.472,1867.94] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.972397
 entropy=2.55691
 entropy (MC)=2.55471
 mean=class=Point name=Unnamed dimension=2 values=[0,1]

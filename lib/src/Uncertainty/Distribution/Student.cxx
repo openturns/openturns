@@ -29,8 +29,10 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/InverseChiSquare.hxx"
+#include "openturns/GaussProductExperiment.hxx"
+#include "openturns/Normal2DCDF.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -231,16 +233,40 @@ Scalar Student::computeCDF(const Point & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
-  // For moderate dimension, use a Gauss-Legendre integration
+
+  // the distribution can be rewritten as a deconditioned 2-d Gaussian with stddev distributed as an inverse Chi2
+  // for moderate dimensions we integrate directly the inverse Chi2 with an adapted quadrature
+  // https://www.researchgate.net/publication/238716742_On_Some_Characteristics_of_the_Bivariate_T-Distribution
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
-    // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
-    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension())));
-    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
-    setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return DistributionImplementation::computeCDF(point);
+    Scalar cdf = 0.0;
+    const UnsignedInteger size = chi2QuadratureNodes_.getSize();
+    if (dimension == 2)
+    {
+      const Scalar z0 = (point[0] - mean_[0]) / sigma_[0];
+      const Scalar z1 = (point[1] - mean_[1]) / sigma_[1];
+      const Scalar rho = R_(1, 0);
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+        const Scalar t = chi2QuadratureNodes_(i, 0);
+        cdf += chi2QuadratureWeights_[i] * Normal2DCDF(z0 / t, z1 / t, rho, false);
+      }
+    }
+    else
+    {
+      Point z(point - mean_);
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+        z[j] /= sigma_[j];
+      const Normal atom(Point(dimension, 0.0), Point(dimension, 1.0), R_);
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+        const Scalar t = chi2QuadratureNodes_(i, 0);
+        cdf += chi2QuadratureWeights_[i] * atom.computeCDF(z * (1.0 / t));
+      }
+    }
+    return cdf;
   }
+
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
   RandomGeneratorState initialState(RandomGenerator::GetState());
@@ -761,6 +787,14 @@ void Student::setNu(const Scalar nu)
   if (nu > 2.0) covarianceScalingFactor_ = nu_ / (nu_ - 2.0);
   studentNormalizationFactor_ = SpecFunc::LogGamma(0.5 * (nu + dimension)) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
   computeRange();
+
+  // store costly quadrature points
+  if ((dimension > 1) && (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension")))
+  {
+    const Distribution chi((nu * InverseChiSquare(nu)).sqrt());
+    const UnsignedInteger marginalSize = ResourceMap::GetAsUnsignedInteger("Student-MarginalIntegrationNodesNumber");
+    chi2QuadratureNodes_ = (GaussProductExperiment(chi, {marginalSize}).generateWithWeights(chi2QuadratureWeights_));
+  }
 }
 
 /* Tell if the distribution has independent copula */

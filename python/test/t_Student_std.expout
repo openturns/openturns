@@ -25,11 +25,11 @@ Point=  class=Point name=Unnamed dimension=2 values=[1,1]
 ddf     = class=Point name=Unnamed dimension=2 values=[-0.13334,0.0166675]
 log pdf=-3.251707
 pdf     =0.038708
-cdf=0.487148
-ccdf=0.512852
-quantile= class=Point name=Unnamed dimension=2 values=[1.14225,3.28449]
+cdf=0.487151
+ccdf=0.512849
+quantile= class=Point name=Unnamed dimension=2 values=[1.14196,3.28392]
 cdf(quantile)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=2 values=[-1.14225,-1.28449]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[-1.14196,-1.28392]
 Survival(inverseSurvival)=0.950000
 entropy=2.379127
 Minimum volume interval= [-1.37255, 1.37255]
@@ -42,12 +42,12 @@ beta= [0.00739423]
 Bilateral confidence interval= [-1.37255, 1.37255]
 [-1.7451, 3.7451]
 beta= [0.973154]
-Unilateral confidence interval (lower tail)= [-77.5591, 1.14225]
-[-154.118, 3.28449]
-beta= [0.973087]
-Unilateral confidence interval (upper tail)= [-1.14225, 77.5591]
-[-1.28449, 156.118]
-beta= [0.973087]
+Unilateral confidence interval (lower tail)= [-77.5591, 1.14196]
+[-154.118, 3.28392]
+beta= [0.973063]
+Unilateral confidence interval (upper tail)= [-1.14196, 77.5591]
+[-1.28392, 156.118]
+beta= [0.973063]
 mean= class=Point name=Unnamed dimension=2 values=[0,1]
 standard deviation= class=Point name=Unnamed dimension=2 values=[0.583874,1.16775]
 skewness= class=Point name=Unnamed dimension=2 values=[0,0]

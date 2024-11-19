@@ -171,6 +171,7 @@ print(
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipCorrelation()  # slow
+validation.skipGradient()  # slow
 validation.run()
 
 # non-spd cov

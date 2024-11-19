@@ -194,6 +194,11 @@ private:
 
   /** Specific normalization factor for the Student distribution */
   Scalar studentNormalizationFactor_ = 0.0;
+
+  /** For CDF computation */
+  Sample chi2QuadratureNodes_;
+  Point chi2QuadratureWeights_;
+
 }; /* class Student */
 
 
