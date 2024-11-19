@@ -25,6 +25,7 @@
 #ifdef OPENTURNS_HAVE_CERES
 #include "openturns/OTwindows.h" // ceres includes windows.h
 #include <ceres/ceres.h>
+#define CERES_VERSION_NR 100000 * CERES_VERSION_MAJOR + 100 * CERES_VERSION_MINOR
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -470,7 +471,13 @@ void Ceres::run()
     Pointer<IterationCallbackInterface> p_iterationCallbackInterface = new IterationCallbackInterface(*this);
     options.callbacks.push_back(p_iterationCallbackInterface.get());
     ceres::GradientProblemSolver::Summary summary;
+
+    // ceres 2.3 changed GradientProblem related APIs to use std::unique_ptr instead of raw pointers
+#if CERES_VERSION_NR < 200300
     ceres::GradientProblem problem(new FirstOrderFunctionInterface(*this));
+#else
+    ceres::GradientProblem problem(std::unique_ptr<FirstOrderFunctionInterface>(new FirstOrderFunctionInterface(*this)));
+#endif
     ceres::Solve(options, problem, &x[0], &summary);
 
     LOGINFO(OSS() << summary.BriefReport());
@@ -552,7 +559,8 @@ void Ceres::load(Advocate & adv)
 
 void Ceres::Initialize()
 {
-#ifdef OPENTURNS_HAVE_CERES
+  // ceres 2.3 switched logging library from glog to abseil
+#if defined(OPENTURNS_HAVE_CERES) && (CERES_VERSION_NR < 200300)
   google::InitGoogleLogging("openturns");
 #endif
 }
