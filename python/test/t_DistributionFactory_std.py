@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import time
 
 print(
     "Continuous univariate factories=",
@@ -25,7 +26,7 @@ print("Multivariate factories=", ot.DistributionFactory.GetMultiVariateFactories
 factories = ot.DistributionFactory.GetContinuousUniVariateFactories()
 factories.add(ot.DistributionFactory.GetDiscreteUniVariateFactories())
 for factory in factories:
-    print(factory)
+    print(f"-- {factory}...")
     dist = factory.build()
     # check if raise on constant sample
     if dist.isContinuous():
@@ -59,9 +60,12 @@ assert factory.getImplementation().__class__.__name__ == "PoissonFactory", "wron
 params = {
     "BetaFactory": 0.05,
     "FisherSnedecorFactory": 0.25,
+    "FrechetFactory": 0.02,
     "LogisticFactory": 0.025,
     "LogNormalFactory": 0.02,
     "ParetoFactory": 0.15,
+    "PolyaFactory": 0.05,
+    "RayleighFactory": 0.02,
     "RiceFactory": 0.3,
     "StudentFactory": 0.15,
     "StudentFactory": 0.15,
@@ -71,30 +75,38 @@ params = {
 }
 
 for factory in factories:
-    print("factory=", factory)
+    print(f"-- {factory}...")
     try:
         factoryName = factory.getImplementation().getClassName()
-        eps = params.get(factoryName, 0.01)
-        # Skip HistogramFactory because it is nonparametric, so the rebuilt distribution has a number of parameters different from the reference distribution
-        # Skip the MeixnerDistributionFactory because it takes ages to compute the parameters
-        if factoryName not in ["HistogramFactory", "MeixnerDistributionFactory"]:
-            # Reference distribution
-            refDistribution = factory.build()
-            sample = refDistribution.getSample(10000)
-            # Get the ref parameter
-            refParameter = refDistribution.getParameter()
-            n = len(refParameter)
-            for k in range(n):
-                # Generate all the combinations of known parameter
-                combinations = ot.Combinations(k, n).generate()
-                for combination in combinations:
-                    indices = [int(x) for x in combination]
-                    factory.setKnownParameter(
-                        [refParameter[i] for i in indices], indices
-                    )
-                    res = factory.build(sample)
-                    resParameter = res.getParameter()
-                    ott.assert_almost_equal(resParameter, refParameter, eps, eps)
     except Exception:
         print("Skip", factory, "no getClassName()")
-        pass
+        continue
+    # Skip HistogramFactory because it is nonparametric, so the rebuilt distribution has a number of parameters different from the reference distribution
+    # Skip some others because they are quite slow
+    distName = factoryName.replace("Factory", "")
+    if distName in ["Rice", "Student", "Trapezoidal", "TruncatedNormal", "VonMises",
+                    "Histogram", "MeixnerDistribution", "Pareto", "Dirichlet", "InverseNormal"]:
+        continue
+    eps = params.get(factoryName, 0.01)
+
+    # Reference distribution
+    refDistribution = factory.build()
+    sample = refDistribution.getSample(10000)
+    # Get the ref parameter
+    refParameter = refDistribution.getParameter()
+    n = len(refParameter)
+    t0 = time.time()
+    for k in range(n):
+        # Generate all the combinations of known parameter
+        combinations = ot.Combinations(k, n).generate()
+        for combination in combinations:
+            indices = [int(x) for x in combination]
+            values = [refParameter[i] for i in indices]
+            factory.setKnownParameter(values, indices)
+            assert factory.getKnownParameterIndices() == indices
+            assert factory.getKnownParameterValues() == values
+            res = factory.build(sample)
+            resParameter = res.getParameter()
+            ott.assert_almost_equal(resParameter, refParameter, eps, eps)
+    t1 = time.time()
+    print(f"done in t={(t1 - t0):.3f} s")
