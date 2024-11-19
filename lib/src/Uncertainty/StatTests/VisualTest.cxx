@@ -753,7 +753,7 @@ GridLayout VisualTest::DrawInsideOutside(const Domain & domain,
       outsideSample.add(sample[i]);
   }
   GridLayout grid(sample.getDimension() - 1, sample.getDimension() - 1);
-  grid.setTitle("Projections of domain " + domain.getName() + (sample.getName().empty() ? "" : (" tested with sample " + sample.getName())));
+  grid.setTitle("Points inside and outside the domain");
   for (UnsignedInteger iX = 0; iX < sample.getDimension(); iX++)
   {
     for (UnsignedInteger iY = iX + 1; iY < sample.getDimension(); iY++)
