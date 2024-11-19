@@ -20,7 +20,7 @@ basis : sequence of :class:`~openturns.Function`
     The basis in which the eigenfunctions are projected.
 marginalDegree : int
     The maximum degree to take into account in the tensorized Legendre basis.
-mustScale : boolean
+mustScale : bool
     Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
 s : float, :math:`\geq0`
     The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
@@ -157,6 +157,6 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 Returns
 -------
-mustScale : boolean
+mustScale : bool
     Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not."
 
