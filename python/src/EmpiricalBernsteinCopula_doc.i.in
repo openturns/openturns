@@ -21,7 +21,7 @@ Notes
 -----
 Let :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` a sample. Let :math:`m` be the bin number.
 Note that when :math:`m=1`, the empirical Bernstein copula is the independent copula. When :math:`m=\sampleSize`, the empirical Bernstein
-copula is also called *the beta copula* (see [segers2016]_).
+copula is also called the *Beta copula* (see [segers2016]_).
 
 **Case 1:** :math:`isRankSample = False`.
 

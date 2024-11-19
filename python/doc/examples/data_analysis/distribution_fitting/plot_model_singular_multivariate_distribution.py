@@ -51,8 +51,8 @@ def draw(dist, Y):
 #
 # .. math::
 #
-#      y_1 & = sin(u) / (1 + cos(u)^2) + 0.05 * v_1 \\
-#      y_2 & = sin(u) * cos(u) / (1 + cos(u)^2) + 0.05 * v_2
+#      y_1 & = \sin(u) / (1 + \cos(u)^2) + 0.05 * v_1 \\
+#      y_2 & = \sin(u) \cos(u) / (1 + \cos(u)^2) + 0.05 * v_2
 #
 # We define the following input random vector:
 #
@@ -109,6 +109,7 @@ view = viewer.View(draw(y_empBern, sample_Y))
 
 # %%
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
+# With this parametrization, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
 # In that case, it manages to reproduce its specific feature.
 empBern_copula = ot.BernsteinCopulaFactory().build(sample_Y, N)
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
