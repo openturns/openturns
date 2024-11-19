@@ -581,7 +581,7 @@ Distribution TruncatedDistribution::getDistribution() const
 
 Distribution TruncatedDistribution::getMarginal(const UnsignedInteger i) const
 {
-  return getMarginal(Indices(1, i));
+  return getMarginal(Indices({i}));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -590,8 +590,10 @@ Distribution TruncatedDistribution::getMarginal(const Indices & indices) const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.getMarginal(indices);
 
-  Interval marginalBounds(bounds_.getMarginal(indices));
-  return new TruncatedDistribution(distribution_.getMarginal(indices), marginalBounds);
+  if (distribution_.hasIndependentCopula())
+    return new TruncatedDistribution(distribution_.getMarginal(indices), bounds_.getMarginal(indices));
+
+  return DistributionImplementation::getMarginal(indices);
 }
 
 /* Realization threshold accessor */

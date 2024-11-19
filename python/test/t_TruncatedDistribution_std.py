@@ -243,3 +243,11 @@ dim = 10
 unif = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dim)
 trunc = ot.TruncatedDistribution(unif, ot.Interval([0.0] * dim, [1e-6] * dim))
 x = trunc.getRealization()
+
+# marginal of truncated is not truncated marginal
+R = ot.CorrelationMatrix(2)
+R[1, 0] = 0.8
+normal = ot.Normal([0.0] * 2, [1.0] * 2, R)
+trunc = ot.TruncatedDistribution(normal, ot.Interval([-0.5] * 2, [1.0] * 2))
+marginal0 = trunc.getMarginal(0)
+ott.assert_almost_equal(marginal0.getMean(), [0.220527])
