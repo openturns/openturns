@@ -7,7 +7,7 @@ f = ot.SymbolicFunction(['x'], ['sin(pi_*x)'])
 values = f(ot.Sample.BuildFromPoint(locations))
 func_P1 = ot.PiecewiseLinearEvaluation(locations, values)
 
-graph = ot.Graph(r'Piecewise linear interpolation of $x  \mapsto \sin(\pi x)$', r'$x$', r'$y$', True) 
+graph = ot.Graph(r'Piecewise linear interpolation of $x  \mapsto \sin(\pi x)$', r'$x$', r'$y$', True)
 cloud = ot.Cloud(ot.Sample.BuildFromPoint(locations), values)
 cloud.setPointStyle("square")
 graph.add(cloud)
