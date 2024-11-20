@@ -222,22 +222,22 @@ Graphical tests
     :toctree: _generated/
     :template: functionWithPlot.rst_t
 
-    VisualTest.DrawPairs
-    VisualTest.DrawPairsXY
-    VisualTest.DrawPairsMarginals
-    VisualTest.DrawParallelCoordinates
+    VisualTest.DrawCDFplot
     VisualTest.DrawHenryLine
+    VisualTest.DrawInsideOutside
     VisualTest.DrawKendallPlot
     VisualTest.DrawLinearModel
     VisualTest.DrawLinearModelResidual
-    VisualTest.DrawPPplot
-    VisualTest.DrawQQplot
-    VisualTest.DrawCDFplot
-    VisualTest.DrawUpperTailDependenceFunction
-    VisualTest.DrawUpperExtremalDependenceFunction
     VisualTest.DrawLowerTailDependenceFunction
     VisualTest.DrawLowerExtremalDependenceFunction
-    VisualTest.DrawInsideOutside
+    VisualTest.DrawPairs
+    VisualTest.DrawPairsMarginals
+    VisualTest.DrawPairsXY
+    VisualTest.DrawParallelCoordinates
+    VisualTest.DrawPPplot
+    VisualTest.DrawQQplot
+    VisualTest.DrawUpperTailDependenceFunction
+    VisualTest.DrawUpperExtremalDependenceFunction
 
     :template: class.rst_t
     GeneralizedExtremeValueValidation
