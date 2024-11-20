@@ -73,8 +73,18 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Test::DistributionValidation::skipPDF
+"Disables PDF test."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Test::DistributionValidation::skipCDF
 "Disables CDF test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionValidation::skipComplementaryCDF
+"Disables CCDF test."
 
 // ---------------------------------------------------------------------
 
@@ -135,6 +145,16 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 %feature("docstring") OT::Test::DistributionValidation::skipEntropy
 "Disables entropy test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionValidation::skipConditional
+"Disables conditional test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionValidation::skipTransformation
+"Disables transformation test."
 
 // ---------------------------------------------------------------------
 

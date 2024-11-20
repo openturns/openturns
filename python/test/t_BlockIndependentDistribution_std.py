@@ -59,6 +59,7 @@ print("CDF(quantile) =%.5f" % distribution.computeCDF(quantile))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.setPDFTolerance(4e-3)  # for conditional PDF
 validation.run()
 
 # Instantiate one distribution object

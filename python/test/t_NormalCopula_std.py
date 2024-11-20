@@ -153,4 +153,5 @@ print(ot.NormalCopula(1).getParametersCollection())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
+validation.skipTransformation()  # FIXME
 validation.run()

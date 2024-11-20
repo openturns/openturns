@@ -78,4 +78,5 @@ print("margins realization=", margins.getRealization())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
+validation.skipConditional()  # FIXME
 validation.run()
