@@ -1102,11 +1102,9 @@ Mesh Mesh::getSubMesh(const Indices & simplicesIndices) const
     {
       const UnsignedInteger vertexIndex = simplices_(simplicesIndices[i], j);
       UnsignedInteger newVertexIndex = vertices.getSize();
-      try
-      {
+      if (usedVertices.count(vertexIndex))
         newVertexIndex = usedVertices.at(vertexIndex);
-      }
-      catch (const std::out_of_range &)
+      else
       {
         usedVertices[vertexIndex] = newVertexIndex;
         vertices.add(vertices_[vertexIndex]);
