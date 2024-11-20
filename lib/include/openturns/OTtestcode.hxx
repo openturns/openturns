@@ -479,6 +479,8 @@ public:
       checkCharacteristicFunction();
     if (enableGeneratingFunction_)
       checkGeneratingFunction();
+    if (enableTransformation_)
+      checkTransformation();
   }
 
   void skipPDF()
@@ -540,6 +542,10 @@ public:
   void skipEntropy()
   {
     enableEntropy_ = false;
+  }
+  void skipTransformation()
+  {
+    enableTransformation_ = false;
   }
   void setEntropyTolerance(const Scalar entropyTolerance)
   {
@@ -1152,6 +1158,29 @@ private:
       assert_almost_equal(mcProbability3, probability, domainTolerance_, domainTolerance_, "proba(ci upper tail) " + distribution_.__repr__());
     }
   }
+ 
+  void checkTransformation() const
+  {
+    // FIXME: should it work for discrete ?
+    if (!distribution_.isContinuous())
+      return;
+
+    LOGTRACE(OSS() << "checking transformation...");
+    const Function transform(distribution_.getIsoProbabilisticTransformation());
+    if (transform.getInputDimension() != distribution_.getDimension())
+      throw TestFailed(OSS() << "wrong transform input dim (" << transform.getInputDimension() << ") for " << distribution_);
+    if (transform.getOutputDimension() != distribution_.getDimension())
+      throw TestFailed(OSS() << "wrong transform output dim for " << distribution_);
+    const Function inverseTransform(distribution_.getInverseIsoProbabilisticTransformation());
+    if (inverseTransform.getInputDimension() != distribution_.getDimension())
+      throw TestFailed(OSS() << "wrong inverse transform input (" << inverseTransform.getInputDimension() << ") dim for " << distribution_);
+    if (inverseTransform.getOutputDimension() != distribution_.getDimension())
+      throw TestFailed(OSS() << "wrong inverse transform output dim for " << distribution_);
+    const Point u0(distribution_.getDimension());
+    const Point x1(inverseTransform(u0));
+    const Point u2(transform(x1));
+    assert_almost_equal(u2, u0, quantileTolerance_, quantileTolerance_, "transform " + distribution_.__repr__());
+  }
 
   DistributionValidation() {}
 
@@ -1177,6 +1206,7 @@ private:
   Bool enableCharacteristicFunction_ = true;
   Bool enableGradient_ = true;
   Bool enableEntropy_ = true;
+  Bool enableTransformation_ = true;
   Scalar entropyTolerance_ = 2e-3;
   Scalar cdfTolerance_ = 1e-5;
   Scalar pdfTolerance_ = 1e-3;
