@@ -3,6 +3,7 @@ Distribution  TruncatedOverMesh(distribution = Normal(mu = [0,0], sigma = [2,2],
 Elliptical =  False
 Continuous =  True
 oneRealization= [-0.137641,0.609755]
+mean= [0.0162465,0.00883308]
 oneSample first= [-0.550024,3.05059]  last= [-2.40376,0.444545]
 mean= [0.00778627,-0.0264828]
 covariance= [[  3.60768  -0.328027 ]
