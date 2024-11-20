@@ -140,6 +140,10 @@ print(
     repr(spearman),
 )
 
+ot.Log.Show(ot.Log.TRACE)
+validation = ott.DistributionValidation(copula)
+validation.run()
+
 # computeProbability
 spearman_corr = ot.CorrelationMatrix([[1.0, 0.74], [0.74, 1.0]])
 copula = ot.NormalCopula(
@@ -150,8 +154,3 @@ prob = copula.computeProbability(interval)
 print("prob=%.6f" % prob)
 
 print(ot.NormalCopula(1).getParametersCollection())
-
-ot.Log.Show(ot.Log.TRACE)
-validation = ott.DistributionValidation(copula)
-validation.skipTransformation()  # FIXME
-validation.run()
