@@ -98,7 +98,7 @@
 
   <!-- OT::GraphImplementation parameters -->
   <Graph-DefaultHorizontalMargin value_float="0.05"          />
-  <Graph-DefaultLegendFontSize   value_float="1.0"           />
+  <Graph-DefaultLegendFontSize   value_float="10.0"          />
   <Graph-DefaultVerticalMargin   value_float="0.05"          />
   <Graph-DefaultHeight           value_int="480" />
   <Graph-DefaultWidth            value_int="640" />

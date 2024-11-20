@@ -137,7 +137,7 @@ data = [[0.0, 0.0], [0.5, -0.5], [0.5, 0.5], [0.0, 1.0], [0.0, 0.0]]
 # %%
 # We create a polygon from these vertices with the :class:`~openturns.Polygon`
 # class : that is our domain event.
-myGraph = ot.Graph("Domain event", r"$x_1$", r"$x_2$", True, "", 1.0)
+myGraph = ot.Graph("Domain event", r"$x_1$", r"$x_2$", True)
 myPolygon = ot.Polygon(data)
 myPolygon.setColor("darkgray")
 myPolygon.setEdgeColor("darkgray")
