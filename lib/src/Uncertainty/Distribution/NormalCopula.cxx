@@ -565,9 +565,10 @@ NormalCopula::IsoProbabilisticTransformation NormalCopula::getIsoProbabilisticTr
 NormalCopula::InverseIsoProbabilisticTransformation NormalCopula::getInverseIsoProbabilisticTransformation() const
 {
   InverseIsoProbabilisticTransformation transformation;
-  transformation.setEvaluation(new InverseNatafEllipticalCopulaEvaluation(getStandardDistribution(), normal_.getCholesky()));
-  transformation.setGradient(new InverseNatafEllipticalCopulaGradient(getStandardDistribution(), normal_.getCholesky()));
-  transformation.setHessian(new InverseNatafEllipticalCopulaHessian(getStandardDistribution(), normal_.getCholesky()));
+  const TriangularMatrix cholesky(normal_.getCholesky()); // recomputed
+  transformation.setEvaluation(new InverseNatafEllipticalCopulaEvaluation(getStandardDistribution(), cholesky));
+  transformation.setGradient(new InverseNatafEllipticalCopulaGradient(getStandardDistribution(), cholesky));
+  transformation.setHessian(new InverseNatafEllipticalCopulaHessian(getStandardDistribution(), cholesky));
 
   return transformation;
 }
@@ -698,10 +699,7 @@ void NormalCopula::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "correlation_", correlation_ );
-  adv.saveAttribute( "covariance_duplicate", covariance_ );
   adv.saveAttribute( "normal_", normal_ );
-  adv.saveAttribute( "integrationNodesNumber_duplicate", integrationNodesNumber_ );
-  adv.saveAttribute( "isAlreadyComputedCovariance_duplicate", isAlreadyComputedCovariance_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -710,10 +708,7 @@ void NormalCopula::load(Advocate & adv)
   // The range is generic for all the copulas
   DistributionImplementation::load(adv);
   adv.loadAttribute( "correlation_", correlation_ );
-  adv.loadAttribute( "covariance_duplicate", covariance_ );
   adv.loadAttribute( "normal_", normal_ );
-  adv.loadAttribute( "integrationNodesNumber_duplicate", integrationNodesNumber_ );
-  adv.loadAttribute( "isAlreadyComputedCovariance_duplicate", isAlreadyComputedCovariance_ );
   computeRange();
 }
 
