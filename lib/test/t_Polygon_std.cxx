@@ -54,7 +54,7 @@ int main(int, char *[])
     }
 
     // Create an empty graph
-    Graph myGraph("Some polygons", "x1", "x2", true, "topright", 1.0, GraphImplementation::NONE);
+    Graph myGraph("Some polygons", "x1", "x2", true, "topright");
 
     // Create the first polygon
     // Must prefix by OT to avoid conflict with Windows API

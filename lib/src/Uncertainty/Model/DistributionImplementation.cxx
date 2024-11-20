@@ -3729,8 +3729,8 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
-  Graph graphPDF(title, xName, "PDF", true, "topright", 1, scale);
+  Graph graph(title, xName, "PDF", true, "topright");
+  graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Point point(2);
   point[0] = xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const Sample gridY(computePDF(support));
@@ -3749,8 +3749,8 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   point[0] = xMax + ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
-  graphPDF.add(Curve(data, "red", "solid", 2, title));
-  return graphPDF;
+  graph.add(Curve(data, "red", "solid", 2, title));
+  return graph;
 }
 
 /* Draw the PDF of the distribution when its dimension is 1 */
@@ -3767,7 +3767,7 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   {
     // Discretization of the x axis
     const PDFWrapper pdfWrapper(this);
-    const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+    const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
     Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
     Drawable drawable(graphPDF.getDrawable(0));
     const String title(OSS() << getDescription()[0] << " PDF");
@@ -3901,7 +3901,8 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     const Sample z(computePDFGrid2D(x, y));
     Contour isoValues(x, y, z);
     isoValues.setDrawLabels(false);
-    Graph graph(getDescription()[0] + " iso-PDF", description_[0], description_[1], true, "upper left", 1.0, scale);
+    Graph graph(getDescription()[0] + " iso-PDF", description_[0], description_[1], true, "upper left");
+    graph.setLogScale(scale);
     graph.add(isoValues);
     return graph;
   }
@@ -3920,7 +3921,8 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     const String xName(description_[0]);
     const String yName(description_[1]);
     const String title(OSS() << getDescription() << " PDF");
-    Graph graph(title, xName, yName, true, "topright", 1, scale);
+    Graph graph(title, xName, yName, true, "topright");
+    graph.setLogScale(scale);
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
       Cloud cloud(support);
@@ -4051,8 +4053,8 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
-  Graph graphLogPDF(title, xName, "PDF", true, "topright", 1, scale);
+  Graph graph(title, xName, "PDF", true, "topright");
+  graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Point point(2);
   point[0] = xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const Sample gridY(computeLogPDF(support));
@@ -4071,8 +4073,8 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   point[0] = xMax + ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
-  graphLogPDF.add(Curve(data, "red", "solid", 2, title));
-  return graphLogPDF;
+  graph.add(Curve(data, "red", "solid", 2, title));
+  return graph;
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 1 */
@@ -4088,7 +4090,7 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   if (isDiscrete()) return drawDiscreteLogPDF(xMin, xMax, logScale);
   // Discretization of the x axis
   const LogPDFWrapper logPdfWrapper(this);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+  const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
   Graph graphLogPDF(logPdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphLogPDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << "log PDF");
@@ -4160,7 +4162,8 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     const Sample z(computeLogPDFGrid2D(x, y));
     Contour isoValues(x, y, z);
     isoValues.setDrawLabels(false);
-    Graph graph(getDescription()[0] + " iso-LogPDF", description_[0], description_[1], true, "upper left", 1.0, scale);
+    Graph graph(getDescription()[0] + " iso-LogPDF", description_[0], description_[1], true, "upper left");
+    graph.setLogScale(scale);
     graph.add(isoValues);
     return graph;
   }
@@ -4179,7 +4182,8 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     const String xName(description_[0]);
     const String yName(description_[1]);
     const String title(OSS() << getDescription() << " PDF");
-    Graph graph(title, xName, yName, true, "topright", 1, scale);
+    Graph graph(title, xName, yName, true, "topright");
+    graph.setLogScale(scale);
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
       Cloud cloud(support);
@@ -4327,8 +4331,8 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
   const UnsignedInteger size = support.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "empty range (" << xMin << ", " << xMax << ")" << ", support is (" << getSupport().getMin()[0] << ", " << getSupport().getMax()[0] << ")";
   const String xName(getDescription()[0]);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
-  Graph graphCDF(title, xName, "CDF", true, "topleft", 1, scale);
+  Graph graph(title, xName, "CDF", true, "topleft");
+  graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Sample data(size + 2, 2);
   data(0, 0) = xMin;
   data(0, 1) = computeCDF(xMin);
@@ -4344,8 +4348,8 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
     data(size + 1, 0) = xMax;
     data(size + 1, 1) = computeCDF(xMax);
   }
-  graphCDF.add(Staircase(data, "red", "solid", 2, "s", title));
-  return graphCDF;
+  graph.add(Staircase(data, "red", "solid", 2, "s", title));
+  return graph;
 }
 
 /* Draw the CDF of the distribution when its dimension is 1 */
@@ -4359,7 +4363,7 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with a point number < 2";
   if (isDiscrete()) return drawDiscreteCDF(xMin, xMax, logScale);
   const CDFWrapper cdfWrapper(this);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+  const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
   Graph graphCDF(cdfWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphCDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " CDF");
@@ -4432,7 +4436,8 @@ Graph DistributionImplementation::drawCDF(const Point & xMin,
   const Sample z(computeCDFGrid2D(x, y));
   Contour isoValues(x, y, z);
   isoValues.setDrawLabels(false);
-  Graph graph(getDescription()[0] + " iso-CDF", description_[0], description_[1], true, "upper left", 1.0, scale);
+  Graph graph(getDescription()[0] + " iso-CDF", description_[0], description_[1], true, "upper left");
+  graph.setLogScale(scale);
   graph.add(isoValues);
   return graph;
 }
@@ -4508,8 +4513,8 @@ Graph DistributionImplementation::drawDiscreteSurvivalFunction(const Scalar xMin
   const UnsignedInteger size = support.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "empty range (" << xMin << ", " << xMax << ")" << ", support is (" << getSupport().getMin()[0] << ", " << getSupport().getMax()[0] << ")";
   const String xName(getDescription()[0]);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
-  Graph graphSurvivalFunction(title, xName, "SurvivalFunction", true, "topleft", 1, scale);
+  Graph graph(title, xName, "SurvivalFunction", true, "topleft");
+  graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Sample data(size + 2, 2);
   data(0, 0) = xMin;
   data(0, 1) = computeSurvivalFunction(xMin);
@@ -4525,8 +4530,8 @@ Graph DistributionImplementation::drawDiscreteSurvivalFunction(const Scalar xMin
     data(size + 1, 0) = xMax;
     data(size + 1, 1) = computeSurvivalFunction(xMax);
   }
-  graphSurvivalFunction.add(Staircase(data, "red", "solid", 2, "s", title));
-  return graphSurvivalFunction;
+  graph.add(Staircase(data, "red", "solid", 2, "s", title));
+  return graph;
 }
 
 /* Draw the SurvivalFunction of the distribution when its dimension is 1 */
@@ -4540,7 +4545,7 @@ Graph DistributionImplementation::drawSurvivalFunction(const Scalar xMin,
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a SurvivalFunction with a point number < 2";
   if (isDiscrete()) return drawDiscreteSurvivalFunction(xMin, xMax, logScale);
   const SurvivalFunctionWrapper survivalWrapper(Collection<Implementation>(0), this);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+  const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
   Graph graphSurvivalFunction(survivalWrapper.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphSurvivalFunction.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " SurvivalFunction");
@@ -4687,7 +4692,7 @@ Graph DistributionImplementation::drawQuantile1D(const Scalar qMin,
     const Bool logScale) const
 {
   const QuantileWrapper quantileWrapper(Collection<Implementation>(0), this);
-  const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>(logScale ? 1 : 0);
+  const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
   Graph graphQuantile(quantileWrapper.draw(qMin, qMax, pointNumber, scale));
   Drawable drawable(graphQuantile.getDrawable(0));
   const String title(OSS() << getDescription()[0] << " Quantile");
@@ -4723,14 +4728,12 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   const String xName(getDescription()[0]);
   const String yName(getDescription()[1]);
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>((logScaleX ? 1 : 0) + (logScaleY ? 2 : 0));
-  Graph graphQuantile(title, xName, yName, true, "topleft", 1, scale);
-  graphQuantile.add(drawSurvivalFunction(data.getMin(), data.getMax(), logScaleX, logScaleY).getDrawable(0));
-  graphQuantile.add(curveQuantile);
-  Description legends(2);
-  legends[0] = "iso-SurvivalFunction";
-  legends[1] = "quantile";
-  graphQuantile.setLegends(legends);
-  return graphQuantile;
+  Graph graph(title, xName, yName, true, "topleft");
+  graph.setLogScale(scale);
+  graph.add(drawSurvivalFunction(data.getMin(), data.getMax(), logScaleX, logScaleY).getDrawable(0));
+  graph.add(curveQuantile);
+  graph.setLegends(Description({"iso-SurvivalFunction", "quantile"}));
+  return graph;
 }
 
 

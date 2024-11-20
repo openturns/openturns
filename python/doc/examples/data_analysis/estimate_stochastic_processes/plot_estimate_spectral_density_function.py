@@ -20,8 +20,7 @@ Estimate a spectral density function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -85,9 +84,8 @@ graph = ot.Graph(
     "Spectral density function",
     True,
     "upper right",
-    1.0,
-    ot.GraphImplementation.LOGY,
 )
+graph.setLogScale(ot.GraphImplementation.LOGY)
 
 # The first curve is the estimate density as function of frequency
 curve1 = ot.Curve(plotSample.getMarginal([0, 1]))
@@ -101,5 +99,5 @@ curve2.setLegend("Cauchy model")
 
 graph.add(curve1)
 graph.add(curve2)
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+otv.View.ShowAll()

@@ -373,7 +373,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   const String yName(outputDescription[outputMarginal]);
   String title(OSS() << yName << " as a function of " << xName);
   if (centralPoint.getDimension() > 1) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "", 1.0, scale);
+  Graph graph(title, xName, yName, true);
+  graph.setLogScale(scale);
   if (xMin < xMax)
     graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
   else
@@ -441,7 +442,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "upper left", 1.0, scale);
+  Graph graph(title, xName, yName, true, "upper left");
+  graph.setLogScale(scale);
 
   if (Interval(xMin, xMax).getVolume() > 0.0)
   {

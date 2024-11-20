@@ -23,30 +23,30 @@ for i in range(size):
     data2[i] = cursor
 
 # Create an empty graph
-myGraph = ot.Graph("Some polygons", "x1", "x2", True, "topright", 1.0)
+graph = ot.Graph("Some polygons", "x1", "x2", True, "topright")
 
 # Create the first polygon
-myPolygon1 = ot.Polygon(data1)
-myPolygon1.setColor("blue")
+polygon1 = ot.Polygon(data1)
+polygon1.setColor("blue")
 
 # Then, draw it
-myGraph.add(myPolygon1)
+graph.add(polygon1)
 
 # Create the second polygon
-myPolygon2 = ot.Polygon(data2)
-myPolygon2.setColor("red")
+polygon2 = ot.Polygon(data2)
+polygon2.setColor("red")
 
 # Add it to the graph
-myGraph.add(myPolygon2)
+graph.add(polygon2)
 
 # Fill below the start of the second polygon
 polygon = ot.Polygon.FillBetween(data2[:10, 0], data2[:10, 1], [[data2[0, 1]]] * 10)
 
 polygon.setColor("green")
-myGraph.add(polygon)
+graph.add(polygon)
 
 # Try all scale types
 for i in range(4):
-    myGraph.setLogScale(i)
+    graph.setLogScale(i)
 
-print("myGraph = ", myGraph)
+print("graph = ", graph)

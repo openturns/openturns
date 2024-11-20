@@ -714,7 +714,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GraphImplementation parameters //
   addAsScalar("Graph-DefaultHorizontalMargin", 0.05);
-  addAsScalar("Graph-DefaultLegendFontSize", 1.0);
+  addAsScalar("Graph-DefaultLegendFontSize", 10.0);
   addAsScalar("Graph-DefaultVerticalMargin", 0.05);
   addAsUnsignedInteger("Graph-DefaultHeight", 480);
   addAsUnsignedInteger("Graph-DefaultWidth", 640);

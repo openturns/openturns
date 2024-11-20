@@ -379,7 +379,8 @@ Graph OptimizationResult::drawErrorHistory() const
 {
   if (getProblem().getObjective().getOutputDimension() > 1)
     throw NotYetImplementedException(HERE) << "drawErrorHistory is not available for multi-objective";
-  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
+  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright");
+  result.setLogScale(GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
   // create a sample with the iteration number to be plotted as x data
@@ -426,7 +427,7 @@ Graph OptimizationResult::drawOptimalValueHistory() const
     throw NotYetImplementedException(HERE) << "drawOptimalValueHistory is not available for multi-objective";
   if (!getOptimalPoint().getDimension())
     throw InvalidDimensionException(HERE) << "drawOptimalValueHistory cannot be called without feasible point";
-  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
+  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright");
   result.setGrid(true);
   result.setGridColor("black");
   const Sample dataX(getInputSample());
