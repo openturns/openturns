@@ -5,10 +5,10 @@ from openturns.viewer import View
 locations = ot.RegularGrid(0.0, 0.25, 11).getVertices().asPoint()
 f = ot.SymbolicFunction(['x'], ['sin(pi_*x)'])
 values = f(ot.Sample.BuildFromPoint(locations))
-derivatives = [f.gradient([x])[0,0] for x in locations]
+derivatives = [f.gradient([x])[0, 0] for x in locations]
 func_H1 = ot.PiecewiseHermiteEvaluation(locations, values.asPoint(), derivatives)
 
-graph = ot.Graph(r'Piecewise Hermite interpolation of $x  \mapsto \sin(\pi x)$', r'$x$', r'$y$', True) 
+graph = ot.Graph(r'Piecewise Hermite interpolation of $x  \mapsto \sin(\pi x)$', r'$x$', r'$y$', True)
 cloud = ot.Cloud(ot.Sample.BuildFromPoint(locations), values)
 cloud.setPointStyle("square")
 graph.add(cloud)
