@@ -28,4 +28,5 @@
 %include OTtestcode_doc.i
 
 %ignore OT::Test::assert_equal;
+%ignore OT::Test::ExitCode;
 %include openturns/OTtestcode.hxx
