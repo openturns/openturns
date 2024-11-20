@@ -74,7 +74,7 @@ Then, we have:
 
     \int_{\Rset^+} 1_{\left\{\model \circ T^{-1}(r\vect{u}) \leq 0\right\}} p_R(r) dr = \Prob{R \in I_{\vect{u}}}
     
-As the radial distribution of :math:`R` is known, we can evaluate exactly  the probability :math:`\Prob{R \in I_{\vect{u}}}` as soon as we know :math:`\vect{u}`.
+As the radial distribution of :math:`R` is known, we can evaluate exactly  the probability :math:`\Prob{R \in I_{\vect{u}}}` as soon as we know the direction :math:`\vect{u}`.
 
 The integral with respect to the directions is evaluated using a sampling method, defined by the
 class:`~openturns.SamplingStrategy`.

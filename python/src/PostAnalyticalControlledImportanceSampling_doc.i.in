@@ -58,18 +58,18 @@ transformation such that :math:`T(\vect{X}) = \vect{U}`, then:
 
    G(\vect{u}) = \model \circ T^{-1}(\vect{u})
 
-We assume that the domain :math:`\cD_f` does not contain the origin of the standard space. Thus, we
-get:
+Let :math:`\cD_f^{std}` be the domain :math:`\cD_f` in the standard space. We assume that the domain
+:math:`\cD_f^{std}` does not contain the origin of the standard space. Thus, it is defined by:
 
 .. math::
 
-    \cD_f & = \{\vect{u} \in \Rset^{\inputDim} \, | \,   G(\vect{u}) \leq 0  \} \\
+    \cD_f^{std} & = \{\vect{u} \in \Rset^{\inputDim} \, | \,   G(\vect{u}) \leq 0  \} \\
           & = \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \geq 0  \} \cup
           \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \leq 0 , G(\vect{u}) \leq 0 \}
           \setminus
           \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \geq 0 , G(\vect{u}) \geq 0 \}
 
-Then we have:
+ Thus, we have:
 
 .. math::
 
