@@ -319,6 +319,28 @@ d= TruncatedDistribution(Uniform(a = 1, b = 2), bounds = [0.2, 2.4]) simplified=
 d= TruncatedDistribution(Exponential(lambda = 1, gamma = 2), bounds = [2.5, 65]) simplified= Exponential(lambda = 1, gamma = 2.5)
 d= TruncatedDistribution(TruncatedDistribution(WeibullMin(beta = 1, alpha = 1, gamma = 0), bounds = [1.5, 7.8]), bounds = [2.5, 6]) simplified= TruncatedDistribution(WeibullMin(beta = 1, alpha = 1, gamma = 0), bounds = [2.5, 6])
 d= TruncatedDistribution(Beta(alpha = 1.5, beta = 6.3, a = -1, b = 2), bounds = [-2.5, 6]) simplified= Beta(alpha = 1.5, beta = 6.3, a = -1, b = 2)
+d= TruncatedDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 2)), bounds = [0, 1]
+[0, 1]) simplified= JointDistribution(TruncatedDistribution(Normal(mu = 0, sigma = 1), bounds = [0, 1]), TruncatedDistribution(Normal(mu = 0, sigma = 1), bounds = [0, 1]), IndependentCopula(dimension = 2))
+d= TruncatedDistribution(BlockIndependentDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]])), bounds = [0, 1]
+[0, 1]
+[0, 1]
+[0, 1]) simplified= BlockIndependentDistribution(TruncatedDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]), bounds = [0, 1]
+[0, 1]), TruncatedDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]), bounds = [0, 1]
+[0, 1]))
+d= TruncatedDistribution(BlockIndependentCopula(NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]), NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]])), bounds = [0, 1]
+[0, 1]
+[0, 1]
+[0, 1]) simplified= BlockIndependentDistribution(TruncatedDistribution(NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]), bounds = [0, 1]
+[0, 1]), TruncatedDistribution(NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]), bounds = [0, 1]
+[0, 1]))
 after setbounds q@0.9= [29.628]
 proba=0.001382
 q@0.1= [0.425]
