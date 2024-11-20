@@ -138,7 +138,7 @@ Evaluation functions
 
     :template: classWithPlot.rst_t
     P1LagrangeEvaluation
-    
+
     :template: class.rst_t
     ProductEvaluation
     ProductPolynomialEvaluation
