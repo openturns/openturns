@@ -32,6 +32,8 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SimplicialCubature.hxx"
 #include "openturns/IntervalMesher.hxx"
+#include "openturns/IdentityFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -247,11 +249,12 @@ void TruncatedOverMesh::computeMean() const
   // integrate x*f(x) using the cubature on mesh
   Point mean(dimension_);
   const SimplicialCubature algo;
-  for(UnsignedInteger component = 0; component < dimension_; ++component)
+  const IdentityFunction idn(dimension_);
+  for(UnsignedInteger j = 0; j < dimension_; ++ j)
   {
-    const Implementation marginalDistribution(distribution_.getMarginal(component).getImplementation());
+    const Implementation marginalDistribution(distribution_.getMarginal(j).getImplementation());
     const ShiftedMomentWrapper integrand(1, 0.0, marginalDistribution);
-    mean[component] = algo.integrate(integrand, mesh_)[0];
+    mean[j] = algo.integrate(ComposedFunction(integrand, idn.getMarginal(j)), mesh_)[0];
   }
   mean_ = mean;
   isAlreadyComputedMean_ = true;
