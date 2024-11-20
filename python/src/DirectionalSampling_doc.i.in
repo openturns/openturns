@@ -41,26 +41,57 @@ The directional sampling algorithm estimates the probability of the event :math:
         = \int_{\Rset^{\inputDim}} \mathbf{1}_{\{\model(\vect{x}) \leq 0 \}}\inputMeasure(\vect{x})\di{\vect{x}}
 
 
-The directional sampling algorithm is an accelerated sampling method. As it is performed
-in the standard normal space, it uses the Rosenblatt iso-probabilistic transformation, as for :class:`~openturns.FORM`
-and :class:`~openturns.SORM` algorithms. However, it remains based on sampling.
+The directional sampling algorithm is a variance reduction sampling method. As it is performed
+in the standard space, it uses the iso-probabilistic transformation associated to :math:`\inputMeasure` (see  :ref:`isoprobabilistic_transformation` to get more details).
 
-In the standard normal space, the random variates are independent and follow the normal distribution with zero
-mean and unit variance denoted by :math:`\cN \left(\vect{0}, \mat{I}_d \right)`. Each iteration of the directional sampling algorithm follows the steps:
+Let :math:`T` be the iso-probabilistic transformation: :math:`T(\vect{X}) = \vect{Z}`. The
+random vector :math:`\vect{Z}` follows a spherical distribution, which means that it is written
+as:
 
-- According to the specified :class:`~openturns.SamplingStrategy`, one or several directions
-  are generated in the standard space. Each direction is computed from a point drawn randomly
-  on :math:`\cS = \big\{ \vect{u} \big| ||\vect{u}|| = 1 \big\}` according to the uniform
-  distribution on :math:`\cS`;
+.. math::
 
-- Along each generated direction :math:`i`, we find the frontiers of :math:`\cD_f`, i.e. the solutions
-  of :math:`g(\vect{x}) = 0` from which we deduce the subset
-  :math:`I_i \subset \Rset` that belongs to :math:`\cD_f`;
+    \vect{Z} = R \vect{U}
+
+where :math:`R` is a scalar random variable following the radial distribution, :math:`\vect{U}` is a random
+vector that follows the uniform distribution on the unit sphere of dimension :math:`\inputDim`, 
+denoted by :math:`\cS_\inputDim`, and :math:`(R, \vect{U})` are independent.
+
+Then the probability :math:`P_f` can be written as:
+
+.. math::
+
+    P_f & = \dfrac{1}{|\cS_\inputDim|} \int_{\cS_\inputDim} \left \{ \int_{\Rset^+} 1_{\left\{\model \circ T^{-1}(r\vect{u}) \leq 0 \right\}} p_R(r) dr \right\} \, d\vect{u} \\
+
+For a given direction :math:`\vect{u}`, let :math:`I_{\vect{u}}` be:
+
+.. math::
+
+   I_{\vect{u}} = \{r \in \Rset^+ \, | \, \model \circ T^{-1}(r\vect{u})\leq 0 \}
+
+Then, we have: 
+
+.. math::
+
+    \int_{\Rset^+} 1_{\left\{\model \circ T^{-1}(r\vect{u}) \leq 0\right\}} p_R(r) dr = \Prob{R \in I_{\vect{u}}}
+    
+As the radial distribution of :math:`R` is known, we can evaluate exactly  the probability :math:`\Prob{R \in I_{\vect{u}}}` as soon as we know :math:`\vect{u}`.
+
+The integral with respect to the directions is evaluated using a sampling method, defined by the
+class:`~openturns.SamplingStrategy`.
+
+The directional sampling algorithm follows the steps:
+
+- A sample is generated from the uniform distribution on 
+  :math:`\cS_\inputDim`: from this sample, some directions are defined, according to the
+  specified :class:`~openturns.SamplingStrategy`. We denote by :math:`(\vect{u}_i)` the sample of the directions;
+
+- Along each direction :math:`i`, we find the frontiers of :math:`\cD_f`, i.e. the solutions
+  of :math:`\model \circ T^{-1}(r\vect{u}_i) = 0` according to the :class:`~openturns.RootStrategy`.
+  From these solutions, we deduce the subset :math:`I_i \subset \Rset^+` that belongs to
+  :math:`\cD_f`;
 
 - For each subset :math:`I_i`, we compute the probability
-  :math:`q_i = \Prob{ ||\RVU|| \in I_i }`. As :math:`\RVU` follows a  :math:`\cN \left(\vect{0}, \mat{I}_d \right)`
-  distribution, :math:`||\RVU||` follows a :math:`\chi` distribution which degree of
-  freedom is equal to :math:`\inputDim`.
+  :math:`q_i = \Prob{R \in I_{\vect{u}_i}}`.
 
 The probability :math:`P_f` is computed from all the  :math:`q_i` probabilities. If :math:`N` directions have been used, then:
 
