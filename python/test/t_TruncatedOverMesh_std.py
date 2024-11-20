@@ -26,6 +26,8 @@ print("Continuous = ", distribution.isContinuous())
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
+mean = distribution.getMean()
+print("mean=", mean)
 
 # Test for sampling
 size = 10000
