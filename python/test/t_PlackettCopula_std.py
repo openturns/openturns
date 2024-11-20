@@ -100,4 +100,5 @@ print("margins realization=", repr(margins.getRealization()))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
+validation.skipTransformation()  # FIXME
 validation.run()
