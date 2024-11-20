@@ -151,7 +151,7 @@ for testIndex in range(len(testCases)):
     validation = ott.DistributionValidation(distribution)
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
-    validation.skipTransformation()  # FIXME
+    validation.setQuantileTolerance(1e-3)  # for transformation
     validation.run()
 
 # Tests of the simplification mechanism
