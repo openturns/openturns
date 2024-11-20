@@ -850,7 +850,7 @@ class View:
             legend_kw.setdefault("shadow", True)
 
             # by default legend is a bit too large
-            legend_kw.setdefault("prop", {"size": 10})
+            legend_kw.setdefault("fontsize", int(graph.getLegendFontSize()))
 
             if len(legend_handles) > 0:
                 legend = self._ax[0].legend(legend_handles, legend_labels, **legend_kw)

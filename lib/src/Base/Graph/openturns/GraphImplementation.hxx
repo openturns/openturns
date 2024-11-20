@@ -53,6 +53,7 @@ public:
   explicit GraphImplementation(const String & title = "");
 
   /** Constructor with parameters */
+  /** legendFontSize, logScale arguments are @deprecated */
   GraphImplementation(const String & title,
                       const String & xTitle,
                       const String & yTitle,

@@ -27,7 +27,7 @@ Examples
 >>> # Generate the data for the polygons to be drawn
 >>> data =[[9.0*i/51, (9.0*i/51)*(9.0*i/51)] for i in range(50)]
 >>> # Create an empty graph
->>> graph = ot.Graph('Polygon example', 'x1', 'x2', True, '', 1.0)
+>>> graph = ot.Graph('Polygon example', 'x1', 'x2', True)
 >>> polygon = ot.Polygon(data)
 >>> polygon.setColor('red')
 >>> graph.add(polygon)"

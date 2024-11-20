@@ -162,7 +162,7 @@ for i in range(size):
     cursor[0] = tmp
     cursor[1] = tmp * tmp
     data2[i] = cursor
-graph = ot.Graph("Some polygons", "x1", "x2", True, "upper right", 1.0)
+graph = ot.Graph("Some polygons", "x1", "x2", True, "upper right")
 myPolygon1 = ot.Polygon(data1)
 myPolygon1.setColor("blue")
 myPolygon1.setLegend("polygon 1")

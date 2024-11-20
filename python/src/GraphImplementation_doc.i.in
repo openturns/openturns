@@ -2,9 +2,9 @@
 "Class Graph containing drawable elements and a graphical context.
 
 Available constructors:
-    Graph(*title=''*)
+    Graph(*title*)
 
-    Graph(*title, xTitle, yTitle, showAxes, legendPosition='', legendFontSize=1.0, logScale=ot.GraphImplementation.NONE*)
+    Graph(*title, xTitle, yTitle, showAxes, legendPosition*)
 
 Parameters
 ----------
@@ -16,22 +16,10 @@ yTitle : str
     Legend of the Y axe.
 showAxes : bool
     *True* to draw the axes. *False* to hide them.
-legendPosition : str
+legendPosition : str, optional
     Indication of the legend's position. If *legendPosition* is not specified,
     the Graph has no legend. The valid strings are given by the
     :meth:`GetValidLegendPositions` method.
-legendFontSize : float
-    Font size of the legend.
-logScale : int
-    logScale indicates whether the logarithmic scale is used either for one or both axes:
-
-    - ot.GraphImplementation.NONE or 0: no log scale is used,
-
-    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
-
-    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
-
-    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data.
 "
 %enddef
 %feature("docstring") OT::GraphImplementation
@@ -207,12 +195,11 @@ fontSize : float
 Examples
 --------
 >>> import openturns as ot
->>> fontSize = 1.0
 >>> # Create an empty graph
->>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, 'upper right', fontSize, 0)
->>> myGraph.setLegendFontSize(1.5)
->>> print(myGraph.getLegendFontSize())
-1.5"
+>>> graph = ot.Graph('Some curves', 'x1', 'x2', True, 'upper right')
+>>> graph.setLegendFontSize(15.0)
+>>> print(graph.getLegendFontSize())
+15.0"
 %enddef
 %feature("docstring") OT::GraphImplementation::setLegendFontSize
 OT_Graph_setLegendFontSize_doc
@@ -250,9 +237,9 @@ Examples
 >>> import openturns as ot
 >>> position = 'upper right'
 >>> # Create an empty graph
->>> myGraph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
->>> myGraph.setLegendPosition('lower left')
->>> print(myGraph.getLegendPosition())
+>>> graph = ot.Graph('Some curves', 'x1', 'x2', True, position)
+>>> graph.setLegendPosition('lower left')
+>>> print(graph.getLegendPosition())
 lower left"
 %enddef
 %feature("docstring") OT::GraphImplementation::setLegendPosition
@@ -323,7 +310,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> position = 'upper left'  # the legend's upper left corner with be set below
->>> graph = ot.Graph('Some curves', 'x1', 'x2', True, position, 1.0, 0)
+>>> graph = ot.Graph('Some curves', 'x1', 'x2', True, position)
 >>> graph.setLegendCorner([1.0, 1.0])  # legend will begin in top right corner
 
 Notes

@@ -54,7 +54,7 @@ int main(int, char *[])
     }
 
     // Create an empty graph
-    Graph myGraph("Some curves", "x1", "x2", true, "topright", 1.0, GraphImplementation::NONE);
+    Graph myGraph("Some curves", "x1", "x2", true, "topright");
 
     // Create the first curve
     Curve myCurve1(data1, "blue", "dashed", 2, "linear function");

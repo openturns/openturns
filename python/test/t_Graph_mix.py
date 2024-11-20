@@ -90,7 +90,7 @@ centre[1] = 10.0
 myPie = ot.Pie(data, labels, centre, 4, palette)
 
 # Create an empty graph
-myGraph = ot.Graph("Cloud/line/pie", "x1", "x2", True, "topright", 1.0)
+myGraph = ot.Graph("Cloud/line/pie", "x1", "x2", True, "topright")
 
 # Then, draw it
 myGraph.add(myCloud)

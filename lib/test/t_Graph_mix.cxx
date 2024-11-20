@@ -121,7 +121,7 @@ int main(int, char *[])
     OT::Pie myPie(data, labels, centre, 4, palette);
 
     // Create an empty graph
-    Graph myGraph("Cloud/line/pie", "x1", "x2", true, "topright", 1.0);
+    Graph myGraph("Cloud/line/pie", "x1", "x2", true, "topright");
 
     // Then, draw it
     myGraph.add(myCloud);
