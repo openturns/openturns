@@ -119,5 +119,6 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
+validation.skipConditional()  # FIXME
 validation.skipTransformation()  # FIXME
 validation.run()

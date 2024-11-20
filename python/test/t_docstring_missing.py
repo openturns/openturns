@@ -2,13 +2,14 @@
 
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.testing as ott
 import inspect
 
 ot.TESTPREAMBLE()
 
 # find all instantiable classes
 instantiables = []
-for mod in [ot, otexp]:
+for mod in [ot, otexp, ott]:
     for name, obj in inspect.getmembers(mod):
         if inspect.isclass(obj):
             cn = obj.__name__
