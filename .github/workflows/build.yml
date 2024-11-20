@@ -51,7 +51,7 @@ jobs:
            -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 ^
            -DLAPACK_LIBRARIES="C:/Users/runneradmin/miniconda3/Library/lib/lapack.lib;C:/Users/runneradmin/miniconda3/Library/lib/blas.lib" ^
            -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
-          cmake --build . --target install --parallel 2 || exit 1
+          cmake --build . --target install --parallel 4 || exit 1
           ctest --output-on-failure --timeout 100 -E cppcheck -j2 --repeat after-timeout:2 --schedule-random
 
   aarch64:
@@ -61,7 +61,7 @@ jobs:
       - name: Build
         run: |
           docker pull openturns/debian-aarch64
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
 
   coverage:
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
       - name: Build
         run: |
           docker pull openturns/archlinux-python
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_coverage.sh `id -u` `id -g`
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_coverage.sh `id -u` `id -g`
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
@@ -85,4 +85,4 @@ jobs:
       - name: Build
         run: |
           docker pull debian:10
-          docker run --rm -e MAKEFLAGS='-j2' -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh
+          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh
