@@ -192,6 +192,7 @@ private:
 
   /** Build the simplified version */
   Bool hasSimplifiedVersion(Distribution & simplified) const;
+  Distribution dispatchTruncation(const Collection<Distribution> & distributions) const;
 
   /** The main parameter set of the distribution */
   Distribution distribution_;

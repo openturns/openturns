@@ -18,8 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-#include <cmath>
 
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -31,6 +29,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/JointDistribution.hxx"
+#include "openturns/BlockIndependentDistribution.hxx"
+#include "openturns/BlockIndependentCopula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -172,17 +172,52 @@ TruncatedDistribution * TruncatedDistribution::clone() const
   return new TruncatedDistribution(*this);
 }
 
+Distribution TruncatedDistribution::dispatchTruncation(const Collection<Distribution> & distributions) const
+{
+  const UnsignedInteger size = distributions.getSize();
+  Collection<Distribution> newBlocks(size);
+  UnsignedInteger startIndex = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    Indices blockIndices(distributions[i].getDimension());
+    blockIndices.fill(startIndex);
+    newBlocks[i] = TruncatedDistribution(distributions[i], bounds_.getMarginal(blockIndices));
+    startIndex += distributions[i].getDimension();
+  }
+  if (size == 1)
+    return newBlocks[0];
+  else
+    return BlockIndependentDistribution(newBlocks);
+}
+
 /* Get the simplified version (or clone the distribution) */
 Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) const
 {
   // n-D case
   JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
-  if (p_joint && p_joint->hasIndependentCopula() && (getDimension() > 1))
+  if (p_joint && p_joint->hasIndependentCopula())
   {
     Collection<Distribution> coll(getDimension());
     for (UnsignedInteger i = 0; i < getDimension(); ++ i)
       coll[i] = TruncatedDistribution(p_joint->getMarginal(i), bounds_.getMarginal(i));
-    simplified = JointDistribution(coll);
+    if (getDimension() == 1)
+      simplified = coll[0];
+    else
+      simplified = JointDistribution(coll);
+    return true;
+  }
+
+  BlockIndependentDistribution *p_blockDistribution = dynamic_cast<BlockIndependentDistribution *>(distribution_.getImplementation().get());
+  if (p_blockDistribution)
+  {
+    simplified = dispatchTruncation(p_blockDistribution->getDistributionCollection());
+    return true;
+  }
+
+  BlockIndependentCopula *p_blockCopula = dynamic_cast<BlockIndependentCopula *>(distribution_.getImplementation().get());
+  if (p_blockCopula)
+  {
+    simplified = dispatchTruncation(p_blockCopula->getCopulaCollection());
     return true;
   }
 
