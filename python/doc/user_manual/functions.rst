@@ -84,9 +84,6 @@ Refer to :ref:`field_function`.
     OpenTURNSPythonFieldToPointFunction
     OpenTURNSPythonPointToFieldFunction
 
-    :template: classWithPlot.rst_t
-    P1LagrangeInterpolation
-
 Collection of functions
 =======================
 
@@ -138,7 +135,11 @@ Evaluation functions
     ParametricEvaluation
     PiecewiseHermiteEvaluation
     PiecewiseLinearEvaluation
+
+    :template: classWithPlot.rst_t
     P1LagrangeEvaluation
+    
+    :template: class.rst_t
     ProductEvaluation
     ProductPolynomialEvaluation
     QuadraticEvaluation
