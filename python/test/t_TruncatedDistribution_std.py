@@ -207,6 +207,9 @@ candidates = [
     ot.Exponential(1.0, 2.0),
     ot.TruncatedDistribution(ot.WeibullMin(), 1.5, 7.8),
     ot.Beta(1.5, 6.3, -1.0, 2.0),
+    ot.JointDistribution([ot.Normal()] * 2),
+    ot.BlockIndependentDistribution([ot.Normal(2), ot.Normal(2)]),
+    ot.BlockIndependentCopula([ot.NormalCopula(2), ot.NormalCopula(2)]),
 ]
 intervals = [
     ot.Interval(-1.0, 4.0),
@@ -214,6 +217,9 @@ intervals = [
     ot.Interval(2.5, 65.0),
     ot.Interval(2.5, 6.0),
     ot.Interval(-2.5, 6.0),
+    ot.Interval(2),
+    ot.Interval(4),
+    ot.Interval(4),
 ]
 for i in range(len(candidates)):
     d = ot.TruncatedDistribution(candidates[i], intervals[i])
