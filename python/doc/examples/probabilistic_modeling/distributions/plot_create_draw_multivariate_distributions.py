@@ -18,6 +18,7 @@ ot.Log.Show(ot.Log.NONE)
 #
 # In this paragraph we use :class:`~openturns.JointDistribution` class to
 # build a multivariate distribution of dimension :math:`\inputDim`, from:
+#
 # - :math:`\inputDim` scalar distributions whose cumulative distribution functions are
 #   denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
 # - and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
@@ -25,12 +26,13 @@ ot.Log.Show(ot.Log.NONE)
 #
 # First case: the core is a copula
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# In this case, we use a core which is a copula. In that case, the instrumental marginals
+# In this case, we use a core which is a copula. Thus, the instrumental marginals
 # are the marginals of the multivariate distribution.
 #
 # We first create the marginals of the distribution:
+#
 #   - a :class:`~openturns.Normal` distribution;
-#   - a :class:`~openturns.Gumbel` distribution
+#   - a :class:`~openturns.Gumbel` distribution.
 #
 # We use a :class:`~openturns.ClaytonCopula` as dependence structure.
 marginals = [ot.Normal(), ot.Gumbel()]
@@ -99,12 +101,13 @@ view = otv.View(graph)
 # %%
 # Second case: the core is not a copula
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# In this case, we use a core which is not a copula. In that case, the instrumental marginals
+# In this case, we use a core which is not a copula. Thus, the instrumental marginals
 # are not the marginals of the multivariate distribution.
 #
 # We first create the instrumental marginals of the distribution:
+#
 # - a :class:`~openturns.Normal` distribution;
-# - a :class:`~openturns.Gumbel` distribution
+# - a :class:`~openturns.Gumbel` distribution.
 #
 # We use a :class:`~openturns.Dirichlet` as the core.
 inst_marginals = [ot.Normal(), ot.Gumbel()]
@@ -171,7 +174,8 @@ view = otv.View(graph)
 # %%
 # Use some native multivariate models
 # -----------------------------------
-# Some models in the library are natively multivariate. We present examples of three of them :
+# Some models in the library are natively multivariate. We present examples of three of them:
+#
 #  - the :class:`~openturns.Normal` distribution,
 #  - the :class:`~openturns.Student` distribution,
 #  - the :class:`~openturns.UserDefined` distribution.
