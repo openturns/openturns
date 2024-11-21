@@ -212,11 +212,12 @@ print(
     distribution.getIsoProbabilisticTransformation(),
 )
 dim = distribution.getDimension()
-x = 0.6
+x = 2.6
 y = [0.2] * (dim - 1)
+q = 0.9
 print("conditional PDF=%.5f" % distribution.computeConditionalPDF(x, y))
 print("conditional CDF=%.5f" % distribution.computeConditionalCDF(x, y))
-print("conditional quantile=%.5f" % distribution.computeConditionalQuantile(x, y))
+print("conditional quantile=%.5f" % distribution.computeConditionalQuantile(q, y))
 pt = ot.Point(dim)
 for i in range(dim):
     pt[i] = 0.1 * i + 0.05
