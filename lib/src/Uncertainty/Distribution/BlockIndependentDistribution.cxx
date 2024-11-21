@@ -341,11 +341,11 @@ UnsignedInteger BlockIndependentDistribution::computePartialDimension(const Unsi
     UnsignedInteger & distributionIndex) const
 {
   distributionIndex = 0;
-  UnsignedInteger partialDimension = distributionCollection_[distributionIndex].getDimension();
-  while (partialDimension < conditioningDimension)
+  UnsignedInteger partialDimension = 0;
+  while (partialDimension + distributionCollection_[distributionIndex].getDimension() <= conditioningDimension)
   {
-    ++distributionIndex;
     partialDimension += distributionCollection_[distributionIndex].getDimension();
+    ++ distributionIndex;
   }
   return partialDimension;
 }
@@ -361,9 +361,9 @@ Scalar BlockIndependentDistribution::computeConditionalPDF(const Scalar x, const
   UnsignedInteger distributionIndex;
   const UnsignedInteger partialDimension = computePartialDimension(conditioningDimension, distributionIndex);
   // Extract the relevant part of the conditioning
-  const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
+  const UnsignedInteger conditioningSize = conditioningDimension - partialDimension;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+  std::copy(y.end() - conditioningSize, y.end(), conditioningVector.begin());
   return distributionCollection_[distributionIndex].computeConditionalPDF(x, conditioningVector);
 }
 
@@ -404,9 +404,9 @@ Scalar BlockIndependentDistribution::computeConditionalCDF(const Scalar x, const
   UnsignedInteger distributionIndex;
   const UnsignedInteger partialDimension = computePartialDimension(conditioningDimension, distributionIndex);
   // Extract the relevant part of the conditioning
-  const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
+  const UnsignedInteger conditioningSize = conditioningDimension - partialDimension;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+  std::copy(y.end() - conditioningSize, y.end(), conditioningVector.begin());
   return distributionCollection_[distributionIndex].computeConditionalCDF(x, conditioningVector);
 }
 
@@ -440,7 +440,6 @@ Point BlockIndependentDistribution::computeSequentialConditionalCDF(const Point 
 Scalar BlockIndependentDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
-  if (conditioningDimension == 0) return q;
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return getRange().getLowerBound()[y.getDimension()];
@@ -450,12 +449,9 @@ Scalar BlockIndependentDistribution::computeConditionalQuantile(const Scalar q, 
   UnsignedInteger distributionIndex;
   const UnsignedInteger partialDimension = computePartialDimension(conditioningDimension, distributionIndex);
   // Extract the relevant part of the conditioning
-  const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
+  const UnsignedInteger conditioningSize = conditioningDimension - partialDimension;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i)
-  {
-    conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
-  }
+  std::copy(y.end() - conditioningSize, y.end(), conditioningVector.begin());
   return distributionCollection_[distributionIndex].computeConditionalQuantile(q, conditioningVector);
 }
 
