@@ -41,12 +41,10 @@ cop = ot.ClaytonCopula(theta)
 distribution = ot.JointDistribution(marginals, cop)
 
 # %%
-# We can check here that the instrumental marginals are really the marginal distributions.
+# We can check here that the instrumental marginals really are  the marginal distributions.
 # In the following graphs, we draw the instrumental marginals and the real marginals, obtained with
 # the method :meth:`~openturns.Distribution.getMarginal`.
-# First, we draw the probability density functions of each component. We recall that the
-# :meth:`~openturns.Distribution.drawPDF`
-# command just generates the graph data. It is the viewer module that enables the actual display.
+# First, we draw the probability density functions of each component.
 graph_PDF_0 = marginals[0].drawPDF()
 graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
 graph_PDF_0.setLegends(['instrumental marg', 'marg'])
@@ -78,7 +76,14 @@ view = otv.View(graph_CDF_1)
 # which was a copula.
 cop_dist = distribution.getCopula()
 graph_cop = cop_dist.drawPDF()
-graph_cop.add(cop.drawPDF())
+# Get the Contour Drawable's actual implementation from the Graph
+# produced by drawPDF in order to access all its methods
+contour_cop = cop.drawPDF().getDrawable(1).getImplementation()
+contour_cop.setLineStyle('dashed')
+# Remove the colorbar
+contour_cop.setColorBarPosition("")
+graph_cop.add(contour_cop)
+# Add the contour without a colorbargraph_cop.add(cop.drawPDF())
 graph_cop.setTitle('Distribution copula and core')
 view = otv.View(graph_cop)
 

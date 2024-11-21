@@ -2,7 +2,7 @@
 "Post analytical controlled importance sampling.
 
 Importance sampling algorithm around the design point, controlled by
-the tangent hyperplan.
+the tangent hyperplane.
 
 Parameters
 ----------
@@ -45,7 +45,7 @@ Let :math:`\ell` be the function defined by:
 where :math:`\vect{u}^*` is the design point in the standard space, and :math:`\beta` the distance
 of the design point from the origin of the standard space: :math:`\beta = \| \vect{u}^*\|`.
 
-The tangent hyperplan at the design point in the standard space is defined by the equation:
+The tangent hyperplane at the design point in the standard space is defined by the equation:
 
 .. math::
 

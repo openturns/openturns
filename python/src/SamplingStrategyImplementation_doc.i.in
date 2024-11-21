@@ -19,7 +19,7 @@ OT_SamplingStrategy_doc
 // ---------------------------------------------------------------------
 
 %define OT_SamplingStrategy_generate_doc
-"Generate the diretions.
+"Generate the directions.
 
 Returns
 -------
