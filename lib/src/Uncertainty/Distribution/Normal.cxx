@@ -630,17 +630,25 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  // Special case when no contitioning or independent copula
+  // Special case when no conditioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(q);
   // General case
-  Scalar meanRos = 0.0;
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+  const UnsignedInteger partialDimension = conditioningDimension + 1;
+  UnsignedInteger start = 0;
+  UnsignedInteger stop = partialDimension;
+  UnsignedInteger shift = 0;
+  MatrixImplementation inverseCholeskyPartial(partialDimension, partialDimension);
+  for (UnsignedInteger i = 0; i < partialDimension; ++ i)
   {
-    meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
+    std::copy(inverseCholesky_.getImplementation()->begin() + start,
+              inverseCholesky_.getImplementation()->begin() + stop,
+              inverseCholeskyPartial.begin() + shift);
+    start += dimension_ + 1;
+    stop += dimension_;
+    shift += partialDimension + 1;
   }
-  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  return meanRos + sigmaRos * DistFunc::qNormal(q);
+  const Point iCholQ(inverseCholeskyPartial.solveLinearSystemTri(DistFunc::qNormal(Point(partialDimension, q))));
+  return mean_[conditioningDimension] + iCholQ[conditioningDimension];
 }
 
 Point Normal::computeSequentialConditionalQuantile(const Point & q) const
