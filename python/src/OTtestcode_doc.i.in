@@ -47,6 +47,8 @@ It helps performing tests to validate :class:`~openturns.Distribution` services:
 - Minimum volume level-set: verify the probability of the level-set
 - Confidence interval: verify the probability of the level-set
 - Characteristic function
+- Conditional PDF/CDF/Quantiles: verify consistency of sequential version
+- Iso probabilistic transformation: verify bijection and gradients
 
 Parameters
 ----------

@@ -1239,13 +1239,29 @@ private:
       throw TestFailed(OSS() << "wrong inverse transform input (" << inverseTransform.getInputDimension() << ") dim for " << distribution_);
     if (inverseTransform.getOutputDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong inverse transform output dim for " << distribution_);
-    const Point u0(distribution_.getDimension(), 0.1);
+
+    // check ToT-1(u)=u
+    const Point u0(distribution_.getDimension(), 0.125);
     LOGTRACE(OSS() << "u0=" << u0);
     const Point x1(inverseTransform(u0));
     LOGTRACE(OSS() << "x1=" << x1);
     const Point u2(transform(x1));
     LOGTRACE(OSS() << "u2=" << u2);
-    assert_almost_equal(u2, u0, quantileTolerance_, quantileTolerance_, "transform " + distribution_.__repr__());
+    assert_almost_equal(u2, u0, quantileTolerance_, quantileTolerance_, "ToT-1(u) " + distribution_.__repr__());
+
+    // check inv transform gradient by FD
+    const Function inverseTransformFD(inverseTransform.getEvaluation());
+    const Matrix uGrad(inverseTransform.gradient(u0));
+    const Matrix uGradFD(inverseTransformFD.gradient(u0));
+    LOGTRACE(OSS() << "uGrad=" << uGrad << " uGradFD=" << uGradFD);
+    assert_almost_equal(uGrad, uGradFD, quantileTolerance_, quantileTolerance_, "inv transform grad " + distribution_.__repr__());
+
+    // check transform gradient by FD
+    const Function transformFD(transform.getEvaluation());
+    const Matrix xGrad(transform.gradient(x1));
+    const Matrix xGradFD(transformFD.gradient(x1));
+    LOGTRACE(OSS() << "xGrad=" << uGrad << " xGradFD=" << uGradFD);
+    assert_almost_equal(xGrad, xGradFD, cdfTolerance_, cdfTolerance_, "transform grad " + distribution_.__repr__());
   }
 
   Distribution distribution_;
