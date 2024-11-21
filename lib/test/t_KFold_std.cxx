@@ -28,7 +28,6 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   const UnsignedInteger size = 100;
   Uniform xuniform(0.9, 1.1);

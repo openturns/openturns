@@ -85,20 +85,7 @@ public:
   /** You should return ExpectedToFail when it failed as it should */
   static const ExitCodeValue ExpectedToFail = 77;
 
-}
-
-; /* class ExitCode */
-
-
-
-/**
- * Random generator initialization
- */
-inline void setRandomGenerator()
-{
-  RandomGenerator::SetSeed(0);
-}
-
+}; /* class ExitCode */
 
 
 

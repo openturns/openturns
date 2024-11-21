@@ -52,7 +52,6 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   const char fileName[] = "myStudyH5.xml";
   const char h5fileName[] = "myStudyH5.h5";

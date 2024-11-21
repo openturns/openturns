@@ -33,7 +33,6 @@ int main(int, char *[])
   {
 
     {
-      setRandomGenerator();
       fullprint << "Fit y ~ 3 - 2 x + 0.05 * sin(x) model using 20 points (sin(x) ~ noise)" << std::endl;
       UnsignedInteger size = 20;
       Sample oneSample(size, 1);
@@ -52,7 +51,6 @@ int main(int, char *[])
     }
 
     {
-      setRandomGenerator();
       fullprint << "Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points" << std::endl;
       UnsignedInteger size = 100;
       // Define a linear grid from 0 to 10 with size points

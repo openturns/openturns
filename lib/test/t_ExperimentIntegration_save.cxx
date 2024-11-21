@@ -28,7 +28,6 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   // Create the input distribution
   const UnsignedInteger dimension = 3;
