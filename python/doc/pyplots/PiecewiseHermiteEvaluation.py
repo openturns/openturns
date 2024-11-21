@@ -1,5 +1,4 @@
 import openturns as ot
-from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 locations = ot.RegularGrid(0.0, 0.25, 11).getVertices().asPoint()
@@ -18,6 +17,4 @@ graph.add(draw_f)
 graph.add(func_H1.draw(-0.5, 3., 1024))
 graph.setColors(['lightblue', "blue", "red"])
 
-fig = plt.figure(figsize=(10, 4))
-func_axis = fig.add_subplot(111)
-view = View(graph, figure=fig, axes=[func_axis], add_legend=False)
+view = View(graph, figure_kw={"figsize": (10,4)}, add_legend=False)

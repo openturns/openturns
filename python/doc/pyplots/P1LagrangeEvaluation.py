@@ -1,5 +1,4 @@
 import openturns as ot
-from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 lowerBound = [0.0, 0.0]
@@ -19,14 +18,13 @@ graph.setColors(['lightblue'])
 draw_f = f.draw(lowerBound, upperBound, [1024] * 2).getDrawable(0)
 draw_f.setLineStyle('dashed')
 lev = draw_f.getLevels()
-draw_fP1 = func_P1.draw(lowerBound, upperBound, [1024] * 2).getDrawable(0)
+draw_fP1 = func_P1.draw(lowerBound, upperBound, [1024] * 2).getDrawable(0).getImplementation()
 draw_fP1.setLevels(lev)
+draw_fP1.setColorBarPosition('')
 graph.add(draw_f)
 graph.add(draw_fP1)
 graph.setTitle(r"P1 Lagrange interpolation of $(x,y) \mapsto \sin(\pi x) \sin(\pi y)$")
 graph.setXTitle('$x$')
 graph.setYTitle('$y$')
 
-fig = plt.figure(figsize=(10, 4))
-func_axis = fig.add_subplot(111)
-View(graph, figure=fig, axes=[func_axis], add_legend=False)
+view = View(graph, figure_kw={"figsize": (10,4)}, add_legend=False)
