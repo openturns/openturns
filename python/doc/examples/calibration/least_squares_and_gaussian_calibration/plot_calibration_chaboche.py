@@ -60,6 +60,7 @@ ot.Log.Show(ot.Log.NONE)
 # class.
 
 # %%
+ot.RandomGenerator.SetSeed(0)
 cm = chaboche_model.ChabocheModel()
 print(cm.data)
 observedStrain = cm.data[:, 0]
