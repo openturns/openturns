@@ -1,6 +1,10 @@
 %feature("docstring") OT::GaussianProcessConditionalCovariance
 "Conditional covariance post processing of a Gaussian Process Regression result.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 gprResult :  :class:`~openturns.experimental.GaussianProcessRegressionResult`
