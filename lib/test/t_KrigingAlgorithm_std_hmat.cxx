@@ -29,7 +29,6 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
   ResourceMap::Set("KrigingAlgorithm-LinearAlgebra", "HMAT");
 
   try

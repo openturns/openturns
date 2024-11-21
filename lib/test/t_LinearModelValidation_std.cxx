@@ -31,7 +31,6 @@ int main(int, char *[])
   OStream fullprint(std::cout);
 
   {
-    setRandomGenerator();
     fullprint << "Fit y ~ 3 - 2 x1 + x2 + epsilon" << std::endl;
     const UnsignedInteger kFoldParameter = 4;
     UnsignedInteger foldRootSize = 3;

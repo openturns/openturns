@@ -28,7 +28,6 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   fullprint << "Test generateWithWeights()" << std::endl;
   const Normal distribution(4);

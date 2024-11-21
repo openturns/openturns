@@ -29,7 +29,6 @@ int main(int, char *[])
   TESTPREAMBLE;
   Log::Show(Log::NONE);
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   try
   {

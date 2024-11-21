@@ -29,7 +29,6 @@ int main(int, char *[])
   TESTPREAMBLE;
   PlatformInfo::SetNumericalPrecision( 6 );
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   try
   {
