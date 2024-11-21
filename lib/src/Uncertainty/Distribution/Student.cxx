@@ -539,17 +539,8 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
 
 Point Student::computeSequentialConditionalQuantile(const Point & q) const
 {
-  if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
-  Point result(dimension_);
   // Waiting for a better implementation
-  Point y(0);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    const Scalar qI = q[i];
-    result[i] = computeConditionalQuantile(qI, y);
-    y.add(result[i]);
-  }
-  return result;
+  return EllipticalDistribution::computeSequentialConditionalQuantile(q);
 }
 
 /* Get the i-th marginal distribution */
