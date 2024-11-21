@@ -2318,6 +2318,7 @@ Scalar DistributionImplementation::computeConditionalQuantile(const Scalar q,
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Point DistributionImplementation::computeSequentialConditionalQuantile(const Point & q) const
 {
+  if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Cannot compute sequential conditional quantile from an argument of dimension=" << q.getDimension() << ", expected " << dimension_;
   Point result(0);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     result.add(computeConditionalQuantile(q[i], result));

@@ -1163,7 +1163,7 @@ private:
     const Point mean(distribution_.getMean());
     LOGTRACE(OSS() << "mean=" << mean<<" dim="<<distribution_.getDimension());
     const Point seqPDF(distribution_.computeSequentialConditionalPDF(mean));
-    LOGTRACE(OSS() << "sequential conditional PDF=" << seqPDF);
+    LOGTRACE(OSS() << "sequential conditional PDF=" << seqPDF.__str__());
     if (seqPDF.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq PDF dim (" << seqPDF.getDimension() << ") for " << distribution_);
 
@@ -1183,7 +1183,7 @@ private:
 
     LOGTRACE(OSS() << "checking conditional CDF...");
     const Point seqCDF(distribution_.computeSequentialConditionalCDF(mean));
-    LOGTRACE(OSS() << "sequential conditional CDF=" << seqCDF);
+    LOGTRACE(OSS() << "sequential conditional CDF=" << seqCDF.__str__());
     if (seqCDF.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq CDF dim (" << seqCDF.getDimension() << ") for " << distribution_);
 
@@ -1204,7 +1204,7 @@ private:
     LOGTRACE(OSS() << "checking conditional quantile...");
     const Scalar p = 0.1;
     const Point seqQ(distribution_.computeSequentialConditionalQuantile(Point(distribution_.getDimension(), p)));
-    LOGTRACE(OSS() << "sequential conditional quantile=" << seqQ);
+    LOGTRACE(OSS() << "sequential conditional quantile=" << seqQ.__str__());
     if (seqQ.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq quantile dim (" << seqCDF.getDimension() << ") for " << distribution_);
 
@@ -1218,7 +1218,7 @@ private:
       std::copy(seqQ.begin(), seqQ.begin() + i, y.begin());
       const Scalar condQuantile = distribution_.computeConditionalQuantile(p, y);
       LOGTRACE(OSS() << "i=" << i << " y=" << y << " conditional quantile=" << condQuantile);
-      // assert_almost_equal(condQuantile, seqQ[i], quantileTolerance_, quantileTolerance_, "seq quantile " + distribution_.__repr__());
+      assert_almost_equal(condQuantile, seqQ[i], quantileTolerance_, quantileTolerance_, "seq quantile " + distribution_.__repr__());
     }
   }
 
@@ -1242,25 +1242,25 @@ private:
 
     // check ToT-1(u)=u
     const Point u0(distribution_.getDimension(), 0.125);
-    LOGTRACE(OSS() << "u0=" << u0);
+    LOGTRACE(OSS() << "u0=" << u0.__str__());
     const Point x1(inverseTransform(u0));
-    LOGTRACE(OSS() << "x1=" << x1);
+    LOGTRACE(OSS() << "x1=" << x1.__str__());
     const Point u2(transform(x1));
-    LOGTRACE(OSS() << "u2=" << u2);
+    LOGTRACE(OSS() << "u2=" << u2.__str__());
     assert_almost_equal(u2, u0, quantileTolerance_, quantileTolerance_, "ToT-1(u) " + distribution_.__repr__());
 
     // check inv transform gradient by FD
     const Function inverseTransformFD(inverseTransform.getEvaluation());
     const Matrix uGrad(inverseTransform.gradient(u0));
     const Matrix uGradFD(inverseTransformFD.gradient(u0));
-    LOGTRACE(OSS() << "uGrad=" << uGrad << " uGradFD=" << uGradFD);
+    LOGTRACE(OSS() << "uGrad=" << uGrad.__str__() << " uGradFD=" << uGradFD.__str__());
     assert_almost_equal(uGrad, uGradFD, quantileTolerance_, quantileTolerance_, "inv transform grad " + distribution_.__repr__());
 
     // check transform gradient by FD
     const Function transformFD(transform.getEvaluation());
     const Matrix xGrad(transform.gradient(x1));
     const Matrix xGradFD(transformFD.gradient(x1));
-    LOGTRACE(OSS() << "xGrad=" << uGrad << " xGradFD=" << uGradFD);
+    LOGTRACE(OSS() << "xGrad=" << uGrad.__str__() << " xGradFD=" << uGradFD.__str__());
     assert_almost_equal(xGrad, xGradFD, cdfTolerance_, cdfTolerance_, "transform grad " + distribution_.__repr__());
   }
 
