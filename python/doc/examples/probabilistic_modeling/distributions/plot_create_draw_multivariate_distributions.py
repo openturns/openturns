@@ -18,7 +18,6 @@ ot.Log.Show(ot.Log.NONE)
 #
 # In this paragraph we use :class:`~openturns.JointDistribution` class to
 # build a multivariate distribution of dimension :math:`\inputDim`, from:
-#
 # - :math:`\inputDim` scalar distributions whose cumulative distribution functions are
 #   denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
 # - and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
@@ -30,7 +29,6 @@ ot.Log.Show(ot.Log.NONE)
 # are the marginals of the multivariate distribution.
 #
 # We first create the marginals of the distribution:
-#
 #   - a :class:`~openturns.Normal` distribution;
 #   - a :class:`~openturns.Gumbel` distribution
 #
@@ -105,7 +103,6 @@ view = otv.View(graph)
 # are not the marginals of the multivariate distribution.
 #
 # We first create the instrumental marginals of the distribution:
-#
 # - a :class:`~openturns.Normal` distribution;
 # - a :class:`~openturns.Gumbel` distribution
 #
@@ -175,7 +172,6 @@ view = otv.View(graph)
 # Use some native multivariate models
 # -----------------------------------
 # Some models in the library are natively multivariate. We present examples of three of them :
-#
 #  - the :class:`~openturns.Normal` distribution,
 #  - the :class:`~openturns.Student` distribution,
 #  - the :class:`~openturns.UserDefined` distribution.
