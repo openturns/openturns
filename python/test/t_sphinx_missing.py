@@ -3,6 +3,7 @@
 import inspect
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.testing as ott
 from pathlib import Path
 import re
 
@@ -19,7 +20,7 @@ for rst_file in rst_files:
 
 # find all instantiable classes
 instantiables = []
-for mod in [ot, otexp]:
+for mod in [ot, otexp, ott]:
     for name, obj in inspect.getmembers(mod):
         if inspect.isclass(obj):
             cn = obj.__name__
