@@ -131,12 +131,15 @@ Evaluation functions
     MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
+
+    :template: classWithPlot.rst_t
     PiecewiseHermiteEvaluation
     PiecewiseLinearEvaluation
     P1LagrangeInterpolation
 
     :template: classWithPlot.rst_t
     P1LagrangeEvaluation
+    SymbolicEvaluation
 
     :template: class.rst_t
     ProductEvaluation
