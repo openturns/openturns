@@ -136,12 +136,14 @@ Evaluation functions
     ParametricEvaluation
 
     :template: classWithPlot.rst_t
+
     PiecewiseHermiteEvaluation
     PiecewiseLinearEvaluation
     P1LagrangeEvaluation
     SymbolicEvaluation
 
     :template: class.rst_t
+
     ProductEvaluation
     ProductPolynomialEvaluation
     QuadraticEvaluation
@@ -196,6 +198,7 @@ Differential equation solvers
     ODESolver
 
     :template: ODESolver.rst_t
+
     RungeKutta
     Fehlberg
 
