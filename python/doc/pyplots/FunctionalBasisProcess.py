@@ -16,7 +16,6 @@ TS = myFBP.getRealization()
 graph = TS.draw()
 graph.add(myFBP.getRealization().draw())
 graph.add(myFBP.getRealization().draw())
-graph.setColors(["red", "blue", "green"])
 graph.setTitle("Functional Basis Process")
 
 fig = plt.figure(figsize=(10, 4))

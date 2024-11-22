@@ -140,7 +140,6 @@ distribution = ot.Distribution(UniformNdPy([5, 6], [7, 9]))
 # %%
 # And plot the CDF:
 graph = distribution.drawCDF()
-graph.setColors(["blue"])
 view = otv.View(graph)
 
 # %%

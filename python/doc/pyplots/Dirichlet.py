@@ -10,7 +10,6 @@ theta_1 = (2.0, 2.0, 2.0)
 theta_2 = (0.5, 0.7, 0.9)
 pdf_2d_1 = ot.Graph(title_2d.format(theta_1), "x1", "x2", True)
 pdf_2d_2 = ot.Graph(title_2d.format(theta_2), "x1", "x2", True)
-palette = ot.Drawable.BuildDefaultPalette(10)
 list_theta = [(2, 2), (7, 5), (2, 6), (3, 4)]
 for theta in list_theta:
     distribution = ot.Dirichlet(theta)
@@ -18,8 +17,6 @@ for theta in list_theta:
     cdf_curve = distribution.drawCDF()
     pdf_graph.add(pdf_curve)
     cdf_graph.add(cdf_curve)
-pdf_graph.setColors([palette[i] for i in range(4)])
-cdf_graph.setColors([palette[i] for i in range(4)])
 legends = [f"theta={theta}" for theta in list_theta]
 pdf_graph.setLegends(legends)
 cdf_graph.setLegends(legends)

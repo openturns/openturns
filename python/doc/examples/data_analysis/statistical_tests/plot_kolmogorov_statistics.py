@@ -15,7 +15,6 @@ Kolmogorov-Smirnov : understand the statistics
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -128,7 +127,11 @@ print("D=", D, ", Index=", index, ", Obs.=", observation)
 # %%
 graph = drawKSDistance(sample, distribution, observation, D, distFactory)
 view = viewer.View(graph)
-plt.show()
+
+
+# %%
+# Display the graphs
+view.ShowAll()
 
 # %%
 # We see that the K.S. statistics is achieved at the observation where the distance

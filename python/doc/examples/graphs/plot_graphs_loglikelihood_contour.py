@@ -35,7 +35,6 @@ sample = distribution.getSample(11)
 # %%
 graph = distribution.drawPDF()
 graph.setLegends(["TruncatedNormal"])
-graph.setColors(["red"])
 zeros = ot.Sample(sample.getSize(), 1)
 cloud = ot.Cloud(sample, zeros)
 cloud.setLegend("Sample")

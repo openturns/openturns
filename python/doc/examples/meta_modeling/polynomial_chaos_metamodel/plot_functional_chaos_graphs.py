@@ -10,7 +10,6 @@ Polynomial chaos graphs
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -61,4 +60,6 @@ view = viewer.View(graph)
 # %%
 graph = drawFamily(ot.HermiteFactory())
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()

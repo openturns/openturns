@@ -70,7 +70,6 @@ Draw a survival function
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -244,7 +243,6 @@ npoints = 50
 logScaleX = True
 graph = userdefined.drawSurvivalFunction(xmin, xmax, pointNumber, logScaleX)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
-graph.setColors(["blue"])
 graph.setLegends(["Sample"])
 graphDistribution = distribution.drawSurvivalFunction(xmin, xmax, npoints, logScaleX)
 graphDistribution.setLegends(["GPD"])
@@ -252,5 +250,8 @@ graph.add(graphDistribution)
 graph.setLegendPosition("upper right")
 graph.setTitle("GPD against the sample - n=%d" % (sample.getSize()))
 view = viewer.View(graph)
-# graph
-plt.show()
+
+
+# %%
+# Show all the graphs.
+view.ShowAll()
