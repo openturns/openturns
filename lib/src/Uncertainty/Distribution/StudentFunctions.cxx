@@ -122,6 +122,9 @@ Scalar StudentQuantile(const Scalar nu,
                        const Bool tail)
 {
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Cannot compute a quantile for a probability level outside of [0, 1]";
+  if (p == 0.0) return tail ? SpecFunc::Infinity : -SpecFunc::Infinity;
+  if (p == 1.0) return tail ? -SpecFunc::Infinity : SpecFunc::Infinity;
   if (p == 0.5) return 0.0;
   const Scalar u = std::min(p, 0.5 + (0.5 - p));
   if (nu == 1.0)
