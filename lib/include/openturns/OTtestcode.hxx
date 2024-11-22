@@ -43,6 +43,8 @@
 #include "openturns/FittingTest.hxx"
 #include "openturns/DomainEvent.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
+#include "openturns/RosenblattEvaluation.hxx"
+#include "openturns/InverseRosenblattEvaluation.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
@@ -1261,6 +1263,13 @@ private:
     const Point u2(transform(x1));
     LOGTRACE(OSS() << "u2=" << u2.__str__());
     assert_almost_equal(u2, u0, quantileTolerance_, quantileTolerance_, "ToT-1(u) " + distribution_.__repr__());
+
+    // with rosenblatt
+    const Function ros(new RosenblattEvaluation(distribution_));
+    const Function invRos(new InverseRosenblattEvaluation(distribution_));
+    const Point r2(ros(invRos(u0)));
+    LOGTRACE(OSS() << "r2=" << r2.__str__());
+    assert_almost_equal(ros(invRos(u0)), u0, quantileTolerance_, quantileTolerance_, "Tros o Tros-1(u) " + distribution_.__repr__());
 
     // check inv transform gradient by FD
     const Function inverseTransformFD(inverseTransform.getEvaluation());
