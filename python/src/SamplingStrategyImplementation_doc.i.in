@@ -1,10 +1,12 @@
 %define OT_SamplingStrategy_doc
-"Base class for sampling strategies.
+"Base class for directions sampling strategies.
 
 Parameters
 ----------
 dimension : int
-    The dimension of the standard space. By default, :math:`dimension = 0` but
+    The dimension of the standard space.
+    
+    By default, :math:`dimension = 0` but
     automatically updated by the calling class.
 
 See also
@@ -17,12 +19,17 @@ OT_SamplingStrategy_doc
 // ---------------------------------------------------------------------
 
 %define OT_SamplingStrategy_generate_doc
-"Generate the sample.
+"Generate the directions.
 
 Returns
 -------
 sample : :class:`~openturns.Sample`
-    The sample generated according to the sampling strategy."
+    The directions generated  according to the sampling strategy.
+    
+Notes
+-----
+The sample is the collection of the points on the unit sphere in the standard space
+associated to the generated directions."
 %enddef
 %feature("docstring") OT::SamplingStrategyImplementation::generate
 OT_SamplingStrategy_generate_doc
