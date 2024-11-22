@@ -13,40 +13,82 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# Create a multivariate model with `JointDistribution`
-# -------------------------------------------------------
+# Create a multivariate model with a :class:`~openturns.JointDistribution`
+# ------------------------------------------------------------------------
 #
 # In this paragraph we use :class:`~openturns.JointDistribution` class to
-# build multidimensional distribution described by its marginal distributions and optionally its dependence structure (a particular copula).
+# build a multivariate distribution of dimension :math:`\inputDim`, from:
 #
-
-
-# %%
-# We first create the marginals of the distribution :
+# - :math:`\inputDim` scalar distributions whose cumulative distribution functions are
+#   denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
+# - and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
+#   included in :math:`[0,1]^\inputDim`.
 #
-#   - a :class:`~openturns.Normal` distribution ;
+# First case: the core is a copula
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# In this case, we use a core which is a copula. Thus, the instrumental marginals
+# are the marginals of the multivariate distribution.
+#
+# We first create the marginals of the distribution:
+#
+#   - a :class:`~openturns.Normal` distribution;
 #   - a :class:`~openturns.Gumbel` distribution.
-
+#
+# We use a :class:`~openturns.ClaytonCopula` as dependence structure.
 marginals = [ot.Normal(), ot.Gumbel()]
+theta = 2.0
+cop = ot.ClaytonCopula(theta)
+distribution = ot.JointDistribution(marginals, cop)
 
 # %%
-# We draw their PDF. We recall that the `drawPDF` command just generates the graph data. It is the viewer module that enables the actual display.
-graphNormalPDF = marginals[0].drawPDF()
-graphNormalPDF.setTitle("PDF of the first marginal")
-graphGumbelPDF = marginals[1].drawPDF()
-graphGumbelPDF.setTitle("PDF of the second marginal")
-view = otv.View(graphNormalPDF)
-view = otv.View(graphGumbelPDF)
+# We can check here that the instrumental marginals really are  the marginal distributions.
+# In the following graphs, we draw the instrumental marginals and the real marginals, obtained with
+# the method :meth:`~openturns.Distribution.getMarginal`.
+# First, we draw the probability density functions of each component.
+graph_PDF_0 = marginals[0].drawPDF()
+graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
+graph_PDF_0.setLegends(['instrumental marg', 'marg'])
+graph_PDF_0.setTitle("First component")
+view = otv.View(graph_PDF_0)
+
+graph_PDF_1 = marginals[1].drawPDF()
+graph_PDF_1.add(distribution.getMarginal(1).drawPDF())
+graph_PDF_1.setLegends(['instrumental marg', 'marg'])
+graph_PDF_1.setTitle("Second component")
+view = otv.View(graph_PDF_1)
 
 # %%
-# The CDF is also available with the `drawCDF` method.
+# Then, we draw the cumulative distribution functions.
+graph_CDF_0 = marginals[0].drawCDF()
+graph_CDF_0.add(distribution.getMarginal(0).drawCDF())
+graph_CDF_0.setLegends(['instrumental marg', 'marg'])
+graph_CDF_0.setTitle("First component")
+view = otv.View(graph_CDF_0)
+
+graph_CDF_1 = marginals[1].drawCDF()
+graph_CDF_1.add(distribution.getMarginal(1).drawCDF())
+graph_CDF_1.setLegends(['instrumental marg', 'marg'])
+graph_CDF_1.setTitle("Second component")
+view = otv.View(graph_CDF_1)
 
 # %%
-# We then have the minimum required to create a bivariate distribution, assuming no dependency structure :
-distribution = ot.JointDistribution(marginals)
+# At last, we check that the copula of the multivariate distribution is the specified core
+# which was a copula.
+cop_dist = distribution.getCopula()
+graph_cop = cop_dist.drawPDF()
+# Get the Contour Drawable's actual implementation from the Graph
+# produced by drawPDF in order to access all its methods
+contour_cop = cop.drawPDF().getDrawable(1).getImplementation()
+contour_cop.setLineStyle('dashed')
+# Remove the colorbar
+contour_cop.setColorBarPosition("")
+graph_cop.add(contour_cop)
+# Add the contour without a colorbargraph_cop.add(cop.drawPDF())
+graph_cop.setTitle('Distribution copula and core')
+view = otv.View(graph_cop)
 
 # %%
-# We can draw the PDF (here in dimension 2) :
+# We can draw the PDF of the bivariate distribution:
 graph = distribution.drawPDF()
 view = otv.View(graph)
 
@@ -57,26 +99,85 @@ view = otv.View(graph)
 
 
 # %%
-# If a dependence between marginals is needed we have to create the copula specifying the dependency structure, here a :class:`~openturns.NormalCopula` :
-R = ot.CorrelationMatrix(2)
-R[0, 1] = 0.3
-copula = ot.NormalCopula(R)
-print(copula)
+# Second case: the core is not a copula
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# In this case, we use a core which is not a copula. Thus, the instrumental marginals
+# are not the marginals of the multivariate distribution.
+#
+# We first create the instrumental marginals of the distribution:
+#
+# - a :class:`~openturns.Normal` distribution;
+# - a :class:`~openturns.Gumbel` distribution.
+#
+# We use a :class:`~openturns.Dirichlet` as the core.
+inst_marginals = [ot.Normal(), ot.Gumbel()]
+core_dir = ot.Dirichlet([2.0, 1.5, 2.5])
+distribution = ot.JointDistribution(inst_marginals, core_dir)
 
 # %%
-# We create the bivariate distribution with the desired copula and draw it.
-distribution = ot.JointDistribution(marginals, copula)
+# We can check here that the instrumental marginals are not the marginal distributions.
+# In the following graphs, we draw the instrumental marginals and the real marginals, obtained with
+# the method :meth:`~openturns.Distribution.getMarginal`.
+# First, we draw the probability density functions of each component.
+graph_PDF_0 = inst_marginals[0].drawPDF()
+graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
+graph_PDF_0.setLegends(['instrumental marg', 'marg'])
+graph_PDF_0.setTitle("First component")
+view = otv.View(graph_PDF_0)
+
+graph_PDF_1 = inst_marginals[1].drawPDF()
+graph_PDF_1.add(distribution.getMarginal(1).drawPDF())
+graph_PDF_1.setLegends(['instrumental marg', 'marg'])
+graph_PDF_1.setTitle("Second component")
+view = otv.View(graph_PDF_1)
+
+# %%
+# Then, we draw the cumulative distribution functions.
+graph_CDF_0 = inst_marginals[0].drawCDF()
+graph_CDF_0.add(distribution.getMarginal(0).drawCDF())
+graph_CDF_0.setLegends(['instrumental marg', 'marg'])
+graph_CDF_0.setTitle("First component")
+view = otv.View(graph_CDF_0)
+
+graph_CDF_1 = inst_marginals[1].drawCDF()
+graph_CDF_1.add(distribution.getMarginal(1).drawCDF())
+graph_CDF_1.setLegends(['instrumental marg', 'marg'])
+graph_CDF_1.setTitle("Second component")
+view = otv.View(graph_CDF_1)
+
+# %%
+# At last, we check that the copula of the multivariate distribution is not the specified core.
+cop_dist = distribution.getCopula()
+graph_cop = cop_dist.drawPDF()
+cop_dist_draw = graph_cop.getDrawable(1)
+levels = cop_dist_draw.getLevels()
+graph_core = core_dir.drawPDF()
+core_draw = graph_core.getDrawable(0).getImplementation()
+core_draw.setColorBarPosition("")
+core_draw.setLevels(levels)
+core_draw.setLineStyle('dashed')
+
+graph_cop.add(core_draw)
+graph_cop.setTitle('Distribution copula and core')
+view = otv.View(graph_cop)
+
+# %%
+# We can draw the PDF of the bivariate distribution.
 graph = distribution.drawPDF()
 view = otv.View(graph)
 
+# %%
+# We also draw the CDF.
+graph = distribution.drawCDF()
+view = otv.View(graph)
 
 # %%
-# Multivariate models
-# -------------------
-# Some models in the library are natively multivariate. We present examples of three of them :
+# Use some native multivariate models
+# -----------------------------------
+# Some models in the library are natively multivariate. We present examples of three of them:
 #
-#  - the :class:`~openturns.Normal` distribution ;
-#  - the :class:`~openturns.Student` distribution ;
+#  - the :class:`~openturns.Normal` distribution,
+#  - the :class:`~openturns.Student` distribution,
 #  - the :class:`~openturns.UserDefined` distribution.
 #
 # The Normal distribution
@@ -135,7 +236,7 @@ graph = distribution.drawPDF()
 graph.setTitle("User defined PDF")
 
 # %%
-# We can draw a sample from this distribution with the `getSample` method :
+# We can generate and display a sample from this distribution.
 omega = distribution.getSample(100)
 cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from UserDefined distribution")
 graph.add(cloud)
