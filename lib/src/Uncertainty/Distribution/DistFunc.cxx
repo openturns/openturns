@@ -1188,8 +1188,8 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
 Scalar DistFunc::qNormal(const Scalar p,
                          const Bool tail)
 {
-  if (p == 0.0) return (tail ?  SpecFunc::Infinity : -SpecFunc::Infinity);
-  if (p == 1.0) return (tail ? -SpecFunc::Infinity :  SpecFunc::Infinity);
+  if (p == 0.0) return (tail ? 8.125890664701906 : -37.5193793471445);
+  if (p == 1.0) return (tail ? -37.5193793471445 :  8.125890664701906);
 
   static const Scalar a[6] =
   {

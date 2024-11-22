@@ -154,3 +154,14 @@ prob = copula.computeProbability(interval)
 print("prob=%.6f" % prob)
 
 print(ot.NormalCopula(1).getParametersCollection())
+
+# normal quantile inf propagation bug in iso transfo
+R = ot.CorrelationMatrix(2)
+R[0, 1] = 0.2
+copula = ot.NormalCopula(R)
+standard_list = [ot.Uniform(), ot.Beta()]
+distribution = ot.JointDistribution(standard_list, copula)
+standard = ot.JointDistribution(standard_list)
+transformation = ot.DistributionTransformation(distribution, standard)
+standard_sample = transformation(ot.Normal(distribution.getDimension()).getSample(10))
+print(standard_sample)
