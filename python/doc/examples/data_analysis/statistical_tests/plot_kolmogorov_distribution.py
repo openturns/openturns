@@ -23,7 +23,6 @@ Kolmogorov-Smirnov : get the statistics distribution
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -199,12 +198,15 @@ graph = ot.KernelSmoothing().build(sampleD).drawPDF()
 graph.setLegends(["Known parameters"])
 graphP = ot.KernelSmoothing().build(sampleDP).drawPDF()
 graphP.setLegends(["Estimated parameters"])
-graphP.setColors(["blue"])
 graph.add(graphP)
 graph.setTitle("Kolmogorov-Smirnov distribution")
 graph.setXTitle("KS-Statistics")
 view = viewer.View(graph)
-plt.show()
+
+# %%
+# Display the graphs
+view.ShowAll()
+
 
 # %%
 # We see that the distribution of the KS distances when the parameters are

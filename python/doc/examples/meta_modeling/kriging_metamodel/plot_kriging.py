@@ -24,7 +24,6 @@ Kriging : multiple input dimensions
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -83,7 +82,9 @@ graph.setLegendPosition("upper right")
 graph.setTitle("Sample size = %d" % (samplesize))
 graph.setXTitle("X2")
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()
 
 # %%
 # As we can see, the metamodel is quite accurate in this case.

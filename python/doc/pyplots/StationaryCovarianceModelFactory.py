@@ -38,7 +38,6 @@ funcEst.setDescription(["$t$", "$cov_{est}$"])
 
 cov_graph = func.draw(-a / 4, a / 4, 1024)
 cov_graph.add(funcEst.draw(-a / 4, a / 4, 1024))
-cov_graph.setColors(["blue", "red"])
 cov_graph.setTitle("Stationary covariance model estimation")
 
 fig = plt.figure(figsize=(10, 4))

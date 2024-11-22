@@ -9,8 +9,6 @@ for i, p in enumerate([-1.0, 0.0, 1.0]):
     distribution = ot.GeneralizedExtremeValue(0.0, 1.0, p)
     pdf_curve = distribution.drawPDF().getDrawable(0)
     cdf_curve = distribution.drawCDF().getDrawable(0)
-    pdf_curve.setColor(palette[i])
-    cdf_curve.setColor(palette[i])
     legend = f"xi={p}"
     pdf_curve.setLegend(legend)
     cdf_curve.setLegend(legend)
