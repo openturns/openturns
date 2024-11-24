@@ -16,4 +16,4 @@ graph.add(draw_f)
 graph.add(func_P1.draw(-0.5, 3., 1024).getDrawable(0))
 graph.setColors(['lightblue', "blue", "red"])
 
-view = View(graph, figure_kw={"figsize": (10, 4)}, add_legend = False)
+view = View(graph, figure_kw = {"figsize": (10, 4)}, add_legend = False)
