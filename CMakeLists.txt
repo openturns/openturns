@@ -677,6 +677,7 @@ install (FILES COPYING
                 COPYING.ev3
                 COPYING.exprtk
                 COPYING.faddeeva
+                COPYING.fastgl
                 COPYING.kendall
                 COPYING.kissfft
                 COPYING.cephes

@@ -63,7 +63,6 @@ Compare the PDFs:
 
 >>> graph = fittedDist.drawPDF()
 >>> graph.add( ot.Gamma(6.0, 1.0).drawPDF())
->>> graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 >>> graph.setLegends(['KS dist', 'Gamma'])
 
 The default values of the parameters of the constructor usually provide good results.
@@ -238,7 +237,6 @@ Compare the PDFs:
 >>> graph = ot.Exponential(1.0).drawPDF()
 >>> graph.add(fittedDistNoCorr.drawPDF())
 >>> graph.add(fittedDistWithCorr.drawPDF())
->>> graph.setColors(['black', 'blue', 'red'])
 >>> graph.setLegends(['Exp dist', 'No boundary corr', 'Boundary corr'])
 "
 

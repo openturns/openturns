@@ -1116,8 +1116,11 @@ void ResourceMap::loadDefaultConfiguration()
   // PointConditionalDistribution parameters //
   addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre");
   addAsString("PointConditionalDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
   addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
+  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
+  addAsBool("PointConditionalDistribution-InitializeSampling", true);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);

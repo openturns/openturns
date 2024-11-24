@@ -50,11 +50,11 @@ public:
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated matrix */
-  Point getRoots(const UnsignedInteger n) const;
+  Point getRoots(const UnsignedInteger n) const override;
 
   /** Nodes and weights of the polynomial of degree n as the eigenvalues of the associated matrix, to build quadrature rules */
   Point getNodesAndWeights(const UnsignedInteger n,
-                           Point & weightsOut) const;
+                           Point & weightsOut) const override;
 
   /** String converter */
   String __repr__() const override;

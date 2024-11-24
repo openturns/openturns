@@ -70,7 +70,6 @@ print(myDistribution.getActualDistribution())
 # We draw the fitted distribution and a histogram of the data.
 graph = myDistribution.drawPDF()
 graph.add(ot.HistogramFactory().build(sample).drawPDF())
-graph.setColors(["black", "red"])
 graph.setLegends(["GEV fitting", "histogram"])
 graph.setLegendPosition("upper right")
 
@@ -103,7 +102,6 @@ curveWeibullMax = distWeibullMax.drawPDF().getDrawable(0)
 curveWeibullMax.setLineStyle("dashed")
 graph.add(curveWeibullMax)
 
-graph.setColors(["black", "red", "green", "blue", "orange"])
 graph.setLegends(
     [
         "GEV fitting",
@@ -159,7 +157,6 @@ print(myFittedDist)
 graph = myFittedDist.drawPDF()
 graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setTitle("Generalized Pareto distribution fitting on a sample")
-graph.setColors(["black", "red"])
 graph.setLegends(["GPD fitting", "histogram"])
 graph.setLegendPosition("upper right")
 
@@ -190,13 +187,11 @@ print(myFittedDist)
 graph = myFittedDist.drawPDF()
 graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setTitle("Generalized Pareto distribution fitting on a sample")
-graph.setColors(["black", "red"])
 graph.setLegends(["GPD fitting", "histogram"])
 graph.setLegendPosition("upper right")
 
 view = viewer.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(-1.0, 10.0)
-
 
 plt.show()

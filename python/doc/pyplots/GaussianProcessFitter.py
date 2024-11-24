@@ -22,7 +22,6 @@ result = algo.getResult()
 fhat = result.getMetaModel()
 
 graph.add(fhat.draw(0.0, 10.0))
-graph.setColors(["blue", "red", "black", "pink"])
 graph.setLegends(["model", "GP Fitter", "sample", "GP Regression"])
 graph.setLegendPosition("upper left")
 graph.setTitle(r"$y(x)=x * sin(x)$")

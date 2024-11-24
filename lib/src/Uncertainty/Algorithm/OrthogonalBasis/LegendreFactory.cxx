@@ -21,6 +21,7 @@
 #include "openturns/LegendreFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/GaussLegendre.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -75,6 +76,24 @@ String LegendreFactory::__repr__() const
          << " measure=" << measure_;
 }
 
+
+/* Roots of the polynomial of degree n */
+Point LegendreFactory::getRoots(const UnsignedInteger n) const
+{
+  if (n == 0) return Point(0);
+  Point tmp;
+  return getNodesAndWeights(n, tmp);
+}
+
+/* Nodes and weights of the polynomial of degree n */
+Point LegendreFactory::getNodesAndWeights(const UnsignedInteger n,
+    Point & weights) const
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
+  const GaussLegendre algo(Indices(1, n));
+  weights = algo.getWeights();
+  return (2.0 * algo.getNodes().asPoint() - Point(n, 1.0));
+}
 
 /* Method save() stores the object through the StorageManager */
 void LegendreFactory::save(Advocate & adv) const

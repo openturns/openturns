@@ -97,6 +97,12 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 
+  /** Get the isoprobabilist transformation */
+  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const override;
+
+  /** Get the inverse isoprobabilist transformation */
+  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const override;
+
   /** Get the quantile of the distribution */
   Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
   Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
@@ -182,6 +188,9 @@ private:
   Point expandPoint(const Point & point) const;
 
   /* Get the simplified version */
+  void dispatchConditioning(const Collection<Distribution> & distributions, Distribution & simplified) const;
+
+  /* Get the simplified version */
   Bool hasSimplifiedVersion(Distribution & simplified) const;
 
   // decompose elliptical distribution mu/cov
@@ -208,11 +217,14 @@ private:
   Indices nonConditioningIndices_;
   Distribution marginalConditionedDistribution_;
   Scalar logNormalizationFactor_ = 0.0;
+  Distribution reorderedDistribution_;
+  Point conditioningCDF_;
 
   // for ratio of uniforms method
-  mutable Scalar supU_ = 0.0;
-  mutable Point infV_;
-  mutable Point supV_;
+  Scalar r_ = 1.0;
+  Scalar supU_ = 0.0;
+  Point infV_;
+  Point supV_;
 
   // for discrete sampling using alias method
   Point base_;

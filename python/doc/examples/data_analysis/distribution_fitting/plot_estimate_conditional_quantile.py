@@ -19,7 +19,6 @@ Estimate a conditional quantile
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 import numpy as np
 
 ot.Log.Show(ot.Log.NONE)
@@ -108,7 +107,6 @@ graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
 # %%
@@ -194,10 +192,11 @@ graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-graph.setColors(["red", "blue"])
 view = viewer.View(graph)
 
 # %%
 # Our estimated conditional quantile is a good approximate and should be better the more data we have. We can observe it by increasing the number of samples.
-#
-plt.show()
+
+# %%
+# Display the graphs
+view.ShowAll()

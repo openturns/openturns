@@ -1,5 +1,5 @@
 %feature("docstring") OT::P1LagrangeEvaluation
-"Data based math evaluation implementation.
+"Evaluation of a P1 Lagrange interpolation over a field.
 
 Available constructors:
 

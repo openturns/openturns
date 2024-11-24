@@ -10,3 +10,4 @@ This library bundles several third-party codes with various licenses compatible 
 - KissFFT (lib/src/Base/Algo/kissfft.hh), under BSD license, see COPYING.kissfft
 - KS distribution from Cephes library (lib/src/Uncertainty/Distribution/cephes/*) under BSD license, see COPYING.cephes
 - TNC optimization solver (lib/src/Base/Optim/algotnc.*) under Expat license, see COPYING.tnc
+- Gauss Legendre quadrature from FastGL library (lib/src/Base/Algo/fastgl*) under BSD license, see COPYING.fastGL

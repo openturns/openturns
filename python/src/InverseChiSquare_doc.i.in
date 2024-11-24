@@ -18,7 +18,7 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \dfrac{\exp \left( -\dfrac{1}{2 x}\right)}{\Gamma \left(\dfrac{\nu}{2}\right)\lambda^{\frac{\nu}{2}}x^{\frac{\nu}{2}+1}}, \quad x \in [0; +\infty[
+    f_X(x) = \dfrac{2^{-\nu/2}}{\Gamma \left(\dfrac{\nu}{2}\right)}  x^{-\left(\frac{\nu}{2}+1 \right)} \exp \left( -\dfrac{1}{2 x}\right), \quad x \in [0; +\infty[
 
 with :math:`\nu > 0`.
 

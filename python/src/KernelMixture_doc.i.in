@@ -13,7 +13,7 @@ sample : 2-d sequence of float
 
 Notes
 -----
-A *KernelMixture* is a particular *Mixture*: all the weights are identical and
+A :class:`~openturns.KernelMixture` is a particular :class:`~openturns.Mixture`: all the weights are identical and
 all the kernels of the combination are of the same
 family. The kernels are centered on the sample points. The multivariate kernel
 is a tensorized product of the same univariate kernel.

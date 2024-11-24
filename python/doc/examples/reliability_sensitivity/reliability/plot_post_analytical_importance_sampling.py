@@ -7,7 +7,6 @@ Use the post-analytical importance sampling algorithm
 # In this example we want to estimate the probability to exceed a threshold through the combination of approximation and simulation methods.
 #
 #   - perform an FORM or SORM study in order to find the design point,
-#
 #   - perform an importance sampling study centered around the design point:
 #     the importance distribution operates in the standard space and is the
 #     standard distribution of the standard space (the standard elliptical
@@ -18,7 +17,6 @@ Use the post-analytical importance sampling algorithm
 #
 #   - the sample is generated according to the new importance distribution:
 #     this technique is called post analytical importance sampling,
-#
 #   - the sample is generated according to the new importance distribution and
 #     is controlled by the value of the linearized limit state function:
 #     this technique is called post analytical controlled importance sampling.

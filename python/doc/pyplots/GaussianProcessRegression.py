@@ -18,7 +18,6 @@ fhat = result.getMetaModel()
 graph = f.draw(0.0, 10.0)
 graph.add(fhat.draw(0.0, 10.0))
 graph.add(ot.Cloud(sampleX, sampleY))
-graph.setColors(["blue", "red", "black"])
 
 # Conditional variance
 gccc = otexp.GaussianProcessConditionalCovariance(result)

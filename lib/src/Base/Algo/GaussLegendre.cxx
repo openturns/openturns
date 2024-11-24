@@ -22,7 +22,7 @@
 #include "openturns/Tuples.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Lapack.hxx"
+#include "fastgl.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -106,45 +106,14 @@ void GaussLegendre::generateNodesAndWeights()
     if (!(integrationNodesNumber > 0)) throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] has " << integrationNodesNumber << "nodes.";
     // Check if we already computed this 1D rule
     // We use the value 'dimension' as a guard
-    UnsignedInteger indexAlreadyComputed = dimension;
-    for (UnsignedInteger j = 0; j < i; ++j)
-      if (discretization_[j] == integrationNodesNumber)
+    marginalNodes[i] = Point(integrationNodesNumber);
+    marginalWeights[i] = Point(integrationNodesNumber);
+    for (UnsignedInteger j = 0; j < integrationNodesNumber; ++j)
       {
-        indexAlreadyComputed = j;
-        break;
-      }
-    // If indexAlreadyComputed < dimension we found a match
-    if (indexAlreadyComputed < dimension)
-    {
-      marginalNodes[i] = marginalNodes[indexAlreadyComputed];
-      marginalWeights[i] = marginalWeights[indexAlreadyComputed];
-    } // A match found
-    else
-    {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-      // First, build a symmetric tridiagonal matrix whose eigenvalues are the nodes of the
-      // gauss integration rule
-      char jobz('V');
-      int ljobz(1);
-      Point d(integrationNodesNumber);
-      Point e(integrationNodesNumber);
-      for (UnsignedInteger k = 1; k < integrationNodesNumber; ++k) e[k - 1] = 0.5 / std::sqrt(1.0 - std::pow(2.0 * k, -2));
-      int ldz(integrationNodesNumber);
-      SquareMatrix z(integrationNodesNumber);
-      Point work(2 * integrationNodesNumber - 2);
-      int info;
-      int n = static_cast<int>(integrationNodesNumber);
-      dstev_(&jobz, &n, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
-      if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
-      for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
-      {
-        // Nodes
-        marginalNodes[i][k] = 0.5 * (1.0 + d[k]);
-        // Weights
-        marginalWeights[i][k] = std::pow(z(0, k), 2);
-      }
-    } // No match found
+	fastgl::QuadPair p(fastgl::GLPair(integrationNodesNumber, integrationNodesNumber - j));
+	marginalNodes[i][j] = 0.5 * (1.0 + p.x());
+	marginalWeights[i][j] = 0.5 * p.weight;
+      } // For j
   } // For i
   // Now, generate the nD rule over [0, 1]^n
   IndicesCollection allTuples(Tuples(discretization_).generate());

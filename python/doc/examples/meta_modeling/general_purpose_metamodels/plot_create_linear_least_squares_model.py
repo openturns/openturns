@@ -54,7 +54,6 @@ Create a linear least squares model
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -127,4 +126,6 @@ curve.setLegend("Linear L.S.")
 graph.add(curve)
 graph.setLegendPosition("upper right")
 view = viewer.View(graph)
-plt.show()
+
+# %%
+view.ShowAll()
