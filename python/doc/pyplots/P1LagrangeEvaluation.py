@@ -27,4 +27,4 @@ graph.setTitle(r"P1 Lagrange interpolation of $(x,y) \mapsto \sin(\pi x) \sin(\p
 graph.setXTitle('$x$')
 graph.setYTitle('$y$')
 
-view = View(graph, figure_kw = {"figsize": (10, 4)}, add_legend = False)
+view = View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)
