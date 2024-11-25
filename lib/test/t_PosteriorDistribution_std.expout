@@ -12,25 +12,15 @@ Distribution PosteriorDistribution(deconditioned distribution = DeconditionedDis
 4 : [ -2.77208  ])
 range=[0, 1]
 [1, 2]
+entropy=-0.2488
+entropy (MC)=-0.2471
 Mean [0.408932,1.65873]
 Covariance [[ 0.0737985  0.00565287 ]
  [ 0.00565287 0.0516131  ]]
 Elliptical distribution= false
 Elliptical copula= false
 Independent copula= false
-oneRealization=[0.577515,1.61937]
-oneSample=    [ X0        X1        ]
-0 : [ 0.2696    1.83034   ]
-1 : [ 0.790755  1.58154   ]
-2 : [ 0.862411  1.90869   ]
-3 : [ 0.545864  1.89846   ]
-4 : [ 0.258716  1.97041   ]
-5 : [ 0.451675  1.43307   ]
-6 : [ 0.0589876 1.77283   ]
-7 : [ 0.147138  1.58356   ]
-8 : [ 0.0167831 1.60289   ]
-9 : [ 0.961464  1.95992   ]
-Mean point= class=Point name=Unnamed dimension=2 values=[0.408932,1.65873] pdf=1.62377 cdf=0.262178
+Mean point= class=Point name=Unnamed dimension=2 values=[0.408932,1.65873] pdf=1.624 cdf=0.2622
 Quantile=[0.946843,1.98454]
 CDF(quantile)=0.95
 margin=MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
@@ -40,10 +30,9 @@ margin=MarginalDistribution(distribution=PosteriorDistribution(deconditioned dis
 2 : [ -0.157398 ]
 3 : [  2.30822  ]
 4 : [ -2.77208  ]), indices=[0])
-margin PDF=1.12641
-margin CDF=0.541543
+margin PDF=1.126
+margin CDF=0.5415
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.900147]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.910434]
 margin=MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
@@ -51,7 +40,6 @@ margin=MarginalDistribution(distribution=PosteriorDistribution(deconditioned dis
 2 : [ -0.157398 ]
 3 : [  2.30822  ]
 4 : [ -2.77208  ]), indices=[1])
-margin PDF=1.44124
-margin CDF=0.456168
+margin PDF=1.441
+margin CDF=0.4562
 margin quantile=class=Point name=Unnamed dimension=1 values=[1.96961]
-margin realization=class=Point name=Unnamed dimension=1 values=[1.77724]
