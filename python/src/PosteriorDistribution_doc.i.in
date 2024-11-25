@@ -96,3 +96,71 @@ Returns
 -------
 factor : float
     Log-scale normalization factor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::getConditionedDistribution
+"Accessor to the distribution's conditioned distribution parameter *conditionedDistribution*.
+
+Returns
+-------
+conditionedDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::getConditioningDistribution
+"Accessor to the distribution's conditioned distribution parameter *conditioningDistribution*.
+
+Returns
+-------
+conditioningDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{Y}`, specified with its parameters.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::getLinkFunction
+"Accessor to the distribution's conditioned distribution parameter *linkFunction*.
+
+Returns
+-------
+linkFunction : :class:`~openturns.Function`
+    the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::setConditionedDistribution
+"Accessor to the distribution's conditioned distribution parameter *conditionedDistribution*.
+
+Parameters
+----------
+conditionedDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::setConditioningDistribution
+"Accessor to the distribution's conditioned distribution parameter *conditioningDistribution*.
+
+Parameters
+----------
+conditioningDistribution : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{Y}`, specified with its parameters.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::setLinkFunction
+"Accessor to the distribution's conditioned distribution parameter *linkFunction*.
+
+Parameters
+----------
+linkFunction : :class:`~openturns.Function`
+    the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+"
