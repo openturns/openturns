@@ -14,7 +14,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 %__cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.24rc1
+Version:        1.24
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -50,6 +50,7 @@ BuildRequires:  suitesparse-devel
 BuildRequires:  coin-or-Ipopt-devel
 BuildRequires:  coin-or-Bonmin-devel
 BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
+BuildRequires:  pkgconfig(libavcodec), pkgconfig(libavdevice), pkgconfig(libjxl)
 BuildRequires:  flexiblas-devel
 BuildRequires:  primesieve-devel
 %else
