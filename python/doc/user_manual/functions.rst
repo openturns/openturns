@@ -36,6 +36,7 @@ Algebra of functions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     AggregatedFunction
 
     :template: classWithPlot.rst_t
@@ -71,6 +72,7 @@ Refer to :ref:`field_function`.
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     FieldFunction
     FieldToPointFunction
     PointToFieldFunction
@@ -92,6 +94,7 @@ Collection of functions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     Basis
     OrthogonalBasis
     BasisSequence
@@ -102,6 +105,7 @@ Finite differentiation schemes
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     CenteredFiniteDifferenceGradient
     CenteredFiniteDifferenceHessian
     FiniteDifferenceGradient
@@ -117,6 +121,7 @@ Evaluation functions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     Evaluation
     EvaluationImplementation
     AggregatedEvaluation
@@ -155,6 +160,7 @@ Gradient functions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     GradientImplementation
     SymbolicGradient
     ComposedGradient
@@ -173,6 +179,7 @@ Hessian functions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     HessianImplementation
     SymbolicHessian
     ComposedHessian
@@ -191,6 +198,7 @@ Differential equation solvers
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     ODESolver
 
     :template: ODESolver.rst_t
@@ -206,6 +214,7 @@ as Python functions.
 .. autosummary::
     :toctree: _generated/
     :template: function.rst_t
+
     SpecFunc.AccurateSum
     SpecFunc.BesselI0
     SpecFunc.BesselI1
@@ -285,6 +294,7 @@ These methods are dedicated to coupling external codes by means of text files.
 .. autosummary::
     :toctree: _generated/
     :template: function.rst_t
+
     coupling_tools.replace
     coupling_tools.execute
     coupling_tools.get_value
@@ -298,6 +308,7 @@ These methods are dedicated to coupling external codes by means of text files.
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
+
     UniVariateFunction
 
 .. _testing_module:
@@ -309,7 +320,9 @@ This module is dedicated to the development in the library.
 .. autosummary::
     :toctree: _generated/
     :template: function.rst_t
+
     testing.assert_almost_equal
 
     :template: class.rst_t
+
     testing.DistributionValidation
