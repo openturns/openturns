@@ -3,6 +3,8 @@
 import openturns as ot
 import openturns.experimental as otexp
 
+ot.ResourceMap.SetAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 24);
+
 observationsSize = 5
 # Create a collection of distribution
 conditionedDistribution = ot.Normal()
@@ -24,10 +26,7 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution = ot.Distribution(conditionedDistribution)
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
-    distribution = otexp.PosteriorDistribution(
-        ot.DeconditionedDistribution(conditionedDistribution, conditioning),
-        observations,
-    )
+    distribution = otexp.PosteriorDistribution(ot.DeconditionedDistribution(conditionedDistribution, conditioning), observations)
     dim = distribution.getDimension()
     print("Distribution ", distribution)
     print("range=", distribution.getRange())
@@ -43,21 +42,6 @@ for conditioning in conditioningDistributionCollection:
     # Has this distribution an independent copula?
     print("Independent copula= ", distribution.hasIndependentCopula())
 
-    # Test for realization of distribution
-    oneRealization = distribution.getRealization()
-    print("oneRealization=", oneRealization)
-
-    # Test for sampling
-    # size = 10
-    # oneSample = distribution.getSample(size)
-    # print("oneSample=", oneSample)
-
-    # Test for sampling
-    #       size = 10000
-    #       Sample anotherSample = distribution.getSample(size)
-    #       print("anotherSample mean=", anotherSample.computeMean())
-    #       print("anotherSample covariance=", anotherSample.computeCovariance())
-
     # Show PDF and CDF of mean point
     meanPDF = distribution.computePDF(mean)
     meanCDF = distribution.computeCDF(mean)
@@ -65,7 +49,7 @@ for conditioning in conditioningDistributionCollection:
     # Get 95% quantile
     quantile = distribution.computeQuantile(0.95)
     print("Quantile=", quantile)
-    # print("CDF(quantile)=", distribution.computeCDF(quantile))
+    print("CDF(quantile)=%.6g" % distribution.computeCDF(quantile))
     # Extract the marginals
     for i in range(dim):
         margin = distribution.getMarginal(i)
@@ -73,4 +57,34 @@ for conditioning in conditioningDistributionCollection:
         print("margin PDF=", ot.Point(1, margin.computePDF(mean[i])))
         print("margin CDF=", ot.Point(1, margin.computeCDF(mean[i])))
         print("margin quantile=", margin.computeQuantile(0.95))
-        print("margin realization=", margin.getRealization())
+
+    ot.Log.Show(ot.Log.TRACE)
+    validation = ott.DistributionValidation(distribution)
+    validation.setMomentsSamplingSize(10000)
+    validation.skipCorrelation()  # slow
+    validation.skipParameters()  # not yet implemented
+    validation.skipGradient()  # not yet implemented
+    validation.run()
+
+# Test the constructors
+conditioned = ot.Normal()
+link = ot.SymbolicFunction(["y"], ["0.0", "y"])
+conditioning = ot.Uniform(0.5, 1.5)
+observations = conditioned.getSample(10)
+
+# First constructor
+posterior = otexp.PosteriorDistribution()
+
+# Second constructor
+posterior = otexp.PosteriorDistribution(ot.DeconditionedDistribution(conditioned, conditioning, link), observations)
+
+# Third constructor
+posterior = otexp.PosteriorDistribution(conditioned, ot.IndependentCopula(2), observations)
+
+# Fourth constructor
+posterior = otexp.PosteriorDistribution(conditioned, conditioning, link, observations)
+
+# Accessors to the arguments of the constructor
+print("conditioned=", posterior.getConditionedDistribution())
+print("conditioning=", posterior.getConditioningDistribution())
+print("link=", posterior.getLinkFunction())
