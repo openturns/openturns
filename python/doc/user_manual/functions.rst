@@ -131,10 +131,10 @@ Evaluation functions
     DualLinearCombinationEvaluation
     IndicatorEvaluation
     LinearCombinationEvaluation
-    
+
     :template: classWithPlot.rst_t
     LinearEvaluation
-    
+
     :template: class.rst_t
     MarginalEvaluation
     MarginalTransformationEvaluation
@@ -156,7 +156,7 @@ Evaluation functions
     :template: class.rst_t
     ProductEvaluation
     ProductPolynomialEvaluation
-    
+
     :template: classWithPlot.rst_t
     QuadraticEvaluation
     SymbolicEvaluation
