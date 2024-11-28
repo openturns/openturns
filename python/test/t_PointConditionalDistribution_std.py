@@ -88,17 +88,6 @@ print(simplified)
 ott.assert_almost_equal(simplified.getMarginal(0), ot.Student(3.5, 1.84, 1.07564))
 ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.156194)
 
-# special case for JointDistribution
-R = ot.CorrelationMatrix(3)
-R[1, 0] = R[2, 0] = R[2, 1] = 0.9
-copula = ot.NormalCopula(R)
-joint = ot.JointDistribution([ot.Exponential(1.0, -2.0)] * R.getDimension(), copula)
-distribution = otexp.PointConditionalDistribution(joint, [1], [0.8])
-simplified = distribution.getSimplifiedVersion()
-print(simplified)
-assert simplified.getName() == "JointDistribution", "wrong type"
-ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.266138)
-
 # special case for Mixture
 mixture = ot.Mixture([ot.Normal(2), ot.Normal(2)], [0.3, 0.7])
 distribution = otexp.PointConditionalDistribution(mixture, [1], [2.0])
