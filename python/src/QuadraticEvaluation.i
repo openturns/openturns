@@ -1,10 +1,10 @@
 // SWIG file QuadraticEvaluation.i
 
-OTAutodoc(QuadraticEvaluation)
-
 %{
 #include "openturns/QuadraticEvaluation.hxx"
 %}
+
+%include QuadraticEvaluation_doc.i
 
 %copyctor OT::QuadraticEvaluation;
 
