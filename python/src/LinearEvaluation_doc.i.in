@@ -12,7 +12,7 @@ linear : :class:`~openturns.Matrix`
 
 Notes
 -----
-This class implements a linear :class:`~openturns.Function` :math:`f` defined as:
+This class implements the evaluation of a linear :class:`~openturns.Function` :math:`f` defined as:
 
 .. math::
 
