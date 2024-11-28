@@ -1122,13 +1122,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // PointConditionalDistribution parameters //
+  addAsBool("PointConditionalDistribution-InitializeSampling", true);
+  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
+  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
   addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre");
   addAsString("PointConditionalDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsString("PointConditionalDistribution-RangeAdaptationMethod", "Rank");
   addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
-  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
-  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
-  addAsBool("PointConditionalDistribution-InitializeSampling", true);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);

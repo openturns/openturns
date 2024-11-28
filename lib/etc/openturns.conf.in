@@ -502,13 +502,14 @@
   <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
   <!-- OT::PointConditionalDistribution parameters -->
-  <PointConditionalDistribution-CubaAlgorithm value_str="cuhre" />
-  <PointConditionalDistribution-OptimizationAlgorithm value_str="Cobyla" />
+  <PointConditionalDistribution-InitializeSampling value_bool="true" />
+  <PointConditionalDistribution-InitializeTransformation value_bool="true" />
+  <PointConditionalDistribution-UseSimplifiedVersion value_bool="true" />
   <PointConditionalDistribution-RatioUniformCandidateNumber value_int="10000" />
   <PointConditionalDistribution-SmallDimension value_int="6" />
-  <PointConditionalDistribution-UseSimplifiedVersion value_bool="true" />
-  <PointConditionalDistribution-InitializeTransformation value_bool="true" />
-  <PointConditionalDistribution-InitializeSampling value_bool="true" />
+  <PointConditionalDistribution-CubaAlgorithm value_str="cuhre" />
+  <PointConditionalDistribution-OptimizationAlgorithm value_str="Cobyla" />
+  <PointConditionalDistribution-RangeAdaptationMethod value_str="Rank" />
 
   <!-- OT::JointDistribution parameters -->
   <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />

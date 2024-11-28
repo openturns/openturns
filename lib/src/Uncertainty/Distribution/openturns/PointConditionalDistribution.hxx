@@ -198,7 +198,11 @@ private:
   Bool hasSimplifiedVersion(Distribution & simplified) const;
 
   // decompose elliptical distribution mu/cov
-  Point decompose(CovarianceMatrix & C) const;
+  Point decompose(const Distribution & distribution,
+		  const Indices & conditioningIndices,
+		  const Indices & nonConditioningIndices,
+		  const Point & conditioningValues,
+		  CovarianceMatrix & C) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const override;
