@@ -36,6 +36,7 @@
 #include "openturns/KernelMixture.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/NormalCopula.hxx"
 #include "openturns/Student.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -44,6 +45,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SobolSequence.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,7 +81,10 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
   Indices permutation(conditioningIndices.getSize());
   permutation.fill();
   std::sort(permutation.begin(), permutation.end(),
-            [&](const UnsignedInteger & a, const UnsignedInteger & b) { return (conditioningIndices[a] < conditioningIndices[b]); });
+            [&](const UnsignedInteger & a, const UnsignedInteger & b)
+  {
+    return (conditioningIndices[a] < conditioningIndices[b]);
+  });
   conditioningIndices_.resize(conditioningIndices.getSize());
   conditioningValues_.resize(conditioningIndices.getSize());
   for (UnsignedInteger i = 0; i < conditioningIndices.getSize(); ++ i)
@@ -308,17 +313,19 @@ void PointConditionalDistribution::update()
   setDescription(distribution_.getDescription().select(nonConditioningIndices_));
 
   // enable simplified path
-  useSimplifiedVersion_ = hasSimplifiedVersion(simplifiedVersion_);
+  if (ResourceMap::GetAsBool("PointConditionalDistribution-UseSimplifiedVersion"))
+    useSimplifiedVersion_ = hasSimplifiedVersion(simplifiedVersion_);
+  else useSimplifiedVersion_ = false;
   LOGDEBUG(OSS() << "useSimplifiedVersion_=" << useSimplifiedVersion_);
 
   // We can postpone the computation of the normalization factor here as we will not need it if there is a simplified version (and it can be costly due to the marginal extraction)
   if (!useSimplifiedVersion_)
-    {
-      if (conditioningIndices_.getSize())
-	logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
-      if (!(logNormalizationFactor_ > std::log(getPDFEpsilon())))
-	throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
-    }
+  {
+    if (conditioningIndices_.getSize())
+      logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
+    if (!SpecFunc::IsNormal(logNormalizationFactor_))
+      throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
+  }
 
   // cache marginal for reuse
   if (!useSimplifiedVersion_)
@@ -340,7 +347,7 @@ void PointConditionalDistribution::update()
   // r_ is a free parameter, could be optimized to maximize the acceptance ratio
   const UnsignedInteger dimension = getDimension();
   if (!useSimplifiedVersion_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
-    && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeSampling"))
+      && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeSampling"))
   {
     const Interval bounds(getRange());
     const Point lb(bounds.getLowerBound());
@@ -355,7 +362,8 @@ void PointConditionalDistribution::update()
       Point candidate(sequence.generate());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
         candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
-      if (computePDF(candidate) > 0.0)
+
+      if (SpecFunc::IsNormal(computeLogPDF(candidate)))
       {
         start = candidate;
         break;
@@ -395,7 +403,7 @@ void PointConditionalDistribution::update()
           Point candidate(sequence.generate());
           for (UnsignedInteger j = 0; j < dimension; ++ j)
             candidate[j] = candidate[j] * ub[j];
-          if (computePDF(candidate) > 0.0)
+	  if (SpecFunc::IsNormal(computeLogPDF(candidate)))
           {
             start = candidate;
             break;
@@ -419,7 +427,7 @@ void PointConditionalDistribution::update()
           Point candidate(sequence.generate());
           for (UnsignedInteger j = 0; j < dimension; ++ j)
             candidate[j] = candidate[j] * lb[j];
-          if (computePDF(candidate) > 0.0)
+	  if (SpecFunc::IsNormal(computeLogPDF(candidate)))
           {
             start = candidate;
             break;
@@ -454,20 +462,24 @@ void PointConditionalDistribution::update()
 }
 
 
-Point PointConditionalDistribution::decompose(CovarianceMatrix & C) const
+Point PointConditionalDistribution::decompose(const Distribution & distribution,
+    const Indices & conditioningIndices,
+    const Indices & nonConditioningIndices,
+    const Point & conditioningValues,
+    CovarianceMatrix & C) const
 {
-  const Point mu(distribution_.getMean());
-  const CovarianceMatrix cov(distribution_.getCovariance());
-  const CovarianceMatrix cxx(distribution_.getMarginal(nonConditioningIndices_).getCovariance());
-  const CovarianceMatrix cyy(distribution_.getMarginal(conditioningIndices_).getCovariance());
-  const Point mux = mu.select(nonConditioningIndices_);
-  const Point muy = mu.select(conditioningIndices_);
-  Matrix cxy(conditioningIndices_.getSize(), nonConditioningIndices_.getSize());
-  for (UnsignedInteger i = 0; i < conditioningIndices_.getSize(); ++ i)
-    for (UnsignedInteger j = 0; j < nonConditioningIndices_.getSize(); ++ j)
-      cxy(i, j) = cov(conditioningIndices_[i], nonConditioningIndices_[j]);
+  const Point mu(distribution.getMean());
+  const CovarianceMatrix cov(distribution.getCovariance());
+  const CovarianceMatrix cxx(distribution.getMarginal(nonConditioningIndices).getCovariance());
+  const CovarianceMatrix cyy(distribution.getMarginal(conditioningIndices).getCovariance());
+  const Point mux = mu.select(nonConditioningIndices);
+  const Point muy = mu.select(conditioningIndices);
+  Matrix cxy(conditioningIndices.getSize(), nonConditioningIndices.getSize());
+  for (UnsignedInteger i = 0; i < conditioningIndices.getSize(); ++ i)
+    for (UnsignedInteger j = 0; j < nonConditioningIndices.getSize(); ++ j)
+      cxy(i, j) = cov(conditioningIndices[i], nonConditioningIndices[j]);
   // here we could get the inverse cholesky from Elliptical but we cannot access the covariance scaling factor
-  const Point muConditional(mux + cxy.transpose() * cyy.solveLinearSystem(conditioningValues_ - muy));
+  const Point muConditional(mux + cxy.transpose() * cyy.solveLinearSystem(conditioningValues - muy));
   C = CovarianceMatrix((cxx - (cxy.transpose() * cyy.solveLinearSystem(cxy))).getImplementation());
   return muConditional;
 }
@@ -475,9 +487,6 @@ Point PointConditionalDistribution::decompose(CovarianceMatrix & C) const
 /* Get the simplified version */
 Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplified) const
 {
-  if (!ResourceMap::GetAsBool("PointConditionalDistribution-UseSimplifiedVersion"))
-    return false;
-
   // no conditioning (empty point)
   if (getDimension() == distribution_.getDimension())
   {
@@ -492,50 +501,60 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     return true;
   }
 
-  // Normal
-  Normal *p_normal = dynamic_cast<Normal *>(distribution_.getImplementation().get());
-  if (p_normal)
+  // The elliptical distributions
+  if (distribution_.isElliptical())
   {
-    CovarianceMatrix C;
-    const Point mu(decompose(C));
-    simplified = Normal(mu, C);
-    return true;
-  }
+    const String standardSpace(distribution_.getStandardRepresentative().getImplementation()->getClassName());
+    // Normal case
+    if (standardSpace == "Normal")
+    {
+      CovarianceMatrix C;
+      const Point mu(decompose(distribution_, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C));
+      simplified = Normal(mu, C);
+      return true;
+    } // Normal case
 
-  // Student
-  Student *p_student = dynamic_cast<Student *>(distribution_.getImplementation().get());
-  if (p_student)
-  {
-    CovarianceMatrix C;
-    const Point mu(decompose(C));
-    const Point mY(conditioningValues_ - mu.select(conditioningIndices_));
-    const Scalar dy = mY.dot(distribution_.getMarginal(conditioningIndices_).getCovariance().solveLinearSystem(mY));
-    const Scalar nu = p_student->getNu();
-    const UnsignedInteger py = conditioningIndices_.getSize();
-    C = CovarianceMatrix((C * std::sqrt((nu + dy) / (nu + py))).getImplementation());
-    simplified = Student(nu + py, mu, C);
-    return true;
-  }
+    // Student case
+    if (standardSpace == "Student")
+    {
+      CovarianceMatrix C;
+      const Point mu(decompose(distribution_, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C));
+      const Point mY(conditioningValues_ - mu.select(conditioningIndices_));
+      const Scalar dy = mY.dot(distribution_.getMarginal(conditioningIndices_).getCovariance().solveLinearSystem(mY));
+      Student *p_student = dynamic_cast<Student *>(distribution_.getStandardDistribution().getImplementation().get());
+      const Scalar nu = p_student->getNu();
+      const UnsignedInteger py = conditioningIndices_.getSize();
+      C = CovarianceMatrix((C * std::sqrt((nu + dy) / (nu + py))).getImplementation());
+      simplified = Student(nu + py, mu, C);
+      return true;
+    } // Student case
+  } // Elliptical
 
   // Mixture
-  Mixture *p_mixture = dynamic_cast<Mixture *>(distribution_.getImplementation().get());
+  const Mixture *p_mixture = dynamic_cast<Mixture *>(distribution_.getImplementation().get());
   if (p_mixture)
   {
     Collection<Distribution> atoms(p_mixture->getDistributionCollection());
     const UnsignedInteger atomsNumber = atoms.getSize();
-    Point newWeights(p_mixture->getWeights());
-    Collection<Distribution> newAtoms(atomsNumber);
+    const Point weights(p_mixture->getWeights());
+    Point newWeights;
+    Collection<Distribution> newAtoms;
     for (UnsignedInteger i = 0; i < atomsNumber; ++i)
     {
-      newWeights[i] *= atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
-      newAtoms[i] = PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_);
-    }
+      const Scalar w = atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
+      // Add only atoms with nonzero distribution
+      if (w > 0.0)
+      {
+        newWeights.add(weights[i] * w);
+        newAtoms.add(PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_));
+      }
+    } // for i
     simplified = Mixture(newAtoms, newWeights);
     return true;
   }
 
   // Kernel mixture
-  KernelMixture *p_kernel_mixture = dynamic_cast<KernelMixture *>(distribution_.getImplementation().get());
+  const KernelMixture *p_kernel_mixture = dynamic_cast<KernelMixture *>(distribution_.getImplementation().get());
   if (p_kernel_mixture)
   {
     const Distribution kernel(p_kernel_mixture->getKernel());
@@ -569,41 +588,45 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
   }
 
   // EmpiricalBernsteinCopula
-  EmpiricalBernsteinCopula *p_empirical_bernstein_copula = dynamic_cast<EmpiricalBernsteinCopula *>(distribution_.getImplementation().get());
+  const EmpiricalBernsteinCopula *p_empirical_bernstein_copula = dynamic_cast<EmpiricalBernsteinCopula *>(distribution_.getImplementation().get());
   if (p_empirical_bernstein_copula)
   {
     const Sample copulaSample(p_empirical_bernstein_copula->getCopulaSample());
     const UnsignedInteger sampleSize = copulaSample.getSize();
     const UnsignedInteger binNumber = p_empirical_bernstein_copula->getBinNumber();
-    Collection<Distribution> atoms(sampleSize);
-    Point weights(sampleSize, 0.0);
+    Collection<Distribution> atoms;
+    Point weights;
     const UnsignedInteger dimension = getDimension();
     const UnsignedInteger conditioningDimension = conditioningIndices_.getSize();
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      Collection<Distribution> atomComponents(dimension);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-      {
-        const UnsignedInteger newJ = nonConditioningIndices_[j];
-        const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
-        atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
-      } // j
-      atoms[i] = JointDistribution(atomComponents);
+      Scalar logWi = 0.0;
       for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
       {
         const UnsignedInteger newJ = conditioningIndices_[j];
         const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
         const Scalar xJ = conditioningValues_[j];
-        weights[i] += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
+        logWi += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
       } // j
-      weights[i] = std::exp(weights[i]);
+      if (SpecFunc::IsNormal(logWi))
+      {
+        weights.add(std::exp(logWi));
+        Collection<Distribution> atomComponents(dimension);
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+        {
+          const UnsignedInteger newJ = nonConditioningIndices_[j];
+          const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
+          atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
+        } // j
+        atoms.add(JointDistribution(atomComponents));
+      } // isNormal
     } // i
     simplified = Mixture(atoms, weights);
     return true;
   }
 
   // BlockIndependentDistribution
-  BlockIndependentDistribution *p_block_independent_distribution = dynamic_cast<BlockIndependentDistribution *>(distribution_.getImplementation().get());
+  const BlockIndependentDistribution *p_block_independent_distribution = dynamic_cast<BlockIndependentDistribution *>(distribution_.getImplementation().get());
   if (p_block_independent_distribution)
   {
     dispatchConditioning(p_block_independent_distribution->getDistributionCollection(), simplified);
@@ -611,25 +634,36 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
   }
 
   // BlockIndependentCopula
-  BlockIndependentCopula *p_block_independent_copula = dynamic_cast<BlockIndependentCopula *>(distribution_.getImplementation().get());
+  const BlockIndependentCopula *p_block_independent_copula = dynamic_cast<BlockIndependentCopula *>(distribution_.getImplementation().get());
   if (p_block_independent_copula)
   {
     dispatchConditioning(p_block_independent_copula->getCopulaCollection(), simplified);
     return true;
   }
 
-  // Joint
+  // Joint. Has we don't have an efficient PointConditionalCopula we restrict ourselve to the Bernstein copula
   JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
   if (p_joint)
   {
-    const Collection<Distribution> marginals(p_joint->getDistributionCollection());
-    Point coreConditioniningValues(conditioningIndices_.getSize());
-    for (UnsignedInteger i = 0; i < conditioningIndices_.getSize(); ++ i)
-      coreConditioniningValues[i] = marginals[conditioningIndices_[i]].computeCDF(conditioningValues_[i]);
-    const PointConditionalDistribution conditionalCore(p_joint->getCore(), conditioningIndices_, coreConditioniningValues);
-    simplified = JointDistribution(marginals.select(nonConditioningIndices_), conditionalCore);
-    return true;
-  }
+    const EmpiricalBernsteinCopula *p_bernstein = dynamic_cast<EmpiricalBernsteinCopula *>(distribution_.getCopula().getImplementation().get());
+    if (p_bernstein)
+      {
+	const Collection<Distribution> marginals(p_joint->getDistributionCollection());
+	Point coreConditioniningValues(conditioningIndices_.getSize());
+	for (UnsignedInteger i = 0; i < conditioningIndices_.getSize(); ++ i)
+	  {
+	    const Scalar conditioningValueI = marginals[conditioningIndices_[i]].computeCDF(conditioningValues_[i]);
+	    // If the conditioning value is too close to 1 or too close to 0
+	    // the conditioning of the core will fail
+	    if ((conditioningValueI <= cdfEpsilon_) || (conditioningValueI >= 1.0 - cdfEpsilon_))
+	      return false;
+	    coreConditioniningValues[i] = conditioningValueI;
+	  }
+	const PointConditionalDistribution conditionalCore(p_joint->getCore(), conditioningIndices_, coreConditioniningValues);
+	simplified = JointDistribution(marginals.select(nonConditioningIndices_), conditionalCore);
+	return true;
+      } // p_bernstein
+  } // p_joint
 
   return false;
 }
@@ -645,7 +679,113 @@ void PointConditionalDistribution::computeRange()
   if (useSimplifiedVersion_)
     setRange(simplifiedVersion_.getRange());
   else
-    setRange(distribution_.getRange().getMarginal(nonConditioningIndices_));
+  {
+    // We have three strategies:
+    // Strategy one [None], fast but risky: the conditioning has no
+    // influence on the marginal range.
+    // Strategy two [Normal], more robust: the conditioning acts on the
+    // marginal range the same way it does on a Normal with the same mean
+    // and covariance, conditioned the same way. The adapted range is the
+    // range of this conditioned distribution. It only uses the mean and
+    // the covariance of the distribution to be conditioned so it is not
+    // too costly for many distributions.
+    // Strategy three [NormalLinear], more robust: the same as strategy two,
+    // except that the marginal range is transformed using the same linear
+    // transformation between the marginal range and the conditioned range
+    // of the equivalent normal.
+    // Strategy four [NormalCopula], robust but slow: the conditioning acts
+    // on the marginal range the same way it acts on a distribution with the
+    // same marginals and a normal copula having the same Spearman
+    // correlation. In addition to the Spearman correlation one has to
+    // extract all the 1D marginal distributions.
+    const String adaptationMethod(ResourceMap::GetAsString("PointConditionalDistribution-RangeAdaptationMethod"));
+    // The marginal range
+    const Interval marginalRange(distribution_.getRange().getMarginal(nonConditioningIndices_));
+    // First strategy
+    if (adaptationMethod == "None")
+      setRange(marginalRange);
+    // Second and third strategies
+    else
+    {
+      // Copy to get the correct flags
+      Interval conditionedRange(marginalRange);
+      if ((adaptationMethod == "Normal") || (adaptationMethod == "NormalLinear"))
+      {
+        // First, the "equivalent" normal
+        const Point mean(distribution_.getMean());
+        const CovarianceMatrix covariance(distribution_.getCovariance());
+        const Normal normal(mean, covariance);
+        CovarianceMatrix C;
+        const Point mu = decompose(normal, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C);
+        const Normal conditionedNormal(mu, C);
+        const Interval normalConditionedRange(conditionedNormal.getRange());
+        // Third, the mapping between the ranges
+        // Second strategy: adopt the bounds of the conditioned equivalent
+        // normal
+        if (adaptationMethod == "Normal")
+        {
+          conditionedRange.setLowerBound(normalConditionedRange.getLowerBound());
+          conditionedRange.setUpperBound(normalConditionedRange.getUpperBound());
+        } // Simple copy
+        // Third strategy: do a linear mapping between ranges
+        else
+        {
+          Point lowerBound(conditionedRange.getLowerBound());
+          Point upperBound(conditionedRange.getUpperBound());
+          const Point u(normalMarginalRange.getLowerBound());
+          const Point v(normalMarginalRange.getUpperBound());
+          const Point x(normalConditionedRange.getLowerBound());
+          const Point y(normalConditionedRange.getUpperBound());
+          for (UnsignedInteger i = 0; i < lowerBound.getDimension(); ++i)
+          {
+            // [u_i, v_i]->[x_i=au_i+b, y_i=av_i+b]
+            // a=(x_i-y_i) / (u_i-v_i) and b=(u_iy_i-v_ix_i) / (u_i-v_i)
+            const Scalar a = (x[i] - y[i]) / (u[i] - v[i]);
+            const Scalar b = (u[i] * y[i] - v[i] * x[i]) / (u[i] - v[i]);
+            lowerBound[i] = a * lowerBound[i] + b;
+            upperBound[i] = a * upperBound[i] + b;
+          }
+          conditionedRange.setLowerBound(lowerBound);
+          conditionedRange.setUpperBound(upperBound);
+        } // linear mapping
+        setRange(conditionedRange);
+      } // Strategy = Normal or NormalLinear
+      // Fourth strategy
+      else
+      {
+        const UnsignedInteger dimension = distribution_.getDimension();
+        const Point mean(dimension, 0.0);
+	const CorrelationMatrix Rspearman(distribution_.getSpearmanCorrelation());
+        const CovarianceMatrix covariance(NormalCopula::GetCorrelationFromSpearmanCorrelation(Rspearman));
+        const Normal normal(mean, covariance);
+        // Extract the marginal distributions
+        Collection<Distribution> marginals(dimension);
+        for (UnsignedInteger i = 0; i < dimension; ++i)
+          marginals[i] = distribution_.getMarginal(i);
+        // Compute the equivalent normal conditioning values
+        const UnsignedInteger conditioningDimension = conditioningIndices_.getSize();
+        Collection<Distribution> conditioningMarginals(conditioningDimension);
+        for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+          conditioningMarginals[i] = marginals[conditioningIndices_[i]];
+        const Point normalConditioningValues(MarginalTransformationEvaluation(conditioningMarginals, Collection<Distribution>(conditioningDimension, Normal()))(conditioningValues_));
+        CovarianceMatrix C;
+        const Point mu = decompose(normal, conditioningIndices_, nonConditioningIndices_, normalConditioningValues, C);
+        const Normal conditionedNormal(mu, C);
+        const Interval normalConditionedRange(conditionedNormal.getRange());
+        // Adapt the range using marginal quantiles
+        const Point x(normalConditionedRange.getLowerBound());
+        const Point y(normalConditionedRange.getUpperBound());
+        const UnsignedInteger conditionedDimension = nonConditioningIndices_.getSize();
+        Collection<Distribution> conditionedMarginals(conditionedDimension);
+        for (UnsignedInteger i = 0; i < conditionedDimension; ++i)
+          conditionedMarginals[i] = marginals[nonConditioningIndices_[i]];
+        const MarginalTransformationEvaluation T(Collection<Distribution>(conditionedDimension, Normal()), conditionedMarginals);
+        conditionedRange.setLowerBound(T(x));
+        conditionedRange.setUpperBound(T(y));
+        setRange(conditionedRange);
+      } // Strategy == NormalCopula
+    } // Strategy != None
+  } // !useSimplifiedVersion_
 }
 
 /* Get the support of a distribution that intersects a given interval */
