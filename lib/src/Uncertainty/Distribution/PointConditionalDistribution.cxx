@@ -316,7 +316,7 @@ void PointConditionalDistribution::update()
     {
       if (conditioningIndices_.getSize())
 	logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
-      if (!(logNormalizationFactor_ > std::log(getPDFEpsilon())))
+      if (!SpecFunc::IsNormal(logNormalizationFactor_))
 	throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
     }
 
@@ -355,7 +355,8 @@ void PointConditionalDistribution::update()
       Point candidate(sequence.generate());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
         candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
-      if (computePDF(candidate) > 0.0)
+
+      if (SpecFunc::IsNormal(computeLogPDF(candidate)))
       {
         start = candidate;
         break;
@@ -395,7 +396,7 @@ void PointConditionalDistribution::update()
           Point candidate(sequence.generate());
           for (UnsignedInteger j = 0; j < dimension; ++ j)
             candidate[j] = candidate[j] * ub[j];
-          if (computePDF(candidate) > 0.0)
+	  if (SpecFunc::IsNormal(computeLogPDF(candidate)))
           {
             start = candidate;
             break;
@@ -419,7 +420,7 @@ void PointConditionalDistribution::update()
           Point candidate(sequence.generate());
           for (UnsignedInteger j = 0; j < dimension; ++ j)
             candidate[j] = candidate[j] * lb[j];
-          if (computePDF(candidate) > 0.0)
+	  if (SpecFunc::IsNormal(computeLogPDF(candidate)))
           {
             start = candidate;
             break;
@@ -523,13 +524,19 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
   {
     Collection<Distribution> atoms(p_mixture->getDistributionCollection());
     const UnsignedInteger atomsNumber = atoms.getSize();
-    Point newWeights(p_mixture->getWeights());
-    Collection<Distribution> newAtoms(atomsNumber);
+    const Point weights(p_mixture->getWeights());
+    Point newWeights;
+    Collection<Distribution> newAtoms;
     for (UnsignedInteger i = 0; i < atomsNumber; ++i)
     {
-      newWeights[i] *= atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
-      newAtoms[i] = PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_);
-    }
+      const Scalar w = atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
+      // Add only atoms with nonzero distribution
+      if (w > 0.0)
+	{
+	  newWeights.add(weights[i] * w);
+	  newAtoms.add(PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_));
+	}
+    } // for i
     simplified = Mixture(newAtoms, newWeights);
     return true;
   }
@@ -575,28 +582,32 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     const Sample copulaSample(p_empirical_bernstein_copula->getCopulaSample());
     const UnsignedInteger sampleSize = copulaSample.getSize();
     const UnsignedInteger binNumber = p_empirical_bernstein_copula->getBinNumber();
-    Collection<Distribution> atoms(sampleSize);
-    Point weights(sampleSize, 0.0);
+    Collection<Distribution> atoms;
+    Point weights;
     const UnsignedInteger dimension = getDimension();
     const UnsignedInteger conditioningDimension = conditioningIndices_.getSize();
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      Collection<Distribution> atomComponents(dimension);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-      {
-        const UnsignedInteger newJ = nonConditioningIndices_[j];
-        const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
-        atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
-      } // j
-      atoms[i] = JointDistribution(atomComponents);
+      Scalar logWi = 0.0;
       for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
       {
         const UnsignedInteger newJ = conditioningIndices_[j];
         const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
         const Scalar xJ = conditioningValues_[j];
-        weights[i] += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
+        logWi += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
       } // j
-      weights[i] = std::exp(weights[i]);
+      if (SpecFunc::IsNormal(logWi))
+	{
+	  weights.add(std::exp(logWi));
+	  Collection<Distribution> atomComponents(dimension);
+	  for (UnsignedInteger j = 0; j < dimension; ++j)
+	    {
+	      const UnsignedInteger newJ = nonConditioningIndices_[j];
+	      const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
+	      atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
+	    } // j
+	  atoms.add(JointDistribution(atomComponents));
+	} // isNormal
     } // i
     simplified = Mixture(atoms, weights);
     return true;
