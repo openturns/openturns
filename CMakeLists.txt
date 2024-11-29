@@ -220,7 +220,7 @@ if (USE_EXPRTK)
   set (SYMBOLICPARSER_DEFAULT_BACKEND ExprTk)
 endif ()
 if (NOT OPENTURNS_HAVE_ANALYTICAL_PARSER)
-  message(FATAL_ERROR "Analytical paser required, please enable either USE_MUPARSER or USE_EXPRTK")
+  message(FATAL_ERROR "Analytical parser required, please enable either USE_MUPARSER or USE_EXPRTK")
 endif ()
 
 if (USE_HMAT)
