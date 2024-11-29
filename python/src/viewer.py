@@ -159,6 +159,9 @@ class View:
     legend_kw : dict, optional
         Passed on to matplotlib.axes.Axes.legend kwargs
 
+    colorbar_kw : dict, optional
+        Passed on to matplotlib.figure.Figure.colorbar kwargs
+
     add_legend : bool, optional
         Adds a legend if True. Default is True.
 
@@ -211,6 +214,7 @@ class View:
         scatter_kw=None,
         text_kw=None,
         legend_kw=None,
+        colorbar_kw=None,
         add_legend=True,
         square_axes=False,
         **kwargs,
@@ -249,6 +253,7 @@ class View:
         scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
         legend_kw_default = self._CheckDict(legend_kw)
+        colorbar_kw_default = self._CheckDict(colorbar_kw)
         legend_handles = []
         legend_labels = []
 
@@ -725,19 +730,20 @@ class View:
                     legend_labels.append(drawable.getLegend())
                 if contour.getColorBarPosition() and len(contour.getLevels()) != 1:
                     colorbar = None
+                    colorbar_kw = dict(colorbar_kw_default)
+                    if "format" not in colorbar_kw:
+                        colorbar_kw["format"] = "%.3g"
                     if matplotlib_version >= Version("3.7.0"):
-                        colorbar = self._fig.colorbar(
-                            contourset,
-                            location=contour.getColorBarPosition(),
-                            format="%.3g",
-                        )
+                        if "location" not in colorbar_kw:
+                            colorbar_kw["location"] = contour.getColorBarPosition()
+                        colorbar = self._fig.colorbar(contourset, **colorbar_kw)
                     else:
                         # do not draw colorbar when Z range has too few values
                         # https://github.com/matplotlib/matplotlib/issues/23817
                         nZ = len(set([z[0] for z in drawable.getData()]))
                         if nZ > 2:
                             try:
-                                colorbar = self._fig.colorbar(contourset, format="%.3g")
+                                colorbar = self._fig.colorbar(contourset, **colorbar_kw)
                                 if contour.getColorBarPosition() != "right":
                                     warnings.warn(
                                         "-- colorbar location was not used in matplotlib < 3.7.0"
