@@ -10,10 +10,6 @@ constant : sequence of float
 linear : :class:`~openturns.Matrix`
     Matrix :math:`\mat{A}`.
 
-See also
---------
-Function
-
 Notes
 -----
 This implements a linear :class:`~openturns.Function` :math:`f` 
@@ -29,6 +25,10 @@ where:
 - :math:`\mat{A}` is a matrix with :math:`p` lines and :math:`d` columns,
 - :math:`\vect{b}` is a vector in :math:`\Rset^d`,
 - :math:`\vect{c}` is a vector in :math:`\Rset^p`.
+
+See also
+--------
+Function
 
 Examples
 --------

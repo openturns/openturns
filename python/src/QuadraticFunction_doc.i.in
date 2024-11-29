@@ -19,7 +19,8 @@ This class implements a quadratic function :math:`f` defined as:
 .. math::
 
     f : & \Rset^d \rightarrow \Rset^p  \\
-        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c} + \frac{1}{2} \vect{X}^T \times \underline{\underline{\underline{M}}} \times \vect{X}
+        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c} + \frac{1}{2} \vect{X}^T.
+        \underline{\underline{\underline{M}}}. \vect{X}
 
 where:
 
