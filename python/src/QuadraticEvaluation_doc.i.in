@@ -19,7 +19,7 @@ This class implements the evaluation of a quadratic function :math:`f` defined a
 .. math::
 
     f : & \Rset^d \rightarrow \Rset^p  \\
-        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c} + \frac{1}{2} \vect{X^T.
+        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c} + \frac{1}{2} \vect{X}^T.
         \underline{\underline{\underline{M}}}. \vect{X}
 
 where:
