@@ -70,7 +70,7 @@ EllipticalDistribution::EllipticalDistribution(const Point & mu,
         << " mu dimension=" << mu.getDimension();
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
-    if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
+    if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
   // Then we set the dimension of the Elliptical distribution
   setDimension(dimension);
   // The mean attribute is stored at an upper level
