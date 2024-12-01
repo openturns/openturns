@@ -23,9 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/GaussLegendre.hxx"
-#include "openturns/RandomGenerator.hxx"
-#include "openturns/SobolSequence.hxx"
-#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -188,27 +185,26 @@ Scalar PosteriorDistribution::computeCDF(const Point & point) const
 /* Sampling */
 Point PosteriorDistribution::getRealization() const
 {
-  if (isContinuous())
-  {
-    const UnsignedInteger dimension = getDimension();
-    if (!infV_.getSize())
-      throw InvalidArgumentException(HERE) << "Sampling was not initialized";
-
-    // Now, the sampling using rejection
-    Bool accepted = false;
-    Point result(dimension);
-    while (!accepted)
-    {
-      const Scalar u = supU_ * RandomGenerator::Generate();
-      const Scalar ur = std::pow(u, r_);
-      for (UnsignedInteger i = 0; i < dimension; ++ i)
-        result[i] = (infV_[i] + (supV_[i] - infV_[i]) * RandomGenerator::Generate()) / ur;
-      accepted = (1.0 + r_ * dimension) * std::log(u) <= computeLogPDF(result);
-    }
-    return result;
-  }
+  // If the distribution is continuous, use the ratio of uniforms method
+  if (isContinuous() && sampler_.isInitialized())
+    return sampler_.getRealization();
 
   return DistributionImplementation::getRealization();
+}
+
+Sample PosteriorDistribution::getSample(const UnsignedInteger size) const
+{
+  // If the distribution is continuous, use the ratio of uniforms method
+  if (isContinuous() && sampler_.isInitialized())
+    return sampler_.getSample(size);
+
+  return DistributionImplementation::getSample(size);
+}
+
+/* Check if the distribution is constinuous */
+Bool PosteriorDistribution::isContinuous() const
+{
+  return deconditionedDistribution_.getConditioningDistribution().isContinuous();
 }
 
 /* Parameters value and description accessor */
@@ -222,97 +218,13 @@ void PosteriorDistribution::setParametersCollection(const PointCollection & )
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)";
 }
 
-class PosteriorDistributionUBoundEvaluation : public EvaluationImplementation
-{
-public:
-  PosteriorDistributionUBoundEvaluation(const Distribution & distribution, const Scalar r)
-    : EvaluationImplementation()
-    , distribution_(distribution)
-    , r_(r)
-  {
-    // Nothing to do
-  }
-
-  PosteriorDistributionUBoundEvaluation * clone() const override
-  {
-    return new PosteriorDistributionUBoundEvaluation(*this);
-  }
-
-  UnsignedInteger getInputDimension() const override
-  {
-    return distribution_.getDimension();
-  }
-
-  UnsignedInteger getOutputDimension() const override
-  {
-    return 1;
-  }
-
-  Point operator()(const Point & inP) const override
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    Scalar result = distribution_.computeLogPDF(inP) / (1.0 + r_ * dimension);
-    result = std::max(-SpecFunc::LogMaxScalar, result);
-    return {result};
-  }
-
-private:
-  Distribution distribution_;
-  Scalar r_ = 0.0;
-
-};
-
-class PosteriorDistributionVBoundEvaluation : public EvaluationImplementation
-{
-public:
-  PosteriorDistributionVBoundEvaluation(const Distribution & distribution, const Scalar r)
-    : EvaluationImplementation()
-    , distribution_(distribution)
-    , r_(r)
-  {
-    // Nothing to do
-  }
-
-  PosteriorDistributionVBoundEvaluation * clone() const override
-  {
-    return new PosteriorDistributionVBoundEvaluation(*this);
-  }
-
-  UnsignedInteger getInputDimension() const override
-  {
-    return distribution_.getDimension();
-  }
-
-  UnsignedInteger getOutputDimension() const override
-  {
-    return distribution_.getDimension();
-  }
-
-  Point operator()(const Point & inP) const override
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    const Scalar value = distribution_.computeLogPDF(inP) * r_ / (1.0 + r_ * dimension);
-    Point result(dimension, value);
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      result[i] += std::log(std::abs(inP[i]));
-      result[i] = std::max(-SpecFunc::LogMaxScalar, result[i]);
-    }
-    return result;
-  }
-
-private:
-  Distribution distribution_;
-  Scalar r_ = 0.0;
-
-};
-
 /* Deconditioned distribution accessor */
 void PosteriorDistribution::setDeconditionedDistribution(const DeconditionedDistribution & deconditionedDistribution)
 {
   if (observations_.getDimension() != deconditionedDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the deconditioned distribution must have the same dimension as the observations.";
   deconditionedDistribution_ = deconditionedDistribution;
   setDimension(deconditionedDistribution.getConditioningDistribution().getDimension());
+  setDescription(deconditionedDistribution.getConditioningDistribution().getDescription());
   // This must be done before to call computeCDF() for the normalization factor
   computeRange();
   // Fix the log-normalization at zero to compute its actual value using computeCDF()
@@ -341,101 +253,13 @@ void PosteriorDistribution::setDeconditionedDistribution(const DeconditionedDist
     && deconditionedDistribution_.getConditionedDistribution().getImplementation()->isParallel();
   if (deconditionedDistribution_.getConditioningDistribution().isContinuous())
   {
-    const Interval bounds(getRange());
-    const Point lb(bounds.getLowerBound());
-    const Point ub(bounds.getUpperBound());
-
-    // find a feasible starting point
-    SobolSequence sequence(dimension);
-    Point start;
-    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber");
-    for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
-    {
-      Point candidate(sequence.generate());
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-        candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
-      if (computePDF(candidate) > 0.0)
-      if (SpecFunc::IsNormal(computeLogPDF(candidate)))
-      {
-        start = candidate;
-        break;
-      }
-    }
-    if (!start.getDimension())
-      throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms U sup";
-
-    // First, the upper bound on U
-    const Function objectiveU(new PosteriorDistributionUBoundEvaluation(*this, r_));
-    OptimizationProblem problemU(objectiveU);
-    problemU.setMinimization(false);
-    problemU.setBounds(bounds);
-    OptimizationAlgorithm algo(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
-    algo.setProblem(problemU);
-    algo.setStartingPoint(start);
-    algo.run();
-    supU_ = std::exp(algo.getResult().getOptimalValue()[0]);
-    LOGDEBUG(OSS() << "supU_=" << supU_ << " u*=" << algo.getResult().getOptimalPoint());
-
-    // Second, the lower and upper bounds on V
-    const Function objectiveV(new PosteriorDistributionVBoundEvaluation(*this, r_));
-    infV_.resize(dimension);
-    supV_.resize(dimension);
-    const Point zero(dimension, 0.0);
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      const Function objectiveVI(objectiveV.getMarginal(i));
-      OptimizationProblem problemVI(objectiveVI);
-      problemVI.setMinimization(false);
-      if (ub[i] > 0.0)
-      {
-        // find a feasible starting point in [0, ub]
-        start.clear();
-        for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
-        {
-          Point candidate(sequence.generate());
-          for (UnsignedInteger j = 0; j < dimension; ++ j)
-            candidate[j] = candidate[j] * ub[j];
-	  if (SpecFunc::IsNormal(computeLogPDF(candidate)))
-          {
-            start = candidate;
-            break;
-          }
-        }
-        if (!start.getDimension())
-          throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms V sup";
-        problemVI.setBounds(Interval(zero, ub));
-        algo.setProblem(problemVI);
-        algo.setStartingPoint(start);
-        algo.run();
-        supV_[i] = std::exp(algo.getResult().getOptimalValue()[0]);
-        LOGDEBUG(OSS() << "supV_[" << i << "]=" << supV_[i] << " v*=" << algo.getResult().getOptimalPoint());
-      }
-      if (lb[i] < 0.0)
-      {
-        // find a feasible starting point in [lb, 0]
-        start.clear();
-        for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
-        {
-          Point candidate(sequence.generate());
-          for (UnsignedInteger j = 0; j < dimension; ++ j)
-            candidate[j] = candidate[j] * lb[j];
-	  if (SpecFunc::IsNormal(computeLogPDF(candidate)))
-          {
-            start = candidate;
-            break;
-          }
-        }
-        if (!start.getDimension())
-          throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms V inf";
-        problemVI.setBounds(Interval(lb, zero));
-        algo.setProblem(problemVI);
-        algo.setStartingPoint(start);
-        algo.run();
-        infV_[i] = -std::exp(algo.getResult().getOptimalValue()[0]);
-        LOGDEBUG(OSS() << "infV_[" << i << "]=" << infV_[i] << " v*=" << algo.getResult().getOptimalPoint());
-      }
-    }
-  }
+    // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
+    // r_ is a free parameter, could be optimized to maximize the acceptance ratio
+    sampler_ = RatioOfUniforms();
+    sampler_.setOptimizationAlgorithm(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PosteriorDistribution-OptimizationAlgorithm")));
+    sampler_.setCandidateNumber(ResourceMap::GetAsUnsignedInteger("PosteriorDistribution-RatioUniformCandidateNumber"));
+    sampler_.setLogUnscaledPDFAndRange(getLogPDF(), getRange(), true);
+  } // isContinuous()
 }
 
 DeconditionedDistribution PosteriorDistribution::getDeconditionedDistribution() const
@@ -620,8 +444,7 @@ void PosteriorDistribution::load(Advocate & adv)
   DistributionImplementation::load(adv);
   adv.loadAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
   adv.loadAttribute( "observations_", observations_ );
-  adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
-  computeRange();
+  setDeconditionedDistribution(deconditionedDistribution_);
 }
 
 

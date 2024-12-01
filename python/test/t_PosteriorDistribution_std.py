@@ -2,8 +2,9 @@
 
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.testing as ott
 
-ot.ResourceMap.SetAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 24);
+ot.ResourceMap.SetAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 24)
 
 observationsSize = 5
 # Create a collection of distribution
