@@ -511,6 +511,10 @@
   <PointConditionalDistribution-OptimizationAlgorithm value_str="Cobyla" />
   <PointConditionalDistribution-RangeAdaptationMethod value_str="Rank" />
 
+  <!-- OT::PosteriorDistribution parameters -->
+  <PosteriorDistribution-OptimizationAlgorithm value_str="Cobyla" />
+  <PosteriorDistribution-RatioUniformCandidateNumber value_int="10000" />
+
   <!-- OT::JointDistribution parameters -->
   <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
@@ -958,6 +962,12 @@
 
   <!-- OT::GaussProductExperiment parameters -->
   <GaussProductExperiment-DefaultMarginalSize value_int="5" />
+
+  <!-- OT::RatioOfUniforms parameters -->
+  <RatioOfUniforms-CandidateNumber         value_int="8192"   />
+  <RatioOfUniforms-MaximumMultistart       value_int="16"     />
+  <RatioOfUniforms-NormalizationSampleSize value_int="10000"  />
+  <RatioOfUniforms-OptimizationAlgorithm   value_str="Cobyla" />
 
   <!-- OT::HyperbolicAnisotropicEnumerateFunction parameters -->
   <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_float="0.4" />

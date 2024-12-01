@@ -1017,6 +1017,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100);
 
+  // RatioOfUniforms //
+  addAsString("RatioOfUniforms-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("RatioOfUniforms-CandidateNumber", 8192);
+  addAsUnsignedInteger("RatioOfUniforms-MaximumMultistart", 16);
+  addAsUnsignedInteger("RatioOfUniforms-NormalizationSampleSize", 10000);
 
   // RankSobolSensitivityALgorithm//
   addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
@@ -1130,6 +1135,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("PointConditionalDistribution-RangeAdaptationMethod", "Rank");
   addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
+
+  // PosteriorDistribution parameters //
+  addAsString("PosteriorDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("PosteriorDistribution-RatioUniformCandidateNumber", 10000);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
