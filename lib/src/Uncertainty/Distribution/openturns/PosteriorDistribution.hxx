@@ -24,6 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/RatioOfUniforms.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -89,6 +90,7 @@ public:
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /* Interface specific to PosteriorDistribution */
 
@@ -130,6 +132,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Check if the distribution is constinuous */
+  Bool isContinuous() const override;
 
   /** Compute the normalized likelihood of the observations */
   Point computeNormalizedLikelihood(const Point & theta) const;
@@ -161,10 +165,7 @@ private:
   Scalar logNormalizationFactor_;
 
   // for ratio of uniforms method
-  Scalar r_ = 1.0;
-  Scalar supU_ = 0.0;
-  Point infV_;
-  Point supV_;
+  RatioOfUniforms sampler_;
 
 }; /* class PosteriorDistribution */
 

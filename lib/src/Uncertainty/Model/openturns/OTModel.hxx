@@ -47,5 +47,6 @@
 #include "openturns/SklarCopula.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/UsualRandomVector.hxx"
+#include "openturns/RatioOfUniforms.hxx"
 
 #endif /* OPENTURNS_OTMODEL_HXX */
