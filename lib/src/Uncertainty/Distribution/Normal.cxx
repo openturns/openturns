@@ -111,10 +111,17 @@ Normal::Normal(const Point & mean,
   {
     const Scalar cii = C(i, i);
     if (!(cii > 0.0))
-      throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
-    sigma[i] = std::sqrt(cii);
-    for (UnsignedInteger j = 0; j < i; ++ j)
-      R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      {
+	sigma[i] = 0.0;
+	// throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+      }
+    else
+      {
+	sigma[i] = std::sqrt(cii);
+	for (UnsignedInteger j = 0; j < i; ++ j)
+	  if (sigma[j] > 0.0)
+	    R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      }
   }
   *this = Normal(mean, sigma, R);
 }
