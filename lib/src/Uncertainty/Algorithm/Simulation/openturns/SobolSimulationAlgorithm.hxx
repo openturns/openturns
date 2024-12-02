@@ -70,10 +70,6 @@ public:
   void setExperimentSize(const UnsignedInteger experimentSize);
   UnsignedInteger getExperimentSize() const;
 
-  // @deprecated (block size accessor)
-  void setBatchSize(const UnsignedInteger batchSize);
-  UnsignedInteger getBatchSize() const;
-
   /** String converter */
   String __repr__() const override;
 
