@@ -22,7 +22,6 @@
 #include "openturns/Tuples.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -84,7 +83,7 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
   Point integral(function.getOutputDimension(), 0.0);
   if (volume == 0.0) return integral;
   // Adapt the nodes to the bounds of the interval
-  const Point halfDelta( (interval.getUpperBound() - interval.getLowerBound()) / 2.0 );
+  const Point halfDelta((interval.getUpperBound() - interval.getLowerBound()) * 0.5);
   // Compute nodes
   adaptedNodes = nodes_ * halfDelta + halfDelta + interval.getLowerBound();
   // Compute the function over the adapted nodes
@@ -227,9 +226,8 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
     } // A match found
     else
     {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-
+      Point mni(integrationNodesNumber);
+      Point mwi(integrationNodesNumber);
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
         const Scalar theta_k = (k + 1.0) * M_PI / (integrationNodesNumber + 1);
@@ -238,10 +236,12 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
         for (UnsignedInteger j = 1; j <= halfNodesNumber; ++j)
           sum_sinus += std::sin((2 * j - 1) * theta_k) / (2 * j - 1);
         // Nodes
-        marginalNodes[i][k] = std::cos(theta_k);
+        mni[k] = std::cos(theta_k);
         // Weights
-        marginalWeights[i][k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
+        mwi[k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
       }
+      marginalNodes[i] = mni;
+      marginalWeights[i] = mwi;
     } // No match found
   }   // For i
 }
@@ -273,7 +273,7 @@ void FejerAlgorithm::generateNodesAndWeights(const IntegrationMethod method)
       generateNodesAndWeightsClenshawCurtis(marginalNodes, marginalWeights);
       break;
     default:
-      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or  CLENSHAWCURTIS, here method=" << method;
+      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or CLENSHAWCURTIS, here method=" << method;
   } /* end switch */
   // Now we have marginal nodes & weights,
   // we generate the nD rule over [0, 1]^n
