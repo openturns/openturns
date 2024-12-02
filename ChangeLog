@@ -15,6 +15,7 @@
 
 ==== API changes ====
   * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
+  * Removed deprecated OptimizationAlgorithm.Build(str) methd
 
 === Documentation ===
 
