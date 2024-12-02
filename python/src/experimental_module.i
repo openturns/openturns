@@ -27,6 +27,10 @@
 %include BaseFuncCollection.i
 %import base_module.i
 
+/* Base/Func */
+%include VertexEvaluation.i
+%include VertexFunction.i
+
 /* Base/Geom */
 %include BoundaryMesher.i
 

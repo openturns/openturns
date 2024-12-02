@@ -1,0 +1,36 @@
+%feature("docstring") OT::VertexEvaluation
+"Vertex evaluation.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+function : :class:`~openturns.PointToFieldFunction`
+    Function
+indices : sequence of int
+    Mesh indices
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexEvaluation::getIndices
+"Indices accessor.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Mesh indices
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexEvaluation::getPointToFieldFunction
+"Function accessor.
+
+Returns
+-------
+function : :class:`~openturns.PointToFieldFunction`
+    Function
+"

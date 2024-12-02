@@ -1,0 +1,65 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief Vertex function
+ *
+ *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef OPENTURNS_VERTEXFUNCTION_HXX
+#define OPENTURNS_VERTEXFUNCTION_HXX
+
+#include "openturns/Function.hxx"
+#include "openturns/PointToFieldFunction.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class VertexFunction
+ *
+ * The class that simulates a identity function,
+ * its gradient and its hessian. This class is just an interface
+ * to actual implementation objects that can be hot-replaced
+ * during computation. Each implementation object refers to
+ * the function, the gradient or the hessian.
+ */
+class OT_API VertexFunction
+  : public Function
+{
+  CLASSNAME
+public:
+
+  /** Default constructor */
+  VertexFunction();
+
+  /** Default constructor */
+  explicit VertexFunction(const PointToFieldFunction & pointToFieldFunction,
+                          const Indices & indices);
+
+
+  /** Comparison operator */
+  using Function::operator ==;
+  Bool operator ==(const VertexFunction & other) const;
+
+  /** String converter */
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
+
+}; /* class VertexFunction */
+
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_VERTEXFUNCTION_HXX */

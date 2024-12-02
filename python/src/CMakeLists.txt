@@ -1043,6 +1043,8 @@ ot_add_python_module(experimental experimental_module.i
                      GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
                      GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i.in
+                     VertexEvaluation.i VertexEvaluation_doc.i.in
+                     VertexFunction.i VertexFunction_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 

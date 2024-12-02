@@ -120,6 +120,8 @@
 #include "openturns/ValueFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/VertexValueFunction.hxx"
+#include "openturns/VertexEvaluation.hxx"
+#include "openturns/VertexFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/UniVariatePolynomialImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"

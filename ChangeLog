@@ -11,6 +11,7 @@
  * CombinationsDistribution (openturns.experimental)
  * LOLAVoronoi sequential experiment (openturns.experimental)
  * ConstantFunction, ConstantEvaluation
+ * VertexFunction, VertexEvaluation
 
 ==== API changes ====
 

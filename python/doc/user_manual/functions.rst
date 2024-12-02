@@ -60,6 +60,7 @@ Algebra of functions
     FieldToPointConnection
     PointToFieldConnection
     PointToPointConnection
+    experimental.VertexFunction
 
 Field and mixed functions
 =========================
@@ -146,6 +147,7 @@ Evaluation functions
     QuadraticEvaluation
     SymbolicEvaluation
     TranslationEvaluation
+    experimental.VertexEvaluation
 
 Gradient functions
 ==================
