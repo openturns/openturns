@@ -13,6 +13,7 @@
  * ConstantFunction, ConstantEvaluation
 
 ==== API changes ====
+  * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
 
 === Documentation ===
 
