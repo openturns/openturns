@@ -283,8 +283,8 @@ ot_add_python_module(func func_module.i
                       LinearEvaluation.i LinearEvaluation_doc.i.in
                       LinearGradient.i LinearGradient_doc.i.in
                       QuadraticEvaluation.i QuadraticEvaluation_doc.i.in
-                      ConstantGradient.i
-                      ConstantHessian.i
+                      ConstantGradient.i ConstantGradient_doc.i.in
+                      ConstantHessian.i ConstantHessian_doc.i.in
                       ComposedEvaluation.i
                       ComposedGradient.i
                       ComposedHessian.i
@@ -1032,6 +1032,8 @@ ot_add_python_module(experimental experimental_module.i
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
+                     ConstantEvaluation.i ConstantEvaluation_doc.i.in
+                     ConstantFunction.i ConstantFunction_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in

@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/SymbolicFunction.hxx"
+#include "openturns/IdentityFunction.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 
@@ -37,7 +37,7 @@ static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 FunctionalBasisProcess::FunctionalBasisProcess()
   : ProcessImplementation()
   , distribution_(Normal())
-  , basis_(1, SymbolicFunction("t", "t"))
+  , basis_(1, IdentityFunction(1))
   , state_(1, 0.0)
 {
   // Set the dimension of the process

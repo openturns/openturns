@@ -11,6 +11,7 @@
  * CombinationsDistribution (openturns.experimental)
  * LOLAVoronoi sequential experiment (openturns.experimental)
  * RatioOfUniforms random vector (openturns.experimental)
+ * ConstantFunction, ConstantEvaluation
 
 ==== API changes ====
 
