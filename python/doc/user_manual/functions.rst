@@ -13,6 +13,7 @@ General mathematical functions
 
     Function
     FunctionImplementation
+    experimental.ConstantFunction
     SymbolicFunction
     TranslationFunction
 
@@ -121,6 +122,7 @@ Evaluation functions
     EvaluationImplementation
     AggregatedEvaluation
     ComposedEvaluation
+    experimental.ConstantEvaluation
     DatabaseEvaluation
     DistanceToDomainEvaluation
     DualLinearCombinationEvaluation
