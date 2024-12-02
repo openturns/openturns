@@ -25,11 +25,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicFunction.hxx"
-#else
-#include "openturns/DatabaseFunction.hxx"
-#endif
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
@@ -317,7 +313,7 @@ void GaussianProcessFitter::run()
   else
   {
     // If no basis ==> zero function
-    metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(covarianceModel_.getOutputDimension(), "0.0"));
+    metaModel = ConstantFunction(covarianceModel_.getInputDimension(), Point(covarianceModel_.getOutputDimension(), 0.0));
   }
 
   // compute residual, relative error

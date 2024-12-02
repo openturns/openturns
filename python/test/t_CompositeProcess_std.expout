@@ -20,6 +20,6 @@ future=     [ t       y0      ]
 3 : [ 1.4     1.43138 ]
 4 : [ 1.5     1.51985 ]
 My antecedent process =  CompositeProcess(FieldFunction :
-  [x1,x2]->[x1^2,abs(x2)](GaussianProcess(trend=[x0,x1]->[0.0,0.0], covariance=ExponentialModel(scale=[0.2,0.3], amplitude=[1,1], no spatial correlation)))
+  [x1,x2]->[x1^2,abs(x2)](GaussianProcess(trend=[x0,x1]->[0,0], covariance=ExponentialModel(scale=[0.2,0.3], amplitude=[1,1], no spatial correlation)))
 My dynamical function =  FieldFunction :
   [x1,x2]->[x1^2,x1+x2]

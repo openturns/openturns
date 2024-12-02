@@ -1,10 +1,10 @@
 // SWIG file ConstantGradient.i
 
-OTAutodoc(ConstantGradient)
-
 %{
 #include "openturns/ConstantGradient.hxx"
 %}
+
+%include ConstantGradient_doc.i
 
 %copyctor OT::ConstantGradient;
 
