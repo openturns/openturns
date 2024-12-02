@@ -37,6 +37,9 @@
 /* Base/Solver */
 %include LeastSquaresEquationsSolver.i
 
+%include ConstantEvaluation.i
+%include ConstantFunction.i
+
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
 %import model_copula_module.i
