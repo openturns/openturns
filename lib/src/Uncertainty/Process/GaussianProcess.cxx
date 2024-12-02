@@ -28,11 +28,7 @@
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/HMatrixFactory.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicFunction.hxx"
-#else
-#include "openturns/DatabaseFunction.hxx"
-#endif
+#include "openturns/ConstantFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,11 +46,7 @@ GaussianProcess::GaussianProcess()
   , trend_()
   , stationaryTrendValue_(0.0)
 {
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")), getMesh());
-#else
-  trend_ = TrendTransform(DatabaseFunction(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())), getMesh());
-#endif
+  trend_ = TrendTransform(ConstantFunction(covarianceModel_.getInputDimension(), Point(getOutputDimension(), 0.0)), getMesh());
   setDescription(trend_.getOutputDescription());
 }
 
@@ -92,11 +84,7 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
   // We use the upper class accessor to prevent the reinitialization of the flags
   ProcessImplementation::setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")), getMesh());
-#else
-  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())), getMesh());
-#endif
+  trend_ = TrendTransform(ConstantFunction(getInputDimension(), Point(getOutputDimension(), 0.0)), getMesh());
   setDescription(trend_.getOutputDescription());
 }
 

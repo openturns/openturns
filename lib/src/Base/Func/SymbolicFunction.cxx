@@ -87,6 +87,8 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else
+  (void)inputVariablesNames;
+  (void)formulas;
   throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
 #endif
 }
@@ -122,6 +124,9 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else
+  (void)inputVariablesNames;
+  (void)outputVariablesNames;
+  (void)formula;
   throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
 #endif
 }
@@ -144,7 +149,11 @@ String SymbolicFunction::__str__(const String & offset) const
 /* Accessor to the formulas */
 Description SymbolicFunction::getFormulas() const
 {
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   return dynamic_cast<SymbolicEvaluation*>(getEvaluation().getImplementation().get())->getFormulas();
+#else
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
+#endif
 }
 
 /* Initialization of the documentation */

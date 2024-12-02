@@ -22,25 +22,14 @@
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/HMatrixFactory.hxx"
-#include "openturns/ProductCovarianceModel.hxx"
-#include "openturns/TensorizedCovarianceModel.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
-#include "openturns/TNC.hxx"
-#include "openturns/Cobyla.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicFunction.hxx"
-#else
-#include "openturns/DatabaseFunction.hxx"
-#endif
-#include "openturns/IdentityFunction.hxx"
-#include "openturns/ComposedFunction.hxx"
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
-#include "openturns/MultiStart.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -376,7 +365,7 @@ void GeneralLinearModelAlgorithm::run()
   else
   {
     // If no basis ==> zero function
-    metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(covarianceModel_.getOutputDimension(), "0.0"));
+    metaModel = ConstantFunction(covarianceModel_.getInputDimension(), Point(covarianceModel_.getOutputDimension(), 0.0));
   }
 
   // compute residual, relative error

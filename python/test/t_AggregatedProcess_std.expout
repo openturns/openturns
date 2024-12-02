@@ -12,7 +12,7 @@ a realization=      [ t         X0        ]
  9 : [  0.9       0.793156 ]
 10 : [  1        -0.470526 ]
 a marginal process= WhiteNoise(Normal(mu = 0, sigma = 1))
-myProcess= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1)),ARMA(X_{0,t} = E_{0,t}, E_t ~ Normal(mu = 0, sigma = 1)),GaussianProcess(trend=[x0]->[0.0], covariance=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation))])
+myProcess= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1)),ARMA(X_{0,t} = E_{0,t}, E_t ~ Normal(mu = 0, sigma = 1)),GaussianProcess(trend=[x0]->[0], covariance=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation))])
 a realization=      [ t          X0         X0         y0         ]
  0 : [  0         -1.28289    0.351418  -0.0436123 ]
  1 : [  0.1       -1.31178    1.78236    0.190168  ]
@@ -26,4 +26,4 @@ a realization=      [ t          X0         X0         y0         ]
  9 : [  0.9       -1.03808    1.00434    0.33466   ]
 10 : [  1         -0.856712   0.741548   1.09293   ]
 a marginal process= ARMA(X_{0,t} = E_{0,t}, E_t ~ Normal(mu = 0, sigma = 1))
-another marginal process= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1)),GaussianProcess(trend=[x0]->[0.0], covariance=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation))])
+another marginal process= AggregatedProcess([WhiteNoise(Normal(mu = 0, sigma = 1)),GaussianProcess(trend=[x0]->[0], covariance=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation))])
