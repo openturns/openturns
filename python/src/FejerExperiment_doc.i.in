@@ -1,0 +1,30 @@
+%feature("docstring") OT::FejerExperiment
+"Fejer experiment.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+algorithm : :class:`~openturns.FejerAlgorithm`
+    The Fejer algorithm
+bounds : :class:`~openturns.Interval`
+    The expected bounds of the experiment 
+
+See also
+--------
+openturns.FejerAlgorithm
+
+Examples
+--------
+Create an experiment:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> method = ot.FejerAlgorithm.FEJERTYPE1
+>>> algo = ot.FejerAlgorithm([3], method)
+>>> bounds = ot.Interval(4.0, 5.0)
+>>> experiment = otexp.FejerExperiment(algo, bounds)
+>>> nodes, weights = experiment.generateWithWeights()
+"
