@@ -111,8 +111,6 @@ public:
 
   /** Build an instance from name */
   static OptimizationAlgorithm GetByName(const String & solverName);
-  /** deprecated */
-  static OptimizationAlgorithm Build(const String & solverName);
 
   /** Build an instance from problem */
   static OptimizationAlgorithm Build(const OptimizationProblem & problem);
