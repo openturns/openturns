@@ -310,29 +310,22 @@ Sample ZipfMandelbrot::getSupport(const Interval & interval) const
 /* Parameters value accessor */
 Point ZipfMandelbrot::getParameter() const
 {
-  Point point(3);
-  point[0] = n_;
-  point[1] = q_;
-  point[2] = s_;
-  return point;
+  return {static_cast<Scalar>(n_), q_, s_};
 }
 
 void ZipfMandelbrot::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
+  if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "ZipfMandelbrot expected 3 parameters, got " << parameter.getSize();
   const Scalar w = getWeight();
-  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parameter[0])), parameter[1], parameter[2]);
+  if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the ZipfMandelbrot first parameter n must be an integer, got " << parameter[0];
+  *this = ZipfMandelbrot(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
 
 /* Parametersdescription accessor */
 Description ZipfMandelbrot::getParameterDescription() const
 {
-  Description description(3);
-  description[0] = "n";
-  description[1] = "q";
-  description[2] = "s";
-  return description;
+  return {"n", "q", "s"};
 }
 
 /* Method save() stores the object through the StorageManager */
