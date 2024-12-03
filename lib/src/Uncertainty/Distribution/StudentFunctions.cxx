@@ -26,7 +26,10 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/GaussKronrodRule.hxx"
+#include "openturns/GaussKronrod.hxx"
+#include "openturns/ParametricFunction.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #define BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
@@ -112,6 +115,42 @@ Scalar StudentCDF(const Scalar nu,
   return (((x < 0.0) == tail) ? 0.5 + (0.5 - value) : value);
 #endif // OPENTURNS_HAVE_BOOST
 }
+
+
+Scalar Student2DCDF(const Scalar nu,
+                    const Scalar x0,
+                    const Scalar x1,
+                    const Scalar rho,
+                    const Bool tail)
+{
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Student2DCDF: nu must be positive, here nu=" << nu;
+  Scalar p1 = 0.0;
+  Scalar p2 = 0.0;
+  Scalar hiLimit = 0.0;
+  if (rho >= 0.0)
+  {
+    p1 = DistFunc::pStudent(nu, std::min(x0, x1));
+    hiLimit = 0.5 * M_PI;
+  }
+  else
+  {
+    p1 = DistFunc::pStudent(nu, x0) - DistFunc::pStudent(nu, -x1);
+    hiLimit = -0.5 * M_PI;
+  }
+  if (std::abs(rho) < 1.0)
+  {
+    const Scalar loLimit = std::asin(rho);
+    if (SpecFunc::IsNormal(x0) && SpecFunc::IsNormal(x1))
+    {
+      const SymbolicFunction fullKernel(Description({"theta", "nu", "x0", "x1"}), Description({"1/(1+((x0*sin(theta)-(x1))^2 / cos(theta)^2 + (x0)^2)/nu)^(0.5*nu)"}));
+      const ParametricFunction kernel(fullKernel, Indices({1, 2, 3}), Point({nu, x0, x1}));
+      p2 = GaussKronrod().integrate(kernel, Interval(loLimit, hiLimit))[0];
+    }
+  }
+  const Scalar p = p1 - p2 / (2.0 * M_PI);
+  return tail ? 0.5 + (0.5 - p) : p;
+}
+
 
 /* The algorithm is based on the following article:
    William T. Shaw, "New methods for simulating the Student T-distribution - direct use of the inverse cumulative distribution"
