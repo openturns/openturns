@@ -134,4 +134,5 @@ print(
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
+validation.skipGradient()  # computePDFGradient does not handle integer parameters
 validation.run()

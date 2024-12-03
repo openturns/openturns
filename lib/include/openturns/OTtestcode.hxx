@@ -1063,25 +1063,21 @@ private:
     {
       Point parameter2(parameter1);
       parameter2[j] += 1e-2;
-      LOGTRACE(OSS() << "parameter2=" << parameter2);
       Distribution distribution2(distribution_);
-      distribution2.setParameter(parameter2);
-      Point parameter3(distribution2.getParameter());
-      LOGTRACE(OSS() << "parameter3=" << parameter3);
       try
       {
-        assert_almost_equal(parameter3, parameter2);
+        distribution2.setParameter(parameter2);
       }
-      catch (const TestFailed &)
+      catch (const InvalidArgumentException &)
       {
         // try increment integer parameter
-        parameter2 = distribution_.getParameter();
-        parameter2[j] += 1.0;
+        parameter2[j] = parameter1[j] + 1.0;
         distribution2.setParameter(parameter2);
-        parameter3 = distribution2.getParameter();
-        LOGTRACE(OSS() << "parameter3=" << parameter3);
-        assert_almost_equal(parameter3, parameter2);
       }
+      LOGTRACE(OSS() << "parameter2=" << parameter2);
+      Point parameter3(distribution2.getParameter());
+      LOGTRACE(OSS() << "parameter3=" << parameter3);
+      assert_almost_equal(parameter3, parameter2);
     }
 
     const Distribution::PointWithDescriptionCollection parameters(distribution_.getParametersCollection());
