@@ -945,12 +945,16 @@ CovariatesResult GeneralizedExtremeValueFactory::buildCovariates(const Sample & 
       || sigmaLink.getEvaluation().getImplementation()->isActualImplementation()
       || xiLink.getEvaluation().getImplementation()->isActualImplementation())
   {
-    Function link1(muLink.getEvaluation().getImplementation()->isActualImplementation() ? muLink : IdentityFunction(1));
-    link1 = ComposedFunction(link1, SymbolicFunction({"x1", "x2", "x3"}, {"x1"}));
-    Function link2(sigmaLink.getEvaluation().getImplementation()->isActualImplementation() ? sigmaLink : IdentityFunction(1));
-    link2 = ComposedFunction(link2, SymbolicFunction({"x1", "x2", "x3"}, {"x2"}));
-    Function link3(xiLink.getEvaluation().getImplementation()->isActualImplementation() ? xiLink : IdentityFunction(1));
-    link3 = ComposedFunction(link3, SymbolicFunction({"x1", "x2", "x3"}, {"x3"}));
+    IdentityFunction identity(3);
+    Function link1 = identity.getMarginal(0);
+    if (muLink.getEvaluation().getImplementation()->isActualImplementation())
+      link1 = ComposedFunction(muLink, link1);
+    Function link2 = identity.getMarginal(1);
+    if (sigmaLink.getEvaluation().getImplementation()->isActualImplementation())
+      link2 = ComposedFunction(sigmaLink, link2);
+    Function link3 = identity.getMarginal(2);
+    if (xiLink.getEvaluation().getImplementation()->isActualImplementation())
+      link3 = ComposedFunction(xiLink, link3);
     AggregatedFunction thetaLink({link1, link2, link3});
     thetaFunction = ComposedFunction(thetaLink, thetaFunction);
   }
