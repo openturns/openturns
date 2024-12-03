@@ -3,17 +3,25 @@
 
 Parameters
 ----------
-absError : positive float, optional
-    Absolute error: distance between two successive iterates at the end point.
-    Default is :math:`10^{-5}`.
-relError : positive float, optional
-    Relative error: distance between the two last successive iterates with
-    regards to the last iterate. Default is :math:`10^{-5}`.
-resError : positive float, optional
-    Residual error: difference between the last iterate value and the expected
-    value. Default is :math:`10^{-8}`.
-maximumFunctionEvaluation : int, optional
-    The maximum number of evaluations of the function. Default is :math:`100`.
+absError : positive float
+    Absolute error between two successive iterates at the end point.
+    Default value is defined in the `ResourceMap` via the `Solver-DefaultAbsoluteError`
+    key is set to :math:`10^{-5}`.
+relError : positive float
+    Relative error between the two last successive iterates with
+    regards to the last iterate.
+    Default value is defined in the `ResourceMap` via the `Solver-DefaultRelativeError`
+    key is set to :math:`10^{-5}`.
+resError : positive float
+    Absolute threshold on `f(x)` for accepting a given solution.
+    It is also used as residual error for the least square optimizer.
+    value.
+    Default value is defined in the `ResourceMap` via the `Solver-DefaultResidualError`
+    and is set to :math:`0`.
+maximumFunctionEvaluation : int
+    The maximum number of evaluations of the function.
+    Default value is defined in the `ResourceMap` via the `Solver-DefaultMaximumFunctionEvaluation`
+    and is set to :math:`100`.
 
 See also
 --------
@@ -176,6 +184,10 @@ infValue, supValue : float, optional
     The values such that :math:`infValue = function(infPoint)`,
     and :math:`supValue = function(supPoint)`.
     :math:`infValue` must be of opposite sign of :math:`supValue`.
+startingPoint : sequence of float
+    Starting point for solving a system of (non linear) equations.
+bounds : :class:`~openturns.Interval`
+    Bounds for searching the solution of the system of equations.
 
 Returns
 -------

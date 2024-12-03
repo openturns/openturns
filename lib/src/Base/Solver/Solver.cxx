@@ -90,6 +90,21 @@ Scalar Solver::solve(const Function & function,
   return getImplementation()->solve(function, value, infPoint, supPoint, infValue, supValue);
 }
 
+/** Solve attempt to find one root to a system of equations function(x) = 0 given a starting point x_0 */
+Point Solver::solve(const Function & function,
+                    const Point & startingPoint) const
+{
+  return getImplementation()->solve(function, startingPoint);
+}
+
+/** Solve attempt to find one root to a system of equations function(x) = 0 given a starting point x_0 and bounds */
+Point Solver::solve(const Function & function,
+                    const Point & startingPoint,
+                    const Interval & bounds) const
+{
+  return getImplementation()->solve(function, startingPoint, bounds);
+}
+
 /* Absolute error accessor */
 void Solver::setAbsoluteError(const Scalar absoluteError)
 {

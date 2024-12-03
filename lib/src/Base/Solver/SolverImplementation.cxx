@@ -217,4 +217,18 @@ Scalar SolverImplementation::solve(const UniVariateFunction &,
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const UniVariateFunction & function, const Scalar value, const Scalar infPoint, const Scalar supPoint, const Scalar infValue, const Scalar supValue) const";
 }
 
+/** Solve attempt to find one root to a system of equations function(x) = 0 given a starting point x_0 */
+Point SolverImplementation::solve(const Function &,
+                                  const Point &) const
+{
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &)";
+}
+
+  Point SolverImplementation::solve(const Function &,
+                                    const Point &,
+                                    const Interval &) const
+{
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &, const Interval&)";
+}
+
 END_NAMESPACE_OPENTURNS
