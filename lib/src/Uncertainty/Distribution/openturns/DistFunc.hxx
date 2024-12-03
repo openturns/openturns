@@ -274,6 +274,13 @@ OT_API Scalar pStudent(const Scalar nu,
 OT_API Point pStudent(const Scalar nu,
                       const Point & x,
                       const Bool tail = false);
+
+OT_API Scalar pStudent2D(const Scalar nu,
+                      const Scalar x1,
+                      const Scalar x2,
+                      const Scalar rho,
+                      const Bool tail = false);
+
 OT_API Scalar qStudent(const Scalar nu,
                        const Scalar p,
                        const Bool tail = false);
