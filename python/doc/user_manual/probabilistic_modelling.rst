@@ -339,6 +339,7 @@ Low-level distribution functions
     DistFunc.pPearsonCorrelation
     DistFunc.pSpearmanCorrelation
     DistFunc.pStudent
+    DistFunc.pStudent2D
     DistFunc.qBeta
     DistFunc.qDickeyFullerConstant
     DistFunc.qDickeyFullerNoConstant
