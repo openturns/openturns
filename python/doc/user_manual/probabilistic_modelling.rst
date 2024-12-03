@@ -91,6 +91,7 @@ Continuous parametric distributions
     :template: classWithPlot.rst_t
     UniformOverMesh
     experimental.UniformOrderStatistics
+    experimental.MarginalUniformOrderStatistics
 
     :template: Distribution.rst_t
     VonMises
@@ -111,6 +112,11 @@ Discrete parametric distributions
 
     Bernoulli
     Binomial
+
+    :template: classWithPlot.rst_t
+    experimental.CombinationsDistribution
+
+    :template: Distribution.rst_t
     Dirac
     Geometric
     Hypergeometric
