@@ -51,4 +51,4 @@ In this example, we create the linear function :math:`f: \Rset^2 \rightarrow \Rs
 
 Get the matrix :math:`\Tr{\mat{A}}`:
 
->>> print(f.getEvaluation().getImplementation().getLinear())"
+>>> A_transpose = f.getEvaluation().getImplementation().getLinear()"
