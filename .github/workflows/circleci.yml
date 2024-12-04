@@ -10,5 +10,5 @@ jobs:
            repo-token: ${{ secrets.GITHUB_TOKEN }}
            api-token: ${{ secrets.CIRCLECI_TOKEN }}
            artifact-path: 0/html/index.html
-           circleci-jobs: build_linux
+           circleci-jobs: sphinx
            job-title: Check the sphinx doc here!
