@@ -61,6 +61,9 @@ public:
   virtual void setSize(const UnsignedInteger size);
   virtual UnsignedInteger getSize() const;
 
+  /** Level accessor */
+  virtual void setLevel(const UnsignedInteger level);
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */

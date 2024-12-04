@@ -225,3 +225,15 @@ isRandom : bool
 %feature("docstring") OT::WeightedExperimentImplementation::isRandom
 OT_WeightedExperiment_isRandom_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setLevel_doc
+"Accessor to the experiment stratification level.
+
+Parameters
+----------
+level : positive int
+    Stratification level."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setLevel
+OT_WeightedExperiment_setLevel_doc
