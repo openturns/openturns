@@ -8,10 +8,11 @@ jobs:
     env:
       LDFLAGS: -L/opt/homebrew/opt/openblas/lib
       CPPFLAGS: -I/opt/homebrew/opt/openblas/include
+      OPENTURNS_NUM_THREADS: 2
+      OMP_NUM_THREADS: 1
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install pkg-config && brew install pkgconf --force
         brew install openblas swig boost tbb nlopt cminpack ceres-solver cuba dlib bison flex hdf5 ipopt primesieve spectra pagmo nanoflann
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
@@ -26,7 +27,7 @@ jobs:
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
-        OPENTURNS_NUM_THREADS=2 OMP_NUM_THREADS=1 ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest
@@ -38,7 +39,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" mpc boost-cpp libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" mpc boost-cpp libcuba libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd
@@ -57,21 +58,30 @@ jobs:
 
   aarch64:
     runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: |
-          docker pull openturns/debian-aarch64
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
+        run: ./utils/build_locally.sh aarch64
+
+  clang:
+    runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: ./utils/build_locally.sh clang
 
   coverage:
     runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: |
-          docker pull openturns/archlinux-python
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_coverage.sh `id -u` `id -g`
+        run: ./utils/build_locally.sh coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
@@ -81,9 +91,9 @@ jobs:
 
   mindeps:
     runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: |
-          docker pull debian:10
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh
+        run: ./utils/build_locally.sh mindeps
