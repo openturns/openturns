@@ -214,7 +214,7 @@ Complex Histogram::computeCharacteristicFunction(const Scalar x) const
   {
     result = height_[0] * SpecFunc::Expm1(Complex(0.0, cumulatedWidth_[0] * x));
     for (UnsignedInteger k = 1; k < size; ++k) result += height_[k] * (std::exp(Complex(0.0, cumulatedWidth_[k] * x)) - std::exp(Complex(0.0, cumulatedWidth_[k - 1] * x)));
-    result /= Complex(0.0, x);
+    result = Complex(result.imag() / x, -result.real() / x); // =result/(i*x)
   }
   result *= std::exp(Complex(0.0, first_ * x));
   return result;
