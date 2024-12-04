@@ -65,6 +65,9 @@ public:
   virtual void setSize(const UnsignedInteger size);
   virtual UnsignedInteger getSize() const;
 
+  /** Level accessor */
+  virtual void setLevel(const UnsignedInteger level);
+
   /** Uniform weights ? */
   virtual Bool hasUniformWeights() const;
 
