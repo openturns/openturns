@@ -178,24 +178,24 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType1(Collection<Point> & margi
     } // A match found
     else
     {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-
+      Point mni(integrationNodesNumber);
+      Point mwi(integrationNodesNumber);
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
-        Scalar sum_term = 0;
         // Nodes
-        const Scalar theta_ = (k + 1.0 / 2.) * M_PI / (integrationNodesNumber);
-        marginalNodes[i][k] = std::cos(theta_);
+        const Scalar theta_ = (k + 1.0 / 2.) * M_PI / integrationNodesNumber;
+        mni[k] = std::cos(theta_);
         // Weights
-        UnsignedInteger end_sum = static_cast<UnsignedInteger>(std::floor((integrationNodesNumber) / 2));
-        for (UnsignedInteger index_sum = 1; index_sum <= end_sum; ++index_sum)
+        const UnsignedInteger halfNodesNumber = integrationNodesNumber / 2;
+        Scalar sum_term = 0;
+        for (UnsignedInteger j = 1; j <= halfNodesNumber; ++ j)
         {
-          sum_term += (1.0 / (4. * index_sum * index_sum - 1)) * std::cos(2 * index_sum * theta_);
+          sum_term += (1.0 / (4.0 * j * j - 1.0)) * std::cos(2.0 * j * theta_);
         }
-        marginalWeights[i][k] = (2.0 / integrationNodesNumber) * (1.0 - 2.0 * sum_term);
+        mwi[k] = (2.0 / integrationNodesNumber) * (1.0 - 2.0 * sum_term);
       }
-
+      marginalNodes[i] = mni;
+      marginalWeights[i] = mwi;
     } // No match found
   }   // For i
 }
@@ -234,9 +234,9 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
       {
         const Scalar theta_k = (k + 1.0) * M_PI / (integrationNodesNumber + 1);
         Scalar sum_sinus = 0.0;
-        const UnsignedInteger halfNodesNumber = (integrationNodesNumber - 1) / 2;
-        for (UnsignedInteger iter_ = 1; iter_ <= halfNodesNumber; ++iter_)
-          sum_sinus += std::sin((2 * iter_ - 1) * theta_k) / (2 * iter_ - 1);
+        const UnsignedInteger halfNodesNumber = (integrationNodesNumber + 1) / 2;
+        for (UnsignedInteger j = 1; j <= halfNodesNumber; ++j)
+          sum_sinus += std::sin((2 * j - 1) * theta_k) / (2 * j - 1);
         // Nodes
         marginalNodes[i][k] = std::cos(theta_k);
         // Weights
