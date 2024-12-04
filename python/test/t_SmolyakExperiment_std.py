@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -409,3 +410,11 @@ print(marginalDegreesList)
 for i in range(len(marginalDegreesList)):
     marginalDegrees = marginalDegreesList[i]
     checkPolynomialExactness(marginalDegrees, level, verbose=True)
+
+# Test tensorisation of Fejer experiments
+algos = [ot.FejerAlgorithm([1], ot.FejerAlgorithm.CLENSHAWCURTIS)] * 2
+coll = [otexp.FejerExperiment(algo, ot.Interval(-1.0, 1.0)) for algo in algos]
+level = 3
+experiment = ot.SmolyakExperiment(coll, level)
+nodes, weights = experiment.generateWithWeights()
+print(nodes, weights)
