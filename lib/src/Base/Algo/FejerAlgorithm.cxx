@@ -104,6 +104,15 @@ void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & m
     const UnsignedInteger integrationNodesNumber = discretization_[i];
     if (!(integrationNodesNumber > 0))
       throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
+
+    // special case for n=1
+    if (integrationNodesNumber == 1)
+    {
+      marginalNodes[i] = Point({0.0});
+      marginalWeights[i] = Point({2.0});
+      continue;
+    }
+
     // Check if we already computed this 1D rule
     // We use the value 'dimension' as a guard
     UnsignedInteger indexAlreadyComputed = dimension;
@@ -121,28 +130,26 @@ void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & m
     } // A match found
     else
     {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
+      Point mni(integrationNodesNumber);
+      Point mwi(integrationNodesNumber);
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
-        const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
-        Scalar ck = 2.0;
-        if (k == 0 || k == (integrationNodesNumber - 1))
-          ck = 1.0;
         // Nodes
-        marginalNodes[i][k] = std::cos(theta_k);
+        const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
+        mni[k] = std::cos(theta_k);
         // Weights
-        Scalar term = 0;
+        Scalar term = 1.0;
         UnsignedInteger halfNodeNumber = (integrationNodesNumber - 1) / 2;
         for (UnsignedInteger l = 1; l <= halfNodeNumber; ++l)
         {
-          Scalar bj = 1.0;
-          if (l < halfNodeNumber)
-            bj = 2.0;
-          term += bj / (4.0 * l * l - 1) * std::cos(2 * l * theta_k);
+          const Scalar bj = l < halfNodeNumber ? 2.0 : 1.0;
+          term -= bj / (4.0 * l * l - 1) * std::cos(2 * l * theta_k);
         }
-        marginalWeights[i][k] = ck / (integrationNodesNumber - 1) * (1 - term);
+        const Scalar ck =  k % (integrationNodesNumber - 1) == 0 ? 1.0 : 2.0;
+        mwi[k] = ck / (integrationNodesNumber - 1) * term;
       }
+      marginalNodes[i] = mni;
+      marginalWeights[i] = mwi;
     } // No match found
   }   // For i
 }
