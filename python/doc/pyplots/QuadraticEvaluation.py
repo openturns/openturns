@@ -5,7 +5,7 @@ center = [0.0]
 constant = [3.0]
 linear = ot.Matrix([[2.0]])
 quadratic = ot.SymmetricTensor([[[5.0]]])
-f = ot.QuadraticFunction(center, constant, linear, quadratic)
+f = ot.QuadraticEvaluation(center, constant, linear, quadratic)
 
 graph = f.draw(-5.0, 5.0)
 graph.setTitle(r"Quadratic function $x \mapsto 5x^2+2x+3$")

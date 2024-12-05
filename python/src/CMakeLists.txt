@@ -282,7 +282,7 @@ ot_add_python_module(func func_module.i
                       TranslationEvaluation.i TranslationEvaluation_doc.i.in
                       LinearEvaluation.i LinearEvaluation_doc.i.in
                       LinearGradient.i LinearGradient_doc.i.in
-                      QuadraticEvaluation.i
+                      QuadraticEvaluation.i QuadraticEvaluation_doc.i.in
                       ConstantGradient.i
                       ConstantHessian.i
                       ComposedEvaluation.i
