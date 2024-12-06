@@ -369,19 +369,19 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
 }
 
 /* LOLA/Voronoi scores accessors */
-Point LOLAVoronoi::getLOLAScore() const
+Sample LOLAVoronoi::getLOLAScore() const
 {
-  return lolaScore_;
+  return Sample::BuildFromPoint(lolaScore_);
 }
 
-Point LOLAVoronoi::getVoronoiScore() const
+Sample LOLAVoronoi::getVoronoiScore() const
 {
-  return voronoiScore_;
+  return Sample::BuildFromPoint(voronoiScore_);
 }
 
-Point LOLAVoronoi::getHybridScore() const
+Sample LOLAVoronoi::getHybridScore() const
 {
-  return hybridScore_;
+  return Sample::BuildFromPoint(hybridScore_);
 }
 
 /* Voronoi sampling size accessor */

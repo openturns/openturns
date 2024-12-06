@@ -187,7 +187,7 @@ neighbourhoodCandidatesNumber : int
 
 Returns
 -------
-voronoiScore : :class:`~openturns.Point`
+voronoiScore : :class:`~openturns.Sample`
     The exploration score :math:`v(p_i)` for the current sample.
 "
 
@@ -198,7 +198,7 @@ voronoiScore : :class:`~openturns.Point`
 
 Returns
 -------
-lolaScore : :class:`~openturns.Point`
+lolaScore : :class:`~openturns.Sample`
     The exploitation score :math:`e(p_i)` for the current sample.
     Note that unlike :math:`v(p_i)` this is scaled in :math:`[0, 1]`.
 "
@@ -210,6 +210,6 @@ lolaScore : :class:`~openturns.Point`
 
 Returns
 -------
-hybridScore : :class:`~openturns.Point`
+hybridScore : :class:`~openturns.Sample`
     The hybrid score :math:`h(p_i)` for the current sample.
 "

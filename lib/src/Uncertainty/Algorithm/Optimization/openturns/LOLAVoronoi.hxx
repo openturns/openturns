@@ -69,9 +69,9 @@ public:
   void load(Advocate & adv) override;
 
   /** LOLA/Voronoi scores accessor */
-  Point getLOLAScore() const;
-  Point getVoronoiScore() const;
-  Point getHybridScore() const;
+  Sample getLOLAScore() const;
+  Sample getVoronoiScore() const;
+  Sample getHybridScore() const;
 
 protected:
   mutable KDTree tree_;

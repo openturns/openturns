@@ -71,7 +71,7 @@ for i in range(10):
     algo.update(x, y)
     x_mean = x.computeMean()
     print(f"iteration={i} x_mean={x_mean}")
-ott.assert_almost_equal(algo.getLOLAScore().norm(), 0.0)
+ott.assert_almost_equal(algo.getLOLAScore().asPoint().norm(), 0.0)
 X = algo.getInputSample()
 discrepancy = ot.SobolSequence.ComputeStarDiscrepancy(X)
 assert discrepancy < 1.0, "wrong repartition"

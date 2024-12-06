@@ -148,10 +148,9 @@ runMetaModel(xLola, yLola, "LOLA")
 
 
 def drawScore(score, tag):
-    y = ot.Sample.BuildFromPoint(score)
     # interpolate the score using a metamodel
     xDist = ot.LeastSquaresExpansion.BuildDistribution(xLola)
-    algo = ot.LeastSquaresExpansion(xLola, y, xDist)
+    algo = ot.LeastSquaresExpansion(xLola, score, xDist)
     algo.run()
     f = algo.getResult().getMetaModel()
     lb = distribution.getRange().getLowerBound()
