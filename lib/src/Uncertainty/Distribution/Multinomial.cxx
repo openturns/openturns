@@ -785,7 +785,8 @@ void Multinomial::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getDimension();
   if (parameter.getDimension() != (dimension + 1))
-    throw InvalidArgumentException(HERE) << "Expected " << (dimension + 1) << " parameters";
+    throw InvalidArgumentException(HERE) << "Multinomial expected " << (dimension + 1) << " parameters, got " << parameter.getDimension();
+  if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n must be an integer, got " << parameter[0];
   setN(parameter[0]);
   Point p(dimension);
   std::copy(parameter.begin() + 1, parameter.end(), p.begin());

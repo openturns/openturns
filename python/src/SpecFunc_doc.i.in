@@ -1096,6 +1096,30 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::LogBinomialCoefficient
+"Compute the natural logarithm of the binomial coefficient.
+
+.. math::
+
+    LogBinomialCoefficient(n, k) = \log\left( \frac{n!}{k! (n-k)!} \right)
+
+Parameters
+----------
+n : nonegative int
+k : nonegative int
+
+Returns
+-------
+result : float
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.SpecFunc.LogBinomialCoefficient(10, 5)
+5.5294..."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::LambertW
 "Lambert W function.
 

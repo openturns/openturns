@@ -653,7 +653,9 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = copulaSample_.getSize();
-  if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "Expected " << (dimension * size) << " parameters";
+  if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "BernsteinCopula expected " << (dimension * size + 1) << " parameters, got " << parameter.getDimension();
+  const Scalar binNumber = parameter[dimension * size];
+  if (binNumber != std::round(binNumber)) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be an integer, got " << binNumber;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -663,7 +665,7 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
       ++ index;
     }
   }
-  binNumber_ = static_cast<UnsignedInteger>(parameter[index]);
+  binNumber_ = binNumber;
 }
 
 Description EmpiricalBernsteinCopula::getParameterDescription() const

@@ -1016,6 +1016,7 @@ ot_add_python_module(testing testing_module.i
                     )
 
 ot_add_python_module(experimental experimental_module.i
+                     CombinationsDistribution.i CombinationsDistribution_doc.i.in
                      PointConditionalDistribution.i PointConditionalDistribution_doc.i.in
                      FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
                      FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in

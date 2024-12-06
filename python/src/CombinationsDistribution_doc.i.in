@@ -1,0 +1,86 @@
+%feature("docstring") OT::CombinationsDistribution
+"Combinations distribution.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+This class is the discrete uniform distribution on the set of the :math:`C_n^k` combinations of :math:`k` elements among :math:`n` elements. 
+Let :math:`E` be a set of :math:`n` elements and  :math:`\cC_{k,n}` the set of combinations of elements of :math:`E`: 
+
+.. math::
+
+    \cC_{k,n} = \left\{ A \subset E, \mathbf{card}(A) = k\right\}
+
+We show that :math:`\cC_{k,n}` is in bijection with the  set :math:`\cF_{k,n}` of strictly increasing functions
+from :math:`\llbracket 1, k \rrbracket`  into :math:`\llbracket 1, n \rrbracket`.
+As a result, this class is also the discrete uniform distribution on the set :math:`\cF_{k,n}`.
+Let each function in  :math:`\cF_{k,n}` be represented by the :math:`k`-upplet denoted by :math:`(i(0), \ldots, i(k-1)) \in \Nset^k`.
+Then the support :math:`\cS` of the CombinationDistribution is included in :math:`\Nset^k` and is defined by:
+
+.. math::
+
+    \cS = \{\vect{s} \in \Nset^k \, | \,  s_i \in \llbracket 1, n \rrbracket, s_1 < \ldots < s_k \} = \{\vect{s} \in \Nset^k \, | \, 1 \leq s_1 < \ldots < s_k \leq n \}
+
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = (i_0, \hdots, i_{k-1})} = \frac{1}{\binom{n}{k}}
+
+Parameters
+----------
+k : int, :math:`k > 0`
+n : int, :math:`n > 0`
+
+See also
+--------
+openturns.Combinations
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns.experimental as otexp
+>>> distribution = otexp.CombinationsDistribution(6, 8)
+
+Get a realization: it is a vector :math:`(s_0, \ldots, s_{k-1})` associated to the increasing function :math:`f: i \rightarrow s_i` or,
+equivalenty, to the combination of the elements :math:`s_i` of the set :math:`E`.
+
+>>> x = distribution.getRealization()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::getN
+"Accessor to the parameter :math:`n`.
+
+Returns
+-------
+n : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::getK
+"Accessor to the parameter :math:`k`.
+
+Returns
+-------
+k : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::setN
+"Accessor to the parameter :math:`n`.
+
+Parameters
+----------
+n : int, :math:`n > 0`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CombinationsDistribution::setK
+"Accessor to the parameter :math:`k`.
+
+Parameters
+----------
+k : int, :math:`k > 0`"

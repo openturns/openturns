@@ -27,14 +27,12 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{\vect{X}} & = & \frac{n - 1}{2}\\
-        \Cov{\vect{X}} & = & \left\{
-                             \begin{array}{ll}
-                                 \displaystyle \frac{n^2-1}{12} \\
-                                 \displaystyle -\frac{1 + n}{12}
-                             \end{array}
-                             \right.
+        \Expect{X_i} & = & \frac{n - 1}{2}, \quad i = 1, \ldots, k \\
+        \Var{X_i} & = & \frac{n^2-1}{12}, \quad i = 1, \ldots, k \\
+        \Cov{X_i, X_j} & = & -\frac{1 + n}{12}, \quad i, j = 1, \ldots, k, i \neq j
     \end{eqnarray*}
+
+
 
 Examples
 --------

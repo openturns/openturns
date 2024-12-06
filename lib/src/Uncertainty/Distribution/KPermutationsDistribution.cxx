@@ -296,7 +296,9 @@ Point KPermutationsDistribution::getParameter() const
 
 void KPermutationsDistribution::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "KPermutations expected 2 parameters, got " << parameter.getSize();
+  if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the KPermutations first parameter k must be an integer, got " << parameter[0];
+  if (parameter[1] != std::round(parameter[1])) throw InvalidArgumentException(HERE) << "the KPermutations second parameter n must be an integer, got " << parameter[1];
   setKN(parameter[0], parameter[1]);
 }
 

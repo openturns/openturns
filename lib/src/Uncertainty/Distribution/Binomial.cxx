@@ -242,9 +242,10 @@ Point Binomial::getParameter() const
 
 void Binomial::setParameter(const Point & parameter)
 {
-  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Binomial expected 2 parameters, got " << parameter.getSize();
+  if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Binomial first parameter n must be an integer, got " << parameter[0];
   const Scalar w = getWeight();
-  *this = Binomial(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
+  *this = Binomial(parameter[0], parameter[1]);
   setWeight(w);
 }
 
