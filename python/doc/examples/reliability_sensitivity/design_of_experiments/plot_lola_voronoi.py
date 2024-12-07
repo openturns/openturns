@@ -33,7 +33,7 @@ contour.setLegend("model")
 graph.setTitle("Model")
 graph.setXTitle("x1")
 graph.setYTitle("x2")
-otv.View(graph)
+otv.View(graph, square_axes=True)
 
 # %%
 # Plot the hessian norm
@@ -51,7 +51,7 @@ graph = hessNorm.draw(distribution.getRange().getLowerBound(), distribution.getR
 graph.setTitle("Hessian norm")
 graph.setXTitle("x1")
 graph.setYTitle("x2")
-otv.View(graph)
+otv.View(graph, square_axes=True)
 
 # %%
 # Lets define an initial design of experiments
@@ -62,14 +62,14 @@ y0 = f1(x0)
 
 # %%
 # Plot the initial input sample
-graph = ot.Graph(f"LOLA-Voronoi N={N}", "x1", "x2", True)
+graph = ot.Graph(f"Initial points N={N}", "x1", "x2", True)
 initial = ot.Cloud(x0)
 initial.setPointStyle("fcircle")
 initial.setColor("blue")
 initial.setLegend(f"initial ({len(x0)})")
 graph.add(initial)
 graph.add(contour)
-otv.View(graph)
+otv.View(graph, square_axes=True)
 
 # %%
 # Instantiate the algorithm from the initial DOE and the distribution
@@ -105,7 +105,7 @@ for i in range(10):
     current.setLegend(f"current iteration ({inc})")
     graph.add(current)
     graph.setTitle(f"LOLA-Voronoi iteration #{i + 1} N={N}")
-    otv.View(graph)
+    otv.View(graph, square_axes=True)
 
 
 # %%
@@ -148,33 +148,32 @@ runMetaModel(xLola, yLola, "LOLA")
 
 
 def drawScore(score, tag):
-    # interpolate the score using a metamodel
-    xDist = ot.LeastSquaresExpansion.BuildDistribution(xLola)
-    algo = ot.LeastSquaresExpansion(xLola, score, xDist)
-    algo.run()
-    f = algo.getResult().getMetaModel()
+    f = ot.DatabaseFunction(xLola, score)
     lb = distribution.getRange().getLowerBound()
     ub = distribution.getRange().getUpperBound()
     graph = f.draw(lb, ub)
+    final = ot.Cloud(xLola)
+    final.setPointStyle("fcircle")
+    graph.add(final)
     graph.setTitle(f"{tag} score")
     graph.setXTitle("x1")
     graph.setYTitle("x2")
-    otv.View(graph)
+    otv.View(graph, square_axes=True)
 
 
 # %%
-# Plot the interpolated Voronoi score: it matches unexplored areas on top or right borders.
+# Plot the Voronoi score: it matches unexplored areas on top or right borders.
 algo.generate(inc)  # triggers score update of the last batch
 drawScore(algo.getVoronoiScore(), "Voronoi")
 
 
 # %%
-# Plot the interpolated LOLA score: it underlines regions with high gradients variations
+# Plot the LOLA score: it underlines regions with high gradients variations
 drawScore(algo.getLOLAScore(), "LOLA")
 
 
 # %%
-# Plot the interpolated hybrid score: it exposes regions with medium-intensity gradients variations left to explore
+# Plot the hybrid score: it exposes regions with medium-intensity gradients variations left to explore
 drawScore(algo.getHybridScore(), "hybrid")
 
 
