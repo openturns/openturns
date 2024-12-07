@@ -762,7 +762,7 @@ void handleException()
     String exceptionMessage("Python exception");
 
     // get the name of the exception
-    if (type)
+    if (type && PyObject_HasAttrString(type, "__name__"))
     {
       ScopedPyObjectPointer nameObj(PyObject_GetAttrString(type, "__name__"));
       if (nameObj.get())
