@@ -53,7 +53,6 @@ DeconditionedDistribution::DeconditionedDistribution()
   description.add(outVars);
   linkFunction.setDescription(description);
   setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
-  isParallel_ = false;
 }
 
 /* Parameters constructor */
@@ -190,8 +189,8 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   const UnsignedInteger conditioningDimension = conditioningDistribution.getDimension();
   const UnsignedInteger conditionedParametersDimension = conditionedDistribution.getParameterDimension();
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
-  if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution.";
-  if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension.";
+  if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution. Here, output dimension=" << linkFunction.getOutputDimension() << " and parameters number=" << conditionedParametersDimension;
+  if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension. Here, input dimension=" << linkFunction.getInputDimension() << " and conditioning dimension=" << conditioningDimension;
   conditionedDistribution_ = conditionedDistribution;
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
@@ -320,11 +319,20 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
     const Sample parameters(linkFunction_(currentY));
     for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
     {
-      Distribution dist(conditionedDistribution);
-      dist.setWeight(yPDF(i, 0));
-      dist.setParameter(parameters[i]);
-      atoms[atomIndex] = dist;
-      ++atomIndex;
+      const Scalar wI = yPDF(i, 0);
+      if (wI > 0.0)
+	try
+	  {
+	    Distribution dist(conditionedDistribution);
+	    dist.setWeight(wI);
+	    dist.setParameter(parameters[i]);
+	    atoms[atomIndex] = dist;
+	    ++atomIndex;
+	  }
+	catch (...)
+	  {
+	    LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
+	  }
     } // Discrete measure
     // Now, update the underlying Mixture
     // Hide warnings
@@ -356,13 +364,20 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
     const Sample parameters(linkFunction_(currentY));
     for (UnsignedInteger i = 0; i < continuousAtomsNumber; ++i)
     {
-      const Scalar w = yPDF(i, 0) * continuousWeights_[i];
-      Distribution dist(conditionedDistribution);
-      dist.setWeight(w);
-      dist.setParameter(parameters[i]);
-      atoms[atomIndex] = dist;
-      LOGDEBUG(OSS() << "i=" << i << ", w=" << w << ", Y=" << currentY[i] << ", dist=" << dist.__str__());
-      ++atomIndex;
+      const Scalar wI = yPDF(i, 0) * continuousWeights_[i];
+      if (wI > 0.0)
+	try
+	  {
+	    Distribution dist(conditionedDistribution);
+	    dist.setWeight(wI);
+	    dist.setParameter(parameters[i]);
+	    atoms[atomIndex] = dist;
+	    ++atomIndex;
+	  }
+	catch (...)
+	  {
+	    LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
+	  }
     } // Continuous measure
     // Now, update the underlying Mixture
     // Hide warnings
@@ -402,11 +417,20 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   const Sample parameters(linkFunction_(currentYs));
   for (UnsignedInteger i = 0; i < currentYs.getSize(); ++i)
   {
-    Distribution dist(conditionedDistribution);
-    dist.setWeight(yPDF(i, 0) * continuousWeights_[i % continuousAtomsNumber]);
-    dist.setParameter(parameters[i]);
-    atoms[atomIndex] = dist;
-    ++atomIndex;
+    const Scalar wI = yPDF(i, 0) * continuousWeights_[i % continuousAtomsNumber];
+    if (wI > 0.0)
+      try
+	{
+	  Distribution dist(conditionedDistribution);
+	  dist.setWeight(wI);
+	  dist.setParameter(parameters[i]);
+	  atoms[atomIndex] = dist;
+	  ++atomIndex;
+	  }
+	catch (...)
+	  {
+	    LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
+	  }	  
   }
   // Now, update the underlying Mixture
   // Hide warnings
