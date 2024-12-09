@@ -73,7 +73,7 @@ public:
   WeightedExperimentCollection getExperimentCollection() const;
 
   /** Level accessor */
-  void setLevel(const UnsignedInteger level);
+  void setLevel(const UnsignedInteger level) override;
   UnsignedInteger getLevel() const;
 
   /** Size accessor */

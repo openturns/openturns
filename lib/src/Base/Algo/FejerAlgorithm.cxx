@@ -22,7 +22,6 @@
 #include "openturns/Tuples.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -84,7 +83,7 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
   Point integral(function.getOutputDimension(), 0.0);
   if (volume == 0.0) return integral;
   // Adapt the nodes to the bounds of the interval
-  const Point halfDelta( (interval.getUpperBound() - interval.getLowerBound()) / 2.0 );
+  const Point halfDelta((interval.getUpperBound() - interval.getLowerBound()) * 0.5);
   // Compute nodes
   adaptedNodes = nodes_ * halfDelta + halfDelta + interval.getLowerBound();
   // Compute the function over the adapted nodes
@@ -104,6 +103,15 @@ void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & m
     const UnsignedInteger integrationNodesNumber = discretization_[i];
     if (!(integrationNodesNumber > 0))
       throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
+
+    // special case for n=1
+    if (integrationNodesNumber == 1)
+    {
+      marginalNodes[i] = Point({0.0});
+      marginalWeights[i] = Point({2.0});
+      continue;
+    }
+
     // Check if we already computed this 1D rule
     // We use the value 'dimension' as a guard
     UnsignedInteger indexAlreadyComputed = dimension;
@@ -121,28 +129,26 @@ void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & m
     } // A match found
     else
     {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
+      Point mni(integrationNodesNumber);
+      Point mwi(integrationNodesNumber);
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
-        const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
-        Scalar ck = 2.0;
-        if (k == 0 || k == (integrationNodesNumber - 1))
-          ck = 1.0;
         // Nodes
-        marginalNodes[i][k] = std::cos(theta_k);
+        const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
+        mni[k] = std::cos(theta_k);
         // Weights
-        Scalar term = 0;
+        Scalar term = 1.0;
         UnsignedInteger halfNodeNumber = (integrationNodesNumber - 1) / 2;
         for (UnsignedInteger l = 1; l <= halfNodeNumber; ++l)
         {
-          Scalar bj = 1.0;
-          if (l < halfNodeNumber)
-            bj = 2.0;
-          term += bj / (4.0 * l * l - 1) * std::cos(2 * l * theta_k);
+          const Scalar bj = l < halfNodeNumber ? 2.0 : 1.0;
+          term -= bj / (4.0 * l * l - 1) * std::cos(2 * l * theta_k);
         }
-        marginalWeights[i][k] = ck / (integrationNodesNumber - 1) * (1 - term);
+        const Scalar ck =  k % (integrationNodesNumber - 1) == 0 ? 1.0 : 2.0;
+        mwi[k] = ck / (integrationNodesNumber - 1) * term;
       }
+      marginalNodes[i] = mni;
+      marginalWeights[i] = mwi;
     } // No match found
   }   // For i
 }
@@ -171,24 +177,24 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType1(Collection<Point> & margi
     } // A match found
     else
     {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-
+      Point mni(integrationNodesNumber);
+      Point mwi(integrationNodesNumber);
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
-        Scalar sum_term = 0;
         // Nodes
-        const Scalar theta_ = (k + 1.0 / 2.) * M_PI / (integrationNodesNumber);
-        marginalNodes[i][k] = std::cos(theta_);
+        const Scalar theta_ = (k + 1.0 / 2.) * M_PI / integrationNodesNumber;
+        mni[k] = std::cos(theta_);
         // Weights
-        UnsignedInteger end_sum = static_cast<UnsignedInteger>(std::floor((integrationNodesNumber) / 2));
-        for (UnsignedInteger index_sum = 1; index_sum <= end_sum; ++index_sum)
+        const UnsignedInteger halfNodesNumber = integrationNodesNumber / 2;
+        Scalar sum_term = 0;
+        for (UnsignedInteger j = 1; j <= halfNodesNumber; ++ j)
         {
-          sum_term += (1.0 / (4. * index_sum * index_sum - 1)) * std::cos(2 * index_sum * theta_);
+          sum_term += (1.0 / (4.0 * j * j - 1.0)) * std::cos(2.0 * j * theta_);
         }
-        marginalWeights[i][k] = (2.0 / integrationNodesNumber) * (1.0 - 2.0 * sum_term);
+        mwi[k] = (2.0 / integrationNodesNumber) * (1.0 - 2.0 * sum_term);
       }
-
+      marginalNodes[i] = mni;
+      marginalWeights[i] = mwi;
     } // No match found
   }   // For i
 }
@@ -220,21 +226,22 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
     } // A match found
     else
     {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-
+      Point mni(integrationNodesNumber);
+      Point mwi(integrationNodesNumber);
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
         const Scalar theta_k = (k + 1.0) * M_PI / (integrationNodesNumber + 1);
         Scalar sum_sinus = 0.0;
-        const UnsignedInteger halfNodesNumber = (integrationNodesNumber - 1) / 2;
-        for (UnsignedInteger iter_ = 1; iter_ <= halfNodesNumber; ++iter_)
-          sum_sinus += std::sin((2 * iter_ - 1) * theta_k) / (2 * iter_ - 1);
+        const UnsignedInteger halfNodesNumber = (integrationNodesNumber + 1) / 2;
+        for (UnsignedInteger j = 1; j <= halfNodesNumber; ++j)
+          sum_sinus += std::sin((2 * j - 1) * theta_k) / (2 * j - 1);
         // Nodes
-        marginalNodes[i][k] = std::cos(theta_k);
+        mni[k] = std::cos(theta_k);
         // Weights
-        marginalWeights[i][k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
+        mwi[k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
       }
+      marginalNodes[i] = mni;
+      marginalWeights[i] = mwi;
     } // No match found
   }   // For i
 }
@@ -266,7 +273,7 @@ void FejerAlgorithm::generateNodesAndWeights(const IntegrationMethod method)
       generateNodesAndWeightsClenshawCurtis(marginalNodes, marginalWeights);
       break;
     default:
-      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or  CLENSHAWCURTIS, here method=" << method;
+      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or CLENSHAWCURTIS, here method=" << method;
   } /* end switch */
   // Now we have marginal nodes & weights,
   // we generate the nD rule over [0, 1]^n

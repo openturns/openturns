@@ -2,20 +2,21 @@
 "Fejer Integration algorithm
 
 Available constructors:
-    FejerAlgorithm(*dimension=1, method=FejerAlgorithm.FEJERTYPE1*)
+    FejerAlgorithm(*dimension, method*)
 
-    FejerAlgorithm(*discretization, method=FejerAlgorithmFEJERTYPE1*)
+    FejerAlgorithm(*discretization, method*)
 
 Parameters
 ----------
 dimension : int, :math:`dimension>0`
-    The dimension of the functions to integrate. The default discretization is *FejerAlgorithm-DefaultMarginalIntegrationPointsNumber* in each dimension, see :class:`~openturns.ResourceMap`.
+    The dimension of the functions to integrate.
 discretization : sequence of int
     The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
+    The default discretization is *FejerAlgorithm-DefaultMarginalIntegrationPointsNumber* in each dimension,
+    see :class:`~openturns.ResourceMap`.
 method : int, optional
     Integer used to select the method of integration.
     (Amongst ot.FejerAlgorithm.FEJERTYPE1, ot.FejerAlgorithm.FEJERTYPE2 and ot.FejerAlgorithm.CLENSHAWCURTIS).
-
     Default is `ot.FejerAlgorithm.FEJERTYPE1`
 
 Notes
@@ -97,6 +98,7 @@ Create a FejerAlgorithm algorithm:
 >>> algo = ot.FejerAlgorithm([2, 4, 5])"
 
 // ---------------------------------------------------------------------
+
 %feature("docstring") OT::FejerAlgorithm::integrate
 "Evaluation of the integral of :math:`f` on an interval.
 
@@ -119,7 +121,6 @@ Returns
 value : :class:`~openturns.Point`
     Approximation of the integral.
 
-
 Examples
 --------
 >>> import openturns as ot
@@ -127,12 +128,11 @@ Examples
 >>> a = -2.5
 >>> b = 4.5
 >>> algoF1 = ot.FejerAlgorithm([10])
->>> value = algoF1.integrate(f, ot.Interval(a, b))[0]
->>> print(value)
--0.590...
+>>> value = algoF1.integrate(f, ot.Interval(a, b))
 "
 
 // ---------------------------------------------------------------------
+
 %feature("docstring") OT::FejerAlgorithm::getDiscretization
 "Accessor to the discretization of the tensorized rule.
 
@@ -142,6 +142,7 @@ discretization : :class:`~openturns.Indices`
     The number of integration point in each dimension."
 
 // ---------------------------------------------------------------------
+
 %feature("docstring") OT::FejerAlgorithm::getNodes
 "Accessor to the integration nodes.
 
@@ -151,6 +152,7 @@ nodes : :class:`~openturns.Sample`
     The tensorized FejerAlgorithm integration nodes on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
 
 // ---------------------------------------------------------------------
+
 %feature("docstring") OT::FejerAlgorithm::getWeights
 "Accessor to the integration weights.
 

@@ -97,6 +97,12 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
   return size_;
 }
 
+/* Level accessor */
+void WeightedExperimentImplementation::setLevel(const UnsignedInteger /*level*/)
+{
+  throw NotYetImplementedException(HERE) << getClassName() << " does not support stratification";
+}
+
 Bool WeightedExperimentImplementation::hasUniformWeights() const
 {
   return true;
