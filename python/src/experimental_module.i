@@ -38,6 +38,7 @@
 %include LeastSquaresEquationsSolver.i
 
 /* Uncertainty/Model */
+
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import dist_bundle3_module.i
@@ -76,6 +77,7 @@
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
 %include GeneralizedParetoValidation.i
+
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosValidation.i
 %include LinearModelValidation.i
@@ -84,3 +86,6 @@
 %include GaussianProcessRegressionResult.i
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
+
+ /* Uncertainty/Model */
+%include RatioOfUniforms.i

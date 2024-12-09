@@ -37,8 +37,6 @@
 #include "openturns/Mixture.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/Student.hxx"
-#include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/RandomGenerator.hxx"
 #include "openturns/DomainEvent.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/GaussKronrod.hxx"
@@ -316,7 +314,7 @@ void PointConditionalDistribution::update()
     {
       if (conditioningIndices_.getSize())
 	logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
-      if (!(logNormalizationFactor_ > std::log(getPDFEpsilon())))
+      if (!SpecFunc::IsNormal(logNormalizationFactor_))
 	throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
     }
 
@@ -342,100 +340,13 @@ void PointConditionalDistribution::update()
   if (!useSimplifiedVersion_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
     && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeSampling"))
   {
-    const Interval bounds(getRange());
-    const Point lb(bounds.getLowerBound());
-    const Point ub(bounds.getUpperBound());
-
-    // find a feasible starting point
-    SobolSequence sequence(dimension);
-    Point start;
-    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber");
-    for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
-    {
-      Point candidate(sequence.generate());
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-        candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
-      if (computePDF(candidate) > 0.0)
-      {
-        start = candidate;
-        break;
-      }
-    }
-    if (!start.getDimension())
-      throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms U sup";
-
-    // First, the upper bound on U
-    const Function objectiveU(new PointConditionalDistributionUBoundEvaluation(*this, r_));
-    OptimizationProblem problemU(objectiveU);
-    problemU.setMinimization(false);
-    problemU.setBounds(bounds);
-    OptimizationAlgorithm algo(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
-    algo.setProblem(problemU);
-    algo.setStartingPoint(start);
-    algo.run();
-    supU_ = std::exp(algo.getResult().getOptimalValue()[0]);
-    LOGDEBUG(OSS() << "supU_=" << supU_ << " u*=" << algo.getResult().getOptimalPoint());
-
-    // Second, the lower and upper bounds on V
-    const Function objectiveV(new PointConditionalDistributionVBoundEvaluation(*this, r_));
-    infV_.resize(dimension);
-    supV_.resize(dimension);
-    const Point zero(dimension, 0.0);
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      const Function objectiveVI(objectiveV.getMarginal(i));
-      OptimizationProblem problemVI(objectiveVI);
-      problemVI.setMinimization(false);
-      if (ub[i] > 0.0)
-      {
-        // find a feasible starting point in [0, ub]
-        start.clear();
-        for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
-        {
-          Point candidate(sequence.generate());
-          for (UnsignedInteger j = 0; j < dimension; ++ j)
-            candidate[j] = candidate[j] * ub[j];
-          if (computePDF(candidate) > 0.0)
-          {
-            start = candidate;
-            break;
-          }
-        }
-        if (!start.getDimension())
-          throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms V sup";
-        problemVI.setBounds(Interval(zero, ub));
-        algo.setProblem(problemVI);
-        algo.setStartingPoint(start);
-        algo.run();
-        supV_[i] = std::exp(algo.getResult().getOptimalValue()[0]);
-        LOGDEBUG(OSS() << "supV_[" << i << "]=" << supV_[i] << " v*=" << algo.getResult().getOptimalPoint());
-      }
-      if (lb[i] < 0.0)
-      {
-        // find a feasible starting point in [lb, 0]
-        start.clear();
-        for (UnsignedInteger k = 0; k < candidateNumber; ++ k)
-        {
-          Point candidate(sequence.generate());
-          for (UnsignedInteger j = 0; j < dimension; ++ j)
-            candidate[j] = candidate[j] * lb[j];
-          if (computePDF(candidate) > 0.0)
-          {
-            start = candidate;
-            break;
-          }
-        }
-        if (!start.getDimension())
-          throw InternalException(HERE) << "Could not find a feasible starting point to initialize ration of uniforms V inf";
-        problemVI.setBounds(Interval(lb, zero));
-        algo.setProblem(problemVI);
-        algo.setStartingPoint(start);
-        algo.run();
-        infV_[i] = -std::exp(algo.getResult().getOptimalValue()[0]);
-        LOGDEBUG(OSS() << "infV_[" << i << "]=" << infV_[i] << " v*=" << algo.getResult().getOptimalPoint());
-      }
-    }
-  }
+    // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
+    // r_ is a free parameter, could be optimized to maximize the acceptance ratio
+    sampler_ = RatioOfUniforms();
+    sampler_.setOptimizationAlgorithm(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("PointConditionalDistribution-OptimizationAlgorithm")));
+    sampler_.setCandidateNumber(ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber"));
+    sampler_.setDistribution(*this);
+  } // isContinuous()
 
   if (!useSimplifiedVersion_ && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeTransformation"))
   {
@@ -523,13 +434,19 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
   {
     Collection<Distribution> atoms(p_mixture->getDistributionCollection());
     const UnsignedInteger atomsNumber = atoms.getSize();
-    Point newWeights(p_mixture->getWeights());
-    Collection<Distribution> newAtoms(atomsNumber);
+    const Point weights(p_mixture->getWeights());
+    Point newWeights;
+    Collection<Distribution> newAtoms;
     for (UnsignedInteger i = 0; i < atomsNumber; ++i)
     {
-      newWeights[i] *= atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
-      newAtoms[i] = PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_);
-    }
+      const Scalar w = atoms[i].getMarginal(conditioningIndices_).computePDF(conditioningValues_);
+      // Add only atoms with nonzero distribution
+      if (w > 0.0)
+	{
+	  newWeights.add(weights[i] * w);
+	  newAtoms.add(PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_));
+	}
+    } // for i
     simplified = Mixture(newAtoms, newWeights);
     return true;
   }
@@ -575,28 +492,32 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     const Sample copulaSample(p_empirical_bernstein_copula->getCopulaSample());
     const UnsignedInteger sampleSize = copulaSample.getSize();
     const UnsignedInteger binNumber = p_empirical_bernstein_copula->getBinNumber();
-    Collection<Distribution> atoms(sampleSize);
-    Point weights(sampleSize, 0.0);
+    Collection<Distribution> atoms;
+    Point weights;
     const UnsignedInteger dimension = getDimension();
     const UnsignedInteger conditioningDimension = conditioningIndices_.getSize();
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      Collection<Distribution> atomComponents(dimension);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-      {
-        const UnsignedInteger newJ = nonConditioningIndices_[j];
-        const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
-        atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
-      } // j
-      atoms[i] = JointDistribution(atomComponents);
+      Scalar logWi = 0.0;
       for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
       {
         const UnsignedInteger newJ = conditioningIndices_[j];
         const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
         const Scalar xJ = conditioningValues_[j];
-        weights[i] += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
+        logWi += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
       } // j
-      weights[i] = std::exp(weights[i]);
+      if (SpecFunc::IsNormal(logWi))
+	{
+	  weights.add(std::exp(logWi));
+	  Collection<Distribution> atomComponents(dimension);
+	  for (UnsignedInteger j = 0; j < dimension; ++j)
+	    {
+	      const UnsignedInteger newJ = nonConditioningIndices_[j];
+	      const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
+	      atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
+	    } // j
+	  atoms.add(JointDistribution(atomComponents));
+	} // isNormal
     } // i
     simplified = Mixture(atoms, weights);
     return true;
@@ -673,7 +594,6 @@ Sample PointConditionalDistribution::getSupport(const Interval & interval) const
   return support;
 }
 
-/* Get one realization of the distribution */
 Point PointConditionalDistribution::getRealization() const
 {
   if (useSimplifiedVersion_)
@@ -686,28 +606,30 @@ Point PointConditionalDistribution::getRealization() const
   }
 
   const UnsignedInteger dimension = getDimension();
-  if (isContinuous() && dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
-  {
-    if (!infV_.getSize())
-      throw InvalidArgumentException(HERE) << "Sampling was not initialized";
-
-    // Now, the sampling using rejection
-    Bool accepted = false;
-    Point result(dimension);
-    while (!accepted)
-    {
-      const Scalar u = supU_ * RandomGenerator::Generate();
-      const Scalar ur = std::pow(u, r_);
-      for (UnsignedInteger i = 0; i < dimension; ++ i)
-        result[i] = (infV_[i] + (supV_[i] - infV_[i]) * RandomGenerator::Generate()) / ur;
-      accepted = (1.0 + r_ * dimension) * std::log(u) <= computeLogPDF(result);
-    }
-    return result;
-  }
+  if (isContinuous() && dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension") && sampler_.isInitialized())
+    return sampler_.getRealization();
 
   return DistributionImplementation::getRealization();
 }
 
+
+Sample PointConditionalDistribution::getSample(const UnsignedInteger size) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.getSample(size);
+
+  if (isDiscrete())
+  {
+    const Indices indices(DistFunc::rDiscrete(base_, alias_, size));
+    return support_.select(indices);
+  }
+
+  const UnsignedInteger dimension = getDimension();
+  if (isContinuous() && dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension") && sampler_.isInitialized())
+    return sampler_.getSample(size);
+
+  return DistributionImplementation::getSample(size);
+}
 
 Point PointConditionalDistribution::expandPoint(const Point & point) const
 {

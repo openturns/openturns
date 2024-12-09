@@ -24,6 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/RatioOfUniforms.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,6 +45,15 @@ public:
   /** Parameters constructor */
   PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
                         const Sample & observations);
+
+  PosteriorDistribution(const Distribution & conditionedDistribution,
+			const Distribution & conditioningDistribution,
+			const Sample & observations);
+
+  PosteriorDistribution(const Distribution & conditionedDistribution,
+			const Distribution & conditioningDistribution,
+			const Function & linkFunction,
+			const Sample & observations);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -78,6 +88,9 @@ public:
   using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
+  /** Get one realization of the distribution */
+  Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /* Interface specific to PosteriorDistribution */
 
@@ -107,12 +120,14 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Check if the distribution is constinuous */
+  Bool isContinuous() const override;
 
-  /** Compute the likelihood of the observations */
-  Point computeLikelihood(const Point & theta) const;
+  /** Compute the normalized likelihood of the observations */
+  Point computeNormalizedLikelihood(const Point & theta) const;
 
-  /** Compute the log-likelihood of the observations */
-  Scalar computeLogLikelihood(const Point & theta) const;
+  /** Compute the log-normalized likelihood of the observations */
+  Scalar computeLogNormalizedLikelihood(const Point & theta) const;
 
 protected:
 
@@ -136,6 +151,9 @@ private:
 
   /** The Bayes normalization constant */
   Scalar logNormalizationFactor_;
+
+  // for ratio of uniforms method
+  RatioOfUniforms sampler_;
 
 }; /* class PosteriorDistribution */
 

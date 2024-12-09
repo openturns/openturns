@@ -2,6 +2,9 @@
 
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.testing as ott
+
+ot.ResourceMap.SetAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 24)
 
 observationsSize = 5
 # Create a collection of distribution
@@ -43,21 +46,6 @@ for conditioning in conditioningDistributionCollection:
     # Has this distribution an independent copula?
     print("Independent copula= ", distribution.hasIndependentCopula())
 
-    # Test for realization of distribution
-    oneRealization = distribution.getRealization()
-    print("oneRealization=", oneRealization)
-
-    # Test for sampling
-    # size = 10
-    # oneSample = distribution.getSample(size)
-    # print("oneSample=", oneSample)
-
-    # Test for sampling
-    #       size = 10000
-    #       Sample anotherSample = distribution.getSample(size)
-    #       print("anotherSample mean=", anotherSample.computeMean())
-    #       print("anotherSample covariance=", anotherSample.computeCovariance())
-
     # Show PDF and CDF of mean point
     meanPDF = distribution.computePDF(mean)
     meanCDF = distribution.computeCDF(mean)
@@ -65,7 +53,7 @@ for conditioning in conditioningDistributionCollection:
     # Get 95% quantile
     quantile = distribution.computeQuantile(0.95)
     print("Quantile=", quantile)
-    # print("CDF(quantile)=", distribution.computeCDF(quantile))
+    print("CDF(quantile)=%.6g" % distribution.computeCDF(quantile))
     # Extract the marginals
     for i in range(dim):
         margin = distribution.getMarginal(i)
@@ -73,4 +61,11 @@ for conditioning in conditioningDistributionCollection:
         print("margin PDF=", ot.Point(1, margin.computePDF(mean[i])))
         print("margin CDF=", ot.Point(1, margin.computeCDF(mean[i])))
         print("margin quantile=", margin.computeQuantile(0.95))
-        print("margin realization=", margin.getRealization())
+
+    ot.Log.Show(ot.Log.TRACE)
+    validation = ott.DistributionValidation(distribution)
+    validation.setMomentsSamplingSize(10000)
+    validation.skipCorrelation()  # slow
+    validation.skipParameters()  # not yet implemented
+    validation.skipGradient()  # not yet implemented
+    validation.run()

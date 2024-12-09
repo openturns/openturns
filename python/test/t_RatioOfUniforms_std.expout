@@ -1,0 +1,21 @@
+ratioOfU is initialized? False
+ratioOfU is initialized? True
+Candidate number= 10
+Algo optim= class=OptimizationAlgorithm implementation=class=TNC class=OptimizationAlgorithmImplementation problem=class=OptimizationProblem implementation=class=OptimizationProblemImplementation objective=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoEvaluation name=Unnamed gradientImplementation=class=NoGradient name=Unnamed hessianImplementation=class=NoHessian name=Unnamed equality constraint=none inequality constraint=none bounds=none minimization=true dimension=0 startingPoint=class=Point name=Unnamed dimension=0 values=[] maximumIterationNumber=100 maximumCallsNumber=1000 maximumAbsoluteError=1e-05 maximumRelativeError=1e-05 maximumResidualError=1e-05 maximumConstraintError=1e-05 scale=class=Point name=Unnamed dimension=0 values=[] offset=class=Point name=Unnamed dimension=0 values=[] maxCGit=50 eta=0.25 stepmx=10 accuracy=0.0001 fmin=1 rescale=1.3
+distribution =  class=Dirichlet name=Dirichlet dimension=6 theta=class=Point name=Unnamed dimension=7 values=[1,2,3,4,5,6,7]
+ratioOfU is initialized? True
+r= 1.0
+Acceptance ratio= 0.07437196151955967
+r= 2.0
+Acceptance ratio= 0.010766690486335453
+One realization [0.0264637,0.0960957,0.057353,0.06803,0.346399,0.258452]
+One sample 0 : [ 0.0122903  0.00958704 0.056284   0.16338    0.162341   0.270933   ]
+1 : [ 0.0223429  0.0872047  0.162302   0.177974   0.153877   0.176723   ]
+2 : [ 0.028081   0.132847   0.101869   0.152653   0.221296   0.229746   ]
+3 : [ 0.0641035  0.0461473  0.0562827  0.185655   0.124247   0.287369   ]
+4 : [ 0.00229129 0.117515   0.285514   0.103647   0.186682   0.167765   ]
+5 : [ 0.0134988  0.00568263 0.130504   0.0880072  0.236763   0.289873   ]
+6 : [ 0.0241312  0.0676567  0.149337   0.127713   0.105772   0.20585    ]
+7 : [ 0.0110153  0.028562   0.0204246  0.289927   0.129784   0.394624   ]
+8 : [ 0.0609411  0.0581891  0.134628   0.0650109  0.159051   0.238261   ]
+9 : [ 0.0522268  0.093016   0.170359   0.0648993  0.206855   0.106749   ]
