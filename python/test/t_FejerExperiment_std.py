@@ -15,6 +15,7 @@ bounds = ot.Interval(4.0, 5.0)
 for method in all_methods:
     algo = ot.FejerAlgorithm([3], method)
     experiment = otexp.FejerExperiment(algo, bounds)
+    assert not experiment.hasUniformWeights()
     nodes, weights = experiment.generateWithWeights()
     print(method, nodes, weights)
     assert len(nodes) == len(weights)

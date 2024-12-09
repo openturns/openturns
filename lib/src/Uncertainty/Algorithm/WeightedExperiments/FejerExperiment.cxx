@@ -60,7 +60,7 @@ FejerExperiment * FejerExperiment::clone() const
 
 Bool FejerExperiment::hasUniformWeights() const
 {
-  return algorithm_.getDiscretization().getSize() < 2;
+  return algorithm_.getDiscretization()[0] < 2;
 }
 
 /* Sample generation */
