@@ -54,4 +54,15 @@ Create the tensorized model:
 
 Fix the same scale to each model:
 
->>> covarianceModel.setScale([1.0]*inputDimension)"
+>>> covarianceModel.setScale([1.0] * inputDimension)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TensorizedCovarianceModel::getCollection
+"Covariance model collection accessor.
+
+Returns
+-------
+coll : sequence of :class:`~openturns.CovarianceModel`
+    Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`d_k`.
+"
