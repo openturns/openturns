@@ -156,3 +156,23 @@ Returns
 -------
 ruleType : int
     The generation rule."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::setUseNestedLevels
+"Accessor to the levels interpretation flag.
+
+Parameters
+----------
+useNestedLevels : bool
+    Whether the level is raised to the power of two (only for FEJERTYPE2, CLENSHAWCURTIS nested rules) or interpreted as raw size."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::getUseNestedLevels
+"Accessor to the levels interpretation flag.
+
+Returns
+-------
+useNestedLevels : bool
+    Whether the level is raised to the power of two (only for FEJERTYPE2, CLENSHAWCURTIS nested rules) or interpreted as raw size."

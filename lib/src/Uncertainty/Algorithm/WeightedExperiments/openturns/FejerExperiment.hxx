@@ -74,6 +74,13 @@ public:
   void setRuleType(const RuleType ruleType);
   RuleType getRuleType() const;
 
+  /** Nesting level accessor */
+  void setLevels(const Indices & levels) override;
+
+  /** Use nested levels flag accessor */
+  void setUseNestedLevels(const Bool useNestedLevels);
+  Bool getUseNestedLevels() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -94,6 +101,8 @@ private:
   RuleType ruleType_ = CLENSHAWCURTIS;
 
   Interval bounds_;
+
+  Bool useNestedLevels_ = true;
 
 }; /* class FejerExperiment */
 
