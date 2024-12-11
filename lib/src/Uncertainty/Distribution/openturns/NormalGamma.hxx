@@ -74,6 +74,10 @@ public:
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 
+  /** Get the i-th marginal distribution */
+  using JointByConditioningDistribution::getMarginal;
+  Distribution getMarginal(const UnsignedInteger i) const override;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
