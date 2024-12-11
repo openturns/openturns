@@ -39,3 +39,15 @@ for method in all_methods:
     algo = ot.FejerAlgorithm([64, 64], method)
     value, adaptedNodes = algo.integrateWithNodes(h, interval)
     ott.assert_almost_equal(value[0], ref, 1e-10, 1e-10)
+
+for n in range(1, 8):
+    print(f"-- n={n} {'-' * 50}")
+    for rule in all_methods:
+        algo = ot.FejerAlgorithm([n], rule)
+        nodes = algo.getNodes().asPoint()
+        weights = algo.getWeights()
+        print(f"rule={rule}", nodes, weights)
+        if n == 1 and rule == ot.FejerAlgorithm.CLENSHAWCURTIS:
+            ott.assert_almost_equal(nodes, [0.0])
+        if n == 2 and rule == ot.FejerAlgorithm.FEJERTYPE2:
+            ott.assert_almost_equal(weights, [1.0] * 2)
