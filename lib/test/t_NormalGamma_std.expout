@@ -35,9 +35,9 @@ Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=
 beta=0.0248688
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0966867,-1.77733] upper bound=class=Point name=Unnamed dimension=2 values=[2.20341,3.77733] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.985531
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,-368.978] upper bound=class=Point name=Unnamed dimension=2 values=[2.55849,4.59228] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,-315.222] upper bound=class=Point name=Unnamed dimension=2 values=[2.55849,4.59228] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.997715
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.160511,-0.941338] upper bound=class=Point name=Unnamed dimension=2 values=[9.72932,370.978] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.160511,-0.941338] upper bound=class=Point name=Unnamed dimension=2 values=[9.72932,317.222] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.972528
 entropy=1.7654
 mean=class=Point name=Unnamed dimension=2 values=[1,0.75]
