@@ -74,6 +74,9 @@ public:
   void setRuleType(const RuleType ruleType);
   RuleType getRuleType() const;
 
+  /** Nesting level accessor */
+  void setLevels(const Indices & levels) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

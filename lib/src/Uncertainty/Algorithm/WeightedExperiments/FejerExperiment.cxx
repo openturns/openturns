@@ -119,6 +119,18 @@ void FejerExperiment::setSize(const UnsignedInteger /*size*/)
   throw NotDefinedException(HERE) << "in FejerExperiment::setSize";
 }
 
+/* Nesting level accessor */
+void FejerExperiment::setLevels(const Indices & levels)
+{
+  const UnsignedInteger size = levels.getSize();
+  if (size != discretization_.getSize())
+    throw InvalidArgumentException(HERE) << "FejerExperiment nesting levels must match discretization size, got " << size;
+  Indices discretization(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    discretization[i] = SpecFunc::IPow(2.0, levels[i]) - 1;
+  setDiscretization(discretization);
+}
+
 UnsignedInteger FejerExperiment::getSize() const
 {
   // only known at generation time
