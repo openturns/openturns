@@ -11,11 +11,11 @@ Example of multi output Kriging on the fire satellite model
 # Loading of the model
 # --------------------
 # This model involves 9 input variables and 3 output variables.
-# We load the :ref:`Fire satellite use case<use-case-firesatellite>`.
+# We load the :ref:`Fire satellite use case<use-case-fire-satellite>`.
 
 # %%
 import openturns as ot
-from openturns.usecases.fireSatellite_function import FireSatelliteModel
+from openturns.usecases.fire_satellite import FireSatelliteModel
 from openturns.viewer import View
 
 ot.Log.Show(ot.Log.NONE)
