@@ -25,10 +25,10 @@ Bilateral confidence interval= [0.0966867, 2.20341]
 [-1.77733, 3.77733]
 beta=0.985531
 Unilateral confidence interval (lower tail)= [0, 2.55849]
-[-368.978, 4.59228]
+[-315.222, 4.59228]
 beta=0.997715
 Unilateral confidence interval (upper tail)= [0.160511, 9.72932]
-[-0.941338, 370.978]
+[-0.941338, 317.222]
 beta=0.972528
 mean= [1,0.75]
 standard deviation= [0.5,1.03078]
