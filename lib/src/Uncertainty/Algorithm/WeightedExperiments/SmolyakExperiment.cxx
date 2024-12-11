@@ -264,7 +264,17 @@ Sample SmolyakExperiment::generateWithWeights(Point & weights) const
   {
     WeightedExperimentCollection collection(collection_);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
-      collection[j].setSize(combinationIndicesCollection(i, j));
+    {
+      try
+      {
+        collection[j].setLevels(Indices{combinationIndicesCollection(i, j)});
+      }
+      catch (const NotYetImplementedException &)
+      {
+        // does not support nesting level
+        collection[j].setSize(combinationIndicesCollection(i, j));
+      }
+    }
     TensorProductExperiment elementaryExperiment(collection);
     Point elementaryWeights(0);
     const Sample elementaryNodes(elementaryExperiment.generateWithWeights(elementaryWeights));
