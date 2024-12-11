@@ -1,5 +1,4 @@
 import openturns as ot
-from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 
@@ -38,7 +37,4 @@ g.setTitle(r"Fejer algorithms example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(va
 g.setLegends(["f", "Fejer_1", "Fejer_2", "Clenshaw-Curtis"])
 g.setLegendPosition("upper right")
 
-fig = plt.figure(figsize=(8, 4))
-axis = fig.add_subplot(111)
-axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=True)
+View(g, figure_kw={"figsize": (8, 4)}, add_legend=True)

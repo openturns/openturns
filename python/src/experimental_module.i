@@ -50,6 +50,7 @@
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include ExperimentIntegration.i
+%include FejerExperiment.i
 
 /* Uncertainty/Algorith/Optimization */
 %include SequentialSamplingAlgorithmImplementation.i

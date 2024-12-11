@@ -65,6 +65,7 @@ Deterministic weighted experiments
     :toctree: _generated/
     :template: classWithPlot.rst_t
 
+    experimental.FejerExperiment
     FixedExperiment
     GaussProductExperiment
     LowDiscrepancyExperiment
