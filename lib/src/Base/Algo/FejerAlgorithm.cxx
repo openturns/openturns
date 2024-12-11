@@ -104,6 +104,15 @@ void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & m
     const UnsignedInteger integrationNodesNumber = discretization_[i];
     if (!(integrationNodesNumber > 0))
       throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
+
+    // special case for n=1
+    if (integrationNodesNumber == 1)
+    {
+      marginalNodes[i] = Point({0.0});
+      marginalWeights[i] = Point({2.0});
+      continue;
+    }
+
     // Check if we already computed this 1D rule
     // We use the value 'dimension' as a guard
     UnsignedInteger indexAlreadyComputed = dimension;
@@ -227,7 +236,7 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
       {
         const Scalar theta_k = (k + 1.0) * M_PI / (integrationNodesNumber + 1);
         Scalar sum_sinus = 0.0;
-        const UnsignedInteger halfNodesNumber = (integrationNodesNumber - 1) / 2;
+        const UnsignedInteger halfNodesNumber = (integrationNodesNumber + 1) / 2;
         for (UnsignedInteger iter_ = 1; iter_ <= halfNodesNumber; ++iter_)
           sum_sinus += std::sin((2 * iter_ - 1) * theta_k) / (2 * iter_ - 1);
         // Nodes
