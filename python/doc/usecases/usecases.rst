@@ -22,7 +22,7 @@ Contents
    use_case_chaboche
    use_case_deflection_tube
    use_case_viscous_fall
-   use_case_fireSatellite
+   use_case_fire_satellite
    use_case_wingweight
    use_case_oscillator
    coles
