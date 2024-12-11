@@ -86,13 +86,6 @@ private:
   /* Generate nodes and weights */
   void generateNodesAndWeights(const IntegrationMethod method);
 
-  // Generate nodes and weights for ClenshawCurtis
-  void generateNodesAndWeightsClenshawCurtis(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
-  // Generate nodes and weights for Fejer Type 1
-  void generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
-  // Generate nodes and weights for Fejer Type 2
-  void generateNodesAndWeightsFejerType2(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
-
   /* Discretization of the tensorized rule */
   Indices discretization_;
 
