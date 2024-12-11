@@ -2,9 +2,9 @@
 "Fejer Integration algorithm
 
 Available constructors:
-    FejerAlgorithm(*dimension=1, method=FejerAlgorithm.FEJERTYPE1*)
+    FejerAlgorithm(*dimension, method*)
 
-    FejerAlgorithm(*discretization, method=FejerAlgorithmFEJERTYPE1*)
+    FejerAlgorithm(*discretization, method*)
 
 Parameters
 ----------
@@ -16,7 +16,7 @@ method : int, optional
     Integer used to select the method of integration.
     (Amongst ot.FejerAlgorithm.FEJERTYPE1, ot.FejerAlgorithm.FEJERTYPE2 and ot.FejerAlgorithm.CLENSHAWCURTIS).
 
-    Default is `ot.FejerAlgorithm.FEJERTYPE1`
+    Default is `ot.FejerAlgorithm.CLENSHAWCURTIS`
 
 Notes
 -----
@@ -128,8 +128,6 @@ Examples
 >>> b = 4.5
 >>> algoF1 = ot.FejerAlgorithm([10])
 >>> value = algoF1.integrate(f, ot.Interval(a, b))[0]
->>> print(value)
--0.590...
 "
 
 // ---------------------------------------------------------------------
