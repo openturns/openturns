@@ -155,9 +155,9 @@ class FireSatelliteModel:
 
     Examples
     --------
-    >>> from openturns.usecases import fireSatellitefunction
+    >>> from openturns.usecases.fire_satellite import FireSatelliteModel
     >>> # Load the FireSatellite model model
-    >>> m = fireSatellitefunction.FireSatelliteModel()
+    >>> m = FireSatelliteModel()
     """
 
     def __init__(self):
