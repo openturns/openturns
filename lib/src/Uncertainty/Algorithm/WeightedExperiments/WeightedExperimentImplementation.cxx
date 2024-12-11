@@ -97,6 +97,12 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
   return size_;
 }
 
+/* Level accessor */
+void WeightedExperimentImplementation::setLevels(const Indices & /*levels*/)
+{
+  throw NotYetImplementedException(HERE) << getClassName() << " does not support nesting levels";
+}
+
 Bool WeightedExperimentImplementation::hasUniformWeights() const
 {
   return true;

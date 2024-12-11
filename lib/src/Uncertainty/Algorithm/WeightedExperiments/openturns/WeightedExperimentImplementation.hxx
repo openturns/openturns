@@ -65,6 +65,9 @@ public:
   virtual void setSize(const UnsignedInteger size);
   virtual UnsignedInteger getSize() const;
 
+  /** Nesting level accessor */
+  virtual void setLevels(const Indices & levels);
+
   /** Uniform weights ? */
   virtual Bool hasUniformWeights() const;
 

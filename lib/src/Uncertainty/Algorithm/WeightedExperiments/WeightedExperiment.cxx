@@ -75,6 +75,14 @@ UnsignedInteger WeightedExperiment::getSize() const
 {
   return getImplementation()->getSize();
 }
+
+/* Level accessor */
+void WeightedExperiment::setLevels(const Indices & levels)
+{
+  copyOnWrite();
+  getImplementation()->setLevels(levels);
+}
+
 /* Here is the interface that all derived class must implement */
 
 /* Sample generation */
