@@ -18,7 +18,7 @@ coll1.add(ot.Uniform())
 d1 = ot.JointDistribution(coll1)
 # Test the different DOE
 ot.ResourceMap.SetAsUnsignedInteger(
-    "DeconditionedDistribution-MarginalIntegrationNodesNumber", 256
+    "DeconditionedDistribution-MarginalIntegrationNodesNumber", 32
 )
 ot.ResourceMap.SetAsUnsignedInteger(
     "DeconditionedDistribution-MaximumIntegrationNodesNumber", 10000
