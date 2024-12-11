@@ -27,6 +27,7 @@
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/ImportanceSamplingExperiment.hxx"
 #include "openturns/ExperimentIntegration.hxx"
+#include "openturns/FejerExperiment.hxx"
 #include "openturns/TemperatureProfile.hxx"
 #include "openturns/GeometricProfile.hxx"
 #include "openturns/LinearProfile.hxx"

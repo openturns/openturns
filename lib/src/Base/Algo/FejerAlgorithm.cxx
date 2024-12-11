@@ -19,10 +19,9 @@
  *
  */
 #include "openturns/FejerAlgorithm.hxx"
-#include "openturns/Tuples.hxx"
+#include "openturns/FejerExperiment.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +36,7 @@ static const Factory<FejerAlgorithm> Factory_FejerAlgorithm;
 FejerAlgorithm::FejerAlgorithm(const UnsignedInteger dimension,
                                const IntegrationMethod method)
   : IntegrationAlgorithmImplementation()
-  , discretization_(Indices(dimension, ResourceMap::GetAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber")))
+  , discretization_(Indices(dimension, ResourceMap::GetAsUnsignedInteger("FejerExperiment-DefaultMarginalNodesNumber")))
   , nodes_(0, 0)
   , weights_(0)
 {
@@ -84,7 +83,7 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
   Point integral(function.getOutputDimension(), 0.0);
   if (volume == 0.0) return integral;
   // Adapt the nodes to the bounds of the interval
-  const Point halfDelta( (interval.getUpperBound() - interval.getLowerBound()) / 2.0 );
+  const Point halfDelta((interval.getUpperBound() - interval.getLowerBound()) * 0.5);
   // Compute nodes
   adaptedNodes = nodes_ * halfDelta + halfDelta + interval.getLowerBound();
   // Compute the function over the adapted nodes
@@ -95,203 +94,11 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
   return std::pow(0.5, 1.0 * inputDimension) * integral * volume;
 }
 
-void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & marginalNodes,
-    Collection<Point> & marginalWeights)
-{
-  const UnsignedInteger dimension = discretization_.getSize();
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const UnsignedInteger integrationNodesNumber = discretization_[i];
-    if (!(integrationNodesNumber > 0))
-      throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
-
-    // special case for n=1
-    if (integrationNodesNumber == 1)
-    {
-      marginalNodes[i] = Point({0.0});
-      marginalWeights[i] = Point({2.0});
-      continue;
-    }
-
-    // Check if we already computed this 1D rule
-    // We use the value 'dimension' as a guard
-    UnsignedInteger indexAlreadyComputed = dimension;
-    for (UnsignedInteger j = 0; j < i; ++j)
-      if (discretization_[j] == integrationNodesNumber)
-      {
-        indexAlreadyComputed = j;
-        break;
-      }
-    // If indexAlreadyComputed < dimension we found a match
-    if (indexAlreadyComputed < dimension)
-    {
-      marginalNodes[i] = marginalNodes[indexAlreadyComputed];
-      marginalWeights[i] = marginalWeights[indexAlreadyComputed];
-    } // A match found
-    else
-    {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-      for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
-      {
-        const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
-        Scalar ck = 2.0;
-        if (k == 0 || k == (integrationNodesNumber - 1))
-          ck = 1.0;
-        // Nodes
-        marginalNodes[i][k] = std::cos(theta_k);
-        // Weights
-        Scalar term = 0;
-        UnsignedInteger halfNodeNumber = (integrationNodesNumber - 1) / 2;
-        for (UnsignedInteger l = 1; l <= halfNodeNumber; ++l)
-        {
-          Scalar bj = 1.0;
-          if (l < halfNodeNumber)
-            bj = 2.0;
-          term += bj / (4.0 * l * l - 1) * std::cos(2 * l * theta_k);
-        }
-        marginalWeights[i][k] = ck / (integrationNodesNumber - 1) * (1 - term);
-      }
-    } // No match found
-  }   // For i
-}
-
-void FejerAlgorithm::generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes,
-    Collection<Point> & marginalWeights)
-{
-  const UnsignedInteger dimension = discretization_.getSize();
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const UnsignedInteger integrationNodesNumber = discretization_[i];
-    // Check if we already computed this 1D rule
-    // We use the value 'dimension' as a guard
-    UnsignedInteger indexAlreadyComputed = dimension;
-    for (UnsignedInteger j = 0; j < i; ++j)
-      if (discretization_[j] == integrationNodesNumber)
-      {
-        indexAlreadyComputed = j;
-        break;
-      }
-    // If indexAlreadyComputed < dimension we found a match
-    if (indexAlreadyComputed < dimension)
-    {
-      marginalNodes[i] = marginalNodes[indexAlreadyComputed];
-      marginalWeights[i] = marginalWeights[indexAlreadyComputed];
-    } // A match found
-    else
-    {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-
-      for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
-      {
-        Scalar sum_term = 0;
-        // Nodes
-        const Scalar theta_ = (k + 1.0 / 2.) * M_PI / (integrationNodesNumber);
-        marginalNodes[i][k] = std::cos(theta_);
-        // Weights
-        UnsignedInteger end_sum = static_cast<UnsignedInteger>(std::floor((integrationNodesNumber) / 2));
-        for (UnsignedInteger index_sum = 1; index_sum <= end_sum; ++index_sum)
-        {
-          sum_term += (1.0 / (4. * index_sum * index_sum - 1)) * std::cos(2 * index_sum * theta_);
-        }
-        marginalWeights[i][k] = (2.0 / integrationNodesNumber) * (1.0 - 2.0 * sum_term);
-      }
-
-    } // No match found
-  }   // For i
-}
-
-void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & marginalNodes,
-    Collection<Point> & marginalWeights)
-{
-  // First, generate the 1D marginal rules over [0, 1]
-  const UnsignedInteger dimension = discretization_.getSize();
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const UnsignedInteger integrationNodesNumber = discretization_[i];
-    // Check if we already computed this 1D rule
-    // We use the value 'dimension' as a guard
-    UnsignedInteger indexAlreadyComputed = dimension;
-    for (UnsignedInteger j = 0; j < i; ++j)
-    {
-      if (discretization_[j] == integrationNodesNumber)
-      {
-        indexAlreadyComputed = j;
-        break;
-      }
-    }
-    // If indexAlreadyComputed < dimension we found a match
-    if (indexAlreadyComputed < dimension)
-    {
-      marginalNodes[i] = marginalNodes[indexAlreadyComputed];
-      marginalWeights[i] = marginalWeights[indexAlreadyComputed];
-    } // A match found
-    else
-    {
-      marginalNodes[i] = Point(integrationNodesNumber);
-      marginalWeights[i] = Point(integrationNodesNumber);
-
-      for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
-      {
-        const Scalar theta_k = (k + 1.0) * M_PI / (integrationNodesNumber + 1);
-        Scalar sum_sinus = 0.0;
-        const UnsignedInteger halfNodesNumber = (integrationNodesNumber + 1) / 2;
-        for (UnsignedInteger iter_ = 1; iter_ <= halfNodesNumber; ++iter_)
-          sum_sinus += std::sin((2 * iter_ - 1) * theta_k) / (2 * iter_ - 1);
-        // Nodes
-        marginalNodes[i][k] = std::cos(theta_k);
-        // Weights
-        marginalWeights[i][k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
-      }
-    } // No match found
-  }   // For i
-}
-
 /* Generate nodes and weights */
 void FejerAlgorithm::generateNodesAndWeights(const IntegrationMethod method)
 {
-  // First, generate the 1D marginal rules over [0, 1]
-  const UnsignedInteger dimension = discretization_.getSize();
-  if (!(dimension > 0))
-    throw InvalidArgumentException(HERE) << "Error: expected a positive dimension, here dimension is " << dimension;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const UnsignedInteger integrationNodesNumber = discretization_[i];
-    if (!(integrationNodesNumber > 0))
-      throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] has " << integrationNodesNumber << " nodes.";
-  }
-  Collection<Point> marginalNodes(dimension);
-  Collection<Point> marginalWeights(dimension);
-  switch (method)
-  {
-    case FEJERTYPE1:
-      generateNodesAndWeightsFejerType1(marginalNodes, marginalWeights);
-      break;
-    case FEJERTYPE2:
-      generateNodesAndWeightsFejerType2(marginalNodes, marginalWeights);
-      break;
-    case CLENSHAWCURTIS:
-      generateNodesAndWeightsClenshawCurtis(marginalNodes, marginalWeights);
-      break;
-    default:
-      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or  CLENSHAWCURTIS, here method=" << method;
-  } /* end switch */
-  // Now we have marginal nodes & weights,
-  // we generate the nD rule over [0, 1]^n
-  IndicesCollection allTuples(Tuples(discretization_).generate());
-  const UnsignedInteger size = allTuples.getSize();
-  nodes_ = Sample(size, dimension);
-  weights_ = Point(size, 1.0);
-
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      nodes_(i, j) = marginalNodes[j][allTuples(i, j)];
-      weights_[i] *= marginalWeights[j][allTuples(i, j)];
-    }
-  } // tuples
+  const FejerExperiment experiment(discretization_, static_cast<FejerExperiment::RuleType>(method));
+  nodes_ = experiment.generateWithWeights(weights_);
 }
 
 /* Discretization accessor */
