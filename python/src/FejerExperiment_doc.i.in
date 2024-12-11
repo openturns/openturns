@@ -1,0 +1,101 @@
+%feature("docstring") OT::FejerExperiment
+"Fejer experiment.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+discretization : sequence of int, optional
+    The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
+    The default discretization is *FejerExperiment-DefaultMarginalNodesNumber* in each dimension,
+    see :class:`~openturns.ResourceMap`.
+rule : int, optional
+    Possible values include:
+
+    - ot.FejerExperiment.FEJERTYPE1,
+    - ot.FejerExperiment.FEJERTYPE2,
+    - ot.FejerExperiment.CLENSHAWCURTIS.
+
+    Default is `ot.FejerExperiment.CLENSHAWCURTIS`
+
+See also
+--------
+openturns.FejerAlgorithm
+
+Examples
+--------
+Create an experiment:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> rule = otexp.FejerExperiment.FEJERTYPE1
+>>> experiment = otexp.FejerExperiment([3], rule)
+>>> experiment.setBounds(ot.Interval(4.0, 5.0))
+>>> nodes, weights = experiment.generateWithWeights()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::setDiscretization
+"Accessor to the discretization of the tensorized rule.
+
+Parameters
+----------
+discretization : :class:`~openturns.Indices`
+    The number of integration point in each dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::getDiscretization
+"Accessor to the discretization of the tensorized rule.
+
+Returns
+-------
+discretization : :class:`~openturns.Indices`
+    The number of integration point in each dimension."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::setBounds
+"Accessor to the design bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    The bounds used for rescaling."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::getBounds
+"Accessor to the design bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    The bounds used for rescaling."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::setRuleType
+"Accessor to the generation rule.
+
+Parameters
+----------
+ruleType : int
+    The generation rule. Possible values include:
+
+    - ot.FejerExperiment.FEJERTYPE1,
+    - ot.FejerExperiment.FEJERTYPE2,
+    - ot.FejerExperiment.CLENSHAWCURTIS."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerExperiment::getRuleType
+"Accessor to the generation rule.
+
+Returns
+-------
+ruleType : int
+    The generation rule."
