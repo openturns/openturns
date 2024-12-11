@@ -61,6 +61,9 @@ public:
   virtual void setSize(const UnsignedInteger size);
   virtual UnsignedInteger getSize() const;
 
+  /** Nesting level accessor */
+  virtual void setLevels(const Indices & levels);
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
