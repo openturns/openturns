@@ -497,7 +497,7 @@
   <BurrFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::DeconditionedDistribution parameters -->
-  <DeconditionedDistribution-MarginalIntegrationNodesNumber value_int="256"          />
+  <DeconditionedDistribution-MarginalIntegrationNodesNumber value_int="48"           />
   <DeconditionedDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
   <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 

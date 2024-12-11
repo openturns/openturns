@@ -1117,7 +1117,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
   // DeconditionedDistribution parameters //
-  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 256);
+  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 48);
   addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
   addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
