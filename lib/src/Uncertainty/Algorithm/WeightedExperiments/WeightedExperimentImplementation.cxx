@@ -98,9 +98,12 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
 }
 
 /* Level accessor */
-void WeightedExperimentImplementation::setLevels(const Indices & /*levels*/)
+void WeightedExperimentImplementation::setLevels(const Indices & levels)
 {
-  throw NotYetImplementedException(HERE) << getClassName() << " does not support nesting levels";
+  UnsignedInteger product = 1;
+  for (UnsignedInteger i = 0; i < levels.getSize(); ++ i)
+    product *= levels[i];
+  setSize(product);
 }
 
 Bool WeightedExperimentImplementation::hasUniformWeights() const
