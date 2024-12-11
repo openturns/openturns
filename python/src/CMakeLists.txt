@@ -1035,6 +1035,7 @@ ot_add_python_module(experimental experimental_module.i
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
+                     FejerExperiment.i FejerExperiment_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
                      GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
