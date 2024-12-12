@@ -1848,6 +1848,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SparseMethod-ErrorThreshold", 1.0e-3);
   addAsScalar("SparseMethod-MaximumErrorFactor", 2.0);
 
+  // SlicedInverseRegression parameters //
+  addAsUnsignedInteger("SlicedInverseRegression-DefaultSliceNumber", 10);
+
   // CholeskyMethod parameters //
   addAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
 

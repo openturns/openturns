@@ -12,6 +12,7 @@
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
+ * SlicedInverseRegression
 
 ==== API changes ====
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
