@@ -1,8 +1,11 @@
 #! /usr/bin/env python
 
+# %%
 import openturns as ot
 import openturns.testing as ott
+import os
 
+# %%
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
@@ -54,6 +57,7 @@ alpha = 0.05
 bounds = distribution.computeBilateralConfidenceInterval(1 - alpha)
 print("%.2f%% bilateral confidence interval" % ((1 - alpha) * 100), " =", bounds)
 
+# %%
 # check survival at upper bound
 distribution = ot.Binomial(10, 1.0)
 assert distribution.computeCDF(10.0) == 1.0
@@ -64,6 +68,78 @@ assert distribution.computeSurvivalFunction(10.0) == 0.0
 distribution = ot.Binomial(3, 0.5)
 assert distribution.computeScalarQuantile(0.9, True) == 0
 
+# %%
+print("Check on dataset")
+separator = ","
+skipped_lines = 13
+path = os.path.join(os.path.dirname(__file__), "t_Binomial_std.csv")
+sample = ot.Sample.ImportFromTextFile(path, separator, skipped_lines)
+rtol = 1.0e-12
+atol = ot.SpecFunc.MinScalar
+sample_size = sample.getSize()
+for i in range(sample_size):
+    x, n, pr, expected_pdf, expected_cdfp, expected_cdfq = sample[i]
+    x = int(x)
+    n = int(n)
+    distribution = ot.Binomial(n, pr)
+    computed_p = distribution.computePDF(x)
+    computed_cdf = distribution.computeCDF(x)
+    computed_ccdf = distribution.computeComplementaryCDF(x)
+    computed_surv = distribution.computeSurvivalFunction(x)
+    print(
+        f"row = {i}/{sample_size}, x = {x}, n = {n}, pr = {pr}, "
+        f"P(X = x) = {expected_pdf}, CDF = {expected_cdfp}, Compl. CDF = {expected_cdfq}"
+    )
+    # Check PDF
+    print(
+        f"    computePDF. Computed = {computed_p:.11e}, expected = {expected_pdf:.11e}"
+    )
+    ott.assert_almost_equal(computed_p, expected_pdf, rtol, atol)
+    # Check CDF
+    print(
+        f"    computeCDF. Computed = {computed_cdf:.11e}, expected = {expected_cdfp:.11e}"
+    )
+    ott.assert_almost_equal(computed_cdf, expected_cdfp, rtol, atol)
+    # Check complementary CDF
+    print(
+        f"    computeComplementaryCDF. Computed = {computed_ccdf:.11e}, "
+        f"expected = {expected_cdfq:.11e}"
+    )
+    ott.assert_almost_equal(computed_ccdf, expected_cdfq, rtol, atol)
+    # Check Survival
+    print(
+        f"    computeSurvivalFunction. Computed = {computed_surv:.11e}, "
+        f"expected = {computed_ccdf:.11e}"
+    )
+    ott.assert_almost_equal(computed_surv, computed_ccdf, rtol, atol)
+    # Check quantile
+    if pr == 0.0 and x < n:
+        # The function is not invertible
+        # for this particular input.
+        continue
+    elif expected_cdfp < expected_cdfq:
+        computed_x = int(distribution.computeQuantile(computed_cdf)[0])
+        cdfXM1 = distribution.computeCDF(computed_x - 1)
+        cdfX = distribution.computeCDF(computed_x)
+        print(
+            f"    computeQuantile (A). Computed X = {computed_x}, "
+            f"F(X - 1) = {cdfXM1:.7e}, F(X) = {cdfX:.7e}"
+        )
+        if computed_cdf == 0.0:
+            assert computed_x == 0.0
+        else:
+            assert cdfXM1 < computed_cdf and computed_cdf <= cdfX
+    else:
+        computed_x = int(distribution.computeQuantile(computed_ccdf, True)[0])
+        print(f"    computeQuantile (B). Computed X = {computed_x}, expected = {x}")
+        assert x == computed_x
+    if i > 0:
+        ott.assert_almost_equal(
+            distribution.computeScalarQuantile(expected_cdfp), x, 0.0, 1.0
+        )  # Can be off by 1 unit
+
+
+# %%
 # quantile bug
 alpha = 0.05
 beta = 0.05
@@ -79,3 +155,35 @@ for n in range(59, 100):
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Corner cases
+
+# 2147483647 is the maximum integer.
+# Values greater than this are not doubles anymore.
+binomial = ot.Binomial()
+N = 2147483647
+binomial.setN(N)
+binomial.setP(1.0 / N)
+computed = binomial.computePDF(1.0)
+expected = 0.3678794
+ott.assert_almost_equal(computed, expected, 1.0e-6, 0.0)
+
+computed = binomial.computePDF(2.0)
+expected = 0.1839397
+ott.assert_almost_equal(computed, expected, 1.0e-6, 0.0)
+
+# Extreme inputs
+binomial = ot.Binomial()
+binomial.setN(9999)
+binomial.setP(0.5)
+computed = binomial.computePDF(4999.0)
+expected = 0.0079786461393821558191
+ott.assert_almost_equal(computed, expected, 1.0e-7, 0.0)
+
+# Check pdf for values of P closer to 1
+binomial = ot.Binomial()
+binomial.setN(2)
+binomial.setP(0.9999)
+computed = binomial.computePDF(1.0)
+expected = 1.999799999999779835e-04
+ott.assert_almost_equal(computed, expected, 1e-12, 0.0)
