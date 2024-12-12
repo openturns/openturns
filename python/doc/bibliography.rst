@@ -293,6 +293,9 @@ Bibliography
 .. [koutsourelakis2004] Koutsourelakis, H. Pradlwarter, G. Schueller,
     *Reliability of structures in high dimensions, part i: algorithms and applications*,
     Probabilistic Engineering Mechanics 19 (4) (2004) 409–417
+.. [li1991] Li, K C. *Sliced Inverse Regression for Dimension Reduction*,
+    Journal of the American Statistical Association, 86, 316-342, 1991.
+    `pdf <https://escholarship.org/content/qt3mw1p0mb/qt3mw1p0mb.pdf>`__
 .. [lebrun2009a] Lebrun, R. & Dutfoy, A. *An innovating analysis of the Nataf
     transformation from the copula viewpoint.* Prob. Eng. Mech., 2009, 24,
     312-320.
