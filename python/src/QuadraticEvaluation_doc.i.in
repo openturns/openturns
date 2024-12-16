@@ -1,5 +1,5 @@
-%feature("docstring") OT::QuadraticFunction
-"Quadratic function.
+%feature("docstring") OT::QuadraticEvaluation
+"Quadratic numerical math evaluation implementation.
 
 Parameters
 ----------
@@ -14,7 +14,7 @@ quadratic : :class:`~openturns.SymmetricTensor`
 
 Notes
 -----
-This class implements a quadratic function :math:`f` defined as:
+This class implements the evaluation of a quadratic function :math:`f` defined as:
 
 .. math::
 
@@ -76,7 +76,7 @@ and:
 >>> quadratic[0,1,1] = 10
 >>> quadratic[1,0,1] = 11
 >>> quadratic[1,1,1] = 12
->>> function = ot.QuadraticFunction(center, constant, linear, quadratic)
+>>> function = ot.QuadraticEvaluation(center, constant, linear, quadratic)
 >>> inP = [1.0, 2.0]
 >>> print(function(inP))
 [39.5,60.5]"
