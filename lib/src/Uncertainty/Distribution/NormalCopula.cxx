@@ -363,7 +363,12 @@ CorrelationMatrix NormalCopula::getKendallTau() const
 /* Compute the entropy of the distribution */
 Scalar NormalCopula::computeEntropy() const
 {
-  return normal_.computeEntropy() - getDimension() * (SpecFunc::LOGSQRT2PI + 0.5);
+  // The entroy of the normal copula is the entropy of
+  // the associated standard normal distribution minus
+  // dim times the entropy of a standard univariate normal
+  // distribution, thus it is equal to (1/2)*log(|
+  //return normal_.computeEntropy() - getDimension() * (SpecFunc::LOGSQRT2PI + 0.5);
+  return -std::log(normal_.EllipticalDistribution::normalizationFactor_);
 }
 
 /* Get the Shape matrix of the copula */
