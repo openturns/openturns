@@ -22,6 +22,7 @@
 #include "openturns/NormalGamma.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/Student.hxx"
 #include "openturns/ParametricFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -339,6 +340,14 @@ void NormalGamma::setParameter(const Point & parameter)
 Description NormalGamma::getParameterDescription() const
 {
   return {"mu", "kappa", "alpha", "beta"};
+}
+
+/* Get the i-th marginal distribution */
+Distribution NormalGamma::getMarginal(const UnsignedInteger i) const
+{
+  if (i >= 2) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, 1]";
+  if (i == 0) return Gamma(alpha_, beta_);
+  return Student(2.0 * alpha_, mu_, std::sqrt(beta_ / (alpha_ * kappa_)));
 }
 
 /* String converter */

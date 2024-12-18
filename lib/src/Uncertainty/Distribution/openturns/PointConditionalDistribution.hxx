@@ -25,6 +25,7 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/RatioOfUniforms.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,6 +66,7 @@ public:
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;
@@ -225,10 +227,7 @@ private:
   Point conditioningCDF_;
 
   // for ratio of uniforms method
-  Scalar r_ = 1.0;
-  Scalar supU_ = 0.0;
-  Point infV_;
-  Point supV_;
+  RatioOfUniforms sampler_;
 
   // for discrete sampling using alias method
   Point base_;

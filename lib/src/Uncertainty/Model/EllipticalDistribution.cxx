@@ -70,7 +70,7 @@ EllipticalDistribution::EllipticalDistribution(const Point & mu,
         << " mu dimension=" << mu.getDimension();
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
-    if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
+    if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
   // Then we set the dimension of the Elliptical distribution
   setDimension(dimension);
   // The mean attribute is stored at an upper level
@@ -738,7 +738,7 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
   setDimension(dimension);
   mean_ = Point(dimension);
   sigma_ = Point(dimension);
-  R_ = CorrelationMatrix(dimension);
+  CorrelationMatrix R(dimension);
   if (dimension == 1)
   {
     mean_[0] = parametersCollection[0][0];
@@ -758,11 +758,11 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
     {
       for (UnsignedInteger j = 0; j < i; ++j)
       {
-        R_(i, j) = parametersCollection[size - 1][parameterIndex];
+        R(i, j) = parametersCollection[size - 1][parameterIndex];
         ++parameterIndex;
       }
     }
-    if ( !R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+    setR(R);
   }
   update();
   computeRange();
@@ -818,8 +818,7 @@ void EllipticalDistribution::setParameter(const Point & parameters)
         ++ index;
       }
     }
-    if (!R.isPositiveDefinite())
-      throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
+    setR(R);
   }
   // commit all changes at once
   mean_ = mean;
