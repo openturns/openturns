@@ -106,7 +106,7 @@ class WingWeightModel:
 
         # Second marginal : Wfw
         self.Wfw = ot.Uniform(220.0, 300.0)
-        self.Sw.setDescription(["Wfw"])
+        self.Wfw.setDescription(["Wfw"])
 
         # Third marginal : A
         self.A = ot.Uniform(6.0, 10.0)
