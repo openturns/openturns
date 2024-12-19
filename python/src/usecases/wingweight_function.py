@@ -102,43 +102,43 @@ class WingWeightModel:
 
         # First marginal : Sw
         self.Sw = ot.Uniform(150.0, 200.0)
-        self.Sw.setName("Sw")
+        self.Sw.setDescription(["Sw"])
 
         # Second marginal : Wfw
         self.Wfw = ot.Uniform(220.0, 300.0)
-        self.Wfw.setName("Wfw")
+        self.Sw.setDescription(["Wfw"])
 
         # Third marginal : A
         self.A = ot.Uniform(6.0, 10.0)
-        self.A.setName("A")
+        self.A.setDescription(["A"])
 
         # Fourth marginal : Lambda
         self.Lambda = ot.Uniform(-10.0, 10.0)
-        self.Lambda.setName("Lambda")
+        self.Lambda.setDescription(["Lambda"])
 
         # Fifth marginal : q
         self.q = ot.Uniform(16.0, 45.0)
-        self.q.setName("q")
+        self.q.setDescription(["q"])
 
         # Sixth marginal : l
         self.ll = ot.Uniform(0.5, 1.0)
-        self.ll.setName("l")
+        self.ll.setDescription(["l"])
 
         # Seventh marginal : tc
         self.tc = ot.Uniform(0.08, 0.18)
-        self.tc.setName("tc")
+        self.tc.setDescription(["tc"])
 
         # Eighth marginal : Nz
         self.Nz = ot.Uniform(2.5, 6.0)
-        self.Nz.setName("Nz")
+        self.Nz.setDescription(["Nz"])
 
         # Nineth marginal : Wdg
         self.Wdg = ot.Uniform(1700.0, 2500.0)
-        self.Wdg.setName("Wdg")
+        self.Wdg.setDescription(["Wdg"])
 
         # Tenth marginal : Wp
         self.Wp = ot.Uniform(0.025, 0.08)
-        self.Wp.setName("Wp")
+        self.Wp.setDescription(["Wp"])
 
         # Input distribution
         self.inputDistribution = ot.JointDistribution(
@@ -161,3 +161,5 @@ class WingWeightModel:
 
         # The Wing weight model
         self.model = ot.PythonFunction(10, 1, functionWingWeight)
+        self.model.setInputDescription(self.inputDistribution.getDescription())
+        self.model.setOutputDescription(["WingWeight"])
