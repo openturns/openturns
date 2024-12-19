@@ -166,32 +166,41 @@ class FireSatelliteModel:
 
         # Altitude
         self.H = ot.TruncatedNormal(18e6, 1e6, 18e6 - 3 * 1e6, 18e6 + 3 * 1e6)
+        self.H.setDescription("H")
 
         # Power other than ACS
         self.Pother = ot.TruncatedNormal(
             1000.0, 50.0, 1000.0 - 3 * 50.0, 1000.0 + 3 * 50.0
         )
+        self.Pother.setDescription(["Pother"])
 
         # Average solar flux
         self.Fs = ot.TruncatedNormal(1400.0, 20.0, 1400.0 - 3 * 20.0, 1400.0 + 3 * 20.0)
+        self.Fs.setDescription(["Fs"])
 
         # Deviation of moment axis
         self.theta = ot.TruncatedNormal(15.0, 1.0, 15.0 - 3 * 1.0, 15.0 + 3 * 1.0)
+        self.theta.setDescription(["theta"])
 
         # Moment arm for radiation torque
         self.Lsp = ot.TruncatedNormal(2.0, 0.4, 2.0 - 3 * 0.4, 2.0 + 3 * 0.4)
+        self.Lsp.setDescription(["Lsp"])
 
         # Reflectance factor
         self.q = ot.TruncatedNormal(0.5, 0.1, 0.5 - 3 * 0.1, 0.5 + 3 * 0.1)
+        self.q.setDescription(["q"])
 
         # Residual dipole of spacecraft
         self.RD = ot.TruncatedNormal(5.0, 1.0, 5.0 - 3 * 1.0, 5.0 + 3 * 1.0)
+        self.RD.setDescription(["RD"])
 
         # Moment arm for aerodynamic torque
         self.Lalpha = ot.TruncatedNormal(2.0, 0.4, 2.0 - 3 * 0.4, 2.0 + 3 * 0.4)
+        self.Lalpha.setDescription(["Lalpha"])
 
         # Drag coefficient
         self.Cd = ot.TruncatedNormal(1.0, 0.3, 1.0 - 3 * 0.3, 1.0 + 3 * 0.3)
+        self.Cd.setDescription(["Cd"])
 
         # Input distribution
         self.inputDistribution = ot.JointDistribution(
@@ -223,6 +232,10 @@ class FireSatelliteModel:
         self.modelTotalTorque = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalTorque
         )
+        self.modelTotalTorque.setInputDescription(
+            self.inputDistribution.getDescription()
+        )
+        self.modelTotalTorque.setOutputDescription(["Total Torque"])
 
         # Model of Total power
         def multidisciplinaryAnalysisToTalPower(x):
@@ -231,6 +244,10 @@ class FireSatelliteModel:
         self.modelTotalPower = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalPower
         )
+        self.modelTotalPower.setInputDescription(
+            self.inputDistribution.getDescription()
+        )
+        self.modelTotalPower.setOutputDescription(["TotalPower"])
 
         # Model of Solar Array Area
         def multidisciplinaryAnalysisSolarArrayArea(x):
@@ -239,6 +256,10 @@ class FireSatelliteModel:
         self.modelSolarArrayArea = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisSolarArrayArea
         )
+        self.modelSolarArrayArea.setInputDescription(
+            self.inputDistribution.getDescription()
+        )
+        self.modelSolarArrayArea.setOutputDescription(["SolarArrayArea"])
 
         # Optional variables (deterministic)
         # Speed of light
