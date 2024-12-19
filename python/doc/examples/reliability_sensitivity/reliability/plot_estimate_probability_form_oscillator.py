@@ -257,9 +257,7 @@ for i in range(distribution.getDimension()):
             ax.set_xlabel(distribution.getDescription()[j])
 
         if i == 1 and j == 0:
-            cs2.collections[0].set_label(my_labels["TLSF"])
             h2, l2 = cs2.legend_elements()
-            cs3.collections[0].set_label(my_labels["ALSF"])
             h3, l3 = cs3.legend_elements()
             lg = ax.legend(
                 [h2[0], h3[0]],
@@ -397,9 +395,7 @@ for i in range(distribution.getDimension()):
             ax.set_xlabel(distribution.getDescription()[j])
 
         if i == 1 and j == 0:
-            cs2.collections[0].set_label(my_labels["TLSF"])
             h2, l2 = cs2.legend_elements()
-            cs3.collections[0].set_label(my_labels["ALSF"])
             h3, l3 = cs3.legend_elements()
             lg = ax.legend(
                 [h2[0], h3[0]],
