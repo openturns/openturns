@@ -102,6 +102,7 @@ print("Agg. total order indices: ", agg_total_order)
 # %%
 graph = sensitivityAnalysis.draw()
 view = viewer.View(graph)
+viewer.View.ShowAll()
 
 # %%
 # Since there are several outputs, the graph presents the aggregated Sobol' indices.
