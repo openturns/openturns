@@ -83,8 +83,13 @@ estimate the failure probability, that is if:
 
 where :math:`\vect{x}^*` is the design point, :math:`s` is the threshold and :math:`\epsilon_t`
 is the absolute tolerance.
-Default value is specified in the `nearestPointAlgorithm` attribute. 
-
+Default value is specified in the `nearestPointAlgorithm` attribute.
+Either single-start or multi-start algorithms (see :class:`~openturns.MultiStart`) can be used for the optimization.
+The methods :meth:`getPhysicalStartingPoint` and :meth:`setPhysicalStartingPoint`
+are used only in case of single-start optimization algorithms.
+In case of multi-start optimization algorithms, the starting points are directly defined within the
+optimization strategy (see :class:`~openturns.MultiStart`). In that case, one has to be
+careful to indicate the initial points in the Standard space.
 
 See also
 --------

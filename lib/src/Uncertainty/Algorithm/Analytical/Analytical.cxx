@@ -119,8 +119,10 @@ void Analytical::run()
   OptimizationAlgorithm nearestPointAlgorithm(nearestPointAlgorithm_);
   nearestPointAlgorithm.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
-  /* set the starting point of the algorithm in the standard space */
-  nearestPointAlgorithm.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingPoint()));
+    
+  /* set the starting point of the algorithm in the standard space  */
+  if ((nearestPointAlgorithm_.getImplementation()->getClassName() != "MultiStart"))
+    nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
 
   /* solve the nearest point problem */
   nearestPointAlgorithm.run();
