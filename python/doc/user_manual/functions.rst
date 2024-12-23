@@ -144,11 +144,7 @@ Evaluation functions
     :template: classWithPlot.rst_t
     PiecewiseHermiteEvaluation
     PiecewiseLinearEvaluation
-
-    :template: class.rst_t
     P1LagrangeInterpolation
-
-    :template: classWithPlot.rst_t
     P1LagrangeEvaluation
 
     :template: class.rst_t
