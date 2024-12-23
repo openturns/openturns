@@ -23,7 +23,7 @@ draw_fP1.setLevels(lev)
 draw_fP1.setColorBarPosition('')
 graph.add(draw_f)
 graph.add(draw_fP1)
-graph.setTitle(r"P1 Lagrange interpolation of $(x,y) \mapsto \sin(\pi x) \sin(\pi y)$")
+graph.setTitle(r"P1 Lagrange interpolation (solid) of $(x,y) \mapsto \sin(\pi x) \sin(\pi y)$ (dashed) from a mesh (blue solid)")
 graph.setXTitle('$x$')
 graph.setYTitle('$y$')
 

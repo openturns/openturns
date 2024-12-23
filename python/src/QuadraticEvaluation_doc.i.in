@@ -24,11 +24,11 @@ This class implements the evaluation of a quadratic function :math:`f` defined a
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`d` lines and :math:`d` columns,
-- :math:`\vect{b}` is a vector in :math:`\Rset^d`,
-- :math:`\vect{c}` is a  vector in :math:`\Rset^p`,
-- :math:`\underline{\underline{\underline{M}}}` is a :math:`\Rset^p \times \Rset^d \times \Rset^d` symmetric
-  tensor.
+- :math:`\mat{A}` is a matrix with :math:`d` lines and :math:`d` columns, called *linear*,
+- :math:`\vect{b}` is a vector in :math:`\Rset^d`, called *center*,
+- :math:`\vect{c}` is a  vector in :math:`\Rset^p`, called *constant*
+- :math:`\underline{\underline{\underline{M}}}` is a :math:`\Rset^p \times \Rset^d \times \Rset^d`
+  symmetric  tensor, , called *quadratic*.
 
 Examples
 --------
@@ -80,3 +80,45 @@ and:
 >>> inP = [1.0, 2.0]
 >>> print(function(inP))
 [39.5,60.5]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticEvaluation::getCenter
+"Accessor to the center.
+
+Returns
+-------
+center : sequence of float
+    Vector :math:`\vect{b}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticEvaluation::getConstant
+"Accessor to the constant.
+
+Returns
+-------
+constant : sequence of float
+    Vector :math:`\vect{c}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticEvaluation::getLinear
+"Accessor to the matrix.
+
+Returns
+-------
+linear : :class:`~openturns.Matrix`
+    Matrix :math:`\mat{A}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticEvaluation::getQuadratic
+"Accessor to the symmetric tensor.
+
+Returns
+-------
+quadratic : :class:`~openturns.SymmetricTensor`
+    Tensor :math:`\underline{\underline{\underline{M}}}`."
+    
+
