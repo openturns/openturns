@@ -14,6 +14,11 @@ See also
 --------
 PiecewiseLinearEvaluation
 
+Notes
+-----
+The evaluation returns constant values for data outside the bounds of the design of experiments.
+Thus, the approximation should not be used outside the range of the design of experiments.
+
 Examples
 --------
 >>> import openturns as ot
@@ -24,3 +29,92 @@ Examples
 >>> f = ot.Function(evaluation)
 >>> print(f([2.5]))
 [1.5]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::getLocations
+"Accessor to the locations.
+
+Returns
+-------
+locations : :class:`~openturns.Point`
+    Locations."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::getValues
+"Accessor to the values.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    Values of the function at the locations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::getDerivatives
+"Accessor to the derivatives.
+
+Returns
+-------
+derivatives : :class:`~openturns.Sample`
+    Derivatives of the function at the locations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::setLocations
+"Accessor to the locations.
+
+Parameters
+----------
+locations : :class:`~openturns.Point`
+    Locations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::setValues
+"Accessor to the values.
+
+Parameters
+----------
+values : :class:`~openturns.Sample`
+    Values of the function at the locations."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::setDerivatives
+"Accessor to the derivatives.
+
+Parameters
+----------
+derivatives : :class:`~openturns.Sample`
+    Derivatives of the function at the locations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives
+"Accessor to the locations and values.
+
+Parameters
+----------
+locations : :class:`~openturns.Point`
+    Locations.
+values : :class:`~openturns.Sample`
+    Values of the function at the locations.
+derivatives : :class:`~openturns.Sample`
+    Derivatives of the function at the locations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::derivate
+"Derivative function.
+
+Parameters
+----------
+point : :class:`~openturns.Point`
+    A point.
+
+Returns
+-------
+derivative : :class:`~openturns.Point`
+    The derivative of the function at the given point."
