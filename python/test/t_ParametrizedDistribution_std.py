@@ -103,6 +103,8 @@ print(f"conditional CDF={ccdf:.6f}")
 sccdf = distribution.computeSequentialConditionalCDF([0.0])
 print(f"sequential conditional CDF={sccdf}")
 
+dp = distribution.getDistributionParameters()
+
 ot.RandomGenerator.SetSeed(2)
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
