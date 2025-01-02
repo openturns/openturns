@@ -30,3 +30,13 @@ Create the distribution:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ParametrizedDistribution::getDistributionParameters
+"Get the distribution parameters.
+
+Returns
+-------
+parameters : :class:`~openturns.DistributionParameters`
+    Parameters of the distribution to be created."

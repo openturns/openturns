@@ -1,4 +1,4 @@
-Distribution  class=ParametrizedDistribution parameters=class=GammaMuSigma name=Unnamed mu=0.1 sigma=0.489898 gamma=-0.5 distribution=class=Gamma name=Gamma dimension=1 k=1.5 lambda=2.5 gamma=-0.5
+Distribution  ParametrizedDistribution(parameters = GammaMuSigma(mu = 0.1, sigma = 0.489898, gamma = -0.5))
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.281847]

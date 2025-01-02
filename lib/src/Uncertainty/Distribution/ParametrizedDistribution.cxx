@@ -227,6 +227,12 @@ String ParametrizedDistribution::__repr__() const
   return oss;
 }
 
+String ParametrizedDistribution::__str__(const String & ) const
+{
+  OSS oss(false);
+  oss << getClassName() << "(parameters = " << distributionParameters_.__str__() << ")";
+  return oss;
+}
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar ParametrizedDistribution::getRoughness() const
@@ -317,5 +323,10 @@ void ParametrizedDistribution::load(Advocate & adv)
   distribution_ = distributionParameters_.getDistribution();
 }
 
+/** Distribution parameters accessor */
+DistributionParameters ParametrizedDistribution::getDistributionParameters() const
+{
+  return distributionParameters_;
+}
 
 END_NAMESPACE_OPENTURNS
