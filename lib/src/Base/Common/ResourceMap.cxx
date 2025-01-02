@@ -944,8 +944,8 @@ void ResourceMap::loadDefaultConfiguration()
   // GaussLegendre parameters //
   addAsUnsignedInteger("GaussLegendre-DefaultMarginalIntegrationPointsNumber", 64);
 
-  // FejerAlgorithm parameters //
-  addAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber", 64);
+  // FejerExperiment parameters //
+  addAsUnsignedInteger("FejerExperiment-DefaultMarginalNodesNumber", 64);
 
   // IteratedQuadrature parameters //
   addAsScalar("IteratedQuadrature-MaximumError", 1.0e-7);

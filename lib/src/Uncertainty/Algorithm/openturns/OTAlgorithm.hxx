@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTALGORITHM_HXX
 #define OPENTURNS_OTALGORITHM_HXX
 
+#include "openturns/FejerAlgorithm.hxx"
 #include "openturns/TaylorExpansionMoments.hxx"
 
 #include "openturns/OTAnalytical.hxx"

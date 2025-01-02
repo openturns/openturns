@@ -225,3 +225,15 @@ isRandom : bool
 %feature("docstring") OT::WeightedExperimentImplementation::isRandom
 OT_WeightedExperiment_isRandom_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setLevels_doc
+"Accessor to the experiment nesting levels.
+
+Parameters
+----------
+levels : sequence of int
+    Nesting level for each component."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setLevels
+OT_WeightedExperiment_setLevels_doc
