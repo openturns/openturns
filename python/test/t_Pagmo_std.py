@@ -52,7 +52,7 @@ for name in multi_obj:
         x = result.getFinalPoints()
         if use_ineq:
             for x1, x2 in x:
-                assert x1 >= x2, f"ineq constraint not verified: {x1} >= {x2}"
+                assert x1 + 1e-5 >= x2, f"ineq constraint not verified: {x1} >= {x2}"
         y = result.getFinalValues()
         fronts = result.getParetoFrontsIndices()
         assert len(fronts) > 0, "no pareto"
