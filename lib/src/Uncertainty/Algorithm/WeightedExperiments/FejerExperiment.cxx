@@ -125,10 +125,22 @@ void FejerExperiment::setLevels(const Indices & levels)
   const UnsignedInteger size = levels.getSize();
   if (size != discretization_.getSize())
     throw InvalidArgumentException(HERE) << "FejerExperiment nesting levels must match discretization size, got " << size;
-  Indices discretization(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    discretization[i] = SpecFunc::IPow(2.0, levels[i]) - 1;
+  Indices discretization(levels);
+  if (useNestedLevels_)
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      discretization[i] = SpecFunc::IPow(2.0, levels[i]) - 1;
   setDiscretization(discretization);
+}
+
+/* Use nested levels flag accessor */
+void FejerExperiment::setUseNestedLevels(const Bool useNestedLevels)
+{
+  useNestedLevels_ = useNestedLevels;
+}
+
+Bool FejerExperiment::getUseNestedLevels() const
+{
+  return useNestedLevels_;
 }
 
 UnsignedInteger FejerExperiment::getSize() const
@@ -171,6 +183,7 @@ void FejerExperiment::save(Advocate & adv) const
   adv.saveAttribute("discretization_", discretization_);
   adv.saveAttribute("ruleType_", static_cast<UnsignedInteger>(ruleType_));
   adv.saveAttribute("bounds_", bounds_);
+  adv.saveAttribute("useNestedLevels_", useNestedLevels_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -182,6 +195,7 @@ void FejerExperiment::load(Advocate & adv)
   adv.loadAttribute("ruleType_", ruleType);
   ruleType_ = static_cast<RuleType>(ruleType);
   adv.loadAttribute("bounds_", bounds_);
+  adv.loadAttribute("useNestedLevels_", useNestedLevels_);
 }
 
 
