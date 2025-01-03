@@ -5,11 +5,18 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Given a set of indices :math:`\mathcal{I}`, a deterministic vector :math:`\vect{x}_\mathcal{I}` and a distribution :math:`L_\theta(\inputRV)`, we define the conditional distribution:
+Given a set of indices :math:`\mathcal{I}`, a deterministic vector :math:`\vect{x}_\mathcal{I}`
+and a distribution :math:`L_\theta(\inputRV)`, we define the conditional distribution:
 
 .. math::
 
     L_\theta(\inputRV_{\bar{\mathcal{I}}} | \inputRV_\mathcal{I} =\inputReal_\mathcal{I})
+
+Its probability density function is defined as:
+
+.. math::
+
+    \dfrac{p_\theta(\inputReal_{\bar{\mathcal{I}}}, \inputReal_{\mathcal{I}})}{\int p_\theta(\inputReal_{\bar{\mathcal{I}}}, \inputReal_{\mathcal{I}}') d \inputReal_{\mathcal{I}}'}
 
 Parameters
 ----------
@@ -22,11 +29,21 @@ conditioningValues : sequence of float
 
 Notes
 -----
-Its probability density function is defined as:
+The default integration algorithm is :class:`openturns.experimental.CubaIntegration` if available
+(or :class:`openturns.GaussKronrod` in dimension) or else :class:`openturns.SimplicialCubature`.
 
-.. math::
+Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the distribution:
 
-    \dfrac{p_\theta(\inputReal_{\bar{\mathcal{I}}}, \inputReal_{\mathcal{I}})}{\int p_\theta(\inputReal_{\bar{\mathcal{I}}}, \inputReal_{\mathcal{I}}') d \inputReal_{\mathcal{I}}'}
+- The string entry `PointConditionalDistribution-CubaAlgorithm` defines the default Cuba algorithm name used.
+- The string entry `PointConditionalDistribution-OptimizationAlgorithm` defines the default optimization algorithm name used.
+- The integer entry `PointConditionalDistribution-RatioUniformCandidateNumber` sets the number
+  of candidates to find a feasible points for the ration of uniforms method initialization.
+- The integer entry `PointConditionalDistribution-SmallDimension` is the dimension threshold
+  from which to switch to CDF inversion sampling instead of ratio of uniforms (for continuous distribution).
+- The boolean entry `PointConditionalDistribution-UseSimplifiedVersion` decides if simplification is enabled.
+- The boolean entry `PointConditionalDistribution-InitializeTransformation` decides whether
+  to initialize the iso-proabilistic transformation.
+- The boolean entry `PointConditionalDistribution-InitializeSampling` decides whether to initialize the ratio of uniforms method.
 
 Examples
 --------
@@ -79,7 +96,16 @@ conditioningValues : :class:`~openturns.Point`
 Returns
 -------
 simplified : :class:`~openturns.Distribution`
-    Simplified distribution when an analytical simplification is available."
+    Simplified distribution in the following cases:
+
+    - no conditionning (empty indices)
+    - independent copula
+    - elliptical distributions (Normal, Student)
+    - JointDistribution, BlockIndependentDistribution, BlockIndependentCopula
+    - Mixture, KernelMixture
+    - Bernstein copula
+
+"
 
 // ---------------------------------------------------------------------
 
@@ -90,7 +116,8 @@ Returns
 -------
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF.
-    Default value is :class:`openturns.experimental.CubaIntegration` if available or else :class:`openturns.SimplicialCubature`."
+    Default value is :class:`openturns.experimental.CubaIntegration`
+    if available or else :class:`openturns.SimplicialCubature`."
 
 // ---------------------------------------------------------------------
 
@@ -101,4 +128,5 @@ Parameters
 ----------
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF.
-    Default value is :class:`openturns.experimental.CubaIntegration` if available or else :class:`openturns.SimplicialCubature`."
+    Default value is :class:`openturns.experimental.CubaIntegration`
+    if available or else :class:`openturns.SimplicialCubature`."

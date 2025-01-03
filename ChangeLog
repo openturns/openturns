@@ -10,8 +10,12 @@
  * New LeastSquaresEquationsSolver class (openturns.experimental)
  * CombinationsDistribution (openturns.experimental)
  * LOLAVoronoi sequential experiment (openturns.experimental)
+ * ConstantFunction, ConstantEvaluation
+ * VertexFunction, VertexEvaluation
 
 ==== API changes ====
+  * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
+  * Removed deprecated OptimizationAlgorithm.Build(str) methd
 
 === Documentation ===
 

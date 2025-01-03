@@ -20,13 +20,8 @@
  */
 #include "openturns/LevelSet.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/SymbolicFunction.hxx"
-#include "openturns/LinearFunction.hxx"
-#include "openturns/Cobyla.hxx"
-#include "openturns/ComposedFunction.hxx"
-#include "openturns/AggregatedFunction.hxx"
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/SpecFunc.hxx"
 
@@ -40,8 +35,8 @@ static const Factory<LevelSet> Factory_LevelSet;
 /* Default constructor */
 LevelSet::LevelSet()
   : DomainImplementation(1)
-  , function_(SymbolicFunction(Description({"x"}), Description({"1.0"})))
-, operator_(LessOrEqual())
+  , function_(ConstantFunction(1, Point({1.0})))
+  , operator_(LessOrEqual())
 {
   // Nothing to do
 }

@@ -1,0 +1,35 @@
+%feature("docstring") OT::VertexFunction
+"Vertex function.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Assuming :math:`f` is a function :math:`f : \Rset^{d} \rightarrow \cM_{N'} \times (\Rset^{d'})^{N'}`
+with :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.,
+the vertex function extract the values matching the mesh index :math:`i \in [1, N']`
+
+.. math::
+
+    f: \left| \begin{array}{rcl}
+               \cM_N \times (\Rset^d)^N & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+                F & \mapsto & F'
+              \end{array} \right.
+
+Parameters
+----------
+function : :class:`~openturns.PointToFieldFunction`
+    Function
+indices : sequence of int
+    Mesh indices
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> N = 10
+>>> mesh = ot.RegularGrid(0, 1, N)
+>>> h = ot.SymbolicFunction(['t', 'a', 'b'],  ['a * t + b + 1'])
+>>> f2p = ot.VertexValuePointToFieldFunction(h, mesh)
+>>> f = otexp.VertexFunction(f2p, [-1 % N])
+"

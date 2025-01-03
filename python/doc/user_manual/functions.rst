@@ -13,6 +13,7 @@ General mathematical functions
 
     Function
     FunctionImplementation
+    experimental.ConstantFunction
     SymbolicFunction
     TranslationFunction
 
@@ -59,6 +60,7 @@ Algebra of functions
     FieldToPointConnection
     PointToFieldConnection
     PointToPointConnection
+    experimental.VertexFunction
 
 Field and mixed functions
 =========================
@@ -121,6 +123,7 @@ Evaluation functions
     EvaluationImplementation
     AggregatedEvaluation
     ComposedEvaluation
+    experimental.ConstantEvaluation
     DatabaseEvaluation
     DistanceToDomainEvaluation
     DualLinearCombinationEvaluation
@@ -144,6 +147,7 @@ Evaluation functions
     QuadraticEvaluation
     SymbolicEvaluation
     TranslationEvaluation
+    experimental.VertexEvaluation
 
 Gradient functions
 ==================
