@@ -111,10 +111,17 @@ Normal::Normal(const Point & mean,
   {
     const Scalar cii = C(i, i);
     if (!(cii > 0.0))
-      throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
-    sigma[i] = std::sqrt(cii);
-    for (UnsignedInteger j = 0; j < i; ++ j)
-      R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      {
+	sigma[i] = 0.0;
+	// throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+      }
+    else
+      {
+	sigma[i] = std::sqrt(cii);
+	for (UnsignedInteger j = 0; j < i; ++ j)
+	  if (sigma[j] > 0.0)
+	    R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      }
   }
   *this = Normal(mean, sigma, R);
 }
@@ -407,6 +414,10 @@ Scalar Normal::computeComplementaryCDF(const Point & point) const
 /* Compute the entropy of the distribution */
 Scalar Normal::computeEntropy() const
 {
+  // The entropy is equal to (see https://statproofbook.github.io/P/mvn-dent):
+  // (dim/2)*(log(2pi))+(1/2)*log(det(Sigma))+(1/2)*dim
+  // We reuse the normalization factors to avoid the recomputation of
+  // the most costly parts:
   // EllipticalDistribution::normalizationFactor_ == 1/sqrt(det(Sigma))
   // logNormalizationFactor_ == log(1/sqrt(2*Pi)^dim)
   return 0.5 * getDimension() - std::log(EllipticalDistribution::normalizationFactor_) - logNormalizationFactor_;

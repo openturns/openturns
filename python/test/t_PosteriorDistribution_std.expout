@@ -17,9 +17,9 @@ Covariance  [[ 0.0737985  0.00565287 ]
 Elliptical distribution=  False
 Elliptical copula=  False
 Independent copula=  False
-oneRealization= [0.577515,1.61937]
 Mean point=  [0.408932,1.65873]  pdf=1.6238  cdf=0.26218
 Quantile= [0.946843,1.98454]
+CDF(quantile)=0.95
 margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
@@ -30,7 +30,6 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned di
 margin PDF= [1.12641]
 margin CDF= [0.541543]
 margin quantile= [0.900147]
-margin realization= [0.2696]
 margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = DeconditionedDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
@@ -41,4 +40,6 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned di
 margin PDF= [1.44124]
 margin CDF= [0.456168]
 margin quantile= [1.96961]
-margin realization= [1.58154]
+conditioned= Normal(mu = 0, sigma = 1)
+conditioning= Uniform(a = 0.5, b = 1.5)
+link= [y]->[0.0,y]

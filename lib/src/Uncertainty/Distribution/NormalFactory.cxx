@@ -112,7 +112,7 @@ Normal NormalFactory::buildAsNormal() const
 
 DistributionFactoryResult NormalFactory::buildEstimator(const Sample & sample) const
 {
-  if (sample.getDimension() > 1) return buildBootStrapEstimator(sample);
+  if (sample.getDimension() > 1) return buildBootStrapEstimator(sample, true);
   Normal distribution(buildAsNormal(sample));
   Scalar mu = distribution.getMean()[0];
   Scalar sigma = distribution.getSigma()[0];
