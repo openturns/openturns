@@ -59,4 +59,7 @@ class Coles:
             dataset = fn
         else:
             dataset = ot.Sample.ImportFromCSVFile(fn, ",")
+        if name == "venice":
+            # strip nans
+            dataset.erase(4, 5)
         return dataset

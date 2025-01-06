@@ -22,6 +22,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * New c++ csv parser replacing the old bison/flex implementation
 
 
 

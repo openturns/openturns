@@ -180,12 +180,6 @@ Description PlatformInfo::GetFeatures()
     Features_["muparser"] = false;
 #endif
 
-#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
-    Features_["bison"] = true;
-#else
-    Features_["bison"] = false;
-#endif
-
 #ifdef OPENTURNS_HAVE_CUBA
     Features_["cuba"] = true;
 #else
