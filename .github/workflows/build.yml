@@ -13,15 +13,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install openblas swig boost tbb nlopt cminpack ceres-solver cuba dlib bison flex hdf5 ipopt primesieve spectra pagmo nanoflann
+        brew install openblas swig boost tbb nlopt cminpack ceres-solver cuba dlib hdf5 ipopt primesieve spectra pagmo nanoflann
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
         cmake \
         -DCMAKE_INSTALL_PREFIX=~/.local \
         -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
-        -DUSE_BISON=OFF \
-        -DFLEX_EXECUTABLE=/opt/homebrew/opt/flex/bin/flex \
-        -DBISON_EXECUTABLE=/opt/homebrew/opt/bison/bin/bison \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
@@ -39,7 +36,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" mpc boost-cpp libcuba libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja "libblas=*=*netlib" mpc boost-cpp libcuba libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd

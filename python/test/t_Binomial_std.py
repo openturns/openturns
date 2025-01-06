@@ -71,9 +71,9 @@ assert distribution.computeScalarQuantile(0.9, True) == 0
 # %%
 print("Check on dataset")
 separator = ","
-skipped_lines = 13
 path = os.path.join(os.path.dirname(__file__), "t_Binomial_std.csv")
-sample = ot.Sample.ImportFromTextFile(path, separator, skipped_lines)
+sample = ot.Sample.ImportFromTextFile(path, separator)
+
 rtol = 1.0e-12
 atol = ot.SpecFunc.MinScalar
 sample_size = sample.getSize()
