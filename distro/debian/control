@@ -5,12 +5,10 @@ Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.
 Uploaders: Denis Barbier <barbier@debian.org>,
            Pierre Gruet <pgt@debian.org>
 Build-Depends: debhelper-compat (= 12),
-               bison,
                cmake,
                coinor-libipopt-dev,
                dh-python,
                gfortran,
-               flex,
                libblas-dev,
                libboost-math-dev,
                libceres-dev,

@@ -7,6 +7,7 @@ ot_add_source_file (Compact.cxx)
 ot_add_source_file (CorrelationAnalysis.cxx)
 ot_add_source_file (CorrelationMatrix.cxx)
 ot_add_source_file (CovarianceMatrix.cxx)
+ot_add_source_file (CSVParser.cxx)
 ot_add_source_file (FaureSequence.cxx)
 ot_add_source_file (Full.cxx)
 ot_add_source_file (HaltonSequence.cxx)
@@ -75,6 +76,7 @@ ot_add_source_file (LatentVariableModel.cxx)
 ot_install_header_file (HistoryStrategyImplementation.hxx)
 ot_install_header_file (SobolSequence.hxx)
 ot_install_header_file (CovarianceMatrix.hxx)
+ot_install_header_file (CSVParser.hxx)
 ot_install_header_file (TestResult.hxx)
 ot_install_header_file (FaureSequence.hxx)
 ot_install_header_file (HaltonSequence.hxx)
@@ -88,7 +90,6 @@ ot_install_header_file (KroneckerCovarianceModel.hxx)
 ot_install_header_file (Last.hxx)
 ot_install_header_file (RandomGenerator.hxx)
 ot_install_header_file (RandomGeneratorState.hxx)
-ot_install_header_file (csv_parser_state.hxx)
 ot_install_header_file (HistoryStrategy.hxx)
 ot_install_header_file (CorrelationAnalysis.hxx)
 ot_install_header_file (LowDiscrepancySequence.hxx)
@@ -140,31 +141,3 @@ ot_install_header_file (RankMCovarianceModel.hxx)
 ot_install_header_file (TensorizedCovarianceModel.hxx)
 ot_install_header_file (IsotropicCovarianceModel.hxx)
 ot_install_header_file (LatentVariableModel.hxx)
-
-# Build on the fly source files
-if (BISON_FOUND AND FLEX_FOUND)
-  ot_add_build_dir_to_include_dirs (${CMAKE_CURRENT_BINARY_DIR})
-  set (BISON_FLAGS "-Wno-deprecated" CACHE STRING "bison flags")
-  separate_arguments(BISON_FLAGS)
-  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.hh
-                      MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/csv_parser.yy
-                      COMMAND ${BISON_EXECUTABLE}
-                      ARGS    ${BISON_FLAGS}
-                              -o ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/csv_parser.yy
-                      COMMENT "CSV parser generation"
-                   )
-  ot_add_built_source_file (${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc)
-  add_custom_target (generate_csv_parser DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc)
-
-  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.h
-                      MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/csv_lexer.ll
-                      COMMAND ${FLEX_EXECUTABLE}
-                      ARGS    --nounistd -o ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc
-                              --header-file=${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.h
-                              ${CMAKE_CURRENT_SOURCE_DIR}/csv_lexer.ll
-                      COMMENT "CSV lexer generation"
-                   )
-  ot_add_built_source_file (${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc)
-  add_custom_target (generate_csv_lexer DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/csv_lexer.cc)
-endif ()
