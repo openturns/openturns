@@ -1062,7 +1062,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Sample-CSVFileSeparator", ";");
   addAsUnsignedInteger("Sample-CSVPrecision", 16);
   addAsString("Sample-CSVFormat", "scientific");
-  addAsString("Sample-CommentMarkers", "#");
+  addAsString("Sample-CommentMarker", "#");
   addAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
   addAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
   addAsString("Sample-PrintFormat", "{:.7g}");

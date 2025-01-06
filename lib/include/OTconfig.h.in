@@ -18,9 +18,6 @@
 /* Define if F77 and FC dummy `main' functions are identical. */
 #cmakedefine FC_DUMMY_MAIN_EQ_F77
 
-/* Define if you have bison parser generator. */
-#cmakedefine OPENTURNS_HAVE_BISON
-
 /* Define if you have the `ipopt` library. */
 #cmakedefine OPENTURNS_HAVE_IPOPT
 
@@ -29,9 +26,6 @@
 
 //* Define if you have the `pagmo` library. */
 #cmakedefine OPENTURNS_HAVE_PAGMO
-
-//* Define to 1 if you have flex lexical analyser generator. */
-#cmakedefine OPENTURNS_HAVE_FLEX
 
 /* Define to 1 if you have the <dirent.h> header file. */
 #cmakedefine OPENTURNS_HAVE_DIRENT_H
@@ -107,12 +101,6 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine OPENTURNS_HAVE_UNISTD_H
 
-/* Define to 1 if you have the uselocale function is available. */
-#cmakedefine OPENTURNS_HAVE_USELOCALE
-
-/* Define to 1 if you have the <xlocale.h> header file. */
-#cmakedefine OPENTURNS_HAVE_XLOCALE_H
-
 /* Define to 1 if the system has Boost libraries. */
 #cmakedefine OPENTURNS_HAVE_BOOST
 
@@ -174,10 +162,6 @@
 #define VERSION "@PACKAGE_VERSION@"
 
 #define OPENTURNS_VERSION @OPENTURNS_VERSION_NR@
-
-/* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
-   `char[]'. */
-#cmakedefine YYTEXT_POINTER
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler
    calls it, or to nothing if 'inline' is not supported under any name.  */

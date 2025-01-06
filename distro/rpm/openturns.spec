@@ -22,7 +22,7 @@ License:        LGPLv3+
 URL:            http://www.openturns.org
 Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%{version}.tar.bz2
 Source1:        %{name}-rpmlintrc
-BuildRequires:  gcc-c++, cmake, bison, flex, swig
+BuildRequires:  gcc-c++, cmake, swig
 BuildRequires:  libxml2-devel
 %if ! 0%{?centos_version}
 BuildRequires:  hdf5-devel

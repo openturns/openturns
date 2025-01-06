@@ -437,7 +437,7 @@
   <Sample-CSVFileSeparator      value_str=";"     />
   <Sample-CSVPrecision           value_int="16" />
   <Sample-CSVFormat              value="scientific" />
-  <Sample-CommentMarkers         value_str="#"    />
+  <Sample-CommentMarker          value_str="#"    />
   <Sample-PrintEllipsisSize      value_int="3"    />
   <Sample-PrintEllipsisThreshold value_int="1000" />
   <Sample-PrintFormat            value_str="{:.7g}" />

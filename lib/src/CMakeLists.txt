@@ -80,11 +80,8 @@ if (Cuba_FOUND)
 endif ()
 
 # Build main library
-foreach (built_source ${BUILT_SOURCEFILES})
-  set_source_files_properties (${built_source} PROPERTIES GENERATED TRUE)
-endforeach (built_source)
 include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
-add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES} ${HEADERFILES})
+add_library (OT ${SOURCEFILES} ${HEADERFILES})
 set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_compile_definitions(OT PRIVATE ${OPENTURNS_DEFINITIONS})
@@ -96,11 +93,6 @@ endif ()
 set_target_properties (OT PROPERTIES SOVERSION 0.26)
 set (LIB_VERSION 0.26.0)
 set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
-
-if (BISON_FOUND AND FLEX_FOUND)
-  add_dependencies (OT generate_csv_lexer)
-  add_dependencies (OT generate_csv_parser)
-endif ()
 
 target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 

@@ -488,9 +488,7 @@ ot_check_test (GumbelCopula_std)
 ot_check_test (GumbelCopulaFactory_std)
 ot_check_test (OrdinalSumCopula_std)
 ot_check_test (DistFunc_beta)
-if (BISON_FOUND AND FLEX_FOUND)
-  ot_check_test (DistFunc_binomial IGNOREOUT)
-endif ()
+ot_check_test (DistFunc_binomial IGNOREOUT)
 if (NOT PROJECT_BINARY_DIR STREQUAL PROJECT_SOURCE_DIR)
   execute_process (COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/t_DistFunc_binomial1.csv ${CMAKE_CURRENT_BINARY_DIR})
   execute_process (COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/t_DistFunc_binomial2.csv ${CMAKE_CURRENT_BINARY_DIR})
@@ -715,9 +713,7 @@ ot_check_test (Function_std)
 ot_check_test (ComposedFunction_std)
 
 # Stat
-if (BISON_FOUND AND FLEX_FOUND)
 ot_check_test (Sample_csv)
-endif ()
 
 # Diff
 ot_check_test (NonCenteredFiniteDifferenceGradient_std)
