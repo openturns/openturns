@@ -111,10 +111,15 @@ void Analytical::run()
   /* set the level function of the algorithm */
   nearestPointAlgorithm_.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
-    
   /* set the starting point of the algorithm in the standard space  */
-  if ((nearestPointAlgorithm_.getImplementation()->getClassName() != "MultiStart"))
-    nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
+    try
+    {
+      nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
+    }
+    catch (const OT::NotDefinedException &)
+    {
+    /* if MultiStart algorithms are used, _setStartintPoint() is not possible */
+    }
 
   /* solve the nearest point problem */
   nearestPointAlgorithm_.run();
