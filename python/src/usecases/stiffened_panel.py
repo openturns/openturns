@@ -63,8 +63,17 @@ class StiffenedPanel:
         Half-width of the stiffener (m) distribution
         `ot.Uniform(0.03762, 0.03838)`
 
+    correlation_matrix : :class:`~openturns.CorrelationMatrix`
+        The correlation matrix used for inputs dependence, mostly identity except for coefficient (4,5) which is -0.8.
+
+    copula : :class:`~openturns.NormalCopula`
+        The (Normal) copula used to define the distribution of the input parameters.
+
     distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
+
+    independent_distribution : :class:`~openturns.JointDistribution`
+        The joint distribution of the input parameters for the special case of independence.
 
     Examples
     --------
@@ -72,9 +81,9 @@ class StiffenedPanel:
     >>> # Load the stiffened panel model
     >>> panel = stiffened_panel.StiffenedPanel()
     >>> print("Inputs:", panel.model.getInputDescription())
-    Inputs: [F,L,a,De,di,E]
+    Inputs: [E,nu,h_c,ell,f_1,f_2,t,a,b_0,p]
     >>> print("Outputs:", panel.model.getOutputDescription())
-    [Deflection,Left angle,Right angle]
+    Outputs: [(N_{xy})_{cr}]
     """
 
     def __init__(self):
@@ -135,7 +144,33 @@ class StiffenedPanel:
         self.p = ot.Uniform(0.03762, 0.03838)
         self.p.setDescription(["p (m)"])
 
+        # correlation matrix
+        self.correlation_matrix = ot.CorrelationMatrix(self.dim)
+        self.correlation_matrix[4, 5] = -0.8
+        self.copula = ot.NormalCopula(
+            ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(
+                self.correlation_matrix
+            )
+        )
+
         self.distribution = ot.JointDistribution(
+            [
+                self.youngModulus,
+                self.nu,
+                self.h_c,
+                self.ell,
+                self.f_1,
+                self.f_2,
+                self.t,
+                self.a,
+                self.b_0,
+                self.p,
+            ],
+            self.copula,
+        )
+
+        # special case: independent distribution
+        self.independent_distribution = ot.JointDistribution(
             [
                 self.youngModulus,
                 self.nu,
