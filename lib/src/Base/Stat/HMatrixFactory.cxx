@@ -150,8 +150,11 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     algo = hmat_create_clustering_hybrid();
   else
     throw InvalidArgumentException(HERE) << "Unknown clustering method: " << clusteringAlgorithm << ", valid choices are: median, geometric or hybrid";
+  // Set MaxDof
+  hmat_clustering_algorithm_t *algodof = hmat_create_clustering_max_dof(algo, ResourceMap::GetAsUnsignedInteger("HMatrix-ClusteringMaxDof"));
+  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algodof);
 
-  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algo);
+  hmat_delete_clustering(algodof);
   hmat_delete_clustering(algo);
   delete[] points;
 
