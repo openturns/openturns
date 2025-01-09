@@ -1873,6 +1873,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
+  addAsUnsignedInteger("HMatrix-ClusteringMaxDof", 250);
   addAsUnsignedInteger("HMatrix-ValidationDump", 0);
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
 
