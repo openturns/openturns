@@ -158,6 +158,9 @@ public:
 
   void addIdentity(Scalar alpha);
 
+  /** Compute log determinant */
+  Scalar computeLogDeterminant() const;
+
   /** Get the Frobenius norm */
   Scalar norm() const;
 
@@ -196,7 +199,7 @@ private:
   std::shared_ptr<void> hmatInterface_;
   Pointer<HMatrixClusterTree> hmatClusterTree_;
   void * hmat_;
-
+  Bool isFactorized_ = false;
 };
 
 // First implementation, by using HMatrixRealAssemblyFunction

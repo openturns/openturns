@@ -134,6 +134,24 @@ OT_HMatrix_norm_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_HMatrix_computelogdet_doc
+"Compute log determinant value.
+
+Returns
+-------
+logdet : float
+    Log determinant.
+
+Notes
+-----
+The log-determinant is computed only if the HMatrix has been factorized using LLt or HODLR.
+Otherwise, an exception is raised."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::computeLogDeterminant
+OT_HMatrix_computelogdet_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_HMatrix_transpose_doc
 "Transpose matrix in-place."
 %enddef

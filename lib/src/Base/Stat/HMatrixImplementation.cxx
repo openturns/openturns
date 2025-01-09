@@ -23,6 +23,7 @@
 
 #include "openturns/HMatrixImplementation.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
 # include <hmat/hmat.h>
@@ -207,6 +208,7 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
   , hmatInterface_(other.hmatInterface_)
   , hmatClusterTree_(NULL)
   , hmat_(NULL)
+  , isFactorized_(other.isFactorized_)
 {
 #ifdef OPENTURNS_HAVE_HMAT
   if (other.hmatClusterTree_.get())
@@ -250,6 +252,7 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
       hmat_ = hmat_copy;
 
       hmatInterface_ = other.hmatInterface_;
+      isFactorized_ = other.isFactorized_;
     }
 #endif
   }
@@ -476,6 +479,9 @@ void HMatrixImplementation::factorize(const String& method)
 #ifdef OPENTURNS_HAVE_HMAT
   if (!hmatInterface_)
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
+  // Check the matrix is not already factorized
+  if (isFactorized_)
+    return;
   hmat_settings_t settings;
   hmat_get_parameters(&settings);
   hmat_factorization_t fact_method = hmat_factorization_lu;
@@ -534,6 +540,8 @@ void HMatrixImplementation::factorize(const String& method)
   static_cast<hmat_interface_t *>(hmatInterface_.get())->finalize();
   if (!done)
     throw InternalException(HERE) << "HMatrix::factorize : factorization failed, probably needs more regularization" ;
+  // isFactorized becomes true.
+  isFactorized_ = true;
 #else
   (void)method;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -593,6 +601,33 @@ void HMatrixImplementation::transpose()
   if (!hmatInterface_)
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->transpose(static_cast<hmat_matrix_t*>(hmat_));
+#else
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
+#endif
+}
+
+/** Compute log determinant */
+Scalar HMatrixImplementation::computeLogDeterminant() const
+{
+#ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
+  if (!isFactorized_)
+    throw InvalidArgumentException(HERE) << "HMatrix must be factorized before computing log determinant";
+  Scalar logdet = 0.0;
+  // use the hmat logdet function.
+  int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->logdet(static_cast<hmat_matrix_t *>(hmat_), &logdet);
+  if (rc == 0) return logdet;
+  // rc != 0 means that the something went wrong, so we fallback to the diagonal method.
+  Point diagonal(getDiagonal());
+  for (UnsignedInteger i = 0; i < diagonal.getSize(); ++i)
+  {
+    const Scalar lii = diagonal[i];
+    if (lii <= 0.0)
+      return SpecFunc::LowestScalar;
+    logdet += log(lii);
+  }
+  return logdet;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif

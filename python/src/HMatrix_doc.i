@@ -21,6 +21,8 @@ matrix : :class:`~openturns.HMatrix`
 OT_HMatrix_transpose_doc
 %feature("docstring") OT::HMatrix::norm
 OT_HMatrix_norm_doc
+%feature("docstring") OT::HMatrix::computeLogDeterminant
+OT_HMatrix_computelogdet_doc
 %feature("docstring") OT::HMatrix::getNbRows
 OT_HMatrix_getNbRows_doc
 %feature("docstring") OT::HMatrix::getNbColumns

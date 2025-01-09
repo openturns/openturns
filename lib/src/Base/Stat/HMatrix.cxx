@@ -113,6 +113,12 @@ void HMatrix::transpose()
   getImplementation()->transpose();
 }
 
+/** Compute log determinant */
+Scalar HMatrix::computeLogDeterminant() const
+{
+  return getImplementation()->computeLogDeterminant();
+}
+
 /** Get the Frobenius norm */
 Scalar HMatrix::norm() const
 {
