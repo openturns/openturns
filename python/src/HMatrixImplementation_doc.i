@@ -190,7 +190,7 @@ OT_HMatrix_assemble_doc
 Parameters
 ----------
 method : str
-    Factorization method, either one of: LDLt, LLt or LU
+    Factorization method, either one of: LDLt, LLt, LU, hodlr or hodlrsym
 
 Notes
 -----

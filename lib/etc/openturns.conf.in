@@ -1237,6 +1237,7 @@
 
   <!-- OT::HMatrix parameters -->
   <HMatrix-ForceSequential      value_bool="false"            />
+  <HMatrix-Admissibility  value_str="standard"            />
   <HMatrix-AdmissibilityFactor  value_float="100.0"            />
   <HMatrix-AssemblyEpsilon      value_float="1.0e-4"         />
   <HMatrix-LargestEigenValueRelativeError value_float="1.0e-1" />

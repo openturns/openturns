@@ -254,6 +254,7 @@ ot_pyinstallcheck_test (Field_operators IGNOREOUT)
 
 if (HMAT_FOUND)
 ot_pyinstallcheck_test (HMatrix_std)
+ot_pyinstallcheck_test (HMatrix_hodlr_std IGNOREOUT)
 endif ()
 
 ot_pyinstallcheck_test (HODLRMatrix_std IGNOREOUT)
