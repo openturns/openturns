@@ -79,6 +79,9 @@ class OT_API HMatrix :
   /** Get the Frobenius norm */
   Scalar norm() const;
 
+  /** Compute log determinant */
+  Scalar computeLogDeterminant() const;
+
   /** Get the diagonal */
   Point getDiagonal() const;
 
