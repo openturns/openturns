@@ -134,8 +134,14 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     algo = hmat_create_clustering_hybrid();
   else
     throw InvalidArgumentException(HERE) << "Unknown clustering method: " << clusteringAlgorithm << ", valid choices are: median, geometric or hybrid";
+  // Set MaxDof
+  const UnsignedInteger clusteringMaxDof = ResourceMap::GetAsUnsignedInteger("HMatrix-ClusteringMaxDof");
+  if (!(clusteringMaxDof > 0))
+    throw InvalidArgumentException(HERE) << "HMatrixFactory::build, invalid non-positive clustering max dof: " << clusteringMaxDof << ", must be positive";
+  hmat_clustering_algorithm_t *algodof = hmat_create_clustering_max_dof(algo, clusteringMaxDof);
+  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algodof);
 
-  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algo);
+  hmat_delete_clustering(algodof);
   hmat_delete_clustering(algo);
   delete[] points;
 
