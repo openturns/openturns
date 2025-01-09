@@ -24,4 +24,10 @@ parameters : :class:`~openturns.HMatrixParameters`
 Returns
 -------
 mat : :class:`~openturns.HMatrix`
-    The compressed representation."
+    The compressed representation.
+
+Notes
+-----
+The HMatrix is built from the sample locations and the output dimension.
+The parameters are used to set the admissibility, the clustering algorithm and other parameters (validation, maxLeafSize,...).
+Default values are provided in the :class:`~openturns.ResourceMap`, and can be modified by the user before calling this method."

@@ -489,8 +489,12 @@ void HMatrixImplementation::factorize(const String& method)
     fact_method = hmat_factorization_ldlt;
   else if (method == "LLt")
     fact_method = hmat_factorization_llt;
+  else if (method == "hodlr")
+    fact_method = hmat_factorization_hodlr;
+  else if (method == "hodlrsym")
+    fact_method = hmat_factorization_hodlrsym;
   else if (method != "LU")
-    LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
+    LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, LLt, hodlr or hodlrsym.");
 
   // Compute an approximation of the max eigen value
   const Scalar maxEV = computeApproximateLargestEigenValue();

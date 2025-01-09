@@ -1812,6 +1812,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // HMatrix parameters //
   addAsBool("HMatrix-ForceSequential", false);
+  addAsString("HMatrix-Admissibility", "standard");
   addAsScalar("HMatrix-AdmissibilityFactor", 100.0);
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);

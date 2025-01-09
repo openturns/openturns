@@ -108,9 +108,25 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   hmat_delete_clustering(algo);
   delete[] points;
 
-  Scalar eta = parameters.getAdmissibilityFactor();
-  hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
-  hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
+  const String admissibilityType = parameters.getAdmissibility();
+  hmat_admissibility_t *admissibility;
+  if (admissibilityType == "standard")
+  {
+    const Scalar eta = parameters.getAdmissibilityFactor();
+    admissibility = hmat_create_admissibility_standard(eta);
+  }
+  else if(admissibilityType == "hodlr")
+  {
+    admissibility = hmat_create_admissibility_hodlr();
+  }
+  else
+  {
+    LOGWARN( OSS() << "admissibility method: " << admissibilityType << ". Valid values are `standard` or `hodlr`.");
+    const Scalar eta = parameters.getAdmissibilityFactor();
+    admissibility = hmat_create_admissibility_standard(1.0);
+  }
+
+  hmat_matrix_t *ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
   hmat_delete_admissibility(admissibility);
   return HMatrix(new HMatrixImplementation(hmatInterface, ct, outputDimension * size, ptrHMat));
 #endif /* OPENTURNS_HAVE_HMAT */
