@@ -158,6 +158,9 @@ public:
 
   void addIdentity(Scalar alpha);
 
+  /** Compute log determinant */
+  Scalar computeLogDeterminant() const;
+
   /** Get the Frobenius norm */
   Scalar norm() const;
 
@@ -204,7 +207,8 @@ private:
   void * hmat_;
   // Shift added to the diagonal during the last factorization, 0 if none
   Scalar regularizationShift_;
-
+  // True if the matrix has been factorized, false otherwise
+  Bool isFactorized_ = false;
 };
 
 // First implementation, by using HMatrixRealAssemblyFunction
