@@ -1,12 +1,12 @@
 .. _sensitivity_hsic:
 
-Sensitivity analysis using Hilbert-Schmidt Indepencence Criterion (HSIC)
+Sensitivity analysis using Hilbert-Schmidt Independence Criterion (HSIC)
 ------------------------------------------------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-The Hilbert-Schmidt Indepencence Criterion deals with analyzing the influence that the random vector
+The Hilbert-Schmidt Independence Criterion deals with analyzing the influence that the random vector
 :math:`\inputRV = \left( X_1,\ldots,X_\inputDim \right)` has on a random variable
 :math:`Y`, which is being studied for uncertainty. Here, we attempt to evaluate the influence
 through the dependence between the two random variables :math:`Y` and :math:`X^i`.
