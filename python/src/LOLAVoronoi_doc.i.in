@@ -1,6 +1,10 @@
 %feature("docstring") OT::LOLAVoronoi
 "LOLA-Voronoi sequential design algorithm.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 This class implements the design of experiments algorithm described in [crombecq2011]_ which allows one
 to sequentially generate new input samples according to the input measure and model output.
 It combines an exploration criterion based on Voronoi tesselation to identify
