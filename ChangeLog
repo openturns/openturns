@@ -10,6 +10,7 @@
  * New LeastSquaresEquationsSolver class (openturns.experimental)
  * CombinationsDistribution (openturns.experimental)
  * LOLAVoronoi sequential experiment (openturns.experimental)
+ * RatioOfUniforms random vector (openturns.experimental)
 
 ==== API changes ====
 
