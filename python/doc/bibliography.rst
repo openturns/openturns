@@ -171,6 +171,8 @@ Bibliography
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
+.. [gobet2016] Gobet, E., 2016, *Monte-Carlo Methods and Stochastic Processes: From Linear to Non-Linear*,
+    Chapman \& Hall/CRC.
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
