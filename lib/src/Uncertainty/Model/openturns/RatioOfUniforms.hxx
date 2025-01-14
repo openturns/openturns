@@ -58,7 +58,7 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** LogPDF and range accessor */
+  /** LogUnscaledPDF and range accessor */
   void setLogUnscaledPDFAndRange(const Function & logUnscaledPDF,
 				 const Interval & range,
 				 const Bool isScaled);
@@ -119,6 +119,7 @@ private:
   Scalar acceptanceRatio_ = 0.0;
   OptimizationAlgorithm optimizationAlgorithm_;
   UnsignedInteger candidateNumber_ = 1;
+  UnsignedInteger maximumMultistart_ = 1;
 }; /* class RatioOfUniforms */
 
 

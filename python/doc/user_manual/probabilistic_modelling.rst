@@ -301,6 +301,7 @@ Random vectors
 
     :template: classWithPlot.rst_t
     UsualRandomVector
+    experimental.RatioOfUniforms
 
 Low-level distribution functions
 ================================

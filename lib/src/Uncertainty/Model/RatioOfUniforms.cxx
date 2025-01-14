@@ -101,13 +101,13 @@ String RatioOfUniforms::__str__(const String & ) const
   return oss;
 }
 
-/* LogPDF and range accessor */
+/* LogUnscaledPDF and range accessor */
 void RatioOfUniforms::setLogUnscaledPDFAndRange(const Function & logUnscaledPDF,
 						const Interval & range,
 						const Bool isScaled)
 {
-  if (logPDF.getInputDimension() != range.getDimension()) throw InvalidArgumentException(HERE) << "Error: the log unscaled PDF input dimension must match the range dimension, here log unscaled PDF input dimension=" << logPDF.getInputDimension() << " and range dimension=" << range.getDimension();
-  if (logPDF.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the log unscaled PDF output dimension must be equal to 1, here log unscaled PDF output dimension=" << logPDF.getOutputDimension();
+  if (logUnscaledPDF.getInputDimension() != range.getDimension()) throw InvalidArgumentException(HERE) << "Error: the log unscaled PDF input dimension must match the range dimension, here log unscaled PDF input dimension=" << logUnscaledPDF.getInputDimension() << " and range dimension=" << range.getDimension();
+  if (logUnscaledPDF.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the log unscaled PDF output dimension must be equal to 1, here log unscaled PDF output dimension=" << logUnscaledPDF.getOutputDimension();
   logUnscaledPDF_ = logUnscaledPDF;
   range_ = range;
   isScaled_ = isScaled;
@@ -162,6 +162,18 @@ void RatioOfUniforms::setCandidateNumber(const UnsignedInteger candidateNumber)
 UnsignedInteger RatioOfUniforms::getCandidateNumber() const
 {
   return candidateNumber_;
+}
+
+/* Maximum multistart accessor */
+void RatioOfUniforms::setMaximumMultistart(const UnsignedInteger maximumMultistart)
+{
+  if (maximumMultistart == 0) throw InvalidArgumentException(HERE) << "Error: the maximum multistart must be strictly positive.";
+  maximumMultistart_ = maximumMultistart;
+}
+
+UnsignedInteger RatioOfUniforms::getMaximumMultistart() const
+{
+  return maximumMultistart_;
 }
 
 /* R accessor */
@@ -308,37 +320,41 @@ Collection<MultiStart> RatioOfUniforms::initialize()
   // find a feasible starting point
   Collection<MultiStart> allMultiStarts(0);
   SobolSequence sequence(dimension);
-  Sample startingPointsU(0, dimension);
+  Sample startingPointsSupU(0, dimension);
   for (UnsignedInteger k = 0; k < candidateNumber_; ++ k)
     {
       Point candidate(sequence.generate());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
         candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
-      if (SpecFunc::IsNormal(logPDF_(candidate)[0]))
-	startingPointsU.add(candidate);
+      if (SpecFunc::IsNormal(logUnscaledPDF_(candidate)[0]))
+	{
+	  startingPointsSupU.add(candidate);
+	  if (startingPointsSupU.getSize() == maximumMultistart_)
+	    break;
+	}
     } // for k
-  if (!startingPointsU.getSize())
+  if (!startingPointsSupU.getSize())
     throw InternalException(HERE) << "Could not find a feasible starting point to initialize ratio of uniforms U sup";
 
   // First, the upper bound on U
-  const Function objectiveU(new RatioOfUniformsUBoundEvaluation(logPDF_, range_, r_));
+  const Function objectiveU(new RatioOfUniformsUBoundEvaluation(logUnscaledPDF_, range_, r_));
   OptimizationProblem problemU(objectiveU);
   problemU.setMinimization(false);
   problemU.setBounds(range_);
   optimizationAlgorithm_.setProblem(problemU);
-  MultiStart multistart(optimizationAlgorithm_, startingPointsU);
+  MultiStart multistart(optimizationAlgorithm_, startingPointsSupU);
   multistart.run();
   allMultiStarts.add(multistart);
   supU_ = std::exp(multistart.getResult().getOptimalValue()[0]);
   LOGDEBUG(OSS() << "supU_=" << supU_ << " u*=" << multistart.getResult().getOptimalPoint());
 
   // Second, the lower and upper bounds on V
-  const Function objectiveV(new RatioOfUniformsVBoundEvaluation(logPDF_, range_, r_));
+  const Function objectiveV(new RatioOfUniformsVBoundEvaluation(logUnscaledPDF_, range_, r_));
   infV_.resize(dimension);
   supV_.resize(dimension);
   const Point zero(dimension, 0.0);
-  Sample startingPointsUB(0, dimension);
-  Sample startingPointsLB(0, dimension);
+  Sample startingPointsInfV(0, dimension);
+  Sample startingPointsSupV(0, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       const Function objectiveVI(objectiveV.getMarginal(i));
@@ -347,22 +363,26 @@ Collection<MultiStart> RatioOfUniforms::initialize()
       if (ub[i] > 0.0)
 	{
 	  // find a feasible starting point in [0, ub]
-	  if (!startingPointsUB.getSize())
+	  if (!startingPointsSupV.getSize())
 	    {
 	      for (UnsignedInteger k = 0; k < candidateNumber_; ++ k)
 		{
 		  Point candidate(sequence.generate());
 		  for (UnsignedInteger j = 0; j < dimension; ++ j)
 		    candidate[j] = candidate[j] * ub[j];
-		  if (SpecFunc::IsNormal(logPDF_(candidate)[0]))
-		    startingPointsUB.add(candidate);
+		  if (SpecFunc::IsNormal(logUnscaledPDF_(candidate)[0]))
+		    {
+		    startingPointsSupV.add(candidate);
+		    if (startingPointsSupV.getSize() == maximumMultistart_)
+		      break;
+		    }
 		} // for k
-	    } // if (!startingPointsUB.getSize())
-	  if (!startingPointsUB.getSize())
+	    } // if (!startingPointsSupV.getSize())
+	  if (!startingPointsSupV.getSize())
 	    throw InternalException(HERE) << "Could not find a feasible starting point to initialize ratio of uniforms V sup";
 	  problemVI.setBounds(Interval(zero, ub));
 	  optimizationAlgorithm_.setProblem(problemVI);
-	  multistart = MultiStart(optimizationAlgorithm_, startingPointsUB);
+	  multistart = MultiStart(optimizationAlgorithm_, startingPointsSupV);
 	  multistart.run();
 	  allMultiStarts.add(multistart);
 	  supV_[i] = std::exp(multistart.getResult().getOptimalValue()[0]);
@@ -371,22 +391,26 @@ Collection<MultiStart> RatioOfUniforms::initialize()
       if (lb[i] < 0.0)
 	{
 	  // find a feasible starting point in [lb, 0]
-	  if (!startingPointsLB.getSize())
+	  if (!startingPointsInfV.getSize())
 	    {
 	      for (UnsignedInteger k = 0; k < candidateNumber_; ++ k)
 		{
 		  Point candidate(sequence.generate());
 		  for (UnsignedInteger j = 0; j < dimension; ++ j)
 		    candidate[j] = candidate[j] * lb[j];
-		  if (SpecFunc::IsNormal(logPDF_(candidate)[0]))
-		    startingPointsLB.add(candidate);
+		  if (SpecFunc::IsNormal(logUnscaledPDF_(candidate)[0]))
+		    {
+		    startingPointsInfV.add(candidate);
+		    if (startingPointsInfV.getSize() == maximumMultistart_)
+		      break;
+		    }
 		} // for k
-	    } // (!startingPointsLB.getSize())
-	  if (!startingPointsLB.getSize())
+	    } // (!startingPointsInfV.getSize())
+	  if (!startingPointsInfV.getSize())
 	    throw InternalException(HERE) << "Could not find a feasible starting point to initialize ratio of uniforms V inf";
 	  problemVI.setBounds(Interval(lb, zero));
 	  optimizationAlgorithm_.setProblem(problemVI);
-	  multistart = MultiStart(optimizationAlgorithm_, startingPointsLB);
+	  multistart = MultiStart(optimizationAlgorithm_, startingPointsInfV);
 	  multistart.run();
 	  allMultiStarts.add(multistart);
 	  infV_[i] = -std::exp(multistart.getResult().getOptimalValue()[0]);
@@ -394,6 +418,7 @@ Collection<MultiStart> RatioOfUniforms::initialize()
 	} // if lb[i] < 0.0
     } // for i
   LOGDEBUG(OSS() << "supU multistart points=\n" << startingPointsSupU << "\ninfV multistart points=\n" << startingPointsInfV << "\nsupV multistart points=\n" << startingPointsSupV);
+<<<<<<< HEAD
   if (isScaled_)
     {
       acceptanceRatio_ = 1.0 / ((1.0 + r_ * dimension) * supU_);
