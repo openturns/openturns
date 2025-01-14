@@ -28,22 +28,6 @@
  * It contains macro definitions whose value is determined by the CMakeLists.txt
  * script and propagated inside any source files.
  */
-#ifndef OPENTURNS_OTCONFIG_H
-#define OPENTURNS_OTCONFIG_H
-
 #include "openturns/OTconfig.h"
-// #define OPENTURNS_PACKAGE_BUGREPORT PACKAGE_BUGREPORT
-// #define OPENTURNS_PACKAGE_NAME      PACKAGE_NAME
-// #define OPENTURNS_PACKAGE_STRING    PACKAGE_STRING
-// #define OPENTURNS_PACKAGE_TARNAME   PACKAGE_TARNAME
-// #define OPENTURNS_PACKAGE_VERSION   PACKAGE_VERSION
-// #undef PACKAGE_BUGREPORT
-// #undef PACKAGE_NAME
-// #undef PACKAGE_STRING
-// #undef PACKAGE_TARNAME
-// #undef PACKAGE_VERSION
-// #undef VERSION
-
-#endif /* OPENTURNS_OTCONFIG_H */
 
 #endif /* OPENTURNS_OTCONFIG_HXX */
