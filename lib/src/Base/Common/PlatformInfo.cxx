@@ -38,7 +38,7 @@ PlatformInfo::PlatformInfo()
 
 String PlatformInfo::GetVersion()
 {
-  return PACKAGE_VERSION;
+  return OPENTURNS_VERSION_STR;
 }
 
 String PlatformInfo::GetRevision()

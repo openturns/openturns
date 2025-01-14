@@ -520,7 +520,6 @@ set (CPACK_SOURCE_IGNORE_FILES "/.git;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}")
 
 
 # Set global definitions
-# TODO: remove PACKAGE_<XX> from source code. Needed for compatibility with autotools
 set (PACKAGE_NAME           ${CPACK_PACKAGE_NAME})
 set (PACKAGE_VERSION        ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR})
 if (CPACK_PACKAGE_VERSION_PATCH)
