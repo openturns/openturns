@@ -28,8 +28,3 @@
 /* Define to 1 if UnsignedLong and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 
-/* Define to the full name of this package. */
-#define PACKAGE_NAME "@PACKAGE_NAME@"
-
-/* Define to the version of this package. */
-#define PACKAGE_VERSION "@PACKAGE_VERSION@"
