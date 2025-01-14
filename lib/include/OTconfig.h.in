@@ -1,23 +1,6 @@
 /* include/OTconfig.h.in.  Generated from configure.ac by autoheader.  */
 
 
-/* Define to 1 if you have the CMake's FortranCInterface */
-#define HAVE_FORTRANCINTERFACE 1
-
-/* Define to dummy `main' function (if any) required to link to the Fortran
-   libraries. */
-#cmakedefine F77_DUMMY_MAIN
-
-/* Define to a macro mangling the given C identifier (in lower and upper
-   case), which must not contain underscores, for linking with Fortran. */
-#define F77_FUNC(name,NAME) FortranCInterface_GLOBAL(name,NAME)
-
-/* As F77_FUNC, but for C identifiers containing underscores. */
-#define F77_FUNC_(name,NAME) FortranCInterface_GLOBAL_(name,NAME)
-
-/* Define if F77 and FC dummy `main' functions are identical. */
-#cmakedefine FC_DUMMY_MAIN_EQ_F77
-
 /* Define if you have the `ipopt` library. */
 #cmakedefine OPENTURNS_HAVE_IPOPT
 
@@ -131,49 +114,13 @@
 /* Name of OpenTURNS home environment variable. */
 #define OPENTURNS_HOME_ENV_VAR "@OPENTURNS_HOME_ENV_VAR@"
 
-/* Name of package */
-#define PACKAGE "@PACKAGE@"
-
-/* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "@PACKAGE_BUGREPORT@"
-
-/* Define to the full name of this package. */
-#define PACKAGE_NAME "@PACKAGE_NAME@"
-
-/* Define to the full name and version of this package. */
-#define PACKAGE_STRING "@PACKAGE_STRING@"
-
-/* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "@PACKAGE_TARNAME@"
-
-/* Define to the version of this package. */
-#define PACKAGE_VERSION "@PACKAGE_VERSION@"
-
 /* Default symbolic parser backend (MuParser if found, ExprTk otherwise) */
 #define SYMBOLICPARSER_DEFAULT_BACKEND "@SYMBOLICPARSER_DEFAULT_BACKEND@"
 
-/* Define to 1 if you have the ANSI C header files. */
-#cmakedefine STDC_HEADERS
-
-/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
-#cmakedefine TIME_WITH_SYS_TIME
-
 /* Version number of package */
-#define VERSION "@PACKAGE_VERSION@"
+#define OPENTURNS_VERSION_STR "@PACKAGE_VERSION@"
 
 #define OPENTURNS_VERSION @OPENTURNS_VERSION_NR@
-
-/* Define to `__inline__' or `__inline' if that's what the C compiler
-   calls it, or to nothing if 'inline' is not supported under any name.  */
-#ifndef __cplusplus
-#undef inline
-#endif
-
-/* Define to rpl_malloc if the replacement function should be used. */
-#cmakedefine malloc
-
-/* Define to `unsigned int' if <sys/types.h> does not define. */
-#cmakedefine size_t
 
 /* Define to 1 if big endian system */
 #cmakedefine DSFMT_BIG_ENDIAN
