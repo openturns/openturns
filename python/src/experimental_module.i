@@ -84,6 +84,7 @@
 %include SequentialSamplingAlgorithmImplementation.i
 %include SequentialSamplingAlgorithm.i
 %include LOLAVoronoi.i
+%include QuantileConfidence.i
 
 /*Uncertainty/Algorithm/Sensitivity */
 %include RankSobolSensitivityAlgorithm.i

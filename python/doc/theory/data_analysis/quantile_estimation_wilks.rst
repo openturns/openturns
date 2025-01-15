@@ -1,7 +1,7 @@
 .. _quantile_estimation_wilks:
 
-Estimation of a quantile upper bound by Wilks' method
------------------------------------------------------
+Estimation of a quantile bound by Wilks' method
+-----------------------------------------------
 
 We consider a random variable :math:`X` of dimension 1 and the unknown  :math:`x_{\alpha}`
 level quantile of its distribution (:math:`\alpha \in [0, 1]`).
@@ -86,7 +86,7 @@ on the sample
 Minimum sample size for an upper bound to the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given :math:`\alpha`, :math:`\beta`, and :math:`k`, we seek for the smallest sample size
+Given :math:`\alpha`, :math:`\beta`, and order :math:`k`, we seek for the smallest sample size
 :math:`\sampleSize`
 such that the equation :eq:`EqOrderStat` is satisfied. In order to do so, we solve the
 equation :eq:`EqOrderStat2` with respect to the sample size :math:`\sampleSize`.
@@ -95,17 +95,18 @@ Once the smallest size :math:`\sampleSize`  has been estimated, a sample of size
 :math:`\sampleSize` can be
 generated from
 :math:`X` and an upper bound of :math:`x_{\alpha}` is estimated using
-:math:`x_{(\sampleSize-i)}` i.e. the :math:`\sampleSize - i`-th observation
+:math:`x_{(\sampleSize-k)}` i.e. the :math:`\sampleSize - k`-th observation
 in the ordered sample :math:`(x_{(1)}, \dots, x_{(\sampleSize)})`.
 
 
 .. topic:: API:
 
-    - See :class:`~openturns.Wilks`
+    - See :class:`~openturns.experimental.QuantileConfidence`
 
 .. topic:: Examples:
 
     - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_estimation_wilks`
+    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_estimation_chemical_process`
 
 .. topic:: References:
 
