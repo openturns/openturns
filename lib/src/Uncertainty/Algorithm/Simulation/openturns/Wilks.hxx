@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class Wilks
+ * @deprecated @class Wilks
  */
 
 class OT_API Wilks : public Object

@@ -1,7 +1,7 @@
 %feature("docstring") OT::Wilks
 "Class to estimate a confidence interval on a quantile.
 
-Refer to :ref:`quantile_estimation_wilks`.
+Refer to :ref:`quantile_confidence_estimation`.
 
 Parameters
 ----------
