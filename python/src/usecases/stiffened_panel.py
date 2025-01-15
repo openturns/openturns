@@ -64,7 +64,7 @@ class StiffenedPanel:
         `ot.Uniform(0.03762, 0.03838)`
 
     correlation_matrix : :class:`~openturns.CorrelationMatrix`
-        The correlation matrix used for inputs dependence, mostly identity except for coefficient (4,5) which is -0.8.
+        The correlation matrix used for inputs dependence, mostly identity except for the term representing the interaction between variables :math:`f_1` and :math:`f_2` which is -0.8.
 
     copula : :class:`~openturns.NormalCopula`
         The (Normal) copula used to define the distribution of the input parameters.
