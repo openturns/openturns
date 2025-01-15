@@ -86,5 +86,5 @@ Estimating a quantile
 .. toctree::
     :maxdepth: 1
 
-    quantile_estimation_wilks
+    quantile_confidence_estimation
 

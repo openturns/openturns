@@ -25,14 +25,14 @@ Simulations methods
     PhysicalSpaceCrossEntropyImportanceSampling
     StandardSpaceCrossEntropyImportanceSampling
 
-Wilks' method
-=============
+Quantile confidence
+===================
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
-    Wilks
+    experimental.QuantileConfidence
 
 Simulation sensitivity analysis
 ===============================

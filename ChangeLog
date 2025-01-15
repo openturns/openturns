@@ -12,12 +12,14 @@
  * LOLAVoronoi sequential experiment (openturns.experimental)
  * RatioOfUniforms random vector (openturns.experimental)
  * ConstantFunction, ConstantEvaluation
+ * QuantileConfidence (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
  * Removed deprecated OptimizationAlgorithm.Build(str) method
  * Deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors (set it from solver)
  * Deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (use MetaModelValidation.computeMeanSquaredError, computeR2Score)
+ * Deprecated Wilks class in favor of QuantileConfidence
 
 === Documentation ===
 
