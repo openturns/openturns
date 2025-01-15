@@ -11,8 +11,10 @@
  * CombinationsDistribution (openturns.experimental)
  * LOLAVoronoi sequential experiment (openturns.experimental)
  * RatioOfUniforms random vector (openturns.experimental)
+ * QuantileConfidence (openturns.experimental)
 
 ==== API changes ====
+ * Deprecated Wilks class in favor of QuantileConfidence
 
 === Documentation ===
 
