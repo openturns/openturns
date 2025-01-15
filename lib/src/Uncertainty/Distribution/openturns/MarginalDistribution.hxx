@@ -138,12 +138,6 @@ public:
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Distribution getMarginal(const Indices & indices) const override;
 
-  /** Get the isoprobabilist transformation */
-  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const override;
-
-  /** Get the inverse isoprobabilist transformation */
-  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const override;
-
   /** Get the standard distribution */
   Distribution getStandardDistribution() const override;
 
