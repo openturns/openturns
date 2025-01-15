@@ -344,18 +344,6 @@ Distribution MarginalDistribution::getMarginal(const Indices & indices) const
   return marginal.clone();
 }
 
-/* Get the isoprobabilistic transformation */
-MarginalDistribution::IsoProbabilisticTransformation MarginalDistribution::getIsoProbabilisticTransformation() const
-{
-  return distribution_.getIsoProbabilisticTransformation().getMarginal(indices_);
-}
-
-/* Get the inverse isoprobabilist transformation */
-MarginalDistribution::InverseIsoProbabilisticTransformation MarginalDistribution::getInverseIsoProbabilisticTransformation() const
-{
-  return distribution_.getInverseIsoProbabilisticTransformation().getMarginal(indices_);
-}
-
 /* Get the standard distribution */
 Distribution MarginalDistribution::getStandardDistribution() const
 {
