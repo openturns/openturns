@@ -1032,6 +1032,7 @@ ot_add_python_module(experimental experimental_module.i
                      GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i.in
                      RatioOfUniforms.i RatioOfUniforms_doc.i.in
+                     QuantileConfidence.i QuantileConfidence_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
