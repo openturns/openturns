@@ -270,6 +270,9 @@ void InverseWishart::computeCovariance() const
 /* Get the standard deviation of the distribution */
 Point InverseWishart::getStandardDeviation() const
 {
+  const UnsignedInteger p = cholesky_.getDimension();
+  const Scalar den = (nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0);
+  if (!(den > 0.0)) throw NotDefinedException(HERE) << "Error: the standard deviation of the inverse Wishart distribution is defined only if nu > p+3, here nu = " << nu_ << " and p = " << p;
   Point sigma(getDimension());
   // If the covariance has already been computed, use it
   if (isAlreadyComputedCovariance_)
@@ -278,18 +281,31 @@ Point InverseWishart::getStandardDeviation() const
     return sigma;
   }
   // else compute only the standard deviation as the covariance may be huge
-  const UnsignedInteger p = cholesky_.getDimension();
-  const Scalar den = (nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0);
-  if (!(den > 0.0)) throw NotDefinedException(HERE) << "Error: the standard deviation of the inverse Wishart distribution is defined only if nu > p+3";
   const CovarianceMatrix V(getV());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      sigma[index] = std::sqrt((2.0 * V(i, j) * V(i, j) + (nu_ - p - 1.0) * (V(i, i) * V(j, j) + V(i, j) * V(i, j))) / den);
+      sigma[index] = std::sqrt(((nu_ - p + 1) * V(i, j) * V(i, j) + (nu_ - p - 1) * V(i, i) * V(j, j)) / den);
       ++index;
     }
   return sigma;
+}
+
+/* Get the skewness of the distribution */
+Point InverseWishart::getSkewness() const
+{
+  const UnsignedInteger p = cholesky_.getDimension();
+  if (!(nu_ - p - 5.0 > 0.0)) throw NotDefinedException(HERE) << "Error: the skewness of the inverse Wishart distribution is defined only if nu > p+5, here nu = " << nu_ << " and p = " << p;
+  return DistributionImplementation::getSkewness();
+}
+
+/* Get the kurtosis of the distribution */
+Point InverseWishart::getKurtosis() const
+{
+  const UnsignedInteger p = cholesky_.getDimension();
+  if (!(nu_ - p - 7.0 > 0.0)) throw NotDefinedException(HERE) << "Error: the kurtosis of the inverse Wishart distribution is defined only if nu > p+7, here nu = " << nu_ << " and p = " << p;
+  return DistributionImplementation::getKurtosis();
 }
 
 

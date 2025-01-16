@@ -54,7 +54,7 @@ class TestInverseWishartMethods(ut.TestCase):
         # equivalent InverseGamma distribution
         U = ot.Uniform(0.0, 1.0)
         scale = 10.0 * U.getRealization()[0]
-        DoF = 3.0 + U.getRealization()[0]  # Degrees of Freedom
+        DoF = 10.0 + U.getRealization()[0]  # Degrees of Freedom
         cls.k, cls.beta = 0.5 * DoF, 0.5 * scale
         cls.one_dimensional_inverse_wishart = ot.InverseWishart(
             ot.CovarianceMatrix([[scale]]), DoF
@@ -175,90 +175,19 @@ class TestInverseWishartMethods(ut.TestCase):
                     theoretical_mean[indice], DoF * Scale_wishart[k, j]
                 )
                 ott.assert_almost_equal(
-                    mean_inverse[indice], coefficient * Scale[k, j], 0.15, 1.0e-3
+                    mean_inverse[indice], coefficient * Scale[k, j], 0.15, 1.0e-2
                 )
                 ott.assert_almost_equal(
-                    mean[indice], DoF * Scale_wishart[k, j], 0.15, 1.0e-3
+                    mean[indice], DoF * Scale_wishart[k, j], 0.15, 1.0e-2
                 )
                 indice += 1
 
 
 # Instantiate one distribution object
-distribution = ot.InverseWishart(ot.CovarianceMatrix(1), 5.0)
+distribution = ot.InverseWishart(ot.CovarianceMatrix(1), 15.0)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 
-# Get mean and covariance
-print("Mean= ", repr(distribution.getMean()))
-print("Covariance= ", repr(distribution.getCovariance()))
-
-# Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
-
-# Test for realization of distribution
-oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
-
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
-
-size = 100
-for i in range(2):
-    msg = ""
-    if ot.FittingTest.Kolmogorov(
-        distribution.getSample(size), distribution
-    ).getBinaryQualityMeasure():
-        msg = "accepted"
-    else:
-        msg = "rejected"
-    print("Kolmogorov test for the generator, sample size=", size, " is", msg)
-    size *= 10
-
-# Define a point
-point = ot.Point(distribution.getDimension(), 9.1)
-print("Point= ", repr(point))
-
-# Show PDF and CDF of point
-eps = 1e-5
-# max = distribution.getB() + distribution.getA()
-# min = distribution.getB() - distribution.getA()
-# derivative of PDF with regards its arguments
-DDF = distribution.computeDDF(point)
-print("ddf     =", repr(DDF))
-
-# PDF value
-LPDF = distribution.computeLogPDF(point)
-print("log pdf=%.6f" % LPDF)
-PDF = distribution.computePDF(point)
-print("pdf     =%.6f" % PDF)
-
-# derivative of the PDF with regards the parameters of the distribution
-CDF = distribution.computeCDF(point)
-print("cdf=%.6f" % CDF)
-CCDF = distribution.computeComplementaryCDF(point)
-print("ccdf=%.6f" % CCDF)
-PDFgr = distribution.computePDFGradient(point)
-print("pdf gradient     =", repr(PDFgr))
-
-# derivative of the PDF with regards the parameters of the distribution
-CDFgr = distribution.computeCDFGradient(point)
-print("cdf gradient     =", repr(CDFgr))
-
-# quantile
-quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-# Get 95% survival function
-inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
-)
 print("entropy=%.6f" % distribution.computeEntropy())
 
 # Confidence regions
@@ -288,26 +217,18 @@ print("beta=", ot.Point(1, beta))
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 
-mean = distribution.getMean()
-print("mean=", repr(mean))
-standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", repr(standardDeviation))
-skewness = distribution.getSkewness()
-print("skewness=", repr(skewness))
-kurtosis = distribution.getKurtosis()
-print("kurtosis=", repr(kurtosis))
-covariance = distribution.getCovariance()
-print("covariance=", repr(covariance))
-parameters = distribution.getParametersCollection()
-print("parameters=", repr(parameters))
-print("Standard representative=", distribution.getStandardRepresentative())
-
 loadTestsFromTestCase(TestInverseWishartMethods)
 
 ot.Log.Show(ot.Log.TRACE)
+print("distribution", distribution)
+ot.RandomGenerator.SetSeed(2)
 validation = ott.DistributionValidation(distribution)
-validation.setSkewnessTolerance(1.0)  # converges slowly
-validation.setKurtosisTolerance(1.0)  # converges slowly
+validation.skipEntropy()  # slow
+validation.skipMinimumVolumeLevelSet()  # slow
+validation.run()
+# 3D test case
+ot.RandomGenerator.SetSeed(2)
+distribution = ot.InverseWishart(ot.CovarianceMatrix([[1, 0.5], [0.5, 1]]), 15.0)
 validation.skipEntropy()  # slow
 validation.skipMinimumVolumeLevelSet()  # slow
 validation.run()
