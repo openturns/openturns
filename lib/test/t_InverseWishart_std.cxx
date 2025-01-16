@@ -35,7 +35,7 @@ int main(int, char *[])
   {
     // Instantiate one distribution object
     CovarianceMatrix cov(1);
-    InverseWishart distribution(cov, 5.0);
+    InverseWishart distribution(cov, 15.0);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -64,7 +64,7 @@ int main(int, char *[])
       size *= 10;
     }
     // Define a point
-    Point point(distribution.getDimension(), 9.1);
+    Point point(distribution.getDimension(), 0.1);
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point

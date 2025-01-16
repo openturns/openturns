@@ -1,55 +1,55 @@
-Distribution class=InverseWishart name=InverseWishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=5 inverseCholeskyInverse=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution class=InverseWishart name=InverseWishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=15 inverseCholeskyInverse=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution InverseWishart(V = 
-[[ 1 ]], nu = 5)
+[[ 1 ]], nu = 15)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.156697]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.374649] last=class=Point name=Unnamed dimension=1 values=[0.381059]
-mean=class=Point name=Unnamed dimension=1 values=[0.335077]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.249466]
-skewness=class=Point name=Unnamed dimension=1 values=[25.4956]
-kurtosis=class=Point name=Unnamed dimension=1 values=[1165.62]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.0560458]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.0901862] last=class=Point name=Unnamed dimension=1 values=[0.0886401]
+mean=class=Point name=Unnamed dimension=1 values=[0.0771182]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00110862]
+skewness=class=Point name=Unnamed dimension=1 values=[2.03504]
+kurtosis=class=Point name=Unnamed dimension=1 values=[11.4085]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=Point name=Unnamed dimension=1 values=[9.1]
-ddf     =class=Point name=Unnamed dimension=1 values=[-2.09622e-05]
-log pdf=-9.80146
-pdf     =5.53709e-05
-pdf (FD)=5.53709e-05
-cdf=0.999795
-ccdf=0.000204753
-survival=0.000204753
-Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0903302]
+Point= class=Point name=Unnamed dimension=1 values=[0.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-220.16]
+log pdf=1.83901
+pdf     =6.29028
+pdf (FD)=6.29028
+cdf=0.81974
+ccdf=0.18026
+survival=0.18026
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0400067]
 Survival(inverse survival)=0.95
-quantile=class=Point name=Unnamed dimension=1 values=[0.872999]
+quantile=class=Point name=Unnamed dimension=1 values=[0.137723]
 cdf(quantile)=0.95
-quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.0903302]
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.0400067]
 cdf (tail)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.000135385,-9.97944e-05]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.000503875,0.000410437]
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0458714] upper bound=class=Point name=Unnamed dimension=1 values=[0.877774] finite lower bound=[1] finite upper bound=[1]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[15.7257,-1.06092]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.629028,0.0521476]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0299545] upper bound=class=Point name=Unnamed dimension=1 values=[0.140394] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(InverseWishart(V = 
-[[ 1 ]], nu = 5)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseWishart(V = 
-[[ 1 ]], nu = 5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseWishart(V = 
-[[ 1 ]], nu = 5)) level=16.35
-beta=7.92992e-08
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0779271] upper bound=class=Point name=Unnamed dimension=1 values=[1.20306] finite lower bound=[1] finite upper bound=[1]
+[[ 1 ]], nu = 15)) gradientImplementation=MinimumVolumeLevelSetGradient(InverseWishart(V = 
+[[ 1 ]], nu = 15)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(InverseWishart(V = 
+[[ 1 ]], nu = 15)) level=47.5285
+beta=2.28365e-21
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.036379] upper bound=class=Point name=Unnamed dimension=1 values=[0.15969] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[0.872999] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[0.137723] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0903302] upper bound=class=Point name=Unnamed dimension=1 values=[59.8961] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0400067] upper bound=class=Point name=Unnamed dimension=1 values=[59.8961] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-entropy=-0.369531
-entropy (MC)=-0.36834
-mean=class=Point name=Unnamed dimension=1 values=[0.333333]
-standard deviation=class=Point name=Unnamed dimension=1 values=[0.471405]
-skewness=class=Point name=Unnamed dimension=1 values=[18.5998]
-kurtosis=class=Point name=Unnamed dimension=1 values=[1074.6]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.222222]
+entropy=-2.20554
+entropy (MC)=-2.20538
+mean=class=Point name=Unnamed dimension=1 values=[0.0769231]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.0328001]
+skewness=class=Point name=Unnamed dimension=1 values=[2.08463]
+kurtosis=class=Point name=Unnamed dimension=1 values=[13.0952]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00107585]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[V_0_0 : 1, nu : 5]]
+parameters=[[V_0_0 : 1, nu : 15]]
 Standard representative=InverseWishart(V = 
-[[ 1 ]], nu = 5)
+[[ 1 ]], nu = 15)
