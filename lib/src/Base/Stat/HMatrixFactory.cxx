@@ -26,7 +26,7 @@
 
 #ifdef OPENTURNS_HAVE_HMAT
 #include <hmat/config.h>
-#ifdef HMAT_HAVE_STARPU
+#if defined(HMAT_HAVE_STARPU) || defined(HMAT_HAVE_TOYRT)
 # include <hmat/hmat_parallel.h>
 #else
 # include <hmat/hmat.h>
@@ -62,20 +62,66 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   hmat_interface_t *hmatInterface = (hmat_interface_t*) calloc(1, sizeof(hmat_interface_t));
   hmat_settings_t settings;
 
-#ifdef HMAT_HAVE_STARPU
-  if (!ResourceMap::GetAsBool("HMatrix-ForceSequential"))
-    hmat_init_starpu_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
-  else
-#endif
+
+#if defined(HMAT_HAVE_STARPU) && defined(HMAT_HAVE_TOYRT)
+    // If both are available, choose based on the boolean
+    // if we don't force the sequential
+    if (ResourceMap::GetAsBool("HMatrix-ForceSequential"))
+    {
+      Log::Info( "Found both ToyRT & StarPU, but forceSequential ! ");
+      hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+    else
+    {
+      if (ResourceMap::GetAsString("HMatrix-ParallelSolver") == "starpu")
+      {
+	Log::Info ("Found both ToyRT & StarPU and user selected StarPU ! ");
+        hmat_init_starpu_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+      }
+      else
+      {
+	Log::Info ("Found both ToyRT & StarPU and user selected ToyRT ! ");
+        hmat_init_toyrt_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+
+      }
+    }
+#elif defined(HMAT_HAVE_STARPU)
+    // Only StarPU is compiled
+    if (ResourceMap::GetAsBool("HMatrix-ForceSequential"))
+    {
+      Log::Info( "Found StarPU, but forceSequential ! ");
+      hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+    else
+    {
+      Log::Info ("Found StarPU ! ");
+      hmat_init_starpu_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+#elif defined(HMAT_HAVE_TOYRT)
+    // Only ToyRT is compiled
+    if (ResourceMap::GetAsBool("HMatrix-ForceSequential"))
+    {
+      Log::Info( "Found ToyRT, but forceSequential ! ");
+      hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+    else
+    {
+      Log::Info ("Found ToyRT ");
+      hmat_init_toyrt_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+#else
+    Log::Info ("Sequential engine available");
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+#endif
+
 
   hmat_get_parameters(&settings);
-
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.validationErrorThreshold = ResourceMap::GetAsScalar("HMatrix-ValidationError");
   settings.validateCompression = settings.validationErrorThreshold > 0;
   settings.validationReRun = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationRerun");
   settings.validationDump = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationDump");
+
 
   hmat_set_parameters(&settings);
 
@@ -92,6 +138,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
       std::copy(&sample(i, 0), &sample(i, 0) + inputDimension, points + i * inputDimension * outputDimension + j * inputDimension);
   }
+
 
   hmat_clustering_algorithm_t* algo;
   const String clusteringAlgorithm = parameters.getClusteringAlgorithm();
