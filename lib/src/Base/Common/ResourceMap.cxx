@@ -1854,6 +1854,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // HMatrix parameters //
   addAsBool("HMatrix-ForceSequential", false);
+  addAsString("HMatrix-ParallelSolver", "starpu");
   addAsString("HMatrix-Admissibility", "standard");
   addAsScalar("HMatrix-AdmissibilityFactor", 100.0);
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
