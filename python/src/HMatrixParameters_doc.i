@@ -10,7 +10,13 @@ the user.
 For example, for the admissibility factor, the default value is given by
 the key 'HMatrix-AdmissibilityFactor' in the :class:`~openturns.ResourceMap` and applied
 only if the 'HMatrix-Admissibility' key is set to 'standard'.
-The default clustering algorithm is given by the key 'HMatrix-ClusteringAlgorithm' in the :class:`~openturns.ResourceMap`.
+The default clustering algorithm is given by the key 'HMatrix-ClusteringAlgorithm' in
+the :class:`~openturns.ResourceMap`. The HMatrixFactory triggers the h-matrix engine.
+If the key 'HMatrix-ForceSequential' key in the :class:`~openturns.ResourceMap` is True,
+the sequential engine is used even if a parallel one is available.
+Otherwise, if parallel engines (StarPU and ToyRT supported) are both available,
+the key 'HMatrix-ParallelSolver' allows one to select the parallel engine to use.
+If only one of the two parallel engines is available, it is used as default.
 "
 
 // ---------------------------------------------------------------------
