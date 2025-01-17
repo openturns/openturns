@@ -72,7 +72,7 @@ class StiffenedPanel:
     distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
-    independent_distribution : :class:`~openturns.JointDistribution`
+    independentDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters for the special case of independence.
 
     Examples
@@ -153,34 +153,21 @@ class StiffenedPanel:
             )
         )
 
-        self.distribution = ot.JointDistribution(
-            [
-                self.youngModulus,
-                self.nu,
-                self.h_c,
-                self.ell,
-                self.f_1,
-                self.f_2,
-                self.t,
-                self.a,
-                self.b_0,
-                self.p,
-            ],
-            self.copula,
-        )
+        varList = [
+            self.youngModulus,
+            self.nu,
+            self.h_c,
+            self.ell,
+            self.f_1,
+            self.f_2,
+            self.t,
+            self.a,
+            self.b_0,
+            self.p,
+        ]
+
+        # distribution
+        self.distribution = ot.JointDistribution(varList, self.copula)
 
         # special case: independent distribution
-        self.independent_distribution = ot.JointDistribution(
-            [
-                self.youngModulus,
-                self.nu,
-                self.h_c,
-                self.ell,
-                self.f_1,
-                self.f_2,
-                self.t,
-                self.a,
-                self.b_0,
-                self.p,
-            ]
-        )
+        self.independentDistribution = ot.JointDistribution(varList)
