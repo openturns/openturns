@@ -488,7 +488,6 @@ ot_add_python_module(algo algo_module.i
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
                       GaussKronrod.i GaussKronrod_doc.i.in
                       GaussLegendre.i GaussLegendre_doc.i.in
-                      FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
                       KarhunenLoeveReduction.i KarhunenLoeveReduction_doc.i.in
@@ -997,6 +996,7 @@ ot_add_python_module(VisualTest visualtest_module.i
                     )
 ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
+		      FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
                       HSICStatImplementation.i HSICStatImplementation_doc.i.in
@@ -1035,6 +1035,7 @@ ot_add_python_module(experimental experimental_module.i
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
+                     FejerExperiment.i FejerExperiment_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
                      GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in

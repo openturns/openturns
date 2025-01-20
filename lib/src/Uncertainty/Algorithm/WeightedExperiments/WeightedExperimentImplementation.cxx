@@ -97,6 +97,15 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
   return size_;
 }
 
+/* Level accessor */
+void WeightedExperimentImplementation::setLevels(const Indices & levels)
+{
+  UnsignedInteger product = 1;
+  for (UnsignedInteger i = 0; i < levels.getSize(); ++ i)
+    product *= levels[i];
+  setSize(product);
+}
+
 Bool WeightedExperimentImplementation::hasUniformWeights() const
 {
   return true;
