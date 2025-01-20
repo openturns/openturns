@@ -35,7 +35,7 @@ This use-case implements a simplified model of buckling for a stiffened panel (s
     **Figure 3.** Parameterization of the stiffened panel.
 
 
-This test case is composed of nine random variables:
+This test case is composed of ten random variables:
 
 - :math:`E\sim\mathcal{TN}(\num{110.0e9}, \num{55.0e9}, \num{99.0e9}, \num{121.0e9})` : Young modulus (:math:`\unit{\Pa}`)
 
