@@ -88,6 +88,13 @@ String MarginalEvaluation::__repr__() const
   return oss;
 }
 
+String MarginalEvaluation::__str__(const String & ) const
+{
+  OSS oss(false);
+  oss << MarginalEvaluation::GetClassName() << " evaluation=" << p_evaluation_->__str__();
+  return oss;
+}
+
 /* Indices accessor */
 Indices MarginalEvaluation::getIndices() const
 {

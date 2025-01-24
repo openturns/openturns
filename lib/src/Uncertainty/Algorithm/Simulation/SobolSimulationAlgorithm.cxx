@@ -357,18 +357,6 @@ UnsignedInteger SobolSimulationAlgorithm::getExperimentSize() const
   return experimentSize_;
 }
 
-void SobolSimulationAlgorithm::setBatchSize(const UnsignedInteger batchSize)
-{
-  LOGWARN("SobolSimulationAlgorithm.setBatchSize is deprecated in favor of setBlockSize (and use setExperimentSize to set the design size instead)");
-  setBlockSize(batchSize);
-}
-
-UnsignedInteger SobolSimulationAlgorithm::getBatchSize() const
-{
-  LOGWARN("SobolSimulationAlgorithm.getBatchSize is deprecated in favor of getBlockSize (and use getExperimentSize to get the design size)");
-  return getBlockSize();
-}
-
 /* Draw the probability convergence at the given level */
 Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger marginalIndex,
     const Scalar level, const String & label) const

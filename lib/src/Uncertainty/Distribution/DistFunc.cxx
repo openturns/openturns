@@ -1601,6 +1601,16 @@ Point DistFunc::pStudent(const Scalar nu,
     result[i] = StudentFunctions::StudentCDF(nu, x[i], tail);
   return result;
 }
+
+Scalar DistFunc::pStudent2D(const Scalar nu,
+                            const Scalar x1,
+                           const Scalar x2,
+                           const Scalar rho,
+                           const Bool tail)
+{
+  return StudentFunctions::Student2DCDF(nu, x1, x2, rho, tail);
+}
+
 /* CDF inverse */
 Scalar DistFunc::qStudent(const Scalar nu,
                           const Scalar p,

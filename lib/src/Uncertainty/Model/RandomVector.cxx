@@ -27,9 +27,6 @@
 #include "openturns/Domain.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/Greater.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicFunction.hxx"
-#endif
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/IntersectionEvent.hxx"
 #include "openturns/UnionEvent.hxx"

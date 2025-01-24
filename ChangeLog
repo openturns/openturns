@@ -10,14 +10,18 @@
  * New LeastSquaresEquationsSolver class (openturns.experimental)
  * CombinationsDistribution (openturns.experimental)
  * LOLAVoronoi sequential experiment (openturns.experimental)
+ * ConstantFunction, ConstantEvaluation
 
 ==== API changes ====
+  * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
+  * Removed deprecated OptimizationAlgorithm.Build(str) methd
 
 === Documentation ===
 
 === Python module ===
 
 === Miscellaneous ===
+ * New c++ csv parser replacing the old bison/flex implementation
 
 
 

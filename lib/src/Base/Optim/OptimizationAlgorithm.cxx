@@ -281,12 +281,6 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
 }
 
 
-OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
-{
-  LOGWARN("OptimizationAlgorithm.Build is deprecated in favor of GetByName");
-  return GetByName(solverName);
-}
-
 OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & problem)
 {
   // return the first algorithm that accepts the problem
@@ -338,7 +332,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem &
   Description result;
   for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
   {
-    OptimizationAlgorithm algorithm(Build(names[i]));
+    OptimizationAlgorithm algorithm(GetByName(names[i]));
     try
     {
       algorithm.setProblem(problem);

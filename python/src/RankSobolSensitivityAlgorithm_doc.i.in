@@ -1,6 +1,10 @@
 %feature("docstring") OT::RankSobolSensitivityAlgorithm
 "Sensitivity analysis using rank-based method.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
