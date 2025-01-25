@@ -503,3 +503,9 @@ JointDistribution
   </tr>
 </table>
 
+Normal marginals, independent copula, isElliptical? True
+Normal marginals, normal copula, isElliptical? True
+Normal marginals, non-normal copula, isElliptical? False
+Student marginals, Student copula, same nu, isElliptical? True
+Student marginals same nu, Student copula different nu, isElliptical? False
+Student marginals different nu, Student copula same nu as first marginal, isElliptical? False
