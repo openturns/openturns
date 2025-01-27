@@ -22,7 +22,6 @@
 #include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/DeconditionedDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
@@ -45,7 +44,6 @@ JointByConditioningDistribution::JointByConditioningDistribution()
   const SymbolicFunction linkFunction(Description({"y0"}), Description({"y0", "y0 + 1"}));
   setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
   setName("JointByConditioningDistribution");
-  isParallel_ = false;
 }
 
 /* Parameters constructor */
@@ -63,7 +61,6 @@ JointByConditioningDistribution::JointByConditioningDistribution(const Distribut
 
   setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
   setName("JointByConditioningDistribution");
-  isParallel_ = false;
 }
 
 /* Comparison operator */
@@ -89,11 +86,10 @@ void JointByConditioningDistribution::computeRange()
   Interval::BoolCollection finiteUpperBound(conditioningDistribution_.getRange().getFiniteUpperBound());
 
   // Then, the conditioned distribution
-  const DeconditionedDistribution deconditioned(conditionedDistribution_, conditioningDistribution_, linkFunction_);
-  lowerBound.add(deconditioned.getRange().getLowerBound());
-  finiteLowerBound.add(deconditioned.getRange().getFiniteLowerBound());
-  upperBound.add(deconditioned.getRange().getUpperBound());
-  finiteUpperBound.add(deconditioned.getRange().getFiniteUpperBound());
+  lowerBound.add(deconditioned_.getRange().getLowerBound());
+  finiteLowerBound.add(deconditioned_.getRange().getFiniteLowerBound());
+  upperBound.add(deconditioned_.getRange().getUpperBound());
+  finiteUpperBound.add(deconditioned_.getRange().getFiniteUpperBound());
 
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
@@ -285,6 +281,7 @@ void JointByConditioningDistribution::setConditionedAndConditioningDistributions
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
   setDimension(conditioningDimension + conditionedDistribution.getDimension());
+  deconditioned_ = DeconditionedDistribution(conditionedDistribution, conditioningDistribution, linkFunction);
   computeRange();
 
   Description description(conditioningDistribution.getDescription());
@@ -299,6 +296,10 @@ void JointByConditioningDistribution::setConditionedAndConditioningDistributions
   }
 
   setDescription(description);
+  const Bool flag1 = linkFunction_.getEvaluation().getImplementation()->isParallel();
+  const Bool flag2 = conditioningDistribution_.getImplementation()->isParallel();
+  const Bool flag3 = conditionedDistribution_.getImplementation()->isParallel();
+  isParallel_ = flag1 && flag2 && flag3;
 }
 
 /* Get the i-th marginal distribution */
@@ -311,7 +312,7 @@ Distribution JointByConditioningDistribution::getMarginal(const UnsignedInteger 
   // If the index is in the conditioning part
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   if (i < conditioningDimension) return conditioningDistribution_.getMarginal(i);
-  return DeconditionedDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i - conditioningDimension);
+  return deconditioned_.getMarginal(i - conditioningDimension);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -333,7 +334,7 @@ Distribution JointByConditioningDistribution::getMarginal(const Indices & indice
     if (indices[i] >= conditioningDimension)
       conditionedIndices.add(indices[i] - conditioningDimension);
   if (conditionedIndices.getSize() == size)
-    return DeconditionedDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(conditionedIndices);
+    return deconditioned_.getMarginal(conditionedIndices);
   return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 
@@ -641,7 +642,7 @@ void JointByConditioningDistribution::load(Advocate & adv)
   adv.loadAttribute( "conditionedDistribution_", conditionedDistribution_ );
   adv.loadAttribute( "conditioningDistribution_", conditioningDistribution_ );
   adv.loadAttribute( "linkFunction_", linkFunction_ );
-  computeRange();
+  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction_);
 }
 
 END_NAMESPACE_OPENTURNS

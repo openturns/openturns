@@ -163,4 +163,4 @@ ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 9.01202
 # negative bound sampling case
 ot.ResourceMap.SetAsBool("PointConditionalDistribution-UseSimplifiedVersion", False)
 distribution = otexp.PointConditionalDistribution(copula - 1.0, [1], [-0.8])
-ott.assert_almost_equal(distribution.getSample(1000).computeMean(), [-0.75] * 2, 1e-2, 1e-2)
+ott.assert_almost_equal(distribution.getSample(10000).computeMean(), [-0.75] * 2, 1e-2, 1e-2)

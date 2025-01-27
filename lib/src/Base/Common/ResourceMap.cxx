@@ -1017,6 +1017,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100);
 
+  // RatioOfUniforms //
+  addAsString("RatioOfUniforms-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("RatioOfUniforms-CandidateNumber", 8192);
+  addAsUnsignedInteger("RatioOfUniforms-MaximumMultistart", 16);
+  addAsUnsignedInteger("RatioOfUniforms-NormalizationSampleSize", 10000);
 
   // RankSobolSensitivityALgorithm//
   addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
@@ -1117,18 +1122,23 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
   // DeconditionedDistribution parameters //
-  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 256);
+  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 48);
   addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
   addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // PointConditionalDistribution parameters //
+  addAsBool("PointConditionalDistribution-InitializeSampling", true);
+  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
+  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
   addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre");
   addAsString("PointConditionalDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsString("PointConditionalDistribution-RangeAdaptationMethod", "Rank");
   addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
-  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
-  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
-  addAsBool("PointConditionalDistribution-InitializeSampling", true);
+
+  // PosteriorDistribution parameters //
+  addAsString("PosteriorDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("PosteriorDistribution-RatioUniformCandidateNumber", 10000);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
