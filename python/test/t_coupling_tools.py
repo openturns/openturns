@@ -569,7 +569,7 @@ def check_execute():
     if sys.platform.startswith("win"):
         ct.execute("echo hi", shell=True, hide_win=False)
     else:
-        ct.execute("echo hi", shell=True, executable="/bin/bash")
+        ct.execute("echo hi", shell=True, executable="/bin/sh")
 
     cp = ct.execute("echo hello", shell=True, capture_output=True)
     if cp.returncode != 0 or not cp.stdout.decode().startswith("hello"):
