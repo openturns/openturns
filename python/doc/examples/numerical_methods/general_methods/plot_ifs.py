@@ -26,13 +26,16 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     # Compute the contraction factor of each function
     all_r = [m.sqrt(abs(f[1].computeDeterminant())) for f in f_i]
     # Find the box counting dimension, ie the value s such that r_1^s+...+r_n^s-1=0
-    equation = "-1.0"
-    for r in all_r:
-        equation += "+" + str(r) + "^s"
+    equation = "-1.0+" + "+".join([str(r) + "^s" for r in all_r])
     dim = len(f_i)
-    s = ot.Brent().solve(
-        ot.SymbolicFunction("s", equation), 0.0, 0.0, -m.log(dim) / m.log(max(all_r))
-    )
+    fs = ot.SymbolicFunction("s", equation)
+    # tweak search bounds
+    xMin, xMax = 0.0, -m.log(dim) / m.log(max(all_r))
+    fMax = fs([xMax])[0]
+    eps = ot.SpecFunc.Precision ** 0.5
+    if abs(fMax) < eps:
+        xMax += eps
+    s = ot.Brent().solve(fs, 0.0, xMin, xMax)
     # Add a small perturbation to sample even the degenerated transforms
     probabilities = [r**s + 1e-2 for r in all_r]
     # Build the sampling distribution
