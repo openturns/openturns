@@ -126,7 +126,10 @@ for testCase in range(len(distribution)):
         interval, threshold = distribution[
             testCase
         ].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        prec = ot.PlatformInfo.GetNumericalPrecision()
+        ot.PlatformInfo.SetNumericalPrecision(5)
         print("Minimum volume interval=", interval)
+        ot.PlatformInfo.SetNumericalPrecision(prec)
         print("threshold=", ot.Point(1, threshold))
         levelSet, beta = distribution[
             testCase
