@@ -24,18 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
 
 int main(int, char *[])
 {
@@ -45,11 +33,7 @@ int main(int, char *[])
   try
   {
     // Test function operator ()
-    Description input(4);
-    input[0] = "x1";
-    input[1] = "x2";
-    input[2] = "x3";
-    input[3] = "x4";
+    const Description input = {"x1", "x2", "x3", "x4"};
     SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
     Point startingPoint(4, 0.0);
     Interval bounds(Point(4, -3.0), Point(4, 5.0));
@@ -65,16 +49,16 @@ int main(int, char *[])
     solver.setProblem(problem);
     solver.run();
 
-    fullprint << "minimizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-    fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "minimizer = " << solver.getResult().getOptimalPoint() << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+    fullprint << "multipliers = " << solver.getResult().computeLagrangeMultipliers() << std::endl;
 
     // Define Optimization Problem : maximization
     problem.setMinimization(false);
     solver.setProblem(problem);
     solver.run();
 
-    fullprint << "maximizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-    fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "maximizer = " << solver.getResult().getOptimalPoint() << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+    fullprint << "multipliers = " << solver.getResult().computeLagrangeMultipliers() << std::endl;
 
   }
   catch (TestFailed & ex)
@@ -87,11 +71,7 @@ int main(int, char *[])
   {
 
     // Test function operator ()
-    Description input(4);
-    input[0] = "x1";
-    input[1] = "x2";
-    input[2] = "x3";
-    input[3] = "x4";
+    const Description input = {"x1", "x2", "x3", "x4"};
     SymbolicFunction levelFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     Point startingPointNearMinimizationCorner(4);
     startingPointNearMinimizationCorner[0] = 3.0;
@@ -117,8 +97,8 @@ int main(int, char *[])
       solver.setProblem(problem);
       solver.setStartingPoint(startingPointNearMinimizationCorner);
       solver.run();
-      fullprint << "minimizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-      fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
+      fullprint << "minimizer = " << solver.getResult().getOptimalPoint() << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+      fullprint << "multipliers = " << solver.getResult().computeLagrangeMultipliers() << std::endl;
     }
     {
       // Define Optimization Problem : maximization
@@ -126,8 +106,8 @@ int main(int, char *[])
       solver.setProblem(problem);
       solver.setStartingPoint(startingPointNearMaximizationCorner);
       solver.run();
-      fullprint << "maximizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-      fullprint << "multipliers = " << printPoint(solver.getResult().computeLagrangeMultipliers(), 4) << std::endl;
+      fullprint << "maximizer = " << solver.getResult().getOptimalPoint() << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+      fullprint << "multipliers = " << solver.getResult().computeLagrangeMultipliers() << std::endl;
     }
   }
   catch (TestFailed & ex)

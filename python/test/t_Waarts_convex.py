@@ -29,7 +29,6 @@ R = ot.IdentityMatrix(dim)
 
 myDistribution = ot.Normal(mean, sigma, R)
 
-start = myDistribution.getMean()
 Covariance = myDistribution.getCovariance()
 
 #
@@ -53,9 +52,9 @@ myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-10)
 myAbdoRackwitz.setMaximumResidualError(1.0e-10)
 myAbdoRackwitz.setMaximumConstraintError(1.0e-10)
-
-myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent, start)
-myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent, start)
+myAbdoRackwitz.setStartingPoint(myDistribution.getMean())
+myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent)
+myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent)
 
 myAlgoAR.run()
 myAlgoAR2.run()

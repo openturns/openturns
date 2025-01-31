@@ -134,7 +134,8 @@ Create the event :math:`\cD_f = \{\vect{x} \in \Rset^{\inputDim} \, | \,\model(\
 Create the FORM algorithm and launch it:
 
 >>> solver = ot.AbdoRackwitz()
->>> analytical = ot.FORM(solver, event, [50.0, 1.0, 10.0, 5.0])
+>>> solver.setStartingPoint(distribution.getMean())
+>>> analytical = ot.FORM(solver, event)
 >>> analytical.run()
 >>> analyticalResult = analytical.getResult()
 

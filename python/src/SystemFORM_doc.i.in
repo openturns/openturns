@@ -37,9 +37,6 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 event : :class:`~openturns.RandomVector`
     Failure system event, in disjunctive normal form
     (either a union of intersections, or a single intersection)
-physicalStartingPoint : sequence of float
-    Starting point of the optimization algorithm, declared in the physical
-    space.
 
 Notes
 -----
@@ -60,8 +57,8 @@ Examples
 >>> e2 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x2+3*x1)^2']), X), ot.Greater(), 5.0)
 >>> event = ot.IntersectionEvent([e1, e2])
 >>> solver = ot.AbdoRackwitz()
->>> starting_pt = [0.1] * dim
->>> algo = ot.SystemFORM(solver, event, starting_pt)
+>>> solver.setStartingPoint([0.1] * dim)
+>>> algo = ot.SystemFORM(solver, event)
 >>> algo.run()
 >>> result = algo.getResult()
 >>> form_results = result.getFORMResultCollection()

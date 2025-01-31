@@ -56,8 +56,8 @@ event = ot.ThresholdEvent(Y, ot.Greater(), threshold)
 # %%
 # Create a FORM algorithm
 solver = ot.Cobyla()
-startingPoint = inputDist.getMean()
-algo = ot.FORM(solver, event, startingPoint)
+solver.setStartingPoint(inputDist.getMean())
+algo = ot.FORM(solver, event)
 
 # Run the algorithm and retrieve the result
 algo.run()

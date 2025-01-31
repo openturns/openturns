@@ -7,9 +7,6 @@ nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
     Optimization algorithm used to search the design point.
 event : :class:`~openturns.RandomVector`
     Failure event.
-physicalStartingPoint : sequence of float
-    Starting point of the optimization algorithm, declared in the physical
-    space.
 
 Notes
 -----
@@ -103,7 +100,8 @@ Examples
 >>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 >>> # We create an OptimizationAlgorithm algorithm
 >>> myOptim = ot.AbdoRackwitz()
->>> myAlgo = ot.Analytical(myOptim, myEvent, [50.0, 1.0, 10.0, 5.0])"
+>>> myOptim.setStartingPoint(myDistribution.getMean())
+>>> myAlgo = ot.Analytical(myOptim, myEvent)"
 
 // ---------------------------------------------------------------------
 
@@ -134,28 +132,6 @@ Parameters
 ----------
 algorithm : :class:`~openturns.OptimizationAlgorithm`
      Optimization algorithm used to research the design point."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Analytical::getPhysicalStartingPoint
-"Accessor to the starting point of the optimization algorithm.
-
-Returns
--------
-point : :class:`~openturns.Point`
-    Starting point of the optimization algorithm, declared in the physical
-    space."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Analytical::setPhysicalStartingPoint
-"Accessor to the starting point of the optimization algorithm.
-
-Parameters
-----------
-point : sequence of float
-    Starting point of the optimization algorithm, declared in the physical
-    space."
 
 // ---------------------------------------------------------------------
 

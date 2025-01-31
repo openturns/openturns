@@ -43,7 +43,7 @@ public:
   /** Constructor with parameters */
   MultiFORM(const OptimizationAlgorithm & solver,
             const RandomVector & event,
-            const Point & physicalStartingPoint);
+            const Point & physicalStartingPoint = Point()); // deprecated argument
 
   /** Virtual constructor */
   MultiFORM * clone() const override;

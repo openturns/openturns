@@ -24,18 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
 
 int main(int, char *[])
 {
@@ -44,20 +32,17 @@ int main(int, char *[])
   try
   {
     Log::Show(Log::NONE);
+    PlatformInfo::SetNumericalPrecision(4);
     // Test function operator ()
-    Description input(4);
-    input[0] = "x1";
-    input[1] = "x2";
-    input[2] = "x3";
-    input[3] = "x4";
+    const Description input = {"x1", "x2", "x3", "x4"};
     SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
     Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    fullprint << "result = " << printPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().computeLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result = " << myAlgorithm.getResult().getOptimalPoint() << std::endl;
+    fullprint << "multipliers = " << myAlgorithm.getResult().computeLagrangeMultipliers() << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -67,11 +52,7 @@ int main(int, char *[])
 
   try
   {
-    Description input(4);
-    input[0] = "x1";
-    input[1] = "x2";
-    input[2] = "x3";
-    input[3] = "x4";
+   const Description input = {"x1", "x2", "x3", "x4"};
     SymbolicFunction levelFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));
@@ -84,10 +65,10 @@ int main(int, char *[])
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
     OptimizationResult result(myAlgorithm.getResult());
-    fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printPoint(result.computeLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result = " << result.getOptimalPoint() << std::endl;
+    fullprint << "multipliers = " << result.computeLagrangeMultipliers() << std::endl;
     result.drawErrorHistory();
-    //FIXME:fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
+    // fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;
     fullprint << "hessian    calls number=" << levelFunction.getHessianCallsNumber() << std::endl;
   }
