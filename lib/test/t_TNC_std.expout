@@ -1,8 +1,8 @@
-minimizer = [-3.0000,-3.0000,5.0000,-3.0000] value=-36
-multipliers = [-1.0000,-2.0000,0.0000,-4.0000,0.0000,0.0000,-3.0000,0.0000]
-maximizer = [5.0000,5.0000,-3.0000,5.0000] value=44
-multipliers = [0.0000,0.0000,3.0000,0.0000,1.0000,2.0000,0.0000,4.0000]
-minimizer = [3.4256,-3.0000,5.0000,-3.0000] value=-108.288
-multipliers = [0.0000,-10.0000,0.0000,-20.0000,0.0000,0.0000,-21.0000,0.0000]
-maximizer = [-3.0000,5.0000,5.0000,5.0000] value=137.97
-multipliers = [1.4134,0.0000,0.0000,0.0000,0.0000,10.0000,27.0000,20.0000]
+minimizer = class=Point name=Unnamed dimension=4 values=[-3,-3,5,-3] value=-36
+multipliers = class=Point name=Unnamed dimension=8 values=[-1,-2,0,-4,0,0,-3,0]
+maximizer = class=Point name=Unnamed dimension=4 values=[5,5,-3,5] value=44
+multipliers = class=Point name=Unnamed dimension=8 values=[0,0,3,0,1,2,0,4]
+minimizer = class=Point name=Unnamed dimension=4 values=[3.42562,-3,5,-3] value=-108.288
+multipliers = class=Point name=Unnamed dimension=8 values=[0,-10,0,-20,0,0,-21,0]
+maximizer = class=Point name=Unnamed dimension=4 values=[-3,5,5,5] value=137.97
+multipliers = class=Point name=Unnamed dimension=8 values=[1.41335,0,0,0,0,10,27,20]

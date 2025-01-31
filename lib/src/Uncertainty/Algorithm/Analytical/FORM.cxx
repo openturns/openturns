@@ -87,7 +87,6 @@ void FORM::run()
 /* Method save() stores the object through the StorageManager */
 void FORM::save(Advocate & adv) const
 {
-
   Analytical::save(adv);
   adv.saveAttribute("formResult_", formResult_);
 }

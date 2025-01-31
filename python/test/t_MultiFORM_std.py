@@ -17,6 +17,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 
 # solver
 solver = ot.Cobyla()
+solver.setStartingPoint([0.0] * dim)
 solver.setMaximumCallsNumber(1000)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
@@ -24,8 +25,7 @@ solver.setMaximumResidualError(1.0e-10)
 solver.setMaximumConstraintError(1.0e-10)
 
 # algorithm
-start_pt = [0.0] * dim
-algo = ot.MultiFORM(solver, event, start_pt)
+algo = ot.MultiFORM(solver, event)
 algo.setMaximumDesignPointsNumber(4)
 algo.run()
 result = algo.getResult()

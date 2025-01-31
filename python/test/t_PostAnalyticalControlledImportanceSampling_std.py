@@ -11,15 +11,7 @@ myFunction = ot.SymbolicFunction(("E", "F", "L", "I"), ("-F*L^3/(3.*E*I)",))
 dim = myFunction.getInputDimension()
 
 # We create a normal distribution point of dimension 1
-mean = ot.Point(dim, 0.0)
-# E
-mean[0] = 50.0
-# F
-mean[1] = 1.0
-# L
-mean[2] = 10.0
-# I
-mean[3] = 5.0
+mean = [50.0, 1.0, 10.0, 5.0]
 sigma = ot.Point(dim, 1.0)
 R = ot.IdentityMatrix(dim)
 myDistribution = ot.Normal(mean, sigma, R)
@@ -39,7 +31,8 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), -3)
 # The third parameter is a starting point for the design point research
 myCobyla = ot.Cobyla()
 myCobyla.setMaximumCallsNumber(400)
-myAlgo = ot.FORM(myCobyla, myEvent, mean)
+myCobyla.setStartingPoint(mean)
+myAlgo = ot.FORM(myCobyla, myEvent)
 
 # Perform the simulation
 myAlgo.run()

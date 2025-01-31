@@ -16,6 +16,7 @@
 ==== API changes ====
   * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
   * Removed deprecated OptimizationAlgorithm.Build(str) methd
+ * Deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors (set it from solver)
 
 === Documentation ===
 

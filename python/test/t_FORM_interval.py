@@ -53,17 +53,16 @@ for domain in intervals:
     event = ot.ThresholdEvent(Y, domain)
 
     ot.RandomGenerator.SetSeed(0)
-    # algo = getattr(openturns, algoName)(event)
     algo = ot.ProbabilitySimulationAlgorithm(event, ot.MonteCarloExperiment())
     algo.run()
     res = algo.getResult().getProbabilityEstimate()
     print("MC p=%.6g" % res)
 
     ot.RandomGenerator.SetSeed(0)
-    # algo = getattr(openturns, algoName)(event)
     algoOptim = ot.Cobyla()
+    algoOptim.setStartingPoint(X.getMean())
     algoOptim.setMaximumConstraintError(1)
-    algo = ot.FORM(algoOptim, event, X.getMean())
+    algo = ot.FORM(algoOptim, event)
 
     algo.run()
     res = algo.getResult().getEventProbability()

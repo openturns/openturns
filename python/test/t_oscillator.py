@@ -25,8 +25,9 @@ optimAlgo.setMaximumAbsoluteError(1.0e-3)
 optimAlgo.setMaximumRelativeError(1.0e-3)
 optimAlgo.setMaximumResidualError(1.0e-3)
 optimAlgo.setMaximumConstraintError(1.0e-3)
+optimAlgo.setStartingPoint(distribution.getMean())
 
-algo = ot.FORM(optimAlgo, event, distribution.getMean())
+algo = ot.FORM(optimAlgo, event)
 algo.run()
 result = algo.getResult()
 

@@ -66,7 +66,8 @@ int main(int, char *[])
     /* The third parameter is a starting point for the design point research */
     Cobyla myCobyla;
     myCobyla.setMaximumCallsNumber(400);
-    FORM myAlgo(myCobyla, myEvent, mean);
+    myCobyla.setStartingPoint(mean);
+    FORM myAlgo(myCobyla, myEvent);
 
     /* Perform the simulation */
     myAlgo.run();

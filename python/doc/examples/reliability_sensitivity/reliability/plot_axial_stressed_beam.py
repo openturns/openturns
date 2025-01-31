@@ -146,6 +146,7 @@ view = viewer.View(graph)
 algoOptim = ot.AbdoRackwitz()
 # Resolution options:
 eps = 1e-3
+algoOptim.setStartingPoint(myDistribution.getMean())
 algoOptim.setMaximumCallsNumber(1000)
 algoOptim.setMaximumAbsoluteError(eps)
 algoOptim.setMaximumRelativeError(eps)
@@ -157,15 +158,11 @@ algoOptim.setMaximumConstraintError(eps)
 initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 
 # %%
-# We create a FORM algorithm. The first parameter is a NearestPointAlgorithm. The second parameter is an event. The third parameter is a starting point for the design point research.
-
-# %%
-algoFORM = ot.FORM(algoOptim, myEvent, myDistribution.getMean())
+# We create a FORM algorithm. The first parameter is a NearestPointAlgorithm. The second parameter is an event.
+algoFORM = ot.FORM(algoOptim, myEvent)
 
 # %%
 # Perform the analysis.
-
-# %%
 algoFORM.run()
 
 # %%

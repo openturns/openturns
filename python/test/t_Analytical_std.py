@@ -39,11 +39,10 @@ print("myCobyla=", myCobyla)
 # We create a Analytical algorithm
 # The first parameter is an OptimizationAlgorithm
 # The second parameter is an event
-# The third parameter is a starting point for the design point research
-myAlgo = ot.Analytical(myCobyla, myEvent, mean)
+myCobyla.setStartingPoint(mean)
+myAlgo = ot.Analytical(myCobyla, myEvent)
 
 print("Analytical=", myAlgo)
-print("physical starting point=", myAlgo.getPhysicalStartingPoint())
 print("event=", myAlgo.getEvent())
 print("nearest point algorithm=", myAlgo.getNearestPointAlgorithm())
 print("result=", myAlgo.getAnalyticalResult())

@@ -77,8 +77,8 @@ optimAlgo.setMaximumConstraintError(1.0e-10)
 # Run FORM.
 
 # %%
-startingPoint = distribution.getMean()
-algo = ot.FORM(optimAlgo, event, startingPoint)
+optimAlgo.setStartingPoint(distribution.getMean())
+algo = ot.FORM(optimAlgo, event)
 n0 = model.getCallsNumber()
 algo.run()
 n1 = model.getCallsNumber()
@@ -108,7 +108,7 @@ view = viewer.View(graph)
 # Run SORM.
 
 # %%
-algo = ot.SORM(optimAlgo, event, startingPoint)
+algo = ot.SORM(optimAlgo, event)
 n0 = model.getCallsNumber()
 algo.run()
 n1 = model.getCallsNumber()

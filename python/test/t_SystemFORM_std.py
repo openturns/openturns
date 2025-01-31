@@ -59,6 +59,7 @@ e5 = ot.ThresholdEvent(
 
 # solver
 solver = ot.AbdoRackwitz()
+solver.setStartingPoint(mean)
 solver.setMaximumIterationNumber(1000)
 solver.setMaximumAbsoluteError(1.0e-3)
 solver.setMaximumRelativeError(1.0e-3)
@@ -66,7 +67,7 @@ solver.setMaximumResidualError(1.0e-3)
 solver.setMaximumConstraintError(1.0e-3)
 
 for event in [e0, e3, e4, e5, e1, e2]:
-    algo = ot.FORM(solver, event, mean)
+    algo = ot.FORM(solver, event)
     algo.run()
     result = algo.getResult()
     print("beta = %.6g" % result.getGeneralisedReliabilityIndex())
@@ -86,7 +87,7 @@ print("pf_sim = %.6g" % pf_sim)
 ott.assert_almost_equal(pf_sim, 0.0023, 1e-3, 1e-3)
 
 # system FORM
-algo = ot.SystemFORM(solver, event, mean)
+algo = ot.SystemFORM(solver, event)
 algo.run()
 result = algo.getResult()
 pf_sysform = result.getEventProbability()

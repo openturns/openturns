@@ -57,7 +57,6 @@ aCopula = ot.IndependentCopula(aCollection.getSize())
 # Instantiate one distribution object
 myDistribution = ot.JointDistribution(aCollection, aCopula)
 
-start = myDistribution.getMean()
 Covariance = myDistribution.getCovariance()
 
 #
@@ -81,8 +80,9 @@ myCobyla.setMaximumAbsoluteError(1.0e-4)
 myCobyla.setMaximumRelativeError(1.0e-4)
 myCobyla.setMaximumResidualError(1.0e-4)
 myCobyla.setMaximumConstraintError(3.0e-3)
+myCobyla.setStartingPoint(myDistribution.getMean())
 
-myAlgoC = ot.FORM(myCobyla, myEvent, start)
+myAlgoC = ot.FORM(myCobyla, myEvent)
 
 myAlgoC.run()
 
@@ -96,8 +96,9 @@ myAbdoRackwitz.setMaximumAbsoluteError(1.0e-6)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-6)
 myAbdoRackwitz.setMaximumResidualError(1.0e-6)
 myAbdoRackwitz.setMaximumConstraintError(3.0e-3)
+myAbdoRackwitz.setStartingPoint(myDistribution.getMean())
 
-myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent, start)
+myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent)
 
 myAlgoAR.run()
 

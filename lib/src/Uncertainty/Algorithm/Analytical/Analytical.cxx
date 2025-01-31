@@ -38,15 +38,20 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
                        const Point & physicalStartingPoint)
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
-    event_(event),
-    physicalStartingPoint_(physicalStartingPoint)
+    event_(event)
 {
+  if (physicalStartingPoint.getSize())
+  {
+    LOGWARN("FORM physicalStartingPoint argument is deprecated");
+    nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
+  }
+
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
-  if (physicalStartingPoint.getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
+  if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
     throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
-  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
+  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm_.getStartingPoint()), event, true);
 }
 
 /* Virtual constructor */
@@ -58,13 +63,15 @@ Analytical * Analytical::clone() const
 /* Physical starting point accessor */
 Point Analytical::getPhysicalStartingPoint() const
 {
-  return physicalStartingPoint_;
+  LOGWARN("Analytical.getPhysicalStartingPoint is deprecated");
+  return nearestPointAlgorithm_.getStartingPoint();
 }
 
 /* Physical starting point accessor */
 void Analytical::setPhysicalStartingPoint(const Point & physicalStartingPoint)
 {
-  physicalStartingPoint_ = physicalStartingPoint;
+  LOGWARN("Analytical.setPhysicalStartingPoint is deprecated");
+  nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
 }
 
 /* Event accessor */
@@ -98,7 +105,7 @@ String Analytical::__repr__() const
   oss << "class=" << Analytical::GetClassName()
       << " nearestPointAlgorithm=" << nearestPointAlgorithm_.__repr__()
       << " event=" << event_
-      << " physicalstartingPoint=" << physicalStartingPoint_;
+      << " physicalstartingPoint=" << nearestPointAlgorithm_.getStartingPoint();
   return oss;
 }
 
@@ -109,18 +116,19 @@ void Analytical::run()
   StandardEvent standardEvent(event_);
 
   /* set the level function of the algorithm */
-  nearestPointAlgorithm_.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
+  OptimizationAlgorithm nearestPointAlgorithm(nearestPointAlgorithm_);
+  nearestPointAlgorithm.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
-  /* set the starting point of the algorithm in the standard space  */
-  nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
+  /* set the starting point of the algorithm in the standard space */
+  nearestPointAlgorithm.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingPoint()));
 
   /* solve the nearest point problem */
-  nearestPointAlgorithm_.run();
+  nearestPointAlgorithm.run();
 
   /* store the optimization result into the analytical result */
-  result_.setOptimizationResult(nearestPointAlgorithm_.getResult());
+  result_.setOptimizationResult(nearestPointAlgorithm.getResult());
   /* set standard space design point in Result */
-  Point standardSpaceDesignPoint(nearestPointAlgorithm_.getResult().getOptimalPoint());
+  Point standardSpaceDesignPoint(nearestPointAlgorithm.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
   result_.setStandardSpaceDesignPoint(standardSpaceDesignPoint);
 
@@ -137,7 +145,7 @@ void Analytical::run()
 
   const Scalar residual = result_.getOptimizationResult().getConstraintError();
 
-  const Scalar limitStateTolerance = nearestPointAlgorithm_.getMaximumConstraintError();
+  const Scalar limitStateTolerance = nearestPointAlgorithm.getMaximumConstraintError();
 
   if (!(residual <= 1.1 * limitStateTolerance)) // 1.1 is added to prevent numerical approximation made in Cobyla for constraint satisfaction tolerance.
     throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: " << limitStateTolerance;
@@ -154,11 +162,9 @@ AnalyticalResult Analytical::getAnalyticalResult() const
 /* Method save() stores the object through the StorageManager */
 void Analytical::save(Advocate & adv) const
 {
-
   PersistentObject::save(adv);
   adv.saveAttribute("nearestPointAlgorithm_", nearestPointAlgorithm_);
   adv.saveAttribute("event_", event_);
-  adv.saveAttribute("physicalStartingPoint_", physicalStartingPoint_);
   adv.saveAttribute("result_", result_);
 }
 
@@ -168,7 +174,13 @@ void Analytical::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("nearestPointAlgorithm_", nearestPointAlgorithm_);
   adv.loadAttribute("event_", event_);
-  adv.loadAttribute("physicalStartingPoint_", physicalStartingPoint_);
+  if (adv.hasAttribute("physicalStartingPoint_"))
+  {
+    // OT < 1.25
+    Point physicalStartingPoint;
+    adv.loadAttribute("physicalStartingPoint_", physicalStartingPoint);
+    nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
+  }
   adv.loadAttribute("result_", result_);
 }
 
