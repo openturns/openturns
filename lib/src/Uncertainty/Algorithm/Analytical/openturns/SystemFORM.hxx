@@ -42,7 +42,7 @@ public:
   /** Constructor with parameters */
   SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
              const RandomVector & event,
-             const Point & physicalStartingPoint);
+             const Point & physicalStartingPoint = Point()); // deprecated argument
 
   /** Virtual constructor */
   SystemFORM * clone() const override;

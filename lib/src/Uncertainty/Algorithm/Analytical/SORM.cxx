@@ -90,7 +90,6 @@ void SORM::run()
 /* Method save() stores the object through the StorageManager */
 void SORM::save(Advocate & adv) const
 {
-
   Analytical::save(adv);
   adv.saveAttribute("sormResult_", sormResult_);
 }

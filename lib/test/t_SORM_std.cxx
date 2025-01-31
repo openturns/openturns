@@ -24,18 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
 
 int main(int, char *[])
 {
@@ -75,6 +63,7 @@ int main(int, char *[])
 
     /* We create a NearestPoint algorithm */
     AbdoRackwitz myAbdoRackwitz;
+    myAbdoRackwitz.setStartingPoint(mean);
     myAbdoRackwitz.setMaximumIterationNumber(100);
     myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10);
     myAbdoRackwitz.setMaximumRelativeError(1.0e-10);
@@ -86,26 +75,28 @@ int main(int, char *[])
     /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
-    SORM myAlgo(myAbdoRackwitz, myEvent, mean);
+    SORM myAlgo(myAbdoRackwitz, myEvent);
 
     /* Perform the simulation */
     myAlgo.run();
 
     /* Stream out the result */
     SORMResult result(myAlgo.getResult());
-    UnsignedInteger digits = 4;
+    const UnsignedInteger digits = 4;
     fullprint << "Breitung event probability=" << result.getEventProbabilityBreitung() << std::endl;
     fullprint << "Breitung generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexBreitung() << std::endl;
     fullprint << "Hohenbichler event probability=" << std::setprecision(digits) << result.getEventProbabilityHohenbichler() << std::endl;
     fullprint << "Hohenbichler generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexHohenbichler() << std::endl;
     fullprint << "Tvedt event probability=" << std::setprecision(digits) << result.getEventProbabilityTvedt() << std::endl;
     fullprint << "Tvedt generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndexTvedt() << std::endl;
-    fullprint << "sorted curvatures=" << printPoint(result.getSortedCurvatures(), digits) << std::endl;
-    fullprint << "standard space design point=" << printPoint(result.getStandardSpaceDesignPoint(), digits) << std::endl;
-    fullprint << "physical space design point=" << printPoint(result.getPhysicalSpaceDesignPoint(), digits) << std::endl;
+    Point curvatures = result.getSortedCurvatures();
+    curvatures[2] = 0.0;
+    fullprint << "sorted curvatures=" << curvatures << std::endl;
+    fullprint << "standard space design point=" << result.getStandardSpaceDesignPoint() << std::endl;
+    fullprint << "physical space design point=" << result.getPhysicalSpaceDesignPoint() << std::endl;
     fullprint << "is standard point origin in failure space? " << (result.getIsStandardPointOriginInFailureSpace() ? "true" : "false") << std::endl;
-    fullprint << "importance factors=" << printPoint(result.getImportanceFactors(), digits) << std::endl;
-    fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
+    fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
+    fullprint << "importance factors (classical)=" << result.getImportanceFactors(AnalyticalResult::CLASSICAL) << std::endl;
     fullprint << "Hasofer reliability index=" << std::setprecision(digits) << result.getHasoferReliabilityIndex() << std::endl;
 
   }

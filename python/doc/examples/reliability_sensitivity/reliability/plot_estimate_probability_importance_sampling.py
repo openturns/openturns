@@ -65,7 +65,8 @@ optimAlgo.setMaximumConstraintError(1.0e-10)
 
 # %%
 # Run FORM
-algo = ot.FORM(optimAlgo, event, distribution.getMean())
+optimAlgo.setStartingPoint(distribution.getMean())
+algo = ot.FORM(optimAlgo, event)
 algo.run()
 result = algo.getResult()
 

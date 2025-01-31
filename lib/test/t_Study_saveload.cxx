@@ -401,6 +401,7 @@ int main(int, char *[])
     abdoRackwitz.setMaximumRelativeError(1.0e-10);
     abdoRackwitz.setMaximumResidualError(1.0e-10);
     abdoRackwitz.setMaximumConstraintError(1.0e-10);
+    abdoRackwitz.setStartingPoint(Point(3, 4.));
     study.add("abdoRackwitz", abdoRackwitz);
 
     // Create a SQP algorithm
@@ -446,7 +447,7 @@ int main(int, char *[])
     study.add("tnc", tnc);
 
     // Create a SORM algorithm
-    SORM sorm(abdoRackwitz, event, Point(3, 4.));
+    SORM sorm(abdoRackwitz, event);
     study.add("sorm", sorm);
 
     // Create a FORMResult

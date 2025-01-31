@@ -296,7 +296,8 @@ solver.setMaximumConstraintError(1.0e-3)
 
 # %%
 # We build the :class:`~openturns.SystemFORM` algorithm from the solver, the event and a starting point (here the mean) and then run the algorithm.
-algo = ot.SystemFORM(solver, event, mean)
+solver.setStartingPoint(mean)
+algo = ot.SystemFORM(solver, event)
 algo.run()
 
 # %%

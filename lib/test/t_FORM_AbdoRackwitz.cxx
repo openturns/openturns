@@ -24,18 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
 
 int main(int, char *[])
 {
@@ -74,15 +62,8 @@ int main(int, char *[])
     ThresholdEvent myEvent(output, Less(), -3.0);
 
     /* We create a NearestPoint algorithm */
-    // Test function operator ()
-    input[0] = "x1";
-    input[1] = "x2";
-    input[2] = "x3";
-    input[3] = "x4";
-    SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
-    Point startingPoint(4, 1.0);
-    AbdoRackwitz myAlgorithm(NearestPointProblem(levelFunction, 3.0));
-    myAlgorithm.setStartingPoint(startingPoint);
+    AbdoRackwitz myAlgorithm;
+    myAlgorithm.setStartingPoint(mean);
     myAlgorithm.setMaximumIterationNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
@@ -93,7 +74,7 @@ int main(int, char *[])
     /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
-    FORM myAlgo(myAlgorithm, myEvent, mean);
+    FORM myAlgo(myAlgorithm, myEvent);
 
     fullprint << "FORM=" << myAlgo << std::endl;
 
@@ -102,14 +83,14 @@ int main(int, char *[])
 
     /* Stream out the result */
     FORMResult result(myAlgo.getResult());
-    UnsignedInteger digits = 5;
+    const UnsignedInteger digits = 5;
     fullprint << "event probability=" << result.getEventProbability() << std::endl;
     fullprint << "generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndex() << std::endl;
-    fullprint << "standard space design point=" << printPoint(result.getStandardSpaceDesignPoint(), digits) << std::endl;
-    fullprint << "physical space design point=" << printPoint(result.getPhysicalSpaceDesignPoint(), digits) << std::endl;
+    fullprint << "standard space design point=" << result.getStandardSpaceDesignPoint() << std::endl;
+    fullprint << "physical space design point=" << result.getPhysicalSpaceDesignPoint() << std::endl;
     fullprint << "is standard point origin in failure space? " << (result.getIsStandardPointOriginInFailureSpace() ? "true" : "false") << std::endl;
-    fullprint << "importance factors=" << printPoint(result.getImportanceFactors(), digits) << std::endl;
-    fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
+    fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
+    fullprint << "importance factors (classical)=" << result.getImportanceFactors(AnalyticalResult::CLASSICAL) << std::endl;
     fullprint << "Hasofer reliability index=" << std::setprecision(digits) << result.getHasoferReliabilityIndex() << std::endl;
   }
   catch (TestFailed & ex)

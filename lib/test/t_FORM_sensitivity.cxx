@@ -24,19 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
-
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -93,6 +80,7 @@ int main(int, char *[])
 
       /* We create a NearestPoint algorithm */
       Cobyla myCobyla;
+      myCobyla.setStartingPoint(mean);
       myCobyla.setMaximumCallsNumber(200);
       myCobyla.setMaximumAbsoluteError(1.0e-10);
       myCobyla.setMaximumRelativeError(1.0e-10);
@@ -104,7 +92,7 @@ int main(int, char *[])
       /* The first parameter is an OptimizationAlgorithm */
       /* The second parameter is an event */
       /* The third parameter is a starting point for the design point research */
-      FORM myAlgo(myCobyla, myEvent, mean);
+      FORM myAlgo(myCobyla, myEvent);
 
       fullprint << "FORM=" << myAlgo << std::endl;
 
@@ -113,9 +101,9 @@ int main(int, char *[])
 
       /* Stream out the result */
       FORMResult result(myAlgo.getResult());
-      UnsignedInteger digits = 5;
-      fullprint << "importance factors=" << printPoint(result.getImportanceFactors(), digits) << std::endl;
-      fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
+      const UnsignedInteger digits = 5;
+      fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
+      fullprint << "importance factors (classical)=" << result.getImportanceFactors(AnalyticalResult::CLASSICAL) << std::endl;
       fullprint << "Hasofer reliability index=" << std::setprecision(digits) << result.getHasoferReliabilityIndex() << std::endl;
       fullprint << "result=" << result << std::endl;
 
