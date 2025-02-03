@@ -170,7 +170,7 @@ void Mesh::checkValidity() const
   {
     Indices simplex(getSimplex(i));
     if (simplex.getSize() != getDimension() + 1)
-      throw InvalidArgumentException(HERE) << "Error: mesh has dimension " << getDimension() << " but simplex #" << i << " has size" << simplex.getSize();
+      throw InvalidArgumentException(HERE) << "Error: mesh has dimension " << getDimension() << " but simplex #" << i << " has size " << simplex.getSize();
 
     if (*std::max_element(simplex.begin(), simplex.end()) >= getVerticesNumber())
       throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " = " << simplex << " refers to an unknown vertex";
