@@ -274,7 +274,7 @@ Scalar Dirichlet::computeCDF(const Point & point) const
     return value;
   }
   // Use crude Monte Carlo for now, with a fixed sampling size
-  static const UnsignedInteger samplingSize(ResourceMap::GetAsUnsignedInteger("DefaultSamplingSize"));
+  static const UnsignedInteger samplingSize(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultSamplingSize"));
   RandomGeneratorState initialState(RandomGenerator::GetState());
   RandomGenerator::SetSeed(samplingSize);
   static const Sample sample(getSample(samplingSize));

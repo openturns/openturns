@@ -250,7 +250,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapStringType::const_iterator it = mapString_.find(key);
+    const MapStringType::const_iterator it = mapString_.find(key);
     if (it != mapString_.end()) return "str";
   }
   // Second, try to retrieve the value from the Scalar map
@@ -260,7 +260,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapScalarType::const_iterator it = mapScalar_.find(key);
+    const MapScalarType::const_iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end()) return "float";
   }
   // Third, try to retrieve the value from the UnsignedInteger map
@@ -270,7 +270,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
+    const MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end()) return "int";
   }
   // Fourth, try to retrieve the value from the Bool map
@@ -280,7 +280,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapBoolType::const_iterator it = mapBool_.find(key);
+    const MapBoolType::const_iterator it = mapBool_.find(key);
     if (it != mapBool_.end()) return "bool";
   }
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap.";
@@ -290,22 +290,22 @@ String ResourceMap::get(const String & key) const
 {
   // First, try to retrieve the value from the String map
   {
-    MapStringType::const_iterator it = mapString_.find(key);
+    const MapStringType::const_iterator it = mapString_.find(key);
     if (it != mapString_.end()) return it->second;
   }
   // Second, try to retrieve the value from the Scalar map
   {
-    MapScalarType::const_iterator it = mapScalar_.find(key);
+    const MapScalarType::const_iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end()) return (OSS() << it->second);
   }
   // Third, try to retrieve the value from the UnsignedInteger map
   {
-    MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
+    const MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end()) return (OSS() << it->second);
   }
   // Fourth, try to retrieve the value from the Bool map
   {
-    MapBoolType::const_iterator it = mapBool_.find(key);
+    const MapBoolType::const_iterator it = mapBool_.find(key);
     if (it != mapBool_.end()) return (OSS() << it->second);
   }
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap.";
@@ -324,41 +324,41 @@ void ResourceMap::removeKey(const String & key)
   if (!hasKey(key))
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap";
 
-  String keyType(getType(key));
+  const String keyType(getType(key));
   if (keyType == "str")
     mapString_.erase(mapString_.find(key));
-  if (keyType == "float")
+  else if (keyType == "float")
     mapScalar_.erase(mapScalar_.find(key));
-  if (keyType == "int")
+  else if (keyType == "int")
     mapUnsignedInteger_.erase(mapUnsignedInteger_.find(key));
-  if (keyType == "bool")
+  else if (keyType == "bool")
     mapBool_.erase(mapBool_.find(key));
 }
 
 String ResourceMap::getAsString(const String & key) const
 {
-  MapStringType::const_iterator it = mapString_.find(key);
+  const MapStringType::const_iterator it = mapString_.find(key);
   if (it != mapString_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a String.";
 }
 
 Scalar ResourceMap::getAsScalar(const String & key) const
 {
-  MapScalarType::const_iterator it = mapScalar_.find(key);
+  const MapScalarType::const_iterator it = mapScalar_.find(key);
   if (it != mapScalar_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a Scalar.";
 }
 
 UnsignedInteger ResourceMap::getAsUnsignedInteger(const String & key) const
 {
-  MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
+  const MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
   if (it != mapUnsignedInteger_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as an UnsignedInteger.";
 }
 
 Bool ResourceMap::getAsBool(const String & key) const
 {
-  MapBoolType::const_iterator it = mapBool_.find(key);
+  const MapBoolType::const_iterator it = mapBool_.find(key);
   if (it != mapBool_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a Bool.";
 }
@@ -396,7 +396,7 @@ void ResourceMap::set(const String & key, const String & value)
   // to convert it to the correct type
   // First, try to retrieve the value from the String map
   {
-    MapStringType::iterator it = mapString_.find(key);
+    const MapStringType::iterator it = mapString_.find(key);
     if (it != mapString_.end())
     {
       it->second = value;
@@ -405,7 +405,7 @@ void ResourceMap::set(const String & key, const String & value)
   }
   // Second, try to retrieve the value from the Scalar map
   {
-    MapScalarType::iterator it = mapScalar_.find(key);
+    const MapScalarType::iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end())
     {
       Scalar scalarValue = -1.0;
@@ -417,7 +417,7 @@ void ResourceMap::set(const String & key, const String & value)
   }
   // Third, try to retrieve the value from the UnsignedInteger map
   {
-    MapUnsignedIntegerType::iterator it = mapUnsignedInteger_.find(key);
+    const MapUnsignedIntegerType::iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end())
     {
       UnsignedInteger unsignedIntegerValue = 0;
@@ -429,7 +429,7 @@ void ResourceMap::set(const String & key, const String & value)
   }
   // Fourth, try to retrieve the value from the Bool map
   {
-    MapBoolType::iterator it = mapBool_.find(key);
+    const MapBoolType::iterator it = mapBool_.find(key);
     if (it != mapBool_.end())
     {
       Bool boolValue = false;
@@ -450,7 +450,7 @@ void ResourceMap::set(const String & key, const String & value)
 
 void ResourceMap::setAsString(const String & key, const String & value)
 {
-  MapStringType::iterator it = mapString_.find(key);
+  const MapStringType::iterator it = mapString_.find(key);
   if (it == mapString_.end())
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a String.";
   it->second = value;
@@ -458,7 +458,7 @@ void ResourceMap::setAsString(const String & key, const String & value)
 
 void ResourceMap::setAsBool(const String & key, const Bool value)
 {
-  MapBoolType::iterator it = mapBool_.find(key);
+  const MapBoolType::iterator it = mapBool_.find(key);
   if (it == mapBool_.end())
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a Bool.";
   it->second = value;
@@ -518,7 +518,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
   XMLDoc document(configurationFile);
 
   // Check it is an OpenTURNS' one
-  xmlNodePtr rootElt = xmlDocGetRootElement(document);
+  const xmlNodePtr rootElt = xmlDocGetRootElement(document);
   if (rootElt == NULL) throw ConfigurationFileParsingException(HERE) << "Wrapper file has no root element" << configurationFile;
   if (xmlStrcmp(rootElt->name, reinterpret_cast<const xmlChar *>(RootElementName)))
     throw ConfigurationFileParsingException(HERE) << "Wrapper file " << configurationFile
@@ -536,7 +536,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         const String key = XML::ToString(current->name);
         // Try to get a String value
         {
-          String value = XML::GetAttributeByName(current, XMLTag_value_str);
+          const String value = XML::GetAttributeByName(current, XMLTag_value_str);
           if (value.size() > 0)
           {
             mapString_[key] = value;
@@ -545,7 +545,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         } // String
         // Try to get a Scalar value
         {
-          String value = XML::GetAttributeByName(current, XMLTag_value_float);
+          const String value = XML::GetAttributeByName(current, XMLTag_value_float);
           if (value.size() > 0)
           {
             Scalar scalarValue = -1.0;
@@ -557,7 +557,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         } // Scalar
         // Try to get an UnsignedInteger value
         {
-          String value = XML::GetAttributeByName(current, XMLTag_value_int);
+          const String value = XML::GetAttributeByName(current, XMLTag_value_int);
           if (value.size() > 0)
           {
             UnsignedInteger unsignedIntegerValue = 0;
@@ -569,7 +569,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         } // UnsignedInteger
         // Try to get a Bool value
         {
-          String value = XML::GetAttributeByName( current, XMLTag_value_bool);
+          const String value = XML::GetAttributeByName( current, XMLTag_value_bool);
           if (value.size() > 0)
           {
             Bool boolValue = false;
@@ -694,7 +694,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Pie parameters //
   addAsScalar("Pie-HorizontalMargin", 0.3);
-  addAsScalar("Pie-LabelThreshold", 0.02);
   addAsScalar("Pie-VerticalMargin", 0.1);
 
   // DrawableImplementation parameters //
@@ -705,8 +704,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultPaletteName", "Tableau");
   addAsString("Drawable-DefaultPattern", "s");
   addAsString("Drawable-DefaultPointStyle", "plus");
-  addAsString("Drawable-DefaultSurfaceColor", "white");
-  addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
 
   // Text drawable
@@ -716,8 +713,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Graph-DefaultHorizontalMargin", 0.05);
   addAsScalar("Graph-DefaultLegendFontSize", 10.0);
   addAsScalar("Graph-DefaultVerticalMargin", 0.05);
-  addAsUnsignedInteger("Graph-DefaultHeight", 480);
-  addAsUnsignedInteger("Graph-DefaultWidth", 640);
 
   // Contour parameters //
   addAsUnsignedInteger("Contour-DefaultLevelsNumber", 10);
@@ -777,7 +772,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("NLopt-InitialSeed", 0);
 
   // OptimizationAlgorithm parameters //
-  addAsScalar("OptimizationAlgorithm-DefaultLevelValue", 0.0);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
@@ -885,7 +879,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
-  addAsUnsignedInteger("Dlib-DefaultMaxSize", 10);
 
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
@@ -1080,7 +1073,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
-  addAsScalar("Mesh-CoordinateEpsilon", 1.0e-14);
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
   addAsBool("Mesh-CheckValidity", false);
 
@@ -1094,7 +1086,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Matrix parameters
   addAsUnsignedInteger("Matrix-size-visible-in-str-from", 5);
-  addAsScalar("Matrix-DefaultSmallPivot", 1.0e-7 );
+  addAsScalar("Matrix-DefaultSmallPivot", 1.0e-7);
   addAsScalar("Matrix-LargestEigenValueRelativeError", 1.0e-4);
   addAsScalar("Matrix-SymmetryThreshold", 1.0e-12);
   addAsUnsignedInteger("Matrix-LargestEigenValueIterations", 50);
@@ -1257,7 +1249,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MeixnerDistribution-MaximumObjectiveError", 1.0e-12);
   addAsScalar("MeixnerDistribution-MaximumRelativeError", 1.0e-12);
   addAsUnsignedInteger("MeixnerDistribution-CDFDiscretization", 10000);
-  addAsUnsignedInteger("MeixnerDistribution-CDFIntegrationNodesNumber", 32);
 
   // Mixture parameters //
   addAsScalar("Mixture-SmallWeight", 1.0e-12);
@@ -1276,7 +1267,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("PolyaFactory-MaximumIteration", 50);
 
   // Normal parameters //
-  addAsScalar("Normal-MaximumCDFEpsilon", 5.0e-6);
   addAsScalar("Normal-MinimumCDFEpsilon", 5.0e-2);
   addAsUnsignedInteger("Normal-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Normal-MaximumNumberOfPoints", 10000000);
@@ -1341,7 +1331,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("QuantileMatchingFactory-MaximumCallsNumber", 1000);
 
   // Student parameters //
-  addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
   addAsScalar("Student-MinimumCDFEpsilon", 5.0e-2);
   addAsUnsignedInteger("Student-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Student-MaximumNumberOfPoints", 10000000);
@@ -1361,9 +1350,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("StudentCopulaFactory-NuStart", 5.0);
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
-
-  // NonCentralStudent parameters //
-  addAsUnsignedInteger("NonCentralStudent-CDFAlgo", 0);
 
   // UserDefined parameters //
   addAsUnsignedInteger("UserDefined-SmallSize", 10000);
@@ -1393,13 +1379,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("RandomMixture-DefaultBeta", 8.5);
   addAsScalar("RandomMixture-DefaultCDFEpsilon", 1.0e-10);
   addAsScalar("RandomMixture-DefaultPDFEpsilon", 1.0e-10);
-  addAsScalar("RandomMixture-GraphCDFEpsilon", 1.0e-5);
-  addAsScalar("RandomMixture-GraphPDFEpsilon", 1.0e-5);
   addAsUnsignedInteger("RandomMixture-DefaultBlockMax", 16);
   addAsUnsignedInteger("RandomMixture-DefaultBlockMin", 3);
   addAsUnsignedInteger("RandomMixture-DefaultMaxSize", 65536);
-  addAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber", 128);
-  addAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber", 1024);
   addAsUnsignedInteger("RandomMixture-MaximumSupportSize", 2048);
   addAsUnsignedInteger("RandomMixture-ProjectionDefaultSize", 25);
   addAsUnsignedInteger("RandomMixture-SmallSize", 100);
@@ -1557,7 +1539,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
-  addAsScalar("GaussianProcessFitter-MeanEpsilon", 1.0e-12);
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
   addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK");
 
@@ -1612,12 +1593,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
   addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
   addAsString("Distribution-SupportPointStyleDiscretePDF", "dot");
-  addAsUnsignedInteger("Distribution-CharacteristicFunctionBlockMax", 20);
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);
   addAsUnsignedInteger("Distribution-DefaultLevelNumber", 10);
   addAsUnsignedInteger("Distribution-DefaultPointNumber", 129);
-  addAsUnsignedInteger("Distribution-DefaultQuantileCacheSize", 128);
   addAsUnsignedInteger("Distribution-DefaultQuantileIteration", 100);
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);
@@ -1774,7 +1753,7 @@ void ResourceMap::loadDefaultConfiguration()
 
 void ResourceMap::reload()
 {
-  std::vector<String> allKeys(getKeys());
+  const std::vector<String> allKeys(getKeys());
   for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
     removeKey(allKeys[i]);
   loadDefaultConfiguration();
@@ -1784,7 +1763,7 @@ void ResourceMap::reload()
 /** Get the list of keys associated to a class */
 std::vector<String> ResourceMap::findKeys(const String & substr)
 {
-  std::vector<String> allKeys(getKeys());
+  const std::vector<String> allKeys(getKeys());
   std::vector<String> result;
   for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
   {
@@ -1821,17 +1800,17 @@ std::vector<String> ResourceMap::getKeys() const
   std::vector<String> keys(getStringKeys());
   // Append the scalar keys
   {
-    std::vector<String> scalarKeys(getScalarKeys());
+    const std::vector<String> scalarKeys(getScalarKeys());
     keys.insert(keys.end(), scalarKeys.begin(), scalarKeys.end());
   }
   // Append the unsigned integer keys
   {
-    std::vector<String> unsignedIntegerKeys(getUnsignedIntegerKeys());
+    const std::vector<String> unsignedIntegerKeys(getUnsignedIntegerKeys());
     keys.insert(keys.end(), unsignedIntegerKeys.begin(), unsignedIntegerKeys.end());
   }
   // Append the bool keys
   {
-    std::vector<String> boolKeys(getBoolKeys());
+    const std::vector<String> boolKeys(getBoolKeys());
     keys.insert(keys.end(), boolKeys.begin(), boolKeys.end());
   }
   // Then sort the keys

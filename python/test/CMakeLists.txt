@@ -892,6 +892,7 @@ if (NOT SWIG_VERSION VERSION_LESS 4)
 endif ()
 ot_pyinstallcheck_test (docstring_missing IGNOREOUT)
 ot_pyinstallcheck_test (sphinx_missing IGNOREOUT)
+ot_pyinstallcheck_test (ResourceMap_missing IGNOREOUT)
 
 
 
