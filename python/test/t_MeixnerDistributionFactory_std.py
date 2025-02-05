@@ -4,7 +4,6 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-ot.ResourceMap.SetAsUnsignedInteger("MeixnerDistribution-CDFIntegrationNodesNumber", 8)
 ot.ResourceMap.SetAsUnsignedInteger("MeixnerDistribution-CDFDiscretization", 100)
 ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumAbsoluteError", 1.0e-6)
 ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumRelativeError", 1.0e-6)

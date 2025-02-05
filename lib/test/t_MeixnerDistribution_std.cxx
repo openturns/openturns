@@ -32,7 +32,6 @@ int main(int, char *[])
 
   try
   {
-    ResourceMap::SetAsUnsignedInteger( "MeixnerDistribution-CDFIntegrationNodesNumber", 8 );
     ResourceMap::SetAsUnsignedInteger( "MeixnerDistribution-CDFDiscretization", 100 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumAbsoluteError", 1.0e-6 );
     ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 );
