@@ -150,7 +150,7 @@ Examples
 Notes
 -----
 The tolerance for the check on the barycentric coordinates can be tweaked
-using the key `Mesh-CoordinateEpsilon`."
+using the key `Mesh-VertexEpsilon`."
 
 // ---------------------------------------------------------------------
 
