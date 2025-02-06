@@ -436,13 +436,12 @@ endif ()
 
 # Find system prerequisites
 include (CheckIncludeFile)
-check_include_file (dirent.h      OPENTURNS_HAVE_DIRENT_H     )
 check_include_file (dlfcn.h       OPENTURNS_HAVE_DLFCN_H      )
-check_include_file (libgen.h      OPENTURNS_HAVE_LIBGEN_H     )
-check_include_file (stdlib.h      OPENTURNS_HAVE_STDLIB_H     )
-check_include_file (sys/stat.h    OPENTURNS_HAVE_SYS_STAT_H   )
-check_include_file (sys/types.h   OPENTURNS_HAVE_SYS_TYPES_H  )
-check_include_file (unistd.h      OPENTURNS_HAVE_UNISTD_H     )
+if (NOT USE_CXX17)
+  check_include_file (libgen.h      OPENTURNS_HAVE_LIBGEN_H     )
+  check_include_file (sys/stat.h    OPENTURNS_HAVE_SYS_STAT_H   )
+  check_include_file (sys/types.h   OPENTURNS_HAVE_SYS_TYPES_H  )
+endif ()
 
 include (CheckFunctionExists)
 if (OPENTURNS_HAVE_DLFCN_H AND UNIX)
