@@ -71,11 +71,6 @@
 #include "openturns/OTtypes.hxx"
 
 /*
- * The OTmemory.hxx header file declares some debugging memory functions
- */
-#include "openturns/OTmemory.hxx"
-
-/*
  * Assertions are needed to ensure invariant respect
  */
 #include <cassert>
@@ -84,22 +79,5 @@
  * Some templates to ease C memory allocation
  */
 #include "openturns/OTconfig.hxx"
-
-#ifdef OPENTURNS_HAVE_STDLIB_H
-#include <stdlib.h>
-#endif
-
-template <class T>
-T * newC(size_t count = 1)
-{
-  T * ptr = static_cast<T *>( calloc( count, sizeof(T) ) );
-  return ptr;
-}
-
-template <class T>
-void deleteC(const T * ptr)
-{
-  free( const_cast<T *>( ptr ) );
-}
 
 #endif /* OPENTURNS_OTPRIVATE_HXX */

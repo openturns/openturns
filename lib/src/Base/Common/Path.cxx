@@ -38,20 +38,19 @@
 #include "openturns/Os.hxx"
 #include "openturns/Log.hxx"
 
+
+#ifdef OPENTURNS_ENABLE_CXX17
+#include <filesystem>
+#else
+
 #ifdef OPENTURNS_HAVE_LIBGEN_H
 #include <libgen.h>               // for dirname
 #endif
 
-#ifdef OPENTURNS_HAVE_UNISTD_H
-#include <unistd.h>               // for close
 #endif
 
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."
-#endif
-
-#ifdef OPENTURNS_HAVE_DIRENT_H
-#include <dirent.h>
 #endif
 
 #ifndef SYSCONFIG_PATH
@@ -116,15 +115,19 @@ FileName Path::GetInstallationDirectory()
 }
 
 
-FileName Path::GetParentDirectory(const FileName & file)
+FileName Path::GetParentDirectory(const FileName & fileName)
 {
   FileName parent;
+#ifdef OPENTURNS_ENABLE_CXX17
+  parent = std::filesystem::u8path(fileName).parent_path().string();
+#else
+
 #ifdef OPENTURNS_HAVE_LIBGEN_H
-  char * szPath = strdup(file.c_str());
+  char * szPath = strdup(fileName.c_str());
   parent = FileName(dirname(szPath));
   free(szPath);
 #else
-  parent = file;
+  parent = fileName;
   if (parent.empty()) return parent;
   for(SignedInteger i = parent.size() - 1; i >= 0; -- i)
   {
@@ -135,6 +138,7 @@ FileName Path::GetParentDirectory(const FileName & file)
       break;
     }
   }
+#endif
 #endif
   return parent;
 }
