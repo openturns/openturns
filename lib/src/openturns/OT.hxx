@@ -39,11 +39,6 @@
  */
 #include "openturns/OTtypes.hxx"
 
-/*
- * The OTmemory.hxx header file declares some debugging memory functions
- */
-#include "openturns/OTmemory.hxx"
-
 /**
  * Here is the list of all classes belonging to the external API of OpenTURNS
  * @todo List the classes belonging to the external API of OpenTURNS

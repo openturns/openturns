@@ -30,7 +30,7 @@
 
 #ifdef OPENTURNS_ENABLE_CXX17
 #include <filesystem>
-#endif
+#else
 
 #ifdef OPENTURNS_HAVE_SYS_TYPES_H
 # include <sys/types.h>            // for stat
@@ -53,6 +53,8 @@
 # if !defined(S_ISREG)
 #  define S_ISREG(mode) (((mode) & S_IFREG) != 0)
 # endif
+#endif
+
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -78,7 +80,11 @@ const char * Os::GetDirectoryListSeparator()
 void Os::Remove(const String& fileName)
 {
   if (!ResourceMap::GetAsBool("Os-RemoveFiles")) return;
+#ifdef OPENTURNS_ENABLE_CXX17
+  if (!std::filesystem::remove(std::filesystem::u8path(fileName)))
+#else
   if (remove(fileName.c_str()) == -1)
+#endif
   {
     Log::Warn(OSS() << "Warning: cannot remove file " << fileName);
   }
