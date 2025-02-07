@@ -541,8 +541,8 @@ TestResult FittingTest::Lilliefors(const Sample & sample,
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with 1D samples";
   const UnsignedInteger size = sample.getSize();
   if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with nonempty samples";
-  if (!factory.build().isContinuous()) throw InvalidArgumentException(HERE) << "Error: Lilliefors test can be applied only to a continuous distribution";
   const Distribution distribution(factory.build(sample));
+  if (!distribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: Lilliefors test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with 1D distribution";
   const Scalar statistics = ComputeKolmogorovStatistics(sample, distribution);
   // The Kolmogorov test p-value is overestimated if parameters have been estimated

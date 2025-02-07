@@ -114,10 +114,7 @@ for i in range(discreteDistributionNumber):
     discreteSampleCollection[i].setName(discreteDistributionCollection[i].getName())
     sampleCollection[continuousDistributionNumber + i] = discreteSampleCollection[i]
 
-factoryCollection = ot.DistributionFactoryCollection(3)
-factoryCollection[0] = ot.UniformFactory()
-factoryCollection[1] = ot.BetaFactory()
-factoryCollection[2] = ot.NormalFactory()
+factoryCollection = [ot.UniformFactory(), ot.BetaFactory(), ot.NormalFactory(), ot.KernelSmoothing()]
 ot.RandomGenerator.SetSeed(0)
 aSample = ot.Uniform(-1.5, 2.5).getSample(size)
 model, best_bic = ot.FittingTest.BestModelBIC(aSample, factoryCollection)
