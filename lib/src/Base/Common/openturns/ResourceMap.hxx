@@ -64,7 +64,7 @@ public:
   static void SetAsScalar(const String & key, const Scalar value);
 
   /** Add a value in the maps */
-  static void AddAsString(const String & key, const String & value);
+  static void AddAsString(const String & key, const String & value, const std::vector<String> & enumValues = {});
   static void AddAsBool(const String & key, const Bool value);
   static void AddAsUnsignedInteger(const String & key, const UnsignedInteger value);
   static void AddAsScalar(const String & key, const Scalar value);
@@ -82,9 +82,13 @@ public:
   static std::vector<String> GetScalarKeys();
   static std::vector<String> GetUnsignedIntegerKeys();
   static std::vector<String> GetBoolKeys();
+  static std::vector<String> GetStringEnum(const String & key);
 
   /** Is the specific key present ? */
   static Bool HasKey(const String & key);
+
+  /** Is the specific key associated to a string enum ? */
+  static Bool HasStringEnum(const String & key);
 
   /** Remove a key */
   static void RemoveKey(const String & key);
@@ -123,6 +127,9 @@ protected:
    * @return The list of keys in the bool map
    */
   std::vector<String> getBoolKeys() const;
+
+  /** return the enum list associated to a key */
+  std::vector<String> getStringEnum(const String & key);
 
   /** Method for retrieving information from the resource map
    * @param key The name under which the value is stored in the ResourceMap
@@ -218,8 +225,9 @@ protected:
   /** Method for adding information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value written to a string
+   * @param enumValues The possible values
    */
-  void addAsString(const String & key, const String & value);
+  void addAsString(const String & key, const String & value, const std::vector<String> & enumValues = {});
 
   /** Method for adding information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
@@ -241,6 +249,9 @@ protected:
 
   /** Is the specific key present ? */
   Bool hasKey(const String & key) const;
+
+  /** Is the specific key associated to a string enum ? */
+  Bool hasStringEnum(const String & key) const;
 
   /** Remove a key from the resource map */
   void removeKey(const String & key);
@@ -280,11 +291,13 @@ private:
   typedef std::map< String, Scalar > MapScalarType;
   typedef std::map< String, UnsignedInteger > MapUnsignedIntegerType;
   typedef std::map< String, Bool > MapBoolType;
+  typedef std::map< String, std::vector< String > > MapStringEnumType;
 
   MapStringType mapString_;
   MapScalarType mapScalar_;
   MapUnsignedIntegerType mapUnsignedInteger_;
   MapBoolType mapBool_;
+  MapStringEnumType mapStringEnum_;
 
   friend struct ResourceMap_init;
 }; /* class ResourceMap */
