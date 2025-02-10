@@ -31,6 +31,8 @@
 #include "openturns/JointDistribution.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 #include "openturns/BlockIndependentCopula.hxx"
+#include "openturns/Dirichlet.hxx"
+#include "openturns/Beta.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -294,6 +296,13 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
       const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
       const Scalar lambda = exponential->getLambda();
       simplified = Exponential(lambda, alpha);
+      return true;
+    }
+    if (kind == "Dirichlet")
+    {
+      const Dirichlet * dirichlet(dynamic_cast< const Dirichlet * >(localDistribution.getImplementation().get()));
+      const Point theta(dirichlet->getTheta());
+      simplified = Beta(theta[0], theta[1], alpha, beta);
       return true;
     }
   }
