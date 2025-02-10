@@ -27,6 +27,7 @@
 #include "openturns/Path.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/XMLToolbox.hxx"
+
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include <libxml/tree.h>
 #endif
@@ -105,6 +106,11 @@ std::vector<String> ResourceMap::GetUnsignedIntegerKeys()
 std::vector<String> ResourceMap::GetBoolKeys()
 {
   return GetInstance().lock().getBoolKeys();
+}
+
+std::vector<String> ResourceMap::GetStringEnum(const String & key)
+{
+  return GetInstance().lock().getStringEnum(key);
 }
 
 /* Get a value in the map */
@@ -190,9 +196,9 @@ void ResourceMap::SetAsScalar(const String & key, const Scalar value)
   GetInstance().lock().setAsScalar(key, value);
 }
 
-void ResourceMap::AddAsString(const String & key, const String & value)
+void ResourceMap::AddAsString(const String & key, const String & value, const std::vector<String> & enumValues)
 {
-  GetInstance().lock().addAsString(key, value);
+  GetInstance().lock().addAsString(key, value, enumValues);
 }
 
 void ResourceMap::AddAsBool(const String & key, const Bool value)
@@ -213,6 +219,11 @@ void ResourceMap::AddAsScalar(const String & key, const Scalar value)
 Bool ResourceMap::HasKey(const String & key)
 {
   return GetInstance().lock().hasKey(key);
+}
+
+Bool ResourceMap::HasStringEnum(const String & key)
+{
+  return GetInstance().lock().hasStringEnum(key);
 }
 
 void ResourceMap::Reload()
@@ -319,6 +330,11 @@ Bool ResourceMap::hasKey(const String & key) const
           || (mapBool_.find(key) != mapBool_.end()));
 }
 
+Bool ResourceMap::hasStringEnum(const String & key) const
+{
+  return mapStringEnum_.find(key) != mapStringEnum_.end();
+}
+
 void ResourceMap::removeKey(const String & key)
 {
   if (!hasKey(key))
@@ -326,7 +342,11 @@ void ResourceMap::removeKey(const String & key)
 
   const String keyType(getType(key));
   if (keyType == "str")
+  {
     mapString_.erase(mapString_.find(key));
+    if (mapStringEnum_.find(key) != mapStringEnum_.end())
+      mapStringEnum_.erase(mapStringEnum_.find(key));
+  }
   else if (keyType == "float")
     mapScalar_.erase(mapScalar_.find(key));
   else if (keyType == "int")
@@ -453,6 +473,14 @@ void ResourceMap::setAsString(const String & key, const String & value)
   const MapStringType::iterator it = mapString_.find(key);
   if (it == mapString_.end())
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a String.";
+  const MapStringEnumType::iterator it2 = mapStringEnum_.find(key);
+  if (it2 != mapStringEnum_.end() && std::find(it2->second.begin(), it2->second.end(), value) == it2->second.end())
+  {
+    String possibleValues;
+    for (std::vector<String>::iterator it3 = it2->second.begin(); it3 != it2->second.end(); ++ it3)
+      possibleValues += *it3 + ", ";
+    throw InvalidArgumentException(HERE) << "Value for key '" << key << "' must be one of: " << possibleValues << " got '" << value << "'";
+  }
   it->second = value;
 }
 
@@ -480,10 +508,16 @@ void ResourceMap::setAsScalar(const String & key, const Scalar value)
   it->second = value;
 }
 
-void ResourceMap::addAsString(const String & key, const String & value)
+void ResourceMap::addAsString(const String & key, const String & value, const std::vector<String> & enumValues)
 {
   if (mapString_.find(key) != mapString_.end())
     throw InternalException(HERE) << "Key '" << key << "' is already in ResourceMap as a String.";
+  if (enumValues.size())
+  {
+    if (std::find(enumValues.begin(), enumValues.end(), value) == enumValues.end())
+      throw InternalException(HERE) << "Enum values do not contain value '" <<  value << "'";
+    mapStringEnum_[key] = enumValues;
+  }
   mapString_[key] = value;
 }
 
@@ -718,7 +752,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Contour-DefaultLevelsNumber", 10);
   addAsBool("Contour-DefaultIsFilled", false);
   addAsBool("Contour-DefaultDrawLabels", true);
-  addAsString("Contour-DefaultColorMapNorm", "linear");
+  addAsString("Contour-DefaultColorMapNorm", "linear", {"asinh", "linear", "log", "logit", "symlog", "rank"});
   addAsString("Contour-DefaultColorMap", "viridis");
   addAsString("Contour-DefaultColorBarPosition", "right");
   addAsString("Contour-DefaultExtend", "both");
@@ -741,11 +775,11 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FieldToPointFunctionalChaosAlgorithm
   addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
-  addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal");
+  addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
   addAsBool("PointToFieldFunctionalChaosAlgorithm-DefaultRecompress", false);
-  addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion");
+  addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion", {"LeastSquaresExpansion", "FunctionalChaosAlgorithm"});
 
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
@@ -893,8 +927,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LOLAVoronoi-MaximumCombinationsNumber", 100);
   addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
   addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
-  addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky");
-  addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum");
+  addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky", {"SVD", "Cholesky", "QR"});
+  addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum", {"Maximum", "Average"});
 
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
@@ -1054,7 +1088,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SampleImplementation parameters
   addAsString("Sample-CSVFileSeparator", ";");
   addAsUnsignedInteger("Sample-CSVPrecision", 16);
-  addAsString("Sample-CSVFormat", "scientific");
+  addAsString("Sample-CSVFormat", "scientific", {"scientific", "fixed", "defaultfloat"});
   addAsString("Sample-CommentMarker", "#");
   addAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
   addAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
@@ -1101,7 +1135,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // BernsteinCopulaFactory parameters //
   addAsScalar("BernsteinCopulaFactory-alpha", 1.0);
-  addAsString("BernsteinCopulaFactory-BinNumberSelectionMethod", "LogLikelihood");
+  addAsString("BernsteinCopulaFactory-BinNumberSelectionMethod", "LogLikelihood", {"AMISE", "LogLikelihood", "PenalizedCsiszarDivergence"});
   addAsUnsignedInteger("BernsteinCopulaFactory-kFraction", 2);
   addAsUnsignedInteger("BernsteinCopulaFactory-MaxM", 1);
   addAsUnsignedInteger("BernsteinCopulaFactory-MinM", 2);
@@ -1116,7 +1150,7 @@ void ResourceMap::loadDefaultConfiguration()
   // DeconditionedDistribution parameters //
   addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 48);
   addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
+  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct", {"GaussProduct", "QMC", "MC"});
 
   // PointConditionalDistribution parameters //
   addAsBool("PointConditionalDistribution-InitializeSampling", true);
@@ -1172,8 +1206,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError", 1.0e-5);
-  addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
-  addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel", {"Gumbel", "Static"});
+  addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax", {"CenterReduce", "MinMax", "None"});
   addAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // ProfileLikelihoodResult parameters //
@@ -1198,8 +1232,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
-  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic");
-  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic", {"Generic", "Static"});
+  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax", {"CenterReduce", "MinMax", "None"});
   addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Gibbs parameters //
@@ -1209,7 +1243,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HistogramFactory-MaximumBinNumber", 1024);
 
   // InverseNormalFactory parameters //
-  addAsString("InverseNormalFactory-Method", "MLE");
+  addAsString("InverseNormalFactory-Method", "MLE", {"MLE", "Moments"});
 
   // KernelMixture parameters //
   addAsUnsignedInteger("KernelMixture-LargeSize", 20);
@@ -1421,8 +1455,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95);
 
   // ExpectationSimulationAlgorithm parameters //
-  addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX");
-  addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE");
+  addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});
+  addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE", {"NONE", "MAX", "NORM1", "NORM2"});
 
   // SobolSimulationAlgorithm parameters //
   addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel", 0.05);
@@ -1474,8 +1508,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MetaModelAlgorithm parameters //
   addAsScalar("MetaModelAlgorithm-PValueThreshold", 1.0e-3);
-  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC");
-  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram");
+  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC", {"BIC", "AIC", "AICC", "PVALUE"});
+  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram", {"Histogram", "KernelSmoothing"});
 
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);
@@ -1483,10 +1517,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", 0);
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
-  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut");
+  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold"});
 
   // LeastSquaresExpansion parameters //
-  addAsString("LeastSquaresExpansion-DecompositionMethod", "QR");
+  addAsString("LeastSquaresExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 
   // FunctionalChaosResult parameters //
   addAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize", 3);
@@ -1504,7 +1538,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosValidation-ModelSelection", false);
 
   // LinearModelAlgorithm parameters //
-  addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
+  addAsString("LinearModelAlgorithm-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 
   // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber", 3);
@@ -1529,7 +1563,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2);
   addAsScalar("GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
-  addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // GaussianProcessFitter parameters //
   addAsBool("GaussianProcessFitter-KeepCovariance", true);
@@ -1540,10 +1574,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
-  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK");
+  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // KrigingAlgorithm parameters //
-  addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK");
+  addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // SquaredExponential parameters //
   addAsScalar("SquaredExponential-DefaultTheta", 1.0);
@@ -1590,8 +1624,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DefaultCDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DependenceEpsilon", 1.0e-12);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
-  addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
-  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
+  addAsString("Distribution-EntropySamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
+  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
   addAsString("Distribution-SupportPointStyleDiscretePDF", "dot");
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);
@@ -1637,9 +1671,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("HMatrix-RegularizationEpsilon", 1.0e-4);
   addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
-  addAsString("HMatrix-ClusteringAlgorithm", "median");
-  addAsString("HMatrix-CompressionMethod", "AcaRandom");
-  addAsString("HMatrix-FactorizationMethod", "LLt");
+  addAsString("HMatrix-ClusteringAlgorithm", "median", {"median", "geometric", "hybrid"});
+  addAsString("HMatrix-CompressionMethod", "AcaRandom", {"Svd", "AcaFull", "AcaPartial", "AcaPlus", "AcaRandom"});
+  addAsString("HMatrix-FactorizationMethod", "LLt", {"LU", "LDLt", "LLt"});
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
@@ -1684,11 +1718,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn", 1000);
 
   // GaussianLinearCalibration parameters //
-  addAsString("GaussianLinearCalibration-Method", "QR");
+  addAsString("GaussianLinearCalibration-Method", "QR", {"SVD", "Cholesky", "QR"});
 
   // LinearLeastSquaresCalibration parameters //
   addAsScalar("LinearLeastSquaresCalibration-Regularization", 1e-12);
-  addAsString("LinearLeastSquaresCalibration-Method", "QR");
+  addAsString("LinearLeastSquaresCalibration-Method", "QR", {"SVD", "Cholesky", "QR"});
 
   // NonLinearLeastSquaresCalibration parameters //
   addAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize", 100);
@@ -1728,7 +1762,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
-  addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
+  addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
 
   // SimplicialCubature parameters //
   addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
@@ -1826,6 +1860,14 @@ std::vector<String> ResourceMap::getStringKeys() const
     keys.push_back(it->first);
   }
   return keys;
+}
+
+/* return the enum list associated to a key */
+std::vector<String> ResourceMap::getStringEnum(const String & key)
+{
+  const MapStringEnumType::const_iterator it = mapStringEnum_.find(key);
+  if (it != mapStringEnum_.end()) return it->second;
+  throw InternalException(HERE) << "Key '" << key << "' has no string enum.";
 }
 
 std::vector<String> ResourceMap::getBoolKeys() const

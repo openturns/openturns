@@ -13,9 +13,10 @@ with open(resourcemap_file) as f:
     resourcemap_lines += f.read().splitlines()
 resourcemap_content = {}
 for line in resourcemap_lines:
-    match = re.search(r'addAs(\w+)\("([\w\-]+)",[ ]*([\w\d\.\-\"]+)\);', line)
+    match = re.search(r'addAs(\w+)\("([\w\-]+)",[ ]*([\w\d\.\-\"]+)[\),]', line)
     if match is not None:
         key, vtype, value = match.group(2), match.group(1), match.group(3)
+        print(key, vtype, value)
         if key == "SymbolicParser-Backend":
             continue
         if vtype == "Scalar":
@@ -24,7 +25,7 @@ for line in resourcemap_lines:
             resourcemap_content[key] = int(value)
         elif vtype == "Bool":
             resourcemap_content[key] = {"true": True, "false": False}[value]
-        elif vtype == "String":
+        elif vtype.startswith("String"):
             resourcemap_content[key] = value.strip('"')
         else:
             raise ValueError(f"got {key}")

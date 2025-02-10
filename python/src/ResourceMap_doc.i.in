@@ -225,12 +225,19 @@ key : str
 value : str
     The value associated to that key. The key is added to the string map even if
     it already exists in another map (float, int or bool).
+enumValues : sequence of str, optional
+    Possible values. Default is an empty list.
+
+    When non-empty the :meth:`SetAsString` calls will make sure the
+value associated to that key is part of the list of the possible supplied values.
 
 Examples
 --------
 >>> import openturns as ot
 >>> ot.ResourceMap.AddAsString('View-ImageFormat2', 'png')
->>> ot.ResourceMap.RemoveKey('View-ImageFormat2')"
+>>> ot.ResourceMap.RemoveKey('View-ImageFormat2')
+>>> ot.ResourceMap.AddAsString('View-ImageFormat3', 'png', ['png', 'jpg', 'bmp'])
+>>> ot.ResourceMap.RemoveKey('View-ImageFormat3')"
 
 // ---------------------------------------------------------------------
 
@@ -413,6 +420,21 @@ keys : tuple of str
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::GetStringEnum
+"Get the possible values of a string enum.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+
+Returns
+-------
+enums : tuple of str
+    The list of possible values."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::HasKey
 "Check if an entry exists.
 
@@ -424,6 +446,21 @@ key : str
 Returns
 -------
 has_key : bool
+    Whether an entry with that key exists."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::HasStringEnum
+"Check if an entry is associated to a string enum.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+
+Returns
+-------
+hasStringEnum : bool
     Whether an entry with that key exists."
 
 // ---------------------------------------------------------------------
