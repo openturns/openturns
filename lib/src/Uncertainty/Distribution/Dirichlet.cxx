@@ -531,23 +531,6 @@ Point Dirichlet::getTheta() const
   return theta_;
 }
 
-/* Get the i-th marginal distribution */
-Distribution Dirichlet::getMarginal(const UnsignedInteger i) const
-{
-  const UnsignedInteger dimension = getDimension();
-  if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  if (dimension == 1) return clone();
-  Beta marginal(theta_[i], sumTheta_ - theta_[i], 0.0, 1.0);
-  /*
-  Point thetaMarginal(2);
-  thetaMarginal[0] = theta_[i];
-  thetaMarginal[1] = sumTheta_ - theta_[i];
-  Dirichlet::Implementation marginal(new Dirichlet(thetaMarginal));
-  */
-  marginal.setDescription({getDescription()[i]});
-  return marginal;
-}
-
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution Dirichlet::getMarginal(const Indices & indices) const
 {
@@ -555,6 +538,13 @@ Distribution Dirichlet::getMarginal(const Indices & indices) const
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
+  if (outputDimension == 1)
+  {
+    const UnsignedInteger index_i = indices[0];
+    Beta marginal(theta_[index_i], sumTheta_ - theta_[index_i], 0.0, 1.0);
+    marginal.setDescription({getDescription()[index_i]});
+    return marginal;
+  }
   Point thetaMarginal(outputDimension + 1);
   Scalar sumMarginal = 0.0;
   for (UnsignedInteger i = 0; i < outputDimension; ++i)

@@ -118,10 +118,8 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 
-  /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const override;
-
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Tell if the distribution has independent marginals */
