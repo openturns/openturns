@@ -6,7 +6,7 @@ jobs:
       - image: openturns/archlinux-python
         environment:
           MAKEFLAGS: "-j4"
-          OPENTURNS_NUM_THREADS: "4"
+          OPENTURNS_NUM_THREADS: 2
     resource_class: large
     steps:
       - checkout
@@ -26,7 +26,7 @@ jobs:
       - image: openturns/archlinux-mingw
         environment:
           MAKEFLAGS: "-j4"
-          OPENTURNS_NUM_THREADS: "4"
+          OPENTURNS_NUM_THREADS: 2
     resource_class: large
     steps:
       - checkout
