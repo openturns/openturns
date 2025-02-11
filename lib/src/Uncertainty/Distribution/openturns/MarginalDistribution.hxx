@@ -40,13 +40,10 @@ class OT_API MarginalDistribution
   CLASSNAME
 public:
 
-  /** Default constructor for save/load methods : 1D distribution with default Uniform underlying distribution */
+  /** Default constructor */
   MarginalDistribution();
 
-  /** Default constructor, independent copula is supposed */
-  MarginalDistribution(const Distribution & distribution,
-                       const UnsignedInteger & index);
-
+  /** Parameters constructor */
   MarginalDistribution(const Distribution & distribution,
                        const Indices & indices);
 

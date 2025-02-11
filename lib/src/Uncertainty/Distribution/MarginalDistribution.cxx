@@ -44,18 +44,6 @@ MarginalDistribution::MarginalDistribution()
 
 /* Parameters constructor */
 MarginalDistribution::MarginalDistribution(const Distribution & distribution,
-    const UnsignedInteger & index)
-  : DistributionImplementation()
-  , distribution_()
-  , indices_()
-{
-  setName("MarginalDistribution");
-  setParallel(distribution.getImplementation()->isParallel());
-  setDistributionAndIndices(distribution, Indices(1, index));
-}
-
-/* Parameters constructor */
-MarginalDistribution::MarginalDistribution(const Distribution & distribution,
     const Indices & indices)
   : DistributionImplementation()
   , distribution_()
