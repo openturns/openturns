@@ -8,14 +8,7 @@ gid=$2
 
 env
 
-if test -d "/io"
-then
-  source_dir=/io  # local
-  cd /tmp
-else
-  source_dir=`pwd`  # circleci
-fi
-
+cd /tmp
 mkdir build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=~/.local \
@@ -23,7 +16,7 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage -fuse-ld=mold" \
       -DSWIG_COMPILE_FLAGS="-O1" \
       -DUSE_HMAT=ON \
-      ${source_dir}
+      /io
 make install
 OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 200 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 #make tests
@@ -37,5 +30,5 @@ cp -v coverage.info coverage
 
 if test -n "${uid}" -a -n "${gid}"
 then
-  sudo chown -R ${uid}:${gid} coverage && sudo cp -r coverage ${source_dir}
+  sudo chown -R ${uid}:${gid} coverage && sudo cp -r coverage /io
 fi

@@ -8,10 +8,11 @@ jobs:
     env:
       LDFLAGS: -L/opt/homebrew/opt/openblas/lib
       CPPFLAGS: -I/opt/homebrew/opt/openblas/include
+      OPENTURNS_NUM_THREADS: 2
+      OMP_NUM_THREADS: 1
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install pkg-config && brew install pkgconf --force
         brew install openblas swig boost tbb nlopt cminpack ceres-solver cuba dlib bison flex hdf5 ipopt primesieve spectra pagmo nanoflann
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
@@ -26,7 +27,7 @@ jobs:
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install -j3
         make tests -j3
-        OPENTURNS_NUM_THREADS=2 OMP_NUM_THREADS=1 ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest
@@ -38,7 +39,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" "liblapack=*=*netlib" "liblapacke=*=*netlib" mpc boost-cpp libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja winflexbison "libblas=*=*netlib" mpc boost-cpp libcuba libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd
@@ -57,21 +58,21 @@ jobs:
 
   aarch64:
     runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: |
-          docker pull openturns/debian-aarch64
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
+        run: ./utils/build_locally.sh aarch64
 
   coverage:
     runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: |
-          docker pull openturns/archlinux-python
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_coverage.sh `id -u` `id -g`
+        run: ./utils/build_locally.sh coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
@@ -81,9 +82,33 @@ jobs:
 
   mindeps:
     runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: |
-          docker pull debian:10
-          docker run --rm -e MAKEFLAGS='-j4' -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh
+        run: ./utils/build_locally.sh mindeps
+
+  freebsd:
+    runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
+      OPENTURNS_NUM_THREADS: 2
+      OMP_NUM_THREADS: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: vmactions/freebsd-vm@v1
+        with:
+          envs: 'MAKEFLAGS OPENTURNS_NUM_THREADS OMP_NUM_THREADS'
+          usesh: true
+          prepare: |
+            pkg install -y cmake git devel/llvm devel/swig devel/boost-all devel/onetbb textproc/libxml2
+            pkg install -y math/lapack science/hdf5 math/nanoflann math/spectra math/primesieve math/py-matplotlib
+            pkg install -y science/pagmo2 math/ipopt math/bonmin math/nlopt math/ceres-solver math/cminpack
+          run: |
+            git config --global --add safe.directory .
+            cmake -DCMAKE_INSTALL_PREFIX=~/.local -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wshadow -Werror -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE" -DSWIG_COMPILE_FLAGS="-O1 -Wno-shadow -Wno-unused-function" . || exit 1
+            cmake --build . --target install || exit 1
+            ctest --output-on-failure --timeout 200 -E cppcheck -j4 --repeat after-timeout:2 --schedule-random || exit 1
+            cmake --build . --target tests || exit 1
+            ctest --output-on-failure --timeout 200 -E pyinstallcheck -j4 --repeat after-timeout:2 --schedule-random || exit 1
