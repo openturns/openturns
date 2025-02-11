@@ -106,5 +106,3 @@ for nDistribution in range(len(coll)):
     validation.skipConditional()  # FIXME
     validation.skipTransformation()  # FIXME
     validation.run()
-    # Additional tests to make codecov happy
-    distribution = ot.MarginalDistribution(fullDistribution, 0)

@@ -36,11 +36,8 @@ int main(int, char *[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    UnsignedInteger dimension = 5;
-    Indices indices;
-    indices.add(2);
-    indices.add(0);
-    indices.add(1);
+    const UnsignedInteger dimension = 5;
+    const Indices indices = {2, 0, 1};
     Collection<Distribution> coll;
     coll.add(Normal(dimension));
     // Here the probabilities don't sum to 1 on purpose
