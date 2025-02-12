@@ -2,6 +2,7 @@ import openturns as ot
 from openturns.viewer import View
 import openturns.experimental as otexp
 
+ot.RandomGenerator.SetSeed(0)
 func = ot.SymbolicFunction(
     ["x1", "x2", "x3"], ["x1 + x2 + sin(x2 * 2 * pi_) / 5 + 1e-3 * x3^2"]
 )

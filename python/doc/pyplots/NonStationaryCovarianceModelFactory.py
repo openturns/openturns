@@ -3,7 +3,7 @@ from math import exp
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-
+ot.RandomGenerator.SetSeed(0)
 # Create the covariance function at (s,t)
 
 

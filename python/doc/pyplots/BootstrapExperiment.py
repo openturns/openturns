@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 ot.RandomGenerator.SetSeed(0)
+ot.ResourceMap.Reload()
 
 # Generate sample with the given plane
 size = 20

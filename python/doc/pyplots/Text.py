@@ -2,9 +2,8 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-distribution = ot.Normal(2)
-
-sample = distribution.getSample(30)
+ot.RandomGenerator.SetSeed(0)
+sample = ot.Normal(2).getSample(30)
 
 # Create an empty graph
 graph = ot.Graph("Text example", "x1", "x2", True, "")

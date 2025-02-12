@@ -1,6 +1,8 @@
 import openturns as ot
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
+ot.ResourceMap.Reload()
 ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 64)
 ot.ResourceMap.SetAsUnsignedInteger("Mesh-LargeSize", 0)
 

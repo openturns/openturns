@@ -2,6 +2,7 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
 # Create a process on a regular grid
 myGrid = ot.RegularGrid(0.0, 0.1, 100)
 

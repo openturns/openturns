@@ -1,6 +1,7 @@
 import openturns as ot
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
 N = 100
 M = 1000
 P = 10
