@@ -2,6 +2,7 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
 
 # Create a bivariate Gaussian process
 myMesh = ot.IntervalMesher([39, 39]).build(ot.Interval([0.0] * 2, [1.0] * 2))

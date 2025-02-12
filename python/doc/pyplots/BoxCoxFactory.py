@@ -2,7 +2,7 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-# Create a process X: R^2 --> R^2
+ot.RandomGenerator.SetSeed(0)
 
 # Define a bi dimensional mesh as a box
 indices = ot.Indices([40, 20])
