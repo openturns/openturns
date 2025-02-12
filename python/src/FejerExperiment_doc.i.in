@@ -5,8 +5,8 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-This class computes Fejer and Clenshaw–Curtis quadrature, see also
-<https://en.wikipedia.org/wiki/Clenshaw%E2%80%93Curtis_quadrature>`_
+This class computes Fejer and Clenshaw–Curtis quadrature,
+`see also here <https://en.wikipedia.org/wiki/Clenshaw%E2%80%93Curtis_quadrature>`_
 
 For any :math:`k=0,1,...,n-1`, let :math:`\theta_k = \dfrac{k\pi}{n}`.
 The Clenshaw-Curtis nodes are:
