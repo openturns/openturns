@@ -3,48 +3,61 @@
 
 Parameters
 ----------
-theta : sequence of float, optional
-        :math:`\vect{\theta}` must be at least bidimensional
-        with :math:`\theta_i > 0, i = 1, \ldots, n+1`.
+theta : sequence of float, 
+        The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter
+        with :math:`\theta_i > 0` for all :math:`i` and :math:`d \geq 1`.
+        
         Default value is [1.0, 1.0].
 
 Notes
 -----
-Its probability distribution function is defined as:
+The Dirichlet distribution is used to model a random vector :math:`\inputRV = (X_1, \dots, X_{\inputDim+1})`
+in the unit cube which sum is equal to 1:
 
 .. math::
 
-    f_{\vect{X}}(\vect{x}) = \frac{\Gamma(|\vect{\theta}|_1)}
-                                  {\prod_{j=1}^{n + 1} \Gamma(\theta_j)}
-                             \left[1 - \sum_{j=1}^{n} x_j
-                                   \right]^{\theta_{n+1} - 1}
-                             \prod_{j=1}^n x_j^{\theta_j - 1},
-                             \quad \vect{x} \in \Delta(\vect{X})
+    & \sum_{i=1}^{\inputDim+1} X_i = 1 \\
+    & X_i \in [0,1] \quad \forall 1 \leq i \leq \inputDim +1
+    
+This relation implies that :math:`X_{\inputDim +1} = 1 - \sum_{i=1}^{\inputDim} X_i`. Then, the last component is fully determined by the other components. The random vector is actually of dimension :math:`\inputDim`.
 
-with :math:`\Delta(\vect{X}) = \{ \vect{x} \in \Rset^n : x_i \geq 0, \sum_{i=1}^n x_i \leq 1, i = 1, \ldots, n \}`
-and :math:`\theta_i > 0, i = 1, \ldots, n+1` and where :math:`|\vect{\theta}|_1 = \sum_{i=1}^{n+1} \theta_i`.
+The Dirichlet distribution implemented in the library models the random vector :math:`\inputRV = (X_1, \dots, X_{\inputDim})` of dimension :math:`\inputDim` and such that:
+
+.. math::
+
+    & \sum_{i=1}^{\inputDim} X_i \leq 1 \\
+    & X_i \in [0,1] \forall 1 \leq i \leq \inputDim
+
+
+Let :math:`\vect{\theta} = (\theta_1, \dots, \theta_{\inputDim+1})` be a vector which all components are
+strictly positive. Let :math:`|\vect{\theta}|_1 = \sum_{i=1}^{\inputDim+1} \theta_i` be the 1-norm of :math:`\vect{\theta}`
+and let the multivariate Beta function be defined in terms of the Gamma function:
+
+.. math::
+
+    B(\vect{\theta}) = \dfrac{\prod_{i=1}^{\inputDim+1}\Gamma(\theta_i)}{\Gamma(|\vect{\theta}|_1)}
+
+The Dirichlet probability distribution function is defined as:
+
+.. math::
+
+    \pdf = \frac{1}{B(\vect{\theta})} 
+            \left( 1  - \sum_{i=1}^{\inputDim} x_i \right)^{\theta_{\inputDim+1}-1}
+            \prod_{i=1}^{\inputDim} x_i^{\theta_i - 1}, \quad \vect{x} \in \supp{\inputRV}
+
+where:
+
+.. math::
+
+    \supp{\inputRV}=  \{ \vect{x} \in [0,1]^\inputDim \, |\,  \sum_{i=1}^\inputDim x_i \leq 1 \}
 
 Its first moments are:
 
 .. math::
-    :nowrap:
 
-    \begin{eqnarray*}
-        \Expect{\vect{X}} & = & \Tr{(\theta_i/|\vect{\theta}|_1,
-                                     \quad i = 1, \ldots, n)} \\
-        \Cov{\vect{X}} & = & \left[- \frac{\theta_i \theta_j}
-                                          {|\vect{\theta}|_1^2
-                                           (|\vect{\theta}|_1+1)},
-                                   \quad i,j = 1, \ldots, n \right]
-    \end{eqnarray*}
-
-.. warning::
-    The present implementation does not model the :math:`n+1`-th component of
-    the Dirichlet distribution as it is fixed:
-
-    .. math::
-
-        X_{n + 1} = 1 - \sum_{i=1}^{n} X_i
+      \Expect{\inputRV} & =  \dfrac{1}{|\vect{\theta}|_1} \vect{\theta}\\
+      \Cov{\inputRV} & =  -\dfrac{1}{|\vect{\theta}|_1^2(|\vect{\theta}|_1+1)}
+               \left( \theta_i \theta_j \right)_{1 \leq i,j \leq \inputDim}
 
 See Also
 --------
@@ -52,7 +65,7 @@ Multinomial
 
 Examples
 --------
-Create a distribution:
+Create a distribution of dimension :math:`\inputDim = 2`:
 
 >>> import openturns as ot
 >>> distribution = ot.Dirichlet([1.0, 1.0, 1.0])
@@ -68,7 +81,8 @@ Draw a sample:
 
 Returns
 -------
-theta : float, :class:`~openturns.Point`"
+theta : sequence of float, :class:`~openturns.Point`,
+        The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter."
 
 // ---------------------------------------------------------------------
 
@@ -77,4 +91,6 @@ theta : float, :class:`~openturns.Point`"
 
 Parameters
 ----------
-theta : float, sequence of float, :math:`\theta_i > 0, i = 1, \ldots, n+1`"
+theta : sequence of float, 
+        The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter
+        with :math:`\theta_i > 0` for all :math:`i` and :math:`d \geq 1`"
