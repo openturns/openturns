@@ -196,7 +196,7 @@ Examples
 Returns
 -------
 volume : :class:`~openturns.Point`
-    Volume of all simplices.
+    Volume of all simplices. It corresponds to the *intrinsic* volume, eg the surface of a mesh made of degenerated simplices in 3D.
 
 Examples
 --------
@@ -204,8 +204,13 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplex = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplex)
->>> print(mesh2d.computeSimplicesVolume())
-[0.5]"
+>>> dim = mesh2d.getIntrinsicDimension()
+>>> vol2d = mesh2d.computeSimplicesVolume()
+>>> simplices = [[0, 1, 1], [1, 2, 2], [2, 0, 0]]
+>>> mesh1d_in_2d = ot.Mesh(vertices, simplices)
+>>> dim = mesh1d_in_2d.getIntrinsicDimension()
+>>> vol1d = mesh1d_in_2d.computeSimplicesVolume()
+"
 
 // ---------------------------------------------------------------------
 
@@ -721,6 +726,15 @@ dimension : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Mesh::getIntrinsicDimension
+"Intrinsic dimension accessor.
+
+Returns
+-------
+dimension : int
+    Dimension of the simplices. It differs from the dimension if the last indices are repeated in the definition of the simplices."
+
+// ---------------------------------------------------------------------
 %feature("docstring") OT::Mesh::getLowerBound
 "Lower bound accessor.
 
