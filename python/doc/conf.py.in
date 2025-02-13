@@ -137,6 +137,9 @@ sphinx_gallery_conf = {
     # The duration of scripts that ran faster than that amount will not be
     # logged nor embedded in the html output
     'min_reported_time': 2,
+
+    # Reset module before each example
+    'reset_modules': ('reset_ot.reset_ot'),
 }
 
 if Version(sphinx_gallery.__version__) >= Version("0.17.0"):

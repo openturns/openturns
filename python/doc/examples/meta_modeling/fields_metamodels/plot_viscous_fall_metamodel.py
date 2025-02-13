@@ -143,8 +143,4 @@ chaosMetamodel = algo.getResult().getMetaModel()
 metaModel = ot.PointToFieldConnection(klLiftingFunction, chaosMetamodel)
 
 # %%
-# Reset ResourceMap
-ot.ResourceMap.Reload()
-
-# %%
 otv.View.ShowAll()
