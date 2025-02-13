@@ -18,10 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
 #include "openturns/Contour.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
@@ -326,7 +322,7 @@ void Contour::setHatches(const Description& hatches)
 {
   for(String h : hatches)
     for(char c : h)
-      if(!strchr("/\\|-+xoO.*", c))
+      if(std::string("/\\|-+xoO.*").find(c) == std::string::npos)
         throw InvalidArgumentException(HERE) << "Given hatch = " << h << " is incorrect";
   hatches_ = hatches;
 }
