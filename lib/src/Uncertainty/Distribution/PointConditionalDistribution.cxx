@@ -599,11 +599,7 @@ void PointConditionalDistribution::computeRange()
     // range of this conditioned distribution. It only uses the mean and
     // the covariance of the distribution to be conditioned so it is not
     // too costly for many distributions.
-    // Strategy three [NormalLinear], more robust: the same as strategy two,
-    // except that the marginal range is transformed using the same linear
-    // transformation between the marginal range and the conditioned range
-    // of the equivalent normal.
-    // Strategy four [NormalCopula], robust but slow: the conditioning acts
+    // Strategy three [NormalCopula], robust but slow: the conditioning acts
     // on the marginal range the same way it acts on a distribution with the
     // same marginals and a normal copula having the same Spearman
     // correlation. In addition to the Spearman correlation one has to
@@ -621,7 +617,6 @@ void PointConditionalDistribution::computeRange()
       Interval conditionedRange(marginalRange);
       if ((adaptationMethod == "Normal") || (adaptationMethod == "NormalLinear"))
       {
-        // First, the "equivalent" normal
         const Point mean(distribution_.getMean());
         const CovarianceMatrix covariance(distribution_.getCovariance());
         const Normal normal(mean, covariance);
@@ -629,38 +624,10 @@ void PointConditionalDistribution::computeRange()
         const Point mu = decompose(normal, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C);
         const Normal conditionedNormal(mu, C);
         const Interval normalConditionedRange(conditionedNormal.getRange());
-        // Third, the mapping between the ranges
-        // Second strategy: adopt the bounds of the conditioned equivalent
-        // normal
-        if (adaptationMethod == "Normal")
-        {
-          conditionedRange.setLowerBound(normalConditionedRange.getLowerBound());
-          conditionedRange.setUpperBound(normalConditionedRange.getUpperBound());
-        } // Simple copy
-        // Third strategy: do a linear mapping between ranges
-        else
-        {
-          Point lowerBound(conditionedRange.getLowerBound());
-          Point upperBound(conditionedRange.getUpperBound());
-          const Point u(normalMarginalRange.getLowerBound());
-          const Point v(normalMarginalRange.getUpperBound());
-          const Point x(normalConditionedRange.getLowerBound());
-          const Point y(normalConditionedRange.getUpperBound());
-          for (UnsignedInteger i = 0; i < lowerBound.getDimension(); ++i)
-          {
-            // [u_i, v_i]->[x_i=au_i+b, y_i=av_i+b]
-            // a=(x_i-y_i) / (u_i-v_i) and b=(u_iy_i-v_ix_i) / (u_i-v_i)
-            const Scalar a = (x[i] - y[i]) / (u[i] - v[i]);
-            const Scalar b = (u[i] * y[i] - v[i] * x[i]) / (u[i] - v[i]);
-            lowerBound[i] = a * lowerBound[i] + b;
-            upperBound[i] = a * upperBound[i] + b;
-          }
-          conditionedRange.setLowerBound(lowerBound);
-          conditionedRange.setUpperBound(upperBound);
-        } // linear mapping
-        setRange(conditionedRange);
-      } // Strategy = Normal or NormalLinear
-      // Fourth strategy
+	conditionedRange.setLowerBound(normalConditionedRange.getLowerBound());
+	conditionedRange.setUpperBound(normalConditionedRange.getUpperBound());
+      } // Strategy = Normal
+      // Third strategy
       else
       {
         const UnsignedInteger dimension = distribution_.getDimension();
