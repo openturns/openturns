@@ -13,7 +13,11 @@ General mathematical functions
 
     Function
     FunctionImplementation
+
+    :template: classWithPlot.rst_t
     SymbolicFunction
+
+    :template: class.rst_t
     TranslationFunction
 
     :template: classWithPlot.rst_t
@@ -126,13 +130,22 @@ Evaluation functions
     DualLinearCombinationEvaluation
     IndicatorEvaluation
     LinearCombinationEvaluation
+
+    :template: classWithPlot.rst_t
     LinearEvaluation
+
+    :template: class.rst_t
     MarginalEvaluation
     MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
+    SymbolicEvaluation
+
+    :template: classWithPlot.rst_t
     PiecewiseHermiteEvaluation
     PiecewiseLinearEvaluation
+
+    :template: class.rst_t
     P1LagrangeInterpolation
 
     :template: classWithPlot.rst_t
@@ -141,8 +154,12 @@ Evaluation functions
     :template: class.rst_t
     ProductEvaluation
     ProductPolynomialEvaluation
+
+    :template: classWithPlot.rst_t
     QuadraticEvaluation
     SymbolicEvaluation
+
+    :template: class.rst_t
     TranslationEvaluation
 
 Gradient functions
