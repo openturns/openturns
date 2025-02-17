@@ -10,10 +10,6 @@ constant : sequence of float
 linear : :class:`~openturns.Matrix`
     Matrix :math:`\mat{A}`.
 
-See also
---------
-Function
-
 Notes
 -----
 This implements a linear :class:`~openturns.Function` :math:`f` 
@@ -21,36 +17,38 @@ defined as :
 
 .. math::
 
-    f : & \Rset^n \rightarrow \Rset^p  \\
+    f : & \Rset^d \rightarrow \Rset^p  \\
         & \vect{X} \mapsto \mat{A} ( \vect{X} - \vect{b} ) + \vect{c}
 
 where:
 
-- :math:`\mat{A}` is the :math:`\Rset^p \times \Rset^n` matrix defined by the
-  input *linear*,
-- :math:`\vect{b}` is the :math:`\Rset^n` vector defined by the object *center*,
+- :math:`\mat{A}` is a matrix with :math:`p` lines and :math:`d` columns,
+- :math:`\vect{b}` is a vector in :math:`\Rset^d`,
+- :math:`\vect{c}` is a vector in :math:`\Rset^p`.
 
-- :math:`\vect{c}` is the :math:`\Rset^p` vector defined by the object *constant*.
+See also
+--------
+Function
 
 Examples
 --------
-In the next example, we create the linear function :math:`f(x) = 2x + 3` 
-for any :math:`x \in \Rset`.
+In this example, we create the linear function :math:`f: \Rset^2 \rightarrow \Rset` such that
+:math:`f(x,y) = 2x + 3y-1`. Then we have:
+
+.. math::
+
+    \mat{A} = \left(2,3 \right), \vect{b} = \Tr{(0,0)}, \vect{c} = (-1)
 
 >>> import openturns as ot
->>> center = [0.0]
->>> constant = [3.0]
->>> linear = ot.Matrix([[2.0]])
+>>> center = [0.0, 0.0]
+>>> constant = [-1.0]
+>>> linear = ot.Matrix(1,2)
+>>> linear[0,0] = 2.0
+>>> linear[0,1] = 3.0
 >>> f = ot.LinearFunction(center, constant, linear)
->>> print(f([1.0]))
-[5]
+>>> print(f([1.0, 1.0]))
+[4]
 
-In the next example, we create the linear function :math:`f(x, y) = 2x - y + 3` 
-for any :math:`x \in \Rset`.
+Get the matrix :math:`\Tr{\mat{A}}`:
 
->>> centerCoefficient = [0.0, 0.0]
->>> constantCoefficient = [3.0]
->>> linearCoefficient = ot.Matrix([[2.0, -1.0]])
->>> f = ot.LinearFunction(centerCoefficient, constantCoefficient, linearCoefficient)
->>> print(f([1.0, 2.0]))
-[3]"
+>>> A_transpose = f.getEvaluation().getImplementation().getLinear()"
