@@ -19,12 +19,14 @@
  *
  */
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Bonmin.hxx"
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/Dlib.hxx"
 #include "openturns/Ipopt.hxx"
+#include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/Pagmo.hxx"
@@ -238,6 +240,10 @@ Bool OptimizationAlgorithm::getCheckStatus() const
 OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName)
 {
   OptimizationAlgorithm solver;
+  if (solverName == "AbdoRackwitz")
+  {
+    solver = AbdoRackwitz();
+  }
   if (PlatformInfo::HasFeature("ceres") && Ceres::GetAlgorithmNames().contains(solverName))
   {
     solver = Ceres(solverName);
@@ -249,6 +255,10 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   else if (solverName == "Cobyla")
   {
     solver = Cobyla();
+  }
+  else if (solverName == "SQP")
+  {
+    solver = SQP();
   }
   else if (solverName == "TNC")
   {
