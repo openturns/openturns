@@ -77,7 +77,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.PlatformInfo.GetFeatures())
-[bison,bonmin,...
+[bonmin,...
 "
 
 // ---------------------------------------------------------------------

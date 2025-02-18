@@ -283,8 +283,8 @@ ot_add_python_module(func func_module.i
                       LinearEvaluation.i LinearEvaluation_doc.i.in
                       LinearGradient.i LinearGradient_doc.i.in
                       QuadraticEvaluation.i QuadraticEvaluation_doc.i.in
-                      ConstantGradient.i
-                      ConstantHessian.i
+                      ConstantGradient.i ConstantGradient_doc.i.in
+                      ConstantHessian.i ConstantHessian_doc.i.in
                       ComposedEvaluation.i
                       ComposedGradient.i
                       ComposedHessian.i
@@ -1032,6 +1032,8 @@ ot_add_python_module(experimental experimental_module.i
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
+                     ConstantEvaluation.i ConstantEvaluation_doc.i.in
+                     ConstantFunction.i ConstantFunction_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
@@ -1100,11 +1102,10 @@ if (SPHINX_FOUND)
   if (NOT HDF5_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(study_save_load)")
   endif ()
-  if (NOT BISON_FOUND OR NOT FLEX_FOUND)
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(import_export_sample_csv)|(estimate_gev_fremantle)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gev_pirie)|(estimate_gev_racetime)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gev_venice)|(estimate_gpd_rain)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_dependence_wavesurge)|(estimate_dependence_wind)")
+  if (NOT NLopt_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_nlopt)|(optimization_rosenbrock)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(advanced_mle_estimator)|(kriging_advanced)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_hyperparameters_optimization)")
   endif ()
 
   # create a build site-package from which sphinx can import

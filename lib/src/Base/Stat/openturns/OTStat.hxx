@@ -26,7 +26,6 @@
 #include "openturns/CorrelationAnalysis.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/CovarianceMatrix.hxx"
-#include "openturns/csv_parser_state.hxx"
 #include "openturns/Full.hxx"
 #include "openturns/ReverseHaltonSequence.hxx"
 #include "openturns/FaureSequence.hxx"

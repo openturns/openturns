@@ -3,8 +3,6 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 import math as m
 
-oldPrecision = ot.PlatformInfo.GetNumericalPrecision()
-ot.PlatformInfo.SetNumericalPrecision(16)
 a = -m.pi
 b = m.pi
 f = ot.SymbolicFunction(["x", "y"], ["1+cos(x)*sin(y)"])
@@ -65,4 +63,3 @@ fig = plt.figure(figsize=(4, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)
-ot.PlatformInfo.SetNumericalPrecision(oldPrecision)

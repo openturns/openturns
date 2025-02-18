@@ -122,7 +122,15 @@ String FunctionalChaosResult::__repr_markdown__() const
 {
   OSS oss(false);
   const UnsignedInteger indicesSize = I_.getSize();
-  const EnumerateFunction enumerateFunction(orthogonalBasis_.getEnumerateFunction());
+  EnumerateFunction enumerateFunction;
+  try
+  {
+    enumerateFunction = orthogonalBasis_.getEnumerateFunction();
+  }
+  catch (const NotYetImplementedException &)
+  {
+  }
+
   const UnsignedInteger outputDimension = metaModel_.getOutputDimension();
   const UnsignedInteger inputDimension = distribution_.getDimension();
   oss << getClassName() << "\n"

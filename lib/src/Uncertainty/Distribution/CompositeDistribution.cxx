@@ -29,7 +29,7 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/SobolSequence.hxx"
-#include "openturns/SymbolicFunction.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,7 +40,7 @@ static const Factory<CompositeDistribution> Factory_CompositeDistribution;
 /* Default constructor */
 CompositeDistribution::CompositeDistribution()
   : DistributionImplementation()
-  , function_(SymbolicFunction("x", "x"))
+  , function_(IdentityFunction(1))
   , antecedent_(Uniform(0.0, 1.0))
   , bounds_(0)
   , values_(0)

@@ -2,6 +2,9 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
+ot.ResourceMap.Reload()
+
 # Create the time grid
 # In the context of the spectral estimate or Fourier transform use,
 # we use data blocs with size of form 2^p

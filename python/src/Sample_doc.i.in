@@ -30,10 +30,6 @@ first : int, :math:`0 \leq first < m`
 last : int, :math:`first < last \leq m`, optional
     The index after the last point to copy.
 
-See Also
---------
-ImportFromCSVFile, ImportFromTextFile
-
 Examples
 --------
 Create a Sample
@@ -45,11 +41,6 @@ Create a Sample
 0 : [ 0 0 ]
 1 : [ 0 0 ]
 2 : [ 0 0 ]
->>> sample = ot.Sample(3, [1.0, 2.0])
->>> print(sample)
-0 : [ 1 2 ]
-1 : [ 1 2 ]
-2 : [ 1 2 ]
 
 Create a Sample from a (2d) array, list or tuple
 
@@ -59,6 +50,10 @@ Create a Sample from a (2d) array, list or tuple
 and back
 
 >>> z = np.array(sample)
+
+Load a sample from a CSV file
+
+>>> sample = ot.Sample.ImportFromCSVFile('sample.csv', ',') # doctest: +SKIP
 
 Eventually samples may also be generated from probability distributions or
 experiments
@@ -119,7 +114,7 @@ file_name : str
     Path to CSV file.
 separator : str
     Separating string.
-    Default uses `csv-file-separator` from the :class:`~openturns.ResourceMap`.
+    Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -132,26 +127,19 @@ The file may or may not contain a header line (columns spanned with strings
 delimited with quotes). If it does contain such a header line, it will be
 used for setting the sample description using :py:meth:`setDescription`.
 
-The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180.
+The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180,
+for more permissive formats see :py:meth:`ImportFromTextFile`.
 
 See Also
 --------
-exportToCSVFile
+exportToCSVFile, ImportFromTextFile
 
 Examples
 --------
 >>> import openturns as ot
-
-Let's first create a sample CSV file
-
->>> ot.RandomGenerator.SetSeed(0)
->>> sample = ot.Normal(2).getSample(30)
->>> sample.exportToCSVFile('sample.csv')
-
-And load it back
-
->>> loaded_sample = ot.Sample.ImportFromCSVFile('sample.csv')
->>> assert sample == loaded_sample"
+>>> separator = ','
+>>> sample = ot.Sample.ImportFromCSVFile('sample.csv', separator) # doctest: +SKIP
+"
 
 // ---------------------------------------------------------------------
 
@@ -168,7 +156,7 @@ separator : str
 skipped_lines : int
     Number of lines skipped.
     Default is 0.
-numSeparator : str
+decimalSeparator : str
     Decimal separator.
     Default is dot.
 
@@ -182,27 +170,25 @@ Notes
 The file may or may not contain a header line (columns spanned with strings
 delimited with quotes). If it does contain such a header line, it will be
 used for setting the sample description using :py:meth:`setDescription`.
-It can also contain some comments, if a line starts with one of the
-characters contained in `Sample-CommentsMarker` from the :class:`~openturns.ResourceMap`.
+
+This method allows for more permissive file formatting than :py:meth:`ImportFromCSVFile`:
+
+- The field separator can be a whitespace
+- Comment lines or empty ones are allowed
+- Lines can be skipped from the start of the file
+
+The comment marker is defined by the `Sample-CommentsMarker` entry from :class:`~openturns.ResourceMap`.
 
 See Also
 --------
-exportToCSVFile
+ImportFromCSVFile
 
 Examples
 --------
 >>> import openturns as ot
-
-Let's first create a sample text file
-
->>> ot.RandomGenerator.SetSeed(0)
->>> sample = ot.Normal(2).getSample(30)
->>> sample.exportToCSVFile('sample.txt', ' ')
-
-And load it back
-
->>> loaded_sample = ot.Sample.ImportFromTextFile('sample.txt')
->>> assert sample == loaded_sample"
+>>> separator = ' '
+>>> sample = ot.Sample.ImportFromTextFile('sample.txt', separator) # doctest: +SKIP
+"
 
 // ---------------------------------------------------------------------
 
@@ -832,8 +818,8 @@ file_name : str
     Path to CSV file.
 separator : str
     Separating string.
-    Default uses `csv-file-separator` from the :class:`~openturns.ResourceMap`.
-numSeparator : str, default='.'
+    Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
+decimalSeparator : str, default='.'
     Decimal separator.
 precision : int
     Numerical precision

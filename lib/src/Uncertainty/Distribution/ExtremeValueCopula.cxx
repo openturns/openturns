@@ -24,7 +24,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/SymbolicFunction.hxx"
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/Brent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -36,7 +36,7 @@ static const Factory<ExtremeValueCopula> Factory_ExtremeValueCopula;
 /* Default constructor */
 ExtremeValueCopula::ExtremeValueCopula()
   : DistributionImplementation()
-  , pickandFunction_(SymbolicFunction("t", "1.0"))
+  , pickandFunction_(ConstantFunction(1, Point({1.0})))
 {
   isCopula_ = true;
   setName( "ExtremeValueCopula" );

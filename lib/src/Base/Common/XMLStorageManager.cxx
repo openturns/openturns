@@ -32,7 +32,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -347,7 +346,7 @@ void toStringConverter(const _Tp & value, String & st)
 static inline
 void fromStringConverter(const String & st, Bool & value)
 {
-  value = (st == "true") ? true : false;
+  value = (st == "true");
 }
 
 static inline

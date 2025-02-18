@@ -61,6 +61,7 @@ public:
 
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & ) const override;
 
   /** Indices accessor */
   Indices getIndices() const;

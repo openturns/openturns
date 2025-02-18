@@ -1070,6 +1070,34 @@ Examples
 >>> cdf = ot.DistFunc.pStudent(2.5, 0.9)
 >>> cdf = ot.DistFunc.pStudent(2.5, 0.9, True)"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pStudent2D
+"Cumulative distribution function of a 2-d Student distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+x1, x2 : float
+    Location.
+rho : float
+    Correlation coefficient.
+tail : bool, optional
+    Tail flag.
+    Default value is False.
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float or sequence of float
+    The CDF or the complementary CDF at x1, x2
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pStudent2D(2.5, 0.1, 0.1, 0.5)
+>>> cdf = ot.DistFunc.pStudent2D(2.5, 0.1, 0.1, 0.5, True)"
 
 // ---------------------------------------------------------------------
 

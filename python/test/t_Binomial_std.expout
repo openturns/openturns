@@ -18,222 +18,210 @@ parameters= [class=PointWithDescription name=X0 dimension=2 description=[n,p] va
 Standard representative= Binomial(n = 15, p = 0.7)
 95.00% bilateral confidence interval  = [7, 13]
 Check on dataset
-row = 0/37, x = 0, n = 10, pr = 0.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
+row = 0/35, x = 0, n = 10, pr = 0.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
     computePDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeComplementaryCDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeSurvivalFunction. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
-row = 1/37, x = 10, n = 10, pr = 0.0, P(X = x) = 0.0, CDF = 1.0, Compl. CDF = 0.0
+row = 1/35, x = 10, n = 10, pr = 0.0, P(X = x) = 0.0, CDF = 1.0, Compl. CDF = 0.0
     computePDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeComplementaryCDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeSurvivalFunction. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeQuantile (B). Computed X = 10, expected = 10
-row = 2/37, x = 0, n = 10, pr = 1.0, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
+row = 2/35, x = 0, n = 10, pr = 1.0, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
     computePDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeCDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 0, F(X - 1) = 0.0000000e+00, F(X) = 0.0000000e+00
-row = 3/37, x = 10, n = 10, pr = 1.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
+row = 3/35, x = 10, n = 10, pr = 1.0, P(X = x) = 1.0, CDF = 1.0, Compl. CDF = 0.0
     computePDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeComplementaryCDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeSurvivalFunction. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeQuantile (B). Computed X = 10, expected = 10
-row = 4/37, x = 1, n = 1030, pr = 0.5, P(X = x) = 8.952445602587756e-308, CDF = 8.96113729734744e-308, Compl. CDF = 1.0
+row = 4/35, x = 1, n = 1030, pr = 0.5, P(X = x) = 8.952445602587756e-308, CDF = 8.96113729734744e-308, Compl. CDF = 1.0
     computePDF. Computed = 8.95244560259e-308, expected = 8.95244560259e-308
     computeCDF. Computed = 8.96113729735e-308, expected = 8.96113729735e-308
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 1, F(X - 1) = 8.6916948e-311, F(X) = 8.9611373e-308
-row = 5/37, x = 400, n = 1030, pr = 0.5, P(X = x) = 1.4435068396634365e-13, CDF = 3.897352466243578e-13, Compl. CDF = 0.9999999999996103
+row = 5/35, x = 400, n = 1030, pr = 0.5, P(X = x) = 1.4435068396634365e-13, CDF = 3.897352466243578e-13, Compl. CDF = 0.9999999999996103
     computePDF. Computed = 1.44350683966e-13, expected = 1.44350683966e-13
     computeCDF. Computed = 3.89735246624e-13, expected = 3.89735246624e-13
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 400, F(X - 1) = 2.4538456e-13, F(X) = 3.8973525e-13
-row = 6/37, x = 589, n = 1030, pr = 0.5, P(X = x) = 5.835293291163824e-07, CDF = 0.9999983439256698, Compl. CDF = 1.6560743301714625e-06
+row = 6/35, x = 589, n = 1030, pr = 0.5, P(X = x) = 5.835293291163824e-07, CDF = 0.9999983439256698, Compl. CDF = 1.6560743301714625e-06
     computePDF. Computed = 5.83529329116e-07, expected = 5.83529329116e-07
     computeCDF. Computed = 9.99998343926e-01, expected = 9.99998343926e-01
     computeComplementaryCDF. Computed = 1.65607433017e-06, expected = 1.65607433017e-06
     computeSurvivalFunction. Computed = 1.65607433017e-06, expected = 1.65607433017e-06
     computeQuantile (B). Computed X = 589, expected = 589
-row = 7/37, x = 1, n = 30, pr = 0.1, P(X = x) = 0.14130386091738736, CDF = 0.18369501919260356, Compl. CDF = 0.8163049808073964
+row = 7/35, x = 1, n = 30, pr = 0.1, P(X = x) = 0.14130386091738736, CDF = 0.18369501919260356, Compl. CDF = 0.8163049808073964
     computePDF. Computed = 1.41303860917e-01, expected = 1.41303860917e-01
     computeCDF. Computed = 1.83695019193e-01, expected = 1.83695019193e-01
     computeComplementaryCDF. Computed = 8.16304980807e-01, expected = 8.16304980807e-01
     computeSurvivalFunction. Computed = 8.16304980807e-01, expected = 8.16304980807e-01
     computeQuantile (A). Computed X = 1, F(X - 1) = 4.2391158e-02, F(X) = 1.8369502e-01
-row = 8/37, x = 1, n = 50, pr = 0.001, P(X = x) = 0.047607889299150725, CDF = 0.9988135174961821, Compl. CDF = 0.001186482503817932
+row = 8/35, x = 1, n = 50, pr = 0.001, P(X = x) = 0.047607889299150725, CDF = 0.9988135174961821, Compl. CDF = 0.001186482503817932
     computePDF. Computed = 4.76078892992e-02, expected = 4.76078892992e-02
     computeCDF. Computed = 9.98813517496e-01, expected = 9.98813517496e-01
     computeComplementaryCDF. Computed = 1.18648250382e-03, expected = 1.18648250382e-03
     computeSurvivalFunction. Computed = 1.18648250382e-03, expected = 1.18648250382e-03
     computeQuantile (B). Computed X = 1, expected = 1
-row = 9/37, x = 16, n = 30, pr = 0.999, P(X = x) = 1.4311328174833965e-34, CDF = 1.4326623224074817e-34, Compl. CDF = 1.0
+row = 9/35, x = 16, n = 30, pr = 0.999, P(X = x) = 1.4311328174833965e-34, CDF = 1.4326623224074817e-34, Compl. CDF = 1.0
     computePDF. Computed = 1.43113281748e-34, expected = 1.43113281748e-34
     computeCDF. Computed = 1.43266232241e-34, expected = 1.43266232241e-34
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 16, F(X - 1) = 1.5295049e-37, F(X) = 1.4326623e-34
-row = 10/37, x = 1, n = 240, pr = 0.9999, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
+row = 10/35, x = 1, n = 240, pr = 0.9999, P(X = x) = 0.0, CDF = 0.0, Compl. CDF = 1.0
     computePDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeCDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 0, F(X - 1) = 0.0000000e+00, F(X) = 0.0000000e+00
-row = 11/37, x = 28, n = 100, pr = 0.22, P(X = x) = 0.032924061808075285, CDF = 0.9383900809697512, Compl. CDF = 0.06160991903024881
+row = 11/35, x = 28, n = 100, pr = 0.22, P(X = x) = 0.032924061808075285, CDF = 0.9383900809697512, Compl. CDF = 0.06160991903024881
     computePDF. Computed = 3.29240618081e-02, expected = 3.29240618081e-02
     computeCDF. Computed = 9.38390080970e-01, expected = 9.38390080970e-01
     computeComplementaryCDF. Computed = 6.16099190302e-02, expected = 6.16099190302e-02
     computeSurvivalFunction. Computed = 6.16099190302e-02, expected = 6.16099190302e-02
     computeQuantile (B). Computed X = 28, expected = 28
-row = 12/37, x = 152, n = 1000, pr = 0.71, P(X = x) = 1.3502335695551398e-295, CDF = 1.4566914903506442e-295, Compl. CDF = 1.0
+row = 12/35, x = 152, n = 1000, pr = 0.71, P(X = x) = 1.3502335695551398e-295, CDF = 1.4566914903506442e-295, Compl. CDF = 1.0
     computePDF. Computed = 1.35023356956e-295, expected = 1.35023356956e-295
     computeCDF. Computed = 1.45669149035e-295, expected = 1.45669149035e-295
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 152, F(X - 1) = 1.0645792e-296, F(X) = 1.4566915e-295
-row = 13/37, x = 3, n = 1080, pr = 0.001, P(X = x) = 0.07127603460581645, CDF = 0.9757780300552841, Compl. CDF = 0.024221969944715913
+row = 13/35, x = 3, n = 1080, pr = 0.001, P(X = x) = 0.07127603460581645, CDF = 0.9757780300552841, Compl. CDF = 0.024221969944715913
     computePDF. Computed = 7.12760346058e-02, expected = 7.12760346058e-02
     computeCDF. Computed = 9.75778030055e-01, expected = 9.75778030055e-01
     computeComplementaryCDF. Computed = 2.42219699447e-02, expected = 2.42219699447e-02
     computeSurvivalFunction. Computed = 2.42219699447e-02, expected = 2.42219699447e-02
     computeQuantile (B). Computed X = 3, expected = 3
-row = 14/37, x = 0, n = 1030, pr = 0.5, P(X = x) = 8.691694759794e-311, CDF = 8.691694759794e-311, Compl. CDF = 1.0
-    computePDF. Computed = 8.69169475979e-311, expected = 8.69169475979e-311
-    computeCDF. Computed = 8.69169475979e-311, expected = 8.69169475979e-311
-    computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
-    computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
-    computeQuantile (A). Computed X = 0, F(X - 1) = 0.0000000e+00, F(X) = 8.6916948e-311
-row = 15/37, x = 1030, n = 1030, pr = 0.5, P(X = x) = 8.691694759794e-311, CDF = 1.0, Compl. CDF = 0.0
-    computePDF. Computed = 8.69169475979e-311, expected = 8.69169475979e-311
-    computeCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
-    computeComplementaryCDF. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
-    computeSurvivalFunction. Computed = 0.00000000000e+00, expected = 0.00000000000e+00
-    computeQuantile (B). Computed X = 1030, expected = 1030
-row = 16/37, x = 187, n = 1030, pr = 0.5, P(X = x) = 2.305222442510606e-100, CDF = 2.9597951362079584e-100, Compl. CDF = 1.0
+row = 14/35, x = 187, n = 1030, pr = 0.5, P(X = x) = 2.305222442510606e-100, CDF = 2.9597951362079584e-100, Compl. CDF = 1.0
     computePDF. Computed = 2.30522244251e-100, expected = 2.30522244251e-100
     computeCDF. Computed = 2.95979513621e-100, expected = 2.95979513621e-100
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 187, F(X - 1) = 6.5457269e-101, F(X) = 2.9597951e-100
-row = 17/37, x = 4, n = 1030, pr = 0.5, P(X = x) = 4.052372710930284e-300, CDF = 4.0682022015213084e-300, Compl. CDF = 1.0
+row = 15/35, x = 4, n = 1030, pr = 0.5, P(X = x) = 4.052372710930284e-300, CDF = 4.0682022015213084e-300, Compl. CDF = 1.0
     computePDF. Computed = 4.05237271093e-300, expected = 4.05237271093e-300
     computeCDF. Computed = 4.06820220152e-300, expected = 4.06820220152e-300
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 4, F(X - 1) = 1.5829491e-302, F(X) = 4.0682022e-300
-row = 18/37, x = 71, n = 1030, pr = 0.5, P(X = x) = 7.052396863408603e-200, CDF = 7.614904751686653e-200, Compl. CDF = 1.0
+row = 16/35, x = 71, n = 1030, pr = 0.5, P(X = x) = 7.052396863408603e-200, CDF = 7.614904751686653e-200, Compl. CDF = 1.0
     computePDF. Computed = 7.05239686341e-200, expected = 7.05239686341e-200
     computeCDF. Computed = 7.61490475169e-200, expected = 7.61490475169e-200
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 71, F(X - 1) = 5.6250789e-201, F(X) = 7.6149048e-200
-row = 19/37, x = 280, n = 1030, pr = 0.5, P(X = x) = 1.280342764528666e-50, CDF = 2.037991584857348e-50, Compl. CDF = 1.0
+row = 17/35, x = 280, n = 1030, pr = 0.5, P(X = x) = 1.280342764528666e-50, CDF = 2.037991584857348e-50, Compl. CDF = 1.0
     computePDF. Computed = 1.28034276453e-50, expected = 1.28034276453e-50
     computeCDF. Computed = 2.03799158486e-50, expected = 2.03799158486e-50
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 280, F(X - 1) = 7.5764882e-51, F(X) = 2.0379916e-50
-row = 20/37, x = 367, n = 1030, pr = 0.5, P(X = x) = 4.78246519228016e-21, CDF = 1.0625330196420556e-20, Compl. CDF = 1.0
+row = 18/35, x = 367, n = 1030, pr = 0.5, P(X = x) = 4.78246519228016e-21, CDF = 1.0625330196420556e-20, Compl. CDF = 1.0
     computePDF. Computed = 4.78246519228e-21, expected = 4.78246519228e-21
     computeCDF. Computed = 1.06253301964e-20, expected = 1.06253301964e-20
     computeComplementaryCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeSurvivalFunction. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeQuantile (A). Computed X = 367, F(X - 1) = 5.8428650e-21, F(X) = 1.0625330e-20
-row = 21/37, x = 413, n = 1030, pr = 0.5, P(X = x) = 3.7344641140712264e-11, CDF = 1.1085627607135255e-10, Compl. CDF = 0.9999999998891437
+row = 19/35, x = 413, n = 1030, pr = 0.5, P(X = x) = 3.7344641140712264e-11, CDF = 1.1085627607135255e-10, Compl. CDF = 0.9999999998891437
     computePDF. Computed = 3.73446411407e-11, expected = 3.73446411407e-11
     computeCDF. Computed = 1.10856276071e-10, expected = 1.10856276071e-10
     computeComplementaryCDF. Computed = 9.99999999889e-01, expected = 9.99999999889e-01
     computeSurvivalFunction. Computed = 9.99999999889e-01, expected = 9.99999999889e-01
     computeQuantile (A). Computed X = 413, F(X - 1) = 7.3511635e-11, F(X) = 1.1085628e-10
-row = 22/37, x = 447, n = 1030, pr = 0.5, P(X = x) = 3.079274333642467e-06, CDF = 1.2646931839564025e-05, Compl. CDF = 0.9999873530681604
+row = 20/35, x = 447, n = 1030, pr = 0.5, P(X = x) = 3.079274333642467e-06, CDF = 1.2646931839564025e-05, Compl. CDF = 0.9999873530681604
     computePDF. Computed = 3.07927433364e-06, expected = 3.07927433364e-06
     computeCDF. Computed = 1.26469318396e-05, expected = 1.26469318396e-05
     computeComplementaryCDF. Computed = 9.99987353068e-01, expected = 9.99987353068e-01
     computeSurvivalFunction. Computed = 9.99987353068e-01, expected = 9.99987353068e-01
     computeQuantile (A). Computed X = 447, F(X - 1) = 9.5676575e-06, F(X) = 1.2646932e-05
-row = 23/37, x = 478, n = 1030, pr = 0.5, P(X = x) = 0.0017421256529667251, CDF = 0.011442014956264542, Compl. CDF = 0.9885579850437355
+row = 21/35, x = 478, n = 1030, pr = 0.5, P(X = x) = 0.0017421256529667251, CDF = 0.011442014956264542, Compl. CDF = 0.9885579850437355
     computePDF. Computed = 1.74212565297e-03, expected = 1.74212565297e-03
     computeCDF. Computed = 1.14420149563e-02, expected = 1.14420149563e-02
     computeComplementaryCDF. Computed = 9.88557985044e-01, expected = 9.88557985044e-01
     computeSurvivalFunction. Computed = 9.88557985044e-01, expected = 9.88557985044e-01
     computeQuantile (A). Computed X = 478, F(X - 1) = 9.6998893e-03, F(X) = 1.1442015e-02
-row = 24/37, x = 494, n = 1030, pr = 0.5, P(X = x) = 0.01056289669305525, CDF = 0.10069913185943613, Compl. CDF = 0.8993008681405639
+row = 22/35, x = 494, n = 1030, pr = 0.5, P(X = x) = 0.01056289669305525, CDF = 0.10069913185943613, Compl. CDF = 0.8993008681405639
     computePDF. Computed = 1.05628966931e-02, expected = 1.05628966931e-02
     computeCDF. Computed = 1.00699131859e-01, expected = 1.00699131859e-01
     computeComplementaryCDF. Computed = 8.99300868141e-01, expected = 8.99300868141e-01
     computeSurvivalFunction. Computed = 8.99300868141e-01, expected = 8.99300868141e-01
     computeQuantile (A). Computed X = 494, F(X - 1) = 9.0136235e-02, F(X) = 1.0069913e-01
-row = 25/37, x = 501, n = 1030, pr = 0.5, P(X = x) = 0.016993045111617772, CDF = 0.20009865401157712, Compl. CDF = 0.7999013459884229
+row = 23/35, x = 501, n = 1030, pr = 0.5, P(X = x) = 0.016993045111617772, CDF = 0.20009865401157712, Compl. CDF = 0.7999013459884229
     computePDF. Computed = 1.69930451116e-02, expected = 1.69930451116e-02
     computeCDF. Computed = 2.00098654012e-01, expected = 2.00098654012e-01
     computeComplementaryCDF. Computed = 7.99901345988e-01, expected = 7.99901345988e-01
     computeSurvivalFunction. Computed = 7.99901345988e-01, expected = 7.99901345988e-01
     computeQuantile (A). Computed X = 501, F(X - 1) = 1.8310561e-01, F(X) = 2.0009865e-01
-row = 26/37, x = 515, n = 1030, pr = 0.5, P(X = x) = 0.02485512993657447, CDF = 0.5124275649682872, Compl. CDF = 0.48757243503171277
+row = 24/35, x = 515, n = 1030, pr = 0.5, P(X = x) = 0.02485512993657447, CDF = 0.5124275649682872, Compl. CDF = 0.48757243503171277
     computePDF. Computed = 2.48551299366e-02, expected = 2.48551299366e-02
     computeCDF. Computed = 5.12427564968e-01, expected = 5.12427564968e-01
     computeComplementaryCDF. Computed = 4.87572435032e-01, expected = 4.87572435032e-01
     computeSurvivalFunction. Computed = 4.87572435032e-01, expected = 4.87572435032e-01
     computeQuantile (B). Computed X = 515, expected = 515
-row = 27/37, x = 519, n = 1030, pr = 0.5, P(X = x) = 0.024095522581366862, CDF = 0.6104180157142418, Compl. CDF = 0.38958198428575824
+row = 25/35, x = 519, n = 1030, pr = 0.5, P(X = x) = 0.024095522581366862, CDF = 0.6104180157142418, Compl. CDF = 0.38958198428575824
     computePDF. Computed = 2.40955225814e-02, expected = 2.40955225814e-02
     computeCDF. Computed = 6.10418015714e-01, expected = 6.10418015714e-01
     computeComplementaryCDF. Computed = 3.89581984286e-01, expected = 3.89581984286e-01
     computeSurvivalFunction. Computed = 3.89581984286e-01, expected = 3.89581984286e-01
     computeQuantile (B). Computed X = 519, expected = 519
-row = 28/37, x = 529, n = 1030, pr = 0.5, P(X = x) = 0.016993045111617772, CDF = 0.8168943911000407, Compl. CDF = 0.1831056088999593
+row = 26/35, x = 529, n = 1030, pr = 0.5, P(X = x) = 0.016993045111617772, CDF = 0.8168943911000407, Compl. CDF = 0.1831056088999593
     computePDF. Computed = 1.69930451116e-02, expected = 1.69930451116e-02
     computeCDF. Computed = 8.16894391100e-01, expected = 8.16894391100e-01
     computeComplementaryCDF. Computed = 1.83105608900e-01, expected = 1.83105608900e-01
     computeSurvivalFunction. Computed = 1.83105608900e-01, expected = 1.83105608900e-01
     computeQuantile (B). Computed X = 529, expected = 529
-row = 29/37, x = 536, n = 1030, pr = 0.5, P(X = x) = 0.01056289669305525, CDF = 0.9098637648336196, Compl. CDF = 0.09013623516638039
+row = 27/35, x = 536, n = 1030, pr = 0.5, P(X = x) = 0.01056289669305525, CDF = 0.9098637648336196, Compl. CDF = 0.09013623516638039
     computePDF. Computed = 1.05628966931e-02, expected = 1.05628966931e-02
     computeCDF. Computed = 9.09863764834e-01, expected = 9.09863764834e-01
     computeComplementaryCDF. Computed = 9.01362351664e-02, expected = 9.01362351664e-02
     computeSurvivalFunction. Computed = 9.01362351664e-02, expected = 9.01362351664e-02
     computeQuantile (B). Computed X = 536, expected = 536
-row = 30/37, x = 552, n = 1030, pr = 0.5, P(X = x) = 0.0017421256529667269, CDF = 0.9903001106967022, Compl. CDF = 0.009699889303297828
+row = 28/35, x = 552, n = 1030, pr = 0.5, P(X = x) = 0.0017421256529667269, CDF = 0.9903001106967022, Compl. CDF = 0.009699889303297828
     computePDF. Computed = 1.74212565297e-03, expected = 1.74212565297e-03
     computeCDF. Computed = 9.90300110697e-01, expected = 9.90300110697e-01
     computeComplementaryCDF. Computed = 9.69988930330e-03, expected = 9.69988930330e-03
     computeSurvivalFunction. Computed = 9.69988930330e-03, expected = 9.69988930330e-03
     computeQuantile (B). Computed X = 552, expected = 552
-row = 31/37, x = 565, n = 1030, pr = 0.5, P(X = x) = 0.00019316170481490288, CDF = 0.9991817412924979, Compl. CDF = 0.0008182587075020682
+row = 29/35, x = 565, n = 1030, pr = 0.5, P(X = x) = 0.00019316170481490288, CDF = 0.9991817412924979, Compl. CDF = 0.0008182587075020682
     computePDF. Computed = 1.93161704815e-04, expected = 1.93161704815e-04
     computeCDF. Computed = 9.99181741292e-01, expected = 9.99181741292e-01
     computeComplementaryCDF. Computed = 8.18258707502e-04, expected = 8.18258707502e-04
     computeSurvivalFunction. Computed = 8.18258707502e-04, expected = 8.18258707502e-04
     computeQuantile (B). Computed X = 565, expected = 565
-row = 32/37, x = 575, n = 1030, pr = 0.5, P(X = x) = 2.2679394170815888e-05, CDF = 0.99991976208378, Compl. CDF = 8.02379162200689e-05
+row = 30/35, x = 575, n = 1030, pr = 0.5, P(X = x) = 2.2679394170815888e-05, CDF = 0.99991976208378, Compl. CDF = 8.02379162200689e-05
     computePDF. Computed = 2.26793941708e-05, expected = 2.26793941708e-05
     computeCDF. Computed = 9.99919762084e-01, expected = 9.99919762084e-01
     computeComplementaryCDF. Computed = 8.02379162201e-05, expected = 8.02379162201e-05
     computeSurvivalFunction. Computed = 8.02379162201e-05, expected = 8.02379162201e-05
     computeQuantile (B). Computed X = 575, expected = 575
-row = 33/37, x = 583, n = 1030, pr = 0.5, P(X = x) = 3.079274333642467e-06, CDF = 0.9999904323424941, Compl. CDF = 9.567657505921526e-06
+row = 31/35, x = 583, n = 1030, pr = 0.5, P(X = x) = 3.079274333642467e-06, CDF = 0.9999904323424941, Compl. CDF = 9.567657505921526e-06
     computePDF. Computed = 3.07927433364e-06, expected = 3.07927433364e-06
     computeCDF. Computed = 9.99990432342e-01, expected = 9.99990432342e-01
     computeComplementaryCDF. Computed = 9.56765750592e-06, expected = 9.56765750592e-06
     computeSurvivalFunction. Computed = 9.56765750592e-06, expected = 9.56765750592e-06
     computeQuantile (B). Computed X = 583, expected = 583
-row = 34/37, x = 598, n = 1030, pr = 0.5, P(X = x) = 3.6837174964506594e-08, CDF = 0.9999999078985209, Compl. CDF = 9.210147907487249e-08
+row = 32/35, x = 598, n = 1030, pr = 0.5, P(X = x) = 3.6837174964506594e-08, CDF = 0.9999999078985209, Compl. CDF = 9.210147907487249e-08
     computePDF. Computed = 3.68371749645e-08, expected = 3.68371749645e-08
     computeCDF. Computed = 9.99999907899e-01, expected = 9.99999907899e-01
     computeComplementaryCDF. Computed = 9.21014790749e-08, expected = 9.21014790749e-08
     computeSurvivalFunction. Computed = 9.21014790749e-08, expected = 9.21014790749e-08
     computeQuantile (B). Computed X = 598, expected = 598
-row = 35/37, x = 617, n = 1030, pr = 0.5, P(X = x) = 3.7344641140712264e-11, CDF = 0.9999999999264884, Compl. CDF = 7.351163493063993e-11
+row = 33/35, x = 617, n = 1030, pr = 0.5, P(X = x) = 3.7344641140712264e-11, CDF = 0.9999999999264884, Compl. CDF = 7.351163493063993e-11
     computePDF. Computed = 3.73446411407e-11, expected = 3.73446411407e-11
     computeCDF. Computed = 9.99999999926e-01, expected = 9.99999999926e-01
     computeComplementaryCDF. Computed = 7.35116349306e-11, expected = 7.35116349306e-11
     computeSurvivalFunction. Computed = 7.35116349306e-11, expected = 7.35116349306e-11
     computeQuantile (B). Computed X = 617, expected = 617
-row = 36/37, x = 635, n = 1030, pr = 0.5, P(X = x) = 1.4184282330185442e-14, CDF = 0.9999999999999771, Compl. CDF = 2.2855665875415883e-14
+row = 34/35, x = 635, n = 1030, pr = 0.5, P(X = x) = 1.4184282330185442e-14, CDF = 0.9999999999999771, Compl. CDF = 2.2855665875415883e-14
     computePDF. Computed = 1.41842823302e-14, expected = 1.41842823302e-14
     computeCDF. Computed = 1.00000000000e+00, expected = 1.00000000000e+00
     computeComplementaryCDF. Computed = 2.28556658754e-14, expected = 2.28556658754e-14

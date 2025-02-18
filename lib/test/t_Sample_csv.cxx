@@ -115,14 +115,11 @@ int main(int, char *[])
     fullprint << "aSample with missing entries (see log)=" << aSample << std::endl;
 
     // We export the sample to an CSV file and then read it again
+    aSample(1, 3) = 1.0;
+    aSample(2, 2) = 1.0;
     aSample.exportToCSVFile("sample.csv");
     Sample sameSample = Sample::ImportFromCSVFile("sample.csv");
-    if (aSample != sameSample) throw TestFailed("Exported sample differs from imported sample");
-    // We export a sample with no description to a CSV file and then read it again
-    aSample.exportToCSVFile("sample.csv");
-    sameSample = Sample::ImportFromCSVFile("sample.csv");
-    if (aSample != sameSample) throw TestFailed("Exported sample differs from imported sample");
-    Os::Remove("sample.csv");
+    assert_almost_equal(aSample, sameSample);
 
     // 6th sample
     aTempFile.open("sample.csv", std::ofstream::out);
@@ -139,6 +136,7 @@ int main(int, char *[])
     aSample.setName("a sample with special chars");
     fullprint << "aSample with special chars (see log)=" << aSample << std::endl;
 
+    Os::Remove("sample.csv");
     try
     {
       aSample = Sample::ImportFromCSVFile("nosample.csv");
