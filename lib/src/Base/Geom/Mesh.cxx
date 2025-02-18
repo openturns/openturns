@@ -99,6 +99,19 @@ UnsignedInteger Mesh::getDimension() const
   return dimension_;
 }
 
+/* Intrinsic dimension accessor */
+UnsignedInteger Mesh::getIntrinsicDimension() const
+{
+  UnsignedInteger verticesPerSimplex = 1;
+  UnsignedInteger lastIndex = simplices_(0, 0);
+  while ((verticesPerSimplex <= dimension_) && (simplices_(0, verticesPerSimplex) != lastIndex))
+  {
+    lastIndex = simplices_(0, verticesPerSimplex);
+    ++verticesPerSimplex;
+  }
+  return verticesPerSimplex - 1;
+}
+
 /* Description of the vertices accessor */
 void Mesh::setDescription(const Description & description)
 {
@@ -285,60 +298,138 @@ Point Mesh::computeSimplicesVolume() const
 {
   const UnsignedInteger nrSimplices = getSimplicesNumber();
   Point result(nrSimplices);
+  // No simplex
   if (nrSimplices == 0) return result;
-  if (getDimension() == 1)
-  {
-    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+  // The mesh has the same dimension as the ambiant space
+  const UnsignedInteger intrinsicDimension = getIntrinsicDimension();
+  if (dimension_ == intrinsicDimension)
     {
-      const Scalar x0 = vertices_(simplices_(index, 0), 0);
-      const Scalar x1 = vertices_(simplices_(index, 1), 0);
-      result[index] = std::abs(x1 - x0);
-    }
-  }
-  else if (getDimension() == 2)
-  {
-    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      if (dimension_ == 1)
+	{
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    {
+	      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+	      const Scalar x1 = vertices_(simplices_(index, 1), 0);
+	      result[index] = std::abs(x1 - x0);
+	    }
+	} // dimension_ == 1
+      else if (dimension_ == 2)
+	{
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    {
+	      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+	      const Scalar y0 = vertices_(simplices_(index, 0), 1);
+	      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+	      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+	      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+	      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+	      result[index] = 0.5 * std::abs(x02 * y01 - x01 * y02);
+	    }
+	} // dimension_ = 2
+      else if (dimension_ == 3)
+	{
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    {
+	      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+	      const Scalar y0 = vertices_(simplices_(index, 0), 1);
+	      const Scalar z0 = vertices_(simplices_(index, 0), 2);
+	      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+	      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+	      const Scalar z01 = vertices_(simplices_(index, 1), 2) - z0;
+	      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+	      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+	      const Scalar z02 = vertices_(simplices_(index, 2), 2) - z0;
+	      const Scalar x03 = vertices_(simplices_(index, 3), 0) - x0;
+	      const Scalar y03 = vertices_(simplices_(index, 3), 1) - y0;
+	      const Scalar z03 = vertices_(simplices_(index, 3), 2) - z0;
+	      result[index] = std::abs(x01 * (y02 * z03 - z02 * y03) + y01 * (z02 * x03 - x02 * z03) + z01 * (x02 * y03 - y02 * x03)) / 6.0;
+	    }
+	} // dimension_ == 3
+      else
+	{
+	  // General case
+	  SquareMatrix matrix(dimension_ + 1);
+	  Scalar sign = 0.0;
+	  const Scalar logGamma = SpecFunc::LogGamma(dimension_ + 1);
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    {
+	      buildSimplexMatrix(index, matrix);
+	      result[index] = exp(matrix.computeLogAbsoluteDeterminantInPlace(sign) - logGamma);
+	    }
+	} // dimension_ > 3
+    } // dimension_ == getIntrinsicDimension()
+  // The mesh is of codimension 1
+  else if (dimension_ == intrinsicDimension + 1)
     {
-      const Scalar x0 = vertices_(simplices_(index, 0), 0);
-      const Scalar y0 = vertices_(simplices_(index, 0), 1);
-      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
-      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
-      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
-      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
-      result[index] = 0.5 * std::abs(x02 * y01 - x01 * y02);
-    }
-  }
-  else if (getDimension() == 3)
-  {
-    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-    {
-      const Scalar x0 = vertices_(simplices_(index, 0), 0);
-      const Scalar y0 = vertices_(simplices_(index, 0), 1);
-      const Scalar z0 = vertices_(simplices_(index, 0), 2);
-      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
-      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
-      const Scalar z01 = vertices_(simplices_(index, 1), 2) - z0;
-      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
-      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
-      const Scalar z02 = vertices_(simplices_(index, 2), 2) - z0;
-      const Scalar x03 = vertices_(simplices_(index, 3), 0) - x0;
-      const Scalar y03 = vertices_(simplices_(index, 3), 1) - y0;
-      const Scalar z03 = vertices_(simplices_(index, 3), 2) - z0;
-      result[index] = std::abs(x01 * (y02 * z03 - z02 * y03) + y01 * (z02 * x03 - x02 * z03) + z01 * (x02 * y03 - y02 * x03)) / 6.0;
-    }
-  }
-  else
-  {
-    // General case
-    SquareMatrix matrix(getDimension() + 1);
-    Scalar sign = 0.0;
-    const Scalar logGamma = SpecFunc::LogGamma(getDimension() + 1);
-    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-    {
-      buildSimplexMatrix(index, matrix);
-      result[index] = exp(matrix.computeLogAbsoluteDeterminantInPlace(sign) - logGamma);
-    }
-  }
+      if (intrinsicDimension == 1)
+	{
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    result[index] = (vertices_[simplices_(index, 0)] - vertices_[simplices_(index, 1)]).norm();
+	} // intrinsicDimension == 1
+      else if (intrinsicDimension == 2)
+	{
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    {
+	      Scalar a = (vertices_[simplices_(index, 0)] - vertices_[simplices_(index, 1)]).norm();
+	      Scalar b = (vertices_[simplices_(index, 1)] - vertices_[simplices_(index, 2)]).norm();
+	      Scalar c = (vertices_[simplices_(index, 2)] - vertices_[simplices_(index, 0)]).norm();
+	      // Sort a, b, c in decreasing order
+	      if (a < b)
+		std::swap(a, b);
+	      if (a < c)
+		std::swap(a, c);
+	      if (b < c)
+		std::swap(b, c);
+	      // Here we use a stable formula
+	      result[index] = 0.25 * std::sqrt((a + (b + c)) * (c - (a - b)) * (c + (a - b)) * (a + (b - c)));
+	    } // index
+	} // intrinsicDimension == 2
+      else
+	{
+	  Sample workingVertices(dimension_ + 1, dimension_);
+	  IndicesCollection simplex(1, dimension_ + 1);
+	  SquareMatrix M(dimension_);
+	  SquareMatrix eigenVectors;
+	  // For each simplex in the mesh
+	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+	    {
+	      // We know (https://urresearch.rochester.edu/fileDownloadForInstitutionalItem.action?itemId=13451&itemFileId=31154)
+	      // that the hyperplane goes through the center of the vertices
+	      // (ie the mean) and has the eigenvector associated with the
+	      // smallest eigenvalue of M'M (a semi-definite symmetric real
+	      // matrix, so its eigenvalues are all nonnegative)
+	      Point sum(dimension_, 0.0);
+	      for (UnsignedInteger i = 0; i < dimension_; ++i)
+		{
+		  sum += vertices_[simplices_(index, i)];
+		  workingVertices[i] = vertices_[simplices_(index, i)];
+		}
+	      // Here we cannot use computeMean as the last vertex has to
+	      // be dropped from the computation
+	      workingVertices -= sum / dimension_;
+	      // Compute a vector normal to the hyperplane containing
+	      // the current degenerated simplex
+	      for (UnsignedInteger i = 0; i < dimension_; ++i)
+		for (UnsignedInteger j = 0; j < dimension_; ++j)
+		  M(j, i) = workingVertices(i, j);
+	      CovarianceMatrix MtM(M.computeGram(false));
+	      // We know that the eigenvalues are sorted into ascending
+	      // order so the eigenvector we are looking for is the first one.
+	      // No need to store the eigenvalues.
+	      (void) MtM.computeEVInPlace(eigenVectors);
+	      const Point normal(eigenVectors.getImplementation()->begin(), eigenVectors.getImplementation()->begin() + dimension_);
+	      // Add the new point defining a full dimension simplex which
+	      // volume is the surface of the lower dimensional simplex
+	      for (UnsignedInteger i = 0; i < dimension_; ++i)
+		{
+		  workingVertices(dimension_, i) = workingVertices(dimension_ - 1, i) + normal[i];
+		  simplex(0, i) = i;
+		}
+	      simplex(0, dimension_) = dimension_;
+	      result[index] = dimension_ * Mesh(workingVertices, simplex).computeSimplicesVolume()[0];
+	    } // index
+	} // intrinsicDimension > 3
+    } // dimension_ == intrinsicDimension + 1
   return result;
 }
 
