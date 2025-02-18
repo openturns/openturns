@@ -1,0 +1,430 @@
+%feature("docstring") OT::QuantileConfidence
+"Estimate confidence intervals of a quantile.
+
+Refer to :ref:`quantile_estimation_wilks`.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Parameters
+----------
+alpha : float
+    Quantile level
+beta : float, optional
+    Confidence level. Default value is 0.95
+
+Notes
+-----
+This class estimates bounds of the quantile of level :math:`\alpha \in [0,1]` of the random variable :math:`X`
+with a confidence greater than :math:`\beta`, using a given order statistics.
+
+Let :math:`x_{\alpha}` be the unknown quantile of level :math:`\alpha` of the random variable :math:`X` of dimension 1.
+Let :math:`(X_1, \dots, X_\sampleSize)` be a sample of independent and identically distributed variables according to :math:`X`.
+Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
+:math:`X_{(k)}` is the :math:`k` -th maximum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`.
+For example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
+and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum. We have:
+
+.. math::
+
+    X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}
+
+Given :math:`\alpha`, :math:`\beta` and order :math:`k`, the class estimates the minimal size :math:`\sampleSize` such that:
+
+.. math::
+
+    \Prob{x_{\alpha} \leq X_{(\sampleSize-k)}} \geq \beta
+
+Once the minimal size :math:`\sampleSize` has been estimated, a sample of size :math:`\sampleSize` can be generated from
+:math:`X` and an upper bound of :math:`x_{\alpha}` is estimated by the value of the :math:`X_{(\sampleSize-k)}` on the sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> sample = ot.Gumbel().getSample(100)
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> ci = algo.computeUnilateralConfidenceInterval(sample)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeUnilateralRank
+"Evaluate an unilateral rank of a quantile.
+
+The lower tail rank is the largest integer :math:`k_{low}` such as
+
+.. math::
+
+    \Pset(X_{(k)} \leq x_{\alpha}) \geq \beta
+
+and is given by:
+
+.. math::
+
+    k_{low} = \overline{F}^{-1}_{n, \alpha}(\beta)
+
+which exists only if
+
+.. math::
+
+    1-(1-\alpha)^n \ge \beta
+
+The upper tail rank is the smallest integer :math:`k_{up}` such as
+
+.. math::
+
+    \Pset(x_{\alpha} \leq X_{(k)}) \geq \beta
+
+and is given by:
+
+.. math::
+
+    k_{up} = F^{-1}_{n, \alpha}(\beta)
+
+which exists only if
+
+.. math::
+
+    1-\alpha^n \geq \beta, \beta > 0
+
+Parameters
+----------
+size : int
+    Sample size
+tail : bool, optional
+    Whether to return the lower or upper tail rank
+
+Returns
+-------
+rank : int
+    Rank :math:`k \in \{0, \hdots, n-1\}`
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> rank = algo.computeUnilateralRank(100)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeBilateralRank
+"Evaluate the bilateral rank of a quantile.
+
+The bilateral ranks :math:`k1, k2` are the integers minimizing the probability
+
+.. math::
+
+    \argmin_{k1, k2 \in \{0, \hdots, n-1\}^2\, | \, \Pset(k_1 < X \leq k_2) \geq \beta} \Pset(k_1 < X \leq k_2) | X \sim \cB(n, \alpha)
+
+which exists only if
+
+.. math::
+
+    1 - \alpha^n - (1-\alpha)^n \ge \beta
+
+Parameters
+----------
+size : int
+    Sample size :math:`n`
+
+Returns
+-------
+ranks : :class:`~openturns.Indices` of size 2
+    Pair of lower and upper ranks :math:`k1, k2 \in \{0, \hdots, n-1\}^2`
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> k1, k2 = algo.computeBilateralRank(100)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeUnilateralConfidenceInterval
+"Evaluate an unilateral confidence interval of a quantile.
+
+The lower tail confidence interval is given by the order statistics:
+
+.. math::
+
+    [X_{(k_{low})}, +\infty]
+
+and the upper tail confidence interval is given by the order statistics:
+
+.. math::
+
+    [-\infty, X_{(k_{up})}]
+
+where the lower or upper ranks :math:`k_{low}, k_{up}` are given by :meth:`computeUnilateralRank`
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Quantile level
+tail : bool, optional
+    Whether to return the lower or upper tail confidence interval. Default is False.
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Quantile confidence interval
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> sample = ot.Gumbel().getSample(100)
+>>> ci = algo.computeUnilateralConfidenceInterval(sample)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeBilateralConfidenceInterval
+"Evaluate a bilateral confidence interval of a quantile.
+
+The confidence interval is given by the order statistics:
+
+.. math::
+
+    [X_{(k_1)}, X_{(k_2)}]
+
+where the ranks :math:`k_1, k_2` are given by :meth:`computeBilateralRank`
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample of the variable :math:`X`
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Quantile confidence interval
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> sample = ot.Gumbel().getSample(60)
+>>> ci = algo.computeBilateralConfidenceInterval(sample)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeUnilateralMinimumSampleSize
+"Evaluate the minimum size of the sample for the unilateral case.
+
+When the rank :math:`r` is zero the minimum sample size is immediate for the lower bound:
+
+.. math::
+
+    n_{low} = \frac{\log(1-\beta)}{\log(1-\alpha)}
+
+and for the upper bound:
+
+.. math::
+
+    n_{up} = \frac{\log(1-\beta)}{\log(\alpha)}
+
+Else in the general case we search for the smallest :math:`n` which verifies:
+
+.. math::
+
+    F_{n,\alpha}(n-r-1) \geq \beta
+
+with :math:`F_{n,\alpha}` the cumulative distribution function of the Binomial distribution.
+
+Parameters
+----------
+rank : int, optional
+    Rank of the quantile. Default value is 0.
+tail : bool, optional
+    Whether to return the lower or upper tail minimum size. Default is False.
+
+Returns
+-------
+size : int
+    Minimum sample size
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> size = algo.computeUnilateralMinimumSampleSize(0)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeBilateralMinimumSampleSize
+"Evaluate the minimum size of the sample for the bilateral case.
+
+The minimal bilateral sample size is the smallest integer :math:`n` such that:
+
+.. math::
+
+    1-\alpha^n-(1-\alpha)^n \geq \beta
+
+if and only if
+
+.. math::
+
+    \Pset(X_(1) \leq x_{\alpha} \leq X_({n})) \geq \beta
+
+the size :math:`n` is searched inside the bounds given by the relationship:
+
+.. math::
+
+    \left\lfloor \frac{\log(1 - \beta)}{\log(\gamma)} \right\rfloor \leq n \leq \left\lceil \frac{\log(\frac{1-\beta}{2})}{\log(\gamma)} \right\rceil
+
+where
+
+.. math::
+
+    \gamma = max(\alpha, 1- \alpha)
+
+Returns
+-------
+size : int
+    Minimum sample size :math:`n`
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> size = algo.computeBilateralMinimumSampleSize()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeAsymptoticBilateralRank
+"Evaluate the asymptotic bilateral rank of a quantile.
+
+The aymptotic bilateral ranks :math:`k1, k2` are given by:
+
+.. math::
+
+    k_1 & = \left\lfloor n \alpha - \sqrt{n} z_{1-\beta/2} \sqrt{\alpha (1 - \alpha)} \right\rfloor - 1 \\
+    k_2 & = \left\lfloor n \alpha + \sqrt{n} z_{1-\beta/2} \sqrt{\alpha (1 - \alpha)} \right\rfloor - 1
+
+with :math:`z_{1-\beta/2}` the Gaussian quantile of order :math:`1-\beta/2`, see [delmas2006]_ proposition 11.1.13.
+
+Parameters
+----------
+size : int
+    Sample size
+
+Returns
+-------
+ranks : :class:`~openturns.Indices` of size 2
+    Pair of lower and upper ranks :math:`k1, k2 \in \{0, \hdots, n-1\}^2`
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> k1, k2 = algo.computeAsymptoticBilateralRank(100)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeAsymptoticBilateralConfidenceInterval
+"Evaluate asymptotic bilateral bounds of a quantile.
+
+The asymptotic bounds are given by the order statistics:
+
+.. math::
+
+    [X_{(k_1)}, X_{(k_2)}]
+
+where the ranks :math:`k_1, k_2` are given by :meth:`computeAsymptoticBilateralRank`
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample of the variable :math:`X`
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Quantile confidence interval
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> sample = ot.Gumbel().getSample(60)
+>>> ci = algo.computeAsymptoticBilateralConfidenceInterval(sample)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::setAlpha
+"Quantile level accessor.
+
+Parameters
+----------
+alpha : float
+    Quantile level
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::getAlpha
+"Quantile level accessor.
+
+Returns
+-------
+alpha : float
+    Quantile level
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::setBeta
+"Confidence level accessor.
+
+Parameters
+----------
+beta : float
+    Confidence level
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::getBeta
+"Confidence level accessor.
+
+Returns
+-------
+beta : float
+    Confidence level
+"
