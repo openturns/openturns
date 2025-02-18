@@ -157,7 +157,9 @@ def computeCrossingProbability_QMC(
 # %%
 def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
     X, event = getXEvent(b, t, mu_S, covariance, R, delta_t)
-    algo = ot.SystemFORM(ot.SQP(), event, X.getMean())
+    solver = ot.SQP()
+    solver.setStartingPoint(X.getMean())
+    algo = ot.SystemFORM(solver, event)
     algo.run()
     return algo.getResult().getEventProbability() / delta_t
 

@@ -51,7 +51,8 @@ myCobyla.setStopCallback(stop)
 
 # %%
 # Run FORM
-myAlgo = ot.FORM(myCobyla, myEvent, mean)
+myCobyla.setStartingPoint(mean)
+myAlgo = ot.FORM(myCobyla, myEvent)
 myAlgo.run()
 result = myAlgo.getResult()
 print("event probability:", result.getEventProbability())

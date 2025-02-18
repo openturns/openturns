@@ -13,6 +13,7 @@
  * RatioOfUniforms random vector (openturns.experimental)
 
 ==== API changes ====
+ * Deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors (set it from solver)
 
 === Documentation ===
 

@@ -39,7 +39,6 @@ sigma = ot.Point(dim, 1.0)
 R = ot.CorrelationMatrix(dim)
 myDistribution = ot.Normal(mean, sigma, R)
 
-start = myDistribution.getSigma()
 Covariance = myDistribution.getCovariance()
 
 #
@@ -63,9 +62,10 @@ myCobyla.setMaximumAbsoluteError(1.0e-4)
 myCobyla.setMaximumRelativeError(1.0e-4)
 myCobyla.setMaximumResidualError(1.0e-4)
 myCobyla.setMaximumConstraintError(1.0e-4)
+myCobyla.setStartingPoint(myDistribution.getSigma())
 
-myAlgoC = ot.FORM(myCobyla, myEvent, start)
-myAlgoC2 = ot.SORM(myCobyla, myEvent, start)
+myAlgoC = ot.FORM(myCobyla, myEvent)
+myAlgoC2 = ot.SORM(myCobyla, myEvent)
 
 myAlgoC.run()
 # myAlgoC2.run()
@@ -81,9 +81,10 @@ myAbdoRackwitz.setMaximumAbsoluteError(1.0e-4)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-4)
 myAbdoRackwitz.setMaximumResidualError(1.0e-4)
 myAbdoRackwitz.setMaximumConstraintError(1.0e-4)
+myAbdoRackwitz.setStartingPoint(myDistribution.getSigma())
 
-myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent, start)
-myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent, start)
+myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent)
+myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent)
 
 myAlgoAR.run()
 myAlgoAR2.run()

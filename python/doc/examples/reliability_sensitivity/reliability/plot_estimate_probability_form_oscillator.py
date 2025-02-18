@@ -130,6 +130,7 @@ print("Failure probability = ", probability)
 # %%
 # Define a solver:
 optimAlgo = ot.Cobyla()
+optimAlgo.setStartingPoint(distribution.getMean())
 optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-3)
 optimAlgo.setMaximumRelativeError(1.0e-3)
@@ -138,7 +139,7 @@ optimAlgo.setMaximumConstraintError(1.0e-3)
 
 # %%
 # Run FORM initialized at the mean of the distribution:
-algo = ot.FORM(optimAlgo, event, distribution.getMean())
+algo = ot.FORM(optimAlgo, event)
 algo.run()
 result = algo.getResult()
 
@@ -285,7 +286,9 @@ for i in range(distribution.getDimension()):
 
 
 # %%
-algoSORM = ot.SORM(ot.Cobyla(), event, distribution.getMean())
+solver = ot.Cobyla()
+solver.setStartingPoint(distribution.getMean())
+algoSORM = ot.SORM(solver, event)
 algoSORM.run()
 
 # %%
