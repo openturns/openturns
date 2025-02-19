@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 f = ot.SymbolicFunction(
     ot.Description.BuildDefault(5, "x"),
@@ -116,3 +117,10 @@ assert n_calls == 2, "Expected n_calls == 2, here n_calls == " + str(n_calls)
 # check parameters name are shown
 html_str = g2._repr_html_()
 assert "[x3 : 0.85, x1 : 0.85]" in html_str, "no params"
+
+# check parameters order
+f1 = ot.SymbolicFunction(["x1", "x2", "x3"], ["2*x1+3*x2+5*x3"])
+f1.setGradient(ot.NonCenteredFiniteDifferenceGradient([1e-5] * 3, f1.getEvaluation()))
+f2 = ot.ParametricFunction(f1, [1, 0], [4.0, 5.0])
+pgrad = f2.parameterGradient([7.0])
+ott.assert_almost_equal(pgrad[0, 0], 3.0)

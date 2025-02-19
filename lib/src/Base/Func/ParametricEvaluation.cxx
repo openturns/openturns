@@ -132,7 +132,7 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
   const UnsignedInteger parametersDimension = getParameterDimension();
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger pointDimension = inP.getDimension();
-  if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - inputDimension << ", got dimension=" << pointDimension;
+  if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
   // Special case if the gradient of the underlying function is based on finite differences
   {
     const CenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const CenteredFiniteDifferenceGradient *>(function_.getGradient().getImplementation().get());
@@ -142,13 +142,12 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
       FiniteDifferenceStep step(p_gradient->getFiniteDifferenceStep());
       const Point fullEpsilon(step.getEpsilon());
       // Build the step restricted to the parameter set of the function
-      Point reducedEpsilon(parametersDimension);
-      for (UnsignedInteger i = 0; i < parametersDimension; ++i)
-        reducedEpsilon[i] = fullEpsilon[parametersPositions_[i]];
-      // Update the step
-      step.setEpsilon(reducedEpsilon);
-      const CenteredFiniteDifferenceGradient reducedGradient(step, ParametricEvaluation(function_, inputPositions_, inP));
-      return reducedGradient.gradient(parameter_);
+      step.setEpsilon(fullEpsilon.select(parametersPositions_));
+
+      ParametricEvaluation evaluation(function_, inputPositions_, inP);
+      evaluation.inputPositions_ = parametersPositions_; // keep parameters order
+      const Matrix reducedGradient(CenteredFiniteDifferenceGradient(step, evaluation).gradient(parameter_));
+      return reducedGradient;
     }
   }
   // Second try: NonCenteredFiniteDifferenceGradient
@@ -160,12 +159,11 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
       FiniteDifferenceStep step(p_gradient->getFiniteDifferenceStep());
       const Point fullEpsilon(step.getEpsilon());
       // Build the step restricted to the parameter set of the function
-      Point reducedEpsilon(parametersDimension);
-      for (UnsignedInteger i = 0; i < parametersDimension; ++i)
-        reducedEpsilon[i] = fullEpsilon[parametersPositions_[i]];
-      // Update the step
-      step.setEpsilon(reducedEpsilon);
-      const NonCenteredFiniteDifferenceGradient reducedGradient(step, ParametricEvaluation(function_, inputPositions_, inP));
+      step.setEpsilon(fullEpsilon.select(parametersPositions_));
+
+      ParametricEvaluation evaluation(function_, inputPositions_, inP);
+      evaluation.inputPositions_ = parametersPositions_; // keep parameters order
+      const NonCenteredFiniteDifferenceGradient reducedGradient(step, evaluation);
       return reducedGradient.gradient(parameter_);
     }
   }
