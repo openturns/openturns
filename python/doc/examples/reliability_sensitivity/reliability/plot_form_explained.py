@@ -319,7 +319,8 @@ solver.setMaximumConstraintError(1.0e-3)
 # %%
 # We build the FORM algorithm with its basic constructor. The starting point for the optimization
 # algorithm is the mean of the input distribution.
-algo_FORM = ot.FORM(solver, event, dist_X.getMean())
+solver.setStartingPoint(dist_X.getMean())
+algo_FORM = ot.FORM(solver, event)
 
 # %%
 # We are ready to run the algorithm and store the result.
@@ -525,8 +526,9 @@ print("Curvature (analytic formula) = ", curvature)
 
 
 # %%
-# We build the SORM algorithm and run it :
-algo_SORM = ot.SORM(solver, event, dist_X.getMean())
+# We build the SORM algorithm and run it:
+solver.setStartingPoint(dist_X.getMean())
+algo_SORM = ot.SORM(solver, event)
 algo_SORM.run()
 
 # %%

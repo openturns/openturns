@@ -2,3 +2,4 @@ Remove ComposedDistribution in some future version
 Remove ComposedCopula in some future version
 Remove NegativeBinomial alias in some future version
 Remove NegativeBinomialFactory alias in some future version
+Remove Analytical.set/getPhysicalStartingPoint in some future version
