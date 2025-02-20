@@ -66,6 +66,9 @@ public:
   /** Get the dimension */
   UnsignedInteger getDimension() const;
 
+  /** Get the intrinsic dimension */
+  UnsignedInteger getIntrinsicDimension() const;
+
   /** Description accessor */
   void setDescription(const Description & description);
   Description getDescription() const;
