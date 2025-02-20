@@ -1350,6 +1350,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresDistributionFactory-MaximumRelativeError", 1.0e-10);
   addAsUnsignedInteger("LeastSquaresDistributionFactory-MaximumCallsNumber", 1000);
 
+  // MarginalUniformOrderStatistics parameters //
+  addAsUnsignedInteger("MarginalUniformOrderStatistics-LargeCaseCDF", 1000);
+  addAsUnsignedInteger("MarginalUniformOrderStatistics-MaximumCallsNumber", 1000000);
+
   // MethodOfMomentsFactory parameters //
   addAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10);

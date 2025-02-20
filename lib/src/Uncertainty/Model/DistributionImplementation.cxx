@@ -2967,10 +2967,10 @@ Point DistributionImplementation::getSkewness() const
 {
   if (isCopula())
     return Point(getDimension(), 0.0);
-  const Point variance(getCentralMoment(2));
+  const Point stdev(getStandardDeviation());
   const Point thirdMoment(getCentralMoment(3));
   Point result(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = thirdMoment[i] / std::pow(variance[i], 1.5);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = thirdMoment[i] / std::pow(stdev[i], 3.0);
   return result;
 }
 
@@ -2981,10 +2981,10 @@ Point DistributionImplementation::getKurtosis() const
     // 1.8 = 9/5
     return Point(getDimension(), 1.8);
 
-  const Point variance(getCentralMoment(2));
+  const Point stdev(getStandardDeviation());
   const Point fourthMoment(getCentralMoment(4));
   Point result(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = fourthMoment[i] / std::pow(variance[i], 2.0);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = fourthMoment[i] / std::pow(stdev[i], 4.0);
   return result;
 }
 
