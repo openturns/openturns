@@ -81,6 +81,38 @@ Examples
 "
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::FejerAlgorithm::integrateWithNodes
+"Evaluation of the integral of :math:`f` on an interval with nodes.
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^\inputDim \mapsto \Rset^\outputDim`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^\inputDim`
+    The integration domain.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral.
+nodes : :class:`~openturns.Sample`.
+    The integration nodes.
+
+Notes
+-----
+The nodes are those associated to the function: :math:`(\xi^{N_i}_{n_i})`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'], ['sin(x)'])
+>>> a = -2.5
+>>> b = 4.5
+>>> algo = ot.FejerAlgorithm([10])
+>>> value, nodes = algo.integrateWithNodes(f, ot.Interval(a, b))
+
+// ---------------------------------------------------------------------
 %feature("docstring") OT::FejerAlgorithm::getDiscretization
 "Accessor to the discretization of the tensorized rule.
 
