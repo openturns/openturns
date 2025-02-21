@@ -173,3 +173,13 @@ This sets a new evaluation of interest. Cache and history are cleaned and the
 class will stores new one accounting for the given evaluation 
 and store input and output :class:`~openturns.Sample`.
 It also has a caching behavior, enabled by default."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::MemoizeEvaluation::getEvaluation
+"Accessor to the internal evaluation.
+
+Returns
+-------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The internal evaluation.
+"

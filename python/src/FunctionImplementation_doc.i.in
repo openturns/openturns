@@ -306,7 +306,7 @@ OT_Function_getImplementation_doc
 
 Returns
 -------
-function : :class:`~openturns.EvaluationImplementation`
+evaluation : :class:`~openturns.EvaluationImplementation`
     The evaluation function.
 
 Examples
