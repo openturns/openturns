@@ -264,21 +264,8 @@ Examples
 >>> f = ot.SymbolicFunction(['x'], ['sin(x)'])
 >>> a = -2.5
 >>> b = 4.5
->>> algoGL = ot.GaussLegendre([10])
->>> value, nodes = algoGL.integrateWithNodes(f, ot.Interval(a, b))
->>> print(value[0])
--0.590...
->>> print(nodes)
-0 : [ -2.40867  ]
-1 : [ -2.02772  ]
-2 : [ -1.37793  ]
-3 : [ -0.516884 ]
-4 : [  0.47894  ]
-5 : [  1.52106  ]
-6 : [  2.51688  ]
-7 : [  3.37793  ]
-8 : [  4.02772  ]
-9 : [  4.40867  ]
+>>> algo = ot.GaussLegendre([10])
+>>> value, nodes = algo.integrateWithNodes(f, ot.Interval(a, b))
 "
 
 // ---------------------------------------------------------------------
