@@ -155,20 +155,20 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     try
     {
       outP = algorithm->getProblem().getResidualFunction()(inP);
+
+      // track input/outputs
+      algorithm->evaluationInputHistory_.add(inP);
+      algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
+
+      // update result
+      algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+      algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "CMinpack went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
+      LOGWARN(OSS() << "CMinpack failed to evaluate residual for x=" << inP.__str__() << " msg=" << exc.what());
+      outP = Point(algorithm->getProblem().getResidualFunction().getOutputDimension(), std::sqrt(SpecFunc::MaxScalar));
     }
-
-    // track input/outputs
-    algorithm->evaluationInputHistory_.add(inP);
-    algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
-
-    // update result
-    algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
-    algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
-
     std::copy(outP.begin(), outP.end(), fvec);
   }
   else if (iflag == 2)
@@ -181,7 +181,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "CMinpack went to an abnormal point x=" << inP.__str__() << " jacobian=" << jacobian.__str__() << " msg=" << exc.what());
+      LOGWARN(OSS() << "CMinpack failed to evaluate residual gradient for x=" << inP.__str__() << " msg=" << exc.what());
     }
     if (algorithm->getProblem().hasBounds())
     {
