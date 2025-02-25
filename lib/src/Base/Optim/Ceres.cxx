@@ -132,8 +132,9 @@ public:
       algorithm_.evaluationInputHistory_.add(inP);
       algorithm_.evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
     }
-    catch (Exception &)
+    catch (const Exception & exc)
     {
+      LOGWARN(OSS() << "Ceres failed to evaluate residual for x=" << inP.__str__() << " msg=" << exc.what());
       return false;
     }
 
@@ -145,8 +146,9 @@ public:
         const Matrix gradient(problem.getResidualFunction().gradient(inP));
         std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
       }
-      catch (Exception &)
+      catch (const Exception & exc)
       {
+        LOGWARN(OSS() << "Ceres failed to evaluate residual gradient for x=" << inP.__str__() << " msg=" << exc.what());
         return false;
       }
     }
@@ -191,8 +193,9 @@ public:
       algorithm_.result_.setCallsNumber(algorithm_.evaluationInputHistory_.getSize());
       algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
     }
-    catch (Exception &)
+    catch (const Exception & exc)
     {
+      LOGWARN(OSS() << "Ceres failed to evaluate objective for x=" << inP.__str__() << " msg=" << exc.what());
       return false;
     }
 
@@ -204,8 +207,9 @@ public:
         const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
         std::copy(gradient.data(), gradient.data() + n, jacobian);
       }
-      catch (Exception &)
+      catch (const Exception & exc)
       {
+        LOGWARN(OSS() << "Ceres failed to evaluate objective gradient for x=" << inP.__str__() << " msg=" << exc.what());
         return false;
       }
     }
