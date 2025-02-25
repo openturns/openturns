@@ -752,14 +752,24 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 inline
 void handleException()
 {
-  PyObject * exception = PyErr_Occurred();
+  PyObject * exceptionType = PyErr_Occurred();
 
-  if (exception)
+  if (exceptionType)
   {
+    String exceptionMessage("Python exception");
+    ScopedPyObjectPointer typeObj(PyObject_Str(exceptionType));
+    const String typeNameObj = checkAndConvert< _PyString_, String >(typeObj.get());
+    exceptionMessage += ": " + typeNameObj;
+
+#if PY_VERSION_HEX >= 0x030C0000
+    PyObject * exception = PyErr_GetRaisedException();
+    ScopedPyObjectPointer nameObj(PyObject_Str(exception));
+    const String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
+    exceptionMessage += ": " + typeString;
+    PyErr_SetRaisedException(exception);
+#else
     PyObject *type = NULL, *value = NULL, *traceback = NULL;
     PyErr_GetExcInfo(&type, &value, &traceback);
-
-    String exceptionMessage("Python exception");
 
     // get the name of the exception
     if (type && PyObject_HasAttrString(type, "__name__"))
@@ -767,7 +777,7 @@ void handleException()
       ScopedPyObjectPointer nameObj(PyObject_GetAttrString(type, "__name__"));
       if (nameObj.get())
       {
-        String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
+        const String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
         exceptionMessage += ": " + typeString;
       }
     }
@@ -778,12 +788,13 @@ void handleException()
       ScopedPyObjectPointer valueObj(PyObject_Str(value));
       if (valueObj.get())
       {
-        String valueString = checkAndConvert< _PyString_, String >(valueObj.get());
+        const String valueString = checkAndConvert< _PyString_, String >(valueObj.get());
         exceptionMessage += ": " + valueString;
       }
     }
 
     PyErr_SetExcInfo(type, value, traceback);
+#endif
     PyErr_Print();
     throw InternalException(HERE) << exceptionMessage;
   }
