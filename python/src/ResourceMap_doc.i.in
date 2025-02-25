@@ -229,7 +229,7 @@ enumValues : sequence of str, optional
     Possible values. Default is an empty list.
 
     When non-empty the :meth:`SetAsString` calls will make sure the
-value associated to that key is part of the list of the possible supplied values.
+    value associated to that key is part of the list of the possible supplied values.
 
 Examples
 --------
