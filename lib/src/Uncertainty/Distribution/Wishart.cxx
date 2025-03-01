@@ -297,6 +297,44 @@ Point Wishart::getStandardDeviation() const
   return sigma;
 }
 
+/* Get the skewness of the distribution */
+Point Wishart::getSkewness() const
+{
+  const UnsignedInteger p = cholesky_.getDimension();
+  Point skewness(getDimension());
+  const CovarianceMatrix V(getV());
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      const Scalar theta = V(i, j);
+      const Scalar theta2 = theta * theta;
+      const Scalar sigma2 = V(i, i) * V(j, j) - theta2;
+      skewness[index] = 2.0 * theta * (3.0 * sigma2 + 4.0 * theta2) / (std::sqrt(nu_) * std::pow(sigma2 + 2.0 * theta2, 1.5));
+      ++index;
+    }
+  return skewness;
+}
+
+/* Get the kurtosis of the distribution */
+Point Wishart::getKurtosis() const
+{
+  const UnsignedInteger p = cholesky_.getDimension();
+  Point kurtosis(getDimension(), 3.0);
+  const CovarianceMatrix V(getV());
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < p; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      const Scalar theta = V(i, j);
+      const Scalar theta2 = theta * theta;
+      const Scalar sigma2 = V(i, i) * V(j, j) - theta2;
+      kurtosis[index] += 6.0 * (sigma2 * sigma2 + 8.0 * sigma2 * theta2 + 8.0 * theta2 * theta2) / (nu_ * std::pow(sigma2 + 2.0 * theta2, 2.0));
+      ++index;
+    }
+  return kurtosis;
+}
+
 Point Wishart::getParameter() const
 {
   const CovarianceMatrix V(getV());

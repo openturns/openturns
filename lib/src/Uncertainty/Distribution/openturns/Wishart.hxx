@@ -86,6 +86,12 @@ public:
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 
+  /** Get the skewness of the distribution */
+  Point getSkewness() const override;
+
+  /** Get the kurtosis of the distribution */
+  Point getKurtosis() const override;
+
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
