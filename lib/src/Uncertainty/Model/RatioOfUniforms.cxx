@@ -476,7 +476,7 @@ Sample RatioOfUniforms::getSampleWithTryNumber(const UnsignedInteger size,
 	  try {
 	    accepted = range_.contains(result) && ((1.0 + r_ * dimension) * std::log(u) <= logUnscaledPDF_(result)[0]);
 	  }
-	  catch (Exception &) {
+	  catch (const Exception &) {
 	    accepted = false;
 	  }
 	} // !accepted
