@@ -60,7 +60,7 @@ Append the list with the covariance kernel for the model output.
 
 >>> covarianceModelCollection.append(ot.SquaredExponential(Y.computeStandardDeviation()))
 
-To perform sensititivity analysis under the condition that the output belongs or is near a domain,
+To perform sensitivity analysis under the condition that the output belongs or is near a domain,
 define a weight function based on the distance to this domain.
 
 >>> dist = ot.DistanceToDomainFunction(ot.Interval(5, float('inf')))
