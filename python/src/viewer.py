@@ -20,11 +20,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as cls
 import warnings
 import io
-
-try:
-    from packaging.version import Version
-except ImportError:
-    from pkg_resources import parse_version as Version
+from packaging.version import Version
 
 __all__ = ["View", "PlotDesign"]
 

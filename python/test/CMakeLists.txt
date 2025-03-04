@@ -833,7 +833,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (MATPLOTLIB_FOUND)
+if (MATPLOTLIB_FOUND AND PACKAGING_FOUND)
   file (GLOB_RECURSE PYFILES "${PROJECT_SOURCE_DIR}/python/doc/examples/*/*.py")
   foreach (PYF ${PYFILES})
     if (PYF MATCHES plot)
@@ -881,7 +881,7 @@ if (MATPLOTLIB_FOUND)
   endif ()
 endif ()
 
-if (MATPLOTLIB_FOUND)
+if (MATPLOTLIB_FOUND AND PACKAGING_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
   ot_pyinstallcheck_test (PlotDesign IGNOREOUT)
 endif ()
@@ -896,7 +896,7 @@ ot_pyinstallcheck_test (ResourceMap_missing IGNOREOUT)
 
 
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND PAKCAGING_FOUND)
   # source modules
   file (GLOB modules ${PROJECT_SOURCE_DIR}/python/src/*.py)
   # swig modules

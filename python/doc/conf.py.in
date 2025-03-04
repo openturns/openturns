@@ -15,11 +15,7 @@ import os
 import subprocess
 from sphinx_gallery.sorting import ExplicitOrder
 import sphinx_gallery
-
-try:
-    from packaging.version import Version
-except ImportError:
-    from pkg_resources import parse_version as Version
+from packaging.version import Version
 
 try:
     import joblib
