@@ -364,10 +364,63 @@ void GaussianNonLinearCalibration::run()
     parameterPosterior = KernelSmoothing().build(thetaSample);
   }
   else
-  {
-    GaussianLinearCalibration algo(model_, inputObservations_, outputObservations_, thetaStar, getParameterPrior().getCovariance(), error.getCovariance());
-    algo.run();
-    parameterPosterior = algo.getResult().getParameterPosterior();
+    {
+      // Compute the linearization
+      Function parametrizedModel(model_);
+      parametrizedModel.setParameter(thetaStar);
+      // Flatten everything related to the model evaluations over the input observations
+      const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
+      const UnsignedInteger outputDimension = getOutputObservations().getDimension();
+      const UnsignedInteger size = getOutputObservations().getSize();
+      Matrix gradientObservations = MatrixImplementation(parameterDimension, size * outputDimension);
+      UnsignedInteger shift = 0;
+      UnsignedInteger skip = parameterDimension * outputDimension;
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
+	  std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
+	  shift += skip;
+	}
+      gradientObservations = gradientObservations.transpose();
+      // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
+      const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
+      // Compute the covariance matrix R
+      CovarianceMatrix R(size * outputDimension);
+      const UnsignedInteger dimension = errorCovariance_.getDimension();
+      if (globalErrorCovariance_) R = errorCovariance_;
+      else
+	{
+	  if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
+	  else
+	    {
+	      for (UnsignedInteger i = 0; i < size; ++i)
+		for (UnsignedInteger j = 0; j < dimension; ++j)
+		  for (UnsignedInteger k = 0; k < dimension; ++k)
+            R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
+	    }
+	}
+      // Compute the inverse of the Cholesky decomposition of R
+      // Compute errorInverseCholesky*J, the second part of the extended design matrix
+      const Normal errorTmp(Point(R.getDimension()), R);
+      const TriangularMatrix errorInverseCholesky(errorTmp.getInverseCholesky());
+      const Matrix invLRJ(errorInverseCholesky * gradientObservations);
+      // Create the extended design matrix of the linear least squares problem
+      Matrix Abar(parameterDimension + size * outputDimension, parameterDimension);
+      for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+	for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+	  Abar(i, j) = parameterInverseCholesky(i, j);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	for (UnsignedInteger j = 0; j < outputDimension; ++j)
+	  for (UnsignedInteger k = 0; k < parameterDimension; ++k)
+	    Abar(i * outputDimension + j + parameterDimension, k) = -invLRJ(i * outputDimension + j, k);
+      // Compute the inverse Gram of the design matrix
+      const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+      LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
+      // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
+      (void) method.solve(Point(Abar.getNbRows()));
+      const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
+      // Create the result object
+      parameterPosterior = Normal(thetaStar, covarianceThetaStar);
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);
