@@ -115,17 +115,29 @@ void LinearLeastSquaresCalibration::run()
 
   const Point thetaStar(getStartingPoint() - deltaTheta);
   const Point r(deltaY - gradientObservations_ * deltaTheta);
-  const Scalar varianceError = r.normSquare() / (deltaY.getDimension() - deltaTheta.getDimension());
+  Distribution error;
+  Distribution parameterPosterior(ComputePosteriorAndErrorDistribution(thetaStar, r, method.getGramInverse(), outputObservations_.getDimension(), error));
+  parameterPosterior.setDescription(parameterPrior_.getDescription());
+  const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
+}
+
+Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(const Point & thetaStar,
+										 const Point & r,
+										 const SquareMatrix & gramInverse,
+										 const UnsignedInteger outputDimension,
+										 Distribution & error)
+{
+  const Scalar varianceError = r.normSquare() / (r.getDimension() - thetaStar.getDimension());
   CovarianceMatrix covarianceThetaStar;
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");
-  covarianceThetaStar = CovarianceMatrix((method.getGramInverse() * varianceError).getImplementation());
+  covarianceThetaStar = CovarianceMatrix((gramInverse * varianceError).getImplementation());
   if (epsilon > 0.0)
   {
-    const Scalar shift = epsilon * covarianceThetaStar.computeSingularValues()[0];
+    const Scalar shift = epsilon * covarianceThetaStar.computeLargestEigenValueModule();
     for (UnsignedInteger i = 0; i < covarianceThetaStar.getDimension(); ++i)
       covarianceThetaStar(i, i) += shift;
   }
-  const UnsignedInteger dimension = outputObservations_.getDimension();
   Normal parameterPosterior;
   try
   {
@@ -135,18 +147,18 @@ void LinearLeastSquaresCalibration::run()
   {
     throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable. Try to increase the \"LinearLeastSquaresCalibration-Regularization\" key in ResourceMap";
   }
-  Distribution error;
-  try
-  {
-    error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * varianceError).getImplementation()));
-  }
-  catch (...)
-  {
-    error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * SpecFunc::MaxScalar).getImplementation()));
-  }
-  parameterPosterior.setDescription(parameterPrior_.getDescription());
-  const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
+  if (outputDimension > 0)
+    {
+      try
+	{
+	  error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * varianceError).getImplementation());
+	}
+      catch (...)
+	{
+	  error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * SpecFunc::MaxScalar).getImplementation());
+	}
+    } // outputDimension > 0
+  return parameterPosterior;
 }
 
 /* Model observations accessor */
