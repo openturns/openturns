@@ -287,9 +287,30 @@ void NonLinearLeastSquaresCalibration::run()
   }
   else
   {
-    LinearLeastSquaresCalibration linearAlgo(model_, inputObservations_, outputObservations_, thetaStar);
-    linearAlgo.run();
-    parameterPosterior = linearAlgo.getResult().getParameterPosterior();
+    // Prepare the inverse Gram
+    // Compute the linearization
+    Function parametrizedModel(model_);
+    parametrizedModel.setParameter(thetaStar);
+    // Flatten everything related to the model evaluations over the input observations
+    const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
+    const UnsignedInteger outputDimension = getOutputObservations().getDimension();
+    const UnsignedInteger size = getOutputObservations().getSize();
+    Matrix gradientObservations = MatrixImplementation(parameterDimension, size * outputDimension);
+    UnsignedInteger shift = 0;
+    UnsignedInteger skip = parameterDimension * outputDimension;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
+      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
+      shift += skip;
+    }
+    const String methodName(ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
+    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, gradientObservations.transpose()));
+    // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
+    (void) method.solve(Point(gradientObservations.getNbColumns()));
+    const CovarianceMatrix gramInverse(method.getGramInverse());
+    Distribution tmp;
+    parameterPosterior = LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(thetaStar, residual.getImplementation()->getData(), gramInverse, 0, tmp);
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
