@@ -76,7 +76,7 @@ void RegularGridEnclosingSimplex::setVerticesAndSimplices(const Sample & vertice
   {
     // allow one to reset it
     start_ = 0.0;
-    N_ = 0.0;
+    N_ = 0;
     step_ = 0.0;
   }
 }
