@@ -80,15 +80,12 @@ void AbdoRackwitz::initialize()
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 {
-  if (!problem.hasLevelFunction())
+  if (!problem.hasLevelFunction() || problem.hasMultipleObjective() || problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " can only solve nearest-point optimization problems";
-  if (problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization ";
   if (problem.hasBounds())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
-
 }
 
 /* Line search for globalization of the algorithm */

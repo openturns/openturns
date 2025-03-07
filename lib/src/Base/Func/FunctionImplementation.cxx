@@ -285,9 +285,9 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
       const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
       return gradientFD.gradient(inP);
     }
-    catch (...)
+    catch (const Exception & exc)
     {
-      throw InternalException(HERE) << "Error: cannot compute gradient at point=" << inP;
+      throw InternalException(HERE) << "Function cannot compute gradient at point=" << inP << " msg: "<< exc.what();
     }
   } // Usual gradient failed
 }
