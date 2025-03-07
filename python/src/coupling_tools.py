@@ -159,7 +159,7 @@ class OTCalledProcessError(subprocess.CalledProcessError):
         err_msg = (
             (":\n" + self.stderr[:200].decode()) if self.stderr is not None else ""
         )
-        return super(OTCalledProcessError).__str__(self) + err_msg
+        return super(OTCalledProcessError, self).__str__() + err_msg
 
 
 def execute(
@@ -220,8 +220,10 @@ def execute(
     """
 
     # split cmd if not in a shell before passing it to os.execvp()
-    posix = os.name == "posix"
-    process_args = cmd if shell else shlex.split(cmd, posix=posix)
+    process_args = cmd
+    if not shell and isinstance(cmd, str):
+        posix = os.name == "posix"
+        process_args = shlex.split(cmd, posix=posix)
 
     # override startupinfo to hide windows console
     startupinfo = None
