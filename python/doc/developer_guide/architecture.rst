@@ -211,7 +211,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Multithreading (optional)             | `TBB <http://www.threadingbuildingblocks.org/>`_                                | 2017              |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Nearest neighbor search (optional)    | `nanoflann <https://github.com/jlblancoc/nanoflann>_`                           | 1.3.2             |
+| Nearest neighbor search (optional)    | `nanoflann <https://github.com/jlblancoc/nanoflann>`_                           | 1.3.2             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Python support                        | `Python <http://www.python.org/>`_                                              | 3.6               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -227,7 +227,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.7               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Sphinx-copybutton <sphinx-copybutton.readthedocs.io>`_                         | 0.5               |
+| Sphinx extension (optional for doc)   | `Sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_      | 0.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `sphinxcontrib.jquery <https://github.com/sphinx-contrib/jquery/>`_             | 4.1               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+

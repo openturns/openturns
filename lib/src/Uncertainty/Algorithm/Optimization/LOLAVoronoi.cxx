@@ -229,25 +229,34 @@ struct LVLOLAScorePolicy
         }
 
         // g = \argmin ||pg-f|| cf 3.3.3 equation (3.8)
-        const Point g(LeastSquaresMethod::Build(methodName_, p).solve(f));
-
-        // local nonlinearity, 3.3.4 equation (3.9)
-        Scalar epr = 0.0;
-        for (UnsignedInteger ti = 0; ti < m; ++ ti)
+        try
         {
-          const Point prtx(lola_.x_[neighbourhoodI[ti]]);
-          const Point prty(lola_.y_[neighbourhoodI[ti]]);
-          epr += std::abs(prty[k] - (pry[k] + g.dot(prtx - prx)));
-        }
+          const Point g(LeastSquaresMethod::Build(methodName_, p).solve(f));
 
-        // the non linearity score is the max across output components cf 3.6 equation (3.12)
-        if (aggregationMethod_ == "Maximum")
-          eprAgg = std::max(eprAgg, epr);
-        else if (aggregationMethod_ == "Average")
-          eprAgg += epr / lola_.y_.getDimension();
-        else
-          throw InvalidArgumentException(HERE) << "LOLAVoronoi-NonLinearityAggregationMethod must be either 'Maximum' or 'Average'";
-      }
+          // local nonlinearity, 3.3.4 equation (3.9)
+          Scalar epr = 0.0;
+          for (UnsignedInteger ti = 0; ti < m; ++ ti)
+          {
+            const Point prtx(lola_.x_[neighbourhoodI[ti]]);
+            const Point prty(lola_.y_[neighbourhoodI[ti]]);
+            epr += std::abs(prty[k] - (pry[k] + g.dot(prtx - prx)));
+          }
+
+          // the non linearity score is the max across output components cf 3.6 equation (3.12)
+          if (aggregationMethod_ == "Maximum")
+            eprAgg = std::max(eprAgg, epr);
+          else if (aggregationMethod_ == "Average")
+            eprAgg += epr / lola_.y_.getDimension();
+          else
+            throw InvalidArgumentException(HERE) << "LOLAVoronoi-NonLinearityAggregationMethod must be either 'Maximum' or 'Average'";
+        }
+        catch (const NotSymmetricDefinitePositiveException &)
+        {
+          std::cerr << "DEBUG NotSymmetricDefinitePositiveException f=" << f << " p=" << p << std::endl;
+          eprAgg = - std::sqrt(SpecFunc::MaxScalar);
+          break;
+        }
+      } // k loop
       lola_.lolaScore_[i] = eprAgg;
     } // i loop
   }

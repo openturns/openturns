@@ -126,19 +126,12 @@ Sample CSVParser::load() const
     iss >> pVal;
     if (iss.fail() || iss.bad() || !iss.eof())
     {
-      std::map<String, Scalar> infMap;
-      infMap["inf"] = SpecFunc::Infinity;
-      infMap["+inf"] = SpecFunc::Infinity;
-      infMap["-inf"] = -SpecFunc::Infinity;
-      infMap["Inf"] = SpecFunc::Infinity;
-      infMap["+Inf"] = SpecFunc::Infinity;
-      infMap["-Inf"] = -SpecFunc::Infinity;
-      infMap["INF"] = SpecFunc::Infinity;
-      infMap["+INF"] = SpecFunc::Infinity;
-      infMap["-INF"] = -SpecFunc::Infinity;
+      const std::map<String, Scalar> infMap = {{"inf", SpecFunc::Infinity}, {"+inf", SpecFunc::Infinity}, {"-inf", -SpecFunc::Infinity},
+                                               {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
+                                               {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity}};
       // handle inf values
       if (infMap.count(pStr))
-        pVal = infMap[pStr];
+        pVal = infMap.at(pStr);
       else
         // invalid values are set to nan
         pVal = std::numeric_limits<Scalar>::quiet_NaN();

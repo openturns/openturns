@@ -1,5 +1,7 @@
 // SWIG file OTtypes.i
 
+%ignore SwigPyIterator;
+
 %include std_string.i
 %include std_map.i
 %include std_complex.i

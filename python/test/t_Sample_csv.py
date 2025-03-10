@@ -41,7 +41,7 @@ print("import with quotes:", repr(aSample))
 # spaces in description
 with open(fname, "w") as f:
     f.write(
-        'nos sbef saft  sbeaf  mid "qnos"  "qsbef" "qsaft"  "qsbeaf"  "mid mid" \n1 2 3 4 5 6 7 8 9 10\n'
+        'nos sbef saft sbeaf mid "qnos" "qsbef" "qsaft" "qsbeaf" "mid mid"\n1 2 3 4 5 6 7 8 9 10\n'
     )
 aSample = ot.Sample.ImportFromTextFile(fname)
 print("import with spaces:", repr(aSample))
@@ -100,7 +100,7 @@ print("aSample with special chars (see log)=", repr(aSample))
 # text file with comments
 with open(fname, "w") as f:
     f.write(
-        "# hello\n\nh1 h2 h3 h4 \n-1.2 2.3 3.4 -4.5 \n#spock\n5.6 -6.7 7.8 8.9 \n-0.1 3.2 5.1 7.5 "
+        "# hello\n\nh1 h2 h3 h4\n-1.2 2.3 3.4 -4.5 \n#spock\n5.6 -6.7 7.8 8.9 \n-0.1 3.2 5.1 7.5 "
     )
 aSample = ot.Sample.ImportFromTextFile(fname)
 print("aSample with comments=", repr(aSample))

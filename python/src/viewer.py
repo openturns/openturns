@@ -672,6 +672,10 @@ class View:
                         contour_kw["norm"] = normDict[norm]
                     except KeyError:
                         warnings.warn("-- Unknown norm " + norm)
+
+                    # 3.3.4 (debian 11) does not like null log levels
+                    if norm == "log" and "levels" in contour_kw:
+                        contour_kw["levels"] = list(filter(lambda x : x > 0.0, contour_kw["levels"]))
                 else:
                     contour_kw["norm"] = norm
                 if contour_kw.get("norm") == "rank":

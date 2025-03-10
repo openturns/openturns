@@ -77,12 +77,11 @@ Matrix ParametricGradient::gradient(const OT::Point & point) const
       FiniteDifferenceStep step(p_gradient->getFiniteDifferenceStep());
       const Point fullEpsilon(step.getEpsilon());
       // Build the step restricted to the parameter set of the function
-      Point reducedEpsilon(pointDimension);
-      for (UnsignedInteger i = 0; i < pointDimension; ++i)
-        reducedEpsilon[i] = fullEpsilon[p_evaluation_->inputPositions_[i]];
-      // Update the step
-      step.setEpsilon(reducedEpsilon);
-      const CenteredFiniteDifferenceGradient reducedGradient(step, ParametricEvaluation(p_evaluation_->function_, p_evaluation_->parametersPositions_, p_evaluation_->parameter_));
+      step.setEpsilon(fullEpsilon.select(p_evaluation_->inputPositions_));
+
+      ParametricEvaluation evaluation(p_evaluation_->function_, p_evaluation_->parametersPositions_, p_evaluation_->parameter_);
+      evaluation.inputPositions_ = p_evaluation_->inputPositions_; // keep inputs order
+      const CenteredFiniteDifferenceGradient reducedGradient(step, evaluation);
       return reducedGradient.gradient(point);
     }
   }
@@ -95,12 +94,11 @@ Matrix ParametricGradient::gradient(const OT::Point & point) const
       FiniteDifferenceStep step(p_gradient->getFiniteDifferenceStep());
       const Point fullEpsilon(step.getEpsilon());
       // Build the step restricted to the parameter set of the function
-      Point reducedEpsilon(pointDimension);
-      for (UnsignedInteger i = 0; i < pointDimension; ++i)
-        reducedEpsilon[i] = fullEpsilon[p_evaluation_->inputPositions_[i]];
-      // Update the step
-      step.setEpsilon(reducedEpsilon);
-      const NonCenteredFiniteDifferenceGradient reducedGradient(step, ParametricEvaluation(p_evaluation_->function_, p_evaluation_->parametersPositions_, p_evaluation_->parameter_));
+      step.setEpsilon(fullEpsilon.select(p_evaluation_->inputPositions_));
+
+      ParametricEvaluation evaluation(p_evaluation_->function_, p_evaluation_->parametersPositions_, p_evaluation_->parameter_);
+      evaluation.inputPositions_ = p_evaluation_->inputPositions_; // keep inputs order
+      const NonCenteredFiniteDifferenceGradient reducedGradient(step, evaluation);
       return reducedGradient.gradient(point);
     }
   }
