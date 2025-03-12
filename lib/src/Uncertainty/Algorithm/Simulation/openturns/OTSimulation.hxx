@@ -45,6 +45,7 @@
 #include "openturns/QuadrantSampling.hxx"
 #include "openturns/QuantileConfidence.hxx"
 #include "openturns/AdaptiveDirectionalStratification.hxx"
+#include "openturns/LineSampling.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationAlgorithm.hxx"
 #include "openturns/SobolSimulationAlgorithm.hxx"
