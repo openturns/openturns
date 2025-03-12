@@ -1,0 +1,204 @@
+%feature("docstring") OT::LineSampling
+"Line sampling algorithm.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+This class implements the line sampling algorithm [koutsourelakis2004]_ with adaptation
+of the important direction from [angelis2015]_, which is also known as adaptive line sampling.
+
+The goal is to estimate the following probability:
+
+.. math::
+
+    P_f = \int_{\mathcal D_f} f_{\uX}(\ux)\di{\ux}\\
+        = \int_{\mathbb R^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \:\leq 0\: \}}f_{\uX}(\ux)\di{\ux}\\
+        = \Prob {\{g(\uX,\underline{d}) \leq 0\}}
+
+The line sampling algorithm is a variance reduction sampling method.
+As it is performed in the standard space, it uses the iso-probabilistic transformation
+associated to :math:`\inputMeasure` (see :ref:`isoprobabilistic_transformation` to get more details).
+
+The generic line sampling algorithm follows the steps:
+
+- A sample :math:`\vect{u}_i` is generated in the standard space :math:`\cZ_\inputDim`:
+  which is projected into the hyperplane orthogonal to the important direction :math:`\vect{\alpha}`.
+
+  Each projected point :math:`\vect{u_P}_i` defines the origin of a line parallel to the important direction :math:`\vect{\alpha}`.
+
+- Along each direction :math:`i \in [1, \sampleSize]` defined from :math:`\vect{u_P}_i` and :math:`\vect{\alpha}`,
+  we find the frontiers of :math:`\cD_f`, i.e. the solutions of the form
+  :math:`\model \circ T^{-1}(\vect{u_P}_i + r \times \vect{\alpha}) = 0` with :math:`r` a scalar coefficient.
+
+  From the :math:`m_i` solutions :math:`r_j, j \in [1, m_i]` we deduce the subset :math:`I_i \subset \Rset^+` that belongs to :math:`\cD_f`
+
+- For each subset :math:`I_i`, we compute the probability :math:`q_i = \Prob{R \in I_{\vect{u_P}_i}, \alpha} = \sum_{j=1}^{m_i} (-1)^j \Phi(-r_j)`
+
+  If the origin of the standard space lies in :math:`\cD_f` we compute :math:`q_i` as the complementary probability of this expression.
+
+The probability :math:`P_f` is computed from all the :math:`q_i` probabilities. If :math:`\sampleSize` samples have been used, then:
+
+.. math::
+
+    \widehat{P}_{f,LS} = \frac{1}{\sampleSize} \sum_{i=1}^{\sampleSize} q_i
+
+The adaptive variant of the algorithm consists in updating the important direction :math:`\vect{\alpha}`
+by the selecting the direction given by the nearest intersection with the frontiers of :math:`\cD_f` from the origin
+as given by the root search for each new line explored.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we are computing the probability.
+initialAlpha : sequence of float
+    The initial important direction :math:`\vect{\alpha}`.
+rootStrategy : :class:`~openturns.RootStrategy`, optional
+    Strategy used to evaluate the frontiers of
+    the event along each direction in the standard space.
+    By default :class:`~openturns.SafeAndSlow`.
+
+Notes
+-----
+Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the algorithm:
+
+- The boolean entry `LineSampling-DefaultSearchOppositeDirection` sets the default value of the flag
+  activating the additional search in the opposite direction of the important direction.
+- The boolean entry `LineSampling-DefaultAdaptiveImportantDirection` sets the default value of the flag
+  activating the use of adaptive important direction as opposed to a fixed important direction.
+
+See also
+--------
+openturns.DirectionalSampling"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::setInitialAlpha
+"Initial important direction accessor.
+
+Parameters
+----------
+alpha : sequence of float
+    Initial important direction."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getInitialAlpha
+"Initial important direction accessor.
+
+Returns
+-------
+alpha : :class:`~openturns.Point`
+    Initial important direction."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::setSearchOppositeDirection
+"Opposite direction search flag accessor.
+
+Parameters
+----------
+searchOppositeDirection : bool
+    Whether to search in the opposite direction of the important direction."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getSearchOppositeDirection
+"Opposite direction search flag accessor.
+
+Returns
+-------
+searchOppositeDirection : bool
+    Whether to search in the opposite direction of the important direction."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::setStoreHistory
+"Accessor to the important direction history.
+
+Parameters
+----------
+storeHistory : bool
+    Whether to store alpha, root values and points histories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getStoreHistory
+"Accessor to the important direction history.
+
+Returns
+-------
+storeHistory : bool
+    Whether to store alpha, root values and points histories."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getAlphaHistory
+"Accessor to the important direction history.
+
+Returns
+-------
+alphaHistory : :class:`~openturns.Sample`
+    Storage strategy used to store the important direction vectors during the simulation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getRootValuesHistory
+"Accessor to the root values history.
+
+Returns
+-------
+rootValuesHistory : sequence of :class:`~openturns.Point`
+    The list of root values for each line."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getRootPointsHistory
+"Accessor to the root points history.
+
+Returns
+-------
+rootPointsHistory : sequence of :class:`~openturns.Sample`
+    The list of root points for each line."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::setAdaptiveImportantDirection
+"Accessor to the adaptive important direction flag.
+
+Parameters
+----------
+adaptiveImportantDirection : bool
+    Whether the important direction is adapted according to new design points."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getAdaptiveImportantDirection
+"Accessor to the adaptive important direction flag.
+
+Returns
+-------
+adaptiveImportantDirection : bool
+    Whether the important direction is adapted according to new design points."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getRootStrategy
+"Get the root strategy.
+
+Returns
+-------
+strategy : :class:`~openturns.RootStrategy`
+    Root strategy used to evaluate the frontiers of
+    the event along each direction in the standard space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::setRootStrategy
+"Set the root strategy.
+
+Parameters
+----------
+strategy : :class:`~openturns.RootStrategy`
+    Root strategy to evaluate the frontiers of
+    the event along each direction in the standard space."

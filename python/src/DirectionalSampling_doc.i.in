@@ -36,7 +36,7 @@ The directional sampling algorithm estimates the probability of the event :math:
 
 The directional sampling algorithm is a variance reduction sampling method.
 As it is performed in the standard space, it uses the iso-probabilistic transformation associated to :math:`\inputMeasure`
-(see :ref:`isoprobabilistic_transformation` to get more details).
+(see :ref:`isoprobabilistic_transformation` for details).
 
 Let :math:`T` be the iso-probabilistic transformation: :math:`T(\vect{X}) = \vect{Z}`. The
 random vector :math:`\vect{Z}` follows a spherical distribution, which means that it is written
@@ -69,7 +69,7 @@ Then, we have:
     \int_{\Rset^+} 1_{\left\{\model \circ T^{-1}(r\vect{u}) \leq 0\right\}} p_R(r) dr = \Prob{R \in I_{\vect{u}}}
 
 As the radial distribution of :math:`R` is known, we can evaluate exactly the probability :math:`\Prob{R \in I_{\vect{u}}}`
-as soon as we know the direction :math:`\vect{u}`.
+for any direction :math:`\vect{u}`.
 
 The integral with respect to the directions is evaluated using a sampling method, defined by the :class:`~openturns.SamplingStrategy`.
 

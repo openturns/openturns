@@ -24,6 +24,7 @@ Simulations methods
     CrossEntropyImportanceSampling
     PhysicalSpaceCrossEntropyImportanceSampling
     StandardSpaceCrossEntropyImportanceSampling
+    experimental.LineSampling
 
 Quantile confidence
 ===================
