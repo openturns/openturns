@@ -20,6 +20,9 @@ Bibliography
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
     `pdf <https://arxiv.org/pdf/1007.0828.pdf>`__
+.. [angelis2015] Angelis M., Patelli E., Beer M., *Advanced line sampling for efficient robust reliability analysis*,
+    Structural safety, 52 :170-182, 2015.
+    `pdf <https://livrepository.liverpool.ac.uk/2010225/1/sissue_mda_ep_mb.pdf>`__
 .. [arnold2008] Arnold B.C, Balakrishnan N., Nagaraja H. N.,
     *A First Course in Order Statistics*, SIAM, 2008
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
@@ -265,6 +268,9 @@ Bibliography
 .. [koehler1996] J.R. Koehler and A.B. Owen. *Computer experiments. In S. Ghosh
     and C.R. Rao, editors, Design and analysis of experiments,
     volume 13 of Handbook of statistics.* Elsevier, 1996.
+.. [koutsourelakis2004] Koutsourelakis, H. Pradlwarter, G. Schueller,
+    *Reliability of structures in high dimensions, part i: algorithms and applications*,
+    Probabilistic Engineering Mechanics 19 (4) (2004) 409–417
 .. [lebrun2009a] Lebrun, R. & Dutfoy, A. *An innovating analysis of the Nataf
     transformation from the copula viewpoint.* Prob. Eng. Mech., 2009, 24,
     312-320.
