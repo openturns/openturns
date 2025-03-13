@@ -130,6 +130,11 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Test::DistributionValidation::skipQuantile
+"Disables quantile test."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Test::DistributionValidation::skipCharacteristicFunction
 "Disables characteristic function test."
 
