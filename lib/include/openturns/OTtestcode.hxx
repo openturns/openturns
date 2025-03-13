@@ -445,8 +445,10 @@ public:
     if (enableComplementaryCDF_)
       checkComplementaryCDF();
     checkSurvival();
-    checkInverseSurvival();
-    checkQuantile();
+    if (enableInverseSurvival_)
+      checkInverseSurvival();
+    if (enableQuantile_)
+      checkQuantile();
     if (enableProbability_)
       checkProbability();
     checkFitting();
@@ -523,6 +525,14 @@ public:
   void skipProbability()
   {
     enableProbability_ = false;
+  }
+  void skipQuantile()
+  {
+    enableQuantile_ = false;
+  }
+  void skipInverseSurvival()
+  {
+    enableInverseSurvival_ = false;
   }
   void skipCharacteristicFunction()
   {
@@ -833,6 +843,21 @@ private:
       LOGTRACE(OSS() << "inverseSurvival=" << inverseSurvival << " survival=" << survival);
       assert_almost_equal(survival, 0.95, quantileTolerance_, quantileTolerance_, "inverse survival " + distribution_.__repr__());
     }
+
+    if (distribution_.isDiscrete() && distribution_.getDimension() == 1)
+    {
+      const Interval sub(distribution_.computeQuantile(0.1), distribution_.computeQuantile(0.9));
+      const Sample support(distribution_.getSupport(sub));
+      for (UnsignedInteger i = 0; i < std::min(support.getSize(), 10UL); ++ i)
+      {
+        LOGTRACE(OSS() << "checking inverse survival..." << support);
+        const Scalar x = support(i, 0);
+        const Scalar survival = distribution_.computeSurvivalFunction(x);
+        const Scalar inverseSurvival = distribution_.computeInverseSurvivalFunction(survival)[0];
+        LOGTRACE(OSS() << "x=" << x << " survival=" << survival << " inverse survival=" << inverseSurvival);
+        assert_almost_equal(inverseSurvival, x, quantileTolerance_, quantileTolerance_, "inverse survival " + distribution_.__repr__());
+      }
+    }
   }
 
   void checkQuantile() const
@@ -853,6 +878,21 @@ private:
       const Scalar cdf2 = distribution_.computeCDF(quantile2);
       LOGTRACE(OSS() << "quantile=" << quantile2 << " cdf=" << cdf2);
       assert_almost_equal(cdf2, 0.05, quantileTolerance_, quantileTolerance_, "quantile(tail) " + distribution_.__repr__());
+    }
+
+    if (distribution_.isDiscrete() && distribution_.getDimension() == 1)
+    {
+      const Interval sub(distribution_.computeQuantile(0.1), distribution_.computeQuantile(0.9));
+      const Sample support(distribution_.getSupport(sub));
+      for (UnsignedInteger i = 0; i < std::min(support.getSize(), 10UL); ++ i)
+      {
+        LOGTRACE(OSS() << "checking quantile..."<< support);
+        const Scalar x = support(i, 0);
+        const Scalar cdf = distribution_.computeCDF(x);
+        const Scalar quantile = distribution_.computeQuantile(cdf)[0];
+        LOGTRACE(OSS() << "x=" << x << " cdf=" << cdf << " quantile=" << quantile);
+        assert_almost_equal(quantile, x, quantileTolerance_, quantileTolerance_, "quantile " + distribution_.__repr__());
+      }
     }
   }
 
@@ -1307,6 +1347,8 @@ private:
   Bool enableConfidenceInterval_ = true;
   Bool enableParameters_ = true;
   Bool enableProbability_ = true;
+  Bool enableQuantile_ = true;
+  Bool enableInverseSurvival_ = true;
   Bool enableGeneratingFunction_ = true;
   Bool enableCharacteristicFunction_ = true;
   Bool enableGradient_ = true;
