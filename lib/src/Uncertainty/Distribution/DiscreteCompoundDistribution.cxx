@@ -161,7 +161,7 @@ void DiscreteCompoundDistribution::setBaseAndCompoundDistributions(const Distrib
   baseDistribution_ = baseDistribution;
   compoundDistribution_ = compoundDistribution;
 
-  const UnsignedInteger m = computeIntegerUpperBound();
+  const UnsignedInteger m = computeIntegerUpperBound() + 1;
 
   const Point weights(computeProbabilities(m));
   Sample points(m, 1);

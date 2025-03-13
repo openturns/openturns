@@ -258,6 +258,9 @@ OT_API Scalar dPoisson(const Scalar lambda,
 OT_API Scalar qPoisson(const Scalar lambda,
                        const Scalar p,
                        const Bool tail = false);
+OT_API Scalar pPoisson(const Scalar lambda,
+                       const Scalar x,
+                       const Bool tail = false);
 OT_API UnsignedInteger rPoisson(const Scalar lambda);
 OT_API Indices rPoisson(const Scalar lambda,
                         const UnsignedInteger size);

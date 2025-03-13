@@ -13,28 +13,25 @@ n1 = 5
 for i1 in range(n1):
     lambda_ = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1)
     for k in range(kMax):
-        print(
-            "dPoisson(%.3g" % lambda_,
-            ", ",
-            k,
-            ")=%.4g" % ot.DistFunc.dPoisson(lambda_, k),
-        )
+        print(f"dPoisson({lambda_:.3g}, {k})={ot.DistFunc.dPoisson(lambda_, k):.4g}")
+
 # dPoisson
 for i1 in range(n1):
     lambda_ = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1)
     for k in range(kMax):
-        print(
-            "logdPoisson(%.3g" % lambda_,
-            ", ",
-            k,
-            ")=%.4g" % ot.DistFunc.logdPoisson(lambda_, k),
-        )
+        print(f"logdPoisson({lambda_:.3g}, {k})= {ot.DistFunc.logdPoisson(lambda_, k):.4g}")
+
+# pPoisson
+for i1 in range(n1):
+    lambda_ = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1)
+    for k in range(kMax):
+        print(f"pPoisson({lambda_:.3g}, {k})= {ot.DistFunc.pPoisson(lambda_, k):.4g}")
 # rPoisson
 nR = 5
 for i1 in range(n1):
     lambda_ = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1)
     for iR in range(nR):
-        print("rPoisson(%.3g" % lambda_, ")=", ot.DistFunc.rPoisson(lambda_))
+        print(f"rPoisson({lambda_:.3g})= {ot.DistFunc.rPoisson(lambda_)}")
 
 # qPoisson
 n2 = 20

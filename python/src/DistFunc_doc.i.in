@@ -710,6 +710,31 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::pPoisson
+"CDF of a Poisson distribution.
+
+Parameters
+----------
+lambda : float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution.
+x : float
+    The location.
+tail : bool, optional
+    Tail flag, default value is False.
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float
+    The CDF or complementary CDF at :math:`x`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.pPoisson(2.0, 5)"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::dNonCentralChiSquare
 "Probability density function of a NonCentralChiSquare distribution.
 
