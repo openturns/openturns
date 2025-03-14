@@ -33,6 +33,7 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DUSE_SPHINX=ON -DSPHINX_FLAGS="-W -T -j4" \
       ${source_dir}
 make install
+find ~/.local/share/doc/openturns/html -name "*.zip" | xargs rm
 if test -n "${uid}" -a -n "${gid}"
 then
   cp -r ~/.local/share/doc/openturns/html .
