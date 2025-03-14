@@ -126,7 +126,8 @@ sphinx_gallery_conf = {
                                         'examples/numerical_methods/optimization',
                                         'examples/numerical_methods/iterative_statistics',
                                         'examples/graphs',]),
-     'show_signature': False,
+    'show_signature': False,
+    'download_all_examples': False,
 
     # directory where function/class granular galleries are stored
     'backreferences_dir'  : 'gen_modules/backreferences',
@@ -136,14 +137,18 @@ sphinx_gallery_conf = {
 
     # The duration of scripts that ran faster than that amount will not be
     # logged nor embedded in the html output
-    'min_reported_time': 2,
+    'min_reported_time': 1e6,
 
-    # Reset module before each example
-    'reset_modules': ('reset_ot.reset_ot'),
+    # omit computation times from all gallery outputs
+    'write_computation_times': False,
 }
 
 if Version(sphinx_gallery.__version__) >= Version("0.17.0"):
     sphinx_gallery_conf["parallel"] = have_joblib
+
+# Reset module before each example
+if Version(sphinx_gallery.__version__) >= Version("0.16.0"):
+    sphinx_gallery_conf["reset_modules"] = ("reset_ot.reset_ot",)
 
 # TODO: drop jquery in custom search.html
 extensions.append('sphinxcontrib.jquery')
@@ -249,6 +254,7 @@ html_static_path = ['_static']
 
 html_css_files = [
     'css/custom.css',
+    'css/sphx_glr.css'
 ]
 
 html_js_files = [
