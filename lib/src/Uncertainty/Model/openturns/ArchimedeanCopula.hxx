@@ -98,6 +98,9 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
 
+  CorrelationMatrix computeUpperTailDependenceMatrix() const override;
+  CorrelationMatrix computeLowerTailDependenceMatrix() const override;
+
 protected:
 
 
