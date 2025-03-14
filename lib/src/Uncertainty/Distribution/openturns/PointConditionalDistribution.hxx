@@ -246,6 +246,9 @@ private:
   // for CDF integration
   IntegrationAlgorithm integrationAlgorithm_;
 
+  // for the use of generic conditional methods
+  Bool useGenericConditionalMethods_ = true;
+  
 }; /* class PointConditionalDistribution */
 
 END_NAMESPACE_OPENTURNS
