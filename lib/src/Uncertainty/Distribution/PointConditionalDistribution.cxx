@@ -25,9 +25,11 @@
 #include "openturns/ParametricFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/RandomGenerator.hxx"
 #include "openturns/SimplicialCubature.hxx"
 #include "openturns/CubaIntegration.hxx"
 #include "openturns/Tuples.hxx"
+#include "openturns/ArchimedeanCopula.hxx"
 #include "openturns/Beta.hxx"
 #include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
@@ -91,6 +93,37 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
     conditioningValues_[i] = conditioningValues[permutation[i]];
   }
 
+  // check if we want & can use generic conditional methods
+  // first, check ResourceMap
+  useGenericConditionalMethods_ = ResourceMap::GetAsBool("PointConditionalDistribution-UseGenericConditionalMethods");
+  if (useGenericConditionalMethods_)
+    {
+      // then, check if we are in a case where it *could be* possible to use these methods
+      const UnsignedInteger conditioningSize = conditioningIndices.getSize();
+      // is the point conditional distribution univariate?
+      if (conditioningSize == fullDimension - 1)
+	{
+	  // If we are in the case of a symmetric bivariate copula (elliptical or archimedean), then X0|X1=x is the same as X1|X0=x
+	  // but only the last one allows for the use of generic methods. Change the conditioning order in this case
+	  if ((conditioningSize > 0) && (distribution.getDimension() == 2) && distribution.isCopula() && (conditioningIndices[0] == 1))
+	    {
+	      // elliptical case: swap the conditioning
+	      if (distribution.hasIndependentCopula())
+		conditioningIndices_[0] = 0;
+	      else
+		{
+		  const ArchimedeanCopula * p_archimedean = dynamic_cast< ArchimedeanCopula * >(distribution.getCopula().getImplementation().get());
+		  // archimedean case: swap the conditioning
+		  if (p_archimedean)
+		    conditioningIndices_[0] = 0;
+		} // No elliptical copula
+	    } // bivariate copula to swap
+	  // Now, check if the last component is the one conditioned by the others
+	  useGenericConditionalMethods_ = (conditioningSize > 0) && (conditioningIndices[conditioningSize - 1] == (fullDimension - 2));
+	} // conditioningSize == fullDimension - 1
+      else
+	useGenericConditionalMethods_ = false;
+    } // useGenericConditionalMethods_ from ResourceMap
   // it is ok to condition continuous marginals by a discrete one and vice-versa
   const Distribution marginalConditioned(distribution.getMarginal(conditioningIndices.complement(fullDimension)));
   if (!marginalConditioned.isDiscrete() && !marginalConditioned.isContinuous())
@@ -334,7 +367,7 @@ void PointConditionalDistribution::update()
   isAlreadyComputedCovariance_ = false;
 
   // initialize alias method
-  if (!useSimplifiedVersion_ && isDiscrete())
+  if (!useSimplifiedVersion_ && !useGenericConditionalMethods_ && isDiscrete())
   {
     support_ = getSupport();
     probabilities_ = computePDF(support_).getImplementation()->getData();
@@ -344,7 +377,7 @@ void PointConditionalDistribution::update()
   // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
   // r_ is a free parameter, could be optimized to maximize the acceptance ratio
   const UnsignedInteger dimension = getDimension();
-  if (!useSimplifiedVersion_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
+  if (!useSimplifiedVersion_ && !useGenericConditionalMethods_ && isContinuous() && (dimension <= ResourceMap::GetAsUnsignedInteger("PointConditionalDistribution-SmallDimension"))
       && ResourceMap::GetAsBool("PointConditionalDistribution-InitializeSampling"))
   {
     // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
@@ -694,6 +727,8 @@ Point PointConditionalDistribution::getRealization() const
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.getRealization();
+  if (useGenericConditionalMethods_)
+    return Point(1, distribution_.computeConditionalQuantile(RandomGenerator::Generate(), conditioningValues_));
 
   if (isDiscrete())
   {
@@ -753,8 +788,9 @@ Scalar PointConditionalDistribution::computeLogPDF(const Point & point) const
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeLogPDF(point);
-  else
-    return distribution_.computeLogPDF(expandPoint(point)) - logNormalizationFactor_;
+  if (useGenericConditionalMethods_)
+    return std::log(distribution_.computeConditionalPDF(point[0], conditioningValues_));
+  return distribution_.computeLogPDF(expandPoint(point)) - logNormalizationFactor_;
 }
 
 /* Get the PDF of the distribution */
@@ -762,8 +798,9 @@ Scalar PointConditionalDistribution::computePDF(const Point & point) const
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computePDF(point);
-  else
-    return std::exp(computeLogPDF(point));
+  if (useGenericConditionalMethods_)
+    return distribution_.computeConditionalPDF(point[0], conditioningValues_);
+  return std::exp(computeLogPDF(point));
 }
 
 /* Get the CDF of the distribution */
@@ -771,7 +808,8 @@ Scalar PointConditionalDistribution::computeCDF(const Point & point) const
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeCDF(point);
-
+  if (useGenericConditionalMethods_)
+    return distribution_.computeConditionalCDF(point[0], conditioningValues_);
   return computeProbability(Interval(getRange().getLowerBound(), point));
 }
 
@@ -780,6 +818,8 @@ Scalar PointConditionalDistribution::computeProbability(const Interval & interva
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeProbability(interval);
+  if (useGenericConditionalMethods_)
+    return distribution_.computeConditionalCDF(interval.getUpperBound()[0], conditioningValues_) - distribution_.computeConditionalCDF(interval.getLowerBound()[0], conditioningValues_);
 
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension)
@@ -810,6 +850,8 @@ Scalar PointConditionalDistribution::computeScalarQuantile(const Scalar prob, co
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeScalarQuantile(prob, tail);
+  if (useGenericConditionalMethods_)
+    return distribution_.computeConditionalQuantile(tail ? 1.0 - prob : prob, conditioningValues_);
 
   return DistributionImplementation::computeScalarQuantile(prob, tail);
 }
@@ -818,6 +860,8 @@ Point PointConditionalDistribution::computeQuantile(const Scalar prob, const Boo
 {
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeQuantile(prob, tail);
+  if (useGenericConditionalMethods_)
+    return Point(1, distribution_.computeConditionalQuantile(tail ? 1.0 - prob : prob, conditioningValues_));
 
   return DistributionImplementation::computeQuantile(prob, tail);
 }
