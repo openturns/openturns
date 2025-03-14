@@ -281,7 +281,7 @@ Scalar PlackettCopula::computeConditionalQuantile(const Scalar q, const Point & 
   const Scalar t49 = t22 * q;
   const Scalar t56 = 16.0 * t24 * t25 - 16.0 * t24 * u + 20.0 * t3 * t25 - 32.0 * t31 * t25 + 16.0 * t34 * t25 + 20.0 * t39 * t25 - 32.0 * t44 * t25 - 4.0 * t49 * t25 + 32.0 * t31 * u - 16.0 * t34 * u - 20.0 * t39 * u + 32.0 * t44 * u;
   const Scalar t70 = -4.0 * t4 * t25 + 4.0 * t49 * u + 2.0 * a - 4.0 * q + t1 + 4.0 * t10 + 0.8e1 * t12 - 0.8e1 * t16 + 4.0 * t2 + 4.0 * t3 - 4.0 * t4 - 20.0 * t8 + 1.0;
-  const Scalar A = 1.0 / (t3 - t4 - a - 1.0);
+  const Scalar A = 0.5 / (t3 - t4 - a - 1.0);
   const Scalar B = (4.0 * t12 * u - 4.0 * t16 * u - a - 2.0 * t10 - 2.0 * t12 + 2.0 * t16 + 2.0 * t8 - 1.0);
   const Scalar C = std::sqrt(t56 + t70);
   if (q <= 0.5)
