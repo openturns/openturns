@@ -486,7 +486,7 @@ void EllipticalDistribution::update()
   {
     // Try to compute the Cholesky factor of the shape matrix
     TriangularMatrix cholesky(getCholesky());
-    inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
+    inverseCholesky_ = cholesky.inverse().getImplementation();
     normalizationFactor_ = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky(i, i);
   } // dimension > 1
@@ -585,7 +585,7 @@ void EllipticalDistribution::setR(const CorrelationMatrix & R)
     for (UnsignedInteger j = 0; j <= i; ++j)
       shape(i, j) *= sigma_[i] * sigma_[j];
   TriangularMatrix cholesky(shape.computeRegularizedCholesky());
-  inverseCholesky_ = cholesky.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
+  inverseCholesky_ = cholesky.inverse().getImplementation();
   R_ = R;
   normalizationFactor_ = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
