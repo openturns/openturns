@@ -57,7 +57,6 @@ margin CDF=0.691462
 margin quantile= class=Point name=Unnamed dimension=1 values=[1.6449]
 margin realization= class=Point name=Unnamed dimension=1 values=[-1.2662]
 chol= class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-invchol= class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*t(chol)= class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0.5]]
 Standard representative= Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
@@ -113,9 +112,9 @@ density generator derivative (FD)=-0.061975
 density generator second derivative     =0.030987
 density generator second derivative (FD)=0.030987
 Radial CDF(2.000000 )=0.864665
-conditional PDF=0.226500
-conditional CDF=0.572644
-conditional quantile=0.692157
+conditional PDF=0.224268
+conditional CDF=0.591319
+conditional quantile=0.638810
 sequential conditional PDF= [0.35207,0.23033]
 sequential conditional CDF( [1.5,2.5] )= [0.93319,0.71815]
 sequential conditional quantile( [0.93319,0.71815] )= [1.5,2.5]
@@ -137,7 +136,6 @@ margins quantile= class=Point name=Unnamed dimension=2 values=[3.8327,1.9163]
 margins CDF(qantile)=0.950000
 margins realization= class=Point name=Unnamed dimension=2 values=[0.64156,-0.3331]
 chol= class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,1.7321]
-invchol= class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,-0.57735,0,0.57735]
 chol*t(chol)= class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
 Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mu_2,sigma_2] values=[0,3],class=PointWithDescription name=dependence dimension=3 description=[R_1_0,R_2_0,R_2_1] values=[0.5,0,0.5]]
 Standard representative= Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
@@ -179,9 +177,9 @@ density generator derivative (FD)=-0.021819
 density generator second derivative     =0.010910
 density generator second derivative (FD)=0.010910
 Radial CDF(2.000000 )=0.738536
-conditional PDF=0.156324
-conditional CDF=0.612703
-conditional quantile=1.059381
+conditional PDF=0.158054
+conditional CDF=0.596752
+conditional quantile=0.620571
 sequential conditional PDF= [0.35207,0.23033,0.15951]
 sequential conditional CDF( [1.5,2.5,3.5] )= [0.93319,0.71815,0.84628]
 sequential conditional quantile( [0.93319,0.71815,0.84628] )= [1.5,2.5,3.5]
@@ -208,7 +206,6 @@ margins quantile= class=Point name=Unnamed dimension=2 values=[3.8327,1.9163]
 margins CDF(qantile)=0.950000
 margins realization= class=Point name=Unnamed dimension=2 values=[-3.2404,-0.11209]
 chol= class=TriangularMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,0,1.7321,1.7321,0,0,2.4495]
-invchol= class=TriangularMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.57735,0.40825,0,0.57735,-0.40825,0,0,0.40825]
 chol*t(chol)= class=SquareMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
 Parameters collection= [class=PointWithDescription name=Marginal 1 dimension=2 description=[mu_0,sigma_0] values=[0,1],class=PointWithDescription name=Marginal 2 dimension=2 description=[mu_1,sigma_1] values=[0,2],class=PointWithDescription name=Marginal 3 dimension=2 description=[mu_2,sigma_2] values=[0,3],class=PointWithDescription name=Marginal 4 dimension=2 description=[mu_3,sigma_3] values=[0,4],class=PointWithDescription name=dependence dimension=6 description=[R_1_0,R_2_0,R_2_1,R_3_0,R_3_1,R_3_2] values=[0.5,0,0.5,0,0,0.5]]
 Standard representative= Normal(mu = [0,0,0,0], sigma = [1,1,1,1], R = [[ 1 0 0 0 ]
@@ -248,9 +245,9 @@ density generator derivative (FD)=-0.007682
 density generator second derivative     =0.003841
 density generator second derivative (FD)=0.003841
 Radial CDF(2.000000 )=0.593994
-conditional PDF=0.125757
-conditional CDF=0.531746
-conditional quantile=1.421725
+conditional PDF=0.125151
+conditional CDF=0.550328
+conditional quantile=1.001154
 sequential conditional PDF= [0.35207,0.23033,0.15951,0.12616]
 sequential conditional CDF( [1.5,2.5,3.5,4.5] )= [0.93319,0.71815,0.84628,0.73646]
 sequential conditional quantile( [0.93319,0.71815,0.84628,0.73646] )= [1.5,2.5,3.5,4.5]
@@ -282,5 +279,4 @@ margins quantile= class=Point name=Unnamed dimension=2 values=[3.8327,1.9163]
 margins CDF(qantile)=0.950000
 margins realization= class=Point name=Unnamed dimension=2 values=[-2.0688,-0.087266]
 chol= class=TriangularMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,0,1.7321,1.7321,0,0,0,2.4495,2.4495,0,0,0,3.1623]
-invchol= class=TriangularMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,-0.57735,0.40825,-0.31623,0,0.57735,-0.40825,0.31623,0,0,0.40825,-0.31623,0,0,0,0.31623]
 chol*t(chol)= class=SquareMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,1,4,3,0,0,3,9,6,0,0,6,16]

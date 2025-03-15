@@ -231,7 +231,6 @@ for dim in range(1, 5):
     chol = distribution.getCholesky()
     invChol = distribution.getInverseCholesky()
     print("chol=", repr(chol))
-    print("invchol=", repr(invChol))
     print("chol*t(chol)=", repr((chol * chol.transpose())))
     ott.assert_almost_equal((chol * invChol), ot.IdentityMatrix(dim))
 
