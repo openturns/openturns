@@ -443,7 +443,7 @@ Distribution MaximumLikelihoodFactory::BuildGaussianEstimator (
     offset += parameterDimension;
     theta = theta + dpdfi.computeGram(false);
   }
-  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension)).getImplementation());
+  const CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).inverse().getImplementation());
   return Normal(distribution.getParameter(), covariance);
 }
 
