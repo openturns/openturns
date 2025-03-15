@@ -1158,42 +1158,42 @@ private:
       return;
 
     LOGTRACE(OSS() << "checking conditional PDF...");
-    const Point mean(distribution_.getMean());
-    LOGTRACE(OSS() << "mean=" << mean<<" dim="<<distribution_.getDimension());
-    const Point seqPDF(distribution_.computeSequentialConditionalPDF(mean));
+    const Point point(distribution_.getRange().getLowerBound() * 0.4 + distribution_.getRange().getUpperBound() * 0.6);
+    LOGTRACE(OSS() << "point=" << point << " dim=" << distribution_.getDimension());
+    const Point seqPDF(distribution_.computeSequentialConditionalPDF(point));
     LOGTRACE(OSS() << "sequential conditional PDF=" << seqPDF.__str__());
     if (seqPDF.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq PDF dim (" << seqPDF.getDimension() << ") for " << distribution_);
 
     if (distribution_.getDimension() == 1)
-      assert_almost_equal(seqPDF[0], distribution_.computePDF(mean), pdfTolerance_, pdfTolerance_, "seq PDF (1d) " + distribution_.__repr__());
+      assert_almost_equal(seqPDF[0], distribution_.computePDF(point), pdfTolerance_, pdfTolerance_, "seq PDF (1d) " + distribution_.__repr__());
 
     // check consistency with computeSequentialConditionalPDF
     for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
     {
       Point y(i);
-      std::copy(mean.begin(), mean.begin() + i, y.begin());
-      const Scalar x = mean[i];
+      std::copy(point.begin(), point.begin() + i, y.begin());
+      const Scalar x = point[i];
       const Scalar condPDF = distribution_.computeConditionalPDF(x, y);
       LOGTRACE(OSS() << "i=" << i << " x=" << x << " y=" << y << " conditional PDF=" << condPDF);
       assert_almost_equal(condPDF, seqPDF[i], pdfTolerance_, pdfTolerance_, "seq pdf " + distribution_.__repr__());
     }
 
     LOGTRACE(OSS() << "checking conditional CDF...");
-    const Point seqCDF(distribution_.computeSequentialConditionalCDF(mean));
+    const Point seqCDF(distribution_.computeSequentialConditionalCDF(point));
     LOGTRACE(OSS() << "sequential conditional CDF=" << seqCDF.__str__());
     if (seqCDF.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq CDF dim (" << seqCDF.getDimension() << ") for " << distribution_);
 
     if (distribution_.getDimension() == 1)
-      assert_almost_equal(seqCDF[0], distribution_.computeCDF(mean), quantileTolerance_, quantileTolerance_, "seq CDF (1d) " + distribution_.__repr__());
+      assert_almost_equal(seqCDF[0], distribution_.computeCDF(point), quantileTolerance_, quantileTolerance_, "seq CDF (1d) " + distribution_.__repr__());
 
     // check consistency with computeSequentialConditionalCDF
     for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
     {
       Point y(i);
-      std::copy(mean.begin(), mean.begin() + i, y.begin());
-      const Scalar x = mean[i];
+      std::copy(point.begin(), point.begin() + i, y.begin());
+      const Scalar x = point[i];
       const Scalar condCDF = distribution_.computeConditionalCDF(x, y);
       LOGTRACE(OSS() << "i=" << i << " x=" << x << " y=" << y << " conditional CDF=" << condCDF);
       assert_almost_equal(condCDF, seqCDF[i], cdfTolerance_, cdfTolerance_, "seq cdf " + distribution_.__repr__());
@@ -1205,10 +1205,7 @@ private:
     LOGTRACE(OSS() << "sequential conditional quantile=" << seqQ.__str__());
     if (seqQ.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq quantile dim (" << seqCDF.getDimension() << ") for " << distribution_);
-
-    if (distribution_.getDimension() == 1)
-        assert_almost_equal(seqQ[0], distribution_.computeScalarQuantile(p), quantileTolerance_, quantileTolerance_, "seq quantile (1d)" + distribution_.__repr__());
-
+    
     // check consistency with computeSequentialConditionalQuantile
     for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
     {
@@ -1218,6 +1215,22 @@ private:
       LOGTRACE(OSS() << "i=" << i << " y=" << y << " conditional quantile=" << condQuantile);
       assert_almost_equal(condQuantile, seqQ[i], quantileTolerance_, quantileTolerance_, "seq quantile " + distribution_.__repr__());
     }
+
+    // check consistency between computeConditionalQuantile and computeConditionalCDF
+    for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
+    {
+      Point y(i);
+      std::copy(seqQ.begin(), seqQ.begin() + i, y.begin());
+      for (UnsignedInteger j = 1; j < 10; ++j)
+	{
+	  const Scalar pj = 0.1 * j;
+	  const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
+	  const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
+	  LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
+	  assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
+	}
+    }
+    
   }
 
   void checkTransformation() const
