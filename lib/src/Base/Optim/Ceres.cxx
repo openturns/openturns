@@ -363,16 +363,26 @@ void Ceres::run()
       options.gradient_tolerance = ResourceMap::GetAsScalar("Ceres-gradient_tolerance");
     if (ResourceMap::HasKey("Ceres-parameter_tolerance"))
       options.parameter_tolerance = ResourceMap::GetAsScalar("Ceres-parameter_tolerance");
-    if (ResourceMap::HasKey("Ceres-linear_solver_type") && !ceres::StringToLinearSolverType(ResourceMap::Get("Ceres-linear_solver_type"), &options.linear_solver_type))
-      throw InvalidArgumentException(HERE) << "Invalid value for linear_solver_type";
     if (ResourceMap::HasKey("Ceres-preconditioner_type") && !ceres::StringToPreconditionerType(ResourceMap::Get("Ceres-preconditioner_type"), &options.preconditioner_type))
       throw InvalidArgumentException(HERE) << "Invalid value for preconditioner_type";
     if (ResourceMap::HasKey("Ceres-visibility_clustering_type") && !ceres::StringToVisibilityClusteringType(ResourceMap::Get("Ceres-visibility_clustering_type"), &options.visibility_clustering_type))
       throw InvalidArgumentException(HERE) << "Invalid value for visibility_clustering_type";
     if (ResourceMap::HasKey("Ceres-dense_linear_algebra_library_type") && !ceres::StringToDenseLinearAlgebraLibraryType(ResourceMap::Get("Ceres-dense_linear_algebra_library_type"), &options.dense_linear_algebra_library_type))
       throw InvalidArgumentException(HERE) << "Invalid value for dense_linear_algebra_library_type";
+
+    // prefer eigen sparse algebra backend over suitesparse
+    if (ceres::IsSparseLinearAlgebraLibraryTypeAvailable(ceres::EIGEN_SPARSE))
+      options.sparse_linear_algebra_library_type = ceres::EIGEN_SPARSE;
+    else
+    {
+      options.sparse_linear_algebra_library_type = ceres::NO_SPARSE;
+      options.linear_solver_type = ceres::DENSE_QR;
+    }
     if (ResourceMap::HasKey("Ceres-sparse_linear_algebra_library_type") && !ceres::StringToSparseLinearAlgebraLibraryType(ResourceMap::Get("Ceres-sparse_linear_algebra_library_type"), &options.sparse_linear_algebra_library_type))
       throw InvalidArgumentException(HERE) << "Invalid value for sparse_linear_algebra_library_type";
+    if (ResourceMap::HasKey("Ceres-linear_solver_type") && !ceres::StringToLinearSolverType(ResourceMap::Get("Ceres-linear_solver_type"), &options.linear_solver_type))
+      throw InvalidArgumentException(HERE) << "Invalid value for linear_solver_type";
+
     if (ResourceMap::HasKey("Ceres-use_explicit_schur_complement"))
       options.use_explicit_schur_complement = ResourceMap::GetAsBool("Ceres-use_explicit_schur_complement");
     if (ResourceMap::HasKey("Ceres-dynamic_sparsity"))
