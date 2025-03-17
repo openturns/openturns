@@ -80,7 +80,7 @@ view = viewer.View(cov_graph)
 
 # %%
 # Use raw matshow
-plt.matshow(covariance)
+_ = plt.matshow(covariance)
 
 # %%
 # Draw the covariance model as a matrix with the correct axes.
