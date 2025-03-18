@@ -105,6 +105,13 @@ private:
   /** Compute the mean of the distribution */
   void computeMean() const override;
 
+  /** Compute the covariance of the distribution */
+  void computeCovariance() const override;
+
+  /** Compute the shifted moments of the distribution */
+  Point computeShiftedMomentContinuous(const UnsignedInteger n,
+				       const Point & shift) const override;
+
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 

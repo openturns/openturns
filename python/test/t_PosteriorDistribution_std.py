@@ -63,6 +63,7 @@ for conditioning in conditioningDistributionCollection:
     validation = ott.DistributionValidation(distribution)
     validation.setMomentsSamplingSize(10000)
     validation.skipCorrelation()  # slow
+    validation.skipDependenceMeasures()  # slow
     validation.skipParameters()  # not yet implemented
     validation.skipGradient()  # not yet implemented
     validation.run()

@@ -29,5 +29,5 @@ marginal = distribution.getMarginal([0, 2])
 print("Marginal [0, 2]=", marginal)
 
 validation = ott.DistributionValidation(distribution)
-validation.skipCorrelation()  # too slow
+validation.skipDependenceMeasures()  # too slow
 validation.run()

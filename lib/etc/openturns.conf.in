@@ -676,6 +676,7 @@
   <TruncatedNormalFactory-SigmaLowerBound value_float="1.0e-4" />
 
   <!-- OT::TruncatedOverMesh parameters -->
+  <TruncatedOverMesh-UseRejection         value_bool="false" />
   <TruncatedOverMesh-OptimizationAlgorithm value_str="TNC" />
   <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />

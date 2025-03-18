@@ -500,6 +500,10 @@ public:
   {
     enableCorrelation_ = false;
   }
+  void skipDependenceMeasures()
+  {
+    enableDependenceMeasures_ = false;
+  }
   void skipMinimumVolumeLevelSet()
   {
     enableMinimumVolumeLevelSet_ = false;
@@ -991,7 +995,6 @@ private:
 
     LOGTRACE(OSS() << "generating big sample...");
     const Sample sample(distribution_.getSample(momentsSamplingSize_));
-
     if (enableMoments_)
     {
       LOGTRACE(OSS() << "checking moments...");
@@ -1034,7 +1037,10 @@ private:
       const CorrelationMatrix correlationMC(sample.computeLinearCorrelation());
       LOGTRACE(OSS() << "correlation(MC)=" << correlationMC);
       assert_almost_equal(correlation, correlationMC, correlationTolerance_, correlationTolerance_, "correlation " + distribution_.__repr__());
+    }
 
+    if (enableDependenceMeasures_)
+    {
       const CorrelationMatrix spearman(distribution_.getSpearmanCorrelation());
       LOGTRACE(OSS() << "spearman    =" << spearman);
       if (distribution_.isContinuous())
@@ -1293,6 +1299,7 @@ private:
   Scalar skewnessTolerance_ = 1e-1;
   Scalar kurtosisTolerance_ = 5.0;
   Bool enableCorrelation_ = true;
+  Bool enableDependenceMeasures_ = true;
   Scalar correlationTolerance_ = 2e-2;
   mutable Sample sample_;
   Bool enableMinimumVolumeInterval_ = true;

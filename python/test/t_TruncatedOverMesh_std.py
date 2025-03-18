@@ -13,7 +13,7 @@ domain = ot.LevelSet(function, ot.LessOrEqual(), level)
 lower = [-5.0] * 2
 upper = [5.0] * 2
 mesh = mesher.build(domain, ot.Interval(lower, upper), False)
-dist = ot.Normal([0.0] * 2, [2.0] * 2)
+dist = ot.Normal([1.0] * 2, [2.0] * 2)
 distribution = ot.TruncatedOverMesh(dist, mesh)
 print("Distribution ", distribution)
 
@@ -52,6 +52,12 @@ print("cdf=%.5g" % CDF)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipMoments()  # slow
-validation.skipCorrelation()  # slow
+# validation.skipMoments()
+validation.skipDependenceMeasures()  # slow
+validation.skipConditional()  # slow
+validation.run()
+ot.ResourceMap.SetAsBool("TruncatedOverMesh-UseRejection", True)
+validation = ott.DistributionValidation(distribution)
+validation.skipDependenceMeasures()  # slow
+validation.skipConditional()  # slow
 validation.run()
