@@ -500,6 +500,10 @@ public:
   {
     enableCorrelation_ = false;
   }
+  void skipDependenceMeasures()
+  {
+    enableDependenceMeasures_ = false;
+  }
   void skipMinimumVolumeLevelSet()
   {
     enableMinimumVolumeLevelSet_ = false;
@@ -701,6 +705,7 @@ private:
   {
     LOGTRACE(OSS() << "checking PDF...");
     const Sample sample(distribution_.getSample(pdfSamplingSize_));
+    sample.exportToCSVFile("sample_pdf.csv");
     for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
     {
       const Point x(sample[i]);
@@ -715,6 +720,7 @@ private:
   {
     LOGTRACE(OSS() << "checking LogPDF...");
     const Sample sample(distribution_.getSample(pdfSamplingSize_));
+    sample.exportToCSVFile("sample_logpdf.csv");
     for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
     {
       const Point x(sample[i]);
@@ -742,6 +748,7 @@ private:
     if (distribution_.isContinuous() && (dimension == 1))
     {
       const Sample sample(distribution_.getSample(cdfSamplingSize_));
+      sample.exportToCSVFile("sample_cdf.csv");
       for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
       {
         const Point x(sample[i]);
@@ -762,6 +769,7 @@ private:
     {
       LOGTRACE(OSS() << "checking DDF...");
       const Sample sample(distribution_.getSample(10));
+      sample.exportToCSVFile("sample_ddf.csv");
       const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
       for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
       {
@@ -793,6 +801,7 @@ private:
     {
       LOGTRACE(OSS() << "checking CCDF...");
       const Sample sample(distribution_.getSample(cdfSamplingSize_));
+      sample.exportToCSVFile("sample_ccdf.csv");
       for (UnsignedInteger i = 0; i < sample.getSize(); ++ i)
       {
         const Point x(sample[i]);
@@ -991,7 +1000,7 @@ private:
 
     LOGTRACE(OSS() << "generating big sample...");
     const Sample sample(distribution_.getSample(momentsSamplingSize_));
-
+    sample.exportToCSVFile("sample_moments.csv");
     if (enableMoments_)
     {
       LOGTRACE(OSS() << "checking moments...");
@@ -1034,7 +1043,10 @@ private:
       const CorrelationMatrix correlationMC(sample.computeLinearCorrelation());
       LOGTRACE(OSS() << "correlation(MC)=" << correlationMC);
       assert_almost_equal(correlation, correlationMC, correlationTolerance_, correlationTolerance_, "correlation " + distribution_.__repr__());
+    }
 
+    if (enableDependenceMeasures_)
+    {
       const CorrelationMatrix spearman(distribution_.getSpearmanCorrelation());
       LOGTRACE(OSS() << "spearman    =" << spearman);
       if (distribution_.isContinuous())
@@ -1293,6 +1305,7 @@ private:
   Scalar skewnessTolerance_ = 1e-1;
   Scalar kurtosisTolerance_ = 5.0;
   Bool enableCorrelation_ = true;
+  Bool enableDependenceMeasures_ = true;
   Scalar correlationTolerance_ = 2e-2;
   mutable Sample sample_;
   Bool enableMinimumVolumeInterval_ = true;
