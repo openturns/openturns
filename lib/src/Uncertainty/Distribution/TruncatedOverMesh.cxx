@@ -33,6 +33,7 @@
 #include "openturns/SimplicialCubature.hxx"
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 
@@ -171,6 +172,17 @@ private:
 /* Get one realization of the distribution */
 Point TruncatedOverMesh::getRealization() const
 {
+  // Do we use rejection?
+  if (ResourceMap::GetAsBool("TruncatedOverMesh-UseRejection"))
+    {
+      Point x;
+      do
+	{
+	  x = distribution_.getRealization();
+	}
+      while (!meshDomain_.contains(x));
+      return x;
+    }
   // pick a simplex
   const UnsignedInteger index = DistFunc::rDiscrete(base_, alias_);
   const Sample simplexVertices(getSimplexVertices(index));
@@ -247,17 +259,60 @@ Scalar TruncatedOverMesh::computeProbabilityContinuous(const Interval & interval
 void TruncatedOverMesh::computeMean() const
 {
   // integrate x*f(x) using the cubature on mesh
-  Point mean(dimension_);
   const SimplicialCubature algo;
-  const IdentityFunction idn(dimension_);
-  for(UnsignedInteger j = 0; j < dimension_; ++ j)
-  {
-    const Implementation marginalDistribution(distribution_.getMarginal(j).getImplementation());
-    const ShiftedMomentWrapper integrand(1, 0.0, marginalDistribution);
-    mean[j] = algo.integrate(ComposedFunction(integrand, idn.getMarginal(j)), mesh_)[0];
-  }
-  mean_ = mean;
+  const Function integrand(getPDF() * IdentityFunction(dimension_));
+  mean_ = algo.integrate(integrand, mesh_);
   isAlreadyComputedMean_ = true;
+}
+
+/* Get the shifted moments of the distribution */
+Point TruncatedOverMesh::computeShiftedMomentContinuous(const UnsignedInteger n,
+    const Point & shift) const
+{
+  if (shift.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
+  if (n == 0) return Point(dimension_, 1.0);
+  // integrate x*f(x) using the cubature on mesh
+  const Description inputVariables(Description::BuildDefault(dimension_, "x"));
+  Description formulas(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    formulas[i] = "(" + inputVariables[i] + "-(" + String(OSS() << std::setprecision(17) << shift[i]) + "))^" + String(OSS() << n);
+  const SimplicialCubature algo;
+  const Function integrand(getPDF() * SymbolicFunction(inputVariables, formulas));
+  return algo.integrate(integrand, mesh_);
+}
+
+/* Compute the covariance of the distribution */
+void TruncatedOverMesh::computeCovariance() const
+{
+  // integrate (x_i-mu)*(x_j-mu)*f(x) using the cubature on mesh
+  const SimplicialCubature algo;
+  (void) getMean();
+  const Description inputVariables(Description::BuildDefault(dimension_, "x"));
+  Description formulas((dimension_ * (dimension_ + 1)) / 2);
+  Description meanAsStrings(dimension_);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      meanAsStrings[j] = (OSS() << std::setprecision(17) << mean_[j]);
+      for (UnsignedInteger i = 0; i <= j; ++i)
+	{
+	  formulas[index] = "(" + inputVariables[i] + "-(" + meanAsStrings[i] + "))*(" + inputVariables[j] + "-(" + meanAsStrings[j] + "))";
+	  ++index;
+	} // i
+    } // j
+  const Function integrand(getPDF() * SymbolicFunction(inputVariables, formulas));
+  const Point covarianceAsPoint(algo.integrate(integrand, mesh_));
+  covariance_ = CovarianceMatrix(dimension_);
+  index = 0;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      for (UnsignedInteger i = 0; i <= j; ++i)
+	{
+	  covariance_(i, j) = covarianceAsPoint[index];
+	  ++index;
+	} // i
+    } // j
+  isAlreadyComputedCovariance_ = true;
 }
 
 
@@ -271,37 +326,40 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
   mesh_ = mesh;
   meshDomain_ = MeshDomain(mesh);
 
-  // compute the weighted probability of the simplices
   const UnsignedInteger simplicesNumber = mesh.getSimplicesNumber();
   probabilities_.resize(simplicesNumber);
-  pdfSup_.resize(simplicesNumber);
   for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
-  {
-    // integrate the pdf over the simplex via the unit hypercube transformation
-    const SimplicialCubature integrationAlgorithm;
-    const Mesh simplexMesh(mesh.getSubMesh({i}));
-    probabilities_[i] = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
-
-    // look for pdf maxima over the simplex in the same way
-    const Sample simplexVertices(getSimplexVertices(i));
-    const Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
-    const ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
-    OptimizationProblem problem(pdfUnitCube);
-    problem.setMinimization(false);
-    problem.setBounds(Interval(dimension));
-    const String solverName = ResourceMap::GetAsString("TruncatedOverMesh-OptimizationAlgorithm");
-    OptimizationAlgorithm solver(OptimizationAlgorithm::GetByName(solverName));
-    solver.setProblem(problem);
-    solver.setStartingPoint(Point(dimension, 0.5)); // start from median
-    solver.run();
-    OptimizationResult result(solver.getResult());
-    pdfSup_[i] = result.getOptimalValue()[0];
-  }
+    {
+      // integrate the pdf over the simplex via the unit hypercube transformation
+      const SimplicialCubature integrationAlgorithm;
+      const Mesh simplexMesh(mesh.getSubMesh({i}));
+      probabilities_[i] = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
+    }
+  if (!ResourceMap::GetAsBool("TruncatedOverMesh-UseRejection"))
+    {
+      // compute the weighted probability of the simplices
+      pdfSup_.resize(simplicesNumber);
+      for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
+	{
+	  // look for pdf maxima over the simplex in the same way
+	  const Sample simplexVertices(getSimplexVertices(i));
+	  const Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
+	  const ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
+	  OptimizationProblem problem(pdfUnitCube);
+	  problem.setMinimization(false);
+	  problem.setBounds(Interval(dimension));
+	  const String solverName = ResourceMap::GetAsString("TruncatedOverMesh-OptimizationAlgorithm");
+	  OptimizationAlgorithm solver(OptimizationAlgorithm::GetByName(solverName));
+	  solver.setProblem(problem);
+	  solver.setStartingPoint(Point(dimension, 0.5)); // start from median
+	  solver.run();
+	  OptimizationResult result(solver.getResult());
+	  pdfSup_[i] = result.getOptimalValue()[0];
+	}
+      DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
+    } // ! use rejection
   normalizationFactor_ = 1.0 / std::accumulate(probabilities_.begin(), probabilities_.end(), 0.0);
   probabilities_ *= normalizationFactor_;
-
-  DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
-
   const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber");
   const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / getDimension())));
   const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber");
