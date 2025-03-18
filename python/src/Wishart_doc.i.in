@@ -18,7 +18,7 @@ InverseWishart
 
 Notes
 -----
-The distribution is of dimension :math:`\frac{p(p+1)}{2}` (without the symmetry terms).
+The distribution is of dimension :math:`\frac{p(p+1)}{2}` (without the symmetry terms). Its CDF is computed using a generic algorithm controlled by a positive scale associated to the entry *Wishart-CDFScaleFactor* of :class:`~openturns.ResourceMap`.
 
 Examples
 --------

@@ -590,6 +590,9 @@
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
 
+  <!-- OT::InverseWishart parameters -->
+  <InverseWishart-CDFScaleFactor value_float="0.5" />
+
   <!-- OT::KernelMixture parameters -->
   <KernelMixture-LargeSize            value_int="20"   />
   <KernelMixture-PDFCDFDiscretization value_int="1000" />
@@ -715,7 +718,8 @@
   <QuantileMatchingFactory-MaximumCallsNumber      value_int="1000" />
 
   <!-- OT::Student parameters -->
-  <Student-MinimumCDFEpsilon              value_float="5.0e-2"             />
+  <Student-CDFScaleFactor                 value_float="4.0"    />
+  <Student-MinimumCDFEpsilon              value_float="5.0e-2" />
   <Student-MarginalIntegrationNodesNumber value_int="16"       />
   <Student-MaximumNumberOfPoints          value_int="10000000" />
   <Student-MinimumNumberOfPoints          value_int="100000"   />
@@ -748,6 +752,9 @@
   <VonMisesFactory-ResidualPrecision value_float="1e-12"        />
   <VonMisesFactory-MaximumIteration  value_int="10" />
   
+  <!-- OT::Wishart parameters -->
+  <Wishart-CDFScaleFactor value_float="0.5" />
+
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
   <AliMikhailHaqCopulaFactory-ThetaEpsilon value_float="1.0e-14" />
 
@@ -984,6 +991,7 @@
   <Distribution-RoughnessSamplingMethod           value_str="MonteCarlo" />
   <Distribution-SupportPointStyleDiscretePDF      value_str="dot" />
   <Distribution-CharacteristicFunctionNMax        value_int="1000000" />
+  <Distribution-DefaultCDFIteration               value_int="10000"   />
   <Distribution-DefaultIntegrationNodesNumber     value_int="255"     />
   <Distribution-DefaultLevelNumber                value_int="10"      />
   <Distribution-DefaultPointNumber                value_int="129"     />
