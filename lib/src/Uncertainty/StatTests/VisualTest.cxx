@@ -343,7 +343,7 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
   const Description description(sample.getDescription());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    Graph pdfGraph(distribution.getMarginal(i).drawPDF());
+    Graph pdfGraph(distribution.getMarginal(i).drawPDF(sample.getMarginal(i).getMin()[0], sample.getMarginal(i).getMax()[0]));
     pdfGraph.setLegends(Description(1));
     pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
     pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
