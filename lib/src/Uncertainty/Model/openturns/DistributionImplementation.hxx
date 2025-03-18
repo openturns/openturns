@@ -234,6 +234,7 @@ public:
 protected:
   virtual Sample computeCDFSequential(const Sample & sample) const;
   virtual Sample computeCDFParallel(const Sample & sample) const;
+  virtual Scalar computeCDFUnimodal(const Point & point, const Point & location, const Point & scale) const;
 public:
   virtual Sample computeCDF(const Sample & sample) const;
 protected:
