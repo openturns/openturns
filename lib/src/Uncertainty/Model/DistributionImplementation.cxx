@@ -2992,6 +2992,14 @@ Point DistributionImplementation::getKurtosis() const
 Point DistributionImplementation::getMoment(const UnsignedInteger n) const
 {
   if (n == 0) return Point(dimension_, 1.0);
+  if ((n == 1) && isAlreadyComputedMean_) return mean_;
+  if ((n == 2) && isAlreadyComputedMean_ && isAlreadyComputedCovariance_)
+    {
+      Point moments2(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	moments2[i] = covariance_(i, i) + mean_[i] * mean_[i];
+      return moments2;
+    }
   return getShiftedMoment(n, Point(dimension_, 0.0));
 }
 
@@ -3000,6 +3008,13 @@ Point DistributionImplementation::getCentralMoment(const UnsignedInteger n) cons
 {
   if (n == 0) return Point(dimension_, 1.0);
   if (n == 1) return Point(dimension_, 0.0);
+  if ((n == 2) && isAlreadyComputedCovariance_)
+    {
+      Point variance(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	variance[i] = covariance_(i, i);
+      return variance;
+    }
   return getShiftedMoment(n, getMean());
 }
 
