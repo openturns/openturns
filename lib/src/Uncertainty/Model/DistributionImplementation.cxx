@@ -71,6 +71,8 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
+#include "openturns/SimplicialCubature.hxx"
+#include "openturns/CubaIntegration.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/TriangularMatrix.hxx"
@@ -748,6 +750,72 @@ Scalar DistributionImplementation::computeCDF(const Point & point) const
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCDF(const Point & point) const";
 }
 
+/* For unimodal distributions one can compute the CDF by exploring boxes of
+   significant probability content */
+Scalar DistributionImplementation::computeCDFUnimodal(const Point & point, const Point & location, const Point & scale, const IntegrationAlgorithm & algo, const Scalar epsilon) const
+{
+  const Function pdf(getPDF());
+  Scalar cdf = 0.0;
+  UnsignedInteger iteration = 0;
+  Indices locationIndices(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const SignedInteger step = (point[i] - location[i]) / scale[i];
+      if (step > 0)
+	locationIndices[i] = step;
+    }
+  Collection<Indices> todo(1, locationIndices);
+  std::map<Indices, UnsignedInteger> done;
+  const UnsignedInteger maximumIteration = SpecFunc::IPow(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultCDFIteration"), dimension_);
+  Scalar delta = 0.0;
+  std::map<Indices, UnsignedInteger>::iterator it;
+  while ((iteration < maximumIteration) && (todo.getSize() > 0))
+    {
+      Indices shift(todo[0]);
+      todo.erase(todo.begin());
+      it = done.find(shift);
+      // Check if we have to compute the cell
+      if (it == done.end())
+	{
+	  done[shift] = 1;
+	  Point b(point);
+	  Point a(point);
+	  for (UnsignedInteger i = 0; i < dimension_; ++i)
+	    {
+	      b[i] -= shift[i] * scale[i];
+	      a[i] = b[i] - scale[i];
+	    } // i
+	  const Interval box(a, b);
+	  delta = algo.integrate(pdf, box)[0];
+	  cdf += delta;
+	  // If the contribution is large enough, add the neighborhood of
+	  // the cell to the list
+	  if (delta > epsilon)
+	    {
+	      for (UnsignedInteger index = 0; index < dimension_; ++index)
+		{
+		  const UnsignedInteger shiftIndex = shift[index];
+		  // Try to move backward
+		  if (shiftIndex > 0)
+		    {
+		      shift[index] -= 1;
+		      it = done.find(shift);
+		      if (it == done.end()) todo.add(shift);
+		      shift[index] = shiftIndex;
+		    }
+		  // Move forward
+		  shift[index] += 1;
+		  it = done.find(shift);
+		  if (it == done.end()) todo.add(shift);
+		  shift[index] = shiftIndex;
+		} // index
+	    } // delta > eps
+	  ++iteration;
+	} // if (it == done.end())
+    } // (iteration < maximumIteration) && (todo.getSize() > 0)
+  return cdf;
+}
+
 Scalar DistributionImplementation::computeComplementaryCDF(const Point & point) const
 {
   const Scalar cdf = computeCDF(point);
@@ -1129,7 +1197,6 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
   if (dimension_ == 1)
     return computeProbabilityContinuous1D(reducedInterval.getLowerBound()[0], reducedInterval.getUpperBound()[0]);
   // Use adaptive multidimensional integration of the PDF on the reduced interval
-  const PDFWrapper pdfWrapper(this);
   Scalar probability = 1.0;
   if (hasIndependentCopula())
   {
@@ -1138,7 +1205,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
     for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i).getImplementation()->computeProbabilityContinuous1D(lower[i], upper[i]);
   }
   else
-    probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+    probability = IteratedQuadrature().integrate(getPDF(), reducedInterval)[0];
 
   return SpecFunc::Clip01(probability);
 }
@@ -2992,6 +3059,14 @@ Point DistributionImplementation::getKurtosis() const
 Point DistributionImplementation::getMoment(const UnsignedInteger n) const
 {
   if (n == 0) return Point(dimension_, 1.0);
+  if ((n == 1) && isAlreadyComputedMean_) return mean_;
+  if ((n == 2) && isAlreadyComputedMean_ && isAlreadyComputedCovariance_)
+    {
+      Point moments2(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	moments2[i] = covariance_(i, i) + mean_[i] * mean_[i];
+      return moments2;
+    }
   return getShiftedMoment(n, Point(dimension_, 0.0));
 }
 
@@ -3000,6 +3075,13 @@ Point DistributionImplementation::getCentralMoment(const UnsignedInteger n) cons
 {
   if (n == 0) return Point(dimension_, 1.0);
   if (n == 1) return Point(dimension_, 0.0);
+  if ((n == 2) && isAlreadyComputedCovariance_)
+    {
+      Point variance(dimension_);
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+	variance[i] = covariance_(i, i);
+      return variance;
+    }
   return getShiftedMoment(n, getMean());
 }
 

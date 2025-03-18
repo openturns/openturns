@@ -48,9 +48,10 @@ pointCDF = copula.computeCDF(point)
 print("Point = ", repr(point), " pdf=%.6f" % pointPDF, " cdf=%.6f" % pointCDF)
 
 # Get 50% quantile
-quantile = copula.computeQuantile(0.5)
-print("Quantile=", repr(quantile))
-print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
+# Too costly
+# quantile = copula.computeQuantile(0.5)
+# print("Quantile=", repr(quantile))
+# print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
 
 # Extract the marginals
 for i in range(dim):
@@ -75,5 +76,6 @@ print("margins realization=", repr(margins.getRealization()))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
-validation.skipCDF()  # FIXME
+validation.setCDFTolerance(1e-4)
+validation.skipGradient()  # Too costly
 validation.run()

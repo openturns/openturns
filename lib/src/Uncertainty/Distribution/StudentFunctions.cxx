@@ -142,8 +142,8 @@ Scalar Student2DCDF(const Scalar nu,
     const Scalar loLimit = std::asin(rho);
     if (SpecFunc::IsNormal(x0) && SpecFunc::IsNormal(x1))
     {
-      const SymbolicFunction fullKernel(Description({"theta", "nu", "x0", "x1"}), Description({"1/(1+((x0*sin(theta)-(x1))^2 / cos(theta)^2 + (x0)^2)/nu)^(0.5*nu)"}));
-      const ParametricFunction kernel(fullKernel, Indices({1, 2, 3}), Point({nu, x0, x1}));
+      // Twice the speed of a ParametricFunction, same accuracy
+      const SymbolicFunction kernel("theta", String(OSS(true) << "1/(1+((" << x0 << "*sin(theta)-(" << x1 << "))^2 / cos(theta)^2 + (" << x0 << ")^2)/" << nu << ")^(0.5*" << nu << ")"));
       p2 = GaussKronrod().integrate(kernel, Interval(loLimit, hiLimit))[0];
     }
   }

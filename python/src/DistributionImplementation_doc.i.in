@@ -30,7 +30,27 @@ The cumulative distribution function is defined as:
 .. math::
 
     F_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i \leq x_i},
-                             \quad \vect{x} \in \Rset^d"
+                             \quad \vect{x} \in \Rset^d
+
+This method is overloaded by most of the actual distributions. Many generic
+algorithms are available depending on the properties of the
+distribution and can be used by actual distributions:
+
+- for discrete distributions, it is a summation of the probabilities
+  of the points contributing to the CDF;
+- for absolutely continuous distributions, it is done using an adaptive
+  integration of the PDF using :class:`~openturns.IteratedQuadrature`;
+- for unimodal absolutely continuous distributions, it is done using an
+  adaptive integration of the PDF using
+  :class:`~openturns.IteratedQuadrature` over a front of boxes starting
+  from the projection of the cell containing the mode and advancing in
+  all the directions toward the point at which one want to compute the
+  CDF and the directions pointing toward :math:`-\infty`. The size of
+  the boxes is controlled by a parameter set by the actual distribution
+  and the maximum number of cells to explore is controlled by the
+  *Distribution-DefaultCDFIteration* entry of :class:`~openturns.ResourceMap`
+
+"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDF
 OT_Distribution_computeCDF_doc
