@@ -92,7 +92,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
     const Scalar p = sample.computeEmpiricalCDF(sortedSample[i]);
     data(i, 1) = dist.computeScalarQuantile(p);
   }
-  Cloud cloudQQplot(data, "Data");
+  Cloud cloudQQplot(data);
   cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisector
