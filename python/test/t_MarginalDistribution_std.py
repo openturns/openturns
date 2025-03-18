@@ -102,7 +102,7 @@ for nDistribution in range(len(coll)):
     )
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipCorrelation()  # slow
+    validation.skipDependenceMeasures()  # slow
     validation.skipConditional()  # FIXME
     validation.skipTransformation()  # FIXME
     validation.run()

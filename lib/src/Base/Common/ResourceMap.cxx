@@ -1332,6 +1332,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("TruncatedNormalFactory-SigmaLowerBound", 1.0e-4);
 
   // TruncatedOverMesh parameters //
+  addAsBool("TruncatedOverMesh-UseRejection", false);
   addAsString("TruncatedOverMesh-OptimizationAlgorithm", "TNC");
   addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
