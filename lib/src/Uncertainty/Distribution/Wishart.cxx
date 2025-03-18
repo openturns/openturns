@@ -209,7 +209,8 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar Wishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  return DistributionImplementation::computeCDF(point);
+  const Scalar a = ResourceMap::GetAsScalar("Wishart-CDFScaleFactor");
+  return DistributionImplementation::computeCDFUnimodal(point, getMean(), a * getStandardDeviation());
 }
 
 /* Compute the mean of the distribution */

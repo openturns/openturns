@@ -38,7 +38,6 @@ InverseWishart::InverseWishart()
 {
   setName("InverseWishart");
   setV(CovarianceMatrix(1));
-  computeRange();
   update();
 }
 
@@ -169,6 +168,7 @@ Scalar InverseWishart::computeLogPDF(const Point & point) const
   // Build the covariance matrix associated to the given point
   CovarianceMatrix m(p);
   UnsignedInteger index = 0;
+  //std::cerr << "In computeLogPDF, point=" << point << ", p=" << p << std::endl;
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
@@ -209,11 +209,8 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar InverseWishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  if (point[0] < getRange().getLowerBound()[0])
-    return 0.0;
-  if (point[0] > getRange().getUpperBound()[0])
-    return 1.0;
-  return DistributionImplementation::computeCDF(point);
+  const Scalar a = ResourceMap::GetAsScalar("InverseWishart-CDFScaleFactor");
+  return DistributionImplementation::computeCDFUnimodal(point, getMean(), a * getStandardDeviation());
 }
 
 /* Compute the mean of the distribution */
