@@ -349,9 +349,7 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
   const Point sampleMax = sample.getMax();
   const Point sampleRange = sampleMax - sampleMin;
   const Point axesMin = sampleMin - xy_Margin * sampleRange;  
-  const Point axesMax = sampleMax + xy_Margin * sampleRange;    
-  
-  Point marginAxes = Point(dimension);
+  const Point axesMax = sampleMax + xy_Margin * sampleRange;
 
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
