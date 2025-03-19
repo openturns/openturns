@@ -1056,6 +1056,7 @@
   <VisualTest-CloudMediumSize value_int="1000" />
   <VisualTest-KendallPlot-MonteCarloSize value_int="100" />
   <VisualTest-DependenceConfidenceLevel value_float="0.95" />
+  <VisualTest-DrawPairsMarginals-AxesMargin value_float="0.10" />
 
   <!--  OT::RandomWalkMetropolisHastings parameters -->
   <RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor   value_float="1.2" />
