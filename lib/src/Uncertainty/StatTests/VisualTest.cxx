@@ -334,6 +334,7 @@ GridLayout VisualTest::DrawPairsXY(const Sample & sampleX, const Sample & sample
 /* Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
 GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
 {
+
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension < 2)
     throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
@@ -341,9 +342,21 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
     throw InvalidDimensionException(HERE) << "Distribution dimension does not match the sample dimension";
   GridLayout grid(dimension, dimension);
   const Description description(sample.getDescription());
+  
+  const Scalar xy_Margin = ResourceMap::GetAsScalar("VisualTest-DrawPairsMarginals-AxesMargin");
+  
+  const Point sampleMin = sample.getMin();
+  const Point sampleMax = sample.getMax();
+  const Point sampleRange = sampleMax - sampleMin;
+  const Point axesMin = sampleMin - xy_Margin * sampleRange;  
+  const Point axesMax = sampleMax + xy_Margin * sampleRange;    
+  
+  Point marginAxes = Point(dimension);
+
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    Graph pdfGraph(distribution.getMarginal(i).drawPDF(sample.getMarginal(i).getMin()[0], sample.getMarginal(i).getMax()[0]));
+    Graph pdfGraph(distribution.getMarginal(i).drawPDF(axesMin[i], axesMax[i]));
+    
     pdfGraph.setLegends(Description(1));
     pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
     pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
@@ -353,6 +366,19 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
       const Indices indices = {j, i};
       const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      
+      Point minRange(2,0.0);
+      minRange[0] = axesMin[j];
+      minRange[1] = axesMin[i];
+      
+      Point maxRange(2,0.0);
+      maxRange[0] = axesMax[j];
+      maxRange[1] = axesMax[i];
+      
+      const Interval marginInterval = Interval(minRange, maxRange);
+                                         
+      graph.setBoundingBox(marginInterval);
+
       graph.add(cloud);
       grid.setGraph(i, j, graph);
     }

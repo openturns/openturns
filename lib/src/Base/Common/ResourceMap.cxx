@@ -1706,7 +1706,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("VisualTest-CloudMediumSize", 1000);
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
   addAsScalar("VisualTest-DependenceConfidenceLevel", 0.95);
-
+  addAsScalar("VisualTest-DrawPairsMarginals-AxesMargin", 0.10);
+  
   // RandomWalkMetropolisHastings parameters //
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor", 1.2);
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound", 0.117); // = 0.5 * 0.234
