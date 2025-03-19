@@ -1,47 +1,73 @@
 %feature("docstring") OT::DeconditionedDistribution
 "Deconditioned distribution.
 
-Helper class for defining the distribution of :math:`\vect{X}` such that
-:math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
-with :math:`\vect{\Theta}=g(\vect{Y})`, :math:`\vect{Y}` follows the distribution
-:math:`\mathcal{L}_{\vect{Y}}` and :math:`g` is a given function of input
-dimension the dimension of :math:`\mathcal{L}_{\vect{Y}}` and output dimension the
-dimension of :math:`\vect{\Theta}`.
+
 
 Parameters
 ----------
 
 conditionedDist : :class:`~openturns.Distribution`
-    the distribution of :math:`\vect{X}|\vect{\Theta}`,
+    The distribution of :math:`\vect{X}|\vect{\Theta}`,
     whose parameters will be overwritten by :math:`g(\vect{Y})`.
-    In the default constructor, *conditionedDist* is taken equal to :math:`\vect{X} | \vect{\Theta} \sim`
-    :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
+
+    In the default constructor, :math:`\vect{X} | \vect{\Theta} \sim` :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
 
 conditioningDist : :class:`~openturns.Distribution`
-    the distribution of :math:`\vect{Y}`, specified with its parameters.
-    In the default constructor,  *conditioningDist* is taken
-    equal to :math:`\vect{Y} \sim` :class:`~openturns.Uniform`:math:`(-1,1)`.
+    The distribution of :math:`\vect{Y}`.
+
+    In the default constructor, :math:`\vect{Y} \sim` :class:`~openturns.Uniform`:math:`(-1,1)`.
 
 linkFunction : :class:`~openturns.Function`, optional
-    the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    The link unction :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
     *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
-    In the default constructor, *linkFunction* is taken equal
-    to :math:`g: \Rset \rightarrow \Rset^2` with :math:`g(y)=(y,y+1)`.
-    When not provided *linkFunction* is taken equal to  :math:`g(\vect{y})=\vect{y}` as we need :math:`p=q`.
+
+    When not provided :math:`g = Id` and :math:`p=q`.
+    
+    In the default constructor, :math:`g: \Rset \rightarrow \Rset^2` with :math:`g(y)=(y,y+1)`.
 
 
 Notes
 -----
-Its probability density function is defined as:
+Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` such that
+:math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
+with :math:`\vect{\Theta}=g(\vect{Y})`, :math:`\vect{Y}` following the distribution
+:math:`\cL_{\vect{Y}}` and :math:`g` being a function which input
+dimension is the dimension of :math:`\cL_{\vect{Y}}` and which output dimension is the
+dimension of :math:`\vect{\Theta}`.
+
+Then this class implements the distribution of :math:`\inputRV`.
+
+This class requires the following features:
+
+- the :math:`\inputRV` may be continous, discrete or neither: e.g., it can be a
+  :class:`~openturns.Mixture` of discrete and continuous distributions. In that case, its parameters set is the union of the
+  parameters set of each of its atoms (the weights of the mixture are not considered as parameters).
+- each component :math:`Y_i` is continuous or discrete: e.g., it can not be a :class:`~openturns.Mixture` of
+  discrete and continuous distributions, (so that the random vector :math:`\vect{Y}` may have some discrete components and some continuous components), 
+- the copula of :math:`\vect{Y}` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`.
+
+We define: 
 
 .. math::
 
-    f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}(\vect{y})\di{\vect{y}}
+    p_{\vect{Y}}(\vect{y}) = \left( \prod_{i=1}^\inputDim p_i(y_i) \right) c(F_1(x_1), \dots, F_d(x_d))
 
-with :math:`f_{\vect{X}|\vect{\Theta}=g(\vect{y})}` the PDF of the distribution
-of :math:`\vect{X}|\vect{\Theta}`, where :math:`\vect{\Theta}` has been replaced
-by :math:`g(\vect{y})`, :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
-:math:`g` the linking function.
+where:
+
+- :math:`c` is the probability density copula of :math:`\vect{Y}`,
+- if :math:`Y_i` is a continuous component, :math:`p_i` is its probability density function,
+- if :math:`Y_i` is a discrete component, :math:`p_i = \sum_{y^i_k \in \cS^i} \Prob{Y_i = y^i_k} \delta_{y^i_k}` where
+  :math:`\cS^i = \{ y^i_k \}` is its support and :math:`\delta_{y^i_k}` the Dirac distibution centered on
+  :math:`y^i_k`.
+
+
+Then, the pdf of :math:`\inputRV` is defined by:
+
+.. math::
+
+    p_{\vect{X}}(\vect{x}) = \int p_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) p_{\vect{Y}}(\vect{y})\di{\vect{y}}
+
+with the same convention as for :math:`\vect{Y}`.
 
 With the default constructor, the resulting random variable :math:`X` follows a
 trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
@@ -49,6 +75,19 @@ trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
 Note that a :class:`~openturns.DeconditionedDistribution` can be obtained as the
 first marginal distribution of a :class:`~openturns.JointByConditioningDistribution`.
 
+
+Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the distribution:
+
+- The string entry *DeconditionedDistribution-ContinuousDiscretizationMethod* specifies the default
+  :class:`~openturns.WeightedExperiment` which is used to discretize the continuous part of the conditioning distribution
+  in order to perform the integration. It can be *GaussProduct*, *QMC* or *MC*: The default is *GaussProduct*, well adapted if the conditioned model is *regular*, meaning that its range does not depend on the parameters (e.g. a :class:`~openturns.Normal` distribution). Otherwise, one of the other discretization methods is to be 
+  preferred (e.g. for a :class:`~openturns.Uniform` distribution).
+- The integer entry *DeconditionedDistribution-MarginalIntegrationNodesNumber* specifies the number of nodes used to the
+  integration in each direction (only active when a quadrature method is applied),
+- The integer entry *DeconditionedDistribution-MarginalIntegrationNodesNumber* specifies the maximum number of nodes used to 
+  the multivariate integration (only active when a quadrature method is applied).
+  
+  
 The continuous part of the conditioning distribution is discretized using a
 :class:`~openturns.WeightedExperiment` which can be modified using
 'DeconditionedDistribution-ContinuousDiscretizationMethod' in

@@ -12,23 +12,33 @@ Parameters
 distribution : :class:`~openturns.Distribution`,
     Distribution of :math:`\inputRV`.
 conditioningIndices : sequence of int,
-    Conditioning vector indices :math:`\mathcal{I}`.
+    Conditioning vector indices :math:`\cI`.
 conditioningValues : sequence of float,
-    Conditioning vector values :math:`\vect{x}_\mathcal{I}`.
+    Conditioning vector values :math:`\vect{x}_\cI`.
 
 Notes
 -----
-Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`, which probability density function is
-denoted by :math:`p_{\inputRV}`.
-Let :math:`\cI` be a set of indices selecting some components
-of :math:`\inputRV` and :math:`\vect{x}_\cI` a real vector of conditioning values. Then this class implements
-the distribution of:
+Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`. Let :math:`\cI \subset \{1, \dots, \inputDim \}`
+be a set of indices of components of  :math:`\inputRV`, :math:`\overline{\cI}` its complementary in
+:math:\{1, \dots, \inputDim \}` and :math:`\vect{x}_\cI` a real vector of dimension equal to the cardinal of :math:`\cI`.
+Then this class implements the distribution of:
 
 .. math::
 
     \inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI
 
-which PDF is defined by:
+
+This class requires the following features:
+
+- each component :math:`X_i` is continuous or discrete: e.g., it can not be a :class:`~openturns.Mixture` of
+  discrete and continuous distributions,
+- the copula of :math:`\inputRV` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`,
+- the random vector :math:`\inputRV_{\overline{\cI}}` is continuous or discrete: all its components must be discrete
+  or all its components must be continuous,
+- the random vector :math:`\inputRV_{\cI}` may have some discrete components and some continuous components. 
+
+Then, the pdf (probability density function if :math:`\inputRV_{\overline{\cI}}` is continuous or probability distribution function if
+:math:`\inputRV_{\overline{\cI}}` is discrete) of :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` is defined by (in the following expression, we assumed a particular order of the conditioned components among the whole set of components in order to ease the notation):
 
 .. math::
     :label: condPDF
@@ -36,11 +46,47 @@ which PDF is defined by:
     p_{\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI}(x_{\overline{\cI}})  = \dfrac{p_{\inputRV}(\vect{x
     }_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_{\cI}}(\vect{x}_{\cI})}
 
+where:
+
+.. math::
+
+    p_{\inputRV}(\vect{x})  = \left( \prod_{i=1}^\inputDim p_i(x_i)\right) c(F_1(x_1), \dots,
+    F_\inputDim(x_\inputDim))
+
+with:
+
+- :math:`c` is the probability density copula of :math:`\inputRV`,
+- if :math:`X_i` is a continuous component, :math:`p_i` is its probability density function,
+- if :math:`X_i` is a discrete component, :math:`p_i = \sum_{x^i_k \in \cS^i} \Prob{X_i = x^i_k} \delta_{x^i_k}` where
+  :math:`\cS^i = \{ x^i_k \}` is its support and :math:`\delta_{x^i_k}` the Dirac distibution centered on
+  :math:`x^i_k`.
+
+Then, if :math:`\inputRV_{\overline{\cI}}` is continuous, we have:
+
+.. math::
+
+    p_{\inputRV_{\cI}}(\vect{x}_{\cI})  = \int p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI}) \,
+    \di{\vect{x}_{\overline{\cI}}}
+
+and if :math:`\inputRV_{\overline{\cI}}` is discrete with its support denoted by :math:`\cS(\vect{X}_{\overline{\cI}}) = \prod_{i \in \overline{\cI}} S^i`, we have:
+
+.. math::
+
+    p_{\inputRV_{\cI}}(\vect{x}_{\cI})  & = \sum_{\vect{x}_{\overline{\cI}} \in \cS(\inputRV_{\overline{\cI}})}
+    p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})
+
+
 Simplification mechanisms to compute :eq:`condPDF` are implemented for some distributions. To know if
 a simplification mechanism exists, ask the method *hasSimplifiedVersion*.
 
+
+If the dimension of :math:`\inputRV_\cI` is greater than 1, the default integration algorithm is the :class:`~openturns.experimental.CubaIntegration` defined in the entry  *PointConditionalDistribution-CubaAlgorithm* if available and the
+:class:`~openturns.SimplicialCubature` algorithm if not. If the
+dimension of :math:`\inputRV_\cI` is 1, then the default integration algorithm is the :class:`~openturns.GaussKronrod` algorithm with its default
+quadrature formula.
+
 In the case where no simplification mechanism has been implemented for the distribution of :math:`\inputRV`, then the range of
-the conditioned distribution is computed according to one of the 4 following strategies. The default strategy is defined in the
+the conditioned distribution is computed according to one of the following strategies. The default strategy is defined in the
 :class:`~openturns.ResourceMap`, entry *PointConditionalDistribution-RangeAdaptationMethod*.
 
 
@@ -112,21 +158,24 @@ We assign to :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` the n
     \cD \left(\vect{X}_{\overline{\cI}}|\vect{X}_\cI = \vect{x}_\cI \right) = \prod_{i\in \overline{\cI}} \left[ x_i^{min},
     x_i^{max}\right]
 
-The default integration algorithm is :class:`openturns.experimental.CubaIntegration` if available
-(or :class:`openturns.GaussKronrod` in dimension) or else :class:`openturns.SimplicialCubature`.
 
-Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the distribution:
+Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the distribution:
 
-- The string entry `PointConditionalDistribution-CubaAlgorithm` defines the default Cuba algorithm name used.
-- The string entry `PointConditionalDistribution-OptimizationAlgorithm` defines the default optimization algorithm name used.
-- The integer entry `PointConditionalDistribution-RatioUniformCandidateNumber` sets the number
-  of candidates to find a feasible points for the ration of uniforms method initialization.
-- The integer entry `PointConditionalDistribution-SmallDimension` is the dimension threshold
-  from which to switch to CDF inversion sampling instead of ratio of uniforms (for continuous distribution).
-- The boolean entry `PointConditionalDistribution-UseSimplifiedVersion` decides if simplification is enabled.
-- The boolean entry `PointConditionalDistribution-InitializeTransformation` decides whether
-  to initialize the iso-proabilistic transformation.
-- The boolean entry `PointConditionalDistribution-InitializeSampling` decides whether to initialize the ratio of uniforms method.
+- The boolean entry *PointConditionalDistribution-UseSimplifiedVersion* decides if simplification is enabled.
+- The string entry *PointConditionalDistribution-CubaAlgorithm* defines the default Cuba algorithm used to compute the CDF when the conditioning 
+  values are mutivariate.
+- The string entry *PointConditionalDistribution-OptimizationAlgorithm* defines the default optimization algorithm name used.
+- The integer entry *PointConditionalDistribution-RatioUniformCandidateNumber* sets the number
+  of candidates to find a feasible points for the ratio of uniforms method initialization.
+- The boolean entry *PointConditionalDistribution-InitializeSampling* decides whether to initialize the ratio of uniforms method.
+- The integer entry *PointConditionalDistribution-SmallDimension* is the dimension threshold
+  from which to switch to CDF inversion sampling instead of ratio of uniforms (for continuous distributions).
+- The boolean entry *PointConditionalDistribution-InitializeTransformation* decides whether
+  to initialize the iso-probabilistic transformation.
+- The boolean entry *PointConditionalDistribution-UseGenericConditionalMethods* decides whether
+  the generic conditional methods are used (see :meth:`~openturns.Distribution.computeConditionalCDF()` for example). These methods can only be
+  used when we want to create the distribution of :math:`X_d|(X_1, \dots, X_{d-1}) = (x_1, \dots, x_{d-1})` or when :math:`\inputRV` is bivariate
+  with a symetric copula.
 
 Examples
 --------
@@ -149,7 +198,7 @@ Examples
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Distribution :math:`L_\theta(\inputReal)`"
+    Distribution :math:`\cL_\theta(\inputReal)`"
 
 // ----------------------------------------------------------------------------
 
@@ -159,7 +208,7 @@ distribution : :class:`~openturns.Distribution`
 Returns
 -------
 conditioningIndices : :class:`~openturns.Indices`
-    Conditioning vector indices :math:`\mathcal{I}`"
+    Conditioning vector indices :math:`\cI`"
 
 // ----------------------------------------------------------------------------
 
@@ -169,7 +218,7 @@ conditioningIndices : :class:`~openturns.Indices`
 Returns
 -------
 conditioningValues : :class:`~openturns.Point`
-    Conditioning vector values :math:`\vect{x}_\mathcal{I}`"
+    Conditioning vector values :math:`\vect{x}_\cI`"
 
 // ----------------------------------------------------------------------------
 
@@ -179,16 +228,12 @@ conditioningValues : :class:`~openturns.Point`
 Returns
 -------
 simplified : :class:`~openturns.Distribution`
-    Simplified distribution in the following cases:
+    Simplified distribution.
 
-    - no conditionning (empty indices)
-    - independent copula
-    - elliptical distributions (Normal, Student)
-    - JointDistribution, BlockIndependentDistribution, BlockIndependentCopula
-    - Mixture, KernelMixture
-    - Bernstein copula
-
-"
+Notes
+-----
+When a siplified version of the conditional exists, it avoids to use the generic methods:
+it is more efficient and more precise."
 
 // ---------------------------------------------------------------------
 
@@ -199,9 +244,12 @@ Returns
 -------
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF.
-    Default value is :class:`openturns.experimental.CubaIntegration`
-    if available or else :class:`openturns.SimplicialCubature`."
 
+Notes
+-----
+By default, if the dimension of :math:`\inputRV_\cI` is greater than 1, the integration algorithm is the :class:`~openturns.experimental.CubaIntegration` defined in the entry  `PointConditionalDistribution-CubaAlgorithm` if available and the :class:`~openturns.SimplicialCubature` algorithm if not. If the
+dimension of :math:`\inputRV_\cI` is 1, then the integration algorithm is the :class:`~openturns.GaussKronrod` algorithm with ts default quadrature
+formula."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::PointConditionalDistribution::setIntegrationAlgorithm
@@ -210,6 +258,4 @@ algo : :class:`~openturns.IntegrationAlgorithm`
 Parameters
 ----------
 algo : :class:`~openturns.IntegrationAlgorithm`
-    Integration algorithm used to compute the CDF.
-    Default value is :class:`openturns.experimental.CubaIntegration`
-    if available or else :class:`openturns.SimplicialCubature`."
+    Integration algorithm used to compute the CDF."
