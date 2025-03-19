@@ -343,13 +343,13 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
   GridLayout grid(dimension, dimension);
   const Description description(sample.getDescription());
   
-  const Scalar xy_Margin = ResourceMap::GetAsScalar("VisualTest-DrawPairsMarginals-AxesMargin");
+  const Scalar axesMargin = ResourceMap::GetAsScalar("VisualTest-DrawPairsMarginals-AxesMargin");
   
   const Point sampleMin = sample.getMin();
   const Point sampleMax = sample.getMax();
   const Point sampleRange = sampleMax - sampleMin;
-  const Point axesMin = sampleMin - xy_Margin * sampleRange;  
-  const Point axesMax = sampleMax + xy_Margin * sampleRange;
+  const Point axesMin = sampleMin - axesMargin * sampleRange;  
+  const Point axesMax = sampleMax + axesMargin * sampleRange;
 
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
@@ -365,14 +365,8 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
       const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       
-      Point minRange(2,0.0);
-      minRange[0] = axesMin[j];
-      minRange[1] = axesMin[i];
-      
-      Point maxRange(2,0.0);
-      maxRange[0] = axesMax[j];
-      maxRange[1] = axesMax[i];
-      
+      const Point minRange = {axesMin[j], axesMin[i]};
+      const Point maxRange = {axesMax[j], axesMax[i]};
       const Interval marginInterval = Interval(minRange, maxRange);
                                          
       graph.setBoundingBox(marginInterval);
