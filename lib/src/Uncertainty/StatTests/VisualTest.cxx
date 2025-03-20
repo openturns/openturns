@@ -94,7 +94,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   }
   Cloud cloudQQplot(data);
   cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));
-  Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
+  Graph graphQQplot("Sample versus model QQ-plot", "Empirical Quantile", "Distribution Quantile", true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(0, 0) = data(0, 0);
