@@ -403,7 +403,7 @@ for j in range(nTrain):
     predictionsLOO[j] = metamodelLOO(xj)
     residuals[j] = (yj - predictionsLOO[j])[0]
 mseLOO = residuals.normSquare() / nTrain
-print("mseLOO = ", mseLOO)
+print(f"mseLOO = {mseLOO:.6g}")
 
 # %%
 # For each point in the training sample, we plot the predicted leave-one-out
