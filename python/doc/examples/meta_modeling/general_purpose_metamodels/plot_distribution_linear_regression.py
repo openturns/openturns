@@ -138,7 +138,10 @@ def plot_sample_by_kernel_smoothing(
     bb = graph.getBoundingBox()
     ylb = bb.getLowerBound()[1]
     yub = bb.getUpperBound()[1]
-    curve = ot.Curve([true_standard_deviation**2] * 2, [ylb, yub])
+    if estimator == "variance": 
+        curve = ot.Curve([true_standard_deviation**2] * 2, [ylb, yub])
+    elif estimator == "standard-deviation":
+        curve = ot.Curve([true_standard_deviation] * 2, [ylb, yub])
     curve.setLegend("Exact")
     curve.setLineWidth(2.0)
     graph.add(curve)
