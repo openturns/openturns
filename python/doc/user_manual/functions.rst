@@ -141,7 +141,6 @@ Evaluation functions
     MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
-    SymbolicEvaluation
 
     :template: classWithPlot.rst_t
     PiecewiseHermiteEvaluation
