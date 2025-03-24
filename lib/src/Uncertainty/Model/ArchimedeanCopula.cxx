@@ -185,4 +185,47 @@ Distribution ArchimedeanCopula::getMarginal(const Indices & indices) const
   return result;
 }
 
+/* Upper tail dependence matrix */
+CorrelationMatrix ArchimedeanCopula::computeUpperTailDependenceMatrix() const
+{
+  CorrelationMatrix result(dimension_);
+  /* The upper tail dependence is given by
+     lambdaU = \lim_{x\rightarrow 1^{-}} 2 - 2\psi'(x) / \psi'(\psi^{-1}(2\psi(x)))
+             = \lim_{x\rightarrow 0^{+}} 2 - 2\psi'(2x) / \psi'(x)
+     but as one can have psi'(0)=-inf, resulting
+     into a NaN, we evaluate the expression at quantileEpsilon_.
+  */
+  const Scalar phi1 = computeArchimedeanGenerator(1.0 - quantileEpsilon_);
+  const Scalar dphi1 = computeArchimedeanGeneratorDerivative(1.0 - quantileEpsilon_);
+  const Scalar phiInv = computeInverseArchimedeanGenerator(2.0 * phi1);
+  const Scalar dphiDen = computeArchimedeanGeneratorDerivative(phiInv);
+  const Scalar lambdaU = 2.0 - 2.0 * computeArchimedeanGeneratorDerivative(2.0 * quantileEpsilon_) / computeArchimedeanGeneratorDerivative(quantileEpsilon_);
+  /* For an archimedean copula, all the upper tail dependence indices are equal */
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    for (UnsignedInteger i = j+1; i < dimension_; ++i)
+      result(i, j) = lambdaU;
+  return result;
+}
+
+/* Lower tail dependence matrix */
+CorrelationMatrix ArchimedeanCopula::computeLowerTailDependenceMatrix() const
+{
+  CorrelationMatrix result(dimension_);
+  /* The lower tail dependence is given by
+     lambdaU = \lim_{x\rightarrow 0^{+}} 2\psi'(x) / \psi'(\psi^{-1}(2\psi(x)))
+     but as one can have psi'(0)=0=psi'(psi^{-1}(2psi(0))), resulting
+     into a NaN, we evaluate the expression at quantileEpsilon_.
+  */
+  const Scalar phi0 = computeArchimedeanGenerator(quantileEpsilon_);
+  const Scalar dphi0 = computeArchimedeanGeneratorDerivative(quantileEpsilon_);
+  const Scalar phiInv = computeInverseArchimedeanGenerator(2.0 * phi0);
+  const Scalar dphiDen = computeArchimedeanGeneratorDerivative(phiInv);
+  const Scalar lambdaL = 2.0 * dphi0 / dphiDen;
+  /* For an archimedean copula, all the lower tail dependence indices are equal */
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    for (UnsignedInteger i = j+1; i < dimension_; ++i)
+      result(i, j) = lambdaL;
+  return result;
+}
+
 END_NAMESPACE_OPENTURNS

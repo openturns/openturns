@@ -52,6 +52,7 @@ print("cdf=%.5g" % CDF)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipMoments()  # slow
-validation.skipCorrelation()  # slow
+# validation.skipMoments()
+# validation.skipCorrelation()  # slow
+validation.skipConditional()  # slow
 validation.run()

@@ -35,11 +35,11 @@ covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.545921,0.239046,0.545921,1,0.539796,0.239046,0.539796,1]
 parameters=[[mu_0 : 0.5, sigma_0 : 2],[mu_0 : 1.5, sigma_0 : 2],[mu_0 : 2.5, sigma_0 : 2],[atom_0_R_1_0 : 0.5, atom_0_R_2_0 : 0, atom_0_R_2_1 : 0.5, atom_1_R_1_0 : 0.5, atom_1_R_2_0 : 0, atom_1_R_2_1 : 0.5, atom_2_R_1_0 : 0.5, atom_2_R_2_0 : 0, atom_2_R_2_1 : 0.5]]
 conditional PDF=0.139463
-conditional CDF=0.692996
-conditional quantile=-0.0523458
+conditional CDF=0.667209
+conditional quantile=0.13396
 sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.183845,0.114039,0.249718]
-sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.5,0.779219,0.846484]
-sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.5,0.779219,0.846484])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.5,0.778617,0.809658]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.5,0.778617,0.809658])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
 newMixture pdf=0.135653
 atoms kept in mixture=[Normal(mu = 2, sigma = 2),Normal(mu = 3, sigma = 3)]
 newMixture=Mixture((w = 0.0724638, d = Normal(mu = 2, sigma = 2)), (w = 0.927536, d = Normal(mu = 3, sigma = 3)))

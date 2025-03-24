@@ -574,10 +574,8 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   Scalar meanRos = 0.0;
   const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-  {
-    meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  }
-  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
   const Scalar z = (x - meanRos) / sigmaRos;
   return DistFunc::dNormal(z) / sigmaRos;
 }
@@ -614,10 +612,8 @@ Scalar Normal::computeConditionalCDF(const Scalar x,
   Scalar meanRos = 0.0;
   const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-  {
-    meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  }
-  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
   return DistFunc::pNormal((x - meanRos) / sigmaRos);
 }
 
@@ -636,32 +632,27 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar Normal::computeConditionalQuantile(const Scalar q,
+ 
     const Point & y) const
+ 
 {
+ 
   const UnsignedInteger conditioningDimension = y.getDimension();
+ 
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no conditioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(q);
   // General case
-  const UnsignedInteger partialDimension = conditioningDimension + 1;
-  UnsignedInteger start = 0;
-  UnsignedInteger stop = partialDimension;
-  UnsignedInteger shift = 0;
-  MatrixImplementation inverseCholeskyPartial(partialDimension, partialDimension);
-  for (UnsignedInteger i = 0; i < partialDimension; ++ i)
-  {
-    std::copy(inverseCholesky_.getImplementation()->begin() + start,
-              inverseCholesky_.getImplementation()->begin() + stop,
-              inverseCholeskyPartial.begin() + shift);
-    start += dimension_ + 1;
-    stop += dimension_;
-    shift += partialDimension + 1;
-  }
-  const Point iCholQ(inverseCholeskyPartial.solveLinearSystemTri(DistFunc::qNormal(Point(partialDimension, q))));
-  return mean_[conditioningDimension] + iCholQ[conditioningDimension];
-}
+  Scalar meanRos = 0.0;
+  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
 
+  meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
+  return meanRos + sigmaRos * DistFunc::qNormal(q); 
+}
+ 
 Point Normal::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;

@@ -141,9 +141,9 @@ density generator derivative (FD)=-0.061975
 density generator second derivative     =0.030987
 density generator second derivative (FD)=0.030987
 Radial CDF(2)=0.86466
-conditional PDF=0.2265
-conditional CDF=0.57264
-conditional quantile=0.69216
+conditional PDF=0.22427
+conditional CDF=0.59132
+conditional quantile=0.63881
 sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[0.129518,0.19497]
 sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[1.5,2.5])=class=Point name=Unnamed dimension=2 values=[0.933193,0.718149]
 sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.933193,0.718149])=class=Point name=Unnamed dimension=2 values=[1.5,2.5]
@@ -225,9 +225,9 @@ density generator derivative (FD)=-0.021819
 density generator second derivative     =0.01091
 density generator second derivative (FD)=0.01091
 Radial CDF(2)=0.73854
-conditional PDF=0.15632
-conditional CDF=0.6127
-conditional quantile=1.0594
+conditional PDF=0.15805
+conditional CDF=0.59675
+conditional quantile=0.62057
 sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.129518,0.19497,0.0967474]
 sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.933193,0.718149,0.846283]
 sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.933193,0.718149,0.846283])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
@@ -312,9 +312,9 @@ density generator derivative (FD)=-0.0076818
 density generator second derivative     =0.0038409
 density generator second derivative (FD)=0.0038409
 Radial CDF(2)=0.59399
-conditional PDF=0.12576
-conditional CDF=0.53175
-conditional quantile=1.4217
+conditional PDF=0.12515
+conditional CDF=0.55033
+conditional quantile=1.0012
 sequential conditional PDF=class=Point name=Unnamed dimension=4 values=[0.129518,0.19497,0.0967474,0.103288]
 sequential conditional CDF(class=Point name=Unnamed dimension=4 values=[1.5,2.5,3.5,4.5])=class=Point name=Unnamed dimension=4 values=[0.933193,0.718149,0.846283,0.736455]
 sequential conditional quantile(class=Point name=Unnamed dimension=4 values=[0.933193,0.718149,0.846283,0.736455])=class=Point name=Unnamed dimension=4 values=[1.5,2.5,3.5,4.5]
