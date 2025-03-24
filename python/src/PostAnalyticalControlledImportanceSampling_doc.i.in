@@ -69,7 +69,7 @@ Let :math:`\cD_f^{std}` be the domain :math:`\cD_f` in the standard space. We as
           \setminus
           \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \geq 0 , G(\vect{u}) \geq 0 \}
 
- Thus, we have:
+Thus, we have:
 
 .. math::
 
