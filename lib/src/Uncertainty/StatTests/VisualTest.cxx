@@ -334,6 +334,7 @@ GridLayout VisualTest::DrawPairsXY(const Sample & sampleX, const Sample & sample
 /* Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
 GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
 {
+
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension < 2)
     throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
@@ -341,22 +342,39 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
     throw InvalidDimensionException(HERE) << "Distribution dimension does not match the sample dimension";
   GridLayout grid(dimension, dimension);
   const Description description(sample.getDescription());
+  
+  const Scalar axesMargin = ResourceMap::GetAsScalar("VisualTest-DrawPairsMarginals-AxesMargin");
+  
+  const Point sampleMin(sample.getMin());
+  const Point sampleMax(sample.getMax());
+  const Point sampleRange(sampleMax - sampleMin);
+  const Point axesMin(sampleMin - axesMargin * sampleRange);  
+  const Point axesMax(sampleMax + axesMargin * sampleRange);
+
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    Graph pdfGraph(distribution.getMarginal(i).drawPDF());
+    Graph pdfGraph(distribution.getMarginal(i).drawPDF(axesMin[i], axesMax[i]));
+    
     pdfGraph.setLegends(Description(1));
     pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
     pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
     grid.setGraph(i, i, pdfGraph);
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
+
       const Indices indices = {j, i};
-      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      const Cloud cloud(sample.getMarginal(indices));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      const Point minRange({axesMin[j], axesMin[i]});
+      const Point maxRange({axesMax[j], axesMax[i]});
+      const Interval marginInterval(Interval(minRange, maxRange));
+                                    
+      graph.setBoundingBox(marginInterval);
+
       graph.add(cloud);
       grid.setGraph(i, j, graph);
+      }
     }
-  }
   return grid;
 }
 
