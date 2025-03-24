@@ -327,8 +327,19 @@ OT_Function_getEvaluation_doc
 
 Returns
 -------
-gradient : :class:`~openturns.GradientImplementation`
-    The gradient function."
+gradient : :class:`~openturns.Gradient`
+    The gradient function.
+
+Examples
+--------
+To use the gradient function as a function when the function is a  :class:`~openturns.ot.SymbolicFunction`. Be carefull. 
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> formula_deriv_x1 = f.getGradient().getImplementation().getFormula(0,0)
+>>> formula_deriv_x2 = f.getGradient().getImplementation().getFormula(1,0)
+>>> derivFunc = ot.SymbolicFunction(['x1', 'x2'], [formula_deriv_x1, formula_deriv_x2])
+"
 %enddef
 %feature("docstring") OT::FunctionImplementation::getGradient
 OT_Function_getGradient_doc
