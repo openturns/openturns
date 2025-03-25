@@ -27,6 +27,7 @@
 #include "openturns/Path.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/XMLToolbox.hxx"
+
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include <libxml/tree.h>
 #endif
@@ -105,6 +106,11 @@ std::vector<String> ResourceMap::GetUnsignedIntegerKeys()
 std::vector<String> ResourceMap::GetBoolKeys()
 {
   return GetInstance().lock().getBoolKeys();
+}
+
+std::vector<String> ResourceMap::GetStringEnum(const String & key)
+{
+  return GetInstance().lock().getStringEnum(key);
 }
 
 /* Get a value in the map */
@@ -190,9 +196,9 @@ void ResourceMap::SetAsScalar(const String & key, const Scalar value)
   GetInstance().lock().setAsScalar(key, value);
 }
 
-void ResourceMap::AddAsString(const String & key, const String & value)
+void ResourceMap::AddAsString(const String & key, const String & value, const std::vector<String> & enumValues)
 {
-  GetInstance().lock().addAsString(key, value);
+  GetInstance().lock().addAsString(key, value, enumValues);
 }
 
 void ResourceMap::AddAsBool(const String & key, const Bool value)
@@ -213,6 +219,11 @@ void ResourceMap::AddAsScalar(const String & key, const Scalar value)
 Bool ResourceMap::HasKey(const String & key)
 {
   return GetInstance().lock().hasKey(key);
+}
+
+Bool ResourceMap::HasStringEnum(const String & key)
+{
+  return GetInstance().lock().hasStringEnum(key);
 }
 
 void ResourceMap::Reload()
@@ -250,7 +261,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapStringType::const_iterator it = mapString_.find(key);
+    const MapStringType::const_iterator it = mapString_.find(key);
     if (it != mapString_.end()) return "str";
   }
   // Second, try to retrieve the value from the Scalar map
@@ -260,7 +271,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapScalarType::const_iterator it = mapScalar_.find(key);
+    const MapScalarType::const_iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end()) return "float";
   }
   // Third, try to retrieve the value from the UnsignedInteger map
@@ -270,7 +281,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
+    const MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end()) return "int";
   }
   // Fourth, try to retrieve the value from the Bool map
@@ -280,7 +291,7 @@ String ResourceMap::getType(const String & key) const
     {
       keys.add(it->first);
     }
-    MapBoolType::const_iterator it = mapBool_.find(key);
+    const MapBoolType::const_iterator it = mapBool_.find(key);
     if (it != mapBool_.end()) return "bool";
   }
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap.";
@@ -290,22 +301,22 @@ String ResourceMap::get(const String & key) const
 {
   // First, try to retrieve the value from the String map
   {
-    MapStringType::const_iterator it = mapString_.find(key);
+    const MapStringType::const_iterator it = mapString_.find(key);
     if (it != mapString_.end()) return it->second;
   }
   // Second, try to retrieve the value from the Scalar map
   {
-    MapScalarType::const_iterator it = mapScalar_.find(key);
+    const MapScalarType::const_iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end()) return (OSS() << it->second);
   }
   // Third, try to retrieve the value from the UnsignedInteger map
   {
-    MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
+    const MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end()) return (OSS() << it->second);
   }
   // Fourth, try to retrieve the value from the Bool map
   {
-    MapBoolType::const_iterator it = mapBool_.find(key);
+    const MapBoolType::const_iterator it = mapBool_.find(key);
     if (it != mapBool_.end()) return (OSS() << it->second);
   }
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap.";
@@ -319,46 +330,55 @@ Bool ResourceMap::hasKey(const String & key) const
           || (mapBool_.find(key) != mapBool_.end()));
 }
 
+Bool ResourceMap::hasStringEnum(const String & key) const
+{
+  return mapStringEnum_.find(key) != mapStringEnum_.end();
+}
+
 void ResourceMap::removeKey(const String & key)
 {
   if (!hasKey(key))
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap";
 
-  String keyType(getType(key));
+  const String keyType(getType(key));
   if (keyType == "str")
+  {
     mapString_.erase(mapString_.find(key));
-  if (keyType == "float")
+    if (mapStringEnum_.find(key) != mapStringEnum_.end())
+      mapStringEnum_.erase(mapStringEnum_.find(key));
+  }
+  else if (keyType == "float")
     mapScalar_.erase(mapScalar_.find(key));
-  if (keyType == "int")
+  else if (keyType == "int")
     mapUnsignedInteger_.erase(mapUnsignedInteger_.find(key));
-  if (keyType == "bool")
+  else if (keyType == "bool")
     mapBool_.erase(mapBool_.find(key));
 }
 
 String ResourceMap::getAsString(const String & key) const
 {
-  MapStringType::const_iterator it = mapString_.find(key);
+  const MapStringType::const_iterator it = mapString_.find(key);
   if (it != mapString_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a String.";
 }
 
 Scalar ResourceMap::getAsScalar(const String & key) const
 {
-  MapScalarType::const_iterator it = mapScalar_.find(key);
+  const MapScalarType::const_iterator it = mapScalar_.find(key);
   if (it != mapScalar_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a Scalar.";
 }
 
 UnsignedInteger ResourceMap::getAsUnsignedInteger(const String & key) const
 {
-  MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
+  const MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
   if (it != mapUnsignedInteger_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as an UnsignedInteger.";
 }
 
 Bool ResourceMap::getAsBool(const String & key) const
 {
-  MapBoolType::const_iterator it = mapBool_.find(key);
+  const MapBoolType::const_iterator it = mapBool_.find(key);
   if (it != mapBool_.end()) return it->second;
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a Bool.";
 }
@@ -396,7 +416,7 @@ void ResourceMap::set(const String & key, const String & value)
   // to convert it to the correct type
   // First, try to retrieve the value from the String map
   {
-    MapStringType::iterator it = mapString_.find(key);
+    const MapStringType::iterator it = mapString_.find(key);
     if (it != mapString_.end())
     {
       it->second = value;
@@ -405,7 +425,7 @@ void ResourceMap::set(const String & key, const String & value)
   }
   // Second, try to retrieve the value from the Scalar map
   {
-    MapScalarType::iterator it = mapScalar_.find(key);
+    const MapScalarType::iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end())
     {
       Scalar scalarValue = -1.0;
@@ -417,7 +437,7 @@ void ResourceMap::set(const String & key, const String & value)
   }
   // Third, try to retrieve the value from the UnsignedInteger map
   {
-    MapUnsignedIntegerType::iterator it = mapUnsignedInteger_.find(key);
+    const MapUnsignedIntegerType::iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end())
     {
       UnsignedInteger unsignedIntegerValue = 0;
@@ -429,7 +449,7 @@ void ResourceMap::set(const String & key, const String & value)
   }
   // Fourth, try to retrieve the value from the Bool map
   {
-    MapBoolType::iterator it = mapBool_.find(key);
+    const MapBoolType::iterator it = mapBool_.find(key);
     if (it != mapBool_.end())
     {
       Bool boolValue = false;
@@ -450,15 +470,23 @@ void ResourceMap::set(const String & key, const String & value)
 
 void ResourceMap::setAsString(const String & key, const String & value)
 {
-  MapStringType::iterator it = mapString_.find(key);
+  const MapStringType::iterator it = mapString_.find(key);
   if (it == mapString_.end())
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a String.";
+  const MapStringEnumType::iterator it2 = mapStringEnum_.find(key);
+  if (it2 != mapStringEnum_.end() && std::find(it2->second.begin(), it2->second.end(), value) == it2->second.end())
+  {
+    String possibleValues;
+    for (std::vector<String>::iterator it3 = it2->second.begin(); it3 != it2->second.end(); ++ it3)
+      possibleValues += *it3 + ", ";
+    throw InvalidArgumentException(HERE) << "Value for key '" << key << "' must be one of: " << possibleValues << " got '" << value << "'";
+  }
   it->second = value;
 }
 
 void ResourceMap::setAsBool(const String & key, const Bool value)
 {
-  MapBoolType::iterator it = mapBool_.find(key);
+  const MapBoolType::iterator it = mapBool_.find(key);
   if (it == mapBool_.end())
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap as a Bool.";
   it->second = value;
@@ -480,10 +508,16 @@ void ResourceMap::setAsScalar(const String & key, const Scalar value)
   it->second = value;
 }
 
-void ResourceMap::addAsString(const String & key, const String & value)
+void ResourceMap::addAsString(const String & key, const String & value, const std::vector<String> & enumValues)
 {
   if (mapString_.find(key) != mapString_.end())
     throw InternalException(HERE) << "Key '" << key << "' is already in ResourceMap as a String.";
+  if (enumValues.size())
+  {
+    if (std::find(enumValues.begin(), enumValues.end(), value) == enumValues.end())
+      throw InternalException(HERE) << "Enum values do not contain value '" <<  value << "'";
+    mapStringEnum_[key] = enumValues;
+  }
   mapString_[key] = value;
 }
 
@@ -518,7 +552,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
   XMLDoc document(configurationFile);
 
   // Check it is an OpenTURNS' one
-  xmlNodePtr rootElt = xmlDocGetRootElement(document);
+  const xmlNodePtr rootElt = xmlDocGetRootElement(document);
   if (rootElt == NULL) throw ConfigurationFileParsingException(HERE) << "Wrapper file has no root element" << configurationFile;
   if (xmlStrcmp(rootElt->name, reinterpret_cast<const xmlChar *>(RootElementName)))
     throw ConfigurationFileParsingException(HERE) << "Wrapper file " << configurationFile
@@ -536,7 +570,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         const String key = XML::ToString(current->name);
         // Try to get a String value
         {
-          String value = XML::GetAttributeByName(current, XMLTag_value_str);
+          const String value = XML::GetAttributeByName(current, XMLTag_value_str);
           if (value.size() > 0)
           {
             mapString_[key] = value;
@@ -545,7 +579,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         } // String
         // Try to get a Scalar value
         {
-          String value = XML::GetAttributeByName(current, XMLTag_value_float);
+          const String value = XML::GetAttributeByName(current, XMLTag_value_float);
           if (value.size() > 0)
           {
             Scalar scalarValue = -1.0;
@@ -557,7 +591,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         } // Scalar
         // Try to get an UnsignedInteger value
         {
-          String value = XML::GetAttributeByName(current, XMLTag_value_int);
+          const String value = XML::GetAttributeByName(current, XMLTag_value_int);
           if (value.size() > 0)
           {
             UnsignedInteger unsignedIntegerValue = 0;
@@ -569,7 +603,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         } // UnsignedInteger
         // Try to get a Bool value
         {
-          String value = XML::GetAttributeByName( current, XMLTag_value_bool);
+          const String value = XML::GetAttributeByName( current, XMLTag_value_bool);
           if (value.size() > 0)
           {
             Bool boolValue = false;
@@ -694,7 +728,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Pie parameters //
   addAsScalar("Pie-HorizontalMargin", 0.3);
-  addAsScalar("Pie-LabelThreshold", 0.02);
   addAsScalar("Pie-VerticalMargin", 0.1);
 
   // DrawableImplementation parameters //
@@ -705,8 +738,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultPaletteName", "Tableau");
   addAsString("Drawable-DefaultPattern", "s");
   addAsString("Drawable-DefaultPointStyle", "plus");
-  addAsString("Drawable-DefaultSurfaceColor", "white");
-  addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
 
   // Text drawable
@@ -716,14 +747,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Graph-DefaultHorizontalMargin", 0.05);
   addAsScalar("Graph-DefaultLegendFontSize", 10.0);
   addAsScalar("Graph-DefaultVerticalMargin", 0.05);
-  addAsUnsignedInteger("Graph-DefaultHeight", 480);
-  addAsUnsignedInteger("Graph-DefaultWidth", 640);
 
   // Contour parameters //
   addAsUnsignedInteger("Contour-DefaultLevelsNumber", 10);
   addAsBool("Contour-DefaultIsFilled", false);
   addAsBool("Contour-DefaultDrawLabels", true);
-  addAsString("Contour-DefaultColorMapNorm", "linear");
+  addAsString("Contour-DefaultColorMapNorm", "linear", {"asinh", "linear", "log", "logit", "symlog", "rank"});
   addAsString("Contour-DefaultColorMap", "viridis");
   addAsString("Contour-DefaultColorBarPosition", "right");
   addAsString("Contour-DefaultExtend", "both");
@@ -746,11 +775,11 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FieldToPointFunctionalChaosAlgorithm
   addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
-  addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal");
+  addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
   addAsBool("PointToFieldFunctionalChaosAlgorithm-DefaultRecompress", false);
-  addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion");
+  addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion", {"LeastSquaresExpansion", "FunctionalChaosAlgorithm"});
 
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
@@ -777,7 +806,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("NLopt-InitialSeed", 0);
 
   // OptimizationAlgorithm parameters //
-  addAsScalar("OptimizationAlgorithm-DefaultLevelValue", 0.0);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
@@ -885,7 +913,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
-  addAsUnsignedInteger("Dlib-DefaultMaxSize", 10);
 
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
@@ -900,8 +927,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LOLAVoronoi-MaximumCombinationsNumber", 100);
   addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
   addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
-  addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky");
-  addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum");
+  addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky", {"SVD", "Cholesky", "QR"});
+  addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum", {"Maximum", "Average"});
 
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
@@ -944,8 +971,8 @@ void ResourceMap::loadDefaultConfiguration()
   // GaussLegendre parameters //
   addAsUnsignedInteger("GaussLegendre-DefaultMarginalIntegrationPointsNumber", 64);
 
-  // FejerAlgorithm parameters //
-  addAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber", 64);
+  // FejerExperiment parameters //
+  addAsUnsignedInteger("FejerExperiment-DefaultMarginalNodesNumber", 64);
 
   // IteratedQuadrature parameters //
   addAsScalar("IteratedQuadrature-MaximumError", 1.0e-7);
@@ -1017,6 +1044,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100);
 
+  // RatioOfUniforms //
+  addAsString("RatioOfUniforms-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("RatioOfUniforms-CandidateNumber", 8192);
+  addAsUnsignedInteger("RatioOfUniforms-MaximumMultiStart", 16);
+  addAsUnsignedInteger("RatioOfUniforms-NormalizationSampleSize", 10000);
 
   // RankSobolSensitivityALgorithm//
   addAsScalar("RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio", 0.8);
@@ -1056,8 +1088,8 @@ void ResourceMap::loadDefaultConfiguration()
   // SampleImplementation parameters
   addAsString("Sample-CSVFileSeparator", ";");
   addAsUnsignedInteger("Sample-CSVPrecision", 16);
-  addAsString("Sample-CSVFormat", "scientific");
-  addAsString("Sample-CommentMarkers", "#");
+  addAsString("Sample-CSVFormat", "scientific", {"scientific", "fixed", "defaultfloat"});
+  addAsString("Sample-CommentMarker", "#");
   addAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
   addAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
   addAsString("Sample-PrintFormat", "{:.7g}");
@@ -1075,7 +1107,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
-  addAsScalar("Mesh-CoordinateEpsilon", 1.0e-14);
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
   addAsBool("Mesh-CheckValidity", false);
 
@@ -1089,7 +1120,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Matrix parameters
   addAsUnsignedInteger("Matrix-size-visible-in-str-from", 5);
-  addAsScalar("Matrix-DefaultSmallPivot", 1.0e-7 );
+  addAsScalar("Matrix-DefaultSmallPivot", 1.0e-7);
   addAsScalar("Matrix-LargestEigenValueRelativeError", 1.0e-4);
   addAsScalar("Matrix-SymmetryThreshold", 1.0e-12);
   addAsUnsignedInteger("Matrix-LargestEigenValueIterations", 50);
@@ -1104,7 +1135,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // BernsteinCopulaFactory parameters //
   addAsScalar("BernsteinCopulaFactory-alpha", 1.0);
-  addAsString("BernsteinCopulaFactory-BinNumberSelectionMethod", "LogLikelihood");
+  addAsString("BernsteinCopulaFactory-BinNumberSelectionMethod", "LogLikelihood", {"AMISE", "LogLikelihood", "PenalizedCsiszarDivergence"});
   addAsUnsignedInteger("BernsteinCopulaFactory-kFraction", 2);
   addAsUnsignedInteger("BernsteinCopulaFactory-MaxM", 1);
   addAsUnsignedInteger("BernsteinCopulaFactory-MinM", 2);
@@ -1117,18 +1148,23 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
   // DeconditionedDistribution parameters //
-  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 256);
+  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 48);
   addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct");
+  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct", {"GaussProduct", "QMC", "MC"});
 
   // PointConditionalDistribution parameters //
+  addAsBool("PointConditionalDistribution-InitializeSampling", true);
+  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
+  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
   addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre");
   addAsString("PointConditionalDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsString("PointConditionalDistribution-RangeAdaptationMethod", "Rank");
   addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
-  addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
-  addAsBool("PointConditionalDistribution-InitializeTransformation", true);
-  addAsBool("PointConditionalDistribution-InitializeSampling", true);
+
+  // PosteriorDistribution parameters //
+  addAsString("PosteriorDistribution-OptimizationAlgorithm", "Cobyla");
+  addAsUnsignedInteger("PosteriorDistribution-RatioUniformCandidateNumber", 10000);
 
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
@@ -1170,8 +1206,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralizedExtremeValueFactory-MaximumConstraintError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumObjectiveError", 1.0e-5);
   addAsScalar("GeneralizedExtremeValueFactory-MaximumRelativeError", 1.0e-5);
-  addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel");
-  addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedExtremeValueFactory-InitializationMethod", "Gumbel", {"Gumbel", "Static"});
+  addAsString("GeneralizedExtremeValueFactory-NormalizationMethod", "MinMax", {"CenterReduce", "MinMax", "None"});
   addAsString("GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // ProfileLikelihoodResult parameters //
@@ -1196,8 +1232,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GeneralizedParetoFactory-MeanResidualLifePointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-ThresholdStabilityPointNumber", 100);
   addAsUnsignedInteger("GeneralizedParetoFactory-SmallSize", 20);
-  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic");
-  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax");
+  addAsString("GeneralizedParetoFactory-InitializationMethod", "Generic", {"Generic", "Static"});
+  addAsString("GeneralizedParetoFactory-NormalizationMethod", "MinMax", {"CenterReduce", "MinMax", "None"});
   addAsString("GeneralizedParetoFactory-DefaultOptimizationAlgorithm", "Cobyla");
 
   // Gibbs parameters //
@@ -1207,7 +1243,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HistogramFactory-MaximumBinNumber", 1024);
 
   // InverseNormalFactory parameters //
-  addAsString("InverseNormalFactory-Method", "MLE");
+  addAsString("InverseNormalFactory-Method", "MLE", {"MLE", "Moments"});
 
   // KernelMixture parameters //
   addAsUnsignedInteger("KernelMixture-LargeSize", 20);
@@ -1247,7 +1283,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MeixnerDistribution-MaximumObjectiveError", 1.0e-12);
   addAsScalar("MeixnerDistribution-MaximumRelativeError", 1.0e-12);
   addAsUnsignedInteger("MeixnerDistribution-CDFDiscretization", 10000);
-  addAsUnsignedInteger("MeixnerDistribution-CDFIntegrationNodesNumber", 32);
 
   // Mixture parameters //
   addAsScalar("Mixture-SmallWeight", 1.0e-12);
@@ -1266,7 +1301,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("PolyaFactory-MaximumIteration", 50);
 
   // Normal parameters //
-  addAsScalar("Normal-MaximumCDFEpsilon", 5.0e-6);
   addAsScalar("Normal-MinimumCDFEpsilon", 5.0e-2);
   addAsUnsignedInteger("Normal-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Normal-MaximumNumberOfPoints", 10000000);
@@ -1331,7 +1365,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("QuantileMatchingFactory-MaximumCallsNumber", 1000);
 
   // Student parameters //
-  addAsScalar("Student-MaximumCDFEpsilon", 5.0e-6);
   addAsScalar("Student-MinimumCDFEpsilon", 5.0e-2);
   addAsUnsignedInteger("Student-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Student-MaximumNumberOfPoints", 10000000);
@@ -1351,9 +1384,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("StudentCopulaFactory-NuStart", 5.0);
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
-
-  // NonCentralStudent parameters //
-  addAsUnsignedInteger("NonCentralStudent-CDFAlgo", 0);
 
   // UserDefined parameters //
   addAsUnsignedInteger("UserDefined-SmallSize", 10000);
@@ -1383,13 +1413,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("RandomMixture-DefaultBeta", 8.5);
   addAsScalar("RandomMixture-DefaultCDFEpsilon", 1.0e-10);
   addAsScalar("RandomMixture-DefaultPDFEpsilon", 1.0e-10);
-  addAsScalar("RandomMixture-GraphCDFEpsilon", 1.0e-5);
-  addAsScalar("RandomMixture-GraphPDFEpsilon", 1.0e-5);
   addAsUnsignedInteger("RandomMixture-DefaultBlockMax", 16);
   addAsUnsignedInteger("RandomMixture-DefaultBlockMin", 3);
   addAsUnsignedInteger("RandomMixture-DefaultMaxSize", 65536);
-  addAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber", 128);
-  addAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber", 1024);
   addAsUnsignedInteger("RandomMixture-MaximumSupportSize", 2048);
   addAsUnsignedInteger("RandomMixture-ProjectionDefaultSize", 25);
   addAsUnsignedInteger("RandomMixture-SmallSize", 100);
@@ -1429,8 +1455,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95);
 
   // ExpectationSimulationAlgorithm parameters //
-  addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX");
-  addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE");
+  addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});
+  addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE", {"NONE", "MAX", "NORM1", "NORM2"});
 
   // SobolSimulationAlgorithm parameters //
   addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel", 0.05);
@@ -1482,8 +1508,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MetaModelAlgorithm parameters //
   addAsScalar("MetaModelAlgorithm-PValueThreshold", 1.0e-3);
-  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC");
-  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram");
+  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC", {"BIC", "AIC", "AICC", "PVALUE"});
+  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram", {"Histogram", "KernelSmoothing"});
 
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);
@@ -1491,10 +1517,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", 0);
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
-  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut");
+  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold"});
 
   // LeastSquaresExpansion parameters //
-  addAsString("LeastSquaresExpansion-DecompositionMethod", "QR");
+  addAsString("LeastSquaresExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 
   // FunctionalChaosResult parameters //
   addAsUnsignedInteger("FunctionalChaosResult-PrintEllipsisSize", 3);
@@ -1512,7 +1538,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosValidation-ModelSelection", false);
 
   // LinearModelAlgorithm parameters //
-  addAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
+  addAsString("LinearModelAlgorithm-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 
   // LinearModelAnalysis parameters //
   addAsUnsignedInteger("LinearModelAnalysis-IdentifiersNumber", 3);
@@ -1537,7 +1563,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2);
   addAsScalar("GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
-  addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // GaussianProcessFitter parameters //
   addAsBool("GaussianProcessFitter-KeepCovariance", true);
@@ -1547,12 +1573,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
-  addAsScalar("GaussianProcessFitter-MeanEpsilon", 1.0e-12);
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
-  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK");
+  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // KrigingAlgorithm parameters //
-  addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK");
+  addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // SquaredExponential parameters //
   addAsScalar("SquaredExponential-DefaultTheta", 1.0);
@@ -1599,15 +1624,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DefaultCDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DependenceEpsilon", 1.0e-12);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
-  addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
-  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
+  addAsString("Distribution-EntropySamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
+  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
   addAsString("Distribution-SupportPointStyleDiscretePDF", "dot");
-  addAsUnsignedInteger("Distribution-CharacteristicFunctionBlockMax", 20);
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);
   addAsUnsignedInteger("Distribution-DefaultLevelNumber", 10);
   addAsUnsignedInteger("Distribution-DefaultPointNumber", 129);
-  addAsUnsignedInteger("Distribution-DefaultQuantileCacheSize", 128);
   addAsUnsignedInteger("Distribution-DefaultQuantileIteration", 100);
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);
@@ -1648,9 +1671,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("HMatrix-RegularizationEpsilon", 1.0e-4);
   addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
-  addAsString("HMatrix-ClusteringAlgorithm", "median");
-  addAsString("HMatrix-CompressionMethod", "AcaRandom");
-  addAsString("HMatrix-FactorizationMethod", "LLt");
+  addAsString("HMatrix-ClusteringAlgorithm", "median", {"median", "geometric", "hybrid"});
+  addAsString("HMatrix-CompressionMethod", "AcaRandom", {"Svd", "AcaFull", "AcaPartial", "AcaPlus", "AcaRandom"});
+  addAsString("HMatrix-FactorizationMethod", "LLt", {"LU", "LDLt", "LLt"});
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
@@ -1683,7 +1706,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("VisualTest-CloudMediumSize", 1000);
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
   addAsScalar("VisualTest-DependenceConfidenceLevel", 0.95);
-
+  addAsScalar("VisualTest-DrawPairsMarginals-AxesMargin", 0.10);
+  
   // RandomWalkMetropolisHastings parameters //
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor", 1.2);
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound", 0.117); // = 0.5 * 0.234
@@ -1695,11 +1719,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn", 1000);
 
   // GaussianLinearCalibration parameters //
-  addAsString("GaussianLinearCalibration-Method", "QR");
+  addAsString("GaussianLinearCalibration-Method", "QR", {"SVD", "Cholesky", "QR"});
 
   // LinearLeastSquaresCalibration parameters //
   addAsScalar("LinearLeastSquaresCalibration-Regularization", 1e-12);
-  addAsString("LinearLeastSquaresCalibration-Method", "QR");
+  addAsString("LinearLeastSquaresCalibration-Method", "QR", {"SVD", "Cholesky", "QR"});
 
   // NonLinearLeastSquaresCalibration parameters //
   addAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize", 100);
@@ -1739,7 +1763,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
-  addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
+  addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
 
   // SimplicialCubature parameters //
   addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
@@ -1764,7 +1788,7 @@ void ResourceMap::loadDefaultConfiguration()
 
 void ResourceMap::reload()
 {
-  std::vector<String> allKeys(getKeys());
+  const std::vector<String> allKeys(getKeys());
   for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
     removeKey(allKeys[i]);
   loadDefaultConfiguration();
@@ -1774,7 +1798,7 @@ void ResourceMap::reload()
 /** Get the list of keys associated to a class */
 std::vector<String> ResourceMap::findKeys(const String & substr)
 {
-  std::vector<String> allKeys(getKeys());
+  const std::vector<String> allKeys(getKeys());
   std::vector<String> result;
   for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
   {
@@ -1811,17 +1835,17 @@ std::vector<String> ResourceMap::getKeys() const
   std::vector<String> keys(getStringKeys());
   // Append the scalar keys
   {
-    std::vector<String> scalarKeys(getScalarKeys());
+    const std::vector<String> scalarKeys(getScalarKeys());
     keys.insert(keys.end(), scalarKeys.begin(), scalarKeys.end());
   }
   // Append the unsigned integer keys
   {
-    std::vector<String> unsignedIntegerKeys(getUnsignedIntegerKeys());
+    const std::vector<String> unsignedIntegerKeys(getUnsignedIntegerKeys());
     keys.insert(keys.end(), unsignedIntegerKeys.begin(), unsignedIntegerKeys.end());
   }
   // Append the bool keys
   {
-    std::vector<String> boolKeys(getBoolKeys());
+    const std::vector<String> boolKeys(getBoolKeys());
     keys.insert(keys.end(), boolKeys.begin(), boolKeys.end());
   }
   // Then sort the keys
@@ -1837,6 +1861,14 @@ std::vector<String> ResourceMap::getStringKeys() const
     keys.push_back(it->first);
   }
   return keys;
+}
+
+/* return the enum list associated to a key */
+std::vector<String> ResourceMap::getStringEnum(const String & key)
+{
+  const MapStringEnumType::const_iterator it = mapStringEnum_.find(key);
+  if (it != mapStringEnum_.end()) return it->second;
+  throw InternalException(HERE) << "Key '" << key << "' has no string enum.";
 }
 
 std::vector<String> ResourceMap::getBoolKeys() const

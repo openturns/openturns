@@ -21,8 +21,10 @@ simplices : 2-d sequence of int
     :math:`(i_1, \dots, i_{dim+1})` in :math:`\Rset^{dim}`. In dimension 1, a
     simplex is an interval :math:`[i_1, i_2]`; in dimension 2, it is a
     triangle :math:`[i_1, i_2, i_3]`.
-checkMeshValidity : bool
-    Tells if we should check if mesh is valid  i.e. if there is non-overlapping
+checkMeshValidity : bool, optional
+    Whether to check if the mesh is valid at the instance creation or if the validation
+    should be delayed until required e.g. when calling :meth:`computeWeights`.
+    The validity check consists in looking for non-overlapping
     simplices, no unused vertex, no simplices with duplicate vertices and
     no coincident vertices.
     Default value is set to false in resource map key `Mesh-CheckValidity`
@@ -148,7 +150,7 @@ Examples
 Notes
 -----
 The tolerance for the check on the barycentric coordinates can be tweaked
-using the key `Mesh-CoordinateEpsilon`."
+using the key `Mesh-VertexEpsilon`."
 
 // ---------------------------------------------------------------------
 
@@ -196,7 +198,7 @@ Examples
 Returns
 -------
 volume : :class:`~openturns.Point`
-    Volume of all simplices.
+    Volume of all simplices. It corresponds to the *intrinsic* volume, eg the surface of a mesh made of degenerated simplices in 3D.
 
 Examples
 --------
@@ -204,8 +206,13 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplex = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplex)
->>> print(mesh2d.computeSimplicesVolume())
-[0.5]"
+>>> dim = mesh2d.getIntrinsicDimension()
+>>> vol2d = mesh2d.computeSimplicesVolume()
+>>> simplices = [[0, 1, 1], [1, 2, 2], [2, 0, 0]]
+>>> mesh1d_in_2d = ot.Mesh(vertices, simplices)
+>>> dim = mesh1d_in_2d.getIntrinsicDimension()
+>>> vol1d = mesh1d_in_2d.computeSimplicesVolume()
+"
 
 // ---------------------------------------------------------------------
 
@@ -721,6 +728,15 @@ dimension : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Mesh::getIntrinsicDimension
+"Intrinsic dimension accessor.
+
+Returns
+-------
+dimension : int
+    Dimension of the simplices. It differs from the dimension if the last indices are repeated in the definition of the simplices."
+
+// ---------------------------------------------------------------------
 %feature("docstring") OT::Mesh::getLowerBound
 "Lower bound accessor.
 

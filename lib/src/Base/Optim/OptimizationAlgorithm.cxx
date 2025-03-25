@@ -19,12 +19,14 @@
  *
  */
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Bonmin.hxx"
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/Dlib.hxx"
 #include "openturns/Ipopt.hxx"
+#include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/Pagmo.hxx"
@@ -238,6 +240,10 @@ Bool OptimizationAlgorithm::getCheckStatus() const
 OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName)
 {
   OptimizationAlgorithm solver;
+  if (solverName == "AbdoRackwitz")
+  {
+    solver = AbdoRackwitz();
+  }
   if (PlatformInfo::HasFeature("ceres") && Ceres::GetAlgorithmNames().contains(solverName))
   {
     solver = Ceres(solverName);
@@ -249,6 +255,10 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   else if (solverName == "Cobyla")
   {
     solver = Cobyla();
+  }
+  else if (solverName == "SQP")
+  {
+    solver = SQP();
   }
   else if (solverName == "TNC")
   {
@@ -280,12 +290,6 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   return solver;
 }
 
-
-OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
-{
-  LOGWARN("OptimizationAlgorithm.Build is deprecated in favor of GetByName");
-  return GetByName(solverName);
-}
 
 OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & problem)
 {
@@ -338,7 +342,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem &
   Description result;
   for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
   {
-    OptimizationAlgorithm algorithm(Build(names[i]));
+    OptimizationAlgorithm algorithm(GetByName(names[i]));
     try
     {
       algorithm.setProblem(problem);

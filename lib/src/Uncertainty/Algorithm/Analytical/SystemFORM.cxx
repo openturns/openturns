@@ -45,7 +45,8 @@ SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
   : Analytical()
 {
   setNearestPointAlgorithm(nearestPointAlgorithm);
-  setPhysicalStartingPoint(physicalStartingPoint);
+  if (physicalStartingPoint.getSize())
+    setPhysicalStartingPoint(physicalStartingPoint);
   setEvent(event);
 }
 
@@ -139,7 +140,7 @@ void SystemFORM::run()
     const UnsignedInteger id = leafEventCollection[i].getId();
     if (idToBetaMap.find(id) == idToBetaMap.end()) // if not already computed for this event
     {
-      FORM algo(getNearestPointAlgorithm(), leafEventCollection[i], getPhysicalStartingPoint());
+      FORM algo(getNearestPointAlgorithm(), leafEventCollection[i]);
       algo.run();
 
       const FORMResult result(algo.getResult());

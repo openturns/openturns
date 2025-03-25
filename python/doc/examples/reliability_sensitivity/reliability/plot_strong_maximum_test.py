@@ -56,8 +56,8 @@ myStandardEvent = ot.StandardEvent(myEvent)
 # %%
 # First : FORM analyses to get the design point
 myCobyla = ot.Cobyla()
-myStartingPoint = inputDist.getMean()
-myAlgoFORM = ot.FORM(myCobyla, myEvent, myStartingPoint)
+myCobyla.setStartingPoint(inputDist.getMean())
+myAlgoFORM = ot.FORM(myCobyla, myEvent)
 myAlgoFORM.run()
 FORMResult = myAlgoFORM.getResult()
 standardSpaceDesignPoint = FORMResult.getStandardSpaceDesignPoint()

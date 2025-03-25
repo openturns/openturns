@@ -40,7 +40,7 @@ CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
 quantile = distribution.computeQuantile(0.95)
 print("quantile=", repr(quantile))
-print("cdf(quantile)=", distribution.computeCDF(quantile))
+print(f"cdf(quantile)= {distribution.computeCDF(quantile):.12g}")
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))

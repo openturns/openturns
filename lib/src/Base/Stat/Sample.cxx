@@ -22,6 +22,7 @@
 #include <fstream>
 #include "openturns/Sample.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/CSVParser.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,20 +30,34 @@ CLASSNAMEINIT(Sample)
 
 /* Factory of Sample from CSV file */
 Sample Sample::ImportFromCSVFile(const FileName & fileName,
-                                 const String & csvSeparator)
+                                 const String & separator)
 {
-  Sample sample(SampleImplementation::BuildFromCSVFile(fileName, csvSeparator));
-  return sample;
+  if ((separator == " ") || (separator == "\t"))
+    throw InvalidArgumentException(HERE) << "Error: the space/tab separator is not allowed for CSV file.";
+
+  CSVParser parser(fileName);
+  parser.setFieldSeparator(separator[0]);
+  return parser.load();
 }
 
 /* Factory of Sample from Text file */
 Sample Sample::ImportFromTextFile(const FileName & fileName,
                                   const String & separator,
                                   const UnsignedInteger skippedLines,
-                                  const String & numSeparator)
+                                  const String & decimalSeparator)
 {
-  Sample sample(SampleImplementation::BuildFromTextFile(fileName, separator, skippedLines, numSeparator));
-  return sample;
+  if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
+  const char theSeparator = separator[0];
+  if (decimalSeparator.size() != 1)
+    throw InvalidArgumentException(HERE) << "Decimal separator must be a string of size 1, got " << decimalSeparator.size();
+
+  CSVParser parser(fileName);
+  parser.setFieldSeparator(theSeparator);
+  parser.setAllowComments(true);
+  parser.setAllowEmptyLines(true);
+  parser.setSkippedLinesNumber(skippedLines);
+  parser.setNumericalSeparator(decimalSeparator[0]);
+  return parser.load();
 }
 
 Sample Sample::BuildFromPoint(const Point &point)
@@ -55,12 +70,12 @@ Sample Sample::BuildFromPoint(const Point &point)
 
 /* Save to CSV file */
 void Sample::exportToCSVFile(const FileName & filename,
-                             const String & csvSeparator,
-                             const String & numSeparator,
+                             const String & separator,
+                             const String & decimalSeparator,
                              const UnsignedInteger precision,
                              const String & format) const
 {
-  getImplementation()->exportToCSVFile(filename, csvSeparator, numSeparator, precision, format);
+  getImplementation()->exportToCSVFile(filename, separator, decimalSeparator, precision, format);
 }
 
 /* Default constructor */

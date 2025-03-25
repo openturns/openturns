@@ -24,11 +24,15 @@
 %include BaseTypCollection.i
 %import typ_module.i
 
+/* Base/Func */
 %include BaseFuncCollection.i
 %import base_module.i
 
 /* Base/Geom */
 %include BoundaryMesher.i
+
+/* Base/Optim */
+%import optim_module.i
 
 /* Base/Stat */
 %include LatentVariableModel.i
@@ -37,7 +41,11 @@
 /* Base/Solver */
 %include LeastSquaresEquationsSolver.i
 
+%include ConstantEvaluation.i
+%include ConstantFunction.i
+
 /* Uncertainty/Model */
+
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import dist_bundle3_module.i
@@ -50,6 +58,7 @@
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include ExperimentIntegration.i
+%include FejerExperiment.i
 
 /* Uncertainty/Algorith/Optimization */
 %include SequentialSamplingAlgorithmImplementation.i
@@ -86,6 +95,7 @@
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
 %include GeneralizedParetoValidation.i
+
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosValidation.i
 %include LinearModelValidation.i
@@ -94,3 +104,6 @@
 %include GaussianProcessRegressionResult.i
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
+
+ /* Uncertainty/Model */
+%include RatioOfUniforms.i

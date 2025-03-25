@@ -282,9 +282,9 @@ ot_add_python_module(func func_module.i
                       TranslationEvaluation.i TranslationEvaluation_doc.i.in
                       LinearEvaluation.i LinearEvaluation_doc.i.in
                       LinearGradient.i LinearGradient_doc.i.in
-                      QuadraticEvaluation.i
-                      ConstantGradient.i
-                      ConstantHessian.i
+                      QuadraticEvaluation.i QuadraticEvaluation_doc.i.in
+                      ConstantGradient.i ConstantGradient_doc.i.in
+                      ConstantHessian.i ConstantHessian_doc.i.in
                       ComposedEvaluation.i
                       ComposedGradient.i
                       ComposedHessian.i
@@ -488,7 +488,6 @@ ot_add_python_module(algo algo_module.i
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
                       GaussKronrod.i GaussKronrod_doc.i.in
                       GaussLegendre.i GaussLegendre_doc.i.in
-                      FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
                       KarhunenLoeveReduction.i KarhunenLoeveReduction_doc.i.in
@@ -997,6 +996,7 @@ ot_add_python_module(VisualTest visualtest_module.i
                     )
 ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
+		      FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
                       HSICStatImplementation.i HSICStatImplementation_doc.i.in
@@ -1032,15 +1032,19 @@ ot_add_python_module(experimental experimental_module.i
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      BoundaryMesher.i BoundaryMesher_doc.i.in
+                     ConstantEvaluation.i ConstantEvaluation_doc.i.in
+                     ConstantFunction.i ConstantFunction_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
+                     FejerExperiment.i FejerExperiment_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
                      GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
                      GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
                      GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i.in
+                     RatioOfUniforms.i RatioOfUniforms_doc.i.in
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
@@ -1098,11 +1102,10 @@ if (SPHINX_FOUND)
   if (NOT HDF5_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(study_save_load)")
   endif ()
-  if (NOT BISON_FOUND OR NOT FLEX_FOUND)
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(import_export_sample_csv)|(estimate_gev_fremantle)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gev_pirie)|(estimate_gev_racetime)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_gev_venice)|(estimate_gpd_rain)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(estimate_dependence_wavesurge)|(estimate_dependence_wind)")
+  if (NOT NLopt_FOUND)
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_nlopt)|(optimization_rosenbrock)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(advanced_mle_estimator)|(kriging_advanced)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_hyperparameters_optimization)")
   endif ()
 
   # create a build site-package from which sphinx can import

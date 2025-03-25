@@ -44,18 +44,6 @@ MarginalDistribution::MarginalDistribution()
 
 /* Parameters constructor */
 MarginalDistribution::MarginalDistribution(const Distribution & distribution,
-    const UnsignedInteger & index)
-  : DistributionImplementation()
-  , distribution_()
-  , indices_()
-{
-  setName("MarginalDistribution");
-  setParallel(distribution.getImplementation()->isParallel());
-  setDistributionAndIndices(distribution, Indices(1, index));
-}
-
-/* Parameters constructor */
-MarginalDistribution::MarginalDistribution(const Distribution & distribution,
     const Indices & indices)
   : DistributionImplementation()
   , distribution_()
@@ -342,18 +330,6 @@ Distribution MarginalDistribution::getMarginal(const Indices & indices) const
   MarginalDistribution marginal(distribution_, marginalIndices);
   marginal.setIntegrationAlgorithm(getIntegrationAlgorithm());
   return marginal.clone();
-}
-
-/* Get the isoprobabilistic transformation */
-MarginalDistribution::IsoProbabilisticTransformation MarginalDistribution::getIsoProbabilisticTransformation() const
-{
-  return distribution_.getIsoProbabilisticTransformation().getMarginal(indices_);
-}
-
-/* Get the inverse isoprobabilist transformation */
-MarginalDistribution::InverseIsoProbabilisticTransformation MarginalDistribution::getInverseIsoProbabilisticTransformation() const
-{
-  return distribution_.getInverseIsoProbabilisticTransformation().getMarginal(indices_);
 }
 
 /* Get the standard distribution */

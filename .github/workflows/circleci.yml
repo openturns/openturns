@@ -1,14 +1,23 @@
 on: [status]
+
+permissions: read-all
+
 jobs:
    circleci_artifacts_redirector_job:
      runs-on: ubuntu-latest
+     permissions:
+       statuses: write
      name: Run CircleCI artifacts redirector
      steps:
        - name: GitHub Action step
-         uses: larsoner/circleci-artifacts-redirector-action@master
+         uses: scientific-python/circleci-artifacts-redirector-action@v1
          with:
            repo-token: ${{ secrets.GITHUB_TOKEN }}
            api-token: ${{ secrets.CIRCLECI_TOKEN }}
            artifact-path: 0/html/index.html
            circleci-jobs: build_linux
            job-title: Check the sphinx doc here!
+       - name: Check the URL
+         if: github.event.status != 'pending'
+         run: |
+           curl --fail ${{ steps.step1.outputs.url }} | grep $GITHUB_SHA

@@ -16,14 +16,7 @@ def stop():
 
 # Definition of objective function
 f = ot.SymbolicFunction(["x1", "x2"], ["-(x2 - 2.0) * (x2 - 2.0)"])
-
-# Definition of variables bounds
-bounds = ot.Interval([-1.0, -1.0e19], [1.0, 1.0e19], [True, True], [True, True])
-
-# Definition of constraints
-# Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
-#    No equality constraint -> nothing to do
-#    Inequality constraints:
+bounds = ot.Interval([-1.0, -1.0e19], [1.0, 1.0e19])
 g = ot.SymbolicFunction(["x1", "x2"], ["-(x1 * x1 + x2 - 1.0)"])
 
 # Setting up problem

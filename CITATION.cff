@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+title: OpenTURNS
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - name: Airbus
+  - name: EDF
+  - name: IMACS
+  - name: ONERA
+  - name: Phimeca
+repository-code: 'https://github.com/openturns/openturns'
+url: 'https://openturns.github.io/www/'
+abstract: Uncertainty treatment library
+keywords:
+  - probability
+  - uncertainty
+  - reliability
+license: LGPL-3.0-or-later
+doi: 10.1007/978-3-319-11259-6_64-1

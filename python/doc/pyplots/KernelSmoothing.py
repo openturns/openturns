@@ -1,6 +1,7 @@
 import openturns as ot
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
 sample = ot.Gamma(6.0, 1.0).getSample(100)
 ks = ot.KernelSmoothing()
 bandwidth = [0.9]

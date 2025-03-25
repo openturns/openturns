@@ -22,12 +22,12 @@ anotherSample mean= [1.50538,2.09375]
 anotherSample covariance= [[  0.0847776   -0.000929088 ]
  [ -0.000929088  0.74965     ]]
 Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
-Quantile= [1.97468,3.60341]
+Quantile= [1.97468,3.60358]
 CDF(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293386]
 Survival(inverseSurvival)=0.950000
 Unilateral confidence interval (lower tail)= [-1, 1.97468]
-[-1, 3.60341]
+[-1, 3.60358]
 beta= [0.974679]
 Unilateral confidence interval (upper tail)= [1.02532, 1]
 [0.293386, 1]

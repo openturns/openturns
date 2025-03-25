@@ -24,19 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
-
+ 
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -85,11 +73,10 @@ int main(int, char *[])
     /* We create a Analytical algorithm */
     /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
-    /* The third parameter is a starting point for the design point research */
-    Analytical myAlgo(myCobyla, myEvent, mean);
+    myCobyla.setStartingPoint(mean);
+    Analytical myAlgo(myCobyla, myEvent);
 
     fullprint << "Analytical=" << myAlgo << std::endl;
-    fullprint << "physical starting point=" << myAlgo.getPhysicalStartingPoint() << std::endl;
     fullprint << "event=" << myAlgo.getEvent() << std::endl;
     fullprint << "nearest point algorithm=" << myAlgo.getNearestPointAlgorithm() << std::endl;
     fullprint << "result=" << myAlgo.getAnalyticalResult() << std::endl;

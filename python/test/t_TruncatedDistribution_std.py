@@ -126,7 +126,10 @@ for testCase in range(len(distribution)):
         interval, threshold = distribution[
             testCase
         ].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        prec = ot.PlatformInfo.GetNumericalPrecision()
+        ot.PlatformInfo.SetNumericalPrecision(5)
         print("Minimum volume interval=", interval)
+        ot.PlatformInfo.SetNumericalPrecision(prec)
         print("threshold=", ot.Point(1, threshold))
         levelSet, beta = distribution[
             testCase
@@ -210,6 +213,7 @@ candidates = [
     ot.JointDistribution([ot.Normal()] * 2),
     ot.BlockIndependentDistribution([ot.Normal(2), ot.Normal(2)]),
     ot.BlockIndependentCopula([ot.NormalCopula(2), ot.NormalCopula(2)]),
+    ot.Dirichlet([0.7, 0.3])
 ]
 intervals = [
     ot.Interval(-1.0, 4.0),
@@ -220,6 +224,7 @@ intervals = [
     ot.Interval(2),
     ot.Interval(4),
     ot.Interval(4),
+    ot.Interval(0.2, 2.4),
 ]
 for i in range(len(candidates)):
     d = ot.TruncatedDistribution(candidates[i], intervals[i])

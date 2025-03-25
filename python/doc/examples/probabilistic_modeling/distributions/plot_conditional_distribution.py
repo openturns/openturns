@@ -5,6 +5,10 @@ Create a conditional distribution
 
 # %%
 
+import openturns as ot
+import openturns.viewer as otv
+
+
 # %%
 # In this example we are going to build the distribution of the random vector :math:`\vect{X}` conditioned by the random vector :math:`\vect{\Theta}`
 #
@@ -16,11 +20,6 @@ Create a conditional distribution
 # .. math::
 #    \vect{\Theta}=f(Y)
 #
-
-# %%
-import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 # %%
 # Create the :math:`Y` distribution
@@ -47,5 +46,8 @@ XDist.getSample(5)
 # %%
 # Draw PDF
 graph = XDist.drawPDF()
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+
+# %%
+view.ShowAll()

@@ -72,10 +72,8 @@ optimAlgo.setMaximumConstraintError(1.0e-10)
 
 # %%
 # Run FORM.
-
-# %%
-startingPoint = distribution.getMean()
-algo = ot.FORM(optimAlgo, event, startingPoint)
+optimAlgo.setStartingPoint(distribution.getMean())
+algo = ot.FORM(optimAlgo, event)
 algo.run()
 result = algo.getResult()
 standardSpaceDesignPoint = result.getStandardSpaceDesignPoint()

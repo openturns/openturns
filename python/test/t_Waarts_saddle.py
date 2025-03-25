@@ -40,8 +40,6 @@ sigma = ot.Point(dim, 1.0)
 R = ot.CorrelationMatrix(dim)
 myDistribution = ot.Normal(mean, sigma, R)
 
-start = ot.Point(dim, 1.0)
-
 #
 # Limit state
 #
@@ -64,9 +62,10 @@ myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-10)
 myAbdoRackwitz.setMaximumResidualError(1.0e-10)
 myAbdoRackwitz.setMaximumConstraintError(3.0e-10)
+myAbdoRackwitz.setStartingPoint([1.0] * dim)
 
-myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent, start)
-myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent, start)
+myAlgoAR = ot.FORM(myAbdoRackwitz, myEvent)
+myAlgoAR2 = ot.SORM(myAbdoRackwitz, myEvent)
 
 myAlgoAR.run()
 myAlgoAR2.run()

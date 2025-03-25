@@ -1,10 +1,10 @@
 // SWIG file ConstantHessian.i
 
-OTAutodoc(ConstantHessian)
-
 %{
 #include "openturns/ConstantHessian.hxx"
 %}
+
+%include ConstantHessian_doc.i
 
 %copyctor OT::ConstantHessian;
 

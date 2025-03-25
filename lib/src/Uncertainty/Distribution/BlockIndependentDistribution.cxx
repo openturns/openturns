@@ -570,6 +570,11 @@ Bool BlockIndependentDistribution::isCopula() const
 /* Check if the distribution is elliptical */
 Bool BlockIndependentDistribution::isElliptical() const
 {
+  // If there is a unique bloc the copula can be nonindependent
+  if (distributionCollection_.getSize() == 1)
+    return distributionCollection_[0].isElliptical();
+  // Otherwise all the standard distributions must have an independent copula in addition for the bloc to be elliptical
+  // It means that they are all normal.
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
     if (!distributionCollection_[i].isElliptical() || !distributionCollection_[i].getStandardDistribution().hasIndependentCopula()) return false;
   return true;

@@ -1,4 +1,4 @@
-.. _use-case-fireSatellite:
+.. _use-case-fire-satellite:
 
 The Fire Satellite model
 ========================
@@ -245,8 +245,8 @@ We can load this model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from openturns.usecases import fireSatellite_function
-    >>> m = fireSatellite_function.FireSatelliteModel()
+    >>> from openturns.usecases.fire_satellite import FireSatelliteModel
+    >>> m = FireSatelliteModel()
     >>> # Load the Fire satellite use case (with 3 outputs: total torque, total power and solar array area)
     >>> model = m.model()
     >>> # Load the Fire satellite use case with total torque as output
@@ -259,7 +259,7 @@ We can load this model from the use cases module as follows :
 API documentation
 -----------------
 
-.. currentmodule:: openturns.usecases.fireSatellite_function
+.. currentmodule:: openturns.usecases.fire_satellite
 
 .. autoclass:: FireSatelliteModel
     :noindex:
@@ -267,5 +267,5 @@ API documentation
 Examples based on this use case
 -------------------------------
 
-.. minigallery:: openturns.usecases.fireSatellite_function.FireSatelliteModel
+.. minigallery:: openturns.usecases.fire_satellite.FireSatelliteModel
 

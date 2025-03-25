@@ -231,6 +231,10 @@ Scalar Student::computeCDF(const Point & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
+  // Special case for dimension 2
+  if (dimension == 2) return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], R_(1, 0));
+#endif
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {

@@ -37,6 +37,8 @@
 #include "openturns/Normal.hxx"
 #include "openturns/IndependentCopula.hxx"
 #include "openturns/NormalCopula.hxx"
+#include "openturns/Student.hxx"
+#include "openturns/StudentCopula.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
@@ -1450,18 +1452,42 @@ Bool JointDistribution::isElliptical() const
 {
   const Bool ellipticalCopula = core_.isCopula() && core_.hasEllipticalCopula();
   if (!ellipticalCopula) return false;
-  const String copulaKind(core_.getImplementation()->getClassName());
-  // Easy case: Normal or independent copula with Normal marginals
-  const Bool hasNormalCopula = (copulaKind == NormalCopula::GetClassName()) || hasIndependentCopula();
-  Bool hasNormalMarginals = true;
-  for (UnsignedInteger i = 0; i < getDimension(); ++i)
-  {
-    const String currentMarginalKind(distributionCollection_[i].getImplementation()->getClassName());
-    hasNormalMarginals = hasNormalMarginals && (currentMarginalKind == Normal::GetClassName());
-  }
   // For now, we are not smart enough to detect a fully general elliptical copula. The general
   // way to do it is to compare the density generator of the marginals and the copula.
-  return hasNormalCopula && hasNormalMarginals;
+  // We will only check if the distribution is a multivariate normal distribution or a multivariate Student distribution
+  // Easy case: Normal or independent copula with Normal marginals
+  // More involved case: Student copula with compatible Student marginals. As we must check the degrees of freedom, a dynamic cast is needed
+  const NormalCopula* p_normalCopula = dynamic_cast<const NormalCopula*>(core_.getImplementation().get());
+  // If the copula is a NormalCopula, check the marginal distributions
+  if (p_normalCopula || hasIndependentCopula())
+    {
+      Bool normalMarginals = true;
+      for (UnsignedInteger i = 0; i < getDimension(); ++i)
+	{
+	  const Normal* p_normal = dynamic_cast<const Normal*>(distributionCollection_[i].getImplementation().get());
+	  // The marginal is not a normal distribution
+	  if (!p_normal)
+	    {
+	      normalMarginals = false;
+	      break;
+	    }
+	} // for i
+      if (normalMarginals) return true;
+    } // if (p_normalCopula || hasIndependentCopula())
+  // More involved case: Student copula with compatible Student marginals. As we must check the degrees of freedom, a dynamic cast is needed
+  const StudentCopula* p_studentCopula = dynamic_cast<const StudentCopula*>(core_.getImplementation().get());
+  // The copula is not a StudentCopula, as it is the last case we test it ends the method
+  if (!p_studentCopula) return false;
+  const Scalar nu = p_studentCopula->getNu();
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+  {
+    const Student* p_student = dynamic_cast<const Student*>(distributionCollection_[i].getImplementation().get());
+    // The marginal is not a Student distribution, we end the method
+    if (!p_student) return false;
+    // The marginal distribution is a Student distribution but the nu parameter is not the expected one
+    if (!(p_student->getNu() == nu)) return false;
+  }
+  return true;
 }
 
 /* Check if the distribution is continuous */

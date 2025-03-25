@@ -1,6 +1,7 @@
 import openturns as ot
 from openturns.viewer import View
 
+ot.RandomGenerator.SetSeed(0)
 X = ot.RandomVector(ot.Normal())
 f = ot.SymbolicFunction(["x"], ["x^2*sin(x)"])
 Y = ot.CompositeRandomVector(f, X)

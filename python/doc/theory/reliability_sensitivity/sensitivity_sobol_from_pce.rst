@@ -37,7 +37,7 @@ to the index :math:`P`.
 Depending on the way the coefficients are computed, the set of multi-indices
 is the consequence of the choice of the polynomial degree, the enumeration rule,
 and, if necessary, the selection method (e.g. the LARS selection method).
-Let :math:`\metaModel(\standardRV)` be the polynomial chaos expansion:
+Let :math:`\tilde{h}(\standardRV)` be the polynomial chaos expansion:
 
 .. math::
     \tilde{h}(\standardRV)
@@ -51,7 +51,7 @@ functional basis.
 The variance of the polynomial chaos expansion is:
 
 .. math::
-    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2 \|\psi_\idx\|^2.
+    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P, \; \idx \neq \vect{0}} a_\idx^2 \|\psi_\idx\|^2.
 
 In the previous expression, let us emphasise that the variance is a sum
 of squares, excepted the :math:`a_0` coefficient.
@@ -59,7 +59,7 @@ If the polynomial basis is orthonormal, the expression is particularly
 simple (see [legratiet2017]_ eq. 38.43 page 1301):
 
 .. math::
-    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P} a_\idx^2.
+    \Var{\metaModel(\standardRV)} = \sum_{\idx \in \mathcal{J}_P, \; \idx \neq \vect{0}} a_\idx^2.
 
 The part of variance of the multi-index :math:`\idx` is:
 

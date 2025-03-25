@@ -1,24 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
-
-
-def printPoint(point, digits):
-    oss = "["
-    eps = m.pow(0.1, digits)
-    for i in range(point.getDimension()):
-        if i == 0:
-            sep = ""
-        else:
-            sep = ","
-        if abs(point[i]) < eps:
-            oss += sep + "%.6f" % abs(point[i])
-        else:
-            oss += sep + "%.6f" % point[i]
-        sep = ","
-    oss += "]"
-    return oss
 
 
 ot.TESTPREAMBLE()
@@ -30,16 +12,8 @@ myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 dim = myFunction.getInputDimension()
 
 # We create a normal distribution point of dimension 1
-mean = ot.Point(dim, 0.0)
-# E
-mean[0] = 50.0
-# F
-mean[1] = 1.0
-# L
-mean[2] = 10.0
-# I
-mean[3] = 5.0
-sigma = ot.Point(dim, 1.0)
+mean = [50.0, 1.0, 10.0, 5.0]
+sigma = [1.0] * dim
 R = ot.IdentityMatrix(dim)
 myDistribution = ot.Normal(mean, sigma, R)
 
@@ -54,6 +28,7 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), -1.5)
 
 # We create a NearestPoint algorithm
 myAbdoRackwitz = ot.AbdoRackwitz()
+myAbdoRackwitz.setStartingPoint(mean)
 myAbdoRackwitz.setMaximumIterationNumber(100)
 myAbdoRackwitz.setMaximumAbsoluteError(1.0e-10)
 myAbdoRackwitz.setMaximumRelativeError(1.0e-10)
@@ -65,7 +40,7 @@ print("myAbdoRackwitz=", myAbdoRackwitz)
 # The first parameter is an OptimizationAlgorithm
 # The second parameter is an event
 # The third parameter is a starting point for the design point research
-myAlgo = ot.SORM(myAbdoRackwitz, myEvent, mean)
+myAlgo = ot.SORM(myAbdoRackwitz, myEvent)
 
 # Perform the simulation
 myAlgo.run()
@@ -88,14 +63,16 @@ print(
     "Tvedt generalized reliability index=%.6f"
     % result.getGeneralisedReliabilityIndexTvedt()
 )
-print("sorted curvatures=", printPoint(result.getSortedCurvatures(), digits))
+curvatures = result.getSortedCurvatures()
+curvatures[2] = 0.0
+print("sorted curvatures=", curvatures)
 print(
     "standard space design point=",
-    printPoint(result.getStandardSpaceDesignPoint(), digits),
+    result.getStandardSpaceDesignPoint()
 )
 print(
     "physical space design point=",
-    printPoint(result.getPhysicalSpaceDesignPoint(), digits),
+    result.getPhysicalSpaceDesignPoint()
 )
 
 # Is the standard point origin in failure space?
@@ -104,5 +81,5 @@ print(
     result.getIsStandardPointOriginInFailureSpace(),
 )
 
-print("importance factors=", printPoint(result.getImportanceFactors(), digits))
+print("importance factors=", result.getImportanceFactors())
 print("Hasofer reliability index=%.6f" % result.getHasoferReliabilityIndex())

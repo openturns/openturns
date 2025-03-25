@@ -1,0 +1,24 @@
+name: Documentation issue
+description: Create a report for the documentation.
+labels:
+  - doc
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Describe the issue
+      description: What should be written instead? Please provide as many details as possible.
+    validations:
+      required: true
+  - type: textarea
+    id: info
+    attributes:
+      label: Where can the issue be found?
+      description: Please post a link to the page where the problem is visible
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Include any additional information that you think would be valuable.

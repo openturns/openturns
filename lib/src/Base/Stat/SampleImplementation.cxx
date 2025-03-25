@@ -24,9 +24,6 @@
 #include <iomanip>
 #include <algorithm>
 #include <iterator>
-#include <cstdlib>
-#include <cstdio>        // std::fopen, std::errno
-#include <cstring>       // std::strerror
 #include <regex>
 
 #include "openturns/OTconfig.hxx"
@@ -36,40 +33,12 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/TBBImplementation.hxx"
-#include "kendall.h"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Lapack.hxx"
+#include "openturns/CSVParser.hxx"
 
-#include <locale.h>
-#ifdef OPENTURNS_HAVE_XLOCALE_H
-#include <xlocale.h>
-#endif
-#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
-#include "openturns/csv_parser_state.hxx"
-#include "csv_parser.hh"
-#include "csv_lexer.h"
+#include "kendall.h"
 
-int csvparse (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * separator);
-#endif
-
-namespace
-{
-
-// wraps std::getline to handle EOLs across systems
-OT::Bool GetLine(std::ifstream & file, OT::String & line)
-{
-  if (std::getline(file, line).fail())
-    return false;
-  // deal with DOS EOLs from UNIX
-  if (line.size() && (line[line.size() - 1] == '\r'))
-  {
-    line.erase(line.size() - 1, 1);
-  }
-  return true;
-}
-
-}
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -306,345 +275,6 @@ OStream & operator << (OStream & OS, const NSI_const_point & point)
 static const Factory<SampleImplementation> Factory_SampleImplementation;
 
 CLASSNAMEINIT(SampleImplementation)
-
-
-/* Factory of SampleImplementation from CSV file */
-SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fileName,
-    const String & csvSeparator)
-{
-  if ((csvSeparator == " ") || (csvSeparator == "\t"))
-    throw InvalidArgumentException(HERE) << "Error: the space/tab separator is not allowed for CSV file.";
-
-  SampleImplementation impl(0, 0);
-
-#if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
-
-  FILE * theFile = std::fopen(fileName.c_str(), "r");
-  if (!theFile)
-  {
-    // theFile can not be found. Errno is set
-    throw FileNotFoundException(HERE) << "Can NOT open file '" << fileName
-                                      << "'. Reason: " << std::strerror(errno);
-  }
-
-  impl.setName(fileName);
-  yyscan_t scanner = 0;
-
-  CSVParserState state;
-  state.theFileName = fileName;
-
-#ifdef OPENTURNS_HAVE_USELOCALE
-  locale_t new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
-  locale_t old_locale = uselocale(new_locale);
-#else
-#ifdef _WIN32
-  _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
-#endif
-  const char * initialLocale = setlocale(LC_NUMERIC, NULL);
-  setlocale(LC_NUMERIC, "C");
-#endif
-
-  csvlex_init(&scanner);
-  csvparse(state, scanner, theFile, impl, impl.dimension_, csvSeparator.c_str());
-  csvlex_destroy(scanner);
-
-#ifdef OPENTURNS_HAVE_USELOCALE
-  uselocale(old_locale);
-  freelocale(new_locale);
-#else
-#ifdef _WIN32
-  _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
-#endif
-  setlocale(LC_NUMERIC, initialLocale);
-#endif
-  std::fclose(theFile);
-
-  // Check the description
-  if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
-    impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
-  if (!(impl.getDimension() > 0)) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
-
-#else
-  (void)fileName;
-  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without bison/flex support";
-#endif
-  return impl;
-}
-
-/* Factory of SampleImplementation from TXT file
- * The file is supposed to be formatted this way:
- * + an optional description of each column in the first row
- * + an arbitrary number of rows containing the same number of values
- * + the values can have an arbitrary number of spaces before or after them, with
- *   a potentially non-space separator between the values
- */
-Bool SampleImplementation::ParseStringAsValues(const String & line,
-    const char separator,
-    Point & data)
-{
-  const Bool isBlankSeparator = separator == ' ';
-  char * begin = const_cast<char *>(line.c_str());
-  char * end = begin;
-  data = Point(0);
-  while (!(*end == '\0'))
-  {
-    const Scalar value = strtod(begin, &end);
-
-    // Check if there was a problem
-    if (begin == end)
-    {
-      data = Point(0);
-      return false;
-    }
-    data.add(value);
-
-    // eat blanks
-    while(*end == ' ') ++end;
-
-    if (!isBlankSeparator)
-    {
-      // Early exit to avoid going past the end of the line
-      // when dealing with a non-blank separator
-      if (*end == '\0') return true;
-      if (*end != separator)
-      {
-        data = Point(0);
-        return false;
-      }
-      // To skip the separator
-      ++ end;
-    }
-    begin = end;
-  }
-  return true;
-}
-
-
-Bool SampleImplementation::ParseStringAsDescription(const String & line,
-    const char separator,
-    Description & description)
-{
-  // Here the speed is not critical at all
-
-  description.clear();
-  UnsignedInteger start = 0;
-  UnsignedInteger len = 0;
-  Bool escaped = false;
-  UnsignedInteger nTrailingSpace = 0;
-
-  for (UnsignedInteger i = 0; i < line.size(); ++ i)
-  {
-    if (line[i] == '\"')
-    {
-      if (!escaped)
-        ++ start;
-      escaped = !escaped;
-    }
-    else if ((line[i] == separator) && !escaped)
-    {
-      const String field(line.substr(start, len - nTrailingSpace));
-      if (field.empty())
-      {
-        if (separator != ' ')
-        {
-          LOGINFO(OSS() << "empty component, description is ignored");
-          return false;
-        }
-      }
-      else
-        description.add(field);
-      start = i + 1;
-      len = 0;
-    }
-    else if ((separator != ' ') && (line[i] == ' '))
-    {
-      if (start == i)
-        ++ start;
-      else
-        ++ len;
-      ++ nTrailingSpace;
-    }
-    else
-    {
-      ++ len;
-      nTrailingSpace = 0;
-    }
-  }
-  if (len > 0)
-  {
-    const String field(line.substr(start, len));
-    if (field.empty())
-    {
-      LOGINFO(OSS() << "empty component, description is ignored");
-      return false;
-    }
-    description.add(field);
-  }
-  return true;
-}
-
-
-Bool SampleImplementation::ParseComment(const String & line, const String & markers)
-{
-  Bool result = false;
-  if (line.size() > 0)
-  {
-    const char firstChar = line[0];
-    for (UnsignedInteger i = 0; i < markers.size(); ++ i)
-    {
-      if (firstChar == markers[i])
-      {
-        result = true;
-        break;
-      }
-    }
-  }
-  return result;
-}
-
-
-SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fileName,
-    const String & separator,
-    const UnsignedInteger skippedLines,
-    const String & numSeparator)
-{
-  if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
-  const char theSeparator = separator[0];
-
-  const String commentMarkers(ResourceMap::GetAsString("Sample-CommentMarkers"));
-  SampleImplementation impl(0, 0);
-
-  std::ifstream theFile(fileName.c_str());
-
-  if (!theFile.is_open())
-  {
-    // theFile can not be found. Errno is set
-    throw FileNotFoundException(HERE) << "Can NOT open file '" << fileName
-                                      << "'. Reason: " << std::strerror(errno);
-  }
-
-  // Manage the locale such that the decimal point IS a point ('.')
-#ifdef OPENTURNS_HAVE_USELOCALE
-  //Override setlocale if comma as numerical separator
-  locale_t new_locale;
-  if(numSeparator == ",")
-    new_locale = newlocale (LC_NUMERIC_MASK, "fr_FR.utf-8", NULL);
-  else
-    new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
-  if(new_locale == 0)
-    throw InternalException(HERE) << "Locale not available";
-  locale_t old_locale = uselocale(new_locale);
-#else
-#ifdef _WIN32
-  _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
-#endif
-  const char * initialLocale = setlocale(LC_NUMERIC, NULL);
-  if(numSeparator == ",")
-  {
-#if defined(_WIN32)
-    //Windows locale name
-    const char * new_locale = setlocale(LC_NUMERIC, "fra_FRA.1252");
-#else
-    const char * new_locale = setlocale(LC_NUMERIC, "fr_FR.utf-8");
-#endif
-    if(new_locale == 0)
-      throw InternalException(HERE) << "Locale not available";
-  }
-  else
-    setlocale(LC_NUMERIC, "C");
-#endif
-
-  String line;
-  UnsignedInteger index = 1;
-
-  // skip N lines
-  for ( ; index <= skippedLines; ++ index)
-    GetLine(theFile, line);
-
-  // Go to the first line containing data
-  Point data;
-  Description description(0);
-  while (!impl.dimension_ && GetLine(theFile, line))
-  {
-    if (line.empty())
-    {
-      LOGWARN(OSS() << "The line number " << index << " is empty");
-      LOGDEBUG(OSS() << "line=" << line);
-    }
-    else if (ParseComment(line, commentMarkers))
-    {
-      LOGWARN(OSS() << "The line number " << index << " contains a comment");
-      LOGDEBUG(OSS() << "line=" << line);
-    }
-    else if (ParseStringAsValues(line, theSeparator, data))
-    {
-      // The dimension is given by the first row of values
-      impl.dimension_ = data.getDimension();
-      impl.data_.add(data);
-      ++ impl.size_;
-      LOGDEBUG(OSS() << "The line number " << index << " contains data");
-    }
-    else if (ParseStringAsDescription(line, theSeparator, description))
-    {
-      // The dimension is given by the description
-      impl.dimension_ = description.getSize();
-      impl.setDescription(description);
-      LOGDEBUG(OSS() << "The line number " << index << " contains a description");
-    }
-    ++ index;
-  }
-
-  // Now, read all the other rows. If they don't contain a point
-  // or if the number of values is not equal to the dimension the
-  // row is ignored
-  while (GetLine(theFile, line))
-  {
-    if (ParseComment(line, commentMarkers))
-    {
-      LOGWARN(OSS() << "The line number " << index << " contains a comment");
-      LOGDEBUG(OSS() << "line=" << line);
-    }
-    else
-    {
-      if (ParseStringAsValues(line, theSeparator, data))
-      {
-        if (data.getDimension() == impl.dimension_)
-        {
-          impl.data_.add(data);
-          ++impl.size_;
-        }
-        else
-        {
-          LOGWARN(OSS() << "The line number " << index << " has a dimension=" << data.getDimension() << ", expected dimension=" << impl.dimension_);
-          LOGDEBUG(OSS() << "line=" << line);
-        }
-      }
-      else
-      {
-        LOGWARN(OSS() << "The line number " << index << " does not contain a point");
-        LOGDEBUG(OSS() << "line=" << line);
-      }
-    }
-    ++ index;
-  } // while (std::getLine(theFile, line))
-  // Check the description
-  if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
-  {
-    impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
-  }
-  if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
-#ifdef OPENTURNS_HAVE_USELOCALE
-  uselocale(old_locale);
-  freelocale(new_locale);
-#else
-#ifdef _WIN32
-  _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
-#endif
-  setlocale(LC_NUMERIC, initialLocale);
-#endif
-  impl.setName(fileName);
-  return impl;
-}
 
 /* Default constructor is private */
 SampleImplementation::SampleImplementation()
@@ -2299,42 +1929,36 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
 }
 
 /* Save to CSV file */
-void SampleImplementation::exportToCSVFile(const FileName & filename,
-    const String & csvSeparator,
-    const String & numSeparator,
+void SampleImplementation::exportToCSVFile(const FileName & fileName,
+    const String & separator,
+    const String & decimalSeparator,
     const UnsignedInteger precision,
     const String & format) const
 {
-  if (csvSeparator == numSeparator)
+  if (decimalSeparator.size() != 1)
+    throw InvalidArgumentException(HERE) << "Decimal separator must be a string of size 1, got " << decimalSeparator.size();
+  if (separator == decimalSeparator)
     throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
-  std::ofstream csvFile(filename.c_str());
+  std::ofstream csvFile(fileName);
   if (csvFile.fail())
-    throw FileOpenException(HERE) << "Could not open file " << filename;
-#ifndef __MINGW32__
-  if (numSeparator == ",")
-#ifdef _WIN32
-    csvFile.imbue(std::locale("fra_FRA.1252"));
-#else
-    csvFile.imbue(std::locale("fr_FR.utf-8"));
-#endif
-  else
-    csvFile.imbue(std::locale("C"));
-#else
-  csvFile.imbue(std::locale("C"));
-#endif
+    throw FileOpenException(HERE) << "Could not open file " << fileName;
+
+  csvFile.imbue(std::locale(std::locale::classic(), new CSVParser::CSVParserFormat(decimalSeparator[0])));
 
   // Export the description
   if (!p_description_.isNull())
   {
     const Description description(getDescription());
-    String separator;
-    for (UnsignedInteger i = 0; i < dimension_; ++i, separator = csvSeparator)
+    String separatorI;
+    for (UnsignedInteger i = 0; i < dimension_; ++ i, separatorI = separator)
     {
       String label(description[i]);
       Bool isBlank = true;
-      for (UnsignedInteger j = 0; isBlank && j < label.size(); ++j) isBlank = (label[j] == ' ') || (label[j] == '\t');
-      if (isBlank) csvFile << separator << "\"NoDescription\"";
-      else csvFile << separator << "\"" << description[i] << "\"";
+      for (UnsignedInteger j = 0; isBlank && j < label.size(); ++ j)
+        isBlank = (label[j] == ' ') || (label[j] == '\t');
+      if (isBlank)
+        label = "NoDescription";
+      csvFile << separatorI << "\"" << label << "\"";
     }
     csvFile << "\n";
   }
@@ -2349,43 +1973,13 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
 
   // Write the data
   UnsignedInteger index = 0;
-#ifdef __MINGW32__
-  // MinGW fails with std::locale("fr_FR.utf-8")
-  std::stringstream ss;
-  ss.imbue(std::locale("C"));
-  ss.precision(precision);
-  if (format == "scientific")
-    ss << std::scientific;
-  else if (format == "fixed")
-    ss << std::fixed;
-#endif
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
-#ifndef __MINGW32__
     csvFile << data_[index];
-#else
-    // manually replace decimal separator
-    ss.str("");
-    ss << data_[index];
-    std::string str(ss.str());
-    if (numSeparator == ",")
-      str = regex_replace(str, std::regex("\\."), ",");
-    csvFile << str;
-#endif
     ++index;
     for(UnsignedInteger j = 1; j < dimension_; ++j)
     {
-#ifndef __MINGW32__
-      csvFile << csvSeparator << data_[index];
-#else
-      // manually replace decimal separator
-      ss.str("");
-      ss << data_[index];
-      str = ss.str();
-      if (numSeparator == ",")
-        str = regex_replace(str, std::regex("\\."), ",");
-      csvFile << csvSeparator << str;
-#endif
+      csvFile << separator << data_[index];
       ++index;
     } // j
     csvFile << "\n";

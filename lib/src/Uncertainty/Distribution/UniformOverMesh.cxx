@@ -21,7 +21,6 @@
 #include <numeric>
 
 #include "openturns/UniformOverMesh.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/GaussLegendre.hxx"

@@ -19,7 +19,7 @@ mesh2D = ot.Mesh(vertices, simplices)
 # Build the Mesh boundary
 mesh2DBoundary = otexp.BoundaryMesher().build(mesh2D)
 volume = mesh2DBoundary.getVolume()
-ott.assert_almost_equal(volume, 0.0)
+ott.assert_almost_equal(volume, 7.780311648918275)
 length = compute_length(mesh2DBoundary)
 ott.assert_almost_equal(length, 7.780311648918275)
 # Build a thick outside Mesh boundary
