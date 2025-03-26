@@ -3767,9 +3767,8 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   if (isContinuous())
   {
     // Discretization of the x axis
-    const PDFWrapper pdfWrapper(this);
     const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
-    Graph graphPDF(pdfWrapper.draw(xMin, xMax, pointNumber, scale));
+    Graph graphPDF(getPDF().draw(xMin, xMax, pointNumber, scale));
     Drawable drawable(graphPDF.getDrawable(0));
     const String title(OSS() << getDescription()[0] << " PDF");
     drawable.setLegend(title);
@@ -3838,7 +3837,7 @@ Sample DistributionImplementation::computePDFGrid2D(const Sample & x, const Samp
       ++ index;
     } // i
   } // j
-  return PDFWrapper(this)(inputSample);
+  return getPDF()(inputSample);
 }
 
 Sample DistributionImplementation::computeLogPDFGrid2D(const Sample & x, const Sample & y) const
@@ -3858,7 +3857,7 @@ Sample DistributionImplementation::computeLogPDFGrid2D(const Sample & x, const S
       ++ index;
     } // i
   } // j
-  return LogPDFWrapper(this)(inputSample);
+  return getLogPDF()(inputSample);
 }
 
 Sample DistributionImplementation::computeCDFGrid2D(const Sample & x, const Sample & y) const
@@ -3878,7 +3877,7 @@ Sample DistributionImplementation::computeCDFGrid2D(const Sample & x, const Samp
       ++ index;
     } // i
   } // j
-  return CDFWrapper(this)(inputSample);
+  return getCDF()(inputSample);
 }
 
 /* Draw the PDF of the distribution when its dimension is 2 */
