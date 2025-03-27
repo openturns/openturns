@@ -6,7 +6,8 @@ from math import pi
 ot.RandomGenerator.SetSeed(1)
 log_UnscaledPDF = ot.SymbolicFunction('x', 'log(cos(x)) + x')
 
-rangePDF = ot.Interval(-pi / 2.0, pi / 2.0)
+eps = 1e-5
+rangePDF = ot.Interval(-pi / 2.0 + eps, pi / 2.0 - eps)
 ratioAlgo = otexp.RatioOfUniforms(log_UnscaledPDF, rangePDF)
 
 unscaled_PDF = ot.ComposedFunction(ot.SymbolicFunction('x', 'exp(x)'), log_UnscaledPDF)
