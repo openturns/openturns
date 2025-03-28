@@ -146,6 +146,9 @@ Bibliography
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
+.. [fischer2017] Fischer, R. (2017). *Modelling the dependence of order
+   statistics and nonparametric estimation*.
+   `pdf <https://pastel.hal.science/tel-01526823/file/TH2016PESC1039.pdf>`__
 .. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density
     estimator: L2 theory*, December 1981, Probability Theory and Related Fields.
     57 (4): 453–476.

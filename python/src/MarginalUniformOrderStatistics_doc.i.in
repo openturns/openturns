@@ -5,14 +5,18 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Allows one to extract marginals of a :class:`~openturns.experimental.UniformOrderStatistics`.
-
 Parameters
 ----------
 uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
     The underlying uniform order statistics distribution.
 indices : sequence of int
     Marginal indices, must be strictly increasing.
+
+Notes
+-----
+This class gives access to the marginals of the joint distribution of the :math:`n` order statistics
+of the Uniform distribution over :math:`[0,1]`, implemented in the class
+:class:`~openturns.experimental.UniformOrderStatistics`. Refer to this documentation to get details.
 "
 
 // ---------------------------------------------------------------------
@@ -43,7 +47,11 @@ uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
 Parameters
 ----------
 indices : sequence of int
-    Marginal indices."
+    Marginal indices.
+
+Notes
+-----
+The indices must be strictly increasing."
 
 // ---------------------------------------------------------------------
 
@@ -58,7 +66,7 @@ indices : :class:`~openturns.Indices`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MarginalUniformOrderStatistics::getN
-"Accessor to the size of the underlying order statistics
+"Accessor to the size of the underlying uniform order statistics.
 
 Returns
 -------
