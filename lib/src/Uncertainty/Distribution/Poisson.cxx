@@ -140,19 +140,17 @@ Scalar Poisson::computeLogPDF(const Point & point) const
 Scalar Poisson::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   const Scalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
-  return DistFunc::pGamma(floor(k) + 1.0, lambda_, true);
+  return DistFunc::pPoisson(lambda_, k);
 }
 
 Scalar Poisson::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
   const Scalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
-  return DistFunc::pGamma(floor(k) + 1.0, lambda_);
+  return DistFunc::pPoisson(lambda_, k, true);
 }
 
 /* Get the PDF gradient of the distribution */

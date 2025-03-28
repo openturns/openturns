@@ -337,6 +337,7 @@ Low-level distribution functions
     DistFunc.pNormal2D
     DistFunc.pNormal3D
     DistFunc.pPearsonCorrelation
+    DistFunc.pPoisson
     DistFunc.pSpearmanCorrelation
     DistFunc.pStudent
     DistFunc.pStudent2D
