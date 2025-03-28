@@ -185,9 +185,8 @@ class NewDistribution_RoU(ot.PythonDistribution):
 newDist_RoU = ot.Distribution(NewDistribution_RoU())
 
 # %%
-# We compare the time for sampling the distribution with the Ratio of Uniforms algorithm to
-# the time with the generic sampler. The Ratio of Uniforms algorithm proves to be much more rapid
-# than the generic method.
+# We compare the sampling speed of the distribution with the Ratio of Uniforms algorithm to the generic sampling speed.
+# The Ratio of Uniforms algorithm proves to be much quicker than the generic method.
 sizeRoU = 10000
 sizeGeneric = 100
 
@@ -197,8 +196,9 @@ t1 = monotonic()
 sample_generic = newDist_generic.getSample(sizeGeneric)
 t2 = monotonic()
 
-print("Ratio of Uniforms speed = ", sizeRoU / (t1 - t0), "rng/s")
-print("Generic algorithm speed = ", sizeGeneric / (t2 - t1), "rng/s")
+speedRoU = sizeRoU / (t1 - t0)
+speedGeneric = sizeGeneric / (t2 - t1)
+print(f"Is Ratio of Uniforms faster ? {speedRoU > 10 * speedGeneric}")
 
 # %%
 # Case 2: Direct use the Ratio of Uniforms algorithm

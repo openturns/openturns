@@ -175,24 +175,12 @@ Figures are automatically generated from the matplotlib handles,
 for example using the openturns.viewer module::
 
     # %%
-    from openturns.viewer import View
+    import openturns.viewer as otv
     graph = dist.drawPDF()
-    view = View(graph)
+    view = otv.View(graph)
 
-Note that sphinx runs the examples in the same Python process so you might want
-to reset the random generator at the beginning of your example for consistent
-results::
-
-    # %%
-    import openturns as ot
-    ot.RandomGenerator.SetSeed(0)
-
-For the same reason you might want to reset the ResourceMap default values at
-the end if your example sets specific settings::
-
-   # %%
-   # Reset default settings
-   ot.ResourceMap.Reload()
+Note that its important to store the View handle in a variable to prevent the object address being printed
+leading to unreproducible example.
 
 The special variable `sphinx_gallery_thumbnail_number <https://sphinx-gallery.github.io/stable/configuration.html#choosing-thumbnail>`_
 can be used to determine which figure is used as thumbnail in the examples gallery::

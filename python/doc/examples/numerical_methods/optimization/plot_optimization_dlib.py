@@ -7,10 +7,8 @@ Optimization using dlib
 # In this example we are going to explore optimization using the interface to the `dlib <http://dlib.net/>`_ library.
 
 # %%
-import numpy as np
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -122,13 +120,14 @@ print("Constraint error: ", result.getConstraintError())
 # %%
 # Draw optimal value history
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Solving least squares problem
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# In least squares problem, the user provides the residual function to minimize. Here the underlying OptimizationProblem is defined as a LeastSquaresProblem.
+# In least squares problem, the user provides the residual function to minimize.
+# Here the underlying OptimizationProblem is defined as a LeastSquaresProblem.
 #
 # dlib least squares algorithms use the same stop criteria as CG, BFGS/LBFGS and Newton algorithms.
 # However, optimization will stop earlier if no significant improvement can be achieved during the process.
@@ -144,12 +143,13 @@ p_ref = [2.8, 1.2, 0.5]  # Reference a, b, c
 modelx = ot.ParametricFunction(model, [0, 1, 2], p_ref)
 
 # Generate reference sample (with normal noise)
-y = np.multiply(modelx(x), np.random.normal(1.0, 0.05, m))
+x00 = modelx(x[0])[0]
+y = [x00 * ot.Normal(1.0, 0.05).getRealization()[0] for i in range(m)]
 
 
 def residualFunction(params):
     modelx = ot.ParametricFunction(model, [0, 1, 2], params)
-    return [modelx(x[i])[0] - y[i, 0] for i in range(m)]
+    return [modelx(x[i])[0] - y[i] for i in range(m)]
 
 
 # %%
@@ -179,11 +179,11 @@ print("Constraint error: ", result.getConstraintError())
 # %%
 # Draw errors history
 graph = result.drawErrorHistory()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw optimal value history
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
+view = otv.View(graph)
 
-plt.show()
+otv.View.ShowAll()

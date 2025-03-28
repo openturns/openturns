@@ -40,7 +40,6 @@ graph_PDF.setXTitle(r"$x_1$")
 graph_PDF.setYTitle(r"$x_2$")
 graph_PDF.setLegendPosition("lower right")
 contours = graph_PDF.getDrawable(0).getImplementation()
-contours.setColorMapNorm("log")
 graph_PDF.setDrawable(contours, 0)
 view = otv.View(graph_PDF, square_axes=True)
 
@@ -565,7 +564,3 @@ print("Probability of failure (SORM Tvedt) Pf = ", pf_Tvedt)
 # %%
 # Display all figures
 otv.View.ShowAll()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

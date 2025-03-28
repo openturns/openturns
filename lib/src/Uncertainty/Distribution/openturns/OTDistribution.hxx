@@ -152,7 +152,6 @@
 #include "openturns/ProductDistribution.hxx"
 #include "openturns/QuantileMatchingFactory.hxx"
 #include "openturns/RandomMixture.hxx"
-#include "openturns/RatioDistribution.hxx"
 #include "openturns/Rayleigh.hxx"
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/Rice.hxx"

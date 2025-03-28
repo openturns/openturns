@@ -59,6 +59,12 @@ LOLAVoronoi::LOLAVoronoi(const Sample & x,
   // LOLA criterion needs at least m=2d neighbours to compute gradient approximations
   if (x.getSize() < 2 * x.getDimension() + 1)
     throw InvalidArgumentException(HERE) << "Input sample size (" << x.getSize() << ") should be >=2d+1 (" << (2 * x.getDimension() + 1) << ")";
+
+  // Input components cannot be constant in order to build the neighbourhood
+  const Point sigma(x.computeStandardDeviation());
+  for (UnsignedInteger i = 0; i < x.getDimension(); ++ i)
+    if (!(sigma[i] > 0.0))
+      throw InvalidArgumentException(HERE) << "Input sample component #" << i << " must not be constant";
 }
 
 

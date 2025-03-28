@@ -78,7 +78,7 @@ transition = ot.SquareMatrix(
 
 # %%
 # Visualize the transition matrix
-plt.matshow(transition)
+_ = plt.matshow(transition)
 
 # %%
 # Invert axes and add texts

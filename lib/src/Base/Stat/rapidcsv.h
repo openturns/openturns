@@ -1605,10 +1605,6 @@ namespace rapidcsv
           }
           else if (buffer[i] == mSeparatorParams.mSeparator)
           {
-            // JSR 06/01/2025: treat multiple space separators as an unique separator
-            if (mSeparatorParams.mSeparator == ' ' && (i + 1) < static_cast<size_t>(readLength) && buffer[i + 1] == ' ')
-              continue;
-
             if (!quoted)
             {
               row.push_back(Unquote(Trim(cell)));
@@ -1645,9 +1641,7 @@ namespace rapidcsv
               }
               else
               {
-                // JSR 06/01/2025: ignore last empty cell when separator is space
-                if (mSeparatorParams.mSeparator != ' ' || !Unquote(Trim(cell)).empty())
-                  row.push_back(Unquote(Trim(cell)));
+                row.push_back(Unquote(Trim(cell)));
 
                 if (mLineReaderParams.mSkipCommentLines && !row.at(0).empty() &&
                     (row.at(0)[0] == mLineReaderParams.mCommentPrefix))

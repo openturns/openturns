@@ -52,9 +52,9 @@ myCobyla.setStopCallback(stop)
 # %%
 # Run FORM
 myCobyla.setStartingPoint(mean)
-myAlgo = ot.FORM(myCobyla, myEvent)
-myAlgo.run()
-result = myAlgo.getResult()
+algo = ot.FORM(myCobyla, myEvent)
+algo.run()
+result = algo.getResult()
 print("event probability:", result.getEventProbability())
 print("calls number:", myFunction.getCallsNumber())
 
@@ -66,17 +66,17 @@ print("calls number:", myFunction.getCallsNumber())
 # %%
 # Create simulation
 experiment = ot.MonteCarloExperiment()
-myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
-myAlgo.setMaximumOuterSampling(1000000)
-myAlgo.setMaximumCoefficientOfVariation(-1.0)
+algo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
+algo.setMaximumOuterSampling(1000000)
+algo.setMaximumCoefficientOfVariation(-1.0)
 
 # %%
 # Define the stopping criterion
-myAlgo.setMaximumTimeDuration(0.01)
+algo.setMaximumTimeDuration(0.01)
 
 # %%
-# Run algorithm
-myAlgo.run()
-result = myAlgo.getResult()
-print("event probability:", result.getProbabilityEstimate())
-print("calls number:", myFunction.getCallsNumber())
+# Run the algorithm
+algo.run()
+result = algo.getResult()
+pf = result.getProbabilityEstimate()
+nCalls = myFunction.getCallsNumber()
