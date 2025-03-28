@@ -153,8 +153,15 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
   // Special case for identical independent variables
   if (allSame_) return variablesNumber_ * distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
-  // General case
-  if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
+  // General case, use finite difference
+  if (!distribution_.hasIndependentCopula())
+    {
+      const Scalar x = point[0];
+      const Scalar epsilon = std::pow(quantileEpsilon_, 1.0 / 3.0) * (1.0 + std::abs(x));
+      const Scalar xp = x + epsilon;
+      const Scalar xm = x - epsilon;
+      return (computeCDF(xp) - computeCDF(xm)) / (xp - xm);
+    }
   // Special treatment of the independent copula case
   const UnsignedInteger size = distribution_.getDimension();
   Point marginalCDF(size);
@@ -231,19 +238,37 @@ Distribution MaximumDistribution::getDistribution() const
 
 Bool MaximumDistribution::isContinuous() const
 {
-  return distribution_.isContinuous();
+  // The distribution is continuous if the margins are continuous
+  // which is the case if the underlying distribution is continuous
+  if (distribution_.isContinuous()) return true;
+  // but also if the margins are continuous and not the core
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!distribution_.getMarginal(i).isContinuous()) return false;
+  return true;
 }
 
 /* Tell if the distribution is discrete */
 Bool MaximumDistribution::isDiscrete() const
 {
-  return distribution_.isDiscrete();
+  // The distribution is discrete if the margins are discrete
+  // which is the case if the underlying distribution is discrete
+  if (distribution_.isDiscrete()) return true;
+  // but also if the margins are discrete and not the core
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!distribution_.getMarginal(i).isDiscrete()) return false;
+  return true;
 }
 
 /* Tell if the distribution is integer valued */
 Bool MaximumDistribution::isIntegral() const
 {
-  return distribution_.isIntegral();
+  // The distribution is integral if the margins are integral
+  // which is the case if the underlying distribution is integral
+  if (distribution_.isIntegral()) return true;
+  // but also if the margins are integral and not the core
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!distribution_.getMarginal(i).isIntegral()) return false;
+  return true;
 }
 
 Point MaximumDistribution::getParameter() const

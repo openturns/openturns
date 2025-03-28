@@ -6,25 +6,6 @@ Distribution  MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], 
  [ 0 0 0 0 1 ]]))
 Elliptical =  False
 Continuous =  True
-oneRealization= [1.20548]
-oneSample first= [1.43725]  last= [0.884963]
-mean= [1.16745]
-covariance= [[ 0.448379 ]]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  [1.0]
-ddf     = [0.0911751]
-log pdf=-0.50052
-pdf    =0.60622
-cdf =0.42157
-ccdf=0.57843
-survival=0.57843
-Inverse survival= [0.123843]
-Survival(inverse survival)=0.95
-quantile= [2.31868]
-cdf(quantile)=0.95
-quantile (tail)= [0.123843]
-cdf (tail)=0.95
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
@@ -38,12 +19,6 @@ Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
 beta=0.95
 beta=0.95
-mean= [1.16296]
-standard deviation= [0.66898]
-skewness= [0.302571]
-kurtosis= [3.20079]
-covariance= [[ 0.447534 ]]
-correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 Standard representative= MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
@@ -55,25 +30,6 @@ Standard representative= MaximumDistribution(Normal(mu = [0,0,0,0,0], sigma = [1
 Distribution  MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.859685]
-oneSample first= [1.78646]  last= [2.18777]
-mean= [1.16148]
-covariance= [[ 0.457225 ]]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  [1.0]
-ddf     = [0.0911751]
-log pdf=-0.50052
-pdf    =0.60622
-cdf =0.42157
-ccdf=0.57843
-survival=0.57843
-Inverse survival= [0.123843]
-Survival(inverse survival)=0.95
-quantile= [2.31868]
-cdf(quantile)=0.95
-quantile (tail)= [0.123843]
-cdf (tail)=0.95
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5))))
@@ -82,37 +38,12 @@ Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
 beta=0.95
 beta=0.95
-mean= [1.16296]
-standard deviation= [0.66898]
-skewness= [0.302571]
-kurtosis= [3.20079]
-covariance= [[ 0.447534 ]]
-correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 Standard representative= MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Distribution  MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.859685]
-oneSample first= [1.78646]  last= [2.18777]
-mean= [1.16148]
-covariance= [[ 0.457225 ]]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  [1.0]
-ddf     = [0.0911751]
-log pdf=-0.50052
-pdf    =0.60622
-cdf =0.42157
-ccdf=0.57843
-survival=0.57843
-Inverse survival= [0.123843]
-Survival(inverse survival)=0.95
-quantile= [2.31868]
-cdf(quantile)=0.95
-quantile (tail)= [0.123843]
-cdf (tail)=0.95
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
 MinimumVolumeLevelSetEvaluation(MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5))))
@@ -121,13 +52,27 @@ Bilateral confidence interval= [-0.0547313, 2.57233]
 beta=0.95
 beta=0.95
 beta=0.95
-mean= [1.16296]
-standard deviation= [0.66898]
-skewness= [0.302571]
-kurtosis= [3.20079]
-covariance= [[ 0.447534 ]]
-correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 Standard representative= MaximumDistribution(JointDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), IndependentCopula(dimension = 5)))
+Distribution  MaximumDistribution(Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1   0.5 0   ]
+ [ 0.5 1   0   ]
+ [ 0   0   1   ]]))
+Elliptical =  False
+Continuous =  True
+threshold= 0.95
+Minimum volume level set= {x | f(x) <= 2.62114} with f=
+MinimumVolumeLevelSetEvaluation(MaximumDistribution(Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1   0.5 0   ]
+ [ 0.5 1   0   ]
+ [ 0   0   1   ]])))
+beta=0.07272
+Bilateral confidence interval= [-0.732826, 2.3765]
+beta=0.95
+beta=0.95
+beta=0.95
+spearman= [[ 1 ]]
+kendall= [[ 1 ]]
+Standard representative= MaximumDistribution(Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1   0.5 0   ]
+ [ 0.5 1   0   ]
+ [ 0   0   1   ]]))
 0.21785
