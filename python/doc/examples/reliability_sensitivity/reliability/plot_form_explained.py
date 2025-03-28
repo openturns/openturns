@@ -15,6 +15,7 @@ An illustrated example of a FORM probability estimate
 import openturns as ot
 import openturns.viewer as otv
 import numpy as np
+# sphinx_gallery_thumbnail_number = 8
 
 # %%
 # Context
@@ -45,7 +46,6 @@ contours.setIsFilled(True)
 contours.buildDefaultLevels(50)
 graph_PDF.setDrawable(contours, 0)
 view = otv.View(graph_PDF, square_axes=True)
-
 
 # %%
 # We consider the model from :math:`\Rset^2` into  :math:`\Rset` defined by:
