@@ -1,4 +1,4 @@
-.. _RandomVectorsExamples:
+.. _random_vectors_examples:
 
 Random Vectors
 --------------

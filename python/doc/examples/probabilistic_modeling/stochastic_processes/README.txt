@@ -1,4 +1,4 @@
-.. _Stochastic processes:
+.. _stochastic_processes:
 
-Stochastic_processes
+Stochastic processes
 --------------------
