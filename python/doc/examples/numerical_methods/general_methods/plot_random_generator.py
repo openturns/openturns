@@ -21,9 +21,9 @@ import time
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Example 0: using a fixed seed
-# -----------------------------
-ot.RandomGenerator.SetSeed(77)
+# Example 0: using the time in milliseconds
+# -----------------------------------------
+ot.RandomGenerator.SetSeed(int(1000 * time.time() % 1e9))
 
 # %%
 # Example 1: using the python process id
@@ -31,9 +31,9 @@ ot.RandomGenerator.SetSeed(77)
 ot.RandomGenerator.SetSeed(os.getpid())
 
 # %%
-# Example 2: using the time in milliseconds
-# -----------------------------------------
-ot.RandomGenerator.SetSeed(int(1000 * time.time() % 1e9))
+# Example 2: using a fixed seed
+# -----------------------------
+ot.RandomGenerator.SetSeed(77)
 
 # %%
 # Example 3: using a previously saved generator state
@@ -42,10 +42,10 @@ ot.RandomGenerator.SetSeed(int(1000 * time.time() % 1e9))
 # use the random generator
 ot.Normal().getSample(100)
 # save the generator state
-particularState = ot.RandomGenerator.GetState()
+state = ot.RandomGenerator.GetState()
 ot.Normal().getRealization()
 
 # %%
 # load the generator state
-ot.RandomGenerator.SetState(particularState)
+ot.RandomGenerator.SetState(state)
 ot.Normal().getRealization()
