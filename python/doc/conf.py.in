@@ -103,6 +103,7 @@ sphinx_gallery_conf = {
                                         'examples/data_analysis/graphics',
                                         'examples/probabilistic_modeling/distributions',
                                         'examples/probabilistic_modeling/copulas',
+                                        'examples/probabilistic_modeling/order_statistics',
                                         'examples/probabilistic_modeling/random_vectors',
                                         'examples/probabilistic_modeling/stochastic_processes',
                                         'examples/meta_modeling/general_purpose_metamodels',
