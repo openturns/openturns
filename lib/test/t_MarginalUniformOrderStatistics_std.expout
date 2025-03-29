@@ -1,0 +1,30 @@
+Distribution class=MarginalUniformOrderStatistics name=MarginalUniformOrderStatistics dimension=2 n=4 indices=[1,3] simplex=class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[0,0],[1,0],[0,1],[1,1]] simplices=[[0,1,2],[1,3,2]]
+Distribution MarginalUniformOrderStatistics(n = 4, indices = [1,3])
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.204795,0.4246]
+oneSample first=class=Point name=Unnamed dimension=2 values=[0.806666,0.842172] last=class=Point name=Unnamed dimension=2 values=[0.380093,0.92017]
+mean=class=Point name=Unnamed dimension=2 values=[0.4001,0.79878]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0397974,0.0134376,0.0134376,0.0269938]
+Point= class=Point name=Unnamed dimension=2 values=[0.15,0.25]
+ddf     =class=Point name=Unnamed dimension=2 values=[-1.2,3.6]
+log pdf =-1.02165
+pdf     =0.36
+cdf     =0.00320625
+ccdf    =0.996794
+survival=0.889781
+Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0702402,0.404995]
+Survival(inverse survival)=0.95
+quantile=class=Point name=Unnamed dimension=2 values=[0.802355,0.993358]
+cdf(quantile)=0.95
+entropy=-1.0114
+entropy (MC)=-1.01097
+mean=class=Point name=Unnamed dimension=2 values=[0.4,0.8]
+standard deviation=class=Point name=Unnamed dimension=2 values=[0.2,0.163299]
+skewness=class=Point name=Unnamed dimension=2 values=[0.285714,-1.04978]
+kurtosis=class=Point name=Unnamed dimension=2 values=[2.35714,3.69643]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.04,0.0133333,0.0133333,0.0266667]
+correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.408248,0.408248,1]
+parameters=[[]]
+Standard representative=MarginalUniformOrderStatistics(n = 4, indices = [1,3])
+Equal? true

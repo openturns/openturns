@@ -74,11 +74,11 @@
 %include CubaIntegration.i
 
 /* Uncertainty/Algorithm/Metamodel */
-%include UserDefinedMetropolisHastings.i
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
+%include UserDefinedMetropolisHastings.i
 
 /* Uncertainty/Algorithm */
 %include SequentialSamplingAlgorithmImplementation.i
@@ -91,8 +91,9 @@
 /* Uncertainty/Distribution */
 %include CombinationsDistribution.i
 %include PointConditionalDistribution.i
-%include SmoothedUniformFactory.i
+%include MarginalUniformOrderStatistics.i
 %include PosteriorDistribution.i
+%include SmoothedUniformFactory.i
 %include UniformOrderStatistics.i
 %include GeneralizedParetoValidation.i
 

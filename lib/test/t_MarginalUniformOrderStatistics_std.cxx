@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Arcsine for standard methods
+ *  @brief The test file of class UniformOrderStatistics for standard methods
  *
  *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -29,13 +29,11 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  TBB::Disable();
 
   try
   {
     // Instantiate one distribution object
-    CovarianceMatrix cov(1);
-    InverseWishart distribution(cov, 15.0);
+    MarginalUniformOrderStatistics distribution(4, {1, 3});
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -55,31 +53,23 @@ int main(int, char *[])
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
-    fullprint << "skewness=" << oneSample.computeSkewness() << std::endl;
-    fullprint << "kurtosis=" << oneSample.computeKurtosis() << std::endl;
-    size = 100;
-    for (UnsignedInteger i = 0; i < 2; ++i)
-    {
-      fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
-      size *= 10;
-    }
+
     // Define a point
-    Point point(distribution.getDimension(), 0.1);
+    Point point( {0.15, 0.25} );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    Scalar eps = 1e-5;
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
-    fullprint << "log pdf=" << LPDF << std::endl;
+    fullprint << "log pdf =" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
-    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
     Scalar CDF = distribution.computeCDF( point );
-    fullprint << "cdf=" << CDF << std::endl;
+    fullprint << "cdf     =" << CDF << std::endl;
+    // Too expensive for a test
     Scalar CCDF = distribution.computeComplementaryCDF( point );
-    fullprint << "ccdf=" << CCDF << std::endl;
+    fullprint << "ccdf    =" << CCDF << std::endl;
     Scalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
     Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
@@ -88,44 +78,11 @@ int main(int, char *[])
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-    Point quantileTail = distribution.computeQuantile( 0.95, true );
-    fullprint << "quantile (tail)=" << quantileTail << std::endl;
-    Scalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
-    fullprint << "cdf (tail)=" << CDFTail << std::endl;
-    Point PDFgr = distribution.computePDFGradient( point );
-    fullprint << "pdf gradient     =" << PDFgr << std::endl;
-//     Point PDFgrFD(2);
-//     PDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computePDF(point) -
-//                   Arcsine(distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps);
-//     PDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computePDF(point) -
-//                   Arcsine(distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps);
-//     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-    Point CDFgr = distribution.computeCDFGradient( point );
-    fullprint << "cdf gradient     =" << CDFgr << std::endl;
-//     Point CDFgrFD(2);
-//     CDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-//                   Arcsine(distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps);
-//     CDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-//                   Arcsine(distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
-//     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
-    // Confidence regions
-    Scalar threshold;
-    fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
-    fullprint << "threshold=" << threshold << std::endl;
-    Scalar beta;
-    LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
-    fullprint << "Minimum volume level set=" << levelSet << std::endl;
-    fullprint << "beta=" << beta << std::endl;
-    fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
-    fullprint << "beta=" << beta << std::endl;
-    fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
-    fullprint << "beta=" << beta << std::endl;
-    fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
-    fullprint << "beta=" << beta << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
+    //
     Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;
     Point skewness = distribution.getSkewness();
@@ -136,23 +93,21 @@ int main(int, char *[])
     fullprint << "covariance=" << covariance << std::endl;
     CovarianceMatrix correlation = distribution.getCorrelation();
     fullprint << "correlation=" << correlation << std::endl;
+    /* Too slow for a test
     CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
     fullprint << "spearman=" << spearman << std::endl;
     CovarianceMatrix kendall = distribution.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
-    Arcsine::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    */
+    UniformOrderStatistics::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
-
-    // Verify covariance
-    CovarianceMatrix matrix(2);
-    matrix(0, 0) = 100.0;
-    matrix(1, 0) = 50.0;
-    matrix(1, 1) = 80.0;
-    // Empirical estimators are typically bad for this distribution, so we use a high degree of freedom.
-    InverseWishart multidimensional(matrix, 40.0);
-    CovarianceMatrix empirical(multidimensional.getSample(100000).computeCovariance());
-    assert_almost_equal(multidimensional.getCovariance(), empirical, 0.1, 0.0);
+    //
+    Study study("test");
+    study.add("distribution", distribution);
+    MarginalUniformOrderStatistics anotherDistribution;
+    study.fillObject("distribution", anotherDistribution);
+    fullprint << "Equal? " << (distribution == anotherDistribution ? "true" : "false") << std::endl;
   }
   catch (TestFailed & ex)
   {

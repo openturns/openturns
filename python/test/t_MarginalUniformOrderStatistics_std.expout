@@ -1,0 +1,8 @@
+Distribution  class=MarginalUniformOrderStatistics name=MarginalUniformOrderStatistics dimension=3 n=4 indices=[0,1,3] simplex=class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=3 data=[[0,0,0],[1,0,0],[0,1,0],[1,1,0],[0,0,1],[1,0,1],[0,1,1],[1,1,1]] simplices=[[0,1,5,7],[0,3,1,7],[0,5,4,7],[0,4,6,7],[0,6,2,7],[0,2,3,7]]
+Distribution  MarginalUniformOrderStatistics(n = 4, indices = [0,1,3])
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.128996,0.204795,0.4246]
+parameters= [[]]
+Standard representative= MarginalUniformOrderStatistics(n = 4, indices = [0,1,3])
+Marginal [0, 2]= MarginalUniformOrderStatistics(n = 4, indices = [0,3])

@@ -289,7 +289,14 @@ Scalar Polya::getR() const
 void Polya::computeRange()
 {
   const Point lowerBound(1, 0.0);
-  const Point upperBound(computeUpperBound());
+  Scalar upper = 1.0;
+  Scalar step = 1.0;
+  while (computeComplementaryCDF(upper) > cdfEpsilon_)
+    {
+      upper += step;
+      step *=2.0;
+    }
+  const Point upperBound(1, upper);
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -313,14 +320,16 @@ Scalar Polya::computeScalarQuantile(const Scalar prob,
   Scalar cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
   LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, Cornish-Fisher estimate=" << quantile << ", cdf=" << cdf);
   Scalar oldCDF = cdf;
-  const Scalar step = tail ? -1.0 : 1.0;
+  Scalar step = tail ? -1.0 : 1.0;
   while (cdf >= prob)
   {
     quantile -= step;
     oldCDF = cdf;
     cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
     LOGDEBUG(OSS() << "in Polya::computeScalarQuantile, backward search, quantile=" << quantile << ", cdf=" << cdf);
+    step *= 2;
   }
+  step /= 2;
   if (cdf < oldCDF)
   {
     quantile += step;

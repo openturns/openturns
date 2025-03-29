@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/Indices.hxx"
 #include "openturns/UniformOrderStatistics.hxx"
+#include "openturns/MarginalUniformOrderStatistics.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Beta.hxx"
@@ -384,7 +385,11 @@ Distribution UniformOrderStatistics::getMarginal(const Indices & indices) const
     marginal.setDescription(Description(1, getDescription()[i]));
     return marginal;
   }
-  return DistributionImplementation::getMarginal(indices);
+  // The MarginalUniformOrderStatistics needs increasing indices
+  if (indices.isStrictlyIncreasing())
+    return MarginalUniformOrderStatistics(dimension_, indices);
+  else
+    return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 
 /* Tell if the distribution has independent marginals */

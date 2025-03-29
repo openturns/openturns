@@ -1,26 +1,71 @@
 %feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution
-"MaximumEntropyOrderStatistics distribution.
+"Maximum Entropy OrderS tatistics distribution.
 
 Parameters
 ----------
 coll : sequence of :class:`~openturns.Distribution`
-    The marginals, with range verifying :math:`a_i \leq a_{i+1}` and :math:`b_i \leq b_{i+1}`.
+    The collection of the marginal distributions.
+    
+    Default collection is [Unif(-1.0, 0.5), Unif(-0.5, 1.0)].
 useApproximation : bool
     Indicates whether the expression :math:`\Phi_k(t)` is approximated with a polynomials (Hermitte with degree 4 on a discretization determined by a Gauss-Kronrod algorithm applied to :math:`\Phi_k(t)`).
+
     By default, the approximation is used.
 checkMarginals : bool
     Indicates whether the compatibility tests on the marginals is done.
+
     By default, the tests are done.
 
 Notes
 -----
-Its realizations are ordered :math:`X_1 \leq \dots \leq X_n`.
+Let :math:`\inputRV = (X_1, \dots, X_n)` be random vector  which marginals are given and such that:
 
-Its probability density function is defined as:
+.. math::
+    :label: orderConstraint
+
+    X_1 \leq \dots \leq X_n \quad \mbox{almost surely}.
+
+The class :class:`~openturns.MaximumEntropyOrderStatisticsDistribution` implements the
+joint distribution of :math:`\inputRV` that maximizes the entropy of  :math:`\inputRV`.
+See [fischer2017]_ for more details.
+
+The distribution of :math:`\inputRV` is the distribution of the random vector of the :math:`n`
+order statistics of a scalar distribution :math:`Y`. We can write:
+
+ .. math::
+   (X_1, \dots, X_n) \sim (Y_{(1)}, \dots, Y_{(n)})
+
+In that case, we do not know  :math:`Y` but we fix the marginals of its order
+statistics distribution.
+
+Note that if the :math:`X_i \sim \beta(i, n-i+1)`, then :math:`\inputRV` is
+the joint distribution of the :math:`n` order statistics of :math:`Y \sim \cU([0,1])`.
+It is implemented by the class
+:class:`~openturns.experimental.UniformOrderStatistics`.
+
+The marginals of  :math:`\inputRV` must be compatible with the order constraint
+:eq:`orderConstraint`. The library checks this compatibility by default. It requires that
+if :math:`F_i` is the CDF of :math:`X_i`, we must have:
+
+.. math::
+    :label: orderConstraintCDF
+
+    F_1 \geq F_2 \geq \dots \geq F_n
+
+which implies that if :math:`[a_i, b_i]` is the numerical range of :math:`X_i`, then:
+
+.. math::
+    a_i \leq a_{i+1}\\
+    b_i \leq b_{i+1}
+
+If the marginal distributions do not verify this constraint, a message is sent at the creation of the class.
+
+If :math:`f_i` is the cdf of :math:`X_i`, the pdf of :math:`\inputRV` is defined as:
 
 .. math::
 
-    f_X(x) = f_1(x_1) \prod\limits_{k=2}^d \phi_k(x_k) \exp\left(-\int_{x_{k-1}}^{x_k} \phi_k(s)\di{s}\right) \mathbf{1}_{x_1 \leq \dots \leq x_d}
+    f_\inputRV(x) = f_1(x_1) \prod\limits_{k=2}^n \phi_k(x_k) \exp\left(-\int_{x_{k-1}}
+    ^{x_k} \phi_k(s)\di{s}\right) \mathbf{1}_{x_1 \leq \dots \leq x_d}
 
              \text{with } \phi_k(x_k) = \frac{f_k(x_k)}{F_{k-1}(x_k)-F_k(x_k)}
 
@@ -30,8 +75,8 @@ We note:
 
     \Phi_k(t) = \exp\left(-\int_{a_{k}}^{t} \phi_k(s)\di{s}\right)
 
-The exponential factor :math:`\Phi_k(t)` may be expensive to compute for every value
-of :math:`t`. It can be replaced by a piecewise Hermite approximation using the
+The exponential factor :math:`\Phi_k(t)` might be expensive to compute at any value
+:math:`t`. It can be replaced by a piecewise Hermite approximation using the
 following keys in :class:`~openturns.ResourceMap`:
 
 * 'MaximumEntropyOrderStatisticsDistribution-UseApproximation': if set to *True*, the approximation is built. The default value is *False*;
@@ -43,7 +88,7 @@ The approximation should be used *with caution*. There is no easy quantitative c
 
 Examples
 --------
-Create a distribution:
+Create a distribution which components are ordered almost surely:
 
 >>> import openturns as ot
 >>> coll = [ot.Uniform(-1.0, 1.0), ot.LogUniform(1.0, 1.2), ot.Triangular(3.0, 4.0, 5.0)]
@@ -60,8 +105,8 @@ Draw a sample:
 
 Returns
 -------
-coll : sequence
-    The marginals."
+coll : of :class:`~openturns.Distribution`
+    The colection of the marginals."
 
 // ---------------------------------------------------------------------
 
@@ -70,8 +115,8 @@ coll : sequence
 
 Parameters
 ----------
-coll : sequence
-    The marginals."
+coll : of :class:`~openturns.Distribution`
+    The  colection of the marginals."
 
 // ---------------------------------------------------------------------
 
