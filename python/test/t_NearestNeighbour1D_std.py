@@ -18,13 +18,11 @@ test_np = np.array(test)
 
 
 def nearest_debug(x):
-    global sample_np
     a = np.sum(np.square(sample_np - x), axis=1)
     return int(np.argmin(a))
 
 
 def nearest_debug_indices(x):
-    global sample_np
     a = np.sum(np.square(sample_np - x), axis=1)
     return a.argsort()
 
