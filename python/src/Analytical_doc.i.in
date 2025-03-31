@@ -7,11 +7,6 @@ nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
     Optimization algorithm used to search the design point.
 event : :class:`~openturns.RandomVector`
     Failure event.
-physicalStartingPoint : sequence of float
-    Starting point of the optimization algorithm, declared in the physical
-    space (in case of single-start algorithm). In case of multi-start algorithm,
-    the starting points are directly defined in nearestPointAlgorithm in the 
-    Standard Space.
 
 Notes
 -----

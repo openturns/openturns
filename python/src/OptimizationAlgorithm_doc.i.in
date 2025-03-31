@@ -20,6 +20,8 @@ OT_OptimizationAlgorithm_getProblem_doc
 OT_OptimizationAlgorithm_getResult_doc
 %feature("docstring") OT::OptimizationAlgorithm::getStartingPoint
 OT_OptimizationAlgorithm_getStartingPoint_doc
+%feature("docstring") OT::OptimizationAlgorithm::getStartingSample
+OT_OptimizationAlgorithm_getStartingSample_doc
 %feature("docstring") OT::OptimizationAlgorithm::run
 OT_OptimizationAlgorithm_run_doc
 %feature("docstring") OT::OptimizationAlgorithm::setMaximumAbsoluteError
@@ -44,6 +46,8 @@ OT_OptimizationAlgorithm_setProblem_doc
 OT_OptimizationAlgorithm_setResult_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStartingPoint
 OT_OptimizationAlgorithm_setStartingPoint_doc
+%feature("docstring") OT::OptimizationAlgorithm::setStartingSample
+OT_OptimizationAlgorithm_setStartingSample_doc
 %feature("docstring") OT::OptimizationAlgorithm::setProgressCallback
 OT_OptimizationAlgorithm_setProgressCallback_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStopCallback
