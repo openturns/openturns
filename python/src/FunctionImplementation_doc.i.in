@@ -332,13 +332,14 @@ gradient : :class:`~openturns.Gradient`
 
 Examples
 --------
-To use the gradient function as a function when the function is a  :class:`~openturns.ot.SymbolicFunction`. Be carefull. 
+To get the gradient formulas when the function is a  :class:`~openturns.ot.SymbolicFunction`.
+The indices are :math:`(i,j)`. The corresponding formula is
+:math:`\left( \dfrac{\partial f_j(\vect{x})}{\partial x_i} \right)`.
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> formula_deriv_x1 = f.getGradient().getImplementation().getFormula(0,0)
 >>> formula_deriv_x2 = f.getGradient().getImplementation().getFormula(1,0)
->>> derivFunc = ot.SymbolicFunction(['x1', 'x2'], [formula_deriv_x1, formula_deriv_x2])
 "
 %enddef
 %feature("docstring") OT::FunctionImplementation::getGradient
@@ -352,7 +353,22 @@ OT_Function_getGradient_doc
 Returns
 -------
 hessian : :class:`~openturns.HessianImplementation`
-    The hessian function."
+    The hessian function.
+
+Examples
+--------
+To get the hessian formulas when the function is a  :class:`~openturns.ot.SymbolicFunction`.
+The indices are :math:`(i,j,k)`. The corresponding formula is :math:`\left( \dfrac{\partial^2 f_k(\vect{x})}{\partial x_i \partial x_j} \right)`.
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> formula_hessian_000 = f.getHessian().getImplementation().getFormula(0,0,0)
+>>> formula_hessian_010 = f.getHessian().getImplementation().getFormula(0,1,0)
+>>> formula_hessian_110 = f.getHessian().getImplementation().getFormula(1,1,0)
+>>> formula_hessian_001 = f.getHessian().getImplementation().getFormula(0,0,0)
+>>> formula_hessian_011 = f.getHessian().getImplementation().getFormula(0,1,0)
+>>> formula_hessian_111 = f.getHessian().getImplementation().getFormula(1,1,0)
+"
 %enddef
 %feature("docstring") OT::FunctionImplementation::getHessian
 OT_Function_getHessian_doc
@@ -429,6 +445,22 @@ Returns
 gradient : :class:`~openturns.Matrix`
     The Jacobian transposed matrix of the function at *point*.
 
+Notes
+-----
+Let :math:`f : \Rset^\inputDim \rightarrow \Rset^p` where the
+:math:`f_i` are the components functions. Then, the gradient evaluated at :math:`\vect{x}` is
+the matrix with :math:`\inputDim` rows and :math:`p` columns defined by:
+
+.. math::
+    \nabla f(\vect{x}) & = \left( \dfrac{\partial f_j(\vect{x})}{\partial x_i} \right)_{i,j} \\
+     & = \left(
+     \begin{array}{lcr}
+    \dfrac{\partial f_1(\vect{x})}{\partial x_1} & \hdots & \dfrac{\partial f_p(\vect{x})}{\partial x_1}\\
+    vdots & \vdots & \vdots \\
+    \dfrac{\partial f_1(\vect{x})}{\partial x_\inputDim} & \hdots & \dfrac{\partial f_p(\vect{x})}{\partial x_\inputDim}
+    \end{array}
+    \right)
+
 Examples
 --------
 >>> import openturns as ot
@@ -455,6 +487,16 @@ Returns
 -------
 hessian : :class:`~openturns.SymmetricTensor`
     Hessian of the function at *point*.
+
+Notes
+-----
+Let :math:`f : \Rset^\inputDim \rightarrow \Rset^p` where the
+:math:`f_i` are the components functions. Then, the hessian evaluated at :math:`\vect{x}` is
+a symmetric tensor with :math:`p` sheets, each one composed of :math:`\inputDim` rows and :math:`\inputDim`
+columns. The :math:`k` -th sheet is defined by:
+
+.. math::
+    \left( \dfrac{\partial^2 f_k(\vect{x})}{\partial x_i \partial x_j} \right)_{i,j}
 
 Examples
 --------
