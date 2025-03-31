@@ -72,6 +72,13 @@ Point OptimizationAlgorithmImplementation::getStartingPoint() const
   return startingPoint_;
 }
 
+/* Starting sample accessor */
+Sample OptimizationAlgorithmImplementation::getStartingSample() const
+{
+  throw NotYetImplementedException(HERE) << "Attribute for MultiStart";
+}
+
+
 /* Starting point accessor */
 void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startingPoint)
 {
@@ -80,6 +87,13 @@ void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startin
       throw InvalidArgumentException(HERE) << "Optimization starting point has nan/inf values: " << startingPoint;
   startingPoint_ = startingPoint;
 }
+
+/* Starting point accessor */
+void OptimizationAlgorithmImplementation::setStartingSample(const Sample & startingSample)
+{
+  throw NotYetImplementedException(HERE) << "Attribute for MultiStart";
+}
+
 
 /* Result accessor */
 OptimizationResult OptimizationAlgorithmImplementation::getResult() const

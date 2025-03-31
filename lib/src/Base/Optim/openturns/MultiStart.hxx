@@ -68,8 +68,8 @@ public:
   void setStartingPoint(const Point & point) override;
 
   /** Starting points accessor */
-  void setStartingSample(const Sample & startingSample);
-  Sample getStartingSample() const;
+  void setStartingSample(const Sample & startingSample) override;
+  Sample getStartingSample() const override;
 
   /** Useless inherited method: throw */
   Point getStartingPoint() const override;

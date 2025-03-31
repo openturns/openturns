@@ -61,6 +61,10 @@ public:
   Point getStartingPoint() const;
   void setStartingPoint(const Point & startingPoint);
 
+  /** Starting point accessor */
+  Sample getStartingSample() const;
+  void setStartingSample(const Sample & startingSample);
+
   /** Problem accessor */
   OptimizationProblem getProblem() const;
   void setProblem(const OptimizationProblem & problem);

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -67,6 +68,27 @@ print(
 
 print("importance factors=", result.getImportanceFactors())
 print("Hasofer reliability index=%.6f" % result.getHasoferReliabilityIndex())
+
+# Test with MultiStart algorithm
+ot.RandomGenerator.SetSeed(0)
+
+startingSample = myDistribution.getSample(10)
+
+myMultiStartCobyla = ot.MultiStart(ot.Cobyla(), startingSample)
+myMultiStartCobyla.setMaximumCallsNumber(400)
+myMultiStartCobyla.setMaximumAbsoluteError(1.0e-5)
+myMultiStartCobyla.setMaximumRelativeError(1.0e-5)
+myMultiStartCobyla.setMaximumResidualError(1.0e-5)
+myMultiStartCobyla.setMaximumConstraintError(1.0e-5)
+
+# We create a FORM algorithm with MultiStart
+algo_multistart = ot.FORM(myMultiStartCobyla, myEvent)
+
+
+# Perform the simulation
+algo_multistart.run()
+result_multistart = algo_multistart.getResult()
+assert_almost_equal(result_multistart.getEventProbability(), result.getEventProbability(), 1e-4, 0.0)
 
 # run twice
 f = ot.SymbolicFunction(["x"], ["x-1.25"])

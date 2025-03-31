@@ -55,10 +55,9 @@ event.setName("deviation")
 # -------------
 
 # %%
-# Define a solver. Here we use a :class:`~openturns.MultiStart` strategy. In this case, the starting
-# points need to be defined in the Standard space.
-lhsExperiment = ot.LHSExperiment(ot.JointDistribution([ot.Uniform(-2, 2)] * 4), 5)
-optimAlgo = ot.MultiStart(ot.Cobyla(), lhsExperiment.generate())
+# Define a solver, here we use a :class:`~openturns.MultiStart` optimization based on :class:`~openturns.Cobyla`
+startingSample = distribution.getSample(10)
+optimAlgo = ot.MultiStart(ot.Cobyla(), startingSample)
 optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-4)
 optimAlgo.setMaximumRelativeError(1.0e-4)

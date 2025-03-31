@@ -42,17 +42,30 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 {
   if (physicalStartingPoint.getSize())
   {
-    LOGWARN("FORM physicalStartingPoint argument is deprecated");
+    LOGWARN("FORM/SORM physicalStartingPoint argument is deprecated");
     nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
   }
 
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
-  if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
+
+  try 
+  {
+    if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
+      throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
+  }
+  catch (const NotDefinedException &) // MultiStart algorithm
+  {
+    if (nearestPointAlgorithm_.getStartingSample()[0].getDimension() != dimension)
+      throw InvalidArgumentException(HERE) << "Starting sample dimension (" << nearestPointAlgorithm_.getStartingSample()[0].getDimension() << ") does not match event dimension (" << dimension << ").";
+  }
+  
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
-    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
-  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm_.getStartingPoint()), event, true);
+      throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
+
+  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getMean(), event, true);
+
 }
+
 
 /* Virtual constructor */
 Analytical * Analytical::clone() const
@@ -119,16 +132,18 @@ void Analytical::run()
   OptimizationAlgorithm nearestPointAlgorithm(nearestPointAlgorithm_);
   nearestPointAlgorithm.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
-  /* set the starting point of the algorithm in the standard space  */
-    try
-    {
-      nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
-    }
-    catch (const OT::NotDefinedException &)
-    {
-    /* if MultiStart algorithms are used, _setStartintPoint() is not possible */
-    }
 
+  try
+  {
+    /* set the starting point of the algorithm in the standard space */
+    nearestPointAlgorithm.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingPoint()));
+  }
+  catch (const NotDefinedException &) // MultiStart algorithm
+  {
+    /* set the starting sample of the algorithm in the standard space */
+    nearestPointAlgorithm.setStartingSample(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingSample()));
+  }
+  
   /* solve the nearest point problem */
   nearestPointAlgorithm.run();
 
