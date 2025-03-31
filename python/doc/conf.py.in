@@ -86,15 +86,15 @@ copybutton_exclude = '.linenos, .gp'
 extensions.append('sphinx_gallery.gen_gallery')
 sphinx_gallery_conf = {
 
-     'examples_dirs': ['examples/data_analysis','examples/probabilistic_modeling','examples/meta_modeling','examples/reliability_sensitivity','examples/functional_modeling','examples/calibration','examples/numerical_methods','examples/graphs',], # path to example scripts
-     'gallery_dirs': ['auto_data_analysis','auto_probabilistic_modeling','auto_meta_modeling','auto_reliability_sensitivity','auto_functional_modeling','auto_calibration','auto_numerical_methods','auto_graphs',], # path to where to save gallery gen. output
+     'examples_dirs': ['examples/getting_started', 'examples/data_analysis','examples/probabilistic_modeling','examples/meta_modeling','examples/reliability_sensitivity','examples/functional_modeling','examples/calibration','examples/numerical_methods','examples/graphs',], # path to example scripts
+     'gallery_dirs': ['auto_getting_started','auto_data_analysis','auto_probabilistic_modeling','auto_meta_modeling','auto_reliability_sensitivity','auto_functional_modeling','auto_calibration','auto_numerical_methods','auto_graphs',], # path to where to save gallery gen. output
 
 
      'filename_pattern': '/plot_',
      'ignore_pattern': '/(external_program)|(__init__.py)|(use_case_)@SPHINX_GALLERY_IGNORE_PATTERN@',
 
-
-     'subsection_order': ExplicitOrder(['examples/data_analysis/manage_data_and_samples',
+     'subsection_order': ExplicitOrder(['examples/getting_started',
+                                        'examples/data_analysis/manage_data_and_samples',
                                         'examples/data_analysis/sample_analysis',
                                         'examples/data_analysis/distribution_fitting',
                                         'examples/data_analysis/statistical_tests',

@@ -15,6 +15,15 @@ This is the examples section.
    | .. toctree::                                            |                                                 |
    |    :maxdepth: 2                                         |                                                 |
    |                                                         |                                                 |
+   |    ../auto_getting_started/index.rst                    |  .. image:: _static/ks_cdf.png                  |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
    |    ../auto_data_analysis/index.rst                      |  .. image:: _static/data_analysis.png           |
    |                                                         |     :align: right                               |
    |                                                         |     :class: padimg                              |
