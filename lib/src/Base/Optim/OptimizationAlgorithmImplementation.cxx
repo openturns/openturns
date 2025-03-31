@@ -89,7 +89,7 @@ void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startin
 }
 
 /* Starting point accessor */
-void OptimizationAlgorithmImplementation::setStartingSample(const Sample & startingSample)
+void OptimizationAlgorithmImplementation::setStartingSample(const Sample &)
 {
   throw NotYetImplementedException(HERE) << "Attribute for MultiStart";
 }

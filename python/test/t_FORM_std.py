@@ -84,7 +84,6 @@ myMultiStartCobyla.setMaximumConstraintError(1.0e-5)
 # We create a FORM algorithm with MultiStart
 algo_multistart = ot.FORM(myMultiStartCobyla, myEvent)
 
-
 # Perform the simulation
 algo_multistart.run()
 result_multistart = algo_multistart.getResult()
