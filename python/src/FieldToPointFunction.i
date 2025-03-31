@@ -84,20 +84,36 @@ class OpenTURNSPythonFieldToPointFunction:
     Parameters
     ----------
     inputMesh : :class:`~openturns.Mesh`
-        The input mesh
+        The input mesh.
     inputDim : positive int
-        Dimension of the input field values d
+        Dimension of the input field values :math:`\inputDim`.
     outputDim : positive int
-        Dimension of the output vector d'
+        Dimension of the output vector d'.
 
     Notes
     -----
-    You have to overload the function:
-        _exec(X): single evaluation, X is a :class:`~openturns.Field`,
-        returns a :class:`~openturns.Field`
+    This function acts on fields to produce points:
+
+    .. math::
+
+        f: \left| \begin{array}{rcl}
+                    \cM_N \times (\Rset^\inputDim)^N & \rightarrow &\Rset^{d'} \\
+                    F & \mapsto & \vect{v}'
+                  \end{array} \right.
+
+    with  :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`.
+
+    A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`
+    of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^\inputDim`.
+
+    At least, you have to overload the function:
+        _exec(X): a single evaluation, where X is a :class:`~openturns.Field`. It returns
+        a :class:`~openturns.Point`.
 
     Examples
-    --------
+    --------    
+    For example, we create the function that maps a field to the mean value of its values.
+    
     >>> import openturns as ot
     >>> mesh = ot.Mesh(1)
     >>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
@@ -127,28 +143,84 @@ class OpenTURNSPythonFieldToPointFunction:
         self.__descOut = ['y' + str(i) for i in range(outputDim)]
 
     def setInputDescription(self, descIn):
+    """
+    Accessor to the description of the input field values.
+
+    Parameters
+    ----------
+    descIn : sequence of str
+        The description of the input field values.    
+    """
         if (len(descIn) != self.__inputDim):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
     def getInputDescription(self):
+    """
+    Accessor to the description of the input field values.
+
+    Returns
+    -------
+    descIn : sequence of str
+        The description of the input field values.    
+    """
         return self.__descIn
 
     def setOutputDescription(self, descOut):
+    """
+    Accessor to the description of the ouput values of the function.
+
+    Parameters
+    ----------
+    descOut : sequence of str
+        The description of the ouput values of the function.    
+    """
         if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
     def getOutputDescription(self):
+    """
+    Accessor to the description of the ouput values of the function.
+
+    Returns
+    -------
+    descOut : sequence of str
+        The description of the ouput values of the function.    
+    """
         return self.__descOut
 
     def getInputDimension(self):
+    """
+    Accessor to the dimension of the input field values.
+
+    Returns
+    -------
+    inputFieldDim : int
+        The dimension of the input field values  :math:`\inputDim`.   
+    """
         return self.__inputDim
 
     def getOutputDimension(self):
+    """
+    Accessor to the dimension of the ouput values of the function.
+
+    Returns
+    -------
+    outputDim : int
+        The dimension of the ouput values of the function :math:`d'`.    
+    """
         return self.__outputDim
 
     def getInputMesh(self):
+    """
+    Accessor to the mesh of the input fields.
+
+    Returns
+    -------
+    inputMesh : :class:`~openturns.Mesh`
+        The mesh of the input fields.  
+    """
         return self.__inputMesh
 
     def __str__(self):
@@ -195,8 +267,23 @@ class PythonFieldToPointFunction(FieldToPointFunction):
         Returns a :class:`~openturns.Field`.
         Default is None.
 
+    Notes
+    -----
+    This function acts on fields to produce points:
+
+    .. math::
+
+        f: \left| \begin{array}{rcl}
+                    \cM_N \times (\Rset^\inputDim)^N & \rightarrow &\Rset^{d'} \\
+                    F & \mapsto & \vect{v}'
+                  \end{array} \right.
+
+    with  :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`.
+
     Examples
     --------
+    For example, we create the function that maps a field to the mean value of its values. The values of the input field are of dimension :math:`d = 2` and the output value of the function is also of dimension :math:`d' = 2`.
+    
     >>> import openturns as ot
     >>> mesh = ot.Mesh(1)
     >>> def myPyFunc(X):
