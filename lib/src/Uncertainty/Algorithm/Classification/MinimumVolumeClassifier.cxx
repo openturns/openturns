@@ -233,7 +233,7 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
     {
       Sample sampleXC(separatedSamples[k]);
       sampleXC.stack(Sample(sampleXC.getSize(), 1));
-      const Cloud cloud(sampleXC, colors[classes[k]], "dot", "");
+      const Cloud cloud(sampleXC, colors[classes[k]], ResourceMap::GetAsString("Drawable-DefaultPointStyle"), "");
       graph.add(cloud);
     }
     grid.setGraph(0, 0, graph);
@@ -248,7 +248,7 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
         Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
         for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
         {
-          const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], "plus", "");
+          const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], ResourceMap::GetAsString("Drawable-DefaultPointStyle"), "");
           graph.add(cloud);
         }
         grid.setGraph(i - 1, j, graph);

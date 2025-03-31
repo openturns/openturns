@@ -77,6 +77,10 @@ public:
   /** Accessor for title */
   void setTitle(const String & title);
   String getTitle() const;
+
+  /** Add a GridLayout */
+  void add(const GridLayout & grid);
+
 private:
 
   /** Number of row/column */
@@ -89,8 +93,6 @@ private:
   String title_;
 
 }; /* class GridLayout */
-
-
 
 END_NAMESPACE_OPENTURNS
 
