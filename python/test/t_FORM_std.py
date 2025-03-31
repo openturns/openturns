@@ -69,7 +69,7 @@ print(
 print("importance factors=", result.getImportanceFactors())
 print("Hasofer reliability index=%.6f" % result.getHasoferReliabilityIndex())
 
-# Test with MultiStart algorithm
+# Test with MultiStart algorithm
 ot.RandomGenerator.SetSeed(0)
 
 startingSample = myDistribution.getSample(10)
