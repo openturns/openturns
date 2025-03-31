@@ -179,7 +179,6 @@ view = otv.View(
 )
 pl.subplots_adjust(bottom=0.25)
 
-
 # %%
 # If we use a sample size equal to :math:`n = 6` with
 # :math:`p = 3` parameters, the distribution is not symmetric.
@@ -203,7 +202,7 @@ pl.subplots_adjust(bottom=0.25)
 
 
 # %%
-# If we use a sample size equal to :math:`n = 6` with
+# If we use a sample size equal to :math:`n = 100` with
 # :math:`p = 3` parameters, the distribution is almost symmetric and
 # almost normal.
 
