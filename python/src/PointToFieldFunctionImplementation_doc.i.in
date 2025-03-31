@@ -4,7 +4,7 @@
 Parameters
 ----------
 inputDim : int, :math:`\geq 1`
-    Dimension :math:`d` of the input vector
+    Dimension :math:`\inputDim` of the input vector
 outputMesh : :class:`~openturns.Mesh`
     The output mesh
 outputDim : int, :math:`\geq 1`
@@ -12,7 +12,7 @@ outputDim : int, :math:`\geq 1`
 
 Notes
 -----
-Point to field functions act on points to produce fields:
+OT_PointToFieldFunction acts on points to produce fields:
 
 .. math::
 
