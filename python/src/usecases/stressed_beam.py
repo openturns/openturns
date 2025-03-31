@@ -42,7 +42,7 @@ class AxialStressedBeam:
                      ot.Normal(muF, sigmaF)
 
     distribution : `JointDistribution`
-                   The joint distribution of the inpput parameters.
+                   The joint distribution of the input parameters.
 
     Examples
     --------

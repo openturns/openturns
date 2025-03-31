@@ -285,13 +285,8 @@ componentwise_max_sigma= [5.42445e+07,0.9375,0.00090211,2.22058e-10]
 >>> algo.run()
 >>> result = algo.getResult()
 >>> expectation = result.getExpectationEstimate()
->>> print(expectation)
-[6.7125e+10,298.637,2.55074,1.45427e-07]
->>> print(cb.distribution.getMean())
-[6.70455e+10,300,2.55,1.45385e-07]
 >>> outer_sampling = result.getOuterSampling()
->>> print('outer_sampling=', outer_sampling)
-outer_sampling= 126"
+"
 
 // ---------------------------------------------------------------------
 
