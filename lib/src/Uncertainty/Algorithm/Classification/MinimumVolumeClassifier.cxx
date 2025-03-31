@@ -193,13 +193,10 @@ GridLayout MinimumVolumeClassifier::drawContour(const Point & contourAlpha) cons
       Graph contour(distribution_.getMarginal(indices).drawPDF());
       // by default we get several contours with each its color, keep only first contour to use a custom number of levels
       contour.setDrawables(Graph::DrawableCollection(1, contour.getDrawable(0)));
-      contour.setColors(Description(1, "black"));
-      contour.setYTitle(j == 0 ? distribution_.getDescription()[i] : "");
-      contour.setXTitle(i == dimension - 1 ? distribution_.getDescription()[j] : "");
-      contour.setLegends(Description(contour.getLegends().getSize()));
       dynamic_cast<Contour*>(contour.getDrawable(0).getImplementation().get())->setLevels(thresholds);
       dynamic_cast<Contour*>(contour.getDrawable(0).getImplementation().get())->setLabels(labels);
       dynamic_cast<Contour*>(contour.getDrawable(0).getImplementation().get())->setDrawLabels(true);
+      dynamic_cast<Contour*>(contour.getDrawable(0).getImplementation().get())->setColorBarPosition("");
       grid.setGraph(i, j, contour);
     }
   }
@@ -236,7 +233,7 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
     {
       Sample sampleXC(separatedSamples[k]);
       sampleXC.stack(Sample(sampleXC.getSize(), 1));
-      const Cloud cloud(sampleXC, colors[classes[k]], "fsquare", "");
+      const Cloud cloud(sampleXC, colors[classes[k]], "dot", "");
       graph.add(cloud);
     }
     grid.setGraph(0, 0, graph);
@@ -251,7 +248,7 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
         Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
         for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
         {
-          const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], "fsquare", "");
+          const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], "plus", "");
           graph.add(cloud);
         }
         grid.setGraph(i - 1, j, graph);
