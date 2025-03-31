@@ -44,6 +44,25 @@ GridLayout::GridLayout(const UnsignedInteger nbRows,
   setAxes(false);
 }
 
+/* Add a GridLayout */
+void GridLayout::add(const GridLayout & grid)
+{
+  if (getNbRows() != grid.getNbRows())
+    throw InvalidArgumentException(HERE) << "Grid to be added has " << grid.getNbRows() << " rows, expected " << getNbRows();
+  if (getNbColumns() != grid.getNbColumns())
+    throw InvalidArgumentException(HERE) << "Grid to be added has " << grid.getNbColumns() << " columns, expected " << getNbColumns();
+  for (UnsignedInteger i = 0; i < getNbRows(); ++i)
+  {
+    for (UnsignedInteger j = 0; j < getNbColumns(); ++j)
+      {
+        LOGDEBUG(OSS() << "Trying to add graphs at row " << i << " and column " << j);
+        Graph host(getGraph(i, j));
+        const Graph guest(grid.getGraph(i, j));
+        host.add(guest);
+        setGraph(i, j, host);
+      }
+  }
+}
 
 /* String converter */
 String GridLayout::__repr__() const

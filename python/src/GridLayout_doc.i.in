@@ -144,3 +144,19 @@ nbColumns : int
 Notes
 -----
 If the new layout contains fewer graphs than the old layout, the remaining graphs are removed from the layout."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::add
+"Add subgraphs from a different grid to the corresponding subgraphs in the current grid.
+
+Parameters
+----------
+grid : :class:`~openturns.GridLayout`
+    GridLayout containing the subgraphs to add.
+
+Notes
+-----
+Only works if both grids have the same number of rows and columns,
+because the (i,j)-th graph of the provided *grid* is added to the (i,j)-th graph of the original grid
+with the :meth:`~openturns.Graph.add` method."
