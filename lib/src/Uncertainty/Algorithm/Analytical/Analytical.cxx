@@ -55,14 +55,14 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
   }
   catch (const NotDefinedException &) // MultiStart algorithm
   {
-    if (nearestPointAlgorithm_.getStartingSample()[0].getDimension() != dimension)
+    if (nearestPointAlgorithm_.getStartingSample().getDimension() != dimension)
       throw InvalidArgumentException(HERE) << "Starting sample dimension (" << nearestPointAlgorithm_.getStartingSample()[0].getDimension() << ") does not match event dimension (" << dimension << ").";
   }
   
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
       throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
 
-  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getMean(), event, true);
+  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(event_.getImplementation()->getAntecedent().getDistribution().getMean()), event, true);
 
 }
 
@@ -131,7 +131,6 @@ void Analytical::run()
   /* set the level function of the algorithm */
   OptimizationAlgorithm nearestPointAlgorithm(nearestPointAlgorithm_);
   nearestPointAlgorithm.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
-
 
   try
   {
