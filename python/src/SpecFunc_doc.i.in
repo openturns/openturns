@@ -988,22 +988,27 @@ result : float"
 
 .. math::
 
+    IPow(m, n) = m^n
     IPow(x, n) = x^n
 
 Parameters
 ----------
+m : int
 n : int
 x : float
 
 Returns
 -------
-result : float
+result : int or float
+    The result has the same type as the first argument.
 
 Examples
 --------
 >>> import openturns as ot
 >>> ot.SpecFunc.IPow(-2.5, 3)
--15.625"
+-15.625
+>>> ot.SpecFunc.IPow(5, 3)
+125"
 
 // ---------------------------------------------------------------------
 
