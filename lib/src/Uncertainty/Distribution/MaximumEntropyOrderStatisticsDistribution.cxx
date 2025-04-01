@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
-#include "openturns/MaximumEntropyOrderStatisticsCopula.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -920,12 +919,6 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Po
 MaximumEntropyOrderStatisticsDistribution::DistributionCollection MaximumEntropyOrderStatisticsDistribution::getDistributionCollection() const
 {
   return distributionCollection_;
-}
-
-/* Get the copula of the distribution */
-Distribution MaximumEntropyOrderStatisticsDistribution::getCopula() const
-{
-  return new MaximumEntropyOrderStatisticsCopula(*this);
 }
 
 /* Flag to tell if we use approximation for the exponential term */

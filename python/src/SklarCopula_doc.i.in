@@ -19,10 +19,6 @@ The Sklar copula is obtained directly from the expression of the
 
 for :math:`u_i \in [0, 1]`
 
-See also
---------
-MaximumEntropyOrderStatisticsCopula
-
 Examples
 --------
 Create a distribution:

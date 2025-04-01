@@ -121,7 +121,6 @@
 #include "openturns/MarginalUniformOrderStatistics.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
-#include "openturns/MaximumEntropyOrderStatisticsCopula.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/MeixnerDistribution.hxx"
 #include "openturns/MeixnerDistributionFactory.hxx"
