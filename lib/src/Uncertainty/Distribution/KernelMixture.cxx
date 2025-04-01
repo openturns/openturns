@@ -73,7 +73,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
   setDimension(sample.getDimension());
   // This call set also the range.
   setBandwidth(bandwidth);
-  if ((getDimension() == 1) && (sample.getSize() >= ResourceMap::GetAsUnsignedInteger("KernelMixture-SmallSize")) && (sample.getSize() < ResourceMap::GetAsUnsignedInteger("KernelMixture-LargeSize")))
+  if ((getDimension() == 1) && (ResourceMap::GetAsBool("KernelMixture-EnableInterpolation")))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
     Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
