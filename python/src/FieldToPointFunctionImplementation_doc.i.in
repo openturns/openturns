@@ -12,7 +12,7 @@ outputDim : positive int
 
 Notes
 -----
-Field to point functions  act on fields to produce points:
+A FieldToPointFunction acts on fields to produce points:
 
 .. math::
 
@@ -27,7 +27,7 @@ A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i
 of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^d`.
 
 The two first constructors build an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
-The instantiation of such an object is used to extract an actual :class:`~openturns.FieldToPointFunction` from a  :class:`~openturns.Study`.
+The instantiation of such an object is used to extract an actual FieldToPointFunction from a  :class:`~openturns.Study`.
 
 See also
 --------
@@ -35,14 +35,15 @@ PythonFieldToPointFunction, OpenTURNSPythonFieldToPointFunction, PointToFieldFun
 
 Examples
 --------
->>> import openturns as ot
-
 Use the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` to create a function
 that acts on fields of input dimension :math:`n=1` and input dimension :math:`d=2`
 and returns their spatial mean vector of dimension :math:`d'=2`.
 
 Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows one to define a persistent state between the evaluations of the function.
 
+For example, we create the function that maps a field to the mean value of its values.
+
+>>> import openturns as ot
 >>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
 ...     def __init__(self):
 ...         # first argument:

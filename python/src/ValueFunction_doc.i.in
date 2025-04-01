@@ -10,7 +10,7 @@ mesh : :class:`~openturns.Mesh`
 
 Notes
 -----
-Value functions act on fields to produce fields such that:
+A ValueFunction acts on fields to produce fields:
 
 .. math::
 
@@ -21,13 +21,13 @@ Value functions act on fields to produce fields such that:
 
 with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
 
-A value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
+The ValueFunction keeps the mesh unchanged: the input mesh is also to the output mesh.
 
 The  field :math:`F'` is defined by the function :math:`g: \Rset^d \rightarrow \Rset^{d'}`:
 
 .. math::
 
-    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{v}_i)
+    \forall 1 \leq i \leq N, \vect{v}'_i = g(\vect{v}_i)
  
 
 The first constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
@@ -39,7 +39,6 @@ FieldFunction, VertexValueFunction, OpenTURNSPythonFunction, PythonFunction
 
 Examples
 --------
->>> import openturns as ot
 
 Create the function :math:`g : \Rset \rightarrow \Rset` defined by:
 
@@ -50,6 +49,7 @@ Create the function :math:`g : \Rset \rightarrow \Rset` defined by:
                 x & \mapsto & x^2
             \end{array}\right.
 
+>>> import openturns as ot
 >>> g = ot.SymbolicFunction('x', 'x^2')
 
 Convert :math:`g` into a value function with :math:`n=1` the dimension of the

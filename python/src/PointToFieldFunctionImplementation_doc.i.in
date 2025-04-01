@@ -12,7 +12,7 @@ outputDim : int, :math:`\geq 1`
 
 Notes
 -----
-OT_PointToFieldFunction acts on points to produce fields:
+A PointToFieldFunction acts on points to produce fields:
 
 .. math::
 
@@ -34,15 +34,16 @@ PythonPointToFieldFunction, OpenTURNSPythonPointToFieldFunction, FieldToPointFun
 
 Examples
 --------
->>> import openturns as ot
-
 Use the class :class:`~openturns.OpenTURNSPythonPointToFieldFunction` to create a function that acts a vector :math:`\vect{v}` of dimension :math:`d=2` and returns a field defined by:
 
     - the mesh that discretizes :math:`[0, 1]` into 10 regular intervals of length 0.1 (:math:`n=1`)
     - the value associated to the vertex number :math:`i` is :math:`\vect{v}'_i = i*\vect{v}` (:math:`d'=2`)
 
-Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows one to define a persistent state between the evaluations of the function.
+Using the class :class:`~openturns.OpenTURNSPythonPointToFieldFunction` allows one to define a persistent state between the evaluations of the function.
 
+For example, we create the function which maps the point :math:`\vect{x}\in \Rset^2` into the field where the output values are :math:`(\vect{O}, \vect{x}, 2\vect{x}, \dots, 10\vect{x})` on the regular grid :math:`(0, 0.1, \dots, 1.0)`.
+
+>>> import openturns as ot
 >>> class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
 ...     def __init__(self):
 ...         mesh = ot.RegularGrid(0.0, 0.1, 11)

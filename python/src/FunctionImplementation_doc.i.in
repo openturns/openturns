@@ -327,12 +327,12 @@ OT_Function_getEvaluation_doc
 
 Returns
 -------
-gradient : :class:`~openturns.Gradient`
+gradient : :class:`~openturns.GradientImplementation`
     The gradient function.
 
 Examples
 --------
-To get the gradient formulas when the function is a  :class:`~openturns.ot.SymbolicFunction`.
+To get the gradient formulas when the function is a  :class:`~openturns.SymbolicFunction`.
 The indices are :math:`(i,j)`. The corresponding formula is
 :math:`\left( \dfrac{\partial f_j(\vect{x})}{\partial x_i} \right)`.
 >>> import openturns as ot
@@ -357,7 +357,7 @@ hessian : :class:`~openturns.HessianImplementation`
 
 Examples
 --------
-To get the hessian formulas when the function is a  :class:`~openturns.ot.SymbolicFunction`.
+To get the hessian formulas when the function is a  :class:`~openturns.SymbolicFunction`.
 The indices are :math:`(i,j,k)`. The corresponding formula is :math:`\left( \dfrac{\partial^2 f_k(\vect{x})}{\partial x_i \partial x_j} \right)`.
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x1', 'x2'],
