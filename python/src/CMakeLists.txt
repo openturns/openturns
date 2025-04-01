@@ -687,7 +687,6 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MarginalDistribution.i MarginalDistribution_doc.i.in
                       MaximumDistribution.i MaximumDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
-                      MaximumEntropyOrderStatisticsCopula.i MaximumEntropyOrderStatisticsCopula_doc.i.in
                       MaximumLikelihoodFactory.i MaximumLikelihoodFactory_doc.i.in
                       MeixnerDistribution.i MeixnerDistribution_doc.i.in
                       MeixnerDistributionFactory.i MeixnerDistributionFactory_doc.i.in
