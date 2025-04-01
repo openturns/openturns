@@ -78,7 +78,7 @@ FieldToPointFunction(const FieldToPointFunction & other) { return new OT::FieldT
 %pythoncode %{
 
 class OpenTURNSPythonFieldToPointFunction:
-    """
+    r"""
     Override FieldToPointFunction from Python.
 
     Parameters
@@ -92,7 +92,7 @@ class OpenTURNSPythonFieldToPointFunction:
 
     Notes
     -----
-    This function acts on fields to produce points:
+    A OpenTURNSPythonFieldToPointFunction function acts on fields to produce points:
 
     .. math::
 
@@ -104,7 +104,8 @@ class OpenTURNSPythonFieldToPointFunction:
     with  :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`.
 
     A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`
-    of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^\inputDim`.
+    of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex of :math:`\cM_N` and
+    :math:`\vect{v}_i` the associated value in :math:`\Rset^\inputDim`.
 
     At least, you have to overload the function:
         _exec(X): a single evaluation, where X is a :class:`~openturns.Field`. It returns
@@ -143,84 +144,84 @@ class OpenTURNSPythonFieldToPointFunction:
         self.__descOut = ['y' + str(i) for i in range(outputDim)]
 
     def setInputDescription(self, descIn):
-    """
-    Accessor to the description of the input field values.
+        """
+        Accessor to the description of the input field values.
 
-    Parameters
-    ----------
-    descIn : sequence of str
-        The description of the input field values.    
-    """
+        Parameters
+        ----------
+        descIn : sequence of str
+            The description of the input field values.    
+        """
         if (len(descIn) != self.__inputDim):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
     def getInputDescription(self):
-    """
-    Accessor to the description of the input field values.
+        """
+        Accessor to the description of the input field values.
 
-    Returns
-    -------
-    descIn : sequence of str
-        The description of the input field values.    
-    """
+        Returns
+        -------
+        descIn : sequence of str
+            The description of the input field values.    
+        """
         return self.__descIn
 
     def setOutputDescription(self, descOut):
-    """
-    Accessor to the description of the ouput values of the function.
+        """
+        Accessor to the description of the ouput values of the function.
 
-    Parameters
-    ----------
-    descOut : sequence of str
-        The description of the ouput values of the function.    
-    """
+        Parameters
+        ----------
+        descOut : sequence of str
+            The description of the ouput values of the function.    
+        """
         if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
     def getOutputDescription(self):
-    """
-    Accessor to the description of the ouput values of the function.
+        """
+        Accessor to the description of the ouput values of the function.
 
-    Returns
-    -------
-    descOut : sequence of str
-        The description of the ouput values of the function.    
-    """
+        Returns
+        -------
+        descOut : sequence of str
+            The description of the ouput values of the function.    
+        """
         return self.__descOut
 
     def getInputDimension(self):
-    """
-    Accessor to the dimension of the input field values.
+        r"""
+        Accessor to the dimension of the input field values.
 
-    Returns
-    -------
-    inputFieldDim : int
-        The dimension of the input field values  :math:`\inputDim`.   
-    """
+        Returns
+        -------
+        inputFieldDim : int
+            The dimension of the input field values  :math:`\inputDim`.   
+        """
         return self.__inputDim
 
     def getOutputDimension(self):
-    """
-    Accessor to the dimension of the ouput values of the function.
+        r"""
+        Accessor to the dimension of the ouput values of the function.
 
-    Returns
-    -------
-    outputDim : int
-        The dimension of the ouput values of the function :math:`d'`.    
-    """
+        Returns
+        -------
+        outputDim : int
+            The dimension of the ouput values of the function :math:`d'`.    
+        """
         return self.__outputDim
 
     def getInputMesh(self):
-    """
-    Accessor to the mesh of the input fields.
+        """
+        Accessor to the mesh of the input field.
 
-    Returns
-    -------
-    inputMesh : :class:`~openturns.Mesh`
-        The mesh of the input fields.  
-    """
+        Returns
+        -------
+        inputMesh : :class:`~openturns.Mesh`
+            The mesh of the input field.  
+        """
         return self.__inputMesh
 
     def __str__(self):
@@ -251,7 +252,7 @@ class OpenTURNSPythonFieldToPointFunction:
         return self._exec_sample([X])[0]
 
 class PythonFieldToPointFunction(FieldToPointFunction):
-    """
+    r"""
     Override FieldToPointFunction from Python.
 
     Parameters
@@ -269,7 +270,7 @@ class PythonFieldToPointFunction(FieldToPointFunction):
 
     Notes
     -----
-    This function acts on fields to produce points:
+    A PythonFieldToPointFunction acts on fields to produce points:
 
     .. math::
 

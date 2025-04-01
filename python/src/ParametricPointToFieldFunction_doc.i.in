@@ -1,9 +1,6 @@
 %feature("docstring") OT::ParametricPointToFieldFunction
 "Parametric Point to Field function.
 
-It defines a parametric function from *function* by freezing the variables
-marked by the *indices* set to the values of *referencePoint*.
-
 Parameters
 ----------
 function : :class:`~openturns.PointToFieldFunction`
@@ -13,6 +10,10 @@ indices : sequence of int
 referencePoint : sequence of float
     Values of the frozen variables.
     Must be of size of *indices*.
+
+Notes
+-----
+ParametricPointToFieldFunction defines a parametric function from a :class:`~openturns.PointToFieldFunction` by freezing the variables marked by the *indices* set to the values of *referencePoint*.
 
 Examples
 --------
