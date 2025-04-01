@@ -219,6 +219,7 @@ OT_API UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
 
 // Integer power
 OT_API Scalar IPow(const Scalar x, const SignedInteger n);
+OT_API UnsignedInteger IPow(const UnsignedInteger m, const UnsignedInteger n);
 
 // Integer root
 OT_API Scalar IRoot(const Scalar x, const SignedInteger n);

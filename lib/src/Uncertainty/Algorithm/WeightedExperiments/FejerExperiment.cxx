@@ -139,13 +139,13 @@ void FejerExperiment::setLevels(const Indices & levels)
       case FEJERTYPE2:
       {
         for (UnsignedInteger i = 0; i < size; ++ i)
-          discretization[i] = SpecFunc::IPow(2.0, levels[i]) - 1;
+          discretization[i] = SpecFunc::IPow(2, levels[i]) - 1;
         break;
       }
       case CLENSHAWCURTIS:
       {
         for (UnsignedInteger i = 0; i < size; ++ i)
-          discretization[i] = SpecFunc::IPow(2.0, levels[i]) + 1;
+          discretization[i] = SpecFunc::IPow(2, levels[i]) + 1;
         break;
       }
       default:
