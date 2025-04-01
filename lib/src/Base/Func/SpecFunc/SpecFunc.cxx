@@ -1289,6 +1289,23 @@ Scalar SpecFunc::IPow(const Scalar x, const SignedInteger n)
   return std::pow(x, 1.0 * n);
 }
 
+UnsignedInteger SpecFunc::IPow(const UnsignedInteger x, const UnsignedInteger n)
+{
+  if (n == 0) return 1;
+  if (x == 0) return 0;
+  Scalar res = 1;
+  UnsignedInteger exponent = n;
+  Scalar factor = x;
+  while (exponent)
+    {
+      if (exponent & 1)
+	res *= factor;
+      exponent >>= 1;
+      factor *= factor;
+    }
+  return res;
+}
+
 // Integer root
 Scalar SpecFunc::IRoot(const Scalar x, const SignedInteger n)
 {
