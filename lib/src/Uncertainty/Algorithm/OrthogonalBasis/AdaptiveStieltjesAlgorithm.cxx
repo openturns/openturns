@@ -208,7 +208,20 @@ void AdaptiveStieltjesAlgorithm::save(Advocate & adv) const
 void AdaptiveStieltjesAlgorithm::load(Advocate & adv)
 {
   OrthonormalizationAlgorithmImplementation::load(adv);
-  adv.loadAttribute( "monicRecurrenceCoefficients_", monicRecurrenceCoefficients_ );
+  // monicRecurrenceCoefficients_ changed type from PersistentCollection<Coefficients> to Sample in 1.19
+  // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
+  if (adv.getStudyVersion() >= 102000)
+    adv.loadAttribute("monicRecurrenceCoefficients_", monicRecurrenceCoefficients_);
+  else
+  {
+    PersistentCollection<Coefficients> coefficientsColl;
+    adv.loadAttribute("monicRecurrenceCoefficients_", coefficientsColl);
+    const UnsignedInteger size = coefficientsColl.getSize();
+    monicRecurrenceCoefficients_ = Sample(size, 3);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      for (UnsignedInteger j = 0; j < 3; ++j)
+        monicRecurrenceCoefficients_(i, j) = coefficientsColl[i][j];
+  }
   adv.loadAttribute( "monicSquaredNorms_", monicSquaredNorms_ );
   adv.loadAttribute( "isElliptical_", isElliptical_ );
 }
