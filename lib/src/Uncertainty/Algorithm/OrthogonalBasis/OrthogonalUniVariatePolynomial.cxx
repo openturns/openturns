@@ -210,7 +210,7 @@ void OrthogonalUniVariatePolynomial::save(Advocate & adv) const
 void OrthogonalUniVariatePolynomial::load(Advocate & adv)
 {
   UniVariatePolynomialImplementation::load(adv);
-  // recurrenceCoefficients_ changed type from PersistentCollection<Coefficients> to Sample in 1.19
+  // recurrenceCoefficients_ changed type from PersistentCollection<Coefficients> to PersistentCollection<Scalar> in 1.19
   // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
   if (adv.getStudyVersion() >= 102000)
     adv.loadAttribute("recurrenceCoefficients_", recurrenceCoefficients_);
