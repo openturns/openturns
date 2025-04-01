@@ -43,9 +43,6 @@ class OT_API MaximumEntropyOrderStatisticsDistribution
   /** The MaximumEntropyOrderStatisticsDistributionWrapper class is closely linked with the MaximumEntropyOrderStatisticsDistribution class */
   friend struct MaximumEntropyOrderStatisticsDistributionWrapper;
 
-  /** The MaximumEntropyOrderStatisticsCopula class is closely linked with the MaximumEntropyOrderStatisticsDistribution class */
-  friend class MaximumEntropyOrderStatisticsCopula;
-
 public:
 
   /** A type for distribution collection */
@@ -78,9 +75,6 @@ public:
 
   /** Marginal distributions accessor */
   DistributionCollection getDistributionCollection() const;
-
-  /** Get the copula of a distribution */
-  Distribution getCopula() const override;
 
   /* Interface inherited from Distribution */
 

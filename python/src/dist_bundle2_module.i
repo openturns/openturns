@@ -46,7 +46,6 @@
 %include MarginalDistribution.i
 %include MaximumDistribution.i
 %include MaximumEntropyOrderStatisticsDistribution.i
-%include MaximumEntropyOrderStatisticsCopula.i
 %include MaximumLikelihoodFactory.i
 %include MeixnerDistribution.i
 %include MeixnerDistributionFactory.i

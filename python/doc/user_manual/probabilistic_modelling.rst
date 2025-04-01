@@ -256,10 +256,6 @@ Refer to :ref:`copula`.
 
     MarshallOlkinCopula
 
-    :template: Copula.rst_t
-
-    MaximumEntropyOrderStatisticsCopula
-
     :template: class.rst_t
     MinCopula
 
