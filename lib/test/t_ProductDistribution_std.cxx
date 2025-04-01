@@ -100,6 +100,9 @@ int main(int, char *[])
     fullprint << "left=" << distribution.getLeft() << std::endl;
     fullprint << "right=" << distribution.getRight() << std::endl;
 
+    Interval interval(-1.0, 2.0);
+    assert_almost_equal(distribution.computeProbability(interval), 0.641, 0.01, 0.0);
+
     // For ticket 957
     {
       Distribution distribution2 = Uniform() * Uniform() * Uniform();
