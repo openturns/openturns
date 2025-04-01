@@ -111,9 +111,9 @@ sheet #1
 >>> dimX = g.getInputDimension()
 >>> dimY = g.getOutputDimension()
 >>> for k in range(dimY):
-... for i in range(dimX):
-...     for j in range(dimX):
-...         print(f'H[{i}, {j}, {k}] = {hessian_mat[i, j, k]}')
+...     for i in range(dimX):
+...         for j in range(dimX):
+...             print(f'H[{i}, {j}, {k}] = {hessian_mat[i, j, k]}')
 H[0, 0, 0] = 2.0
 H[0, 1, 0] = 6.0
 H[1, 0, 0] = 6.0
