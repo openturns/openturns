@@ -161,3 +161,10 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipCorrelation()  # slow
 validation.run()
+
+# Instantiate a distribution with a sample neither small nor large
+for i in range(20):
+    meanPoint += [1.0] * dimension
+    sample.add(meanPoint)
+distribution2 = ot.KernelMixture(ot.Normal(), sigma, sample)
+ott.assert_almost_equal(distribution2.computePDF(point), 0.000709, 0.01, 0.0)
