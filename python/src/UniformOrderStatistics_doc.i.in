@@ -29,7 +29,7 @@ as (see [arnold2008]_ eq. 2.2.4 page 11):
 where :math:`\cS\subset\Rset^n` is the simplex with vertices :math:`\cV`:
 
 .. math::
-   \cV=\left\{(\underbrace{0,\dots,0}_{k}, \underbrace{1,\dots,1}_{n-k}), \; k\in\{0,\dots,n\}\right\}`.
+   \cV=\left\{(\underbrace{0,\dots,0}_{k}, \underbrace{1,\dots,1}_{n-k}), \; k\in\{0,\dots,n\}\right\}.
 
 The link between :math:`\cS` and the order statistics is given by:
 
