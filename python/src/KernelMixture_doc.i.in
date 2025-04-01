@@ -31,6 +31,9 @@ The probability density function :math:`\inputRV` is defined by:
 
 where :math:`k` is the kernel pdf.
 
+If :math:`\inputDim = 1` and the `KernelMixture-EnableInterpolation` ResourceMap key is set to `True` (it is `False` by default),
+then the PDF and CDF of the kernel mixture are interpolated with :class:`PiecewiseHermiteEvaluation`.
+
 Examples
 --------
 Create a *KernelMixture*:

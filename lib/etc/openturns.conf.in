@@ -597,9 +597,8 @@
   <InverseWishart-CDFScaleFactor value_float="0.5" />
 
   <!-- OT::KernelMixture parameters -->
-  <KernelMixture-LargeSize            value_int="20"   />
   <KernelMixture-PDFCDFDiscretization value_int="1000" />
-  <KernelMixture-SmallSize            value_int="50"   />
+  <KernelMixture-EnableInterpolation  value_bool="false"   />
   
   <!-- OT::KernelSmoothing parameters -->
   <KernelSmoothing-AbsolutePrecision   value_float="0.0"     />

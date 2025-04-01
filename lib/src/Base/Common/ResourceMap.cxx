@@ -1253,9 +1253,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("InverseWishart-CDFScaleFactor", 0.5);
 
   // KernelMixture parameters //
-  addAsUnsignedInteger("KernelMixture-LargeSize", 20);
   addAsUnsignedInteger("KernelMixture-PDFCDFDiscretization", 1000);
-  addAsUnsignedInteger("KernelMixture-SmallSize", 50);
+  addAsBool("KernelMixture-EnableInterpolation", false);
 
   // KernelSmoothing parameters //
   addAsScalar("KernelSmoothing-AbsolutePrecision", 0.0);
