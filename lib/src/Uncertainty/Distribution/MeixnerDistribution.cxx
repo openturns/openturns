@@ -408,7 +408,7 @@ void MeixnerDistribution::update()
 /* Build a C1 interpolation of the CDF function */
 Collection<PiecewiseHermiteEvaluation> MeixnerDistribution::interpolateCDF(const UnsignedInteger n)
 {
-  const PDFWrapper pdfWrapper(this);
+  const Function pdf(getPDF());
   const Scalar xMin = getRange().getLowerBound()[0];
   const Scalar xMax = getRange().getUpperBound()[0];
   const Scalar mu = getMean()[0];
@@ -436,8 +436,8 @@ Collection<PiecewiseHermiteEvaluation> MeixnerDistribution::interpolateCDF(const
     Sample fi;
     Point ei;
     Scalar error = -1.0;
-    valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
-    valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdfWrapper, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
+    valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdf, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
+    valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdf, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
     derivativesCDF[i] = computePDF(xCDF);
     derivativesCCDF[n - i - 1] = -computePDF(xCCDF);
     xCDFOld = xCDF;
