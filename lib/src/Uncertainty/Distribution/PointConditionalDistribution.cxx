@@ -836,7 +836,7 @@ Scalar PointConditionalDistribution::computeProbability(const Interval & interva
     if (isContinuous())
     {
       // Build the relevant parametric function to be integrated over the remaining parameters
-      const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), conditioningIndices_, conditioningValues_);
+      const ParametricFunction kernel(distribution_.getPDF(), conditioningIndices_, conditioningValues_);
       probability = integrationAlgorithm_.integrate(kernel, intersection)[0] / std::exp(logNormalizationFactor_);
     }
     else

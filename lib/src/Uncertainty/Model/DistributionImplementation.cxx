@@ -1214,7 +1214,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
 Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar aa, const Scalar bb) const
 {
   // Use adaptive multidimensional integration of the PDF on the reduced interval
-  const PDFWrapper pdfWrapper(this);
+  const Function pdf(getPDF());
   Scalar probability = 0.0;
   Scalar error = -1.0;
   Point ai;
@@ -1228,7 +1228,7 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
   // If no singularity inside of the given reduced interval
   const UnsignedInteger singularitiesNumber = singularities.getSize();
   const GaussKronrod gkAlgo;
-  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = gkAlgo.integrate(pdfWrapper, a, b, error, ai, bi, fi, ei)[0];
+  if (singularitiesNumber == 0 || singularities[0] >= b || singularities[singularitiesNumber - 1] <= a) probability = gkAlgo.integrate(pdf, a, b, error, ai, bi, fi, ei)[0];
   else
   {
     Scalar lower = a;
@@ -1237,14 +1237,14 @@ Scalar DistributionImplementation::computeProbabilityContinuous1D(const Scalar a
       const Scalar upper = singularities[i];
       if (upper > a && upper < b)
       {
-        probability += gkAlgo.integrate(pdfWrapper, lower, upper, error, ai, bi, fi, ei)[0];
+        probability += gkAlgo.integrate(pdf, lower, upper, error, ai, bi, fi, ei)[0];
         lower = upper;
       }
       // Exit the loop if no more singularities inside of the reduced interval
       if (upper >= b) break;
     } // for
     // Last contribution
-    probability += gkAlgo.integrate(pdfWrapper, lower, b, error, ai, bi, fi, ei)[0];
+    probability += gkAlgo.integrate(pdf, lower, b, error, ai, bi, fi, ei)[0];
   } // else
   return SpecFunc::Clip01(probability);
 }
@@ -2140,18 +2140,18 @@ Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePD
   const Scalar mu = getMean()[0];
   // Here we use an absolute precision of 0.0 in order to force the algorithm to use all the available discretization points
   GaussKronrod algorithm( n - 1, cdfEpsilon_ * cdfEpsilon_, GaussKronrodRule::G3K7);
-  const PDFWrapper pdfWrapper(this);
+  const Function pdf(getPDF());
   Scalar error = -1.0;
   Point ai;
   Point bi;
   Sample fi;
   Point ei;
-  algorithm.integrate(pdfWrapper, xMin, mu, error, ai, bi, fi, ei);
+  algorithm.integrate(pdf, xMin, mu, error, ai, bi, fi, ei);
   ai.add(mu);
   Sample locationsCDF(ai.getSize(), 1);
   locationsCDF.getImplementation()->setData(ai);
   locationsCDF = locationsCDF.sort(0);
-  algorithm.integrate(pdfWrapper, mu, xMax, error, ai, bi, fi, ei);
+  algorithm.integrate(pdf, mu, xMax, error, ai, bi, fi, ei);
   ai.add(xMax);
   Sample locationsCCDF(ai.getSize(), 1);
   locationsCCDF.getImplementation()->setData(ai);
@@ -4171,9 +4171,9 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a logPDF with a point number < 2";
   if (isDiscrete()) return drawDiscreteLogPDF(xMin, xMax, logScale);
   // Discretization of the x axis
-  const LogPDFWrapper logPdfWrapper(this);
+  const Function logPdf(getLogPDF());
   const GraphImplementation::LogScale scale = logScale ? GraphImplementation::LOGX : GraphImplementation::NONE;
-  Graph graphLogPDF(logPdfWrapper.draw(xMin, xMax, pointNumber, scale));
+  Graph graphLogPDF(logPdf.draw(xMin, xMax, pointNumber, scale));
   Drawable drawable(graphLogPDF.getDrawable(0));
   const String title(OSS() << getDescription()[0] << "log PDF");
   drawable.setLegend(title);
