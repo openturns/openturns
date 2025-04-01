@@ -61,9 +61,6 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
   
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
       throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
-
-  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(event_.getImplementation()->getAntecedent().getDistribution().getMean()), event, true);
-
 }
 
 
@@ -145,17 +142,19 @@ void Analytical::run()
   
   /* solve the nearest point problem */
   nearestPointAlgorithm.run();
-
-  /* store the optimization result into the analytical result */
-  result_.setOptimizationResult(nearestPointAlgorithm.getResult());
+  
   /* set standard space design point in Result */
   Point standardSpaceDesignPoint(nearestPointAlgorithm.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
-  result_.setStandardSpaceDesignPoint(standardSpaceDesignPoint);
+  
+  result_ = AnalyticalResult(standardSpaceDesignPoint, event_, true);
+
+  /* store the optimization result into the analytical result */
+  result_.setOptimizationResult(nearestPointAlgorithm.getResult());
 
   /* set isStandardPointOriginInFailureSpace in Result */
-  Point origin(standardSpaceDesignPoint.getDimension(), 0.0);
-  Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
+  const Point origin(standardSpaceDesignPoint.getDimension(), 0.0);
+  const Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
 
