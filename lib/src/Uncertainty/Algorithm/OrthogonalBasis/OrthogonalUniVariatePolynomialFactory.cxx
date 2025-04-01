@@ -208,7 +208,21 @@ void OrthogonalUniVariatePolynomialFactory::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "measure_", measure_ );
   adv.saveAttribute( "coefficientsCache_", coefficientsCache_ );
-  adv.saveAttribute( "recurrenceCoefficientsCache_", recurrenceCoefficientsCache_ );
+
+  // recurrenceCoefficientsCache_ changed type from PersistentCollection<Coefficients> to Sample in 1.19
+  // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
+  if (adv.getStudyVersion() >= 102000)
+    adv.loadAttribute("recurrenceCoefficientsCache_", recurrenceCoefficientsCache_);
+  else
+  {
+    PersistentCollection<Coefficients> coefficientsColl;
+    adv.loadAttribute("recurrenceCoefficientsCache_", coefficientsColl);
+    const UnsignedInteger size = coefficientsColl.getSize();
+    recurrenceCoefficientsCache_ = Sample(size, 3);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      for (UnsignedInteger j = 0; j < 3; ++j)
+        recurrenceCoefficientsCache_(i, j) = coefficientsColl[i][j];
+  }
 }
 
 
