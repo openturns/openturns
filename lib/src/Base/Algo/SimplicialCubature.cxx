@@ -192,7 +192,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   Collection<Sample> flatVertices(flatSize, Sample(0, dimension));
   for (UnsignedInteger K = 0; K < flatSize; ++ K)
   {
-    Indices simplex(mesh.getSimplex(K));
+    const Indices simplex(mesh.getSimplex(K));
     for (UnsignedInteger i = 0; i < simplex.getSize(); ++ i)
       flatVertices[K].add(mesh.getVertex(simplex[i]));
 
@@ -231,7 +231,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     VL -= VLS[ID];
     AE -= AES[ID];
     const UnsignedInteger NEW = computeNewSubregions(dimension, outputDimension, F, ID, flatSize, flatVertices);
-    Scalar VI = volume[ID] / NEW;
+    const Scalar VI = volume[ID] / NEW;
 
     //     Apply basic rule, and add new contributions to VL and AE.
     volume.resize(flatSize + NEW - 1);
@@ -274,15 +274,14 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
 }
 
 Point SimplicialCubature::computePermutationSums(const UnsignedInteger dimension, const Sample & simplexVertices,
-    const UnsignedInteger outputDimension, const Function & function,
-    const Point & GConst) const
+    const Function & function, const Point & GConst) const
 {
-  Point result(outputDimension, 0.0);
   Point G(GConst);
   std::sort(G.begin(), G.end(), std::greater<Scalar>());
 
   Bool pr = true;
   // Compute integrand value for permutations of G
+  Sample inS(0, dimension);
   while (pr)
   {
     // TODO: better matrix conversion ?
@@ -291,7 +290,7 @@ Point SimplicialCubature::computePermutationSums(const UnsignedInteger dimension
       for (UnsignedInteger j = 0; j < simplexVertices.getDimension(); ++ j)
         VERTEXM(j, i) = simplexVertices(i, j);
 
-    result += function(VERTEXM * G);
+    inS.add(VERTEXM * G);
     pr = false;
 
     for (UnsignedInteger I = 1; I < dimension + 1; ++ I)
@@ -320,7 +319,8 @@ Point SimplicialCubature::computePermutationSums(const UnsignedInteger dimension
       }
     }
   }
-  return result;
+  const Sample outS(function(inS));
+  return outS.computeMean() * (0.0 + outS.getSize());
 }
 
 void SimplicialCubature::computeRuleValueAndError(const UnsignedInteger dimension, const Sample & simplexVertices,
@@ -339,7 +339,7 @@ void SimplicialCubature::computeRuleValueAndError(const UnsignedInteger dimensio
   for (UnsignedInteger K = 0; K < WTS; ++ K)
     if (evalBudget[K] > 0)
     {
-      const Point sym(computePermutationSums(dimension, simplexVertices, outputDimension, function, G.getColumn(K)*Point(1, 1.0)));
+      const Point sym(computePermutationSums(dimension, simplexVertices, function, G.getColumn(K)*Point(1, 1.0)));
       for (UnsignedInteger i = 0; i < outputDimension; ++ i)
       {
         const Scalar scaledSymI = volume * sym[i];
@@ -375,8 +375,8 @@ UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger d
     const UnsignedInteger flatSize, Collection<Sample> & flatVertices) const
 {
   (void)outputDimension;
-  UnsignedInteger CUTTF = 2;
-  UnsignedInteger CUTTB = 8;
+  const UnsignedInteger CUTTF = 2;
+  const UnsignedInteger CUTTB = 8;
 
   // Compute the differences.
   UnsignedInteger IS = 1;
@@ -385,9 +385,9 @@ UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger d
   Scalar EMX = 0;
   Sample V(flatVertices[bestSimplex]);
 
-  Point CN(V.computeMean());
-  Point FC(function(CN));
-  Scalar DFMD = FC.norm1();
+  const Point CN(V.computeMean());
+  const Point FC(function(CN));
+  const Scalar DFMD = FC.norm1();
 
   Matrix FRTHDF(dimension, dimension + 1);
 
@@ -401,15 +401,21 @@ UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger d
   {
     for(UnsignedInteger J = I + 1; J < dimension + 1 ; ++ J)
     {
-      Point H(2.0 * (V[I] - V[J]) / (5.0 * (dimension + 1.0)));
-      Scalar EWD = H.norm1();
+      const Point H(2.0 * (V[I] - V[J]) / (5.0 * (dimension + 1.0)));
+      const Scalar EWD = H.norm1();
       if (EWD >= EMX)
       {
         IE = I;
         JE = J;
         EMX = EWD;
       }
-      Scalar DFR = (function(CN - 2 * H) + function(CN + 2 * H) + 6 * FC - 4 * (function(CN - H) + function(CN + H))).norm1();
+      Sample inS(0, dimension);
+      inS.add(CN - 2 * H);
+      inS.add(CN + 2 * H);
+      inS.add(CN - H);
+      inS.add(CN + H);
+      const Sample outS(function(inS));
+      Scalar DFR = (outS[0] + outS[1] + 6 * FC - 4 * (outS[2] + outS[3])).norm1();
       if ((DFMD + DFR / 8.0) == DFMD)
         DFR = 0.0;
       DFR = DFR * EWD;

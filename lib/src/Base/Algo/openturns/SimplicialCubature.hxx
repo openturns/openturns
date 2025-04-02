@@ -86,8 +86,7 @@ private:
   UnsignedInteger getNodeNumber(const UnsignedInteger dimension) const;
 
   Point computePermutationSums(const UnsignedInteger dimension, const Sample & simplexVertices,
-                               const UnsignedInteger outputDimension, const Function & function,
-                               const Point & G) const;
+                               const Function & function, const Point & G) const;
 
   Indices initializeBasicRule(const UnsignedInteger dimension, Matrix & W, Matrix & G) const;
 
