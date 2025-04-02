@@ -1,6 +1,6 @@
 """
-Goal-oriented active learning Kriging for reliability analysis
-==============================================================
+Gaussian Process-based active learning for reliability
+======================================================
 """
 
 # %%
