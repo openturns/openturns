@@ -299,7 +299,7 @@ for krigingStep in range(10):
 # We can see that the metamodel only needs to be accurate near the event threshold to retrieve a precise estimation probability of failure.
 # With only 10 points evaluated on the real limit state function, the metamodel accuracy is sufficient to estimate the failure probability.
 # Indeed, the estimated probability is very close to the reference probability.
-# This kind of active leraning strategies allows one to save a large number of simulations.
+# This kind of active learning strategies allows one to save a large number of simulations.
 
 # %%
 # Conclusion
