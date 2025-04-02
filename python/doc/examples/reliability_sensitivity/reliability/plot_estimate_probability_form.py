@@ -55,14 +55,14 @@ event.setName("deviation")
 # -------------
 
 # %%
-# Define a solver
-optimAlgo = ot.Cobyla()
-optimAlgo.setStartingPoint(distribution.getMean())
+# Define a solver, here we use a :class:`~openturns.MultiStart` optimization based on :class:`~openturns.Cobyla`
+startingSample = distribution.getSample(10)
+optimAlgo = ot.MultiStart(ot.Cobyla(), startingSample)
 optimAlgo.setMaximumCallsNumber(1000)
-optimAlgo.setMaximumAbsoluteError(1.0e-10)
-optimAlgo.setMaximumRelativeError(1.0e-10)
-optimAlgo.setMaximumResidualError(1.0e-10)
-optimAlgo.setMaximumConstraintError(1.0e-10)
+optimAlgo.setMaximumAbsoluteError(1.0e-4)
+optimAlgo.setMaximumRelativeError(1.0e-4)
+optimAlgo.setMaximumResidualError(1.0e-4)
+optimAlgo.setMaximumConstraintError(1.0e-4)
 
 # %%
 # Run FORM

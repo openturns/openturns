@@ -78,6 +78,18 @@ void OptimizationAlgorithm::setStartingPoint(const Point & startingPoint)
   getImplementation()->setStartingPoint(startingPoint);
 }
 
+/* Starting sample accessor */
+Sample OptimizationAlgorithm::getStartingSample() const
+{
+  return getImplementation()->getStartingSample();
+}
+
+void OptimizationAlgorithm::setStartingSample(const Sample & startingSample)
+{
+  copyOnWrite();
+  getImplementation()->setStartingSample(startingSample);
+}
+
 /* Problem accessor */
 OptimizationProblem OptimizationAlgorithm::getProblem() const
 {
@@ -244,7 +256,7 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   {
     solver = AbdoRackwitz();
   }
-  if (PlatformInfo::HasFeature("ceres") && Ceres::GetAlgorithmNames().contains(solverName))
+  else if (PlatformInfo::HasFeature("ceres") && Ceres::GetAlgorithmNames().contains(solverName))
   {
     solver = Ceres(solverName);
   }
@@ -315,6 +327,7 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & p
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
+  names.add("AbdoRackwitz");
   if (PlatformInfo::HasFeature("bonmin"))
     names.add(Bonmin::GetAlgorithmNames());
   if (PlatformInfo::HasFeature("ipopt"))
@@ -326,6 +339,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   names.add("Cobyla");
   if (PlatformInfo::HasFeature("dlib"))
     names.add(Dlib::GetAlgorithmNames());
+  names.add("SQP");
   names.add("TNC");
   if (PlatformInfo::HasFeature("nlopt"))
     names.add(NLopt::GetAlgorithmNames());

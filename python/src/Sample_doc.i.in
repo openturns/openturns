@@ -112,7 +112,7 @@ Parameters
 ----------
 file_name : str
     Path to CSV file.
-separator : str
+separator : str, optional
     Separating string.
     Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
 
@@ -150,13 +150,13 @@ Parameters
 ----------
 file_name : str
     Path to text file.
-separator : str
+separator : str, optional
     Separating string.
     Default uses a blank space.
-skipped_lines : int
+skipped_lines : int, optional
     Number of lines skipped.
     Default is 0.
-decimalSeparator : str
+decimalSeparator : str, optional
     Decimal separator.
     Default is dot.
 
@@ -816,15 +816,16 @@ Parameters
 ----------
 file_name : str
     Path to CSV file.
-separator : str
+separator : str, optional
     Separating string.
     Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
-decimalSeparator : str, default='.'
+decimalSeparator : str, optional
     Decimal separator.
-precision : int
+    Default is dot.
+precision : int, optional
     Numerical precision
     Default takes `Sample-CSVPrecision` entry from :class:`~openturns.ResourceMap`.
-format : str
+format : str, optional
     Floating-point formatting, one of:
 
     - scientific: exponent notation

@@ -42,17 +42,27 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 {
   if (physicalStartingPoint.getSize())
   {
-    LOGWARN("FORM physicalStartingPoint argument is deprecated");
+    LOGWARN("FORM/SORM physicalStartingPoint argument is deprecated");
     nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
   }
 
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
-  if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
+
+  try 
+  {
+    if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
+      throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
+  }
+  catch (const NotDefinedException &) // MultiStart algorithm
+  {
+    if (nearestPointAlgorithm_.getStartingSample().getDimension() != dimension)
+      throw InvalidArgumentException(HERE) << "Starting sample dimension (" << nearestPointAlgorithm_.getStartingSample()[0].getDimension() << ") does not match event dimension (" << dimension << ").";
+  }
+  
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
-    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
-  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm_.getStartingPoint()), event, true);
+      throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
 }
+
 
 /* Virtual constructor */
 Analytical * Analytical::clone() const
@@ -119,22 +129,32 @@ void Analytical::run()
   OptimizationAlgorithm nearestPointAlgorithm(nearestPointAlgorithm_);
   nearestPointAlgorithm.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
-  /* set the starting point of the algorithm in the standard space */
-  nearestPointAlgorithm.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingPoint()));
-
+  try
+  {
+    /* set the starting point of the algorithm in the standard space */
+    nearestPointAlgorithm.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingPoint()));
+  }
+  catch (const NotDefinedException &) // MultiStart algorithm
+  {
+    /* set the starting sample of the algorithm in the standard space */
+    nearestPointAlgorithm.setStartingSample(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingSample()));
+  }
+  
   /* solve the nearest point problem */
   nearestPointAlgorithm.run();
-
-  /* store the optimization result into the analytical result */
-  result_.setOptimizationResult(nearestPointAlgorithm.getResult());
+  
   /* set standard space design point in Result */
   Point standardSpaceDesignPoint(nearestPointAlgorithm.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
-  result_.setStandardSpaceDesignPoint(standardSpaceDesignPoint);
+  
+  result_ = AnalyticalResult(standardSpaceDesignPoint, event_, true);
+
+  /* store the optimization result into the analytical result */
+  result_.setOptimizationResult(nearestPointAlgorithm.getResult());
 
   /* set isStandardPointOriginInFailureSpace in Result */
-  Point origin(standardSpaceDesignPoint.getDimension(), 0.0);
-  Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
+  const Point origin(standardSpaceDesignPoint.getDimension(), 0.0);
+  const Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
 

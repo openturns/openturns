@@ -1279,5 +1279,5 @@ Indentation
 
 The python code should use 4 spaces per indentation level.
 For more information about python formatting,
-refer to `PEP8 <http://www.python.org/dev/peps/pep-0008/>`_.
+refer to `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_.
 

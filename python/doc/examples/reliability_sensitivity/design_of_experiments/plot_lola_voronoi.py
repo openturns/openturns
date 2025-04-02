@@ -33,7 +33,7 @@ contour.setLegend("model")
 graph.setTitle("Model")
 graph.setXTitle("x1")
 graph.setYTitle("x2")
-otv.View(graph, square_axes=True)
+_ = otv.View(graph, square_axes=True)
 
 # %%
 # Plot the hessian norm
@@ -51,7 +51,7 @@ graph = hessNorm.draw(distribution.getRange().getLowerBound(), distribution.getR
 graph.setTitle("Hessian norm")
 graph.setXTitle("x1")
 graph.setYTitle("x2")
-otv.View(graph, square_axes=True)
+_ = otv.View(graph, square_axes=True)
 
 # %%
 # Lets define an initial design of experiments
@@ -69,7 +69,7 @@ initial.setColor("blue")
 initial.setLegend(f"initial ({len(x0)})")
 graph.add(initial)
 graph.add(contour)
-otv.View(graph, square_axes=True)
+_ = otv.View(graph, square_axes=True)
 
 # %%
 # Instantiate the algorithm from the initial DOE and the distribution
