@@ -74,6 +74,7 @@ view = viewer.View(graph)
 # %%
 # Define the reliability analysis
 # -------------------------------
+
 # %%
 # We define the event and estimate the reference failure probability with Monte-Carlo algorithm.
 
