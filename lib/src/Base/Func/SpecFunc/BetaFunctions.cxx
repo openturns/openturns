@@ -26,6 +26,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
+// boost::math::ibeta_inv can error in extended precision causing t_DistFunc_beta failure
 #define BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
 #include <boost/math/special_functions/beta.hpp>
 #endif

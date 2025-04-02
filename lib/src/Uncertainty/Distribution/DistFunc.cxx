@@ -1437,7 +1437,7 @@ Scalar DistFunc::qPoisson(const Scalar lambda,
   const Scalar cp = std::min(std::max(p, SpecFunc::MinScalar), 1.0 - SpecFunc::ScalarEpsilon);
 #ifdef OPENTURNS_HAVE_BOOST
   typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_up> > integer_round_up;
-  typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_up> > integer_round_down;
+  typedef boost::math::policies::policy< boost::math::policies::discrete_quantile<boost::math::policies::integer_round_down> > integer_round_down;
   if (tail)
     return boost::math::quantile(complement(boost::math::poisson_distribution<Scalar, integer_round_down >(lambda), cp));
   else
