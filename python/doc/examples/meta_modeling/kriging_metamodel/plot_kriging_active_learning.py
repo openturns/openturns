@@ -21,21 +21,23 @@ from openturns import viewer
 
 ot.Log.Show(ot.Log.NONE)
 
-# %%
-dimension = 1
-DoESize = 4
 
 # %%
-# Define the function.
+# Define the function, the threshold above which the system is considered in failure, and the input probability distribution.
 
 # %%
+
 g = ot.SymbolicFunction(["x"], ["0.5*x^2 + sin(5*x)"])
 threshold = 1.25
+distribution = ot.Normal(0, 0.4)
+
 
 # %%
 # Create the design of experiments.
 
 # %%
+dimension = 1
+DoESize = 4
 xMin = -2.0
 xMax = 2.0
 X_distr = ot.Uniform(xMin, xMax)
@@ -43,6 +45,7 @@ X = ot.LHSExperiment(X_distr, DoESize, False, False).generate()
 Y = g(X)
 
 # %%
+# We plot the limit state function, the initial Design of Experiments and the failure threshold.
 thresholdFunction = ot.Curve([xMin, xMax], [threshold] * 2)
 thresholdFunction.setLineStyle("dashed")
 thresholdFunction.setColor("red")
@@ -76,8 +79,6 @@ view = viewer.View(graph)
 # Define the event and estimate the reference failure probability with Monte-Carlo algorithm.
 
 # %%
-distribution = ot.Normal(0, 0.4)
-
 vect = ot.RandomVector(distribution)
 g = ot.MemoizeFunction(g)
 G = ot.CompositeRandomVector(g, vect)
@@ -140,7 +141,6 @@ def plotMyBasicKriging(
     Given a kriging result, plot the data, the kriging metamodel
     and a confidence interval.
     """
-    samplesize = X.getSize()
     meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
     graphKriging.setLegends(["Kriging"])
@@ -180,10 +180,7 @@ def plotMyBasicKriging(
     # Compute the Polygon graphics
     boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
-    # Validate the kriging metamodel
-    metamodelPredictions = meta(xGrid)
-    mmv = ot.MetaModelValidation(yFunction, metamodelPredictions)
-    r2Score = mmv.computeR2Score()[0]
+
     # Plot the function
     graphFonction = ot.Curve(xGrid, yFunction)
     graphFonction.setLineStyle("dashed")
@@ -214,7 +211,7 @@ def plotMyBasicKriging(
     graph.setAxes(True)
     graph.setGrid(True)
     graph.setTitle(
-        "Estimated proba = %f, Reference proba =  %f" % (proba, refProbability)
+        "Estimated probability = %f, Reference probability =  %f" % (proba, refProbability)
     )
     graph.setXTitle("X")
     graph.setYTitle("Y")
@@ -222,7 +219,7 @@ def plotMyBasicKriging(
 
 
 # %%
-# We start by creating the initial Kriging metamodel on the 4 points in the design of experiments.
+# We start by creating the initial Kriging surrogate model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments. We estimate the probability on this surrogate model and compare with the reference probability computed on the real limit state function.
 
 # %%
 gprResult = createMyBasicKriging(X, Y)
@@ -235,9 +232,10 @@ view = viewer.View(graph)
 # ------------------------------------------------------
 
 # %%
-# To sequentially add the new points, the "U criterion" is used. It consists in finding the new point as the sample $\mathbf{x}$ in the Monte-Carlo experiment that minimizes  the following expression:
-# $\frac{\left|T-\hat{\mathcal{M}}(\mathbf{x})\right|}{\hat{\sigma}(\mathbf{x})}$
-# with $\hat{\sigma}(\mathbf{x})$ the square root of the marginal covariance of the Gaussian Process evaluated on $\mathbf{x}$, and $T$ the event threshold (here 1.5)
+# To sequentially add the new points, the "U criterion" is used. 
+# It consists in finding the new point as the sample :math:`\mathbf{x}` in the Monte-Carlo experiment that minimizes  the following expression:
+# :math:`\frac{ \left| T - \hat{\mathcal{M}} ( \mathbf{x}) \right|}{\hat{\sigma}(\mathbf{x})}`
+# with :math:`\hat{\sigma}(\mathbf{x})` the square root of the marginal covariance of the Gaussian Process evaluated on :math:`\mathbf{x}`, and :math:`T` the event threshold (here 1.5)
 
 # %%
 def getNewPoint(X, gprResult, threshold):
@@ -298,7 +296,7 @@ for krigingStep in range(10):
 
 # %%
 # We can see that the metamodel only needs to be accurate near the event threshold to retrieve a precise estimation probability of failure.
-# With only 10 points the metamodel accuracy is sufficient to retrieve the same probability as the original algorithm that needs a few thousands of evaluations.
+# With only 10 points evaluated on the real limit state function, the metamodel accuracy is sufficient to retrieve the same probability as the original algorithm that needs a few thousands of evaluations on the limit state function.
 # This kind of active leraning strategies allows to save a large number of simulations.
 
 # %%
