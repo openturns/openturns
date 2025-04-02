@@ -118,7 +118,6 @@ String Contour::__repr__() const
       << " isVmaxUsed=" << isVmaxUsed_
       << " vmax=" << vmax_
       << " colorMap=" << colorMap_
-      << " alpha=" << alpha_
       << " norm=" << norm_
       << " extend=" << extend_
       << " hatches=" << hatches_
@@ -277,18 +276,6 @@ void Contour::setColorMap(const String& colorMap)
   colorMap_ = colorMap;
 }
 
-/** Accessor for alpha */
-Scalar Contour::getAlpha() const
-{
-  return alpha_;
-}
-
-void Contour::setAlpha(Scalar alpha)
-{
-  if (alpha < 0 || alpha > 1) throw InvalidArgumentException(HERE) << "Given alpha = " << alpha << " not in [0, 1]";
-  alpha_ = alpha;
-}
-
 /** Accessor for norm */
 String Contour::getColorMapNorm() const
 {
@@ -390,7 +377,6 @@ void Contour::save(Advocate & adv) const
   adv.saveAttribute("isVmaxUsed_", isVmaxUsed_);
   adv.saveAttribute("vmax_", vmax_);
   adv.saveAttribute("colorMap_", colorMap_);
-  adv.saveAttribute("alpha_", alpha_);
   adv.saveAttribute("norm_", norm_);
   adv.saveAttribute("extend_", extend_);
   adv.saveAttribute("hatches_", hatches_);
@@ -431,10 +417,13 @@ void Contour::load(Advocate & adv)
     adv.loadAttribute("colorMap_", colorMap_);
   else
     colorMap_.clear();
+  // TODO: remove loading of deprecated alpha_ attribute
   if (adv.hasAttribute("alpha_"))
-    adv.loadAttribute("alpha_", alpha_);
-  else
-    alpha_ = 1;
+  {
+    Scalar alpha;
+    adv.loadAttribute("alpha_", alpha);
+    setAlpha(alpha);
+  }
   if (adv.hasAttribute("norm_"))
     adv.loadAttribute("norm_", norm_);
   else

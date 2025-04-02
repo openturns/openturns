@@ -291,6 +291,40 @@ OT_Drawable_getColorCode_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Drawable_getAlpha_doc
+"Accessor to the alpha blending value.
+
+Returns
+-------
+alpha : float
+    The alpha blending value, between 0 (transparent) and 1 (opaque).
+
+See Also
+--------
+setAlpha"
+%enddef
+%feature("docstring") OT::DrawableImplementation::getAlpha
+OT_Drawable_getAlpha_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_setAlpha_doc
+"Accessor to the alpha blending value.
+
+Parameters
+----------
+alpha : float
+    The alpha blending value, between 0 (transparent) and 1 (opaque).
+
+See Also
+--------
+getAlpha"
+%enddef
+%feature("docstring") OT::DrawableImplementation::setAlpha
+OT_Drawable_setAlpha_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Drawable_GetValidColors_doc
 "Return the list of the valid colors of the drawable element.
 
