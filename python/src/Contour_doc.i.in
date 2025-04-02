@@ -205,40 +205,6 @@ getColorMap, GetValidColorMaps"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Contour::getAlpha
-"Accessor to the alpha blending value of the Contour element.
-
-Returns
--------
-alpha : float
-    The alpha blending value of the Contour element, between 0 (transparent) and 1 (opaque).
-
-Examples
---------
->>> import openturns as ot
->>> print(ot.Contour(2,2,ot.Sample(4,1)).getAlpha())
-1.0
-
-See Also
---------
-setAlpha"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Contour::setAlpha
-"Accessor to the alpha blending value of the Contour element.
-
-Parameters
-----------
-alpha : float
-    The alpha blending value of the Contour element, between 0 (transparent) and 1 (opaque).
-
-See Also
---------
-getAlpha"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Contour::isVminUsed
 "Accessor to the flag isVminUsed of the Contour element.
 If false, the *vmin* value is ignored.

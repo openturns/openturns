@@ -26,6 +26,10 @@ OT_Drawable_setColor_doc
 OT_Drawable_getColorCode_doc
 %feature("docstring") OT::Drawable::GetValidColors
 OT_Drawable_GetValidColors_doc
+%feature("docstring") OT::Drawable::getAlpha
+OT_Drawable_getAlpha_doc
+%feature("docstring") OT::Drawable::setAlpha
+OT_Drawable_setAlpha_doc
 %feature("docstring") OT::Drawable::getEdgeColor
 OT_Drawable_getEdgeColor_doc
 %feature("docstring") OT::Drawable::getFillStyle
