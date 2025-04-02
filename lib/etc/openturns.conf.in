@@ -269,6 +269,7 @@
   <EfficientGlobalOptimization-DefaultOptimizationAlgorithm     value_str="Cobyla" />
 
   <!-- OT::LOLAVoronoi parameters -->
+  <LOLAVoronoi-HybridScoreTradeoff value_float="0.5" />
   <LOLAVoronoi-UseTruncatedDistribution value_bool="false" />
   <LOLAVoronoi-MaximumCombinationsNumber value_int="100" />
   <LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber value_int="15" />
