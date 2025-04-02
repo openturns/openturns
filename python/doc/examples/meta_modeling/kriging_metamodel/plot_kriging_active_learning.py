@@ -219,7 +219,8 @@ def plotMyBasicKriging(
 
 
 # %%
-# We start by creating the initial Kriging surrogate model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments. We estimate the probability on this surrogate model and compare with the reference probability computed on the real limit state function.
+# We start by creating the initial Kriging surrogate model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments. 
+# We estimate the probability on this surrogate model and compare with the reference probability computed on the real limit state function.
 
 # %%
 gprResult = createMyBasicKriging(X, Y)
@@ -232,7 +233,7 @@ view = viewer.View(graph)
 # ------------------------------------------------------
 
 # %%
-# To sequentially add the new points, the "U criterion" is used. 
+# To sequentially add the new points, the "U criterion" is used.
 # It consists in finding the new point as the sample :math:`\mathbf{x}` in the Monte-Carlo experiment that minimizes  the following expression:
 # :math:`\frac{ \left| T - \hat{\mathcal{M}} ( \mathbf{x}) \right|}{\hat{\sigma}(\mathbf{x})}`
 # with :math:`\hat{\sigma}(\mathbf{x})` the square root of the marginal covariance of the Gaussian Process evaluated on :math:`\mathbf{x}`, and :math:`T` the event threshold (here 1.5)
@@ -296,7 +297,8 @@ for krigingStep in range(10):
 
 # %%
 # We can see that the metamodel only needs to be accurate near the event threshold to retrieve a precise estimation probability of failure.
-# With only 10 points evaluated on the real limit state function, the metamodel accuracy is sufficient to retrieve the same probability as the original algorithm that needs a few thousands of evaluations on the limit state function.
+# With only 10 points evaluated on the real limit state function, the metamodel accuracy is sufficient to estimate the failure probability.
+# Indeed, the estimated probability is very close to the reference probability.
 # This kind of active leraning strategies allows to save a large number of simulations.
 
 # %%
