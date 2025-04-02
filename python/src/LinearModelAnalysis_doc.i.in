@@ -39,7 +39,7 @@ of a satisfactory regression model.
   The normality assumption can be accepted (or, more precisely, cannot be
   rejected) if the p-value is larger than a threshold (e.g. 0.05).
 
-The essentials of regression theory are presented in :ref:`regression_analysis`.
+The basics on regression theory are presented in :ref:`regression_analysis`.
 The goodness of fit tests for normality are presented in :ref:`graphical_fitting_test`, 
 :ref:`chi2_fitting_test`, :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`  and
 :ref:`anderson_darling_test`.
@@ -65,7 +65,7 @@ Examples
 Returns
 -------
 linearModelResult : :class:`~openturns.LinearModelResult`
-    The  linear model result which had been passed to the constructor."
+    The  linear model result which has been passed to the constructor."
 
 // ---------------------------------------------------------------------
 
@@ -75,6 +75,19 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 Returns
 -------
 tScores : :class:`~openturns.Point`
+   The Student score of each coefficient estimate :math:`\hat{\vect{a}}`.
+
+Notes
+-----
+For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`T_k` is computed as: 
+
+.. math::
+   :label: tScores
+
+   T_k = \dfrac{\hat{a}_k}{\sigma(a_k)}
+
+where :math:`\sigma(a_k)` is the standard deviation of the distribution of the estimator :math:`\hat{a}_k`
+defined in :eq:`std_dev_estim`.
 "
 
 // ---------------------------------------------------------------------
@@ -85,16 +98,47 @@ tScores : :class:`~openturns.Point`
 Returns
 -------
 pValues : :class:`~openturns.Point`
+    Student P-values of the coefficient estimates.
+
+Notes
+-----
+The p-values of each coefficient estimate is computed from the t-scores defined in :eq:`tScores` with
+respect to the :class:`~openturns.Student` distribution
+with :math:`dof` degrees of freedom defined in :eq:`dofWithBase` or :eq:`dofNoBase`.
+
+These p-values are used under the Gaussian assumption of the error :math:`\varepsilon`. They test
+if each coefficient is significantly different from zero. If the residuals are not Gaussian, this test is not appropriate and should not be used.
 "
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getCoefficientsConfidenceInterval
 "Accessor to the confidence interval of level :math:`\alpha` for the coefficients
-of the linear expansion
+of the linear expansion.
+
+Parameters
+----------
+alpĥa : float, :math:`0 \leq \alpha \leq 1`
+    The confidence level :math:`\alpha`.
 
 Returns
 -------
 confidenceInterval : :class:`~openturns.Interval`
+    The confidence interval.
+
+Notes
+-----
+The confidence interval of the coefficient :math:`a_k` of level :math:`\alpha` is defined by:
+
+.. math::
+   \left[\hat{a}_k \pm \sqrt{\left((\mat{\Psi}^t\mat{\Psi})^{-1} \right)_{k+1, k+1}}\hat{\sigma} t_{(1+\alpha)/2}\right]
+
+where:
+
+- :math:`t_{(1+\alpha)/2}` is the quantile of order :math:`(1+\alpha)/2` of the Student(:math:`dof`) distribution,
+- with :math:`dof` the degrees of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`,
+- :math:`\mat{\Psi}` the design matrix defined in :eq:`designMatDef` or :eq:`designMatDef2`.
+
+The interval returned is multivariate and contains the intervals of all the coefficients.
 "
 
 // ---------------------------------------------------------------------
@@ -105,6 +149,43 @@ confidenceInterval : :class:`~openturns.Interval`
 Returns
 -------
 fisherScore : float
+    The Fisher score of the model.
+
+Notes
+-----
+The Fisher score is computed as follows.
+
+Let be :math:`dofM` the degrees of freedom of the model, equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we substract 1 from :math:`dofM`.
+
+Let :math:`dof` be the degrees of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
+
+Let *SSR* be the Sum of Squared Residuals (sometimes called *SSE* as Sum of Squared Errors) defined by: 
+
+.. math::
+   SSR = \sum_{i=1}^\sampleSize \varepsilon_i^2
+
+Let *SST* be the Sum of Squared Total defined by: 
+
+.. math::
+   SST = \left| \begin{array}{ll}
+       \sum_{i=1}^\sampleSize (Y_i - \bar{Y}_i)^2 & \mbox{if the basis contains an intercept} \\ 
+       \sum_{i=1}^\sampleSize Y_i^2               & \mbox{if not.}
+                \end{array}
+         \right.
+
+where :math:`\bar{Y}_i = \dfrac{1}{\sampleSize} Y_i`.
+
+We denote by *SSM* the Sum of Squared Model defined by:
+
+.. math::
+   SSM = SST - SSR
+
+Then, the Fisher score :math:`F` is defined by:
+
+.. math::
+   :label: FisherScore
+
+   F = \dfrac{SSM/dofM}{SSE/dof}
 "
 
 // ---------------------------------------------------------------------
@@ -115,7 +196,18 @@ fisherScore : float
 Returns
 -------
 fisherPValue : float
-"
+    Fisher P-value of the model estimate.
+
+Notes
+-----
+The Fisher p-value is computed from the Fisher score defined in :eq:`FisherScore` with
+respect to the :class:`~openturns.FisherSnedecor` distribution parameterized by :math:`(dofM, dof)` where:
+
+- :math:`dofM` is the degrees of freedom of the model (equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we substract 1 from :math:`dofM`.
+- :math:`dof` is the degrees of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
+
+This p-value is used under the Gaussian assumption of the error :math:`\varepsilon`. It tests
+if all the coefficients are statistically usefull to the model. If the residuals are not Gaussian, this test is not appropriate and should not be used."
 
 // ---------------------------------------------------------------------
 
@@ -125,25 +217,13 @@ fisherPValue : float
 Returns
 -------
 stdError : float
-    This is the unbiased estimator :math:`\hat{\sigma}` of the standard deviation
-    of the Gaussian observation error of the observed output.
+    The residuals standard deviation estimate.
 
 Notes
 -----
-The standard error of the residuals is the *root mean squared error* (also
-called *standard error of regression*), estimated as:
-
-.. math::
-    \widehat{\sigma} = \sqrt{\frac{1}{\operatorname{dof}} SSE}
-
-where :math:`\operatorname{dof}` is the number of degrees of freedom
-and :math:`SSE` is the sum of squared errors:
-
-.. math::
-    SSE = \sum_{i = 1}^n (y_i - \widehat{y}_i)^2
-
-where :math:`\{y_i\}_{i = 1, ..., n}` are the observations and
-:math:`\{\widehat{y}_i\}_{i = 1, ..., n}` are the predictions from the linear model.
+The standard error is also called the *root mean squared error* or the *standard error of regression*. It is
+the residual standard deviation :math:`\hat{\sigma}` defined in :eq:`estimSigma2Noise` which is the unbiaised
+residuals variance.
 "
 
 // ---------------------------------------------------------------------
@@ -177,7 +257,6 @@ Returns
 -------
 testResult : :class:`~openturns.TestResult`
     Test result class.
-
 
 Notes
 -----
@@ -224,6 +303,11 @@ We check that the residual is Gaussian thanks to :meth:`~openturns.NormalityTest
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+The graph plots the sample :math:`(Y_i, \hat{Y}_i)` where :math:`Y_i` is the real value of experience :math:`i`
+and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
 "
 
 // ---------------------------------------------------------------------
@@ -233,16 +317,26 @@ graph : :class:`~openturns.Graph`
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+The graph plots the sample :math:`(\varepsilon_i, \hat{Y}_i)` where :math:`\varepsilon_i` is the residual of experience :math:`i` defined in :eq:`residualDef`
+and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::drawScaleLocation
-"Accessor to a Scale-Location plot of sqrt(abs(residuals)) versus fitted values.
+"Accessor to a Scale-Location plot of sqrt(abs(stand residuals)) versus fitted values.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+The graph plots the sample :math:`(\hat{Y}_i, \sqrt{|\varepsilon_i^{st}|})` where :math:`\varepsilon_i^{st}` is the standardized residual of experience :math:`i` defined in :eq:`stdRes`
+and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
 "
 
 // ---------------------------------------------------------------------
@@ -253,6 +347,11 @@ graph : :class:`~openturns.Graph`
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+The graph plots the empirical quantiles of the standardized residuals defined in :eq:`stdRes` versus
+the quantiles of the Normal distribution with zero mean and unit variance.
 "
 
 // ---------------------------------------------------------------------
@@ -263,6 +362,11 @@ graph : :class:`~openturns.Graph`
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+The graph plots the Cook distance of each experience :math:`i` is defined in :eq:`cookDef`.
+The Cook's distance measures the impact of every individual data point on the linear regression.
 "
 
 // ---------------------------------------------------------------------
@@ -273,6 +377,13 @@ graph : :class:`~openturns.Graph`
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef` and the leverage :math:`\ell_i`  of experience :math:`i`, 
+defined as the distance between the point :math:`(\vect{X}^i, Y_i)`
+or :math:`(\vect{\phi}(\vect{X}^i), Y_i)` to the linear
+regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots,  \phi_{p'}(\vect{X}^i))}`.
 "
 
 // ---------------------------------------------------------------------
@@ -283,5 +394,12 @@ graph : :class:`~openturns.Graph`
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
+Notes
+-----
+This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :math:`\ell_i/(1-\ell_i)` where :math:`\ell_i` is the leverage of experience :math:`i`, 
+defined as the distance between the point :math:`(\vect{X}^i, Y_i)`
+or :math:`(\vect{\phi}(\vect{X}^i), Y_i)` to the linear
+regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots,  \phi_{p'}(\vect{X}^i))}`.
 "
 

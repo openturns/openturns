@@ -8,29 +8,29 @@ inputSample : 2-d sequence of float
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
 design : :class:`~openturns.Matrix`
-    The design matrix :math:`X`.
+    The design matrix :math:`\mat{\Psi}`.
 outputSample : 2-d sequence of float
-   The output sample of a model.
+   The output sample :math:`(Y_i)_{1 \leq i \leq \sampleSize}`.
 metaModel : :class:`~openturns.Function`
     The meta model.
 coefficients : sequence of float
-    The trend coefficients associated to the linear model. 
+    The estimated coefficients :math:`\vect{\hat{a}}`. 
 formula : str
      The formula description. 
 coefficientsNames : sequence of str
      The coefficients names of the basis.  
 sampleResiduals : 2-d sequence of float
-    The residual errors.
+    The residual errors  :math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}`.
 standardizedSampleResiduals : 2-d sequence of float
-    The normalized residual errors.
+    The standardized residuals defined in :eq:`stdRes`.
 diagonalGramInverse : sequence of float
     The diagonal of the Gram inverse matrix.
 leverages : sequence of float
-    The leverage score. 
+    The leverages :math:`(\ell)_{1 \leq i \leq \sampleSize}`.
 cookDistances : sequence of float
-    Cook's distances.
+    Cook's distances defined in :eq:`cookDef`.
 residualsVariance : float
-    The unbiased variance estimator of the output observation error.
+    The unbiased variance estimator of the residuals defined in :eq:`estimSigma2Noise`.
 
 See Also
 --------
@@ -45,7 +45,16 @@ LinearModelAlgorithm
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    The basis."
+    The basis of the regression model.
+
+Notes
+-----
+If a functional basis has been provided in the constructor, then we get it back:
+:math:`(\psi_j)_{1 \leq j \leq p'}`. Its size is :math:`p'`.
+
+Otherwise, the functional basis is composed of the projections :math:`\psi_k : \Rset^p \rightarrow \Rset`
+such that :math:`\psi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
+:math:`\psi_0 : \vect{x} \rightarrow 1`. Its size is :math:`p+1`."
 
 // ---------------------------------------------------------------------
 
@@ -55,7 +64,29 @@ basis : :class:`~openturns.Basis`
 Returns
 -------
 design: :class:`~openturns.Matrix`
-    The design matrix."
+    The design matrix :math:`\mat{\Psi}`.
+
+Notes
+-----
+If the linear model is defined by :eq:`modelNoBase`, the design matrix is:
+
+.. math::
+   :label: designMatDef
+
+   \mat{\Psi} = (\vect{1}, \vect{X}_1, \dots, \vect{X}_{p})
+
+where :math:`\vect{1} = \Tr{(1, \dots, 1)}` and :math:`\vect{X}_k = \Tr{(X_k^1, \dots, X_k^\sampleSize)}`
+is the values of the regressor :math:`k` in the :math:`\sampleSize` experiences. Thus, :math:`\mat{\Psi}` has :math:`\sampleSize` rows and  :math:`p+1` columns.
+
+If the linear model is defined by :eq:`modelWithBase`, the design matrix is:
+
+.. math::
+   :label: designMatDef2
+
+   \mat{\Psi} = (\vect{\phi}_1, \dots, \vect{\phi}_{p'})
+
+where :math:`\vect{\phi_j} = \Tr{(\phi_j(\vect{X}^1), \dots, \phi_j(\vect{X}^\sampleSize))}`
+is the values of the function :math:`\phi_j` at the :math:`\sampleSize` experiences. Thus, :math:`\mat{\Psi}` has :math:`\sampleSize` rows and  :math:`p'` columns."
 
 // ---------------------------------------------------------------------
 
@@ -65,17 +96,21 @@ design: :class:`~openturns.Matrix`
 Returns
 -------
 outputSample : :class:`~openturns.Sample`
-"
+
+Notes
+-----
+The fitted sample is :math:`(\hat{Y}_1, \dots, \hat{Y}_\sampleSize)` where
+:math:`\hat{Y}_i` is defined in :eq:`fittedValue` or :eq:`fittedValue2`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelResult::getCoefficients
-"Accessor to the coefficients of the linear model of the trend.
+"Accessor to the coefficients of the linear model.
 
 Returns
 -------
 coefficients : :class:`~openturns.Point`
-"
+    The estimated of the coefficients :math:`\hat{\vect{a}}`."
 
 // ---------------------------------------------------------------------
 
@@ -85,7 +120,21 @@ coefficients : :class:`~openturns.Point`
 Returns
 -------
 standardErrors : :class:`~openturns.Point`
-"
+
+Notes
+-----
+The standard deviation :math:`\sigma(a_k)` of the estimator :math:`\hat{a}_k` is defined by:
+
+.. math::
+    :label: std_dev_estim
+
+    \sigma(a_k)^2 = \sigma^2 \left(\Tr{\mat{\Psi}}\mat{\Psi}\right)^{-1}_{k+1, k+1}
+
+where:
+
+- the variance :math:`\sigma^2` of the residual :math:`\varepsilon` is approximated by
+  its unbiaised estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`,
+- the matrix :math:`\mat{\Psi}` is the design matrix defined in :eq:`designMatDef` or :eq:`designMatDef2`."
 
 // ---------------------------------------------------------------------
 
@@ -95,7 +144,10 @@ standardErrors : :class:`~openturns.Point`
 Returns
 -------
 condensedFormula : str
-"
+
+Notes
+-----
+This formula gives access to the linear model."
 
 // ---------------------------------------------------------------------
 
@@ -105,7 +157,10 @@ condensedFormula : str
 Returns
 -------
 coefficientsNames : :class:`~openturns.Description`
-"
+
+Notes
+-----
+The name of the coefficient :math:`a_k` is the name of the regressor :math:`X_k`."
 
 // ---------------------------------------------------------------------
 
@@ -115,7 +170,11 @@ coefficientsNames : :class:`~openturns.Description`
 Returns
 -------
 sampleResiduals : :class:`~openturns.Sample`
-"
+    The sample of the residuals.
+
+Notes
+-----
+The residuals sample is :math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}` defined in :eq:`residualDef`."
 
 // ---------------------------------------------------------------------
 
@@ -124,20 +183,48 @@ sampleResiduals : :class:`~openturns.Sample`
 
 Returns
 -------
-dof : int
-    Sample size minus basis size, a null value is allowed.
+dof : int, :math:`\geq 1`
+    Number of degrees of freedom.
+
+Notes
+-----
+If the linear model is defined by :eq:`modelNoBase`, the degrees of freedom :math:`dof` is:
+
+.. math::
+    :label: dofNoBase
+
+    dof = \sampleSize - (p + 1)
+
+where :math:`p` is the number of regressors.
+
+Otherwise, the linear model is defined by :eq:`modelWithBase` and its :math:`dof` is:
+
+.. math::
+    :label: dofWithBase
+
+    dof = \sampleSize - p'
+
+where :math:`p'` is the number of functions in the provided basis.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelResult::getNoiseDistribution
-"Accessor to the noise distribution, ie the underlying distribution of the residual.
+"Accessor to the normal distribution of the residuals.
 
 Returns
 -------
-noiseDistribution : :class:`~openturns.Distribution`
-    Not defined when degrees of freedom is null.
-"
+noiseDistribution : :class:`~openturns.Normal`
+    The normal distribution estimated from the residuals.
+
+Notes
+-----
+The noise distribution is assumed to be Gaussian. The normal distribution has zero mean and
+its variance is estimated from the residuals sample
+:math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}`
+using the unbiaised estimator defined in :eq:`estimSigma2Noise`.
+
+If the residuals are not Gaussian, this distribution is not appropriate and should not be used."
 
 // ---------------------------------------------------------------------
 
@@ -147,7 +234,22 @@ noiseDistribution : :class:`~openturns.Distribution`
 Returns
 -------
 standardizedResiduals : :class:`~openturns.Sample`
-"
+    The standarduzed residuals :math:`(\varepsilon_i^{st})_{1 \leq i  \leq \sampleSize}`.
+
+Notes
+-----
+The standardized residuals are defined by:
+
+.. math::
+    :label: stdRes
+
+    \varepsilon_i^{st} = \dfrac{\varepsilon_i}{\sqrt{\hat{\sigma}^2(1 - \ell_i)}}
+
+where :math:`\hat{\sigma}^2` is the unbiaised residuals variance defined in
+:eq:`estimSigma2Noise` and :math:`\ell_i` is the leverage of experience :math:`i`,
+defined as the distance between the point :math:`(\vect{X}^i, Y_i)`
+or :math:`(\vect{\phi}(\vect{X}^i), Y_i)` to the linear
+regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots,  \phi_{p'}(\vect{X}^i))}`."
 
 // ---------------------------------------------------------------------
 
@@ -157,7 +259,14 @@ standardizedResiduals : :class:`~openturns.Sample`
 Returns
 -------
 leverages : :class:`~openturns.Point`
-"
+    The leverage of all the experiences :math:`(\ell_i)_{1 \leq i  \leq \sampleSize}`.
+
+Notes
+-----
+The leverage :math:`\ell_i`  of experience :math:`i` is
+defined as the distance between the point :math:`(\vect{X}^i, Y_i)`
+or :math:`(\vect{\phi}(\vect{X}^i), Y_i)` to the linear
+regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots,  \phi_{p'}(\vect{X}^i))}`."
 
 // ---------------------------------------------------------------------
 
@@ -167,7 +276,12 @@ leverages : :class:`~openturns.Point`
 Returns
 -------
 diagonalGramInverse : :class:`~openturns.Point`
-"
+    The diagonal of the Gram matrix.
+
+Notes
+-----
+The Gram matrix is :math:`\Tr{\mat{\Psi}}\mat{\Psi}` where :math:`\mat{\Psi}`
+is the design matrix defined in :eq:`designMatDef` or :eq:`designMatDef2`."
 
 // ---------------------------------------------------------------------
 
@@ -177,7 +291,22 @@ diagonalGramInverse : :class:`~openturns.Point`
 Returns
 -------
 cookDistances : :class:`~openturns.Point`
-"
+    The Cook's distance of each experience :math:`(CookD_i)_{1 \leq i  \leq \sampleSize}`.
+
+Notes
+-----
+The Cook distance of experience :math:`i` is defined by:
+
+.. math::
+    :label: cookDef
+
+    CookD_i = \left(\dfrac{1}{\sampleSize-dof}\right) \left( \dfrac{\ell_i}{1 - \ell_i} \right)
+    (\varepsilon_i^{st})^2
+
+where :math:`\varepsilon_i^{st}` is the standardized residual defined in :eq:`stdRes` and :math:`dof` is the 
+degress of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
+
+The Cook's distance measures the impact of every experience on the linear regression."
 
 // ---------------------------------------------------------------------
 
@@ -187,7 +316,25 @@ cookDistances : :class:`~openturns.Point`
 Returns
 -------
 rSquared : float
-"
+   The indicator :math:`R^2`.
+
+Notes
+-----
+The :math:`R^2` value quantifies the quality of the linear approximation.
+
+If the model is defined by :eq:`modelWithBase` such that the basis does not contain any intercept (constant function), then :math:`R^2` is defined by:
+
+.. math::
+   R^2 = 1- \dfrac{\sum_{i=1}^\sampleSize \varepsilon_i^2}{\sum_{i=1}^\sampleSize Y_i^2}
+
+where the :math:`\varepsilon_i` are the residuals defined in :eq:`residualDef` and :math:`Y_i` the output sample values.
+
+Otherwise, when the model is defined by :eq:`modelNoBase` or by :eq:`modelWithBase` with an intercept, :math:`R^2` is defined by:
+
+.. math::
+   R^2 = 1- \dfrac{\sum_{i=1}^\sampleSize \varepsilon_i^2}{\sum_{i=1}^\sampleSize (Y_i-\bar{Y})^2}
+
+where :math:`\bar{Y} = \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize Y_i`."
 
 // ---------------------------------------------------------------------
 
@@ -197,8 +344,28 @@ rSquared : float
 Returns
 -------
 adjustedRSquared : float
-    Not defined when degrees of freedom is null.
-"
+   The :math:`R_{ad}^2` indicator.
+    
+
+Notes
+-----
+The :math:`R_{ad}^2` value quantifies the quality of the linear approximation.
+
+If the model is defined by :eq:`modelWithBase` such that the basis does not contain any intercept (constant function), then :math:`R_{ad}^2` is defined by:
+
+.. math::
+   R_{ad}^2 = 1 - \left(\dfrac{\sampleSize}{dof}\right)(1 - R^2)
+
+where :math:`dof` is the degrees of freedom of the model defined in :eq:`dofWithBase`.
+
+Otherwise, when the model is defined by :eq:`modelNoBase` or by :eq:`modelWithBase` with an intercept, :math:`R_{ad}^2` is defined by:
+
+.. math::
+   R_{ad}^2 = 1 - \left(\dfrac{(\sampleSize - 1)}{dof}\right)(1 - R^2)
+
+where :math:`dof` is defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
+
+If the degree of freedom :math:`dof` is null, :math:`R_{ad}^2` is not defined."
 
 // ---------------------------------------------------------------------
 
@@ -208,6 +375,14 @@ adjustedRSquared : float
 Returns
 -------
 intercept : Bool
+   Tells if the model has a constant regressor.
+
+Notes
+-----
+The *intercept* is True when: 
+
+- the model is defined in :eq:`modelNoBase`,
+- the model is defined in :eq:`modelWithBase` such that the basis contains a constant function.
 "
 
 // ---------------------------------------------------------------------
@@ -218,7 +393,19 @@ intercept : Bool
 Returns
 -------
 residualsVariance : float
-"
+    The residuals variance estimator.
+
+Notes
+-----
+The residual variance estimator is
+the unbiaised empirical variance of the residuals:
+
+.. math::
+   :label: estimSigma2Noise
+   
+   \hat{\sigma}^2 = \dfrac{1}{dof} \sum_{i=1}^\sampleSize  \varepsilon_i^2
+
+where math:`dof` is the degrees of freedom of the model defined in :eq:`dofNoBase` or :eq:`dofWithBase`."
 
 // ---------------------------------------------------------------------
 
@@ -228,7 +415,11 @@ residualsVariance : float
 Returns
 -------
 leastSquaresMethod: :class:`~openturns.LeastSquaresMethod`
-    The least squares method."
+    The least squares method.
+
+Notes
+-----
+The least squares method used to estimate the coefficients is precised in the :class:`~openturns.ResourceMap` class, entry *LinearModelAlgorithm-DecompositionMethod*."
 
 // ---------------------------------------------------------------------
 
