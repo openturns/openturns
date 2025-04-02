@@ -83,8 +83,7 @@ estimate the failure probability, that is if:
 
 where :math:`\vect{x}^*` is the design point, :math:`s` is the threshold and :math:`\epsilon_t`
 is the absolute tolerance.
-Default value is specified in the `nearestPointAlgorithm` attribute. 
-
+The initial points are directly defined in the Physical Space through the used :class:`~openturns.OptimizationAlgorithm`.
 
 See also
 --------

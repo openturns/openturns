@@ -76,8 +76,8 @@ public:
   Point getStartingPoint() const override;
 
   /** Starting points accessor */
-  void setStartingSample(const Sample & startingSample);
-  Sample getStartingSample() const;
+  void setStartingSample(const Sample & startingSample) override;
+  Sample getStartingSample() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

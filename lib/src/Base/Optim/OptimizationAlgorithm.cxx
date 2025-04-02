@@ -78,6 +78,18 @@ void OptimizationAlgorithm::setStartingPoint(const Point & startingPoint)
   getImplementation()->setStartingPoint(startingPoint);
 }
 
+/* Starting sample accessor */
+Sample OptimizationAlgorithm::getStartingSample() const
+{
+  return getImplementation()->getStartingSample();
+}
+
+void OptimizationAlgorithm::setStartingSample(const Sample & startingSample)
+{
+  copyOnWrite();
+  getImplementation()->setStartingSample(startingSample);
+}
+
 /* Problem accessor */
 OptimizationProblem OptimizationAlgorithm::getProblem() const
 {
