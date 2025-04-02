@@ -10,6 +10,12 @@ add_subdirectory (Uncertainty)
 
 set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
+# Avoids propagating BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS to other boost-based code
+if (Boost_FOUND)
+  set_source_files_properties (Base/Func/SpecFunc/BetaFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+  set_source_files_properties (Uncertainty/Distribution/StudentFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # Exclude Ceres sources from unity build (templates take much memory)
 if (Ceres_FOUND)
   set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
