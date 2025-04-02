@@ -1362,6 +1362,26 @@ String DrawableImplementation::getEdgeColor() const
   throw NotDefinedException(HERE) << "Error: no edge color in " << getClassName();
 }
 
+/* Accessor for alpha */
+Scalar DrawableImplementation::getAlpha() const
+{
+  const Indices alphaColor(ConvertToRGBA(ConvertFromName(getColor())));
+  const UnsignedInteger alphaInteger = alphaColor[3];
+  const Scalar alpha = alphaInteger / 256.0;
+  return alpha;
+}
+
+void DrawableImplementation::setAlpha(const Scalar & alpha)
+{
+  if(!((alpha >= 0.0) & (alpha <= 1.0))) throw InvalidArgumentException(HERE) << "Given alpha = " << alpha << " but should belong to [0,1].";
+  const Indices colorIndices(ConvertToRGB(ConvertFromName(getColor())));
+  const UnsignedInteger red = colorIndices[0];
+  const UnsignedInteger green = colorIndices[1];
+  const UnsignedInteger blue = colorIndices[2];
+  const UnsignedInteger alphaInteger = alpha * 256;
+  setColor(ConvertFromRGBA(red, green, blue, alphaInteger), isColorExplicitlySet());
+}
+
 /* Accessor for explicit color validation flag*/
 Bool DrawableImplementation::isColorExplicitlySet() const
 {

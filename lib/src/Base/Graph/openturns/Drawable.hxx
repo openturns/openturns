@@ -82,6 +82,8 @@ public:
   String getColorCode() const;
   void setColor(const String & color);
   String getEdgeColor() const;
+  Scalar getAlpha() const;
+  void setAlpha(const Scalar & alpha);
 
   /** Accessor for pattern */
   String getPattern() const;
