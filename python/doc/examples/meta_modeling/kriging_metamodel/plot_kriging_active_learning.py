@@ -219,7 +219,7 @@ def plotMyBasicKriging(
 
 
 # %%
-# We start by creating the initial Kriging surrogate model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments. 
+# We start by creating the initial Kriging surrogate model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments.
 # We estimate the probability on this surrogate model and compare with the reference probability computed on the real limit state function.
 
 # %%
@@ -306,6 +306,7 @@ for krigingStep in range(10):
 # ----------
 #
 # The current example presents the naive implementation on the creation of a sequential design of experiments (active learning) based on kriging for failure probability estimation.
+# See `Modules <https://github.com/openturns/openturns/wiki/Modules>`_ for module `ot-ak` that implements active learning algorithms for reliability.
 # More practical algorithms are presented in the following references.
 #
 # * Echard, B., Gayton, N., & Lemaire, M. (2011). AK-MCS: an active learning reliability method combining Kriging and Monte Carlo simulation. Structural Safety, 33(2), 145-154.
