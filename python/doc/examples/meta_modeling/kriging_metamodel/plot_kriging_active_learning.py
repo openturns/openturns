@@ -45,7 +45,7 @@ X = ot.LHSExperiment(X_distr, DoESize, False, False).generate()
 Y = g(X)
 
 # %%
-# We plot the limit state function, the initial Design of Experiments and the failure threshold.
+# We plot the limit state function, the initial design of experiments and the failure threshold.
 thresholdFunction = ot.Curve([xMin, xMax], [threshold] * 2)
 thresholdFunction.setLineStyle("dashed")
 thresholdFunction.setColor("red")
@@ -72,11 +72,10 @@ view = viewer.View(graph)
 
 
 # %%
-# Define the event and reliability algorithm
-# ------------------------------------------
-
+# Define the reliability analysis
+# -------------------------------
 # %%
-# Define the event and estimate the reference failure probability with Monte-Carlo algorithm.
+# We define the event and estimate the reference failure probability with Monte-Carlo algorithm.
 
 # %%
 vect = ot.RandomVector(distribution)
@@ -277,7 +276,7 @@ Y.add(yNew)
 # We now plot the updated Kriging.
 
 # %%
-# sphinx_gallery_thumbnail_number = 3
+# sphinx_gallery_thumbnail_number = 13
 gprResult = createMyBasicKriging(X, Y)
 graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
 view = viewer.View(graph)
