@@ -29,20 +29,21 @@ DoESize = 4
 # Define the function.
 
 # %%
-g = ot.SymbolicFunction(["x"], ["0.5*x^2 + sin(5*x) "])
+g = ot.SymbolicFunction(["x"], ["0.5*x^2 + sin(5*x)"])
+threshold = 1.25
 
 # %%
 # Create the design of experiments.
 
 # %%
-xMin = -2.
-xMax = 2.
+xMin = -2.0
+xMax = 2.0
 X_distr = ot.Uniform(xMin, xMax)
-X = ot.LHSExperiment(X_distr, sampleSize, False, False).generate()
+X = ot.LHSExperiment(X_distr, DoESize, False, False).generate()
 Y = g(X)
 
 # %%
-thresholdFunction = ot.Curve([xMin, xMax], [event.getThreshold()]*2 )
+thresholdFunction = ot.Curve([xMin, xMax], [threshold] * 2)
 thresholdFunction.setLineStyle("dashed")
 thresholdFunction.setColor("red")
 thresholdFunction.setLineWidth(2)
@@ -54,7 +55,7 @@ data.setPointStyle("circle")
 data.setLegend("Design of Experiments")
 
 graphFunction = g.draw(xMin, xMax)
-graphFunction.setColors(['magenta'])
+graphFunction.setColors(["magenta"])
 graphFunction.setLegends(["Limit state function"])
 
 graph = ot.Graph()
@@ -80,7 +81,7 @@ distribution = ot.Normal(0, 0.4)
 vect = ot.RandomVector(distribution)
 g = ot.MemoizeFunction(g)
 G = ot.CompositeRandomVector(g, vect)
-event = ot.ThresholdEvent(G, ot.Greater(), 1.25)
+event = ot.ThresholdEvent(G, ot.Greater(), threshold)
 
 experiment = ot.MonteCarloExperiment()
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
@@ -132,7 +133,9 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 
 
 # %%
-def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, refProbability, level=0.95):
+def plotMyBasicKriging(
+    gprResult, xMin, xMax, X, Y, event, sampleX, refProbability, level=0.95
+):
     """
     Given a kriging result, plot the data, the kriging metamodel
     and a confidence interval.
@@ -148,10 +151,16 @@ def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, refProbabili
     yKrig = meta(xGrid)
     # Compute the conditional covariance
 
-    if event.getOperator().compare(1,2):
-        proba = np.sum(np.array(gprResult.getMetaModel()(sampleX))<event.getThreshold())/sampleX.getSize()
-    else: 
-        proba = np.sum(np.array(gprResult.getMetaModel()(sampleX))>event.getThreshold())/sampleX.getSize()
+    if event.getOperator().compare(1, 2):
+        proba = (
+            np.sum(np.array(gprResult.getMetaModel()(sampleX)) < event.getThreshold())
+            / sampleX.getSize()
+        )
+    else:
+        proba = (
+            np.sum(np.array(gprResult.getMetaModel()(sampleX)) > event.getThreshold())
+            / sampleX.getSize()
+        )
 
     gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
     epsilon = ot.Sample(nbpoints, [1.0e-8])
@@ -182,12 +191,12 @@ def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, refProbabili
     graphFonction.setLineWidth(2)
     graphFonction.setLegend("Function")
 
-    thresholdFunction = ot.Curve([xMin, xMax], [event.getThreshold()]*2 )
+    thresholdFunction = ot.Curve([xMin, xMax], [event.getThreshold()] * 2)
     thresholdFunction.setLineStyle("dashed")
     thresholdFunction.setColor("red")
     thresholdFunction.setLineWidth(2)
     thresholdFunction.setLegend("Threshold")
-    
+
     # Draw the X and Y observed
     cloudDOE = ot.Cloud(X, Y)
     cloudDOE.setPointStyle("circle")
@@ -204,7 +213,9 @@ def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, refProbabili
     graph.setLegendPosition("lower right")
     graph.setAxes(True)
     graph.setGrid(True)
-    graph.setTitle("Estimated proba = %f, Reference proba =  %f" % (proba, refProbability))
+    graph.setTitle(
+        "Estimated proba = %f, Reference proba =  %f" % (proba, refProbability)
+    )
     graph.setXTitle("X")
     graph.setYTitle("Y")
     return graph
@@ -238,8 +249,10 @@ def getNewPoint(X, gprResult, threshold):
     response = gprResult.getMetaModel()(X)
     conditionalVariance = gpcc.getConditionalMarginalVariance(X)
 
-    criterion = np.abs(ot.Sample([ot.Point([event.getThreshold()])] * X.getSize()) - response) / np.sqrt(conditionalVariance+1e-12)
-    
+    criterion = np.abs(
+        ot.Sample([ot.Point([event.getThreshold()])] * X.getSize()) - response
+    ) / np.sqrt(conditionalVariance + 1e-12)
+
     iMaxU = int(np.argmin(criterion))
     xNew = X[iMaxU]
     return xNew
@@ -284,7 +297,7 @@ for krigingStep in range(10):
     View(graph)
 
 # %%
-# We can see that the metamodel only needs to be accurate near the event threshold to retrieve a precise estimation probability of failure. 
+# We can see that the metamodel only needs to be accurate near the event threshold to retrieve a precise estimation probability of failure.
 # With only 10 points the metamodel accuracy is sufficient to retrieve the same probability as the original algorithm that needs a few thousands of evaluations.
 # This kind of active leraning strategies allows to save a large number of simulations.
 
@@ -297,6 +310,6 @@ for krigingStep in range(10):
 #
 # * Echard, B., Gayton, N., & Lemaire, M. (2011). AK-MCS: an active learning reliability method combining Kriging and Monte Carlo simulation. Structural Safety, 33(2), 145-154.
 # * Echard, B. (2012). Assessment by kriging of the reliability of structures subjected to fatigue stress, Université Blaise Pascal, PhD thesis
-# 
+#
 
 View.ShowAll()
