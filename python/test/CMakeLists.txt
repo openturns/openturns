@@ -651,7 +651,10 @@ if (Ceres_FOUND OR CMinpack_FOUND)
   ot_pyinstallcheck_test (GaussianNonLinearCalibration_std)
   ot_pyinstallcheck_test (GaussianNonLinearCalibration_noobs)
 endif ()
-
+ot_pyinstallcheck_test (Calibration_console IGNOREOUT)
+if (NOT PROJECT_BINARY_DIR STREQUAL PROJECT_SOURCE_DIR)
+  execute_process (COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/t_Calibration_console.csv ${CMAKE_CURRENT_BINARY_DIR})
+endif ()
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)
