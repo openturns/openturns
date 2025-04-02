@@ -15,12 +15,12 @@ OT_TemperatureProfile_doc
 
 Parameters
 ----------
-i : int,
+i : int
     The index at which the temperature is computed.
 
 Returns
 -------
-temperature:  float,
+temperature:  float
     The temperature :math:`T(i)`."
 %enddef
 %feature("docstring") OT::TemperatureProfileImplementation::operator()
@@ -33,8 +33,8 @@ OT_TemperatureProfile_call_doc
 
 Returns
 -------
-iMax : int,
-    The maximum index value"
+iMax : int
+    The maximum index value."
 %enddef
 %feature("docstring") OT::TemperatureProfileImplementation::getIMax
 OT_TemperatureProfile_getIMax
@@ -47,7 +47,7 @@ OT_TemperatureProfile_getIMax
 Returns
 -------
 T0 : float
-    The temperature origin"
+    The temperature origin."
 %enddef
 %feature("docstring") OT::TemperatureProfileImplementation::getT0
 OT_TemperatureProfile_getT0

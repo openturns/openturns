@@ -3,11 +3,11 @@
 
 Parameters
 ----------
-T0 : float,
+T0 : float
     Initial temperature.
-c : float, optional, :math:`0 < c < 1`,
+c : float, optional, :math:`0 < c < 1`
     The geometric ratio.
-iMax : int, optional,
+iMax : int, optional
     Number of maximal iterations.
 
 Notes
@@ -37,12 +37,12 @@ OT_GeometricProfile_doc
 
 Parameters
 ----------
-i : int,
+i : int
     The index at which the temperature is computed.
 
 Returns
 -------
-temperature:  float,
+temperature :  float
     The temperature :math:`T(i)`.
 
 Examples

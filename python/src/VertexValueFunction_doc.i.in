@@ -123,7 +123,7 @@ function : :class:`~openturns.VertexValueFunction`
 Returns
 -------
 outputMesh : :class:`~openturns.Mesh`
-    The output mesh which is also to the input one: :math:`\cM_{N}`."
+    The output mesh which is also equal to the input one: :math:`\cM_{N}`."
 
 
 
