@@ -199,7 +199,7 @@ def plotMyBasicKriging(
     cloudDOE.setPointStyle("circle")
     cloudDOE.setColor("red")
     cloudDOE.setLegend("Data")
-    # Assemble the graphics
+    # Assemble the graph
 
     graph = ot.Graph()
     graph.add(boundsPoly)
