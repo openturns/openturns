@@ -42,7 +42,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Point & values)
-  : EvaluationImplementation()
+  : EvaluationImplementation(),
+    enableExtrapolation_(enableExtrapolation)
 {
   // Convert the values into a sample
   const UnsignedInteger size = values.getSize();
@@ -55,7 +56,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Sample & values)
-  : EvaluationImplementation()
+  : EvaluationImplementation(),
+    enableExtrapolation_(enableExtrapolation)
 {
   setLocationsAndValues(locations, values);
 }
@@ -136,11 +138,31 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
   if (values_.getSize() == 1) return values_[0];
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  if (x <= locations_[iLeft])
-    return values_[iLeft];
+    
+  if (x <= locations_[iLeft]) 
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iLeft];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the design of experiments=" << locations_[iLeft];
+    }
+  }
+  
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight])
-    return values_[iRight];
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iRight];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the design of experiments=" << values_[iRight];
+    }
+  }
   iLeft = FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar xLeft = locations_[iLeft];
@@ -166,16 +188,32 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = inSample(i, 0);
+
     if (x <= locations_[0])
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
-      continue;
+      if (enableExtrapolation_)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+        continue;
+      }
+      else
+      {
+        throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the design of experiments=" << locations_[0];
+      }
     }
+    
     UnsignedInteger iRight = maxIndex;
     if (x >= locations_[iRight])
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
-      continue;
+      if (enableExtrapolation_)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+        continue;
+      }
+      else
+      {
+        throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the design of experiments=" << locations_[iRight];
+      }
     }
     iLeft = FindSegmentIndex(locations_, x, iLeft, isRegular_);
 

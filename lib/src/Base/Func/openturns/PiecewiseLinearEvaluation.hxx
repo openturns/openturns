@@ -45,11 +45,13 @@ public:
 
   /** Parameter constructor */
   PiecewiseLinearEvaluation(const Point & locations,
-                            const Point & values);
+                            const Point & values,
+                            const Bool enableExtrapolation = ResourceMap::GetAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation"));
 
   /** Parameter constructor */
   PiecewiseLinearEvaluation(const Point & locations,
-                            const Sample & values);
+                            const Sample & values,
+                            const Bool enableExtrapolation = ResourceMap::GetAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation"));
 
   /** Virtual constructor */
   PiecewiseLinearEvaluation * clone() const override;
@@ -100,6 +102,9 @@ protected:
                                           const Bool isRegular);
 
 private:
+  /** Enable extrapolation */
+  Bool enableExtrapolation_;
+  
   // The locations
   Point locations_;
 

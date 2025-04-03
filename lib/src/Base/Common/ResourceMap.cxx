@@ -723,7 +723,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // PiecewiseLinearEvaluation parameters //
   addAsScalar("PiecewiseLinearEvaluation-EpsilonRegular", 1.0e-12);
-
+  addAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation", true);
+  
   // UniVariatePolynomialImplementation parameters //
   addAsUnsignedInteger("UniVariatePolynomial-SmallDegree", 400);
 
