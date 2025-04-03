@@ -24,7 +24,7 @@ This class fits a  linear regression model between a scalar variable :math:`Y` a
 :math:`\sampleSize` experiences that have provided an output sample
 of :math:`Y` related to an input sample of the regressors :math:`\vect{X} = (X_1, \dots, X_p)`.
 
-Let :math:`(Y_1, \dots, Y_\sampleSize)` be
+Let :math:`\vect{Y} = (Y_1, \dots, Y_\sampleSize)` be
 the output sample and :math:`(\vect{X}^1, \dots, \vect{X}^\sampleSize)` the input
 sample, where :math:`\vect{X}^i = (X_1^i, \dots, X_p^i)`.
 

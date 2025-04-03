@@ -26,7 +26,7 @@ standardizedSampleResiduals : 2-d sequence of float
 diagonalGramInverse : sequence of float
     The diagonal of the Gram inverse matrix.
 leverages : sequence of float
-    The leverages :math:`(\ell_i)_{1 \leq i \leq \sampleSize}`.
+    The leverages :math:`(\ell_i)_{1 \leq i \leq \sampleSize}` defined in :eq:`leverageDef`.
 cookDistances : sequence of float
     Cook's distances defined in :eq:`cookDef`.
 residualsVariance : float
@@ -247,10 +247,7 @@ The standardized residuals are defined by:
     \varepsilon_i^{st} = \dfrac{\varepsilon_i}{\sqrt{\hat{\sigma}^2(1 - \ell_i)}}
 
 where :math:`\hat{\sigma}^2` is the unbiaised residuals variance defined in
-:eq:`estimSigma2Noise` and :math:`\ell_i` is the leverage of experience :math:`i`,
-defined as the distance between the point :math:`(\vect{X}^i, Y_i)`
-or :math:`(\vect{\phi}(\vect{X}^i), Y_i)` to the linear
-regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots,  \phi_{p'}(\vect{X}^i))}`."
+:eq:`estimSigma2Noise` and :math:`\ell_i` is the leverage of experience :math:`i` defined in :eq:`leverageDef`."
 
 // ---------------------------------------------------------------------
 
@@ -264,10 +261,31 @@ leverages : :class:`~openturns.Point`
 
 Notes
 -----
-The leverage :math:`\ell_i`  of experience :math:`i` is
-defined as the distance between the point :math:`(\vect{X}^i, Y_i)`
-or :math:`(\vect{\phi}(\vect{X}^i), Y_i)` to the linear
-regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots,  \phi_{p'}(\vect{X}^i))}`."
+We denote by :math:`\hat{\vect{Y}} = (\hat{Y}_1, \dots, \hat{Y}_n)` the fitted values of the :math:`n` experiences. Then we have: 
+
+.. math::
+  \hat{\vect{Y}} =  \mat{\Psi} \hat{\vect{a}}
+
+where :math:`\mat{\Psi}` is the design matrix defined in :eq:`designMatDef`. It leads to:
+
+.. math::
+  \Var{\hat{\vect{Y}}} & = \mat{\Psi} \Var{\hat{\vect{a}}}\Tr{\mat{\Psi}} \\
+                       & = \sigma^2 \mat{H}
+
+where:
+
+.. math::
+  \mat{H} = \mat{\Psi} (\Tr{\mat{\Psi}}\mat{\Psi})^{-1} \Tr{\mat{\Psi}}
+
+Thus, for the experience :math:`i`, we get:
+
+.. math::
+  :label: leverageDef
+
+  \Var{\hat{Y}_i} = \sigma^2 \ell_{ii}
+
+where :math:`\ell_{ii}` is the :math:`i`-th element of the diagonal of :math:`\mat{H}`:
+:math:`\ell_{ii}` is the leverage :math:`\ell_i`  of experience :math:`i`."
 
 // ---------------------------------------------------------------------
 
@@ -296,7 +314,8 @@ cookDistances : :class:`~openturns.Point`
 
 Notes
 -----
-The Cook's distance measures the impact of every experience on the linear regression.
+The Cook's distance measures the impact of every experience on the linear regression. See
+[rawlings2001]_ (section 11.2.1, *Cook's D* page 362) for more details.
 
 The Cook distance of experience :math:`i` is defined by:
 
@@ -350,7 +369,9 @@ adjustedRSquared : float
 
 Notes
 -----
-The :math:`R_{ad}^2` value quantifies the quality of the linear approximation.
+The :math:`R_{ad}^2` value quantifies the quality of the linear approximation. With respect to
+:math:`R^2`, :math:`R_{ad}^2` takes into account the data set
+size and the number of hyperparameters.
 
 If the model is defined by :eq:`modelWithBase` such that the basis does not contain any intercept (constant function), then :math:`R_{ad}^2` is defined by:
 
