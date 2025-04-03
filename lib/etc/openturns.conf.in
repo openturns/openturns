@@ -72,7 +72,7 @@
   
   <!-- OT::PiecewiseHermiteEvaluation parameters -->
   <PiecewiseLinearEvaluation-EpsilonRegular value_float="1.0e-12" />
-   <PiecewiseLinearEvaluation-DefaultEnableExtrapolation value_bool="true"/>
+  <PiecewiseLinearEvaluation-DefaultEnableExtrapolation value_bool="true"/>
     
   <!-- OT::UniVariatePolynomialImplementation parameters -->
   <UniVariatePolynomial-SmallDegree value_int="400" />
