@@ -62,7 +62,7 @@ Create the right-unbounded interval :math:`[2, +\infty[`:
 
 Create the left-unbounded interval :math:`]-\infty, 2]`:
 
->>> print(ot.Interval([1], [a], [False], [True]))
+>>> print(ot.Interval([1], [2], [False], [True]))
 ]-inf (1), 2]
 
 We can perform some operations with intervals as defined in :eq:`operationsInterval`:

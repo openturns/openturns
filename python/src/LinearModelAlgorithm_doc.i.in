@@ -1,5 +1,5 @@
 %feature("docstring") OT::LinearModelAlgorithm
-"Class used to create a linear model from numerical samples.
+"Class used to create a linear regression model.
 
 Parameters
 ----------
@@ -19,25 +19,27 @@ LinearModelResult
 
 Notes
 -----
-This class fits a  linear regression model between a scalar variable :math:`Y` and some :math:`p` scalar regressors :math:`(X_1, \dots, X_p)`. The model is estimated from :math:`\sampleSize` experiences that have provided an output sample
+This class fits a  linear regression model between a scalar variable :math:`Y` and some
+:math:`p` scalar regressors :math:`(X_1, \dots, X_p)`. The model is estimated from
+:math:`\sampleSize` experiences that have provided an output sample
 of :math:`Y` related to an input sample of the regressors :math:`\vect{X} = (X_1, \dots, X_p)`.
 
 Let :math:`(Y_1, \dots, Y_\sampleSize)` be
-the output sample and :math:`(\vect{X}^1, \dots, \vect{X}^\sampleSize)` the input sample, where :math:`\vect{X}^i = (X_1^i, \dots, X_p^i)`.
+the output sample and :math:`(\vect{X}^1, \dots, \vect{X}^\sampleSize)` the input
+sample, where :math:`\vect{X}^i = (X_1^i, \dots, X_p^i)`.
 
-The linear model can be defined with or without a functional basis. If no basis is specified, the model is:
+The linear model can be defined with or without a functional basis. If no basis is
+specified, the model is:
 
 .. math::
     :label: modelNoBase
 
     Y = a_0 + \sum_{k=1}^{p} a_k X_k + \epsilon
 
-where :math:`a_0, a_1, ..., a_{p} \in \Rset` are scalar coefficients and :math:`\epsilon` a random
+where :math:`a_0, a_1, ..., a_{p} \in \Rset` are scalar coefficients and
+:math:`\epsilon` a random
 variable with zero mean and constant variance :math:`\sigma^2` independent from
-the coefficients :math:`a_k`. 
-
-The algorithm estimates the coefficients
-:math:`\vect{a} = (a_0, ..., a_p)` of the linear model as well as the variance :math:`\sigma^2`.
+the coefficients :math:`a_k`.
 
 Let the :math:`\hat{Y}_i` for :math:`1 \leq i \leq \sampleSize` be the fitted values, defined by:
 
@@ -49,17 +51,15 @@ Let the :math:`\hat{Y}_i` for :math:`1 \leq i \leq \sampleSize` be the fitted va
 where :math:`\hat{\vect{a}} = (\hat{a}_0, \dots, \hat{a}_p)` is the estimate of  :math:`\vect{a}`.
 
 If a functional basis is specified, let :math:`p'` be its dimension and 
-:math:`\phi_j : \Rset^{p} \rightarrow \Rset` for :math:`j \in \{1, ..., p'\}`  be the :math:`j`-th basis function.
-The linear model is:
+:math:`\phi_j : \Rset^{p} \rightarrow \Rset` for :math:`j \in \{1, ..., p'\}`  be the :math:`j`-th basis function. The linear model is:
 
 .. math::
     :label: modelWithBase
 
     Y = \sum_{j=1}^{p'} a_j \phi_j(\vect{X}) + \epsilon
 
-where the :math:`\vect{a} = (a_1, \dots, a_{p'})` and :math:`\epsilon` have the same properties as in the previous
-case. The algorithm still estimates the coefficients
-:math:`\vect{a}` as well as the variance :math:`\sigma^2`.
+where :math:`\vect{a} = (a_1, \dots, a_{p'})` and :math:`\epsilon` have the same properties as in the previous
+case.
 
 
 The fitted values :math:`\hat{Y}_i`  for :math:`1 \leq i \leq \sampleSize` are defined by:
@@ -69,7 +69,7 @@ The fitted values :math:`\hat{Y}_i`  for :math:`1 \leq i \leq \sampleSize` are d
 
     \hat{Y}_i = \sum_{j=1}^{p'} \hat{a}_j \phi_j(\vect{X}^i)
 
-where :math:`\hat{\vect{a}} = (\hat{a}_0, \dots, \hat{a}_{p'})` is the estimate of the :math:`\vect{a}`.
+where :math:`\hat{\vect{a}} = (\hat{a}_1, \dots, \hat{a}_{p'})` is the estimate of the :math:`\vect{a}`.
 
 We define the residual of the :math:`i`-th experience by: 
 
@@ -79,7 +79,8 @@ We define the residual of the :math:`i`-th experience by:
     \varepsilon_i & = Y_i -  \hat{Y}_i
 
 
-The algorithm estimates the coefficients of the linear model as well as the variance :math:`\sigma^2`.
+The algorithm still estimates the coefficients
+:math:`\vect{a}` as well as the variance :math:`\sigma^2`.
 The coefficients are evaluated using a linear least squares method,
 by default the `QR` method.
 User might also choose `SVD` or `Cholesky` by
@@ -153,10 +154,10 @@ basis : :class:`~openturns.Basis`
 Notes
 -----
 If a functional basis has been provided in the constructor, then we get it back:
-:math:`(\psi_k)_{0 \leq k \leq p}`.
-Otherwise, the functional basis is composed of the projections :math:`\psi_k : \Rset^p \rightarrow \Rset`
-such that :math:`\psi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
-:math:`\psi_0 : \vect{x} \rightarrow 1`."
+:math:`(\phi_k)_{1 \leq k \leq p'}`.
+Otherwise, the functional basis is composed of the projections :math:`\phi_k : \Rset^p \rightarrow \Rset`
+such that :math:`\phi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
+:math:`\phi_0 : \vect{x} \rightarrow 1`."
 
 // ---------------------------------------------------------------------
 
