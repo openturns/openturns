@@ -93,7 +93,7 @@ print(hessian_AsFunction)
 # expression of its gradient and hessian functions.
 #
 # To get the gradient function as a function defined in :eq:`gradientFct`, we have to use a
-# :class:`~openturns.PythonFunction`. We re-use the prevous function for for educational purposes.
+# :class:`~openturns.PythonFunction`. We re-use the previous function for for educational purposes.
 
 
 def gradient_AsFunction_Python(inPoint):
