@@ -83,8 +83,6 @@ for fittingAlgorithmIndex in range(len(listFittingAlgorithm)):
 
     result = algo.getResult()
     print("coeffs = ", result.getCoefficients())
-    print("residuals = ", result.getResiduals())
-    print("relative errors = ", result.getRelativeErrors())
 
     isLeastSquaresPCE = result.isLeastSquares()
     assert isLeastSquaresPCE

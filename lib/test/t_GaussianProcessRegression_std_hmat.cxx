@@ -77,8 +77,6 @@ int main(int, char *[])
       algo.run();
       GaussianProcessRegressionResult result(algo.getResult());
       assert_almost_equal(result.getMetaModel()(inputTrain), outputTrain, 1e-2);
-      assert_almost_equal(result.getResiduals(), {2.44e-06});
-      assert_almost_equal(result.getRelativeErrors(), {1.76e-12});
 
       // Prediction accuracy
       assert_almost_equal(outputTest, result.getMetaModel()(inputTest), 0.3, 0.0);
@@ -255,8 +253,6 @@ int main(int, char *[])
       const Function metaModel(result.getMetaModel());
       // Validation similar to the first test
       assert_almost_equal(metaModel(inputTrain), outputTrain);
-      assert_almost_equal(result.getResiduals(), {1.32804e-07}, 1e-3, 1e-3);
-      assert_almost_equal(result.getRelativeErrors(), {5.20873e-21});
 
       // Prediction accuracy
       assert_almost_equal(outputTest, metaModel(inputTest), 0.3, 0.0);

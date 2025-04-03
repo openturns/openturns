@@ -24,8 +24,6 @@ def __FunctionalChaosResult_repr_html(self):
     # Table of attributes
     inputDimension = self.getMetaModel().getInputDimension()
     outputDimension = self.getMetaModel().getOutputDimension()
-    relativeErrors = self.getRelativeErrors()
-    residuals = self.getResiduals()
     transformation = self.getTransformation()
     inverseTransformation = self.getInverseTransformation()
     orthogonalBasis = self.getOrthogonalBasis()
@@ -43,8 +41,6 @@ def __FunctionalChaosResult_repr_html(self):
     html += f"  <li>inverse transformation: {inverseTransformation.getInputDimension()} -> {inverseTransformation.getOutputDimension()}</li>\n"
     html += f"  <li>orthogonal basis dimension: {orthogonalBasis.getMeasure().getDimension()}</li>\n"
     html += f"  <li>indices size: {indicesSize}</li>\n"
-    html += f"  <li>relative errors: {relativeErrors}</li>\n"
-    html += f"  <li>residuals: {residuals}</li>\n"
     html += "</ul>\n"
     # Table of coefficients
     html += "<table>\n"

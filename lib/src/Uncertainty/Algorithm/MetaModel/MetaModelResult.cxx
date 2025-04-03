@@ -77,6 +77,7 @@ void MetaModelResult::setResiduals(const Point & residuals)
 
 Point MetaModelResult::getResiduals() const
 {
+  LOGWARN("MetaModelResult.getResiduals is deprecated, use MetaModelValidation.computeR2Score instead");
   return residuals_;
 }
 
@@ -88,6 +89,7 @@ void MetaModelResult::setRelativeErrors(const Point & relativeErrors)
 
 Point MetaModelResult::getRelativeErrors() const
 {
+  LOGWARN("MetaModelResult.getRelativeErrors is deprecated, use MetaModelValidation.computeMeanSquaredError instead");
   return relativeErrors_;
 }
 

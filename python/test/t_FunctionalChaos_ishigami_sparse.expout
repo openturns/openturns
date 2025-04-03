@@ -35,8 +35,6 @@ coeffs =   0 : [  3.50064     ]
 34 : [  0.0473871   ]
 35 : [  0.000960004 ]
 36 : [ -0.00215534  ]
-residuals =  [0.000243679]
-relative errors =  [2.19894e-08]
 isLeastSquares=  True
 involvesModelSelection=  True
 coeffs =   0 : [  3.50064     ]
@@ -76,7 +74,5 @@ coeffs =   0 : [  3.50064     ]
 34 : [  0.0473871   ]
 35 : [  0.000960004 ]
 36 : [ -0.00215534  ]
-residuals =  [0.000243679]
-relative errors =  [1.43801e-07]
 isLeastSquares=  True
 involvesModelSelection=  True
