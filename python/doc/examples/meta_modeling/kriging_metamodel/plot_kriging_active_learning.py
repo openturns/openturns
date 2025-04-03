@@ -6,7 +6,7 @@ Gaussian Process-based active learning for reliability
 # %%
 # In this example, we show how to sequentially add new points to a Gaussian Progress Regression model in order to improve the predictivity of the surrogate model for reliability estimation.
 # This kind of strategy is called "active learning".
-# In order to create simple graphics, we consider a 1-d function.
+# In order to create simple graphs, we consider a 1-d function.
 
 # %%
 # Create the function and the design of experiments
