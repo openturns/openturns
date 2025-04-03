@@ -263,7 +263,7 @@ def getNewPoint(X, gprResult, threshold):
 
 # %%
 xNew = getNewPoint(sampleX, gprResult, event.getThreshold())
-xNew
+print(xNew)
 
 # %%
 # Then we evaluate the function on the new point and add it to the training design of experiments.
