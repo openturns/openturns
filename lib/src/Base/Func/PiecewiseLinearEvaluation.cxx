@@ -41,7 +41,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
-    const Point & values)
+    const Point & values,
+    const Bool enableExtrapolation)
   : EvaluationImplementation(),
     enableExtrapolation_(enableExtrapolation)
 {
@@ -55,7 +56,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
 
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
-    const Sample & values)
+    const Sample & values,
+    const Bool enableExtrapolation)
   : EvaluationImplementation(),
     enableExtrapolation_(enableExtrapolation)
 {
