@@ -52,6 +52,9 @@ public:
   /** The bijective association between an integer and a set of indices */
   Indices operator() (const UnsignedInteger index) const override;
 
+  /** The inverse of the association */
+  UnsignedInteger inverse(const Indices & indices) const override;
+
   /** The cardinal of the given strata */
   UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const override;
 
