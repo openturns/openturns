@@ -3,8 +3,10 @@ Gaussian Process-based active learning for reliability
 ======================================================
 """
 
+# sphinx_gallery_thumbnail_number = 13
 # %%
-# In this example, we show how to sequentially add new points to a Gaussian Progress Regression model in order to improve the predictivity of the surrogate model for reliability estimation.
+# In this example, we show how to sequentially add new points to a Gaussian Progress Regression model.
+# The goal is to improve the predictivity of the surrogate model for reliability estimation.
 # This kind of strategy is called "active learning".
 # In order to create simple graphs, we consider a 1-d function.
 
@@ -101,7 +103,7 @@ print("Reference probability on the real function =", probability)
 
 
 # %%
-def createMyBasicKriging(X, Y):
+def createMyBasicGPR(X, Y):
     """
     Create a kriging from a pair of X and Y samples.
     We use a 3/2 Matérn covariance model and a constant trend.
@@ -125,16 +127,8 @@ def linearSample(xmin, xmax, npoints):
     vertices = rg.getVertices()
     return vertices
 
-
 # %%
-# The following `sqrt` function will be used later to compute the standard deviation from the variance.
-
-# %%
-sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
-
-
-# %%
-def plotMyBasicKriging(
+def plotMyBasicGPR(
     gprResult, xMin, xMax, X, Y, event, sampleX, refProbability, level=0.95
 ):
     """
@@ -165,7 +159,7 @@ def plotMyBasicKriging(
     gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
     epsilon = ot.Sample(nbpoints, [1.0e-8])
     conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid) + epsilon
-    conditionalSigma = sqrt(conditionalVariance)
+    conditionalSigma = np.sqrt(conditionalVariance)
     # Compute the quantile of the Normal distribution
     alpha = 1 - (1 - level) / 2
     quantileAlpha = ot.DistFunc.qNormal(alpha)
@@ -223,8 +217,8 @@ def plotMyBasicKriging(
 # We estimate the probability on this surrogate model and compare with the reference probability computed on the real limit state function.
 
 # %%
-gprResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
+gprResult = createMyGPR(X, Y)
+graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
 view = viewer.View(graph)
 
 
@@ -277,9 +271,8 @@ Y.add(yNew)
 # We now plot the updated Kriging.
 
 # %%
-# sphinx_gallery_thumbnail_number = 13
-gprResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
+gprResult = createMyBasicGPR(X, Y)
+graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
 view = viewer.View(graph)
 
 # %%
@@ -291,8 +284,8 @@ for krigingStep in range(10):
     yNew = g(xNew)
     X.add(xNew)
     Y.add(yNew)
-    gprResult = createMyBasicKriging(X, Y)
-    graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
+    gprResult = createMyBasicGPR(X, Y)
+    graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
     View(graph)
 
 # %%
