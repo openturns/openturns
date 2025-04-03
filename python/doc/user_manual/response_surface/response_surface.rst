@@ -42,6 +42,6 @@ Non-parametric
 
     functional_chaos_expansion
     glm
-    kriging
+    gaussian_process_regression
     lm
 
