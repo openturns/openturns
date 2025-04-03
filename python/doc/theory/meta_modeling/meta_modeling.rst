@@ -18,7 +18,7 @@ General purpose surrogate models
     taylor_expansion
     polynomial_least_squares
     polynomial_sparse_least_squares
-    kriging
+    gaussian_process_regression
     cross_validation
 
 

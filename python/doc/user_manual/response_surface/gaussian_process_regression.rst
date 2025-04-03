@@ -1,21 +1,8 @@
-=========================
-Response surface: Kriging
-=========================
+=============================================
+Response surface: Gaussian Process Regression
+=============================================
 
 .. currentmodule:: openturns
-
-Kriging algorithm
-=================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: classWithPlot.rst_t
-
-    KrigingAlgorithm
-
-    :template: class.rst_t
-    KrigingResult
-
 
 Gaussian Process Regression
 ===========================
@@ -32,6 +19,12 @@ Gaussian Process Regression
     experimental.GaussianProcessFitterResult
     experimental.GaussianProcessConditionalCovariance
 
+    :template: classWithPlot.rst_t
+    KrigingAlgorithm
+
+    :template: class.rst_t
+    KrigingResult
+    KrigingRandomVector
 
 Construction of the regression basis
 ====================================
@@ -44,13 +37,3 @@ Construction of the regression basis
     ConstantBasisFactory
     LinearBasisFactory
     QuadraticBasisFactory
-
-Kriging random vector
-=====================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    KrigingRandomVector
-
