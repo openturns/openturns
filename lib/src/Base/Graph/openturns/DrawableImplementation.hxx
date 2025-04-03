@@ -77,6 +77,8 @@ public:
   virtual String getColorCode() const;
   virtual void setColor(const String & color);
   virtual String getEdgeColor() const;
+  virtual Scalar getAlpha() const;
+  virtual void setAlpha(const Scalar & alpha);
 
   /** Point style accessor */
   virtual String getPointStyle() const;

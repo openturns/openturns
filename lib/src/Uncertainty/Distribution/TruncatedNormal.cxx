@@ -295,13 +295,13 @@ Interval TruncatedNormal::computeMinimumVolumeIntervalWithMarginalProbability(co
   // 2b) P([\beta,b])<prob: the minimum volume interval [c, d] is such that
   //     d == b, a <= c < \beta -> this is a tail unilateral MVI
 
+  Function pdf(getPDF());
   // 1)
   if (phiANorm_ >= phiBNorm_)
   {
     // Find \alpha
-    PDFWrapper pdfWrapper(this);
     Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
-    const Scalar alpha = solver.solve(pdfWrapper, normalizationFactor_ * phiANorm_ / sigma_, mu_, b_);
+    const Scalar alpha = solver.solve(pdf, normalizationFactor_ * phiANorm_ / sigma_, mu_, b_);
     const Scalar probability = computeProbability(Interval(a_, alpha));
     // 1a)
     if (probability >= prob)
@@ -311,9 +311,8 @@ Interval TruncatedNormal::computeMinimumVolumeIntervalWithMarginalProbability(co
   }
   // 2)
   // Find \beta
-  PDFWrapper pdfWrapper(this);
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
-  const Scalar beta = solver.solve(pdfWrapper, normalizationFactor_ * phiBNorm_ / sigma_, a_, mu_);
+  const Scalar beta = solver.solve(pdf, normalizationFactor_ * phiBNorm_ / sigma_, a_, mu_);
   const Scalar probability = computeProbability(Interval(beta, b_));
   // 2a)
   if (probability >= prob)

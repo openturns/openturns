@@ -15,12 +15,13 @@
 
 ==== API changes ====
   * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
-  * Removed deprecated OptimizationAlgorithm.Build(str) methd
- * Deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors (set it from solver)
+  * Removed deprecated OptimizationAlgorithm.Build(str) method
+  * Deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors (set it from solver)
 
 === Documentation ===
 
 === Python module ===
+  * Added GridLayout.add method to add all subgraphs of another grid
 
 === Miscellaneous ===
  * New c++ csv parser replacing the old bison/flex implementation

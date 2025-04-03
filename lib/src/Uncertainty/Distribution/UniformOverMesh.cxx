@@ -215,7 +215,7 @@ Scalar UniformOverMesh::computeProbabilityContinuous(const Interval & interval) 
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      probability = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+      probability = integrationAlgorithm_.integrate(getPDF(), intersection)[0];
     }
   }
   return probability;

@@ -193,7 +193,7 @@ Scalar MarginalDistribution::computePDF(const Point & point) const
     if (isContinuous())
     {
       // Build the relevant parametric function to be integrated over the remaining parameters
-      const ParametricFunction kernel(PDFWrapper(distribution_.getImplementation()->clone()), indices_, point);
+      const ParametricFunction kernel(distribution_.getPDF(), indices_, point);
       const Interval marginalInterval(distribution_.getRange().getMarginal(indices_.complement(distribution_.getDimension())));
       return integrationAlgorithm_.integrate(kernel, marginalInterval)[0];
     }
