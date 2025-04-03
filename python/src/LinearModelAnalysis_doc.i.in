@@ -155,7 +155,7 @@ Notes
 -----
 The Fisher score is computed as follows.
 
-Let be :math:`dofM` the degrees of freedom of the model, equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we substract 1 from :math:`dofM`.
+Let be :math:`dofM` the degrees of freedom of the model, equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we subtract 1 from :math:`dofM`.
 
 Let :math:`dof` be the degrees of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
 
@@ -203,11 +203,11 @@ Notes
 The Fisher p-value is computed from the Fisher score defined in :eq:`FisherScore` with
 respect to the :class:`~openturns.FisherSnedecor` distribution parameterized by :math:`(dofM, dof)` where:
 
-- :math:`dofM` is the degrees of freedom of the model (equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we substract 1 from :math:`dofM`.
+- :math:`dofM` is the degrees of freedom of the model (equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we subtract 1 from :math:`dofM`.
 - :math:`dof` is the degrees of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
 
 This p-value is used under the Gaussian assumption of the error :math:`\varepsilon`. It tests
-if all the coefficients are statistically usefull to the model. If the residuals are not Gaussian, this test is not appropriate and should not be used."
+if all the coefficients are statistically useful to the model. If the residuals are not Gaussian, this test is not appropriate and should not be used."
 
 // ---------------------------------------------------------------------
 
