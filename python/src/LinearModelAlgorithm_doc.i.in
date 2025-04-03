@@ -28,6 +28,7 @@ the output sample and :math:`(\vect{X}^1, \dots, \vect{X}^\sampleSize)` the inpu
 The linear model can be defined with or without a functional basis. If no basis is specified, the model is:
 
 .. math::
+    :label: modelNoBase
 
     Y = a_0 + \sum_{k=1}^{p} a_k X_k + \epsilon
 
@@ -52,6 +53,7 @@ If a functional basis is specified, let :math:`p'` be its dimension and
 The linear model is:
 
 .. math::
+    :label: modelWithBase
 
     Y = \sum_{j=1}^{p'} a_j \phi_j(\vect{X}) + \epsilon
 

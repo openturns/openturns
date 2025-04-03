@@ -94,6 +94,8 @@ print(hessian_AsFunction)
 #
 # To get the gradient function as a function defined in :eq:`gradientFct`, we have to use a
 # :class:`~openturns.PythonFunction`. We re-use the prevous function for for educational purposes.
+
+
 def gradient_AsFunction_Python(inPoint):
     f1_deriv_x1 = f.gradient(inPoint)[0, 0]
     f1_deriv_x2 = f.gradient(inPoint)[1, 0]
@@ -107,6 +109,8 @@ print(gradient_AsFunction_OT([1.0, 2.0]))
 
 # %%
 # To get the hessian function as a functiond efined in :eq:`hessianFct`, we do the same:
+
+
 def hessian_AsFunction_Python(inPoint):
     f1_hessian_x1x1 = f.hessian(inPoint)[0, 0, 0]
     f1_hessian_x1x2 = f.hessian(inPoint)[1, 0, 0]
@@ -114,8 +118,7 @@ def hessian_AsFunction_Python(inPoint):
     f2_hessian_x1x1 = f.hessian(inPoint)[0, 0, 1]
     f2_hessian_x1x2 = f.hessian(inPoint)[1, 0, 1]
     f2_hessian_x2x2 = f.hessian(inPoint)[1, 1, 1]
-    return [f1_hessian_x1x1, f1_hessian_x1x2, f1_hessian_x2x2, f2_hessian_x1x1, f2_hessian_x1x2,
-            f2_hessian_x2x2]
+    return [f1_hessian_x1x1, f1_hessian_x1x2, f1_hessian_x2x2, f2_hessian_x1x1, f2_hessian_x1x2, f2_hessian_x2x2]
 
 
 hessian_AsFunction_OT = ot.PythonFunction(2, 6, hessian_AsFunction_Python)
