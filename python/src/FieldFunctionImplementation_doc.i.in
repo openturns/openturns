@@ -14,7 +14,7 @@ outputDim : int, :math:`\geq 1`
 
 Notes
 -----
-Field functions act on fields to produce fields:
+A FieldFunction acts on fields to produce fields:
 
 .. math::
 
@@ -39,10 +39,11 @@ PythonFieldFunction, OpenTURNSPythonFieldFunction
 
 Examples
 --------
->>> import openturns as ot
-
 Using the class :class:`~openturns.OpenTURNSPythonFieldFunction` allows one to define a persistent state between the evaluations of the function.
 
+For example, we create the function which maps a field to another field sharing the same mesh and such that each value :math:`\vect{x}` of the input field is mapped into :math:`2\vect{x}`.
+
+>>> import openturns as ot
 >>> class FUNC(ot.OpenTURNSPythonFieldFunction):
 ...     def __init__(self):
 ...         # first argument:

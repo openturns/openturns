@@ -1,9 +1,6 @@
 %feature("docstring") OT::ParametricFunction
 "Parametric function.
 
-It defines a parametric function from *function* by freezing the variables
-marked by the *indices* set to the values of *referencePoint*.
-
 Please read the example below and :doc:`/auto_functional_modeling/vectorial_functions/plot_parametric_function` 
 for a detailed example of this class.
 
@@ -22,6 +19,11 @@ parametersSet : bool, optional
     in *indices*.
     Otherwise, the set variables are the ones referenced in the complementary
     set of *indices*.
+
+Notes
+-----
+A ParametricFunction defines a parametric function from *function* by freezing the variables
+marked by the *indices* set to the values of *referencePoint*.
 
 Examples
 --------

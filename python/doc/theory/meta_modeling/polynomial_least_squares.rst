@@ -109,11 +109,11 @@ such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
 .. topic:: API:
 
-    - See :class:`~openturns.FunctionalChaosAlgorithm`
+    - See :class:`~openturns.LinearLeastSquares`
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
+    - See :doc:`/auto_meta_modeling/general_purpose_metamodels/plot_create_linear_least_squares_model`
 
 
 .. topic:: References:

@@ -4,28 +4,25 @@
 Parameters
 ----------
 T0 : float
-    Initial temperature
-c : float, optional
-    The geometric ratio
-    Should be in ]0,1[
+    Initial temperature.
+c : float, optional, :math:`0 < c < 1`
+    The geometric ratio.
 iMax : int, optional
-    Number of maximal iterations
+    Number of maximal iterations.
 
 Notes
 -----
-The temperature write:
+The temperature is defined by:
 
 .. math::
-    :nowrap:
 
-    \begin{equation*}
-        T(i) = T_0 * c^{i} \in [0,iMax]
-    \end{equation*}
+        T(i) = T_0 c^{i} \quad 0 \leq i \leq i_{Max}
 
 Examples
 --------
+Define the profile: :math:`T(i) = 10 (0.9)^{i}` for :math:`0 \leq i \leq 100` :
+
 >>> import openturns as ot
->>> # Define a profile
 >>> T0 = 10.0
 >>> iMax = 100
 >>> c = 0.90
@@ -36,22 +33,23 @@ Examples
 OT_GeometricProfile_doc
 // ---------------------------------------------------------------------
 %define OT_GeometricProfile_call_doc
-"Compute the temperature T(i).
+"Compute the temperature :math:`T(i)`.
 
 Parameters
 ----------
 i : int
-    The index for whome we seek temperature
+    The index at which the temperature is computed.
 
 Returns
 -------
-temperature:  float
-    The temperature
+temperature :  float
+    The temperature :math:`T(i)`.
 
 Examples
 --------
+Define the profile: :math:`T(i) = 10 (0.9)^{i}` for  :math:`0 \leq i \leq 100` and compute it at :math:`i=5`:
+
 >>> import openturns as ot
->>> # Define a profile
 >>> T0 = 10.0
 >>> iMax = 100
 >>> c = 0.90
