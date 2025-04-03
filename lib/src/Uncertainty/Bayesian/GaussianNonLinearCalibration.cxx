@@ -382,35 +382,11 @@ void GaussianNonLinearCalibration::run()
       shift += skip;
     }
     gradientObservations = gradientObservations.transpose();
-    // Compute the covariance matrix R
-    CovarianceMatrix R(size * outputDimension);
-    const UnsignedInteger dimension = errorCovariance_.getDimension();
-    if (globalErrorCovariance_) R = errorCovariance_;
-    else
-    {
-      if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
-      else
-      {
-        for (UnsignedInteger i = 0; i < size; ++i)
-          for (UnsignedInteger j = 0; j < dimension; ++j)
-            for (UnsignedInteger k = 0; k < dimension; ++k)
-              R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
-      }
-    }
-    // Compute the inverse of the Cholesky decomposition of R
-    // Compute errorInverseCholesky*J, the second part of the extended design matrix
-    const Normal errorTmp(Point(R.getDimension()), R);
-    const TriangularMatrix errorTmpInverseCholesky(errorTmp.getInverseCholesky());
-    const Matrix invLRJ(errorTmpInverseCholesky * gradientObservations);
-    // Create the extended design matrix of the linear least squares problem
-    Matrix Abar(parameterDimension + size * outputDimension, parameterDimension);
-    for (UnsignedInteger i = 0; i < parameterDimension; ++i)
-      for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-        Abar(i, j) = parameterInverseCholesky(i, j);
-    for (UnsignedInteger i = 0; i < size; ++i)
-      for (UnsignedInteger j = 0; j < outputDimension; ++j)
-        for (UnsignedInteger k = 0; k < parameterDimension; ++k)
-          Abar(i * outputDimension + j + parameterDimension, k) = -invLRJ(i * outputDimension + j, k);
+
+    TriangularMatrix dummy;
+    const Matrix Abar(GaussianLinearCalibration::ComputeDesignMatrix(parameterDimension, outputDimension, size, getParameterPrior(), gradientObservations,
+                                          globalErrorCovariance_, errorCovariance_, dummy));
+
     // Compute the inverse Gram of the design matrix
     const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
     LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
