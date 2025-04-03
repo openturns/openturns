@@ -5,7 +5,7 @@ Gaussian Process-based active learning for reliability
 
 # sphinx_gallery_thumbnail_number = 13
 # %%
-# In this example, we show how to sequentially add new points to a Gaussian Progress Regression model.
+# In this example, we show how to sequentially add new points to a Gaussian Progress Regression model (GPR).
 # The goal is to improve the predictivity of the surrogate model for reliability estimation.
 # This kind of strategy is called "active learning".
 # In order to create simple graphs, we consider a 1-d function.
@@ -105,7 +105,7 @@ print("Reference probability on the real function =", probability)
 # %%
 def createMyBasicGPR(X, Y):
     """
-    Create a kriging from a pair of X and Y samples.
+    Create a Gaussian Process from a pair of X and Y samples.
     We use a 3/2 Matérn covariance model and a constant trend.
     """
     basis = ot.ConstantBasisFactory(dimension).build()
@@ -132,12 +132,12 @@ def plotMyBasicGPR(
     gprResult, xMin, xMax, X, Y, event, sampleX, refProbability, level=0.95
 ):
     """
-    Given a kriging result, plot the data, the kriging metamodel
+    Given a gaussian process result, plot the data, the GP metamodel
     and a confidence interval.
     """
     meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
-    graphKriging.setLegends(["Kriging"])
+    graphKriging.setLegends(["GPR"])
     # Create a grid of points and evaluate the function and the kriging
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
@@ -213,17 +213,17 @@ def plotMyBasicGPR(
 
 
 # %%
-# We start by creating the initial Kriging surrogate model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments.
+# We start by creating the initial Gaussian Process Regressor model :math:`\hat{\mathcal{M}}` on the 4 points in the design of experiments.
 # We estimate the probability on this surrogate model and compare with the reference probability computed on the real limit state function.
 
 # %%
-gprResult = createMyGPR(X, Y)
+gprResult = createMyBasicGPR(X, Y)
 graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
 view = viewer.View(graph)
 
 
 # %%
-# Active learning Kriging to sequentially add new points
+# Active learning Gaussian Process Regressor to sequentially add new points
 # ------------------------------------------------------
 
 # %%
@@ -268,7 +268,7 @@ X.add(xNew)
 Y.add(yNew)
 
 # %%
-# We now plot the updated Kriging.
+# We now plot the updated Gaussian Process Regressor.
 
 # %%
 gprResult = createMyBasicGPR(X, Y)
@@ -279,7 +279,7 @@ view = viewer.View(graph)
 # The algorithm added in the domain.
 
 # %%
-for krigingStep in range(10):
+for GPRStep in range(10):
     xNew = getNewPoint(sampleX, gprResult, event)
     yNew = g(xNew)
     X.add(xNew)
@@ -298,7 +298,7 @@ for krigingStep in range(10):
 # Conclusion
 # ----------
 #
-# The current example presents the naive implementation on the creation of a sequential design of experiments (active learning) based on kriging for failure probability estimation.
+# The current example presents the naive implementation on the creation of a sequential design of experiments (active learning) based on GPR for failure probability estimation.
 # See `Modules <https://github.com/openturns/openturns/wiki/Modules>`_ for module `ot-ak` that implements active learning algorithms for reliability.
 # More practical algorithms are presented in the following references.
 #
