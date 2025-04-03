@@ -12,6 +12,13 @@ for dimension in range(1, 4):
     for i in range(size):
         print("i=", i, "f(i)=", f(i))
 
+# without bounds
+f = ot.NormInfEnumerateFunction(2)
+for index in range(25):
+    m = f(index)
+    index_inv = f.inverse(m)
+    print("index=", index, repr(m))
+    assert index == index_inv, "wrong inverse"
 # with bounds
 f = ot.NormInfEnumerateFunction(2)
 f.setUpperBound([int(1e8), 3])
