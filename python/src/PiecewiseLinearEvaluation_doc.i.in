@@ -7,6 +7,8 @@ locations : sequence of float
     Locations
 values : 1-d or 2-d sequence of float
     Values at each location
+enableExtrapolation : boolean, optional
+    Boolean that enables extrapolation of the model outside the design of experiments, default value is True.
 
 See also
 --------
