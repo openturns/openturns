@@ -126,7 +126,8 @@ def linearSample(xmin, xmax, npoints):
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
-
+    
+    
 # %%
 def plotMyBasicGPR(
     gprResult, xMin, xMax, X, Y, event, sampleX, refProbability, level=0.95
