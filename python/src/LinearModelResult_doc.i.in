@@ -26,7 +26,7 @@ standardizedSampleResiduals : 2-d sequence of float
 diagonalGramInverse : sequence of float
     The diagonal of the Gram inverse matrix.
 leverages : sequence of float
-    The leverages :math:`(\ell)_{1 \leq i \leq \sampleSize}`.
+    The leverages :math:`(\ell_i)_{1 \leq i \leq \sampleSize}`.
 cookDistances : sequence of float
     Cook's distances defined in :eq:`cookDef`.
 residualsVariance : float
@@ -50,11 +50,11 @@ basis : :class:`~openturns.Basis`
 Notes
 -----
 If a functional basis has been provided in the constructor, then we get it back:
-:math:`(\psi_j)_{1 \leq j \leq p'}`. Its size is :math:`p'`.
+:math:`(\phi_j)_{1 \leq j \leq p'}`. Its size is :math:`p'`.
 
-Otherwise, the functional basis is composed of the projections :math:`\psi_k : \Rset^p \rightarrow \Rset`
-such that :math:`\psi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
-:math:`\psi_0 : \vect{x} \rightarrow 1`. Its size is :math:`p+1`."
+Otherwise, the functional basis is composed of the projections :math:`\phi_k : \Rset^p \rightarrow \Rset`
+such that :math:`\phi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
+:math:`\phi_0 : \vect{x} \rightarrow 1`. Its size is :math:`p+1`."
 
 // ---------------------------------------------------------------------
 
@@ -219,9 +219,10 @@ noiseDistribution : :class:`~openturns.Normal`
 
 Notes
 -----
-The noise distribution is assumed to be Gaussian. The normal distribution has zero mean and
+The noise distribution is the distribution of the residuals. It is assumed to be Gaussian.
+The normal distribution has zero mean and
 its variance is estimated from the residuals sample
-:math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}`
+:math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}` defined in :eq:`residualDef`,
 using the unbiaised estimator defined in :eq:`estimSigma2Noise`.
 
 If the residuals are not Gaussian, this distribution is not appropriate and should not be used."
@@ -276,7 +277,7 @@ regression where :math:`\vect{\phi}(\vect{X}^i) = \Tr{(\phi_1(\vect{X}^i), \dots
 Returns
 -------
 diagonalGramInverse : :class:`~openturns.Point`
-    The diagonal of the Gram matrix.
+    The diagonal of the Gram inverse matrix.
 
 Notes
 -----
@@ -295,6 +296,8 @@ cookDistances : :class:`~openturns.Point`
 
 Notes
 -----
+The Cook's distance measures the impact of every experience on the linear regression.
+
 The Cook distance of experience :math:`i` is defined by:
 
 .. math::
@@ -304,9 +307,7 @@ The Cook distance of experience :math:`i` is defined by:
     (\varepsilon_i^{st})^2
 
 where :math:`\varepsilon_i^{st}` is the standardized residual defined in :eq:`stdRes` and :math:`dof` is the 
-degress of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
-
-The Cook's distance measures the impact of every experience on the linear regression."
+degress of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`."
 
 // ---------------------------------------------------------------------
 
@@ -356,12 +357,12 @@ If the model is defined by :eq:`modelWithBase` such that the basis does not cont
 .. math::
    R_{ad}^2 = 1 - \left(\dfrac{\sampleSize}{dof}\right)(1 - R^2)
 
-where :math:`dof` is the degrees of freedom of the model defined in :eq:`dofWithBase`.
+where :math:`dof` is the degrees of freedom of the model defined in :eq:`dofWithBase` and :math:`\sampleSize` the number of experiences.
 
 Otherwise, when the model is defined by :eq:`modelNoBase` or by :eq:`modelWithBase` with an intercept, :math:`R_{ad}^2` is defined by:
 
 .. math::
-   R_{ad}^2 = 1 - \left(\dfrac{(\sampleSize - 1)}{dof}\right)(1 - R^2)
+   R_{ad}^2 = 1 - \left(\dfrac{\sampleSize - 1}{dof}\right)(1 - R^2)
 
 where :math:`dof` is defined in :eq:`dofNoBase` or :eq:`dofWithBase`.
 
@@ -405,7 +406,7 @@ the unbiaised empirical variance of the residuals:
    
    \hat{\sigma}^2 = \dfrac{1}{dof} \sum_{i=1}^\sampleSize  \varepsilon_i^2
 
-where math:`dof` is the degrees of freedom of the model defined in :eq:`dofNoBase` or :eq:`dofWithBase`."
+where :math:`dof` is the degrees of freedom of the model defined in :eq:`dofNoBase` or :eq:`dofWithBase`."
 
 // ---------------------------------------------------------------------
 
