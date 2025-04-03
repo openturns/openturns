@@ -44,19 +44,11 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
       list (APPEND swig_other_sources "${it}")
     endif ()
   endforeach ()
-  
-  # https://github.com/swig/swig/issues/1273
-  option (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH "Force double escaping of backslashes" OFF)
-  mark_as_advanced (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
-  set (TIMES x1)
-  if ((SWIG_VERSION VERSION_LESS 4) OR SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
-    set (TIMES x2)
-  endif ()
 
   # handle docstring generation
   add_custom_target (generate_${MODULENAME}_docstrings
                       COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
-                      -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=${TIMES}
+                      -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=x1
                       -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
                       DEPENDS ${docstring_sources})
   add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  

@@ -26,8 +26,8 @@ case $choice in
     docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -v `pwd`:/io openturns/debian-aarch64 /io/.ci_support/run_docker_aarch64.sh
     ;;
   "5" | "mindeps")
-    docker pull debian:10
-    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -v `pwd`:/io debian:10 /io/.ci_support/run_docker_mindeps.sh
+    docker pull debian:11
+    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -v `pwd`:/io debian:11 /io/.ci_support/run_docker_mindeps.sh
     ;;
   *)
     echo "sorry?"
