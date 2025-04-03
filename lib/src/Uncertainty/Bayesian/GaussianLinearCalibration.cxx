@@ -94,18 +94,65 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
   if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
 }
 
+
+Matrix GaussianLinearCalibration::ComputeDesignMatrix(const UnsignedInteger parameterDimension,
+                                                      const UnsignedInteger outputDimension,
+                                                      const UnsignedInteger size,
+                                                      const Distribution & parameterPrior,
+                                                      const Matrix & gradientObservations,
+                                                      const Bool globalErrorCovariance,
+                                                      const CovarianceMatrix & errorCovariance,
+                                                      TriangularMatrix & errorInverseCholesky)
+{
+  const UnsignedInteger dimension = errorCovariance.getDimension();
+  // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
+  const TriangularMatrix parameterInverseCholesky(parameterPrior.getInverseCholesky());
+
+  // Compute the covariance matrix R
+  CovarianceMatrix R(size * outputDimension);
+  if (globalErrorCovariance) R = errorCovariance;
+  else
+  {
+    if (dimension == 1) R = (R * errorCovariance(0, 0)).getImplementation();
+    else
+    {
+      for (UnsignedInteger i = 0; i < size; ++i)
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+          for (UnsignedInteger k = 0; k < dimension; ++k)
+            R(i * dimension + j, i * dimension + k) = errorCovariance(j, k);
+    }
+  }
+
+  // Compute the inverse of the Cholesky decomposition of R
+  const Normal error(Point(R.getDimension()), R);
+  errorInverseCholesky = TriangularMatrix(error.getInverseCholesky());
+  // Compute errorInverseCholesky*J, the second part of the extended design matrix
+  const Matrix invLRJ(errorInverseCholesky * gradientObservations);
+  // Create the extended design matrix of the linear least squares problem
+  Matrix Abar (parameterDimension + size * outputDimension, parameterDimension);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+      Abar(i, j) = parameterInverseCholesky(i, j);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger k = 0; k < parameterDimension; ++k)
+        Abar(i * outputDimension + j + parameterDimension, k) = -invLRJ(i * outputDimension + j, k);
+  return Abar;
+}
+
+
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void GaussianLinearCalibration::run()
 {
+  const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
+  const UnsignedInteger outputDimension = getOutputObservations().getDimension();
+  const UnsignedInteger size = getOutputObservations().getSize();
   if (getModel().getEvaluation().getImplementation()->isActualImplementation())
   {
     // Compute the linearization
     Function parametrizedModel(getModel());
     parametrizedModel.setParameter(getParameterPrior().getMean());
     // Flatten everything related to the model evaluations over the input observations
-    const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
-    const UnsignedInteger outputDimension = getOutputObservations().getDimension();
-    const UnsignedInteger size = getOutputObservations().getSize();
     modelObservations_ = parametrizedModel(getInputObservations());
     gradientObservations_ = MatrixImplementation(parameterDimension, size * outputDimension);
     UnsignedInteger shift = 0;
@@ -120,42 +167,12 @@ void GaussianLinearCalibration::run()
     parameterPrior_.setDescription(getModel().getParameterDescription());
   }
 
+  TriangularMatrix errorInverseCholesky;
+  const Matrix Abar(ComputeDesignMatrix(parameterDimension, outputDimension, size, getParameterPrior(), gradientObservations_,
+                                        globalErrorCovariance_, errorCovariance_, errorInverseCholesky));
+
   // Compute the difference of output observations and output predictions
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
-  // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
-  const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
-  // Compute the covariance matrix R
-  CovarianceMatrix R(deltaY.getSize());
-  const UnsignedInteger dimension = errorCovariance_.getDimension();
-  const UnsignedInteger size = outputObservations_.getSize();
-  if (globalErrorCovariance_) R = errorCovariance_;
-  else
-  {
-    if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
-    else
-    {
-      for (UnsignedInteger i = 0; i < size; ++i)
-        for (UnsignedInteger j = 0; j < dimension; ++j)
-          for (UnsignedInteger k = 0; k < dimension; ++k)
-            R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
-    }
-  }
-  // Compute the inverse of the Cholesky decomposition of R
-  const Normal error(Point(R.getDimension()), R);
-  const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
-  // Compute errorInverseCholesky*J, the second part of the extended design matrix
-  const Matrix invLRJ(errorInverseCholesky * gradientObservations_);
-  // Create the extended design matrix of the linear least squares problem
-  const UnsignedInteger parameterDimension = getParameterMean().getDimension();
-  const UnsignedInteger outputDimension = outputObservations_.getDimension();
-  Matrix Abar(parameterDimension + size * outputDimension, parameterDimension);
-  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
-    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-      Abar(i, j) = parameterInverseCholesky(i, j);
-  for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      for (UnsignedInteger k = 0; k < parameterDimension; ++k)
-        Abar(i * outputDimension + j + parameterDimension, k) = -invLRJ(i * outputDimension + j, k);
   // Compute errorInverseCholesky*deltay, the right hand size of the extended residual
   const Point invLRz = errorInverseCholesky * deltaY;
   // Create the extended right hand side of the extended linear least squares system : ybar = -invLRz
