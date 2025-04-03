@@ -1,4 +1,4 @@
-.. _Kriging metamodel:
+.. _gaussian_process_regression_metamodel:
 
-Kriging metamodel
------------------
+Gaussian Process Regression metamodel
+-------------------------------------
