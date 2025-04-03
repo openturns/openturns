@@ -169,7 +169,7 @@ def plotMyBasicKriging(
     # Compute the quantile of the Normal distribution
     alpha = 1 - (1 - level) / 2
     quantileAlpha = ot.DistFunc.qNormal(alpha)
-    # Graphics of the bounds
+    # Draw the bounds
     epsilon = 1.0e-8
     dataLower = [
         yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
