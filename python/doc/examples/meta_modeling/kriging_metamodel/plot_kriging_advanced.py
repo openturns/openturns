@@ -98,8 +98,6 @@ algokriging.run()
 # %%
 # Get some results
 krigingResult = algokriging.getResult()
-print("residual = ", krigingResult.getResiduals())
-print("R2 = ", krigingResult.getRelativeErrors())
 print("Optimal scale= {}".format(krigingResult.getCovarianceModel().getScale()))
 print(
     "Optimal amplitude = {}".format(krigingResult.getCovarianceModel().getAmplitude())
@@ -261,8 +259,6 @@ algokriging_nugget.run()
 # We get the results and the metamodel.
 
 krigingResult_nugget = algokriging_nugget.getResult()
-print("residual = ", krigingResult_nugget.getResiduals())
-print("R2 = ", krigingResult_nugget.getRelativeErrors())
 print("Optimal scale= {}".format(krigingResult_nugget.getCovarianceModel().getScale()))
 print(
     "Optimal amplitude = {}".format(

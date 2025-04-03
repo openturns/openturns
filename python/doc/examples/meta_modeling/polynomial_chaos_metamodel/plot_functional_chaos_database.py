@@ -134,10 +134,6 @@ yPoint = metamodel(xPoint)
 print("Value at ", xPoint, " is ", yPoint)
 
 # %%
-# Print residuals.
-result.getResiduals()
-
-# %%
 # Based on these results, we may want to validate our metamodel.
 # More details on this topic are presented in
 # :doc:`Validate a polynomial chaos </auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_draw_validation>`.

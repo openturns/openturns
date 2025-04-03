@@ -7,16 +7,6 @@ sampleX, sampleY : 2-d sequence of float
     Input/output samples
 metaModel : :class:`~openturns.Function`
     Definition of the response surface(s) of the model's output(s).
-residuals : sequence of float
-    The residual values defined as follows for each output of the model:
-    :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
-    with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
-    metamodel's values.
-relativeErrors : sequence of float
-    The relative errors defined as follows for each output of the model:
-    :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
-    with :math:`\vect{Y}` the vector of the :math:`N` model's values
-    :math:`y_i` and :math:`\hat{y_i}` the metamodel's values.
 
 Notes
 -----
@@ -26,7 +16,7 @@ method getResult() of these classes.
 
 See also
 --------
-FunctionalChaosResult"
+openturns.LinearModelResult, openturns.FunctionalChaosResult, openturns.experimental.GaussianProcessRegressionResult"
 
 // ---------------------------------------------------------------------
 
@@ -47,58 +37,6 @@ Parameters
 ----------
 metaModel : :class:`~openturns.Function`
     Metamodel."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MetaModelResult::getResiduals
-"Accessor to the residuals.
-
-Returns
--------
-residuals : :class:`~openturns.Point`
-    The residual values defined as follows for each output of the model:
-    :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
-    with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
-    metamodel's values."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MetaModelResult::setResiduals
-"Accessor to the residuals.
-
-Parameters
-----------
-residuals : sequence of float
-    The residual values defined as follows for each output of the model:
-    :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
-    with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
-    metamodel's values."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MetaModelResult::getRelativeErrors
-"Accessor to the relative errors.
-
-Returns
--------
-relativeErrors : :class:`~openturns.Point`
-    The relative errors  defined as follows for each output of the model:
-    :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
-    with :math:`\vect{Y}` the vector of the :math:`N` model's values
-    :math:`y_i` and :math:`\hat{y_i}` the metamodel's values."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MetaModelResult::setRelativeErrors
-"Accessor to the relative errors.
-
-Parameters
-----------
-relativeErrors : sequence of float
-    The relative errors defined as follows for each output of the model:
-    :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
-    with :math:`\vect{Y}` the vector of the :math:`N` model's values
-    :math:`y_i` and :math:`\hat{y_i}` the metamodel's values."
 
 // ---------------------------------------------------------------------
 

@@ -53,8 +53,6 @@ def test_one_input_one_output():
     algo.run()
     result = algo.getResult()
     ott.assert_almost_equal(result.getMetaModel()(X), Y, 1e-2)
-    ott.assert_almost_equal(result.getResiduals(), [2.44e-06])
-    ott.assert_almost_equal(result.getRelativeErrors(), [1.76e-12])
 
     # Prediction accuracy
     ott.assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0)
@@ -202,8 +200,6 @@ def test_gpr_no_opt():
     result = algo.getResult()
     Yhat = result.getMetaModel()(X)
     ott.assert_almost_equal(Yhat, Y)
-    ott.assert_almost_equal(result.getResiduals(), [1.32804e-07], 1e-3, 1e-3)
-    ott.assert_almost_equal(result.getRelativeErrors(), [5.20873e-21])
     # Prediction accuracy
     ott.assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0)
 

@@ -146,12 +146,6 @@ graph.add(dr)
 _ = View(graph)
 
 # %%
-# Inspect the chaos quality: residuals and relative errors.
-# The relative error is very low; that means the chaos decomposition performs very well.
-print(f"residuals={result.getFCEResult().getResiduals()}")
-print(f"relative errors={result.getFCEResult().getRelativeErrors()}")
-
-# %%
 # Graphically validate the chaos result:
 # we can see the points are very close to the diagonal; this means
 # approximated points are very close to the learning points.

@@ -73,8 +73,6 @@ Y = model(X)
 algo = ot.FunctionalChaosAlgorithm(X, Y)
 algo.run()
 result = algo.getResult()
-print(result.getResiduals())
-print(result.getRelativeErrors())
 
 # %%
 # Quick summary of sensitivity analysis
