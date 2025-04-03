@@ -534,17 +534,12 @@ add_custom_target (check COMMENT "Run pre-installation tests")
 add_custom_target (installcheck COMMENT "Run post-installation tests")
 
 if (BUILD_PYTHON)
-  find_package (SWIG 3.0.11)
+  find_package (SWIG 4)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
 
     # this name was chosen in common with pyagrum for otagrum
     set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
-
-    # ptr conversion argument to handle None correctly in swig 4.x, this just allows one to pass compilation with swig 3.x
-    if (SWIG_VERSION VERSION_LESS 4)
-      list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
-    endif ()
   endif ()
 
   if (CMAKE_VERSION VERSION_LESS 3.18)
