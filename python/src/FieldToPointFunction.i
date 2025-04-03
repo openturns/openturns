@@ -169,12 +169,12 @@ class OpenTURNSPythonFieldToPointFunction:
 
     def setOutputDescription(self, descOut):
         """
-        Accessor to the description of the ouput values of the function.
+        Accessor to the description of the output values of the function.
 
         Parameters
         ----------
         descOut : sequence of str
-            The description of the ouput values of the function.    
+            The description of the output values of the function.    
         """
         if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
@@ -182,12 +182,12 @@ class OpenTURNSPythonFieldToPointFunction:
 
     def getOutputDescription(self):
         """
-        Accessor to the description of the ouput values of the function.
+        Accessor to the description of the output values of the function.
 
         Returns
         -------
         descOut : sequence of str
-            The description of the ouput values of the function.    
+            The description of the output values of the function.    
         """
         return self.__descOut
 
@@ -204,12 +204,12 @@ class OpenTURNSPythonFieldToPointFunction:
 
     def getOutputDimension(self):
         r"""
-        Accessor to the dimension of the ouput values of the function.
+        Accessor to the dimension of the output values of the function.
 
         Returns
         -------
         outputDim : int
-            The dimension of the ouput values of the function :math:`d'`.    
+            The dimension of the output values of the function :math:`d'`.    
         """
         return self.__outputDim
 

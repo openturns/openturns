@@ -91,7 +91,7 @@ stdresiduals = result.getStandardizedResiduals()
 stdresiduals[:5]
 
 # %%
-# We can also get the noise distribution wich is assumed to be gaussian:
+# We can also get the noise distribution which is assumed to be gaussian:
 
 # %%
 result.getNoiseDistribution()

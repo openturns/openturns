@@ -234,12 +234,12 @@ class OpenTURNSPythonFieldFunction:
 
     def getOutputMesh(self):
         """
-        Accessor to the mesh of the ouput field of the function.
+        Accessor to the mesh of the output field of the function.
 
         Returns
         -------
         outputMesh : int
-            The mesh of the ouput field of the function.
+            The mesh of the output field of the function.
         """
         return self.__outputMesh
 
