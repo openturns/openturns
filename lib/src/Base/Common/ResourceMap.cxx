@@ -719,6 +719,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // PiecewiseHermiteEvaluation parameters //
   addAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular", 1.0e-12);
+  addAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation", true);
 
   // PiecewiseLinearEvaluation parameters //
   addAsScalar("PiecewiseLinearEvaluation-EpsilonRegular", 1.0e-12);
