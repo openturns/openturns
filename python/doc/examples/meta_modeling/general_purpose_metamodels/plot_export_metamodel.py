@@ -30,7 +30,6 @@ Y = g(X)
 # Build a chaos metamodel
 algo = ot.FunctionalChaosAlgorithm(X, Y, distribution)
 algo.run()
-assert algo.getResult().getResiduals()[0] < 1e-12
 metamodel = algo.getResult().getMetaModel()
 
 # %%

@@ -73,12 +73,6 @@ int main(int, char *[])
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      Point residualRef(1, 5.57410e-06);
-      assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-4);
-
-      Point relativeErrorRef(1, 9.17605e-12);
-      assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
-
       // Evaluation of the covariance on the X dataset
       CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
@@ -142,12 +136,6 @@ int main(int, char *[])
       KrigingResult result(algo.getResult());
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
-
-      Point residualRef(1, 1.17e-07);
-      assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-5);
-
-      Point relativeErrorRef(1, 1.48e-11);
-      assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
 
       Function metaModel(result.getMetaModel());
       // Get the gradient computed by metamodel

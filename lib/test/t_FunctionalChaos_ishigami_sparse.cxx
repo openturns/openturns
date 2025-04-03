@@ -71,8 +71,6 @@ int main(int, char *[])
     algo.run();
     FunctionalChaosResult result(algo.getResult());
     fullprint << "coeffs = " << result.getCoefficients() << std::endl;
-    fullprint << "residuals = " << result.getResiduals() << std::endl;
-    fullprint << "relative errors = " << result.getRelativeErrors() << std::endl;
   }
   return ExitCode::Success;
 }

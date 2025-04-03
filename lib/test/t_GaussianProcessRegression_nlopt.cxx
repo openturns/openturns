@@ -70,8 +70,6 @@ int main(int, char *[])
       algo.run();
       GaussianProcessRegressionResult result(algo.getResult());
       assert_almost_equal(result.getMetaModel()(inputTrain), outputTrain);
-      assert_almost_equal(result.getResiduals(), {1.32804e-07}, 1e-3, 1e-3);
-      assert_almost_equal(result.getRelativeErrors(), {5.20873e-21});
 
       // Prediction accuracy
       const Point point = {7.5};

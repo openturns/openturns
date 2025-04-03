@@ -91,10 +91,6 @@ int main(int, char *[])
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << adaptiveStrategy << std::endl;
         fullprint << algo.getProjectionStrategy() << std::endl;
-        Point residuals(result.getResiduals());
-        fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
-        Point relativeErrors(result.getRelativeErrors());
-        fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
 
         // Post-process the results
         FunctionalChaosRandomVector vector(result);

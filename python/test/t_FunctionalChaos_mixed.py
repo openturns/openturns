@@ -36,8 +36,6 @@ algo = ot.FunctionalChaosAlgorithm(
 )
 algo.run()
 result = algo.getResult()
-print(result.getRelativeErrors())
-assert result.getRelativeErrors()[0] < 1e-10, "relative error too high"
 assert (
     algo.getResult().getMetaModel().getOutputDescription() == y.getDescription()
 ), "wrong output description"

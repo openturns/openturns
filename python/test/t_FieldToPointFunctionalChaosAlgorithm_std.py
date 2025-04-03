@@ -82,10 +82,14 @@ fhat_xm = metamodel(xm)
 print("f^(xm)=", fhat_xm)
 ott.assert_almost_equal(fhat_xm, [1.09018], 1e-3, 1e-3)
 
-# test residual
-residuals = result.getFCEResult().getResiduals()
-print("residuals", residuals)
-assert residuals.norm() < 5e-3, "residual too large"
+# test MSE
+resultFCE = result.getFCEResult()
+xFCE = resultFCE.getInputSample()
+yFCE = resultFCE.getOutputSample()
+validation = ot.MetaModelValidation(yFCE, resultFCE.getMetaModel()(xFCE))
+mse = validation.computeMeanSquaredError()
+print("MSE", mse)
+assert mse.norm() < 1e-2, "MSE too large"
 
 # check modes retained
 kl_results = result.getInputKLResultCollection()
@@ -99,10 +103,14 @@ algo.setBlockIndices(blockIndices)
 algo.run()
 result = algo.getResult()
 
-# test residual
-residuals = result.getFCEResult().getResiduals()
-print("residuals", residuals)
-assert residuals.norm() < 5e-3, "residual too large"
+# test MSE
+resultFCE = result.getFCEResult()
+xFCE = resultFCE.getInputSample()
+yFCE = resultFCE.getOutputSample()
+validation = ot.MetaModelValidation(yFCE, resultFCE.getMetaModel()(xFCE))
+mse = validation.computeMeanSquaredError()
+print("MSE", mse)
+assert mse.norm() < 1e-2, "MSE too large"
 
 # check modes retained
 kl_results = result.getInputKLResultCollection()

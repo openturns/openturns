@@ -77,10 +77,6 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print(algo.getAdaptiveStrategy())
         print(algo.getProjectionStrategy())
         # print "coefficients=", result.getCoefficients()
-        residuals = result.getResiduals()
-        print("residuals=", residuals)
-        relativeErrors = result.getRelativeErrors()
-        print("relativeErrors=", relativeErrors)
         isLeastSquaresPCE = result.isLeastSquares()
         assert isLeastSquaresPCE
         involvesModelSelectionPCE = result.involvesModelSelection()
