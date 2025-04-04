@@ -334,6 +334,8 @@ Bibliography
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
     `pdf <https://www.asc.ohio-state.edu/statistics/comp_exp/jour.club/McKayConoverBeckman.pdf>`__
+.. [meeker2017] Meeker, W. Q. Hahn, G. J., and Escobar, L.A. (2017).
+    *Statistical intervals : a guide for practitioners and researchers*, John Wiley & Sons
 .. [melchers1990] Melchers, R. E. (1990).
     *Radial importance sampling for structural reliability.* Journal of engineering mechanics, 116(1), 189-203.
 .. [minka2012] Thomas P. Minka,
