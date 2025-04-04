@@ -21,3 +21,17 @@ for x in X:
     print("f( %.12g )=" % x[0], evaluation(x), ", ref=", ref(x))
 Y = evaluation(X)
 print(Y)
+
+# Test exception enableExtrapolation
+locations = [1.0, 2.0, 3.0, 4.0, 5.0]
+values = [-2.0, 2.0, 1.0, 3.0, 5.0]
+derivatives = [0.0]*5
+evaluation = ot.PiecewiseHermiteEvaluation(locations, values, derivatives)
+evaluation.setEnableExtrapolation(False)
+f = ot.Function(evaluation)
+try:
+    f([-12.5])
+except Exception:
+    pass
+else:
+    raise ValueError("test fails because no exception was raised")

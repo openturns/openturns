@@ -336,7 +336,8 @@ void PiecewiseLinearEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
-  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  if (adv.hasAttribute("enableExtrapolation_"))
+    adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 

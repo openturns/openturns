@@ -364,7 +364,8 @@ void PiecewiseHermiteEvaluation::save(Advocate & adv) const
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
   adv.saveAttribute( "derivatives_", derivatives_ );
-  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  if (adv.hasAttribute("enableExtrapolation_"))
+    adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 
