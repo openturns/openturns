@@ -91,6 +91,7 @@ The CDF is computed using several algorithms, depending on the dimension of the 
   *Student-MinimumNumberOfPoints* and *Student-MaximumNumberOfPoints* entries
   of :class:`~openturns.ResourceMap`.
 
+
 Examples
 --------
 Create a distribution:

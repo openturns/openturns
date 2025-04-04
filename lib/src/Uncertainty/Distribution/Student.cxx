@@ -239,7 +239,7 @@ Scalar Student::computeCDF(const Point & point) const
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
     const Scalar a = ResourceMap::GetAsScalar("Student-CDFScaleFactor");
-    return DistributionImplementation::computeCDFUnimodal(point, mean_, a * sigma_);
+    return DistributionImplementation::computeCDFUnimodal(point, mean_, a * sigma_, IteratedQuadrature(), std::pow(cdfEpsilon_, 1.0 / dimension_));
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");

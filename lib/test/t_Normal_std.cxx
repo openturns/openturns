@@ -264,7 +264,6 @@ int main(int, char *[])
       Matrix chol(distribution.getCholesky());
       Matrix invChol(distribution.getInverseCholesky());
       fullprint << "chol=" << chol << std::endl;
-      fullprint << "invchol=" << invChol << std::endl;
       fullprint << "chol*t(chol)=" << (chol * chol.transpose()) << std::endl;
       assert_almost_equal((chol * invChol), IdentityMatrix(dim));
       {
