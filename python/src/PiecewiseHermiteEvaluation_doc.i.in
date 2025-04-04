@@ -18,8 +18,8 @@ Notes
 -----
 The evaluation returns constant values for data outside the bounds of the design of experiments.
 Thus, the approximation should not be used outside the range of the design of experiments.
-The possibility of extrapolation can be changed using :meth:`setEnableExtrapolation` (default value is `True`, see :class:`~openturns.ResourceMap`). 
-If this parameter is set to `False`, an error message is retrieved for evaluations outside the design of experiments.
+The possibility of extrapolation can be changed using :meth:`setEnableExtrapolation` (default value is *True*, see :class:`~openturns.ResourceMap`). 
+If this parameter is set to *False*, an error message is retrieved for evaluations outside the design of experiments.
 
 Examples
 --------
@@ -128,7 +128,7 @@ derivative : :class:`~openturns.Point`
 
 Parameters
 ----------
-boolean : :class:`~openturns.Bool`
+enableExtrapolation : bool
     Parameter for extrapolation."
     
 // ---------------------------------------------------------------------
@@ -138,5 +138,5 @@ boolean : :class:`~openturns.Bool`
 
 Returns
 -------
-boolean : :class:`~openturns.Bool`
+enableExtrapolation : bool
     Parameter for extrapolation."
