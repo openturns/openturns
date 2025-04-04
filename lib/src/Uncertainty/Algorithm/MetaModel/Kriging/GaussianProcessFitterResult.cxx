@@ -26,7 +26,6 @@
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

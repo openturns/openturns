@@ -30,8 +30,6 @@ static const Factory<MetaModelResult> Factory_MetaModelResult;
 /* Default constructor */
 MetaModelResult::MetaModelResult()
   : PersistentObject()
-  , residuals_(0)
-  , relativeErrors_(0)
 {
   // Nothing to do
 }
@@ -49,7 +47,12 @@ MetaModelResult::MetaModelResult(const Sample & inputSample,
   , residuals_(residuals)
   , relativeErrors_(relativeErrors)
 {
-  // Nothing to do
+  if (metaModel.getInputDimension() != inputSample.getDimension())
+    throw InvalidArgumentException(HERE) << "The input sample dimension (" << inputSample.getDimension() << ") must match the metamodel input dimension (" << metaModel.getInputDimension() << ")";
+  if (metaModel.getOutputDimension() != outputSample.getDimension())
+    throw InvalidArgumentException(HERE) << "The output sample dimension (" << outputSample.getDimension() << ") must match the metamodel output dimension (" << metaModel.getOutputDimension() << ")";
+  if (inputSample.getSize() != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "The input sample size (" << inputSample.getSize() << ") must match the output sample size (" << outputSample.getSize() << ")";
 }
 
 /* Virtual constructor */
