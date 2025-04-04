@@ -43,7 +43,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Point & values)
   : EvaluationImplementation(),
-    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"))
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation"))
 {
   // Convert the values into a sample
   const UnsignedInteger size = values.getSize();
@@ -57,7 +57,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Sample & values)
   : EvaluationImplementation(),
-    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"))
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation"))
 {
   setLocationsAndValues(locations, values);
 }
@@ -320,14 +320,14 @@ UnsignedInteger PiecewiseLinearEvaluation::getOutputDimension() const
 }
 
 /* enableExtrapolation accessor */
-Bool PiecewiseHermiteEvaluation::getEnableExtrapolation() const
+Bool PiecewiseLinearEvaluation::getEnableExtrapolation() const
 {
   return enableExtrapolation_;
 }
 
-void PiecewiseHermiteEvaluation::setEnableExtrapolation(const Bool & enableExtrapolation)
+void PiecewiseLinearEvaluation::setEnableExtrapolation(const Bool & enableExtrapolation)
 {
-  enableExtrapolation_ = enableApproximation;
+  enableExtrapolation_ = enableExtrapolation;
 }
 
 /* Method save() stores the object through the StorageManager */
