@@ -83,7 +83,7 @@ values : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PiecewiseHermiteEvaluation::setEnableExtrapolation
+%feature("docstring") OT::PiecewiseLinearEvaluation::setEnableExtrapolation
 "Accessor to the parameters allowing extrapolation outside the design of experiments.
 
 Parameters
@@ -93,7 +93,7 @@ enableExtrapolation : bool
     
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::PiecewiseHermiteEvaluation::getEnableExtrapolation
+%feature("docstring") OT::PiecewiseLinearEvaluation::getEnableExtrapolation
 "Accessor to the parameters allowing extrapolation outside the design of experiments.
 
 Returns
