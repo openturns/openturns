@@ -20,16 +20,11 @@
  */
 #include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/Curve.hxx"
-#include <unordered_map>
-#include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/LinearEnumerateFunction.hxx"
-#include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
-#include "openturns/NormInfEnumerateFunction.hxx"
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/Basis.hxx"
 
@@ -67,7 +62,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     const FunctionCollection & Psi_k,
     const Point & residuals,
     const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, Function(), residuals, relativeErrors)
+  : MetaModelResult(inputSample, outputSample, ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension())), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
