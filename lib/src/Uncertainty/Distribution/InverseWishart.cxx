@@ -38,7 +38,6 @@ InverseWishart::InverseWishart()
 {
   setName("InverseWishart");
   setV(CovarianceMatrix(1));
-  computeRange();
   update();
 }
 
@@ -182,6 +181,47 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const UnsignedInteger p = cholesky_.getDimension();
+  if (p == 1)
+    {
+      const Scalar m00 = m(0, 0);
+      if (m00 <= 0.0) return SpecFunc::LowestScalar;
+      const Scalar c00 = cholesky_(0, 0);
+      return -0.5 * ((nu_ + 2.0) * std::log(m00) + c00 * c00 / m00) + logNormalizationFactor_;
+    }
+  if (p == 2)
+    {
+      const Scalar m00 = m(0, 0);
+      if (m00 <= 0.0) return SpecFunc::LowestScalar;
+      const Scalar m10 = m(1, 0);
+      const Scalar m11 = m(1, 1);
+      const Scalar mixed = m00 * m11 - m10 * m10;
+      if (mixed <= 0.0) return SpecFunc::LowestScalar;
+      const Scalar c00 = cholesky_(0, 0);
+      const Scalar c10 = cholesky_(1, 0);
+      const Scalar c11 = cholesky_(1, 1);
+      return -0.5 * ((nu_ + 3.0) * std::log(mixed) + (c00 * c00 * m11 - 2.0 * c00 * c10 * m10 + m00 * (c10 * c10 + c11 * c11)) / mixed) + logNormalizationFactor_;
+    }
+  if (p == 3)
+    {
+      const Scalar m00 = m(0, 0);
+      if (m00 <= 0.0) return SpecFunc::LowestScalar;
+      const Scalar m10 = m(1, 0);
+      const Scalar m11 = m(1, 1);
+      const Scalar mixed = m00 * m11 - m10 * m10;
+      if (mixed <= 0.0) return SpecFunc::LowestScalar;
+      const Scalar m20 = m(2, 0);
+      const Scalar m21 = m(2, 1);
+      const Scalar m22 = m(2, 2);
+      const Scalar mixed2 = mixed * m22 - m00 * m21 * m21 + 2.0 * m10 * m20 * m21 - m11 * m20 * m20;
+      if (mixed2 <= 0.0) return SpecFunc::LowestScalar;
+      const Scalar c00 = cholesky_(0, 0);
+      const Scalar c10 = cholesky_(1, 0);
+      const Scalar c20 = cholesky_(2, 0);
+      const Scalar c11 = cholesky_(1, 1);
+      const Scalar c21 = cholesky_(2, 1);
+      const Scalar c22 = cholesky_(2, 2);
+      return -0.5 * ((nu_ + 4.0) * std::log(mixed2) + (((c20 * c20 + c21 * c21 + c22 * c22) * m11 + (-2.0 * c10 * c20 - 2.0 * c11 * c21) * m21 + m22 * (c10 * c10 + c11 * c11)) * m00 + (-c20 * c20 - c21 * c21 - c22 * c22) * m10 * m10 + ((2.0 * c10 * c20 + 2.0 * c11 * c21) * m20 + 2.0 * c00 * (-c10 * m22 + c20 * m21)) * m10 + (-c10 * c10 - c11 * c11) * m20 * m20 + 2.0 * c00 * (c10 * m21 - c20 * m11) * m20 - c00 * c00 * (-m22 * m11 + m21 * m21)) / ((m22 * m11 - m21 *m21) * m00 - m11 * m20 * m20 + 2.0 * m10 * m20 * m21 - m10 * m10 * m22)) + logNormalizationFactor_;
+    }
   try
   {
     // If the Cholesky factor is not defined, it means that M is not symmetric positive definite (an exception is thrown) and the PDF is zero
@@ -196,7 +236,12 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
     // Trace(V M^{-1}) = Trace(C C' X'^{-1} X^{-1}) = Trace(C'X'^{-1} X^{-1}C)
     //                 = Trace(A'A) with A = X^{-1}C
     const TriangularMatrix A(X.solveLinearSystemInPlace(cholesky_).getImplementation());
-    logPDF -= 0.5 * A.computeGram(true).computeTrace();
+    for (UnsignedInteger j = 0; j < p; ++j)
+      for (UnsignedInteger i = j; i < p; ++i)
+	{
+	  const Scalar aij = A(i, j);
+	  logPDF -= 0.5 * aij * aij;
+	}
     return logPDF;
   }
   catch (...)
@@ -209,11 +254,8 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 Scalar InverseWishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  if (point[0] < getRange().getLowerBound()[0])
-    return 0.0;
-  if (point[0] > getRange().getUpperBound()[0])
-    return 1.0;
-  return DistributionImplementation::computeCDF(point);
+  const Scalar a = ResourceMap::GetAsScalar("InverseWishart-CDFScaleFactor");
+  return DistributionImplementation::computeCDFUnimodal(point, getMean(), a * getStandardDeviation());
 }
 
 /* Compute the mean of the distribution */
@@ -376,11 +418,12 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   {
     throw InvalidArgumentException(HERE) << "Error: V must be positive definite";
   }
-  const TriangularMatrix T(cholesky_.solveLinearSystem(IdentityMatrix(p)).getImplementation());
+  const TriangularMatrix T(cholesky_.inverse().getImplementation());
   // vInverse = T'.T, non const because we compute its Cholesky factor
   CovarianceMatrix vInverse(T.computeGram(true));
   // Flag false means that vInverse is not preserved, non const because we solve a linear system with this matrix
   TriangularMatrix vInverseCholesky(vInverse.computeCholeskyInPlace());
+  // Keep this as we don't have an in-place inverse
   inverseCholeskyInverse_ = vInverseCholesky.solveLinearSystemInPlace(IdentityMatrix(p)).getImplementation();
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;

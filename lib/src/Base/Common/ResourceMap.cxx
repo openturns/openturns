@@ -1156,9 +1156,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("PointConditionalDistribution-InitializeSampling", true);
   addAsBool("PointConditionalDistribution-InitializeTransformation", true);
   addAsBool("PointConditionalDistribution-UseSimplifiedVersion", true);
-  addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre");
+  addAsBool("PointConditionalDistribution-UseGenericConditionalMethods", true);
+  addAsString("PointConditionalDistribution-CubaAlgorithm", "cuhre", {"cuhre", "divonne", "suave", "vegas"});
   addAsString("PointConditionalDistribution-OptimizationAlgorithm", "Cobyla");
-  addAsString("PointConditionalDistribution-RangeAdaptationMethod", "Rank");
+  addAsString("PointConditionalDistribution-RangeAdaptationMethod", "NormalCopula", {"None", "Normal", "NormalCopula"});
   addAsUnsignedInteger("PointConditionalDistribution-RatioUniformCandidateNumber", 10000);
   addAsUnsignedInteger("PointConditionalDistribution-SmallDimension", 6);
 
@@ -1244,6 +1245,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // InverseNormalFactory parameters //
   addAsString("InverseNormalFactory-Method", "MLE", {"MLE", "Moments"});
+
+  // InverseWishart parameters //
+  addAsScalar("InverseWishart-CDFScaleFactor", 0.5);
 
   // KernelMixture parameters //
   addAsUnsignedInteger("KernelMixture-LargeSize", 20);
@@ -1331,6 +1335,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("TruncatedNormalFactory-SigmaLowerBound", 1.0e-4);
 
   // TruncatedOverMesh parameters //
+  addAsBool("TruncatedOverMesh-UseRejection", false);
   addAsString("TruncatedOverMesh-OptimizationAlgorithm", "TNC");
   addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
@@ -1370,6 +1375,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Student parameters //
   addAsScalar("Student-MinimumCDFEpsilon", 5.0e-2);
+  addAsScalar("Student-CDFScaleFactor", 4.0);
   addAsUnsignedInteger("Student-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Student-MaximumNumberOfPoints", 10000000);
   addAsUnsignedInteger("Student-MinimumNumberOfPoints", 100000);
@@ -1401,6 +1407,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("VonMisesFactory-RelativePrecision", 1.0e-12);
   addAsScalar("VonMisesFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("VonMisesFactory-MaximumIteration", 10);
+
+  // Wishart parameters //
+  addAsScalar("Wishart-CDFScaleFactor", 0.5);
 
   // AliMikhailHaqCopulaFactory parameters //
   addAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14);
@@ -1635,6 +1644,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);
   addAsUnsignedInteger("Distribution-DefaultLevelNumber", 10);
   addAsUnsignedInteger("Distribution-DefaultPointNumber", 129);
+  addAsUnsignedInteger("Distribution-DefaultCDFIteration", 10000);
   addAsUnsignedInteger("Distribution-DefaultQuantileIteration", 100);
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);

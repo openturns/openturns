@@ -777,21 +777,20 @@ Distribution MaximumEntropyOrderStatisticsDistribution::getMarginal(const Indice
 {
   const UnsignedInteger size = indices.getSize();
   if (size == 1) return getMarginal(indices[0]);
+  const UnsignedInteger dimension = getDimension();
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
+  if (!indices.isIncreasing()) return DistributionImplementation::getMarginal(indices);
+  // Here we know that if the size is equal to the dimension, the indices are [0,...,dimension-1]
+  if (size == dimension) return *this;
   return getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices).clone();
 }
 
 MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribution::getMarginalAsMaximumEntropyOrderStatisticsDistribution(const Indices & indices) const
 {
-  const UnsignedInteger size = indices.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "indices must be of size at least 2";
-  const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
-  if (!indices.isIncreasing()) throw InvalidArgumentException(HERE) << "Cannot take the marginal distribution of an order statistics distribution with nonincreasing indices.";
-  // Here we know that if the size is equal to the dimension, the indices are [0,...,dimension-1]
-  if (size == dimension) return *this;
   // This call will check that indices are correct
   DistributionCollection marginalDistributions(distributionCollection_.select(indices));
   Collection<PiecewiseHermiteEvaluation> marginalExponentialFactorApproximation(0);
+  const UnsignedInteger size = indices.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger j = indices[i];
