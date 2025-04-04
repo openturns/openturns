@@ -336,8 +336,7 @@ void PiecewiseLinearEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
-  if (adv.hasAttribute("enableExtrapolation_"))
-    adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 
@@ -348,6 +347,8 @@ void PiecewiseLinearEvaluation::load(Advocate & adv)
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
   adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  if (adv.hasAttribute("enableExtrapolation_"))
+    adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
   isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
 }
 

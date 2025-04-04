@@ -364,8 +364,7 @@ void PiecewiseHermiteEvaluation::save(Advocate & adv) const
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
   adv.saveAttribute( "derivatives_", derivatives_ );
-  if (adv.hasAttribute("enableExtrapolation_"))
-    adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 
@@ -376,7 +375,9 @@ void PiecewiseHermiteEvaluation::load(Advocate & adv)
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
   adv.loadAttribute( "derivatives_", derivatives_ );
-  adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  if (adv.hasAttribute("enableExtrapolation_"))
+    adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
+
   isRegular_ = PiecewiseLinearEvaluation::IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular"));
 }
 
