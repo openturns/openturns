@@ -41,10 +41,9 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
-    const Point & values,
-    const Bool enableExtrapolation)
+    const Point & values)
   : EvaluationImplementation(),
-    enableExtrapolation_(enableExtrapolation)
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"))
 {
   // Convert the values into a sample
   const UnsignedInteger size = values.getSize();
@@ -56,10 +55,9 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
 
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
-    const Sample & values,
-    const Bool enableExtrapolation)
+    const Sample & values)
   : EvaluationImplementation(),
-    enableExtrapolation_(enableExtrapolation)
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"))
 {
   setLocationsAndValues(locations, values);
 }
@@ -149,7 +147,7 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the design of experiments=" << locations_[iLeft];
+       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
     }
   }
   
@@ -162,7 +160,7 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the design of experiments=" << values_[iRight];
+       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
     }
   }
   iLeft = FindSegmentIndex(locations_, x, 0, isRegular_);
@@ -200,7 +198,7 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
       }
       else
       {
-        throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the design of experiments=" << locations_[0];
+        throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[0];
       }
     }
     
@@ -214,7 +212,7 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
       }
       else
       {
-        throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the design of experiments=" << locations_[iRight];
+        throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
       }
     }
     iLeft = FindSegmentIndex(locations_, x, iLeft, isRegular_);
@@ -321,6 +319,16 @@ UnsignedInteger PiecewiseLinearEvaluation::getOutputDimension() const
   return values_.getDimension();
 }
 
+/* enableExtrapolation accessor */
+Bool PiecewiseHermiteEvaluation::getEnableExtrapolation() const
+{
+  return enableExtrapolation_;
+}
+
+void PiecewiseHermiteEvaluation::setEnableExtrapolation(const Bool & enableExtrapolation)
+{
+  enableExtrapolation_ = enableApproximation;
+}
 
 /* Method save() stores the object through the StorageManager */
 void PiecewiseLinearEvaluation::save(Advocate & adv) const
@@ -328,6 +336,7 @@ void PiecewiseLinearEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
+  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 
@@ -337,6 +346,7 @@ void PiecewiseLinearEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
+  adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
   isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
 }
 

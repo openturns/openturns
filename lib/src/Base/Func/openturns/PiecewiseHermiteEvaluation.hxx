@@ -43,14 +43,12 @@ public:
   /** Parameter constructor */
   PiecewiseHermiteEvaluation(const Point & locations,
                              const Point & values,
-                             const Point & derivatives,
-                             const Bool enableExtrapolation = ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"));
+                             const Point & derivatives);
 
   /** Parameter constructor */
   PiecewiseHermiteEvaluation(const Point & locations,
                              const Sample & values,
-                             const Sample & derivatives,
-                             const Bool enableExtrapolation = ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"));
+                             const Sample & derivatives);
   
   /** Virtual constructor */
   PiecewiseHermiteEvaluation * clone() const override;
@@ -70,7 +68,11 @@ public:
   /** Locations accessor */
   Point getLocations() const;
   void setLocations(const Point & locations);
-
+  
+  /** enableExtrapolation accessor */
+  Bool getEnableExtrapolation() const;
+  void setEnableExtrapolation(const Bool & enableExtrapolation);
+  
   /** Values accessor */
   Sample getValues() const;
   void setValues(const Sample & values);

@@ -9,8 +9,6 @@ values : 1-d or 2-d sequence of float
     Values at each location
 derivatives : 1-d or 2-d sequence of float
     Derivatives at each location
-enableExtrapolation : boolean, optional
-    Boolean that enables extrapolation of the model outside the design of experiments, default value is True.
 
 See also
 --------
@@ -20,6 +18,8 @@ Notes
 -----
 The evaluation returns constant values for data outside the bounds of the design of experiments.
 Thus, the approximation should not be used outside the range of the design of experiments.
+The possibility of extrapolation can be changed using :meth:`setEnableExtrapolation` (default value is `True`, see :class:`~openturns.ResourceMap`). 
+If this parameter is set to `False`, an error message is retrieved for evaluations outside the design of experiments.
 
 Examples
 --------
@@ -91,7 +91,7 @@ Parameters
 ----------
 derivatives : :class:`~openturns.Sample`
     Derivatives of the function at the locations."
-
+        
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives
@@ -120,3 +120,23 @@ Returns
 -------
 derivative : :class:`~openturns.Point`
     The derivative of the function at the given point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::setEnableExtrapolation
+"Accessor to the parameters allowing extrapolation outside the design of experiments.
+
+Parameters
+----------
+boolean : :class:`~openturns.Bool`
+    Parameter for extrapolation."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PiecewiseHermiteEvaluation::getEnableExtrapolation
+"Accessor to the parameters allowing extrapolation outside the design of experiments.
+
+Returns
+-------
+boolean : :class:`~openturns.Bool`
+    Parameter for extrapolation."
