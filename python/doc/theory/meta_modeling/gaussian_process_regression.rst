@@ -1,20 +1,20 @@
-.. _kriging:
+.. _gaussian_process_regression:
 
-Kriging
--------
+Gaussian process regression
+---------------------------
 
-Kriging (also known as Gaussian process regression) is a Bayesian
+Gaussian process regression (also known as Kriging) is a Bayesian
 technique that aim at approximating functions (most often in order to
 surrogate it because it is expensive to evaluate). In the following it
 is assumed we aim at creating a surrogate model of a scalar-valued model
 :math:`\cM: \vect{x} \mapsto y`. Note the implementation of
-Kriging deals with vector-valued functions
+Gaussian process regression deals with vector-valued functions
 (:math:`\cM: \vect{x} \mapsto \vect{y}`), without simply looping over
 each output. It is also assumed the model is obtained over a design of
 experiments in order to produce a set of observations gathered in the
 following dataset:
 :math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
-Ultimately Kriging aims at producing a predictor (also known as a
+Ultimately Gaussian process regression aims at producing a predictor (also known as a
 response surface or metamodel) denoted as :math:`\tilde{\cM}`.
 
 We put the following Gaussian process prior on the model :math:`\cM`:
@@ -78,7 +78,7 @@ is the observations’ correlation matrix, and:
 is the vector of cross-correlations between the prediction and the
 observations.
 
-As such, the Kriging predictor is defined as the following conditional
+As such, the GP predictor is defined as the following conditional
 distribution:
 
 .. math:: \tilde{Y}(\vect{x}) = \left[Y(\vect{x}) \mid \vect{Y} = \vect{y}, \vect{\theta}=\vect{\theta}^*, \sigma^2=(\sigma^2)^*\right]
@@ -119,11 +119,9 @@ It can be shown (see references) that the predictor
 
    .. math:: \vect{u}(\vect{x}) = \Tr{\mat{F}} \mat{R}^{-1} \vect{r}(\vect{x}) - \vect{f}(\vect{x})
 
-Kriging may also be referred to as *Gaussian process regression*.
-
-
 .. topic:: API:
 
+    - See :class:`~openturns.experimental.GaussianProcessRegression`
     - See :class:`~openturns.KrigingAlgorithm`
 
 

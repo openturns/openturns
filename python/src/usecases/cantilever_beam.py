@@ -48,6 +48,9 @@ class CantileverBeam:
     independentDistribution : :class:`~openturns.JointDistribution`
         The joint distribution of the parameters with independent copula.
 
+    data : :class:`~openturns.Sample`
+        Sample of the input distribution
+
     Examples
     --------
     >>> from openturns.usecases import cantilever_beam
@@ -95,3 +98,5 @@ class CantileverBeam:
         self.independentDistribution = ot.JointDistribution(
             [self.E, self.F, self.L, self.II]
         )
+
+        self.data = self.distribution.getSample(100)
