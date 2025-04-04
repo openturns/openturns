@@ -39,14 +39,10 @@ GaussianProcessRegressionResult::GaussianProcessRegressionResult()
 /* Constructor with parameters  */
 GaussianProcessRegressionResult::GaussianProcessRegressionResult(const GaussianProcessFitterResult & result,
     const Sample & covarianceCoefficients)
-  : gpfResult_(result),
-    covarianceCoefficients_(covarianceCoefficients)
+  : MetaModelResult(result.getInputSample(), result.getOutputSample(), result.getMetaModel(), result.getResiduals(), result.getRelativeErrors())
+  , gpfResult_(result)
+  , covarianceCoefficients_(covarianceCoefficients)
 {
-  setInputSample(result.getInputSample());
-  setOutputSample(result.getOutputSample());
-  setMetaModel(result.getMetaModel());
-  setResiduals(result.getResiduals());
-  setRelativeErrors(result.getRelativeErrors());
   const UnsignedInteger size = covarianceCoefficients.getSize();
   if (size != getInputSample().getSize())
     throw InvalidArgumentException(HERE) << "In GaussianProcessRegressionResult::GaussianProcessRegressionResult, covariance coefficients has incorrect size. Expected size = " << getInputSample().getSize() << ", covariance coefficients size = " << size;
