@@ -44,7 +44,8 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation()
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
     const Point & values,
     const Point & derivatives)
-  : EvaluationImplementation()
+  : EvaluationImplementation(),
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"))
 {
   const UnsignedInteger sizeValues = values.getSize();
   SampleImplementation sampleValues(sizeValues, 1);
@@ -52,6 +53,7 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
   const UnsignedInteger sizeDerivatives = derivatives.getSize();
   SampleImplementation sampleDerivatives(sizeDerivatives, 1);
   sampleDerivatives.setData(derivatives);
+
   // Check the input
   setLocationsValuesAndDerivatives(locations, sampleValues, sampleDerivatives);
 }
@@ -61,7 +63,8 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
     const Sample & values,
     const Sample & derivatives)
-  : EvaluationImplementation()
+  : EvaluationImplementation(),
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseHermiteEvaluation-DefaultEnableExtrapolation"))
 {
   // Check the input
   setLocationsValuesAndDerivatives(locations, values, derivatives);
@@ -99,9 +102,31 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  if (x <= locations_[iLeft]) return values_[iLeft];
+  if (x <= locations_[iLeft]) 
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iLeft];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
+    }
+  }
+
   const UnsignedInteger iRight = locations_.getSize() - 1;
-  if (x >= locations_[iRight]) return values_[iRight];
+  if (x >= locations_[iRight])
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iRight];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
+    }
+  }
+
   iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
@@ -129,14 +154,30 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     const Scalar x = inSample(i, 0);
     if (x <= locations_[0])
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
-      continue;
+      if (enableExtrapolation_)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+        continue;
+      }
+      else
+      {
+        throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[0];
+      }
     }
+    
     if (x >= locations_[iRight])
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
-      continue;
+      if (enableExtrapolation_)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+        continue;
+      }
+      else
+      {
+        throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
+      }
     }
+    
     iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, iLeft, isRegular_);
 
     const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
@@ -156,9 +197,32 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   if (values_.getSize() == 1) return Point(values_.getDimension());;
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  if (x <= locations_[iLeft]) return values_[iLeft];
+  
+  if (x <= locations_[iLeft]) 
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iLeft];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
+    }
+  }
+  
+  
   UnsignedInteger iRight = locations_.getSize() - 1;
-  if (x >= locations_[iRight]) return values_[iRight];
+  if (x >= locations_[iRight])
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iRight];
+    }
+    else
+    {
+      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
+    }
+  }
   iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
@@ -222,6 +286,18 @@ void PiecewiseHermiteEvaluation::setValues(const Sample & values)
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   values_ = values;
 }
+
+/* enableExtrapolation accessor */
+Bool PiecewiseHermiteEvaluation::getEnableExtrapolation() const
+{
+  return enableExtrapolation_;
+}
+
+void PiecewiseHermiteEvaluation::setEnableExtrapolation(const Bool & enableExtrapolation)
+{
+  enableExtrapolation_ = enableExtrapolation;
+}
+ 
 
 /* Derivatives accessor */
 Sample PiecewiseHermiteEvaluation::getDerivatives() const
@@ -288,6 +364,7 @@ void PiecewiseHermiteEvaluation::save(Advocate & adv) const
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
   adv.saveAttribute( "derivatives_", derivatives_ );
+  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 
@@ -298,6 +375,9 @@ void PiecewiseHermiteEvaluation::load(Advocate & adv)
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
   adv.loadAttribute( "derivatives_", derivatives_ );
+  if (adv.hasAttribute("enableExtrapolation_"))
+    adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
+
   isRegular_ = PiecewiseLinearEvaluation::IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular"));
 }
 
