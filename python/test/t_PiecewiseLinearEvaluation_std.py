@@ -17,7 +17,7 @@ print("evaluation=", evaluation)
 for i in range(2 * size):
     x = [-1.0 + 12.0 * i / (2.0 * size - 1.0)]
     print("f( %.12g )=" % x[0], evaluation(x), ", ref=", ref(x))
-    
+
 # Test exception enableExtrapolation
 locations = [1.0, 2.0, 3.0, 4.0, 5.0]
 values = [-2.0, 2.0, 1.0, 3.0, 5.0]

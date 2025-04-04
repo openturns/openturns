@@ -25,7 +25,7 @@ print(Y)
 # Test exception enableExtrapolation
 locations = [1.0, 2.0, 3.0, 4.0, 5.0]
 values = [-2.0, 2.0, 1.0, 3.0, 5.0]
-derivatives = [0.0]*5
+derivatives = [0.0] * 5
 evaluation = ot.PiecewiseHermiteEvaluation(locations, values, derivatives)
 evaluation.setEnableExtrapolation(False)
 f = ot.Function(evaluation)
