@@ -126,7 +126,7 @@ def linearSample(xmin, xmax, npoints):
     rg = ot.RegularGrid(xmin, step, npoints)
     vertices = rg.getVertices()
     return vertices
-   
+
 
 # %%
 def plotMyBasicGPR(
@@ -225,7 +225,7 @@ view = viewer.View(graph)
 
 # %%
 # Active learning Gaussian Process Regressor to sequentially add new points
-# ------------------------------------------------------
+# -------------------------------------------------------------------------
 
 # %%
 # To sequentially add the new points, the "U criterion" is used.
