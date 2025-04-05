@@ -41,6 +41,9 @@ class OT_API GaussianLinearCalibration
   : public CalibrationAlgorithmImplementation
 {
   CLASSNAME
+
+  friend class GaussianNonLinearCalibration;
+
 public:
 
   /** Default constructor */
@@ -103,6 +106,15 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  static Matrix ComputeDesignMatrix(const UnsignedInteger parameterDimension,
+                                const UnsignedInteger outputDimension,
+                                const UnsignedInteger size,
+                                const Distribution & parameterPrior,
+                                const Matrix & gradientObservations,
+                                const Bool globalErrorCovariance,
+                                const CovarianceMatrix & errorCovariance,
+                                TriangularMatrix & errorInverseCholesky);
+
   /* The model observations */
   Sample modelObservations_;
 

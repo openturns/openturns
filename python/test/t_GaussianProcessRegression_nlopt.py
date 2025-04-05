@@ -38,8 +38,6 @@ def test_one_input_one_output():
     algo.run()
     result = algo.getResult()
     ott.assert_almost_equal(result.getMetaModel()(X), Y)
-    ott.assert_almost_equal(result.getResiduals(), [1.32804e-07], 1e-3, 1e-3)
-    ott.assert_almost_equal(result.getRelativeErrors(), [5.20873e-21])
 
     # Prediction accuracy
     ott.assert_almost_equal(result.getMetaModel()([7.5]), f([7.5]), 0.3, 0.0)

@@ -345,11 +345,8 @@ algo = ot.FunctionalChaosAlgorithm(inputDesignPCE, outputDesignPCE, m.inputDistr
 
 algo.run()
 result = algo.getResult()
-print(result.getResiduals())
-print(result.getRelativeErrors())
 
 # %%
-# The relative errors are low : this indicates that the PCE model has good accuracy.
 # Then, we exploit the surrogate model to compute the Sobol' indices.
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
 sensitivityAnalysis

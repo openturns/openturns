@@ -11,8 +11,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.00527094,0.032434]
-relative errors= [0.0107646,0.0196503]
 output= 0
 mean= 0.99922 absolute error=7.78430e-04
 variance=0.64968 absolute error=8.75764e-03
@@ -66,8 +64,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0042755,0.0248146]
-relative errors= [0.00708265,0.0115022]
 output= 0
 mean= 0.99342 absolute error=6.57762e-03
 variance=0.63987 absolute error=1.85655e-02

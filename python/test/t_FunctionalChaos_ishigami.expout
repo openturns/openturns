@@ -11,8 +11,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0313673]
-relativeErrors= [0.0178023]
 mean=3.46342005 absolute error=0.0365799482
 variance=13.50334313 absolute error=0.3412448109
 Sobol index 0 = 0.31585299 absolute error=0.0019477974
@@ -82,8 +80,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.032434]
-relativeErrors= [0.0196503]
 mean=3.54042934 absolute error=0.0404293402
 variance=13.37475093 absolute error=0.4698370155
 Sobol index 0 = 0.31288968 absolute error=0.0010155152
@@ -154,8 +150,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0290505]
-relativeErrors= [0.0154051]
 mean=3.52113827 absolute error=0.0211382679
 variance=13.62209540 absolute error=0.2224925455
 Sobol index 0 = 0.31794192 absolute error=0.0040367337
@@ -226,8 +220,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0241084]
-relativeErrors= [0.0105163]
 mean=3.45801565 absolute error=0.0419843459
 variance=13.83830987 absolute error=0.0062780708
 Sobol index 0 = 0.30611627 absolute error=0.0077889249
@@ -305,8 +297,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0248146]
-relativeErrors= [0.0115022]
 mean=3.48612447 absolute error=0.0138755275
 variance=14.20287519 absolute error=0.3582872529
 Sobol index 0 = 0.30217019 absolute error=0.0117349971
@@ -384,8 +374,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.024718]
-relativeErrors= [0.0111528]
 mean=3.52947075 absolute error=0.0294707509
 variance=13.72885940 absolute error=0.1157285436
 Sobol index 0 = 0.31135035 absolute error=0.0025548383

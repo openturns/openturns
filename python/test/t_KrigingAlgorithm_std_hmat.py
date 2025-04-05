@@ -38,8 +38,6 @@ def test_one_input_one_output():
     result = algo.getResult()
 
     ott.assert_almost_equal(result.getMetaModel()(X), Y, 1e-2)
-    ott.assert_almost_equal(result.getResiduals(), [0.0], 0.0, 1e-2)
-    ott.assert_almost_equal(result.getRelativeErrors(), [0.0], 0.0, 1e-5)
 
     # Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(X)
