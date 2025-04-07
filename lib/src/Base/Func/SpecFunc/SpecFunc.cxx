@@ -47,11 +47,7 @@
 #include <boost/multiprecision/mpfr.hpp>
 #endif
 
-#if (BOOST_VERSION >= 105600)
-
 #include <boost/math/special_functions/bessel_prime.hpp>
-
-#endif
 
 #else
 
@@ -346,7 +342,7 @@ Scalar SpecFunc::BesselK(const Scalar nu,
 Scalar SpecFunc::BesselKDerivative(const Scalar nu,
                                    const Scalar x)
 {
-#if defined(OPENTURNS_HAVE_BOOST) && (BOOST_VERSION >= 105600)
+#if defined(OPENTURNS_HAVE_BOOST)
   return boost::math::cyl_bessel_k_prime(nu, x);
 #else
   if (x == 0.0) return LowestScalar;
