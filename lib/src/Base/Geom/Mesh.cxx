@@ -1127,13 +1127,7 @@ Mesh Mesh::intersect(const Mesh & other) const
     // fix orientation
     if (boost::geometry::area(tri1) < 0.0)
     {
-#if BOOST_VERSION >= 107000
       boost::geometry::correct(tri1);
-#else
-      // compilation error with old boost 1.67 not worth supporting, just throw
-      // boost/geometry/strategies/within.hpp:80:5: error: no matching function for call to 'assertion_failed<false>(mpl_::failed
-      throw InvalidArgumentException(HERE) << "Simplex orientation at index " << i1 << " is clockwise";
-#endif
     }
 
     for (UnsignedInteger i2 = 0; i2 < other.getSimplicesNumber(); ++ i2)
