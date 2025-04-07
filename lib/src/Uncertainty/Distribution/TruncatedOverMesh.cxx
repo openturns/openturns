@@ -231,12 +231,12 @@ Scalar TruncatedOverMesh::computeProbabilityContinuous(const Interval & interval
       SimplicialCubature integrationAlgorithm;
       const UnsignedInteger setMaximumCallsNumber = ResourceMap::GetAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber");
       integrationAlgorithm.setMaximumCallsNumber(setMaximumCallsNumber);
-      probability = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), intersectionMesh)[0];
+      probability = integrationAlgorithm.integrate(distribution_.getPDF(), intersectionMesh)[0];
     }
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      probability = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+      probability = integrationAlgorithm_.integrate(getPDF(), intersection)[0];
     }
   }
   return probability;
@@ -280,12 +280,12 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
     // integrate the pdf over the simplex via the unit hypercube transformation
     const SimplicialCubature integrationAlgorithm;
     const Mesh simplexMesh(mesh.getSubMesh({i}));
-    probabilities_[i] = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), simplexMesh)[0];
+    probabilities_[i] = integrationAlgorithm.integrate(distribution_.getPDF(), simplexMesh)[0];
 
     // look for pdf maxima over the simplex in the same way
     const Sample simplexVertices(getSimplexVertices(i));
     const Function simplexTransform(new TruncatedOverMeshSimplexTransformationEvaluation(simplexVertices));
-    const ComposedFunction pdfUnitCube(PDFWrapper(distribution_.getImplementation()->clone()), simplexTransform);
+    const ComposedFunction pdfUnitCube(distribution_.getPDF(), simplexTransform);
     OptimizationProblem problem(pdfUnitCube);
     problem.setMinimization(false);
     problem.setBounds(Interval(dimension));

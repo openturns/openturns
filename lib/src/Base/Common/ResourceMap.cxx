@@ -1246,9 +1246,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("InverseNormalFactory-Method", "MLE", {"MLE", "Moments"});
 
   // KernelMixture parameters //
-  addAsUnsignedInteger("KernelMixture-LargeSize", 20);
+  addAsUnsignedInteger("KernelMixture-LargeSize", 50);
   addAsUnsignedInteger("KernelMixture-PDFCDFDiscretization", 1000);
-  addAsUnsignedInteger("KernelMixture-SmallSize", 50);
+  addAsUnsignedInteger("KernelMixture-SmallSize", 20);
 
   // KernelSmoothing parameters //
   addAsScalar("KernelSmoothing-AbsolutePrecision", 0.0);

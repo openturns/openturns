@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -66,6 +67,10 @@ print("Standard representative=", distribution.getStandardRepresentative())
 # Specific to this distribution
 print("left=", distribution.getLeft())
 print("right=", distribution.getRight())
+
+# Probability of an interval
+interval = ot.Interval(-1.0, 2.0)
+ott.assert_almost_equal(distribution.computeProbability(interval), 0.641, 0.01, 0.0)
 
 # For ticket 957
 distribution = ot.Uniform() * ot.Uniform() * ot.Uniform()

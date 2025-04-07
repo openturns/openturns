@@ -139,6 +139,18 @@ String Drawable::getEdgeColor() const
   return getImplementation()->getEdgeColor();
 }
 
+/* Accessor for alpha */
+Scalar Drawable::getAlpha() const
+{
+  return getImplementation()->getAlpha();
+}
+
+void Drawable::setAlpha(const Scalar & alpha)
+{
+  copyOnWrite();
+  getImplementation()->setAlpha(alpha);
+}
+
 /* Accessor for line width */
 Scalar Drawable::getLineWidth() const
 {

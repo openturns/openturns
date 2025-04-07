@@ -108,10 +108,6 @@ public:
   String getColorMap() const;
   void setColorMap(const String & colorMap);
 
-  /** Accessor for alpha */
-  Scalar getAlpha() const;
-  void setAlpha(Scalar alpha);
-
   /** Accessor for norm */
   String getColorMapNorm() const;
   void setColorMapNorm(const String & norm);
@@ -184,9 +180,6 @@ private:
 
   /** Name of the color map */
   String colorMap_;
-
-  /** Transparency of the filling colors */
-  Scalar alpha_;
 
   /** Name of the scale normalization method */
   String norm_;
