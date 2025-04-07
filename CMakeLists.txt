@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 3.13)
+cmake_minimum_required (VERSION 3.18)
 
 # By default, build in Release mode. Must appear before project() command
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
@@ -250,10 +250,6 @@ if (USE_BOOST)
   endif ()
 
   if (Boost_FOUND)
-    if (CMAKE_VERSION VERSION_LESS 3.15)
-      # Boost_VERSION reports the integer BOOST_VERSION from boost/version.hpp instead of x.y.z format
-      set (Boost_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
-    endif ()
     set (OPENTURNS_HAVE_BOOST TRUE)
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES Boost::boost)
     list (APPEND OPENTURNS_ENABLED_FEATURES "boost")
@@ -542,19 +538,12 @@ if (BUILD_PYTHON)
     set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
   endif ()
 
-  if (CMAKE_VERSION VERSION_LESS 3.18)
-    find_package (Python 3.6 COMPONENTS Interpreter Development)
-    if (NOT TARGET Python::Module)
-      include (TargetLinkLibrariesWithDynamicLookup)
-    endif ()
+  option (USE_PYTHON_SABI "Use Python stable ABI" OFF)
+  if (USE_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
+    find_package (Python 3.6 COMPONENTS Interpreter Development.SABIModule)
+    add_library (Python::Module ALIAS Python::SABIModule)
   else ()
-    option (USE_PYTHON_SABI "Use Python stable ABI" OFF)
-    if (USE_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
-      find_package (Python 3.6 COMPONENTS Interpreter Development.SABIModule)
-      add_library (Python::Module ALIAS Python::SABIModule)
-    else ()
-      find_package (Python 3.6 COMPONENTS Interpreter Development.Module)
-    endif ()
+    find_package (Python 3.6 COMPONENTS Interpreter Development.Module)
   endif ()
 
   if (Python_FOUND)
