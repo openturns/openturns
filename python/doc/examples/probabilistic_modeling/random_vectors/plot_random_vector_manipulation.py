@@ -56,12 +56,8 @@ X02.getSample(5)
 # --------------------------------------------------------------
 #
 # We create a random vector using the :class:`~openturns.PythonRandomVector` class, which
-# enables to overload the following methods:
-#
-# - :meth:`~openturns.PythonRandomVector.getRealization`
-# - :meth:`~openturns.PythonRandomVector.getSample`
-# - :meth:`~openturns.PythonRandomVector.getMean`
-# - :meth:`~openturns.PythonRandomVector.getCovariance`
+# enables to overload the following methods: *getRealization*, *getSample*,
+# *getMean* and **getCovariance*.
 #
 # Inherit :class:`~openturns.PythonRandomVector`
 class RVEC(ot.PythonRandomVector):
