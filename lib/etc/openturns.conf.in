@@ -69,10 +69,12 @@
 
   <!-- OT::PiecewiseHermiteEvaluation parameters -->
   <PiecewiseHermiteEvaluation-EpsilonRegular value_float="1.0e-12" />
-  
+  <PiecewiseHermiteEvaluation-DefaultEnableExtrapolation value_bool="true"/>
+   
   <!-- OT::PiecewiseHermiteEvaluation parameters -->
   <PiecewiseLinearEvaluation-EpsilonRegular value_float="1.0e-12" />
-  
+  <PiecewiseLinearEvaluation-DefaultEnableExtrapolation value_bool="true"/>
+    
   <!-- OT::UniVariatePolynomialImplementation parameters -->
   <UniVariatePolynomial-SmallDegree value_int="400" />
 
