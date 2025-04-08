@@ -24,8 +24,7 @@
 #include <cstring>                // for strdup
 
 #ifdef _WIN32
-#include <fstream>                // for ofstream
-#include "openturns/OTwindows.h"            // for GetTempFileName, GetModuleFileName
+#include "openturns/OTwindows.h"  // for GetModuleFileName
 #endif
 
 // Include OTConfig that defines OPENTURNS_HAVE_XXX
@@ -38,16 +37,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/Log.hxx"
 
-
-#ifdef OPENTURNS_ENABLE_CXX17
 #include <filesystem>
-#else
-
-#ifdef OPENTURNS_HAVE_LIBGEN_H
-#include <libgen.h>               // for dirname
-#endif
-
-#endif
 
 #ifndef INSTALL_PATH
 #error "INSTALL_PATH is NOT defined. Check configuration."
@@ -117,30 +107,7 @@ FileName Path::GetInstallationDirectory()
 
 FileName Path::GetParentDirectory(const FileName & fileName)
 {
-  FileName parent;
-#ifdef OPENTURNS_ENABLE_CXX17
-  parent = std::filesystem::u8path(fileName).parent_path().string();
-#else
-
-#ifdef OPENTURNS_HAVE_LIBGEN_H
-  char * szPath = strdup(fileName.c_str());
-  parent = FileName(dirname(szPath));
-  free(szPath);
-#else
-  parent = fileName;
-  if (parent.empty()) return parent;
-  for(SignedInteger i = parent.size() - 1; i >= 0; -- i)
-  {
-    /* We do not care about escaped backslashes */
-    if(parent.at(i) == Os::GetDirectorySeparator()[0])
-    {
-      parent.resize(i);
-      break;
-    }
-  }
-#endif
-#endif
-  return parent;
+  return std::filesystem::u8path(fileName).parent_path().string();
 }
 
 

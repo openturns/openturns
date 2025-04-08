@@ -25,9 +25,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 
-#ifdef OPENTURNS_ENABLE_CXX17
 #include <filesystem>
-#endif
 #include "rapidcsv.h"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -93,11 +91,7 @@ void CSVParser::setNumericalSeparator(const char decimalSeparator)
 
 Sample CSVParser::load() const
 {
-#ifdef OPENTURNS_ENABLE_CXX17
   if (!std::ifstream(std::filesystem::u8path(fileName_)).good())
-#else
-  if (!std::ifstream(fileName_).good())
-#endif
     throw FileNotFoundException(HERE) << "Cannot open file '" << fileName_ << "'. Reason: " << std::strerror(errno);
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
