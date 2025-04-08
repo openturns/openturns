@@ -29,5 +29,8 @@ static const char Revision[]              = "@ot_revision@";
 static const char InstallationDirectory[] = "@prefix@";
 static const char CompilerId[]            = "@CMAKE_CXX_COMPILER_ID@";
 static const char CompilerVersion[]       = "@CMAKE_CXX_COMPILER_VERSION@";
+static const char SystemName[]            = "@CMAKE_SYSTEM_NAME@";
+static const char SystemVersion[]         = "@CMAKE_SYSTEM_VERSION@";
+static const char SystemProcessor[]       = "@CMAKE_SYSTEM_PROCESSOR@";
 
 END_NAMESPACE_OPENTURNS
