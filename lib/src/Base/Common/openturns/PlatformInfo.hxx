@@ -73,6 +73,18 @@ public:
 
   /** Compiler version */
   static String GetCompilerVersion();
+
+  /** System name */
+  static String GetSystemName();
+
+  /** System version */
+  static String GetSystemVersion();
+
+  /** System processor */
+  static String GetSystemProcessor();
+
+  /** Summary */
+  static String Summary();
 private:
 
   PlatformInfo();

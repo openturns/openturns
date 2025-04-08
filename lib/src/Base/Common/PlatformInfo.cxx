@@ -23,6 +23,8 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PlatformInfo.hxx"
 
+#include <iomanip>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -211,6 +213,38 @@ String PlatformInfo::GetCompilerId()
 String PlatformInfo::GetCompilerVersion()
 {
   return CompilerVersion;
+}
+
+String PlatformInfo::GetSystemName()
+{
+  return SystemName;
+}
+
+String PlatformInfo::GetSystemVersion()
+{
+  return SystemVersion;
+}
+
+String PlatformInfo::GetSystemProcessor()
+{
+  return SystemProcessor;
+}
+
+/* Summary */
+String PlatformInfo::Summary()
+{
+  OSS result;
+  result << std::left << std::setw(20) << "version" << GetVersion() << "\n";
+  result << std::left << std::setw(20) << "revision" << GetRevision() << "\n";
+  result << std::left << std::setw(20) << "date" << GetDate() << "\n";
+  result << std::left << std::setw(20) << "system name" << GetSystemName() << "\n";
+  result << std::left << std::setw(20) << "system version" << GetSystemVersion() << "\n";
+  result << std::left << std::setw(20) << "system processor" << GetSystemProcessor() << "\n";
+  result << std::left << std::setw(20) << "compiler id" << GetCompilerId() << "\n";
+  result << std::left << std::setw(20) << "compiler version" << GetCompilerVersion() << "\n";
+  for (const String & feature : PlatformInfo::GetFeatures())
+    result << std::left << std::setw(20) << feature << (HasFeature(feature) ? "ok" : "n/a") << "\n";
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS
