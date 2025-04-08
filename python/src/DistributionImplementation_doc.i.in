@@ -1322,7 +1322,7 @@ Parameters
 alpha : float, :math:`\alpha \in [0,1]`
     The confidence level.
 tail : bool
-    `True` indicates the interval is bounded by an lower value.
+    `True` indicates the interval is bounded by a lower value.
     `False` indicates the interval is bounded by an upper value.
     Default value is `False`.
 
@@ -1378,7 +1378,7 @@ Parameters
 alpha : float, :math:`\alpha \in [0,1]`
     The confidence level.
 tail : bool
-    `True` indicates the interval is bounded by an lower value.
+    `True` indicates the interval is bounded by a lower value.
     `False` indicates the interval is bounded by an upper value.
     Default value is `False`.
 
