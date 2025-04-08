@@ -32,7 +32,6 @@ option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"  
 option (USE_PRIMESIEVE               "Use primesieve for prime numbers generation"                           ON)
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
 option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
-option (USE_CXX17                    "Use C++17 standard"                                                    ON)
 option (USE_NANOFLANN                "Use nanoflann for Nearest Neighbor search"                             ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
@@ -433,11 +432,6 @@ endif ()
 # Find system prerequisites
 include (CheckIncludeFile)
 check_include_file (dlfcn.h       OPENTURNS_HAVE_DLFCN_H      )
-if (NOT USE_CXX17)
-  check_include_file (libgen.h      OPENTURNS_HAVE_LIBGEN_H     )
-  check_include_file (sys/stat.h    OPENTURNS_HAVE_SYS_STAT_H   )
-  check_include_file (sys/types.h   OPENTURNS_HAVE_SYS_TYPES_H  )
-endif ()
 
 include (CheckFunctionExists)
 if (OPENTURNS_HAVE_DLFCN_H AND UNIX)

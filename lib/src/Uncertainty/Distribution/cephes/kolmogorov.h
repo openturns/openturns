@@ -61,10 +61,6 @@
 const double MINLOG = -7.451332191019412076235E2;  // log 2**-1022
 constexpr long double SCIPY_El = 2.718281828459045235360287471352662498L;
 
-#ifndef OPENTURNS_ENABLE_CXX17
-namespace std { template<typename T> inline T clamp(const T & v, const T & lo, const T & hi) { return std::max(std::min(v, hi), lo); }}
-#endif
-
 #include "dd_real.h"
 // #include "unity.h"
 
