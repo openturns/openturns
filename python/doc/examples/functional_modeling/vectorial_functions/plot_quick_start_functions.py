@@ -8,7 +8,8 @@ Defining Python and symbolic functions: a quick start introduction to functions
 # --------
 #
 # In this example, we show how to define Python and symbolic functions.
-# Such functions can be evaluated by the library and used, for example, to propagate uncertainties. We focus on functions which have a vector input and a vector output.
+# Such functions can be evaluated by the library and used, for example, to propagate uncertainties.
+# We focus on functions which have a vector input and a vector output.
 
 # %%
 # Introduction
@@ -175,7 +176,7 @@ print(empiricalSd)
 #   * or a `Sample` with size `nbExperiments` and dimension `nbOutputs`
 
 # %%
-# In the following, we present an vectorization example based on the `numpy` module.
+# In the following, we present a vectorization example based on the `numpy` module.
 
 # %%
 
