@@ -91,7 +91,9 @@ SafeAndSlow::ScalarCollection SafeAndSlow::solve(const Function & function,
     const Scalar supValue = function(Point(1, supPoint))[0];
     if ((infValue - value) * (supValue - value) < 0.0)
     {
-      result.add(solver.solve(function, value, infPoint, supPoint, infValue, supValue));
+      const Scalar root = solver.solve(function, value, infPoint, supPoint, infValue, supValue);
+      if (result.isEmpty() || result[result.getSize() - 1] != root)
+        result.add(root);
     }
     infPoint = supPoint;
     infValue = supValue;
