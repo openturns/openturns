@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 #if defined OPENTURNS_HAVE_LIBXML2
 
-static //inline
+static
 XML::XMLString StringToXmlString(const String & st)
 {
   return reinterpret_cast<XML::XMLString>(const_cast<char*>(st.c_str()));
@@ -138,10 +138,8 @@ String XMLDoc::__repr__() const
     return String();
   }
 
-  String data = reinterpret_cast<char *>(buf->content);
-
-  xmlBufferFree( buf );
-
+  const String data(XML::ToString(xmlBufferContent(buf)));
+  xmlBufferFree(buf);
   return data;
 }
 
