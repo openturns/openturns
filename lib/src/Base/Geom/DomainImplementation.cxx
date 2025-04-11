@@ -21,6 +21,7 @@
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,13 +64,47 @@ Bool DomainImplementation::contains(const Point & ) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
+class DomainImplementationContainsSamplePolicy
+{
+  const Sample & input_;
+  const Indices & shifts_;
+  DomainImplementation::BoolCollection & output_;
+  const DomainImplementation & domain_;
+
+public:
+  DomainImplementationContainsSamplePolicy(const Sample & input,
+					   const Indices & shifts,
+					   DomainImplementation::BoolCollection & output,
+					   const DomainImplementation & domain)
+    : input_(input)
+    , shifts_(shifts)
+    , output_(output)
+    , domain_(domain)
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      for (UnsignedInteger j = shifts_[i]; j < shifts_[i+1]; ++j)
+	output_[j] = domain_.contains(input_[j]);
+  } // operator ()
+};  // class DomainImplementationContainsSamplePolicy
+
 /* Check if the given points are inside of the domain */
 DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   BoolCollection result(size, 0);
-  for(UnsignedInteger i = 0; i < size; ++ i)
-    result[i] = contains(sample[i]);
+  const UnsignedInteger nThreads = ResourceMap::GetAsUnsignedInteger("TBB-ThreadsNumber");
+  Indices shifts(nThreads + 1);
+  const UnsignedInteger stride = size / nThreads;
+  for (UnsignedInteger i = 1; i < nThreads; ++i)
+    shifts[i] = i * stride;
+  shifts[nThreads] = size;
+  const DomainImplementationContainsSamplePolicy policy( sample, shifts, result, *this );
+  TBBImplementation::ParallelFor( 0, nThreads, policy );
   return result;
 }
 

@@ -304,6 +304,7 @@ Bool LevelSet::contains(const Point & point) const
 LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
 {
   if (sample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << dimension_ << ", got dimension=" << sample.getDimension();
+  if (function_.getImplementation()->isParallel()) return DomainImplementation::contains(sample); 
   const UnsignedInteger size(sample.getSize());
   BoolCollection result(size);
   // If a bounding box has been computed/provided, only check points inside this bounding box
