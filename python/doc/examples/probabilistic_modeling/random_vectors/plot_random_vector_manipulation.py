@@ -20,7 +20,7 @@ ot.Log.Show(ot.Log.NONE)
 # Case 1: use the class :class:`~openturns.RandomVector`
 # ------------------------------------------------------
 #
-# We create the random vector :math:`(X_0, X_1, X_2)` folowing a Normal
+# We create the random vector :math:`(X_0, X_1, X_2)` following the Normal
 # distribution with zero mean and unit variance.
 dist3d = ot.Normal(3)
 X = ot.RandomVector(dist3d)
@@ -42,7 +42,7 @@ X.getCovariance()
 X.getSample(5)
 
 # %%
-# Extract the component :math:`X1`:
+# Extract the component :math:`X_1`:
 X1 = X.getMarginal(1)
 X1.getSample(5)
 
@@ -95,7 +95,7 @@ randomVector = ot.RandomVector(RVEC())
 randomVector.getSample(5)
 
 # %%
-# Get mean
+# Get its mean
 randomVector.getMean()
 
 # %%
