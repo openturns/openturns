@@ -21,6 +21,7 @@
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/NormInfEnumerateFunction.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -102,9 +103,29 @@ Indices NormInfEnumerateFunction::operator() (const UnsignedInteger index) const
         ++ index_;
         break;
       }
-    }
-  }
+    } // j
+  } // while (index_ < index)
   return multiIndices_;
+}
+
+
+/* The inverse of the association */
+UnsignedInteger NormInfEnumerateFunction::inverse(const Indices & indices) const
+{
+  UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = indices.getSize();
+  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension, here size=" << size << " and dimension=" << dimension;
+  // Quick return for dimension == 1 case
+  if (dimension == 1) return indices[0];
+  UnsignedInteger result = 0;
+  // If no upper bound we can skip a full hypercube of indices
+  if (upperBound_.getSize() < dimension)
+    {
+      const UnsignedInteger maxIndex = *std::max_element(indices.begin(), indices.end());
+      result = SpecFunc::IPow(maxIndex - 1, dimension);
+    }
+  while ((*this)(result) != indices) ++result;
+  return result;
 }
 
 

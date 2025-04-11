@@ -191,6 +191,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   // We must check that the conditioning distribution has the same dimension as the input dimension of the link function and that the conditioning distribution has the same dimension as the input dimension of the link function
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution. Here, output dimension=" << linkFunction.getOutputDimension() << " and parameters number=" << conditionedParametersDimension;
   if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension. Here, input dimension=" << linkFunction.getInputDimension() << " and conditioning dimension=" << conditioningDimension;
+  if ((!conditioningDistribution.isDiscrete()) && (!conditioningDistribution.getCopula().isContinuous())) throw InvalidArgumentException(HERE) << "Error: expected a conditioning distribution with a continuous copula if the conditioning distribution is not fully discrete";
   conditionedDistribution_ = conditionedDistribution;
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
@@ -212,7 +213,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
       continuousUpperBounds_.add(marginal.getRange().getUpperBound()[0]);
     } // Continuous marginal
     // Discrete marginal
-    else
+    else if(marginal.isDiscrete())
     {
       const Sample support(marginal.getSupport());
       // Special case for Dirac distributions. It can be either a Dirac distribution or a UserDefined distribution, so we check the support directly.
@@ -228,6 +229,8 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
         discreteSupports.add(support);
       } // Random discrete marginal
     } // Discrete marginal
+    else
+      throw InvalidArgumentException(HERE) << "Error: the conditioning marginal distributions must be either continuous or discrete, here marginal " << i << "=" << marginal << " is neither continuous nor discrete";
   } // Loop over the marginal distributions
   // Integration measure for the continuous parameters
   const UnsignedInteger continuousDimension = continuousMarginalsIndices_.getSize();
@@ -283,12 +286,14 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   } // discreteDimension > 0
   // Integration measure for the Dirac parameters
   const UnsignedInteger diracDimension = diracMarginalsIndices_.getSize();
-  // Build the equivalent mixture
+  /********************************
+   * Build the equivalent mixture
+   ********************************/
   // Zeroth case: all Dirac
   if (diracDimension == conditioningDimension)
   {
     Collection< Distribution > atoms(1, conditionedDistribution);
-    atoms[0].setParameter(diracValues_);
+    atoms[0].setParameter(linkFunction_(diracValues_));
     // Hide warnings
     Log::Severity oldSeverity = Log::Flags();
     Log::Show(oldSeverity & ~Log::WARN);
@@ -299,10 +304,8 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   // First case: only Dirac and stochastic discrete marginals with at least one stochastic discrete marginal
   if (continuousDimension == 0)
   {
-    const UnsignedInteger totalSize = discreteAtomsNumber;
-    Collection< Distribution > atoms(totalSize);
+    Collection< Distribution > atoms(0);
     Point y(conditioningDimension);
-    UnsignedInteger atomIndex = 0;
     // First, the Dirac components.
     for (UnsignedInteger i = 0; i < diracDimension; ++i)
       y[diracMarginalsIndices_[i]] = diracValues_[i];
@@ -326,8 +329,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
 	    Distribution dist(conditionedDistribution);
 	    dist.setWeight(wI);
 	    dist.setParameter(parameters[i]);
-	    atoms[atomIndex] = dist;
-	    ++atomIndex;
+	    atoms.add(dist);
 	  }
 	catch (...)
 	  {
@@ -345,10 +347,8 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
   // Second case: only Dirac and continuous marginals with at least one continuous marginal
   if (discreteDimension == 0)
   {
-    const UnsignedInteger totalSize = continuousAtomsNumber;
-    Collection< Distribution > atoms(totalSize);
+    Collection< Distribution > atoms(0);
     Point y(conditioningDimension);
-    UnsignedInteger atomIndex = 0;
     // First, the Dirac components
     for (UnsignedInteger i = 0; i < diracDimension; ++i)
       y[diracMarginalsIndices_[i]] = diracValues_[i];
@@ -371,8 +371,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
 	    Distribution dist(conditionedDistribution);
 	    dist.setWeight(wI);
 	    dist.setParameter(parameters[i]);
-	    atoms[atomIndex] = dist;
-	    ++atomIndex;
+	    atoms.add(dist);
 	  }
 	catch (...)
 	  {
@@ -388,10 +387,8 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
     return;
   } // No discrete marginal
   // Third case: Dirac, stochastic discrete and continuous marginal distributions with at least one stochastic discrete marginal and one continuous marginal
-  const UnsignedInteger totalSize = continuousAtomsNumber * discreteAtomsNumber;
-  Collection< Distribution > atoms(totalSize);
+  Collection< Distribution > atoms(0);
   Point y(conditioningDimension);
-  UnsignedInteger atomIndex = 0;
   // First, the Dirac components
   for (UnsignedInteger i = 0; i < diracDimension; ++i)
     y[diracMarginalsIndices_[i]] = diracValues_[i];
@@ -424,8 +421,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
 	  Distribution dist(conditionedDistribution);
 	  dist.setWeight(wI);
 	  dist.setParameter(parameters[i]);
-	  atoms[atomIndex] = dist;
-	  ++atomIndex;
+	  atoms.add(dist);
 	  }
 	catch (...)
 	  {

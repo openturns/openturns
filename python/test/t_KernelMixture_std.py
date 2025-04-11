@@ -159,5 +159,5 @@ distribution.setParameter(parameters)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipCorrelation()  # slow
+validation.skipDependenceMeasures()  # slow
 validation.run()

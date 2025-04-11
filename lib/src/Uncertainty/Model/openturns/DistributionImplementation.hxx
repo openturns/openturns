@@ -36,6 +36,8 @@
 #include "openturns/UniVariateFunctionImplementation.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
+#include "openturns/IntegrationAlgorithm.hxx"
+#include "openturns/IteratedQuadrature.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 
@@ -234,6 +236,7 @@ public:
 protected:
   virtual Sample computeCDFSequential(const Sample & sample) const;
   virtual Sample computeCDFParallel(const Sample & sample) const;
+  virtual Scalar computeCDFUnimodal(const Point & point, const Point & location, const Point & scale, const IntegrationAlgorithm & algo = IteratedQuadrature(), const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon")) const;
 public:
   virtual Sample computeCDF(const Sample & sample) const;
 protected:

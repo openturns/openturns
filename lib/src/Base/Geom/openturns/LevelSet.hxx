@@ -55,8 +55,8 @@ public:
   Bool contains(const Point & point) const override;
 
   /** Check if the given points are inside of the closed levelSet */
-  BoolCollection contains(const Sample & sample) const override;
   using DomainImplementation::contains;
+  BoolCollection contains(const Sample & sample) const override;
 
   /** Returns the levelSet equals to the intersection between the levelSet and another one */
   LevelSet intersect(const LevelSet & other) const;
