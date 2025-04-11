@@ -338,7 +338,7 @@ and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`f
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::drawScaleLocation
-"Accessor to a Scale-Location plot of sqrt(abs(stand residuals)) versus fitted values.
+"Accessor to a Scale-Location plot of sqrt(abs(standardized residuals)) versus fitted values.
 
 Returns
 -------

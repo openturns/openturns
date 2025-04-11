@@ -22,7 +22,7 @@ parametersSet : bool, optional
 
 Notes
 -----
-A ParametricFunction defines a parametric function from *function* by freezing the variables
+A ParametricFunction defines a partial function from *function* by freezing the variables
 marked by the *indices* set to the values of *referencePoint*.
 
 Examples
