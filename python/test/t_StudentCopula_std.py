@@ -7,7 +7,7 @@ ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 dim = 3
-copula = ot.StudentCopula(2.5, ot.CorrelationMatrix(dim))
+copula = ot.StudentCopula(5.5, ot.CorrelationMatrix(dim))
 print("Copula ", repr(copula))
 print("Copula ", copula)
 print("Mean ", repr(copula.getMean()))
@@ -75,5 +75,5 @@ print("margins realization=", repr(margins.getRealization()))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
-validation.skipCDF()  # FIXME
+validation.setCDFTolerance(1e-4)
 validation.run()
