@@ -29,16 +29,18 @@ finiteUpperBound : sequence of bool of dimension *dim*
 
 Notes
 -----
-The meaning of a flag is: if flag :math:`i` is *True*, the corresponding
-component of the given bound is finite and its value is given by bound
-:math:`i`. If not, the corresponding component is infinite and its value is
-either :math:`-\infty` if bound :math:`i < 0` or :math:`+\infty` if bound
-:math:`i \geq 0`.
+If finiteLowerBound[i] is True, then lowerBound[i] is the actual lower bound. Similarly, if
+finiteUpperBound[i] is True, then upperBound[i] is the actual upper bound.
+
+Otherwise, if finiteLowerBound[i] is False, then the lower bound is :math:`-\infty`. Similarly, if
+finiteUpperBound[i] is False, then the lower bound is :math:`+\infty`.
 
 It is possible to add or subtract two intervals and multiply an interval by a
 scalar according to the following rules: 
 
 .. math::
+   :label: operationsInterval
+
    I_1 + I_2 & = \{ \vect{x} + \vect{y} \, |\, \vect{x} \in I_1, \vect{y} \in I_2\} \\
    I_1 - I_2 & = \{ \vect{x} - \vect{y} \, |\, \vect{x} \in I_1, \vect{y} \in I_2\} \\
    \lambda I_1 & = \{ \lambda \vect{x} \, |\, \vect{x} \in I_1 \} \\
@@ -46,29 +48,42 @@ scalar according to the following rules:
 
 Examples
 --------
+Create the finite interval :math:`[2,4] \times [3,5]`:
+
 >>> import openturns as ot
->>> # The finite interval [2,4] * [3,5]
 >>> print(ot.Interval([2.0, 3.0], [4.0, 5.0]))
 [2, 4]
 [3, 5]
->>> # The right-unbounded interval [2, +inf[
->>> a = 2.0
->>> print(ot.Interval([a], [1], [True], [False]))
+
+Create the right-unbounded interval :math:`[2, +\infty[`:
+
+>>> print(ot.Interval([2], [1], [True], [False]))
 [2, (1) +inf[
->>> print(ot.Interval([1], [a], [False], [True]))
+
+Create the left-unbounded interval :math:`]-\infty, 2]`:
+
+>>> print(ot.Interval([1], [2], [False], [True]))
 ]-inf (1), 2]
->>> # Operations with intervals:
+
+We can perform some operations with intervals as defined in :eq:`operationsInterval`:
+
 >>> interval1 = ot.Interval([2.0, 3.0], [5.0, 8.0])
 >>> interval2 = ot.Interval([1.0, 4.0], [6.0, 13.0])
->>> # Addition
+
+Addition :math:`I_1 + I_2` :
+
 >>> print(interval1 + interval2)
 [3, 11]
 [7, 21]
->>> # Subtraction
+
+Subtraction :math:`I_1 - I_2` :
+
 >>> print(interval1 - interval2)
 [-4, 4]
 [-10, 4]
->>> # Multiplication
+
+Multiplication :math:`I_1 \times \lambda` :
+
 >>> print(interval1 * 3)
 [6, 15]
 [9, 24]"

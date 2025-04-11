@@ -9,7 +9,7 @@ Increase the input dimension of a function
 # ===========
 #
 # We want to build a function :math:`f : \mathbb{R}^d \mapsto \mathbb{R}` from
-# *p* functions :math:`f_i: \mathbb{R} \mapsto \mathbb{R}`.
+# *d* functions :math:`f_i: \mathbb{R} \mapsto \mathbb{R}`.
 #
 # We can do that:
 #
