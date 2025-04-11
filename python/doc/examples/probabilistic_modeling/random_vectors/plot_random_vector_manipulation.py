@@ -18,7 +18,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Case 1: use the class :class:`~openturns.RandomVector`
-# -----------------------------------------------------
+# ------------------------------------------------------
 #
 # We create the random vector :math:`(X_0, X_1, X_2)` folowing a Normal
 # distribution with zero mean and unit variance.
@@ -53,13 +53,14 @@ X02.getSample(5)
 
 # %%
 # Case 2: use the class :class:`~openturns.PythonRandomVector`
-# --------------------------------------------------------------
+# ------------------------------------------------------------
 #
 # We create a random vector using the :class:`~openturns.PythonRandomVector` class, which
 # enables to overload the following methods: *getRealization*, *getSample*,
 # *getMean* and **getCovariance*.
 #
 # Inherit :class:`~openturns.PythonRandomVector`
+
 class RVEC(ot.PythonRandomVector):
     def __init__(self):
         super(RVEC, self).__init__(2)
