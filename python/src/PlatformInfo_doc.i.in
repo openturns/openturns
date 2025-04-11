@@ -121,3 +121,43 @@ Returns
 -------
 version : str
     Compiler version."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetSystemName
+"Accessor to the system name.
+
+Returns
+-------
+name : str
+    System name."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetSystemVersion
+"Accessor to the system version.
+
+Returns
+-------
+version : str
+    System version."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetSystemProcessor
+"Accessor to the system processor.
+
+Returns
+-------
+processor : str
+    System processor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::Summary
+"Accessor to infos summary.
+
+Returns
+-------
+summary : str
+    Summary of version, compiler, features..."

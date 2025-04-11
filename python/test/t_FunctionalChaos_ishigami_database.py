@@ -133,10 +133,6 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("###################################")
         print(adaptiveStrategy)
         print(algo.getProjectionStrategy())
-        residuals = result.getResiduals()
-        print("residuals=", residuals)
-        relativeErrors = result.getRelativeErrors()
-        print("relativeErrors=", relativeErrors)
         print("isLeastSquares= ", result.isLeastSquares())
         isLeastSquaresReference = (
             projectionStrategy.getClassName() == "LeastSquaresStrategy"

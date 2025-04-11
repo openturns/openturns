@@ -27,11 +27,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
-//#include <cstring>
 
-#ifdef OPENTURNS_ENABLE_CXX17
 #include <filesystem>
-#endif
 
 #if defined OPENTURNS_HAVE_LIBXML2
 #include <libxml/parser.h>
@@ -44,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 #if defined OPENTURNS_HAVE_LIBXML2
 
-static //inline
+static
 XML::XMLString StringToXmlString(const String & st)
 {
   return reinterpret_cast<XML::XMLString>(const_cast<char*>(st.c_str()));
@@ -63,10 +60,8 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 
 XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
-#ifdef OPENTURNS_ENABLE_CXX17
   if (!std::ifstream(std::filesystem::u8path(fileName)).good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
-#endif
   doc_ = xmlReadFile(fileName.c_str(), "UTF-8", 0);
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
@@ -100,10 +95,8 @@ XMLDoc::operator xmlDocPtr() const
 
 void XMLDoc::save(const FileName & fileName) const
 {
-#ifdef OPENTURNS_ENABLE_CXX17
   if (!std::ofstream(std::filesystem::u8path(fileName)).good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
-#endif
   int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
   if (rc < 0)
     throw InternalException(HERE) << "XMLDoc: Could not save XML file " << fileName;
@@ -145,10 +138,8 @@ String XMLDoc::__repr__() const
     return String();
   }
 
-  String data = reinterpret_cast<char *>(buf->content);
-
-  xmlBufferFree( buf );
-
+  const String data(XML::ToString(xmlBufferContent(buf)));
+  xmlBufferFree(buf);
   return data;
 }
 

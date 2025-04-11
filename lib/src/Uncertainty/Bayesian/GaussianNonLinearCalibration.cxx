@@ -365,9 +365,36 @@ void GaussianNonLinearCalibration::run()
   }
   else
   {
-    GaussianLinearCalibration algo(model_, inputObservations_, outputObservations_, thetaStar, getParameterPrior().getCovariance(), error.getCovariance());
-    algo.run();
-    parameterPosterior = algo.getResult().getParameterPosterior();
+    // Compute the linearization
+    Function parametrizedModel(model_);
+    parametrizedModel.setParameter(thetaStar);
+    // Flatten everything related to the model evaluations over the input observations
+    const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
+    const UnsignedInteger outputDimension = getOutputObservations().getDimension();
+    const UnsignedInteger size = getOutputObservations().getSize();
+    Matrix gradientObservations = MatrixImplementation(parameterDimension, size * outputDimension);
+    UnsignedInteger shift = 0;
+    UnsignedInteger skip = parameterDimension * outputDimension;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
+      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
+      shift += skip;
+    }
+    gradientObservations = gradientObservations.transpose();
+
+    TriangularMatrix dummy;
+    const Matrix Abar(GaussianLinearCalibration::ComputeDesignMatrix(parameterDimension, outputDimension, size, getParameterPrior(), gradientObservations,
+                                          globalErrorCovariance_, errorCovariance_, dummy));
+
+    // Compute the inverse Gram of the design matrix
+    const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
+    // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
+    (void) method.solve(Point(Abar.getNbRows()));
+    const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
+    // Create the result object
+    parameterPosterior = Normal(thetaStar, covarianceThetaStar);
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);

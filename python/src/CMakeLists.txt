@@ -44,19 +44,11 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
       list (APPEND swig_other_sources "${it}")
     endif ()
   endforeach ()
-  
-  # https://github.com/swig/swig/issues/1273
-  option (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH "Force double escaping of backslashes" OFF)
-  mark_as_advanced (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
-  set (TIMES x1)
-  if ((SWIG_VERSION VERSION_LESS 4) OR SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
-    set (TIMES x2)
-  endif ()
 
   # handle docstring generation
   add_custom_target (generate_${MODULENAME}_docstrings
                       COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
-                      -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=${TIMES}
+                      -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=x1
                       -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
                       DEPENDS ${docstring_sources})
   add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  
@@ -66,14 +58,9 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   add_dependencies (${MODULENAME} generate_swig_runtime)
   target_include_directories (${MODULENAME} PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
-  swig_link_libraries (${MODULENAME} OT)
 
-  if (TARGET Python::Module)
-    target_link_libraries (${MODULENAME} Python::Module)
-  else ()
-    target_include_directories (${MODULENAME} PRIVATE ${Python_INCLUDE_DIRS})
-    target_link_libraries_with_dynamic_lookup (${MODULENAME} ${Python_LIBRARIES})
-  endif ()
+  target_link_libraries (${MODULENAME} OT)
+  target_link_libraries (${MODULENAME} Python::Module)
 
   set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
   set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
@@ -687,7 +674,6 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MarginalDistribution.i MarginalDistribution_doc.i.in
                       MaximumDistribution.i MaximumDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
-                      MaximumEntropyOrderStatisticsCopula.i MaximumEntropyOrderStatisticsCopula_doc.i.in
                       MaximumLikelihoodFactory.i MaximumLikelihoodFactory_doc.i.in
                       MeixnerDistribution.i MeixnerDistribution_doc.i.in
                       MeixnerDistributionFactory.i MeixnerDistributionFactory_doc.i.in
@@ -1053,11 +1039,7 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 # Build and install openturns.memoryview
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
 target_include_directories (memoryview PRIVATE ${Python_INCLUDE_DIRS})
-if (TARGET Python::Module)
-  target_link_libraries (memoryview Python::Module)
-else ()
-  target_link_libraries_with_dynamic_lookup (memoryview ${Python_LIBRARIES})
-endif ()
+target_link_libraries (memoryview Python::Module)
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
 if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")

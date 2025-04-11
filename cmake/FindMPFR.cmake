@@ -31,6 +31,13 @@ find_library (MPFR_LIBRARY
 )
 
 set (MPFR_LIBRARIES ${MPFR_LIBRARY})
+
+find_library(GMP_LIBRARY NAMES gmp)
+
+if (GMP_LIBRARY)
+  list (APPEND MPFR_LIBRARIES ${GMP_LIBRARY})
+endif ()
+
 set (MPFR_INCLUDE_DIRS ${MPFR_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)

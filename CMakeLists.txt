@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 3.13)
+cmake_minimum_required (VERSION 3.18)
 
 # By default, build in Release mode. Must appear before project() command
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
@@ -32,7 +32,6 @@ option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"  
 option (USE_PRIMESIEVE               "Use primesieve for prime numbers generation"                           ON)
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
 option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
-option (USE_CXX17                    "Use C++17 standard"                                                    ON)
 option (USE_NANOFLANN                "Use nanoflann for Nearest Neighbor search"                             ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
@@ -239,25 +238,21 @@ if (HDF5_FOUND)
 endif ()
 
 if (USE_BOOST)
-  find_package (Boost CONFIG 1.46)
+  find_package (Boost CONFIG 1.70)
   if (Boost_FOUND)
     message(STATUS "Found Boost: ${Boost_DIR} (found suitable version \"${Boost_VERSION}\")")
   endif ()
 
   # fallback to FindBoost before its deprecation
   if (CMAKE_VERSION VERSION_LESS 3.30 AND NOT Boost_FOUND)
-    find_package (Boost MODULE 1.46)
+    find_package (Boost MODULE 1.70)
   endif ()
 
   if (Boost_FOUND)
-    if (CMAKE_VERSION VERSION_LESS 3.15)
-      # Boost_VERSION reports the integer BOOST_VERSION from boost/version.hpp instead of x.y.z format
-      set (Boost_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
-    endif ()
     set (OPENTURNS_HAVE_BOOST TRUE)
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES Boost::boost)
     list (APPEND OPENTURNS_ENABLED_FEATURES "boost")
-    if (USE_MPC AND NOT Boost_VERSION VERSION_LESS 1.68)
+    if (USE_MPC)
       find_package (MPC)
       if (MPC_FOUND)
         set (OPENTURNS_HAVE_MPC TRUE)
@@ -437,11 +432,6 @@ endif ()
 # Find system prerequisites
 include (CheckIncludeFile)
 check_include_file (dlfcn.h       OPENTURNS_HAVE_DLFCN_H      )
-if (NOT USE_CXX17)
-  check_include_file (libgen.h      OPENTURNS_HAVE_LIBGEN_H     )
-  check_include_file (sys/stat.h    OPENTURNS_HAVE_SYS_STAT_H   )
-  check_include_file (sys/types.h   OPENTURNS_HAVE_SYS_TYPES_H  )
-endif ()
 
 include (CheckFunctionExists)
 if (OPENTURNS_HAVE_DLFCN_H AND UNIX)
@@ -534,32 +524,20 @@ add_custom_target (check COMMENT "Run pre-installation tests")
 add_custom_target (installcheck COMMENT "Run post-installation tests")
 
 if (BUILD_PYTHON)
-  find_package (SWIG 3.0.11)
+  find_package (SWIG 4)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
 
     # this name was chosen in common with pyagrum for otagrum
     set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
-
-    # ptr conversion argument to handle None correctly in swig 4.x, this just allows one to pass compilation with swig 3.x
-    if (SWIG_VERSION VERSION_LESS 4)
-      list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
-    endif ()
   endif ()
 
-  if (CMAKE_VERSION VERSION_LESS 3.18)
-    find_package (Python 3.6 COMPONENTS Interpreter Development)
-    if (NOT TARGET Python::Module)
-      include (TargetLinkLibrariesWithDynamicLookup)
-    endif ()
+  option (USE_PYTHON_SABI "Use Python stable ABI" OFF)
+  if (USE_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
+    find_package (Python 3.6 COMPONENTS Interpreter Development.SABIModule)
+    add_library (Python::Module ALIAS Python::SABIModule)
   else ()
-    option (USE_PYTHON_SABI "Use Python stable ABI" OFF)
-    if (USE_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
-      find_package (Python 3.6 COMPONENTS Interpreter Development.SABIModule)
-      add_library (Python::Module ALIAS Python::SABIModule)
-    else ()
-      find_package (Python 3.6 COMPONENTS Interpreter Development.Module)
-    endif ()
+    find_package (Python 3.6 COMPONENTS Interpreter Development.Module)
   endif ()
 
   if (Python_FOUND)

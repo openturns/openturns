@@ -11,8 +11,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0290505]
-relativeErrors= [0.0154051]
 isLeastSquares=  True
 involvesModelSelection=  True
 mean=3.52113827 absolute error=0.0211382679
@@ -44,8 +42,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.031185]
-relativeErrors= [8.89613e-05]
 isLeastSquares=  True
 involvesModelSelection=  True
 mean=3.51972123 absolute error=0.0197212272
@@ -77,8 +73,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0782409]
-relativeErrors= [0]
 isLeastSquares=  False
 involvesModelSelection=  True
 mean=3.57690572 absolute error=0.0769057245
@@ -110,8 +104,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.024718]
-relativeErrors= [0.0111528]
 isLeastSquares=  True
 involvesModelSelection=  False
 mean=3.52947075 absolute error=0.0294707509
@@ -143,8 +135,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0295638]
-relativeErrors= [8.25367e-05]
 isLeastSquares=  True
 involvesModelSelection=  True
 mean=3.52361492 absolute error=0.0236149151
@@ -176,8 +166,6 @@ ProjectionStrategyImplementation
 - weights: dimension= 250
 - design: size= 250
 
-residuals= [0.0865757]
-relativeErrors= [0]
 isLeastSquares=  False
 involvesModelSelection=  False
 mean=3.57690572 absolute error=0.0769057245

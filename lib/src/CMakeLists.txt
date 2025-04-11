@@ -10,6 +10,12 @@ add_subdirectory (Uncertainty)
 
 set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
+# Avoids propagating BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS to other boost-based code
+if (Boost_FOUND)
+  set_source_files_properties (Base/Func/SpecFunc/BetaFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+  set_source_files_properties (Uncertainty/Distribution/StudentFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # Exclude Ceres sources from unity build (templates take much memory)
 if (Ceres_FOUND)
   set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
@@ -105,15 +111,9 @@ target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
 target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
 
-if (USE_CXX17)
-  set_property (TARGET OT PROPERTY CXX_STANDARD 17)
-  target_compile_definitions (OT PRIVATE OPENTURNS_ENABLE_CXX17)
-
-  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
-    target_link_libraries (OT PRIVATE stdc++fs)
-  endif ()
-else ()
-  set_property (TARGET OT PROPERTY CXX_STANDARD 11)
+set_property (TARGET OT PROPERTY CXX_STANDARD 17)
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
+  target_link_libraries (OT PRIVATE stdc++fs)
 endif ()
 target_compile_features (OT PUBLIC cxx_std_11)
 

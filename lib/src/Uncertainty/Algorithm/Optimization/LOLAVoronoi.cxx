@@ -282,9 +282,12 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
   computeLOLAScore();
   // hybrid score, see 3.4 equation (3.10)
   const Scalar sumLS = std::accumulate(lolaScore_.begin(), lolaScore_.end(), 0.0);
-  hybridScore_ = voronoiScore_;
+  const Scalar lambda = ResourceMap::GetAsScalar("LOLAVoronoi-HybridScoreTradeoff");
+  if (!(lambda >= 0.0) || !(lambda <= 1.0))
+    throw InvalidArgumentException(HERE) << "The LOLAVoronoi-HybridScoreTradeoff entry must be in [0, 1]";
+  hybridScore_ = voronoiScore_ * lambda;
   for (UnsignedInteger i = 0; i < x_.getSize(); ++ i)
-    hybridScore_[i] += lolaScore_[i] / sumLS;
+    hybridScore_[i] += (1.0 - lambda) * lolaScore_[i] / sumLS;
   const Indices ranking(Sample::BuildFromPoint(hybridScore_).argsort(false));
   const UnsignedInteger d = x_.getDimension();
   Sample result(0, d);
