@@ -1641,10 +1641,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
   addAsString("Distribution-SupportPointStyleDiscretePDF", "dot");
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
+  addAsUnsignedInteger("Distribution-DefaultCDFIteration", 10000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);
   addAsUnsignedInteger("Distribution-DefaultLevelNumber", 10);
   addAsUnsignedInteger("Distribution-DefaultPointNumber", 129);
-  addAsUnsignedInteger("Distribution-DefaultCDFIteration", 10000);
   addAsUnsignedInteger("Distribution-DefaultQuantileIteration", 100);
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);

@@ -752,12 +752,9 @@ Scalar DistributionImplementation::computeCDF(const Point & point) const
 
 /* For unimodal distributions one can compute the CDF by exploring boxes of
    significant probability content */
-Scalar DistributionImplementation::computeCDFUnimodal(const Point & point, const Point & location, const Point & scale) const
+Scalar DistributionImplementation::computeCDFUnimodal(const Point & point, const Point & location, const Point & scale, const IntegrationAlgorithm & algo, const Scalar epsilon) const
 {
   const Function pdf(getPDF());
-  //const CubaIntegration algo("cuhre");
-  const IteratedQuadrature algo;
-  //const SimplicialCubature algo;
   Scalar cdf = 0.0;
   UnsignedInteger iteration = 0;
   Indices locationIndices(dimension_);
@@ -769,9 +766,8 @@ Scalar DistributionImplementation::computeCDFUnimodal(const Point & point, const
     }
   Collection<Indices> todo(1, locationIndices);
   std::map<Indices, UnsignedInteger> done;
-  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultCDFIteration");
+  const UnsignedInteger maximumIteration = SpecFunc::IPow(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultCDFIteration"), dimension_);
   Scalar delta = 0.0;
-  const Scalar epsilon = ResourceMap::GetAsScalar("IteratedQuadrature-MaximumError");
   std::map<Indices, UnsignedInteger>::iterator it;
   while ((iteration < maximumIteration) && (todo.getSize() > 0))
     {
