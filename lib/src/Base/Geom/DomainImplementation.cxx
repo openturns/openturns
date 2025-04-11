@@ -21,6 +21,7 @@
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,13 +64,37 @@ Bool DomainImplementation::contains(const Point & ) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
+class DomainImplementationContainsSamplePolicy
+{
+  const Sample & input_;
+  DomainImplementation::BoolCollection & output_;
+  const DomainImplementation & domain_;
+
+public:
+  DomainImplementationContainsSamplePolicy(const Sample & input,
+					   DomainImplementation::BoolCollection & output,
+					   const DomainImplementation & domain)
+    : input_(input)
+    , output_(output)
+    , domain_(domain)
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+	output_[i] = domain_.contains(input_[i]);
+  } // operator ()
+};  // class DomainImplementationContainsSamplePolicy
+
 /* Check if the given points are inside of the domain */
 DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   BoolCollection result(size, 0);
-  for(UnsignedInteger i = 0; i < size; ++ i)
-    result[i] = contains(sample[i]);
+  const DomainImplementationContainsSamplePolicy policy( sample, result, *this );
+  TBBImplementation::ParallelFor( 0, size, policy);
   return result;
 }
 
