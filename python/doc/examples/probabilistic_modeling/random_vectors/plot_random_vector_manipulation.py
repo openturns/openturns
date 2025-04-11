@@ -61,6 +61,7 @@ X02.getSample(5)
 #
 # Inherit :class:`~openturns.PythonRandomVector`
 
+
 class RVEC(ot.PythonRandomVector):
     def __init__(self):
         super(RVEC, self).__init__(2)
