@@ -10,7 +10,7 @@ Create a random vector
 #
 # - Case 1: directly using the class :class:`~openturns.RandomVector`,
 # - Case 2: from python, using the class :class:`~openturns.PythonRandomVector` which enables to
-# redefine some methods (as the sampling method for example).
+#   redefine some methods (as the sampling method for example).
 
 # %%
 import openturns as ot
