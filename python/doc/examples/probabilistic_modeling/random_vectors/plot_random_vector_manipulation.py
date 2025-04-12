@@ -8,8 +8,8 @@ Create a random vector
 #
 # This class can be cerated by:
 #
-# - Case 1: directly using the class :class:`~openturns.RandomVector`,
-# - Case 2: from python, using the class :class:`~openturns.PythonRandomVector` which enables to
+# - Case 1: directly using the :class:`~openturns.RandomVector` class,
+# - Case 2: from python, using the :class:`~openturns.PythonRandomVector` class which enables to
 #   redefine some methods (as the sampling method for example).
 
 # %%
@@ -17,7 +17,7 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Case 1: use the class :class:`~openturns.RandomVector`
+# Case 1: use the :class:`~openturns.RandomVector` class
 # ------------------------------------------------------
 #
 # We create the random vector :math:`(X_0, X_1, X_2)` following the Normal
@@ -52,12 +52,12 @@ X02 = X.getMarginal([0, 2])
 X02.getSample(5)
 
 # %%
-# Case 2: use the class :class:`~openturns.PythonRandomVector`
+# Case 2: use the :class:`~openturns.PythonRandomVector` class
 # ------------------------------------------------------------
 #
 # We create a random vector using the :class:`~openturns.PythonRandomVector` class, which
 # enables to overload the following methods: *getRealization*, *getSample*,
-# *getMean* and **getCovariance*.
+# *getMean* and *getCovariance*.
 #
 # Inherit :class:`~openturns.PythonRandomVector`
 
