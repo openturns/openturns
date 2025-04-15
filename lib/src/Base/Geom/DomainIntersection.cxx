@@ -86,6 +86,15 @@ Bool DomainIntersection::operator != (const DomainIntersection & other) const
   return !operator==(other);
 }
 
+/* Is it safe to call in parallel? */
+Bool DomainIntersection::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++ i)
+    if (!collection_[i].getImplementation()->isParallel())
+      return false;
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void DomainIntersection::save(Advocate & adv) const
 {

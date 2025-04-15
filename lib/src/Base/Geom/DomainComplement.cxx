@@ -91,6 +91,12 @@ Bool DomainComplement::operator != (const DomainComplement & other) const
   return !operator==(other);
 }
 
+/* Is it safe to call in parallel? */
+Bool DomainComplement::isParallel() const
+{
+  return domain_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void DomainComplement::save(Advocate & adv) const
 {

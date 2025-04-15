@@ -490,6 +490,13 @@ String Interval::__str__(const String & offset) const
   return oss;
 }
 
+/* Is it safe to call in parallel? */
+Bool Interval::isParallel() const
+{
+  return true;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void Interval::save(Advocate & adv) const
 {

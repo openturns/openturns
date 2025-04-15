@@ -304,7 +304,7 @@ Bool LevelSet::contains(const Point & point) const
 LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
 {
   if (sample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << dimension_ << ", got dimension=" << sample.getDimension();
-  if (function_.getImplementation()->isParallel()) return DomainImplementation::contains(sample); 
+  if (isParallel()) return DomainImplementation::contains(sample);
   const UnsignedInteger size(sample.getSize());
   BoolCollection result(size);
   // If a bounding box has been computed/provided, only check points inside this bounding box
@@ -414,6 +414,12 @@ String LevelSet::__str__(const String & offset) const
   OSS oss(false);
   oss << "{x | f(x) " << operator_.__str__() << " " << level_ << "} with f=" << "\n" << offset << function_.__str__(offset);
   return oss;
+}
+
+/* Is it safe to call in parallel? */
+Bool LevelSet::isParallel() const
+{
+  return function_.getImplementation()->isParallel();
 }
 
 void LevelSet::save(Advocate & adv) const
