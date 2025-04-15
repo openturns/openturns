@@ -94,7 +94,7 @@ DomainImplementation::BoolCollection DomainImplementation::contains(const Sample
   const UnsignedInteger size = sample.getSize();
   BoolCollection result(size, 0);
   const DomainImplementationContainsSamplePolicy policy( sample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   return result;
 }
 
@@ -117,6 +117,12 @@ Sample DomainImplementation::computeDistance(const Sample & sample) const
 UnsignedInteger DomainImplementation::getDimension() const
 {
   return dimension_;
+}
+
+/* Is it safe to call in parallel? */
+Bool DomainImplementation::isParallel() const
+{
+  return false;
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -114,6 +114,12 @@ Point MeshDomain::getUpperBound() const
   return mesh_.getUpperBound();
 }
 
+/* Is it safe to call in parallel? */
+Bool MeshDomain::isParallel() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void MeshDomain::save(Advocate & adv) const
 {

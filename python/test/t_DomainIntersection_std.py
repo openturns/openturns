@@ -40,3 +40,13 @@ print("is sample ", sample, " inside ? ", domain.contains(sample))
 sphere2 = ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x/0"]), ot.LessOrEqual(), 1.0)
 domain2 = ot.DomainIntersection([cube, sphere2])
 assert not domain2.contains(p0), "prune sphere"
+
+# check thread-safety
+f1 = ot.PythonFunction(2, 1, lambda X: [X[0]])
+f2 = ot.PythonFunction(2, 1, lambda X: [X[1]])
+l2 = ot.LevelSet(f2, ot.Greater(), 0.0)
+l1 = ot.LevelSet(f1, ot.Greater(), 0.0)
+u = ot.DomainIntersection([l1, l2])
+x = ot.Normal(2).getSample(1000)
+y = u.contains(x)
+assert len(y) == 1000

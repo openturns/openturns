@@ -108,6 +108,15 @@ Bool DomainDisjunctiveUnion::operator != (const DomainDisjunctiveUnion & other) 
   return !operator==(other);
 }
 
+/* Is it safe to call in parallel? */
+Bool DomainDisjunctiveUnion::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++ i)
+    if (!collection_[i].getImplementation()->isParallel())
+      return false;
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void DomainDisjunctiveUnion::save(Advocate & adv) const
 {

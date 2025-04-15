@@ -8,6 +8,8 @@
 
 %copyctor OT::DomainImplementation;
 
+%ignore OT::DomainImplementation::isParallel;
+
 %include openturns/DomainImplementation.hxx
 
 %pythoncode %{

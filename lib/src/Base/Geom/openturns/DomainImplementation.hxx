@@ -66,6 +66,9 @@ public:
   /** Dimension accessors */
   UnsignedInteger getDimension() const;
 
+  /** Is it safe to call in parallel? */
+  virtual Bool isParallel() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

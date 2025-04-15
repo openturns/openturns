@@ -103,6 +103,12 @@ Bool DomainDifference::operator != (const DomainDifference & other) const
   return !operator==(other);
 }
 
+/* Is it safe to call in parallel? */
+Bool DomainDifference::isParallel() const
+{
+  return left_.getImplementation()->isParallel() && right_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void DomainDifference::save(Advocate & adv) const
 {
