@@ -42,7 +42,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Point & values)
-  : EvaluationImplementation()
+  : EvaluationImplementation(),
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation"))
 {
   // Convert the values into a sample
   const UnsignedInteger size = values.getSize();
@@ -55,7 +56,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Sample & values)
-  : EvaluationImplementation()
+  : EvaluationImplementation(),
+    enableExtrapolation_(ResourceMap::GetAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation"))
 {
   setLocationsAndValues(locations, values);
 }
@@ -136,11 +138,31 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
   if (values_.getSize() == 1) return values_[0];
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  if (x <= locations_[iLeft])
-    return values_[iLeft];
+    
+  if (x <= locations_[iLeft]) 
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iLeft];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
+    }
+  }
+  
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight])
-    return values_[iRight];
+  {
+    if (enableExtrapolation_)
+    {
+      return values_[iRight];
+    }
+    else
+    {
+       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
+    }
+  }
   iLeft = FindSegmentIndex(locations_, x, 0, isRegular_);
 
   const Scalar xLeft = locations_[iLeft];
@@ -166,16 +188,32 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = inSample(i, 0);
+
     if (x <= locations_[0])
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
-      continue;
+      if (enableExtrapolation_)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+        continue;
+      }
+      else
+      {
+        throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[0];
+      }
     }
+    
     UnsignedInteger iRight = maxIndex;
     if (x >= locations_[iRight])
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
-      continue;
+      if (enableExtrapolation_)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+        continue;
+      }
+      else
+      {
+        throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
+      }
     }
     iLeft = FindSegmentIndex(locations_, x, iLeft, isRegular_);
 
@@ -281,6 +319,16 @@ UnsignedInteger PiecewiseLinearEvaluation::getOutputDimension() const
   return values_.getDimension();
 }
 
+/* enableExtrapolation accessor */
+Bool PiecewiseLinearEvaluation::getEnableExtrapolation() const
+{
+  return enableExtrapolation_;
+}
+
+void PiecewiseLinearEvaluation::setEnableExtrapolation(const Bool & enableExtrapolation)
+{
+  enableExtrapolation_ = enableExtrapolation;
+}
 
 /* Method save() stores the object through the StorageManager */
 void PiecewiseLinearEvaluation::save(Advocate & adv) const
@@ -288,6 +336,7 @@ void PiecewiseLinearEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
+  adv.saveAttribute( "enableExtrapolation_", enableExtrapolation_ );
 }
 
 
@@ -297,6 +346,9 @@ void PiecewiseLinearEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
+  adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
+  if (adv.hasAttribute("enableExtrapolation_"))
+    adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
   isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
 }
 

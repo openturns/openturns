@@ -67,6 +67,10 @@ public:
   Point getLocations() const;
   void setLocations(const Point & locations);
 
+  /** enableExtrapolation accessor */
+  Bool getEnableExtrapolation() const;
+  void setEnableExtrapolation(const Bool & enableExtrapolation);
+  
   /** Values accessor */
   Sample getValues() const;
   void setValues(const Point & values);
@@ -100,6 +104,9 @@ protected:
                                           const Bool isRegular);
 
 private:
+  /** Enable extrapolation */
+  Bool enableExtrapolation_;
+  
   // The locations
   Point locations_;
 
