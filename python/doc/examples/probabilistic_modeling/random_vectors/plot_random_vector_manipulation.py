@@ -60,6 +60,8 @@ X02.getSample(5)
 # *getMean* and *getCovariance*.
 #
 # Inherit :class:`~openturns.PythonRandomVector`
+# Here, we create a random vector of dimension 2 :math:`(X_1, X_2)`, where :math:`X_1 \sim \cU(0,1)` and
+# :math:`X_1 \sim \cU(1,3)` with independent components.
 
 
 class RVEC(ot.PythonRandomVector):
@@ -83,7 +85,7 @@ class RVEC(ot.PythonRandomVector):
         return [0.5, 2.5]
 
     def getCovariance(self):
-        return [[1.0, 0.0], [0.0, 1.0]]
+        return [[1.0 / 12.0, 0.0], [0.0, 1.0 / 12.0]]
 
 
 # %%
