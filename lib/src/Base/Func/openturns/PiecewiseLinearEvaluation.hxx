@@ -105,7 +105,7 @@ protected:
 
 private:
   /** Enable extrapolation */
-  Bool enableExtrapolation_;
+  Bool enableExtrapolation_ = false;
   
   // The locations
   Point locations_;
