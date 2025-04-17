@@ -2493,6 +2493,11 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   const Scalar rightCDF = 1.0;
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   Scalar root = solver.solve(f, p, leftTau, rightTau, leftCDF, rightCDF);
+
+  // sometimes the root returned by brent is a slightly over the quantile by order of machine epsilon
+  if (isDiscrete() && isIntegral() && (computeCDF(std::floor(root)) >= p))
+    return std::floor(root);
+
   LOGDEBUG(OSS() << "root=" << root);
 
   // special case non strictly increasing CDF: retain the inf of the interval veryfing F(x)=p
