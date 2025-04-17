@@ -3656,3 +3656,17 @@ epsilon : float
 %enddef
 %feature("docstring") OT::DistributionImplementation::setSupportEpsilon
 OT_Distribution_setSupportEpsilon_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_isParallel_doc
+"Accessor to the parallel flag.
+
+Returns
+-------
+isParallel : bool
+    Whether the object is considered thread-safe.
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::isParallel
+OT_Distribution_isParallel_doc
