@@ -68,3 +68,5 @@ OT_Function_isLinear_doc
 OT_Function_isLinearlyDependent_doc
 %feature("docstring") OT::Function::setStopCallback
 OT_Function_setStopCallback_doc
+%feature("docstring") OT::Function::isParallel
+OT_Function_isParallel_doc

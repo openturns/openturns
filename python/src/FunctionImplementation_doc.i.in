@@ -972,3 +972,17 @@ callback : callable
 %enddef
 %feature("docstring") OT::FunctionImplementation::setStopCallback
 OT_Function_setStopCallback_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_isParallel_doc
+"Accessor to the parallel flag.
+
+Returns
+-------
+isParallel : bool
+    Whether the object is considered thread-safe.
+"
+%enddef
+%feature("docstring") OT::FunctionImplementation::isParallel
+OT_Function_isParallel_doc
