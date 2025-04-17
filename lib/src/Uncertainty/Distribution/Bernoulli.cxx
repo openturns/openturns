@@ -138,7 +138,7 @@ Scalar Bernoulli::computeCDF(const Point & point) const
   // k >= 1.0
   if (k > 1.0 - supportEpsilon_) return 1.0;
   // k > 0.0 && k < 1.0
-  return 1.0 - p_;
+  return 0.5 - (p_ - 0.5);
 }
 
 /* Get the PDF gradient of the distribution */
@@ -169,8 +169,10 @@ Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  if (prob < 1.0 - p_) return (tail ? 1.0 : 0.0);
-  return (tail ? 0.0 : 1.0);
+  if (tail)
+    return 0.5 - (p_ - 0.5) > prob ? 1.0 : 0.0;
+  else
+    return 0.5 - (p_ - 0.5) >= prob ? 0.0 : 1.0;
 }
 
 /* Compute the entropy of the distribution */

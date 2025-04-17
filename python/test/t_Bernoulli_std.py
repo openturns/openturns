@@ -54,5 +54,4 @@ print("probabilities=", distribution.getProbabilities())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipQuantile()
 validation.run()
