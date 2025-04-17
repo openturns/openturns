@@ -222,6 +222,8 @@ OT_Distribution_isDiscrete_doc
 OT_Distribution_isElliptical_doc
 %feature("docstring") OT::Distribution::isIntegral
 OT_Distribution_isIntegral_doc
+%feature("docstring") OT::Distribution::isParallel
+OT_Distribution_isParallel_doc
 %feature("docstring") OT::Distribution::setDescription
 OT_Distribution_setDescription_doc
 %feature("docstring") OT::Distribution::setParametersCollection

@@ -27,7 +27,6 @@
 %ignore OT::DistributionImplementation::setWeight;
 %ignore OT::DistributionImplementation::getWeight;
 %ignore OT::DistributionImplementation::setParallel;
-%ignore OT::DistributionImplementation::isParallel;
 %ignore OT::DistributionImplementation::setQuantileEpsilon;
 %ignore OT::DistributionImplementation::getQuantileEpsilon;
 %ignore OT::DistributionImplementation::computeProbabilityGeneral;
