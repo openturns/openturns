@@ -75,3 +75,15 @@ dim : int
 OT_Domain_getDimension_doc
 
 // ---------------------------------------------------------------------
+
+%define OT_Domain_isParallel_doc
+"Accessor to the parallel flag.
+
+Returns
+-------
+isParallel : bool
+    Whether the object is considered thread-safe.
+"
+%enddef
+%feature("docstring") OT::DomainImplementation::isParallel
+OT_Domain_isParallel_doc
