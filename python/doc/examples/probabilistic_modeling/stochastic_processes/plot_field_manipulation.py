@@ -13,6 +13,7 @@ Draw a field
 #
 # A field is stored in the :class:`~openturns.Field` object that stores the mesh and the values at each vertex of the mesh.
 # It can be built from a mesh and values or as a realization of a stochastic process.
+# sphinx_gallery_thumbnail_number = 6
 
 # %%
 import openturns as ot

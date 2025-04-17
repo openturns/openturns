@@ -138,7 +138,10 @@ def plot_sample_by_kernel_smoothing(
     bb = graph.getBoundingBox()
     ylb = bb.getLowerBound()[1]
     yub = bb.getUpperBound()[1]
-    curve = ot.Curve([true_standard_deviation**2] * 2, [ylb, yub])
+    if estimator == "variance":
+        curve = ot.Curve([true_standard_deviation**2] * 2, [ylb, yub])
+    elif estimator == "standard-deviation":
+        curve = ot.Curve([true_standard_deviation] * 2, [ylb, yub])
     curve.setLegend("Exact")
     curve.setLineWidth(2.0)
     graph.add(curve)
@@ -176,7 +179,6 @@ view = otv.View(
 )
 pl.subplots_adjust(bottom=0.25)
 
-
 # %%
 # If we use a sample size equal to :math:`n = 6` with
 # :math:`p = 3` parameters, the distribution is not symmetric.
@@ -200,7 +202,7 @@ pl.subplots_adjust(bottom=0.25)
 
 
 # %%
-# If we use a sample size equal to :math:`n = 6` with
+# If we use a sample size equal to :math:`n = 100` with
 # :math:`p = 3` parameters, the distribution is almost symmetric and
 # almost normal.
 

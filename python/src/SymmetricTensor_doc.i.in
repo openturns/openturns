@@ -63,7 +63,65 @@ sheet #1
  [  8 11 ]]
 sheet #2
 [[  3  9 ]
- [  9 12 ]]"
+ [  9 12 ]]
+
+Here we detail how the tensor is built with the hessian of the function
+:math:`g: \Rset^2 \rightarrow \Rset^2` defined by:
+
+.. math::
+
+   & g(x_1,x_2) = (g_1(x_1,x_2), g_2(x_1,x_2))\\
+   & g_1(x_1,x_2) = x_1^2x_2 + 2x_1x_2^2\\
+   & g_2(x_1,x_2) = x_1^3x_2
+
+
+Then the hessian tensor of :math:`g` at the point :math:`(x_1, x_2)` is composed of 2 sheets:
+
+.. math::
+
+    \left( \dfrac{\partial^2 g_1}{\partial x_i \partial x_j} \right)_{1 \leq i,j \leq 2} = \left(
+    \begin{array}{cc}
+    2x_2 & 2x_1+4x_2 \\
+    2x_1+4x_2 & 4x_1
+    \end{array}
+    \right)
+
+and:
+
+.. math::
+
+    \left( \dfrac{\partial^2 g_2}{\partial x_i \partial x_j} \right)_{1 \leq i,j \leq 2}= \left(
+    \begin{array}{cc}
+    6x_1x_2 & 3x_1^2 \\
+    3x_1^2 & 0
+    \end{array}
+    \right)
+
+>>> g = ot.SymbolicFunction(['x1', 'x2'], ['x1*x1*x2 + 2*x1*x2*x2', 'x1*x1*x1*x2'])
+>>> point_0 = [1.0, 1.0]
+>>> hessian_mat = g.hessian(point_0)
+>>> print(hessian_mat)
+sheet #0
+[[ 2 6 ]
+ [ 6 4 ]]
+sheet #1
+[[ 6 3 ]
+ [ 3 0 ]]
+
+>>> dimX = g.getInputDimension()
+>>> dimY = g.getOutputDimension()
+>>> for k in range(dimY):
+...     for i in range(dimX):
+...         for j in range(dimX):
+...             print(f'H[{i}, {j}, {k}] = {hessian_mat[i, j, k]}')
+H[0, 0, 0] = 2.0
+H[0, 1, 0] = 6.0
+H[1, 0, 0] = 6.0
+H[1, 1, 0] = 4.0
+H[0, 0, 1] = 6.0
+H[0, 1, 1] = 3.0
+H[1, 0, 1] = 3.0
+H[1, 1, 1] = 0.0"
 
 // ---------------------------------------------------------------------
 
