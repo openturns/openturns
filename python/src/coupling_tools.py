@@ -178,8 +178,8 @@ def execute(
 
     Parameters
     ----------
-    cmd : str
-        Command line to execute, e.g.: "echo 42"
+    cmd : list of str or str
+        Command to execute, e.g.: "echo 42"
     cwd : str
         Current directory of the executed command.
     shell : bool, default=False
