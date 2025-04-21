@@ -13,7 +13,7 @@ CDF(quantile)=0.500000
 Quantile= class=Point name=Unnamed dimension=2 values=[0.0659606,0.0659606]
 InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0402547,0.0402547]
 Survival(inverseSurvival)=0.950000
-entropy=-0.538461
+entropy=-0.538481
 Minimum volume interval= [0.0156773, 0.984323]
 [0.0156773, 0.984323]
 threshold= [0.968645]

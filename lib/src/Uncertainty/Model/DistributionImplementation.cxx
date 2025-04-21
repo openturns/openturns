@@ -1500,6 +1500,15 @@ Scalar DistributionImplementation::computeEntropy() const
     // In low dimension, use an adaptive quadrature
     if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallDimensionEntropy"))
     {
+      // If the distribution is a copula, odds are high that it is singular in the corners
+      // One way to fix it is to add smooth marginal distributions, here we use standard
+      // normal distributions
+      if (isCopula())
+	{
+	  const JointDistribution joint(Collection<Distribution>(dimension_, Normal()), *this);
+	  const EntropyKernel entropyKernel(&joint);
+	  return IteratedQuadrature().integrate(entropyKernel, joint.getRange())[0] - dimension_ * Normal().computeEntropy();
+	}
       const EntropyKernel entropyKernel(this);
       return IteratedQuadrature().integrate(entropyKernel, range_)[0];
     } // Low dimension
