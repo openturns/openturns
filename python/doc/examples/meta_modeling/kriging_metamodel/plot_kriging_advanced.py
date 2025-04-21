@@ -163,7 +163,7 @@ graph_ref_func = ref_func.draw(xmin, xmax, n_pts_plot)
 graph_krigingMeta = krigingMeta.draw(xmin, xmax, n_pts_plot)
 for graph in [graph_ref_func, graph_krigingMeta]:
     graph.setTitle("")
-View(graph_ref_func, axes=[ax], plot_kw={"label": "$x sin(x)$"})
+View(graph_ref_func, axes=[ax], plot_kw={"label": r"$x\sin(x)$"})
 View(
     graph_krigingMeta,
     plot_kw={"color": "green", "label": "prediction"},
@@ -202,7 +202,7 @@ for i in range(krv_sample.getSize()):
 View(
     graph_ref_func,
     axes=[ax],
-    plot_kw={"color": "black", "label": "$x*sin(x)$"},
+    plot_kw={"color": "black", "label": r"$x\sin(x)$"},
 )
 View(
     graph_krigingMeta,

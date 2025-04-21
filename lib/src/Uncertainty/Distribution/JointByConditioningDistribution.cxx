@@ -53,7 +53,7 @@ JointByConditioningDistribution::JointByConditioningDistribution(const Distribut
   : DistributionImplementation()
 {
   if (!conditionedDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditionedDistribution=" << conditionedDistribution;
-  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioned distributions, here conditioningDistribution=" << conditioningDistribution;
+  if (!conditioningDistribution.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the JointByConditioningDistribution is defined only for continuous conditioning distributions, here conditioningDistribution=" << conditioningDistribution;
 
   Function linkFunction(linkFunction0);
   if (!linkFunction.getEvaluation().getImplementation()->isActualImplementation())
