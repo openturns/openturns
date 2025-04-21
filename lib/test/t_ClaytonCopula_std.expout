@@ -1,6 +1,6 @@
 Copula class=ClaytonCopula name=a clayton copula dimension=2 theta=2.5
 Copula ClaytonCopula(theta = 2.5)
-entropy=-0.538461
+entropy=-0.538481
 entropy (MC)=-0.539085
 Mean class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 Elliptical distribution= false

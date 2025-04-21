@@ -21,7 +21,7 @@ Inverse survival=class=Point name=Unnamed dimension=7 values=[0.00832738,0.00832
 Survival(inverse survival)=0.95
 Quantile=class=Point name=Unnamed dimension=7 values=[0.895624,0.895624,0.895624,0.895624,0.895624,0.895624,0.895624]
 CDF(quantile)=0.5
-entropy=-0.729842
+entropy=-0.729844
 entropy (MC)=-0.72967
 mean=class=Point name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 parameters=[[copula_0_theta : 3, copula_1_R_2_1 : 0.5, copula_1_R_3_1 : 0.25, copula_1_R_3_2 : 0, copula_2_theta : 2]]

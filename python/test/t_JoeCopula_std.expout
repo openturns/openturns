@@ -13,7 +13,7 @@ CDF(quantile)=0.500000
 Quantile= class=Point name=Unnamed dimension=2 values=[0.162105,0.162105]
 InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0262476,0.0262476]
 Survival(inverseSurvival)=0.950000
-entropy=-0.125300
+entropy=-0.125309
 CDF(x|y)=0.66002
 Quantile(p|y)=0.6
 margin= class=IndependentCopula name=IndependentCopula dimension=1

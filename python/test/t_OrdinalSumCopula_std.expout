@@ -35,7 +35,7 @@ beta=0.97161
 Unilateral confidence interval (upper tail)= [0.0299408, 1]
 [0.0299408, 1]
 beta=0.97006
-entropy=-1.25325
+entropy=-1.25321
 entropy (MC)=-1.25340
 mean= [0.5,0.5]
 covariance= [[ 0.083333 0.076861 ]
