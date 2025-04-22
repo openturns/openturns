@@ -1021,6 +1021,7 @@ ot_add_python_module(experimental experimental_module.i
                      BoundaryMesher.i BoundaryMesher_doc.i.in
                      ConstantEvaluation.i ConstantEvaluation_doc.i.in
                      ConstantFunction.i ConstantFunction_doc.i.in
+                     VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in

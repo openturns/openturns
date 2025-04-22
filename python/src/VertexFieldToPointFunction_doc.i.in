@@ -1,0 +1,35 @@
+%feature("docstring") OT::VertexFieldToPointFunction
+"Restriction of a field function at a specific node.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Assuming :math:`f` is a function :math:`f : \Rset^{d} \rightarrow \cM_{N'} \times (\Rset^{d'})^{N'}`
+with :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.,
+the vertex function extract the values matching the mesh index :math:`i \in [1, N']`
+
+.. math::
+
+    f: \left| \begin{array}{rcl}
+               \cM_N \times (\Rset^d)^N & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+                F & \mapsto & F'
+              \end{array} \right.
+
+Parameters
+----------
+inputMesh : :class:`~openturns.Mesh`
+    Mesh
+dimension : int
+    Input, output dimension
+indices : sequence of int
+    Mesh indices
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> N = 10
+>>> mesh = ot.RegularGrid(0, 1, N)
+>>> f = otexp.VertexFieldToPointFunction(mesh, 1, [-1 % N])
+"

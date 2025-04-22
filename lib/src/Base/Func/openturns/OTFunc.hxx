@@ -158,5 +158,6 @@
 #include "openturns/MarginalEvaluation.hxx"
 #include "openturns/MarginalGradient.hxx"
 #include "openturns/MarginalHessian.hxx"
+#include "openturns/VertexFieldToPointFunction.hxx"
 
 #endif /* OPENTURNS_OTFUNC_HXX */
