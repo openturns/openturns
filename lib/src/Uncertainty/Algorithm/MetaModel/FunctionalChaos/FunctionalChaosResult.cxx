@@ -71,8 +71,19 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , alpha_k_(alpha_k)
   , Psi_k_(Psi_k)
 {
-  // The composed meta model will be a dual linear combination
-  composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
+  if (Psi_k.getSize() > 0)
+    {
+      // The composed meta model will be a dual linear combination
+      composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
+    }
+  else
+    {
+      // The meta model is the null function
+      composedMetaModel_ = ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension()));
+      Psi_k_.add(orthogonalBasis.build(0));
+      alpha_k_ = Sample(1, outputSample.getDimension());
+      I_.add(0);
+    }
   if (transformation.getEvaluation().getImplementation()->getClassName() == "IdentityEvaluation")
     metaModel_ = composedMetaModel_;
   else

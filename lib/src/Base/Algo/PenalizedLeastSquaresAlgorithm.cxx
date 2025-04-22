@@ -242,7 +242,9 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
   const Scalar empiricalError = quadraticResidual / sampleSize;
 
   // The relative error
-  setRelativeError(empiricalError / y_.computeVariance()[0]);
+  const Scalar yVariance = y_.computeVariance()[0];
+  const Scalar relativeError = (yVariance > 0.0 ? empiricalError / yVariance : -1.0);
+  setRelativeError(relativeError);
 }
 
 
