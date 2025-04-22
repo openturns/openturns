@@ -142,6 +142,7 @@ ot_add_source_file (UniVariatePolynomial.cxx)
 ot_add_source_file (UniVariateFunctionImplementation.cxx)
 ot_add_source_file (UniVariateFunction.cxx)
 ot_add_source_file (ValueFunction.cxx)
+ot_add_source_file (VertexFieldToPointFunction.cxx)
 ot_add_source_file (VertexValueFunction.cxx)
 
 ot_install_header_file (AggregatedFunction.hxx)
@@ -283,6 +284,7 @@ ot_install_header_file (NullHessian.hxx)
 ot_install_header_file (MarginalEvaluation.hxx)
 ot_install_header_file (MarginalGradient.hxx)
 ot_install_header_file (MarginalHessian.hxx)
+ot_install_header_file (VertexFieldToPointFunction.hxx)
 
 # Recurse in subdirectories
 add_subdirectory (SpecFunc)

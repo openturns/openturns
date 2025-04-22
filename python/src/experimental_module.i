@@ -43,6 +43,7 @@
 
 %include ConstantEvaluation.i
 %include ConstantFunction.i
+%include VertexFieldToPointFunction.i
 
 /* Uncertainty/Model */
 
