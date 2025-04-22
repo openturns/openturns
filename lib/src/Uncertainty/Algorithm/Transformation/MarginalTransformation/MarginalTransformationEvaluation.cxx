@@ -110,7 +110,7 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
           const Scalar q75Output = outputDistribution.computeScalarQuantile(0.75);
           const Scalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
-          const Scalar b = (q75Output - q25Output) / (q75Input - q25Input);
+          const Scalar b = (q75Input == q25Input ? 1.0 : (q75Output - q25Output) / (q75Input - q25Input));
           const Scalar c = -0.5 * (q75Input + q25Input);
           OSS oss;
           oss.setPrecision(20);
