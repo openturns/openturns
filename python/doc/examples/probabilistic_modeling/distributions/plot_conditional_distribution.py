@@ -19,7 +19,7 @@ import openturns.viewer as otv
 # with :math:`\vect{\Theta}` obtained with the random variable :math:`Y` through a function :math:`f`
 #
 # .. math::
-#    \vect{\Theta} = f(Y)
+#    \vect{\Theta} = f(\vect{Y})
 #
 
 # %%
@@ -39,7 +39,7 @@ XgivenThetaDist = ot.Uniform()
 # %%
 # At last, we create the deconditioned distribution of:math:`X`:
 XDist = ot.DeconditionedDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription(["X|Theta=f(y)"])
+XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
 XDist
 
 # %%
