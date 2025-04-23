@@ -677,3 +677,17 @@ description : :class:`~openturns.Description`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getFullParameterDescription
 OT_CovarianceModel_getFullParameterDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_isParallel_doc
+"Accessor to the parallel flag.
+
+Returns
+-------
+isParallel : bool
+    Whether the object is considered thread-safe.
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::isParallel
+OT_CovarianceModel_isParallel_doc
