@@ -4839,7 +4839,10 @@ public:
     , distribution_(distribution)
     , link_(SymbolicFunction(Description({"u", "cuu"}), Description(1, linkFormula)))
   , survival_(survival)
-  {}
+  {
+    if (!distribution.isCopula() || distribution.getDimension() != 2)
+      throw InvalidArgumentException(HERE) << "Can only compute dependence function of a 2-d copula";
+  }
 
   DistributionImplementationDependenceEvaluation * clone() const override
   {
@@ -4873,99 +4876,141 @@ private:
   Bool survival_ = false;
 };
 
-Function DistributionImplementation::getUpperTailDependenceFunction() const
+Function DistributionImplementation::getTailDependenceFunction(const Distribution & distribution,
+                                                                const TailDependenceType tailDependenceType) const
 {
-  return DistributionImplementationDependenceEvaluation(*this, "2-log(cuu)/log(u)");
+  String linkFormula;
+  switch (tailDependenceType)
+  {
+    case UpperTail:
+    {
+      linkFormula = "2-log(cuu)/log(u)";
+      break;
+    }
+    case UpperExtremal:
+    {
+      linkFormula = "2*log1p(-u)/log(cuu)-1";
+      break;
+    }
+    case LowerTail:
+    {
+      linkFormula = "log1p(-cuu)/log1p(-u)";
+      break;
+    }
+    case LowerExtremal:
+    {
+      linkFormula = "2*log(u)/log(cuu)-1";
+      break;
+    }
+    default:
+      throw NotYetImplementedException(HERE) << "Unknown tail dependence type:" << tailDependenceType;
+  }
+  const Bool survival = tailDependenceType == UpperExtremal;
+  return DistributionImplementationDependenceEvaluation(distribution, linkFormula, survival);
 }
 
-Function DistributionImplementation::getUpperExtremalDependenceFunction() const
-{
-  return DistributionImplementationDependenceEvaluation(*this, "2*log1p(-u)/log(cuu)-1", true);
-}
-
-Function DistributionImplementation::getLowerTailDependenceFunction() const
-{
-  return DistributionImplementationDependenceEvaluation(*this, "log1p(-cuu)/log1p(-u)");
-}
-
-Function DistributionImplementation::getLowerExtremalDependenceFunction() const
-{
-  return DistributionImplementationDependenceEvaluation(*this, "2*log(u)/log(cuu)-1");
-}
-
-CorrelationMatrix DistributionImplementation::computeDependenceMatrix(const Function & dependenceFunction, const Bool lower) const
+CorrelationMatrix DistributionImplementation::computeTailDependenceMatrix(const TailDependenceType tailDependenceType) const
 {
   if (getDimension() < 2)
     throw InvalidArgumentException(HERE) << "Can only compute dependence matrix of a multivariate distribution";
   CorrelationMatrix dependence(getDimension());
   const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DependenceEpsilon");
+  const Bool lower = (tailDependenceType == LowerTail) || (tailDependenceType == LowerExtremal);
   const Scalar u = lower ? epsilon : 1.0 - epsilon;
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Distribution marginal = getDimension() == 2 ? *this : getMarginal(Indices({i, j}));
+      const Function dependenceFunction = getTailDependenceFunction(marginal, tailDependenceType);
       dependence(i, j) = dependenceFunction(Point({u}))[0];
+    }
   return dependence;
 }
 
 CorrelationMatrix DistributionImplementation::computeUpperTailDependenceMatrix() const
 {
-  return computeDependenceMatrix(getUpperTailDependenceFunction());
+  return computeTailDependenceMatrix(UpperTail);
 }
 
 CorrelationMatrix DistributionImplementation::computeUpperExtremalDependenceMatrix() const
 {
-  return computeDependenceMatrix(getUpperExtremalDependenceFunction());
+  return computeTailDependenceMatrix(UpperExtremal);
 }
 
 CorrelationMatrix DistributionImplementation::computeLowerTailDependenceMatrix() const
 {
-  return computeDependenceMatrix(getLowerTailDependenceFunction(), true);
+  return computeTailDependenceMatrix(LowerTail);
 }
 
 CorrelationMatrix DistributionImplementation::computeLowerExtremalDependenceMatrix() const
 {
-  return computeDependenceMatrix(getLowerExtremalDependenceFunction(), true);
+  return computeTailDependenceMatrix(LowerExtremal);
 }
 
-Graph DistributionImplementation::drawDependenceFunction(const Function & dependenceFunction, const String & legend) const
+Graph DistributionImplementation::drawTailDependenceFunction(const TailDependenceType tailDependenceType) const
 {
   if (getDimension() != 2)
     throw InvalidArgumentException(HERE) << "Can only draw dependence function of a bivariate distribution";
-
+  const Function dependenceFunction = getTailDependenceFunction(*this, tailDependenceType);
   const Scalar epsilon = 1e-3;
   Graph graph(dependenceFunction.draw(epsilon, 1.0 - epsilon));
+  String legend;
+  String title;
+  switch (tailDependenceType)
+  {
+    case UpperTail:
+    {
+      legend = "$\\chi(u)$";
+      title = "Upper tail dependence function";
+      break;
+    }
+    case UpperExtremal:
+    {
+      legend = "$\\bar{\\chi}(u)$";
+      title = "Upper extremal dependence function";
+      break;
+    }
+    case LowerTail:
+     {
+      legend = "$\\chi_L(u)$";
+      title = "Lower tail dependence function";
+      break;
+    }
+    case LowerExtremal:
+    {
+      legend = "$\\bar{\\chi}_L(u)$";
+      title = "Lower extremal dependence function";
+      break;
+    }
+    default:
+      throw NotYetImplementedException(HERE) << "Unknown tail dependence type:" << tailDependenceType;
+  }
   graph.setLegendPosition("bottom");
   graph.setLegends(Description({legend}));
   graph.setXTitle("u");
   graph.setYTitle(legend);
+  graph.setTitle(title);
   return graph;
 }
 
 Graph DistributionImplementation::drawUpperTailDependenceFunction() const
 {
-  Graph graph(drawDependenceFunction(getUpperTailDependenceFunction(), "$\\chi(u)$"));
-  graph.setTitle("Upper tail dependence function");
-  return graph;
+  return drawTailDependenceFunction(UpperTail);
 }
 
 Graph DistributionImplementation::drawUpperExtremalDependenceFunction() const
 {
-  Graph result(drawDependenceFunction(getUpperExtremalDependenceFunction(), "$\\bar{\\chi}(u)$"));
-  result.setTitle("Upper extremal dependence function");
-  return result;
+  return drawTailDependenceFunction(UpperExtremal);
 }
 
 Graph DistributionImplementation::drawLowerTailDependenceFunction() const
 {
-  Graph result(drawDependenceFunction(getLowerTailDependenceFunction(), "$\\chi_L(u)$"));
-  result.setTitle("Lower tail dependence function");
-  return result;
+  return drawTailDependenceFunction(LowerTail);
 }
 
 Graph DistributionImplementation::drawLowerExtremalDependenceFunction() const
 {
-  Graph result(drawDependenceFunction(getLowerExtremalDependenceFunction(), "$\\bar{\\chi}_L(u)$"));
-  result.setTitle("Lower extremal dependence function");
-  return result;
+  return drawTailDependenceFunction(LowerExtremal);
 }
 
 /* Parameters value and description accessor */
