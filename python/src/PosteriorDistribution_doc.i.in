@@ -22,6 +22,7 @@ Notes
 Its probability density function is defined as:
 
 .. math::
+    :label: postPDF
 
     f_{\vect{Y}|\vect{X}_1=\vect{x}_1, ..., \vect{X}_n = \vect{x}_n}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}'}(\vect{x}_i) d \vect{y}'}
 
@@ -164,3 +165,41 @@ linkFunction : :class:`~openturns.Function`
     the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
     *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::computeLogNormalizedLikelihood
+"Compute the log-likelihood including the normalization constant.
+
+Parameters
+----------
+x : sequence of float, 2-d sequence of float
+    Point in :math:`\Rset^\inputDim`.
+
+Returns
+-------
+value : float
+    The value of the log-likelihood at *x*.
+
+Notes
+-----
+The normalized log-likelihood is the log-PDF of the posterior distribution defined in :eq:`postPDF`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::computeNormalizedLikelihood
+"Compute the likelihood including the normalization constant.
+
+Parameters
+----------
+x : sequence of float, 2-d sequence of float
+    Point in :math:`\Rset^\inputDim`.
+
+Returns
+-------
+value : float
+    The value of the likelihood at *x*.
+
+Notes
+-----
+The normalized likelihood is the PDF of the posterior distribution defined in :eq:`postPDF`."

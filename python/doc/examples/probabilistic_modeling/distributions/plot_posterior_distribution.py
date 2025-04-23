@@ -4,16 +4,16 @@ Compare Frequentist and Bayesian estimation
 """
 
 # %%
-# In this example, we want to estimate of the parameters
+# In this example, we want to estimate of the parameter
 # :math:`\vect{\Theta}` of a random vector :math:`\inputRV` from which we have some data.
-# We compare the frequentist and the Bayesian approaches to estimate the parameters :math:`\vect{\Theta}`.
+# We compare the frequentist and the Bayesian approaches to estimate the parameter :math:`\vect{\Theta}`.
 #
 # Let :math:`\inputRV = (X_0, X_1)` be a random vector following a bivariate normal distribution
 # with zero mean, unit variance and independent components:
 # :math:`\cN_2 \left(\vect{\theta}\right)`
 # where the parameter :math:`\vect{\theta} = (\mu_0, \sigma_0, \mu_1, \sigma_1, \rho) = (0, 1, 0, 1, 0)`.
 # We assume to have a sample generated from :math:`\vect{X}` denoted by
-# :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` where :math:`_\sampleSize = 25`.
+# :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` where :math:`\sampleSize = 25`.
 #
 # We assume to know the parameters :math:`(\mu_0, \mu_1, \rho)` and we want to estimate the parameters :math:`(\sigma_0, \sigma_1)`.
 # In the Bayesian approach, we assume that :math:`\vect{\Theta} = (0, \sigma_0, 0, \sigma_1, 0)` is a random vector and we define
@@ -44,15 +44,15 @@ Compare Frequentist and Bayesian estimation
 #
 # The second case is such that the link function :math:`g_2` is not bijective on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
-# The bayesian approach uses the :class:`~openturns.PosteriorDistribution` that estimates the posterior distribution denoted by
+# The bayesian approach uses the :class:`~openturns.experimental.PosteriorDistribution` that estimates the posterior distribution denoted by
 # :math:`\pi_{n, \vect{Y}}` maximizing the likelihood of the conditioned model on the sample, weighted by the prior distribution
 # :math:`\pi_{\vect{Y}}^0`. From the :math:`\pi_{n, \vect{Y}}` distribution, we extract the vector of modes
-# denoted :math:`\vect{Y}_n^m`.
+# denoted by :math:`\vect{Y}_n^m`.
 #
-# It is interesting to note that when :math:`n \rightarrow +\infty`, then :math:`\pi_{n, \vect{Y}}\rightarrow \pi_{\vect{Y}}^*`
-# such that :math:`g( \pi_{\vect{Y}}^*)` is a Dirac distribution centered at :math:`\vect{\theta}_v`.
+# It is interesting to note that when :math:`n \rightarrow +\infty`, then :math:`\pi_{n, \vect{Y}} \rightarrow \pi_{\vect{Y}}^*`
+# such that :math:`g(\pi_{\vect{Y}}^*)` is a Dirac distribution centered at :math:`\vect{\theta}`.
 #
-# The frequentist approach estimates the parameter :math:`\vect{theta}` by maximizing the likelihood of the normal model on the
+# The frequentist approach estimates the parameter :math:`\vect{\theta}` by maximizing the likelihood of the normal model on the
 # sample. To model the same level of information, we consider a centered bivariate normal model with independent components.
 # We denote by :math:`\vect{\theta}_n^{MC}` the parameter obtained.
 
@@ -103,7 +103,7 @@ observations = conditioned.getSample(Nsample)
 # Case 1: we consider the :math:`g_1` link function
 # -------------------------------------------------
 #
-# Here, :math:`g_1(\vect{y}) & = (0, y_0, 0, y_1, 0)` and :math:`\pi_{\vect{Y}}^{0,1} & \cT(0,1,2) \times \cT(0,1,2)`.
+# Here, :math:`g_1(\vect{y}) = (0, y_0, 0, y_1, 0)` and :math:`\pi_{\vect{Y}}^{0,1} = \cT(0,1,2) \times \cT(0,1,2)`.
 #
 # We create the link function.
 linkFunction = ot.SymbolicFunction(["u0", "u1"], ["0.0", "u0", "0.0", "u1", "0.0"])
@@ -126,13 +126,14 @@ posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
 
 # %%
 # From the posterior distribution  :math:`\pi_{n, \vect{Y}}` of :math:`\vect{Y}`, we get:
+#
 # - the mode parameter :math:`\vect{Y}_n^m` that maximizes the PDF,
 # - the distribution of :math:`\inputRV`  parameterized by :math:`\vect{\theta}_n^m = g(\vect{Y}_n^m)`,
-# - a bilateral condifence interval of level :math:`\alpha` wich corresponds to marginal confidence intervals of order :math:`\beta`,
-#   where the remaining marginal  probability :math:`1-\beta` is equally distributed on both sides of the marginal interval,
+# - a bilateral condifence interval of level :math:`\alpha`,
 # - the volume of this condifence interval,
 # - the Kullback-Leibler distance between the estimated distribution and the theoretical one:
 #   :math:`KL\left(\cN_2\left(g(\vect{Y}_n^m)\right), \cN_2 \left(\vect{\theta}\right) \right)`.
+#
 theta_Bay = linkFunction(computeMode(posterior_Y))
 print(f"{theta_Bay=}")
 model_Bay = ot.Distribution(conditioned)
@@ -160,12 +161,14 @@ lh_est = lh_factory.buildEstimator(observations)
 
 # %%
 # We extract from the likelihood estimate:
+#
 # - the asymptotic distribution of the estimator,
 # - the parameters estimates,
 # - a bilateral condifence interval of level :math:`\alpha`,
 # - the volume of this condifence interval,
 # - the Kullback-Leibler distance between the estimated distribution and the theoretical one:
 #   :math:`KL\left(\cN_2 \left(\vect{\theta}_n^{MV} \right), \cN_2 \left(\vect{\theta}\right) \right)`.
+#
 model_ML = lh_est.getDistribution()
 theta_ML = model_ML.getParameter()
 print(f"{theta_ML=}")
@@ -184,6 +187,7 @@ print("Kullback-Leibler distance ML = ", dist_KL[0])
 
 # %%
 # In the following figure, we  plot:
+#
 # - the theoretical distribution of :math:`\inputRV`:  :math:`\cN_2 \left(\vect{\theta}\right)`: solid lines,
 # - its maximum likelihood distribution :math:`\cN_2 \left(\vect{\theta}_n^{MV}\right)`: dashed lines,
 # - its Bayesian distribution: :math:`\cN_2(g(\vect{Y}_n^m))`: dotted lines.
@@ -203,17 +207,16 @@ dr_Bay.setColorBarPosition("")
 dr_Bay.setLineStyle("dotted")
 g.add(dr_Bay)
 g.add(ot.Cloud(observations))
-g.setLegends(["Initial dist", "Max Lik. dist", "Bay dist", "Observations"])
+g.setLegends(["Initial dist", "ML dist", "Bay dist", "Observations"])
 g.setXTitle(r"$X_0$")
 g.setYTitle(r"$X_1$")
-g.setTitle(
-    "Initial distribution, max. Lik. estimated dist and Bayesian estimated dist."
-)
+g.setTitle("Initial distribution, ML estimated dist and Bayesian estimated dist.")
 view = otv.View(g, (800, 800), square_axes=True)
 
 
 # %%
 # In the following figure, we plot:
+#
 # - the maximum likelihood distribution of the parameter :math:`\vect{\Theta}`: :math:`\vect{\theta}_n^{MV}`: left,
 # - its Bayesian distribution: :math:`g(\pi_{n, \vect{Y}})`: right.
 #
@@ -252,7 +255,7 @@ g_ML.setLegends(
 )
 g_ML.setXTitle(r"$\sigma_0$")
 g_ML.setYTitle(r"$\sigma_1$")
-g_ML.setTitle("Max Lik. Estimator")
+g_ML.setTitle("ML Estimator")
 
 # %%
 # Then the Bayesian estimator.
@@ -298,27 +301,28 @@ view = otv.View(grid)
 
 # %%
 # Finally, the following table sums up the previous computed quantities.
+#
 # ============     ========================  ========================  ======================   ======================
 # Approach         :math:`\tilde{\sigma}_0`  :math:`\tilde{\sigma}_1`  IC(:math:`\sigma_0`)     IC(:math:`\sigma_1`)
 # ============     ========================  ========================  ======================   ======================
-#  Frequentist      0.967                     0.951                     :math:`[0.651, 1.30]`    :math:`[0.659, 1.20]`
-#  Bayesian         0.950                     0.934                     :math:`[0.736, 1.38]`    :math:`[0.724, 1.35]`
-#  ============    ========================  ========================  ======================   ======================
+# Frequentist      0.967                     0.951                     :math:`[0.651, 1.30]`    :math:`[0.659, 1.20]`
+# Bayesian         0.950                     0.934                     :math:`[0.736, 1.38]`    :math:`[0.724, 1.35]`
+# ============     ========================  ========================  ======================   ======================
 #
 # ============     =============   =======================  =================================================
 # Approach         :math:`\beta`   :math:`KL`               :math:`\cV(IC(\tilde{\sigma}_0, \tilde{\sigma}))`
 # ============     =============   =======================  =================================================
-#  Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
-#  Bayesian         0.974           :math:`6.87\, 10^{-3}`   0.381
-#  ============    =============   =======================  =================================================
+# Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
+# Bayesian         0.974           :math:`6.87\, 10^{-3}`   0.381
+# ============     =============   =======================  =================================================
 
 # %%
 # Case 2: we consider the :math:`g_2` link function
 # -------------------------------------------------
 #
-# Here, :math:`g_2(\vect{y}) & = (0,0.5+y_0^2, 0, 0.5+y_1^2, 0)` and :math:`\pi_{\vect{Y}}^{0,2} & \cT(-1, 0, 1) \times \cT(-1, 0,1)`.
+# Here, :math:`g_2(\vect{y}) = (0,0.5+y_0^2, 0, 0.5+y_1^2, 0)` and :math:`\pi_{\vect{Y}}^{0,2} = \cT(-1, 0, 1) \times \cT(-1, 0,1)`.
 #
-# We note that the posterior distribution of :math:`\vect{Y}` is quadri-modale, as the lonk function :math:`g_2` is no mor bijective
+# We note that the posterior distribution of :math:`\vect{Y}` is quadri-modale, as the lonk function :math:`g_2` is no more bijective
 # on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
 # We go through the same steps as described previously. The maximum estimator is not changed.
@@ -360,12 +364,10 @@ dr_Bay.setColorBarPosition("")
 dr_Bay.setLineStyle("dotted")
 g.add(dr_Bay)
 g.add(ot.Cloud(observations))
-g.setLegends(["Initial dist", "Max Lik. dist", "Bay dist", "Observations"])
+g.setLegends(["Initial dist", "ML dist", "Bay dist", "Observations"])
 g.setXTitle(r"$X_0$")
 g.setYTitle(r"$X_1$")
-g.setTitle(
-    "Initial distribution, max. Lik. estimated dist and Bayesian estimated dist."
-)
+g.setTitle("Initial distribution, ML estimated dist and Bayesian estimated dist.")
 view = otv.View(g, (800, 800), square_axes=True)
 
 g_ML = dist_estimator_ML.drawPDF([0.5] * 2, [1.5] * 2)
@@ -399,7 +401,7 @@ g_ML.setLegends(
 )
 g_ML.setXTitle(r"$\sigma_0$")
 g_ML.setYTitle(r"$\sigma_1$")
-g_ML.setTitle("Max Lik. Estimator")
+g_ML.setTitle("ML Estimator")
 
 
 g_Bay = dist_estimateur_Bay.drawPDF([0.5] * 2, [1.5] * 2)
@@ -443,21 +445,22 @@ view = otv.View(grid)
 
 # %%
 # Finally, the following table sums up the previous computed quantities.
+#
 # ============     ========================  ========================  ======================   ======================
 # Approach         :math:`\tilde{\sigma}_0`  :math:`\tilde{\sigma}_1`  IC(:math:`\sigma_0`)     IC(:math:`\sigma_1`)
 # ============     ========================  ========================  ======================   ======================
-#  Frequentist      0.967                     0.951                     :math:`[0.651, 1.30]`    :math:`[0.659, 1.20]`
-#  Bayesian         0.929                     0.915                     :math:`[0.706, 1.27]`    :math:`[0.693, 1.25]`
-#  ============    ========================  ========================  ======================   ======================
+# Frequentist      0.967                     0.951                     :math:`[0.651, 1.30]`    :math:`[0.659, 1.20]`
+# Bayesian         0.929                     0.915                     :math:`[0.706, 1.27]`    :math:`[0.693, 1.25]`
+# ============     ========================  ========================  ======================   ======================
 #
 # ============     =============   =======================  =================================================
 # Approach         :math:`\beta`   :math:`KL`               :math:`\cV(IC(\tilde{\sigma}_0, \tilde{\sigma}))`
 # ============     =============   =======================  =================================================
-#  Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
-#  Bayesian         0.974           :math:`1.21\, 10^{-2}`   0.316
-#  ============    =============   =======================  =================================================
-# %%
-# We also plot that PDf of the posterior distribution :math:`\pi_{n, \vect{Y}}` of :math:`\vect{Y}` which is quadri-modale, with a sample.
+# Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
+# Bayesian         0.974           :math:`1.21\, 10^{-2}`   0.316
+# ============     =============   =======================  =================================================
+#
+# We also plot the PDF of the posterior distribution :math:`\pi_{n, \vect{Y}}` of :math:`\vect{Y}` which is quadri-modale, with a sample.
 # sphinx_gallery_thumbnail_number =  5
 g_pinY = posterior_Y.drawPDF()
 g_pinY.setXTitle(r"$Y_0$")

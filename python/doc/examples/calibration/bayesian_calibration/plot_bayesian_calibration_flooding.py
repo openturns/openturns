@@ -38,7 +38,7 @@ Bayesian calibration of the flooding model
 # The errors of the water heights are associated with a gaussian distribution with a zero mean and a standard variation equal to:
 #
 # .. math::
-#    \sigma=0.1.
+#    \sigma=0.5.
 #
 #
 # Therefore, the observed water heights are:
