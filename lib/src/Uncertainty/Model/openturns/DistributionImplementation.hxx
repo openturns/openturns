@@ -723,14 +723,12 @@ protected:
                                const Bool logScaleX = false,
                                const Bool logScaleY = false) const;
 
-  /** Dependence functions */
-  virtual Function getUpperTailDependenceFunction() const;
-  virtual Function getUpperExtremalDependenceFunction() const;
-  virtual Function getLowerTailDependenceFunction() const;
-  virtual Function getLowerExtremalDependenceFunction() const;
+  /** Dependence functions helpers */
+  enum TailDependenceType {UpperTail, UpperExtremal, LowerTail, LowerExtremal};
+  virtual Function getTailDependenceFunction(const Distribution & distribution, const TailDependenceType tailDependenceType) const;
+  virtual CorrelationMatrix computeTailDependenceMatrix(const TailDependenceType tailDependenceType) const;
+  virtual Graph drawTailDependenceFunction(const TailDependenceType tailDependenceType) const;
 
-  virtual CorrelationMatrix computeDependenceMatrix(const Function & link, const Bool lower = false) const;
-  virtual Graph drawDependenceFunction(const Function & link, const String & legend) const;
 public:
   /** Dependence coefficients */
   virtual CorrelationMatrix computeUpperTailDependenceMatrix() const;
