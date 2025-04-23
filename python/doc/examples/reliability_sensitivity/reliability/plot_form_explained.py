@@ -1,4 +1,4 @@
-"""
+r"""
 An illustrated example of a FORM probability estimate
 =====================================================
 """

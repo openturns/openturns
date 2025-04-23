@@ -1,4 +1,4 @@
-"""
+r"""
 Create a conditional random vector
 ==================================
 """

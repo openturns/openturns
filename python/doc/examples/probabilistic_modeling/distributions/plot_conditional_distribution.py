@@ -1,6 +1,6 @@
-"""
-Create a conditional distribution
-=================================
+r"""
+Create a Deconditioned distribution
+===================================
 """
 
 # %%
@@ -25,11 +25,12 @@ import openturns.viewer as otv
 # %%
 # We consider the following case: :math:`X|\vect{\Theta} \sim \cU(\vect{\Theta})`
 # with :math:`\vect{\Theta} = (Y, 1 + Y^2)` and :math:`Y \sim \cU(-1,1)`.
+#
 # We first create the :math:`Y` distribution:
 YDist = ot.Uniform(-1.0, 1.0)
 
 # %%
-# Then we create the link function `f: y \rightarrow (y, 1+y^2):
+# Then we create the link function :math:`f: y \rightarrow (y, 1+y^2)`:
 f = ot.SymbolicFunction(["y"], ["y", "1+y^2"])
 
 # %%
@@ -37,17 +38,17 @@ f = ot.SymbolicFunction(["y"], ["y", "1+y^2"])
 XgivenThetaDist = ot.Uniform()
 
 # %%
-# At last, we create the deconditioned distribution of:math:`X`:
+# At last, we create the deconditioned distribution of :math:`X`:
 XDist = ot.DeconditionedDistribution(XgivenThetaDist, YDist, f)
 XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
 XDist
 
 # %%
-# Get a sample
+# Get a sample:
 XDist.getSample(5)
 
 # %%
-# Draw PDF
+# Draw the PDF:
 graph = XDist.drawPDF()
 view = otv.View(graph)
 
