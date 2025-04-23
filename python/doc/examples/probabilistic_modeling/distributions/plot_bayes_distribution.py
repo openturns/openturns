@@ -50,8 +50,8 @@ sample = XDist.getSample(100)
 # %%
 # Draw PDF
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
-graph = XDist.drawPDF(sample.getMin(), sample.getMax(), [256]*2)
-graph.setTitle(r'$(Y,X)$ iso-PDF')
+graph = XDist.drawPDF(sample.getMin(), sample.getMax(), [256] * 2)
+graph.setTitle(r"$(Y,X)$ iso-PDF")
 cloud = ot.Cloud(sample)
 cloud.setColor("red")
 cloud.setLegend("sample")
