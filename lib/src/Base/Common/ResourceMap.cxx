@@ -1638,11 +1638,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DefaultQuantileEpsilon", 1.0e-12);
   addAsScalar("Distribution-DefaultPDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DefaultCDFEpsilon", 1.0e-14);
-  addAsScalar("Distribution-DependenceEpsilon", 1.0e-12);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
   addAsString("Distribution-EntropySamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
   addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo", {"MonteCarlo", "QuasiMonteCarlo"});
   addAsString("Distribution-SupportPointStyleDiscretePDF", "dot");
+  addAsScalar("Distribution-TailDependenceEpsilon", 1.0e-12);
+  addAsScalar("Distribution-TailDependenceMargin", 1.0e-3);
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
   addAsUnsignedInteger("Distribution-DefaultCDFIteration", 10000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);

@@ -4914,7 +4914,7 @@ CorrelationMatrix DistributionImplementation::computeTailDependenceMatrix(const 
   if (getDimension() < 2)
     throw InvalidArgumentException(HERE) << "Can only compute dependence matrix of a multivariate distribution";
   CorrelationMatrix dependence(getDimension());
-  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DependenceEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-TailDependenceEpsilon");
   const Bool lower = (tailDependenceType == LowerTail) || (tailDependenceType == LowerExtremal);
   const Scalar u = lower ? epsilon : 1.0 - epsilon;
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
@@ -4952,7 +4952,7 @@ Graph DistributionImplementation::drawTailDependenceFunction(const TailDependenc
   if (getDimension() != 2)
     throw InvalidArgumentException(HERE) << "Can only draw dependence function of a bivariate distribution";
   const Function dependenceFunction = getTailDependenceFunction(*this, tailDependenceType);
-  const Scalar epsilon = 1e-3;
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-TailDependenceMargin");
   Graph graph(dependenceFunction.draw(epsilon, 1.0 - epsilon));
   String legend;
   String title;
