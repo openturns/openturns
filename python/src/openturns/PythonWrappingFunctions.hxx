@@ -769,12 +769,13 @@ void handleException()
     PyErr_SetRaisedException(exception);
 #else
     PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    PyErr_GetExcInfo(&type, &value, &traceback);
+    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_NormalizeException(&type, &value, &traceback);
 
     // get the name of the exception
-    if (type && PyObject_HasAttrString(type, "__name__"))
+    if (type)
     {
-      ScopedPyObjectPointer nameObj(PyObject_GetAttrString(type, "__name__"));
+      ScopedPyObjectPointer nameObj(PyObject_Str(type));
       if (nameObj.get())
       {
         const String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
@@ -793,7 +794,7 @@ void handleException()
       }
     }
 
-    PyErr_SetExcInfo(type, value, traceback);
+    PyErr_Restore(type, value, traceback);
 #endif
     PyErr_Print();
     throw InternalException(HERE) << exceptionMessage;
