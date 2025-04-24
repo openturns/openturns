@@ -988,7 +988,6 @@
   <Distribution-DefaultCDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultPDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultQuantileEpsilon            value_float="1.0e-12"           />
-  <Distribution-DependenceEpsilon                 value_float="1.0e-12"           />
   <Distribution-DiscreteDrawPDFScaling            value_float="0.25"              />
   <Distribution-EntropySamplingMethod             value_str="MonteCarlo" />
   <Distribution-RoughnessSamplingMethod           value_str="MonteCarlo" />
@@ -1004,8 +1003,10 @@
   <Distribution-SmallDimensionEntropy             value_int="3"       />
   <Distribution-RoughnessSamplingSize             value_int="524288"  />
   <Distribution-SmallDimensionRoughness           value_int="3"       />
-  <Distribution-SupportEpsilon            value_float="1.0e-14" />
-  
+  <Distribution-SupportEpsilon                    value_float="1.0e-14" />
+  <Distribution-TailDependenceEpsilon             value_float="1.0e-12"/>
+  <Distribution-TailDependenceMargin              value_float="1.0e-3"/>
+
   <!-- OT::DiscreteMarkovChain parameters -->
   <DiscreteMarkovChain-DOTArcColor value_str="black" />
   <DiscreteMarkovChain-DOTLayout value_str="dot" />
