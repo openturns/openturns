@@ -38,7 +38,7 @@ print("X realization (third )=", repr(X.getRealization()))
 print("X sample =", repr(X.getSample(5)))
 
 # We create a composite RandomVector Y from X and myFunction
-Y = ot.RandomVector(ot.CompositeRandomVector(myFunction, X))
+Y = ot.CompositeRandomVector(myFunction, X)
 print("Y=", Y)
 print("is composite? ", Y.isComposite())
 
@@ -52,3 +52,8 @@ parameter = Y.getParameter()
 print("Y parameter =", repr(parameter))
 Y.setParameter(parameter)
 print("Y parameter desc =", repr(Y.getParameterDescription()))
+
+# check composite of composite
+composite2 = ot.CompositeRandomVector(ot.SymbolicFunction(["y0", "y1"], ["y0+y1"]), Y)
+print(composite2)
+assert composite2.getAntecedent().getDistribution() == distribution

@@ -20,6 +20,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/CompositeRandomVector.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,9 +44,19 @@ CompositeRandomVector::CompositeRandomVector(const Function & function,
   , function_(function)
   , antecedent_(antecedent)
 {
-  if (function.getInputDimension() != antecedent_.getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=" << antecedent_.getDimension() << " and Function input dimension=" << function.getInputDimension();
+  // compose the function of the inner composite RV
+  CompositeRandomVector * p_composite = dynamic_cast<CompositeRandomVector*>(antecedent.getImplementation().get());
+  if (p_composite)
+  {
+    function_ = ComposedFunction(function, antecedent.getFunction());
+    antecedent_ = antecedent.getAntecedent();
+  }
+
+  if (function_.getInputDimension() != antecedent_.getDimension())
+    throw InvalidArgumentException(HERE) << "CompositeRandomVector cannot instantiate from a RandomVector and a Function with incompatible dimensions, here antecedent dimension=" << antecedent_.getDimension() << " and function input dimension=" << function_.getInputDimension();
+
   // Get the description from the underlying function
-  setDescription(function.getOutputDescription());
+  setDescription(function_.getOutputDescription());
 }
 
 /* Virtual constructor */
