@@ -624,6 +624,7 @@ void DeconditionedDistribution::save(Advocate & adv) const
   Mixture::save(adv);
   adv.saveAttribute( "conditionedDistribution_", conditionedDistribution_ );
   adv.saveAttribute( "conditioningDistribution_", conditioningDistribution_ );
+  adv.saveAttribute( "linkFunction_", linkFunction_ );
   adv.saveAttribute( "discreteMarginalsIndices_", discreteMarginalsIndices_ );
   adv.saveAttribute( "diracMarginalsIndices_", diracMarginalsIndices_ );
   adv.saveAttribute( "continuousMarginalsIndices_", continuousMarginalsIndices_ );
@@ -641,6 +642,7 @@ void DeconditionedDistribution::load(Advocate & adv)
   Mixture::load(adv);
   adv.loadAttribute( "conditionedDistribution_", conditionedDistribution_ );
   adv.loadAttribute( "conditioningDistribution_", conditioningDistribution_ );
+  adv.loadAttribute( "linkFunction_", linkFunction_ );
   adv.loadAttribute( "discreteMarginalsIndices_", discreteMarginalsIndices_ );
   adv.loadAttribute( "diracMarginalsIndices_", diracMarginalsIndices_ );
   adv.loadAttribute( "continuousMarginalsIndices_", continuousMarginalsIndices_ );
