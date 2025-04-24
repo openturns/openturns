@@ -1,12 +1,12 @@
 """
-Compare Frequentist and Bayesian estimation
+Compare frequentist and Bayesian estimation
 ===========================================
 """
 
 # %%
 # In this example, we want to estimate of the parameter
-# :math:`\vect{\Theta}` of a random vector :math:`\inputRV` from which we have some data.
-# We compare the frequentist and the Bayesian approaches to estimate the parameter :math:`\vect{\Theta}`.
+# :math:`\vect{\Theta}` of the distribution of a random vector :math:`\inputRV` from which we have some data.
+# We compare the frequentist and the Bayesian approaches to estimate :math:`\vect{\theta}`.
 #
 # Let :math:`\inputRV = (X_0, X_1)` be a random vector following a bivariate normal distribution
 # with zero mean, unit variance and independent components:
@@ -16,7 +16,7 @@ Compare Frequentist and Bayesian estimation
 # :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` where :math:`\sampleSize = 25`.
 #
 # We assume to know the parameters :math:`(\mu_0, \mu_1, \rho)` and we want to estimate the parameters :math:`(\sigma_0, \sigma_1)`.
-# In the Bayesian approach, we assume that :math:`\vect{\Theta} = (0, \sigma_0, 0, \sigma_1, 0)` is a random vector and we define
+# In the Bayesian approach, we assume that :math:`\vect{\Theta} = (0, \Sigma_0, 0, \igma_1, 0)` is a random vector and we define
 # a link function :math:`g : \Rset^2 \rightarrow \Rset^5` such that:
 #
 # .. math::
@@ -39,17 +39,17 @@ Compare Frequentist and Bayesian estimation
 #
 # .. math::
 #
-#   \pi_{\vect{Y}}^{0,1} & \cT(0,1,2) \times \cT(0,1,2) \\
-#   \pi_{\vect{Y}}^{0,2} & \cT(-1, 0, 1) \times \cT(-1, 0,1)
+#   \pi_{\vect{Y}}^{0,1} & = \cT(0,1,2) \times \cT(0,1,2) \\
+#   \pi_{\vect{Y}}^{0,2} & = \cT(-1, 0, 1) \times \cT(-1, 0,1)
 #
 # The second case is such that the link function :math:`g_2` is not bijective on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
-# The bayesian approach uses the :class:`~openturns.experimental.PosteriorDistribution` that estimates the posterior distribution denoted by
-# :math:`\pi_{n, \vect{Y}}` maximizing the likelihood of the conditioned model on the sample, weighted by the prior distribution
-# :math:`\pi_{\vect{Y}}^0`. From the :math:`\pi_{n, \vect{Y}}` distribution, we extract the vector of modes
-# denoted by :math:`\vect{Y}_n^m`.
+# The Bayesian approach uses the :class:`~openturns.experimental.PosteriorDistribution` that estimates the posterior distribution of :math:`\vect{Y}` denoted by
+# :math:`\pi_{\vect{Y}}^\sampleSize` maximizing the likelihood of the conditioned model on the sample, weighted by the prior distribution
+# :math:`\pi_{\vect{Y}}^0`. From the :math:`\pi_{\vect{Y}}^\sampleSize` distribution, we extract the vector of modes
+# denoted by :math:`\vect{Y}_n^m`: this point maximizes :math:`\pi_{\vect{Y}}^\sampleSize`.
 #
-# It is interesting to note that when :math:`n \rightarrow +\infty`, then :math:`\pi_{n, \vect{Y}} \rightarrow \pi_{\vect{Y}}^*`
+# It is interesting to note that when :math:`n \rightarrow +\infty`, then :math:`\pi_{\vect{Y}}^\sampleSize \rightarrow \pi_{\vect{Y}}^*`
 # such that :math:`g(\pi_{\vect{Y}}^*)` is a Dirac distribution centered at :math:`\vect{\theta}`.
 #
 # The frequentist approach estimates the parameter :math:`\vect{\theta}` by maximizing the likelihood of the normal model on the
@@ -100,8 +100,8 @@ observations = conditioned.getSample(Nsample)
 
 
 # %%
-# Case 1: we consider the :math:`g_1` link function
-# -------------------------------------------------
+# Case 1: we consider the first link function
+# -------------------------------------------
 #
 # Here, :math:`g_1(\vect{y}) = (0, y_0, 0, y_1, 0)` and :math:`\pi_{\vect{Y}}^{0,1} = \cT(0,1,2) \times \cT(0,1,2)`.
 #
@@ -114,28 +114,28 @@ conditioning = ot.JointDistribution([ot.Triangular(0.0, 1.0, 2.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
 
 # %%
-# We have to decondition the :math:`\vect{X}|\vect{Theta} = g(\vect{Y}` distribution with
-# respect to the  :math:`\vect{Y}` distribution in order to get the
-# distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.DeconditionedDistribution`.
+# We have to decondition the :math:`\vect{X}|\vect{\Theta} = g(\vect{Y})` distribution with
+# respect to the  prior distribution :math:`\pi_{\vect{Y}}^{0,1}` in order to get the
+# final distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.DeconditionedDistribution`.
 deconditioned = ot.DeconditionedDistribution(conditioned, conditioning, linkFunction)
 
 # %%
-# Then, we can create the posterior distribution based on the deconditioned distribution of :math:`\vect{X}`,
-# the sample and the prior distribution of :math:`\vect{Y}`.
+# Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the deconditioned distribution of :math:`\vect{X}` and
+# the sample.
 posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
 
 # %%
-# From the posterior distribution  :math:`\pi_{n, \vect{Y}}` of :math:`\vect{Y}`, we get:
+# From  :math:`\pi_{\vect{Y}}^\sampleSize`, we get:
 #
 # - the mode parameter :math:`\vect{Y}_n^m` that maximizes the PDF,
 # - the distribution of :math:`\inputRV`  parameterized by :math:`\vect{\theta}_n^m = g(\vect{Y}_n^m)`,
-# - a bilateral condifence interval of level :math:`\alpha`,
+# - a bilateral condifence interval of level :math:`\alpha` of the posterior distribution of :math:`\vect{Y}`,
 # - the volume of this condifence interval,
-# - the Kullback-Leibler distance between the estimated distribution and the theoretical one:
+# - the Kullback-Leibler distance between the Bayesian mode based distribution and the theoretical one:
 #   :math:`KL\left(\cN_2\left(g(\vect{Y}_n^m)\right), \cN_2 \left(\vect{\theta}\right) \right)`.
 #
 theta_Bay = linkFunction(computeMode(posterior_Y))
-print(f"{theta_Bay=}")
+print('Theta Bay =', theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
 dist_estimateur_Bay = posterior_Y
@@ -143,8 +143,9 @@ alpha = 0.95
 interval_Bay, beta = (
     dist_estimateur_Bay.computeBilateralConfidenceIntervalWithMarginalProbability(alpha)
 )
-print("Beta=", beta)
-print("Condifence interval Bay=\n", interval_Bay, "volume =", interval_Bay.getVolume())
+print("Beta =", beta)
+print("Condifence interval Bay =\n", interval_Bay)
+print("Volume =", interval_Bay.getVolume())
 sample = model_Bay.getSample(1000000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
@@ -164,33 +165,34 @@ lh_est = lh_factory.buildEstimator(observations)
 #
 # - the asymptotic distribution of the estimator,
 # - the parameters estimates,
-# - a bilateral condifence interval of level :math:`\alpha`,
+# - a bilateral condifence interval of level :math:`\alpha` of the asymptotic distribution of the estimator,
 # - the volume of this condifence interval,
-# - the Kullback-Leibler distance between the estimated distribution and the theoretical one:
+# - the Kullback-Leibler distance between the maximum likelihood based distribution and the theoretical one:
 #   :math:`KL\left(\cN_2 \left(\vect{\theta}_n^{MV} \right), \cN_2 \left(\vect{\theta}\right) \right)`.
 #
 model_ML = lh_est.getDistribution()
 theta_ML = model_ML.getParameter()
-print(f"{theta_ML=}")
+print('Theta ML = ', theta_Bay)
 dist_estimator_ML = lh_est.getParameterDistribution().getMarginal([1, 3])
 interval_ML, beta = (
     dist_estimator_ML.computeBilateralConfidenceIntervalWithMarginalProbability(alpha)
 )
-print("Beta = ", beta)
-print("Condifence interval ML = \n", interval_ML, "volume = ", interval_ML.getVolume())
+print("Beta =", beta)
+print("Condifence interval ML =\n", interval_ML)
+print("Volume =", interval_ML.getVolume())
 sample = model_ML.getSample(1000000)
 dist_KL = (
     model_ML.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
-print("Kullback-Leibler distance ML = ", dist_KL[0])
+print("Kullback-Leibler distance ML =", dist_KL[0])
 
 
 # %%
 # In the following figure, we  plot:
 #
-# - the theoretical distribution of :math:`\inputRV`:  :math:`\cN_2 \left(\vect{\theta}\right)`: solid lines,
-# - its maximum likelihood distribution :math:`\cN_2 \left(\vect{\theta}_n^{MV}\right)`: dashed lines,
-# - its Bayesian distribution: :math:`\cN_2(g(\vect{Y}_n^m))`: dotted lines.
+# - the theoretical distribution of :math:`\inputRV`:  :math:`\cN_2 \left(\vect{\theta}\right)` (solid lines),
+# - its maximum likelihood based distribution: :math:`\cN_2 \left(\vect{\theta}_n^{MV}\right)` (dashed lines),
+# - its Bayesian mode based distribution: :math:`\cN_2(g(\vect{Y}_n^m))`(dotted lines).
 #
 # We conclude that both approaches lead to the same results.
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
@@ -207,7 +209,7 @@ dr_Bay.setColorBarPosition("")
 dr_Bay.setLineStyle("dotted")
 g.add(dr_Bay)
 g.add(ot.Cloud(observations))
-g.setLegends(["Initial dist", "ML dist", "Bay dist", "Observations"])
+g.setLegends(["Theoretical dist", "ML dist", "Bay dist", "Observations"])
 g.setXTitle(r"$X_0$")
 g.setYTitle(r"$X_1$")
 g.setTitle("Initial distribution, ML estimated dist and Bayesian estimated dist.")
@@ -215,12 +217,12 @@ view = otv.View(g, (800, 800), square_axes=True)
 
 
 # %%
-# In the following figure, we plot:
+# In the following figure, we consider the parameter :math:`\vect{\Theta}` and we plot:
 #
-# - the maximum likelihood distribution of the parameter :math:`\vect{\Theta}`: :math:`\vect{\theta}_n^{MV}`: left,
-# - its Bayesian distribution: :math:`g(\pi_{n, \vect{Y}})`: right.
+# - the asymptotic distribution of the maximum likelihood estimator: :math:`\vect{\theta}_n^{MV}`: left,
+# - the Bayesian mode based distribution: :math:`g(\pi_{\vect{Y}}^\sampleSize)`: right.
 #
-# On each figure, we draw the bilateral confidence bilateral interval or credibility bilateral interval  of level :math:`\alpha = 0.95`
+# On each figure, we draw the bilateral confidence interval or bilateral credibility interval of level :math:`\alpha = 0.95`
 # computed from the estimator distribution.
 #
 # First the maximum likelihood estimator.
@@ -315,14 +317,14 @@ view = otv.View(grid)
 # Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
 # Bayesian         0.974           :math:`6.87\, 10^{-3}`   0.381
 # ============     =============   =======================  =================================================
-
+#
 # %%
-# Case 2: we consider the :math:`g_2` link function
-# -------------------------------------------------
+# Case 2: we consider the second link function
+# --------------------------------------------
 #
 # Here, :math:`g_2(\vect{y}) = (0,0.5+y_0^2, 0, 0.5+y_1^2, 0)` and :math:`\pi_{\vect{Y}}^{0,2} = \cT(-1, 0, 1) \times \cT(-1, 0,1)`.
 #
-# We note that the posterior distribution of :math:`\vect{Y}` is quadri-modale, as the lonk function :math:`g_2` is no more bijective
+# We note that the posterior distribution of :math:`\vect{Y}` is quadri-modal, as the link function :math:`g_2` is no more bijective
 # on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
 # We go through the same steps as described previously. The maximum estimator is not changed.
@@ -337,20 +339,24 @@ sample_posterior = linkFunction(posterior_Y.getSample(100000)).getMarginal([1, 3
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 
 theta_Bay = linkFunction(computeMode(posterior_Y))
-print(f"{theta_Bay=}")
+print('Theta Bay =', theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
+dist_estimateur_Bay = posterior_Y
+alpha = 0.95
 interval_Bay, beta = (
     dist_estimateur_Bay.computeBilateralConfidenceIntervalWithMarginalProbability(alpha)
 )
-print("Beta=", beta)
-print("Condifence interval Bay=\n", interval_Bay, "volume = ", interval_Bay.getVolume())
+print("Beta =", beta)
+print("Condifence interval Bay =\n", interval_Bay)
+print("Volume =", interval_Bay.getVolume())
 sample = model_Bay.getSample(1000000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
-print("Kullback-Leibler distance Bay = ", dist_Bay[0])
+print("Kullback-Leibler distance Bay =", dist_Bay[0])
 
+# %%
 g = conditioned.drawPDF()
 levels = g.getDrawable(0).getLevels()
 dr_ML = model_ML.drawPDF().getDrawable(0).getImplementation()
@@ -364,12 +370,13 @@ dr_Bay.setColorBarPosition("")
 dr_Bay.setLineStyle("dotted")
 g.add(dr_Bay)
 g.add(ot.Cloud(observations))
-g.setLegends(["Initial dist", "ML dist", "Bay dist", "Observations"])
+g.setLegends(["Theoretical dist", "ML dist", "Bay dist", "Observations"])
 g.setXTitle(r"$X_0$")
 g.setYTitle(r"$X_1$")
 g.setTitle("Initial distribution, ML estimated dist and Bayesian estimated dist.")
 view = otv.View(g, (800, 800), square_axes=True)
 
+# %%
 g_ML = dist_estimator_ML.drawPDF([0.5] * 2, [1.5] * 2)
 c = ot.Cloud([theta_ML[[1, 3]]])
 c.setColor("red")
@@ -460,7 +467,7 @@ view = otv.View(grid)
 # Bayesian         0.974           :math:`1.21\, 10^{-2}`   0.316
 # ============     =============   =======================  =================================================
 #
-# We also plot the PDF of the posterior distribution :math:`\pi_{n, \vect{Y}}` of :math:`\vect{Y}` which is quadri-modale, with a sample.
+# We also plot the PDF of the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` of :math:`\vect{Y}` which is quadri-modal, with a sample.
 # sphinx_gallery_thumbnail_number =  5
 g_pinY = posterior_Y.drawPDF()
 g_pinY.setXTitle(r"$Y_0$")
