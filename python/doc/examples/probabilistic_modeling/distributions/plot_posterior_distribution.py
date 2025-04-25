@@ -16,7 +16,7 @@ Compare frequentist and Bayesian estimation
 # :math:`(\inputReal_1, \dots, \inputReal_\sampleSize)` where :math:`\sampleSize = 25`.
 #
 # We assume to know the parameters :math:`(\mu_0, \mu_1, \rho)` and we want to estimate the parameters :math:`(\sigma_0, \sigma_1)`.
-# In the Bayesian approach, we assume that :math:`\vect{\Theta} = (0, \Sigma_0, 0, \igma_1, 0)` is a random vector and we define
+# In the Bayesian approach, we assume that :math:`\vect{\Theta} = (0, \Sigma_0, 0, \Sigma_1, 0)` is a random vector and we define
 # a link function :math:`g : \Rset^2 \rightarrow \Rset^5` such that:
 #
 # .. math::
@@ -215,14 +215,14 @@ g.setYTitle(r"$X_1$")
 g.setTitle("Initial distribution, ML estimated dist and Bayesian estimated dist.")
 view = otv.View(g, (800, 800), square_axes=True)
 
-
 # %%
 # In the following figure, we consider the parameter :math:`\vect{\Theta}` and we plot:
 #
 # - the asymptotic distribution of the maximum likelihood estimator: :math:`\vect{\theta}_n^{MV}`: left,
 # - the Bayesian mode based distribution: :math:`g(\pi_{\vect{Y}}^\sampleSize)`: right.
 #
-# On each figure, we draw the bilateral confidence interval or bilateral credibility interval of level :math:`\alpha = 0.95`
+# On each figure, we draw the bilateral confidence interval or bilateral credibility interval of
+# level :math:`\alpha = 0.95`
 # computed from the estimator distribution.
 #
 # First the maximum likelihood estimator.
@@ -304,20 +304,21 @@ view = otv.View(grid)
 # %%
 # Finally, the following table sums up the previous computed quantities.
 #
-# ============     ========================  ========================  ======================   ======================
+# ===========      ========================  ========================  =====================    =====================
 # Approach         :math:`\tilde{\sigma}_0`  :math:`\tilde{\sigma}_1`  IC(:math:`\sigma_0`)     IC(:math:`\sigma_1`)
-# ============     ========================  ========================  ======================   ======================
+# ===========      ========================  ========================  =====================    =====================
 # Frequentist      0.967                     0.951                     :math:`[0.651, 1.30]`    :math:`[0.659, 1.20]`
 # Bayesian         0.950                     0.934                     :math:`[0.736, 1.38]`    :math:`[0.724, 1.35]`
-# ============     ========================  ========================  ======================   ======================
+# ===========      ========================  ========================  =====================    =====================
 #
-# ============     =============   =======================  =================================================
+# ===========      =============   ======================   =================================================
 # Approach         :math:`\beta`   :math:`KL`               :math:`\cV(IC(\tilde{\sigma}_0, \tilde{\sigma}))`
-# ============     =============   =======================  =================================================
+# ===========      =============   ======================   =================================================
 # Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
 # Bayesian         0.974           :math:`6.87\, 10^{-3}`   0.381
-# ============     =============   =======================  =================================================
-#
+# ===========      =============   ======================   =================================================
+
+
 # %%
 # Case 2: we consider the second link function
 # --------------------------------------------
@@ -453,19 +454,19 @@ view = otv.View(grid)
 # %%
 # Finally, the following table sums up the previous computed quantities.
 #
-# ============     ========================  ========================  ======================   ======================
+# ===========      ========================  ========================  =====================    =====================
 # Approach         :math:`\tilde{\sigma}_0`  :math:`\tilde{\sigma}_1`  IC(:math:`\sigma_0`)     IC(:math:`\sigma_1`)
-# ============     ========================  ========================  ======================   ======================
+# ===========      ========================  ========================  =====================    =====================
 # Frequentist      0.967                     0.951                     :math:`[0.651, 1.30]`    :math:`[0.659, 1.20]`
 # Bayesian         0.929                     0.915                     :math:`[0.706, 1.27]`    :math:`[0.693, 1.25]`
-# ============     ========================  ========================  ======================   ======================
+# ===========      ========================  ========================  =====================    =====================
 #
-# ============     =============   =======================  =================================================
+# ===========      =============   ======================   =================================================
 # Approach         :math:`\beta`   :math:`KL`               :math:`\cV(IC(\tilde{\sigma}_0, \tilde{\sigma}))`
-# ============     =============   =======================  =================================================
+# ===========      =============   ======================   =================================================
 # Frequentist      0.974           :math:`3.46\, 10^{-3}`   0.352
 # Bayesian         0.974           :math:`1.21\, 10^{-2}`   0.316
-# ============     =============   =======================  =================================================
+# ===========      =============   ======================   =================================================
 #
 # We also plot the PDF of the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` of :math:`\vect{Y}` which is quadri-modal, with a sample.
 # sphinx_gallery_thumbnail_number =  5
