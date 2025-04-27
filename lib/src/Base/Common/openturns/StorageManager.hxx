@@ -25,7 +25,6 @@
 #include <vector>                // for std::vector
 #include <set>                   // for std::set
 #include <map>                   // for std::map
-#include <cstddef>               // for ptrdiff_t
 #include "openturns/Object.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Exception.hxx"
@@ -406,30 +405,16 @@ private:
 }; /* end class Advocate */
 
 
-template <typename _Tp>
-struct PtrTraits
-{
-  typedef _Tp       value_type;
-  typedef ptrdiff_t difference_type;
-  typedef _Tp *     pointer;
-  typedef _Tp &     reference;
-};
-
 
 template <typename _Tp>
 class AdvocateIterator
 {
   Advocate advocate_;
-  long index_;
-  Bool first_;
+  long index_ = 0;
+  Bool first_ = true;
 public:
-  typedef typename PtrTraits<_Tp>::value_type      value_type;
-  typedef typename PtrTraits<_Tp>::difference_type difference_type;
-  typedef typename PtrTraits<_Tp>::pointer         pointer;
-  typedef typename PtrTraits<_Tp>::reference       reference;
-  typedef std::output_iterator_tag                 iterator_category;
 
-  explicit AdvocateIterator(Advocate & advocate) : advocate_(advocate), index_(0), first_(true) {}
+  explicit AdvocateIterator(Advocate & advocate) : advocate_(advocate) {}
 
   AdvocateIterator(const AdvocateIterator & other)
     : advocate_(other.advocate_)
