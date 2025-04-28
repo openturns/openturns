@@ -43,7 +43,7 @@ This class requires the following features:
   :class:`~openturns.Mixture` of discrete and continuous distributions. In that case, its parameters set is the union of the
   parameters set of each of its atoms (the weights of the mixture are not considered as parameters).
 - each component :math:`Y_i` is continuous or discrete: e.g., it can not be a :class:`~openturns.Mixture` of
-  discrete and continuous distributions, (so that the random vector :math:`\vect{Y}` may have some discrete components and some continuous components), 
+  discrete and continuous distributions, (the random vector :math:`\vect{Y}` may have some discrete components and some continuous components), 
 - the copula of :math:`\vect{Y}` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`.
 
 We define: 

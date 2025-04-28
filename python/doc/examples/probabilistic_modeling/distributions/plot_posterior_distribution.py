@@ -192,7 +192,7 @@ print("Kullback-Leibler distance ML =", dist_KL[0])
 #
 # - the theoretical distribution of :math:`\inputRV`:  :math:`\cN_2 \left(\vect{\theta}\right)` (solid lines),
 # - its maximum likelihood based distribution: :math:`\cN_2 \left(\vect{\theta}_n^{MV}\right)` (dashed lines),
-# - its Bayesian mode based distribution: :math:`\cN_2(g(\vect{Y}_n^m))`(dotted lines).
+# - its Bayesian mode based distribution: :math:`\cN_2(g(\vect{Y}_n^m))` (dotted lines).
 #
 # We conclude that both approaches lead to the same results.
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
@@ -218,8 +218,8 @@ view = otv.View(g, (800, 800), square_axes=True)
 # %%
 # In the following figure, we consider the parameter :math:`\vect{\Theta}` and we plot:
 #
-# - the asymptotic distribution of the maximum likelihood estimator: :math:`\vect{\theta}_n^{MV}`: left,
-# - the Bayesian mode based distribution: :math:`g(\pi_{\vect{Y}}^\sampleSize)`: right.
+# - the asymptotic distribution of the maximum likelihood estimator: :math:`\vect{\theta}_n^{MV}` (left),
+# - the Bayesian mode based distribution: :math:`g(\pi_{\vect{Y}}^\sampleSize)` (right).
 #
 # On each figure, we draw the bilateral confidence interval or bilateral credibility interval of
 # level :math:`\alpha = 0.95`
@@ -248,9 +248,9 @@ c.setLineStyle("dashed")
 g_ML.add(c)
 g_ML.setLegends(
     [
-        r"dist of $\mathbf{\boldsymbol{\theta}}_n^{MV}$",
-        r"$\mathbf{\boldsymbol{\theta}}_n^{MV}$",
-        r"$g(\mathbf{\boldsymbol{Y}}_n^m)$",
+        r"dist of $\mathbf{\theta}_n^{MV}$",
+        r"$\mathbf{\theta}_n^{MV}$",
+        r"$g(\mathbf{Y}_n^m)$",
         "ML CI(" + str(int(100 * alpha)) + "%)",
         "Bay CI(" + str(int(100 * alpha)) + "%)",
     ]
@@ -283,9 +283,9 @@ c.setLineStyle("dashed")
 g_Bay.add(c)
 g_Bay.setLegends(
     [
-        r"dist of $g(\pi_{n, \mathbf{\boldsymbol{Y}}})$",
-        r"$g(\mathbf{\boldsymbol{Y}}_n^m)$",
-        r"$\mathbf{\boldsymbol{\theta}}_n^{MV}$",
+        r"dist of $g(\pi_{n, \mathbf{Y}})$",
+        r"$g(\mathbf{Y}_n^m)$",
+        r"$\mathbf{\theta}_n^{MV}$",
         "Bay CI(" + str(int(100 * alpha)) + "%)",
         "ML CI(" + str(int(100 * alpha)) + "%)",
     ]
@@ -400,9 +400,9 @@ c.setLineStyle("dashed")
 g_ML.add(c)
 g_ML.setLegends(
     [
-        r"dist of $\mathbf{\boldsymbol{\theta}}_n^{MV}$",
-        r"$\mathbf{\boldsymbol{\theta}}_n^{MV}$",
-        r"$g(\mathbf{\boldsymbol{Y}}_n^m)$",
+        r"dist of $\mathbf{\theta}_n^{MV}$",
+        r"$\mathbf{\theta}_n^{MV}$",
+        r"$g(\mathbf{Y}_n^m)$",
         "ML CI(" + str(int(100 * alpha)) + "%)",
         "Bay CI(" + str(int(100 * alpha)) + "%)",
     ]
@@ -434,9 +434,9 @@ c.setLineStyle("dashed")
 g_Bay.add(c)
 g_Bay.setLegends(
     [
-        r"dist of $g(\pi_{n, \mathbf{\boldsymbol{Y}}})$",
-        r"$g(\mathbf{\boldsymbol{Y}}_n^m)$",
-        r"$\mathbf{\boldsymbol{\theta}}_n^{MV}$",
+        r"dist of $g(\pi_{n, \mathbf{Y}})$",
+        r"$g(\mathbf{Y}_n^m)$",
+        r"$\mathbf{\theta}_n^{MV}$",
         "Bay CI(" + str(int(100 * alpha)) + "%)",
         "ML CI(" + str(int(100 * alpha)) + "%)",
     ]
@@ -473,7 +473,7 @@ view = otv.View(grid)
 g_pinY = posterior_Y.drawPDF()
 g_pinY.setXTitle(r"$Y_0$")
 g_pinY.setYTitle(r"$Y_1$")
-g_pinY.setTitle(r"Posterior Bayesian Distribution of $\mathbf{\boldsymbol{Y}}$")
+g_pinY.setTitle(r"Posterior Bayesian Distribution of $\mathbf{Y}$")
 g_pinY.add(ot.Cloud(posterior_Y.getSample(100)))
 view = otv.View(g_pinY, (800, 800))
 

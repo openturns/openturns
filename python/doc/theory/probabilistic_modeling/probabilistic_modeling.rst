@@ -5,11 +5,15 @@ Probabilistic modeling
 
 The current section is dedicated to probabilistic methods and concepts.
 
+Distributions
+-------------
+
 .. toctree::
     :maxdepth: 1
 
     parametric_models
     copulas
+    conditional_distributions
     random_mixture
 
 Stochastic process

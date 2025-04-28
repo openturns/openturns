@@ -15,7 +15,7 @@ Notes
 -----
 A :class:`~openturns.KernelMixture` is a particular :class:`~openturns.Mixture`: all the weights are identical and
 all the kernels of the combination are of the same
-family. The kernels are centered on the sample points. The multivariate kernel
+discrete or continuous family. The kernels are centered on the sample points. The multivariate kernel
 is a tensorized product of the same univariate kernel.
 
 The treatment of such a Mixture has been optimized.
@@ -23,7 +23,7 @@ The treatment of such a Mixture has been optimized.
 We denote by :math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize) \in \Rset^\inputDim`
 a sample from :math:`\inputRV`.
 
-The probability density function :math:`\inputRV` is defined by:
+For continous atoms, the probability density function :math:`\inputRV` is defined by:
 
 .. math::
 
