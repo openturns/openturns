@@ -263,6 +263,7 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
 
   // Integration measure for the discrete parameters
   const UnsignedInteger discreteDimension = discreteMarginalsIndices_.getSize();
+  if ((continuousDimension > 0) && (discreteDimension > 0) && !conditioningDistribution_.hasIndependentCopula()) throw NotYetImplementedException(HERE) << "Error: the case with mixed discrete and continuous marginal conditioning distribution with dependence is not yet supported";
   UnsignedInteger discreteAtomsNumber = 0;
   if (discreteDimension > 0)
   {
