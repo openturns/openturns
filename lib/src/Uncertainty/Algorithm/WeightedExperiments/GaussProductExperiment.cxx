@@ -129,9 +129,12 @@ void GaussProductExperiment::setMarginalSizes(const Indices & marginalSizes)
   {
     marginalSizes_ = marginalSizes;
     size_ = 1;
+    const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       const UnsignedInteger dI = marginalSizes_[i];
+      if (size_ > maxUInt / dI)
+        throw InvalidArgumentException(HERE) << "GaussProductExperiment size would overflow integer limit " << maxUInt;
       size_ *= dI;
     } // Loop over the dimensions
     isAlreadyComputedNodesAndWeights_ = false;
@@ -148,9 +151,12 @@ void GaussProductExperiment::setDistributionAndMarginalSizes(const Distribution 
 
   const UnsignedInteger dimension = distribution_.getDimension();
   size_ = 1;
+  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const UnsignedInteger dI = marginalSizes_[i];
+    if (size_ > maxUInt / dI)
+      throw InvalidArgumentException(HERE) << "GaussProductExperiment size would overflow integer limit " << maxUInt;
     size_ *= dI;
   }
 }
