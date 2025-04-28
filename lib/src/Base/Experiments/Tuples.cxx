@@ -56,8 +56,15 @@ IndicesCollection Tuples::generate() const
   /* Dimension of the realizations */
   const UnsignedInteger dimension = bounds_.getSize();
   /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
-  UnsignedInteger size = bounds_[0];
-  for (UnsignedInteger i = 1; i < dimension; ++i) size *= bounds_[i];
+  UnsignedInteger size = 1;
+  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    const UnsignedInteger bI = bounds_[i];
+    if (size > maxUInt / bI)
+      throw InvalidArgumentException(HERE) << "Tuples size would overflow integer limit " << maxUInt;
+    size *= bI;
+  }
   IndicesCollection allTuples(size, dimension);
   /* Indices would have stored the indices of the nested loops if we were able to code "dimension" nested loops dynamically */
   Indices indices(dimension);
