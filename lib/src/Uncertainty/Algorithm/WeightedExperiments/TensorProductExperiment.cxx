@@ -49,10 +49,14 @@ TensorProductExperiment::TensorProductExperiment(const WeightedExperimentCollect
 {
   const UnsignedInteger numberOfMarginalExperiments = collection_.getSize();
   BlockIndependentDistribution::DistributionCollection distributionCollection(numberOfMarginalExperiments);
+  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
   UnsignedInteger size = 1;
   for (UnsignedInteger i = 0; i < numberOfMarginalExperiments; ++i)
   {
-    size *= collection_[i].getSize();
+    const UnsignedInteger nI = collection_[i].getSize();
+    if (size > maxUInt / nI)
+      throw InvalidArgumentException(HERE) << "TensorProductExperiment size would overflow integer limit " << maxUInt;
+    size *= nI;
     distributionCollection[i] = collection_[i].getDistribution();
   }
   WeightedExperimentImplementation::setSize(size);
