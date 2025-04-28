@@ -1341,9 +1341,12 @@ UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
     const UnsignedInteger k)
 {
   if (k > n) return 0; // by convention
+  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
   UnsignedInteger value = 1;
   for (UnsignedInteger i = 0; i < std::min(k, n - k); ++ i)
   {
+    if (value > maxUInt / (n - i))
+      throw InvalidArgumentException(HERE) << "Binomial coefficient would overflow integer limit " << maxUInt;
     value *= n - i;
     value /= i + 1;
   }
