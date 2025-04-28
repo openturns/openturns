@@ -214,8 +214,15 @@ Scalar Dirichlet::computeCDF(const Point & point) const
     for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * std::log(point[i]) - std::log(theta_[i]);
     // Initialize the integration data
     initializeIntegration();
+    const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
     UnsignedInteger size = 1;
-    for (UnsignedInteger i = 0; i < dimension; ++i) size *= integrationNodes_[i].getSize();
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const UnsignedInteger nI = integrationNodes_[i].getSize();
+      if (size > maxUInt / nI)
+        throw InvalidArgumentException(HERE) << "Dirichlet integration nodes size would overflow integer limit " << maxUInt;
+      size *= nI;
+    }
     // Loop over the integration nodes
     for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
     {
