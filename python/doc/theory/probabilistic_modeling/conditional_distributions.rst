@@ -222,30 +222,88 @@ Conclusion: The conditional distribution of a Kernel Mixture is a Mixture which 
 as we have :math:`w_k = 1/N` in :eq:`mixtureCond2`.
 
 
-**Truncated distributions:**  Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` which PDF is :math:`p_\inputRV`. Then,
-the truncated random vector :math:`\inputRV_T = \inputRV|\inputRV\in [\vect{a}, \vect{b}]` has the following PDF:
+**Truncated distributions:**  Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` which PDF is :math:`p_\inputRV`. Let :math:`\cD`
+be a domain of :math:`\Rset^\inputDim` and let :math:`\inputRV_T = \inputRV|\inputRV\in \cD` be the random vector :math:`\inputRV`
+truncated to the domain :math:`\cD`. It has the following PDF:
 
 .. math::
 
-    p_{\inputRV_T}(\vect{x}) = \dfrac{1}{\alpha} p_{\inputRV}(\vect{x}) 1_{[\vect{a}, \vect{b}]}(\vect{x})
+    p_{\inputRV_T}(\vect{x}) = \dfrac{1}{\alpha} p_{\inputRV}(\vect{x})  1_{\cD}(\vect{x})
 
-where :math:`\alpha = \Prob{\inputRV\in [\vect{a}, \vect{b}]}`.
-
-The margin of index :math:`\cI` of :math:`\inputRV_T`  has the following PDF:
-
-.. math::
-
-    p_{\inputRV_{T, \cI}}(\vect{x}) = \dfrac{1}{\alpha} \int p_{\inputRV}(\vect{x}) 1_{[\vect{a}, \vect{b}]}(\vect{x}) d\vect{x}_{\overline{\cI}}
-
-
-The conditional distribution of :math:`\inputRV_{T, \overline{\cI}}` is written as:
+where :math:`\alpha = \Prob{\inputRV\in \cD}`. Let  :math:`\vect{x}_\cI` be in the support of the margin :math:`\cI` of :math:`\inputRV_T`, denoted
+by :math:`\inputRV_{T, \cI}`. We denote
+by :math:`\vect{Z}` the conditional random vector:
 
 .. math::
 
-    p_{\inputRV_{T,\overline{\cI}}|\inputRV_{T, \cI} = \vect{x}_\cI}(x_{\overline{\cI}})  =
-         \dfrac{p_{\inputRV_T}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_{T,\cI}}(\vect{x}_{\cI})}
+    \vect{Z} = \inputRV_{T,\overline{\cI}} | \inputRV_{T, \cI} = \vect{x}_\cI
 
-Conclusion: There is no simplification: the conditional distribution of a truncated distribution is not the truncated distribution of the conditional
+The random vector :math:`\vect{Z}` is defined on the domain:
+
+.. math::
+
+    \cD_{\overline{\cI}} = \{ \vect{x}_{\overline{\cI}} \, |\, (\vect{x}_{\overline{\cI}}, \vect{x}_{\cI}) \in \cD \}
+
+Then, for all :math:`\vect{x}_{\overline{\cI}}  \in \cD_{\overline{\cI}}`, we have:
+
+.. math::
+    :label: pdf_1
+
+    p_{\vect{Z}}( \vect{x}_{\overline{\cI}}) & = \dfrac{p_{\inputRV_T}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_{T,\cI}}(\vect{x}_{\cI})}
+    1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}}) \\
+                                             &  \propto p_{\inputRV_T}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})1_{\cD_{\overline{\cI}}}(\vect{x}
+                                             _{\overline{\cI}})
+
+Now, we denote by :math:`\vect{Y}` the conditional random vector:
+
+.. math::
+
+    \vect{Y} = {\inputRV_{\overline{\cI}} | {\inputRV_{\cI} = \vect{x}_\cI
+
+Then, we have:
+
+.. math::
+
+    p_{\vect{Y}}(\vect{x}_{\overline{\cI}}) & = \dfrac{p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_\cI}(\vect{x}_{\cI})}
+
+Let :math:`\vect{T}` the truncated random vector defined by:
+
+.. math::
+
+    \vect{T} = \vect{Y} | \vect{Y} \in \cD_{\overline{\cI}}
+
+Then, we have:
+
+.. math::
+
+    p_\vect{T}(\vect{x}_{\overline{\cI}}) & = \dfrac{1}{\beta} p_{\vect{Y}}(\vect{x}_{\overline{\cI}})1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}})
+
+
+where :math:`\beta = \Prob{\vect{T} \in \cD_{\overline{\cI}}}`. Noting that:
+
+.. math::
+
+    p_{\vect{Y}}(\vect{x}_{\overline{\cI}})1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}}) = \dfrac{p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}
+    _{\cI})}{p_{\inputRV_\cI}(\vect{x}_{\cI})}1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})
+
+we get:
+
+.. math::
+
+    p_\vect{T}(\vect{x}_{\overline{\cI}}) & =\dfrac{1}{\beta p_{\inputRV_\cI}(\vect{x}_{\cI})} p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}
+    _{\cI})1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})
+
+which is:
+
+.. math::
+    :label: pdf_2
+
+    p_\vect{T}(\vect{x}_{\overline{\cI}}) & \propto  p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}
+    _{\cI})
+
+The equivalence of the relations :eq:`pdf_1` and :eq:`pdf_2` proves the conclusion.
+
+Conclusion: The conditional distribution of a truncated distribution is the truncated distribution of the conditional
 distribution.
 
 The following figure illustrates the case where :math:`(X_0, X_1) \sim \cN \left(\vect{0}, \vect{1}, \mat{R}  \right)` with :math:`R(0,1) = 0.8`.
@@ -254,6 +312,9 @@ We plot:
 - the PDF of :math:`\inputRV|\inputRV\in [-0.5, 1.0]` conditioned by :math:`X_0 = 0.5` (Cond dist of truncated),
 - the truncation to :math:`[-0.5, 1.0]` of  :math:`\inputRV|X_0 = 0.5`: (Truncation of cond dist).
 
+
+.. figure:: illustration_conditional_truncated.png
+    :scale: 35 %
 
 Note that the numerical range of the conditional distribution might be different from the range of the numerical range of the non conditioned
 distribution. For example, consider a bivariate distribution :math:`(X_0, X_1)` following a normal distribution with zero mean, unit variance and a
