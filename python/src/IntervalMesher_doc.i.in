@@ -27,10 +27,9 @@ Parameters
 interval : :class:`~openturns.Interval`
     The interval to mesh, of dimension equal to the dimension
     of `discretization`.
-diamond : bool
-    A flag telling if one want the usual mesh (rectangular cells cut along a
-    diagonal in dimension 2) or a diamond like mesh (rectangular cells cut
-    into 4 triangles with the center of the cell as shared vertex).
+diamond : bool, optional
+    Whether to compute rectangular cells cut into 4 triangles with the center of
+    the cell as a shared vertex, or rectangular cells cut along a diagonal in dimension 2.
     Default is *IntervalMesher-UseDiamond*, see :class:`~openturns.ResourceMap`.
 
 Returns
