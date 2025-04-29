@@ -24,7 +24,7 @@
 
 #include "openturns/ArchimedeanCopula.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/ConditionalRandomVector.hxx"
+#include "openturns/DeconditionedRandomVector.hxx"
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactory.hxx"

@@ -5,3 +5,4 @@ Remove NegativeBinomialFactory alias in some future version
 Remove Analytical.set/getPhysicalStartingPoint in some future version
 Remove MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors for 1.26
 Remove Wilks in some future version
+Remove ConditionalRandomVector alias for 1.26
