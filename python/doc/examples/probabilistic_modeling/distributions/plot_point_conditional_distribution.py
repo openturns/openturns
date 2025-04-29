@@ -16,6 +16,8 @@ Create a Point Conditional Distribution
 # We illustrate the fact that the range of the conditioned distribution is updated.
 
 # %%
+=======
+>>>>>>> 59de17874 (Improved details on conditional distributions)
 import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
@@ -62,7 +64,6 @@ g_X.setYTitle(r"$x_1$")
 # We also print the updated range of the distribution of :math:`X_0`.
 cond_indices = [1]
 q_list = [0.05, 0.5, 0.95]
-
 cond_value_list = [coll_marg[1].computeQuantile(q)[0] for q in q_list]
 
 g_cond = coll_marg[0].drawPDF()

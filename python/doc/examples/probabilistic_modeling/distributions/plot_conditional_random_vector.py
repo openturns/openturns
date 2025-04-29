@@ -29,7 +29,6 @@ Create a deconditioned random vector
 # - Case 1: the parameter random vector has continuous marginals,
 # - Case 2: the parameter random vector has dependent continuous and discrete marginals,
 # - Case 3: the parameter random vector has any dependent marginals.
-#
 
 # %%
 import openturns as ot

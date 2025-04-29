@@ -33,7 +33,6 @@ where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`,
 
 See the class :class:`~openturns.JointByConditioningDistribution`.
 
-
 Case 2: Condition a joint distribution to some values of its marginals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -411,7 +410,6 @@ with the same convention as for :math:`\vect{Y}`.
 Note that this is always possible to create the random vector :math:`\inputRV` whatever the distribution of :math:`\vect{\Theta}`:
 see the class :class:`~openturns.ConditionalRandomVector`. But remember that a :class:`~openturns.ConditionalRandomVector`
 (and more generally a :class:`~openturns.RandomVector`) can only be sampled.
-
 
 Case 4: Create a Bayesian posterior distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
