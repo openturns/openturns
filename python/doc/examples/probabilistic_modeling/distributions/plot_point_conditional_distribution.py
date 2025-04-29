@@ -16,8 +16,6 @@ Create a Point Conditional Distribution
 # We illustrate the fact that the range of the conditioned distribution is updated.
 
 # %%
-=======
->>>>>>> 59de17874 (Improved details on conditional distributions)
 import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
