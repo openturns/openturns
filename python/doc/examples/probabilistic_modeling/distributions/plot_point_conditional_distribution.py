@@ -14,12 +14,13 @@ Create a Point Conditional Distribution
 # - Case 4:  Extreme values conditioning.
 #
 # We illustrate the fact that the range of the conditioned distribution is updated.
+
+# %%
 import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
 
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
-# sphinx_gallery_thumbnail_number =  5
 
 # %%
 # Case 1: Bivariate distribution with continuous marginals
@@ -82,6 +83,7 @@ g_cond.setColors(ot.Drawable.BuildDefaultPalette(len(q_list) + 1))
 grid = ot.GridLayout(1, 2)
 grid.setGraph(0, 0, g_X)
 grid.setGraph(0, 1, g_cond)
+# sphinx_gallery_thumbnail_number =  1
 view = otv.View(grid)
 
 # %%
@@ -117,7 +119,8 @@ g_X.setYTitle(r"$x_1$")
 
 # %%
 # We define the conditioned marginal, the list of the conditioning values and we create
-# all the conditioned distributions, whose PDF we draw on the same graph.
+# all the conditioned distributions, whose PDF we draw on the same graph. To make them all visible,
+# we artificially shifted the discrete distributions by a factor 0.1, 0.2 and 0.3.
 #
 # We also print the updated range of the distribution of :math:`X_0`.
 cond_value_list = [coll_marg[1].computeQuantile(q)[0] for q in q_list]
@@ -127,7 +130,8 @@ g_cond.setLegends([r"dist of $X_0$"])
 for index, cond_value in enumerate(cond_value_list):
     cond_value = cond_value_list[index]
     cond_dist = otexp.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
-    draw = cond_dist.drawPDF().getDrawable(0)
+    # Here, we shift the distribution to make it visible!
+    draw = ((index / 10.0) + cond_dist).drawPDF().getDrawable(0)
     draw.setLegend(r"$x_1 = q($" + str(q_list[index]) + ")")
     g_cond.add(draw)
     print(
@@ -135,6 +139,7 @@ for index, cond_value in enumerate(cond_value_list):
     )
 
 g_cond.setTitle(r"PDF of $X_0|X_1 = x_1$")
+g_cond.setLegendPosition('topleft')
 g_cond.setColors(ot.Drawable.BuildDefaultPalette(len(q_list) + 1))
 
 # %%
@@ -185,7 +190,7 @@ cop = ot.NormalCopula(R)
 dist_X = ot.JointDistribution(coll_marg, cop)
 
 # %%
-# We draw the distribution of :math:`(X_0, X_2)`
+# We draw the distribution of :math:`(X_0, X_2)`.
 g_X02 = dist_X.getMarginal([0, 2]).drawPDF([-4.0, -1.0], [4.0, 1.0], [256] * 2)
 contour = g_X02.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
@@ -193,7 +198,8 @@ contour.buildDefaultLevels(50)
 g_X02.setDrawable(contour, 0)
 g_X02.setTitle(r"$(X_0, X_2)$: iso-lines PDF")
 
-# We draw all the conditioned distributions :math:`(X_0, X_2)|X_1 = x_1s`.
+# %%
+# We draw all the conditioned distributions :math:`(X_0, X_2)|X_1 = x_1`.
 cond_value_list = [coll_marg[1].computeQuantile(q)[0] for q in q_list]
 graph_list = list()
 for index, cond_value in enumerate(cond_value_list):
@@ -256,9 +262,9 @@ g_cond.setLegendPosition("")
 view = otv.View(g_cond)
 
 # %%
-# We print the updated numerical range. We note that it has moved into :math:`[-11.76, -0.82]` which was outside the
-# numerical range of :math:`X_0`.
-print("Range :\n", cond_dist.getRange())
+# We print the updated numerical range of :math:`X_0| X_1 = -9.0`. We note that it has moved into
+# :math:`[-11.76, -0.82]` which is not included in the numerical range of :math:`X_0`.
+print("Range of X0|X1 = -9.0 :\n", cond_dist.getRange())
 
 
 # %%

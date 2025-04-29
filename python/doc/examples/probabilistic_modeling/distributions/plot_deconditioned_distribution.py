@@ -3,12 +3,6 @@ Create a deconditioned distribution
 """
 
 # %%
-
-import openturns as ot
-import openturns.viewer as otv
-
-
-# %%
 # In this example we are going to build the distribution of the random vector :math:`\inputRV`
 # defined by the conditional distribution of:
 #
@@ -35,6 +29,10 @@ import openturns.viewer as otv
 #    X|(A,B) & \sim \cU(Y, 1+Y^2) \\
 #    Y & \sim \cU(-1,1)
 #
+
+# %%
+import openturns as ot
+import openturns.viewer as otv
 
 # %%
 # Create the :math:`Y` distribution.
