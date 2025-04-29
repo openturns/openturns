@@ -100,8 +100,8 @@ observations = conditioned.getSample(Nsample)
 
 
 # %%
-# Case 1: we consider the first link function
-# -------------------------------------------
+# Case 1: Bijective link function
+# -------------------------------
 #
 # Here, :math:`g_1(\vect{y}) = (0, y_0, 0, y_1, 0)` and :math:`\pi_{\vect{Y}}^{0,1} = \cT(0,1,2) \times \cT(0,1,2)`.
 #
@@ -329,6 +329,7 @@ view = otv.View(grid)
 # on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
 # We go through the same steps as described previously. The maximum estimator is not changed.
+# But in order to get the posterior distribution of :math:
 linkFunction = ot.SymbolicFunction(
     ["u0", "u1"], ["0.0", "0.5+u0^2", "0.0", "0.5+u1^2", "0.0"]
 )
@@ -343,7 +344,6 @@ theta_Bay = linkFunction(computeMode(posterior_Y))
 print('Theta Bay =', theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
-dist_estimateur_Bay = posterior_Y
 alpha = 0.95
 interval_Bay, beta = (
     dist_estimateur_Bay.computeBilateralConfidenceIntervalWithMarginalProbability(alpha)

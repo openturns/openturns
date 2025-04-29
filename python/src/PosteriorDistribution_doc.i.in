@@ -26,7 +26,7 @@ with :math:`\vect{\Theta}=g(\vect{Y})` and :math:`\vect{Y}` following the prior 
 :math:`g` is the link function which input dimension
 is the dimension of :math:`\mathcal{L}_{\vect{Y}}` and which output dimension the dimension of :math:`\vect{\Theta}`.
 
-This class implements the posterior distribution of :math:`\vect{Y}` given that we have a sample :math:`(\vect{s}, \dots, \vect{s}_\sampleSize)` of
+This class implements the posterior distribution of :math:`\vect{Y}` given that we have a sample :math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize)` of
 :math:`\vect{X}`.
 
 This class requires the following features:
@@ -38,16 +38,18 @@ This class requires the following features:
   discrete and continuous distributions, (the random vector :math:`\vect{Y}` may have some discrete components and some continuous components), 
 - the copula of :math:`\vect{Y}` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`.
 
-If  :math:`\vect{Y}` and :math:`\vect{X}` are continuous random vector, then its PDF is defined by:
+If  :math:`\vect{Y}` and :math:`\vect{X}` are continuous random vector, then the posterior PDF of :math:`\vect{Y}` is defined by:
 
 .. math::
     :label: postPDF
 
-    f_{\vect{Y}|\inputRV_1 = \vect{x}_1, \dots, \inputRV_\sampleSize =  \vect{x}_\sampleSize}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^\sampleSize f_{\inputRV|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y})\prod_{i=1}^\sampleSize f_{\inputRV|\vect{\Theta}=\vect{y}'}(\vect{x}_i) d \vect{y}}
+    f_{\vect{Y}|\inputRV_1 = \vect{x}_1, \dots, \inputRV_\sampleSize =  \vect{x}_\sampleSize}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})
+    \prod_{i=1}^\sampleSize f_{\inputRV|\vect{\theta} = g(\vect{y})}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y})\prod_{i=1}^\sampleSize
+    f_{\inputRV|\vect{\theta} = g(\vect{y})}(\vect{x}_i) d \vect{y}}
 
-with :math:`f_{\inputRV|\vect{\Theta}}` the PDF of :math:`\inputRV|\vect{\Theta}`,
-:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
-:math:`\vect{x}_i` the observations of the deconditioned distribution.
+with :math:`f_{\inputRV|\vect{\theta} = g(\vect{y})}` the PDF of the distribution of :math:`\inputRV|\vect{\Theta}`
+where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})` and :math:`f_{\vect{Y}}` the PDF of the prior distribution
+of  :math:`\vect{Y}`.
 
 Note that the denominator  of :eq:`postPDF` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the prior distribution of :math:`\vect{Y}`.
 

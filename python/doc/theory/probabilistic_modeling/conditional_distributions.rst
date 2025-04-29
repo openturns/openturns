@@ -6,18 +6,18 @@ Conditional distributions
 The library offers some modelisation capacities on conditional distributions:
 
 - Case 1: Create a joint distribution from its conditioned margins,
-- Case 2: Create a distribution which parameters are aleatory,
-- Case 3: Condition a joint distribution by some values of its margins,
+- Case 2: Condition a joint distribution by some values of its margins,
+- Case 3: Create a distribution whose parameters are random,
 - Case 4: Create a Bayesian posterior distribution.
 
 
 Case 1: Create a joint distribution from its conditioned margins
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The objective is to create the distribution of the random vector :math:`(\vect{Y},\vect{X})`
+The objective is to create the joint distribution of the random vector :math:`(\vect{Y},\inputRV)`
 where :math:`\vect{Y}` follows the distribution :math:`\mathcal{L}_{\vect{Y}}`
-and :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`
-where :math:`\vect{\Theta}=g(\vect{Y})` with :math:`g` a given function of input dimension
+and :math:`\inputRV|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\inputRV|\vect{\Theta}}`
+where :math:`\vect{\Theta}=g(\vect{Y})` with :math:`g` a link function of input dimension
 the dimension of :math:`\mathcal{L}_{\vect{Y}}` and output dimension the dimension of :math:`\vect{\Theta}`.
 
 This distribution is limited to the continuous case, ie when both the conditioning and the conditioned distributions are continuous.
@@ -25,56 +25,16 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_{(\vect{Y}, \vect{X})}(\vect{y}, \vect{x}) = f_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}( \vect{y})
+    f_{(\vect{Y},\inputRV)}(\vect{y}, \vect{x}) = f_{\inputRV|\vect{\theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}( \vect{y})
 
-with :math:`f_{\vect{X}|\vect{\Theta}=g(\vect{y})}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}`,
+with :math:`f_{\inputRV|\vect{\theta} = g(\vect{y})}` the PDF of the distribution of :math:`\inputRV|\vect{\Theta}`
 where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`,
-:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and :math:`g` the linking function.
+:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}`.
 
 See the class :class:`~openturns.JointByConditioningDistribution`.
 
 
-Case 2: Create a distribution which parameters are aleatory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The objective is to create the margin distribution of :math:`\inputRV` in the previous case.
-
-See the class :class:`~openturns.DeconditionedDistribution`.
-
-This class requires the following features:
-
-- the :math:`\inputRV` may be continuous, discrete or neither: e.g., it can be a
-  :class:`~openturns.Mixture` of discrete and continuous distributions. In that case, its parameters set is the union of the
-  parameters set of each of its atoms (the weights of the mixture are not considered as parameters).
-- each component :math:`Y_i` is continuous or discrete: e.g., it can not be a :class:`~openturns.Mixture` of
-  discrete and continuous distributions, (so that the random vector :math:`\vect{Y}` may have some discrete components and some continuous components),
-- the copula of :math:`\vect{Y}` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`.
-
-We define:
-
-.. math::
-
-    p_{\vect{Y}}(\vect{y}) = \left( \prod_{i=1}^\inputDim p_i(y_i) \right) c(F_1(x_1), \dots, F_d(x_d))
-
-where:
-
-- :math:`c` is the probability density copula of :math:`\vect{Y}`,
-- if :math:`Y_i` is a continuous component, :math:`p_i` is its probability density function,
-- if :math:`Y_i` is a discrete component, :math:`p_i = \sum_{y^i_k \in \cS^i} \Prob{Y_i = y^i_k} \delta_{y^i_k}` where
-  :math:`\cS^i = \{ y^i_k \}` is its support and :math:`\delta_{y^i_k}` the Dirac distribution centered on
-  :math:`y^i_k`.
-
-
-Then, the PDF of :math:`\inputRV` is defined by:
-
-.. math::
-
-    p_{\vect{X}}(\vect{x}) = \int p_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) p_{\vect{Y}}(\vect{y})\di{\vect{y}}
-
-with the same convention as for :math:`\vect{Y}`.
-
-
-Case 3: Condition a joint distribution by some values of its margins
+Case 2: Condition a joint distribution by some values of its margins
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`. Let :math:`\cI \subset \{1, \dots, \inputDim \}`
@@ -141,8 +101,8 @@ and if :math:`\inputRV_{\overline{\cI}}` is discrete with its support denoted by
 Simplification mechanisms to compute :eq:`condPDF2` are implemented for some distributions. We detail some cases where a simplification has
 been implemented.
 
-**Elliptical distributions:** This is the case for Normal and Student distributions. If :math:`\inputRV` follows a normal or a Student distribution,
-then :math:`\inputRV_{\overline{\cI}}` respectively follows a normal or Student distribution with modified parameters.
+**Elliptical distributions:** This is the case for normal and Student distributions. If :math:`\inputRV` follows a normal or a Student distribution,
+then :math:`\inputRV_{\overline{\cI}}` respectively follows a normal or a Student distribution with modified parameters.
 See `Conditional Normal <https://en.wikipedia.org/wiki/Multivariate_normal_distribution>`_ and
 `Conditional Student <https://en.wikipedia.org/wiki/Multivariate_t-distribution>`_  for the formulas of the conditional distributions.
 
@@ -190,13 +150,13 @@ discrete or continuous family. The kernels are centered on the sample points. Th
 is a tensorized product of the same univariate kernel.
 
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` defined by a  Kernel Mixture distribution based on the sample
-:math:`(\vect{s}, \dots, \vect{s}_\sampleSize)` and the kernel :math:`K`. In the continuous case, :math:`k` is the kernel PDF and we have:
+:math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize)` and the kernel :math:`K`. In the continuous case, :math:`k` is the kernel PDF and we have:
 
 .. math::
 
-    p_\inputRV(\vect{x}) = \sum_{q=1}^\sampleSize \dfrac{1}{\sampleSize} p_q(\vect{x})
+    p_{\inputRV}(\vect{x}) = \sum_{q=1}^\sampleSize \dfrac{1}{\sampleSize} p_q(\vect{x})
 
-where :math:`p_q` is the  kernel  normalized by the bandwidth :math:`h`:
+where :math:`p_q` is the kernel  normalized by the bandwidth :math:`h`:
 
 .. math::
 
@@ -230,9 +190,8 @@ truncated to the domain :math:`\cD`. It has the following PDF:
 
     p_{\inputRV_T}(\vect{x}) = \dfrac{1}{\alpha} p_{\inputRV}(\vect{x})  1_{\cD}(\vect{x})
 
-where :math:`\alpha = \Prob{\inputRV\in \cD}`. Let  :math:`\vect{x}_\cI` be in the support of the margin :math:`\cI` of :math:`\inputRV_T`, denoted
-by :math:`\inputRV_{T, \cI}`. We denote
-by :math:`\vect{Z}` the conditional random vector:
+where :math:`\alpha = \Prob{\inputRV\in \cD}`. Let  :math:`\vect{x}_\cI` be in the support of the margin :math:`\cI` of
+:math:`\inputRV_T`, denoted by :math:`\inputRV_{T, \cI}`. We denote by :math:`\vect{Z}` the conditional random vector:
 
 .. math::
 
@@ -244,15 +203,28 @@ The random vector :math:`\vect{Z}` is defined on the domain:
 
     \cD_{\overline{\cI}} = \{ \vect{x}_{\overline{\cI}} \, |\, (\vect{x}_{\overline{\cI}}, \vect{x}_{\cI}) \in \cD \}
 
+The domain :math:`\cD_{\overline{\cI}} \neq \emptyset` as  :math:`\vect{x}_\cI \in \supp{\inputRV_{\cI}}`.
 Then, for all :math:`\vect{x}_{\overline{\cI}}  \in \cD_{\overline{\cI}}`, we have:
+
+.. math::
+
+    p_{\vect{Z}}( \vect{x}_{\overline{\cI}}) & = \dfrac{p_{\inputRV_T}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_{T,\cI}}(\vect{x}_{\cI})}
+    1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}}) \\
+                                             &  \dfrac{1}{\alpha\, p_{\inputRV_{T,\cI}}(\vect{x}_{\cI})} p_{\inputRV}(\vect{x}
+                                             _{\overline{\cI}}, \vect{x}_{\cI}))  1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}
+                                             _{\cI}) 1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}})\\
+                                             &  \dfrac{1}{\alpha\, p_{\inputRV_{T,\cI}}(\vect{x}_{\cI})} p_{\inputRV}(\vect{x}
+                                             _{\overline{\cI}}, \vect{x}_{\cI}) 1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}
+                                             _{\cI})
+
+which is:
 
 .. math::
     :label: pdf_1
 
-    p_{\vect{Z}}( \vect{x}_{\overline{\cI}}) & = \dfrac{p_{\inputRV_T}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_{T,\cI}}(\vect{x}_{\cI})}
-    1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}}) \\
-                                             &  \propto p_{\inputRV_T}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})1_{\cD_{\overline{\cI}}}(\vect{x}
-                                             _{\overline{\cI}})
+    p_{\vect{Z}}( \vect{x}_{\overline{\cI}}) \propto p_{\inputRV}(\vect{x}
+                                             _{\overline{\cI}}, \vect{x}_{\cI}) 1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}
+                                             _{\cI})
 
 Now, we denote by :math:`\vect{Y}` the conditional random vector:
 
@@ -395,16 +367,58 @@ We assign to :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` the n
     x_i^{max}\right]
 
 
+Case 3: Create a distribution whose parameters are random
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The objective is to create the margin distribution of :math:`\inputRV` in the previous case.
+
+See the class :class:`~openturns.DeconditionedDistribution`.
+
+This class requires the following features:
+
+- the :math:`\inputRV` may be continuous, discrete or neither: e.g., it can be a
+  :class:`~openturns.Mixture` of discrete and continuous distributions. In that case, its parameters set is the union of the
+  parameters set of each of its atoms (the weights of the mixture are not considered as parameters).
+- each component :math:`Y_i` is continuous or discrete: e.g., it can not be a :class:`~openturns.Mixture` of
+  discrete and continuous distributions, (so that the random vector :math:`\vect{Y}` may have some discrete components and some continuous components),
+- the copula of :math:`\vect{Y}` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`,
+- if :math:`\vect{Y}` has both discrete components and continuous components, its copula must be the independent copula. The general case has
+  not been implemented yet.
+
+We define:
+
+.. math::
+
+    p_{\vect{Y}}(\vect{y}) = \left( \prod_{i=1}^\inputDim p_i(y_i) \right) c(F_1(x_1), \dots, F_d(x_d))
+
+where:
+
+- :math:`c` is the probability density copula of :math:`\vect{Y}`,
+- if :math:`Y_i` is a continuous component, :math:`p_i` is its probability density function,
+- if :math:`Y_i` is a discrete component, :math:`p_i = \sum_{y^i_k \in \cS^i} \Prob{Y_i = y^i_k} \delta_{y^i_k}` where
+  :math:`\cS^i = \{ y^i_k \}` is its support and :math:`\delta_{y^i_k}` the Dirac distribution centered on
+  :math:`y^i_k`.
+
+
+Then, the PDF of :math:`\inputRV` is defined by:
+
+.. math::
+
+    p_{\vect{X}}(\vect{x}) = \int p_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) p_{\vect{Y}}(\vect{y})\di{\vect{y}}
+
+with the same convention as for :math:`\vect{Y}`.
+
+
 Case 4: Create a Bayesian posterior distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Consider the random vector :math:`\vect{X}`
 where :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
-with :math:`\vect{\Theta}=g(\vect{Y})` and :math:`\vect{Y}` following the distribution :math:`\mathcal{L}_{\vect{Y}}`. The function
-:math:`g` is the link function which input dimension
+with :math:`\vect{\Theta} = g(\vect{Y})` and :math:`\vect{Y}` following the prior distribution :math:`\mathcal{L}_{\vect{Y}}`. The function
+:math:`g` is a link function which input dimension
 is the dimension of :math:`\mathcal{L}_{\vect{Y}}` and which output dimension the dimension of :math:`\vect{\Theta}`.
 
-The objective is to create the posterior distribution of :math:`\vect{Y}` given that we have a sample :math:`(\vect{s}, \dots, \vect{s}_\sampleSize)` of
+The objective is to create the posterior distribution of :math:`\vect{Y}` given that we have a sample :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)` of
 :math:`\vect{X}`.
 
 
@@ -420,18 +434,19 @@ This class requires the following features:
 - the copula of :math:`\vect{Y}` is continuous: e.g., it can not be the :class:`~openturns.MinCopula`.
 
 
-If  :math:`\vect{Y}` and :math:`\vect{X}` are continuous random vector, then its PDF is defined by:
+If  :math:`\vect{Y}` and :math:`\vect{X}` are continuous random vector, then the posterior PDF of :math:`\vect{Y}` is
+defined by:
 
 .. math::
     :label: postPDF2
 
     f_{\vect{Y}|\inputRV_1 = \vect{x}_1, \dots, \inputRV_\sampleSize =  \vect{x}_\sampleSize}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})
-    \prod_{i=1}^\sampleSize f_{\inputRV|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y})\prod_{i=1}^\sampleSize
-    f_{\inputRV|\vect{\Theta}=\vect{y}'}(\vect{x}_i) d \vect{y}}
+    \prod_{i=1}^\sampleSize f_{\inputRV|\vect{\theta} = g(\vect{y})}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y})\prod_{i=1}^\sampleSize
+    f_{\inputRV|\vect{\theta} = g(\vect{y})}(\vect{x}_i) d \vect{y}}
 
-with :math:`f_{\inputRV|\vect{\Theta}}` the PDF of :math:`\inputRV|\vect{\Theta}`,
-:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
-:math:`\vect{x}_i` the observations of the deconditioned distribution.
+with :math:`f_{\inputRV|\vect{\theta} = g(\vect{y})}` the PDF of the distribution of :math:`\inputRV|\vect{\Theta}`
+where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})` and :math:`f_{\vect{Y}}` the PDF of the prior distribution
+of  :math:`\vect{Y}`.
 
 Note that the denominator  of :eq:`postPDF2` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the
 prior distribution of :math:`\vect{Y}`.
