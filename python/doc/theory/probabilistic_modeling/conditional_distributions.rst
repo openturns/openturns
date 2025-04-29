@@ -1,4 +1,4 @@
-.. _parametric_models:
+.. _conditional_distributions:
 
 Conditional distributions
 -------------------------
@@ -196,7 +196,7 @@ Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` defined b
 
     p_\inputRV(\vect{x}) = \sum_{q=1}^\sampleSize \dfrac{1}{\sampleSize} p_q(\vect{x})
 
-where :math:`p_q` is the  kernel  normalized by the bandwith :math:`h`:
+where :math:`p_q` is the  kernel  normalized by the bandwidth :math:`h`:
 
 .. math::
 
@@ -258,13 +258,13 @@ Now, we denote by :math:`\vect{Y}` the conditional random vector:
 
 .. math::
 
-    \vect{Y} = {\inputRV_{\overline{\cI}} | {\inputRV_{\cI} = \vect{x}_\cI
+    \vect{Y} = \inputRV_{\overline{\cI}} | \inputRV_{\cI} = \vect{x}_\cI
 
 Then, we have:
 
 .. math::
 
-    p_{\vect{Y}}(\vect{x}_{\overline{\cI}}) & = \dfrac{p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_\cI}(\vect{x}_{\cI})}
+    p_{\vect{Y}}(\vect{x}_{\overline{\cI}})  = \dfrac{p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})}{p_{\inputRV_\cI}(\vect{x}_{\cI})}
 
 Let :math:`\vect{T}` the truncated random vector defined by:
 
@@ -276,7 +276,7 @@ Then, we have:
 
 .. math::
 
-    p_\vect{T}(\vect{x}_{\overline{\cI}}) & = \dfrac{1}{\beta} p_{\vect{Y}}(\vect{x}_{\overline{\cI}})1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}})
+    p_{\vect{T}}(\vect{x}_{\overline{\cI}})  = \dfrac{1}{\beta} p_{\vect{Y}}(\vect{x}_{\overline{\cI}})1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}})
 
 
 where :math:`\beta = \Prob{\vect{T} \in \cD_{\overline{\cI}}}`. Noting that:
@@ -284,13 +284,13 @@ where :math:`\beta = \Prob{\vect{T} \in \cD_{\overline{\cI}}}`. Noting that:
 .. math::
 
     p_{\vect{Y}}(\vect{x}_{\overline{\cI}})1_{\cD_{\overline{\cI}}}(\vect{x}_{\overline{\cI}}) = \dfrac{p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}
-    _{\cI})}{p_{\inputRV_\cI}(\vect{x}_{\cI})}1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})
+    _{\cI})}{p_{\inputRV_\cI}(\vect{x}_{\cI})}1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI}),
 
 we get:
 
 .. math::
 
-    p_\vect{T}(\vect{x}_{\overline{\cI}}) & =\dfrac{1}{\beta p_{\inputRV_\cI}(\vect{x}_{\cI})} p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}
+    p_{\vect{T}}(\vect{x}_{\overline{\cI}})  = \dfrac{1}{\beta p_{\inputRV_\cI}(\vect{x}_{\cI})} p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}
     _{\cI})1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})
 
 which is:
@@ -298,19 +298,19 @@ which is:
 .. math::
     :label: pdf_2
 
-    p_\vect{T}(\vect{x}_{\overline{\cI}}) & \propto  p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}
+    p_{\vect{T}}(\vect{x}_{\overline{\cI}})  \propto  p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})1_{\cD}(\vect{x}_{\overline{\cI}}, \vect{x}
     _{\cI})
 
 The equivalence of the relations :eq:`pdf_1` and :eq:`pdf_2` proves the conclusion.
 
 Conclusion: The conditional distribution of a truncated distribution is the truncated distribution of the conditional
-distribution.
+distribution. Care: the truncation domains are not exactly the same.
 
 The following figure illustrates the case where :math:`(X_0, X_1) \sim \cN \left(\vect{0}, \vect{1}, \mat{R}  \right)` with :math:`R(0,1) = 0.8`.
 We plot:
 
 - the PDF of :math:`\inputRV|\inputRV\in [-0.5, 1.0]` conditioned by :math:`X_0 = 0.5` (Cond dist of truncated),
-- the truncation to :math:`[-0.5, 1.0]` of  :math:`\inputRV|X_0 = 0.5`: (Truncation of cond dist).
+- the PDF of the truncation to :math:`[-0.5, 1.0]` of  :math:`\inputRV|X_0 = 0.5`: (Truncation of cond dist).
 
 
 .. figure:: illustration_conditional_truncated.png
@@ -423,7 +423,7 @@ This class requires the following features:
 If  :math:`\vect{Y}` and :math:`\vect{X}` are continuous random vector, then its PDF is defined by:
 
 .. math::
-    :label: postPDF
+    :label: postPDF2
 
     f_{\vect{Y}|\inputRV_1 = \vect{x}_1, \dots, \inputRV_\sampleSize =  \vect{x}_\sampleSize}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})
     \prod_{i=1}^\sampleSize f_{\inputRV|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y})\prod_{i=1}^\sampleSize
@@ -433,7 +433,7 @@ with :math:`f_{\inputRV|\vect{\Theta}}` the PDF of :math:`\inputRV|\vect{\Theta}
 :math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and
 :math:`\vect{x}_i` the observations of the deconditioned distribution.
 
-Note that the denominator  of :eq:`postPDF` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the
+Note that the denominator  of :eq:`postPDF2` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the
 prior distribution of :math:`\vect{Y}`.
 
 In the other cases, the PDF is the probability distribution function for the discrete components and the :math:`\int` are replaced by some :math:`\sum`.

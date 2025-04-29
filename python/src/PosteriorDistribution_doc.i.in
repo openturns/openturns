@@ -51,7 +51,8 @@ with :math:`f_{\inputRV|\vect{\Theta}}` the PDF of :math:`\inputRV|\vect{\Theta}
 
 Note that the denominator  of :eq:`postPDF` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the prior distribution of :math:`\vect{Y}`.
 
-In the other cases, the PDF is the probability distribution function for the discrete components and the :math:`\int` are replaced by some :math:`\Sum`.
+In the other cases, the PDF is the probability distribution function for the discrete components and the :math:`\int` are replaced by some
+:math:`\sum`.
 
 
 Examples

@@ -23,7 +23,7 @@ The treatment of such a Mixture has been optimized.
 We denote by :math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize) \in \Rset^\inputDim`
 a sample from :math:`\inputRV`.
 
-For continous atoms, the probability density function :math:`\inputRV` is defined by:
+For continuous atoms, the probability density function :math:`\inputRV` is defined by:
 
 .. math::
 
