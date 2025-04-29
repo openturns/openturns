@@ -26,7 +26,7 @@ XgivenThetaDist = ot.Exponential()
 
 # %%
 # Create the :math:`\vect X` distribution
-XDist = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
+XDist = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
 
 # %%
 # Draw a sample

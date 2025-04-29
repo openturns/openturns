@@ -750,7 +750,7 @@ ot_add_python_module(bayesian bayesian_module.i
                       RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
                       IndependentMetropolisHastings.i IndependentMetropolisHastings_doc.i.in
                       Gibbs.i Gibbs_doc.i.in
-                      ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
+                      DeconditionedRandomVector.i DeconditionedRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
                     )
 

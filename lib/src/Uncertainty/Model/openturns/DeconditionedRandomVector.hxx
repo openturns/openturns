@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_CONDITIONALRANDOMVECTOR_HXX
-#define OPENTURNS_CONDITIONALRANDOMVECTOR_HXX
+#ifndef OPENTURNS_DECONDITIONEDRANDOMVECTOR_HXX
+#define OPENTURNS_DECONDITIONEDRANDOMVECTOR_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
@@ -33,11 +33,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class ConditionalRandomVector
+ * @class DeconditionedRandomVector
  *
  * An implementation class for distribution-based random vectors
  */
-class OT_API ConditionalRandomVector
+class OT_API DeconditionedRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME
@@ -45,15 +45,15 @@ class OT_API ConditionalRandomVector
 public:
 
   /** Default constructor */
-  ConditionalRandomVector();
+  DeconditionedRandomVector();
 
   /** Default constructor */
-  ConditionalRandomVector(const Distribution & distribution,
+  DeconditionedRandomVector(const Distribution & distribution,
                           const RandomVector & randomParameters);
 
 
   /** Virtual constructor */
-  ConditionalRandomVector * clone() const override;
+  DeconditionedRandomVector * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -95,9 +95,9 @@ private:
   /** The random vector defining the distribution parameters */
   RandomVector randomParameters_;
 
-}; /* class ConditionalRandomVector */
+}; /* class DeconditionedRandomVector */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_CONDITIONALRANDOMVECTOR_HXX */
+#endif /* OPENTURNS_DECONDITIONEDRANDOMVECTOR_HXX */

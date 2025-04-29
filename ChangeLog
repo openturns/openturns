@@ -21,6 +21,7 @@
  * Deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors (set it from solver)
  * Deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (use MetaModelValidation.computeMeanSquaredError, computeR2Score)
  * Deprecated Wilks class in favor of QuantileConfidence
+ * Deprecated ConditionalRandomVector in favor of DeconditionedRandomVector
 
 === Documentation ===
 

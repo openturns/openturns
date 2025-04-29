@@ -47,7 +47,7 @@ int main(int, char *[])
     fullprint << "random parameters=" << randomParameters << std::endl;
 
     /* We create a distribution-based RandomVector */
-    ConditionalRandomVector vect(distribution, randomParameters);
+    DeconditionedRandomVector vect(distribution, randomParameters);
     fullprint << "vect=" << vect << std::endl;
 
     /* Check standard methods of class RandomVector */
