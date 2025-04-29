@@ -39,7 +39,7 @@ GaussianProcessRegressionResult::GaussianProcessRegressionResult()
 /* Constructor with parameters  */
 GaussianProcessRegressionResult::GaussianProcessRegressionResult(const GaussianProcessFitterResult & result,
     const Sample & covarianceCoefficients)
-  : MetaModelResult(result.getInputSample(), result.getOutputSample(), result.getMetaModel(), result.getResiduals(), result.getRelativeErrors())
+  : MetaModelResult(result)
   , gpfResult_(result)
   , covarianceCoefficients_(covarianceCoefficients)
 {
