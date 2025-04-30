@@ -80,10 +80,12 @@ bool ExpressionParser::IsVariableName(const std::string & vname)
             (vname == "log2")     ||
             (vname == "log10")    ||
             (vname == "log")      ||
+            (vname == "log1p")    ||
             (vname == "ln")       ||
             (vname == "lngamma")  ||
             (vname == "gamma")    ||
             (vname == "exp")      ||
+            (vname == "expm1")    ||
             (vname == "erf")      ||
             (vname == "erfc")     ||
             (vname == "sqrt")     ||
@@ -218,10 +220,12 @@ Expression ExpressionParser::prim(const bool get)
           else if (s == "log2") ret = Log2Link(ret);
           else if (s == "log10") ret = Log10Link(ret);
           else if (s == "log") ret = LogLink(ret);
+          else if (s == "log1p") ret = Log1pLink(ret);
           else if (s == "ln") ret = LogLink(ret);
           else if (s == "lngamma") ret = LngammaLink(ret);
           else if (s == "gamma") ret = GammaLink(ret);
           else if (s == "exp") ret = ExpLink(ret);
+          else if (s == "expm1") ret = ExpM1Link(ret);
           else if (s == "erf") ret = ErfLink(ret);
           else if (s == "erfc") ret = ErfcLink(ret);
           else if (s == "sqrt") ret = SqrtLink(ret);

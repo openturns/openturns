@@ -288,6 +288,9 @@ std::ostream & operator<< (std::ostream & outbuf, const BasicExpression & expr)
         case LOG:
           outbuf << "log";
           break;
+        case LOG1P:
+          outbuf << "log1p";
+          break;
         case LN:
           outbuf << "ln";
           break;
@@ -299,6 +302,9 @@ std::ostream & operator<< (std::ostream & outbuf, const BasicExpression & expr)
           break;
         case EXP:
           outbuf << "exp";
+          break;
+        case EXPM1:
+          outbuf << "expm1";
           break;
         case ERF:
           outbuf << "erf";
@@ -2764,6 +2770,44 @@ Expression Log(Expression a)
   }
 }
 
+Expression Log1p(Expression a)
+{
+  // make a preliminary check
+  if (a->IsLessThan(-1))
+  {
+    // argument is < zero, can't do
+    unsigned long mycode(0);
+    std::string myif("Expression Building");
+    std::string myscope("Log1p");
+    std::string myop("value <= -1");
+    std::string mydesc("log1p(<=-1) is undefined");
+    std::string myinfo(HELPURL);
+    throw ErrNotPermitted(mycode, myif, myscope, myop, mydesc, myinfo);
+  }
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    Expression ret;
+    ret.SetToCopyOf(a);
+    double t = ret->GetValue();
+    assert(t > -1);
+    ret->SetCoeff(1.0);
+    ret->SetValue(log1p(t));
+    ret->SetExponent(1.0);
+    ret->SetOpType(CONST);
+    return ret;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(LOG1P);
+    ret->AddCopyOfNode(a);
+    return ret;
+  }
+}
+
 Expression Ln(Expression a)
 {
   // make a preliminary check
@@ -4273,6 +4317,34 @@ Expression LogLink(Expression a)
   }
 }
 
+Expression Log1pLink(Expression a)
+{
+  // make a preliminary check
+  if (a->IsLessThan(-1.0))
+    throw ErrNotPermitted(0, "Expression Building", "Log1pLink", "value <= -1", "log1p(<=-1) is undefined", HELPURL);
+
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    double t = a->GetValue();
+    assert(t >= 0);
+    a->SetCoeff(1.0);
+    a->SetValue(log1p(t));
+    a->SetExponent(1.0);
+    a->SetOpType(CONST);
+    return a;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(LOG1P);
+    ret->AddNode(a);
+    return ret;
+  }
+}
+
 Expression LnLink(Expression a)
 {
   // make a preliminary check
@@ -4368,6 +4440,28 @@ Expression ExpLink(Expression a)
     ret->SetCoeff(1.0);
     ret->SetExponent(1.0);
     ret->SetOpType(EXP);
+    ret->AddNode(a);
+    return ret;
+  }
+}
+
+Expression ExpM1Link(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    a->SetValue(expm1(a->GetValue()));
+    a->SetCoeff(1.0);
+    a->SetExponent(1.0);
+    a->SetOpType(CONST);
+    return a;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(EXPM1);
     ret->AddNode(a);
     return ret;
   }
@@ -5134,12 +5228,39 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
           ret = Diff(a->GetNode(0), vi);
           ret = ret / a->GetCopyOfNode(0);  // f'/f
           break;
+        case LOG1P:
+          if (sz != 1)
+          {
+            // check that there is exactly one operand
+            throw ErrNotPermitted(14, "Expression", "Diff", "GetSize() != 1",
+                                  "log1p must have exactly 1 operand",
+                                  HELPURL);
+          }
+          if (a->GetNode(0)->IsLessThan(-1.0))
+          {
+            throw ErrNotPermitted(15, "Expression", "Diff", "arg <= -1",
+                                  "log1p argument must be symbolic or positive",
+                                  HELPURL);
+          }
+          ret = Diff(a->GetNode(0), vi);
+          ret = ret / (Expression(1.0) + a->GetCopyOfNode(0));  // f'/(1+f)
+          break;
         case EXP:
           if (sz != 1)
           {
             // check that there is exactly one operand
             throw ErrNotPermitted(16, "Expression", "Diff", "GetSize() != 1",
                                   "exp must have exactly 1 operand",
+                                  HELPURL);
+          }
+          ret = Diff(a->GetNode(0), vi) * Exp(a->GetCopyOfNode(0));  // f'exp(f)
+          break;
+        case EXPM1:
+          if (sz != 1)
+          {
+            // check that there is exactly one operand
+            throw ErrNotPermitted(16, "Expression", "Diff", "GetSize() != 1",
+                                  "expm1 must have exactly 1 operand",
                                   HELPURL);
           }
           ret = Diff(a->GetNode(0), vi) * Exp(a->GetCopyOfNode(0));  // f'exp(f)
