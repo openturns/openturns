@@ -61,11 +61,6 @@
 %include ExperimentIntegration.i
 %include FejerExperiment.i
 
-/* Uncertainty/Algorith/Optimization */
-%include SequentialSamplingAlgorithmImplementation.i
-%include SequentialSamplingAlgorithm.i
-%include LOLAVoronoi.i
-
 /* Uncertainty */
 %import bayesian_module.i
 %import metamodel_module.i
