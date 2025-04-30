@@ -489,7 +489,8 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
       if (w > 0.0)
       {
         newWeights.add(weights[i] * w);
-        newAtoms.add(PointConditionalDistribution(atoms[i], conditioningIndices_, conditioningValues_));
+	const PointConditionalDistribution atom(atoms[i], conditioningIndices_, conditioningValues_);
+	newAtoms.add(atom.getSimplifiedVersion());
       }
     } // for i
     simplified = Mixture(newAtoms, newWeights);
@@ -1010,7 +1011,9 @@ Distribution PointConditionalDistribution::getMarginal(const Indices & indices) 
 Point PointConditionalDistribution::getParameter() const
 {
   // parameters of the conditioned then conditioning values
-  Point parameter(distribution_.getParameter());
+  Point parameter;
+  if (ResourceMap::GetAsBool("PointConditionalDistribution-UseFullParameters"))
+    parameter = distribution_.getParameter();
   parameter.add(conditioningValues_);
   return parameter;
 }
@@ -1022,21 +1025,26 @@ void PointConditionalDistribution::setParameter(const Point & parameter)
     throw InvalidArgumentException(HERE) << "Parameter size should be " << currentParameter.getSize() << " got " << parameter.getSize();
 
   // set parameters of the conditioned
-  Point conditionedParameter(distribution_.getParameter().getSize());
+  Point conditionedParameter;
   if (parameter != currentParameter)
   {
-    std::copy(parameter.begin(), parameter.begin() + conditionedParameter.getSize(), conditionedParameter.begin());
-    distribution_.setParameter(conditionedParameter);
+    if (ResourceMap::GetAsBool("PointConditionalDistribution-UseFullParameters"))
+      {
+	conditionedParameter = Point(distribution_.getParameter().getSize());
+	std::copy(parameter.begin(), parameter.begin() + conditionedParameter.getSize(), conditionedParameter.begin());
+	distribution_.setParameter(conditionedParameter);
+      }
+    // then conditioning values
+    std::copy(parameter.begin() + conditionedParameter.getSize(), parameter.end(), conditioningValues_.begin());
   }
-
-  // then conditioning values
-  std::copy(parameter.begin() + conditionedParameter.getSize(), parameter.end(), conditioningValues_.begin());
   update();
 }
 
 Description PointConditionalDistribution::getParameterDescription() const
 {
-  Description description(distribution_.getParameterDescription());
+  Description description;
+  if (ResourceMap::GetAsBool("PointConditionalDistribution-UseFullParameters"))
+    description.add(distribution_.getParameterDescription());
   description.add(Description::BuildDefault(conditioningIndices_.getSize(), "p_cond_"));
   return description;
 }
