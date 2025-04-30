@@ -55,7 +55,7 @@ Domains
     :template: classWithPlot.rst_t
 
     Mesh
-    experimental.BoundaryMesher
+    BoundaryMesher
 
 Matrices
 ========

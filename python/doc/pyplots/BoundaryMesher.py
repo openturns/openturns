@@ -1,6 +1,5 @@
 import openturns as ot
 from openturns.viewer import View
-import openturns.experimental as otexp
 import matplotlib.pyplot as plt
 
 # Define the vertices of the mesh
@@ -10,11 +9,11 @@ simplices = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 # Create the Mesh
 mesh2D = ot.Mesh(vertices, simplices)
 # Build the Mesh boundary
-mesh2DBoundary = otexp.BoundaryMesher().build(mesh2D)
+mesh2DBoundary = ot.BoundaryMesher().build(mesh2D)
 # Build a thick outside Mesh boundary
-mesh2DBoundaryOutside = otexp.BoundaryMesher().build(mesh2D, 0.05)
+mesh2DBoundaryOutside = ot.BoundaryMesher().build(mesh2D, 0.05)
 # Build a thick inside Mesh boundary
-mesh2DBoundaryInside = otexp.BoundaryMesher().build(mesh2D, -0.05)
+mesh2DBoundaryInside = ot.BoundaryMesher().build(mesh2D, -0.05)
 # Create a Graph
 graph = ot.Graph("", "", "", True, "lower right")
 graph.add(mesh2D.draw())
