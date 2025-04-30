@@ -448,14 +448,14 @@
   <Domain-DefaultOutColor value_str="prettyBlue" />
 
   <!-- OT::Mesh parameters -->
-  <Mesh-BackfaceCulling   value_bool="false" />
-  <Mesh-AmbientFactor     value_float="0.1" />
-  <Mesh-DiffuseFactor     value_float="0.7" />
-  <Mesh-Shininess         value_float="100.0" />
-  <Mesh-SpecularFactor    value_float="0.2" />
-  <Mesh-VertexEpsilon     value_float="1.0e-6" />
-  <Mesh-LargeSize         value_int="5000" />
-  <Mesh-CheckValidity     value_bool="false" />
+  <Mesh-BackfaceCulling      value_bool="false"   />
+  <Mesh-AmbientFactor        value_float="0.1"    />
+  <Mesh-DiffuseFactor        value_float="0.7"    />
+  <Mesh-Shininess            value_float="100.0"  />
+  <Mesh-SpecularFactor       value_float="0.2"    />
+  <Mesh-VertexEpsilon        value_float="1.0e-6" />
+  <Mesh-LargeSize            value_int="5000"     />
+  <Mesh-CheckValidity        value_bool="false"   />
 
   <!-- OT::BoundingVolumeHierarchy parameters -->
   <BoundingVolumeHierarchy-Strategy  value_str="Mean"         />
@@ -504,6 +504,7 @@
   <PointConditionalDistribution-InitializeTransformation value_bool="true"     />
   <PointConditionalDistribution-UseSimplifiedVersion value_bool="true"         />
   <PointConditionalDistribution-UseGenericConditionalMethods value_bool="true" />
+  <PointConditionalDistribution-UseFullParameters value_bool="false"           />
   <PointConditionalDistribution-RatioUniformCandidateNumber value_int="10000"  />
   <PointConditionalDistribution-SmallDimension value_int="6"                   />
   <PointConditionalDistribution-CubaAlgorithm value_str="cuhre"                />
