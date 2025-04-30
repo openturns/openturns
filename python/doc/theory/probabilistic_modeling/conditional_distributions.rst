@@ -5,14 +5,14 @@ Conditional distributions
 
 The library offers some modelisation capacities on conditional distributions:
 
-- Case 1: Create a joint distribution from its conditioned margins,
-- Case 2: Condition a joint distribution by some values of its margins,
+- Case 1: Create a joint distribution using conditioning,
+- Case 2: Condition a joint distribution by some values of its marginals,
 - Case 3: Create a distribution whose parameters are random,
 - Case 4: Create a Bayesian posterior distribution.
 
 
-Case 1: Create a joint distribution from its conditioned margins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Case 1: Create a joint distribution using conditioning
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The objective is to create the joint distribution of the random vector :math:`(\vect{Y},\inputRV)`
 where :math:`\vect{Y}` follows the distribution :math:`\mathcal{L}_{\vect{Y}}`
@@ -34,8 +34,8 @@ where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`,
 See the class :class:`~openturns.JointByConditioningDistribution`.
 
 
-Case 2: Condition a joint distribution by some values of its margins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Case 2: Condition a joint distribution to some values of its marginals
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`. Let :math:`\cI \subset \{1, \dots, \inputDim \}`
 be a set of indices of components of  :math:`\inputRV`, :math:`\overline{\cI}` its complementary in
@@ -370,7 +370,7 @@ We assign to :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` the n
 Case 3: Create a distribution whose parameters are random
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The objective is to create the margin distribution of :math:`\inputRV` in the previous case.
+The objective is to create the marginal distribution of :math:`\inputRV` in Case 1.
 
 See the class :class:`~openturns.DeconditionedDistribution`.
 
@@ -407,6 +407,10 @@ Then, the PDF of :math:`\inputRV` is defined by:
     p_{\vect{X}}(\vect{x}) = \int p_{\vect{X}|\vect{\Theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) p_{\vect{Y}}(\vect{y})\di{\vect{y}}
 
 with the same convention as for :math:`\vect{Y}`.
+
+Note that this is always possible to create the random vector :math:`\inputRV` whatever the distribution of :math:`\vect{\Theta}`:
+see the class :class:`~openturns.ConditionalRandomVector`. But remember that a :class:`~openturns.ConditionalRandomVector`
+(and more generally a :class:`~openturns.RandomVector`) can only be sampled.
 
 
 Case 4: Create a Bayesian posterior distribution
@@ -461,9 +465,9 @@ In the other cases, the PDF is the probability distribution function for the dis
 .. topic:: Examples:
 
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_bayes_distribution`
-    - See :doc:`/auto_probabilistic_modeling/distributions/plot_conditional_distribution`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_point_conditional_distribution`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_deconditioned_distribution`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_conditional_random_vector`
-    - See :doc:`/auto_probabilistic_modeling/distributions/plot_pointConditionalDistribution`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_posterior_distribution`
 
 .. topic:: References:

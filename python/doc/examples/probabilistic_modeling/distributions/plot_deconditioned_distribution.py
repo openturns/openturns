@@ -24,10 +24,12 @@ Create a deconditioned distribution
 # We consider the case where :math:`X` is of dimension 1 and follows a uniform distribution defined
 # by:
 #
-# .. math::
-#
-#    X|(A,B) & \sim \cU(Y, 1+Y^2) \\
-#    Y & \sim \cU(-1,1)
+# ===============  =========================================================  ===============================
+# Variable         Distribution                                               Parameter
+# ===============  =========================================================  ===============================
+# :math:`X`        :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (Y, 1+Y^2)`
+# :math:`Y`        :class:`~openturns.Uniform` (:math:`c, d`)                 :math:`(c,d) = (-1, 1)`
+# ===============  =========================================================  ===============================
 #
 
 # %%

@@ -28,11 +28,13 @@ ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 #
 # Here, we consider the bivariate distribution of :math:`(X_0, X_1)` defined by:
 #
-# .. math::
-#
-#   X_0 & \sim \Gamma(5, 0.5)\\
-#   X_1 & \sim \mbox{Student}(5)\\
-#   \mbox{copula} & \sim \mbox{ClaytonCopula}(2.5)
+# ===========      ==================================================  ===============================
+# Variable         Distribution                                        Parameter
+# ===========      ==================================================  ===============================
+# :math:`X_0`      :class:`~openturns.Gamma` (:math:`k, \lambda`)      :math:`(k, \lambda) = (5, 0.5)`
+# :math:`X_1`      :class:`~openturns.Student` (:math:`\nu`)           :math:`\nu = 5`
+# Copula           :class:`~openturns.ClaytonCopula` (:math:`\theta`)  :math:`\theta = 2.5`
+# ===========      ==================================================  ===============================
 #
 # We condition the marginal :math:`X_1` to be equal to its quantiles of order
 # 0.05, 0.5 and then 0.95. Then, we draw the resulting conditioned distribution of:
@@ -59,8 +61,8 @@ g_X.setYTitle(r"$x_1$")
 #
 # We also print the updated range of the distribution of :math:`X_0`.
 cond_indices = [1]
-
 q_list = [0.05, 0.5, 0.95]
+
 cond_value_list = [coll_marg[1].computeQuantile(q)[0] for q in q_list]
 
 g_cond = coll_marg[0].drawPDF()
@@ -92,11 +94,13 @@ view = otv.View(grid)
 #
 # Here, we consider the bivariate distribution of :math:`(X_0, X_1)` defined by:
 #
-# .. math::
-#
-#   X_0 & \sim \cB in(25, 0.2)\\
-#   X_1 & \sim \cP(1)\\
-#   \mbox{copula} & \sim \mbox{GumbelCopula}(2)
+# ===========      ==================================================  ===============================
+# Variable         Distribution                                        Parameter
+# ===========      ==================================================  ===============================
+# :math:`X_0`      :class:`~openturns.Binomial` (:math:`n,p`)          :math:`(n,p) = (25, 0.2)`
+# :math:`X_1`      :class:`~openturns.Poisson` (:math:`\lambda`)       :math:`\lambda = 1`
+# Copula           :class:`~openturns.GumbelCopula` (:math:`\theta`)   :math:`\theta = 2`
+# ===========      ==================================================  ===============================
 #
 # We condition the marginal :math:`X_1` to be equal to its quantiles of order
 # 0.05, 0.5 and then 0.95. Then, we draw the resulting conditioned distribution of:
@@ -139,7 +143,7 @@ for index, cond_value in enumerate(cond_value_list):
     )
 
 g_cond.setTitle(r"PDF of $X_0|X_1 = x_1$")
-g_cond.setLegendPosition('topleft')
+g_cond.setLegendPosition("topleft")
 g_cond.setColors(ot.Drawable.BuildDefaultPalette(len(q_list) + 1))
 
 # %%
@@ -156,14 +160,16 @@ view = otv.View(grid)
 #
 # Here, we consider the trivariate distribution of :math:`(X_0, X_1, X_2)` defined by:
 #
-# .. math::
+# ===========      ==================================================  ===============================
+# Variable         Distribution                                        Parameter
+# ===========      ==================================================  ===============================
+# :math:`X_0`      :class:`~openturns.Normal` (:math:`\mu, \sigma`)    :math:`(\mu, \sigma) = (0,1)`
+# :math:`X_1`      :class:`~openturns.Poisson` (:math:`\lambda`)       :math:`\lambda = 1`
+# :math:`X_2`      :class:`~openturns.Uniform` (:math:`a,b`)           :math:`(a,b) = (-1, 1)`
+# Copula           :class:`~openturns.NormalCopula` (:math:`\mat{R}`)  see below
+# ===========      ==================================================  ===============================
 #
-#   X_0 & \sim \cN(0, 1)\\
-#   X_1 & \sim \cP(1)\\
-#   X_2 & \sim \cU(-1, 1)\\
-#   \mbox{copula} & \sim \mbox{NormalCopula}(3)
-#
-# where the correlation matrix of the normal copula is such that:
+# where the correlation matrix :math:`\mat{R}` of the normal copula is defined by:
 #
 # .. math::
 #
@@ -202,6 +208,8 @@ g_X02.setTitle(r"$(X_0, X_2)$: iso-lines PDF")
 # We draw all the conditioned distributions :math:`(X_0, X_2)|X_1 = x_1`.
 cond_value_list = [coll_marg[1].computeQuantile(q)[0] for q in q_list]
 graph_list = list()
+graph_list.append(g_X02)
+
 for index, cond_value in enumerate(cond_value_list):
     cond_value = cond_value_list[index]
     cond_dist = otexp.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
@@ -217,14 +225,13 @@ for index, cond_value in enumerate(cond_value_list):
     print("Quantile of the cond value = ", q_list[index])
     print("Range :\n", cond_dist.getRange())
 
-
 # %%
 # We gather both graphs into one grid.
 grid = ot.GridLayout(2, 2)
-grid.setGraph(0, 0, g_X02)
-grid.setGraph(0, 1, graph_list[0])
-grid.setGraph(1, 0, graph_list[1])
-grid.setGraph(1, 1, graph_list[2])
+grid.setGraph(0, 0, graph_list[0])
+grid.setGraph(0, 1, graph_list[1])
+grid.setGraph(1, 0, graph_list[2])
+grid.setGraph(1, 1, graph_list[3])
 view = otv.View(grid)
 
 # %%
@@ -236,11 +243,13 @@ view = otv.View(grid)
 #
 # We consider the bivariate  distribution of :math:`(X_0, X_1)` defined by:
 #
-# .. math::
-#
-#     X_0 & \sim \cN(0, 1)\\
-#     X_1 & \sim \cN(0,1)\\
-#     \mbox{copula} & \sim \mbox{ClaytonCopula}(2)
+# ===========      ==================================================  ===============================
+# Variable         Distribution                                        Parameter
+# ===========      ==================================================  ===============================
+# :math:`X_0`      :class:`~openturns.Normal` (:math:`\mu, \sigma`)    :math:`(\mu, \sigma) = (0,1)`
+# :math:`X_1`      :class:`~openturns.Normal` (:math:`\mu, \sigma`)    :math:`(\mu, \sigma) = (0,1)`
+# Copula           :class:`~openturns.ClaytonCopula` (:math:`\theta`)  :math:`\theta = 2`
+# ===========      ==================================================  ===============================
 #
 # We condition the marginal :math:`X_1` to be equal to the value :math:`x_1 = -9`, which
 # is outside the numerical range of its distribution: :math:`[-7.65063, +7.65063]`,
