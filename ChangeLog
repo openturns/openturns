@@ -26,6 +26,7 @@
  * FieldFunctionalChaosResult left the experimental module
  * FieldFunctionalChaosSobolIndices left the experimental module
  * UserDefinedMetropolisHastings left the experimental module
+ * BoundaryMesher left the experimental module
 
 === Documentation ===
 

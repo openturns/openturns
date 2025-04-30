@@ -223,6 +223,7 @@ ot_add_python_module(geom geom_module.i
                       Mesh.i Mesh_doc.i.in
                       RegularGrid.i RegularGrid_doc.i.in
                       IntervalMesher.i IntervalMesher_doc.i.in
+                      BoundaryMesher.i BoundaryMesher_doc.i.in
                       MeshDomain.i MeshDomain_doc.i.in
                       DomainComplement.i DomainComplement_doc.i.in
                       DomainIntersection.i DomainIntersection_doc.i.in
@@ -1018,7 +1019,6 @@ ot_add_python_module(experimental experimental_module.i
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i.in
                      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
-                     BoundaryMesher.i BoundaryMesher_doc.i.in
                      ConstantEvaluation.i ConstantEvaluation_doc.i.in
                      ConstantFunction.i ConstantFunction_doc.i.in
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i.in

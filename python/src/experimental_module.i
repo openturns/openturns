@@ -28,9 +28,6 @@
 %include BaseFuncCollection.i
 %import base_module.i
 
-/* Base/Geom */
-%include BoundaryMesher.i
-
 /* Base/Optim */
 %import optim_module.i
 
