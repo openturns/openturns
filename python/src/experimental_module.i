@@ -49,6 +49,7 @@
 
 /* Uncertainty/Distribution */
 %import model_copula_module.i
+%import dist_bundle2_module.i
 %import dist_bundle3_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
@@ -62,7 +63,6 @@
 %include FejerExperiment.i
 
 /* Uncertainty */
-%import bayesian_module.i
 %import metamodel_module.i
 %include simulation_module.i
 
@@ -70,11 +70,7 @@
 %include CubaIntegration.i
 
 /* Uncertainty/Algorithm/Metamodel */
-%include FieldFunctionalChaosResult.i
-%include FieldToPointFunctionalChaosAlgorithm.i
-%include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i
-%include UserDefinedMetropolisHastings.i
 
 /* Uncertainty/Algorithm */
 %include SequentialSamplingAlgorithmImplementation.i

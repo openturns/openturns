@@ -85,7 +85,7 @@ view = otv.View(graph)
 
 # %%
 # Compute the sensitivity indices
-sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
+sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
 s1 = sensitivity.getFirstOrderIndices()
 st = sensitivity.getTotalOrderIndices()
 

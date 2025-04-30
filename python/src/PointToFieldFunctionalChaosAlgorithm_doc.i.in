@@ -100,8 +100,8 @@ distribution : :class:`~openturns.Distribution`
 
 See Also
 --------
-openturns.experimental.FieldToPointFunctionalChaosAlgorithm
-openturns.experimental.FieldFunctionalChaosSobolIndices
+openturns.FieldToPointFunctionalChaosAlgorithm
+openturns.FieldFunctionalChaosSobolIndices
 openturns.KarhunenLoeveAlgorithm
 openturns.FunctionalChaosAlgorithm
 
@@ -188,7 +188,7 @@ It computes the response surfaces and creates a
 
 Returns
 -------
-result : :class:`openturns.experimental.FieldFunctionalChaosResult`
+result : :class:`openturns.FieldFunctionalChaosResult`
     Result class."
 
 // ---------------------------------------------------------------------

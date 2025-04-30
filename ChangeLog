@@ -22,6 +22,10 @@
  * Deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (use MetaModelValidation.computeMeanSquaredError, computeR2Score)
  * Deprecated Wilks class in favor of QuantileConfidence
  * Deprecated ConditionalRandomVector in favor of DeconditionedRandomVector
+ * FieldToPointFunctionalChaosAlgorithm left the experimental module
+ * FieldFunctionalChaosResult left the experimental module
+ * FieldFunctionalChaosSobolIndices left the experimental module
+ * UserDefinedMetropolisHastings left the experimental module
 
 === Documentation ===
 

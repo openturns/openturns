@@ -116,7 +116,7 @@ Functional chaos on fields
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.FieldToPointFunctionalChaosAlgorithm
-    experimental.FieldFunctionalChaosResult
-    experimental.FieldFunctionalChaosSobolIndices
+    FieldToPointFunctionalChaosAlgorithm
+    FieldFunctionalChaosResult
+    FieldFunctionalChaosSobolIndices
     experimental.PointToFieldFunctionalChaosAlgorithm
