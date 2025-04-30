@@ -82,7 +82,7 @@ print(f"n_modes={n_modes}")
 # assert sum(n_modes) == 6, "wrong modes"
 
 # retrieve Sobol indices
-sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
+sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
 for marginalIndex in range(len(blockIndices)):
     s1 = sensitivity.getFirstOrderIndices(marginalIndex)
     st = sensitivity.getTotalOrderIndices(marginalIndex)

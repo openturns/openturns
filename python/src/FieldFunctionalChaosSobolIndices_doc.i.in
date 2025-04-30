@@ -1,10 +1,6 @@
 %feature("docstring") OT::FieldFunctionalChaosSobolIndices
 "Sobol indices from a functional decomposition.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 This class allows one to perform sensitivity analysis from field chaos decomposition.
 The process decomposition is done by Karhunen-Loeve and the modes interpolation
 is performed by functional chaos:
@@ -51,7 +47,7 @@ This generalizes to higher order indices.
 
 Parameters
 ----------
-result : :class:`openturns.experimental.FieldFunctionalChaosResult`
+result : :class:`openturns.FieldFunctionalChaosResult`
     Result.
 
 See also
@@ -61,7 +57,6 @@ FieldToPointFunctionalChaosAlgorithm
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> mesh = ot.RegularGrid(0.0, 0.1, 20)
 >>> cov = ot.KroneckerCovarianceModel(ot.MaternModel([2.0], 1.5), ot.CovarianceMatrix(4))
@@ -71,7 +66,7 @@ Examples
 >>> for xi in x:
 ...     m = xi.computeMean()
 ...     y.append([m[0] + m[1] + m[2] - m[3] + m[0] * m[1] - m[2] * m[3] - 0.1 * m[0] * m[1] * m[2]])
->>> algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
+>>> algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
 >>> algo.setThreshold(4e-2)
 >>> # Temporarily lower the basis size for the sake of this example.
 >>> # We need to store the original size.
@@ -82,7 +77,7 @@ Examples
 >>> # we can now restore the original value.
 >>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', bs)
 >>> result = algo.getResult()
->>> sensitivity = otexp.FieldFunctionalChaosSobolIndices(result)
+>>> sensitivity = ot.FieldFunctionalChaosSobolIndices(result)
 >>> sobol_1 = sensitivity.getFirstOrderIndices()
 >>> sobol_t = sensitivity.getTotalOrderIndices()
 "

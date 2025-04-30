@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 import os
 
@@ -62,7 +61,7 @@ y = f(x)
 
 
 # run algo
-algo = otexp.FieldToPointFunctionalChaosAlgorithm(x, y)
+algo = ot.FieldToPointFunctionalChaosAlgorithm(x, y)
 algo.setThreshold(4e-2)
 algo.setRecompress(True)
 ot.ResourceMap.SetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", N)
@@ -128,7 +127,7 @@ if ot.PlatformInfo.HasFeature("libxml2"):
     study = ot.Study()
     study.setStorageManager(ot.XMLStorageManager(fname))
     study.load()
-    algo = otexp.FieldToPointFunctionalChaosAlgorithm()
+    algo = ot.FieldToPointFunctionalChaosAlgorithm()
     study.fillObject("algo", algo)
     print(algo)
     os.remove(fname)

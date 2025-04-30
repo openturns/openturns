@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 import math as m
 
@@ -34,7 +33,7 @@ def python_link(x):
 
 
 link = ot.PythonFunction(1, 2, python_link)
-mala = otexp.UserDefinedMetropolisHastings(
+mala = ot.UserDefinedMetropolisHastings(
     log_density, support, initialState, proposal, link
 )
 

@@ -32,4 +32,4 @@ Bayesian updating
     IndependentMetropolisHastings
     RandomVectorMetropolisHastings
     Gibbs
-    experimental.UserDefinedMetropolisHastings
+    UserDefinedMetropolisHastings

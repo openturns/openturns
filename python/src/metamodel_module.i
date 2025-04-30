@@ -18,6 +18,7 @@
 %include OTexceptions.i
 %include std_vector.i
 
+%include BaseTypCollection.i
 %include BaseFuncCollection.i
 %import base_module.i
 
@@ -82,6 +83,9 @@
 %include KrigingRandomVector.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
+%include FieldFunctionalChaosResult.i
+%include FieldToPointFunctionalChaosAlgorithm.i
+%include FieldFunctionalChaosSobolIndices.i
 
 /* At last we include template definitions */
 %include UncertaintyMetaModelTemplateDefs.i
