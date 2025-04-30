@@ -3841,7 +3841,11 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   point[0] = xMax + ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
-  graph.add(Curve(data, "red", "solid", 2, title));
+  Curve curve(data);
+  curve.setLineStyle("solid");
+  curve.setLineWidth(2);
+  curve.setLegend(title);
+  graph.add(curve);
   return graph;
 }
 
@@ -4164,7 +4168,11 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   point[0] = xMax + ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
-  graph.add(Curve(data, "red", "solid", 2, title));
+  Curve curve(data);
+  curve.setLineStyle("solid");
+  curve.setLineWidth(2);
+  curve.setLegend(title);
+  graph.add(curve);
   return graph;
 }
 
@@ -4439,7 +4447,11 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
     data(size + 1, 0) = xMax;
     data(size + 1, 1) = computeCDF(xMax);
   }
-  graph.add(Staircase(data, "red", "solid", 2, "s", title));
+  Staircase staircase(data);
+  staircase.setLineStyle("solid");
+  staircase.setLineWidth(2);
+  staircase.setLegend(title);
+  graph.add(staircase);
   return graph;
 }
 
@@ -4621,7 +4633,11 @@ Graph DistributionImplementation::drawDiscreteSurvivalFunction(const Scalar xMin
     data(size + 1, 0) = xMax;
     data(size + 1, 1) = computeSurvivalFunction(xMax);
   }
-  graph.add(Staircase(data, "red", "solid", 2, "s", title));
+  Staircase staircase(data);
+  staircase.setLineStyle("solid");
+  staircase.setLineWidth(2);
+  staircase.setLegend(title);
+  graph.add(staircase);
   return graph;
 }
 
