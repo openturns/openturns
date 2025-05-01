@@ -291,7 +291,7 @@ We plot:
 Note that the numerical range of the conditional distribution might be different from the range of the numerical range of the non conditioned
 distribution. For example, consider a bivariate distribution :math:`(X_0, X_1)` following a normal distribution with zero mean, unit variance and a
 correlation :math:`R(0,1) = 0.4`. Then consider :math:`X_1|X_0 = 10.0`. The numerical range of :math:`X_1|X_0 = 10` is :math:`[-3.01, 11.0]` where as the
-numerical range of :math:`X_1` is :math:`[-7.65, 7.65]`. See :doc:`/auto_probabilistic_modeling/distributions/plot_pointConditionalDistribution` to get
+numerical range of :math:`X_1` is :math:`[-7.65, 7.65]`. See :doc:`/auto_probabilistic_modeling/distributions/plot_point_conditional_distribution` to get
 some more examples.
 
 The computation of the numerical range is important to make possible the integration of the PDF on some domains. The library implements 3 strategies to
