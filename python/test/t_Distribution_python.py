@@ -277,6 +277,5 @@ class PoissonPy(ot.PythonDistribution):
 
 
 dist = ot.Distribution(PoissonPy(2.5))
-print("Is discrete?", dist.isDiscrete())
-print("Is integral?", dist.isIntegral())
-print("pdf graph=", dist.drawPDF())
+assert dist.isDiscrete()
+assert dist.isIntegral()
