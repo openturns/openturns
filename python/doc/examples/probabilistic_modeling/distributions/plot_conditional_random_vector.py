@@ -12,7 +12,7 @@ Create a deconditioned random vector
 #
 # where :math:`\vect{\Theta}` is the parameter random vector following the distribution :math:`\cL_{\vect{\Theta}}`.
 #
-# This example creates a :class:`~openturns.RandomVector`. Remember that a :class:`~openturns.ConditionalRandomVector`
+# This example creates a :class:`~openturns.ConditionalRandomVector`. Remember that a :class:`~openturns.ConditionalRandomVector`
 # (and more generally a :class:`~openturns.RandomVector`) can only be sampled.
 #
 # There is no restriction on the random vector :math:`\vect{\Theta}`. It can be created from any multivariate distribution or
@@ -42,14 +42,14 @@ import openturns.viewer as otv
 # We consider the case where :math:`X` is of dimension 1 and follows a exponential distribution
 # defined by:
 #
-# ===============  =========================================================  ===============================
-# Variable         Distribution                                               Parameter
-# ===============  =========================================================  ===============================
-# :math:`X`        :class:`~openturns.Exponential` (:math:`\Lambda, \Gamma`)  :math:`(\mu, \sigma) = (0, 1)`
-# :math:`\Lambda`  :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (0, 1)`
-# :math:`\Gamma`   :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (1, 2)`
-# Copula           :class:`~openturns.ClaytonCopula` (:math:`\theta`)         :math:`\theta = 2`
-# ===============  =========================================================  ===============================
+# ================================ =========================================================  ====================================
+# Variable                         Distribution                                               Parameter
+# ================================ =========================================================  ====================================
+# :math:`X`                        :class:`~openturns.Exponential` (:math:`\Lambda, \Gamma`)  (:math:`\Lambda, \Gamma`) are random
+# :math:`\Lambda`                  :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (0, 1)`
+# :math:`\Gamma`                   :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (1, 2)`
+# Copula (:math:`\Lambda, \Gamma`) :class:`~openturns.ClaytonCopula` (:math:`\theta`)         :math:`\theta = 2`
+# ================================ =========================================================  ====================================
 #
 
 # %%
@@ -72,6 +72,7 @@ XDist = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
 # Draw a sample
 X_RV.getSample(5)
 
+# %%
 # If we sample largely the distribution, we can fit its PDF with non parametric techniques, as the kernel smoothing.
 sample_huge = X_RV.getSample(1000)
 dist_KS = ot.KernelSmoothing().build(sample_huge)
@@ -88,14 +89,14 @@ view = otv.View(g_PDF)
 # We consider the case where :math:`X` is of dimension 1 and follows a exponential distribution
 # defined by:
 #
-# ===============  =========================================================  ===============================
-# Variable         Distribution                                               Parameter
-# ===============  =========================================================  ===============================
-# :math:`X`        :class:`~openturns.Exponential` (:math:`\Lambda, \Gamma`)  :math:`(\mu, \sigma) = (0, 1)`
-# :math:`\Lambda`  1 + :class:`~openturns.Poisson` (:math:`\ell`)             :math:`\ell = 1`
-# :math:`\Gamma`   :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (1, 2)`
-# Copula           :class:`~openturns.ClaytonCopula` (:math:`\theta`)         :math:`\theta = 2`
-# ===============  =========================================================  ===============================
+# =================================  =========================================================  ====================================
+# Variable                           Distribution                                               Parameter
+# =================================  =========================================================  ====================================
+# :math:`X`                          :class:`~openturns.Exponential` (:math:`\Lambda, \Gamma`)  (:math:`\Lambda, \Gamma`) are random
+# :math:`\Lambda`                    1 + :class:`~openturns.Poisson` (:math:`\ell`)             :math:`\ell = 1`
+# :math:`\Gamma`                     :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (1, 2)`
+# Copula  (:math:`\Lambda, \Gamma`)  :class:`~openturns.ClaytonCopula` (:math:`\theta`)         :math:`\theta = 2`
+# =================================  =========================================================  ====================================
 #
 
 # %%
@@ -111,6 +112,7 @@ thetaRV = ot.RandomVector(thetaDist)
 XgivenThetaDist = ot.Exponential()
 X_RV = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
 
+# %%
 # If we sample largely the distribution, we can fit its PDF with non parametric techniques, as the kernel smoothing.
 sample_huge = X_RV.getSample(1000)
 dist_KS = ot.KernelSmoothing().build(sample_huge)
@@ -127,17 +129,17 @@ view = otv.View(g_PDF)
 # We consider the case where :math:`X` is of dimension 1 and follows a exponential distribution
 # defined by:
 #
-# ===============  =========================================================  ===============================
+# =================================  =========================================================  ====================================
 # Variable         Distribution                                               Parameter
-# ===============  =========================================================  ===============================
-# :math:`X`        :class:`~openturns.Exponential` (:math:`\Lambda, \Gamma`)  :math:`(\mu, \sigma) = (0, 1)`
-# :math:`\Lambda`  :class:`~openturns.Mixture`                                see below
-# :math:`\Gamma`   :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (1, 2)`
-# Copula           :class:`~openturns.ClaytonCopula` (:math:`\theta`)         :math:`\theta = 2`
-# ===============  =========================================================  ===============================
+# =================================  =========================================================  ====================================
+# :math:`X`                          :class:`~openturns.Exponential` (:math:`\Lambda, \Gamma`)  (:math:`\Lambda, \Gamma`) are random
+# :math:`\Lambda`                    :class:`~openturns.Mixture`                                see below
+# :math:`\Gamma`                     :class:`~openturns.Uniform` (:math:`a, b`)                 :math:`(a,b) = (1, 2)`
+# Copula  (:math:`\Lambda, \Gamma`)  :class:`~openturns.ClaytonCopula` (:math:`\theta`)         :math:`\theta = 2`
+# =================================  =========================================================  ====================================
 #
-# where the mixture is built from the :class:`~openturns.Exponential` with :math:`\ell = 1` and the
-# :class:`~openturns.Geometric` with :math:`p = 0.1`, with equal weights. In this case, the distribution of :math:`\Lambda` is
+# where the mixture is built from the :class:`~openturns.Exponential` (:math:`\ell`) with :math:`\ell = 1` and the
+# :class:`~openturns.Geometric` (:math:`p`) with :math:`p = 0.1`, with equal weights. In this case, the distribution of :math:`\Lambda` is
 # not discrete nor continuous.
 
 # %%
@@ -152,6 +154,7 @@ thetaRV = ot.RandomVector(thetaDist)
 XgivenThetaDist = ot.Exponential()
 X_RV = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
 
+# %%
 # If we sample largely the distribution, we can fit its PDF with non parametric techniques, as the kernel smoothing.
 sample_huge = X_RV.getSample(1000)
 dist_KS = ot.KernelSmoothing().build(sample_huge)

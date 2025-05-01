@@ -5,8 +5,8 @@ from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)
 distXgivenT = ot.Exponential()
 distGamma = ot.Uniform(1.0, 2.0)
-distAlpha = ot.Uniform(0.0, 0.1)
-distTheta = ot.JointDistribution([distGamma, distAlpha])
+distLambda = ot.Uniform(0.0, 1)
+distTheta = ot.JointDistribution([distLambda, distGamma])
 rvTheta = ot.RandomVector(distTheta)
 
 rvX = ot.DeconditionedRandomVector(distXgivenT, rvTheta)
@@ -17,7 +17,7 @@ graph = histX.drawPDF()
 graph.setXTitle("x")
 graph.setYTitle("pdf")
 graph.setTitle(
-    r"Conditional Random Vector: Exp($\gamma$, $\lambda$), $\gamma \sim \mathcal{U}(1,2)$, $\lambda \sim \mathcal{U}(0,1)$"
+    r"Conditional Random Vector: Exp( $\lambda$, $\gamma$), $\lambda \sim \mathcal{U}(0,1)$, $\gamma \sim \mathcal{U}(1,2)$"
 )
 
 fig = plt.figure(figsize=(8, 4))
