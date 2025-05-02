@@ -57,6 +57,7 @@ TruncatedOverMesh::TruncatedOverMesh(const Distribution & distribution, const Me
   , distribution_(distribution)
 {
   setName("TruncatedOverMesh");
+  setParallel(distribution_.getImplementation()->isParallel());
   setMesh(mesh);
   if (!distribution.isContinuous())
     throw NotYetImplementedException(HERE) << "TruncatedOverMesh: the distribution must be continuous";
