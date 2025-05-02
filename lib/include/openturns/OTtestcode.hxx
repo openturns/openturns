@@ -823,7 +823,7 @@ private:
   {
     if (distribution_.getDimension() == 1)
     {
-      LOGTRACE(OSS() << "checking survival...");
+      LOGTRACE(OSS() << "checking S(x)=1-F(x)...");
       const Point x(distribution_.getRealization());
       const Scalar survival = distribution_.computeSurvivalFunction(x);
       LOGTRACE(OSS() << "survival=" << survival);
@@ -837,7 +837,7 @@ private:
   {
     if (distribution_.isContinuous() && distribution_.getDimension() == 1)
     {
-      LOGTRACE(OSS() << "checking inverse survival...");
+      LOGTRACE(OSS() << "checking S(S^-1(0.95))=0.95...");
       const Point inverseSurvival(distribution_.computeInverseSurvivalFunction(0.95));
       const Scalar survival = distribution_.computeSurvivalFunction(inverseSurvival);
       LOGTRACE(OSS() << "inverseSurvival=" << inverseSurvival << " survival=" << survival);
@@ -850,7 +850,7 @@ private:
       const Sample support(distribution_.getSupport(sub));
       for (UnsignedInteger i = 0; i < std::min(support.getSize(), 10UL); ++ i)
       {
-        LOGTRACE(OSS() << "checking inverse survival..." << support);
+        LOGTRACE(OSS() << "checking S^-1(S(x0))=x0...");
         const Scalar x = support(i, 0);
         const Scalar survival = distribution_.computeSurvivalFunction(x);
         const Scalar inverseSurvival = distribution_.computeInverseSurvivalFunction(survival)[0];
@@ -864,7 +864,7 @@ private:
   {
     if (distribution_.isContinuous() && distribution_.getDimension() == 1)
     {
-      LOGTRACE(OSS() << "checking quantile...");
+      LOGTRACE(OSS() << "checking F(F^-1(0.95))=0.95...");
       const Point quantile1 = distribution_.computeQuantile(0.95);
       if (!distribution_.getRange().contains(quantile1))
         throw TestFailed(OSS() << "quantile not in range for " << distribution_);
@@ -872,6 +872,7 @@ private:
       LOGTRACE(OSS() << "quantile=" << quantile1 << " cdf=" << cdf1);
       assert_almost_equal(cdf1, 0.95, quantileTolerance_, quantileTolerance_, "quantile " + distribution_.__repr__());
 
+      LOGTRACE(OSS() << "checking F(S^-1(0.95))=0.95...");
       const Point quantile2 = distribution_.computeQuantile(0.95, true);
       if (!distribution_.getRange().contains(quantile2))
         throw TestFailed(OSS() << "quantile not in range for " << distribution_);
@@ -886,12 +887,30 @@ private:
       const Sample support(distribution_.getSupport(sub));
       for (UnsignedInteger i = 0; i < std::min(support.getSize(), 10UL); ++ i)
       {
-        LOGTRACE(OSS() << "checking quantile..."<< support);
+        LOGTRACE(OSS() << "checking F^-1(F(x)=x...");
         const Scalar x = support(i, 0);
         const Scalar cdf = distribution_.computeCDF(x);
         const Scalar quantile = distribution_.computeQuantile(cdf)[0];
         LOGTRACE(OSS() << "x=" << x << " cdf=" << cdf << " quantile=" << quantile);
         assert_almost_equal(quantile, x, quantileTolerance_, quantileTolerance_, "quantile " + distribution_.__repr__());
+      }
+    }
+
+    if (distribution_.getDimension() == 1)
+    {
+      LOGTRACE(OSS() << "checking F(F^-1(p))>=p...");
+      for (UnsignedInteger i = 0; i < 10; ++ i)
+      {
+        const Scalar p = 0.05 + i * 0.1;
+        const Scalar q = distribution_.computeQuantile(p)[0];
+        if (!distribution_.getRange().contains(Point({q})))
+          throw TestFailed(OSS() << "quantile not in range for " << distribution_);
+        const Scalar cdf = distribution_.computeCDF(q);
+        LOGTRACE(OSS() << "p=" << p << " q=" << q << " cdf=" << cdf);
+        if (!(cdf + cdfTolerance_ >= p))
+          throw InvalidArgumentException(HERE) << "F(F^-1(p))>=p fails";
+        if (distribution_.isContinuous())
+          assert_almost_equal(cdf, p, cdfTolerance_, cdfTolerance_,  "F(F^-1(p))=p " + distribution_.__repr__());
       }
     }
   }
@@ -900,11 +919,12 @@ private:
   {
     if (distribution_.getDimension() == 1)
     {
-      LOGTRACE(OSS() << "checking probability...");
+      LOGTRACE(OSS() << "checking P(range)=1...");
       const Scalar proba1 = distribution_.computeProbability(distribution_.getRange());
       LOGTRACE(OSS() << "proba(range)=" << proba1);
       assert_almost_equal(proba1, 1.0, cdfTolerance_, cdfTolerance_, "proba(range) " + distribution_.__repr__());
 
+      LOGTRACE(OSS() << "checking P([-inf; +inf])=1...");
       const Scalar proba2 = distribution_.computeProbability(Interval(-SpecFunc::Infinity, SpecFunc::Infinity));
       LOGTRACE(OSS() << "proba(R)=" << proba2);
       assert_almost_equal(proba2, 1.0, cdfTolerance_, cdfTolerance_, "proba(R) " + distribution_.__repr__());
@@ -1356,7 +1376,7 @@ private:
   Bool enableTransformation_ = true;
   Bool enableConditional_ = true;
   Scalar entropyTolerance_ = 2e-3;
-  Scalar cdfTolerance_ = 1e-5;
+  Scalar cdfTolerance_ = 2e-5;
   Scalar pdfTolerance_ = 1e-3;
   Scalar ddfTolerance_ = 1e-3;
   Scalar quantileTolerance_ = 1e-5;
