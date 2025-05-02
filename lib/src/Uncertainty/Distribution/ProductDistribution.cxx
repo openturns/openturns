@@ -855,7 +855,7 @@ void ProductDistribution::setLeft(const Distribution & left)
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
-  isParallel_ = p_left_->isParallel();
+  setParallel(p_left_->isParallel() && p_right_->isParallel());
   computeRange();
 }
 
@@ -873,7 +873,7 @@ void ProductDistribution::setRight(const Distribution & right)
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
-  isParallel_ = p_right_->isParallel();
+  setParallel(p_left_->isParallel() && p_right_->isParallel());
   computeRange();
 }
 
