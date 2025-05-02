@@ -56,6 +56,7 @@ MinimumVolumeClassifier::MinimumVolumeClassifier(const Distribution & distributi
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (!(alpha_[i] >= 0.0) || !(alpha_[i] <= 1.0))
       throw InvalidArgumentException(HERE) << "Confidence level must be in [0, 1]";
+  setParallel(distribution.getImplementation()->isParallel());
 }
 
 /* Virtual constructor */

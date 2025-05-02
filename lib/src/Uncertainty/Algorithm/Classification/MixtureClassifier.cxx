@@ -41,7 +41,7 @@ MixtureClassifier::MixtureClassifier(const Mixture & mixture)
   : ClassifierImplementation()
   , mixture_(mixture)
 {
-  // Nothing to do
+  setParallel(mixture.isParallel());
 }
 
 /* Virtual constructor */

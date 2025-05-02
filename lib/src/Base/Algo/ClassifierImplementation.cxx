@@ -95,7 +95,7 @@ Indices ClassifierImplementation::classify(const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
   const ClassifyPolicy policy(inS, result, this);
-  TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   return result;
 }
 
@@ -132,34 +132,15 @@ struct GradePolicy
 
 
 /* Grade a sample */
-Point ClassifierImplementation::gradeParallel(const Sample & inS,
-    const Indices & hClass) const
-{
-  const UnsignedInteger size = inS.getSize();
-  Point result(size);
-  const GradePolicy policy(inS, hClass, result, this);
-  TBBImplementation::ParallelFor(0, size, policy);
-  return result;
-}
-
-Point ClassifierImplementation::gradeSequential(const Sample & inS,
-    const Indices & hClass) const
-{
-  const UnsignedInteger size = inS.getSize();
-  Point grades(size);
-  for ( UnsignedInteger i = 0; i < size; ++ i )
-    grades[i] = grade(inS[i], hClass[i]);
-  return grades;
-}
-
 Point ClassifierImplementation::grade(const Sample & inS, const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
-  if ( size != hClass.getSize() )
+  if (size != hClass.getSize())
     throw InvalidDimensionException(HERE) << "Input sample dimension (=" << size << ") and classes dimension (=" << hClass.getSize() << ") do not match.";
-  if (isParallel_)
-    return gradeParallel(inS, hClass);
-  return gradeSequential(inS, hClass);
+  Point result(size);
+  const GradePolicy policy(inS, hClass, result, this);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  return result;
 }
 
 /** Parallelization flag accessor */
