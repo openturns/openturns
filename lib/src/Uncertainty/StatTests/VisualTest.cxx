@@ -510,6 +510,7 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
     cobWeb.add(filament);
   }
   // Draw the vertical lines associated with the input variables
+  const Description palette(Curve::BuildDefaultPalette(inputDimension));
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
@@ -519,6 +520,7 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
     Curve bar(data);
     if (i < inputDimension)
     {
+      bar.setColor(palette[i]);
       bar.setLegend(inputSample.getDescription()[i]);
     }
     else
