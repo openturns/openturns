@@ -48,7 +48,6 @@ CompositeDistribution::CompositeDistribution()
   , increasing_(0)
   , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
-  // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);
   setName("CompositeDistribution");
   setDimension(1);
@@ -68,8 +67,6 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , increasing_(0)
   , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon") * (antecedent.getRange().getUpperBound()[0] - antecedent.getRange().getLowerBound()[0]), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
-  // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
-  setParallel(false);
   setName("CompositeDistribution");
   // This method check everything and call the update() method.
   setFunctionAndAntecedent(function, antecedent);
@@ -129,6 +126,7 @@ void CompositeDistribution::setFunctionAndAntecedent(const Function & function,
   antecedent_ = antecedent;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+  setParallel(function.getImplementation()->isParallel() && antecedent.getImplementation()->isParallel());
   update();
 }
 
