@@ -25,9 +25,9 @@ Elliptical distribution= true
 Elliptical copula= true
 Independent copula= true
 oneRealization=class=Point name=Unnamed dimension=3 values=[3.30342,0.207998,-8.08667]
-oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[1.85337,0.193954,4.30076],[1.13682,2.49519,0.558261],[1.32885,3.28639,-0.425635],[4.84637,2.77168,2.16423],[1.87043,2.88678,-0.791618],[4.71915,-1.09338,1.24062],[3.17637,-4.61406,-0.0186904],[3.2316,-2.79136,8.00648],[4.72735,1.14194,4.52464],[4.23681,0.00126513,-2.09767]]
-anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00732,1.96126,1.02609]
-anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.02217,-0.0306704,0.0997155,-0.0306704,9.02098,0.0418057,0.0997155,0.0418057,15.9525]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[1.85337,2.77168,-0.0186904],[1.79597,2.87318,1.46319],[4.65038,0.305643,-5.38848],[1.13682,2.88678,8.00648],[3.33013,0.656286,4.45469],[2.77913,4.57872,-0.144085],[1.32885,-1.09338,4.52464],[3.85759,2.18046,3.47363],[2.28718,2.26456,-1.66498],[4.84637,-4.61406,-2.09767]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00604,1.99116,0.988782]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[3.98484,-0.0412779,-0.015671,-0.0412779,9.06944,-0.0361291,-0.015671,-0.0361291,16.0188]
 Zero point= class=Point name=Unnamed dimension=3 values=[0,0,0] pdf=0.000666586 cdf=0.00676915
 Quantile=class=Point name=Unnamed dimension=3 values=[7.2424,8.3636,9.48481]
 CDF(quantile)=0.95
@@ -59,8 +59,8 @@ conditional quantile=2.01339
 sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.150569,0.131147,0.0820402]
 sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.226627,0.566184,0.734014]
 sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.226627,0.566184,0.734014])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
-anotherSample mean=class=Point name=Unnamed dimension=3 values=[3.00628,2.0077,0.966492]
-anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.0067,0.111055,-0.172045,0.111055,8.82503,0.227309,-0.172045,0.227309,15.8971]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[2.98947,1.9985,1.01238]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[3.99531,0.0373505,0.0969691,0.0373505,8.88251,0.0124282,0.0969691,0.0124282,15.8412]
 
 
 
