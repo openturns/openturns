@@ -655,9 +655,12 @@ Scalar UserDefined::computeScalarQuantile(const Scalar prob,
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  UnsignedInteger index = 0;
-  const Scalar p = tail ? 1 - prob : prob;
-  while (cumulativeProbabilities_[index] < p) ++index;
+  UnsignedInteger index = tail ? cumulativeProbabilities_.getSize() - 1 : 0;
+  const Scalar p = tail ? 0.5 - (prob - 0.5) : prob;
+  if (tail)
+    while (p < 1.0 && index > 0 && cumulativeProbabilities_[index] > p) --index;
+  else
+    while (cumulativeProbabilities_[index] < p) ++index;
   return points_(index, 0);
 }
 
