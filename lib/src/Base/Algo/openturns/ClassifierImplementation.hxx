@@ -59,11 +59,6 @@ public:
   virtual Point grade(const Sample & inS,
                       const Indices & outC) const;
 
-protected:
-  virtual Point gradeParallel(const Sample & inS,
-                              const Indices & outC) const;
-  virtual Point gradeSequential(const Sample & inS,
-                                const Indices & outC) const;
 public:
 
   /** String converter */
