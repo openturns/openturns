@@ -226,7 +226,7 @@ void MaximumDistribution::setDistribution(const Distribution & distribution)
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
-  isParallel_ = distribution_.getImplementation()->isParallel();
+  setParallel(distribution_.getImplementation()->isParallel());
   computeRange();
 }
 
