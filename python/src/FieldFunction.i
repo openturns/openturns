@@ -96,12 +96,26 @@ class OpenTURNSPythonFieldFunction:
 
     Notes
     -----
-    You have to overload the function:
-        _exec(X): single evaluation, X is a :class:`~openturns.Field`,
-        returns a :class:`~openturns.Field`
+    A OpenTURNSPythonFieldFunction acts on fields to produce fields:
+
+    .. math::
+
+        f: \left| \begin{array}{rcl}
+                   \cM_{N'} \times (\Rset^{d'})^{N'}  &  \rightarrow & \cM_{N'} \times (\Rset^{d'})^{N'}  \\
+                    F & \mapsto  & F' 
+                  \end{array} \right.
+
+    with  :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}` and :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.
+
+    A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` of elements of :math:`\cM_{N} \times (\Rset^{d})^{N}` where :math:`\vect{t}_i` is a vertex of :math:`\cM_{N}` and :math:`\vect{v}_i` the associated value in :math:`\Rset^{d}`.
+    
+    At least, you have to overload the function:
+        _exec(X): single evaluation, X is a :class:`~openturns.Field`. It returns a :class:`~openturns.Field`.
 
     Examples
     --------
+    For example, we create the function which maps a field to another field sharing the same mesh and such that each value :math:`\vect{x}` of the input field is mapped into :math:`2\vect{x}`.
+    
     >>> import openturns as ot
     >>> mesh = ot.Mesh(1)
     >>> class FUNC(ot.OpenTURNSPythonFieldFunction):
@@ -138,31 +152,95 @@ class OpenTURNSPythonFieldFunction:
         self.__descOut = ['y' + str(i) for i in range(outputDim)]
 
     def setInputDescription(self, descIn):
+        """
+        Accessor to the description of the input field values of the function.
+
+        Parameters
+        ----------
+        descIn : sequence of str
+            The description of the input field values of the function.
+        """  
         if (len(descIn) != self.__inputDim):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
     def getInputDescription(self):
+        """
+        Accessor to the description of the input field values of the function.
+
+        Returns
+        -------
+        descIn : sequence of str
+            The description of the input field values of the function.    
+        """
         return self.__descIn
 
     def setOutputDescription(self, descOut):
+        """
+        Accessor to the description of the output field values of the function.
+
+        Parameters
+        ----------
+        descIn : sequence of str
+            The description of the input field values of the function.
+        """  
         if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
     def getOutputDescription(self):
+        """
+        Accessor to the description of the output field values of the function.
+
+        Returns
+        -------
+        descIn : sequence of str
+            The description of the output field values of the function.    
+        """
         return self.__descOut
 
     def getInputDimension(self):
+        r"""
+        Accessor to the dimension of the input field values of the function.
+
+        Returns
+        -------
+        inputPointDim : int
+            The dimension of the input field values of the function :math:`\inputDim`.
+        """
         return self.__inputDim
 
     def getOutputDimension(self):
+        r"""
+        Accessor to the dimension of the output field values.
+
+        Returns
+        -------
+        outputFieldDim : int
+            The dimension of the output field values :math:`d'`.
+        """
         return self.__outputDim
 
     def getInputMesh(self):
+        """
+        Accessor to the mesh of the input field of the function.
+
+        Returns
+        -------
+        inputMesh : int
+            The mesh of the input field of the function.
+        """
         return self.__inputMesh
 
     def getOutputMesh(self):
+        """
+        Accessor to the mesh of the output field of the function.
+
+        Returns
+        -------
+        outputMesh : int
+            The mesh of the output field of the function.
+        """
         return self.__outputMesh
 
     def __str__(self):
@@ -211,8 +289,28 @@ class PythonFieldFunction(FieldFunction):
         Returns a :class:`~openturns.Field`.
         Default is None.
 
+    Notes
+    -----
+    A PythonFieldFunction acts on fields to produce fields:
+
+    .. math::
+
+        f: \left| \begin{array}{rcl}
+                   \cM_{N'} \times (\Rset^{d'})^{N'}  &  \rightarrow & \cM_{N'} \times (\Rset^{d'})^{N'}  \\
+                    F & \mapsto  & F' 
+                  \end{array} \right.
+
+    with  :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}` and :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.
+
+    A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` of elements of :math:`\cM_{N} \times (\Rset^{d})^{N}` where :math:`\vect{t}_i` is a vertex of :math:`\cM_{N}` and :math:`\vect{v}_i` the associated value in :math:`\Rset^{d}`.
+    
+    At least, you have to overload the function:
+        _exec(X): single evaluation, X is a :class:`~openturns.Field`. It returns a :class:`~openturns.Field`.
+
     Examples
     --------
+    For example, we create the function which maps a field to another field sharing the same mesh and such that each value :math:`\vect{x}` of the input field is mapped into :math:`2\vect{x}`.
+
     >>> import openturns as ot
     >>> mesh = ot.Mesh(1)
     >>> def myPyFunc(X):

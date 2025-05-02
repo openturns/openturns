@@ -10,7 +10,7 @@ mesh : :class:`~openturns.Mesh`
 
 Notes
 -----
-Vertex value functions act on fields to produce fields such that:
+A VertexValueFunction acts on fields to produce fields:
 
 .. math::
 
@@ -21,13 +21,13 @@ Vertex value functions act on fields to produce fields such that:
 
 with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
 
-A vertex value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
+The VertexValueFunction keeps the mesh unchanged: the input mesh is also the output mesh.
 
 The field :math:`F'` is defined by the function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`:
 
 .. math::
 
-    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{t}_i, \vect{v}_i)
+   \forall 1 \leq i \leq N, \quad \vect{v}'_i = g(\vect{t}_i, \vect{v}_i)
 
 When :math:`g` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
 The instantiation of such an object is used to extract an actual :class:`~openturns.VertexValueFunction` from a :class:`~openturns.Study`.
@@ -38,8 +38,6 @@ FieldFunction, ValueFunction, VertexValueFunction
 
 Examples
 --------
->>> import openturns as ot
-
 Create a function :math:`g : \Rset \times \Rset \rightarrow \Rset` such as:
 
 .. math::
@@ -49,6 +47,7 @@ Create a function :math:`g : \Rset \times \Rset \rightarrow \Rset` such as:
                 (t, x) & \mapsto & (x + t^2)
             \end{array}\right.
 
+>>> import openturns as ot
 >>> g = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 
 Convert :math:`g` into a vertex value function with :math:`n=1`:
@@ -82,20 +81,20 @@ Convert :math:`g` into a vertex value function with :math:`n=1`:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VertexValueFunction::getFunction
-"Get the function of :math:`\ell`.
+"Get the function of :math:`g`.
 
 Returns
 -------
 l : :class:`~openturns.Function`
-   Function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
+   Function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
 
 Examples
 --------
 >>> import openturns as ot
->>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
+>>> g = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 >>> n = 1
 >>> mesh = ot.Mesh(n)
->>> myVertexValueFunction = ot.ValueFunction(h, mesh)
+>>> myVertexValueFunction = ot.ValueFunction(g, mesh)
 >>> print(myVertexValueFunction.getFunction())
 [t,x]->[x + t^2]"
 
@@ -124,7 +123,7 @@ function : :class:`~openturns.VertexValueFunction`
 Returns
 -------
 outputMesh : :class:`~openturns.Mesh`
-    The output mesh which is equal to the input one: :math:`\cM_{N}`."
+    The output mesh which is also equal to the input one: :math:`\cM_{N}`."
 
 
 

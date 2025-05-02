@@ -1,5 +1,5 @@
 %feature("docstring") OT::LinearModelAlgorithm
-"Class used to create a linear model from numerical samples.
+"Class used to create a linear regression model.
 
 Parameters
 ----------
@@ -19,46 +19,69 @@ LinearModelResult
 
 Notes
 -----
-This class is used in order to create a linear model from an input sample
-and an output sample.
-Let :math:`n` be the sample size and let :math:`n_x` be the input
-sample dimension.
-This class fits a linear regression model between the scalar
-variable :math:`Y` and the :math:`n_x`-dimensional vector :math:`\vect{X} = (X_i)_{1 \leq i \leq n_x}`.
-The linear model can be estimated with or without a functional basis.
+This class fits a  linear regression model between a scalar variable :math:`Y` and some
+:math:`p` scalar regressors :math:`(X_1, \dots, X_p)`. The model is estimated from
+:math:`\sampleSize` experiences that have provided an output sample
+of :math:`Y` related to an input sample of the regressors :math:`\vect{X} = (X_1, \dots, X_p)`.
 
-If no basis is specified, the model is:
+Let :math:`\vect{Y} = (Y_1, \dots, Y_\sampleSize)` be
+the output sample and :math:`(\vect{X}^1, \dots, \vect{X}^\sampleSize)` the input
+sample, where :math:`\vect{X}^i = (X_1^i, \dots, X_p^i)`.
 
-.. math::
-
-    Y = a_0 + \sum_{i=1}^{n_x} a_i X_i + \epsilon
-
-where :math:`a_0, a_1, ..., a_{n_x} \in \Rset`
-are unknown coefficients and :math:`\epsilon` is a random variable with zero mean and constant
-(unknown) variance :math:`\sigma^2` independent from
-the coefficients :math:`\{a_i\}_{i = 0, ..., n_x}`.
-The algorithm estimates the coefficients
-:math:`a_0, a_1, ..., a_{n_x}` of the linear model.
-Moreover, the method estimates the variance :math:`\sigma^2`.
-
-If a functional basis is specified, let :math:`p \in \Nset` be the number of
-functions in the basis.
-For :math:`j \in \{1, ..., p\}`, let :math:`\phi_j : \Rset^{n_x} \rightarrow \Rset`
-be the :math:`i`-th basis function.
-The linear model is:
+The linear model can be defined with or without a functional basis. If no basis is
+specified, the model is:
 
 .. math::
+    :label: modelNoBase
 
-    Y = \sum_{j=1}^p a_j \phi_j(\vect{X}) + \epsilon
+    Y = a_0 + \sum_{k=1}^{p} a_k X_k + \epsilon
 
-where :math:`\epsilon` is a random variable with zero mean and constant
-(and unknown) variance :math:`\sigma^2` and :math:`a_1, ..., a_p \in \Rset`
-are unknown coefficients.
-The algorithm estimates the coefficients
-:math:`a_1, ..., a_p` of the linear model.
-Moreover, the method estimates the variance :math:`\sigma^2`.
+where :math:`a_0, a_1, ..., a_{p} \in \Rset` are scalar coefficients and
+:math:`\epsilon` a random
+variable with zero mean and constant variance :math:`\sigma^2` independent from
+the coefficients :math:`a_k`.
 
-The coefficients :math:`a_i` are evaluated using a linear least squares method,
+Let the :math:`\hat{Y}_i` for :math:`1 \leq i \leq \sampleSize` be the fitted values, defined by:
+
+.. math::
+    :label: fittedValue
+
+    \hat{Y}_i = \hat{a}_0 + \sum_{k=1}^{p} \hat{a}_k X_k^i
+
+where :math:`\hat{\vect{a}} = (\hat{a}_0, \dots, \hat{a}_p)` is the estimate of  :math:`\vect{a}`.
+
+If a functional basis is specified, let :math:`p'` be its dimension and 
+:math:`\phi_j : \Rset^{p} \rightarrow \Rset` for :math:`j \in \{1, ..., p'\}`  be the :math:`j`-th basis function. The linear model is:
+
+.. math::
+    :label: modelWithBase
+
+    Y = \sum_{j=1}^{p'} a_j \phi_j(\vect{X}) + \epsilon
+
+where :math:`\vect{a} = (a_1, \dots, a_{p'})` and :math:`\epsilon` have the same properties as in the previous
+case.
+
+
+The fitted values :math:`\hat{Y}_i`  for :math:`1 \leq i \leq \sampleSize` are defined by:
+
+.. math::
+    :label: fittedValue2
+
+    \hat{Y}_i = \sum_{j=1}^{p'} \hat{a}_j \phi_j(\vect{X}^i)
+
+where :math:`\hat{\vect{a}} = (\hat{a}_1, \dots, \hat{a}_{p'})` is the estimate of the :math:`\vect{a}`.
+
+We define the residual of the :math:`i`-th experience by: 
+
+.. math::
+    :label: residualDef
+
+    \varepsilon_i & = Y_i -  \hat{Y}_i
+
+
+The algorithm still estimates the coefficients
+:math:`\vect{a}` as well as the variance :math:`\sigma^2`.
+The coefficients are evaluated using a linear least squares method,
 by default the `QR` method.
 User might also choose `SVD` or `Cholesky` by
 setting the `LinearModelAlgorithm-DecompositionMethod` key of the :class:`~openturns.ResourceMap`.
@@ -116,7 +139,7 @@ In order to access the projection matrix, we build the least squares method.
 Returns
 -------
 inputSample : :class:`~openturns.Sample`
-    The Xsample which had been passed to the constructor."
+    The Xsample which has been passed to the constructor."
 
 // ---------------------------------------------------------------------
 
@@ -126,7 +149,15 @@ inputSample : :class:`~openturns.Sample`
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    The basis which had been passed to the constructor."
+    The basis of the regression model.
+
+Notes
+-----
+If a functional basis has been provided in the constructor, then we get it back:
+:math:`(\phi_k)_{1 \leq k \leq p'}`.
+Otherwise, the functional basis is composed of the projections :math:`\phi_k : \Rset^p \rightarrow \Rset`
+such that :math:`\phi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
+:math:`\phi_0 : \vect{x} \rightarrow 1`."
 
 // ---------------------------------------------------------------------
 
@@ -141,10 +172,10 @@ outputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAlgorithm::getResult
-"Accessor to the computed linear model.
+"Accessor to the result of the algorithm.
 
 Returns
 -------
 result : :class:`~openturns.LinearModelResult`
-    The linear model built from numerical samples, along with other useful information."
+    All the results of the algorithm."
 

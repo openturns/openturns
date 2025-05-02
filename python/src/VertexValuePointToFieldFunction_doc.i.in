@@ -6,35 +6,33 @@ Parameters
 g : :class:`~openturns.Function`
     Function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
 mesh : :class:`~openturns.Mesh`
-    Mesh on which the function is defined.
+    Mesh of the output field in :math:`\Rset^n`.
 
 Notes
 -----
-Let us note :math:`g : \Rset^{d} \rightarrow \Rset^{d'}` a function, :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^{p}`. Vertex value (point to field) functions are particular functions that map the field :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` onto  :math:`F'` relying on the `g` function such as: 
-
-.. math:
-
-     \forall \vect{t}_i \in \cM_N, \quad \vect{v} \in \Rset^{d-p},\quad `F' = (\vect{t}_i, g(\vect{t}_i, \vect{v}_i))_{1 \leq i \leq N}`  
+A VertexValuePointToFieldFunction function acts on points to produce fields: 
 
 .. math::
 
     f: \left| \begin{array}{rcl}
-               \Rset^d & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
-                F & \mapsto & F'
-              \end{array} \right.
+               \Rset^d & \rightarrow & \cM_{N} \times (\Rset^{d'})^{N} \\
+                \vect{x} & \mapsto & F(\vect{x})
+              \end{array} \right. 
 
-with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
+with :math:`\cM_{N}` a mesh of :math:`\cD' \subset \Rset^{n}` and :math:`F(\vect{x})` a field sharing this mesh.
 
-A vertex value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
-
-The field :math:`F'` is defined by the function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`:
+The field :math:`F(\vect{x})` is defined from a function
+:math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}` as:
 
 .. math::
 
-    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{t}_i, \vect{v}_i)
+    F(\vect{x}) & = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N} \quad \mbox{with} \quad
+    \vect{t}_i \in \cM_{N}, \, \vect{v}_i = g(\vect{t}_i, \vect{x})
 
-When :math:`g` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
-The instantiation of such an object is used to extract an actual :class:`~openturns.VertexValuePointToFieldFunction` from a :class:`~openturns.Study`.
+When :math:`g` is not specified, the constructor builds an object which evaluation operator is not defined
+(it throws a *NotYetImplementedException*).
+The instantiation of such an object is used to extract an actual VertexValuePointToFieldFunction from a
+:class:`~openturns.Study`.
 
 See also
 --------
@@ -42,8 +40,6 @@ ParametricPointToFieldFunction
 
 Examples
 --------
->>> import openturns as ot
-
 Create a function :math:`g : \Rset \times \Rset \rightarrow \Rset` such as:
 
 .. math::
@@ -53,6 +49,8 @@ Create a function :math:`g : \Rset \times \Rset \rightarrow \Rset` such as:
                 (t, x) & \mapsto & (x + t^2)
             \end{array}\right.
 
+
+>>> import openturns as ot
 >>> g = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 
 Convert :math:`g` into a vertex value function with :math:`n=1`:
@@ -73,12 +71,12 @@ Convert :math:`g` into a vertex value function with :math:`n=1`:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VertexValuePointToFieldFunction::getFunction
-"Get the function of :math:`\ell`.
+"Get the function of :math:`g`.
 
 Returns
 -------
 l : :class:`~openturns.Function`
-   Function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
+   Function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
 
 Examples
 --------

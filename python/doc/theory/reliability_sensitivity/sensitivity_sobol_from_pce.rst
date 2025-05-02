@@ -37,10 +37,10 @@ to the index :math:`P`.
 Depending on the way the coefficients are computed, the set of multi-indices
 is the consequence of the choice of the polynomial degree, the enumeration rule,
 and, if necessary, the selection method (e.g. the LARS selection method).
-Let :math:`\tilde{h}(\standardRV)` be the polynomial chaos expansion:
+Let :math:`\metaModel(\standardRV)` be the polynomial chaos expansion:
 
 .. math::
-    \tilde{h}(\standardRV)
+    \metaModel(\standardRV)
     &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\standardRV)
 
 where :math:`\standardRV` is the standardized input random vector,

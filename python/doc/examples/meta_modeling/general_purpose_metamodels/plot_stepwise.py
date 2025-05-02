@@ -55,7 +55,7 @@ print("dimension = ", dimension)
 # %%
 algo_full = ot.LinearModelAlgorithm(input_sample, output_sample)
 algo_full.run()
-result_full = ot.LinearModelResult(algo_full.getResult())
+result_full = algo_full.getResult()
 print("R-squared = ", result_full.getRSquared())
 print("Adjusted R-squared = ", result_full.getAdjustedRSquared())
 

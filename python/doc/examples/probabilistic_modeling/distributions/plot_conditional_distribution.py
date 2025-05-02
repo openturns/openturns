@@ -1,6 +1,6 @@
-"""
-Create a conditional distribution
-=================================
+r"""
+Create a Deconditioned distribution
+===================================
 """
 
 # %%
@@ -10,7 +10,8 @@ import openturns.viewer as otv
 
 
 # %%
-# In this example we are going to build the distribution of the random vector :math:`\vect{X}` conditioned by the random vector :math:`\vect{\Theta}`
+# In this example we are going to build the distribution of the random vector :math:`\vect{X}` conditioned by
+# the random vector :math:`\vect{\Theta}`:
 #
 # .. math::
 #    \vect{X}|\vect{\Theta}
@@ -18,33 +19,36 @@ import openturns.viewer as otv
 # with :math:`\vect{\Theta}` obtained with the random variable :math:`Y` through a function :math:`f`
 #
 # .. math::
-#    \vect{\Theta}=f(Y)
+#    \vect{\Theta} = f(\vect{Y})
 #
 
 # %%
-# Create the :math:`Y` distribution
+# We consider the following case: :math:`X|\vect{\Theta} \sim \cU(\vect{\Theta})`
+# with :math:`\vect{\Theta} = (Y, 1 + Y^2)` and :math:`Y \sim \cU(-1,1)`.
+#
+# We first create the :math:`Y` distribution:
 YDist = ot.Uniform(-1.0, 1.0)
 
 # %%
-# Create :math:`\vect{\Theta}=f(Y)`
+# Then we create the link function :math:`f: y \rightarrow (y, 1+y^2)`:
 f = ot.SymbolicFunction(["y"], ["y", "1+y^2"])
 
 # %%
-# Create the :math:`\vect{X}|\vect{\Theta}` distribution
+# Then, we create the :math:`\vect{X}|\vect{\Theta}` distribution:
 XgivenThetaDist = ot.Uniform()
 
 # %%
-# create the distribution
+# At last, we create the deconditioned distribution of :math:`X`:
 XDist = ot.DeconditionedDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription(["X|Theta=f(y)"])
+XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
 XDist
 
 # %%
-# Get a sample
+# Get a sample:
 XDist.getSample(5)
 
 # %%
-# Draw PDF
+# Draw the PDF:
 graph = XDist.drawPDF()
 view = otv.View(graph)
 
