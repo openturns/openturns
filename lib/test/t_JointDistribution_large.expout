@@ -13,5 +13,5 @@ margins CDF=0.136487
 margins quantile=class=Point name=Unnamed dimension=2 values=[2.63486,2.63486]
 margins CDF(quantile)=0.5
 margins realization=class=Point name=Unnamed dimension=2 values=[-0.497945,0.0659895]
-margins sample mean=class=Point name=Unnamed dimension=2 values=[1.10296,1.01133]
-margins sample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[9.04179,-0.213449,-0.213449,8.62407]
+margins sample mean=class=Point name=Unnamed dimension=2 values=[1.09997,1.01432]
+margins sample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[8.58804,0.625979,0.625979,9.07836]
