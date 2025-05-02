@@ -70,6 +70,7 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
   , distribution_(distribution)
 {
   setName("PointConditionalDistribution");
+  setParallel(distribution.getImplementation()->isParallel());
   const UnsignedInteger fullDimension = distribution.getDimension();
 
   if (conditioningIndices.getSize() != conditioningValues.getSize())
@@ -348,6 +349,8 @@ void PointConditionalDistribution::update()
     useSimplifiedVersion_ = hasSimplifiedVersion(simplifiedVersion_);
   else useSimplifiedVersion_ = false;
   LOGDEBUG(OSS() << "useSimplifiedVersion_=" << useSimplifiedVersion_);
+  if (useSimplifiedVersion_)
+    setParallel(simplifiedVersion_.getImplementation()->isParallel());
 
   // We can postpone the computation of the normalization factor here as we will not need it if there is a simplified version (and it can be costly due to the marginal extraction)
   if (!useSimplifiedVersion_)
