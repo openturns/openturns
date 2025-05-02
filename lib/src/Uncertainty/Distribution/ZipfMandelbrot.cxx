@@ -220,7 +220,7 @@ void ZipfMandelbrot::computeCovariance() const
 Scalar ZipfMandelbrot::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  return round(DistributionImplementation::computeScalarQuantile(prob, tail));
+  return ceil(DistributionImplementation::computeScalarQuantile(prob, tail));
 }
 
 /* Check if the distribution is elliptical */
