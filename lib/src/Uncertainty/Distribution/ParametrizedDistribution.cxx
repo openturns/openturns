@@ -44,6 +44,7 @@ ParametrizedDistribution::ParametrizedDistribution(const DistributionParameters 
   , distributionParameters_(distParam)
   , distribution_(distParam.getDistribution())
 {
+  setParallel(distribution_.getImplementation()->isParallel());
   // Update the range
   computeRange();
 }
