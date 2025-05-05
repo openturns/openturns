@@ -1,15 +1,6 @@
 %feature("docstring") OT::ExtremeValueCopula
 "ExtremeValue copula.
 
-Parameters
-----------
-pickandFunction : :class:`~openturns.Function`
-    Parameter :math:`A`, the Pickand function defining the extreme value copula.
-    
-    Default value is the constant function equal to 1.
-
-Notes
------
 The ExtremeValue copula is a bivariate copula defined by:
 
 .. math::
@@ -19,6 +10,13 @@ The ExtremeValue copula is a bivariate copula defined by:
 for :math:`(u_1, u_2) \in [0, 1]^2`
 
 Where :math:`A` is a convex function satisfying :math:`A(0)=A(1)=1`, :math:`\max(t, 1-t)\leq A(t)\leq 1`.
+
+
+Parameters
+----------
+pickandFunction : :class:`~openturns.Function`
+    Parameter :math:`A`, the Pickand function defining the extreme value copula.
+    Default value is the constant function equal to 1.
 
 See also
 --------
