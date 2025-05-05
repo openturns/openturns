@@ -44,12 +44,12 @@ GeneralLinearModelResult::GeneralLinearModelResult()
 GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const Sample & outputSample,
     const Function & metaModel,
-    const Point & residuals,
-    const Point & relativeErrors,
     const Basis & basis,
     const Point & trendCoefficients,
     const CovarianceModel & covarianceModel,
-    const Scalar optimalLogLikelihood)
+    const Scalar optimalLogLikelihood,
+    const Point & residuals,
+    const Point & relativeErrors)
   : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
   , basis_(basis)
   , beta_(trendCoefficients)

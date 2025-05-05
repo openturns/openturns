@@ -64,8 +64,8 @@ public:
                         const Indices & I,
                         const Sample & alpha_k,
                         const FunctionCollection & Psi_k,
-                        const Point & residuals,
-                        const Point & relativeErrors
+                        const Point & residuals = Point(),
+                        const Point & relativeErrors = Point()
                        );
 
   /** Virtual constructor */
