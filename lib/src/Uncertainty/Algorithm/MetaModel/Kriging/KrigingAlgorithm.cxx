@@ -143,7 +143,7 @@ void KrigingAlgorithm::run()
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
-  result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, beta, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
+  result_ = KrigingResult(inputSample_, outputSample_, metaModel, basis, beta, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_, residuals, relativeErrors);
 }
 
 

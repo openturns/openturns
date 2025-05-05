@@ -25,13 +25,6 @@ alpha_k : 2-d sequence of `float`
     The coefficients of the functional chaos expansion.
 Psi_k : sequence of :class:`~openturns.Function`
     The functions of the multivariate basis selected by the algorithm.
-residuals : sequence of `float`, :math:`\hat{\vect{r}} \in \Rset^{\outputDim}`
-    For each output component, the residual is the square root of the sum of 
-    squared differences between the model and the meta model, divided by the 
-    sample size.
-relativeErrors : sequence of `float`, :math:`\widehat{\vect{re}} \in \Rset^{\outputDim}`
-    The relative error is the empirical error divided by the 
-    sample variance of the output.
 isLeastSquares : bool
     True if the expansion is computed using least squares.
 isModelSelection : bool

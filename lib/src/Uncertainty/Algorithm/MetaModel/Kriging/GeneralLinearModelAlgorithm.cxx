@@ -387,7 +387,7 @@ void GeneralLinearModelAlgorithm::run()
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
+  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, residuals, relativeErrors);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
   if (keepCholeskyFactor_)
@@ -402,7 +402,7 @@ void GeneralLinearModelAlgorithm::run()
     result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   }
   else
-    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
+    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, residuals, relativeErrors);
   hasRun_ = true;
 }
 
