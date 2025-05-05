@@ -270,3 +270,9 @@ for i, distribution in enumerate(
     ott.assert_almost_equal(
         distribution.computePDF(quantile), fitted.computePDF(quantile), 0.05
     )
+
+# segfault non-regression
+data = ot.Sample.ImportFromCSVFile("t_KernelSmoothing_segfault.csv", ",")
+factory = ot.KernelSmoothing()
+bandwidth = [4.0 * 4.3461e+09]
+distribution = factory.build(data, bandwidth)
