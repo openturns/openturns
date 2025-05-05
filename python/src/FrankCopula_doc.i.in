@@ -1,15 +1,6 @@
 %feature("docstring") OT::FrankCopula
 "Frank copula.
 
-Parameters
-----------
-theta : float
-    Parameter :math:`\theta`, :math:`\theta \in \Rset`.
-    
-    Default value is 2.0.
-
-Notes
------
 The Frank copula is a bivariate symmetric Archimedean copula defined by:
 
 .. math::
@@ -27,6 +18,12 @@ And its generator is:
 .. math::
 
     \varphi(t) = -\log \left( \frac{e^{-\theta t}-1}{e^{-\theta}-1} \right)
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta`, :math:`\theta \in \Rset`.
+    Default value is 2.0.
 
 See also
 --------

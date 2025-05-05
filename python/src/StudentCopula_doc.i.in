@@ -1,17 +1,6 @@
 %feature("docstring") OT::StudentCopula
 "Student copula.
 
-Parameters
-----------
-nu : float, :math:`\nu > 0`
-    Generalised number degrees of freedom.
-R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`, optional
-    If :math:`\nu > 2`: correlation matrix.
-    If :math:`\nu \leq 2`: generalized correlation matrix.
-    By default the identity matrix.
-
-Notes
------
 The Student copula is a multivariate copula defined by:
 
 .. math::
@@ -24,6 +13,15 @@ function of the Student distribution with zero mean,
 unit marginal variances and correlation :math:`\mat{R}`
 
 for :math:`(u_1, \cdots, u_n) \in [0, 1]^n`
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom.
+R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`, optional
+    If :math:`\nu > 2`: correlation matrix.
+    If :math:`\nu \leq 2`: generalized correlation matrix.
+    By default the identity matrix.
 
 See also
 --------

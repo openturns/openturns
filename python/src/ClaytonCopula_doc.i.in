@@ -1,15 +1,6 @@
 %feature("docstring") OT::ClaytonCopula
 "Clayton copula.
 
-Parameters
-----------
-theta : float
-    Parameter :math:`\theta`, :math:`\theta \geq -1`.
-
-    Default value is 2.0.
-
-Notes
------
 The Clayton copula is a bivariate asymmmetric Archimedean copula, exhibiting
 greater dependence in the negative tail than in the positive. It is defined by:
 
@@ -28,6 +19,12 @@ And its generator is:
 The support of the copula is :math:`\{ (u,v)\in [0,1]^2, u^{-\theta} +  v^{-\theta} \geq 1 \}`. 
 
 If :math:`\theta <0`, the support is strictly included in :math:`[0,1]^2` and the frontier defined by :math:`\{ (u,v)\in [0,1]^2, u^{-\theta} +  v^{-\theta} = 1 \}` has a mass not equal to zero. In that case, the copula is a non strict archimedean copula.
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta`, :math:`\theta \geq -1`.
+    Default value is 2.0.
 
 See also
 --------
