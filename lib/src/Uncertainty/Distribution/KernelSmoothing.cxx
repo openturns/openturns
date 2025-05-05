@@ -433,8 +433,8 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
       {
         indexX = static_cast< UnsignedInteger > (trunc((x - xMin) / deltaX));
         // Here we cannot have indexX == 0 as gridX[0] == xMin <= x
-        if (gridX[indexX] > x) --indexX;
-        if (gridX[indexX + 1] < x) ++indexX;
+        if ((indexX > 0) && (gridX[indexX] > x)) --indexX;
+        if ((indexX < binNumber_) && (gridX[indexX + 1] < x)) ++indexX;
       }
       const Scalar y = sample(i, 1);
       UnsignedInteger indexY;
@@ -444,8 +444,8 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
       {
         indexY = static_cast< UnsignedInteger > (trunc((y - yMin) / deltaY));
         // Here we cannot have indexY == 0 as gridY[0] == yMin <= y
-        if (gridY[indexY] > y) --indexY;
-        if (gridY[indexY + 1] < y) ++indexY;
+        if ((indexY > 0) && (gridY[indexY] > y)) --indexY;
+        if ((indexY < binNumber_) && (gridY[indexY + 1] < y)) ++indexY;
       }
       const Scalar wRight  = (x - gridX[indexX]) / deltaX;
       const Scalar wLeft   = 1.0 - wRight;
@@ -522,8 +522,8 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
     {
       index = static_cast< UnsignedInteger > (trunc((x - xMin) / delta));
       // Here we cannot have indexX == 0 as gridX[0] == xMin <= x
-      if (grid[index] > x) --index;
-      if (grid[index + 1] < x) ++index;
+      if ((index > 0) && (grid[index] > x)) --index;
+      if ((index < binNumber_) && (grid[index + 1] < x)) ++index;
     }
     // Split the point contribution between the two endpoints of the bin containing
     // the point using a linear split
