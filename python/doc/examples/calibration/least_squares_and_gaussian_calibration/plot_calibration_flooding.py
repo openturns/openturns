@@ -203,7 +203,7 @@ graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%
-# Wee see that the model does not fit to the data.
+# We see that the model does not fit to the data.
 # The goal of calibration is to find which parameter best fit to the
 # observations.
 
