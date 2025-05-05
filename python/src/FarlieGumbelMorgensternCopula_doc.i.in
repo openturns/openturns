@@ -1,15 +1,6 @@
 %feature("docstring") OT::FarlieGumbelMorgensternCopula
 "FarlieGumbelMorgenstern copula.
 
-Parameters
-----------
-theta : float
-    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
-
-    Default value is 0.5.
-
-Notes
------
 The FarlieGumbelMorgenstern copula is defined by:
 
 .. math::
@@ -17,6 +8,12 @@ The FarlieGumbelMorgenstern copula is defined by:
     C(u_1, u_2) = u_1 u_2 (1 + \theta (1 - u_1)(1 - u_2))
 
 for :math:`(u_1, u_2) \in [0, 1]^2`
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
+    Default value is 0.5.
 
 See also
 --------

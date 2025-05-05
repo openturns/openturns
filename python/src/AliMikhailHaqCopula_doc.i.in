@@ -1,15 +1,6 @@
 %feature("docstring") OT::AliMikhailHaqCopula
 "AliMikhailHaq copula.
 
-Parameters
-----------
-theta : float
-    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
-    
-    Default value is 0.5.
-
-Notes
------
 The AliMikhailHaq copula is a bivariate Archimedean copula defined by:
 
 .. math::
@@ -23,6 +14,12 @@ And its generator is:
 .. math::
 
     \varphi(t) = \log \left( \frac{1-\theta(1-t)}{t} \right)
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
+    Default value is 0.5.
 
 See also
 --------

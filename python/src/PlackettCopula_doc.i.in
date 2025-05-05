@@ -1,15 +1,6 @@
 %feature("docstring") OT::PlackettCopula
 "Plackett copula.
 
-Parameters
-----------
-theta : float
-    Parameter :math:`\theta`, :math:`\theta \geq 0`.
-    
-    Default value is 2.0.
-
-Notes
------
 The Plackett copula is a bivariate symmetric copula defined by:
 
 .. math::
@@ -31,6 +22,12 @@ This is a *comprehensive family* of copulas as it contains:
 - the Frechet lower bound :math:`W(u_1,u_2)=\max(0,u_1+u_2-1)=\lim_{\theta\rightarrow\infty}C(u_1,u_2)`,
 - the Frechet upper bound :math:`M(u_1,u_2)=\min(u_1,u_2)=C_0(u_1,u_2)`
 - the independent copula :math:`\Pi(u_1,u_2)=u_1u_2=C_1(u_1,u_2)`.
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta`, :math:`\theta \geq 0`.
+    Default value is 2.0.
 
 Examples
 --------

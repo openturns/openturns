@@ -1,14 +1,6 @@
 %feature("docstring") OT::SklarCopula
 "Sklar copula.
 
-Parameters
-----------
-distribution : :class:`~openturns.Distribution`
-    Distribution, whatever its type : UsualDistribution, JointDistribution,
-    KernelMixture, Mixture, RandomMixture, ...).
-
-Notes
------
 The Sklar copula is obtained directly from the expression of the
 :math:`n`-dimensional distribution which cumulative distribution function is
 :math:`F` with :math:`F_i` its marginals :
@@ -18,6 +10,12 @@ The Sklar copula is obtained directly from the expression of the
     C(u_1, \cdots, u_n) = F(F_1^{-1}(u_1), \cdots, F_n^{-1}(u_n))
 
 for :math:`u_i \in [0, 1]`
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution, whatever its type : UsualDistribution, JointDistribution,
+    KernelMixture, Mixture, RandomMixture, ...).
 
 Examples
 --------

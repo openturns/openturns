@@ -1,15 +1,6 @@
 %feature("docstring") OT::GalambosCopula
 "Galambos copula.
 
-Parameters
-----------
-theta : float
-    Parameter :math:`\theta > 0`.
-    
-    Default value is 0.5.
-
-Notes
------
 The Galambos copula is a bivariate copula defined by:
 
 .. math::
@@ -22,6 +13,12 @@ This copula is an Extreme Value Copula based on the Pickand function :math:`A` d
 .. math::
 
    A(t) = 1 - [t^{-\theta} + (1-t)^{-\theta}]^{-1/\theta}.
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta > 0`.
+    Default value is 0.5.
 
 See also
 --------

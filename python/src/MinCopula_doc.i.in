@@ -1,15 +1,6 @@
 %feature("docstring") OT::MinCopula
 "MinCopula.
 
-Parameters
-----------
-n : int
-    Dimension of the copula, :math:`n \geq 1`.
-    
-    Default value is 2.
-
-Notes
------
 The Min Copula is defined by:
 
 .. math::
@@ -17,6 +8,12 @@ The Min Copula is defined by:
     C(u_1, \cdots, u_n) = \min_{i=1, \cdots, n} u_i
 
 for :math:`u_i \in [0, 1]`
+
+Parameters
+----------
+n : int
+    Dimension of the copula, :math:`n \geq 1`.
+    Default value is 2.
 
 See also
 --------
