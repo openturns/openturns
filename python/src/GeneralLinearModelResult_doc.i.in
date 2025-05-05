@@ -129,7 +129,7 @@ If the trend is not estimated, the collection is empty.
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
+    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModel`.
 "
 
 // ---------------------------------------------------------------------
