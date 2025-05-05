@@ -335,7 +335,7 @@ void GaussianProcessFitter::run()
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_);
+  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_, residuals, relativeErrors);
   result_.setRho(rho_);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula

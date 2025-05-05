@@ -60,14 +60,14 @@ public:
   GaussianProcessFitterResult(const Sample & inputData,
                               const Sample & outputData,
                               const Function & metaModel,
-                              const Point & residuals,
-                              const Point & relativeErrors,
                               const Matrix & regressionMatrix,
                               const Basis & basis,
                               const Point & trendCoefficients,
                               const CovarianceModel & covarianceModel,
                               const Scalar optimalLogLikelihood,
-                              const LinearAlgebra linearAlgebraMethod);
+                              const LinearAlgebra linearAlgebraMethod,
+                              const Point & residuals = Point(),
+                              const Point & relativeErrors = Point());
 
   /** Virtual constructor */
   GaussianProcessFitterResult * clone() const override;
