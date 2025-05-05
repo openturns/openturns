@@ -1,14 +1,10 @@
 %feature("docstring") OT::BlockIndependentDistribution
 "Merge of a collection of independent distributions.
 
-Parameters
-----------
-distributions : list of :class:`~openturns.Distribution`.
-    The distributions of the independent blocks.
-
-Notes
------
-Let's :math:`X_1\, \dots, X_K`:math:`K` independent random vectors of respective dimension :math:`n_i \geq 1` and cumulative distribution functions :math:`F_1,\dots, F_K`. The :class:`~openturns.BlockIndependentDistribution` is the distribution of the random vector :math:`X` of dimension :math:`d = n_1 + \dots + n_K` of cumulative distribution function :math:`F` defined by:
+Let's :math:`X_1\, \dots, X_K`:math:`K` independent random vectors of respective dimension :math:`n_i \geq 1`
+and cumulative distribution functions :math:`F_1,\dots, F_K`.
+The :class:`~openturns.BlockIndependentDistribution` is the distribution of the random vector :math:`X`
+of dimension :math:`d = n_1 + \dots + n_K` of cumulative distribution function :math:`F` defined by:
 
 .. math::
 
@@ -16,6 +12,10 @@ Let's :math:`X_1\, \dots, X_K`:math:`K` independent random vectors of respective
 
 where :math:`x_i\in\Rset^{n_1},\dots,x_K\in\Rset^{n_K}`.
 
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`.
+    The distributions of the independent blocks.
 
 Examples
 --------

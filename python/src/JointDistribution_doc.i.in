@@ -1,21 +1,6 @@
 %feature("docstring") OT::JointDistribution
 "Joint distribution.
 
-Parameters
-----------
-distributions : list of :class:`~openturns.Distribution`
-    List of :math:`\inputDim` scalar distributions
-    called the *instrumental marginals*.
-    
-    If *core* is a copula, these distributions are the scalar marginal distributions of the
-    joint distribution.
-core : :class:`~openturns.Distribution`, optional
-    A distribution over :math:`[0,1]^\inputDim`. 
-    
-    By default, the :class:`~openturns.IndependentCopula` of dimension :math:`\inputDim`.
-
-Notes
------
 A :class:`~openturns.JointDistribution` is a multivariate distribution of dimension :math:`\inputDim`,
 which is built from:
 
@@ -36,6 +21,19 @@ of the resulting distribution and we get:
 .. math::
 
     F(x_1, \cdots, x_\inputDim) = C(F_1(x_1), \cdots, F_\inputDim(x_\inputDim))
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of :math:`\inputDim` scalar distributions
+    called the *instrumental marginals*.
+    
+    If *core* is a copula, these distributions are the scalar marginal distributions of the
+    joint distribution.
+core : :class:`~openturns.Distribution`, optional
+    A distribution over :math:`[0,1]^\inputDim`. 
+    
+    By default, the :class:`~openturns.IndependentCopula` of dimension :math:`\inputDim`.
 
 See also
 --------

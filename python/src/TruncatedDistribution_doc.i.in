@@ -1,6 +1,28 @@
 %feature("docstring") OT::TruncatedDistribution
 "Truncated distribution.
 
+Assuming a random variable *X* is truncated with two bounds *a* and *b*,
+its probability density function is defined as:
+
+.. math::
+
+      \forall y \in \Rset, p_Y(y) =
+      \begin{array}{|ll}
+        0 &  \mbox{for } y \geq b  \mbox{ or }  y \leq a\\
+        \displaystyle \frac{1}{F_X(b) - F_X(a)}\, p_X(y) & \mbox{for } y\in[a,b]
+      \end{array}
+
+and its cumulative distribution function is defined as:
+
+.. math::
+
+    \forall y \in \Rset, F_Y(y) = \Prob{X<y\, / \, X\in[a,b]} =
+    \begin{array}{|ll}
+      1 & \mbox{for } y \geq b, \\
+      0 & \mbox{for } y \leq a, \\
+      \displaystyle \frac{F_X(y) - F_X(a)}{F_X(b) - F_X(a)} & \mbox{for } y\in[a,b]
+    \end{array}
+
 Available constructors:
     TruncatedDistribution(*distribution, lowerBound, upperBound, threshold=0.5*)
 
@@ -37,30 +59,6 @@ threshold : float, :math:`\tau \in [0, 1]`
     If :math:`F(upperBound)-F(lowerBound)<\tau`: a CDF inversion is performed.
 
     If :math:`F(upperBound)-F(lowerBound)>\tau`: rejection.
-
-Notes
------
-Assuming a random variable *X* is truncated with two bounds *a* and *b*,
-its probability density function is defined as:
-
-.. math::
-
-      \forall y \in \Rset, p_Y(y) =
-      \begin{array}{|ll}
-        0 &  \mbox{for } y \geq b  \mbox{ or }  y \leq a\\
-        \displaystyle \frac{1}{F_X(b) - F_X(a)}\, p_X(y) & \mbox{for } y\in[a,b]
-      \end{array}
-
-and its cumulative distribution function is defined as:
-
-.. math::
-
-    \forall y \in \Rset, F_Y(y) = \Prob{X<y\, / \, X\in[a,b]} =
-    \begin{array}{|ll}
-      1 & \mbox{for } y \geq b, \\
-      0 & \mbox{for } y \leq a, \\
-      \displaystyle \frac{F_X(y) - F_X(a)}{F_X(b) - F_X(a)} & \mbox{for } y\in[a,b]
-    \end{array}
 
 Examples
 --------

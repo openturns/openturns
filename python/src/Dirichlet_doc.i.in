@@ -1,16 +1,6 @@
 %feature("docstring") OT::Dirichlet
 "Dirichlet distribution.
 
-Parameters
-----------
-theta : sequence of float, 
-        The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter
-        with :math:`\theta_i > 0` for all :math:`i` and :math:`d \geq 1`.
-        
-        Default value is [1.0, 1.0].
-
-Notes
------
 The Dirichlet distribution is used to model a random vector :math:`\inputRV = (X_1, \dots, X_{\inputDim+1})`
 in the unit cube which sum is equal to 1:
 
@@ -58,6 +48,14 @@ Its first moments are:
       \Expect{\inputRV} & =  \dfrac{1}{|\vect{\theta}|_1} \vect{\theta}\\
       \Cov{\inputRV} & =  -\dfrac{1}{|\vect{\theta}|_1^2(|\vect{\theta}|_1+1)}
                \left( \theta_i \theta_j \right)_{1 \leq i,j \leq \inputDim}
+
+Parameters
+----------
+theta : sequence of float, optional
+    The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter
+    with :math:`\theta_i > 0` for all :math:`i` and :math:`d \geq 1`.
+
+    Default value is [1.0, 1.0].
 
 See Also
 --------

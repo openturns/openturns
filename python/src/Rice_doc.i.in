@@ -1,20 +1,6 @@
 %feature("docstring") OT::Rice
 "Rice distribution.
 
-
-Parameters
-----------
-beta : float, :math:`\beta > 0`
-    Scale parameter.
-
-    Default value is 1.0.
-nu : float, :math:`\nu \geq 0`
-    Location parameter.
-
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -39,6 +25,17 @@ Its first moments are:
     \end{eqnarray*}
 
 where :math:`\mathrm{L}_q(x)` denotes a Laguerre polynomial.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter.
+
+    Default value is 1.0.
+nu : float, :math:`\nu \geq 0`
+    Location parameter.
+
+    Default value is 1.0.
 
 Examples
 --------

@@ -1,23 +1,6 @@
 %feature("docstring") OT::Pareto
 "Pareto distribution.
 
-Parameters
-----------
-beta : float
-    Scale parameter :math:`\beta > 0`.
-
-    Default value is 1.0.
-alpha : float, :math:`\alpha > 0`
-    Shape parameter :math:`\alpha`.
-
-    Default value is 1.0.
-gamma : float
-    Location parameter :math:`\gamma`.
-
-    Default value is 0.0.
-
-Notes
------
 Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
@@ -41,6 +24,21 @@ Its first moments are:
         \Var{X} & = & \dfrac{\alpha}{\alpha-2}\left(\dfrac{\beta}{\alpha - 1} \right)^2 \quad \text{ if } \alpha > 2 \\
         Skew[X] & = & \dfrac{2(1+\alpha)}{\alpha-3}\sqrt{\dfrac{\alpha-2}{\alpha}} \quad \text{ if } \alpha > 3
     \end{eqnarray*}
+
+Parameters
+----------
+beta : float
+    Scale parameter :math:`\beta > 0`.
+
+    Default value is 1.0.
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`.
+
+    Default value is 1.0.
+gamma : float
+    Location parameter :math:`\gamma`.
+
+    Default value is 0.0.
 
 Examples
 --------

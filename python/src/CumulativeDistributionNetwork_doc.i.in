@@ -1,15 +1,6 @@
 %feature("docstring") OT::CumulativeDistributionNetwork
 "Graphical model joint distribution.
 
-Parameters
-----------
-distributions : list of :class:`~openturns.Distribution`
-    List of :math:`n` distributions associated to the red nodes of a bipartite graph.
-graph : :class:`~openturns.BipartiteGraph`
-    A bipartite graph. It must have :math:`n` red nodes, and the red node :math:`i` must have a clique of size the dimension of the :math:`i` th distribution.
-
-Notes
------
 A cumulative distribution network (CDN) is a :math:`p`-dimensional distribution which cumulative distribution function is given as a product of lower dimensional cumulative distribution functions:
 
 .. math::
@@ -19,6 +10,13 @@ A cumulative distribution network (CDN) is a :math:`p`-dimensional distribution 
 Where :math:`\vect{x}_i` is the vector :math:`(x_{j}, j\in J_i)`, :math:`J_i` being the clique of black nodes linked to the red node :math:`i`.
 
 The dimension :math:`p` is the cardinal of the union of the cliques, ie the number of black nodes in the bipartite graph.
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of :math:`n` distributions associated to the red nodes of a bipartite graph.
+graph : :class:`~openturns.BipartiteGraph`
+    A bipartite graph. It must have :math:`n` red nodes, and the red node :math:`i` must have a clique of size the dimension of the :math:`i` th distribution.
 
 Examples
 --------

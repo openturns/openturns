@@ -1,24 +1,6 @@
 %feature("docstring") OT::WeibullMin
 "WeibullMin distribution.
 
-
-Parameters
-----------
-beta : float
-    scale parameter :math:`\beta > 0`.
-
-    Default value is 1.0.
-alpha : float
-    shape parameter :math:`\alpha > 0`.
-
-    Default value is 1.0.
-gamma : float, optional
-    Location parameter.
-
-    Default value is 0.0.
-
-Notes
------
 Its cumulative and probability density functions are defined as:
 
 .. math::
@@ -44,11 +26,31 @@ Its first moments are:
 where :math:`\Gamma` denotes Euler's Gamma function
 :meth:`~openturns.SpecFunc.Gamma`.
 
-It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMinMuSigma`. In that case, all the results are presented in that new parametrization.
+Parameters
+----------
+beta : float
+    scale parameter :math:`\beta > 0`.
 
-In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\beta, \alpha, \gamma)`.
+    Default value is 1.0.
+alpha : float
+    shape parameter :math:`\alpha > 0`.
 
-Note that if :math:`X` follows a WeibullMin :math:`(\beta, \alpha, \gamma)` distribution, then  :math:`(-X)` follows a WeibullMax :math:`(\beta, \alpha, -\gamma)` distribution.
+    Default value is 1.0.
+gamma : float, optional
+    Location parameter.
+
+    Default value is 0.0.
+
+Notes
+-----
+It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMinMuSigma`.
+In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution,
+see the example below: all the results will be presented in the native parametrization :math:`(\beta, \alpha, \gamma)`.
+
+Note that if :math:`X` follows a WeibullMin :math:`(\beta, \alpha, \gamma)` distribution,
+then :math:`(-X)` follows a WeibullMax :math:`(\beta, \alpha, -\gamma)` distribution.
 
 See also
 --------

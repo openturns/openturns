@@ -1,6 +1,38 @@
 %feature("docstring") OT::Student
 "Student distribution.
 
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\Gamma \left(\frac{\nu + d}{2}\right)}
+                  {(\pi \nu) ^ {\frac{d}{2}} \Gamma \left(\frac{\nu}{2}\right)}
+             \frac{\left| \mathrm{det}(\mat{R}) \right| ^ {-1/2}}
+                  {\prod_{k = 1} ^ d \sigma_k}
+             \left(1 + \frac{\vect{z} ^ t \mat{R} ^ {-1} \vect{z}}{\nu}
+             \right) ^ {-\frac{\nu + d}{2}}, \quad x \in \Rset
+
+with :math:`\nu > 0, d \geq 1, \mat{R} \in  \cM_{d \times d}(\Rset),
+\sigma_k > 0, k=1, \dots, d` , and
+where :math:`\vect{z}=\mat{\Delta}^{-1}\left(\vect{x}-\vect{\mu}\right)`, 
+:math:`\mat{\Delta} = \mat{\mathrm{diag}}(\vect{\sigma})` and :math:`\Gamma`
+denotes Euler's Gamma function :meth:`~openturns.SpecFunc.Gamma`.
+
+with :math:`\mat{\Sigma} = \diag(\vect{\sigma}) \mat{R} \diag(\vect{\sigma})`.
+Both :math:`\mat{R}` and :math:`\mat{\Sigma}` are symmetric positive definite.
+
+The first moments of the distribution are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \vect{\Expect{X}} & = & \vect{\mu} \quad \text{ if }\nu>1\\
+        \mat{\Cov{X}} & = & \displaystyle \frac{\nu}{\nu-2}
+                            \Tr{\mat{\Delta}}\,\mat{R}\,\mat{\Delta}
+                          \quad \text{ if }\nu>2
+    \end{eqnarray*}
+
 Available constructors:
     Student(*nu, d*)
 
@@ -42,38 +74,6 @@ Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in  \cM_{d \ti
 
 Notes
 -----
-Its probability density function is defined as:
-
-.. math::
-
-    f_X(x) = \frac{\Gamma \left(\frac{\nu + d}{2}\right)}
-                  {(\pi \nu) ^ {\frac{d}{2}} \Gamma \left(\frac{\nu}{2}\right)}
-             \frac{\left| \mathrm{det}(\mat{R}) \right| ^ {-1/2}}
-                  {\prod_{k = 1} ^ d \sigma_k}
-             \left(1 + \frac{\vect{z} ^ t \mat{R} ^ {-1} \vect{z}}{\nu}
-             \right) ^ {-\frac{\nu + d}{2}}, \quad x \in \Rset
-
-with :math:`\nu > 0, d \geq 1, \mat{R} \in  \cM_{d \times d}(\Rset),
-\sigma_k > 0, k=1, \dots, d` , and
-where :math:`\vect{z}=\mat{\Delta}^{-1}\left(\vect{x}-\vect{\mu}\right)`, 
-:math:`\mat{\Delta} = \mat{\mathrm{diag}}(\vect{\sigma})` and :math:`\Gamma`
-denotes Euler's Gamma function :meth:`~openturns.SpecFunc.Gamma`.
-
-with :math:`\mat{\Sigma} = \diag(\vect{\sigma}) \mat{R} \diag(\vect{\sigma})`.
-Both :math:`\mat{R}` and :math:`\mat{\Sigma}` are symmetric positive definite.
-
-The first moments of the distribution are:
-
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-        \vect{\Expect{X}} & = & \vect{\mu} \quad \text{ if }\nu>1\\
-        \mat{\Cov{X}} & = & \displaystyle \frac{\nu}{\nu-2}
-                            \Tr{\mat{\Delta}}\,\mat{R}\,\mat{\Delta}
-                          \quad \text{ if }\nu>2
-    \end{eqnarray*}
-
 The CDF is computed using several algorithms, depending on the dimension of the distribution:
 
 - In dimension 1, it is done using boost algorithm or the incomplete
