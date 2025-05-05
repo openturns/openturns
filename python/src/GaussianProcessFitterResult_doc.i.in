@@ -148,7 +148,7 @@ linAlgMethod : int
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:'metaModelGPF'.
+    The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:`metaModelGPF`.
 "
 
 // ---------------------------------------------------------------------
