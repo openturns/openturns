@@ -3,14 +3,14 @@ Create a deconditioned random vector
 ====================================
 
 # %%
-# In this example we are going to build the random vector :math:`\inputRV` defined by the
-# conditional distribution of:
+# In this example we are going to build the random vector :math:`\inputRV` defined as the
+# deconditioned distribution of:
 #
 # .. math::
 #
 #    \inputRV|\vect{\Theta}
 #
-# where :math:`\vect{\Theta}` is the parameter random vector following the distribution :math:`\cL_{\vect{\Theta}}`.
+# with respect to parameter random vector :math:`\vect{\Theta}` following the distribution :math:`\cL_{\vect{\Theta}}`.
 #
 # This example creates a :class:`~openturns.ConditionalRandomVector`. Remember that a :class:`~openturns.ConditionalRandomVector`
 # (and more generally a :class:`~openturns.RandomVector`) can only be sampled.
@@ -21,7 +21,7 @@ Create a deconditioned random vector
 # Note that in some restricted cases, it is possible to create the
 # distribution of :math:`\inputRV` using the class :class:`~openturns.DeconditionedDistribution`.
 # The :class:`~openturns.DeconditionedDistribution` offers a lot of methods attached to the distribution, in particular the
-# computation of the PDF, CDF, the moments if any, \dots. The advantage of the :class:`~openturns.ConditionalRandomVector` relies
+# computation of the PDF, CDF, the moments if any, :math:`\dots`. The advantage of the :class:`~openturns.ConditionalRandomVector` relies
 # on the fact that it is fast to build and can be built in all cases. But it only offers the sampling capacity.
 #
 # We consider the following cases:
@@ -39,7 +39,7 @@ import openturns.viewer as otv
 # Case 1: the parameter random vector  has continuous marginals
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# We consider the case where :math:`X` is of dimension 1 and follows a exponential distribution
+# We consider the case where :math:`X` is of dimension 1 and follows an exponential distribution
 # defined by:
 #
 # ================================ =========================================================  ====================================
@@ -73,9 +73,10 @@ XDist = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
 X_RV.getSample(5)
 
 # %%
-# If we sample largely the distribution, we can fit its PDF with non parametric techniques, as the kernel smoothing.
-sample_huge = X_RV.getSample(1000)
-dist_KS = ot.KernelSmoothing().build(sample_huge)
+# If we generate a large sample of the random vector, we can fit its distribution with non-parametric techniques
+# such as a kernel smoothing.
+sample_large = X_RV.getSample(10000)
+dist_KS = ot.KernelSmoothing().build(sample_large)
 g_PDF = dist_KS.drawPDF()
 g_PDF.setTitle("Case 1: PDF of X by kernel smoothing")
 g_PDF.setXTitle("x")
@@ -86,7 +87,7 @@ view = otv.View(g_PDF)
 # Case 2: the parameter random vector has dependent continuous and discrete marginals
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# We consider the case where :math:`X` is of dimension 1 and follows a exponential distribution
+# We consider the case where :math:`X` is of dimension 1 and follows an exponential distribution
 # defined by:
 #
 # =================================  =========================================================  ====================================
@@ -113,9 +114,10 @@ XgivenThetaDist = ot.Exponential()
 X_RV = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
 
 # %%
-# If we sample largely the distribution, we can fit its PDF with non parametric techniques, as the kernel smoothing.
-sample_huge = X_RV.getSample(1000)
-dist_KS = ot.KernelSmoothing().build(sample_huge)
+# If we generate a large sample of the random vector, we can fit its distribution with non-parametric techniques
+# such as a kernel smoothing.
+sample_large = X_RV.getSample(10000)
+dist_KS = ot.KernelSmoothing().build(sample_large)
 g_PDF = dist_KS.drawPDF()
 g_PDF.setTitle("Case 2: PDF of X by kernel smoothing")
 g_PDF.setXTitle("x")
@@ -126,7 +128,7 @@ view = otv.View(g_PDF)
 # Case 3: the parameter random vector has any dependent marginals
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# We consider the case where :math:`X` is of dimension 1 and follows a exponential distribution
+# We consider the case where :math:`X` is of dimension 1 and follows an exponential distribution
 # defined by:
 #
 # =================================  =========================================================  ====================================
@@ -155,9 +157,10 @@ XgivenThetaDist = ot.Exponential()
 X_RV = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
 
 # %%
-# If we sample largely the distribution, we can fit its PDF with non parametric techniques, as the kernel smoothing.
-sample_huge = X_RV.getSample(1000)
-dist_KS = ot.KernelSmoothing().build(sample_huge)
+# If we generate a large sample of the random vector, we can fit its distribution with non-parametric techniques
+# such as a kernel smoothing.
+sample_large = X_RV.getSample(10000)
+dist_KS = ot.KernelSmoothing().build(sample_large)
 g_PDF = dist_KS.drawPDF()
 g_PDF.setTitle("Case 3: PDF of X by kernel smoothing")
 g_PDF.setXTitle("x")
