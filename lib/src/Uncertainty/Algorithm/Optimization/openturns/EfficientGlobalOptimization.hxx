@@ -24,6 +24,7 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/KrigingResult.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,8 +47,11 @@ public:
 
   /** Constructor with parameters */
   EfficientGlobalOptimization(const OptimizationProblem & problem,
-                              const KrigingResult & krigingResult,
-                              const Function & noise = Function());
+                              const KrigingResult & krigingResult);
+
+  /** Constructor with parameters */
+  EfficientGlobalOptimization(const OptimizationProblem & problem,
+                              const GaussianProcessRegressionResult & gprResult);
 
   /** Virtual constructor */
   EfficientGlobalOptimization * clone() const override;
@@ -81,18 +85,11 @@ public:
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
-  /** Metamodel noise function accessor */
-  void setMetamodelNoise(const Function & metaModelNoise);
-  Function getMetamodelNoise() const;
-
-  /** Improvement noise function accessor */
-  void setNoiseModel(const Function & noiseModel);
-  Function getNoiseModel() const;
-
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
-  /** Kriging result accessor (especially useful after run() has been called) */
+  /** GPR result accessor (especially useful after run() has been called) */
+  GaussianProcessRegressionResult getGaussianProcessRegressionResult() const;
   KrigingResult getKrigingResult() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -108,6 +105,8 @@ protected:
 
 private:
   KrigingResult krigingResult_;
+  GaussianProcessRegressionResult gprResult_;
+  Bool isGPR_ = false;
   OptimizationAlgorithm solver_;
 
   // whether the solver was set
@@ -127,12 +126,6 @@ private:
 
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_ = 0.0;
-
-  // noise model called at design points
-  Function metamodelNoise_;
-
-  // optional noise model for improvement optimization only
-  Function noiseModel_;
 
   Sample expectedImprovement_;
 

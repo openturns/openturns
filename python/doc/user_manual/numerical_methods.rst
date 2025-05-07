@@ -26,7 +26,7 @@ Refer to :ref:`optimization_algorithm`.
     CMinpack
     Cobyla
     Dlib
-    EfficientGlobalOptimization
+    experimental.EfficientGlobalOptimization
     Ipopt
     MultiStart
     NLopt

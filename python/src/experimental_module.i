@@ -99,6 +99,7 @@
 %include GaussianProcessRegressionResult.i
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
+%include EfficientGlobalOptimization.i
 
 /* Uncertainty/Model */
 %include RatioOfUniforms.i
