@@ -1,6 +1,6 @@
-====================
-Statistics on sample
-====================
+=============
+Data analysis
+=============
 
 .. currentmodule:: openturns
 
@@ -143,52 +143,6 @@ Building copulas from samples
     PlackettCopulaFactory
     StudentCopulaFactory
 
-Sensitivity Analysis
-====================
-
-Refer to :ref:`sensitivity_sobol`.
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    CorrelationAnalysis
-    ANCOVA
-    FAST
-    experimental.RankSobolSensitivityAlgorithm
-
-    :template: classWithPlot.rst_t
-
-    SobolIndicesAlgorithm
-    MartinezSensitivityAlgorithm
-    SaltelliSensitivityAlgorithm
-    JansenSensitivityAlgorithm
-    MauntzKucherenkoSensitivityAlgorithm
-
-    :template: class.rst_t
-
-    SobolIndicesExperiment
-
-    :template: classWithPlot.rst_t
-
-    SobolSimulationAlgorithm
-    SobolSimulationResult
-
-HSIC Indices
-============
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    HSICStat
-    HSICUStat
-    HSICVStat
-    HSICEstimator
-    HSICEstimatorConditionalSensitivity
-    HSICEstimatorGlobalSensitivity
-    HSICEstimatorTargetSensitivity
-
 Statistical tests
 =================
 
@@ -288,3 +242,16 @@ Model selection
     FittingTest.BestModelChiSquared
     FittingTest.BestModelKolmogorov
     FittingTest.BestModelLilliefors
+
+Iterative statistics
+====================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    IterativeAlgorithm
+    IterativeExtrema
+    IterativeMoments
+    IterativeThresholdExceedance
+
