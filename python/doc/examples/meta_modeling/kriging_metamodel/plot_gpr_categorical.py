@@ -1,6 +1,6 @@
 """
-Kriging: metamodel with continuous and categorical variables
-============================================================
+Gaussian Process Regression: surrogate model with continuous and categorical variables
+======================================================================================
 """
 
 # %%
@@ -102,13 +102,15 @@ optAlgLV = ot.MultiStart(ot.Cobyla(), initSampleLV)
 # %%
 # Create and train the Gaussian process models
 basis = ot.ConstantBasisFactory(2).build()
-algoLV = ot.KrigingAlgorithm(x, y, kLV, basis)
-algoLV.setOptimizationAlgorithm(optAlgLV)
-algoLV.setOptimizationBounds(boundsLV)
-algoLV.run()
-resLV = algoLV.getResult()
+fitterLV = otexp.GaussianProcessFitter(x, y, kLV, basis)
+fitterLV.setOptimizationAlgorithm(optAlgLV)
+fitterLV.setOptimizationBounds(boundsLV)
+fitterLV.run()
+regressionLV = otexp.GaussianProcessRegression(fitterLV.getResult())
+regressionLV.run()
+resLV = regressionLV.getResult()
 
-algoIndependentList = []
+resIndependentList = []
 for z in range(2):
     # Select the training samples corresponding to the correct combination
     # of categorical levels
@@ -118,11 +120,15 @@ for z in range(2):
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(1).build()
-    algoIndependent = ot.KrigingAlgorithm(xLoc, yLoc, kIndependent, basis)
-    algoIndependent.setOptimizationAlgorithm(optAlgInd)
-    algoIndependent.setOptimizationBounds(boundsInd)
-    algoIndependent.run()
-    algoIndependentList.append(algoIndependent.getResult())
+    fitter_independent = otexp.GaussianProcessFitter(xLoc, yLoc, kIndependent, basis)
+    fitter_independent.setOptimizationAlgorithm(optAlgInd)
+    fitter_independent.setOptimizationBounds(boundsInd)
+    fitter_independent.run()
+    regression_independent = otexp.GaussianProcessRegression(
+        fitter_independent.getResult()
+    )
+    regression_independent.run()
+    resIndependentList.append(regression_independent.getResult())
 
 # %%
 # Plot the prediction of the mixed continuous / categorical GP,
@@ -143,12 +149,12 @@ for z in range(numberOfZLevels):
     xPltInd = xPlt[ind]
     yPltInd = yPlt[ind]
 
-    predMeanLV = resLV.getConditionalMean(xPltInd)
-    predMeanInd = algoIndependentList[z].getConditionalMean(xPltInd[:, 0])
-    predSTDLV = np.sqrt(resLV.getConditionalMarginalVariance(xPltInd))
-    predSTDInd = np.sqrt(
-        algoIndependentList[z].getConditionalMarginalVariance(xPltInd[:, 0])
-    )
+    predMeanLV = resLV.getMetaModel()(xPltInd)
+    predMeanInd = resIndependentList[z].getMetaModel()(xPltInd[:, 0])
+    cond_covLV = otexp.GaussianProcessConditionalCovariance(resLV)
+    cond_independent = otexp.GaussianProcessConditionalCovariance(resIndependentList[z])
+    predSTDLV = np.sqrt(cond_covLV.getConditionalMarginalVariance(xPltInd))
+    predSTDInd = np.sqrt(cond_independent.getConditionalMarginalVariance(xPltInd[:, 0]))
 
     (trainingData,) = ax1.plot(xLoc[:, 0], yLoc, "r*")
     (trueFunction,) = ax1.plot(xPltInd[:, 0], yPltInd, "k--")
@@ -319,11 +325,13 @@ for rep in range(3):
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(dim).build()
-    algoLV = ot.KrigingAlgorithm(x, y, kLV, basis)
-    algoLV.setOptimizationAlgorithm(optAlgLV)
-    algoLV.setOptimizationBounds(boundsLV)
-    algoLV.run()
-    resLV = algoLV.getResult()
+    fitterLV = otexp.GaussianProcessFitter(x, y, kLV, basis)
+    fitterLV.setOptimizationAlgorithm(optAlgLV)
+    fitterLV.setOptimizationBounds(boundsLV)
+    fitterLV.run()
+    regressionLV = otexp.GaussianProcessRegression(fitterLV.getResult())
+    regressionLV.run()
+    resLV = regressionLV.getResult()
 
     # Compute the models predictive performances on a validation data set
     xVal = dist.getSample(1000)
@@ -345,11 +353,16 @@ for rep in range(3):
 
             # Create and train the Gaussian process models
             basis = ot.ConstantBasisFactory(2).build()
-            algoIndependent = ot.KrigingAlgorithm(xLoc, yLoc, kIndependent, basis)
-            algoIndependent.setOptimizationAlgorithm(optAlgInd)
-            algoIndependent.setOptimizationBounds(boundsInd)
-            algoIndependent.run()
-            resInd = algoIndependent.getResult()
+            fitter_independent = otexp.GaussianProcessFitter(
+                xLoc, yLoc, kIndependent, basis
+            )
+            fitter_independent.setOptimizationAlgorithm(optAlgInd)
+            fitter_independent.setOptimizationBounds(boundsInd)
+            fitter_independent.run()
+            regression_independent = otexp.GaussianProcessRegression(
+                fitter_independent.getResult()
+            )
+            resInd = regression_independent.getResult()
 
             # Compute the models predictive performances on a validation data set
             ind = np.where(np.all(np.array(xVal[:, 2:]) == [z1, z2], axis=1))[0]

@@ -1,8 +1,8 @@
 """
-Kriging with an isotropic covariance function
-=============================================
+Gaussian Process Regression with an isotropic covariance function
+=================================================================
 
-In typical machine learning applications, Gaussian process regression/Kriging
+In typical machine learning applications, Gaussian process regression
 surrogate models take several inputs,
 and those inputs are usually heterogeneous
 (e.g. in the :doc:`cantilever beam
@@ -16,6 +16,8 @@ This calls for a specific kind of covariance kernel, represented
 in the library by the :class:`~openturns.IsotropicCovarianceModel` class.
 """
 
+# TODO : change reference to plot_gpr_cantilever_beam
+
 # %%
 # Modeling temperature across a surface
 # -------------------------------------
@@ -24,6 +26,7 @@ in the library by the :class:`~openturns.IsotropicCovarianceModel` class.
 # %%
 import numpy as np
 import openturns as ot
+import openturns.experimental as otexp
 import matplotlib.pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
@@ -70,34 +73,39 @@ lower = 50.0
 upper = 1000.0
 
 
-def fitKriging(coordinates, observations, covarianceModel, basis):
+def fitGPR(coordinates, observations, covarianceModel, basis):
     """
-    Fit the parameters of a Kriging metamodel.
+    Fit the parameters of a Gaussian Process Regression surrogate model.
     """
     # Define the Kriging algorithm.
-    algo = ot.KrigingAlgorithm(coordinates, observations, covarianceModel, basis)
+    fitter = otexp.GaussianProcessFitter(
+        coordinates, observations, covarianceModel, basis
+    )
 
     # Set the optimization bounds for the scale parameter to sensible values
     # given the data set.
     scale_dimension = covarianceModel.getScale().getDimension()
-    algo.setOptimizationBounds(
+    fitter.setOptimizationBounds(
         ot.Interval([lower] * scale_dimension, [upper] * scale_dimension)
     )
 
     # Run the Kriging algorithm and extract the fitted surrogate model.
-    algo.run()
-    krigingResult = algo.getResult()
-    krigingMetamodel = krigingResult.getMetaModel()
-    return krigingResult, krigingMetamodel
+    fitter.run()
+    fitter_result = fitter.getResult()
+    regression = otexp.GaussianProcessRegression(fitter_result)
+    regression.run()
+    result = regression.getResult()
+    surrogate = result.getMetaModel()
+    return result, surrogate
 
 
 # %%
 # Let us define a helper function to plot Kriging predictions.
 
 
-def plotKrigingPredictions(krigingMetamodel):
+def plotGPRPredictions(krigingMetamodel):
     """
-    Plot the predictions of a Kriging metamodel.
+    Plot the predictions of a Gaussian Process Regression surrogate model.
     """
     # Create the mesh of the box [0., 1000.] * [0., 700.]
     myInterval = ot.Interval([0.0, 0.0], [1000.0, 700.0])
@@ -145,17 +153,15 @@ def plotKrigingPredictions(krigingMetamodel):
 inputDimension = 2
 basis = ot.ConstantBasisFactory(inputDimension).build()
 covarianceModel = ot.SquaredExponential(inputDimension)
-krigingResult, krigingMetamodel = fitKriging(
-    coordinates, observations, covarianceModel, basis
-)
-plotKrigingPredictions(krigingMetamodel)
+gpr_result, surrogate_model = fitGPR(coordinates, observations, covarianceModel, basis)
+plotGPRPredictions(surrogate_model)
 
 # %%
 # We see weird vertical columns on the plot.
 # How did this happen? Let us have a look at the optimized scale parameter
 # :math:`\hat{\vect{\theta}} = (\hat{\theta}_1, \hat{\theta}_2)`.
 
-print(krigingResult.getCovarianceModel().getScale())
+print(gpr_result.getCovarianceModel().getScale())
 # %%
 # The value of :math:`\hat{\theta}_1` is actually equal to the lower bound:
 
@@ -181,13 +187,11 @@ isotropic = ot.IsotropicCovarianceModel(ot.SquaredExponential(), inputDimension)
 # and it will make sure :math:`\theta_1 = \theta_2 = \theta_{iso}` at all times
 # during the optimization.
 
-krigingResult, krigingMetamodel = fitKriging(
-    coordinates, observations, isotropic, basis
-)
-print(krigingResult.getCovarianceModel().getScale())
+gpr_result, surrogate_model = fitGPR(coordinates, observations, isotropic, basis)
+print(gpr_result.getCovarianceModel().getScale())
 
 # %%
 # Prediction with the isotropic covariance kernel is much more satisfactory.
 
 # sphinx_gallery_thumbnail_number = 3
-plotKrigingPredictions(krigingMetamodel)
+plotGPRPredictions(surrogate_model)
