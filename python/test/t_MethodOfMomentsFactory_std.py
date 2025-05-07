@@ -27,7 +27,7 @@ distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
 print("distribution=", distribution)
 sample = distribution.getSample(size)
 factory = ot.MethodOfMomentsFactory(ot.Beta(), [1, 2])
-factory.setKnownParameter([-1.0, 1.0], [2, 3])
+factory.setKnownParameter([2, 3], [-1.0, 1.0])
 inf_dist = factory.build(sample)
 print("estimated distribution=", inf_dist)
 p_ref = [2.27806, 2.20053, -1, 1]
@@ -66,7 +66,7 @@ a = xMin - delta / (size + 2)
 b = xMax + delta / (size + 2)
 distribution = ot.TruncatedNormal()
 factory = ot.MethodOfMomentsFactory(distribution, [1, 2, 3, 4])
-factory.setKnownParameter([a, b], [2, 3])
+factory.setKnownParameter([2, 3], [a, b])
 solver = factory.getOptimizationAlgorithm()
 sampleMean = sample.computeMean()[0]
 sampleSigma = sample.computeStandardDeviation()[0]
@@ -79,7 +79,7 @@ finiteLowerBound = [False, True]
 finiteUpperBound = [False, True]
 bounds = ot.Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound)
 factory = ot.MethodOfMomentsFactory(distribution, [3, 4], bounds)
-factory.setKnownParameter([a, b], [2, 3])
+factory.setKnownParameter([2, 3], [a, b])
 factory.setOptimizationBounds(bounds)
 inf_dist = factory.build(sample)
 print("estimated distribution=", inf_dist)
@@ -90,7 +90,7 @@ ott.assert_almost_equal(inf_dist.getParameter(), p_ref, 1e-2, 1e-2)
 sample = ot.Normal(2.0, 1.0).getSample(size)
 factory = ot.MethodOfMomentsFactory(ot.Normal(), [1])
 factory.setBootstrapSize(4)
-factory.setKnownParameter([1.0], [1])  # set the sigma parameter to 1.0
+factory.setKnownParameter([1], [1.0])  # set the sigma parameter to 1.0
 result = factory.buildEstimator(sample)
 inf_dist = result.getDistribution().getParameter()
 print("estimated distribution=", inf_dist)

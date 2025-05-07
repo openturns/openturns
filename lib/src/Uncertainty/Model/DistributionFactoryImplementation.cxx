@@ -200,8 +200,13 @@ void DistributionFactoryImplementation::setBootstrapSize(const UnsignedInteger b
 }
 
 
-void DistributionFactoryImplementation::setKnownParameter(const Point & values,
-    const Indices & indices)
+void DistributionFactoryImplementation::setKnownParameter(const Point & values, const Indices & indices)
+{
+  LOGWARN("DistributionFactory.setKnownParameter(Point, Indices) is deprecated");
+  setKnownParameter(indices, values);
+}
+
+void DistributionFactoryImplementation::setKnownParameter(const Indices & indices, const Point & values)
 {
   if (values.getSize() != indices.getSize())
     throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
@@ -224,7 +229,7 @@ void DistributionFactoryImplementation::adaptToKnownParameter(const Sample & sam
   if (knownParameterValues_.getSize() > 0)
   {
     MaximumLikelihoodFactory factory(*distribution);
-    factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+    factory.setKnownParameter(knownParameterIndices_, knownParameterValues_);
     distribution->setParameter(factory.build(sample).getParameter());
   }
 }

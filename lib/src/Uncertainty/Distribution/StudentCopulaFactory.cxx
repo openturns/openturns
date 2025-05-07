@@ -88,7 +88,7 @@ StudentCopula StudentCopulaFactory::buildAsStudentCopula(const Sample & sample) 
   values.erase(0);
   Indices indices(values.getSize());
   indices.fill(1);
-  factory.setKnownParameter(values, indices);
+  factory.setKnownParameter(indices, values);
 
   factory.setOptimizationAlgorithm(solver_);
   const Scalar nuMin = ResourceMap::GetAsScalar("StudentCopulaFactory-NuMin");

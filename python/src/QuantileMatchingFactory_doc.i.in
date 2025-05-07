@@ -154,7 +154,7 @@ Examples
 >>> sample = distribution.getSample(10)
 >>> factory = ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.99])
 >>> # set (a,b) out of (r, t, a, b)
->>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> factory.setKnownParameter([2, 3], [-1.0, 1.0])
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------

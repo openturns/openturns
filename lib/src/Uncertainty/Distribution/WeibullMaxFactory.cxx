@@ -67,7 +67,7 @@ WeibullMax WeibullMaxFactory::buildAsWeibullMax(const Sample & sample) const
     for (UnsignedInteger i = 0; i < knownParameterIndices_.getSize(); ++i)
       if (knownParameterIndices_[i] == 2)
         minParametersValues[i] *= -1.0;
-    minFactory.setKnownParameter(minParametersValues, knownParameterIndices_);
+    minFactory.setKnownParameter(knownParameterIndices_, minParametersValues);
   }
   const Distribution weibullMin(minFactory.build(-1.0 * sample));
   Point parameter(weibullMin.getParameter());

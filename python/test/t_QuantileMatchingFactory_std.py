@@ -30,7 +30,7 @@ p_ref = distribution.getParameter()
 print("distribution=", distribution)
 sample = distribution.getSample(size)
 factory = ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.99])
-factory.setKnownParameter([-1.0, 1.0], [2, 3])
+factory.setKnownParameter([2, 3], [-1.0, 1.0])
 inf_dist = factory.build(sample)
 print("estimated distribution=", inf_dist)
 ott.assert_almost_equal(inf_dist.getParameter(), p_ref, 1e-2, 1e-2)
@@ -45,7 +45,7 @@ ott.assert_almost_equal(inf_dist.getParameter(), p_ref, 1e-2, 1e-2)
 
 # from quantiles, known parameters
 factory = ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.99])
-factory.setKnownParameter([-1.0, 1.0], [2, 3])
+factory.setKnownParameter([2, 3], [-1.0, 1.0])
 quantiles = [-0.847, 0.867]
 inf_dist = factory.buildFromQuantiles(quantiles)
 print("estimated distribution (quantiles)=", inf_dist)

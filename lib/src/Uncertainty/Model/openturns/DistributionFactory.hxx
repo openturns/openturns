@@ -74,9 +74,12 @@ public:
       const DistributionParameters & parameters) const;
 
   /** Accessor to known parameter */
-  void setKnownParameter(const Point & values, const Indices & positions);
+  void setKnownParameter(const Indices & positions, const Point & values);
   Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
+
+  // @deprecated
+  void setKnownParameter(const Point & values, const Indices & positions);
 
   /** Catalog of factories */
   static DistributionFactoryCollection GetContinuousUniVariateFactories();

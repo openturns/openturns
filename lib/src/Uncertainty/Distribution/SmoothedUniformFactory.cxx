@@ -78,7 +78,7 @@ SmoothedUniform SmoothedUniformFactory::buildAsSmoothedUniform(const Sample & sa
   const SmoothedUniform initial(a, b, sigma);
   // finish the job with MLE
   MaximumLikelihoodFactory mleFactory(initial);
-  mleFactory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+  mleFactory.setKnownParameter(knownParameterIndices_, knownParameterValues_);
   const Point parameters(mleFactory.buildParameter(sample));
   return buildAsSmoothedUniform(parameters);
 }
