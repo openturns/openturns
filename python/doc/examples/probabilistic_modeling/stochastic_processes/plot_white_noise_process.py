@@ -63,6 +63,6 @@ graph.setTitle(
 for k in range(sample.getSize()):
     drawable = graph.getDrawable(k)
     drawable.setLegend("realization " + str(k + 1))
-    graph.setDrawable(drawable, k)
+    graph.setDrawable(k, drawable)
 view = viewer.View(graph)
 plt.show()

@@ -147,7 +147,7 @@ graph.add(contour)
 contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
 contour.setColorMapNorm("log")
-graph.setDrawable(contour, 0)
+graph.setDrawable(0, contour)
 view = viewer.View(graph)
 
 # %%
@@ -155,11 +155,11 @@ view = viewer.View(graph)
 # Here the labels are reformatted to use scientific notation and define precision.
 contour = graph.getDrawable(0).getImplementation()
 contour.setColorBarPosition("")  # Hide color bar
-graph.setDrawable(contour, 0)
+graph.setDrawable(0, contour)
 contour = graph.getDrawable(1).getImplementation()
 contour.setDrawLabels(True)
 contour.setLabels(["{:.3g}".format(level) for level in contour.getLevels()])
-graph.setDrawable(contour, 1)
+graph.setDrawable(1, contour)
 view = viewer.View(graph)
 
 viewer.View.ShowAll()

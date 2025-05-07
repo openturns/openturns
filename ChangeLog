@@ -29,6 +29,7 @@
  * UserDefinedMetropolisHastings left the experimental module
  * BoundaryMesher left the experimental module
  * Deprecated DistributionFactory.setKnownParameter(Point, Indices)
+ * Deprecated Graph.setDrawable(Drawable, int)
 
 === Documentation ===
 

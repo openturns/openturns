@@ -7,3 +7,4 @@ Remove MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors f
 Remove Wilks in some future version
 Remove ConditionalRandomVector alias for 1.26
 Remove deprecated method DistributionFactory.setKnownParameter(Point, Indices)
+Remove deprecated method Graph.setDrawable(Drawable, int)
