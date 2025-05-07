@@ -44,7 +44,7 @@ contours = graph_PDF.getDrawable(0).getImplementation()
 contours.setColorMapNorm("rank")
 contours.setIsFilled(True)
 contours.buildDefaultLevels(50)
-graph_PDF.setDrawable(contours, 0)
+graph_PDF.setDrawable(0, contours)
 view = otv.View(graph_PDF, square_axes=True)
 
 # %%
@@ -64,7 +64,7 @@ contours = graph_model.getDrawable(0).getImplementation()
 contours.setColorMapNorm("rank")
 contours.setIsFilled(True)
 contours.buildDefaultLevels(50)
-graph_model.setDrawable(contours, 0)
+graph_model.setDrawable(0, contours)
 view = otv.View(graph_model, square_axes=True)
 
 

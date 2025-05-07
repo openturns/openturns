@@ -137,7 +137,7 @@ gnorm = normal.drawLogPDF(data.getMin(), data.getMax())
 bad = [l_pair[i][1] for i in range(index_bad + 1)]
 c = ot.Cloud(bad)
 c.setPointStyle("bullet")
-graph.setDrawable(c, 1)
+graph.setDrawable(1, c)
 dr = gnorm.getDrawable(0)
 dr.setLevels([beta])
 dr.setLegend("99% level-set")

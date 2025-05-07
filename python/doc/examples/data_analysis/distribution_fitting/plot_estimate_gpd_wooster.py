@@ -52,7 +52,7 @@ for season in full_season:
     cloud = ot.Cloud(days, sample)
     cloud.setColor("red")
     cloud.setPointStyle(",")
-    graph.setDrawable(cloud, 0)
+    graph.setDrawable(0, cloud)
     graph.setTitle(f"{title} ({season})")
     view = otv.View(graph)
 
