@@ -104,7 +104,7 @@ FisherSnedecor FisherSnedecorFactory::buildMethodOfLikelihoodMaximization(const 
   const Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::Infinity), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
   // Use bounds only for unknown parameters
   factory.setOptimizationBounds(bounds.getMarginal(knownParameterIndices_.complement(bounds.getDimension())));
-  factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+  factory.setKnownParameter(knownParameterIndices_, knownParameterValues_);
 
   return buildAsFisherSnedecor(factory.buildParameter(sample));
 }

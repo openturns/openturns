@@ -9,7 +9,7 @@ distribution = ot.Pareto(3.3, 7.5, 0.0)
 print("distribution=", distribution)
 sample = distribution.getSample(size)
 factory = ot.LeastSquaresDistributionFactory(ot.Pareto())
-factory.setKnownParameter([0.0], [2])
+factory.setKnownParameter([2], [0.0])
 inf_dist = factory.build(sample)
 print("estimated distribution=", inf_dist)
 ott.assert_almost_equal(
