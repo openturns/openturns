@@ -360,3 +360,40 @@ Low-level distribution functions
     DistFunc.rUniformTetrahedron
     DistFunc.rUniformSimplex
 
+.. _isoprobabilistic_transformations:
+
+Isoprobabilistic transformation
+===============================
+
+Refer to :ref:`isoprobabilistic_transformation`.
+
+.. currentmodule:: openturns
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    DistributionTransformation
+    MarginalTransformationEvaluation
+    MarginalTransformationGradient
+    MarginalTransformationHessian
+    InverseNatafEllipticalCopulaEvaluation
+    InverseNatafEllipticalCopulaGradient
+    InverseNatafEllipticalCopulaHessian
+    NatafEllipticalCopulaEvaluation
+    NatafEllipticalCopulaGradient
+    NatafEllipticalCopulaHessian
+    InverseNatafIndependentCopulaEvaluation
+    InverseNatafIndependentCopulaGradient
+    InverseNatafIndependentCopulaHessian
+    NatafIndependentCopulaEvaluation
+    NatafIndependentCopulaGradient
+    NatafIndependentCopulaHessian
+    InverseNatafEllipticalDistributionEvaluation
+    InverseNatafEllipticalDistributionGradient
+    InverseNatafEllipticalDistributionHessian
+    NatafEllipticalDistributionEvaluation
+    NatafEllipticalDistributionGradient
+    NatafEllipticalDistributionHessian
+    InverseRosenblattEvaluation
+    RosenblattEvaluation
