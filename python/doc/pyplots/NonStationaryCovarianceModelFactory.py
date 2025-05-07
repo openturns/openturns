@@ -29,7 +29,7 @@ for i in range(alld.getSize()):
     d = alld[i]
     d.setLineStyle("twodash")
     d.setLineWidth(2)
-    myGraphRef.setDrawable(d, i)
+    myGraphRef.setDrawable(i, d)
     levels[i] = d.getLevels()[0]
 
 

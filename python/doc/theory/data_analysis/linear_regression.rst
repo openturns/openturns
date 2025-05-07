@@ -105,7 +105,7 @@ relationships, as in the following simple example where
     graph = ot.VisualTest.DrawLinearModel(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
-    graph.setDrawable(cloud, 0)
+    graph.setDrawable(0, cloud)
     graph.setTitle('')
     View(graph)
 
@@ -138,7 +138,7 @@ regression coefficients :math:`a_j`.
     graph = ot.VisualTest.DrawLinearModel(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
-    graph.setDrawable(cloud, 0)
+    graph.setDrawable(0, cloud)
     graph.setTitle('')
     View(graph)
 
@@ -187,7 +187,7 @@ nor in he standard deviation.
     graph = ot.VisualTest.DrawLinearModelResidual(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
-    graph.setDrawable(cloud, 0)
+    graph.setDrawable(0, cloud)
     graph.setTitle('')
     # copy the graph in a file
     View(graph)
@@ -218,7 +218,7 @@ be abandoned, or at least used very cautiously.
     graph = ot.VisualTest.DrawLinearModelResidual(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
-    graph.setDrawable(cloud, 0)
+    graph.setDrawable(0, cloud)
     graph.setTitle('')
     View(graph)
 

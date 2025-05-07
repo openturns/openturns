@@ -3874,7 +3874,7 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
     drawable.setLegend(title);
     drawable.setLineStyle("solid");
     drawable.setLineWidth(2);
-    graphPDF.setDrawable(drawable, 0);
+    graphPDF.setDrawable(0, drawable);
     graphPDF.setXTitle(getDescription()[0]);
     graphPDF.setYTitle("PDF");
     graphPDF.setTitle("");
@@ -4201,7 +4201,7 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
-  graphLogPDF.setDrawable(drawable, 0);
+  graphLogPDF.setDrawable(0, drawable);
   graphLogPDF.setXTitle(getDescription()[0]);
   graphLogPDF.setYTitle("log PDF");
   graphLogPDF.setTitle("");
@@ -4478,7 +4478,7 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
-  graphCDF.setDrawable(drawable, 0);
+  graphCDF.setDrawable(0, drawable);
   graphCDF.setXTitle(getDescription()[0]);
   graphCDF.setYTitle("CDF");
   graphCDF.setTitle("");
@@ -4664,7 +4664,7 @@ Graph DistributionImplementation::drawSurvivalFunction(const Scalar xMin,
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
-  graphSurvivalFunction.setDrawable(drawable, 0);
+  graphSurvivalFunction.setDrawable(0, drawable);
   graphSurvivalFunction.setXTitle(getDescription()[0]);
   graphSurvivalFunction.setYTitle("SurvivalFunction");
   graphSurvivalFunction.setTitle("");
@@ -4811,7 +4811,7 @@ Graph DistributionImplementation::drawQuantile1D(const Scalar qMin,
   drawable.setLegend(title);
   drawable.setLineStyle("solid");
   drawable.setLineWidth(2);
-  graphQuantile.setDrawable(drawable, 0);
+  graphQuantile.setDrawable(0, drawable);
   graphQuantile.setXTitle(getDescription()[0]);
   graphQuantile.setYTitle("Quantile");
   graphQuantile.setTitle("");

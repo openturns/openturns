@@ -110,6 +110,12 @@ Drawable Graph::getDrawable(const UnsignedInteger index) const
   return getImplementation()->getDrawable(index);
 }
 
+void Graph::setDrawable(const UnsignedInteger index, const Drawable & drawable)
+{
+  copyOnWrite();
+  getImplementation()->setDrawable(index, drawable);
+}
+
 void Graph::setDrawable(const Drawable & drawable,
                         const UnsignedInteger index)
 {

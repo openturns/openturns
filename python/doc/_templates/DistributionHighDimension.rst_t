@@ -53,7 +53,7 @@
                 pdf_contour = pdf_graph.getDrawable(0).getImplementation()
                 pdf_contour.setColorBarPosition("")
                 pdf_contour.setColorMapNorm("rank")
-                pdf_graph.setDrawable(pdf_contour, 0)
+                pdf_graph.setDrawable(0, pdf_contour)
                 cloud = ot.Cloud(sample.getMarginal([i, j]))
                 cloud.setPointStyle("dot")
                 pdf_graph.add(cloud)
