@@ -1,12 +1,13 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
+import openturns.experimental as otexp
 import openturns.testing
+import math as m
 
 ot.Log.Show(ot.Log.NONE)
 ot.TBB.Disable()
-
+ot.ResourceMap.SetAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "TNC")
 
 #
 # branin
@@ -20,7 +21,6 @@ formula = (
 branin = ot.SymbolicFunction(["x1", "x2"], [formula])
 transfo = ot.SymbolicFunction(["u1", "u2"], ["15*u1-5", "15*u2"])
 model = ot.ComposedFunction(branin, transfo)
-noiseModel = ot.SymbolicFunction(["x1", "x2"], ["0.96"])  # assume constant noise var
 
 # problem
 problem = ot.OptimizationProblem()
@@ -36,14 +36,13 @@ outputSample = model(inputSample)
 
 # first kriging model
 covarianceModel = ot.SquaredExponential([0.3007, 0.2483], [0.981959])
+covarianceModel.setNuggetFactor(0.96)  # assume constant noise var
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-noise = [x[0] for x in noiseModel(inputSample)]
-kriging.setNoise(noise)
 kriging.run()
 
 # algo
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
+algo = otexp.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setMaximumCallsNumber(14)
 algo.setAEITradeoff(0.66744898)
 algo.run()
@@ -118,11 +117,13 @@ outputSample = model(inputSample)
 # first kriging model
 covarianceModel = ot.SquaredExponential([2.50057] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-kriging.run()
+fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr.run()
 
 # algo
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 # solver = ot.NLopt('GN_ESCH')
 # solver = ot.NLopt('GN_MLSL')
 algo.setMaximumCallsNumber(15)
@@ -173,16 +174,18 @@ inputSample = experiment.generate()
 outputSample = model(inputSample)
 covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-kriging.run()
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr.run()
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(10)
 algo.run()
 result = algo.getResult()
 
 # check maximization
 problem.setMinimization(False)
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(10)
 algo.run()
 result = algo.getResult()
