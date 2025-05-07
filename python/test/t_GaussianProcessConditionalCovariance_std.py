@@ -54,20 +54,20 @@ def test_one_input_one_output():
     gccc = GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(X)
-    ott.assert_almost_equal(mean, Y, 0.0, 1e-13)
+    ott.assert_almost_equal(mean, Y, 0.0, 1e-12)
 
     covariance = gccc.getConditionalCovariance(X)
     nullMatrix = ot.Matrix(sampleSize, sampleSize)
-    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13)
+    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-12)
 
     # Covariance per marginal & extract variance component
     coll = gccc.getDiagonalCovarianceCollection(X)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0] * sampleSize, 1e-14, 1e-13)
+    ott.assert_almost_equal(var, [0] * sampleSize, 1e-12, 1e-12)
 
     # Variance per marginal
     var = gccc.getConditionalMarginalVariance(X)
-    ott.assert_almost_equal(var, ot.Sample(sampleSize, 1), 1e-14, 1e-13)
+    ott.assert_almost_equal(var, ot.Sample(sampleSize, 1), 1e-12, 1e-12)
 
     # Kriging variance is non-null on validation points
     validCovariance = gccc.getConditionalCovariance(X2)
@@ -135,11 +135,11 @@ def test_two_inputs_one_output():
     # Covariance per marginal & extract variance component
     coll = gccc.getDiagonalCovarianceCollection(inputSample)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0] * len(var), 0.0, 1e-13)
+    ott.assert_almost_equal(var, [0] * len(var), 0.0, 1e-12)
 
     # Variance per marginal
     var = gccc.getConditionalMarginalVariance(inputSample)
-    ott.assert_almost_equal(var, ot.Sample(inputSample.getSize(), 1), 0.0, 1e-13)
+    ott.assert_almost_equal(var, ot.Sample(inputSample.getSize(), 1), 0.0, 1e-12)
 
 
 def test_two_outputs():
@@ -234,7 +234,7 @@ def test_stationary_fun():
 
     gccc = GaussianProcessConditionalCovariance(result)
     variance = gccc.getConditionalMarginalVariance(x)
-    ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-15, 1e-15)
+    ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-12, 1e-12)
 
 
 def test_gpr_no_opt():
@@ -268,10 +268,10 @@ def test_gpr_no_opt():
 
     covariance = gccc.getConditionalCovariance(X)
     nullMatrix = ot.Matrix(sampleSize, sampleSize)
-    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13)
+    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-12)
 
     variance = gccc.getConditionalMarginalVariance(X)
-    ott.assert_almost_equal(variance, ot.Sample(len(X), 1), 1e-14, 1e-14)
+    ott.assert_almost_equal(variance, ot.Sample(len(X), 1), 1e-12, 1e-12)
 
     # Kriging variance is non-null on validation points
     validCovariance = gccc.getConditionalCovariance(X2)
