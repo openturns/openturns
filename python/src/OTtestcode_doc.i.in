@@ -165,6 +165,16 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Test::DistributionValidation::skipDependenceMeasures
+"Disables dependence measure test."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionValidation::skipInverseSurvival
+"Disables inverse survival function test."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Test::DistributionValidation::setMomentsSamplingSize
 "Sampling size accessor for moments test.
 
