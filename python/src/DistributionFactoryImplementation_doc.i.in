@@ -109,10 +109,10 @@ OT_DistributionFactory_setBootstrapSize_doc
 
 Parameters
 ----------
-values : sequence of float
-    Values of known parameters.
 positions : sequence of int
     Indices of known parameters.
+values : sequence of float
+    Values of known parameters.
 
 Examples
 --------
@@ -131,7 +131,7 @@ and the fourth parameter (at index 3) to 1.
 >>> sample = distribution.getSample(10)
 >>> factory = ot.BetaFactory()
 >>> # set (a,b) out of (r, t, a, b)
->>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
+>>> factory.setKnownParameter([2, 3], [-1.0, 1.0])
 >>> inf_distribution = factory.build(sample)"
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::setKnownParameter

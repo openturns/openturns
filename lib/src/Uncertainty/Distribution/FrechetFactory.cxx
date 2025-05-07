@@ -97,7 +97,7 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   const Interval bounds(lower, upper);
   // Use bounds only for unknown parameters
   mleFactory.setOptimizationBounds(bounds.getMarginal(knownParameterIndices_.complement(bounds.getDimension())));
-  mleFactory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+  mleFactory.setKnownParameter(knownParameterIndices_, knownParameterValues_);
   const Point parameters(mleFactory.buildParameter(sample));
   return buildAsFrechet(parameters);
 }

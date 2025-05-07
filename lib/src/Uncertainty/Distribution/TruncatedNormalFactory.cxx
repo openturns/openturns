@@ -82,7 +82,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   // Set the bounds as known parameters
   const Point knownParameterValues = {a, b};
   const Indices knownParameterIndices = {2, 3};
-  factory.setKnownParameter(knownParameterValues, knownParameterIndices);
+  factory.setKnownParameter(knownParameterIndices, knownParameterValues);
 
   // Compute the mean and std and set it as initial values
   const Scalar sampleMean = sample.computeMean()[0];
@@ -134,7 +134,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   knownParameterValues[0] = -oneEps;
   Indices knownParameterIndices(2);
   knownParameterIndices.fill(2);
-  factory.setKnownParameter(knownParameterValues, knownParameterIndices);
+  factory.setKnownParameter(knownParameterIndices, knownParameterValues);
 
   // override starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
