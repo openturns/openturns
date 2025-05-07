@@ -1,13 +1,14 @@
 %feature("docstring") OT::EfficientGlobalOptimization
 "Efficient Global Optimization algorithm.
 
-The EGO algorithm [jones1998]_ is an adaptative optimization method based on
-kriging.
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+The EGO algorithm [jones1998]_ is an adaptative optimization method based on Gaussian process regression.
 An initial design of experiment is used to build a first metamodel.
-At each iteration a new point that maximizes a criterion is chosen as
-optimizer candidate.
-The criterion uses a tradeoff between the metamodel value and the conditional
-variance.
+At each iteration a new point that maximizes a criterion is chosen as optimizer candidate.
+The criterion uses a tradeoff between the metamodel value and the conditional variance.
 Then the new point is evaluated using the original model and the metamodel is
 relearnt on the extended design of experiment.
 
@@ -15,10 +16,8 @@ Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     The optimization problem to solve
-krigingResult : :class:`~openturns.KrigingResult`
-    The result of the meta-model on the first design of experiment
-noise : :class:`~openturns.Function`
-    Noise model used on design experiment points, and also for improvement optimization
+gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+    The result of the metamodel on the first design of experiment
 
 Notes
 -----
@@ -37,7 +36,7 @@ the mean improvement:
 
     \mathbb{E}\left[I(x_{new})\right] = \mathbb{E}\left[max(f_{min} - Y_{new}, 0)\right]
 
-This criterion is explicited using the kriging mean and variance:
+This criterion is explicited using the GP mean and variance:
 
 .. math::
 
@@ -82,6 +81,7 @@ This behavior can be overridden by using another solver with :func:`setOptimizat
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 4
 >>> model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'],
@@ -98,14 +98,16 @@ Examples
 Initial minimum output value:  [-248]
 >>> covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 >>> basis = ot.ConstantBasisFactory(dim).build()
->>> kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> kriging.run()
->>> algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+>>> fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> fitter.run()
+>>> gpr = otexp.GaussianProcessRegression(fitter.getResult())
+>>> gpr.run()
+>>> algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 >>> algo.setMaximumCallsNumber(2)
 >>> algo.run()
 >>> result = algo.getResult()
->>> updatedKrigingResult = algo.getKrigingResult()
->>> updatedOutputSample = updatedKrigingResult.getOutputSample()
+>>> updatedGPRResult = algo.getGPRResult()
+>>> updatedOutputSample = updatedGPRResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
 "
 
@@ -317,17 +319,30 @@ noiseModel : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::EfficientGlobalOptimization::getGPRResult
+"Retrieve the GPR result.
+
+Notes
+-----
+Before :meth:`run` is called, this method returns the result passed to the constructor.
+Once :meth:`run` has been called, it returns an updated result that takes new observations into account.
+
+Returns
+-------
+gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+    Result that takes all observations into account."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::EfficientGlobalOptimization::getKrigingResult
 "Retrieve the Kriging result.
 
 Notes
 -----
-Before :meth:`run` is called, this method returns the
-:class:`~openturns.KrigingResult` passed to the constructor.
-Once :meth:`run` has been called, it returns an updated
-:class:`~openturns.KrigingResult` that takes new observations into account.
+Before :meth:`run` is called, this method returns the result passed to the constructor.
+Once :meth:`run` has been called, it returns an updated result that takes new observations into account.
 
 Returns
 -------
 krigingResult : :class:`~openturns.KrigingResult`
-    Kriging result that takes all observations into account."
+    Result that takes all observations into account."
