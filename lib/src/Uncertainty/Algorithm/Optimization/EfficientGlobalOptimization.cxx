@@ -420,7 +420,10 @@ void EfficientGlobalOptimization::run()
     }
   } // while
 
-  krigingResult_ = krigingResult; // update krigingResult_ to take new points into account
+   // update result to take new points into account
+  krigingResult_ = krigingResult;
+  gprResult_ = gprResult;
+
   result.setIterationNumber(iterationNumber);
   setResult(result);
 }
