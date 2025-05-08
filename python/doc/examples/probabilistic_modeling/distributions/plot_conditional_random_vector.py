@@ -1,6 +1,7 @@
 """
 Create a deconditioned random vector
 ====================================
+"""
 
 # %%
 # In this example we are going to build the random vector :math:`\inputRV` defined as the
