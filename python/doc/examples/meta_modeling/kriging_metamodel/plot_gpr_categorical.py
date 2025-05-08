@@ -362,6 +362,7 @@ for rep in range(3):
             regression_independent = otexp.GaussianProcessRegression(
                 fitter_independent.getResult()
             )
+            regression_independent.run()
             resInd = regression_independent.getResult()
 
             # Compute the models predictive performances on a validation data set

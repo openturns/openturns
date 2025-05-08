@@ -2,7 +2,7 @@
 "Efficient Global Optimization algorithm.
 
 The EGO algorithm [jones1998]_ is an adaptative optimization method based on
-kriging.
+Gaussian Process Regression.
 An initial design of experiment is used to build a first metamodel.
 At each iteration a new point that maximizes a criterion is chosen as
 optimizer candidate.
@@ -15,10 +15,8 @@ Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     The optimization problem to solve
-krigingResult : :class:`~openturns.KrigingResult`
+gaussianProcessRegressionResult : :class:`~openturns.GaussianProcessRegressionResult`
     The result of the meta-model on the first design of experiment
-noise : :class:`~openturns.Function`
-    Noise model used on design experiment points, and also for improvement optimization
 
 Notes
 -----
@@ -37,19 +35,16 @@ the mean improvement:
 
     \mathbb{E}\left[I(x_{new})\right] = \mathbb{E}\left[max(f_{min} - Y_{new}, 0)\right]
 
-This criterion is explicited using the kriging mean and variance:
+This criterion is explicited using the Gaussian process mean and variance:
 
 .. math::
 
     \mathbb{E}\left[I(x_{new})\right] = (f_{min} - m_K(x_{new})) \Phi\left( \frac{f_{min} - m_K(x_{new})}{s_K(x_{new})} \right) + s_K(x_{new}) \phi\left( \frac{f_{min} - m_K(x_{new})}{s_K(x_{new})} \right)
 
-An optional observation noise variance can be provided:
-
-.. math:: Y_{obs} = Y(x) + \sigma_{\epsilon}(x) \epsilon
-
-In that case the AEI (Augmented Expected Improvement) formulation is used.
-As we don't have access to the real minimum of the function anymore a quantile
-of the kriging prediction is used, with the constant :math:`c`:
+In case the covariance model of the Gaussian process model has a non-zero nugget factor :math:`\sigma_{\epsilon}` (i.e. the emulated function is noisy),
+the AEI (Augmented Expected Improvement) formulation is used.
+Because we do not have access to the real minimum of the function in this case, a quantile
+of the Gaussian process conditional mean is used, with the constant :math:`c`:
 
 .. math:: u(x) = m_K(x) + c s_K(x)
 
@@ -57,11 +52,11 @@ This criterion is minimized over the design points:
 
 .. math:: x_{min} = \argmax_{x_i} (u(x_i))
 
-The AEI criterion reads:
+The AEI criterion is:
 
 .. math::
 
-    AEI(x_{new}) = \mathbb{E}\left[max(m_K(x_{min}) - Y_{new}, 0)\right] \times \left(1 - \frac{\sigma_{\epsilon}(x_{new})}{\sqrt{\sigma_{\epsilon}^2(x_{new})+s^2_K(x_{new})}} \right)
+    AEI(x_{new}) = \mathbb{E}\left[max(m_K(x_{min}) - Y_{new}, 0)\right] \times \left(1 - \frac{\sigma_{\epsilon}}{\sqrt{\sigma_{\epsilon}^2+s^2_K(x_{new})}} \right)
 
 with
 
@@ -82,6 +77,7 @@ This behavior can be overridden by using another solver with :func:`setOptimizat
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 4
 >>> model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'],
@@ -98,14 +94,16 @@ Examples
 Initial minimum output value:  [-248]
 >>> covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 >>> basis = ot.ConstantBasisFactory(dim).build()
->>> kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> kriging.run()
->>> algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+>>> fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> fitter.run()
+>>> regression = otexp.GaussianProcessRegression(fitter.getResult())
+>>> regression.run()
+>>> algo = ot.EfficientGlobalOptimization(problem, regression.getResult())
 >>> algo.setMaximumCallsNumber(2)
 >>> algo.run()
 >>> result = algo.getResult()
->>> updatedKrigingResult = algo.getKrigingResult()
->>> updatedOutputSample = updatedKrigingResult.getOutputSample()
+>>> updatedGaussianProcessRegressionResult = algo.getGaussianProcessRegressionResult()
+>>> updatedOutputSample = updatedGaussianProcessRegressionResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
 "
 
@@ -242,7 +240,7 @@ b : float
 Parameters
 ----------
 c : float
-    Used to define a quantile of the kriging prediction at the design points.
+    Used to define a quantile of the Gaussian process prediction at the design points.
     :math:`u(x)=m_K(x)+c*s_K(x)`"
 
 // ---------------------------------------------------------------------
@@ -253,7 +251,7 @@ c : float
 Returns
 -------
 c : float
-    Used to define a quantile of the kriging prediction at the design points.
+    Used to define a quantile of the Gaussian process prediction at the design points.
     :math:`u(x)=m_K(x)+c*s_K(x)`"
 
 // ---------------------------------------------------------------------
@@ -268,66 +266,17 @@ ei : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EfficientGlobalOptimization::setMetamodelNoise
-"Metamodel noise model accessor.
-
-Parameters
-----------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    design update only.
-    Of same input dimension as the objective and 1-d output."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::getMetamodelNoise
-"Metamodel noise model accessor.
-
-Returns
--------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    design update only.
-    Of same input dimension as the objective and 1-d output."
-
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::setNoiseModel
-"Improvement noise model accessor.
-
-Parameters
-----------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    criterion optimization only.
-    Of same input dimension as the objective and 1-d output."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::getNoiseModel
-"Improvement noise model accessor.
-
-Returns
--------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    criterion optimization only.
-    Of same input dimension as the objective and 1-d output."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::getKrigingResult
-"Retrieve the Kriging result.
+%feature("docstring") OT::EfficientGlobalOptimization::getGaussianProcessRegressionResult
+"Retrieve the Gaussian process regression result.
 
 Notes
 -----
 Before :meth:`run` is called, this method returns the
-:class:`~openturns.KrigingResult` passed to the constructor.
+:class:`~openturns.GaussianProcessRegressionResult` passed to the constructor.
 Once :meth:`run` has been called, it returns an updated
-:class:`~openturns.KrigingResult` that takes new observations into account.
+:class:`~openturns.GaussianProcessRegressionResult` that takes new observations into account.
 
 Returns
 -------
-krigingResult : :class:`~openturns.KrigingResult`
-    Kriging result that takes all observations into account."
+gaussianProcessRegressionResult : :class:`~openturns.GaussianProcessRegressionResult`
+    Gaussian process regression result that takes all observations into account."
