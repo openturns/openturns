@@ -23,7 +23,7 @@
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/KrigingResult.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,8 +46,7 @@ public:
 
   /** Constructor with parameters */
   EfficientGlobalOptimization(const OptimizationProblem & problem,
-                              const KrigingResult & krigingResult,
-                              const Function & noise = Function());
+                              const GaussianProcessRegressionResult & krigingResult);
 
   /** Virtual constructor */
   EfficientGlobalOptimization * clone() const override;
@@ -81,19 +80,11 @@ public:
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
-  /** Metamodel noise function accessor */
-  void setMetamodelNoise(const Function & metaModelNoise);
-  Function getMetamodelNoise() const;
-
-  /** Improvement noise function accessor */
-  void setNoiseModel(const Function & noiseModel);
-  Function getNoiseModel() const;
-
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
   /** Kriging result accessor (especially useful after run() has been called) */
-  KrigingResult getKrigingResult() const;
+  GaussianProcessRegressionResult getGaussianProcessRegressionResult() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -107,7 +98,7 @@ protected:
   void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
-  KrigingResult krigingResult_;
+  GaussianProcessRegressionResult gprResult_;
   OptimizationAlgorithm solver_;
 
   // whether the solver was set
@@ -127,12 +118,6 @@ private:
 
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_ = 0.0;
-
-  // noise model called at design points
-  Function metamodelNoise_;
-
-  // optional noise model for improvement optimization only
-  Function noiseModel_;
 
   Sample expectedImprovement_;
 
