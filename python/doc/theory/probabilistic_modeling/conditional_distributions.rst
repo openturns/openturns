@@ -408,7 +408,7 @@ Then, the PDF of :math:`\inputRV` is defined by:
 with the same convention as for :math:`\vect{Y}`.
 
 Note that this is always possible to create the random vector :math:`\inputRV` whatever the distribution of :math:`\vect{\Theta}`:
-see the class :class:`~openturns.ConditionalRandomVector`. But remember that a :class:`~openturns.ConditionalRandomVector`
+see the class :class:`~openturns.DeconditionedRandomVector`. But remember that a :class:`~openturns.DeconditionedRandomVector`
 (and more generally a :class:`~openturns.RandomVector`) can only be sampled.
 
 Case 4: Create a Bayesian posterior distribution
@@ -465,7 +465,7 @@ In the other cases, the PDF is the probability distribution function for the dis
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_bayes_distribution`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_point_conditional_distribution`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_deconditioned_distribution`
-    - See :doc:`/auto_probabilistic_modeling/distributions/plot_conditional_random_vector`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_deconditioned_random_vector`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_posterior_distribution`
 
 .. topic:: References:
