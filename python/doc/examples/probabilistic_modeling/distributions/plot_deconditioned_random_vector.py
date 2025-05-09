@@ -13,7 +13,7 @@ Create a deconditioned random vector
 #
 # with respect to parameter random vector :math:`\vect{\Theta}` following the distribution :math:`\cL_{\vect{\Theta}}`.
 #
-# This example creates a :class:`~openturns.ConditionalRandomVector`. Remember that a :class:`~openturns.ConditionalRandomVector`
+# This example creates a :class:`~openturns.DeconditionedRandomVector`. Remember that a :class:`~openturns.DeconditionedRandomVector`
 # (and more generally a :class:`~openturns.RandomVector`) can only be sampled.
 #
 # There is no restriction on the random vector :math:`\vect{\Theta}`. It can be created from any multivariate distribution or
@@ -22,7 +22,7 @@ Create a deconditioned random vector
 # Note that in some restricted cases, it is possible to create the
 # distribution of :math:`\inputRV` using the class :class:`~openturns.DeconditionedDistribution`.
 # The :class:`~openturns.DeconditionedDistribution` offers a lot of methods attached to the distribution, in particular the
-# computation of the PDF, CDF, the moments if any, :math:`\dots`. The advantage of the :class:`~openturns.ConditionalRandomVector` relies
+# computation of the PDF, CDF, the moments if any, :math:`\dots`. The advantage of the :class:`~openturns.DeconditionedRandomVector` relies
 # on the fact that it is fast to build and can be built in all cases. But it only offers the sampling capacity.
 #
 # We consider the following cases:
@@ -65,8 +65,8 @@ thetaRV = ot.RandomVector(thetaDist)
 XgivenThetaDist = ot.Exponential()
 
 # %%
-# Create the :math:`\vect X` distribution
-XDist = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
+# Create the :math:`\inputRV` random vector.
+X_RV = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
 
 # %%
 # Draw a sample
@@ -111,7 +111,7 @@ thetaRV = ot.RandomVector(thetaDist)
 # %%
 # Create the :math:`\inputRV|\vect{\Theta}` random vector.
 XgivenThetaDist = ot.Exponential()
-X_RV = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
+X_RV = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
 
 # %%
 # If we generate a large sample of the random vector, we can fit its distribution with non-parametric techniques
@@ -154,7 +154,7 @@ thetaRV = ot.RandomVector(thetaDist)
 # %%
 # Create the :math:`\inputRV|\vect{\Theta}` random vector.
 XgivenThetaDist = ot.Exponential()
-X_RV = ot.ConditionalRandomVector(XgivenThetaDist, thetaRV)
+X_RV = ot.DeconditionedRandomVector(XgivenThetaDist, thetaRV)
 
 # %%
 # If we generate a large sample of the random vector, we can fit its distribution with non-parametric techniques
