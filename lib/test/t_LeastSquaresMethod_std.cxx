@@ -54,56 +54,86 @@ int main(int, char *[])
 
     Point hFromH(size);
 
+    // Test proxy-based construction
+    Point refSolve;
+    Point refSolveNormal;
+    CovarianceMatrix refGramInverse;
+    Point refHDiag;
+    Scalar refGramInverseTrace = 0.0;
+    Point refGramInverseDiag;
+
     for (UnsignedInteger k = 0; k < 3; ++k)
     {
       LeastSquaresMethod algo(LeastSquaresMethod::Build(methods[k], proxy, indices));
       algo.update(Indices(0), indices, Indices(0));
 
       fullprint << methods[k] << std::endl;
-      fullprint << "Solve=" << algo.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << algo.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << algo.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << algo.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << algo.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << algo.getGramInverseDiag() << std::endl;
+
+      const Point solve(algo.solve(Point(size, 1.0)));
+      const Point solveNormal(algo.solveNormal(Point(dimension, 1.0)));
+      const CovarianceMatrix gramInverse(algo.getGramInverse());
+      const Point hDiag(algo.getHDiag());
+      const Scalar gramInverseTrace(algo.getGramInverseTrace());
+      const Point gramInverseDiag(algo.getGramInverseDiag());
+
+      if (k == 0)
+      {
+        refSolve = solve;
+        refSolveNormal = solveNormal;
+        refGramInverse = gramInverse;
+        refHDiag = hDiag;
+        refGramInverseTrace = gramInverseTrace;
+        refGramInverseDiag = gramInverseDiag;
+      }
+      else
+      {
+        assert_almost_equal(solve, refSolve, 1e-10, 1e-10);
+        assert_almost_equal(solveNormal, refSolveNormal, 1e-10, 1e-10);
+        assert_almost_equal(gramInverse, refGramInverse, 1e-10, 1e-10);
+        assert_almost_equal(hDiag, refHDiag, 1e-10, 1e-10);
+        assert_almost_equal(gramInverseTrace, refGramInverseTrace, 1e-10, 1e-10);
+        assert_almost_equal(gramInverseDiag, refGramInverseDiag, 1e-10, 1e-10);
+      }
 
       // Validation of H
       SymmetricMatrix H(algo.getH());
 
       // Get the Diagonal of H matrix and compare it to the getHDiag
-      // Second method is already validated
-      // Note also that H^n = H so we could add this test
       for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
       assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
+      // H^n = H
       SquareMatrix H2(H * H);
       assert_almost_equal(H2, H, 1e-15, 1e-15);
-
     }
+
+    // Test matrix-based construction and cross-validate with proxy-based
     Matrix design(proxy.computeDesign(indices));
     for (UnsignedInteger k = 0; k < 3; ++k)
     {
       LeastSquaresMethod algo(LeastSquaresMethod::Build(methods[k], design));
       algo.update(Indices(0), indices, Indices(0));
 
-      fullprint << methods[k] << std::endl;
-      fullprint << "Solve=" << algo.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << algo.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << algo.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << algo.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << algo.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << algo.getGramInverseDiag() << std::endl;
+      const Point solve(algo.solve(Point(size, 1.0)));
+      const Point solveNormal(algo.solveNormal(Point(dimension, 1.0)));
+      const CovarianceMatrix gramInverse(algo.getGramInverse());
+      const Point hDiag(algo.getHDiag());
+      const Scalar gramInverseTrace(algo.getGramInverseTrace());
+      const Point gramInverseDiag(algo.getGramInverseDiag());
+
+      assert_almost_equal(solve, refSolve, 1e-10, 1e-10);
+      assert_almost_equal(solveNormal, refSolveNormal, 1e-10, 1e-10);
+      assert_almost_equal(gramInverse, refGramInverse, 1e-10, 1e-10);
+      assert_almost_equal(hDiag, refHDiag, 1e-10, 1e-10);
+      assert_almost_equal(gramInverseTrace, refGramInverseTrace, 1e-10, 1e-10);
+      assert_almost_equal(gramInverseDiag, refGramInverseDiag, 1e-10, 1e-10);
 
       // Validation of H
       SymmetricMatrix H(algo.getH());
 
-      // Get the Diagonal of H matrix and compare it to the getHDiag
-      // Second method is already validated
-      // Note also that H^n = H so we could add this test
       for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
       assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
       SquareMatrix H2(H * H);
       assert_almost_equal(H2,  H, 1e-15, 1e-15);
-
     }
 
   }

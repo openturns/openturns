@@ -156,6 +156,8 @@ void LeastSquaresExpansion::run()
   result_.setIsLeastSquares(true);
   result_.setInvolvesModelSelection(false);
   result_.setUseDomination(useDomination_);
+  result_.setSelectionHistory(Collection<Indices>(), Collection<Point>(), Indices(outputDimension + 1, 0));
+  result_.setErrorHistory(Point(), Indices(outputDimension + 1, 0));
 }
 
 /* Domination flag accessor */

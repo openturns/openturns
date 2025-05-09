@@ -174,7 +174,8 @@ transformation : :class:`~openturns.Function`
 %feature("docstring") OT::FunctionalChaosResult::drawSelectionHistory
 "Draw the basis selection history.
 
-This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.OMPExpansion`.
+Use the *outputIndex* parameter to select the output whose history to draw.
 
 Returns
 -------
@@ -186,7 +187,8 @@ graph : :class:`~openturns.Graph`
 %feature("docstring") OT::FunctionalChaosResult::getCoefficientsHistory
 "The coefficients values selection history accessor.
 
-This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.OMPExpansion`.
+Use the *outputIndex* parameter to select the output whose history to retrieve.
 
 Returns
 -------
@@ -199,7 +201,8 @@ coefficientsHistory : 2-d sequence of float
 %feature("docstring") OT::FunctionalChaosResult::getIndicesHistory
 "The basis indices selection history accessor.
 
-This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.OMPExpansion`.
+Use the *outputIndex* parameter to select the output whose history to retrieve.
 
 Returns
 -------
@@ -218,7 +221,13 @@ indicesHistory : 2-d sequence of int
     The basis indices selection history
 coefficientsHistory : 2-d sequence of float
     The coefficients values selection history
-    Must be of same size as indicesHistory."
+    Must be of same size as indicesHistory.
+historyCutPoints : sequence of int
+    Cumulative offsets that partition the flat history arrays into per-output
+    segments.  Must contain exactly ``outputDimension + 1`` non-decreasing
+    values, with the last entry equal to the total number of history entries.
+    ``historyCutPoints[k]`` to ``historyCutPoints[k+1] - 1`` gives the slice
+    belonging to output index *k*."
 
 // ---------------------------------------------------------------------
 
@@ -362,7 +371,8 @@ conditionalPCE : :class:`~openturns.FunctionalChaosResult`
 %feature("docstring") OT::FunctionalChaosResult::drawErrorHistory
 "Draw the error history.
 
-This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.OMPExpansion`.
+Use the *outputIndex* parameter to select the output whose history to draw.
 
 Returns
 -------
@@ -374,7 +384,8 @@ graph : :class:`~openturns.Graph`
 %feature("docstring") OT::FunctionalChaosResult::getErrorHistory
 "The error history accessor.
 
-This is only available with :class:`~openturns.LARS`, and when the output dimension is 1.
+Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.OMPExpansion`.
+Use the *outputIndex* parameter to select the output whose history to retrieve.
 
 Returns
 -------
@@ -389,7 +400,13 @@ errorHistory : sequence of float
 Parameters
 ----------
 errorHistory : sequence of float
-    The error history"
+    The error history
+historyCutPoints : sequence of int
+    Cumulative offsets that partition the flat history arrays into per-output
+    segments.  Must contain exactly ``outputDimension + 1`` non-decreasing
+    values, with the last entry equal to the total number of history entries.
+    ``historyCutPoints[k]`` to ``historyCutPoints[k+1] - 1`` gives the slice
+    belonging to output index *k*."
 
 %feature("docstring") OT::FunctionalChaosResult::isLeastSquares
 "Get the least squares flag.

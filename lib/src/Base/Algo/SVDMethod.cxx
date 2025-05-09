@@ -133,10 +133,9 @@ Point SVDMethod::solve(const Point & rhs)
 
   // First step
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
   }
   const Point c(u_.getImplementation()->genVectProd(b, true));
   // Second step
@@ -153,10 +152,9 @@ Point SVDMethod::solveNormal(const Point & rhs)
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[hasUniformWeight_ ? 0 : i];
   }
   // G^-1= V*S^-2*V^T
   Point coefficients(vT_ * b);

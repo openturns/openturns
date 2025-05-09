@@ -214,7 +214,6 @@ int main(int, char *[])
                              3.407, 0, 4.545, 0, 0, 8859.2219, 0, 11818.623
                             };
       const Matrix reference_covariance(4, 4, rowData);
-      const SquareMatrix nullMatrix(4);
       const Point pointOfInterest = {9.5, 10.0};
       const Sample sample(Sample::BuildFromPoint(pointOfInterest));
       const CovarianceMatrix covarianceMat(gccc(sample).getCovariance());
@@ -273,7 +272,6 @@ int main(int, char *[])
       const Sample outputTrain(f(inputTrain));
 
       // create covariance model
-      const Basis basis(ConstantBasisFactory(dimension).build());
       const Point scale = {1.6326932047296538};
       const Point amplitude = {4.895995962015954};
       const SquaredExponential covarianceModel(scale, amplitude);

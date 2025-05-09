@@ -116,6 +116,9 @@ public:
   /** Build the Gram matrix */
   Matrix computeWeightedDesign(const Bool whole = false) const;
 
+  /** Build the raw design matrix without weight scaling */
+  Matrix computeDesign(const Bool whole = false) const;
+
   /** Build a method instance from its name */
   static LeastSquaresMethod Build(const String name,
                                   const DesignProxy & proxy,

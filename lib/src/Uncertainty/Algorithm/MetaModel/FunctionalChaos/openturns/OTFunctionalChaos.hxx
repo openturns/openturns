@@ -30,6 +30,7 @@
 #include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/FunctionalChaosSobolIndices.hxx"
 #include "openturns/FunctionalChaosValidation.hxx"
+#include "openturns/OMPExpansion.hxx"
 #include "openturns/LeastSquaresExpansion.hxx"
 #include "openturns/IntegrationExpansion.hxx"
 #include "openturns/LeastSquaresStrategy.hxx"
