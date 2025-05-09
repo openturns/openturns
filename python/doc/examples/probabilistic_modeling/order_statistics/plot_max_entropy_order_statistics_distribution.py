@@ -74,7 +74,7 @@ graph = jointDist.drawPDF()
 contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
 contour.buildDefaultLevels(50)
-graph.setDrawable(contour, 0)
+graph.setDrawable(0, contour)
 graph.setTitle("PDF of the Maximum Entropy Order Statistics Distribution")
 view = otv.View(graph)
 

@@ -6,6 +6,12 @@ where :math:`Y` follows the distribution :math:`\Gamma(\alpha, \beta)`
 with :math:`\alpha>0` and :math:`\beta>0`, :math:`X|Y` follows the distribution
 :math:`\mathcal{N}\left(\mu, \dfrac{1}{\sqrt{\kappa Y}}\right)`.
 
+Its probability density function is defined as:
+
+.. math::
+
+    f_{(Y,X)}(y,x) = \dfrac{\beta^\alpha}{\Gamma(\alpha)}\sqrt{\dfrac{\kappa}{2\pi}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
+
 Parameters
 ----------
 mu : float :math:`\mu`
@@ -16,14 +22,6 @@ alpha : float  :math:`\alpha >0`
      Shape parameter of the conditioning Gamma distribution of :math:`Y`.
 beta : float  :math:`\beta >0`
      Rate parameter of the conditioning Gamma distribution of :math:`Y`.
-
-Notes
------
-Its probability density function is defined as:
-
-.. math::
-
-    f_{(Y,X)}(y,x) = \dfrac{\beta^\alpha}{\Gamma(\alpha)}\sqrt{\dfrac{\kappa}{2\pi}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
 
 Examples
 --------

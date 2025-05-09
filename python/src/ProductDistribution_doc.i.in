@@ -3,23 +3,6 @@
 
 Helper class for defining the push-forward distribution of a given univariate distribution by a given scalar function.
 
-Parameters
-----------
-
-distX : :class:`~openturns.Distribution`, univariate
-    Independent of `distY`
-
-distY : :class:`~openturns.Distribution`, univariate
-    Independent of `distX`
-
-Returns
--------
-distZ : :class:`~openturns.Distribution`, univariate
-    :math:`distZ` is the distribution of the random variable :math:`Z = XY` when :math:`(X,Y)` is a random vector with independent copula and respective marginal distributions `distX` and `distY`.
-
-
-Notes
------
 We note :math:`Z=XY` the scalar random variable which distribution is :math:`f_Z`.
  
 .. math::
@@ -38,6 +21,21 @@ Its first moments, if finite, are defined as:
         \Var{Z} & = & \Expect{X}^2 \Var{Y} +  \Expect{Y}^2 \Var{X} + \Var{X}  \Var{Y} 
     \end{eqnarray*}
 
+Parameters
+----------
+
+distX : :class:`~openturns.Distribution`, univariate
+    Independent of `distY`
+
+distY : :class:`~openturns.Distribution`, univariate
+    Independent of `distX`
+
+Returns
+-------
+distZ : :class:`~openturns.Distribution`, univariate
+    :math:`distZ` is the distribution of the random variable :math:`Z = XY`
+    when :math:`(X,Y)` is a random vector with independent copula
+    and respective marginal distributions `distX` and `distY`.
 
 Examples
 --------

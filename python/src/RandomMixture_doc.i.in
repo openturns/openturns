@@ -3,35 +3,6 @@
 
 Refer to :ref:`random_mixture`.
 
-Available constructors:
-    RandomMixture(*coll, cst*)
-
-    RandomMixture(*coll, weights, cst*)
-
-    RandomMixture(*coll, weightsMatrix*)
-
-    RandomMixture(*coll, weightsMatrix, constant*)
-
-
-Parameters
-----------
-coll : list of :class:`~openturns.Distribution`
-    The collection of distributions that model the random vector.
-cst : float
-    Constant coefficient of the affine expression in dimension 1.
-    Default value is zero.
-weights :  sequence of float
-    Weights of the affine combination in dimension 1.
-    Default value is (1, ...,1).
-constant : sequence of float
-    Constant vector of the affine expression.
-    Its size should be equal to the dimension of the distribution.
-    Default value is (0,...,0).
-weightsMatrix :  2-d sequence of float
-    Weights of the affine combination.
-
-Notes
------
 Create an affine combination of input random variables of the form :math:`\vect{Y} = \vect{y}_0 + \mat{M} \vect{X}` where:
 
 - :math:`\vect{Y}` is a random vector of size :math:`d` with :math:`d\in \{1,2,3\}`
@@ -94,6 +65,33 @@ Its first moments are:
         \Expect{\vect{Y}}  & = & \vect{y}_0 + \mat{M}\Expect{\vect{X}} \\
         \Cov{Y}  & = & \mat{M} \Cov{X} \Tr{\mat{M}}
     \end{eqnarray*}
+
+Available constructors:
+    RandomMixture(*coll, cst*)
+
+    RandomMixture(*coll, weights, cst*)
+
+    RandomMixture(*coll, weightsMatrix*)
+
+    RandomMixture(*coll, weightsMatrix, constant*)
+
+
+Parameters
+----------
+coll : list of :class:`~openturns.Distribution`
+    The collection of distributions that model the random vector.
+cst : float
+    Constant coefficient of the affine expression in dimension 1.
+    Default value is zero.
+weights :  sequence of float
+    Weights of the affine combination in dimension 1.
+    Default value is (1, ...,1).
+constant : sequence of float
+    Constant vector of the affine expression.
+    Its size should be equal to the dimension of the distribution.
+    Default value is (0,...,0).
+weightsMatrix :  2-d sequence of float
+    Weights of the affine combination.
 
 Examples
 --------

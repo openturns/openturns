@@ -1,17 +1,6 @@
 %feature("docstring") OT::InverseGamma
 "InverseGamma distribution.
 
-Parameters
-----------
-k : float, :math:`k > 0`
-    Shape parameter.
-    Default value is 1.0.
-lambda : float, :math:`\lambda > 0`
-    Rate parameter.
-    Default value is 1.0.
-
-Notes
------
 :math:`X` follows an Inverse Gamma distribution of parameters :math:`(\lambda, k)` means that :math:`\dfrac{1}{X}` follows the :math:`\Gamma(k, \dfrac{1}{\lambda})` distribution, with :math:`k>0` and :math:`\lambda>0`.
 
 Its probability density function is defined as:
@@ -33,6 +22,14 @@ Its first moments are:
         \Var{X} & = &\dfrac{1}{\lambda^2(k-1)^2(k-2)} \quad \text{if } k>2 
     \end{eqnarray*}
 
+Parameters
+----------
+k : float, :math:`k > 0`
+    Shape parameter.
+    Default value is 1.0.
+lambda : float, :math:`\lambda > 0`
+    Rate parameter.
+    Default value is 1.0.
 
 Examples
 --------

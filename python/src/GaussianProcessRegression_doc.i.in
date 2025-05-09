@@ -16,11 +16,8 @@ Parameters
 ----------
 gprFitterResult : :class:`~openturns.experimental.GaussianProcessFitterResult`
     Result class 
-
 inputSample, outputSample : 2-d sequence of float
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}` upon which the meta-model is built.
-covarianceModel : :class:`~openturns.CovarianceModel`
-
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model used for the underlying Gaussian process assumption.
 trendFunction : :class:`~openturns.Function`

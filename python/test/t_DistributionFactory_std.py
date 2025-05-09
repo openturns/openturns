@@ -102,7 +102,7 @@ for factory in factories:
         for combination in combinations:
             indices = [int(x) for x in combination]
             values = [refParameter[i] for i in indices]
-            factory.setKnownParameter(values, indices)
+            factory.setKnownParameter(indices, values)
             assert factory.getKnownParameterIndices() == indices
             assert factory.getKnownParameterValues() == values
             res = factory.build(sample)

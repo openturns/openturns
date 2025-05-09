@@ -10,22 +10,18 @@ This section details classes, functions included in the Python bindings.
     :maxdepth: 1
 
     base_objects
-    calibration
-    combinatorial_generators
     designs_of_experiments
     functions
     graphs
-    integration
-    isoprobabilistic_transformation
-    optimization
     orthogonal_basis
+    data_analysis
     probabilistic_modelling
-    response_surface/response_surface
-    statistics_on_sample
     stochastic_process
+    meta_modelling
     central_tendency
-    threshold_probability_reliability_algorithms
-    threshold_probability_simulation_algorithms
-    transformations
+    calibration
+    reliability
+    sensitivity_analysis
+    numerical_methods
     configuration
     usecases

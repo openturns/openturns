@@ -83,7 +83,7 @@ WeibullMin WeibullMinFactory::buildMethodOfLikelihoodMaximization(const Sample &
 {
   LOGINFO("in WeibullMinFactory, using likelihood maximization");
   MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
-  factory.setKnownParameter(knownParameterValues_, knownParameterIndices_);
+  factory.setKnownParameter(knownParameterIndices_, knownParameterValues_);
   return buildAsWeibullMin(factory.build(sample).getParameter());
 }
 

@@ -5,6 +5,16 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+Its probability density function is defined as:
+
+.. math::
+
+    f_{\vect{Y}|\vect{X}_1=\vect{x}_1, ..., \vect{X}_n = \vect{x}_n}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}'}(\vect{x}_i) d \vect{y}'}
+
+with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
+:math:`f_{\vect{Y}}` the PDF of the conditioning distribution, i.e. the marginal distribution of :math:`\vect{Y}`,
+:math:`\vect{x}_i` the observations of the deconditioned distribution.
+
 Parameters
 ----------
 deconditioned : :class:`~openturns.DeconditionedDistribution`
@@ -16,18 +26,6 @@ See Also
 --------
 openturns.DeconditionedDistribution
 openturns.MetropolisHastings
-
-Notes
------
-Its probability density function is defined as:
-
-.. math::
-
-    f_{\vect{Y}|\vect{X}_1=\vect{x}_1, ..., \vect{X}_n = \vect{x}_n}(\vect{y}) = \frac{f_{\vect{Y}}(\vect{y})\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}_i)}{\int f_{\vect{Y}}(\vect{y}')\prod_{i=1}^n f_{\vect{X}|\vect{\Theta}=\vect{y}'}(\vect{x}_i) d \vect{y}'}
-
-with :math:`f_{\vect{X}|\vect{\Theta}}` the PDF of the conditioned distribution,
-:math:`f_{\vect{Y}}` the PDF of the conditioning distribution, i.e. the marginal distribution of :math:`\vect{Y}`,
-:math:`\vect{x}_i` the observations of the deconditioned distribution.
 
 Examples
 --------

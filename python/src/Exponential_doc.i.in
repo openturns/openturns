@@ -1,19 +1,6 @@
 %feature("docstring") OT::Exponential
 "Exponential distribution.
 
-Parameters
-----------
-lambda : float, :math:`\lambda > 0`
-    Rate parameter.
-    
-    Default value is 1.0.
-gamma : float, optional
-    Location parameter :math:`\gamma`.
-    
-    Default value is 0.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -32,6 +19,17 @@ Its first moments are:
         \Expect{X} & = & \gamma + \frac{1}{\lambda} \\
         \Var{X} & = & \frac{1}{\lambda^2}
     \end{eqnarray*}
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Rate parameter.
+    
+    Default value is 1.0.
+gamma : float, optional
+    Location parameter :math:`\gamma`.
+    
+    Default value is 0.0.
 
 Examples
 --------

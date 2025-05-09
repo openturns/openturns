@@ -157,33 +157,4 @@ History strategy
     Last
     Null
 
-Spatial lookup
-==============
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    NearestNeighbourAlgorithm
-    KDTree
-    NaiveNearestNeighbour
-    NearestNeighbour1D
-    RegularGridNearestNeighbour
-    EnclosingSimplexAlgorithm
-    NaiveEnclosingSimplex
-    RegularGridEnclosingSimplex
-    EnclosingSimplexMonotonic1D
-    BoundingVolumeHierarchy
-
-Iterative statistics
-====================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    IterativeAlgorithm
-    IterativeExtrema
-    IterativeMoments
-    IterativeThresholdExceedance
 

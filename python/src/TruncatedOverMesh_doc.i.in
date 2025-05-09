@@ -1,6 +1,14 @@
 %feature("docstring") OT::TruncatedOverMesh
 "Truncated distribution over a mesh.
 
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{|\cD|}, \quad x \in \cD
+
+with :math:`\cD\subset\Rset^n` a mesh of dimension :math:`n`.
+
 Parameters
 ----------
 dist : :class:`~openturns.Distribution`
@@ -14,14 +22,6 @@ UniformOverMesh
 
 Notes
 -----
-Its probability density function is defined as:
-
-.. math::
-
-    f_X(x) = \frac{1}{|\cD|}, \quad x \in \cD
-
-with :math:`\cD\subset\Rset^n` a mesh of dimension :math:`n`.
-
 The sampling can be done using either a global rejection method or a local rejection method simplex by simplex. This is controlled by the entry *TtuncatedOverMesh-UseRejection* of :class:`~openturns.ResourceMap`. If it is set to *True*, the global rejection is used, otherwise the local rejection is used.
 If the mesh is significantly smaller than the support of the distribution, the second method is more efficient but it needs an offline computation of cost proportionnal to the number of simplices in the mesh.
 

@@ -1,19 +1,6 @@
 %feature("docstring") OT::Arcsine
 "Arcsine distribution.
 
-Parameters
-----------
-a : float
-    lower bound.
-    
-    Default value is -1.0.
-b : float
-    upper bound, :math:`b > a`.
-    
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -33,9 +20,22 @@ Its first moments are:
         \Var{X} & = & \frac{(b - a)^2}{8}
     \end{eqnarray*}
 
+Parameters
+----------
+a : float
+    lower bound.
+
+    Default value is -1.0.
+b : float
+    upper bound, :math:`b > a`.
+
+    Default value is 1.0.
+
+Notes
+-----
 It is possible to create an Arcsine distribution from the alternative parametrization :math:`(\mu, \sigma)`: see  :class:`~openturns.ArcsineMuSigma`. In that case, all the results are presented in that new parametrization.
 
-In order to use the alternative  parametrization :math:`(\mu, \sigma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(a, b)`
+In order to use the alternative parametrization :math:`(\mu, \sigma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(a, b)`
 
 Examples
 --------

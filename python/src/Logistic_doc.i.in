@@ -1,19 +1,6 @@
 %feature("docstring") OT::Logistic
 "Logistic distribution.
 
-Parameters
-----------
-mu : float
-    Mean parameter :math:`\mu`.
-    
-    Default value is 1.0.
-beta : float, :math:`\beta > 0`
-    Scale parameter :math:`\beta`.
-    
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -34,6 +21,17 @@ Its first moments are:
         \Expect{X} & = & \mu \\
         \Var{X} & = & \frac{1}{3} \pi^2 \beta^2
     \end{eqnarray*}
+
+Parameters
+----------
+mu : float
+    Mean parameter :math:`\mu`.
+
+    Default value is 1.0.
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`.    
+
+    Default value is 1.0.
 
 Examples
 --------

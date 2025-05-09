@@ -11,12 +11,12 @@ infDist = factory.build(sample)
 print(f"estimated distribution={infDist}")
 
 # set (a,b) out of (r, t, a, b)
-factory.setKnownParameter([-1.0, 1.0], [2, 3])
+factory.setKnownParameter([2, 3], [-1.0, 1.0],)
 infDist = factory.build(sample)
 print(f"estimated distribution with bounds={infDist}")
 
 factory = ot.MaximumLikelihoodFactory(ot.Exponential())
-factory.setKnownParameter([0.1], [1])
+factory.setKnownParameter([1], [0.1])
 print(factory.build())
 print(factory.build([3, 0]))
 

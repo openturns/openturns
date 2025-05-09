@@ -1,24 +1,7 @@
 %feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution
 "Maximum Entropy Order Statistics distribution.
 
-Parameters
-----------
-coll : sequence of :class:`~openturns.Distribution`
-    The collection of the marginal distributions.
-    
-    Default collection is [Unif(-1.0, 0.5), Unif(-0.5, 1.0)].
-useApproximation : bool
-    Indicates whether the expression :math:`\Phi_k(t)` is approximated with a polynomials (Hermitte with degree 4 on a discretization determined by a Gauss-Kronrod algorithm applied to :math:`\Phi_k(t)`).
-
-    By default, the approximation is used.
-checkMarginals : bool
-    Indicates whether the compatibility tests on the marginals is done.
-
-    By default, the tests are done.
-
-Notes
------
-Let :math:`\inputRV = (X_1, \dots, X_n)` be random vector  which marginals are given and such that:
+Let :math:`\inputRV = (X_1, \dots, X_n)` be random vector which marginals are given and such that:
 
 .. math::
     :label: orderConstraint
@@ -26,7 +9,7 @@ Let :math:`\inputRV = (X_1, \dots, X_n)` be random vector  which marginals are g
     X_1 \leq \dots \leq X_n \quad \mbox{almost surely}.
 
 The class :class:`~openturns.MaximumEntropyOrderStatisticsDistribution` implements the
-joint distribution of :math:`\inputRV` that maximizes the entropy of  :math:`\inputRV`.
+joint distribution of :math:`\inputRV` that maximizes the entropy of :math:`\inputRV`.
 See [fischer2017]_ for more details.
 
 The distribution of :math:`\inputRV` is the distribution of the random vector of the :math:`n`
@@ -35,13 +18,11 @@ order statistics of a scalar distribution :math:`Y`. We can write:
  .. math::
    (X_1, \dots, X_n) \sim (Y_{(1)}, \dots, Y_{(n)})
 
-In that case, we do not know  :math:`Y` but we fix the marginals of its order
-statistics distribution.
+In that case, we do not know :math:`Y` but we fix the marginals of its order statistics distribution.
 
 Note that if the :math:`X_i \sim \beta(i, n-i+1)`, then :math:`\inputRV` is
 the joint distribution of the :math:`n` order statistics of :math:`Y \sim \cU([0,1])`.
-It is implemented by the class
-:class:`~openturns.experimental.UniformOrderStatistics`.
+It is implemented by the class :class:`~openturns.experimental.UniformOrderStatistics`.
 
 The marginals of  :math:`\inputRV` must be compatible with the order constraint
 :eq:`orderConstraint`. The library checks this compatibility by default. It requires that
@@ -69,6 +50,23 @@ If :math:`f_i` is the cdf of :math:`X_i`, the pdf of :math:`\inputRV` is defined
 
              \text{with } \phi_k(x_k) = \frac{f_k(x_k)}{F_{k-1}(x_k)-F_k(x_k)}
 
+Parameters
+----------
+coll : sequence of :class:`~openturns.Distribution`
+    The collection of the marginal distributions.
+    
+    Default collection is [Unif(-1.0, 0.5), Unif(-0.5, 1.0)].
+useApproximation : bool
+    Indicates whether the expression :math:`\Phi_k(t)` is approximated with a polynomials (Hermitte with degree 4 on a discretization determined by a Gauss-Kronrod algorithm applied to :math:`\Phi_k(t)`).
+
+    By default, the approximation is used.
+checkMarginals : bool
+    Indicates whether the compatibility tests on the marginals is done.
+
+    By default, the tests are done.
+
+Notes
+-----
 We note:
 
 .. math::

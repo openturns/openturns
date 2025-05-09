@@ -52,12 +52,12 @@ public:
   GeneralLinearModelResult(const Sample & inputData,
                            const Sample & outputData,
                            const Function & metaModel,
-                           const Point & residuals,
-                           const Point & relativeErrors,
                            const Basis & basis,
                            const Point & trendCoefficients,
                            const CovarianceModel & covarianceModel,
-                           const Scalar optimalLogLikelihood);
+                           const Scalar optimalLogLikelihood,
+                           const Point & residuals = Point(),
+                           const Point & relativeErrors = Point());
 
   /** Virtual constructor */
   GeneralLinearModelResult * clone() const override;
