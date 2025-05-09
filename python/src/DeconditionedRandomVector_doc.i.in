@@ -8,19 +8,20 @@ Parameters
 
 conditionedDist : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`\vect{\Theta}`.
     
-randomParameters : :class:`~openturns.RandomVector`, the random parameters :math:`\vect{\Theta}` of the `conditionedDist` distribution. 
+parametersRandomVector : :class:`~openturns.RandomVector`, the parameters random vector :math:`\vect{\Theta}` of the `conditionedDist` distribution. 
 
 Notes
 -----
-Its probability density function is defined as:
+Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` such that
+:math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
+with :math:`\vect{\Theta}` a random vector following the distribution :math:`\mathcal{L}_{\vect{\Theta}}`.
 
-.. math::
+Then this class implements the random vector :math:`\inputRV`. Note that a :class:`~openturns.RandomVector` can only be sampled.
 
-    f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{\theta}}(\vect{x}|\vect{\theta}) f_{\vect{\Theta}}(\vect{\theta})\di{\vect{\theta}}
+There is no restriction on the random vector :math:`\vect{\Theta}`. It can be created from any multivariate distribution or
+as the output of a function :math:`f` applied to an input random vector :math:`\vect{Y}`: :math:`\vect{\Theta} = f(\vect{Y})`.
 
-with  :math:`f_{\vect{X}|\vect{\Theta}=\vect{\theta}}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}`, where :math:`\vect{\Theta}` has been replaced by :math:`\vect{\theta}`, :math:`f_{\vect{\Theta}}` the PDF of :math:`\vect{\Theta}`.
-
-Note that there exist other (quasi) equivalent modellings using a combination of the classes :class:`~openturns.DeconditionedDistribution` and :class:`~openturns.RandomVector` (see the Use Cases Guide).
+Note that in some restricted cases, it is possible to create the distribution of :math:`\inputRV` using the class :class:`~openturns.DeconditionedDistribution`.
 
 Examples
 --------

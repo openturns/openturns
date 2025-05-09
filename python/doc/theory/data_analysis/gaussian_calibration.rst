@@ -131,7 +131,7 @@ Therefore, the posterior distribution of :math:`\vect{\theta}` given the observa
 
 .. math::
 
-    p(\vect{\theta}|\vect{y}) \propto \exp\left( -\frac{1}{2} \left( \|\vect{y}-H(\vect{\theta})\|^2_R
+    p(\vect{\theta}|\vect{y}) \propto \exp\left( -\frac{1}{2} \left( \|\vect{y}-h(\vect{\theta})\|^2_R
     + \|\vect{\theta}-\vect{\mu} \|^2_B \right) \right)
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`.
@@ -144,7 +144,7 @@ reached at :
 
 .. math::
 
-    \hat{\vect{\theta}}_{MAP} = \argmin_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - H(\vect{\theta})\|^2_R
+    \hat{\vect{\theta}}_{MAP} = \argmin_{\vect{\theta}\in\Rset^{d_h}} \frac{1}{2} \left( \|\vect{y} - h(\vect{\theta})\|^2_R
     + \|\vect{\theta}-\vect{\mu} \|^2_B \right).
 
 It is called the *maximum a posteriori posterior* estimator or

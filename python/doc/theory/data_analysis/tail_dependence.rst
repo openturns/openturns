@@ -105,7 +105,7 @@ We show that:
 
     \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
 
-where :math:`\bar{C}` is the copula survivor function defined by:
+where :math:`\bar{C}` is the copula survival function defined by:
 
 .. math::
 

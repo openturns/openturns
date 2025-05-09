@@ -1295,6 +1295,11 @@ confInterval : :class:`~openturns.Interval`
 beta : float
     The probability :math:`\beta`.
 
+Notes
+-----
+Refer to :func:`computeBilateralConfidenceInterval()`. In addition to the confidence interval,
+the method returns the probability :math:`\beta`.
+
 Examples
 --------
 We consider a Normal(2) distribution with zero mean, unit standard deviation and independent components.
@@ -1371,8 +1376,6 @@ OT_Distribution_computeUnilateralConfidenceInterval_doc
 %define OT_Distribution_computeUnilateralConfidenceIntervalWithMarginalProbability_doc
 "Compute a unilateral confidence interval.
 
-Refer to :func:`computeUnilateralConfidenceInterval()`
-
 Parameters
 ----------
 alpha : float, :math:`\alpha \in [0,1]`
@@ -1388,6 +1391,12 @@ confInterval : :class:`~openturns.Interval`
     The unilateral confidence interval of level *alpha*.
 marginalProb : float
     The value :math:`\beta` which is the common marginal probability of each marginal interval.
+
+Notes
+-----
+Refer to :func:`computeUnilateralConfidenceInterval()`. In addition to the confidence interval, the method returns the probability
+:math:`\beta`.
+
 
 Examples
 --------

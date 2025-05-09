@@ -38,7 +38,7 @@ This class requires the following features:
 - the random vector :math:`\inputRV_{\cI}` may have some discrete components and some continuous components. 
 
 Then, the pdf (probability density function if :math:`\inputRV_{\overline{\cI}}` is continuous or probability distribution function if
-:math:`\inputRV_{\overline{\cI}}` is discrete) of :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` is defined by (in the following expression, we assumed a particular order of the conditioned components among the whole set of components in order to ease the notation):
+:math:`\inputRV_{\overline{\cI}}` is discrete) of :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` is defined by (in the following expression, we assumed a particular order of the conditioned components among the whole set of components for easy reading):
 
 .. math::
     :label: condPDF
