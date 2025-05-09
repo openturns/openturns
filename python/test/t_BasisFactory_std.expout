@@ -1,17 +1,14 @@
 x= [2.0, 3.0]
 factory= class=ConstantBasisFactory name=Unnamed
-basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
- [ 0 ]]] )
+basis= Basis( [[x0,x1]->[1]] )
 y= [1]
 factory= class=LinearBasisFactory name=Unnamed
-basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
- [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+basis= Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
  [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
  [ 1 ]]] )
 y= [1,2,3]
 factory= class=QuadraticBasisFactory name=Unnamed
-basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
- [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+basis= Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
  [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
  [ 1 ]],QuadraticEvaluation
   center :
