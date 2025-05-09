@@ -1547,6 +1547,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
   addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold"});
 
+  // OMPExpansion parameters //
+  addAsString("OMPExpansion-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
+
   // LeastSquaresExpansion parameters //
   addAsString("LeastSquaresExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 
