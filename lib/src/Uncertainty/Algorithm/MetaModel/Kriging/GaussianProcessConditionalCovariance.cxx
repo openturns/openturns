@@ -170,11 +170,10 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
   // Symmetric : ok but not necessary definite. Here by definition it is!
   // So should we define  operator - & operator -= with covariances?
   LOGINFO("Compute Sigma_xx-BtB");
-  CovarianceMatrix result(*sigmaXX.getImplementation() - *BtB.getImplementation() );
+  CovarianceMatrix result((sigmaXX - BtB).getImplementation());
 
-  // Case of simple Kriging
-  if(basis.getSize() == 0) return result;
-
+  if (basis.getSize() > 0)
+    {
   // Case of universal Kriging: compute the covariance due to the regression part
   // Additional information have to be computed
   // 1) compute F
@@ -209,6 +208,21 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
   const Matrix rho(Gt_.solveLinearSystem(ux));
   LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
   result = result + rho.computeGram(true);
+    }
+  // now check if the result has positive diagonal elements
+  Scalar smallest = 0.0;
+  for (UnsignedInteger i = 0; i < result.getDimension(); ++i)
+    {
+      const Scalar dII = result(i, i);
+      if (dII < smallest) smallest = dII;
+    }
+  // If the smallest diagonal element is negative, shift the whole diagonal
+  // in order to make it zero
+  if (smallest < 0.0)
+    {
+      for (UnsignedInteger i = 0; i < result.getDimension(); ++i)
+	result(i, i) -= smallest;
+    }
   return result;
 }
 
@@ -321,10 +335,9 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
       result(j, 0) -= sum;
     }
 
-    // Case of simple Kriging
     const Basis basis(result_.getBasis());
-    if (basis.getSize() == 0) return result;
-
+    if (basis.getSize() > 0)
+      {
     // Case of universal Kriging: compute the covariance due to the regression part
     // Additional information have to be computed
     // 1) compute F
@@ -360,6 +373,21 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
         sum += rho(i, j) * rho(i, j);
       result(j, 0) += sum;
     }
+      } // universal kriging
+    // now check if the result has positive elements
+    Scalar smallest = 0.0;
+    for (UnsignedInteger i = 0; i < result.getSize(); ++i)
+      {
+	const Scalar varI = result(i, 0);
+	if (varI < smallest) smallest = varI;
+      }
+    // If the smallest element is negative, shift the whole sample
+    // in order to make it zero
+    if (smallest < 0.0)
+      {
+	for (UnsignedInteger i = 0; i < result.getSize(); ++i)
+	  result(i, 0) -= smallest;
+      }
     return result;
   } // end for if  outputdim=1
 
