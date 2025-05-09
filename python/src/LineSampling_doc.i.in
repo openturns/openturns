@@ -5,6 +5,10 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+
+This class implements the line sampling algorithm from [koutsourelakis2004]_ with adaptation
+of the important direction from [angelis2015]_, which is also known as adaptive line sampling.
+
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`, distributed according to
 the measure :math:`\inputMeasure`, and :math:`\model: \Rset^\inputDim \rightarrow \Rset`
 be the *limit state function* (where we only wrote the random input parameters).
@@ -20,19 +24,6 @@ The line sampling algorithm estimates the probability of the event :math:`\cD_f`
 
     P_f = \Prob{\model\left( \inputRV \right) \leq 0}
         = \int_{\Rset^{\inputDim}} \mathbf{1}_{\{\model(\vect{x}) \leq 0 \}}\inputMeasure(\vect{x})\di{\vect{x}}
-
-This class implements the line sampling algorithm from [koutsourelakis2004]_ with adaptation
-of the important direction from [angelis2015]_, which is also known as adaptive line sampling.
-
-The goal is to estimate the following probability:
-
-.. math::
-
-    P_f = \int_{\mathcal D_f} f_{\uX}(\ux)\di{\ux}\\
-        = \int_{\mathbb R^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \:\leq 0\: \}}f_{\uX}(\ux)\di{\ux}\\
-        = \Prob {\{g(\uX,\underline{d}) \leq 0\}}
-
-The line sampling algorithm is a variance reduction sampling method.
 
 Let :math:`T` be the iso-probabilistic transformation: :math:`T(\vect{X}) = \vect{Z}`. The
 random vector :math:`\vect{Z}` follows a spherical distribution, which means that it is written
