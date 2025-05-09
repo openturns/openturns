@@ -24,7 +24,6 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/GaussianProcessRegression.hxx"
-#include "openturns/GaussianProcessRegressionResult.hxx"
 #include "openturns/GaussianProcessConditionalCovariance.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/JointDistribution.hxx"

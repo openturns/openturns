@@ -136,7 +136,7 @@ for z in range(2):
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(15, 10))
 for z in range(numberOfZLevels):
     # Select the training samples corresponding to the correct combination
-    # of categorical levgetConditionalMarginalVarianceels
+    # of categorical levels
     ind = np.where(np.all(np.array(x[:, 1]) == z, axis=1))[0]
     xLoc = x[ind][:, 0]
     yLoc = y[ind]
