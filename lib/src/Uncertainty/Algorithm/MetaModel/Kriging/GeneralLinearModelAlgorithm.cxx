@@ -24,7 +24,6 @@
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/LinearFunction.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/ConstantFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"

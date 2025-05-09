@@ -20,6 +20,7 @@
  */
 #include "openturns/LinearBasisFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -55,7 +56,7 @@ Basis LinearBasisFactory::build() const
   Collection<Function> functions;
 
   // constant term
-  functions.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 1.0), Matrix(1, inputDimension_)));
+  functions.add(ConstantFunction(inputDimension_, Point({1.0})));
 
   // linear term
   for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
