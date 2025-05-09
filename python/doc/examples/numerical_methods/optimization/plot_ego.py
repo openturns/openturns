@@ -22,6 +22,7 @@ EfficientGlobalOptimization examples
 from openturns.usecases import branin_function
 from openturns.usecases import ackley_function
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
@@ -106,8 +107,10 @@ view = viewer.View(graph)
 # %%
 covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 2.5)
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-kriging.run()
+fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr.run()
 
 # %%
 # Create the optimization problem
@@ -124,11 +127,11 @@ problem.setBounds(bounds)
 # %%
 # In order to show the various options, we configure them all, even if most could be left to default settings in this case.
 #
-# The most important method is :class:`~openturns.EfficientGlobalOptimization.setMaximumCallsNumber` which limits the number of iterations that the algorithm can perform.
+# The most important method is :class:`~openturns.experimental.EfficientGlobalOptimization.setMaximumCallsNumber` which limits the number of iterations that the algorithm can perform.
 # In the Ackley example, we choose to perform 30 iterations of the algorithm.
 
 # %%
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(30)
 algo.run()
 result = algo.getResult()
@@ -205,7 +208,7 @@ upperbound = bm.upperbound
 # %%
 # and we load the model function and its noise :
 objectiveFunction = bm.model
-noise = bm.noiseModel
+# noise = bm.noiseModel
 
 # %%
 # We build a sample out of the three minima :
@@ -234,7 +237,6 @@ sampleSize = 10 * dim
 experiment = ot.LHSExperiment(distribution, sampleSize)
 inputSample = experiment.generate()
 outputSample = objectiveFunction(inputSample)
-noiseSample = noise(inputSample)
 
 # %%
 graph = ot.Graph(
@@ -247,11 +249,11 @@ view = viewer.View(graph)
 # %%
 covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 2.5)
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-
-# %%
-kriging.setNoise([x[0] for x in noiseSample])
-kriging.run()
+fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+gpr = otexp.GaussianProcessRegression(fitter.getResult())
+# gpr.setNoise([x[0] for x in noise(inputSample)])
+gpr.run()
 
 # %%
 # Create and solve the problem
@@ -266,7 +268,7 @@ problem.setBounds(bounds)
 
 # %%
 # We configure the algorithm, with the model noise:
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noise)
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(30)
 
 # %%

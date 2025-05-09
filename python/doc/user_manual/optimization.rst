@@ -34,7 +34,7 @@ Optimization solvers
     CMinpack
     Cobyla
     Dlib
-    EfficientGlobalOptimization
+    experimental.EfficientGlobalOptimization
     Ipopt
     MultiStart
     NLopt

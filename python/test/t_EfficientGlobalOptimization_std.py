@@ -1,8 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import math as m
+import openturns.experimental as otexp
 import openturns.testing
+import math as m
 
 ot.Log.Show(ot.Log.NONE)
 ot.TBB.Disable()
@@ -43,7 +44,7 @@ kriging.setNoise(noise)
 kriging.run()
 
 # algo
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
+algo = otexp.EfficientGlobalOptimization(problem, kriging.getResult(), noiseModel)
 algo.setMaximumCallsNumber(14)
 algo.setAEITradeoff(0.66744898)
 algo.run()
@@ -118,11 +119,13 @@ outputSample = model(inputSample)
 # first kriging model
 covarianceModel = ot.SquaredExponential([2.50057] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-kriging.run()
+fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr.run()
 
 # algo
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 # solver = ot.NLopt('GN_ESCH')
 # solver = ot.NLopt('GN_MLSL')
 algo.setMaximumCallsNumber(15)
@@ -175,14 +178,14 @@ covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 kriging.run()
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setMaximumCallsNumber(10)
 algo.run()
 result = algo.getResult()
 
 # check maximization
 problem.setMinimization(False)
-algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setMaximumCallsNumber(10)
 algo.run()
 result = algo.getResult()

@@ -987,8 +987,7 @@ ot_add_python_module(VisualTest visualtest_module.i
                     )
 ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
-		      FejerAlgorithm.i FejerAlgorithm_doc.i.in
-                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
+                      FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
                       HSICStatImplementation.i HSICStatImplementation_doc.i.in
                       HSICStat.i HSICStat_doc.i.in
@@ -1031,6 +1030,7 @@ ot_add_python_module(experimental experimental_module.i
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in
                      GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
                      GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
+                     EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i.in
                      RatioOfUniforms.i RatioOfUniforms_doc.i.in
                      QuantileConfidence.i QuantileConfidence_doc.i.in
