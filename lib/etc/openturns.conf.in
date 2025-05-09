@@ -905,6 +905,9 @@
   <!-- OT::FunctionalChaosValidation parameters -->
   <FunctionalChaosValidation-ModelSelection        value_bool="false" />
 
+  <!-- OT::OMPExpansion parameters -->
+  <OMPExpansion-DecompositionMethod       value_str="SVD" />
+
   <!-- OT::LeastSquaresExpansion parameters -->
   <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />
 
