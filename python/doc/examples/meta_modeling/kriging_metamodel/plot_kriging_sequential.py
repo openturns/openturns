@@ -1,6 +1,6 @@
 """
-Sequentially adding new points to a Gaussian Process fitter
-===========================================================
+Sequentially adding new points to a Gaussian Process metamodel
+==============================================================
 """
 
 # %%

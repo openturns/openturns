@@ -1,5 +1,5 @@
 """
-Example of multi output Gaussian Process Fitter on the fire satellite model
+Example of multi output Gaussian Process Regression on the fire satellite model
 ===========================================================================
 """
 
