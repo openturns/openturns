@@ -1,10 +1,10 @@
 """
-Sequentially adding new points to a Kriging
-===========================================
+Sequentially adding new points to a Gaussian Process fitter
+===========================================================
 """
 
 # %%
-# In this example, we show how to sequentially add new points to a Kriging in order to improve the predictivity of the metamodel.
+# In this example, we show how to sequentially add new points to a  Gaussian Process fitter (Kriging) in order to improve the predictivity of the metamodel.
 # In order to create simple graphics, we consider a 1-d function.
 
 # %%
@@ -54,7 +54,7 @@ view = viewer.View(graph)
 
 
 # %%
-def createMyBasicKriging(X, Y):
+def createMyBasicGPfitter(X, Y):
     """
     Create a kriging from a pair of X and Y samples.
     We use a 3/2 Matérn covariance model and a constant trend.
@@ -87,15 +87,15 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 
 
 # %%
-def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, level=0.95):
+def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     """
-    Given a kriging result, plot the data, the kriging metamodel
+    Given a kriging result, plot the data, the GP fitter metamodel
     and a confidence interval.
     """
     samplesize = X.getSize()
     meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
-    graphKriging.setLegends(["Kriging"])
+    graphKriging.setLegends(["Gaussian Process fitter"])
     # Create a grid of points and evaluate the function and the kriging
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
@@ -151,11 +151,11 @@ def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, level=0.95):
 
 
 # %%
-# We start by creating the initial Kriging metamodel on the 4 points in the design of experiments.
+# We start by creating the initial GP fitter metamodel on the 4 points in the design of experiments.
 
 # %%
-gprResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
+gprResult = createMyBasicGPfitter(X, Y)
+graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
 view = viewer.View(graph)
 
 
@@ -200,13 +200,13 @@ X.add(xNew)
 Y.add(yNew)
 
 # %%
-# We now plot the updated Kriging.
+# We now plot the updated GP fitter.
 
 # %%
 # sphinx_gallery_thumbnail_number = 3
-gprResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
-graph.setTitle("Kriging #0")
+gprResult = createMyBasicGPfitter(X, Y)
+graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
+graph.setTitle("GP fitter #0")
 view = viewer.View(graph)
 
 # %%
@@ -218,9 +218,9 @@ for krigingStep in range(5):
     yNew = g(xNew)
     X.add(xNew)
     Y.add(yNew)
-    gprResult = createMyBasicKriging(X, Y)
-    graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
-    graph.setTitle("Kriging #%d " % (krigingStep + 1) + graph.getTitle())
+    gprResult = createMyBasicGPfitter(X, Y)
+    graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
+    graph.setTitle("GP fitter #%d " % (krigingStep + 1) + graph.getTitle())
     View(graph)
 
 # %%
