@@ -42,9 +42,6 @@
 /* Uncertainty/Algorithm */
 %include TaylorExpansionMoments.i
 
-/* Uncertainty/Algorithm/Optimization */
-%include EfficientGlobalOptimization.i
-
  /* Uncertainty/Algorithm/Transformation */
 %import transformation_module.i
 %import UncertaintyTransformationTemplateDefs.i

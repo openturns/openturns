@@ -24,6 +24,7 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/KrigingResult.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,6 +49,10 @@ public:
   EfficientGlobalOptimization(const OptimizationProblem & problem,
                               const KrigingResult & krigingResult,
                               const Function & noise = Function());
+
+  /** Constructor with parameters */
+  EfficientGlobalOptimization(const OptimizationProblem & problem,
+                              const GaussianProcessRegressionResult & gprResult);
 
   /** Virtual constructor */
   EfficientGlobalOptimization * clone() const override;
@@ -92,7 +97,8 @@ public:
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
-  /** Kriging result accessor (especially useful after run() has been called) */
+  /** GPR result accessor (especially useful after run() has been called) */
+  GaussianProcessRegressionResult getGPRResult() const;
   KrigingResult getKrigingResult() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -108,6 +114,8 @@ protected:
 
 private:
   KrigingResult krigingResult_;
+  GaussianProcessRegressionResult gprResult_;
+  Bool isGPR_ = false;
   OptimizationAlgorithm solver_;
 
   // whether the solver was set

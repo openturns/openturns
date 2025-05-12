@@ -26,6 +26,9 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/GaussianProcessFitter.hxx"
+#include "openturns/GaussianProcessRegression.hxx"
+#include "openturns/GaussianProcessConditionalCovariance.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,7 +62,7 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
   checkProblem(problem);
-  if (krigingResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Metamodel must be 1-d";
+  if (krigingResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Kriging metamodel must be 1-d";
   if (noise.getEvaluation().getImplementation()->isActualImplementation())
   {
     setMetamodelNoise(noise);
@@ -67,17 +70,37 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   }
 }
 
+EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProblem & problem,
+    const GaussianProcessRegressionResult & gprResult)
+  : OptimizationAlgorithmImplementation(problem)
+  , gprResult_(gprResult)
+  , isGPR_(true)
+  , solver_(OptimizationAlgorithm::GetByName(ResourceMap::GetAsString("EfficientGlobalOptimization-DefaultOptimizationAlgorithm")))
+  , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
+  , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
+  , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
+  , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
+  , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+{
+  checkProblem(problem);
+  if (gprResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "GPR metamodel must be 1-d";
+}
 
 class ExpectedImprovementEvaluation : public EvaluationImplementation
 {
 public:
   ExpectedImprovementEvaluation (const Scalar optimalValue,
-                                 const KrigingResult & metaModelResult,
+                                 const KrigingResult & krigingResult,
+                                 const GaussianProcessRegressionResult & gprResult,
+                                 const Bool isGPR,
                                  const Function & noiseModel,
                                  const Bool isMinimization)
     : EvaluationImplementation()
     , optimalValue_(optimalValue)
-    , metaModelResult_(metaModelResult)
+    , krigingResult_(krigingResult)
+    , gprResult_(gprResult)
+    , gprCov_(gprResult)
+    , isGPR_(isGPR)
     , noiseModel_(noiseModel)
     , isMinimization_(isMinimization)
   {
@@ -95,9 +118,9 @@ public:
 
   Scalar computeAsScalar(const Point & x) const
   {
-    const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
+    const Scalar mx = isGPR_ ? gprCov_.getConditionalMean(x)[0] : krigingResult_.getConditionalMean(x)[0];
     const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
-    const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
+    const Scalar sk2 = isGPR_ ? gprCov_.getConditionalMarginalVariance(x) : krigingResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
     if (!SpecFunc::IsNormal(sk))
       return SpecFunc::LowestScalar;
@@ -129,7 +152,10 @@ public:
 
   UnsignedInteger getInputDimension() const
   {
-    return metaModelResult_.getMetaModel().getInputDimension();
+    if (isGPR_)
+      return gprResult_.getMetaModel().getInputDimension();
+    else
+      return krigingResult_.getMetaModel().getInputDimension();
   }
 
   UnsignedInteger getOutputDimension() const
@@ -137,19 +163,12 @@ public:
     return 1;
   }
 
-  Description getInputDescription() const
-  {
-    return metaModelResult_.getMetaModel().getInputDescription();
-  }
-
-  Description getOutputDescription() const
-  {
-    return metaModelResult_.getMetaModel().getOutputDescription();
-  }
-
 protected:
   Scalar optimalValue_;
-  KrigingResult metaModelResult_;
+  KrigingResult krigingResult_;
+  GaussianProcessRegressionResult gprResult_;
+  GaussianProcessConditionalCovariance gprCov_;
+  Bool isGPR_ = false;
   Function noiseModel_;
 
   // whether the global problem is a miminization (the improvement criterion is always maximized)
@@ -157,15 +176,23 @@ protected:
 };
 
 
-
-
 void EfficientGlobalOptimization::run()
 {
   const OptimizationProblem problem(getProblem());
   const UnsignedInteger dimension = problem.getDimension();
   const Function model(problem.getObjective());
-  Sample inputSample(krigingResult_.getInputSample());
-  Sample outputSample(krigingResult_.getOutputSample());
+  Sample inputSample;
+  Sample outputSample;
+  if (isGPR_)
+  {
+    inputSample = gprResult_.getInputSample();
+    outputSample = gprResult_.getOutputSample();
+  }
+  else
+  {
+    inputSample = krigingResult_.getInputSample();
+    outputSample = krigingResult_.getOutputSample();
+  }
   UnsignedInteger size = inputSample.getSize();
   Point noise(size);
   const Bool hasNoise = metamodelNoise_.getEvaluation().getImplementation()->isActualImplementation();
@@ -212,7 +239,9 @@ void EfficientGlobalOptimization::run()
 
   UnsignedInteger iterationNumber = 0;
   // use the provided kriging result at first iteration
-  KrigingResult metaModelResult(krigingResult_);
+
+  GaussianProcessRegressionResult gprResult(gprResult_);
+  KrigingResult krigingResult(krigingResult_);
 
   while ((!exitLoop) && (evaluationNumber < getMaximumCallsNumber()))
   {
@@ -222,11 +251,11 @@ void EfficientGlobalOptimization::run()
       // with noisy objective we don't have access to the real current optimal value
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
       optimalValueSubstitute = problem.isMinimization() ? SpecFunc::Infinity : SpecFunc::LowestScalar;
-      const Sample mx(metaModelResult.getConditionalMean(inputSample));
+      const Sample mx(krigingResult.getConditionalMean(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);
-        const Scalar sk2 = metaModelResult.getConditionalMarginalVariance(x);
+        const Scalar sk2 = krigingResult.getConditionalMarginalVariance(x);
         const Scalar u = mx(i, 0) + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalValueSubstitute))
             || (!problem.isMinimization() && (u > optimalValueSubstitute)))
@@ -236,7 +265,7 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_, problem.isMinimization()));
+    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, krigingResult, gprResult, isGPR_, noiseModel_, problem.isMinimization()));
 
     // use multi-start to optimize the improvement criterion when using the default solver
     OptimizationAlgorithm solver(solver_);
@@ -321,7 +350,7 @@ void EfficientGlobalOptimization::run()
 
       // when a correlation length becomes smaller than the minimal distance between design point for a single component
       // that means the model tends to be noisy, and the original EGO formulation is not adapted anymore
-      const Point scale(metaModelResult.getCovarianceModel().getScale());
+      const Point scale(isGPR_ ? gprResult.getCovarianceModel().getScale() : krigingResult.getCovarianceModel().getScale());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         const Bool minDistStop = scale[j] < minimumDistance[j] / correlationLengthFactor_;
@@ -361,18 +390,40 @@ void EfficientGlobalOptimization::run()
 
     if (evaluationNumber > 0)
     {
-      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasis());
-      LOGINFO(OSS() << "Rebuilding kriging ...");
-      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
-      if (hasNoise)
-        algo.setNoise(noise);
-      algo.run();
-      LOGINFO(OSS() << "Rebuilding kriging - done");
-      metaModelResult = algo.getResult();
+      if (isGPR_)
+      {
+        GaussianProcessRegression algo;
+        if ((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0))
+        {
+          GaussianProcessFitter fitter(inputSample, outputSample, gprResult.getCovarianceModel(), gprResult.getBasis());
+          fitter.run();
+          algo = GaussianProcessRegression(fitter.getResult());
+        }
+        else
+        {
+          algo = GaussianProcessRegression(inputSample, outputSample, gprResult.getCovarianceModel(), gprResult.getBasis()[0]);
+        }
+        algo.run();
+        gprResult = algo.getResult();
+      }
+      else
+      {
+        KrigingAlgorithm algo(inputSample, outputSample, krigingResult.getCovarianceModel(), krigingResult.getBasis());
+        LOGINFO(OSS() << "Rebuilding kriging ...");
+        algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
+        if (hasNoise)
+          algo.setNoise(noise);
+        algo.run();
+        LOGINFO(OSS() << "Rebuilding kriging - done");
+        krigingResult = algo.getResult();
+      }
     }
   } // while
 
-  krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
+   // update result to take new points into account
+  krigingResult_ = krigingResult;
+  gprResult_ = gprResult;
+
   result.setIterationNumber(iterationNumber);
   setResult(result);
 }
@@ -483,6 +534,7 @@ void EfficientGlobalOptimization::setMetamodelNoise(const Function & noiseModel)
   const UnsignedInteger dimension = getProblem().getDimension();
   if (noiseModel.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise model must be of dimension " << dimension;
   if (noiseModel.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise model must be 1-d";
+  if (isGPR_) throw InvalidArgumentException(HERE) << "Cannot use a noise model with new GPR API";
   metamodelNoise_ = noiseModel;
 }
 
@@ -497,6 +549,7 @@ void EfficientGlobalOptimization::setNoiseModel(const Function & noiseModel)
   const UnsignedInteger dimension = getProblem().getDimension();
   if (noiseModel.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise model must be of dimension " << dimension;
   if (noiseModel.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise model must be 1-d";
+  if (isGPR_) throw InvalidArgumentException(HERE) << "Cannot use a noise model with new GPR API";
   noiseModel_ = noiseModel;
 }
 
@@ -506,18 +559,24 @@ Function EfficientGlobalOptimization::getNoiseModel() const
 }
 
 
-/* Kriging result accessor (especially useful after run() has been called) */
+/* GP result accessor (especially useful after run() has been called) */
+GaussianProcessRegressionResult EfficientGlobalOptimization::getGPRResult() const
+{
+  return gprResult_;
+}
+
 KrigingResult EfficientGlobalOptimization::getKrigingResult() const
 {
   return krigingResult_;
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void EfficientGlobalOptimization::save(Advocate & adv) const
 {
   OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("krigingResult_", krigingResult_);
+  adv.saveAttribute("gprResult_", gprResult_);
+  adv.saveAttribute("isGPR_", isGPR_);
   adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("multiStartExperimentSize_", multiStartExperimentSize_);
   adv.saveAttribute("multiStartNumber_", multiStartNumber_);
@@ -532,6 +591,11 @@ void EfficientGlobalOptimization::load(Advocate & adv)
 {
   OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("krigingResult_", krigingResult_);
+  if (adv.hasAttribute("gprResult_"))
+  {
+    adv.loadAttribute("gprResult_", gprResult_);
+    adv.loadAttribute("isGPR_", isGPR_);
+  }
   adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("multiStartExperimentSize_", multiStartExperimentSize_);
   adv.loadAttribute("multiStartNumber_", multiStartNumber_);
