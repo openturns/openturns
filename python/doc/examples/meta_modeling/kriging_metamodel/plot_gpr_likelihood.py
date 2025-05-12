@@ -1,6 +1,6 @@
 """
-Kriging : draw the likelihood
-=============================
+Gaussian process regression: draw the likelihood
+================================================
 """
 
 # %%
@@ -8,8 +8,9 @@ Kriging : draw the likelihood
 # --------
 #
 # In this short example we draw the log-likelihood as a function of the scale
-# parameter of a covariance Kriging model.
+# parameter of a covariance model.
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -32,23 +33,22 @@ covarianceModel = ot.SquaredExponential(1)
 covarianceModel = ot.MaternModel([1.0], 1.5)
 
 # %%
-# We are now ready to build the Kriging algorithm, run it and store the result :
-algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-algo.run()
-result = algo.getResult()
+# We are now ready to fit the Gaussian Process parameters and store the result :
+fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+fitter_result = fitter.getResult()
+
 
 # %%
 # We can retrieve the covariance model from the result object and then access
 # the scale of the model :
-theta = result.getCovarianceModel().getScale()
+theta = fitter_result.getCovarianceModel().getScale()
 print("Scale of the covariance model : %.3e" % theta[0])
 
 # %%
 # This hyperparameter is calibrated thanks to a maximization of the log-likelihood. We get this log-likehood as a function of :math:`\theta` :
-ot.ResourceMap.SetAsBool(
-    "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", True
-)
-reducedLogLikelihoodFunction = algo.getReducedLogLikelihoodFunction()
+ot.ResourceMap.SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", True)
+reducedLogLikelihoodFunction = fitter.getObjectiveFunction()
 
 # %%
 # We draw the reduced log-likelihood :math:`\mathcal{L}(\theta)` as a function
@@ -75,7 +75,3 @@ graph.setLegends([r"Matern $\nu = 1.5$", r"$\theta$ estimate"])
 # Display figures
 view = otv.View(graph)
 otv.View.ShowAll()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()
