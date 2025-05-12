@@ -100,7 +100,7 @@ fitter_algo.setOptimizeParameters(True)
 # %%
 # We run the algorithm and get the metamodel.
 fitter_algo.run()
-fitter_result  = fitter_algo.getResult()
+fitter_result = fitter_algo.getResult()
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
@@ -136,5 +136,4 @@ for i in range(3):
     graph.setYTitle("Metamodel prediction")
     graph.setTitle(label[i])
     View(graph)
-
 View.ShowAll()
