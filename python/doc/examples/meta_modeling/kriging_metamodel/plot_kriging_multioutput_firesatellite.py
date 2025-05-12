@@ -1,22 +1,23 @@
 """
-Example of multi output Kriging on the fire satellite model
-===========================================================
+Example of multi output Gaussian Process Fitter on the fire satellite model
+===========================================================================
 """
 
 # %%
-# This example aims to illustrate Kriging metamodel with several outputs on the fire satellite model.
+# This example aims to illustrate Gaussian Process Fitter (Kriging) metamodel with several outputs on the fire satellite model.
 
 
 # %%
 # Loading of the model
 # --------------------
 # This model involves 9 input variables and 3 output variables.
-# We load the :ref:`Fire satellite use case<use-case-fire-satellite>`.
+# We load the :ref:`Fire satellite use case<use-case-firesatellite>`.
 
 # %%
 import openturns as ot
-from openturns.usecases.fire_satellite import FireSatelliteModel
+from openturns.usecases.fireSatellite_function import FireSatelliteModel
 from openturns.viewer import View
+import openturns.experimental as otexp
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -76,7 +77,7 @@ myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
 covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
 # %%
-# The scaling of the data is really important when dealing with Kriging,
+# The scaling of the data is really important when dealing with GP fitter,
 # especially considering the domain definition of the input variables (the
 # altitude varies in order of :math:`10^7` whereas the drag coefficient is around 1).
 # We thus define appropriate bounds for the training algorithm based on the
@@ -89,16 +90,22 @@ scaleOptimizationBounds = ot.Interval(
 )
 
 # %%
-# We can now define the scaled version of Kriging model.
-algo = ot.KrigingAlgorithm(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds)
-algo.setOptimizeParameters(True)
+# We can now define the scaled version of with GP fitter model.
+optim_algo = ot.TNC()
+fitter_algo = otexp.GaussianProcessFitter(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
+fitter_algo.setOptimizationAlgorithm(optim_algo)
+fitter_algo.setOptimizationBounds(scaleOptimizationBounds)
+fitter_algo.setOptimizeParameters(True)
 
 # %%
 # We run the algorithm and get the metamodel.
-algo.run()
-result = algo.getResult()
-krigingMetamodel = result.getMetaModel()
+fitter_algo.run()
+fitter_result  = fitter_algo.getResult()
+gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo.run()
+gpr_result = gpr_algo.getResult()
+
+gprMetamodel = gpr_result.getMetaModel()
 
 # %%
 # Validation of metamodel
@@ -113,7 +120,7 @@ outputTestSet = model(inputTestSet)
 
 # %%
 # Then, we use the :class:`~openturns.MetaModelValidation` class to validate the metamodel.
-metamodelPredictions = krigingMetamodel(inputTestSet)
+metamodelPredictions = gprMetamodel(inputTestSet)
 val = ot.MetaModelValidation(outputTestSet, metamodelPredictions)
 
 r2Score = val.computeR2Score()
@@ -129,3 +136,5 @@ for i in range(3):
     graph.setYTitle("Metamodel prediction")
     graph.setTitle(label[i])
     View(graph)
+
+View.ShowAll()
