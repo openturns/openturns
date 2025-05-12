@@ -1,19 +1,6 @@
 %feature("docstring") OT::Uniform
 "Uniform distribution.
 
-Parameters
-----------
-a : float
-    Lower bound.
-
-    Default value is -1.0.
-b : float, :math:`b > a`
-    Upper bound.
-
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -31,6 +18,17 @@ Its first moments are defined as:
         \Expect{X} & = & \frac{a+b}{2} \\
         \Var{X} & = & \frac{(b-a)^2}{12}
     \end{eqnarray*}
+
+Parameters
+----------
+a : float
+    Lower bound.
+
+    Default value is -1.0.
+b : float, :math:`b > a`
+    Upper bound.
+
+    Default value is 1.0.
 
 Examples
 --------

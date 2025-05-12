@@ -4,6 +4,21 @@
 Helper class for defining the push-forward distribution of a given univariate
 distribution by a given scalar function.
 
+We note :math:`X` a scalar random variable which distribution is :math:`distX`,
+which probability density function is :math:`f_X`.
+
+Then :math:`distY` is the distribution of the scalar random variable
+:math:`Y=g(X)`, which probability density function :math:`f_Y` is defined as:
+
+.. math::
+
+    \displaystyle f_Y(y) = \sum_{k =0}^{k=N} \frac{f_X (g^{-1}(y))}{|g'\circ g^{-1}(y)|}1_{y \in g([a_k, a_{k+1}))}
+
+with :math:`a_0=\inf \supp{f_X}`, :math:`a_N=\sup \supp{f_X}` and
+:math:`(a_1, \dots, a_N)` such that :math:`g` is monotone over
+:math:`[a_k, a_{k+1})` for :math:`0 \leq k \leq N`.
+
+
 Available constructors:
     CompositeDistribution(*g, distX*)
 
@@ -24,23 +39,8 @@ Returns
 distY : :class:`~openturns.Distribution`, univariate
     :math:`distY` is the push-forward distribution of :math:`distX` by :math:`g`.
 
-
 Notes
 -----
-We note :math:`X` a scalar random variable which distribution is :math:`distX`,
-which probability density function is :math:`f_X`.
-
-Then :math:`distY` is the distribution of the scalar random variable
-:math:`Y=g(X)`, which probability density function :math:`f_Y` is defined as:
-
-.. math::
-
-    \displaystyle f_Y(y) = \sum_{k =0}^{k=N} \frac{f_X (g^{-1}(y))}{|g'\circ g^{-1}(y)|}1_{y \in g([a_k, a_{k+1}))}
-
-with :math:`a_0=\inf \supp{f_X}`, :math:`a_N=\sup \supp{f_X}` and
-:math:`(a_1, \dots, a_N)` such that :math:`g` is monotone over
-:math:`[a_k, a_{k+1})` for :math:`0 \leq k \leq N`.
-
 Its first moments are obtained by numerical integration.
 
 Examples

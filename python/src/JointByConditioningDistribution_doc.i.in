@@ -7,6 +7,17 @@ and :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{
 where :math:`\vect{\Theta}=g(\vect{Y})` with :math:`g` a given function of input dimension
 the dimension of :math:`\mathcal{L}_{\vect{Y}}` and output dimension the dimension of :math:`\vect{\Theta}`.
 
+This distribution is limited to the continuous case, ie when both the conditioning and the conditioned distributions are continuous.
+Its probability density function is defined as:
+
+.. math::
+
+    f_{(\vect{Y}, \vect{X})}(\vect{y}, \vect{x}) = f_{\vect{X}|\vect{\theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}( \vect{y})
+
+with :math:`f_{\vect{X}|\vect{\theta}=g(\vect{y})}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}` 
+where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`,
+:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and :math:`g` the linking function.
+
 Parameters
 ----------
 conditionedDist : :class:`~openturns.Distribution`
@@ -20,20 +31,8 @@ linkFunction : :class:`~openturns.Function`, optional
 
 Notes
 -----
-This distribution is limited to the continuous case, ie when both the conditioning and the conditioned distributions are continuous.
-Its probability density function is defined as:
-
-.. math::
-
-    f_{(\vect{Y}, \vect{X})}(\vect{y}, \vect{x}) = f_{\vect{X}|\vect{\theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}( \vect{y})
-
-with :math:`f_{\vect{X}|\vect{\theta}=g(\vect{y})}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}` 
-where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`,
-:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and :math:`g` the linking function.
-
 With the default constructor, the resulting random vector :math:`(Y,X)` is uniformly
 distributed on the parallelogram which vertices are :math:`(-1,-1); (0,-1); (2,1); (1,1)`.
-
 
 Examples
 --------

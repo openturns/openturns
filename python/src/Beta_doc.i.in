@@ -1,27 +1,6 @@
 %feature("docstring") OT::Beta
 "Beta distribution.
 
-Parameters
-----------
-alpha : float
-    Shape parameter :math:`\alpha > 0`.
-    
-    Default value is 2.0.
-beta : float
-    Shape parameter :math:`\beta > 0`.
-    
-    Default value is 2.0.
-a : float
-    Lower bound.
-    
-    Default value is -1.0.
-b : float, :math:`b > a`
-    Upper bound.
-    
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -43,10 +22,30 @@ Its first moments are:
         \Var{X} & = & (b - a)^2 \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}
     \end{eqnarray*}
 
+Parameters
+----------
+alpha : float
+    Shape parameter :math:`\alpha > 0`.
 
+    Default value is 2.0.
+beta : float
+    Shape parameter :math:`\beta > 0`.
+
+    Default value is 2.0.
+a : float
+    Lower bound.
+
+    Default value is -1.0.
+b : float, :math:`b > a`
+    Upper bound.
+
+    Default value is 1.0.
+
+Notes
+-----
 It is possible to create a Beta distribution from the alternative parametrization :math:`(\mu, \sigma, a, b)`: see  :class:`~openturns.BetaMuSigma`. In that case, all the results are presented in that new parametrization.
 
-In order to use the alternative  parametrization :math:`(\mu, \sigma, a, b)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta, a, b)`.
+In order to use the alternative parametrization :math:`(\mu, \sigma, a, b)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta, a, b)`.
 
 Examples
 --------

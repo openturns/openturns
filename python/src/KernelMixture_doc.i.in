@@ -1,18 +1,6 @@
 %feature("docstring") OT::KernelMixture
 "Build a particular linear combination of probability density functions.
 
-Parameters
-----------
-kernel : :class:`~openturns.Distribution`
-    Univariate distribution of the kernel.
-bandwidth : sequence of float
-    Contains the bandwidth in each direction, :math:`(h^1, \dots, h^d)`.
-sample : 2-d sequence of float
-    The data on which each kernel is centered,
-    :math:`(\vect{s}_1, \dots, \vect{s}_n)` of dimension :math:`\inputDim`.
-
-Notes
------
 A :class:`~openturns.KernelMixture` is a particular :class:`~openturns.Mixture`: all the weights are identical and
 all the kernels of the combination are of the same
 discrete or continuous family. The kernels are centered on the sample points. The multivariate kernel
@@ -31,6 +19,18 @@ For continuous atoms, the probability density function :math:`\inputRV` is defin
 
 where :math:`k` is the kernel pdf.
 
+Parameters
+----------
+kernel : :class:`~openturns.Distribution`
+    Univariate distribution of the kernel.
+bandwidth : sequence of float
+    Contains the bandwidth in each direction, :math:`(h^1, \dots, h^d)`.
+sample : 2-d sequence of float
+    The data on which each kernel is centered,
+    :math:`(\vect{s}_1, \dots, \vect{s}_n)` of dimension :math:`\inputDim`.
+
+Notes
+-----
 If :math:`\inputDim = 1` and the `KernelMixture-EnableInterpolation` ResourceMap key is set to `True` (it is `False` by default),
 then the PDF and CDF of the kernel mixture are interpolated with :class:`PiecewiseHermiteEvaluation`.
 

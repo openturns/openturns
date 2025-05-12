@@ -1,6 +1,12 @@
 %feature("docstring") OT::Mixture
 "Build a linear combination of probability density functions.
 
+The probability density function of a *Mixture* is defined by:
+
+.. math::
+
+    f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1
+
 Parameters
 ----------
 collDist : sequence of :class:`~openturns.Distribution`,
@@ -13,14 +19,6 @@ weights : sequence of float, optional
     *collDist[i].setWeight(myWeight)*. If not set, the weights are all
     taken equal to 1. The weights are automatically normalized so that their
     sum is equal to 1.
-
-Notes
------
-The probability density function of a *Mixture* is defined by:
-
-.. math::
-
-    f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1
 
 Examples
 --------

@@ -1,16 +1,6 @@
 %feature("docstring") OT::InverseChiSquare
 "InverseChiSquare distribution.
 
-Parameters
-----------
-nu : float, :math:`\nu > 0`
-    Degrees of freedom.  
-
-    Default value is 1.0.
-     
-
-Notes
------
 :math:`X` follows an Inverse ChiSquare distribution of parameter :math:`\nu` means that :math:`\dfrac{1}{X}` follows the :math:`\chi^2(\nu)` distribution, with :math:`\nu>0`.
 The Inverse ChiSquare distribution parameterized by :math:`\nu` is exactly the :math:`InverseGamma(\dfrac{\nu}{2}, 2)` distribution.
 
@@ -32,6 +22,12 @@ Its first moments are:
         \Var{X} & = &\dfrac{2}{(\nu-2)^2(\nu-4)}\quad \text{if } \nu>4
     \end{eqnarray*}
 
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.  
+
+    Default value is 1.0.
 
 Examples
 --------

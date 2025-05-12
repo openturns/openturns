@@ -1,19 +1,6 @@
 %feature("docstring") OT::NonCentralChiSquare
 "NonCentralChiSquare distribution.
 
-Parameters
-----------
-nu : float, :math:`\nu > 0`
-    Generalised number degree of freedom.
-    
-    Default value is 5.0.
-lambda : float, :math:`\lambda \geq 0`
-    Non-centrality parameter :math:`\lambda`.
-    
-    Default value is 0.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -34,6 +21,17 @@ Its first moments are:
         \Expect{X} & = & \nu + \lambda \\
         \Var{X} & = & 2(\nu + 2\lambda)
     \end{eqnarray*}
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degree of freedom.
+    
+    Default value is 5.0.
+lambda : float, :math:`\lambda \geq 0`
+    Non-centrality parameter :math:`\lambda`.
+    
+    Default value is 0.0.
 
 Examples
 --------

@@ -1,24 +1,6 @@
 %feature("docstring") OT::Triangular
 "Triangular distribution.
 
-Parameters
-----------
-a : float
-    Lower bound.
-
-    Default value is -1.0.
-m : float, :math:`a \leq m \leq b`
-    Mode.
-
-    Default value is 0.0.
-b : float, :math:`a < b`
-    Upper bound.
-
-    Default value is 1.0.
-
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -41,6 +23,21 @@ Its first moments are:
         \Expect{X} & =  & \frac{1}{3}\,(a+m+b) \\
         \Var{X} & = & \frac{1}{18} (a^2+b^2+m^2-ab-am-bm)
     \end{eqnarray*}
+
+Parameters
+----------
+a : float
+    Lower bound.
+
+    Default value is -1.0.
+m : float, :math:`a \leq m \leq b`
+    Mode.
+
+    Default value is 0.0.
+b : float, :math:`a < b`
+    Upper bound.
+
+    Default value is 1.0.
 
 Examples
 --------

@@ -1,15 +1,6 @@
 %feature("docstring") OT::DiscreteCompoundDistribution
 "Discrete compound distribution.
 
-Parameters
-----------
-base_distribution : :class:`~openturns.Distribution`
-    Integer-valued distribution of the summed independent random variables
-compound_distribution : :class:`~openturns.Distribution`
-    Integer-valued distribution of the number of summed terms :math:`N`
-
-Notes
------
 Probability distribution of the random variable :math:`Y(\omega)` defined as:
 
 .. math::
@@ -20,6 +11,13 @@ where the :math:`X_i \; (i \in \mathbb{N}\setminus{0})` are independent
 identically distribution random variables following base_distribution
 and :math:`N` is a random variable following compound_distribution that is
 independent from all :math:`X_i \; (i \in \mathbb{N}\setminus{0})`.
+
+Parameters
+----------
+base_distribution : :class:`~openturns.Distribution`
+    Integer-valued distribution of the summed independent random variables
+compound_distribution : :class:`~openturns.Distribution`
+    Integer-valued distribution of the number of summed terms :math:`N`
 
 See Also
 --------

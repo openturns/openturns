@@ -1,33 +1,6 @@
 %feature("docstring") OT::DeconditionedDistribution
 "Deconditioned distribution.
 
-
-
-Parameters
-----------
-
-conditionedDist : :class:`~openturns.Distribution`
-    The distribution of :math:`\vect{X}|\vect{\Theta}`,
-    whose parameters will be overwritten by :math:`g(\vect{Y})`.
-
-    In the default constructor, :math:`\vect{X} | \vect{\Theta} \sim` :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
-
-conditioningDist : :class:`~openturns.Distribution`
-    The distribution of :math:`\vect{Y}`.
-
-    In the default constructor, :math:`\vect{Y} \sim` :class:`~openturns.Uniform`:math:`(-1,1)`.
-
-linkFunction : :class:`~openturns.Function`, optional
-    The link unction :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
-    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
-
-    When not provided :math:`g = Id` and :math:`p=q`.
-    
-    In the default constructor, :math:`g: \Rset \rightarrow \Rset^2` with :math:`g(y)=(y,y+1)`.
-
-
-Notes
------
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` such that
 :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
 with :math:`\vect{\Theta}=g(\vect{Y})`, :math:`\vect{Y}` following the distribution
@@ -71,12 +44,36 @@ Then, the pdf of :math:`\inputRV` is defined by:
 
 with the same convention as for :math:`\vect{Y}`.
 
+Parameters
+----------
+
+conditionedDist : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
+
+    In the default constructor, :math:`\vect{X} | \vect{\Theta} \sim` :class:`~openturns.Uniform` :math:`(\vect{\Theta})`.
+
+conditioningDist : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{Y}`.
+
+    In the default constructor, :math:`\vect{Y} \sim` :class:`~openturns.Uniform`:math:`(-1,1)`.
+
+linkFunction : :class:`~openturns.Function`, optional
+    The link unction :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of
+    *conditioningDist* and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+
+    When not provided :math:`g = Id` and :math:`p=q`.
+    
+    In the default constructor, :math:`g: \Rset \rightarrow \Rset^2` with :math:`g(y)=(y,y+1)`.
+
+
+Notes
+-----
 With the default constructor, the resulting random variable :math:`X` follows a
 trapezoidal distribution parameterized by :math:`(-1, 0, 1, 2)`.
 
 Note that a :class:`~openturns.DeconditionedDistribution` can be obtained as the
 first marginal distribution of a :class:`~openturns.JointByConditioningDistribution`.
-
 
 Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the distribution:
 

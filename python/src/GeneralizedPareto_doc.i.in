@@ -1,23 +1,6 @@
 %feature("docstring") OT::GeneralizedPareto
 "Generalized Pareto distribution.
 
-Parameters
-----------
-sigma : float, :math:`\sigma > 0`
-    Scale parameter :math:`\sigma`.
-    
-    Default value is 1.0.
-xi : float
-    Shape parameter :math:`\xi`.
-    
-    Default value is 0.0.
-u : float, default=0.0
-    Location parameter :math:`u`.
-    
-    Default value is 0.0.
-
-Notes
------
 Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
@@ -62,8 +45,23 @@ Its first moments are:
                       \quad \text{ if } \xi < \frac{1}{2}
     \end{eqnarray*}
 
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`.
+    
+    Default value is 1.0.
+xi : float
+    Shape parameter :math:`\xi`.
+    
+    Default value is 0.0.
+u : float, default=0.0
+    Location parameter :math:`u`.
+    
+    Default value is 0.0.
 
-
+Notes
+-----
 When the constructor from a :class:`~openturns.Pareto`:math:`(\beta, \alpha, \gamma)` distribution is used,  then it creates :class:`~openturns.GeneralizedPareto`:math:`(\sigma, \xi, u)` where:
 
 .. math::

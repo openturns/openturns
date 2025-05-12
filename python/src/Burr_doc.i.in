@@ -1,17 +1,6 @@
 %feature("docstring") OT::Burr
 "Burr distribution.
 
-Parameters
-----------
-c : float, :math:`c > 0`
-    
-    Default value is 1.0.
-k : float, :math:`k > 0`
-    
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -27,6 +16,15 @@ Its only, first-order moment is:
     \Expect{X} = k {\rm B}(k - 1 / c, 1 + 1 / c)
 
 where :math:`\rm B` denotes Euler's beta function.
+
+Parameters
+----------
+c : float, :math:`c > 0`
+
+    Default value is 1.0.
+k : float, :math:`k > 0`
+
+    Default value is 1.0.
 
 Examples
 --------

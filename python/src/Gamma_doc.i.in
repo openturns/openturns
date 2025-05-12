@@ -1,23 +1,6 @@
 %feature("docstring") OT::Gamma
 "Gamma distribution.
 
-Parameters
-----------
-k : float
-    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
-    
-    Default value is 1.0.
-lambda : float
-    Rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
-    
-    Default value is 1.0.
-gamma : float, optional
-    Location parameter :math:`\gamma`.
-    
-    Default value is 0.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -39,7 +22,23 @@ Its first moments are:
         \Var{X} & = & \frac{k}{\lambda^2}
     \end{eqnarray*}
 
+Parameters
+----------
+k : float
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+    
+    Default value is 1.0.
+lambda : float
+    Rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
+    
+    Default value is 1.0.
+gamma : float, optional
+    Location parameter :math:`\gamma`.
+    
+    Default value is 0.0.
 
+Notes
+-----
 It is possible to create a Gamma distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.GammaMuSigma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(k, \lambda, \gamma)`.

@@ -1,6 +1,14 @@
 %feature("docstring") OT::UniformOverMesh
 "UniformOverMesh distribution.
 
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{|\cD|}, \quad x \in \cD
+
+with :math:`\cD\subset\Rset^n` a mesh of dimension :math:`n`.
+
 Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
@@ -9,16 +17,6 @@ mesh : :class:`~openturns.Mesh`
 See also
 --------
 TruncatedOverMesh
-
-Notes
------
-Its probability density function is defined as:
-
-.. math::
-
-    f_X(x) = \frac{1}{|\cD|}, \quad x \in \cD
-
-with :math:`\cD\subset\Rset^n` a mesh of dimension :math:`n`.
 
 Examples
 --------
