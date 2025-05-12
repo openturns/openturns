@@ -1,23 +1,6 @@
 %feature("docstring") OT::Frechet
 "Frechet distribution.
 
-Parameters
-----------
-beta : float, :math:`\beta > 0`
-    Scale parameter.
-    
-    Default value is 1.0.
-alpha : float, :math:`\alpha > 0`
-    Shape parameter.
-    
-    Default value is 1.0.
-gamma : float, optional
-    Location parameter.
-    
-    Default value is 0.0.
-
-Notes
------
 Its cumulative distribution function and its probability density function are defined as:
 
 .. math::
@@ -48,6 +31,21 @@ Its first moments are:
 
 where :math:`\Gamma` denotes Euler's Gamma function
 :meth:`~openturns.SpecFunc.Gamma`.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter.
+    
+    Default value is 1.0.
+alpha : float, :math:`\alpha > 0`
+    Shape parameter.
+    
+    Default value is 1.0.
+gamma : float, optional
+    Location parameter.
+    
+    Default value is 0.0.
 
 Examples
 --------

@@ -1,19 +1,6 @@
 %feature("docstring") OT::LogUniform
 "LogUniform distribution.
 
-Parameters
-----------
-a_log : float
-    Lower bound in log-scale.
-    
-    Default value is -1.0.
-b_log : float, :math:`b_\ell > a_\ell`
-    Upper bound in log-scale.
-    
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -35,6 +22,17 @@ Its first moments are:
                             + a (b_\ell - a_\ell + 2)}
                            {(b_\ell - a_\ell)^2}
     \end{eqnarray*}
+
+Parameters
+----------
+a_log : float
+    Lower bound in log-scale.
+
+    Default value is -1.0.
+b_log : float, :math:`b_\ell > a_\ell`
+    Upper bound in log-scale.
+
+    Default value is 1.0.
 
 Examples
 --------

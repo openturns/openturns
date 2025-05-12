@@ -5,6 +5,9 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+This class gives access to the marginals of the joint distribution of the :math:`n` order statistics
+of the Uniform distribution over :math:`[0,1]`, implemented in the class :class:`~openturns.experimental.UniformOrderStatistics`.
+
 Parameters
 ----------
 n : int
@@ -12,11 +15,9 @@ n : int
 indices : sequence of int
     Marginal indices, must be strictly increasing.
 
-Notes
------
-This class gives access to the marginals of the joint distribution of the :math:`n` order statistics
-of the Uniform distribution over :math:`[0,1]`, implemented in the class
-:class:`~openturns.experimental.UniformOrderStatistics`. Refer to this documentation to get details.
+See also
+--------
+openturns.experimental.UniformOrderStatistics
 "
 
 // ---------------------------------------------------------------------

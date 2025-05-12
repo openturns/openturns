@@ -1,9 +1,6 @@
 %feature("docstring") OT::Epanechnikov
 "Epanechnikov distribution.
 
-Notes
------
-
 Its probability density function is defined as:
 
 .. math::

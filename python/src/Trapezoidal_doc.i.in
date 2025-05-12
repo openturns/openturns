@@ -1,27 +1,6 @@
 %feature("docstring") OT::Trapezoidal
 "Trapezoidal distribution.
 
-Parameters
-----------
-a : float, :math:`a < d`
-    Lower bound.
-
-    Default value is -2.0.
-b : float, :math:`a \leq b < c`
-    Level start.
-
-    Default value is -1.0.
-c : float, :math:`b < c \leq d`
-    Level end.
-
-    Default value is is 1.0.
-d : float, :math:`c \leq d`
-    Upper bound.
-
-    Default value is 2.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -51,6 +30,25 @@ Its first moments are:
                     & & + 4abc^2 + 4a^2c^2 - 3b^3c - 3ab^2c - 3a^2bc ...\\
                     & & - 3a^3c + b^4 + 2ab^3 + 2a^3b + a^4)
     \end{eqnarray*}
+
+Parameters
+----------
+a : float, :math:`a < d`
+    Lower bound.
+
+    Default value is -2.0.
+b : float, :math:`a \leq b < c`
+    Level start.
+
+    Default value is -1.0.
+c : float, :math:`b < c \leq d`
+    Level end.
+
+    Default value is is 1.0.
+d : float, :math:`c \leq d`
+    Upper bound.
+
+    Default value is 2.0.
 
 Examples
 --------

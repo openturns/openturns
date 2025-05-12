@@ -1,19 +1,6 @@
 %feature("docstring") OT::FisherSnedecor
 "Fisher-Snedecor distribution.
 
-Parameters
-----------
-d1 : float, :math:`d_1 > 0`
-    First :class:`~openturns.ChiSquare` degrees of freedom (numerator).
-    
-    Default value is 1.0.
-d2 : float, :math:`d_2 > 0`
-    Second :class:`~openturns.ChiSquare` degrees of freedom (denominator).
-    
-    Default value is 5.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -35,6 +22,17 @@ Its first moments are:
         \Expect{X} & = & \frac{d_2}{d_2 - 2} \textrm{ if } d_2>2\\
         \Var{X} & = & \frac{2d_2^2(d_1+d_2-2)}{d_1(d_2-2)^2(d_2-4)} \textrm{ if } d_2>4
     \end{eqnarray*}
+
+Parameters
+----------
+d1 : float, :math:`d_1 > 0`
+    First :class:`~openturns.ChiSquare` degrees of freedom (numerator).
+    
+    Default value is 1.0.
+d2 : float, :math:`d_2 > 0`
+    Second :class:`~openturns.ChiSquare` degrees of freedom (denominator).
+    
+    Default value is 5.0.
 
 Examples
 --------

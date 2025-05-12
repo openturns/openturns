@@ -1,6 +1,12 @@
 %feature("docstring") OT::MaximumDistribution
 "Maximum distribution.
 
+Let :math:`\inputRV = (X_1, \dots, X_\inputDim)` be a random vector of dimension
+:math:`\inputDim \geq 1`. This class implements the distribution of:
+
+.. math::
+    Y = \max(X_1, ... , X_\inputDim).
+
 Available constructors:
     MaximumDistribution(*distribution*)
 
@@ -20,12 +26,6 @@ size : int
 
 Notes
 -----
-Let :math:`\inputRV = (X_1, \dots, X_\inputDim)` be a random vector of dimension
-:math:`\inputDim \geq 1`. This class implements the distribution of:
-
-.. math::
-    Y = \max(X_1, ... , X_\inputDim).
-
 In the first constructor, the distribution of :math:`\inputRV` is given. Then,
 the CDF of :math:`Y` is defined by:
 

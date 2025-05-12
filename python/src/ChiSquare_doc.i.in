@@ -1,15 +1,6 @@
 %feature("docstring") OT::ChiSquare
 ":math:`\chi^2` distribution.
 
-Parameters
-----------
-nu : float, :math:`\nu > 0`
-    Degrees of freedom.
-    
-    Default value is 1.0.
-
-Notes
------
 Its probability density function is defined as:
 
 .. math::
@@ -28,6 +19,13 @@ Its first moments are:
         \Expect{X} & = & \nu \\
         \Var{X} & = & 2 \nu
     \end{eqnarray*}
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.
+
+    Default value is 1.0.
 
 Examples
 --------

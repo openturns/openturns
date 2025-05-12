@@ -5,21 +5,6 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Parameters
-----------
-deconditioned : :class:`~openturns.DeconditionedDistribution`
-    The distribution of density :math:`f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}|\vect{y}) f_{\vect{Y}}(\vect{y})\di{\vect{y}}`.
-observations : 2-d sequence of float
-    Observations :math:`\vect{x}_i`.
-
-See Also
---------
-openturns.DeconditionedDistribution
-openturns.MetropolisHastings
-
-Notes
------
-
 Let :math:`\inputRV` be a random vector such that :math:`\inputRV|\vect{\Theta}` follows the distribution
 :math:`\mathcal{L}_{\inputRV|\vect{\Theta}}`,
 with :math:`\vect{\Theta}=g(\vect{Y})` and :math:`\vect{Y}` following the prior distribution :math:`\mathcal{L}_{\vect{Y}}`. The function
@@ -51,11 +36,23 @@ with :math:`f_{\inputRV|\vect{\theta} = g(\vect{y})}` the PDF of the distributio
 where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})` and :math:`f_{\vect{Y}}` the PDF of the prior distribution
 of  :math:`\vect{Y}`.
 
-Note that the denominator  of :eq:`postPDF` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the prior distribution of :math:`\vect{Y}`.
+Note that the denominator  of :eq:`postPDF` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})`
+with respect to the prior distribution of :math:`\vect{Y}`.
 
 In the other cases, the PDF is the probability distribution function for the discrete components and the :math:`\int` are replaced by some
 :math:`\sum`.
 
+Parameters
+----------
+deconditioned : :class:`~openturns.DeconditionedDistribution`
+    The distribution of density :math:`f_{\vect{X}}(\vect{x}) = \int f_{\vect{X}|\vect{\Theta}=\vect{y}}(\vect{x}|\vect{y}) f_{\vect{Y}}(\vect{y})\di{\vect{y}}`.
+observations : 2-d sequence of float
+    Observations :math:`\vect{x}_i`.
+
+See Also
+--------
+openturns.DeconditionedDistribution
+openturns.MetropolisHastings
 
 Examples
 --------

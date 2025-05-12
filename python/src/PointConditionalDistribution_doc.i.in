@@ -5,19 +5,6 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-
-
-Parameters
-----------
-distribution : :class:`~openturns.Distribution`,
-    Distribution of :math:`\inputRV`.
-conditioningIndices : sequence of int,
-    Conditioning vector indices :math:`\cI`.
-conditioningValues : sequence of float,
-    Conditioning vector values :math:`\vect{x}_\cI`.
-
-Notes
------
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`. Let :math:`\cI \subset \{1, \dots, \inputDim \}`
 be a set of indices of components of  :math:`\inputRV`, :math:`\overline{\cI}` its complementary in
 :math:\{1, \dots, \inputDim \}` and :math:`\vect{x}_\cI` a real vector of dimension equal to the cardinal of :math:`\cI`.
@@ -75,10 +62,19 @@ and if :math:`\inputRV_{\overline{\cI}}` is discrete with its support denoted by
     p_{\inputRV_{\cI}}(\vect{x}_{\cI})  & = \sum_{\vect{x}_{\overline{\cI}} \in \cS(\inputRV_{\overline{\cI}})}
     p_{\inputRV}(\vect{x}_{\overline{\cI}}, \vect{x}_{\cI})
 
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`,
+    Distribution of :math:`\inputRV`.
+conditioningIndices : sequence of int,
+    Conditioning vector indices :math:`\cI`.
+conditioningValues : sequence of float,
+    Conditioning vector values :math:`\vect{x}_\cI`.
 
-Simplification mechanisms to compute :eq:`condPDF` are implemented for some distributions. To know if
-a simplification mechanism exists, ask the method *hasSimplifiedVersion*.
-
+Notes
+-----
+Simplification mechanisms to compute :eq:`condPDF` are implemented for some distributions.
+To know if a simplification is used, ask the method *hasSimplifiedVersion*.
 
 If the dimension of :math:`\inputRV_\cI` is greater than 1, the default integration algorithm is the :class:`~openturns.experimental.CubaIntegration` defined in the entry  *PointConditionalDistribution-CubaAlgorithm* if available and the
 :class:`~openturns.SimplicialCubature` algorithm if not. If the

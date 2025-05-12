@@ -1,23 +1,6 @@
 %feature("docstring") OT::WeibullMax
 "WeibullMax distribution.
 
-Parameters
-----------
-beta : float
-    Scale parameter :math:`\beta > 0`.
-
-    Default value is 1.0.
-alpha : float
-    Shape parameter :math:`\alpha > 0`.
-
-    Default value is 1.0.
-gamma : float, optional
-    Location parameter.
-
-    Default value is 0.0.
-
-Notes
------
 Its cumulative distribution function and probability density function are defined as:
 
 .. math::
@@ -48,6 +31,23 @@ Its first moments are:
 where :math:`\Gamma` denotes Euler's Gamma function
 :meth:`~openturns.SpecFunc.Gamma`.
 
+Parameters
+----------
+beta : float
+    Scale parameter :math:`\beta > 0`.
+
+    Default value is 1.0.
+alpha : float
+    Shape parameter :math:`\alpha > 0`.
+
+    Default value is 1.0.
+gamma : float, optional
+    Location parameter.
+
+    Default value is 0.0.
+
+Notes
+-----
 It is possible to create a WeibullMax distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMaxMuSigma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\beta, \alpha, \gamma)`.
