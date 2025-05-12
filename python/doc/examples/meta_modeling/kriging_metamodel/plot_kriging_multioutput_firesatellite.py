@@ -15,7 +15,7 @@ Example of multi output Gaussian Process Fitter on the fire satellite model
 
 # %%
 import openturns as ot
-from openturns.usecases.fireSatellite import FireSatelliteModel
+from openturns.usecases.fire_satellite import FireSatelliteModel
 from openturns.viewer import View
 import openturns.experimental as otexp
 
