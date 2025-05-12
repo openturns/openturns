@@ -64,7 +64,7 @@ enforces isotropy because it naturally only uses one scale parameter.
 >>> print(alteriso.getScale())
 [0.5,0.5]
 
-See also :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_isotropic`.
+See also :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_isotropic`.
 "
 
 %enddef
