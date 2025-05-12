@@ -608,6 +608,15 @@ def check_get_value():
     os.remove("result.txt")
 
 
+def check_get_value_token():
+    with open("result.txt", "w") as f:
+        f.write("Price [£] : 42\n")
+        f.write("Temperature [°C] : 12.34\n")
+    tvalue = ct.get_value("result.txt", token="C] :")
+    ott.assert_almost_equal(tvalue, 12.34)
+    os.remove("result.txt")
+
+
 check_execute()
 check_replace()
 check_get_token_escaped()
@@ -623,3 +632,4 @@ check_get_tokens_perf()
 check_get_tokens_skip_perf()
 check_get_line_col_perf()
 check_get_value()
+check_get_value_token()
