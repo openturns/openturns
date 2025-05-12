@@ -46,6 +46,9 @@
 %include SVDMethod.i
 %include FittingAlgorithmImplementation.i
 %include FittingAlgorithm.i
+%include KFold.i
+%include CorrectedLeaveOneOut.i
+%include SparseMethod.i
 %include NearestNeighbourAlgorithmImplementation.i
 %include NearestNeighbourAlgorithm.i
 %include KDTree.i
