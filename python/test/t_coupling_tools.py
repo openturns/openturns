@@ -20,29 +20,23 @@ max_time = sys.maxsize
 
 def create_template():
     template_name = "template.in"
-
-    template_handle = open(template_name, "wb")
-    template_handle.write(wanted_lines.encode())
-    template_handle.close()
-
+    with open(template_name, "wb") as f:
+        f.write(wanted_lines.encode())
     return template_name
 
 
 def create_big_template():
     template_name = "template_big.in"
 
-    template_handle = open(template_name, "wb")
-
     print(("create template file of " + str(howbig) + "Mo"))
-
-    template_handle.write(wanted_lines.encode())
-    for i in range(howbig):
-        for i in range(1024):
-            # line of 1024 octets
-            template_handle.write(b"u" * 1024)
-            template_handle.write(b"\n")
-    template_handle.write(b"# ooo\n")
-    template_handle.close()
+    with open(template_name, "wb") as f:
+        f.write(wanted_lines.encode())
+        for i in range(howbig):
+            for i in range(1024):
+                # line of 1024 octets
+                f.write(b"u" * 1024)
+                f.write(b"\n")
+        f.write(b"# ooo\n")
 
     return template_name
 
@@ -60,20 +54,19 @@ def remove_file(filename, quiet=False):
 def check_outfile(filename, wanted_result):
     """wanted_result: a string"""
     is_ok = True
-    handle = open(filename)
-    for wanted_line, result_line in zip(wanted_result.splitlines(True), handle):
-        if wanted_line != result_line:
-            print(
-                (
-                    "Aaaaarg, result is not what we wanted (result:"
-                    + result_line
-                    + ", should be:"
-                    + wanted_line.decode()
-                    + ")"
+    with open(filename) as f:
+        for wanted_line, result_line in zip(wanted_result.splitlines(True), f):
+            if wanted_line != result_line:
+                print(
+                    (
+                        "Aaaaarg, result is not what we wanted (result:"
+                        + result_line
+                        + ", should be:"
+                        + wanted_line.decode()
+                        + ")"
+                    )
                 )
-            )
-            is_ok = False
-    handle.close()
+                is_ok = False
 
     if is_ok:
         print(("check " + filename + ": ok"))
@@ -148,29 +141,28 @@ def check_replace():
 def create_results(tokens, values=None, big=False):
     filename = "results.out"
 
-    handle = open(filename, "wb")
+    with open(filename, "wb") as f:
 
-    if big:
-        print(("create file of " + str(howbig) + "Mo"))
+        if big:
+            print(("create file of " + str(howbig) + "Mo"))
 
-        for i in range(howbig):
-            for i in range(1024):
-                # line of 1024 octets
-                handle.write(b"u" * 1024)
-                handle.write(b"\n")
-        handle.write(b"# ooo\n")
+            for i in range(howbig):
+                for i in range(1024):
+                    # line of 1024 octets
+                    f.write(b"u" * 1024)
+                    f.write(b"\n")
+            f.write(b"# ooo\n")
 
-    if values is None:
-        handle.write(tokens.encode())
-    else:
-        n = 0
-        for t, v in zip(tokens, values):
-            handle.write((t + str(v)).encode())
-            # go to next line sometimes
-            if n % 3 == 0:
-                handle.write(b"\n")
-            n += 1
-    handle.close()
+        if values is None:
+            f.write(tokens.encode())
+        else:
+            n = 0
+            for t, v in zip(tokens, values):
+                f.write((t + str(v)).encode())
+                # go to next line sometimes
+                if n % 3 == 0:
+                    f.write(b"\n")
+                n += 1
 
     return filename
 
@@ -325,11 +317,10 @@ def check_get():
 def check_get_token_escaped():
     print(("=== " + sys._getframe().f_code.co_name))
     result_file = "results.out"
-    handle = open(result_file, "wb")
-    handle.write(b"FOO (BAR\n")
-    handle.write(b"1.0 1.1 1.2 1.3\n")
-    handle.write(b"2.0 2.1 2.2 2.3\n")
-    handle.close()
+    with open(result_file, "wb") as f:
+        f.write(b"FOO (BAR\n")
+        f.write(b"1.0 1.1 1.2 1.3\n")
+        f.write(b"2.0 2.1 2.2 2.3\n")
     results = ct.get(
         filename=result_file, tokens=[r"FOO \(BAR"], skip_lines=[1], skip_cols=[1]
     )

@@ -120,34 +120,28 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         inplace = True
         outfile = infile + ".temporary_outfile"
 
-    infile_handle = open(infile, "rb")
-    outfile_handle = open(outfile, "wb")
-
     regex_tokens = []
     found_tokens = []
     for token in tokens:
         regex_tokens.append(re.compile(token))
         found_tokens.append(False)
 
-    for line in infile_handle:
-        line = line.decode(encoding)
-        i = 0
-        for regex_token in regex_tokens:
-            found = regex_token.search(line)
-            while found is not None:
-                found_tokens[i] = True
-                line = line.replace(found.group(0), formats[i].format(values[i]))
+    with open(infile, "rb") as fi, open(outfile, "wb") as fo:
+        for line in fi:
+            line = line.decode(encoding)
+            i = 0
+            for regex_token in regex_tokens:
                 found = regex_token.search(line)
-            i += 1
-
-        outfile_handle.write(line.encode(encoding))
-
-    infile_handle.close()
-    outfile_handle.close()
+                while found is not None:
+                    found_tokens[i] = True
+                    line = line.replace(found.group(0), formats[i].format(values[i]))
+                    found = regex_token.search(line)
+                i += 1
+            fo.write(line.encode(encoding))
 
     for token, found_token in zip(tokens, found_tokens):
         if not found_token:
-            raise EOFError("Error: token '" + token + "' not found!")
+            raise EOFError(f"No token {token} was found")
 
     if inplace:
         os.remove(infile)
@@ -326,22 +320,19 @@ def get_regex(filename, patterns, encoding=default_encoding):
 
         re_patterns.append(re.compile(pattern))
 
-    file_handle = open(filename, "rb")
-
-    for line in file_handle:
-        line = line.decode(encoding)
-        i = 0
-        for re_pattern in re_patterns:
-            match = re_pattern.search(line)
-            if match:
-                results[i] = float(match.group(1))
-            i += 1
-
-    file_handle.close()
+    with open(filename, "rb") as f:
+        for line in f:
+            line = line.decode(encoding)
+            i = 0
+            for re_pattern in re_patterns:
+                match = re_pattern.search(line)
+                if match:
+                    results[i] = float(match.group(1))
+                i += 1
 
     for result, pattern in zip(results, patterns):
         if result is None:
-            raise EOFError("error: no pattern (" + pattern + ") found!")
+            raise EOFError(f"No pattern [{pattern}] found")
 
     return results
 
@@ -371,7 +362,7 @@ def get_real_from_line(line):
         result = float(line[match.start() : match.end()])
     else:
         raise EOFError(
-            "error: real not found at the beginning of this line: " "(" + line + ")!"
+            f"No float found at the beginning of this line: [{line}]"
         )
 
     return result
@@ -459,73 +450,66 @@ def get_line_col(
     check_param(skip_col, int)
     check_param(seek, int)
 
-    handle = open(filename, "rb")
-    if seek > 0:
-        handle.seek(seek)
+    with open(filename, "rb") as f:
+        if seek > 0:
+            f.seek(seek)
 
-    if debug:
-        sys.stderr.write(
-            "get_line_col(skip_line="
-            + str(skip_line)
-            + ", skip_col="
-            + str(skip_col)
-            + ", seek="
-            + str(seek)
-            + ")\n"
-        )
-
-    # skip line backward
-    if skip_line < 0:
-        # cache position of each beginning of line
-        # last elt of the list is the last inserted
-        lines_cache = []
-        # determine number of elt to cache
-        lines_cache_size = -skip_line
-
-        # build lines cache
-        previous_pos = handle.tell()
-        line = read_line(handle, seek)
-        while len(line) > 0:
-            # append to cache
-            lines_cache.append(previous_pos)
-            if len(lines_cache) > lines_cache_size:
-                # todo: list not optimized to del before the end
-                del lines_cache[0]
-            previous_pos = handle.tell()
-
-            line = read_line(handle, seek)
-            if debug:
-                sys.stderr.write("lines_cache: " + str(lines_cache) + "\n")
-
-        if len(lines_cache) < lines_cache_size:
-            err_msg = (
-                "error: the file has less than " + str(lines_cache_size) + " lines!"
+        if debug:
+            sys.stderr.write(
+                "get_line_col(skip_line="
+                + str(skip_line)
+                + ", skip_col="
+                + str(skip_col)
+                + ", seek="
+                + str(seek)
+                + ")\n"
             )
-            handle.close()
-            raise EOFError(err_msg)
-        else:
-            handle.seek(lines_cache[0])
-            line_found = read_line(handle, seek)
-            if debug:
-                sys.stderr.write("line found: ->" + line_found.decode(encoding) + "<-\n")
-    # skip line forward
-    else:
-        while skip_line >= 0:
-            line = read_line(handle, seek)
-            if skip_line > 0 and len(line) == 0:
-                handle.close()
-                raise EOFError('error: the file has less lines than "skip_line"!')
-            skip_line -= 1
-        line_found = line
 
-    handle.close()
+        # skip line backward
+        if skip_line < 0:
+            # cache position of each beginning of line
+            # last elt of the list is the last inserted
+            lines_cache = []
+            # determine number of elt to cache
+            lines_cache_size = -skip_line
+
+            # build lines cache
+            previous_pos = f.tell()
+            line = read_line(f, seek)
+            while len(line) > 0:
+                # append to cache
+                lines_cache.append(previous_pos)
+                if len(lines_cache) > lines_cache_size:
+                    # todo: list not optimized to del before the end
+                    del lines_cache[0]
+                previous_pos = f.tell()
+
+                line = read_line(f, seek)
+                if debug:
+                    sys.stderr.write("lines_cache: " + str(lines_cache) + "\n")
+
+            if len(lines_cache) < lines_cache_size:
+                raise EOFError(f"The file has less than {lines_cache_size} lines")
+            else:
+                f.seek(lines_cache[0])
+                line_found = read_line(f, seek)
+                if debug:
+                    sys.stderr.write("line found: ->" + line_found.decode(encoding) + "<-\n")
+        # skip line forward
+        else:
+            while skip_line >= 0:
+                line = read_line(f, seek)
+                if skip_line > 0 and len(line) == 0:
+                    raise EOFError("The file has less lines than skip_line")
+                skip_line -= 1
+            line_found = line
 
     # get the good col
     if skip_col != 0:
         try:
             line_found = line_found.split(col_sep.encode() if col_sep is not None else col_sep)[skip_col]
         except Exception:
-            raise EOFError("error: value not found on this line: (" + line_found.decode(encoding) + ")!")
+            raise EOFError(f"Value not found on this line: [{line_found.decode(encoding)}]")
 
     # get the value
     result = get_real_from_line(line_found)
@@ -651,82 +635,79 @@ def get_value(
             filename, skip_line, skip_col, col_sep=col_sep, encoding=encoding
         )
     else:
-        handle = open(filename, "rb")
+        with open(filename, "rb") as f:
 
-        re_token = re.compile(token.encode(encoding))
+            re_token = re.compile(token.encode(encoding))
 
-        # store previous begin of line pos
-        line_pos = handle.tell()
+            # store previous begin of line pos
+            line_pos = f.tell()
 
-        # store token pos [elt 0: start pos of the token, elt 1: end of the
-        # token]
-        if skip_token >= 0:
-            token_pos = None
-        else:
-            token_pos_cache = []
-
-        line = handle.readline()
-        while len(line) > 0:
-            for token_match in re_token.finditer(line):
-                if skip_token > 0:
-                    # token found but it's not the good one
-                    skip_token -= 1
-                elif skip_token == 0:
-                    # token found
-                    token_pos = [
-                        line_pos + token_match.start(),
-                        line_pos + token_match.end(),
-                    ]
-                    if debug:
-                        sys.stderr.write("skip_token == 0, line: " + line.decode(encoding) + "\n")
-                    break
-                else:
-                    # token wanted in revert order: we first cache them all
-                    token_pos_cache.append(
-                        [line_pos + token_match.start(), line_pos + token_match.end()]
-                    )
-
-            if skip_token >= 0 and token_pos is not None:
-                # token found
-                break
-
-            line_pos = handle.tell()
-            line = handle.readline()
-
-        # get the token from the cache
-        if skip_token < 0 and len(token_pos_cache) >= -skip_token:
-            token_pos = token_pos_cache[skip_token]
-
-        if token_pos is None:
-            handle.close()
-            raise EOFError("error: no token (" + token + ") was found!")
-
-        if skip_line == 0 and skip_col == 0:
-            # get the real right after the token
-            handle.seek(token_pos[1])
-            line = handle.readline()
-            if debug:
-                sys.stderr.write("first token, line_found: " + line.decode(encoding) + "\n")
-            result = get_real_from_line(line)
-            handle.close()  # fixme: no multiple close?
-        else:
-            # get the real by skipping from the token
-            if skip_line < 0 or (skip_line == 0 and skip_col < 0):
-                # search before the token
-                seek_pos = -token_pos[0]
-                skip_line -= 1  # skip line from the token
+            # store token pos [elt 0: start pos of the token, elt 1: end of the
+            # token]
+            if skip_token >= 0:
+                token_pos = None
             else:
-                # search after the token
-                seek_pos = token_pos[1]
-            handle.close()
-            result = get_line_col(
-                filename,
-                skip_line,
-                skip_col,
-                col_sep=col_sep,
-                seek=seek_pos,
-                encoding=encoding,
-            )
+                token_pos_cache = []
+
+            line = f.readline()
+            while len(line) > 0:
+                for token_match in re_token.finditer(line):
+                    if skip_token > 0:
+                        # token found but it's not the good one
+                        skip_token -= 1
+                    elif skip_token == 0:
+                        # token found
+                        token_pos = [
+                            line_pos + token_match.start(),
+                            line_pos + token_match.end(),
+                        ]
+                        if debug:
+                            sys.stderr.write("skip_token == 0, line: " + line.decode(encoding) + "\n")
+                        break
+                    else:
+                        # token wanted in revert order: we first cache them all
+                        token_pos_cache.append(
+                            [line_pos + token_match.start(), line_pos + token_match.end()]
+                        )
+
+                if skip_token >= 0 and token_pos is not None:
+                    # token found
+                    break
+
+                line_pos = f.tell()
+                line = f.readline()
+
+            # get the token from the cache
+            if skip_token < 0 and len(token_pos_cache) >= -skip_token:
+                token_pos = token_pos_cache[skip_token]
+
+            if token_pos is None:
+                raise EOFError(f"No token [{token}] found")
+
+            if skip_line == 0 and skip_col == 0:
+                # get the real right after the token
+                f.seek(token_pos[1])
+                line = f.readline()
+                if debug:
+                    sys.stderr.write("first token, line_found: " + line.decode(encoding) + "\n")
+                result = get_real_from_line(line)
+            else:
+                # get the real by skipping from the token
+                if skip_line < 0 or (skip_line == 0 and skip_col < 0):
+                    # search before the token
+                    seek_pos = -token_pos[0]
+                    skip_line -= 1  # skip line from the token
+                else:
+                    # search after the token
+                    seek_pos = token_pos[1]
+                result = get_line_col(
+                    filename,
+                    skip_line,
+                    skip_col,
+                    col_sep=col_sep,
+                    seek=seek_pos,
+                    encoding=encoding,
+                )
 
     return result
 
