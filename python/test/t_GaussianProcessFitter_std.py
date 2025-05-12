@@ -162,6 +162,46 @@ def use_case_6(X, Y):
     ott.assert_almost_equal(result.getTrendCoefficients(), [])
 
 
+def bugfix_optim_no_feasible():
+    from openturns.usecases.fire_satellite import FireSatelliteModel
+
+    m = FireSatelliteModel()
+
+    model = m.model
+    inputDistribution = m.inputDistribution
+
+    ot.RandomGenerator.SetSeed(0)
+    experiment = ot.LHSExperiment(inputDistribution, 10 * m.dim)
+    inputTrainingSet = experiment.generate()
+    outputTrainingSet = model(inputTrainingSet)
+    linear_basis = ot.LinearBasisFactory(m.dim).build()
+    basis = ot.Basis(
+        [
+            ot.AggregatedFunction([linear_basis.build(k)] * 3)
+            for k in range(linear_basis.getSize())
+        ]
+    )
+
+    myCov1 = ot.MaternModel([1.0] * m.dim, 2.5)
+    myCov2 = ot.SquaredExponential([1.0] * m.dim)
+    myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
+
+    covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
+
+    scaleOptimizationBounds = ot.Interval(
+        [1.0e6, 1.0e3, 1.0e3, 1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+        [2.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0],
+    )
+
+    algo = GaussianProcessFitter(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
+    algo.setOptimizationBounds(scaleOptimizationBounds)
+    algo.setOptimizeParameters(True)
+    try:
+        algo.run()
+    except TypeError:
+        pass
+
+
 if __name__ == "__main__":
 
     ot.RandomGenerator.SetSeed(0)
@@ -188,3 +228,5 @@ if __name__ == "__main__":
     use_case_4(X, Y)
     use_case_5(X, Y)
     use_case_6(X, Y)
+    # fix https://github.com/openturns/openturns/issues/2953
+    bugfix_optim_no_feasible()

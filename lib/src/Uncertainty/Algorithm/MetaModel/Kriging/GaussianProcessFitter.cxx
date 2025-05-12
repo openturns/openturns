@@ -406,7 +406,10 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const OptimizationAlgorithm::Result result(solver_.getResult());
-  const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
+  const Point optimalLogLikelihoodPoint = result.getOptimalValue();
+  if (!optimalLogLikelihoodPoint.getSize())
+    throw InvalidArgumentException(HERE) << "optimization in GaussianProcessFitter did not yield feasible points";
+  const Scalar optimalLogLikelihood = optimalLogLikelihoodPoint[0];
   const Point optimalParameters(result.getOptimalPoint());
   const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
