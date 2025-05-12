@@ -1,6 +1,8 @@
 %feature("docstring") OT::GeneralLinearModelAlgorithm
 "Algorithm for the evaluation of general linear models.
 
+Refer to :ref:`gaussian_process_regression`.
+
 Available constructors:
     GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, keepCovariance=True*)
 
