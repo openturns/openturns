@@ -109,7 +109,10 @@ Sample CSVParser::load() const
   pLineReaderParams.mCommentPrefix = commentMarkers[0];
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
   Description description;
-  rapidcsv::Document doc(fileName_, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
+  std::ifstream stream;
+  stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+  stream.open(std::filesystem::u8path(fileName_), std::ios::binary);
+  rapidcsv::Document doc(stream, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;
 
