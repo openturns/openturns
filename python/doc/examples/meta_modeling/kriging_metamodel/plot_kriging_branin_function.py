@@ -1,5 +1,5 @@
 """
-Gaussian Process fitter : metamodel of the Branin-Hoo function
+Gaussian Process Regression: metamodel of the Branin-Hoo function
 ==============================================================
 """
 
