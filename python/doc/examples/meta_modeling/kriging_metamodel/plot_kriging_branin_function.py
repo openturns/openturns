@@ -64,7 +64,7 @@ print(bm.objectiveFunction(sample1))
 
 # %%
 # Optimization of GP hyperparameters and conditioning to data
-#------------------------------------------------------------
+# -----------------------------------------------------------
 #
 # We use the :class:`~openturns.experimental.GaussianProcessFitter` class to perform the GP fitter analysis.
 # We first generate a design of experiments with LHS and store the input training points in `xdata`
