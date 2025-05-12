@@ -363,7 +363,7 @@ def get_real_from_line(line):
 
     # \S*: spaces are allowed at the beginning of the real
     real_regex = r"\s*[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?"
-    re_real = re.compile(real_regex)
+    re_real = re.compile(real_regex.encode())
 
     # get the value
     match = re_real.match(line)
@@ -377,7 +377,7 @@ def get_real_from_line(line):
     return result
 
 
-def read_line(handle, seek=0, encoding=default_encoding):
+def read_line(handle, seek=0):
     """
     Get next line.
 
@@ -385,30 +385,28 @@ def read_line(handle, seek=0, encoding=default_encoding):
     ----------
     seek : int
         if seek < 0: stop reading seek before the end of the file
-    encoding : str
-        file encoding, see http://docs.python.org/2/library/codecs.html#codec-base-classes
     """
-    line = handle.readline().decode(encoding)
+    line = handle.readline()
 
-    if seek < 0 and line != "":
+    if seek < 0 and len(line) > 0:
         if handle.tell() > -seek:
             if debug:
-                sys.stderr.write("line before cut ->" + line + "<-\n")
+                sys.stderr.write("line before cut ->" + line.decode() + "<-\n")
 
             # cut the end of the line
             line = line[: len(line) - (handle.tell() + seek)]
             # after cut, if the line is empty, add a \n to behave like
             # readline() python function
-            if line == "":
-                line = "\n"
+            if len(line) == 0:
+                line = os.linesep
             # any further read will return ''
             handle.seek(0, os.SEEK_END)
 
             if debug:
-                sys.stderr.write("line after cut ->" + line + "<-\n")
+                sys.stderr.write("line after cut ->" + line.decode() + "<-\n")
 
     if debug:
-        sys.stderr.write("read_line: ->" + line + "<-\n")
+        sys.stderr.write("read_line: ->" + line.decode() + "<-\n")
 
     return line
 
@@ -486,8 +484,8 @@ def get_line_col(
 
         # build lines cache
         previous_pos = handle.tell()
-        line = read_line(handle, seek, encoding)
-        while line != "":
+        line = read_line(handle, seek)
+        while len(line) > 0:
             # append to cache
             lines_cache.append(previous_pos)
             if len(lines_cache) > lines_cache_size:
@@ -495,7 +493,7 @@ def get_line_col(
                 del lines_cache[0]
             previous_pos = handle.tell()
 
-            line = read_line(handle, seek, encoding)
+            line = read_line(handle, seek)
             if debug:
                 sys.stderr.write("lines_cache: " + str(lines_cache) + "\n")
 
@@ -507,14 +505,14 @@ def get_line_col(
             raise EOFError(err_msg)
         else:
             handle.seek(lines_cache[0])
-            line_found = read_line(handle, seek, encoding)
+            line_found = read_line(handle, seek)
             if debug:
-                sys.stderr.write("line found: ->" + line_found + "<-\n")
+                sys.stderr.write("line found: ->" + line_found.decode(encoding) + "<-\n")
     # skip line forward
     else:
         while skip_line >= 0:
-            line = read_line(handle, seek, encoding)
-            if skip_line > 0 and line == "":
+            line = read_line(handle, seek)
+            if skip_line > 0 and len(line) == 0:
                 handle.close()
                 raise EOFError('error: the file has less lines than "skip_line"!')
             skip_line -= 1
@@ -525,9 +523,9 @@ def get_line_col(
     # get the good col
     if skip_col != 0:
         try:
-            line_found = line_found.split(col_sep)[skip_col]
+            line_found = line_found.split(col_sep.encode() if col_sep is not None else col_sep)[skip_col]
         except Exception:
-            raise EOFError("error: value not found on this line: (" + line_found + ")!")
+            raise EOFError("error: value not found on this line: (" + line_found.decode(encoding) + ")!")
 
     # get the value
     result = get_real_from_line(line_found)
@@ -655,7 +653,7 @@ def get_value(
     else:
         handle = open(filename, "rb")
 
-        re_token = re.compile(token)
+        re_token = re.compile(token.encode(encoding))
 
         # store previous begin of line pos
         line_pos = handle.tell()
@@ -667,8 +665,8 @@ def get_value(
         else:
             token_pos_cache = []
 
-        line = handle.readline().decode(encoding)
-        while line != "":
+        line = handle.readline()
+        while len(line) > 0:
             for token_match in re_token.finditer(line):
                 if skip_token > 0:
                     # token found but it's not the good one
@@ -680,7 +678,7 @@ def get_value(
                         line_pos + token_match.end(),
                     ]
                     if debug:
-                        sys.stderr.write("skip_token == 0, line: " + line + "\n")
+                        sys.stderr.write("skip_token == 0, line: " + line.decode(encoding) + "\n")
                     break
                 else:
                     # token wanted in revert order: we first cache them all
@@ -693,7 +691,7 @@ def get_value(
                 break
 
             line_pos = handle.tell()
-            line = handle.readline().decode(encoding)
+            line = handle.readline()
 
         # get the token from the cache
         if skip_token < 0 and len(token_pos_cache) >= -skip_token:
@@ -706,9 +704,9 @@ def get_value(
         if skip_line == 0 and skip_col == 0:
             # get the real right after the token
             handle.seek(token_pos[1])
-            line = handle.readline().decode(encoding)
+            line = handle.readline()
             if debug:
-                sys.stderr.write("first token, line_found: " + line + "\n")
+                sys.stderr.write("first token, line_found: " + line.decode(encoding) + "\n")
             result = get_real_from_line(line)
             handle.close()  # fixme: no multiple close?
         else:
