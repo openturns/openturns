@@ -11,7 +11,7 @@ of the important direction from [angelis2015]_, which is also known as adaptive 
 
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`, distributed according to
 the measure :math:`\inputMeasure`, and :math:`\model: \Rset^\inputDim \rightarrow \Rset`
-be the *limit state function* (where we only wrote the random input parameters).
+be the *limit state function* (where we only write the random input parameters).
 We define the event :math:`\cD_f` by:
 
 .. math::
@@ -25,61 +25,52 @@ The line sampling algorithm estimates the probability of the event :math:`\cD_f`
     P_f = \Prob{\model\left( \inputRV \right) \leq 0}
         = \int_{\Rset^{\inputDim}} \mathbf{1}_{\{\model(\vect{x}) \leq 0 \}}\inputMeasure(\vect{x})\di{\vect{x}}
 
-Let :math:`T` be the iso-probabilistic transformation: :math:`T(\vect{X}) = \vect{Z}`. The
-random vector :math:`\vect{Z}` follows a spherical distribution, which means that it is written
-as:
+Let :math:`T` be the iso-probabilistic transformation to the standard space: :math:`T(\vect{X}) = \vect{Z}`. The
+random vector :math:`\vect{Z}` is a :math:`\inputDim`-dimensional Gaussian vector following the standard normal distribution.
 
-.. math::
-
-    \vect{Z} = R \vect{U}
-
-where :math:`R` is a scalar random variable following the radial distribution, :math:`\vect{U}` is a random
-vector that follows the uniform distribution on the unit sphere of dimension :math:`\inputDim`,
-denoted by :math:`\cS_\inputDim`, and :math:`(R, \vect{U})` are independent.
-
-For any direction :math:`\alpha \in \Rset^d` such that :math:`||\alpha||_2=1`,
-let :math:`P_{\alpha}` be the orthogonal projection from :math:`\Rset^d` to the line :math:`\langle \alpha \rangle`
-and let :math:`P^{\perp}_{\alpha}` be the orthogonal projection from :math:`\Rset^d`
-to the hyperplane of :math:`\Rset^d` normal to :math:`\langle \alpha \rangle`.
+For any direction :math:`\vect{\alpha} \in \Rset^d` such that :math:`||\vect{\alpha}||_2=1`,
+let :math:`P_{\vect{\alpha}}` be the orthogonal projection from :math:`\Rset^d` to the one-dimensional vector space (line)
+spanned by :math:`\vect{\alpha}` (we call :math:`\vect{\alpha}` the *important direction*)  and let :math:`P^{\perp}_{\vect{\alpha}}` be the orthogonal projection from :math:`\Rset^d`
+to the hyperplane of :math:`\Rset^d` normal to the one-dimensional vector space spanned by :math:`\vect{\alpha}`.
 
 Then :math:`P_f` can be rewritten:
 
 .. math::
 
-    P_f = \Expect{\Prob{P_{\alpha}(\vect{Z}) + P^{\perp}_{\alpha}(\vect{Z}) \in T(\cD_f) | P_{\alpha}(\vect{Z})}}
+    P_f = \Expect{\Prob{P_{\vect{\alpha}}(\vect{Z}) + P^{\perp}_{\vect{\alpha}}(\vect{Z}) \in T(\cD_f) | P^{\perp}_{\vect{\alpha}}(\vect{Z})}}
 
-Since :math:`\vect{Z}` follows a standard multivariate normal distribution, :math:`P_{\alpha}(\vect{Z})`
-and :math:`P^{\perp}_{\alpha}(\vect{Z})` are independent.
+Since :math:`\vect{Z}` follows a standard multivariate normal distribution, :math:`P_{\vect{\alpha}}(\vect{Z})`
+and :math:`P^{\perp}_{\vect{\alpha}}(\vect{Z})` are independent.
 
-Therefore, given that :math:`P_{\alpha}(\vect{Z})` follows the same distribution as :math:`R \alpha`
+Therefore, given that :math:`P_{\vect{\alpha}}(\vect{Z})` follows the same distribution as :math:`R \vect{\alpha}`
 where :math:`R` is a scalar random variable following the standard normal distribution, we have:
 
 .. math::
 
-    P_f = \Expect{\Prob{R \alpha + P^{\perp}_{\alpha}(\vect{Z}) \in T(\cD_f) | P_{\alpha}(\vect{Z})}}
+    P_f = \Expect{\Prob{R \vect{\alpha} + P^{\perp}_{\vect{\alpha}}(\vect{Z}) \in T(\cD_f) | P^{\perp}_{\vect{\alpha}}(\vect{Z})}}
 
-Now, for any vector :math:`\vect{u} \in \Rset^d` that is orthogonal to :math:`\alpha`,
+Now, for any vector :math:`\vect{u} \in \Rset^d` that is orthogonal to :math:`\vect{\alpha}`,
 we define :math:`I_u` as the set
 
 .. math::
 
-    I_u = \{ r \in \Rset, r \alpha + u \in T(\cD_f) \}
+    I_u = \{ r \in \Rset, r \vect{\alpha} + u \in T(\cD_f) \}
 
 We can rewrite
 
 .. math::
 
-    P_f = \Expect{\Prob{R \in I_{P_{\alpha}(\vect{Z})} | P_{\alpha}(\vect{Z}}}
+    P_f = \Expect{\Prob{R \in I_{P_{\vect{\alpha}}(\vect{Z})} | P^{\perp}_{\vect{\alpha}}(\vect{Z}}}
 
 Letting :math:`I_u^0` be the interior of :math:`I_u`, we assume :math:`I_u^0` to be the union
 of a finite number of open intervals.
 
-Then there exists :math:`n_u \in \Nset` and :math:`r_0, \hdots, r_{2 n_u + 1} \in \Rset^{\cup \{-\infty, +\infty\}}` such that
-:math:`r_0 < \hdots < r_{2 n_u + 1}` and :math:`I_u^0 = \bigcup_{i=0}^{n_u}`.
+Then there exists :math:`n_u \in \Nset` and :math:`r_0, \hdots, r_{2 n_u + 1} \in \Rset \cup \{-\infty, +\infty\}` such that
+:math:`r_0 < \hdots < r_{2 n_u + 1}` and :math:`I_u^0 = \bigcup_{i=0}^{n_u} (r_{2i}, r_{2i+1})`.
 
-:math:`r_0` is either :math:`-\infty` or a root of :math:`r \mapsto g \circ T^{-1}(r \alpha + u)`.
-:math:`r_{2 n_u + 1}` is either :math:`+\infty` or a root of :math:`r \mapsto g \circ T^{-1}(r \alpha + u)`.
-All the other :math:`r_j` are roots of :math:`r \mapsto g \circ T^{-1}(r \alpha + u)`.
+:math:`r_0` is either :math:`-\infty` or a root of :math:`r \mapsto g \circ T^{-1}(r \vect{\alpha} + u)`.
+:math:`r_{2 n_u + 1}` is either :math:`+\infty` or a root of :math:`r \mapsto g \circ T^{-1}(r \vect{\alpha} + u)`.
+All the other :math:`r_j` are roots of :math:`r \mapsto g \circ T^{-1}(r \vect{\alpha} + u)`.
 
 With :math:`\Phi` denoting the CDF of the standard normal distribution we have
 
@@ -91,12 +82,12 @@ With :math:`\Phi` denoting the CDF of the standard normal distribution we have
 
 The generic line sampling algorithm follows the steps for :math:`k=1, \hdots \sampleSize`:
 
-- Draw a sample :math:`\vect{z_k} \sim Z` and project it on the hyperplane normal to :math:`\alpha`
-  to obtain :math:`P^{\perp}_{\alpha}(\vect{z_k})`.
+- Draw a sample :math:`\vect{z_k} \sim Z` and project it on the hyperplane normal to :math:`\vect{\alpha}`
+  to obtain :math:`P^{\perp}_{\vect{\alpha}}(\vect{z_k})`.
 
-- Find the roots of :math:`r \mapsto g \circ T^{-1}(r \alpha + P^{\perp}_{\alpha}(\vect{z_k}))`.
+- Find the roots of :math:`r \mapsto g \circ T^{-1}(r \vect{\alpha} + P^{\perp}_{\vect{\alpha}}(\vect{z_k}))`.
 
-- Use the roots to compute :math:`p_{\vect{z_k}} = \Prob{R \in I_{P^{\perp}_{\alpha}(\vect{z_k})}}`.
+- Use the roots to compute :math:`p_{\vect{z_k}} = \Prob{R \in I_{P^{\perp}_{\vect{\alpha}}(\vect{z_k})}}`.
 
 The global probability :math:`P_f` is computed from all the :math:`p_{\vect{z_k}}` probabilities.
 
