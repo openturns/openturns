@@ -141,7 +141,7 @@ covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 #   function;
 # - :math:`\vect{W}` is a Gaussian process of dimension 1 with zero mean and a Matérn covariance model.
 #
-# The coefficients of the trend function and the active covariance model parameters are estimated by 
+# The coefficients of the trend function and the active covariance model parameters are estimated by
 # maximizing the *reduced* log-likelihood of the model.
 fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()

@@ -532,7 +532,7 @@ active : sequence of int
 
 Notes
 -----
-In order to get the position of a paremeter known by its name,  we have to first call the method
+In order to get the position of a parameter known by its name,  we have to first call the method
 :py:meth:`getFullParameterDescription` and then call the method *find* as shown in the following
 example.
 
@@ -550,12 +550,12 @@ included in the list.
 
 >>> covModel.getParameterDescription()
 
-We now get the active parameter. The parameter :math:`\nu`  is not in the list.
+We now get the active parameters. The parameter :math:`\nu`  is not in the list.
 
 >>> active = covModel.getActiveParameter()
 
 We want to search the index associated to the parameter :math:`\nu` in the full list of the
-parameter indices.
+parameters indices.
 
 >>> activeDesc = covModel.getFullParameterDescription()
 >>> index = activeDesc.find('nu')
