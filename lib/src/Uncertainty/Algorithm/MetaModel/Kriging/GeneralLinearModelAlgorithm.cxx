@@ -451,10 +451,11 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver);
   solver.run();
   const OptimizationAlgorithm::Result result(solver.getResult());
-  const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
-  const Point optimalParameters(result.getOptimalPoint());
-  if (!optimalParameters.getDimension())
+  const Point optimalLogLikelihoodPoint = result.getOptimalValue();
+  if (!optimalLogLikelihoodPoint.getSize())
     throw InvalidArgumentException(HERE) << "optimization in GeneralLinearModelAlgorithm did not yield feasible points";
+  const Scalar optimalLogLikelihood = optimalLogLikelihoodPoint[0];
+  const Point optimalParameters(result.getOptimalPoint());
   const UnsignedInteger callsNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct

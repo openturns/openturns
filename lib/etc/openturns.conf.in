@@ -930,15 +930,16 @@
   <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
 
   <!-- OT::GaussianProcessFitter parameters -->
-  <GaussianProcessFitter-KeepCovariance                   value_bool="true"      />
-  <GaussianProcessFitter-OptimizeParameters               value_bool="true"      />
-  <GaussianProcessFitter-UnbiasedVariance                 value_bool="true"      />
-  <GaussianProcessFitter-UseAnalyticalAmplitudeEstimate   value_bool="true"      />
-  <GaussianProcessFitter-DefaultOptimizationLowerBound    value_float="1.0e-2"  />
-  <GaussianProcessFitter-DefaultOptimizationScaleFactor   value_float="2.0"     />
-  <GaussianProcessFitter-DefaultOptimizationUpperBound    value_float="1.0e2"   />
-  <GaussianProcessFitter-DefaultOptimizationAlgorithm     value_str="Cobyla"     />
-  <GaussianProcessFitter-LinearAlgebra                    value_str="LAPACK"  />
+  <GaussianProcessFitter-KeepCovariance                         value_bool="true"      />
+  <GaussianProcessFitter-OptimizeParameters                     value_bool="true"      />
+  <GaussianProcessFitter-UnbiasedVariance                       value_bool="true"      />
+  <GaussianProcessFitter-UseAnalyticalAmplitudeEstimate         value_bool="true"      />
+  <GaussianProcessFitter-DefaultOptimizationLowerBound          value_float="1.0e-2"  />
+  <GaussianProcessFitter-DefaultOptimizationScaleFactor         value_float="2.0"     />
+  <GaussianProcessFitter-DefaultOptimizationUpperBound          value_float="1.0e2"   />
+  <GaussianProcessFitter-DefaultOptimizationNuggetLowerBound    value_float="1.0e-12"   />
+  <GaussianProcessFitter-DefaultOptimizationAlgorithm           value_str="Cobyla"     />
+  <GaussianProcessFitter-LinearAlgebra                          value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />
