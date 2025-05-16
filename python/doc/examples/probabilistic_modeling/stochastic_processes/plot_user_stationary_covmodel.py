@@ -1,6 +1,6 @@
 """
-Create a stationary covariance model
-====================================
+Create a custom stationary covariance model
+===========================================
 """
 
 # %%
