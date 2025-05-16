@@ -22,6 +22,7 @@ Stochastic process
 .. toctree::
 
     process_definitions
+    covariance_model
 
 Transformation of fields
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +46,6 @@ Normal processes
 
 .. toctree::
 
-    covariance_model
     stationary_covariance_model
     estimate_stationary_covariance_model
     estimate_non_stationary_covariance_model
