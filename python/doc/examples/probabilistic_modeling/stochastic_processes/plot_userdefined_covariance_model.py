@@ -48,6 +48,7 @@ dt = 0.5
 N = int((20.0 - t0) / dt)
 mesh = ot.RegularGrid(t0, dt, N)
 
+
 def gamma(tau):
     return 1.0 / (1.0 + tau * tau)
 
@@ -64,7 +65,7 @@ for k in range(N):
 covmodel = ot.UserDefinedStationaryCovarianceModel(mesh, coll)
 
 # %%
-# We can draw the covariance function. 
+# We can draw the covariance function.
 x = ot.Sample(N, 2)
 for k in range(N):
     t = mesh.getValue(k)
@@ -79,17 +80,16 @@ myGraph.setLegendPosition("upper right")
 view = viewer.View(myGraph)
 
 
-
-
 # %%
 # Case 2: any covariance model
 # ----------------------------
 #
 # In this example, we build a covariance model from a time grid and a covariance function depending on :math:`s,t)`,
-# using the class :class:`UserDefinedCovarianceMode`.
+# using the class :class:`~openturns.UserDefinedCovarianceModel`.
 N = 32
 a = 4.0
 mesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
+
 
 def C(s, t):
     return m.exp(-4.0 * abs(s - t) / (1 + (s * s + t * t)))
@@ -108,9 +108,10 @@ for k in range(mesh.getVerticesNumber()):
 # The, we create the final non stationary covariance model.
 covmodel = ot.UserDefinedCovarianceModel(mesh, covariance)
 
-
 # %%
 # We can draw the covariance model as a function: first, we define the function to draw.
+
+
 def f(x):
     return [covmodel([x[0]], [x[1]])[0, 0]]
 
