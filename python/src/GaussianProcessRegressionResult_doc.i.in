@@ -11,51 +11,18 @@ Parameters
 gpfResult : :class:`~openturns.experimental.GaussianProcessFitterResult`
     Structure result of a gaussian process fitter.
 covarianceCoefficients : 2-d sequence of float
-    The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
+    The :math:`\vect{\gamma}` defined in :eq:`gammaDefinition`.
 
 Notes
 -----
-The Gaussian Process Regression (aka Kriging) meta model :math:`\tilde{\cM}` is defined by:
+The structure is usually created by the method :py:meth:`~openturns.experimental.GaussianProcessRegression.run`, and obtained thanks to the `getResult()` method.
 
-.. math::
-    :label: metaModelGP
-    
-    \tilde{\cM}(\vect{x}) =  \vect{\mu}(\vect{x}) + \Expect{\vect{Y}(\omega, \vect{x})\,| \,\cC}
-
-where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for each :math:`k \in [1, \sampleSize]`.
-    
-Equation :eq:`metaModelKrig` writes:
-
-.. math::
-
-    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,\vect{x}_1),\dots,\vect{Y}(\omega, \vect{x}_{\sampleSize}))}\vect{\gamma}
-
-where 
-
-.. math::
-
-    \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1),\dots,\vect{Y}(\omega, \vect{x}_{\sampleSize}))} = \left(\mat{C}(\vect{x},\vect{x}_1)|\dots|\mat{C}(\vect{x},\vect{x}_{\sampleSize})\right)\in \cM_{\outputDim,\sampleSize \times \outputDim}(\Rset)
-
-and 
-
-.. math::
-    :label: gammaEqGP
-
-    \vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})
-
-At the end, the meta model writes:
-
-.. math::
-    :label: metaModelGPFinal
-
-    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^{\sampleSize} \gamma_i  \mat{C}(\vect{x},\vect{x}_i)
-
-
-
+Refer to the documentation of :class:`~openturns.experimental.GaussianProcessRegression` to get details on
+the notations.
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
@@ -67,19 +34,17 @@ Create the algorithm:
 
 >>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
 >>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
-
 >>> fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 >>> fit_algo.run()
+
+Create the interpolating Gaussian process approximation:
 
 >>> algo = otexp.GaussianProcessRegression(fit_algo.getResult())
 >>> algo.run()
 
-Get the result:
+Get the resulting interpolating meta model :math:`\metaModel`:
 
 >>> result = algo.getResult()
-
-Get the meta model:
-
 >>> metaModel = result.getMetaModel()
 "
 
@@ -91,7 +56,7 @@ Get the meta model:
 Returns
 -------
 covCoeff : :class:`~openturns.Sample`
-    The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
+    The :math:`\vect{\gamma}` defined in :eq:`gammaDefinition`.
 "
 
 // ---------------------------------------------------------------------
@@ -102,11 +67,12 @@ covCoeff : :class:`~openturns.Sample`
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    Functional basis of size :math:`b` : :math:`(\varphi^\ell: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` for each :math:`l \in [1, b]`.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq b}: \Rset^\inputDim
+    \rightarrow \Rset`.
 
 Notes
 -----
-If the trend is not estimated, the basis is empty. "
+If the trend is not estimated, the basis is empty. The same basis is used for each marginal output."
 
 
 // ---------------------------------------------------------------------
@@ -117,12 +83,12 @@ If the trend is not estimated, the basis is empty. "
 Returns
 -------
 covModel : :class:`~openturns.CovarianceModel`
-    The covariance model of the Gaussian process *W*.
+    The covariance model of the Gaussian process :math:`\vect{W}`.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussianProcessRegressionResult::getLinearAlgebraMethod
-"Accessor to the used linear algebra method to fit.
+"Accessor to the linear algebra method used to fit.
 
 Returns
 -------
@@ -137,12 +103,17 @@ linAlgMethod : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessRegressionResult::getMetaModel
-"Accessor to the metamodel.
+"Accessor to the meta model.
 
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:`metaModelGPF`.
+    The meta model :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in
+    :eq:`GPRmetamodel`.
+
+Notes
+-----
+This meta model is interpolating the data set.
 "
 
 // ---------------------------------------------------------------------
@@ -153,7 +124,7 @@ metaModel : :class:`~openturns.Function`
 Returns
 -------
 process : :class:`~openturns.Process`
-    Returns the Gaussian process :math:`W` with the optimized parameters.
+    The Gaussian process :math:`\vect{W}` its the optimized parameters.
 "
 
 // ---------------------------------------------------------------------
@@ -176,6 +147,17 @@ Returns
 -------
 process : :class:`~openturns.Matrix`
     Returns the regression matrix.
+
+Notes
+-----
+The regression matrix, e.g the evaluation of the basis function
+upon the input design sample. It contains :math:`\sampleSize \times \outputDim` lines and as many column as
+the size of the functional basis. The column :math:`k` is defined as:
+
+.. math::
+
+    \left(\varphi_k(\vect{x}_1), \dots,\varphi_k(\vect{x}_\sampleSize) \right).
+
 "
 
 // ---------------------------------------------------------------------
@@ -186,17 +168,12 @@ process : :class:`~openturns.Matrix`
 Returns
 -------
 trendCoef : sequence of float
-    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^{\outputDim})` as a :class:`~openturns.Point` 
-"
+    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})` as a
+    :class:`~openturns.Point`.
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GaussianProcessRegressionResult::getTrendFunction
-"Accessor to the trend function.
-
-Returns
--------
-trendFunc : :class:`~openturns.Function`
-    The trend function.
+Notes
+-----
+As the same basis is used for each marginal output, each :math:`\vect{\beta}^\ell` vector is of dimension
+:math:`b`, the size of the functional basis.
 "
 // ---------------------------------------------------------------------

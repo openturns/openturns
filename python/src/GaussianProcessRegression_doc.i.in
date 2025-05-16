@@ -15,33 +15,32 @@ Available constructors:
 Parameters
 ----------
 gprFitterResult : :class:`~openturns.experimental.GaussianProcessFitterResult`
-    Result class 
+    The result class built by :class:`~openturns.experimental.GaussianProcessFitter`.
 inputSample, outputSample : 2-d sequence of float
-    The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}` upon which the meta-model is built.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\outputDim}` upon which the meta-model is built.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model used for the underlying Gaussian process assumption.
+    The covariance model used for the underlying Gaussian process approximation.
 trendFunction : :class:`~openturns.Function`
-    A trend function
+    The trend function.
 
 Notes
 -----
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model.
 
-We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all *k*, with :math:`\cM:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model.
-The class allows making a gaussian process interpolating on the input samples.
+The underlying Gaussian process approximation can be fulfilled with two different ways: 
 
-Within the first constructor, we suppose all gaussian process parameters  (the trend coefficients :math:`\beta_j^l`, the scale :math:`\vect{\theta}` and the amplitude :math:`\vect{\sigma}`) already calibrated and the objective
-is to condionning this process (the gaussian process to become interpolating over the dataset)
+- Within the first constructor: we suppose that the Gaussian process approximation has already been
+  calibrated using the class :class:`~openturns.experimental.GaussianProcessFitter`;
+- Within the second constructor: all the elements defining the Gaussian process approximation are specified
+  separately: the data set, the covariance model and the trend function.
 
-Within the second constructor, we assume covariance model already calibrated. A gaussian process is fitted using :class:`~openturns.experimental.GaussianProcessFitter` 
-and the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as the trace of a this gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. 
-
-The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The objective of the *GaussianProcessRegression* is to condition the Gaussian process approximation to the data set: thus, we make the Gaussian process approximation become interpolating over the dataset.
 
 
+In all cases, no estimation of underlying Gaussian process approximation is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 .. math::
-    :label: metaModelGPAlgo
 
-    \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + W(\omega, \vect{x})
+    \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
 where:
 
@@ -50,36 +49,68 @@ where:
     \vect{\mu}(\vect{x}) = \left(
       \begin{array}{l}
         \mu_1(\vect{x}) \\
-        \dots  \\
-        \mu_p(\vect{x})
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
        \end{array}
      \right)
 
-with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \beta_j^l \varphi_j^\ell(\vect{x})` and :math:`\varphi_j^\ell: \Rset^{\inputDim} \rightarrow \Rset` the trend functions.
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
-:math:`W` is a Gaussian process of dimension *p* with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
+Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
+covariance function :math:`\mat{C}: \Rset^\inputDim \times \Rset^\inputDim \rightarrow  \Rset^\outputDim \times \Rset^\outputDim`.
 
-
-The Gaussian Process Regression meta model :math:`\tilde{\cM}` is defined by:
-
-
-.. math::
-
-    \tilde{\cM}(\vect{x}) =  \vect{\mu}(\vect{x}) + \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
-
-where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for each :math:`k \in [1, \sampleSize]`.
-
-:eq:`metaModelKrigAlgo` writes:
+The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
 .. math::
 
-    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
+    \metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
 
-where :math:`\Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}_{\sampleSize})  \right)` is a matrix in :math:`\cM_{\inputDim,\sampleSize \times \outputDim}(\Rset)` and :math:`\vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})`.
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for :math:`1 \leq k
+\leq \sampleSize`.
+
+Then the meta model  :eq:`metaModelKrigAlgo` can be written as:
+
+.. math::
+
+    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
+    \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
+
+where:
+
+.. math::
+
+    \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}
+    _{\sampleSize}))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}
+    _{\sampleSize})  \right) \in \cM_{\outputDim,\sampleSize \times \outputDim}(\Rset)
+
+and :math:`\vect{\gamma}` is defined by:
+
+.. math::
+    :label: gammaDefinition
+
+    \vect{\gamma} = \mat{C}^{-1} \left( \vect{y}_1 - \vect{\mu}( \vect{x}_1), \dots, \vect{y}_\sampleSize -
+    \vect{\mu}( \vect{x}_\sampleSize) \right) \in  \cM_{\sampleSize \times \outputDim, 1}(\Rset)
+
+where:
+
+.. math::
+
+    \mat{C} = \Cov{\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})}\in
+    \cM_{\sampleSize \times \outputDim, \sampleSize \times \outputDim}(\Rset)
+
+Finally, the meta model can be written as:
+
+
+.. math::
+    :label: GPRmetamodel
+
+    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
+
+
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
@@ -95,7 +126,7 @@ Create the algorithm:
 >>> fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 >>> fit_algo.run()
 
-Get the resulting meta model:
+Get the resulting interpolating meta model :math:`\metaModel`:
 
 >>> fit_result = fit_algo.getResult()
 >>> algo = otexp.GaussianProcessRegression(fit_result)
@@ -111,8 +142,7 @@ Get the resulting meta model:
 Returns
 -------
 result : :class:`~openturns.experimental.GaussianProcessRegressionResult`
-    Structure containing all the results obtained after computation
-    and created by the method :py:meth:`run`.
+    Structure containing all the results obtained, created by the method :py:meth:`run`.
 "
 // ---------------------------------------------------------------------
 
@@ -121,7 +151,7 @@ result : :class:`~openturns.experimental.GaussianProcessRegressionResult`
 
 Notes
 -----
-It computes the kriging response surface and creates a
+It computes the Gaussian Process interpolating approximation and creates a
 :class:`~openturns.experimental.GaussianProcessRegressionResult` structure containing all the results."
 
 // ---------------------------------------------------------------------

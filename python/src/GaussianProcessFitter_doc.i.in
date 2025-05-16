@@ -16,19 +16,17 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model of the Gaussian process. See notes for the details.
 
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^\inputDim \rightarrow \Rset`.
-    If :math:`\outputDim > 1`, the same basis is used for each marginal output.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq b}: \Rset^\inputDim \rightarrow \Rset`.
+    
+    The same basis is used for each marginal output.
+    
     Default value is `Basis(0)`, i.e. no trend to estimate
 
 Notes
 -----
-We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where
-:math:`\sampleSize \in \Nset` is the sample size, :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k \in \{1, ..., \sampleSize\}`
-and :math:`\model:\Rset^\inputDim \mapsto \Rset^\outputDim` is the model.
-The objective is to build a surrogate model :math:`\metaModel`, using a **Gaussian Process**: the sample
-:math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as the restriction of a Gaussian process
-:math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`.
-The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k`, with :math:`\model:\Rset^\inputDim \mapsto \Rset^{\outputDim}` a given function.
+
+The objective is to build a meta model :math:`\metaModel`, using a **Gaussian process**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 .. math::
 
@@ -46,13 +44,20 @@ where:
        \end{array}
      \right)
 
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{n_\ell} \beta_j^\ell \varphi_j^\ell(\vect{x})`
-for any :math:`\ell \in \{1, ..., \outputDim\}`,
-where :math:`n_\ell \in \Nset` is the number trend functions of the :math:`\ell`-th output component, and
-:math:`\varphi_j^\ell: \Rset^\inputDim \rightarrow \Rset` the trend functions.
-The Gaussian process :math:`\vect{W}` is of dimension :math:`\outputDim` with zero mean and covariance function
-:math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :ref:`process_definitions`
-for the notations).
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
+
+Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
+covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`, where (see
+:ref:`covariance_model` for more details on the notations):
+
+- :math:`\vect{\theta}` is the scale vector,
+- :math:`\vect{\sigma}` is the standard deviation vector,
+- :math:`\mat{R}` is the spatial correlation matrix between the components of :math:`\vect{W}`,
+- :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
+
+
+
+Note that the meta model defined as the trend function: :math:`\metaModel(\vect{x}) = \vect{\mu}(\vect{x})` does not interpolate the input - output sample.
 
 We note:
 
@@ -62,30 +67,32 @@ We note:
       \begin{array}{l}
         \beta_1^\ell \\
         \vdots  \\
-        \beta_{n_\ell}^\ell
+        \beta_{b}^\ell
        \end{array}
-     \right) \in \Rset^{n_\ell}
+     \right) \in \Rset^{b}
      \quad \mbox{ and } \quad
      \vect{\beta} = \left(
       \begin{array}{l}
          \vect{\beta}^1\\
          \vdots  \\
-         \vect{\beta}^\outputDim
+         \vect{\beta}^{\outputDim}
        \end{array}
-     \right)\in \Rset^{n_t}
+     \right)\in \Rset^{b\outputDim}
 
 where :math:`n_t = \sum_{\ell = 1}^p n_\ell` is the total number of trend functions for all
 output dimensions.
 
-The *GaussianProcessFitter* class estimates the coefficients
-:math:`(\beta_j^\ell)_{j=1, ..., n_\ell, \; \ell=1, ..., \outputDim}` and :math:`\vect{p}`
-where :math:`\vect{p}` is the vector of parameters of the covariance model, i.e. a subset of
-:math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`, that has been declared as
-*active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
+The *GaussianProcessFitter* class estimates the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}` 
+where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of
+:math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as
+*active*: by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`. See
+:class`openturns.CovarianceModel` to get details on the activation of the estimation of the other
+parameters.
 
 The estimation is done by maximizing the *reduced* log-likelihood of the model (see the equation :eq:`logLikelihoodGP` below).
 
-**Estimation of the parameters** :math:`\beta_j^\ell` and :math:`\vect{p}`
+**Estimation of the parameters:** We want to estimate all the parameters :math:`\left(\beta_j^\ell \right)` for :math:`1 \leq j \leq b`
+and :math:`1 \leq \ell \leq \outputDim`, and :math:`\vect{p}`.
 
 We note:
 
@@ -97,7 +104,7 @@ We note:
         \vdots  \\
         \vect{y}_\sampleSize
        \end{array}
-     \right) \in \Rset^{\sampleSize \outputDim},
+     \right) \in \Rset^{\outputDim \times \sampleSize},
      \quad
      \vect{m}_{\vect{\beta}} = \left(
       \begin{array}{l}
@@ -105,9 +112,7 @@ We note:
         \vdots  \\
         \vect{\mu}(\vect{x}_\sampleSize)
        \end{array}
-     \right) \in \Rset^{\sampleSize \outputDim}
-
-and
+     \right) \in \Rset^{\outputDim \times \sampleSize}
 
 .. math::
 
@@ -119,7 +124,8 @@ and
        \end{array}
      \right) \in \cS_{\sampleSize \outputDim}^+(\Rset)
 
-where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)`.
+where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\inputDim \times \inputDim}^+(\Rset)`.
+
 The model likelihood writes:
 
 .. math::
@@ -214,7 +220,7 @@ Create the algorithm:
 >>> algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
-Get the resulting meta model:
+Get the resulting  meta model which is the trend function of the Gaussian process:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()"
@@ -268,7 +274,7 @@ The log-likelihood function may be useful for some postprocessing: maximization 
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
@@ -407,3 +413,29 @@ keepCholesky : bool
     Tells whether we keep or not the final Cholesky factor."
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::getMethod
+" Accessor to the linear algebra method.
+
+Returns
+-------
+linAlgMethod : int
+    The used linear algebra method to fit the model:
+
+    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+
+    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::setMethod
+" Accessor to the linear algebra method.
+
+Parameters
+----------
+linAlgMethod : int
+    The used linear algebra method to fit the model:
+
+    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+
+    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
