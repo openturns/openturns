@@ -10,12 +10,12 @@ Parameters
 inputSample, outputSample : :class:`~openturns.Sample`
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}`.
 metaModel : :class:`~openturns.Function`
-    The meta model: :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:metaModelGPF.
+    The meta model: :math:`\metaModel`, defined in :eq:metaModelGPF by the trend function.
 regressionMatrix : :class:`~openturns.Matrix`
-    The regression matrix, e.g the evaluation of the basis function
+    The regression matrix, e.g the evaluation of the basis functions
     upon the input design sample.
 basis :  :class:`~openturns.Basis`
-    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` for each :math:`l \in [1, b]`.
+    Functional basis of size :math:`b` : :math:`(\varphi_j: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` for :math:`j \in [1, b]`.
     Its size should be equal to zero if the trend is not estimated.
 trendCoef : sequence of float
     The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^{\outputDim})` stored as a Point.
@@ -32,40 +32,13 @@ linAlgMethod : int
 
 Notes
 -----
-The structure is usually created by the method `run` of a :class:`~openturns.experimental.GaussianProcessFitter`, and obtained thanks to the `getResult()` method.
+The structure is usually created by the method :py:meth:`~openturns.experimental.GaussianProcessFitter.run`, and obtained thanks to the `getResult()` method.
 
-The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` is defined by:
-
-.. math::
-    :label: metaModelGPF
-
-    \tilde{\cM}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \dots  \\
-        \mu_p(\vect{x}) 
-       \end{array}
-     \right)
-
-where :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \alpha_j^\ell \varphi_j^\ell(\vect{x})` and
-:math:`\varphi_j^\ell: \Rset^{\inputDim} \rightarrow \Rset` are the trend functions
-(the :math:`\ell-th` marginal of :math:`\varphi(x)`).
-
-
-.. math::
-    :label: metaModelWithTGPF
-
-    \tilde{\cM}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1\circ T(\vect{x}) \\
-        \dots  \\
-        \mu_p\circ T(\vect{x}) 
-       \end{array}
-     \right)
+Refer to the documentation of :class:`~openturns.experimental.GaussianProcessFitter` to get details on the notations.
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
@@ -84,7 +57,7 @@ Get the result:
 
 >>> result = algo.getResult()
 
-Get the meta model:
+Get the meta model :math:`\metaModel(\vect{x}) = \vect{\mu}(\vect{x})`:
 
 >>> metaModel = result.getMetaModel()
 >>> graph = metaModel.draw(0.0, 7.0)
@@ -103,12 +76,11 @@ Get the meta model:
 Returns
 -------
 basis : :class:`~openturns.Basis`
-    Functional basis of size :math:`b` : :math:`(\varphi^\ell: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` 
-    for each :math:`l \in [1, b]`.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq b}: \Rset^\inputDim \rightarrow \Rset`.
 
 Notes
 -----
-If the trend is not estimated, the basis is empty. "
+If the trend is not estimated, the basis is empty. The same basis is used for each marginal output."
 
 
 // ---------------------------------------------------------------------
@@ -119,12 +91,12 @@ If the trend is not estimated, the basis is empty. "
 Returns
 -------
 covModel : :class:`~openturns.CovarianceModel`
-    The covariance model of the Gaussian process *W*.
+    The covariance model of the Gaussian process :math:`\vect{W}` with its optimized parameters.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussianProcessFitterResult::getLinearAlgebraMethod
-"Accessor to the used linear algebra method to fit.
+"Accessor to the linear algebra method used to fit.
 
 Returns
 -------
@@ -139,13 +111,31 @@ linAlgMethod : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessFitterResult::getMetaModel
-"Accessor to the metamodel.
+"Accessor to the trend function.
 
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in :eq:`metaModelGPF`.
-"
+    The meta model :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined by the estimated trend function.
+
+Notes
+-----
+See :class:`~openturns.GaussianProcessFitter` to get the notations. This method returns the meta model
+:math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
+function:
+
+.. math::
+    :label: metaModelGPF
+
+    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
+       \end{array}
+     \right)
+
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`."
 
 // ---------------------------------------------------------------------
 
@@ -155,7 +145,7 @@ metaModel : :class:`~openturns.Function`
 Returns
 -------
 process : :class:`~openturns.Process`
-    Returns the Gaussian process :math:`W` with the optimized parameters.
+    The Gaussian process :math:`\vect{W}` its the optimized parameters.
 "
 
 // ---------------------------------------------------------------------
@@ -178,8 +168,19 @@ Returns
 -------
 process : :class:`~openturns.Matrix`
     Returns the regression matrix.
-"
 
+Notes
+-----
+The regression matrix, e.g the evaluation of the basis function
+upon the input design sample. It contains :math:`\sampleSize \times \outputDim` lines and as many column as
+the size of the functional basis. The column :math:`k` is defined as:
+
+.. math::
+
+    \left(\varphi_k(\vect{x}_1), \dots,\varphi_k(\vect{x}_\sampleSize) \right).
+
+"
+   
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessFitterResult::getTrendCoefficients
@@ -188,7 +189,10 @@ process : :class:`~openturns.Matrix`
 Returns
 -------
 trendCoef : sequence of float
-    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^{\outputDim})` as a :class:`~openturns.Point`
-"
+    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})` as a :class:`~openturns.Point`.
 
+Notes
+-----
+As the same basis is used for each marginal output, each :math:`\vect{\beta}^\ell` vector is of dimension
+:math:`b`, the size of the functional basis."
 // ---------------------------------------------------------------------
