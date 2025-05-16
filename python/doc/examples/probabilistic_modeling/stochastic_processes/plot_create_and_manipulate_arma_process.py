@@ -198,6 +198,7 @@ curve = graph.getDrawable(0)
 curve.setLineStyle("dashed")
 graph0.add(curve)
 graph0.setTitle("One ARMA realization and a possible future")
+# sphinx_gallery_thumbnail_number = 3
 view = viewer.View(graph0)
 
 
