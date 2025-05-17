@@ -549,16 +549,23 @@ We get the default active parameters description: we can see that the :math:`\nu
 included in the list.
 
 >>> covModel.getParameterDescription()
+[scale_0,amplitude_0]
 
 We now get the active parameters. The parameter :math:`\nu`  is not in the list.
 
 >>> active = covModel.getActiveParameter()
+>>> print(active)
+[0,2]
 
 We want to search the index associated to the parameter :math:`\nu` in the full list of the
 parameters indices.
 
 >>> activeDesc = covModel.getFullParameterDescription()
+>>> print(activeDesc)
+[scale_0,nuggetFactor,amplitude_0,nu]
 >>> index = activeDesc.find('nu')
+>>> print(index)
+3
 
 Now, we add the index of :math:`\nu` in the initial list of active parameters. We sort the active
 indices by increasing order. Then we update the list of the active parameters.
@@ -569,7 +576,12 @@ indices by increasing order. Then we update the list of the active parameters.
 
 Check that the parameter :math:`\nu` is in the active parameters list!
 
->>> covModel.getActiveParameter()"
+>>> covModel.getActiveParameter()
+[0,2,3]
+
+>>> covModel.getFullParameterDescription()
+[scale_0,nuggetFactor,amplitude_0,nu]
+"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setActiveParameter
 OT_CovarianceModel_setActiveParameter_doc

@@ -36,8 +36,8 @@ The underlying Gaussian process approximation can be fulfilled with two differen
 
 The objective of the *GaussianProcessRegression* is to condition the Gaussian process approximation to the data set: thus, we make the Gaussian process approximation become interpolating over the dataset.
 
+In all cases, no estimation of the underlying Gaussian process approximation is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
-In all cases, no estimation of underlying Gaussian process approximation is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 .. math::
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
@@ -59,20 +59,23 @@ with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})
 Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
 covariance function :math:`\mat{C}: \Rset^\inputDim \times \Rset^\inputDim \rightarrow  \Rset^\outputDim \times \Rset^\outputDim`.
 
-The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
+The Gaussian Process Regression denoted by :math:`\vect{Z}` is the Gaussian process :math:`\vect{Y}` conditioned to the data
+set:
+
+.. math::
+    :label: GPRdef
+
+    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
+
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
+:math:`1 \leq k \leq \sampleSize`.
+
+Then, :math:`\vect{Z}` is a Gaussian process, which mean is defined by:
 
 .. math::
 
-    \metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
-
-where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for :math:`1 \leq k
-\leq \sampleSize`.
-
-Then the meta model  :eq:`metaModelKrigAlgo` can be written as:
-
-.. math::
-
-    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
+   \Expect{\vect{Z}(\omega, \vect{x})\, | \,  \cC}  & =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}\\
+    & = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
     \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
 
 where:
@@ -98,14 +101,54 @@ where:
     \mat{C} = \Cov{\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})}\in
     \cM_{\sampleSize \times \outputDim, \sampleSize \times \outputDim}(\Rset)
 
-Finally, the meta model can be written as:
+Finally, we get the following mean of the Gaussian process regression at the point :math:`\vect{x}`:
 
+.. math::
+    :label: expextationGPR
+
+    \Expect{\vect{Z}(\omega, \vect{x})\, | \,  \cC} = \vect{\mu}(\vect{x}) + \sum_{i=1}
+    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\ouptDim}
+
+The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defined by:
+
+.. math::
+    :label: covarianceGPR_point
+
+    \Cov{\vect{Z}(\omega, \vect{x})} & =  \Cov{\vect{Y}(\omega, \vect{x}), \vect{Y}(\omega,
+    \vect{x})} - \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
+    \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \mat{C}^{-1}\Cov{(\vect{Y}
+    (\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})), \vect{Y}(\omega,
+    \vect{x})}
+
+with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi)_N))`, the covariance matrix is
+defined by:
+
+.. math::
+    :label: covarianceGPR_sample
+
+    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
+        \left(
+          \begin{array}{lcl}
+            \Sigma_{11} & \dots & \Sigma_{1N} \\
+            \dots  \\
+            \Sigma_{N1} & \dots & \Sigma_{NN}
+          \end{array}
+        \right)
+
+where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
+
+The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
 .. math::
     :label: GPRmetamodel
 
-    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
+    \metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
 
+In order to get services related to the conditional covariance, use the class :class:`~openturns.experimental.GaussianProcessConditionalCovariance`.
+    
+    
 
 
 Examples
