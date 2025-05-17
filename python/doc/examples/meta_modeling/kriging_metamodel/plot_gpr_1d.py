@@ -161,9 +161,7 @@ view = viewer.View(g_trend)
 
 # %%
 # The class :class:`~openturns.experimental.GaussianProcessRegression` is built from the  Gaussian process :math:`Y` and makes
-# the  Gaussian process approximation interpolate the data set.
-#
-# The meta model is defined by: 
+# the  Gaussian process approximation interpolate the data set. The meta model is defined by:
 #
 # .. math::
 #
