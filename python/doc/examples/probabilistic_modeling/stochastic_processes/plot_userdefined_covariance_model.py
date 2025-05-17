@@ -85,7 +85,7 @@ view = viewer.View(myGraph)
 # ----------------------------
 #
 # In this example, we build a covariance model from a time grid and a covariance function depending on :math:`s,t)`,
-# using the class :class:`UserDefinedCovarianceModel`.
+# using the class :class:`~openturns.UserDefinedCovarianceModel`.
 N = 32
 a = 4.0
 mesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
