@@ -82,7 +82,7 @@ The *GaussianProcessFitter* class estimates the coefficients :math:`\beta_j^\ell
 where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of
 :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as
 *active*: by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`. See
-:class`openturns.CovarianceModel` to get details on the activation of the estimation of the other
+:class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
 parameters.
 
 The estimation is done by maximizing the *reduced* log-likelihood of the model (see its expression below).
@@ -121,17 +121,17 @@ and:
         \vdots &   & \vdots \\
         \mat{C}_{\sampleSize \times 1} & \dots &  \mat{C}_{\sampleSize \times \sampleSize}
        \end{array}
-     \right) \in \cS_{\inputDim \times \sampleSize}^+(\Rset)
+     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
-where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\inputDim \times \inputDim}^+(\Rset)`.
+where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+(\Rset)`.
 
-The model likelihood writes:
+The likelihood of the Gaussian process on the data set is defined by:
 
 .. math::
 
-    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}{(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m} \right)  \right]
+    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}{(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}_{\vect{\beta}} \right)  \right]
 
-Let :math:`\mat{L}_{\vect{p}}` ve the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular matrix with positive diagonal such that :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
+Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular matrix with positive diagonal such that :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
 Therefore:
 
 .. math::
@@ -178,8 +178,11 @@ It is also possible to proceed as follows:
 - tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
-- *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-- *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
+
+- *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction
+  associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
+- *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased*
+  estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if `hmat-oss` support has been enabled.
 

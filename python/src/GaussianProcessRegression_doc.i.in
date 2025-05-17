@@ -37,7 +37,8 @@ The underlying Gaussian process approximation can be fulfilled with two differen
 The objective of the *GaussianProcessRegression* is to condition the Gaussian process approximation to the data set: thus, we make the Gaussian process approximation become interpolating over the dataset.
 
 
-In all cases, no estimation of underlying Gaussian process approximation is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+In all cases, no estimation of the underlying Gaussian process approximation is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+
 .. math::
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
