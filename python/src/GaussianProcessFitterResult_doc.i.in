@@ -10,17 +10,17 @@ Parameters
 inputSample, outputSample : :class:`~openturns.Sample`
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}`.
 metaModel : :class:`~openturns.Function`
-    The meta model: :math:`\metaModel`, defined in :eq:metaModelGPF by the trend function.
+    The meta model: :math:`\metaModel`, defined in :eq:`metaModelGPF` by the trend function.
 regressionMatrix : :class:`~openturns.Matrix`
     The regression matrix, e.g the evaluation of the basis functions
     upon the input design sample.
 basis :  :class:`~openturns.Basis`
-    Functional basis of size :math:`b` : :math:`(\varphi_j: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim})` for :math:`j \in [1, b]`.
+    Functional basis of size :math:`b` : :math:`(\varphi_j: \Rset^{\inputDim} \rightarrow \Rset)` for :math:`j \in [1, b]`.
     Its size should be equal to zero if the trend is not estimated.
 trendCoef : sequence of float
-    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^{\outputDim})` stored as a Point.
+    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})`.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance function of the Gaussian process with its optimized parameters.
+    The covariance model of the Gaussian process with its optimized parameters.
 optimalLogLikelihood : float
     The maximum log-likelihood corresponding to the model.
 linAlgMethod : int
@@ -32,9 +32,28 @@ linAlgMethod : int
 
 Notes
 -----
-The structure is usually created by the method :py:meth:`~openturns.experimental.GaussianProcessFitter.run`, and obtained thanks to the `getResult()` method.
+The structure is usually created by the method :py:meth:`~openturns.experimental.GaussianProcessFitter.run` of the class
+:class:`~openturns.experimental.GaussianProcessFitter` and obtained with its method
+:py:meth:`~openturns.experimental.GaussianProcessFitter.getResult()`.
 
 Refer to the documentation of :class:`~openturns.experimental.GaussianProcessFitter` to get details on the notations.
+
+This class creates the meta model
+:math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
+function:
+
+.. math::
+    :label: metaModelGPF
+
+    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
+       \end{array}
+     \right)
+
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
 Examples
 --------
@@ -122,20 +141,7 @@ Notes
 -----
 See :class:`~openturns.GaussianProcessFitter` to get the notations. This method returns the meta model
 :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
-function:
-
-.. math::
-    :label: metaModelGPF
-
-    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
-
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`."
+function in :eq:`metaModelGPF`."
 
 // ---------------------------------------------------------------------
 
@@ -171,8 +177,8 @@ process : :class:`~openturns.Matrix`
 
 Notes
 -----
-The regression matrix, e.g the evaluation of the basis function
-upon the input design sample. It contains :math:`\sampleSize \times \outputDim` lines and as many column as
+The regression matrix, e.g the evaluation of the basis functions
+upon the input design sample. It contains :math:`\sampleSize` lines and as many column as
 the size of the functional basis. The column :math:`k` is defined as:
 
 .. math::
