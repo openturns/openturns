@@ -243,13 +243,13 @@ print("Quantile alpha=%f" % (quantileAlpha))
 # %%
 # The Gaussian process regression computed on the sample :math:`(\xi_1, \dots, \xi_N)` is a Gaussian vector. It is possible to
 # get the variance of each :math:`\vect{Z}_i(\omega) = \vect{Y}(\omega, \vect{\xi}_i)\, | \,  \cC` for :math:`1 \leq i \leq N`
-# whith
+# with
 # the meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
 # returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 # However, some coefficients in the diagonal are very close to zero and
-# nonpositive, which leads to an exception of the sqrt function.
+# nonpositive, which leads to an exception of the `sqrt` function.
 # This is why we add an epsilon on the diagonal (nugget factor), which prevents this issue.
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 epsilon = ot.Sample(n_test, [1.0e-8])
