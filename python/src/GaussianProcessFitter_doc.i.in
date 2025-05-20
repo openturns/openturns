@@ -7,6 +7,7 @@ Refer to :ref:`gaussian_process_regression`.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
@@ -24,9 +25,13 @@ basis : :class:`~openturns.Basis`
 
 Notes
 -----
+
+Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k`, with :math:`\model:\Rset^\inputDim \mapsto \Rset^{\outputDim}` a given function.
 
-The objective is to build a meta model :math:`\metaModel`, using a **Gaussian process**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The class creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
+:math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. It is defined by:
 
 .. math::
 
@@ -150,7 +155,7 @@ Therefore:
 >>>>>>> b740b9a1e (Cosmetics)
 
 .. math::
-    :label: logLikelihoodGP
+    :label: logLikelihoodGPAPI
 
     \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
     = \alpha - \log \left( \det \left(\mat{L}_{\vect{p}}\right) \right)

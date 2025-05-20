@@ -83,8 +83,6 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following functions which plots the data.
 
-# %%
-
 def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
     """Plot the data (x_data,y_data) as a Cloud/Curve"""
     if type == "Curve":
@@ -100,7 +98,6 @@ def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyl
     return graphF
 
 
-# %%
 graph = ot.Graph("test and train", "", "", True, "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
@@ -121,10 +118,9 @@ view = viewer.View(graph)
 #
 # Nevertheless, we could modify the list of the
 # parameters that have to be estimated (the *active* parameters) and in particular we can add the
-# estimation of :math:`\nu`: see the documentation of the method :meth:`~openturns.CovarianceModel.setActiveParameter` of
+# estimation of :math:`\nu`: see the documentation of the method
+# :meth:`~openturns.CovarianceModel.setActiveParameter` of
 # the class :class:`~openturns.CovarianceModel` to get more details.
-
-# %%
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
@@ -162,13 +158,22 @@ view = viewer.View(g_trend)
 
 # %%
 # The class :class:`~openturns.experimental.GaussianProcessRegression` is built from the  Gaussian process :math:`Y` and makes
-# the  Gaussian process approximation interpolate the data set. The meta model is defined by:
+# the  Gaussian process approximation :math:`\vect{Z}` interpolate the data set and is defined as:
+#
+# .. math::
+#    :label: GPRdefEx
+#
+#    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
+#
+# where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
+# :math:`1 \leq k \leq \sampleSize`. The Gaussian process regression meta model is defined by the mean of :math:`\vect{Z}`:
 #
 # .. math::
 #
 #    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
 #
-# where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn covariance model.
+# where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn
+# covariance model.
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
@@ -179,7 +184,7 @@ print(gpr_result)
 # :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
 # parameter has remained unchanged.
 # Then we get the meta model with
-# :meth:`~openturns.experimental.GaussianProcessFitter.getMetaModel` and we
+# :meth:`~openturns.experimental.GaussianProcessFitterResult.getMetaModel` and we
 # evaluate the outputs of the meta model on the test
 # design of experiments.
 
@@ -204,7 +209,7 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We see that the Gaussian process regression meta model is interpolating. This is what is meant by
+# We observe that the Gaussian process regression meta model is interpolating. This is what is meant by
 # *conditioning* a Gaussian process.
 #
 # We see that, when the sine function has a strong curvature between two points which are separated by a
@@ -217,17 +222,12 @@ view = viewer.View(graph)
 # %%
 # Compute confidence bounds
 # -------------------------
-
-# %%
+#
 # In order to assess the quality of the meta model, we can estimate the variance and compute a
 # :math:`1-\alpha = 95\%` confidence interval associated with the conditioned Gaussian process.
 #
 # We denote by :math:`q_{p}` the quantile of order :math:`p` of the Gaussian distribution.
 # Therefore, the confidence interval of level :math:`1-\alpha` is :math:`\left[q_{\alpha/2},q_{1-\alpha/2}\right]`.
-#
-#
-
-# %%
 alpha = 0.05
 
 
@@ -241,17 +241,16 @@ print("alpha=%f" % (alpha))
 print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
-# In order to compute the regression error, we can consider the conditional variance.
-# The :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method returns the covariance matrix `covGrid`
-# evaluated at each point in the given sample. Then we can use the diagonal
-# coefficients in order to get the marginal conditional Gaussian process variance.
+# The Gaussian process regression computed on the sample :math:`(\xi_1, \dots, \xi_N)` is a Gaussian vector. It is possible to
+# get the variance of each :math:`\vect{Z}_i(\omega) = \vect{Y}(\omega, \vect{\xi}_i)\, | \,  \cC` for :math:`1 \leq i \leq N`
+# with
+# the meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
+# returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 # However, some coefficients in the diagonal are very close to zero and
-# nonpositive, which leads to an exception of the sqrt function.
+# nonpositive, which leads to an exception of the `sqrt` function.
 # This is why we add an epsilon on the diagonal (nugget factor), which prevents this issue.
-
-# %%
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 epsilon = ot.Sample(n_test, [1.0e-8])
 gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
@@ -260,8 +259,6 @@ conditionalSigma = sqrt(conditionalVariance)
 
 # %%
 # The following figure presents the conditional standard deviation depending on :math:`x`.
-
-# %%
 graph = ot.Graph(
     "Conditional standard deviation", "x", "Conditional standard deviation", True, ""
 )
@@ -300,7 +297,7 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # We are ready to display all the previous information and the three confidence intervals we want.
 
 # %%
-# sphinx_gallery_thumbnail_number = 
+# sphinx_gallery_thumbnail_number = 5
 graph = ot.Graph("", "", "", True, "")
 
 # Now we loop over the different values :

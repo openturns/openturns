@@ -5,6 +5,8 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+Refer to :ref:`gaussian_process_regression`.
+
 Parameters
 ----------
 gprResult :  :class:`~openturns.experimental.GaussianProcessRegressionResult`
@@ -66,7 +68,7 @@ condMean : :class:`~openturns.Point`
           \begin{array}{l}
             \Expect{\vect{Z}(\omega, \vect{\xi}_1)}\\
             \dots  \\
-            \Expect{\vect{Y}(\omega, \vect{\xi}_N)}
+            \Expect{\vect{Z}(\omega, \vect{\xi}_N)}
           \end{array}
         \right)
 
@@ -89,7 +91,7 @@ sampleX : 2-d sequence of float
 Returns
 -------
 condCov : :class:`~openturns.CovarianceMatrix`
-    The conditional covariance of the Gaussian process regression  :math:`\vect{Z}` defined in :eq:`GPRdef` at point :math:`\vect{x}` is defined in :eq:`covarianceGPR_point`. When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`, the covariance matrix is defined in :eq:`covarianceGPR_sample`."
+    The conditional covariance of the Gaussian process regression  :math:`\vect{Z}` defined in :eq:`GPRdef` at point :math:`\vect{x}` is defined in :eq:`covarianceGPR_point`. When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is defined in :eq:`covarianceGPR_sample`."
 
 // ---------------------------------------------------------------------
 
@@ -127,6 +129,7 @@ Notes
 Each element of the collection corresponds to the conditional covariance with respect to the input learning set
 (e.g. a pointwise evaluation of the `getDiagonalCovariance`). The returned collection is
 of size :math:`N` and contains matrices in :math:`\cM_{\outputDim, \outputDim}(\Reset)`."
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessConditionalCovariance::getConditionalMarginalVariance
