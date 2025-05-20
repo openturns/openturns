@@ -175,7 +175,7 @@ This step is performed by the class :class:`~openturns.experimental.GaussianProc
 Step 2:  Gaussian Process Regression
 ------------------------------------
 
-Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian process regression 
+Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian process regression
 aims at conditioning it to the data set: we make the Gaussian process approximation become
 interpolating over the dataset.
 
@@ -273,8 +273,8 @@ The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
 We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the meta model. The
 :class:`~openturns.experimental.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
-  
-  
+
+
 .. topic:: API:
 
     - See :class:`~openturns.experimental.GaussianProcessFitter`
