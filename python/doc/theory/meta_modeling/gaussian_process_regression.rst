@@ -281,7 +281,7 @@ The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_1d.py`
+    - See :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_1d`
 
 
 .. topic:: References:
