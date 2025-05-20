@@ -5,6 +5,8 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+Refer to :ref:`gaussian_process_regression`.
+
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample`
