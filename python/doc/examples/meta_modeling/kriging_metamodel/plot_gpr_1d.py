@@ -141,7 +141,8 @@ covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 # - :math:`\mu(x) = \sum_{j=1}^{b} \beta_j \varphi_j(x)` and :math:`\varphi_j: \Rset \rightarrow \Rset`
 #   the trend function for :math:`1 \leq j \leq b`. Here the functional basis is reduced to the constant
 #   function;
-# - :math:`W` is a Gaussian process of dimension 1 with zero mean and a Matérn covariance model.
+# - :math:`W` is a Gaussian process of dimension 1 with zero mean and a Matérn covariance model
+#   which covariance function is denoted by :math:`C`.
 #
 # The coefficients of the trend function and the active covariance model parameters are estimated by
 # maximizing the *reduced* log-likelihood of the model.
@@ -167,7 +168,7 @@ view = viewer.View(g_trend)
 #
 #    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
 #
-# where the :math:`\gamma_i` are called the *covariance coefficients*.
+# where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn covariance model.
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
@@ -175,8 +176,11 @@ print(gpr_result)
 
 # %%
 # We observe that the `scale` and `amplitude` parameters have been optimized by the
-# :meth:`~openturns.experimental.GaussianProcessFitter.run` method.
-# Then we get the meta model with `getMetaModel` and evaluate the outputs of the meta model on the test
+# :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
+# parameter has remained unchanged.
+# Then we get the meta model with
+# :meth:`~openturns.experimental.GaussianProcessFitter.getMetaModel` and we
+# evaluate the outputs of the meta model on the test
 # design of experiments.
 
 # %%
@@ -218,8 +222,8 @@ view = viewer.View(graph)
 # In order to assess the quality of the meta model, we can estimate the variance and compute a
 # :math:`1-\alpha = 95\%` confidence interval associated with the conditioned Gaussian process.
 #
-# We denote by :math:`q_{p}` the quantile of order :math:`p` of the the Gaussian distribution.
-# Therefore, the confidence interval is :math:`\left[q_{\alpha/2},q_{1-\alpha/2}\right]`.
+# We denote by :math:`q_{p}` the quantile of order :math:`p` of the Gaussian distribution.
+# Therefore, the confidence interval of level :math:`1-\alpha` is :math:`\left[q_{\alpha/2},q_{1-\alpha/2}\right]`.
 #
 #
 
@@ -296,7 +300,7 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # We are ready to display all the previous information and the three confidence intervals we want.
 
 # %%
-# sphinx_gallery_thumbnail_number = 4
+# sphinx_gallery_thumbnail_number = 
 graph = ot.Graph("", "", "", True, "")
 
 # Now we loop over the different values :
