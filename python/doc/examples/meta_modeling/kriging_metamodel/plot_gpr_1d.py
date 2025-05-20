@@ -82,7 +82,10 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following function which plots the data.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 92ecfe00d (Modified the theory on GPR)
 def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
     """Plot the data (x_data,y_data) as a Cloud/Curve"""
     if type == "Curve":

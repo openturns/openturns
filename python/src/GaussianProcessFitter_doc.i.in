@@ -70,7 +70,6 @@ It is also possible to proceed as follows:
 - set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 - tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
-
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
 - *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to

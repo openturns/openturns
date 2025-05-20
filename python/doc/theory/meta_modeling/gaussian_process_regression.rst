@@ -11,7 +11,7 @@ Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model and 
 :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)`
 for all :math:`k`.
 
-The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that intermolates the data
+The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that interpolates the data
 set. To build this metamodel, we follow the steps:
 
 - first, we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
