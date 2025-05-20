@@ -5,8 +5,6 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Refer to :ref:`gaussian_process_regression`.
-
 Available constructors:
     GaussianProcessRegression(*gprFitterResult*)
 
@@ -25,6 +23,9 @@ trendFunction : :class:`~openturns.Function`
 
 Notes
 -----
+
+Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model.
 
 The underlying Gaussian process approximation can be fulfilled with two different ways: 
@@ -42,19 +43,7 @@ In all cases, no estimation of the underlying Gaussian process approximation is 
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
-where:
-
-.. math::
-
-    \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
-
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
+where :math:` \vect{\mu} = (\mu_1(\vect{x}), \dots, \mu_\outputDim(\vect{x}))` with each :math:`\mu_\ell: \Rset^\inputDim \rightarrow \Rset` is the trend funciton.  We have :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
 Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
 covariance function :math:`\mat{C}: \Rset^\inputDim \times \Rset^\inputDim \rightarrow  \Rset^\outputDim \times \Rset^\outputDim`.
@@ -104,7 +93,7 @@ where:
 Finally, we get the following mean of the Gaussian process regression at the point :math:`\vect{x}`:
 
 .. math::
-    :label: expextationGPR
+    :label: expectationGPRAPI
 
     \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
     ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\ouptDim}

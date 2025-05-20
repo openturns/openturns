@@ -16,7 +16,7 @@ set. To build this meta model, we follow the steps:
 
 - first, we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
-  where :math:`\vect{\mu}` is the thredn fucntion and :math:`\vect{W}` is a Gaussian process of
+  where :math:`\vect{\mu}` is the thredn function and :math:`\vect{W}` is a Gaussian process of
   dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`.
 - then, you condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
   Gaussian Process Regression denoted by
@@ -222,7 +222,7 @@ where:
 Finally, we get the following mean of the Gaussian process regression at the point :math:`\vect{x}`:
 
 .. math::
-    :label: expextationGPR
+    :label: expectationGPR
 
     \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
     ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\ouptDim}
