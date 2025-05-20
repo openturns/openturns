@@ -1,6 +1,6 @@
 """
-Draw fields
-===========
+Manipulate stochastic processes
+===============================
 """
 
 # %%
