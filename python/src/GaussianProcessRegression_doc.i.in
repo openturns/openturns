@@ -28,117 +28,40 @@ Refer to :ref:`gaussian_process_regression` to get all the notations and the the
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model.
 
-The underlying Gaussian process approximation can be fulfilled with two different ways: 
+The underlying Gaussian process approximation :math:`\vect{Y}` can be fulfilled with two different ways: 
 
 - Within the first constructor: we suppose that the Gaussian process approximation has already been
   calibrated using the class :class:`~openturns.experimental.GaussianProcessFitter`;
 - Within the second constructor: all the elements defining the Gaussian process approximation are specified
   separately: the data set, the covariance model and the trend function.
 
-The objective of the *GaussianProcessRegression* is to condition the Gaussian process approximation to the data set: thus, we make the Gaussian process approximation become interpolating over the dataset.
+The objective of the *GaussianProcessRegression* is to condition the Gaussian process approximation :math:`\vect{Y}` to the data set: thus, we make the Gaussian process approximation become interpolating over the dataset.
 
-In all cases, no estimation of the underlying Gaussian process approximation is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+In all cases, no estimation of the underlying Gaussian process approximation :math:`\vect{Y}` is performed. Refer to :class:`~openturns.experimental.GaussianProcessFitter` to get more details on the notation. The Gaussian process :math:`\vect{Y}` is defined by:
 
 .. math::
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
-where :math:` \vect{\mu} = (\mu_1(\vect{x}), \dots, \mu_\outputDim(\vect{x}))` with each :math:`\mu_\ell: \Rset^\inputDim \rightarrow \Rset` is the trend function.  We have :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
-
-Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
-covariance function :math:`\mat{C}: \Rset^\inputDim \times \Rset^\inputDim \rightarrow  \Rset^\outputDim \times \Rset^\outputDim`.
+where :math:` \vect{\mu} : \Rset^\inputDim \rightarrow \Rset^outputDim` is the trend function and :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and a specified covariance function.
 
 The Gaussian Process Regression denoted by :math:`\vect{Z}` is the Gaussian process :math:`\vect{Y}` conditioned to the data
 set:
 
 .. math::
-    :label: GPRdefAPI
 
     \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
 
 where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
 :math:`1 \leq k \leq \sampleSize`.
 
-Then, :math:`\vect{Z}` is a Gaussian process, which mean is defined by:
+Then, :math:`\vect{Z}` is a Gaussian process, which mean and covariance function are defined in :eq:`expectationGPR` and
+:eq:`covarianceGPR_point`.
 
-.. math::
-
-   \Expect{\vect{Z}(\omega, \vect{x})\, | \,  \cC}  & =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}\\
-    & = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
-    \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
-
-where:
-
-.. math::
-
-    \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}
-    _{\sampleSize}))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}
-    _{\sampleSize})  \right) \in \cM_{\outputDim,\sampleSize \times \outputDim}(\Rset)
-
-and :math:`\vect{\gamma}` is defined by:
-
-.. math::
-    :label: gammaDefinitionAPI
-
-    \vect{\gamma} = \mat{C}^{-1} \left( \vect{y}_1 - \vect{\mu}( \vect{x}_1), \dots, \vect{y}_\sampleSize -
-    \vect{\mu}( \vect{x}_\sampleSize) \right) \in  \cM_{\sampleSize \times \outputDim, 1}(\Rset)
-
-where:
-
-.. math::
-
-    \mat{C} = \Cov{\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})}\in
-    \cM_{\sampleSize \times \outputDim, \sampleSize \times \outputDim}(\Rset)
-
-Finally, we get the following mean of the Gaussian process regression at the point :math:`\vect{x}`:
-
-.. math::
-    :label: expectationGPRAPI
-
-    \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
-    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\outputDim}
-
-The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defined by:
-
-.. math::
-    :label: covarianceGPR_pointAPI
-
-    \Cov{\vect{Z}(\omega, \vect{x})} & =  \Cov{\vect{Y}(\omega, \vect{x}), \vect{Y}(\omega,
-    \vect{x})} - \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
-    \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \mat{C}^{-1}\Cov{(\vect{Y}
-    (\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})), \vect{Y}(\omega,
-    \vect{x})}
-
-with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
-
-When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
-defined by:
-
-.. math::
-    :label: covarianceGPR_sampleAPI
-
-    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
-        \left(
-          \begin{array}{lcl}
-            \Sigma_{11} & \dots & \Sigma_{1N} \\
-            \dots  \\
-            \Sigma_{N1} & \dots & \Sigma_{NN}
-          \end{array}
-        \right)
-
-where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
-
-The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
-
-.. math::
-    :label: GPRmetamodelAPI
-
-    \metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
+The Gaussian Process Regression meta model :math:`\metaModel` is defined by the mean of :math:`\vect{Z}`. Its expression is
+detailed in :eq:`GPRmetamodel`.
 
 In order to get services related to the conditional covariance, use the class :class:`~openturns.experimental.GaussianProcessConditionalCovariance`.
-    
-    
-
 
 Examples
 --------
@@ -185,6 +108,4 @@ Notes
 -----
 It computes the Gaussian Process interpolating approximation and creates a
 :class:`~openturns.experimental.GaussianProcessRegressionResult` structure containing all the results."
-
-// ---------------------------------------------------------------------
 

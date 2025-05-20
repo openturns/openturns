@@ -23,7 +23,8 @@ set. To build this meta model, we follow the steps:
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`.
 - define the meta model as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
-  that this meta model is interpolating the data set.
+  that this meta model is interpolating the data set. We can use the conditional covariance in order to quantify
+  the error of the meta model.
 
 
 Note the implementation of
@@ -56,7 +57,7 @@ where:
      \right)
 
 with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and
-:math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend function for :math:`1 \leq j \leq b` and
+:math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions basis for :math:`1 \leq j \leq b` and
 :math:`1 \leq \ell \leq \outputDim`.
 
 Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
@@ -174,11 +175,11 @@ This step is performed by the class :class:`~openturns.experimental.GaussianProc
 Step 2:  Gaussian Process Regression
 ------------------------------------
 
-Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian Regression technique
+Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian process regression
 aims at conditioning it to the data set: we make the Gaussian process approximation become
 interpolating over the dataset.
 
-The final Gaussian Process Regression denoted by :math:`\vect{Z}` is defined by:
+The final Gaussian process regression denoted by :math:`\vect{Z}` is defined by:
 
 .. math::
     :label: GPRdef
@@ -257,19 +258,21 @@ defined by:
 
 where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
 
-This step is performed by the class :class:`~openturns.experimental.GaussianProcessRegression` and
-:class:`~openturns.experimental.GaussianProcessConditionalCovariance`.
+This step is performed by the class :class:`~openturns.experimental.GaussianProcessRegression`.
 
 
-Step 3:  Gaussian Process Regression meta model
------------------------------------------------
+Step 3:  Gaussian Process Regression meta model and its exploitation
+--------------------------------------------------------------------
 
 The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
 .. math::
     :label: GPRmetamodel
 
-    \metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
+    \metaModel(\vect{x})  \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
+
+We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the meta model. The
+:class:`~openturns.experimental.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
 
 
 .. topic:: API:
