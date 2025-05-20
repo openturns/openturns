@@ -5,6 +5,8 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+Refer to :ref:`gaussian_process_regression`.
+
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
@@ -24,7 +26,8 @@ Notes
 -----
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k`, with :math:`\model:\Rset^\inputDim \mapsto \Rset^{\outputDim}` a given function.
 
-The objective is to build a meta model :math:`\metaModel`, using a **Gaussian process**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The class creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
+:math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. It is defined by:
 
 .. math::
 
@@ -135,7 +138,7 @@ Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p
 Therefore:
 
 .. math::
-    :label: logLikelihoodGP
+    :label: logLikelihoodGPAPI
 
     \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize})
     = cste - \log \det \mat{L}_{\vect{p}} -\dfrac{1}{2}  \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2

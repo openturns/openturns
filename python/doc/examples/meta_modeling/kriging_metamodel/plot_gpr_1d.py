@@ -121,7 +121,8 @@ view = viewer.View(graph)
 #
 # Nevertheless, we could modify the list of the
 # parameters that have to be estimated (the *active* parameters) and in particular we can add the
-# estimation of :math:`\nu`: see the documentation of the method :meth:`~openturns.CovarianceModel.setActiveParameter` of
+# estimation of :math:`\nu`: see the documentation of the method
+# :meth:`~openturns.CovarianceModel.setActiveParameter` of
 # the class :class:`~openturns.CovarianceModel` to get more details.
 
 # %%
@@ -179,7 +180,7 @@ print(gpr_result)
 # :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
 # parameter has remained unchanged.
 # Then we get the meta model with
-# :meth:`~openturns.experimental.GaussianProcessFitter.getMetaModel` and we
+# :meth:`~openturns.experimental.GaussianProcessFitterResult.getMetaModel` and we
 # evaluate the outputs of the meta model on the test
 # design of experiments.
 
@@ -300,7 +301,7 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # We are ready to display all the previous information and the three confidence intervals we want.
 
 # %%
-# sphinx_gallery_thumbnail_number = 
+# sphinx_gallery_thumbnail_number = 5
 graph = ot.Graph("", "", "", True, "")
 
 # Now we loop over the different values :

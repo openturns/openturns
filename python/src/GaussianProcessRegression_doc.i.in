@@ -63,7 +63,7 @@ The Gaussian Process Regression denoted by :math:`\vect{Z}` is the Gaussian proc
 set:
 
 .. math::
-    :label: GPRdef
+    :label: GPRdefAPI
 
     \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
 
@@ -89,7 +89,7 @@ where:
 and :math:`\vect{\gamma}` is defined by:
 
 .. math::
-    :label: gammaDefinition
+    :label: gammaDefinitionAPI
 
     \vect{\gamma} = \mat{C}^{-1} \left( \vect{y}_1 - \vect{\mu}( \vect{x}_1), \dots, \vect{y}_\sampleSize -
     \vect{\mu}( \vect{x}_\sampleSize) \right) \in  \cM_{\sampleSize \times \outputDim, 1}(\Rset)
@@ -106,13 +106,13 @@ Finally, we get the following mean of the Gaussian process regression at the poi
 .. math::
     :label: expextationGPR
 
-    \Expect{\vect{Z}(\omega, \vect{x})\, | \,  \cC} = \vect{\mu}(\vect{x}) + \sum_{i=1}
+    \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
     ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\ouptDim}
 
 The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defined by:
 
 .. math::
-    :label: covarianceGPR_point
+    :label: covarianceGPR_pointAPI
 
     \Cov{\vect{Z}(\omega, \vect{x})} & =  \Cov{\vect{Y}(\omega, \vect{x}), \vect{Y}(\omega,
     \vect{x})} - \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
@@ -126,7 +126,7 @@ When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi)_N))`, the co
 defined by:
 
 .. math::
-    :label: covarianceGPR_sample
+    :label: covarianceGPR_sampleAPI
 
     \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
         \left(
@@ -142,7 +142,7 @@ where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega,
 The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
 .. math::
-    :label: GPRmetamodel
+    :label: GPRmetamodelAPI
 
     \metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
 
