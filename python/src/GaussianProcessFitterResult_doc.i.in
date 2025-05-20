@@ -38,7 +38,7 @@ The structure is usually created by the method :py:meth:`~openturns.experimental
 :class:`~openturns.experimental.GaussianProcessFitter` and obtained with its method
 :py:meth:`~openturns.experimental.GaussianProcessFitter.getResult()`.
 
-Refer to the documentation of :class:`~openturns.experimental.GaussianProcessFitter` to get details on the notations.
+Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
 
 This class creates the meta model
 :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend

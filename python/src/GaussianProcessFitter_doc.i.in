@@ -18,209 +18,68 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq b}: \Rset^\inputDim \rightarrow \Rset`.
-    
+
     The same basis is used for each marginal output.
-    
-    Default value is `Basis(0)`, i.e. no trend to estimate
+
+    Default value is `Basis(0)`, i.e. no trend to estimate.
 
 Notes
 -----
 
-Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
+We only detail here the notions related to the class.
 
-We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k`, with :math:`\model:\Rset^\inputDim \mapsto \Rset^{\outputDim}` a given function.
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}`
+where :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k`, with :math:`\model:\Rset^\inputDim \mapsto
+\Rset^{\outputDim}` a given function.
 
-The class creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
+The class creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample
+:math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
 :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. It is defined by:
 
 .. math::
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
-where:
+where :math:`\vect{\mu} = (\mu_1, \dots, \mu_\outputDim)` with :math:``\mu_\ell(\vect{x}) = \sum_{j=1}^{b}
+\beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend function
+basis for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
-.. math::
-
-    \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
-
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
-
-Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
-covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`, where (see
-:ref:`covariance_model` for more details on the notations):
-
-- :math:`\vect{\theta}` is the scale vector,
-- :math:`\vect{\sigma}` is the standard deviation vector,
-- :math:`\mat{R}` is the spatial correlation matrix between the components of :math:`\vect{W}`,
-- :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
-
-
-
-Note that the meta model defined as the trend function: :math:`\metaModel(\vect{x}) = \vect{\mu}(\vect{x})` does not interpolate the input - output sample.
-
-We note:
-
-.. math::
-
-    \vect{\beta}^\ell = \left(
-      \begin{array}{l}
-        \beta_1^\ell \\
-        \vdots  \\
-        \beta_{b}^\ell
-       \end{array}
-     \right) \in \Rset^{b}
-     \quad \mbox{ and } \quad
-     \vect{\beta} = \left(
-      \begin{array}{l}
-         \vect{\beta}^1\\
-         \vdots  \\
-         \vect{\beta}^{\outputDim}
-       \end{array}
-     \right)\in \Rset^{b\outputDim}
-
-where :math:`n_t = \sum_{\ell = 1}^p n_\ell` is the total number of trend functions for all
-output dimensions.
+Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and a specified
+covariance model.
 
 The *GaussianProcessFitter* class estimates the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}` 
-where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of
-:math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as
-*active*: by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`. See
+where :math:`\vect{p}` is the vector of the parameters of the covariance model  that has been declared as
+*active*: see
 :class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
 parameters.
 
-The estimation is done by maximizing the *reduced* log-likelihood of the model (see the equation :eq:`logLikelihoodGP` below).
 
-**Estimation of the parameters:** We want to estimate all the parameters :math:`\left(\beta_j^\ell \right)` for :math:`1 \leq j \leq b`
-and :math:`1 \leq \ell \leq \outputDim`, and :math:`\vect{p}`.
+The estimation is done by maximizing the *reduced* log-likelihood of the mode, defined in :eq:`logLikelihoodGP`.
 
-We note:
-
-.. math::
-
-    \vect{y} = \left(
-      \begin{array}{l}
-        \vect{y}_1 \\
-        \vdots  \\
-        \vect{y}_\sampleSize
-       \end{array}
-     \right) \in \Rset^{\outputDim \times \sampleSize},
-     \quad
-     \vect{m}_{\vect{\beta}} = \left(
-      \begin{array}{l}
-        \vect{\mu}(\vect{x}_1) \\
-        \vdots  \\
-        \vect{\mu}(\vect{x}_\sampleSize)
-       \end{array}
-     \right) \in \Rset^{\outputDim \times \sampleSize}
-
-.. math::
-
-    \mat{C}_{\vect{p}} = \left(
-      \begin{array}{lcl}
-        \mat{C}_{11} & \dots &  \mat{C}_{1 \sampleSize}\\
-        \vdots       &       & \vdots \\
-        \mat{C}_{\sampleSize1} & \dots &  \mat{C}_{\sampleSize\sampleSize}
-       \end{array}
-<<<<<<< HEAD
-     \right) \in \cS_{\sampleSize \outputDim}^+(\Rset)
-=======
-     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
->>>>>>> b740b9a1e (Cosmetics)
-
-where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+(\Rset)`.
-
-The likelihood of the Gaussian process on the data set is defined by:
-
-.. math::
-
-<<<<<<< HEAD
-    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
-    = \dfrac{1}{(2\pi)^{\frac{1}{2} \sampleSize \outputDim} \left|\det\left(\mat{C}_{\vect{p}}\right)\right|^{\frac{1}{2}}}
-    \exp\left( -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m} \right)  \right)
-
-Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular matrix
-with positive diagonal such that :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
-Therefore the log-likelihood is:
-=======
-    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}{(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}_{\vect{\beta}} \right)  \right]
-
-Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular matrix with positive diagonal such that :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
-Therefore:
->>>>>>> b740b9a1e (Cosmetics)
-
-.. math::
-    :label: logLikelihoodGPAPI
-
-    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
-    = \alpha - \log \left( \det \left(\mat{L}_{\vect{p}}\right) \right)
-    -\dfrac{1}{2}  \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2_2
-
-where :math:`\alpha \in \Rset` is a constant independent of :math:`\vect{\beta}` and :math:`\vect{p}`.
-The maximization of :eq:`logLikelihoodGP` leads to the following optimality condition for :math:`\vect{\beta}`:
-
-.. math::
-
-    \vect{\beta}^*(\vect{p}^*)
-    = \argmin_{\vect{\beta}} \left\| \mat{L}_{\vect{p}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2
-
-This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a
-general relation between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into
-:eq:`logLikelihoodGP`, leading to a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
-
-In the particular case where :math:`\outputDim = \dim(\vect{\sigma}) = 1` and :math:`\sigma` is a part of
-:math:`\vect{p}`, then a further reduction is possible. In this case, let :math:`\vect{q}` be
-the vector :math:`\vect{p}` in which :math:`\sigma` has been substituted by 1.
-Therefore:
-
-.. math::
-
-    \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2 
-    = \frac{1}{\sigma^2} \left\| \mat{L}_{\vect{q}}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2.
-
-This shows that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality
-condition for :math:`\sigma` reads:
-
-.. math::
-
-    \vect{\sigma}^*(\vect{q}^*)
-    =\dfrac{1}{\sampleSize} 
-    \left\| \mat{L}_{\vect{q}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)}\right) \right\|^2_2.
-
-This leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}`
-and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
-
-The default optimizer is :class:`~openturns.Cobyla` and can be changed thanks to the :meth:`setOptimizationAlgorithm` method.
-User could also change the default optimization solver by setting the `GaussianProcessFitter-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names.
+The default optimizer is :class:`~openturns.Cobyla` and can be changed thanks to the
+:meth:`setOptimizationAlgorithm` method.
+User could also change the default optimization solver by setting the
+`GaussianProcessFitter-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt`
+solver names.
 
 It is also possible to proceed as follows:
 
-- ask for the reduced log-likelihood function thanks to the :meth:`getObjectiveFunction` method
-- optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimization algorithms (that can take into account some additional constraints if needed)
-- set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*
-- tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method
+- ask for the reduced log-likelihood function thanks to the :meth:`getObjectiveFunction` method,
+- optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimization algorithms (that can take into account some additional constraints if needed),
+- set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
+- tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
-The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
+The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`: *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,*ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
 
-<<<<<<< HEAD
-- *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-- *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
-=======
-- *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction
-  associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-- *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased*
-  estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
->>>>>>> b740b9a1e (Cosmetics)
 
-With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if `hmat-oss` support has been enabled.
+With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_ 
+implementation could be used if `hmat-oss` support has been enabled.
 
-This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements 
-and floating point operations. To use it, the `GaussianProcessFitter-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
+This implementation, which is based on a compressed representation of an approximated covariance matrix
+(and its Cholesky factor), has a better complexity both in terms of memory requirements
+and floating point operations. To use it, the `GaussianProcessFitter-LinearAlgebra` resource map key should be
+instancied to `HMAT`. Default value of the key is `LAPACK`.
 
 Examples
 --------
@@ -288,7 +147,7 @@ outputSample : :class:`~openturns.Sample`
 Returns
 -------
 logLikelihood : :class:`~openturns.Function`
-    The log-likelihood function degined in :eq:`logLikelihoodGP` as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
+    The log-likelihood function degined in :eq:`logLikelihoodGP` as a function of the active parameters of the covariance model.
 
 Notes
 -----

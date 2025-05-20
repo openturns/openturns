@@ -195,9 +195,6 @@ y_test_MM = gprMetamodel(x_test)
 
 # %%
 # Now we plot Gaussian process regression meta model, in addition to the previous plots.
-
-
-# %%
 graph = ot.Graph("", "", "", True, "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
@@ -212,7 +209,8 @@ view = viewer.View(graph)
 # We observe that the Gaussian process regression meta model is interpolating. This is what is meant by
 # *conditioning* a Gaussian process.
 #
-# We see that, when the sine function has a strong curvature between two points which are separated by a
+# We see that, when the sine function has a strong curvature between two points which are separated
+# by a
 # large distance (e.g. between :math:`x=4` and :math:`x=6`),
 # then the Gaussian regression is not close to the function :math:`g`.
 # However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly
@@ -298,7 +296,7 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 
 # %%
 # sphinx_gallery_thumbnail_number = 5
-graph = ot.Graph("", "", "", True, "")
+graph = ot.Graph("", "X", "Y", True, "")
 
 # Now we loop over the different values :
 for idx, v in enumerate(alphas):
@@ -314,11 +312,6 @@ for idx, v in enumerate(alphas):
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
-
-graph.setAxes(True)
-graph.setXTitle("X")
-graph.setYTitle("Y")
-graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%

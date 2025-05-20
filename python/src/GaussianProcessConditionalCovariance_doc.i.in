@@ -5,7 +5,6 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Refer to :ref:`gaussian_process_regression`.
 
 Parameters
 ----------
@@ -15,10 +14,27 @@ gprResult :  :class:`~openturns.experimental.GaussianProcessRegressionResult`
 
 Notes
 -----
-Refer to the documentation of :class:`~openturns.experimental.GaussianProcessRegression` to get details on the notations.
 
-The class provides services around related to the conditional covariance of the Gaussian Process Regression.
 
+Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+
+
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model. The  Gaussian process approximation :math:`\vect{Y}` is defined by:
+
+.. math::
+
+    \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
+
+where :math:` \vect{\mu} : \Rset^\inputDim \rightarrow \Rset^outputDim` is the trend function and :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and a specified covariance function. The Gaussian process regression denoted by :math:`\vect{Z}` is defined by:
+
+.. math::
+
+    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
+
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
+:math:`1 \leq k \leq \sampleSize`.
+
+The class provides services related to the conditional covariance of the Gaussian process regression :math:`\vect{Z}`.
 
 Examples
 --------
@@ -165,7 +181,7 @@ the method returns :math:`\Var{Z_k(\omega, \vect{x}}` where :math:`\vect{Z}` is 
 process regression  defined in :eq:`GPRdef`.
 
 If several marginal of interest :math:`k_1, \dots, k_M)` or several points :math:`(\vect{\xi}_1,
-\dots, \vect{\xi}_N)` have been specified, the method returns the concatenation of 
+\dots, \vect{\xi}_N)` have been specified, the method returns the concatenation of
 sequence of variances :math:`(\Var{Z_{k_1}(\omega, \vect{\xi}_j}, \dots, \Var{Z_{k_M}(\omega, \vect{\xi}_j})` for each :math:`1 \leq j \leq N`."
 
 // ---------------------------------------------------------------------
@@ -188,7 +204,7 @@ condDist : :class:`~openturns.Normal`
 Notes
 -----
 The conditional distribution of the Gaussian
-process regression :math:`(\vect{Z}` defined in :eq:`GPRdef` and computed at :math:`\vect{x}` or at :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`.
+process regression :math:`\vect{Z}` defined in :eq:`GPRdef` and computed at :math:`\vect{x}` or at :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`.
 In the first case, the method returns a Gaussian distribution of dimension :math:`\outputDim`,
 while in the second case, the method returns a Gaussian distribution of dimension
 :math:`N \times \outputDim`. The mean and the coarance matrix of the resulting distribution are
