@@ -5,21 +5,25 @@ Gaussian process regression
 
 Gaussian process regression (also known as Kriging) is a Bayesian
 technique that aim at approximating functions (most often in order to
-surrogate it because it is expensive to evaluate). 
+surrogate it because it is expensive to evaluate).
 
 Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model and a dataset
-:math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all :math:`k`.
+:math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)`
+for all :math:`k`.
 
-The objective is to build a meta model :math:`\metaModel`, using a Gaussian process that intermolates the data set. To build this meta model, we follow the steps: 
+The objective is to build a meta model :math:`\metaModel`, using a Gaussian process that intermolates the data
+set. To build this meta model, we follow the steps:
 
 - first, we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
   where :math:`\vect{\mu}` is the thredn fucntion and :math:`\vect{W}` is a Gaussian process of
   dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`.
-- then, you condition the Gaussian process :math:`\vect{Y}` to the data set by considerong the
-  Gaussian Process Regression denoted by :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC` where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =
-  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`.
-- define the meta model as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note that this meta model is interpolating the data set.
+- then, you condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
+  Gaussian Process Regression denoted by
+  :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
+  is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`.
+- define the meta model as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+  that this meta model is interpolating the data set.
 
 
 Note the implementation of
@@ -30,7 +34,9 @@ each output.
 
 Step 1: Gaussian process fitting
 --------------------------------
-The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
+
+The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample
+:math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
 :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. It is defined by:
 
 .. math::
@@ -49,7 +55,9 @@ where:
        \end{array}
      \right)
 
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and
+:math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend function for :math:`1 \leq j \leq b` and
+:math:`1 \leq \ell \leq \outputDim`.
 
 Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
 covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`, where (see
@@ -60,7 +68,7 @@ covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{
 - :math:`\mat{R}` is the spatial correlation matrix between the components of :math:`\vect{W}`,
 - :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
 
-Then, we have to estimate the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}` 
+Then, we have to estimate the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}`
 where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of
 :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as
 *active*: by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`. See
@@ -69,7 +77,8 @@ parameters.
 
 The estimation is done by maximizing the *reduced* log-likelihood of the model (see its expression below).
 
-**Estimation of the parameters:** We want to estimate all the parameters :math:`\left(\beta_j^\ell \right)` for :math:`1 \leq j \leq b`
+**Estimation of the parameters:** We want to estimate all the parameters :math:`\left(\beta_j^\ell \right)` for
+:math:`1 \leq j \leq b`
 and :math:`1 \leq \ell \leq \outputDim`, and :math:`\vect{p}`.
 
 We note:
@@ -105,15 +114,21 @@ and:
        \end{array}
      \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
-where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+(\Rset)`.
+where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+
+(\Rset)`.
 
 The likelihood of the Gaussian process on the data set is defined by:
 
 .. math::
 
-    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}{(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}_{\vect{\beta}} \right)  \right]
+    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}
+    {(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}
+    \Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}
+    _{\vect{\beta}} \right)  \right]
 
-Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular matrix with positive diagonal such that :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
+Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular
+matrix with positive diagonal such that
+:math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
 Therefore:
 
 .. math::
@@ -133,21 +148,26 @@ This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is
 between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to
 a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
-In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`, then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which :math:`\sigma` has been substituted by 1, then:
+In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
+then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which
+:math:`\sigma` has been substituted by 1, then:
 
 .. math::
 
     \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
     = \frac{1}{\sigma^2} \| \mat{L}_{\vect{q}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2_2
 
-showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality condition for :math:`\sigma` reads:
+showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality condition
+for :math:`\sigma` reads:
 
 .. math::
 
     \vect{\sigma}^*(\vect{q}^*)
-    = \dfrac{1}{\sampleSize} \| \mat{L}_{\vect{q}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)}) \|^2_2
+    = \dfrac{1}{\sampleSize} \| \mat{L}_{\vect{q}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)})
+    \|^2_2
 
-which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
+which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and
+:math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
 
 This step is performed by the class :class:`~openturns.experimental.GaussianProcessFitter`.
 
@@ -157,7 +177,7 @@ Step 2:  Gaussian Process Regression
 Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian Regression technique
 aims at conditioning it to the data set: we make the Gaussian process approximation become
 interpolating over the dataset.
- 
+
 The final Gaussian Process Regression denoted by :math:`\vect{Z}` is defined by:
 
 .. math::
@@ -267,7 +287,9 @@ The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 .. topic:: References:
 
     - [dubourg2011]_
-    - S. Lophaven, H. Nielsen and J. Sondergaard, 2002, "DACE, A Matlab kriging toolbox", Technichal University of Denmark. https://www.omicron.dk/dace/dace.pdf
-    - T. Santner, B. Williams and W. Notz, 2003. "The design and analysis of computer experiments", Springer, New York.
+    - S. Lophaven, H. Nielsen and J. Sondergaard, 2002, "DACE, A Matlab kriging toolbox", Technichal University
+    of Denmark. https://www.omicron.dk/dace/dace.pdf
+    - T. Santner, B. Williams and W. Notz, 2003. "The design and analysis of computer experiments", Springer,
+    New York.
     - C. Rasmussen and C. Williams, 2006, T. Dietterich (Ed.), "Gaussian processes for machine learning", MIT Press.
 
