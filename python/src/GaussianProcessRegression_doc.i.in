@@ -96,7 +96,7 @@ Finally, we get the following mean of the Gaussian process regression at the poi
     :label: expectationGPRAPI
 
     \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
-    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\ouptDim}
+    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\outputDim}
 
 The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defined by:
 
@@ -111,7 +111,7 @@ The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defin
 
 with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
 
-When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi)_N))`, the covariance matrix is
+When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
 defined by:
 
 .. math::

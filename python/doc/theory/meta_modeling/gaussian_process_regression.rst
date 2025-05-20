@@ -225,7 +225,7 @@ Finally, we get the following mean of the Gaussian process regression at the poi
     :label: expectationGPR
 
     \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
-    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\ouptDim}
+    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\outputDim}
 
 The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defined by:
 
@@ -240,7 +240,7 @@ The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defin
 
 with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
 
-When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi)_N))`, the covariance matrix is
+When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
 defined by:
 
 .. math::
@@ -288,8 +288,7 @@ The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
 
     - [dubourg2011]_
     - S. Lophaven, H. Nielsen and J. Sondergaard, 2002, "DACE, A Matlab kriging toolbox", Technichal University
-    of Denmark. https://www.omicron.dk/dace/dace.pdf
-    - T. Santner, B. Williams and W. Notz, 2003. "The design and analysis of computer experiments", Springer,
-    New York.
+      of Denmark. https://www.omicron.dk/dace/dace.pdf
+    - T. Santner, B. Williams and W. Notz, 2003. "The design and analysis of computer experiments", Springer, New York.
     - C. Rasmussen and C. Williams, 2006, T. Dietterich (Ed.), "Gaussian processes for machine learning", MIT Press.
 
