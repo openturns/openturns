@@ -11,8 +11,8 @@ Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model and 
 :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)`
 for all :math:`k`.
 
-The objective is to build a meta model :math:`\metaModel`, using a Gaussian process that intermolates the data
-set. To build this meta model, we follow the steps:
+The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that intermolates the data
+set. To build this metamodel, we follow the steps:
 
 - first, we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
@@ -22,9 +22,9 @@ set. To build this meta model, we follow the steps:
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`.
-- define the meta model as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
-  that this meta model is interpolating the data set. We can use the conditional covariance in order to quantify
-  the error of the meta model.
+- define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+  that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
+  the error of the metamodel.
 
 
 Note the implementation of
@@ -261,17 +261,17 @@ where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega,
 This step is performed by the class :class:`~openturns.experimental.GaussianProcessRegression`.
 
 
-Step 3:  Gaussian Process Regression meta model and its exploitation
+Step 3:  Gaussian Process Regression metamodel and its exploitation
 --------------------------------------------------------------------
 
-The Gaussian Process Regression meta model :math:`\metaModel` is defined by:
+The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
 
 .. math::
     :label: GPRmetamodel
 
     \metaModel(\vect{x})  \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
 
-We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the meta model. The
+We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
 :class:`~openturns.experimental.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
 
 

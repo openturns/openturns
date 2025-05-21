@@ -99,7 +99,7 @@ Create the algorithm:
 >>> algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
-Get the resulting  meta model which is the trend function of the Gaussian process:
+Get the resulting  metamodel which is the trend function of the Gaussian process:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()"
