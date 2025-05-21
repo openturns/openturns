@@ -32,10 +32,9 @@ import openturns.viewer as otv
 # The model is the function :math:`g: \Rset \rightarrow \Rset` defined by:
 #
 # .. math::
-#    \model(x) = x \sin \left( \frac{x}{2} \right), \qud \forall x \in [0,10].
+#    \model(x) = x \sin \left( \frac{x}{2} \right), \quad \forall x \in [0,10].
 #
-# We consider the :class:`~openturns.MaternModel` covariance kernel
-# where :math:`\vect{\theta} = (\sigma, \rho)` is the vector of hyperparameters.
+# We consider the :class:`~openturns.MaternModel` covariance model.
 # The covariance model is fixed but its parameters must be calibrated
 # depending on the data.
 # The Gaussian process regression metamodel is defined by:
@@ -59,7 +58,7 @@ import openturns.viewer as otv
 # property: the metamodel is exact at the training data set.
 #
 # The objective is to estimate the trend function :math:`\mu` and the parameters of the covariance model,
-# labelled as *active*: by default, the active parameters are :math:`\vect{\theta} = (\sigma, \rho)` but refer to
+# labelled as *active*: by default, the active parameters are the scale and the amplitude :math:`\vect{\theta} = (\theta, \sigma)` but refer to
 # :class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other parameters.
 #
 # Define the model
@@ -157,10 +156,6 @@ dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 
 # %%
-# First, we define the :class:`~openturns.MaternModel` covariance model.
-covarianceModel = ot.MaternModel([1.0], [1.0], 2.5)
-
-# %%
 # We build the Gaussian process regression algorithm on the transformed data, the output data, the covariance
 # model and the basis.
 # First, we define the :class:`~openturns.MaternModel` covariance model. The two first parameters
@@ -212,8 +207,8 @@ view = otv.View(graph)
 
 # %%
 # We also observe the estimated values of the hyperparameters of the trained covariance model.
-rho = gpr_result.getCovarianceModel().getScale()[0]
-print("Scale parameter: %.3e" % rho)
+theta = gpr_result.getCovarianceModel().getScale()[0]
+print("Scale parameter: %.3e" % theta)
 
 sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
@@ -347,8 +342,8 @@ metamodel_gpr = ot.ComposedFunction(metamodel_transformed_data, myTransform)
 
 # %%
 # We get the updated covariance model.
-rho = gpr_result.getCovarianceModel().getScale()[0]
-print("Scale parameter: %.3e" % rho)
+theta = gpr_result.getCovarianceModel().getScale()[0]
+print("Scale parameter: %.3e" % theta)
 
 sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
@@ -416,8 +411,8 @@ metamodel_gpr = ot.ComposedFunction(metamodel_transformed_data, myTransform)
 
 # %%
 # We get the updated covariance model.
-rho = gpr_result.getCovarianceModel().getScale()[0]
-print("Scale parameter: %.3e" % rho)
+theta = gpr_result.getCovarianceModel().getScale()[0]
+print("Scale parameter: %.3e" % theta)
 
 sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
