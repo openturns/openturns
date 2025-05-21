@@ -43,7 +43,7 @@ Create the interpolating Gaussian process approximation:
 >>> algo = otexp.GaussianProcessRegression(fit_algo.getResult())
 >>> algo.run()
 
-Get the resulting interpolating meta model :math:`\metaModel`:
+Get the resulting interpolating metamodel :math:`\metaModel`:
 
 >>> result = algo.getResult()
 >>> metaModel = result.getMetaModel()
@@ -104,17 +104,17 @@ linAlgMethod : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessRegressionResult::getMetaModel
-"Accessor to the meta model.
+"Accessor to the metamodel.
 
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in
+    The metamodel :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined in
     :eq:`GPRmetamodel`.
 
 Notes
 -----
-This meta model is interpolating the data set.
+This metamodel is interpolating the data set.
 "
 
 // ---------------------------------------------------------------------

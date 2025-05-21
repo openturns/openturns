@@ -218,5 +218,5 @@ computed by :meth:`getConditionalMean` and :meth:`getConditionalCovariance`."
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The Gaussian process regression meta model :math:`\tilde{g}: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined in :eq:`GPRmetamodel`."
+    The Gaussian process regression metamodel :math:`\tilde{g}: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined in :eq:`GPRmetamodel`."
 

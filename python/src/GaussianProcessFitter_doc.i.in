@@ -70,10 +70,16 @@ It is also possible to proceed as follows:
 - set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 - tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
-The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`: *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,*ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
+
+The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
+
+- *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to
+  :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
+- *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of
+  :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
 
 
-With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_ 
+With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
 
 This implementation, which is based on a compressed representation of an approximated covariance matrix
@@ -102,7 +108,7 @@ Create the algorithm:
 >>> algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
-Get the resulting  meta model which is the trend function of the Gaussian process:
+Get the resulting  metamodel which is the trend function of the Gaussian process:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()"
