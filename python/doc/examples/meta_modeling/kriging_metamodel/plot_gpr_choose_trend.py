@@ -6,7 +6,6 @@ Gaussian Process Regression: choose a polynomial trend
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
-from matplotlib import pylab as plt
 
 # %%
 # Introduction
@@ -41,7 +40,6 @@ from matplotlib import pylab as plt
 # depending on the data.
 # The Gaussian process regression metamodel is defined by:
 #
-# 
 # .. math::
 #
 #    \metaModel(\vect{x})  \Expect{Y(\omega, x)\, | \,  \cC}
@@ -91,7 +89,8 @@ step = (xmax - xmin) / (nTest - 1)
 x_test = ot.RegularGrid(xmin, step, nTest).getVertices()
 
 # %%
-# We draw the training points and the model at the testing points. We encapsulate it into a function to use it again later.
+# We draw the training points and the model at the testing points. We encapsulate it into a function to use it
+# again later.
 
 
 def plot_model(color):
@@ -120,8 +119,7 @@ view = otv.View(graph)
 # %%
 # Scale the input training sample
 # -------------------------------
-
-# %%
+#
 # We often have to apply a transform on the input data before performing the Gaussian process regression.
 # This makes the estimation of the hyperparameters of the Gaussian process regression metamodel
 # easier for the optimization algorithm.
@@ -158,7 +156,7 @@ scaledXtrain
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 
-#
+# %%
 # First, we define the :class:`~openturns.MaternModel` covariance model.
 covarianceModel = ot.MaternModel([1.0], [1.0], 2.5)
 
@@ -183,7 +181,7 @@ algo_gpr = otexp.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
-# We can get the metamodel on the transformed data: 
+# We can get the metamodel on the transformed data:
 gpr_result = algo_gpr.getResult()
 metamodel_transformed_data = gpr_result.getMetaModel()
 
@@ -253,6 +251,7 @@ def plot_trend(x_test, trend_func, color):
     curve.setLegend("Trend")
     return curve
 
+
 # %%
 # We draw the estimated trend function.
 graph.add(plot_trend(x_test, trend, 'red'))
@@ -262,7 +261,7 @@ view = otv.View(graph)
 # %%
 # Now, we want to plot some confidence bounds of the metamodel. We use the class
 # :class:`~openturns.experimental.GaussianProcessConditionalCovariance` which is built from the Gaussian
-# Process Regression result. We create a function to plot confidence bounds. 
+# Process Regression result. We create a function to plot confidence bounds.
 
 
 def plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, color, alpha=0.05):
@@ -281,21 +280,22 @@ def plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, color, alpha=0.05)
     y_test = metamodel_transf_data(scaled_x_test)
     dataLower = [
         y_test[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(n_test)
-    ]
+                ]
     dataUpper = [
         y_test[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(n_test)
-    ]
+                ]
     boundsPoly = ot.Polygon.FillBetween(x_test.asPoint(), dataLower, dataUpper)
     boundsPoly.setColor(
         ot.Drawable.ConvertFromHSV(color[0], color[1], color[2])
-        )
+                       )
     boundsPoly.setLegend("%d%% C.I." % ((1.0 - alpha) * 100))
     return boundsPoly
+
 
 # %%
 # We plot the bounds of three different confidence intervals of level :math:`1-\alpha`:
 alphas = [0.05, 0.1, 0.2]
-# three different green colors defined by HSV values
+# three different green colors defined by HSV values:
 bounds_colors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 
 graph = ot.Graph('Gaussian Process Regression metamodel: constant trend', 'x', 'y', True)
@@ -328,7 +328,7 @@ algo_gpr = otexp.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
-# We  get the metamodel on the transformed data and we build the final metamodel acting on the initial input data: 
+# We  get the metamodel on the transformed data and we build the final metamodel acting on the initial input data.
 gpr_result = algo_gpr.getResult()
 metamodel_transformed_data = gpr_result.getMetaModel()
 metamodel_gpr = ot.ComposedFunction(metamodel_transformed_data, myTransform)
@@ -342,7 +342,7 @@ sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
 
 # %%
-# We get the trand funciton acting on the transformed data and we bild the trend acting on the initial input data: 
+# We get the trand funciton acting on the transformed data and we build the trend acting on the initial input data:
 trend_transformed_data = fit_result.getMetaModel()
 trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 
@@ -368,8 +368,6 @@ graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
-
-
 # %%
 # Quadratic basis
 # ---------------
@@ -387,7 +385,7 @@ algo_gpr = otexp.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
-# We  get the metamodel on the transformed data and we build the final metamodel acting on the initial input data: 
+# We  get the metamodel on the transformed data and we build the final metamodel acting on the initial input data.
 gpr_result = algo_gpr.getResult()
 metamodel_transformed_data = gpr_result.getMetaModel()
 metamodel_gpr = ot.ComposedFunction(metamodel_transformed_data, myTransform)
@@ -401,7 +399,7 @@ sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
 
 # %%
-# We get the trand funciton acting on the transformed data and we bild the trend acting on the initial input data: 
+# We get the trand funciton acting on the transformed data and we build the trend acting on the initial input data.
 trend_transformed_data = fit_result.getMetaModel()
 trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 
@@ -426,7 +424,6 @@ graph.add(plot_trend(x_test, trend, 'red'))
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
-
 
 # %%
 # And far away from the training data set?
@@ -454,7 +451,8 @@ view = otv.View(graph)
 
 # %%
 # We observe that far away from the training data set, the Gaussian Process Regression metamodel is equal to the
-# trend function which is not a good approximation of the model.
+# trend function which is not a good approximation of the model. In that case, it is not a good idea to use the
+# Gaussian Process Regression metamodel far away from the training data set.
 
 # %%
 # Display figures

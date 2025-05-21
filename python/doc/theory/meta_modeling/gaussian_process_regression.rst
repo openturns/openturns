@@ -16,15 +16,15 @@ set. To build this metamodel, we follow the steps:
 
 - first, we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
-  where :math:`\vect{\mu}` is the thredn function and :math:`\vect{W}` is a Gaussian process of
-  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`.
-- then, you condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
+  where :math:`\vect{\mu}` is the trend function and :math:`\vect{W}` is a Gaussian process of
+  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`;
+- then, we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
-  is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`.
-- define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+  is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
+- at last, we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
   that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
-  the error of the metamodel.
+  the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
 
 Note the implementation of
