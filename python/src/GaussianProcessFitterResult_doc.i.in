@@ -12,7 +12,7 @@ Parameters
 inputSample, outputSample : :class:`~openturns.Sample`
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^{\inputDim}` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}`.
 metaModel : :class:`~openturns.Function`
-    The meta model: :math:`\metaModel`, defined in :eq:`metaModelGPF` by the trend function.
+    The metamodel: :math:`\metaModel`, defined in :eq:`metaModelGPF` by the trend function.
 regressionMatrix : :class:`~openturns.Matrix`
     The regression matrix, e.g the evaluation of the basis functions
     upon the input design sample.
@@ -40,7 +40,7 @@ The structure is usually created by the method :py:meth:`~openturns.experimental
 
 Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
 
-This class creates the meta model
+This class creates the metamodel
 :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
 function:
 
@@ -78,7 +78,7 @@ Get the result:
 
 >>> result = algo.getResult()
 
-Get the meta model :math:`\metaModel(\vect{x}) = \vect{\mu}(\vect{x})`:
+Get the metamodel :math:`\metaModel(\vect{x}) = \vect{\mu}(\vect{x})`:
 
 >>> metaModel = result.getMetaModel()
 >>> graph = metaModel.draw(0.0, 7.0)
@@ -137,11 +137,11 @@ linAlgMethod : int
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined by the estimated trend function.
+    The metamodel :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}`, defined by the estimated trend function.
 
 Notes
 -----
-See :class:`~openturns.GaussianProcessFitter` to get the notations. This method returns the meta model
+See :class:`~openturns.GaussianProcessFitter` to get the notations. This method returns the metamodel
 :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
 function in :eq:`metaModelGPF`."
 

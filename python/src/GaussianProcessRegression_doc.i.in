@@ -58,7 +58,7 @@ where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y
 Then, :math:`\vect{Z}` is a Gaussian process, which mean and covariance function are defined in :eq:`expectationGPR` and
 :eq:`covarianceGPR_point`.
 
-The Gaussian Process Regression meta model :math:`\metaModel` is defined by the mean of :math:`\vect{Z}`. Its expression is
+The Gaussian Process Regression metamodel :math:`\metaModel` is defined by the mean of :math:`\vect{Z}`. Its expression is
 detailed in :eq:`GPRmetamodel`.
 
 In order to get services related to the conditional covariance, use the class :class:`~openturns.experimental.GaussianProcessConditionalCovariance`.
@@ -81,7 +81,7 @@ Create the algorithm:
 >>> fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 >>> fit_algo.run()
 
-Get the resulting interpolating meta model :math:`\metaModel`:
+Get the resulting interpolating metamodel :math:`\metaModel`:
 
 >>> fit_result = fit_algo.getResult()
 >>> algo = otexp.GaussianProcessRegression(fit_result)
