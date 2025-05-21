@@ -196,7 +196,7 @@ metamodel_gpr = ot.ComposedFunction(metamodel_transformed_data, myTransform)
 # Define a function to plot the metamodel:
 
 
-def plotMetamodel(x_test, metamodel, color):
+def plot_metamodel(x_test, metamodel, color):
     y_test = metamodel(x_test)
     curve = ot.Curve(x_test, y_test)
     curve.setLineStyle("dashed")
@@ -208,7 +208,7 @@ def plotMetamodel(x_test, metamodel, color):
 # %%
 # We can draw the metamodel and the model on the same graph.
 graph = plot_model(palette[0])
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
 graph.setTitle("Gaussian Process Regression metamodel: constant trend")
 view = otv.View(graph)
 
@@ -245,7 +245,7 @@ trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 # Define a function to plot the trend.
 
 
-def plotTrend(x_test, trend_func, color):
+def plot_trend(x_test, trend_func, color):
     y_test = trend_func(x_test)
     curve = ot.Curve(x_test, y_test)
     curve.setLineStyle("dotdash")
@@ -255,7 +255,7 @@ def plotTrend(x_test, trend_func, color):
 
 # %%
 # We draw the estimated trend function.
-graph.add(plotTrend(x_test, trend, 'red')
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setTitle("Gaussian Process Regression metamodel: constant trend")
 view = otv.View(graph)
 
@@ -265,7 +265,7 @@ view = otv.View(graph)
 # Process Regression result. We create a function to plot confidence bounds. 
 
 
-def plotGPRConfidenceBounds(gpr_result, x_test, myTransform, color, alpha=0.05):
+def plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, color, alpha=0.05):
     bilateralCI = ot.Normal().computeBilateralConfidenceInterval(1.0 - alpha)
     quantileAlpha = bilateralCI.getUpperBound()[0]
     sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
@@ -299,12 +299,12 @@ alphas = [0.05, 0.1, 0.2]
 bounds_colors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 
 graph = ot.Graph('Gaussian Process Regression metamodel: constant trend', 'x', 'y', True)
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
 graph.add(plot_model(palette[0]))
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
-graph.add(plotTrend(x_test, trend, 'red'))
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
@@ -349,8 +349,8 @@ trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 # %%
 # We draw the model, the trained data set, the estimated trend function and the Gaussian Process Regression metamodel
 graph = plot_model(palette[0])
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
-graph.add(plotTrend(x_test, trend, 'red'))
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setTitle("Gaussian Process Regression metamodel: linear basis")
 view = otv.View(graph)
 
@@ -358,12 +358,12 @@ view = otv.View(graph)
 # We plot some confidence bounds of the metamodel.
 # sphinx_gallery_thumbnail_number = 6
 graph = ot.Graph('Gaussian Process Regression metamodel: linear trend', 'x', 'y', True)
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
-graph.add(plot_exact_model(palette[0]))
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
-graph.add(plotTrend(x_test, trend, 'red'))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
+graph.add(plot_model(palette[0]))
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
@@ -408,21 +408,21 @@ trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 # %%
 # We draw the model, the trained data set, the estimated trend function and the Gaussian Process Regression
 # metamodel.
-graph = plot_exact_model(palette[0])
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
-graph.add(plotTrend(x_test, trend, 'red'))
+graph = plot_model(palette[0])
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setTitle("Gaussian Process Regression metamodel: quadratic basis")
 view = otv.View(graph)
 
 # %%
 # We plot some confidence bounds of the metamodel.
 graph = ot.Graph('Gaussian Process Regression metamodel: quadratic trend', 'x', 'y', True)
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
-graph.add(plot_exact_model(palette[0]))
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
-graph.add(plotTrend(x_test, trend, 'red'))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
+graph.add(plot_model(palette[0]))
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
@@ -442,12 +442,12 @@ step = (xmax - xmin) / (nTest - 1)
 x_test = ot.RegularGrid(xmin, step, nTest).getVertices()
 
 graph = ot.Graph('Gaussian Process Regression metamodel: quadratic trend', 'x', 'y', True)
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
-graph.add(plotGPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
-graph.add(plot_exact_model(palette[0]))
-graph.add(plotMetamodel(x_test, metamodel_gpr, palette[1]))
-graph.add(plotTrend(x_test, trend, 'red'))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[1], alphas[1]))
+graph.add(plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, bounds_colors[2], alphas[2]))
+graph.add(plot_model(palette[0]))
+graph.add(plot_metamodel(x_test, metamodel_gpr, palette[1]))
+graph.add(plot_trend(x_test, trend, 'red'))
 graph.setLegendCorner([1.0, 1.0])
 graph.setLegendPosition("upper left")
 view = otv.View(graph)
