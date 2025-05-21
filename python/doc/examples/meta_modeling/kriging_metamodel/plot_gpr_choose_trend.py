@@ -11,7 +11,7 @@ import openturns.viewer as otv
 # Introduction
 # ------------
 #
-# In this example, we buid a metamodel using a Gaussian process regression whose trend is estimated on a
+# In this example, we build a metamodel using a Gaussian process regression whose trend is estimated on a
 # given data set. We illustrate the impact of the choice of the trend function basis on the metamodel.
 # This example focuses on three polynomial trends:
 #
@@ -331,7 +331,7 @@ view = otv.View(graph)
 basis = ot.LinearBasisFactory(dimension).build()
 
 # %%
-# We  we build the :math:`Y(\omega, x)` Gaussian process, then we condition it to the data set.
+# We build the :math:`Y(\omega, x)` Gaussian process, then we condition it to the data set.
 algo_fit = otexp.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
@@ -354,7 +354,7 @@ sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
 
 # %%
-# We get the trand funciton acting on the transformed data and we build the trend acting on the initial input data:
+# We get the trend function acting on the transformed data and we build the trend function acting on the initial input data.
 trend_transformed_data = fit_result.getMetaModel()
 trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 
@@ -396,11 +396,11 @@ view = otv.View(graph)
 # Quadratic basis
 # ---------------
 #
-# In this last paragraph we turn to the quadratic basis. All subsequent analysis should remain the same.
+# In this last section, we turn to the quadratic basis. All subsequent analysis should remain the same.
 basis = ot.QuadraticBasisFactory(dimension).build()
 
 # %%
-# We  we build the :math:`Y(\omega, x)` Gaussian process, then we condition it to the data set.
+# We build the :math:`Y(\omega, x)` Gaussian process, then we condition it to the data set.
 algo_fit = otexp.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
@@ -423,7 +423,7 @@ sigma = gpr_result.getCovarianceModel().getAmplitude()[0]
 print("Amplitude parameter: %.3e" % sigma)
 
 # %%
-# We get the trand funciton acting on the transformed data and we build the trend acting on the initial input data.
+# We get the trend function acting on the transformed data and we build the trend acting on the initial input data.
 trend_transformed_data = fit_result.getMetaModel()
 trend = ot.ComposedFunction(trend_transformed_data, myTransform)
 
