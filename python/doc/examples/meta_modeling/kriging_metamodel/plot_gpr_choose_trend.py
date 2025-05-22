@@ -24,7 +24,7 @@ import openturns.viewer as otv
 # regression metamodel far away from the training data set.
 #
 # Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects.
-# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_trend` example,
+# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_beam_trend` example,
 # we give another example of this method.
 # In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_arbitrary_trend` example,
 # we show how to configure an arbitrary trend.
@@ -207,6 +207,8 @@ view = otv.View(graph)
 
 # %%
 # We also observe the estimated values of the hyperparameters of the trained covariance model.
+# Note that the scale parameter is related to the transformed data. To get the scale parameter related to
+# the initial variables, you have to multiply it by the *stdDev* factor.
 theta = gpr_result.getCovarianceModel().getScale()[0]
 print("Scale parameter: %.3e" % theta)
 

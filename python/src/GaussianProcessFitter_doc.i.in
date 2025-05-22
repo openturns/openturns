@@ -73,11 +73,10 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
 - *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to
   :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
 - *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of
-  :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality
-  condition for :math:`\sigma`.s
+  :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
 
 
-With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_ 
+With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
 
 This implementation, which is based on a compressed representation of an approximated covariance matrix
