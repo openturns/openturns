@@ -61,7 +61,7 @@ def test_one_input_one_output():
     ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13)
 
     # Covariance per marginal & extract variance component
-    coll = gccc.getConditionalMarginalCovariance(X)
+    coll = gccc.getDiagonalCovarianceCollection(X)
     var = [mat[0, 0] for mat in coll]
     ott.assert_almost_equal(var, [0] * sampleSize, 1e-14, 1e-13)
 
@@ -133,7 +133,7 @@ def test_two_inputs_one_output():
     ott.assert_almost_equal(covariance, ot.SquareMatrix(len(inputSample)), 7e-7, 7e-7)
 
     # Covariance per marginal & extract variance component
-    coll = gccc.getConditionalMarginalCovariance(inputSample)
+    coll = gccc.getDiagonalCovarianceCollection(inputSample)
     var = [mat[0, 0] for mat in coll]
     ott.assert_almost_equal(var, [0] * len(var), 0.0, 1e-13)
 
@@ -197,7 +197,7 @@ def test_two_outputs():
 
     # Marginal variance on a specific point
     x = [1.1]
-    covTest = gccc.getConditionalMarginalCovariance(x)
+    covTest = gccc.getDiagonalCovariance(x)
     ref_cov_test = ot.Matrix(
         [
             [0.000205032, 2.28332e-20],

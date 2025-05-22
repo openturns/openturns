@@ -104,29 +104,39 @@ condCov : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianProcessConditionalCovariance::getConditionalMarginalCovariance
-"Compute the conditional covariance of the Gaussian process on a point (or several points).
+%feature("docstring") OT::GaussianProcessConditionalCovariance::getDiagonalCovariance
+"Compute the conditional covariance of the Gaussian process on a point.
 
 Parameters
 ----------
 x : sequence of float
     The point :math:`\vect{x}` where the conditional marginal covariance of the output has to be evaluated.
+
+Returns
+-------
+condCov : :class:`~openturns.CovarianceMatrix`
+    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessConditionalCovariance::getDiagonalCovarianceCollection
+"Compute the conditional covariance of the Gaussian process on a sample.
+
+Parameters
+----------
 sampleX : 2-d sequence of float
      The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional marginal covariance of the output has to be evaluated (*M* can be equal to 1).
 
 Returns
 -------
-condCov : :class:`~openturns.CovarianceMatrix`
-    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
-
 condCov : :class:`~openturns.CovarianceMatrixCollection`
     The collection of conditional covariance matrices :math:`\Cov{\vect{Y}(\omega, \vect{\xi})\, | \,  \cC}` at
     each point of the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
 
 Notes
 -----
-In case input parameter is a of type :class:`~openturns.Sample`, each element of the collection corresponds to the conditional
-covariance with respect to the input learning set (pointwise evaluation of the getConditionalCovariance)."
+Each element of the collection corresponds to the conditional covariance with respect to the input learning set
+(e.g. a pointwise evaluation of the `getDiagonalCovariance`)."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessConditionalCovariance::getConditionalMarginalVariance
