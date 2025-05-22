@@ -269,7 +269,7 @@ conditional_sigma_kriging = sqrt(conditional_variance_kriging)
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 # Notice also that :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance` is similar to
-# :meth:`~openturns.KrigingResult.getConditionalCovariance`., and :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalCovariance`
+# :meth:`~openturns.KrigingResult.getConditionalCovariance`, and :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getDiagonalCovarianceCollection`
 # has a "twin" method :meth:`~openturns.KrigingResult.getConditionalMarginalCovariance`.,
 
 # %%
