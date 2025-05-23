@@ -7,10 +7,10 @@ Gaussian Process Regression : quick-start
 # Abstract
 # --------
 #
-# In this example, we create a Gaussian process Regression for a function which has
+# In this example, we create a Gaussian Process Regression for a function which has
 # scalar real inputs and outputs.
 # We show how to create the learning and the validation samples.
-# We show how to create the metamodel by choosing a trend and a covariance model.
+# We show how to create the meta model by choosing a trend and a covariance model.
 # Finally, we compute the predicted confidence interval using the conditional variance.
 
 # %%
@@ -20,15 +20,15 @@ Gaussian Process Regression : quick-start
 # We consider the sine function:
 #
 # .. math::
-#    y = \sin(x)
+#    g(x) = \sin(x)
 #
 #
 # for any :math:`x\in[0,12]`.
 #
-# We want to create a metamodel of this function. This is why we create a sample of :math:`n` observations of the function:
+# We want to create a meta model of this function. This is why we create a sample of :math:`n` observations of the function:
 #
 # .. math::
-#    y_i=\sin(x_i)
+#    y_i=g(x_i)
 #
 #
 # for :math:`i=1,...,7`, where :math:`x_i` is the i-th input and :math:`y_i` is the corresponding output.
@@ -41,14 +41,10 @@ Gaussian Process Regression : quick-start
 #  :math:`x_i`  1   3   4   6   7.9   11   11.5
 # ============ === === === === ===== ==== ======
 #
-# We are going to consider a Gaussian Process Regression metamodel with:
+# We are going to consider a Gaussian Process Regression meta model with:
 #
 # * a constant trend,
 # * a Matern covariance model.
-
-# %%
-# Creation of the metamodel
-# -------------------------
 #
 # We begin by defining the function `g` as a symbolic function.
 # Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step.
@@ -57,7 +53,6 @@ Gaussian Process Regression : quick-start
 # %%
 import openturns as ot
 from openturns import viewer
-from matplotlib import pylab as plt
 import openturns.experimental as otexp
 
 ot.Log.Show(ot.Log.NONE)
@@ -72,7 +67,7 @@ n_train = x_train.getSize()
 n_train
 
 # %%
-# In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
+# In order to compare the function and its meta model, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
 # Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
 
 # %%
@@ -87,8 +82,6 @@ y_test = g(x_test)
 
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following functions which plots the data.
-
-# %%
 
 def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
     """Plot the data (x_data,y_data) as a Cloud/Curve"""
@@ -105,7 +98,6 @@ def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyl
     return graphF
 
 
-# %%
 graph = ot.Graph("test and train", "", "", True, "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
@@ -116,24 +108,85 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the :class:`~openturns.MaternModel` class to define the covariance model.
-# This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
-
-# %%
+# Creation of the meta model
+# --------------------------
+#
+# We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the
+# :class:`~openturns.MaternModel` class to define the covariance model.
+# In this example,, the regularity parameter of the Matérn model is fixed to :math:`\nu=3/2` and
+# we only estimate the scale and the amplitude parameters.
+#
+# Nevertheless, we could modify the list of the
+# parameters that have to be estimated (the *active* parameters) and in particular we can add the
+# estimation of :math:`\nu`: see the documentation of the method
+# :meth:`~openturns.CovarianceModel.setActiveParameter` of
+# the class :class:`~openturns.CovarianceModel` to get more details.
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
+
+# %%
+# The class :class:`~openturns.experimental.GaussianProcessFitter`  builds the Gaussian process :math:`Y` defined by:
+#
+# .. math::
+#
+#   Y(\omega, x) = \mu(x) + W(\omega, x)
+#
+# where:
+#
+# - :math:`\mu(x) = \sum_{j=1}^{b} \beta_j \varphi_j(x)` and :math:`\varphi_j: \Rset \rightarrow \Rset`
+#   the trend function for :math:`1 \leq j \leq b`. Here the functional basis is reduced to the constant
+#   function;
+# - :math:`W` is a Gaussian process of dimension 1 with zero mean and a Matérn covariance model
+#   which covariance function is denoted by :math:`C`.
+#
+# The coefficients of the trend function and the active covariance model parameters are estimated by
+# maximizing the *reduced* log-likelihood of the model.
 fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
+print(fitter_result)
+
+# %%
+# We can draw the trend function.
+trend_func = fitter_result.getMetaModel()
+g_trend = trend_func.draw(xmin, xmax, 256)
+g_trend.setTitle(r'Trend function of the Gaussian process $Y$')
+g_trend.setXTitle(r'$x$')
+g_trend.setYTitle(r'$\mu(x)$')
+view = viewer.View(g_trend)
+
+# %%
+# The class :class:`~openturns.experimental.GaussianProcessRegression` is built from the  Gaussian process :math:`Y` and makes
+# the  Gaussian process approximation :math:`\vect{Z}` interpolate the data set and is defined as:
+#
+# .. math::
+#    :label: GPRdefEx
+#
+#    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
+#
+# where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
+# :math:`1 \leq k \leq \sampleSize`. The Gaussian process regression meta model is defined by the mean of :math:`\vect{Z}`:
+#
+# .. math::
+#
+#    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
+#
+# where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn
+# covariance model.
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 print(gpr_result)
 
 # %%
-# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the :meth:`~openturns.experimental.GaussianProcessFitter.run` method.
-# Then we get the metamodel with `getMetaModel` and evaluate the outputs of the metamodel on the test design of experiments.
+# We observe that the `scale` and `amplitude` parameters have been optimized by the
+# :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
+# parameter has remained unchanged.
+# Then we get the meta model with
+# :meth:`~openturns.experimental.GaussianProcessFitterResult.getMetaModel` and we
+# evaluate the outputs of the meta model on the test
+# design of experiments.
 
 # %%
 gprMetamodel = gpr_result.getMetaModel()
@@ -141,10 +194,7 @@ y_test_MM = gprMetamodel(x_test)
 
 
 # %%
-# Now we plot Gaussian process Regression output, in addition to the previous plots
-
-
-# %%
+# Now we plot Gaussian process regression meta model, in addition to the previous plots.
 graph = ot.Graph("", "", "", True, "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
@@ -156,29 +206,26 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We see that the Gaussian process regression is interpolating. This is what is meant by *conditioning* a Gaussian process.
+# We observe that the Gaussian process regression meta model is interpolating. This is what is meant by
+# *conditioning* a Gaussian process.
 #
-# We see that, when the sine function has a strong curvature between two points which are separated by a large distance (e.g. between :math:`x=4` and :math:`x=6`),
-# then the gaussian regression is not close to the function :math:`g`.
-# However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly linear (e.g. between :math:`x=8` and :math:`x=11`),
-# then the gaussian process regression is quite accurate.
+# We see that, when the sine function has a strong curvature between two points which are separated
+# by a
+# large distance (e.g. between :math:`x=4` and :math:`x=6`),
+# then the Gaussian regression is not close to the function :math:`g`.
+# However, when the training points are close (e.g. between :math:`x=11` and :math:`x=11.5`) or when the function is nearly
+# linear (e.g. between :math:`x=8` and :math:`x=11`),
+# then the Gaussian process regression is quite accurate.
 
 # %%
 # Compute confidence bounds
 # -------------------------
-
-# %%
-# In order to assess the quality of the metamodel, we can estimate the variance and compute a 95% confidence interval associated with the conditioned Gaussian process.
 #
-# We begin by defining the `alpha` variable containing the complementary of the confidence level than we want to compute.
-# Then we compute the quantile of the Gaussian distribution corresponding to `1-alpha/2`. Therefore, the confidence interval is:
+# In order to assess the quality of the meta model, we can estimate the variance and compute a
+# :math:`1-\alpha = 95\%` confidence interval associated with the conditioned Gaussian process.
 #
-# .. math::
-#    P\in\left(X\in\left[q_{\alpha/2},q_{1-\alpha/2}\right]\right)=1-\alpha.
-#
-#
-
-# %%
+# We denote by :math:`q_{p}` the quantile of order :math:`p` of the Gaussian distribution.
+# Therefore, the confidence interval of level :math:`1-\alpha` is :math:`\left[q_{\alpha/2},q_{1-\alpha/2}\right]`.
 alpha = 0.05
 
 
@@ -192,17 +239,16 @@ print("alpha=%f" % (alpha))
 print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
-# In order to compute the regression error, we can consider the conditional variance.
-# The :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method returns the covariance matrix `covGrid`
-# evaluated at each points in the given sample. Then we can use the diagonal
-# coefficients in order to get the marginal conditional Kriging variance.
+# The Gaussian process regression computed on the sample :math:`(\xi_1, \dots, \xi_N)` is a Gaussian vector. It is possible to
+# get the variance of each :math:`\vect{Z}_i(\omega) = \vect{Y}(\omega, \vect{\xi}_i)\, | \,  \cC` for :math:`1 \leq i \leq N`
+# with
+# the meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
+# returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 # However, some coefficients in the diagonal are very close to zero and
-# nonpositive, which leads to an exception of the sqrt function.
+# nonpositive, which leads to an exception of the `sqrt` function.
 # This is why we add an epsilon on the diagonal (nugget factor), which prevents this issue.
-
-# %%
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 epsilon = ot.Sample(n_test, [1.0e-8])
 gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
@@ -211,8 +257,6 @@ conditionalSigma = sqrt(conditionalVariance)
 
 # %%
 # The following figure presents the conditional standard deviation depending on :math:`x`.
-
-# %%
 graph = ot.Graph(
     "Conditional standard deviation", "x", "Conditional standard deviation", True, ""
 )
@@ -251,8 +295,8 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # We are ready to display all the previous information and the three confidence intervals we want.
 
 # %%
-# sphinx_gallery_thumbnail_number = 4
-graph = ot.Graph("", "", "", True, "")
+# sphinx_gallery_thumbnail_number = 5
+graph = ot.Graph("", "X", "Y", True, "")
 
 # Now we loop over the different values :
 for idx, v in enumerate(alphas):
@@ -268,11 +312,6 @@ for idx, v in enumerate(alphas):
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
-
-graph.setAxes(True)
-graph.setXTitle("X")
-graph.setYTitle("Y")
-graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
@@ -282,4 +321,6 @@ view = viewer.View(graph)
 # are not (e.g. between :math:`x=8.` and :math:`x=11`) or when the curvature
 # of the function is large (between :math:`x=4` and :math:`x=6`).
 
-plt.show()
+# %%
+# Display all figures
+viewer.View.ShowAll()
