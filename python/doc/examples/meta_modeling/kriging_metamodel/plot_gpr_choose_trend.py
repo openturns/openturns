@@ -150,8 +150,6 @@ scaledXtrain
 #
 # In this paragraph we choose a basis constant for the estimation of the trend.
 # The basis is built with the :class:`~openturns.ConstantBasisFactory` class.
-
-# %%
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 
