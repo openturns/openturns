@@ -82,7 +82,7 @@ int main(int, char *[])
       assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13);
 
       // Covariance per marginal & extract variance component
-      Collection<CovarianceMatrix> coll(gccc.getConditionalMarginalCovariance(inputTrain));
+      Collection<CovarianceMatrix> coll(gccc.getDiagonalCovarianceCollection(inputTrain));
       Point variance(coll.getSize());
       const Point nullVariance(coll.getSize());
       for (UnsignedInteger index = 0; index < coll.getSize(); ++ index)
@@ -154,7 +154,7 @@ int main(int, char *[])
       assert_almost_equal(covariance, SquareMatrix(inputSample.getSize()), 7e-7, 7e-7);
 
       // Covariance per marginal & extract variance component
-      Collection<CovarianceMatrix> condMargCov(gccc.getConditionalMarginalCovariance(inputSample));
+      Collection<CovarianceMatrix> condMargCov(gccc.getDiagonalCovarianceCollection(inputSample));
       Point variance(condMargCov.getSize());
       const Point nullVariance(condMargCov.getSize());
       for (UnsignedInteger index = 0; index < condMargCov.getSize(); ++index)
@@ -294,7 +294,7 @@ int main(int, char *[])
       assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13);
 
       // Covariance per marginal & extract variance component
-      Collection<CovarianceMatrix> coll(gccc.getConditionalMarginalCovariance(inputTrain));
+      Collection<CovarianceMatrix> coll(gccc.getDiagonalCovarianceCollection(inputTrain));
       Point variance(coll.getSize());
       const Point nullVariance(coll.getSize());
       for (UnsignedInteger index = 0; index < coll.getSize(); ++ index)

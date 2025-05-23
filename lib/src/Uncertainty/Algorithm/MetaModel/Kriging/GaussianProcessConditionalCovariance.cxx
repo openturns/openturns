@@ -218,23 +218,23 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
   const UnsignedInteger inputDimension = point.getDimension();
   const CovarianceModel covarianceModel(result_.getCovarianceModel());
   if (inputDimension != covarianceModel.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
+    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
   const Sample pointAsSample(1, point);
   return getConditionalCovariance(pointAsSample);
 }
 
 /** Compute covariance matrices conditionally to observations (1 cov / point)*/
-GaussianProcessConditionalCovariance::CovarianceMatrixCollection GaussianProcessConditionalCovariance::getConditionalMarginalCovariance(const Sample & xi) const
+GaussianProcessConditionalCovariance::CovarianceMatrixCollection GaussianProcessConditionalCovariance::getDiagonalCovarianceCollection(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned a s-collection of cov matrices (pxp)
   const CovarianceModel covarianceModel(result_.getCovarianceModel());
   const UnsignedInteger inputDimension = xi.getDimension();
   if (inputDimension != covarianceModel.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
+    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getDiagonalCovarianceCollection, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
-    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalMarginalCovariance, expected a non empty sample";
+    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getDiagonalCovarianceCollection, expected a non empty sample";
 
   CovarianceMatrixCollection collection(sampleSize);
   Point data(inputDimension);
@@ -248,12 +248,12 @@ GaussianProcessConditionalCovariance::CovarianceMatrixCollection GaussianProcess
 }
 
 /** Compute covariance matrix conditionally to observations (1 cov of size outdimension)*/
-CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalMarginalCovariance(const Point & xi) const
+CovarianceMatrix GaussianProcessConditionalCovariance::getDiagonalCovariance(const Point & xi) const
 {
   const UnsignedInteger inputDimension = xi.getDimension();
   const CovarianceModel covarianceModel(result_.getCovarianceModel());
   if (inputDimension != covarianceModel.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
+    throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getDiagonalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
   return getConditionalCovariance(xi);
 }
 
@@ -269,7 +269,7 @@ Scalar GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
   if ( !(marginalIndex < outputDimension))
     throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalMarginalVariance, marginalIndex should be in [0," << outputDimension << "]. Here, marginalIndex = " << marginalIndex ;
   // Compute the matrix & return only the marginalIndex diagonal element
-  const CovarianceMatrix marginalCovarianceMatrix(getConditionalMarginalCovariance(point));
+  const CovarianceMatrix marginalCovarianceMatrix(getDiagonalCovariance(point));
   return marginalCovarianceMatrix(marginalIndex, marginalIndex);
 }
 
@@ -385,7 +385,7 @@ Point GaussianProcessConditionalCovariance::getConditionalMarginalVariance(const
     throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::getConditionalMarginalVariance, the indices of a marginal sample must be in the range [0," << covarianceModel.getOutputDimension()
                                          << " ] and must be different";
   // Compute the matrix & return only the marginalIndex diagonal element
-  const CovarianceMatrix covarianceMatrix(getConditionalMarginalCovariance(point));
+  const CovarianceMatrix covarianceMatrix(getDiagonalCovariance(point));
   Point result(indices.getSize());
   for (UnsignedInteger j = 0; j < indices.getSize(); ++j) result[j] = covarianceMatrix(indices[j], indices[j]);
   return result;

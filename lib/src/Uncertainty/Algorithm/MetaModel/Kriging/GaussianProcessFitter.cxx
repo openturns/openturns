@@ -133,7 +133,7 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
     const Scalar scaleFactor(ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationScaleFactor"));
     if (!(scaleFactor > 0))
       throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
     Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
     // check if scale is active
@@ -158,6 +158,14 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
       } //k (upper bounds settingà
     } //if active scale
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+
+    // We set the lower bound for the nugget factor to 0.
+    const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
+    for (UnsignedInteger i = 0; i < optimizationDimension; ++i)
+        if (activeParametersDescription[i] == "nuggetFactor")
+        {
+          lowerBound[i] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
+        }
 
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
@@ -398,7 +406,10 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const OptimizationAlgorithm::Result result(solver_.getResult());
-  const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
+  const Point optimalLogLikelihoodPoint = result.getOptimalValue();
+  if (!optimalLogLikelihoodPoint.getSize())
+    throw InvalidArgumentException(HERE) << "optimization in GaussianProcessFitter did not yield feasible points";
+  const Scalar optimalLogLikelihood = optimalLogLikelihoodPoint[0];
   const Point optimalParameters(result.getOptimalPoint());
   const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to

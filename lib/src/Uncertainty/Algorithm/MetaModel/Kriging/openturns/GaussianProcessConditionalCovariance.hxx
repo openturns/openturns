@@ -70,10 +70,10 @@ public:
   virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
   /** Compute covariance matrices conditionally to observations (1 cov / point)*/
-  virtual CovarianceMatrixCollection getConditionalMarginalCovariance(const Sample & xi) const;
+  virtual CovarianceMatrixCollection getDiagonalCovarianceCollection(const Sample & xi) const;
 
   /** Compute covariance matrix conditionally to observations (1 cov of size outdimension)*/
-  virtual CovarianceMatrix getConditionalMarginalCovariance(const Point & xi) const;
+  virtual CovarianceMatrix getDiagonalCovariance(const Point & xi) const;
 
   /** Compute marginal variance conditionally to observations (1 cov of size outdimension)*/
   virtual Scalar getConditionalMarginalVariance(const Point & point,
