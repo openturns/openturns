@@ -164,13 +164,14 @@ print(gpr_result_lin.getCovarianceModel())
 #
 # - change the default optimization algorithm and select for example the :class:`~openturns.TNC`
 #   algorithm (Truncated Newton Constrained) using the entry of :class:`~openturns.ResourceMap` called
-#   *GaussianProcessFitter-DefaultOptimizationAlgorithm*,
+#   *GaussianProcessFitter-DefaultOptimizationAlgorithm*: *ot.ResourceMap.SetAsString("GaussianProcessFitter-
+#    DefaultOptimizationAlgorithm", "TNC")*,
 # - or keep the default optimization algorithm but change the default maximum constrainte error value which is equal to
 #   :math:`10^{-5}`. We move it to :math:`10^{-6}`  using the entry of :class:`~openturns.ResourceMap` called
-#   *OptimizationAlgorithm-DefaultMaximumConstraintError*.
+#   *OptimizationAlgorithm-DefaultMaximumConstraintError*: *ot.ResourceMap.SetAsScalar("OptimizationAlgorithm
+#   -DefaultMaximumConstraintError", 1e-6)*.
 #
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1e-6)
-#ot.ResourceMap.SetAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "TNC") # the second option!
 basis = ot.QuadraticBasisFactory(dimension).build()
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 algo_fit.setOptimizationBounds(scaleOptimizationBounds)
