@@ -83,6 +83,7 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following function which plots the data.
 
+
 def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
     """Plot the data (x_data,y_data) as a Cloud/Curve"""
     if type == "Curve":
@@ -101,8 +102,12 @@ def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyl
 # %%
 # Here, we draw the model and the train sample.
 graph = ot.Graph("Model and Train sample", "X", "Y", True, "")
-graph.add(plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed"))
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
+)
+graph.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
+)
 graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
@@ -150,9 +155,9 @@ print(fitter_result)
 # We can draw the trend function.
 trend_func = fitter_result.getMetaModel()
 g_trend = trend_func.draw(xmin, xmax, 256)
-g_trend.setTitle(r'Trend function of the Gaussian process $Y$')
-g_trend.setXTitle(r'$x$')
-g_trend.setYTitle(r'$\mu(x)$')
+g_trend.setTitle(r"Trend function of the Gaussian process $Y$")
+g_trend.setXTitle(r"$x$")
+g_trend.setYTitle(r"$\mu(x)$")
 view = viewer.View(g_trend)
 
 # %%
@@ -195,8 +200,12 @@ y_test_MM = gprMetamodel(x_test)
 # %%
 # Now we plot Gaussian process regression metamodel, in addition to the previous plots.
 graph = ot.Graph("Gaussian process regression metamodel", "X", "Y", True, "")
-graph.add(plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed"))
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
+)
+graph.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
+)
 graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
 graph.setLegendPosition("upper right")
 view = viewer.View(graph)
@@ -292,7 +301,9 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 
 # %%
 # sphinx_gallery_thumbnail_number = 5
-graph = ot.Graph("Gaussian process regression metamodel and confidence bounds", "X", "Y", True, "")
+graph = ot.Graph(
+    "Gaussian process regression metamodel and confidence bounds", "X", "Y", True, ""
+)
 
 # Now we loop over the different values :
 for idx, v in enumerate(alphas):
@@ -305,7 +316,9 @@ for idx, v in enumerate(alphas):
     boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 
-graph.add(plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
+)
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
 graph.setLegendPosition("upper right")

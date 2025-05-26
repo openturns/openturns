@@ -37,7 +37,7 @@ Then we define the train sample as a box with 8 levels on the x-axis and 5 level
 >>> box = ot.Box(levels)
 >>> x_train = box.generate()
 >>> x_train *= 10
->>> y_train = model(inputSample)
+>>> y_train = model(x_train)
 
 We define the covariane model as a :class:`~openturns.SquaredExponential` model.
 >>> dim = 2
