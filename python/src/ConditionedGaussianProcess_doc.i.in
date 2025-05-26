@@ -10,8 +10,6 @@
 
 Parameters
 ----------
-krigingResult : :class:`~openturns.KrigingResult`
-    Structure that contains all elements of kriging computations.
 gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
     Structure that contains all elements of Gaussian Process Regression computations.
 mesh : :class:`~openturns.Mesh`
@@ -19,50 +17,45 @@ mesh : :class:`~openturns.Mesh`
 
 Notes
 -----
-ConditionedGaussianProcess helps to create Gaussian random fields,
-:math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`, with covariance function :math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)` ( :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)` in the stationary case), conditionally to some observations.
+This class helps to generate fields from the conditioned gaussian process resulting
+from a Gaussian process regression algorithm.
 
-      Let :math:`X(\omega,x=x_1)=y_1,\cdots,X(\omega,x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.KrigingAlgorithm`:
-
-.. math::
-
-    Y(\vect{x}) = \Tr{\vect{f}(\vect{x})} \vect{\beta} + Z(\vect{x})
-
-with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a general linear model, :math:`Z(\vect{x})` a zero-mean Gaussian process with a stationary autocorrelation function :math:`\cC^{stat}`:
-
-.. math::
-
-    \mathbb{E}[Z(\vect{x}), Z(\vect{\tilde{x}})] = \sigma^2 \cC^{stat}_{\theta}(\vect{x} - \vect{\tilde{x}})
-
-The ConditionedGaussianProcess generates realizations of the conditioned process. It focuses first on the :class:`~openturns.KrigingAlgorithm` to build such prior. Results are stored in a :class:`~openturns.KrigingResult` structure, which is given as input argument of the class. This last one, combined with the mesh argument, define both the prior  :math:`Y(\cM)` and the covariance evaluation on the mesh vertices :math:`\cC^{stat}_{\theta}(\cM)` conditionally to the previous observations. It follows that the realizations are randomly generated from the Gaussian distribution :math:`\cN ( Y(\cM), \cC^{stat}_{\theta}(\cM) )`.
-
-In practice, we do not store the Gaussian distribution as we need only the random realization method. For that purpose, we use the Cholesky method : we compute the Cholesky factor :math:`\cL_{\theta}(\cM)` of the covariance matrix :math:`\cC^{stat}_{\theta}(\cM)` such as :math:`\cC^{stat}_{\theta}(\cM) = \cL_{\theta}(\cM) \Tr{\cL_{\theta}(\cM)}`.
-It follows that the random realizations are obtained as following : :math:`realization = Y(\cM) + \cL_{\theta}(\cM) W` with :math:`W` a centered & reduced random Gaussian realization.
+Refer to the documentation of :class:`~openturns.experimental.GaussianProcessRegression` to get details on
+the notations.
 
 Examples
 --------
+We consider the model :math:`g: \Rset^2 \rightarrow \Rset` defined by :math:`g(x,y) = cos(x/2) + sin(y)`.
+
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
->>> # Kriging use case
->>> # Learning data
+>>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
+
+Then we define the train sample as a box with 8 levels on the x-axis and 5 levels on the y-axis.
 >>> levels = [8.0, 5.0]
 >>> box = ot.Box(levels)
->>> inputSample = box.generate()
->>> # Scale each direction
->>> inputSample *= 10
->>> # Define model
->>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
->>> outputSample = model(inputSample)
->>> # Definition of exponential model
->>> inputDimension = 2
->>> covarianceModel = ot.SquaredExponential([1.988, 0.924], [3.153])
->>> # Basis definition
->>> basis = ot.ConstantBasisFactory(inputDimension).build()
->>> # Kriring algorithm
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
->>> result = algo.getResult()
+>>> x_train = box.generate()
+>>> x_train *= 10
+>>> y_train = model(inputSample)
+
+We define the covariane model as a :class:`~openturns.SquaredExponential` model.
+>>> dim = 2
+>>> covarianceModel = ot.SquaredExponential([1.0, 1.0], [1.0])
+
+We define the functions basis to estimate the trend: this basis only contains constant functions.
+>>> basis = ot.ConstantBasisFactory(dim).build()
+
+We estimate the Gaussian process regression, using first the class :class:`~openturns.experimental.GaussianProcessFitter`, then 
+using the class :class:`~openturns.experimental.GaussianProcessRegression`.
+>>> fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
+>>> fitter_algo.run()
+>>> fitter_result = fitter_algo.getResult()
+>>> gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+>>> gpr_algo.run()
+>>> gpr_result = gpr_algo.getResult()
+
+Now, we define the mesh on which the gconditionned gaussian process  is generated.
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0], [1.0, 1.0], [1.5, 0.5]]
 >>> simplices = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
 >>> mesh2D = ot.Mesh(vertices, simplices)
@@ -74,6 +67,7 @@ Examples
 >>> gpr_algo.run()
 >>> gpr_result = gpr_algo.getResult()
 >>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)"
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionedGaussianProcess::getRealization
