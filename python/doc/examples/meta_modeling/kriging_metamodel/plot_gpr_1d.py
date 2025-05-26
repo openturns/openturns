@@ -69,8 +69,6 @@ n_train
 # %%
 # In order to compare the function and its surrogate model, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
 # Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
-
-# %%
 xmin = 0.0
 xmax = 12.0
 n_test = 100
@@ -82,10 +80,7 @@ y_test = g(x_test)
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following function which plots the data.
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 92ecfe00d (Modified the theory on GPR)
 def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
     """Plot the data (x_data,y_data) as a Cloud/Curve"""
     if type == "Curve":

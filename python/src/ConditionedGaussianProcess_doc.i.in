@@ -10,10 +10,8 @@
 
 Parameters
 ----------
-krigingResult : :class:`~openturns.KrigingResult`
-    Structure that contains all elements of kriging computations.
 gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
-    Structure that contains all elements of Gaussian Process Regression computations.
+    Structure result of a gaussian process regression.
 mesh : :class:`~openturns.Mesh`
     Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
 
