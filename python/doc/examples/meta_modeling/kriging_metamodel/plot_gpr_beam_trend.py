@@ -15,11 +15,6 @@ Gaussian Process Regression: choose a polynomial trend on the beam model
 #
 # In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_choose_trend` example,
 # we give another example of this procedure.
-#
-# Definition of the model
-# -----------------------
-
-# %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
@@ -29,7 +24,10 @@ ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%
-# We load the use case :
+# Definition of the model
+# -----------------------
+#
+# We load the use case.
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -39,7 +37,7 @@ model = cb.model
 # %%
 # Then we define the distribution of the input random vector.
 dimension = cb.dim  # number of inputs
-myDistribution = cb.distribution
+input_dist = cb.distribution
 
 # %%
 # Create the design of experiments
@@ -51,7 +49,7 @@ myDistribution = cb.distribution
 
 # %%
 sampleSize_train = 10
-X_train = myDistribution.getSample(sampleSize_train)
+X_train = input_dist.getSample(sampleSize_train)
 Y_train = model(X_train)
 
 # %%
@@ -62,7 +60,7 @@ Y_train = model(X_train)
 # The basis is built with the :class:`~openturns.ConstantBasisFactory` class.
 basis = ot.ConstantBasisFactory(dimension).build()
 
-#
+# %%
 # In order to create the Gaussian Process Regression metamodel, we use a squared exponential covariance kernel.
 # The :class:`~openturns.SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients.
 # This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
@@ -108,10 +106,8 @@ metamodel_cst = gpr_result_cst.getMetaModel()
 
 # %%
 # The :meth:`~openturns.experimental.GaussianProcessRegressionResult.getTrendCoefficients` method returns the coefficients of the trend.
-print(gpr_result_cst.getTrendCoefficients())
-
-# %%
 # The constant trend always has only one coefficient (if there is one single output).
+print(gpr_result_cst.getTrendCoefficients())
 
 # %%
 # We can check the estimated covariance model.
@@ -150,8 +146,8 @@ print(gpr_result_lin.getCovarianceModel())
 #
 # * 1 coefficient for the constant part,
 # * dim = 4 coefficients for the linear part.
-
-# %%
+#
+#
 # Quadratic basis
 # ---------------
 #
@@ -198,20 +194,15 @@ print(gpr_result_quad.getCovarianceModel())
 #
 #
 # coefficients, associated with the symmetric matrix of the quadratic function.
-
-# %%
+#
 # Validate the metamodel
 # ----------------------
-
-# %%
+#
 # We finally want to validate the Gaussian Process Regression metamodel. This is why we generate a validation sample
 # with size 100 and we evaluate the output of the model on this sample.
-
-# %%
 sampleSize_test = 100
-X_test = myDistribution.getSample(sampleSize_test)
+X_test = input_dist.getSample(sampleSize_test)
 Y_test = model(X_test)
-
 
 # %%
 # We define a function to easily draw the QQ-plot graphs.
@@ -229,15 +220,12 @@ def drawMetaModelValidation(X_test, Y_test, metamodel_gpr, title):
 
 
 # %%
+# We plot here the validation graph for each metamodel.
 grid = ot.GridLayout(1, 3)
 grid.setTitle("Different trends")
-graphConstant = drawMetaModelValidation(
-    X_test, Y_test, metamodel_cst, "Constant"
-)
+graphConstant = drawMetaModelValidation(X_test, Y_test, metamodel_cst, "Constant")
 graphLinear = drawMetaModelValidation(X_test, Y_test, metamodel_lin, "Linear")
-graphQuadratic = drawMetaModelValidation(
-    X_test, Y_test, metamodel_quad, "Quadratic"
-)
+graphQuadratic = drawMetaModelValidation(X_test, Y_test, metamodel_quad, "Quadratic")
 grid.setGraph(0, 0, graphConstant)
 grid.setGraph(0, 1, graphLinear)
 grid.setGraph(0, 2, graphQuadratic)
