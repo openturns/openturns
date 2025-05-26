@@ -9,7 +9,7 @@ Refer to :ref:`gaussian_process_regression`.
 
 Parameters
 ----------
-gpfResult : :class:`~openturns.experimental.GaussianProcessFitterResult`
+gpfitResult : :class:`~openturns.experimental.GaussianProcessFitterResult`
     Structure result of a gaussian process fitter.
 covarianceCoefficients : 2-d sequence of float
     The :math:`\vect{\gamma}` defined in :eq:`gammaDefinition`.
