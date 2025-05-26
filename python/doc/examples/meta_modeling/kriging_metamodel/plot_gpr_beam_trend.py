@@ -9,9 +9,9 @@ Gaussian Process Regression: choose a polynomial trend on the beam model
 # given data set. We illustrate the impact of the choice of the trend function basis on the metamodel.
 # This example focuses on three polynomial trends:
 #
-# - :class:`~openturns.ConstantBasisFactory`;
-# - :class:`~openturns.LinearBasisFactory`;
-# - :class:`~openturns.QuadraticBasisFactory`.
+# * :class:`~openturns.ConstantBasisFactory`;
+# * :class:`~openturns.LinearBasisFactory`;
+# * :class:`~openturns.QuadraticBasisFactory`.
 #
 # In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_choose_trend` example,
 # we give another example of this procedure.
@@ -119,7 +119,7 @@ print(gpr_result_cst.getCovarianceModel())
 #
 # In this paragraph we choose a linear basis for the estimation of the trend.
 # The basis is built with the :class:`~openturns.LinearBasisFactory` class. The same methodology is followed:
-# we do no detail it.
+# we do not detail it.
 basis = ot.LinearBasisFactory(dimension).build()
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 algo_fit.setOptimizationBounds(scaleOptimizationBounds)
@@ -153,16 +153,16 @@ print(gpr_result_lin.getCovarianceModel())
 #
 # In this paragraph we choose a quadratic basis for the estimation of the trend.
 # The basis is built with the :class:`~openturns.QuadraticBasisFactory` class. The same methodology is followed:
-# we do no detail it.
+# we do not detail it.
 #
 # However we can see that the default optimization algorithm which is :class:`~openturns.Cobyla` does not manage to converge.
 # Thus, we can either:
 #
-# - change the default optimization algorithm and select for example the :class:`~openturns.TNC`
+# * change the default optimization algorithm and select for example the :class:`~openturns.TNC`
 #   algorithm (Truncated Newton Constrained) using the entry of :class:`~openturns.ResourceMap` called
 #   *GaussianProcessFitter-DefaultOptimizationAlgorithm*: *ot.ResourceMap.SetAsString("GaussianProcessFitter-
-#    DefaultOptimizationAlgorithm", "TNC")*,
-# - or keep the default optimization algorithm but change the default maximum constrainte error value which is equal to
+#   DefaultOptimizationAlgorithm", "TNC")*,
+# * or keep the default optimization algorithm but change the default maximum constrainte error value which is equal to
 #   :math:`10^{-5}`. We move it to :math:`10^{-6}`  using the entry of :class:`~openturns.ResourceMap` called
 #   *OptimizationAlgorithm-DefaultMaximumConstraintError*: *ot.ResourceMap.SetAsScalar("OptimizationAlgorithm
 #   -DefaultMaximumConstraintError", 1e-6)*.

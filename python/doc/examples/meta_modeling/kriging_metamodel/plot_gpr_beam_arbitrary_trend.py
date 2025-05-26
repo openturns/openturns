@@ -18,12 +18,6 @@ Gaussian Process Regression: choose an arbitrary trend
 # then we create an orthogonal polynomial basis corresponding to the input marginals.
 #
 # For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
-
-# %%
-# Definition of the model
-# -----------------------
-
-# %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
@@ -32,6 +26,9 @@ ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.INFO)
 
 # %%
+# Definition of the model
+# -----------------------
+#
 # We load the cantilever beam use case
 cb = cantilever_beam.CantileverBeam()
 
