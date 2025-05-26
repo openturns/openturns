@@ -79,6 +79,7 @@ y_test = g(x_test)
 
 # %%
 
+
 def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
     """Plot the data (x_data,y_data) as a Cloud/Curve"""
     if type == "Curve":
@@ -97,8 +98,14 @@ def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyl
 # %%
 # Here, we draw the model and the train sample.
 graph = ot.Graph("Model and Train sample", "X", "Y", True, "")
-graph.add(plot_1d_data(x_test, y_test, type="Curve", legend="model", color="black", linestyle="dashed"))
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red"))
+graph.add(
+    plot_1d_data(
+        x_test, y_test, type="Curve", legend="model", color="black", linestyle="dashed"
+    )
+)
+graph.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
+)
 graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
@@ -122,9 +129,8 @@ print(fitter_result)
 # We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the
 # :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
 # parameter has remained unchanged, as expected.
-
-# %%
-# We condition the gaussian process to make it interpolate the data set using the class
+#
+# Then, we condition the gaussian process to make it interpolate the data set using the class
 # :class:`~openturns.experimental.GaussianProcessRegression`.
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
@@ -133,15 +139,25 @@ print(gpr_result)
 
 # %%
 # We get the metamodel and the predictions on the test sample.
-gprMetamodel = gpr_result.getMetaModel()
-y_test_MM = gprMetamodel(x_test)
+gpr_metamodel = gpr_result.getMetaModel()
+y_test_MM = gpr_metamodel(x_test)
 
 # %%
 # The following function plots the Gaussian Process Regression predictions on the test sample.
 graph = ot.Graph("Gaussian process regression metamodel", "X", "Y", True, "")
-graph.add(plot_1d_data(x_test, y_test, type="Curve", legend="model", color="black", linestyle="dashed"))
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red"))
-graph.add(plot_1d_data(x_test, y_test_MM, type="Curve", legend="GPR", color="blue", linestyle="solid"))
+graph.add(
+    plot_1d_data(
+        x_test, y_test, type="Curve", legend="model", color="black", linestyle="dashed"
+    )
+)
+graph.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
+)
+graph.add(
+    plot_1d_data(
+        x_test, y_test_MM, type="Curve", legend="GPR", color="blue", linestyle="solid"
+    )
+)
 graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
@@ -164,8 +180,19 @@ if False:
     trajectories = process.getSampe(10)
     type(trajectories)
     graph = trajectories.drawMarginal()
-    graph.add(plot_1d_data(x_test, y_test, type="Curve", legend="model", color="black", linestyle="dashed"))
-    graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red"))
+    graph.add(
+        plot_1d_data(
+            x_test,
+            y_test,
+            type="Curve",
+            legend="model",
+            color="black",
+            linestyle="dashed",
+        )
+    )
+    graph.add(
+        plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
+    )
     graph.setXTitle("X")
     graph.setYTitle("Y")
     graph.setLegendPosition("upper right")
