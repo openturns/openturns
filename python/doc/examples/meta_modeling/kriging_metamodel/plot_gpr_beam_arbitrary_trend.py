@@ -27,7 +27,6 @@ Gaussian Process Regression: choose an arbitrary trend
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
-import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
