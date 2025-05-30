@@ -133,30 +133,40 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
     const Scalar scaleFactor(ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationScaleFactor"));
     if (!(scaleFactor > 0))
       throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
     Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
-    // check if scale is active
-    const Indices activeParameters(reducedCovarianceModel_.getActiveParameter());
-    Bool isScaleActive(true);
-    for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+    // check if some scales ar active
+    // check if nugget factor is active
+    const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
+    Indices activeScalesPositions(0);
+    Indices activeScalesIndices(0);
+    Indices activeNugget(0);
+    for (UnsignedInteger k = 0; k < optimizationDimension; ++k)
     {
-      if (!activeParameters.contains(k))
-      {
-        isScaleActive = false;
-        break;
-      }
+      const String parameterName(activeParametersDescription[k]);
+      if (parameterName.find("scale_") != String::npos)
+	{
+	  activeScalesPositions.add(k);
+	  // Extract the scale index from its description
+	  activeScalesIndices.add(std::stoi(parameterName.substr(parameterName.find("_") + 1, parameterName.size())));
+	}
+      if (activeParametersDescription[k].find("nuggetFactor") != String::npos) activeNugget.add(k);
     }
-    if (isScaleActive)
+
+    if (activeScalesPositions.getSize() > 0)
     {
       const Point inputSampleRange(inputSample_.computeRange());
-      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+      for (UnsignedInteger k = 0; k < activeScalesPositions.getSize(); ++k)
       {
-        upperBound[k] = inputSampleRange[k] * scaleFactor;
+        upperBound[k] = inputSampleRange[activeScalesIndices[k]] * scaleFactor;
         if (upperBound[k] < lowerBound[k])
           upperBound[k] += lowerBound[k];
-      } //k (upper bounds settingà
-    } //if active scale
+      } // k (upper bounds setting)
+    } // if active scale
+    if (activeNugget.getSize() > 0)
+      // Set the lower bound to 0 for nuggetFactor
+      lowerBound[activeNugget[0]] = 0.0;
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
 
     optimizationBounds_ = Interval(lowerBound, upperBound);
