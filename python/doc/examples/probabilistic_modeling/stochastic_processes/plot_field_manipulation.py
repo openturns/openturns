@@ -67,6 +67,7 @@ view = viewer.View(graph)
 
 # %%
 # Draw the field with interpolation
+# sphinx_gallery_thumbnail_number = 4
 graph = field.drawMarginal(0)
 graph.setTitle("Marginal field (with interpolation)")
 view = viewer.View(graph)
