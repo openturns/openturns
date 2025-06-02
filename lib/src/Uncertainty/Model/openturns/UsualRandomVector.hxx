@@ -99,6 +99,9 @@ protected:
   /** Default constructor */
   UsualRandomVector() : RandomVectorImplementation() {};
 
+  /** Set the underlying distribution  */
+  void setDistribution(const Distribution & distribution);
+
 private:
 
   /** The distribution the vector follows */

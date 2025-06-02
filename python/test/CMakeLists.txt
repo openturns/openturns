@@ -391,6 +391,7 @@ ot_pyinstallcheck_test (FunctionalBasisProcess_std)
 ot_pyinstallcheck_test (WhittleFactory_std)
 ot_pyinstallcheck_test (ConditionedGaussianProcess_std)
 ot_pyinstallcheck_test (KarhunenLoeveQuadratureAlgorithm_std)
+ot_pyinstallcheck_test (GaussianProcessRandomVector_std)
 
 ## Transformation
 ot_pyinstallcheck_test (MarginalTransformationEvaluation_std)
