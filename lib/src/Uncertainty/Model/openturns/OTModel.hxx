@@ -48,5 +48,6 @@
 #include "openturns/StandardEvent.hxx"
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/RatioOfUniforms.hxx"
+#include "openturns/GaussianProcessRandomVector.hxx"
 
 #endif /* OPENTURNS_OTMODEL_HXX */

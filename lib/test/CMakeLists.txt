@@ -528,6 +528,7 @@ ot_check_test (WhittleFactory_std)
 ot_check_test (ConditionedGaussianProcess_std)
 ot_check_test (ARMALikelihoodFactory_std)
 ot_check_test (KarhunenLoeveQuadratureAlgorithm_std)
+ot_check_test (GaussianProcessRandomVector_std)
 
 # Transformation
 ot_check_test (MarginalTransformationEvaluation_std)

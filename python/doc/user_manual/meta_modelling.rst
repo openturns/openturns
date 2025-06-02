@@ -108,6 +108,7 @@ Main classes
     :template: class.rst_t
     KrigingResult
     KrigingRandomVector
+    experimental.GaussianProcessRandomVector
 
 Construction of the regression basis
 ------------------------------------

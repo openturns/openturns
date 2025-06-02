@@ -106,3 +106,6 @@
 
 /* Uncertainty/Process */
 %include ConditionedGaussianProcess.i
+
+/* Uncertainty/Model */
+%include GaussianProcessRandomVector.i
