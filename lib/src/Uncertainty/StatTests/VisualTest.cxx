@@ -157,9 +157,9 @@ Graph VisualTest::DrawPPplot(const Sample & sample,
     data(i, 0) = p;
     data(i, 1) = dist.computeCDF(sortedSample[i]);
   }
-  Cloud cloud(data, "Data");
+  Cloud cloud(data);
   cloud.setPointStyle(VisualTestGetPointStyle(size));
-  Graph graph("Sample versus model PP-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
+  Graph graph("Sample versus model PP-plot", sample.getDescription()[0], "Distribution", true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(0, 0) = data(0, 0);
@@ -178,24 +178,10 @@ Graph VisualTest::DrawPPplot(const Sample & sample,
 Graph VisualTest::DrawCDFplot(const Sample & sample1,
                               const Sample & sample2)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample2.getDimension();
-  const Sample sortedSample(sample1.sort(0));
-  const UnsignedInteger pointNumber(sample1.getSize());
-  const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
-  const Sample data2(UserDefined(sample2).computeCDF(sortedSample));
-  Cloud cloudCDFplot(data1, data2, "Data");
-  cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
-  Graph graphCDFplot("Two sample CDF-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
-  // First, the bisector
-  Sample diagonal(2, 2);
-  diagonal(1, 0) = 1.0;
-  diagonal(1, 1) = 1.0;
-  Curve bisector(diagonal, "Test line");
-  bisector.setLineStyle("dashed");
-  graphCDFplot.add(bisector);
-  // Then the CDF plot
-  graphCDFplot.add(cloudCDFplot);
+  Graph graphCDFplot(DrawCDFplot(sample1, UserDefined(sample2)));
+  graphCDFplot.setTitle("Two sample CDF-plot");
+  graphCDFplot.setYTitle(sample2.getDescription()[0]);
   return graphCDFplot;
 }
 
@@ -206,12 +192,24 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << dist.getDimension();
   const Sample sortedSample(sample.sort(0));
-  const UnsignedInteger pointNumber(sample.getSize());
-  const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
-  const Sample data2(dist.computeCDF(sortedSample));
-  Cloud cloudCDFplot(data1, data2, "Data");
+  const UnsignedInteger pointNumber = sample.getSize();
+  Sample data1(0, 1);
+  Sample data2(0, 1);
+  Scalar vPrev = -SpecFunc::MaxScalar;
+  for (UnsignedInteger i =0; i < pointNumber; ++ i)
+  {
+    const Scalar v = sortedSample(i, 0);
+    if (v > vPrev)
+    {
+      data1.add(Point({(0.5 + i) / pointNumber}));
+      data2.add(Point({v}));
+      vPrev = v;
+    }
+  }
+  data2 = dist.computeCDF(data2);
+  Cloud cloudCDFplot(data1, data2);
   cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
-  Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
+  Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], "Distribution", true, "topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(1, 0) = 1.0;
