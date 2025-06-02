@@ -575,7 +575,6 @@ ot_add_python_module(model_process model_process_module.i
                       WhittleFactoryState.i WhittleFactoryState_doc.i.in
                       ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in
                       ARMAFactory.i ARMAFactory_doc.i.in
-                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
                       KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in
                       KarhunenLoeveSVDAlgorithm.i KarhunenLoeveSVDAlgorithm_doc.i.in
                       PythonEvaluation.cxx
@@ -1026,6 +1025,7 @@ ot_add_python_module(experimental experimental_module.i
                      CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
                      FejerExperiment.i FejerExperiment_doc.i.in
+                     ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
                      GaussianProcessFitter.i GaussianProcessFitter_doc.i.in
                      GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i.in

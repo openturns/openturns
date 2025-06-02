@@ -8,6 +8,7 @@
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
+#include "openturns/OTProcess.hxx"
 #include "openturns/OTWeightedExperiments.hxx"
 #include "openturns/OTOrthogonalBasis.hxx"
 #include "openturns/OTMetaModel.hxx"
@@ -63,6 +64,9 @@
 %import metamodel_module.i
 %include simulation_module.i
 
+/* Uncertainty/Process */
+%import model_process_module.i
+
 /* Base/Algo */
 %include CubaIntegration.i
 
@@ -97,5 +101,8 @@
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
 
- /* Uncertainty/Model */
+/* Uncertainty/Model */
 %include RatioOfUniforms.i
+
+/* Uncertainty/Process */
+%include ConditionedGaussianProcess.i

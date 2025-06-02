@@ -23,6 +23,7 @@
 
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/KrigingResult.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,6 +44,10 @@ public:
 
   /** Standard constructor  */
   ConditionedGaussianProcess(const KrigingResult & result,
+                             const Mesh & mesh);
+
+  /** Standard constructor  */
+  ConditionedGaussianProcess(const GaussianProcessRegressionResult & result,
                              const Mesh & mesh);
 
   /** Virtual constructor */
@@ -86,8 +91,14 @@ protected:
   void initialize();
 
 private:
+  /** InputDimension */
+  UnsignedInteger inputDimension_;
+
   /** KrigingResult */
   KrigingResult krigingResult_;
+
+  /** Gaussian process result */
+  GaussianProcessRegressionResult gprResult_;
 
   /** Trend part - conditionned by the mesh points */
   Sample trendEvaluationMesh_;

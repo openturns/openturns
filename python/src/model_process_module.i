@@ -45,7 +45,6 @@
 %include WhittleFactory.i
 %include ARMALikelihoodFactory.i
 %include ARMAFactory.i
-%include ConditionedGaussianProcess.i
 %include KarhunenLoeveQuadratureAlgorithm.i
 %include KarhunenLoeveSVDAlgorithm.i
 
