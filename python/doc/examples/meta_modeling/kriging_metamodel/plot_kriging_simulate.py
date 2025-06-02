@@ -49,6 +49,7 @@ Kriging : generate trajectories from a metamodel
 
 # %%
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
@@ -167,10 +168,10 @@ view = viewer.View(graph)
 # However, the :class:`~openturns.KrigingRandomVector` class was more specifically designed to
 # create a :class:`~openturns.RandomVector` so that it can feed, for example, a function which has a field as input argument.
 #
-# This is why we use the :class:`~openturns.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
+# This is why we use the :class:`~openturns.experimental.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
 
 # %%
-process = ot.ConditionedGaussianProcess(krigingResult, myRegularGrid)
+process = otexp.ConditionedGaussianProcess(krigingResult, myRegularGrid)
 
 # %%
 trajectories = process.getSample(10)

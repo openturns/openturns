@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/GaussianProcessConditionalCovariance.hxx"
 #include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,6 +35,7 @@ static const Factory<ConditionedGaussianProcess> Factory_ConditionedGaussianProc
 
 ConditionedGaussianProcess::ConditionedGaussianProcess()
   : GaussianProcess()
+  , inputDimension_()
   , krigingResult_()
   , trendEvaluationMesh_()
   , knownValuesIndices_()
@@ -44,7 +46,9 @@ ConditionedGaussianProcess::ConditionedGaussianProcess()
 ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & result,
     const Mesh & mesh)
   : GaussianProcess()
+  , inputDimension_(result.getMetaModel().getInputDimension())
   , krigingResult_(result)
+  , gprResult_()
   , trendEvaluationMesh_()
   , knownValuesIndices_()
 {
@@ -59,6 +63,25 @@ ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & res
   initialize();
 }
 
+ConditionedGaussianProcess::ConditionedGaussianProcess(const GaussianProcessRegressionResult & result,
+    const Mesh & mesh)
+  : GaussianProcess()
+  , inputDimension_(result.getMetaModel().getInputDimension())
+  , krigingResult_()
+  , gprResult_(result)
+  , trendEvaluationMesh_()
+  , knownValuesIndices_()
+{
+  // set covariance model
+  covarianceModel_ = result.getCovarianceModel();
+  // Set the mesh & dimension
+  setOutputDimension(covarianceModel_.getOutputDimension());
+  if (covarianceModel_.getInputDimension() != mesh.getDimension())
+    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getOutputDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
+  setMesh(mesh);
+  // Initialize
+  initialize();
+}
 
 /* Virtual constructor */
 ConditionedGaussianProcess * ConditionedGaussianProcess::clone() const
@@ -96,7 +119,14 @@ void ConditionedGaussianProcess::initialize()
   if (isInitialized_) return;
   const Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
-  CovarianceMatrix covarianceMatrix(krigingResult_.getConditionalCovariance(vertices));
+  CovarianceMatrix covarianceMatrix;
+  if (krigingResult_.getCovarianceCoefficients().getSize())
+    covarianceMatrix = krigingResult_.getConditionalCovariance(vertices);
+  else
+  {
+    GaussianProcessConditionalCovariance gpcc(gprResult_);
+    covarianceMatrix = gpcc.getConditionalCovariance(vertices);
+  }
   // Now check if there is any point both in the input sample and in the mesh vertices.
   // They are characterized by
   // a zero cross: a null row and a null column which cross at a zero diagonal element.
@@ -125,7 +155,11 @@ void ConditionedGaussianProcess::initialize()
   covarianceCholeskyFactor_ = covarianceMatrix.computeRegularizedCholesky();
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
-  const Function krigingEvaluation(krigingResult_.getMetaModel());
+  Function krigingEvaluation;
+  if (krigingResult_.getCovarianceCoefficients().getSize())
+    krigingEvaluation = krigingResult_.getMetaModel();
+  else
+    krigingEvaluation = gprResult_.getMetaModel();
   // Evaluation of the trend over the mesh
   trendEvaluationMesh_ = krigingEvaluation(vertices);
   // Set the trend function
@@ -142,9 +176,9 @@ void ConditionedGaussianProcess::initialize()
 void ConditionedGaussianProcess::setMesh(const Mesh & mesh)
 {
   // Checking dimension coherancy between kriging result & mesh
-  if (mesh.getDimension() != krigingResult_.getMetaModel().getInputDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, incompatible dimension between mesh & kriging. Here, mesh dimension = " << mesh.getDimension()
-                                         << " and kriging input dimension = " <<  krigingResult_.getMetaModel().getInputDimension();
+  if (mesh.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, incompatible dimension between mesh & kriging (aka gaussian process regression). Here, mesh dimension = " << mesh.getDimension()
+                                         << " and kriging input dimension = " <<  inputDimension_;
   // Set the mesh
   isInitialized_ = false;
   ProcessImplementation::setMesh(mesh);
@@ -202,7 +236,9 @@ Bool ConditionedGaussianProcess::isStationary() const
 void ConditionedGaussianProcess::save(Advocate & adv) const
 {
   GaussianProcess::save(adv);
+  adv.saveAttribute("inputDimension_", inputDimension_);
   adv.saveAttribute("krigingResult_", krigingResult_);
+  adv.saveAttribute("gprResult_", gprResult_);
   adv.saveAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
   adv.saveAttribute("knownValuesIndices_", knownValuesIndices_);
 }
@@ -211,7 +247,15 @@ void ConditionedGaussianProcess::save(Advocate & adv) const
 void ConditionedGaussianProcess::load(Advocate & adv)
 {
   GaussianProcess::load(adv);
+  if (adv.hasAttribute("inputDimension_"))
+  {
+    adv.loadAttribute("inputDimension_", inputDimension_);
+  }
   adv.loadAttribute("krigingResult_", krigingResult_);
+  if (adv.hasAttribute("gprResult_"))
+  {
+    adv.loadAttribute("gprResult_", gprResult_);
+  }
   adv.loadAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
   adv.loadAttribute("knownValuesIndices_", knownValuesIndices_);
 }
