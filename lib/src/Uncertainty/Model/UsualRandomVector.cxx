@@ -122,6 +122,12 @@ Description UsualRandomVector::getParameterDescription() const
   return distribution_.getParameterDescription();
 }
 
+/** Set the underlying distribution  */
+void UsualRandomVector::setDistribution(const Distribution & distribution)
+{
+  distribution_ = distribution;
+}
+
 /* Method save() stores the object through the StorageManager */
 void UsualRandomVector::save(Advocate & adv) const
 {
