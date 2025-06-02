@@ -1044,7 +1044,7 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
 target_include_directories (memoryview PRIVATE ${Python_INCLUDE_DIRS})
 target_link_libraries (memoryview Python::Module)
-set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
+set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "" SKIP_UNITY_BUILD_INCLUSION ON)
 if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 else ()
