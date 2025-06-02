@@ -24,6 +24,8 @@
 
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/KrigingGradient.hxx"
+#include "openturns/GaussianProcessEvaluation.hxx"
+#include "openturns/GaussianProcessGradient.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/KrigingResult.hxx"
 #include "openturns/GeneralLinearModelResult.hxx"

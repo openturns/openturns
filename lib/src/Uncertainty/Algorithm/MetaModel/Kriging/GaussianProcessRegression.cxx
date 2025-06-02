@@ -21,8 +21,8 @@
 
 #include "openturns/GaussianProcessRegression.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/KrigingEvaluation.hxx"
-#include "openturns/KrigingGradient.hxx"
+#include "openturns/GaussianProcessEvaluation.hxx"
+#include "openturns/GaussianProcessGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/GaussianProcessFitter.hxx"
 
@@ -146,8 +146,8 @@ void GaussianProcessRegression::run()
   covarianceCoefficients.getImplementation()->setData(gamma);
 
   // Meta model definition
-  metaModel.setEvaluation(new KrigingEvaluation(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
-  metaModel.setGradient(new KrigingGradient(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
+  metaModel.setEvaluation(new GaussianProcessEvaluation(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
+  metaModel.setGradient(new GaussianProcessGradient(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
   // compute residual, relative error
