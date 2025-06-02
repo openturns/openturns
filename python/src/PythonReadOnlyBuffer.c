@@ -434,57 +434,48 @@ static PySequenceMethods Buffer_as_sequence = {
     .sq_inplace_repeat = (ssizeargfunc)NULL,
 };
 
-
-#define openturns_memoryview_module_name "openturns.memoryview"
-
 /*
   Module creation, adapted from https://docs.python.org/3/howto/cporting.html
-
-  Minor changes may be required in PyModuleDef definition to support Python 3.0 and 3.1.
 */
-struct module_state {
-    PyObject *error;
-};
-
-
-#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-
-static PyObject *
-error_out(PyObject *m, PyObject *args) {
-    (void)args;
-    struct module_state *st = GETSTATE(m);
-    PyErr_SetString(st->error, "something bad happened");
-    return NULL;
-}
 
 static PyMethodDef memoryview_methods[] = {
-    {"error_out", (PyCFunction)error_out, METH_NOARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 
-static int memoryview_traverse(PyObject *m, visitproc visit, void *arg) {
-    Py_VISIT(GETSTATE(m)->error);
+static int openturns_memoryview_exec(PyObject *module) {
+    BufferType.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&BufferType) < 0)
+      return -1;
+    Py_INCREF(&BufferType);
+
+    PyModule_AddObject(module, "Buffer", (PyObject *)&BufferType);
     return 0;
 }
 
-static int memoryview_clear(PyObject *m) {
-    Py_CLEAR(GETSTATE(m)->error);
-    return 0;
-}
 
-static struct PyModuleDef openturns_memoryview_module = {
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
+static PyModuleDef_Slot openturns_memoryview_slots[] = {
+    {Py_mod_exec, (void*)openturns_memoryview_exec},
+    {0, NULL}
+};
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
+static struct PyModuleDef openturns_memoryview_def = {
     .m_base = PyModuleDef_HEAD_INIT,
-    .m_name = openturns_memoryview_module_name,
+    .m_name = "openturns.memoryview",
     .m_doc = Buffer_doc,
-    .m_size = sizeof(struct module_state),
+    .m_size = 0,
     .m_methods = memoryview_methods,
-    .m_slots = NULL,
-    .m_traverse = memoryview_traverse,
-    .m_clear = memoryview_clear,
+    .m_slots = openturns_memoryview_slots,
+    .m_traverse = NULL,
+    .m_clear = NULL,
     .m_free = NULL,
 };
-
-#define INITERROR return NULL
 
 PyMODINIT_FUNC
 PyInit_memoryview(void);
@@ -492,29 +483,7 @@ PyInit_memoryview(void);
 PyMODINIT_FUNC
 PyInit_memoryview(void)
 {
-  PyObject *module;
-  struct module_state *st;
-
-  BufferType.tp_new = PyType_GenericNew;
-  if (PyType_Ready(&BufferType) < 0)
-      INITERROR;
-
-  module = PyModule_Create(&openturns_memoryview_module);
-
-  if (module == NULL)
-      INITERROR;
-
-  st = GETSTATE(module);
-  st->error = PyErr_NewException(openturns_memoryview_module_name ".Error", NULL, NULL);
-  if (st->error == NULL) {
-      Py_DECREF(module);
-      INITERROR;
-  }
-
-  Py_INCREF(&BufferType);
-  PyModule_AddObject(module, "Buffer", (PyObject *)&BufferType);
-
-  return module;
+  return PyModuleDef_Init(&openturns_memoryview_def);
 }
 
 #endif
