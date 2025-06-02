@@ -2,12 +2,18 @@
 "Conditioned Gaussian process.
 
     ConditionedGaussianProcess(*krigingResult, mesh*)
+    ConditionedGaussianProcess(*gprResult, mesh*)
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
 
 Parameters
 ----------
 krigingResult : :class:`~openturns.KrigingResult`
     Structure that contains all elements of kriging computations.
+gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+    Structure that contains all elements of Gaussian Process Regression computations.
 mesh : :class:`~openturns.Mesh`
     Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
 
@@ -36,6 +42,7 @@ It follows that the random realizations are obtained as following : :math:`reali
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Kriging use case
 >>> # Learning data
@@ -59,7 +66,14 @@ Examples
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0], [1.0, 1.0], [1.5, 0.5]]
 >>> simplices = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
 >>> mesh2D = ot.Mesh(vertices, simplices)
->>> process = ot.ConditionedGaussianProcess(result, mesh2D)"
+>>> process = otexp.ConditionedGaussianProcess(result, mesh2D)
+>>> fitter_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> fitter_algo.run()
+>>> fitter_result = fitter_algo.getResult()
+>>> gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+>>> gpr_algo.run()
+>>> gpr_result = gpr_algo.getResult()
+>>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ConditionedGaussianProcess::getRealization
@@ -73,6 +87,7 @@ realization : :class:`~openturns.Field`
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Kriging use case
 >>> # Learning data
@@ -96,9 +111,16 @@ Examples
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0],[1.0, 1.0], [1.5, 0.5]]
 >>> simplices = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
 >>> mesh2D = ot.Mesh(vertices, simplices)
->>> process = ot.ConditionedGaussianProcess(result, mesh2D)
+>>> process = otexp.ConditionedGaussianProcess(result, mesh2D)
 >>> # Get a realization of the process
 >>> realization = process.getRealization()
-"
-
-
+>>> # With the new Gaussian Process Regression
+>>> fitter_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> fitter_algo.run()
+>>> fitter_result = fitter_algo.getResult()
+>>> gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+>>> gpr_algo.run()
+>>> gpr_result = gpr_algo.getResult()
+>>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
+>>> # Get a realization of the process
+>>> realization = process.getRealization()"
