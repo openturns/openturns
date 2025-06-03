@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -9,7 +8,7 @@ ot.TESTPREAMBLE()
 distribution = ot.SmoothedUniform(-0.5, 1.5, 0.5)
 size = 10000
 sample = distribution.getSample(size)
-factory = otexp.SmoothedUniformFactory()
+factory = ot.SmoothedUniformFactory()
 estimatedDistribution = factory.build(sample)
 ott.assert_almost_equal(estimatedDistribution, distribution, 1e-2, 1e-2)
 print("distribution=", repr(distribution))

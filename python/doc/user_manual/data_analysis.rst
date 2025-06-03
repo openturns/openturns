@@ -105,7 +105,7 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     SkellamFactory
-    experimental.SmoothedUniformFactory
+    SmoothedUniformFactory
     StudentFactory
     TrapezoidalFactory
     TriangularFactory
