@@ -29,7 +29,7 @@ import openturns as ot
 import openturns.experimental as otexp
 
 ot.RandomGenerator.SetSeed(0)
-ot.Log.Show(ot.Log.NONE)
+ot.Log.Show(ot.Log.INFO)
 
 # %%
 # We load the cantilever beam use case
@@ -105,6 +105,8 @@ covariance_model = ot.SquaredExponential([1.0] * dimension, [1.0])
 # First, we estimate a Gaussian process approximating the model with the class
 # :class:`~openturns.experimental.GaussianProcessFitter`.
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+print('First run: algo GPFitter = ', algo_fit.getOptimizationAlgorithm())
+algo_fit.setOptimizationAlgorithm(ot.TNC())
 algo_fit.run()
 fitter_result = algo_fit.getResult()
 
@@ -162,6 +164,8 @@ basis = ot.Basis(functions)
 
 # %%
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+print('Second run: algo GPFitter = ', algo_fit.getOptimizationAlgorithm())
+algo_fit.setOptimizationAlgorithm(ot.TNC())
 algo_fit.run()
 fitter_result = algo_fit.getResult()
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
