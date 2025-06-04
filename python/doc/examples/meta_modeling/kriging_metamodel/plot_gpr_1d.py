@@ -10,7 +10,7 @@ Gaussian Process Regression : quick-start
 # In this example, we create a Gaussian Process Regression for a function which has
 # scalar real inputs and outputs.
 # We show how to create the learning and the validation samples.
-# We show how to create the meta model by choosing a trend and a covariance model.
+# We show how to create the surrogate model by choosing a trend and a covariance model.
 # Finally, we compute the predicted confidence interval using the conditional variance.
 
 # %%
@@ -25,7 +25,7 @@ Gaussian Process Regression : quick-start
 #
 # for any :math:`x\in[0,12]`.
 #
-# We want to create a metamodel of this function. This is why we create a sample of :math:`n` observations of the function:
+# We want to create a surrogate model of this function. This is why we create a sample of :math:`n` observations of the function:
 #
 # .. math::
 #    y_i=g(x_i)
@@ -41,7 +41,7 @@ Gaussian Process Regression : quick-start
 #  :math:`x_i`  1   3   4   6   7.9   11   11.5
 # ============ === === === === ===== ==== ======
 #
-# We are going to consider a Gaussian Process Regression metamodel with:
+# We are going to consider a Gaussian Process Regression surrogate model with:
 #
 # * a constant trend,
 # * a Matern covariance model.
@@ -67,7 +67,7 @@ n_train = x_train.getSize()
 n_train
 
 # %%
-# In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
+# In order to compare the function and its surrogate model, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
 # Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
 
 # %%
@@ -112,12 +112,12 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# Creation of the metamodel
+# Creation of the surrogate model
 # -------------------------
 #
 # We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the
 # :class:`~openturns.MaternModel` class to define the covariance model.
-# In this example,, the regularity parameter of the Matérn model is fixed to :math:`\nu=3/2` and
+# In this example,, the smoothness parameter of the Matérn model is fixed to :math:`\nu=3/2` and
 # we only estimate the scale and the amplitude parameters.
 #
 # Nevertheless, we could modify the list of the
@@ -170,11 +170,11 @@ view = viewer.View(g_trend)
 #    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
 #
 # where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
-# :math:`1 \leq k \leq \sampleSize`. The Gaussian process regression metamodel is defined by the mean of :math:`\vect{Z}`:
+# :math:`1 \leq k \leq \sampleSize`. The Gaussian process regression surrogate model is defined by the mean of :math:`\vect{Z}`:
 #
 # .. math::
 #
-#    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
+#    \surrogateModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
 #
 # where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn
 # covariance model.
@@ -187,9 +187,9 @@ print(gpr_result)
 # We observe that the `scale` and `amplitude` parameters have been optimized by the
 # :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
 # parameter has remained unchanged.
-# Then we get the metamodel with
+# Then we get the surrogate model with
 # :meth:`~openturns.experimental.GaussianProcessFitterResult.getMetaModel` and we
-# evaluate the outputs of the metamodel on the test
+# evaluate the outputs of the surrogate model on the test
 # design of experiments.
 
 # %%
@@ -198,8 +198,8 @@ y_test_MM = gprMetamodel(x_test)
 
 
 # %%
-# Now we plot Gaussian process regression metamodel, in addition to the previous plots.
-graph = ot.Graph("Gaussian process regression metamodel", "X", "Y", True, "")
+# Now we plot Gaussian process regression surrogate model, in addition to the previous plots.
+graph = ot.Graph("Gaussian process regression surrogate model", "X", "Y", True, "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
 )
@@ -211,7 +211,7 @@ graph.setLegendPosition("upper right")
 view = viewer.View(graph)
 
 # %%
-# We observe that the Gaussian process regression metamodel is interpolating. This is what is meant by
+# We observe that the Gaussian process regression surrogate model is interpolating. This is what is meant by
 # *conditioning* a Gaussian process.
 #
 # We see that, when the sine function has a strong curvature between two points which are separated
@@ -226,7 +226,7 @@ view = viewer.View(graph)
 # Compute confidence bounds
 # -------------------------
 #
-# In order to assess the quality of the metamodel, we can estimate the variance and compute a
+# In order to assess the quality of the surrogate model, we can estimate the variance and compute a
 # :math:`1-\alpha = 95\%` confidence interval associated with the conditioned Gaussian process.
 #
 # We denote by :math:`q_{p}` the quantile of order :math:`p` of the Gaussian distribution.
@@ -302,7 +302,7 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # %%
 # sphinx_gallery_thumbnail_number = 5
 graph = ot.Graph(
-    "Gaussian process regression metamodel and confidence bounds", "X", "Y", True, ""
+    "Gaussian process regression surrogate model and confidence bounds", "X", "Y", True, ""
 )
 
 # Now we loop over the different values :
