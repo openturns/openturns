@@ -79,7 +79,6 @@ myRegularGrid = ot.RegularGrid(xmin, step, n_test)
 x_test = myRegularGrid.getVertices()
 y_test = g(x_test)
 
-
 # %%
 # In order to observe the function and the location of the points in the input design of experiments, we define the following function which plots the data.
 
@@ -113,7 +112,7 @@ view = viewer.View(graph)
 
 # %%
 # Creation of the surrogate model
-# -------------------------
+# -------------------------------
 #
 # We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the
 # :class:`~openturns.MaternModel` class to define the covariance model.
@@ -174,7 +173,7 @@ view = viewer.View(g_trend)
 #
 # .. math::
 #
-#    \surrogateModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
+#    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
 #
 # where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn
 # covariance model.
