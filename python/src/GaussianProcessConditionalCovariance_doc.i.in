@@ -144,7 +144,7 @@ Notes
 -----
 Each element of the collection corresponds to the conditional covariance with respect to the input learning set
 (e.g. a pointwise evaluation of the `getDiagonalCovariance`). The returned collection is
-of size :math:`N` and contains matrices in :math:`\cM_{\outputDim, \outputDim}(\Reset)`."
+of size :math:`N` and contains matrices in :math:`\cM_{\outputDim, \outputDim}(\Rset)`."
 
 // ---------------------------------------------------------------------
 
