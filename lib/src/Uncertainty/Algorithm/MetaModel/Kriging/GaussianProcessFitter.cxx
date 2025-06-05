@@ -99,6 +99,7 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
   // Now, adapt the model parameters.
   // First, check if the parameters have to be optimized. If not, remove all the active parameters.
   analyticalAmplitude_ = false;
+  const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
   if (!optimizeParameters_) reducedCovarianceModel_.setActiveParameter(Indices());
   // Second, check if the amplitude parameter is unique and active
   else if (ResourceMap::GetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate"))
@@ -106,7 +107,6 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
     // The model has to be of dimension 1
     if (reducedCovarianceModel_.getOutputDimension() == 1)
     {
-      const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
       // And one of the active parameters must be called amplitude_0
       for (UnsignedInteger i = 0; i < activeParametersDescription.getSize(); ++i)
         if (activeParametersDescription[i] == "amplitude_0")
@@ -136,37 +136,38 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
     Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
     Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
-    // check if scale is active
-    const Indices activeParameters(reducedCovarianceModel_.getActiveParameter());
-    Bool isScaleActive(true);
-    for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+    // check if some scales are active
+    // check if nugget factor is active
+    Indices activeScalesPositions(0);
+    Indices activeScalesIndices(0);
+    Indices activeNugget(0);
+    for (UnsignedInteger k = 0; k < optimizationDimension; ++k)
     {
-      if (!activeParameters.contains(k))
-      {
-        isScaleActive = false;
-        break;
-      }
+      const String parameterName(activeParametersDescription[k]);
+      if (parameterName.find("scale_") != String::npos)
+	{
+	  activeScalesPositions.add(k);
+	  // Extract the scale index from its description
+	  activeScalesIndices.add(std::stoi(parameterName.substr(parameterName.find("_") + 1, parameterName.size())));
+	}
+      if (activeParametersDescription[k].find("nuggetFactor") != String::npos) activeNugget.add(k);
     }
-    if (isScaleActive)
+
+    if (activeScalesPositions.getSize() > 0)
     {
       const Point inputSampleRange(inputSample_.computeRange());
-      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+      for (UnsignedInteger k = 0; k < activeScalesPositions.getSize(); ++k)
       {
-        upperBound[k] = inputSampleRange[k] * scaleFactor;
+        upperBound[k] = inputSampleRange[activeScalesIndices[k]] * scaleFactor;
         if (upperBound[k] < lowerBound[k])
           upperBound[k] += lowerBound[k];
-      } //k (upper bounds settingà
-    } //if active scale
+      } // k (upper bounds setting)
+    } // if active scale
+    if (activeNugget.getSize() > 0)
+      // Set the lower bound to 0 for nuggetFactor
+      lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
-
-    // We set the lower bound for the nugget factor to 0.
-    const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
-    for (UnsignedInteger i = 0; i < optimizationDimension; ++i)
-        if (activeParametersDescription[i] == "nuggetFactor")
-        {
-          lowerBound[i] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
-        }
-
+    
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
