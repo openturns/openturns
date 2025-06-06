@@ -41,7 +41,7 @@ The class creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such 
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
-where :math:`\vect{\mu} = (\mu_1, \dots, \mu_\outputDim)` with :math:``\mu_\ell(\vect{x}) = \sum_{j=1}^{b}
+where :math:`\vect{\mu} = (\mu_1, \dots, \mu_\outputDim)` with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b}
 \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend function
 basis for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
