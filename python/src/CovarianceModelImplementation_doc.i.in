@@ -139,7 +139,7 @@ Notes
 This method makes a discretization of the model on the given :class:`~openturns.Mesh`,
 :class:`~openturns.RegularGrid` or :class:`~openturns.Sample` composed of
 the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` thanks to the
-:meth:`discretize` method and returns its Cholesky factor."
+:py:meth:`discretize` method and returns its Cholesky factor."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorize
 OT_CovarianceModel_discretizeAndFactorize_doc
@@ -164,7 +164,7 @@ HMatrix : :class:`~openturns.HMatrix`
 
 Notes
 -----
-This method is similar to the :meth:`discretize` method. This method requires that
+This method is similar to the :py:meth:`discretize` method. This method requires that
 OpenTURNS has been compiled with the hmat library.
 The method is helpful for very large parameters (Mesh, grid, Sample)
 because it compresses data.
@@ -195,7 +195,7 @@ HMatrix : :class:`~openturns.HMatrix`
 
 Notes
 -----
-This method is similar to the :meth:`discretizeAndFactorize` method. This method requires that
+This method is similar to the :py:meth:`discretizeAndFactorize` method. This method requires that
 requires that OpenTURNS has been compiled with the hmat library.
 The method is helpful for very large parameters (Mesh, grid, Sample)
 because it compresses data.
@@ -523,12 +523,65 @@ OT_CovarianceModel_operator_doc
 %define OT_CovarianceModel_setActiveParameter_doc
 "Accessor to the active parameter set.
 
-In the context of kriging, it allows one to choose which hyperparameters are tuned.
+This method defines which hyperparameters are tuned.
 
 Parameters
 ----------
 active : sequence of int
-    Indices of the active parameters."
+    Indices of the active parameters.
+
+Notes
+-----
+In order to get the position of a parameter known by its name,  we have to first call the method
+:py:meth:`getFullParameterDescription` and then call the method *find* as shown in the following
+example.
+
+Examples
+--------
+For example, we create a :class:`~openturns.MaternModel` covariance model. By default,
+only the scale and the amplitude parameters are active and will be estimated.
+We want to add the estimation of the :math:`\nu` parameter.
+
+>>> import openturns as ot
+>>> covModel = ot.MaternModel()
+
+We get the default active parameters description: we can see that the :math:`\nu` parameter is not
+included in the list.
+
+>>> covModel.getParameterDescription()
+[scale_0,amplitude_0]
+
+We now get the active parameters. The parameter :math:`\nu`  is not in the list.
+
+>>> active = covModel.getActiveParameter()
+>>> print(active)
+[0,2]
+
+We want to search the index associated to the parameter :math:`\nu` in the full list of the
+parameters indices.
+
+>>> activeDesc = covModel.getFullParameterDescription()
+>>> print(activeDesc)
+[scale_0,nuggetFactor,amplitude_0,nu]
+>>> index = activeDesc.find('nu')
+>>> print(index)
+3
+
+Now, we add the index of :math:`\nu` in the initial list of active parameters. We sort the active
+indices by increasing order. Then we update the list of the active parameters.
+
+>>> active = covModel.getActiveParameter()
+>>> active.add(index)
+>>> covModel.setActiveParameter(sorted(active))
+
+Check that the parameter :math:`\nu` is in the active parameters list!
+
+>>> covModel.getActiveParameter()
+[0,2,3]
+
+>>> covModel.getFullParameterDescription()
+[scale_0,nuggetFactor,amplitude_0,nu]
+"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setActiveParameter
 OT_CovarianceModel_setActiveParameter_doc
