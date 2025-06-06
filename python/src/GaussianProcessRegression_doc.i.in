@@ -30,9 +30,9 @@ We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \samp
 
 The underlying Gaussian process approximation :math:`\vect{Y}` can be fulfilled with two different ways: 
 
-- Within the first constructor: we suppose that the Gaussian process approximation has already been
+* Within the first constructor: we suppose that the Gaussian process approximation has already been
   calibrated using the class :class:`~openturns.experimental.GaussianProcessFitter`;
-- Within the second constructor: all the elements defining the Gaussian process approximation are specified
+* Within the second constructor: all the elements defining the Gaussian process approximation are specified
   separately: the data set, the covariance model and the trend function.
 
 The objective of the *GaussianProcessRegression* is to condition the Gaussian process approximation :math:`\vect{Y}` to the data set: thus, we make the Gaussian process approximation become interpolating over the dataset.
