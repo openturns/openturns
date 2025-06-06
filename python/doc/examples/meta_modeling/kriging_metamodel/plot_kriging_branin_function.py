@@ -184,7 +184,7 @@ view = otv.View(graphFineTune)
 print(gccc.getConditionalMarginalVariance(xdata, 0)[0:5])
 
 # %%
-# These values are nearly zero which is expected as the GP fitter interpolates data. The value being
+# These values are nearly zero which is expected as the metamodel interpolates data. The value being
 # known it is not random anymore and the variance ought to be zero.
 
 # %%
