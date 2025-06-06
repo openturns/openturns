@@ -95,7 +95,7 @@ def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     samplesize = X.getSize()
     meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
-    graphKriging.setLegends(["Gaussian Process fitter"])
+    graphKriging.setLegends(["Gaussian Process Regression"])
     # Create a grid of points and evaluate the function and the metamodel
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
