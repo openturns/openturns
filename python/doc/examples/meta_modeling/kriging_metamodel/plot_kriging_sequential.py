@@ -56,7 +56,7 @@ view = viewer.View(graph)
 # %%
 def createMyBasicGPfitter(X, Y):
     """
-    Create a kriging from a pair of X and Y samples.
+    Create a Gaussian Process model from a pair of X and Y samples.
     We use a 3/2 Matérn covariance model and a constant trend.
     """
     basis = ot.ConstantBasisFactory(dimension).build()
@@ -89,14 +89,14 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 # %%
 def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     """
-    Given a kriging result, plot the data, the GP fitter metamodel
+    Given a metamodel result, plot the data, the GP fitter metamodel
     and a confidence interval.
     """
     samplesize = X.getSize()
     meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
     graphKriging.setLegends(["Gaussian Process fitter"])
-    # Create a grid of points and evaluate the function and the kriging
+    # Create a grid of points and evaluate the function and the metamodel
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
     yFunction = g(xGrid)
@@ -120,7 +120,7 @@ def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     # Compute the Polygon graphics
     boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
-    # Validate the kriging metamodel
+    # Validate the metamodel
     metamodelPredictions = meta(xGrid)
     mmv = ot.MetaModelValidation(yFunction, metamodelPredictions)
     r2Score = mmv.computeR2Score()[0]
@@ -171,7 +171,7 @@ view = viewer.View(graph)
 def getNewPoint(xMin, xMax, gprResult):
     """
     Returns a new point to be added to the design of experiments.
-    This point maximizes the conditional variance of the kriging.
+    This point maximizes the conditional variance of the metamodel.
     """
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
@@ -233,12 +233,7 @@ for krigingStep in range(5):
 # Conclusion
 # ----------
 #
-# The current example presents the naive implementation on the creation of a sequential design of experiments based on kriging.
-# More practical algorithms are presented in the following references.
-#
-# * Mona Abtini. Plans prédictifs à taille fixe et séquentiels pour le krigeage (2008). Thèse de doctorat de l'Université de Lyon.
-# * Céline Scheidt. Analyse statistique d’expériences simulées : Modélisation adaptative de réponses non régulières par krigeage et plans d’expériences (2007).
-#   Thèse présentée pour obtenir le grade de Docteur de l’Université Louis Pasteur.
-# * David Ginsbourger. Sequential Design of Computer Experiments. Wiley StatsRef: Statistics Reference Online, Wiley (2018)
+# The current example presents the naive implementation on the creation of a sequential design of experiments based on Gaussian Process metamodel.
+# More practical algorithms are presented in [ginsbourger2018]_.
 
 View.ShowAll()
