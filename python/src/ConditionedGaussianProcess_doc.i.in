@@ -33,21 +33,26 @@ We consider the model :math:`g: \Rset^2 \rightarrow \Rset` defined by :math:`g(x
 >>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 
 Then we define the train sample as a box with 8 levels on the x-axis and 5 levels on the y-axis.
+
 >>> levels = [8.0, 5.0]
 >>> box = ot.Box(levels)
 >>> x_train = box.generate()
 >>> x_train *= 10
 >>> y_train = model(x_train)
 
-We define the covariane model as a :class:`~openturns.SquaredExponential` model.
+We define the covariane model as a :class:`~openturns.SquaredExponential` model:
+
 >>> dim = 2
 >>> covarianceModel = ot.SquaredExponential([1.0, 1.0], [1.0])
 
-We define the functions basis to estimate the trend: this basis only contains constant functions.
+We define the functions basis to estimate the trend: this basis only contains constant functions:
+
 >>> basis = ot.ConstantBasisFactory(dim).build()
 
-We estimate the Gaussian process regression, using first the class :class:`~openturns.experimental.GaussianProcessFitter`, then 
-using the class :class:`~openturns.experimental.GaussianProcessRegression`.
+We estimate the Gaussian process regression, using first the class
+:class:`~openturns.experimental.GaussianProcessFitter`, then
+using the class :class:`~openturns.experimental.GaussianProcessRegression`:
+
 >>> fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 >>> fitter_algo.run()
 >>> fitter_result = fitter_algo.getResult()
@@ -55,7 +60,8 @@ using the class :class:`~openturns.experimental.GaussianProcessRegression`.
 >>> gpr_algo.run()
 >>> gpr_result = gpr_algo.getResult()
 
-Now, we define the mesh on which the gconditionned gaussian process  is generated.
+Now, we define the mesh on which the gconditionned gaussian process  is generated:
+
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0], [1.0, 1.0], [1.5, 0.5]]
 >>> simplices = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
 >>> mesh2D = ot.Mesh(vertices, simplices)
@@ -69,6 +75,7 @@ Now, we define the mesh on which the gconditionned gaussian process  is generate
 >>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
 
 We get a realization of the conditioned Gaussian process:
+
 >>> realization = process.getRealization()"
 
 // ---------------------------------------------------------------------

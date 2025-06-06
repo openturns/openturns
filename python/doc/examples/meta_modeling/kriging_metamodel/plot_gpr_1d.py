@@ -28,7 +28,7 @@ Gaussian Process Regression : quick-start
 # We want to create a surrogate model of this function. This is why we create a sample of :math:`n` observations of the function:
 #
 # .. math::
-#    y_i=g(x_i)
+#    y_i = g(x_i)
 #
 #
 # for :math:`i=1,...,7`, where :math:`x_i` is the i-th input and :math:`y_i` is the corresponding output.
@@ -46,11 +46,6 @@ Gaussian Process Regression : quick-start
 # * a constant trend,
 # * a Matern covariance model.
 #
-# We begin by defining the function `g` as a symbolic function.
-# Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step.
-# Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
-
-# %%
 import openturns as ot
 from openturns import viewer
 import openturns.experimental as otexp
@@ -58,9 +53,12 @@ import openturns.experimental as otexp
 ot.Log.Show(ot.Log.NONE)
 
 # %%
+# We begin by defining the function :math:`g` as a symbolic function.
 g = ot.SymbolicFunction(["x"], ["sin(x)"])
 
 # %%
+# Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step.
+# Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
 x_train = ot.Sample([[x] for x in [1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5]])
 y_train = g(x_train)
 n_train = x_train.getSize()
@@ -68,7 +66,8 @@ n_train
 
 # %%
 # In order to compare the function and its surrogate model, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
-# Then we convert this grid into a `Sample` and we compute the outputs of the function on this sample.
+# Then we convert this grid into a :class:`~openturns.Sample` and we compute the outputs of the
+# function on this sample.
 xmin = 0.0
 xmax = 12.0
 n_test = 100
@@ -114,7 +113,7 @@ view = viewer.View(graph)
 #
 # We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the
 # :class:`~openturns.MaternModel` class to define the covariance model.
-# In this example,, the smoothness parameter of the Matérn model is fixed to :math:`\nu=3/2` and
+# In this example, the smoothness parameter of the Matérn model is fixed to :math:`\nu=3/2` and
 # we only estimate the scale and the amplitude parameters.
 #
 # Nevertheless, we could modify the list of the
