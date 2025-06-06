@@ -106,7 +106,7 @@ print(gpr_result)
 # -----------------------
 #
 # We get the metamodel (mean of the conditioned Gaussian Process) and the variance estimation.
-# We draw the GP fitter metamodel of the Branin function.
+# We draw the GP metamodel of the Branin function.
 gprMetamodel = gpr_result.getMetaModel()
 gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
 
