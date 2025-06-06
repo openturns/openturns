@@ -175,4 +175,3 @@ view = viewer.View(graph)
 # %%
 # Display all figures
 viewer.View.ShowAll()
-
