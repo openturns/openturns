@@ -575,13 +575,10 @@ def check_execute():
         raise Exception("ct.execute error!")
 
     # we expect a subclass of CalledProcessError with the error stream in the exception message
-    try:
+    with ott.assert_raises(subprocess.CalledProcessError):
         cp = ct.execute(
             sys.executable + " zebuebceb745az4f801m", shell=True, capture_output=True
         )
-        raise Exception("should throw CalledProcessError")
-    except subprocess.CalledProcessError:
-        pass
 
     print("execute ok")
 

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -21,28 +22,19 @@ assert basis.getSubBasis([1, 2]).getSize() == 2, "wrong subsize"
 assert basis.isFinite(), "!finite"
 assert not basis.isOrthogonal(), "orthogonal"
 
-try:
-    degree = 2
-    poly = []
-    factory = ot.MonomialFunctionFactory()
-    for i in range(degree + 1):
-        poly.append(factory.build(i))
+degree = 2
+poly = []
+factory = ot.MonomialFunctionFactory()
+for i in range(degree + 1):
+    poly.append(factory.build(i))
+with ott.assert_raises(RuntimeError):
     basis = ot.Basis(poly)
-    raise AssertionError("should not go there")
-except RuntimeError:
-    print("ok")
 
 # check basis dimensions
 f1 = ot.SymbolicFunction(["x", "y"], ["x+y"])
 f2 = ot.SymbolicFunction(["x", "y"], ["x+y", "x-y"])
 f3 = ot.SymbolicFunction(["x"], ["x+1"])
-try:
+with ott.assert_raises(TypeError):
     b = ot.Basis([f1, f2])
-    raise AssertionError("should not go there")
-except TypeError:
-    print("ok")
-try:
+with ott.assert_raises(TypeError):
     b = ot.Basis([f1, f3])
-    raise AssertionError("should not go there")
-except TypeError:
-    print("ok")

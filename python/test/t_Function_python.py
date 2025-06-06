@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import sys
 
 ot.TESTPREAMBLE()
@@ -166,12 +167,8 @@ def a_exec(X):
 
 
 myFunc = ot.PythonFunction(2, 1, a_exec)
-print("index check: ", end="")
-try:
+with ott.assert_raises(RuntimeError):
     myFunc([5, 6])
-    print("fail")
-except RuntimeError:
-    print("ok")
 
 f = ot.PythonFunction(0, 3, lambda x: [42.0] * 3)
 x = []
@@ -189,8 +186,6 @@ class BFunction(ot.OpenTURNSPythonFunction):
 
 
 bModel = BFunction()
-try:
+with ott.assert_raises(RuntimeError):
     # when super is not called in init, should not crash
     bFunction = ot.Function(bModel)
-except RuntimeError:
-    print("ok")
