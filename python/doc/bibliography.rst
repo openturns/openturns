@@ -182,6 +182,8 @@ Bibliography
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
 .. [gobet2016] Gobet, E., 2016, *Monte-Carlo Methods and Stochastic Processes: From Linear to Non-Linear*,
     Chapman \& Hall/CRC.
+.. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
+    Wiley StatsRef: Statistics Reference Online, Wiley
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
