@@ -43,7 +43,7 @@ Gaussian Process Regression : generate trajectories from the metamodel
 # Refer to it for further details: we only focus here on the simulation of new trajectories.
 #
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import openturns.experimental as otexp
 
 ot.Log.Show(ot.Log.NONE)
@@ -107,7 +107,7 @@ graph.add(
     plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
 )
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the :class:`~openturns.MaternModel` class to define the covariance model.
@@ -159,7 +159,7 @@ graph.add(
     )
 )
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Simulate new trajectories
@@ -168,37 +168,33 @@ view = viewer.View(graph)
 # In order to generate new trajectories of the conditioned Gaussian process, we use the class
 # :class:`~openturns.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
 # It is created from the result of the Gaussian Process Regression algorithm.
-#
-# Awaiting for the creation of the following API:
-if False:
-    process = ot.ConditionedGaussianProcess(gpr_result, myRegularGrid)
+process = ot.ConditionedGaussianProcess(gpr_result, myRegularGrid)
 
 # %%
 # The method :meth:`~openturns.Process.getSample` method returns a :class:`~openturns.ProcessSample`.
-if False:
-    # sphinx_gallery_thumbnail_number = 3
-    trajectories = process.getSampe(10)
-    type(trajectories)
-    graph = trajectories.drawMarginal()
-    graph.add(
-        plot_1d_data(
-            x_test,
-            y_test,
-            type="Curve",
-            legend="model",
-            color="black",
-            linestyle="dashed",
-        )
+# sphinx_gallery_thumbnail_number = 3
+trajectories = process.getSampe(10)
+type(trajectories)
+graph = trajectories.drawMarginal()
+graph.add(
+    plot_1d_data(
+        x_test,
+        y_test,
+        type="Curve",
+        legend="model",
+        color="black",
+        linestyle="dashed",
     )
-    graph.add(
-        plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
-    )
-    graph.setXTitle("X")
-    graph.setYTitle("Y")
-    graph.setLegendPosition("upper right")
-    graph.setTitle("10 simulated trajectories")
-    view = viewer.View(graph)
+)
+graph.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
+)
+graph.setXTitle("X")
+graph.setYTitle("Y")
+graph.setLegendPosition("upper right")
+graph.setTitle("10 simulated trajectories")
+view = otv.View(graph)
 
 # %%
 # Display all figures
-viewer.View.ShowAll()
+otv.View.ShowAll()
