@@ -11,7 +11,7 @@
 Parameters
 ----------
 gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
-    Structure result of a gaussian process regression.
+    Structure that contains all the elements of Gaussian Process Regression computations.
 mesh : :class:`~openturns.Mesh`
     Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
 
@@ -66,7 +66,10 @@ Now, we define the mesh on which the gconditionned gaussian process  is generate
 >>> gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 >>> gpr_algo.run()
 >>> gpr_result = gpr_algo.getResult()
->>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)"
+>>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
+
+We get a realization of the conditioned Gaussian process:
+>>> realization = process.getRealization()"
 
 // ---------------------------------------------------------------------
 
@@ -76,45 +79,4 @@ Now, we define the mesh on which the gconditionned gaussian process  is generate
 Returns
 -------
 realization : :class:`~openturns.Field`
-    A realization of the process.
-
-Examples
---------
->>> import openturns as ot
->>> import openturns.experimental as otexp
->>> ot.RandomGenerator.SetSeed(0)
->>> # Kriging use case
->>> # Learning data
->>> levels = [8.0, 5.0]
->>> box = ot.Box(levels)
->>> inputSample = box.generate()
->>> # Scale each direction
->>> inputSample *= 10
->>> # Define model
->>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
->>> outputSample = model(inputSample)
->>> # Definition of exponential model
->>> inputDimension = 2
->>> covarianceModel = ot.SquaredExponential(inputDimension *[0.95])
->>> # Basis definition
->>> basis = ot.ConstantBasisFactory(inputDimension).build()
->>> # Kriring algorithm
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
->>> algo.run()
->>> result = algo.getResult()
->>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0],[1.0, 1.0], [1.5, 0.5]]
->>> simplices = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
->>> mesh2D = ot.Mesh(vertices, simplices)
->>> process = otexp.ConditionedGaussianProcess(result, mesh2D)
->>> # Get a realization of the process
->>> realization = process.getRealization()
->>> # With the new Gaussian Process Regression
->>> fitter_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
->>> fitter_algo.run()
->>> fitter_result = fitter_algo.getResult()
->>> gpr_algo = otexp.GaussianProcessRegression(fitter_result)
->>> gpr_algo.run()
->>> gpr_result = gpr_algo.getResult()
->>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
->>> # Get a realization of the process
->>> realization = process.getRealization()"
+    A realization of the process."
