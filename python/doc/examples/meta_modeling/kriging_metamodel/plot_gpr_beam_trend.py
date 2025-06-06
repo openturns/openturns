@@ -21,7 +21,6 @@ import openturns.experimental as otexp
 import openturns.viewer as otv
 
 ot.Log.Show(ot.Log.NONE)
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 # Definition of the model
