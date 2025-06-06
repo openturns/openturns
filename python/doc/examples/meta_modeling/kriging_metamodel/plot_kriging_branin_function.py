@@ -13,7 +13,6 @@ from numpy import sqrt
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import branin_function
-from matplotlib import pylab as plt
 import openturns.experimental as otexp
 
 
@@ -189,7 +188,7 @@ print(gccc.getConditionalMarginalVariance(xdata, 0)[0:5])
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()
 
 # %%
 # Reset default settings
