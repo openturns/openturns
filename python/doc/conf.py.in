@@ -142,6 +142,9 @@ sphinx_gallery_conf = {
 
     # omit computation times from all gallery outputs
     'write_computation_times': False,
+
+    # Use SVG format
+    'image_scrapers': ('matplotlib_svg_scraper.matplotlib_svg_scraper',),
 }
 
 if Version(sphinx_gallery.__version__) >= Version("0.17.0"):

@@ -6,7 +6,7 @@ def reset_ot(gallery_conf, fname):
     ot.RandomGenerator.SetSeed(0)
     ot.ResourceMap.Reload()
 
-    # explicitely set agg backend
+    # explicitly set agg backend
     import matplotlib
     matplotlib_backend = matplotlib.get_backend().lower()
     if matplotlib_backend != "agg":
