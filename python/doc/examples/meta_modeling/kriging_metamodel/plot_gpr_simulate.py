@@ -168,12 +168,12 @@ view = otv.View(graph)
 # In order to generate new trajectories of the conditioned Gaussian process, we use the class
 # :class:`~openturns.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
 # It is created from the result of the Gaussian Process Regression algorithm.
-process = ot.ConditionedGaussianProcess(gpr_result, myRegularGrid)
+process = otexp.ConditionedGaussianProcess(gpr_result, myRegularGrid)
 
 # %%
 # The method :meth:`~openturns.Process.getSample` method returns a :class:`~openturns.ProcessSample`.
 # sphinx_gallery_thumbnail_number = 3
-trajectories = process.getSampe(10)
+trajectories = process.getSample(10)
 type(trajectories)
 graph = trajectories.drawMarginal()
 graph.add(
