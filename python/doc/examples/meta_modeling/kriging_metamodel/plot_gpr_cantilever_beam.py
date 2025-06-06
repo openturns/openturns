@@ -6,15 +6,12 @@ Gaussian Process Regression : cantilever beam model
 # %%
 # In this example, we create a Gaussian Process Regression (GPR) metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`.
 # We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size 20.
-
-
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
 
 ot.Log.Show(ot.Log.NONE)
-
 # sphinx_gallery_thumbnail_number = 3
 
 # %%
@@ -141,8 +138,6 @@ view = viewer.View(graph)
 # %%
 # We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first sign of good quality.
 # The method :meth:`~openturns.MetaModelValidation.drawValidation` compares the observed outputs and the metamodel outputs.
-
-# %%
 graph = val.drawValidation()
 graph.setTitle("R2 = %.2f%%" % (100 * R2))
 view = viewer.View(graph)

@@ -16,9 +16,9 @@ Kriging : cantilever beam model
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
 
 ot.Log.Show(ot.Log.NONE)
+# sphinx_gallery_thumbnail_number = 3
 
 # %%
 # We load the cantilever beam use case :
@@ -171,5 +171,8 @@ view = viewer.View(graph)
 graph = val.drawValidation()
 graph.setTitle("R2 = %.2f%%" % (100 * r2Score))
 view = viewer.View(graph)
-plt.show()
-# sphinx_gallery_thumbnail_number = 3
+
+# %%
+# Display all figures
+viewer.View.ShowAll()
+

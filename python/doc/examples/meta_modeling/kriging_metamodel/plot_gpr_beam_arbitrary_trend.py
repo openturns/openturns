@@ -22,8 +22,7 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
 
-ot.RandomGenerator.SetSeed(0)
-ot.Log.Show(ot.Log.INFO)
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Definition of the model
@@ -49,8 +48,6 @@ input_dist = cb.distribution
 # We consider a simple Monte-Carlo sampling as a design of experiments.
 # This is why we generate an input sample using the `getSample` method of the distribution.
 # Then we evaluate the output using the `model` function.
-
-# %%
 sampleSize_train = 20
 X_train = input_dist.getSample(sampleSize_train)
 Y_train = model(X_train)
