@@ -333,6 +333,7 @@ This module is dedicated to the development in the library.
     :template: function.rst_t
 
     testing.assert_almost_equal
+    testing.assert_raises
 
     :template: class.rst_t
 
