@@ -1,10 +1,10 @@
 """
-Sequentially adding new points to a Kriging
-===========================================
+Sequentially adding new points to a Gaussian Process metamodel
+==============================================================
 """
 
 # %%
-# In this example, we show how to sequentially add new points to a Kriging in order to improve the predictivity of the metamodel.
+# In this example, we show how to sequentially add new points to a  Gaussian Process fitter (Kriging) in order to improve the predictivity of the metamodel.
 # In order to create simple graphics, we consider a 1-d function.
 
 # %%
@@ -54,9 +54,9 @@ view = viewer.View(graph)
 
 
 # %%
-def createMyBasicKriging(X, Y):
+def createMyBasicGPfitter(X, Y):
     """
-    Create a kriging from a pair of X and Y samples.
+    Create a Gaussian Process model from a pair of X and Y samples.
     We use a 3/2 Matérn covariance model and a constant trend.
     """
     basis = ot.ConstantBasisFactory(dimension).build()
@@ -87,16 +87,16 @@ sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 
 
 # %%
-def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, level=0.95):
+def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     """
-    Given a kriging result, plot the data, the kriging metamodel
+    Given a metamodel result, plot the data, the GP fitter metamodel
     and a confidence interval.
     """
     samplesize = X.getSize()
     meta = gprResult.getMetaModel()
     graphKriging = meta.draw(xMin, xMax)
-    graphKriging.setLegends(["Kriging"])
-    # Create a grid of points and evaluate the function and the kriging
+    graphKriging.setLegends(["Gaussian Process Regression"])
+    # Create a grid of points and evaluate the function and the metamodel
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
     yFunction = g(xGrid)
@@ -120,7 +120,7 @@ def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, level=0.95):
     # Compute the Polygon graphics
     boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")
-    # Validate the kriging metamodel
+    # Validate the metamodel
     metamodelPredictions = meta(xGrid)
     mmv = ot.MetaModelValidation(yFunction, metamodelPredictions)
     r2Score = mmv.computeR2Score()[0]
@@ -151,11 +151,11 @@ def plotMyBasicKriging(gprResult, xMin, xMax, X, Y, level=0.95):
 
 
 # %%
-# We start by creating the initial Kriging metamodel on the 4 points in the design of experiments.
+# We start by creating the initial GP fitter metamodel on the 4 points in the design of experiments.
 
 # %%
-gprResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
+gprResult = createMyBasicGPfitter(X, Y)
+graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
 view = viewer.View(graph)
 
 
@@ -171,7 +171,7 @@ view = viewer.View(graph)
 def getNewPoint(xMin, xMax, gprResult):
     """
     Returns a new point to be added to the design of experiments.
-    This point maximizes the conditional variance of the kriging.
+    This point maximizes the conditional variance of the metamodel.
     """
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
@@ -200,13 +200,13 @@ X.add(xNew)
 Y.add(yNew)
 
 # %%
-# We now plot the updated Kriging.
+# We now plot the updated GP fitter.
 
 # %%
 # sphinx_gallery_thumbnail_number = 3
-gprResult = createMyBasicKriging(X, Y)
-graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
-graph.setTitle("Kriging #0")
+gprResult = createMyBasicGPfitter(X, Y)
+graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
+graph.setTitle("GP fitter #0")
 view = viewer.View(graph)
 
 # %%
@@ -218,9 +218,9 @@ for krigingStep in range(5):
     yNew = g(xNew)
     X.add(xNew)
     Y.add(yNew)
-    gprResult = createMyBasicKriging(X, Y)
-    graph = plotMyBasicKriging(gprResult, xMin, xMax, X, Y)
-    graph.setTitle("Kriging #%d " % (krigingStep + 1) + graph.getTitle())
+    gprResult = createMyBasicGPfitter(X, Y)
+    graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
+    graph.setTitle("GP fitter #%d " % (krigingStep + 1) + graph.getTitle())
     View(graph)
 
 # %%
@@ -233,12 +233,7 @@ for krigingStep in range(5):
 # Conclusion
 # ----------
 #
-# The current example presents the naive implementation on the creation of a sequential design of experiments based on kriging.
-# More practical algorithms are presented in the following references.
-#
-# * Mona Abtini. Plans prédictifs à taille fixe et séquentiels pour le krigeage (2008). Thèse de doctorat de l'Université de Lyon.
-# * Céline Scheidt. Analyse statistique d’expériences simulées : Modélisation adaptative de réponses non régulières par krigeage et plans d’expériences (2007).
-#   Thèse présentée pour obtenir le grade de Docteur de l’Université Louis Pasteur.
-# * David Ginsbourger. Sequential Design of Computer Experiments. Wiley StatsRef: Statistics Reference Online, Wiley (2018)
+# The current example presents the naive implementation on the creation of a sequential design of experiments based on Gaussian Process metamodel.
+# More practical algorithms are presented in [ginsbourger2018]_.
 
 View.ShowAll()
