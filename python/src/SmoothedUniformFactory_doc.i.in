@@ -1,10 +1,6 @@
 %feature("docstring") OT::SmoothedUniformFactory
 "SmoothedUniform factory.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Notes
 -----
 The parameters are estimated by method of moments:

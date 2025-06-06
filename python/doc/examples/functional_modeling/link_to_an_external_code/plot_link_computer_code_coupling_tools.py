@@ -59,7 +59,9 @@ ot.Log.Show(ot.Log.NONE)
 # The following is the content of the `external_program.py` script.
 
 # %%
-code = """
+code = r"""
+'''Wrapper driver.'''
+
 # 1. Get input
 import sys
 inFile = sys.argv[1]

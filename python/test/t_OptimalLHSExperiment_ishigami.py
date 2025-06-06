@@ -1,10 +1,6 @@
 import openturns as ot
 from math import pi
 
-# import matplotlib
-# matplotlib.use('Agg')
-# import matplotlib.pylab as plt
-
 # Definition of the Ishigami function
 dimension = 3
 a = 7.0

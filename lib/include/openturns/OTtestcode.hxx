@@ -270,6 +270,15 @@ void checkClassWithClassName()
 
 inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
+  if (std::isinf(a) && std::isinf(b))
+  {
+    if (a * b < 0.0)
+      throw TestFailed(OSS() << "Value a: " << a << " and b: " << b << " are different " << errMsg << " prod="<< (a*b));
+    else
+      return;
+  }
+  if (std::isnan(a) && std::isnan(b))
+    return;
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b))
     throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
   if (std::abs(a - b) > atol + rtol * std::abs(b))
@@ -280,12 +289,15 @@ inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rto
 
 inline void assert_almost_equal(const Complex & a, const Complex & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
-  if (!SpecFunc::IsNormal(a.real()) || !SpecFunc::IsNormal(b.real()) ||
-      !SpecFunc::IsNormal(a.imag()) || !SpecFunc::IsNormal(b.imag()))
-    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
-  if (std::abs(a - b) > atol + rtol * std::abs(b))
+  if (SpecFunc::IsNormal(a.real()) && SpecFunc::IsNormal(b.real()) && SpecFunc::IsNormal(a.imag()) && SpecFunc::IsNormal(b.imag()))
   {
-    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+    if (std::abs(a - b) > atol + rtol * std::abs(b))
+      throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+  }
+  else
+  {
+    assert_almost_equal(a.real(), b.real(), rtol, atol, errMsg);
+    assert_almost_equal(a.imag(), b.imag(), rtol, atol, errMsg);
   }
 }
 

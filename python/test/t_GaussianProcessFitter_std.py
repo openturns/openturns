@@ -196,10 +196,8 @@ def bugfix_optim_no_feasible():
     algo = GaussianProcessFitter(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
     algo.setOptimizationBounds(scaleOptimizationBounds)
     algo.setOptimizeParameters(True)
-    try:
+    with ott.assert_raises(TypeError):
         algo.run()
-    except TypeError:
-        pass
 
 
 if __name__ == "__main__":

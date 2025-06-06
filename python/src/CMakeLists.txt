@@ -707,6 +707,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Skellam.i Skellam_doc.i.in
                       SkellamFactory.i SkellamFactory_doc.i.in
                       SmoothedUniform.i SmoothedUniform_doc.i.in
+                      SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                       SquaredNormal.i SquaredNormal_doc.i.in
                       Student.i Student_doc.i.in
                       StudentFactory.i StudentFactory_doc.i.in
@@ -1013,7 +1014,6 @@ ot_add_python_module(experimental experimental_module.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i.in
                      PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
-                     SmoothedUniformFactory.i SmoothedUniformFactory_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i.in
@@ -1044,7 +1044,7 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
 target_include_directories (memoryview PRIVATE ${Python_INCLUDE_DIRS})
 target_link_libraries (memoryview Python::Module)
-set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
+set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "" SKIP_UNITY_BUILD_INCLUSION ON)
 if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 else ()

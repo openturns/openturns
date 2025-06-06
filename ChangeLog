@@ -15,6 +15,7 @@
  * ConstantFunction, ConstantEvaluation
  * QuantileConfidence (openturns.experimental)
  * LineSampling (openturns.experimental)
+ * GaussianProcessRandomVector (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated SobolSimulationAlgorithm.setBatchSize method
@@ -28,8 +29,10 @@
  * FieldFunctionalChaosSobolIndices left the experimental module
  * UserDefinedMetropolisHastings left the experimental module
  * BoundaryMesher left the experimental module
+ * SmoothedUniformFactory left the experimental module
  * Deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Deprecated Graph.setDrawable(Drawable, int)
+ * ConditionedGaussianProcess moved to experimental
 
 === Documentation ===
 

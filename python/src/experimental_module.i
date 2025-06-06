@@ -88,7 +88,6 @@
 %include PointConditionalDistribution.i
 %include MarginalUniformOrderStatistics.i
 %include PosteriorDistribution.i
-%include SmoothedUniformFactory.i
 %include UniformOrderStatistics.i
 %include GeneralizedParetoValidation.i
 

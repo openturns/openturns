@@ -119,16 +119,17 @@ The benefits of this approach are:
 The Python module
 ~~~~~~~~~~~~~~~~~
 
-| The binding of the library is done almost automatically by SWIG
-  (Simplified Wrapper Interface Generator) through a set of SWIG
-  interface files (.i).
-| The main target language is python. These swig files contain some
-  specific ’glue code’ to each class for the target script language.
-  SWIG parses the library headers and theses swig interface files to
-  generates the corresponding module source yet to be compiled to
-  produce a binary python module, see [fig:swig]. The process is shared
-  between several modules for modularity and to speed up compilation
-  time with parallel builds.
+The binding of the library is done almost automatically by SWIG
+(Simplified Wrapper Interface Generator) through a set of SWIG
+interface files (.i).
+
+The main target language is python. These swig files contain some
+specific ’glue code’ to each class for the target script language.
+SWIG parses the library headers and theses swig interface files to
+generates the corresponding module source yet to be compiled to
+produce a binary python module, see [fig:swig]. The process is shared
+between several modules for modularity and to speed up compilation
+time with parallel builds.
 
 .. figure:: Figures/design/swig.png
    :alt: Python module generation process
@@ -343,18 +344,19 @@ implementation choices that were made.
 Bridge pattern
 ~~~~~~~~~~~~~~
 
-| The bridge pattern is a design pattern used in software engineering
-  which is meant to “decouple an abstraction from its implementation so
-  that the two can vary independently”. The bridge uses encapsulation,
-  aggregation, and can use inheritance to separate responsibilities into
-  different classes.
-| When a class varies often, the features of object-oriented programming
-  become very useful because changes to a program’s code can be made
-  easily with minimal prior knowledge about the program. The bridge
-  pattern is useful when both the class as well as what it does vary
-  often. The class itself can be thought of as the implementation and
-  what the class can do as the abstraction. The bridge pattern can also
-  be thought of as two layers of abstraction.
+The bridge pattern is a design pattern used in software engineering
+which is meant to “decouple an abstraction from its implementation so
+that the two can vary independently”. The bridge uses encapsulation,
+aggregation, and can use inheritance to separate responsibilities into
+different classes.
+
+When a class varies often, the features of object-oriented programming
+become very useful because changes to a program’s code can be made
+easily with minimal prior knowledge about the program. The bridge
+pattern is useful when both the class as well as what it does vary
+often. The class itself can be thought of as the implementation and
+what the class can do as the abstraction. The bridge pattern can also
+be thought of as two layers of abstraction.
 
 This pattern is one of the most widely used in . Some examples are:
 

@@ -78,7 +78,7 @@ if subprocess.run(["dvisvgm", "-V"], shell=True, capture_output=True).returncode
 imgmath_embed = True
 
 extensions.append('matplotlib.sphinxext.plot_directive')
-plot_formats = ['png']
+plot_formats = ['svg']
 
 extensions.append('sphinx_copybutton')
 copybutton_exclude = '.linenos, .gp'
@@ -142,6 +142,9 @@ sphinx_gallery_conf = {
 
     # omit computation times from all gallery outputs
     'write_computation_times': False,
+
+    # Use SVG format
+    'image_scrapers': ('matplotlib_svg_scraper.matplotlib_svg_scraper',),
 }
 
 if Version(sphinx_gallery.__version__) >= Version("0.17.0"):

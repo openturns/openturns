@@ -408,13 +408,13 @@ public:
   virtual Point getKurtosis() const;
 
   /** Get the raw moments of the distribution */
-  virtual Point getMoment(const UnsignedInteger n) const;
+  virtual Point getMoment(const UnsignedInteger k) const;
 
   /** Get the centered moments of the distribution */
-  virtual Point getCentralMoment(const UnsignedInteger n) const;
+  virtual Point getCentralMoment(const UnsignedInteger k) const;
 
   /** Get the shifted moments of the distribution */
-  virtual Point getShiftedMoment(const UnsignedInteger n,
+  virtual Point getShiftedMoment(const UnsignedInteger k,
                                  const Point & shift) const;
 
   /** Get the covariance of the distribution */

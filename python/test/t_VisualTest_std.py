@@ -122,3 +122,8 @@ U = ot.Uniform(-3, 3)
 dist = ot.JointDistribution([U, U, U])
 grid = ot.VisualTest.DrawInsideOutside(domain, dist.getSample(30))
 print(grid)
+
+# CDF plot with unique values
+dist = ot.Mixture([ot.Uniform(8, 15), ot.Dirac(10)], [0.1, 0.9])
+ud = ot.UserDefined(dist.getSample(1000))
+graph = ot.VisualTest.DrawCDFplot(ud.getSample(100), ud)

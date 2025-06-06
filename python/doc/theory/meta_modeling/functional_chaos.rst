@@ -518,7 +518,7 @@ equivalent to:
 .. topic:: Examples:
 
     - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
-    - See :doc:`/auto_functional_modeling/univariate_functions/plot_createUnivariateFunction`
+    - See :doc:`/auto_functional_modeling/univariate_functions/plot_create_univariate_function`
 
 
 .. topic:: References:

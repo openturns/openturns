@@ -9,11 +9,12 @@ In order to structure the code of the project, the various elements
 packages. This chapter describes the rules to be followed for the
 definition, management and use of these packages.
 
-| The code is mainly located in a single library. This library is
-  organized as a set of modules. However, there may be several
-  interacting libraries in the future.
-| The library is interfaced with Python through a Python module
-  exposing almost all the classes and operators.
+The code is mainly located in a single library. This library is
+organized as a set of modules. However, there may be several
+interacting libraries in the future.
+
+The library is interfaced with Python through a Python module
+exposing almost all the classes and operators.
 
 For the moment, the entire set of classes is located in **libOT.so** for
 the dynamic part and in **libOT.a** for the static part.
@@ -90,10 +91,6 @@ the second is called the *suffix* (or *extension*).
 | **.txt**            | Text file                                                                                                 |
 +---------------------+-----------------------------------------------------------------------------------------------------------+
 | **.xml**            | XML file (mainly for wrapper description file)                                                            |
-+---------------------+-----------------------------------------------------------------------------------------------------------+
-| **.ll**             | Lex scanner file                                                                                          |
-+---------------------+-----------------------------------------------------------------------------------------------------------+
-| **.yy**             | Yacc parser file                                                                                          |
 +---------------------+-----------------------------------------------------------------------------------------------------------+
 
 For example, it is not recommended to give the following names to two
@@ -197,9 +194,8 @@ GCC compilation:
 
 ::
 
-    mkdir -p build && cd build
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -D_GLIBCXX_ASSERTIONS" ..
-    make
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -D_GLIBCXX_ASSERTIONS" -B build .
+    make -C build
 
 Namespaces
 ~~~~~~~~~~
@@ -1171,19 +1167,21 @@ Example:
 These rules refer to the classes and methods in the Python layer using
 the services of the internal model and the solvers.
 
-C++ 11
+C++ 17
 ~~~~~~
 
-The library requires the C++ 11 standard.
+The library requires the C++ 17 standard.
 Some useful features include:
 
-- std::atomic
-- std::vector::data()
-- std::shared_ptr
-- constructor delegation
-- default member initializers
-- list initialization
-- override keyword
+- std::atomic (since c++ 11)
+- std::vector::data() (since c++ 11)
+- std::shared_ptr (since c++ 11)
+- constructor delegation (since c++ 11)
+- default member initializers (since c++ 11)
+- list initialization (since c++ 11)
+- override keyword (since c++ 11)
+- lambda expressions (since c++ 11)
+- std::filesytem
 
 Example: constructor delegation:
 

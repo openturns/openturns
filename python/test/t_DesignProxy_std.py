@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -26,11 +27,8 @@ full = range(basisSize)
 design = proxy.computeDesign(full)
 print(design)
 
-try:
+with ott.assert_raises(TypeError):
     proxy.computeDesign(range(5))
-    assert False, "should not go here"
-except TypeError:
-    print("ok")
 
 partial = [0, 2]
 print(proxy.getBasis(partial))
@@ -41,8 +39,5 @@ full = range(basisSize)
 design = proxy.computeDesign(full)
 print(design)
 
-try:
+with ott.assert_raises(TypeError):
     proxy.computeDesign(range(5))
-    assert False, "should not go here"
-except TypeError:
-    print("ok")
