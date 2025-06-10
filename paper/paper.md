@@ -52,17 +52,10 @@ bibliography: paper.bib
 OpenTURNS is also available as a Python module. 
 
 ## Introduction
-> A travailler pour éviter le plagiat
-The needs to assess robust performances for complex systems and to answer tighter regulatory processes (security, safety, environmental control, health impacts, etc.) have led to the emergence of a new industrial simulation challenge: to take uncertainties into account when dealing with complex numerical simulation frameworks. Many attempts at treating uncertainty in large industrial applications have involved domain-specific approaches or standards: metrology, reliability,
-differential-based approaches, variance decomposition, etc. However, facing the questioning of their certification authorities in an increasing number of different domains, these domain-specific approaches are no more appropriate. Therefore, a generic methodology has emerged from the joint effort of several industrial companies and academic institutions.
+Numerical simulation and the uncertainties associated with these models make decision-making robust in the design and operation of complex systems. Supervisory authorities in safety-critical industrial sectors (e.g. nuclear power or civil aviation) are demanding that players use tried-and-tested methods, backed up by tested, documented and auditable implementations. As a result, several uncertainty processing libraries have emerged over the last few decades. However, many of these approaches are dedicated to a particular discipline, such as numerical fluid mechanics or hydrology. This approach limits the sharing of best practices. This is why a generic approach to uncertainty management is so important.
 
 ## Overview
-OpenTURNS is an open-source software under the LGPL license based on
-a C++ library and a Python. OpenTURNS provides the following features:
-- Generic to the physical or industrial domains for treating of multi-physical problems
-- Structured in a practitioner guidance methodological approach with advanced industrial computing capabilities, various engineering environments, large data models, etc.
-- Includes algorithms in order to manage uncertainties in several situations
-- in Python, plotting features are provided using Matplotlib.
+OpenTURNS is an open-source software under the LGPL license based on a C++ library and provides a Python package. OpenTURNS is a generic library for probabilistic modeling and uncertainty quantification. The library provides full documentation, in particular of the programming interface, examples and probabilistic theory. In Python, plotting features are provided using Matplotlib. 
 
 ## Features
 The OpenTURNS library provides functions for defining a probabilistic model for a random vector or stochastic process. A multivariate distribution can be defined in a number of ways: directly, by decomposition into marginals and copulas, or by conditioning. For a one-dimensional distribution and a given function, we can determine the push-forward distribution. In addition, the library can be used to define functions acting on these objects, and to combine these functions. The calculation of the gradient or hessian of a function is taken into account. In the context of uncertainty quantification, the library provides services for sampling the law of the input random vector to the physical model and propagating uncertainties to the output. Sampling can be performed using Monte-Carlo, quasi Monte-Carlo and variance reduction methods (importance sampling, line sampling). Different types of experimental designs are implemented including Latin Hypercube Sampling (LHS) and optimized LHS.
@@ -76,7 +69,7 @@ The library is presented in several publications, e.g. `@Baudin:2016`. For examp
 
 The Persalys graphical user interface provides uncertainty quantification features using OpenTURNS (see www.persalys.fr) . Other Persalys-derived graphical tools are also based on OpenTURNS (see `@Bryla:2022`). 
 
-A User's day meeting is organized each year since 2008. The goal of this meeting is to present the use of OpenTURNS in engineering or research uncertainty quantification studies.
+A User's day meeting has been organized each year since 2008. The goal of this meeting is to present the use of OpenTURNS in engineering or research uncertainty quantification studies.
 
 # Acknowledgements
 
