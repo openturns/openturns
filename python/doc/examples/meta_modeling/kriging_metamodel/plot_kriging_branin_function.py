@@ -1,6 +1,6 @@
 """
-Kriging: metamodel of the Branin-Hoo function
-==============================================
+Gaussian Process Regression: metamodel of the Branin-Hoo function
+=================================================================
 """
 
 # %%
@@ -13,7 +13,7 @@ from numpy import sqrt
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import branin_function
-from matplotlib import pylab as plt
+import openturns.experimental as otexp
 
 
 # %%
@@ -62,10 +62,10 @@ print(bm.objectiveFunction(sample1))
 
 
 # %%
-# Definition of the Kriging metamodel
-# -----------------------------------
+# Optimization of GP hyperparameters and conditioning to data
+# -----------------------------------------------------------
 #
-# We use the :class:`~openturns.KrigingAlgorithm` class to perform the Kriging analysis.
+# We use the :class:`~openturns.experimental.GaussianProcessFitter` class to perform the GP fitter analysis.
 # We first generate a design of experiments with LHS and store the input training points in `xdata`
 experiment = ot.LHSExperiment(
     ot.JointDistribution([ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]),
@@ -90,23 +90,27 @@ basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
 
 # %%
-# We have all the components to build a Kriging algorithm and run it :
-algo = ot.KrigingAlgorithm(xdata, ydata, covarianceModel, basis)
-algo.run()
-
-# %%
-# We get the result of the Kriging analysis with :
-result = algo.getResult()
+# We have all the components to build a GP fitter  algorithm and run it :
+fitter_algo = otexp.GaussianProcessFitter(xdata, ydata, covarianceModel, basis)
+fitter_algo.setOptimizeParameters(True)
+fitter_algo.run()
+fitter_result = fitter_algo.getResult()
+gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo.run()
+gpr_result = gpr_algo.getResult()
+print(gpr_result)
 
 # %%
 # Metamodel visualization
 # -----------------------
 #
-# We draw the Kriging metamodel of the Branin function. It is the mean of the random process.
-metamodel = result.getMetaModel()
+# We get the metamodel (mean of the conditioned Gaussian Process) and the variance estimation.
+# We draw the GP metamodel of the Branin function.
+gprMetamodel = gpr_result.getMetaModel()
+gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
 
 
-graphBasic = metamodel.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
+graphBasic = gprMetamodel.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)
 # Take the first drawable as the only contour with multiple levels
 contours = graphBasic.getDrawable(0).getImplementation()
 contours.setColorBarPosition("")  # Hide the color bar
@@ -130,7 +134,7 @@ view = otv.View(graphFineTune)
 
 # %%
 # We evaluate the metamodel at the minima locations :
-print(metamodel(sample1))
+print(gprMetamodel(sample1))
 
 # %%
 # Graphically, both the metamodel and the exact function look the same. The metamodel also has three
@@ -152,7 +156,7 @@ inputData = ot.Box([N, N]).generate()
 
 # %%
 # We compute the conditional variance of the model and take the square root to get the deviation :
-condCov = result.getConditionalMarginalVariance(inputData, 0)
+condCov = gccc.getConditionalMarginalVariance(inputData, 0)
 condCovSd = sqrt(condCov)
 
 # %%
@@ -176,15 +180,15 @@ view = otv.View(graphFineTune)
 # We observe that the standard deviation is small in the center of the domain where we have enough
 # data to learn the model.
 # We can print the value of the variance at the first 5 training points (they all behave similarly) :
-print(result.getConditionalMarginalVariance(xdata, 0)[0:5])
+print(gccc.getConditionalMarginalVariance(xdata, 0)[0:5])
 
 # %%
-# These values are nearly zero which is expected as the Kriging interpolates data. The value being
+# These values are nearly zero which is expected as the metamodel interpolates data. The value being
 # known it is not random anymore and the variance ought to be zero.
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()
 
 # %%
 # Reset default settings
