@@ -4,7 +4,7 @@ Gaussian process regression
 ---------------------------
 
 Gaussian process regression (also known as Kriging) is a Bayesian
-technique that aim at approximating functions (most often in order to
+technique that aims at approximating functions (most often in order to
 surrogate it because it is expensive to evaluate).
 
 Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model and a dataset
@@ -14,27 +14,27 @@ for all :math:`k`.
 The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that interpolates the data
 set. To build this metamodel, we follow the steps:
 
-- first, we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
+- Step 1: Gaussian process fitting: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
   where :math:`\vect{\mu}` is the trend function and :math:`\vect{W}` is a Gaussian process of
   dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`;
-- then, we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
+- Step 2:  Gaussian Process Regression: we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
-- at last, we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+- Step 3:  Gaussian Process Regression metamodel and its exploitation:  we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
   that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
   the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
 
-Note the implementation of
+Note that the implementation of a
 Gaussian process regression deals with vector-valued functions
 (:math:`\metaModel: \vect{x} \mapsto \vect{y}`), without simply looping over
 each output.
 
 
 Step 1: Gaussian process fitting
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample
 :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
@@ -173,7 +173,7 @@ which leads to a further reduction of the log-likelihood function where both :ma
 This step is performed by the class :class:`~openturns.experimental.GaussianProcessFitter`.
 
 Step 2:  Gaussian Process Regression
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian process regression
 aims at conditioning it to the data set: we make the Gaussian process approximation become
@@ -262,7 +262,7 @@ This step is performed by the class :class:`~openturns.experimental.GaussianProc
 
 
 Step 3:  Gaussian Process Regression metamodel and its exploitation
---------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
 

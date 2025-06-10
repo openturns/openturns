@@ -24,7 +24,7 @@ trendFunction : :class:`~openturns.Function`
 Notes
 -----
 
-Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+Refer to :ref:`gaussian_process_regression` (step 2) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model.
 
@@ -43,7 +43,7 @@ In all cases, no estimation of the underlying Gaussian process approximation :ma
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
-where :math:` \vect{\mu} : \Rset^\inputDim \rightarrow \Rset^outputDim` is the trend function and :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and a specified covariance function.
+where :math:`\vect{\mu} : \Rset^\inputDim \rightarrow \Rset^outputDim` is the trend function and :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and a specified covariance function.
 
 The Gaussian Process Regression denoted by :math:`\vect{Z}` is the Gaussian process :math:`\vect{Y}` conditioned to the data
 set:

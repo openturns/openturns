@@ -13,7 +13,7 @@ Gaussian Process Regression : generate trajectories from the metamodel
 # We consider the sine function:
 #
 # .. math::
-#    g(x) = \sin(x)
+#    \model(x) = \sin(x)
 #
 #
 # for any :math:`x\in[0,12]`.
@@ -21,7 +21,7 @@ Gaussian Process Regression : generate trajectories from the metamodel
 # We want to create a metamodel of this function. This is why we create a sample of :math:`n` observations of the function:
 #
 # .. math::
-#    y_i=g(x_i)
+#    y_i = \model(x_i)
 #
 #
 # for :math:`i=1,...,7`, where :math:`x_i` is the i-th input and :math:`y_i` is the corresponding output.
@@ -172,6 +172,8 @@ process = otexp.ConditionedGaussianProcess(gpr_result, myRegularGrid)
 
 # %%
 # The method :meth:`~openturns.Process.getSample` method returns a :class:`~openturns.ProcessSample`.
+
+# %%
 # sphinx_gallery_thumbnail_number = 3
 trajectories = process.getSample(10)
 type(trajectories)
@@ -196,5 +198,5 @@ graph.setTitle("10 simulated trajectories")
 view = otv.View(graph)
 
 # %%
-# Display all figures
+# Display all figures.
 otv.View.ShowAll()

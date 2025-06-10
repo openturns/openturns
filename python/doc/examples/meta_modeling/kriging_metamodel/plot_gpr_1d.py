@@ -20,7 +20,7 @@ Gaussian Process Regression : quick-start
 # We consider the sine function:
 #
 # .. math::
-#    g(x) = \sin(x)
+#    \model(x) = \sin(x)
 #
 #
 # for any :math:`x\in[0,12]`.
@@ -28,7 +28,7 @@ Gaussian Process Regression : quick-start
 # We want to create a surrogate model of this function. This is why we create a sample of :math:`n` observations of the function:
 #
 # .. math::
-#    y_i = g(x_i)
+#    y_i = \model(x_i)
 #
 #
 # for :math:`i=1,...,7`, where :math:`x_i` is the i-th input and :math:`y_i` is the corresponding output.
@@ -53,7 +53,7 @@ import openturns.experimental as otexp
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We begin by defining the function :math:`g` as a symbolic function.
+# We begin by defining the function :math:`\model` as a symbolic function.
 g = ot.SymbolicFunction(["x"], ["sin(x)"])
 
 # %%
@@ -172,7 +172,7 @@ view = viewer.View(g_trend)
 #
 #    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i)
 #
-# where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance # function of the Matérn
+# where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance function of the Matérn
 # covariance model.
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
@@ -243,7 +243,7 @@ print("Quantile alpha=%f" % (quantileAlpha))
 # The Gaussian process regression computed on the sample :math:`(\xi_1, \dots, \xi_N)` is a Gaussian vector. It is possible to
 # get the variance of each :math:`\vect{Z}_i(\omega) = \vect{Y}(\omega, \vect{\xi}_i)\, | \,  \cC` for :math:`1 \leq i \leq N`
 # with
-# the meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
+# the :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
 # returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
@@ -328,5 +328,5 @@ view = viewer.View(graph)
 # of the function is large (between :math:`x=4` and :math:`x=6`).
 
 # %%
-# Display all figures
+# Display all figures.
 viewer.View.ShowAll()
