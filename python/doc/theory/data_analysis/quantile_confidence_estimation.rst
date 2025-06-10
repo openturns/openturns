@@ -3,35 +3,20 @@
 Estimation of a quantile bound
 ------------------------------
 
-We consider a random variable :math:`X` of dimension 1 and the unknown  :math:`x_{\alpha}`
-level quantile of its distribution (:math:`\alpha \in [0, 1]`).
+We consider a random variable :math:`X` of dimension 1 and the unknown quantile :math:`x_{\alpha}`
+of level :math:`\alpha` of its distribution (:math:`\alpha \in [0, 1]`).
 We seek to evaluate an upper bound of :math:`x_{\alpha}` with a confidence greater or equal to
-:math:`\beta`, using a given order statistics.
+:math:`\beta`, using order statistics.
 
 Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
 Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
-:math:`X_{(k)}` is the :math:`k` -th maximum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`. For
+:math:`X_{(k)}` is the :math:`k` -th minimum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`. For
 example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
 and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum. We have:
 
 .. math::
 
     X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}
-
-
-Smallest rank for an upper bound to the quantile
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Let :math:`(x_1, \dots, x_\sampleSize)` be an i.i.d. sample of size :math:`\sampleSize` of
-the random variable :math:`X`.
-Given a quantile level :math:`\alpha \in [0,1]`, a confidence level
-:math:`\beta \in [0,1]`, and a sample size :math:`\sampleSize`, we seek the smallest
-rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
-
-.. math::
-    :label: EqOrderStat
-
-    \Prob{x_{\alpha} \leq X_{(k)}} \geq \beta
 
 The probability density and cumulative distribution functions of the order
 statistics :math:`X_{(k)}` are:
@@ -59,10 +44,24 @@ Therefore:
     F_{X_{(k)}}(x_{\alpha}) = \sum_{i=k}^{\sampleSize} \binom{\sampleSize}{i} \alpha^i (1-\alpha)^{\sampleSize-i}
     = \overline{F}_{(\sampleSize,\alpha)}(k-1)
 
-and equation :eq:`EqOrderStat` implies:
+Rank for an upper bound of the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let :math:`(x_1, \dots, x_\sampleSize)` be an i.i.d. sample of size :math:`\sampleSize` of
+the random variable :math:`X`.
+Given a quantile level :math:`\alpha \in [0,1]`, a confidence level
+:math:`\beta \in [0,1]`, and a sample size :math:`\sampleSize`, we seek the smallest
+rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
 
 .. math::
-    :label: EqOrderStat2
+    :label: EqOrderStatB
+
+    \Prob{x_{\alpha} \leq X_{(k)}} \geq \beta \qquad
+
+As equation :eq:`EqOrderStatB` implies:
+
+.. math::
+    :label: EqOrderStat2B
 
     1-F_{X_{(k)}}(x_{\alpha})\geq \beta
 
@@ -79,24 +78,140 @@ The smallest rank :math:`k_{sol}` such that the previous equation is satisfied i
     k_{sol} & = \min \{ k \in \llbracket 1, n \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\geq \beta \}\\
             & = 1 +  \min \{ k \in \llbracket 1, n\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq \beta \}
 
-An upper bound of  :math:`x_{\alpha}` is estimated by the value of :math:`X_{(k_{sol})}`
-on the sample
-:math:`(x_1, \dots, x_\sampleSize)`.
+An upper bound of :math:`x_{\alpha}` is estimated by the value of :math:`X_{(k_{sol})}`
+on the sample :math:`(x_1, \dots, x_\sampleSize)`.
 
-Minimum sample size for an upper bound to the quantile
+Here is a recap of the existence of solutions for this case:
+
++------------------------+------------------+-------------------------------------+---------------------------------+
+| :math:`K_{sol}`        | :math:`\beta=0`  | :math:`0 < \beta < 1`               | :math:`\beta=1`                 |
++========================+==================+=====================================+=================================+
+| :math:`\alpha=0`       | 1                | 1                                   | 1                               |
++------------------------+------------------+-------------------------------------+---------------------------------+
+| :math:`0 < \alpha < 1` | 1                | see :eq:`EqOrderStatBgen`           | :math:`\emptyset`               |
++------------------------+------------------+-------------------------------------+---------------------------------+
+| :math:`\alpha=1`       | 1                | :math:`\emptyset`                   | :math:`\emptyset`               |
++------------------------+------------------+-------------------------------------+---------------------------------+
+
+With:
+
+.. math::
+    :label: EqOrderStatBgen
+
+    1+F_{n,\alpha}^{-1}(\beta) \text{if} 1-\alpha^n \geq \beta \text{else} \emptyset
+
+Rank for a lower bound of the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly for the lower bound we seek the greatest rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
+
+.. math::
+    :label: EqOrderStatA
+
+    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta \qquad
+
+Here is a recap of the existence of solutions for this case:
+
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`K_{sol}`        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
++========================+======================================+=========================================+=================================+
+| :math:`\alpha=0`       | n                                    | :math:`\emptyset`                       | :math:`\emptyset`               |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`0 < \alpha < 1` | n                                    | see :eq:`EqOrderStatAgen`               | :math:`\emptyset`               |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`\alpha=1`       | n                                    | n                                       | n                               |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+
+With
+
+.. math::
+    :label: EqOrderStatAgen
+
+    \emptyset \text{if} (1-\alpha)^n > 1 - \beta \\
+    \text{otherwise if there exists} k_0 | 1-\beta = F_{(\sampleSize,\alpha}(k_0 - 1) \text{then} k_{sol} = 1+F_{n,\alpha}^{-1}(1-\beta)
+    \text{and if not} k_{sol} = F_{n,\alpha}^{-1}(1-\beta)
+
+Ranks for bilateral bounds of the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly for the lower bound we seek the ranks :math:`k_1, k_2 \in \llbracket 1, \sampleSize \rrbracket^2` such that:
+
+.. math::
+    :label: EqOrderStatC
+
+    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta \qquad
+
+with :math:`k_2 - k_1` the smallest.
+
+Here is a recap of the existence of solutions for this case:
+
++------------------------+-------------------------------------------------+---------------------------------+-------------------------+
+| :math:`K_{sol}`        | :math:`\beta=0`                                 | :math:`0 < \beta < 1`           | :math:`\beta=1`         |
++========================+=================================================+=================================+=========================+
+| :math:`\alpha=0`       | :math:`\Bigl\lfloor \frac{n}{2} \Bigr\rfloor`   | :math:`\emptyset`               | :math:`\emptyset`       |
++------------------------+-------------------------------------------------+---------------------------------+-------------------------+
+| :math:`0 < \alpha < 1` | 1                                               | :math:`\emptyset` or 1          | :math:`\emptyset`       |
++------------------------+-------------------------------------------------+---------------------------------+-------------------------+
+| :math:`\alpha=1`       | :math:`\Bigl\lfloor \frac{n}{2} \Bigr\rfloor`   | :math:`\emptyset`               | :math:`\emptyset`       |
++------------------------+-------------------------------------------------+---------------------------------+-------------------------+
+
+Minimum sample size for an upper bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Given :math:`\alpha`, :math:`\beta`, and order :math:`k`, we seek for the smallest sample size
 :math:`\sampleSize`
-such that the equation :eq:`EqOrderStat` is satisfied. In order to do so, we solve the
-equation :eq:`EqOrderStat2` with respect to the sample size :math:`\sampleSize`.
+such that the equation :eq:`EqOrderStatB` is satisfied. In order to do so, we solve the
+equation :eq:`EqOrderStat2B` with respect to the sample size :math:`\sampleSize`.
 
-Once the smallest size :math:`\sampleSize`  has been estimated, a sample of size
-:math:`\sampleSize` can be
-generated from
-:math:`X` and an upper bound of :math:`x_{\alpha}` is estimated using
-:math:`x_{(\sampleSize-k)}` i.e. the :math:`\sampleSize - k`-th observation
+Once the smallest size :math:`\sampleSize` has been estimated, a sample of size :math:`\sampleSize` can be
+generated from :math:`X` and an upper bound of :math:`x_{\alpha}` is estimated using
+:math:`x_{(k)}` i.e. the :math:`k`-th observation
 in the ordered sample :math:`(x_{(1)}, \dots, x_{(\sampleSize)})`.
+
+Here is a recap of the existence of solutions for this case:
+
++--------------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+|                                | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
++================================+======================================+=========================================+=================================+
+| :math:`0 \leq \alpha \leq 1`   | :math:`k \text{if} 1-\alpha^k \geq \beta \text{else} \emptyset`                                                  |
++--------------------------------+------------------------------------------------------------------------------------------------------------------+
+
+Minimum sample size for a lower bound of the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly for the lower bound, we seek for the smallest sample size :math:`\sampleSize`
+such that the equation :eq:`EqOrderStatA` is satisfied.
+
+Here is a recap of the existence of solutions for this case:
+
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+|                        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
++========================+======================================+=========================================+=================================+
+| :math:`\alpha=0`       | :math:`k`                            | :math:`\emptyset`                       | :math:`\emptyset`               |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`0 < \alpha < 1` | :math:`\argmin \{n \geq k | f_{k,\alpha} \leq 1-\beta \}`                      | :math:`\emptyset`               |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`\alpha=1`       | :math:`k`                            | :math:`k`                               | :math:`k`                       |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+
+
+Minimum sample size for bilateral bounds of the quantile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly for the bilateral bounds, we seek for the smallest sample size :math:`\sampleSize`
+such that the equation :eq:`EqOrderStatC` is satisfied.
+
+Here is a recap of the existence of solutions for this case:
+
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+|                        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
++========================+======================================+=========================================+=================================+
+| :math:`\alpha=1`       | :math:`k_2`                          | :math:`\emptyset`                       | :math:`\emptyset`               |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`0 < \alpha < 1` | :math:`k_2` if :math:`1-\alpha^{k_2} - F_{k_2,\alpha}(k_1-1) \geq \beta` else :math:`\emptyset`                  |
++------------------------+--------------------------------------------------------------------------------+---------------------------------+
+| :math:`\alpha=0`       | :math:`\emptyset` if :math:`k_1 \neq 0` and :math:`\beta > 0` else :math:`k_2`                                   |
++------------------------+------------------------------------------------------------------------------------------------------------------+
 
 
 .. topic:: API:
