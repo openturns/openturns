@@ -22,10 +22,12 @@ authors:
     affiliation: 2
   - name: Sofiane Haddad
     affiliation: 2
+  - name: Julien Schueller
+    affiliation: 3
   - name: Loïc Brevault
-    affiliation: 3
+    affiliation: 4
   - name: Mathieu Balesdent
-    affiliation: 3
+    affiliation: 4
 affiliations:
  - name: EDF R&D, France
    index: 1
