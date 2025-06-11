@@ -1,10 +1,11 @@
 = New Features =
 
-== 1.25 release (in-progress) == #release-1.25
+== 1.25 release (2025-06-12) == #release-1.25
 
 === Library ===
 
 ==== Major changes ====
+ * Deprecation of KrigingAlgorithm classes in favor of new GPR APIs
 
 ==== New classes ====
  * New LeastSquaresEquationsSolver class (openturns.experimental)
@@ -37,11 +38,78 @@
 === Documentation ===
 
 === Python module ===
-  * Added GridLayout.add method to add all subgraphs of another grid
+ * Add openturns.testing.assert_raises
+ * Allow replacement of unicode characters in coupling_tools module
 
 === Miscellaneous ===
+ * Added GridLayout.add method to add all subgraphs of another grid
  * New c++ csv parser replacing the old bison/flex implementation
+ * Smolyak nested tensorization
+ * Allow MultiStart optimization in FORM algorithms
+ * Compare nan/inf values in openturns.testing.assert_almost_equal
+ * FreeBSD CI testing
+ * Add PlatformInfo.Summary method for various machine/compiler/versions infos
 
+=== Bug fixes (total 59) ===
+ * #2455 (The MetaModelResult class is not robust to wrong input arguments)
+ * #2292 (The residuals and relativeErrors of FunctionalChaosResult have wrong names and wrong values)
+ * #1288 (ImportFromCSVFile does not manage accents on Windows)
+ * #2818 (PostAnalyticalControlledImportanceSampling has no doc)
+ * #2858 (ParametrizedDistribution has no introspection)
+ * #2852 (The API help page of the Dirichlet distribution can be improved)
+ * #2851 (t_Pagmo_std.py fails for tiny x1 and x2 and moead)
+ * #2850 (Estimating the coefficients of a PCE can fail)
+ * #2842 (incorrect Fejer nodes for low discretization)
+ * #2844 (The documentation of PointConditionalDistribution does not highlight its features)
+ * #2847 (The documentation of the stiffened panel example is wrong)
+ * #2908 (DrawParallelCoordinates is broken)
+ * #2905 (The evaluation of a Python function can produce a confusing, unrelated, exception)
+ * #2890 (calibration MAP outside CI)
+ * #2893 (Inconsistency in Poisson computeQuantile function (F^-1(F(k)) != k))
+ * #2934 (GaussProductExperiment in huge dim)
+ * #2933 (Colors do not change when we draw several PDF of discrete distributions)
+ * #2899 (The PDFWrapper class should be private and Distribution.getPDF should be used)
+ * #2901 (DistributionValidation should check more properties)
+ * #2903 (InverseWishart CDF is wrong)
+ * #2762 (GridLayout.add(grid))
+ * #2758 (RatioDistribution is undocumented, untested and unavailable in Python)
+ * #2815 (The sensitivity_sobol_from_pce.html theory help page has bugs)
+ * #2792 (The finiteLowerBound and finiteUpperBound of an interval are difficult to understand)
+ * #2799 (The OpenTURNSPythonPointToFieldFunction class has undocumented methods)
+ * #2831 (Add transparency ("alpha") parameter to Clouds)
+ * #2839 (Unable to build without MUPARSER and without EXPRTK)
+ * #2835 (MarginalDistribution transformation input dim)
+ * #2826 (The FireSatellite model has no description)
+ * #2874 (The API help of GeometricProfile has issues)
+ * #2878 (Creating a PCE from a Dirichlet input may be difficult)
+ * #2865 (The legend of DrawQQplot is wrong)
+ * #2866 (The Y title of DrawQQplot can be too long)
+ * #2862 (test fails: cppcheck_FisherSnedecor_std)
+ * #2868 (The documentation of SymmetricTensor can be improved)
+ * #2875 (Add a citation file for OpenTURNS)
+ * #2876 (Mesh class does not handle surface meshes)
+ * #2886 (Changing the indices of inputs in a python function changes the result of LinearLeastSquaresCalibration)
+ * #2871 (The range of PointConditionalDistribution can be wrong)
+ * #2856 (Extrapolation of the PiecewiseLinearEvaluation and PiecewiseHermiteEvaluation outside the range of design of experiments)
+ * #2915 (A getting started example would help new users)
+ * #2937 (ConditionalRandomVector)
+ * #2733 (slow KernelMixture.computeEntropy)
+ * #2894 (DrawPairsMarginals should use the same axes on all projections)
+ * #2634 (Sample.ImportFromCSVFile cannot manage unicode descriptions)
+ * #2341 (Sensitivity analysis item is missing in the API webpage)
+ * #2943 (KernelSmoothing can fail on a particular dataset)
+ * #2867 (copulas maths are hidden)
+ * #2913 (The polynomial_chaos_metamodel/plot_chaos_cv.py has regressed)
+ * #2940 GridLayout.setGraph is not consistent with Graph.setDrawable)
+ * #2052 (We cannot compute Wilk's rank)
+ * #2953 (MultiOutput with GPR)
+ * #2959 (GausianProcessConditionalCovariance: getConditionalMarginalCovariance misnamed)
+ * #2765 (The plot_distribution_linear_regression example has an error)
+ * #2951 (The KrigingRandomVector class has no GaussianProcessRegression counterpart)
+ * #2914 (There is no link from the API kriging pages to the theory pages of kriging)
+ * #2956 (coupling tools unicode parsing)
+ * #1935 (Some help pages have content and formatting issues)
+ * #1270 (The moment order argument of Distribution/getMoment is wrongly documented)
 
 
 == 1.24 release (2024-11-26) == #release-1.24
