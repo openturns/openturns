@@ -12,7 +12,7 @@ Create a domain event
 #
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 # %%
 # We consider a standard unit Gaussian bivariate random vector :math:`\vect{X} = (X_1,X_2)` with

@@ -15,7 +15,7 @@ Add a trend to a process
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

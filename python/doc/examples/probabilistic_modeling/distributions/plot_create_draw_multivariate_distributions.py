@@ -7,7 +7,7 @@ Create and draw multivariate distributions
 # In this example we create and draw multidimensional distributions.
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

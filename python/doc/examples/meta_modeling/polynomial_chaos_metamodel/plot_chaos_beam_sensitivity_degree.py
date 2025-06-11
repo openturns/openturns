@@ -18,7 +18,7 @@ Polynomial chaos is sensitive to the degree
 import openturns as ot
 import numpy as np
 import openturns.viewer
-import pylab as pl
+import matplotlib.pyplot as plt
 
 # %%
 # The following parameter value leads to fast simulations.
@@ -188,7 +188,7 @@ inputTrain = myDistribution.getSample(N)
 outputTrain = g(inputTrain)
 inputTest = myDistribution.getSample(n_valid)
 outputTest = g(inputTest)
-fig = pl.figure(figsize=(25, 4))
+fig = plt.figure(figsize=(25, 4))
 for totalDegree in range(1, maxDegree + 1):
     chaosResult = ComputeSparseLeastSquaresChaos(
         inputTrain, outputTrain, multivariateBasis, totalDegree, myDistribution
@@ -198,7 +198,7 @@ for totalDegree in range(1, maxDegree + 1):
     )
     ax = fig.add_subplot(1, maxDegree, totalDegree)
     _ = ot.viewer.View(graph, figure=fig, axes=[ax])
-    pl.suptitle("Metamodel validation")
+    plt.suptitle("Metamodel validation")
 
 # %%
 # We see that when the degree of the polynomial increases, the :math:`R^2` coefficient decreases.
@@ -248,11 +248,11 @@ def computeSampleR2(N, n_valid, numberAttempts, maxDegree):
 # %%
 def plotR2Boxplots(r2Sample, N):
     data = np.array(r2Sample)
-    pl.figure()
-    pl.boxplot(data)
-    pl.title("N=%d" % (N))
-    pl.xlabel("Degree")
-    pl.ylabel("R2 (%)")
+    plt.figure()
+    plt.boxplot(data)
+    plt.title("N=%d" % (N))
+    plt.xlabel("Degree")
+    plt.ylabel("R2 (%)")
     return
 
 
@@ -283,7 +283,7 @@ N = 50  # size of the train design
 r2Sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
 plotR2Boxplots(r2Sample, N)
 
-pl.show()
+plt.show()
 
 # %%
 # When the sample size increases, the :math:`R^2` computation becomes less sensitive to the polynomial degree.

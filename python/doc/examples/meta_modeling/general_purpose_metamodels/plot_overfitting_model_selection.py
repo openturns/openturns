@@ -35,7 +35,7 @@ Over-fitting and model selection
 
 # %%
 import openturns as ot
-import pylab as pl
+from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
 # %%
@@ -284,7 +284,7 @@ grid.setGraph(0, 1, myPolynomialCurveFittingGraph(1, x_train, y_train))
 grid.setGraph(1, 0, myPolynomialCurveFittingGraph(3, x_train, y_train))
 grid.setGraph(1, 1, myPolynomialCurveFittingGraph(9, x_train, y_train))
 view = otv.View(grid, figure_kw={"figsize": (8.0, 5.0)})
-pl.subplots_adjust(hspace=0.5, wspace=0.5)
+plt.subplots_adjust(hspace=0.5, wspace=0.5)
 
 # %%
 # When the polynomial degree is low, the fit is satisfying.
@@ -419,7 +419,8 @@ n_train = 100
 x_train, y_train = createDataset(n_train)
 grid.setGraph(0, 1, myPolynomialCurveFittingGraph(total_degree, x_train, y_train))
 view = otv.View(grid, figure_kw={"figsize": (8.0, 4.0)})
-pl.subplots_adjust(wspace=0.3)
+plt.subplots_adjust(wspace=0.3)
 
 # %%
 # We see that the polynomial oscillates with a dataset with size 11, but does not with the larger dataset: increasing the training dataset mitigates the oscillations.
+otv.View.ShowAll()

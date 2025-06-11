@@ -35,7 +35,7 @@ Gaussian Process Regression vs KrigingAlgorithm
 # %%
 import openturns as ot
 from openturns import viewer
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 import openturns.experimental as otexp
 
 ot.Log.Show(ot.Log.NONE)

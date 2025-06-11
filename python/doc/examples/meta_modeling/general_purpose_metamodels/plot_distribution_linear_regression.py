@@ -33,7 +33,7 @@ Distribution of estimators in linear regression
 
 import openturns as ot
 import openturns.viewer as otv
-import pylab as pl
+from matplotlib import pyplot as plt
 
 # %%
 # The simulation engine
@@ -177,7 +177,7 @@ view = otv.View(
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
-pl.subplots_adjust(bottom=0.25)
+plt.subplots_adjust(bottom=0.25)
 
 # %%
 # If we use a sample size equal to :math:`n = 6` with
@@ -198,7 +198,7 @@ view = otv.View(
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
-pl.subplots_adjust(bottom=0.25)
+plt.subplots_adjust(bottom=0.25)
 
 
 # %%
@@ -223,7 +223,7 @@ view = otv.View(
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
-pl.subplots_adjust(bottom=0.25)
+plt.subplots_adjust(bottom=0.25)
 
 
 # %%
@@ -245,14 +245,13 @@ view = otv.View(
     ),
     figure_kw={"figsize": (6.0, 3.5)},
 )
-pl.subplots_adjust(bottom=0.25)
+plt.subplots_adjust(bottom=0.25)
 
 
 # %%
 # If we use a sample size equal to :math:`n = 100` with
 # :math:`p = 3` parameters, we see that the distribution is almost normal.
 # We notice that the bias disappeared.
-
 
 # %%
 otv.View.ShowAll()

@@ -14,7 +14,7 @@ Use the FORM algorithm in case of several design points
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 # %%
 # We consider a standard bivariate Gaussian random vector :math:`X = (X_1, X_2)` :

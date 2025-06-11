@@ -1225,7 +1225,7 @@ Example of tolerated notations:
 ::
 
     import matplotlib
-    from matplotlib import pylab
+    from matplotlib import pyplot
     import numpy as np
 
 Incorrect examples:

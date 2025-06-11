@@ -16,7 +16,7 @@ Define a function with a field output: the viscous free fall example
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 from openturns.usecases import viscous_free_fall
 
 ot.Log.Show(ot.Log.NONE)

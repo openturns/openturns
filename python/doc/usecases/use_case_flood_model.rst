@@ -172,7 +172,6 @@ of the Manning-Strickler model.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel()
@@ -197,7 +196,6 @@ It makes use of a Quasi Monte Carlo sample of size :math:`n = 10000`.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel()
@@ -223,7 +221,6 @@ dyke height increases.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel()
@@ -246,7 +243,7 @@ the histogram to estimate the density of the output of the model.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
+    from matplotlib import pyplot as plt
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel()
@@ -268,7 +265,7 @@ the histogram to estimate the density of the output of the model.
 
     grid.setTitle("Scenario: dyke is low")
     _ = otv.View(grid, figure_kw={"figsize": (8.0, 2.5)})
-    pl.subplots_adjust(wspace=0.4, top=0.8)
+    plt.subplots_adjust(wspace=0.4, top=0.8)
 
 The next figure presents the distribution of the three outputs in the
 scenario where the height of the dyke is high.
@@ -277,7 +274,7 @@ scenario where the height of the dyke is high.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
+    from matplotlib import pyplot as plt
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel(distributionHdLow=False)
@@ -299,7 +296,7 @@ scenario where the height of the dyke is high.
 
     grid.setTitle("Default scenario: dyke is high")
     _ = otv.View(grid, figure_kw={"figsize": (8.0, 2.5)})
-    pl.subplots_adjust(wspace=0.4, top=0.8)
+    plt.subplots_adjust(wspace=0.4, top=0.8)
 
 The next figure presents the Sobol' indices of the three outputs in the
 scenario where the height of the dyke is low.
@@ -310,7 +307,7 @@ size equal to :math:`n = 2^{13}` and the Sobol' low discrepancy sequence.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
+    from matplotlib import pyplot as plt
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel()
@@ -341,7 +338,7 @@ size equal to :math:`n = 2^{13}` and the Sobol' low discrepancy sequence.
         figure_kw={"figsize": (7.0, 9.0)},
         legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
     )
-    pl.subplots_adjust(wspace=0.4, hspace=0.5, right=0.7)
+    plt.subplots_adjust(wspace=0.4, hspace=0.5, right=0.7)
 
 The next figure presents the Sobol' indices of the three outputs in the
 scenario where the height of the dyke is high.
@@ -350,7 +347,7 @@ scenario where the height of the dyke is high.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
+    from matplotlib import pyplot as plt
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel(distributionHdLow=False)
@@ -381,7 +378,7 @@ scenario where the height of the dyke is high.
         figure_kw={"figsize": (7.0, 9.0)},
         legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
     )
-    pl.subplots_adjust(wspace=0.4, hspace=0.5, right=0.7)
+    plt.subplots_adjust(wspace=0.4, hspace=0.5, right=0.7)
 
 The next figure presents the Sobol' indices of the height model output
 with four inputs :math:`(Q, K_s, Z_v, Z_m)` only.
@@ -391,7 +388,7 @@ This is a simpler model that leads to a simplified analysis.
 
     import openturns as ot
     import openturns.viewer as otv
-    import pylab as pl
+    from matplotlib import pyplot as plt
     from openturns.usecases import flood_model
 
     fm = flood_model.FloodModel()
@@ -418,7 +415,7 @@ This is a simpler model that leads to a simplified analysis.
         graph,
         figure_kw={"figsize": (6.0, 4.0)},
     )
-    pl.subplots_adjust(right=0.7)
+    plt.subplots_adjust(right=0.7)
 
 Analysis of the calibration problem
 -----------------------------------
