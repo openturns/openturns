@@ -49,7 +49,7 @@ Then just run installer and follow the instructions.
 
 A non-interactive installation is also possible with the command line::
 
-    openturns-1.23-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.25-py312-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 macOS
 -----
@@ -60,7 +60,7 @@ Debian/Ubuntu
 First create an entry in the apt configuration matching your distribution family and codename
 if available in one of the following commands::
 
-    echo deb https://openturns.github.io/apt/ubuntu oracular main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb https://openturns.github.io/apt/ubuntu plucky main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb https://openturns.github.io/apt/ubuntu noble main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
@@ -98,17 +98,15 @@ RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
-    curl https://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_40/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Fedora_41/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_42/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/15.6/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Mageia_9/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_40/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_41/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_42/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/15.6/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_9/repodata/repomd.xml.key
 
