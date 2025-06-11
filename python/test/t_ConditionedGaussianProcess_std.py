@@ -20,7 +20,9 @@ def build_gpr_result(inputSample, outputSample, covarianceModel, basis):
     """
     From data & covariance model, build a Gaussian Process Regression result
     """
-    fitter_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fitter_algo = otexp.GaussianProcessFitter(
+        inputSample, outputSample, covarianceModel, basis
+    )
     fitter_algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
     fitter_algo.run()
     fitter_result = fitter_algo.getResult()

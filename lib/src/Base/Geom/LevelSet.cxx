@@ -36,7 +36,7 @@ static const Factory<LevelSet> Factory_LevelSet;
 LevelSet::LevelSet()
   : DomainImplementation(1)
   , function_(ConstantFunction(1, Point({1.0})))
-  , operator_(LessOrEqual())
+, operator_(LessOrEqual())
 {
   // Nothing to do
 }

@@ -48,7 +48,7 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
 
-  try 
+  try
   {
     if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
       throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
@@ -58,9 +58,9 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
     if (nearestPointAlgorithm_.getStartingSample().getDimension() != dimension)
       throw InvalidArgumentException(HERE) << "Starting sample dimension (" << nearestPointAlgorithm_.getStartingSample()[0].getDimension() << ") does not match event dimension (" << dimension << ").";
   }
-  
+
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
-      throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
+    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
 }
 
 
@@ -139,14 +139,14 @@ void Analytical::run()
     /* set the starting sample of the algorithm in the standard space */
     nearestPointAlgorithm.setStartingSample(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingSample()));
   }
-  
+
   /* solve the nearest point problem */
   nearestPointAlgorithm.run();
-  
+
   /* set standard space design point in Result */
   Point standardSpaceDesignPoint(nearestPointAlgorithm.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
-  
+
   result_ = AnalyticalResult(standardSpaceDesignPoint, event_, true);
 
   /* store the optimization result into the analytical result */

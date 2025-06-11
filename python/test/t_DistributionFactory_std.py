@@ -77,8 +77,18 @@ for factory in factories:
     # Skip HistogramFactory because it is nonparametric, so the rebuilt distribution has a number of parameters different from the reference distribution
     # Skip some others because they are quite slow
     distName = factoryName.replace("Factory", "")
-    if distName in ["Rice", "Student", "Trapezoidal", "TruncatedNormal", "VonMises",
-                    "Histogram", "MeixnerDistribution", "Pareto", "Dirichlet", "InverseNormal"]:
+    if distName in [
+        "Rice",
+        "Student",
+        "Trapezoidal",
+        "TruncatedNormal",
+        "VonMises",
+        "Histogram",
+        "MeixnerDistribution",
+        "Pareto",
+        "Dirichlet",
+        "InverseNormal",
+    ]:
         continue
     eps = params.get(factoryName, 0.05)
 

@@ -38,7 +38,7 @@ public:
 
   /** Default constructor without parameters */
   CSVParser();
-  
+
   /** Parameters constructor */
   explicit CSVParser(const String & fileName);
 
@@ -48,7 +48,7 @@ public:
   void setAllowEmptyLines(const Bool allowEmptyLines);
   void setSkippedLinesNumber(const UnsignedInteger skippedLinesNumber);
   void setNumericalSeparator(const char decimalSeparator);
-  
+
   Sample load() const;
 
   /** String converter */
@@ -60,15 +60,18 @@ public:
   struct CSVParserFormat : std::numpunct<char>
   {
     explicit CSVParserFormat(const char_type decimalSeparator)
-    : decimalSeparator_(decimalSeparator) {}
+      : decimalSeparator_(decimalSeparator) {}
 
-    char_type do_decimal_point() const { return decimalSeparator_; }
+    char_type do_decimal_point() const
+    {
+      return decimalSeparator_;
+    }
     char_type decimalSeparator_;
   };
 
 private:
   String fileName_;
-  
+
   // options
   char fieldSeparator_ = ',';
   Bool allowComments_ = false;

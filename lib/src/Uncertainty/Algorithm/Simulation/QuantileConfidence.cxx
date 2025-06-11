@@ -204,8 +204,8 @@ class QuantileConfidenceEvaluation: public EvaluationImplementation
 {
 public:
   QuantileConfidenceEvaluation(const Scalar alpha,
-                  const UnsignedInteger rank,
-                  const Bool tail)
+                               const UnsignedInteger rank,
+                               const Bool tail)
     : EvaluationImplementation()
     , alpha_(alpha)
     , rank_(rank)

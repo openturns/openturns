@@ -110,7 +110,7 @@ private:
 
   /** Compute the shifted moments of the distribution */
   Point computeShiftedMomentContinuous(const UnsignedInteger n,
-				       const Point & shift) const override;
+                                       const Point & shift) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

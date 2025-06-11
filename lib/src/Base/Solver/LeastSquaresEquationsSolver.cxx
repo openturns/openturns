@@ -41,9 +41,9 @@ static const Factory<LeastSquaresEquationsSolver> Factory_LeastSquaresEquationsS
 
 /* Parameter constructor */
 LeastSquaresEquationsSolver::LeastSquaresEquationsSolver(const Scalar absoluteError,
-                                                         const Scalar relativeError,
-                                                         const Scalar residualError,
-                                                         const UnsignedInteger maximumCallsNumber)
+    const Scalar relativeError,
+    const Scalar residualError,
+    const UnsignedInteger maximumCallsNumber)
   : SolverImplementation(absoluteError, relativeError, residualError, maximumCallsNumber)
 {
   // LeastSquares problem
@@ -84,8 +84,8 @@ OptimizationAlgorithm LeastSquaresEquationsSolver::getOptimizationAlgorithm() co
    given a starting point x with a least square optimization method.
 */
 Point LeastSquaresEquationsSolver::solve(const Function & function,
-                                         const Point & startingPoint) const
-{ 
+    const Point & startingPoint) const
+{
   const Interval bounds;
   return solve(function, startingPoint, bounds);
 }
@@ -94,16 +94,16 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
    given a starting point x with a least square optimization method.
 */
 Point LeastSquaresEquationsSolver::solve(const Function & function,
-                                         const Point & startingPoint,
-                                         const Interval & bounds) const
+    const Point & startingPoint,
+    const Interval & bounds) const
 {
   LeastSquaresProblem lsqProblem(function);
   const UnsignedInteger boundsDimension = bounds.getDimension();
   if (boundsDimension == function.getInputDimension())
     lsqProblem.setBounds(bounds);
   if ((boundsDimension > 0) && (boundsDimension != function.getInputDimension()))
-      throw InvalidArgumentException(HERE) << "Bounds should be of dimension 0 or dimension = " << function.getInputDimension()
-                                           << ". Here bounds's dimension = " << boundsDimension;
+    throw InvalidArgumentException(HERE) << "Bounds should be of dimension 0 or dimension = " << function.getInputDimension()
+                                         << ". Here bounds's dimension = " << boundsDimension;
   OptimizationAlgorithm solver(solver_);
   solver.setStartingPoint(startingPoint);
   try
@@ -119,7 +119,7 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
   solver.run();
   callsNumber_ = solver.getResult().getCallsNumber();
   const Point min_value_obtained = solver.getResult().getOptimalValue();
-  if (  getResidualError() < min_value_obtained[0]) 
+  if (  getResidualError() < min_value_obtained[0])
     throw InternalException(HERE) << "Error: solver did not find a solution that satisfies the threshold, here obtained residual=" << min_value_obtained[0];
   const Point result = solver.getResult().getOptimalPoint();
   return result;

@@ -41,8 +41,8 @@ class OT_API LinearLeastSquaresCalibration
 {
   CLASSNAME
 
-    /** The NonLinearLeastSquaresCalibration class is closely related with the LinearLeastSquaresCalibration class */
-    friend class NonLinearLeastSquaresCalibration;
+  /** The NonLinearLeastSquaresCalibration class is closely related with the LinearLeastSquaresCalibration class */
+  friend class NonLinearLeastSquaresCalibration;
 
 public:
 
@@ -95,10 +95,10 @@ public:
 private:
   /* Compute the posterior and error distributions */
   static Distribution ComputePosteriorAndErrorDistribution(const Point & thetaStar,
-							   const Point & r,
-							   const SquareMatrix & gramInverse,
-							   const UnsignedInteger outputDimension,
-							   Distribution & error);
+      const Point & r,
+      const SquareMatrix & gramInverse,
+      const UnsignedInteger outputDimension,
+      Distribution & error);
 
   /* The model observations */
   Sample modelObservations_;

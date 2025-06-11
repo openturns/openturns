@@ -361,9 +361,7 @@ def get_real_from_line(line):
     if match:
         result = float(line[match.start() : match.end()])
     else:
-        raise EOFError(
-            f"No float found at the beginning of this line: [{line}]"
-        )
+        raise EOFError(f"No float found at the beginning of this line: [{line}]")
 
     return result
 
@@ -494,7 +492,9 @@ def get_line_col(
                 f.seek(lines_cache[0])
                 line_found = read_line(f, seek)
                 if debug:
-                    sys.stderr.write("line found: ->" + line_found.decode(encoding) + "<-\n")
+                    sys.stderr.write(
+                        "line found: ->" + line_found.decode(encoding) + "<-\n"
+                    )
         # skip line forward
         else:
             while skip_line >= 0:
@@ -507,9 +507,13 @@ def get_line_col(
     # get the good col
     if skip_col != 0:
         try:
-            line_found = line_found.split(col_sep.encode() if col_sep is not None else col_sep)[skip_col]
+            line_found = line_found.split(
+                col_sep.encode() if col_sep is not None else col_sep
+            )[skip_col]
         except Exception:
-            raise EOFError(f"Value not found on this line: [{line_found.decode(encoding)}]")
+            raise EOFError(
+                f"Value not found on this line: [{line_found.decode(encoding)}]"
+            )
 
     # get the value
     result = get_real_from_line(line_found)
@@ -662,12 +666,17 @@ def get_value(
                             line_pos + token_match.end(),
                         ]
                         if debug:
-                            sys.stderr.write("skip_token == 0, line: " + line.decode(encoding) + "\n")
+                            sys.stderr.write(
+                                "skip_token == 0, line: " + line.decode(encoding) + "\n"
+                            )
                         break
                     else:
                         # token wanted in revert order: we first cache them all
                         token_pos_cache.append(
-                            [line_pos + token_match.start(), line_pos + token_match.end()]
+                            [
+                                line_pos + token_match.start(),
+                                line_pos + token_match.end(),
+                            ]
                         )
 
                 if skip_token >= 0 and token_pos is not None:
@@ -689,7 +698,9 @@ def get_value(
                 f.seek(token_pos[1])
                 line = f.readline()
                 if debug:
-                    sys.stderr.write("first token, line_found: " + line.decode(encoding) + "\n")
+                    sys.stderr.write(
+                        "first token, line_found: " + line.decode(encoding) + "\n"
+                    )
                 result = get_real_from_line(line)
             else:
                 # get the real by skipping from the token

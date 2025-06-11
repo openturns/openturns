@@ -274,5 +274,5 @@ for i, distribution in enumerate(
 # segfault non-regression
 data = ot.Sample.ImportFromCSVFile("t_KernelSmoothing_segfault.csv", ",")
 factory = ot.KernelSmoothing()
-bandwidth = [4.0 * 4.3461e+09]
+bandwidth = [4.0 * 4.3461e09]
 distribution = factory.build(data, bandwidth)

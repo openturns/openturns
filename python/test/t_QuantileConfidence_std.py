@@ -16,7 +16,21 @@ assert algo.getBeta() == beta
 
 # lower rank
 print("lower rank ...")
-k_ref = {59: 0, 93: 1, 124: 2, 153: 3, 181: 4, 208: 5, 311: 9, 410: 13, 506: 17, 717: 26, 809: 30, 900: 34, 1036: 40}
+k_ref = {
+    59: 0,
+    93: 1,
+    124: 2,
+    153: 3,
+    181: 4,
+    208: 5,
+    311: 9,
+    410: 13,
+    506: 17,
+    717: 26,
+    809: 30,
+    900: 34,
+    1036: 40,
+}
 for i in range(991, 1013):
     k_ref[i] = 38
 k_ref[1013] = 39
@@ -30,8 +44,23 @@ for n in k_ref.keys():
 # upper rank
 print("upper rank ...")
 algo.setAlpha(0.95)
-k_ref = {59: 58, 93: 91, 124: 121, 153: 149, 181: 176, 208: 202, 311: 301,
-         410: 396, 506: 488, 601: 579, 717: 690, 809: 778, 900: 865, 1013: 973, 1036: 995}
+k_ref = {
+    59: 58,
+    93: 91,
+    124: 121,
+    153: 149,
+    181: 176,
+    208: 202,
+    311: 301,
+    410: 396,
+    506: 488,
+    601: 579,
+    717: 690,
+    809: 778,
+    900: 865,
+    1013: 973,
+    1036: 995,
+}
 for n in k_ref.keys():
     u = algo.computeUnilateralRank(n)
     p = ot.Binomial(n, alpha).computeCDF(u)
@@ -43,10 +72,27 @@ for n in k_ref.keys():
 print("bilateral ranks ...")
 algo.setAlpha(0.05)
 algo = otexp.QuantileConfidence(alpha, beta)
-k_ref = {59: (0, 9), 60: (0, 8), 70: (0, 8), 80: (0, 8), 90: (0, 8), 100: (1, 10),
-         150: (1, 12), 200: (2, 15), 250: (3, 18), 300: (4, 21), 400: (11, 28),
-         500: (12, 33), 600: (19, 40), 700: (25, 50), 800: (22, 50), 900: (34, 69), 1000: (36, 63),
-         10000: (437, 536), 100000: (4879, 5160)}
+k_ref = {
+    59: (0, 9),
+    60: (0, 8),
+    70: (0, 8),
+    80: (0, 8),
+    90: (0, 8),
+    100: (1, 10),
+    150: (1, 12),
+    200: (2, 15),
+    250: (3, 18),
+    300: (4, 21),
+    400: (11, 28),
+    500: (12, 33),
+    600: (19, 40),
+    700: (25, 50),
+    800: (22, 50),
+    900: (34, 69),
+    1000: (36, 63),
+    10000: (437, 536),
+    100000: (4879, 5160),
+}
 for n in k_ref.keys():
     k1, k2 = algo.computeBilateralRank(n)
     binomial = ot.Binomial(n, alpha)
@@ -178,7 +224,9 @@ for alpha in [0.01, 0.05, 0.10, 0.25, 0.75, 0.90, 0.95, 0.99]:
             n = algo.computeUnilateralMinimumSampleSize(r)
             p = ot.Binomial(n, alpha).computeComplementaryCDF(r)
             pPrev = ot.Binomial(n - 1, alpha).computeComplementaryCDF(r)
-            print(f"alpha={alpha:.3f} beta={beta:.3f} r={r} n={n} p={p:.6f} pPrev={pPrev:.6f}")
+            print(
+                f"alpha={alpha:.3f} beta={beta:.3f} r={r} n={n} p={p:.6f} pPrev={pPrev:.6f}"
+            )
             assert p >= beta
             assert pPrev < beta
             if r == 0 and (alpha, beta) in ref_a:
@@ -189,7 +237,9 @@ for alpha in [0.01, 0.05, 0.10, 0.25, 0.75, 0.90, 0.95, 0.99]:
             n = algo.computeUnilateralMinimumSampleSize(r, True)
             p = ot.Binomial(n, alpha).computeCDF(n - 1 - r)
             pPrev = ot.Binomial(n - 1, alpha).computeCDF((n - 1) - 1 - r)
-            print(f"alpha={alpha:.3f} beta={beta:.3f} r={r} n={n} p={p:.6f} pPrev={pPrev:.6f}")
+            print(
+                f"alpha={alpha:.3f} beta={beta:.3f} r={r} n={n} p={p:.6f} pPrev={pPrev:.6f}"
+            )
             assert p >= beta
             assert pPrev < beta
             if r == 0 and (alpha, beta) in ref_b:
@@ -197,16 +247,35 @@ for alpha in [0.01, 0.05, 0.10, 0.25, 0.75, 0.90, 0.95, 0.99]:
 
         # bilateral
         n = algo.computeBilateralMinimumSampleSize()
-        p = 1 - alpha ** n - (1 - alpha) ** n
+        p = 1 - alpha**n - (1 - alpha) ** n
         pPrev = 1 - alpha ** (n - 1) - (1 - alpha) ** (n - 1)
-        print(f"alpha={alpha:.3f} beta={beta:.3f} r={r} n={n} p={p:.6f} pPrev={pPrev:.6f}")
+        print(
+            f"alpha={alpha:.3f} beta={beta:.3f} r={r} n={n} p={p:.6f} pPrev={pPrev:.6f}"
+        )
         assert p >= beta
         assert pPrev < beta
         if (alpha, beta) in ref_c:
             assert n == ref_c[(alpha, beta)]
 
 # table J13 from Meeker2017
-for alpha in [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 0.96, 0.97, 0.98, 0.99, 0.995, 0.999]:
+for alpha in [
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    0.96,
+    0.97,
+    0.98,
+    0.99,
+    0.995,
+    0.999,
+]:
     print(f"{alpha:.3f} | ", end=" ")
     for beta in [0.5, 0.75, 0.9, 0.95, 0.98, 0.99, 0.999]:
         algo = otexp.QuantileConfidence(alpha, beta)
@@ -361,12 +430,12 @@ algo = otexp.QuantileConfidence(alpha, beta)
 dist = ot.Gumbel()
 qalpha = dist.computeQuantile(alpha)
 for i in range(3, 7):
-    n = 10 ** i
+    n = 10**i
     k1, k2 = algo.computeAsymptoticBilateralRank(n)
     binom = ot.Binomial(n, alpha)
     p = binom.computeProbability(ot.Interval(k1, k2))
     print(f"n={n} ci=[{k1}, {k2}] p={p}")
-    atol = 2.0 * n ** -0.5
+    atol = 2.0 * n**-0.5
     ott.assert_almost_equal(p, beta, 0.0, atol)
     if n <= 1e4:
         sample = dist.getSample(n)

@@ -34,10 +34,10 @@ Scalar StudentCDF(const Scalar nu,
                   const Bool tail = false);
 
 Scalar Student2DCDF(const Scalar nu,
-                  const Scalar x0,
-                  const Scalar x1,
-                  const Scalar rho,
-                  const Bool tail = false);
+                    const Scalar x0,
+                    const Scalar x1,
+                    const Scalar rho,
+                    const Bool tail = false);
 
 Scalar StudentQuantile(const Scalar nu,
                        const Scalar p,

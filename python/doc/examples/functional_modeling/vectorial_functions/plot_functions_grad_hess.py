@@ -44,7 +44,7 @@ import openturns as ot
 #                & = (2x_1, 4x_2, 1, 12x_2^3)
 #
 # To get the gradient as a function, we first get the analytical expressions of the derivatives:
-f = ot.SymbolicFunction(['x1', 'x2'], ['x1^2 + 2 * x2^2', 'x1 + 3 * x2^4'])
+f = ot.SymbolicFunction(["x1", "x2"], ["x1^2 + 2 * x2^2", "x1 + 3 * x2^4"])
 formula_f1_deriv_x1 = f.getGradient().getImplementation().getFormula(0, 0)
 formula_f1_deriv_x2 = f.getGradient().getImplementation().getFormula(1, 0)
 formula_f2_deriv_x1 = f.getGradient().getImplementation().getFormula(0, 1)
@@ -52,8 +52,15 @@ formula_f2_deriv_x2 = f.getGradient().getImplementation().getFormula(1, 1)
 
 # %%
 # Then we create a new :class:`~openturns.SymbolicFunction` from these analytical expressions:
-gradient_AsFunction = ot.SymbolicFunction(['x1', 'x2'], [formula_f1_deriv_x1, formula_f1_deriv_x2,
-                                                         formula_f2_deriv_x1, formula_f2_deriv_x2])
+gradient_AsFunction = ot.SymbolicFunction(
+    ["x1", "x2"],
+    [
+        formula_f1_deriv_x1,
+        formula_f1_deriv_x2,
+        formula_f2_deriv_x1,
+        formula_f2_deriv_x2,
+    ],
+)
 print(gradient_AsFunction)
 
 # %%
@@ -80,9 +87,17 @@ formula_f2_hessian_x2x2 = f.getHessian().getImplementation().getFormula(1, 1, 1)
 
 # %%
 # Then we create a new :class:`~openturns.SymbolicFunction` from these analytical expressions:
-hessian_AsFunction = ot.SymbolicFunction(['x1', 'x2'], [formula_f1_hessian_x1x1, formula_f1_hessian_x1x2,
-                                                        formula_f1_hessian_x2x2, formula_f2_hessian_x1x1,
-                                                        formula_f2_hessian_x1x2, formula_f2_hessian_x2x2])
+hessian_AsFunction = ot.SymbolicFunction(
+    ["x1", "x2"],
+    [
+        formula_f1_hessian_x1x1,
+        formula_f1_hessian_x1x2,
+        formula_f1_hessian_x2x2,
+        formula_f2_hessian_x1x1,
+        formula_f2_hessian_x1x2,
+        formula_f2_hessian_x2x2,
+    ],
+)
 print(hessian_AsFunction)
 
 # %%
@@ -118,7 +133,14 @@ def hessian_AsFunction_Python(inPoint):
     f2_hessian_x1x1 = f.hessian(inPoint)[0, 0, 1]
     f2_hessian_x1x2 = f.hessian(inPoint)[1, 0, 1]
     f2_hessian_x2x2 = f.hessian(inPoint)[1, 1, 1]
-    return [f1_hessian_x1x1, f1_hessian_x1x2, f1_hessian_x2x2, f2_hessian_x1x1, f2_hessian_x1x2, f2_hessian_x2x2]
+    return [
+        f1_hessian_x1x1,
+        f1_hessian_x1x2,
+        f1_hessian_x2x2,
+        f2_hessian_x1x1,
+        f2_hessian_x1x2,
+        f2_hessian_x2x2,
+    ]
 
 
 hessian_AsFunction_OT = ot.PythonFunction(2, 6, hessian_AsFunction_Python)

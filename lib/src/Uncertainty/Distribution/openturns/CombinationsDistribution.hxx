@@ -44,7 +44,7 @@ public:
 
   /** Parameters constructor */
   CombinationsDistribution(const UnsignedInteger k,
-                            const UnsignedInteger n);
+                           const UnsignedInteger n);
 
 
   /** Comparison operator */

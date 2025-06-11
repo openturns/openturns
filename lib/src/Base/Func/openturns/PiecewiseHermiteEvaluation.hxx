@@ -49,7 +49,7 @@ public:
   PiecewiseHermiteEvaluation(const Point & locations,
                              const Sample & values,
                              const Sample & derivatives);
-  
+
   /** Virtual constructor */
   PiecewiseHermiteEvaluation * clone() const override;
 
@@ -68,11 +68,11 @@ public:
   /** Locations accessor */
   Point getLocations() const;
   void setLocations(const Point & locations);
-  
+
   /** enableExtrapolation accessor */
   Bool getEnableExtrapolation() const;
   void setEnableExtrapolation(const Bool & enableExtrapolation);
-  
+
   /** Values accessor */
   Sample getValues() const;
   void setValues(const Sample & values);
@@ -98,14 +98,14 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-    
+
 protected:
 
 private:
 
   /** Enable extrapolation */
   Bool enableExtrapolation_ = false;
-  
+
   // The locations
   Point locations_;
 

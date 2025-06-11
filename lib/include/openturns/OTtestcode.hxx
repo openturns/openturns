@@ -273,7 +273,7 @@ inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rto
   if (std::isinf(a) && std::isinf(b))
   {
     if (a * b < 0.0)
-      throw TestFailed(OSS() << "Value a: " << a << " and b: " << b << " are different " << errMsg << " prod="<< (a*b));
+      throw TestFailed(OSS() << "Value a: " << a << " and b: " << b << " are different " << errMsg << " prod=" << (a * b));
     else
       return;
   }
@@ -1283,7 +1283,7 @@ private:
     LOGTRACE(OSS() << "sequential conditional quantile=" << seqQ.__str__());
     if (seqQ.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq quantile dim (" << seqCDF.getDimension() << ") for " << distribution_);
-    
+
     // check consistency with computeSequentialConditionalQuantile
     for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
     {
@@ -1300,15 +1300,15 @@ private:
       Point y(i);
       std::copy(seqQ.begin(), seqQ.begin() + i, y.begin());
       for (UnsignedInteger j = 1; j < 10; ++j)
-	{
-	  const Scalar pj = 0.1 * j;
-	  const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
-	  const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
-	  LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
-	  assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
-	}
+      {
+        const Scalar pj = 0.1 * j;
+        const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
+        const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
+        LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
+        assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
+      }
     }
-    
+
   }
 
   void checkTransformation() const

@@ -109,11 +109,11 @@ void GaussLegendre::generateNodesAndWeights()
     marginalNodes[i] = Point(integrationNodesNumber);
     marginalWeights[i] = Point(integrationNodesNumber);
     for (UnsignedInteger j = 0; j < integrationNodesNumber; ++j)
-      {
-	fastgl::QuadPair p(fastgl::GLPair(integrationNodesNumber, integrationNodesNumber - j));
-	marginalNodes[i][j] = 0.5 * (1.0 + p.x());
-	marginalWeights[i][j] = 0.5 * p.weight;
-      } // For j
+    {
+      fastgl::QuadPair p(fastgl::GLPair(integrationNodesNumber, integrationNodesNumber - j));
+      marginalNodes[i][j] = 0.5 * (1.0 + p.x());
+      marginalWeights[i][j] = 0.5 * p.weight;
+    } // For j
   } // For i
   // Now, generate the nD rule over [0, 1]^n
   IndicesCollection allTuples(Tuples(discretization_).generate());

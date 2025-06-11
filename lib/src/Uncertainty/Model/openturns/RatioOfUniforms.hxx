@@ -48,8 +48,8 @@ public:
   explicit RatioOfUniforms(const Distribution & distribution);
 
   RatioOfUniforms(const Function & logUnscaledPDF,
-		  const Interval & range,
-		  const Bool isScaled = false);
+                  const Interval & range,
+                  const Bool isScaled = false);
 
   /** Virtual constructor */
   RatioOfUniforms * clone() const override;
@@ -60,8 +60,8 @@ public:
 
   /** LogUnscaledPDF and range accessor */
   void setLogUnscaledPDFAndRange(const Function & logUnscaledPDF,
-				 const Interval & range,
-				 const Bool isScaled);
+                                 const Interval & range,
+                                 const Bool isScaled);
   Function getLogUnscaledPDF() const;
   Interval getRange() const;
 
@@ -104,7 +104,7 @@ public:
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
   Sample getSampleWithTryNumber(const UnsignedInteger size,
-				UnsignedInteger & tryNumberOut) const;
+                                UnsignedInteger & tryNumberOut) const;
 
 protected:
 

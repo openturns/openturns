@@ -64,9 +64,9 @@ class IteratedQuadraturePartialFunctionWrapper : public FunctionImplementation
 public:
   /* Default constructor */
   IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
-                          const Function & function,
-                          const IteratedQuadrature::FunctionCollection & lowerBounds,
-                          const IteratedQuadrature::FunctionCollection & upperBounds)
+      const Function & function,
+      const IteratedQuadrature::FunctionCollection & lowerBounds,
+      const IteratedQuadrature::FunctionCollection & upperBounds)
     : FunctionImplementation()
     , quadrature_(quadrature)
     , function_(function)

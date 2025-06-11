@@ -90,9 +90,18 @@ scaleOptimizationBounds = ot.Interval(
 # %%
 # We can now define the scaled version of with GP fitter model.
 # First, we need to initialize the covariance model's parameters in accordance with the optimization bounds.
-covarianceModelParameters = 0.5 * (scaleOptimizationBounds.getUpperBound() - scaleOptimizationBounds.getLowerBound()) + scaleOptimizationBounds.getLowerBound()
+covarianceModelParameters = (
+    0.5
+    * (
+        scaleOptimizationBounds.getUpperBound()
+        - scaleOptimizationBounds.getLowerBound()
+    )
+    + scaleOptimizationBounds.getLowerBound()
+)
 covarianceModel.setParameter(covarianceModelParameters)
-fitter_algo = otexp.GaussianProcessFitter(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
+fitter_algo = otexp.GaussianProcessFitter(
+    inputTrainingSet, outputTrainingSet, covarianceModel, basis
+)
 fitter_algo.setOptimizationBounds(scaleOptimizationBounds)
 fitter_algo.setOptimizeParameters(True)
 

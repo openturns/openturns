@@ -74,7 +74,7 @@ public:
 
   /** Nodes and weights of the polynomial of degree n as the eigenvalues of the associated matrix, to build quadrature rules */
   virtual Point getNodesAndWeights(const UnsignedInteger n,
-				   Point & weightsOut) const;
+                                   Point & weightsOut) const;
 
   /** Measure accessor */
   Distribution getMeasure() const;

@@ -70,15 +70,23 @@ normal = ot.Normal([0.0] * 3, R)
 distribution = otexp.PointConditionalDistribution(normal, [1], [2.0])
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
-simplified_ref = ot.Normal([1.8] * 2, [0.43589] * 2, ot.CorrelationMatrix([[1.0, 0.473684], [0.473684, 1.0]]))
+simplified_ref = ot.Normal(
+    [1.8] * 2, [0.43589] * 2, ot.CorrelationMatrix([[1.0, 0.473684], [0.473684, 1.0]])
+)
 ott.assert_almost_equal(simplified, simplified_ref)
 
 # ensure services are ok
 mean_ref = simplified_ref.getMean()
 ott.assert_almost_equal(distribution.getMean(), mean_ref)
-ott.assert_almost_equal(distribution.getStandardDeviation(), simplified_ref.getStandardDeviation())
-ott.assert_almost_equal(distribution.computePDF(mean_ref), simplified_ref.computePDF(mean_ref))
-ott.assert_almost_equal(distribution.computeCDF(mean_ref), simplified_ref.computeCDF(mean_ref))
+ott.assert_almost_equal(
+    distribution.getStandardDeviation(), simplified_ref.getStandardDeviation()
+)
+ott.assert_almost_equal(
+    distribution.computePDF(mean_ref), simplified_ref.computePDF(mean_ref)
+)
+ott.assert_almost_equal(
+    distribution.computeCDF(mean_ref), simplified_ref.computeCDF(mean_ref)
+)
 
 # special case for Student
 student = ot.Student(2.5, [0.4] * 3, [1.2] * 3, R)
@@ -125,14 +133,18 @@ assert simplified.getName() == "Mixture", "wrong type"
 # special case for BlockIndependentDistribution
 blockIndep = ot.BlockIndependentDistribution([normal, student, mixture])
 # test a conditioning which remove the first block, modify the second block and let the last block unchanged
-distribution = otexp.PointConditionalDistribution(blockIndep, [1, 3, 0, 2], [0.5, 0.5, 0.5, 0.5])
+distribution = otexp.PointConditionalDistribution(
+    blockIndep, [1, 3, 0, 2], [0.5, 0.5, 0.5, 0.5]
+)
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "BlockIndependentDistribution", "wrong type"
 ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.0248766)
 # test a conditioning which remove all but the last block
 # As the last block can be simplified, it is its actual simplification which is used
-distribution = otexp.PointConditionalDistribution(blockIndep, [0, 1, 2, 3, 4, 5, 6], [0.5] * 7)
+distribution = otexp.PointConditionalDistribution(
+    blockIndep, [0, 1, 2, 3, 4, 5, 6], [0.5] * 7
+)
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "Mixture", "wrong type"
@@ -152,4 +164,6 @@ ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 9.01202
 # negative bound sampling case
 ot.ResourceMap.SetAsBool("PointConditionalDistribution-UseSimplifiedVersion", False)
 distribution = otexp.PointConditionalDistribution(copula - 1.0, [1], [-0.8])
-ott.assert_almost_equal(distribution.getSample(10000).computeMean(), [-0.75] * 2, 1e-2, 1e-2)
+ott.assert_almost_equal(
+    distribution.getSample(10000).computeMean(), [-0.75] * 2, 1e-2, 1e-2
+)

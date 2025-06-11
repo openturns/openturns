@@ -49,7 +49,7 @@ public:
   /** Operator () */
   using FieldToPointFunctionImplementation::operator();
   Point operator() (const Sample & inF) const override;
-  
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

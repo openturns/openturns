@@ -34,8 +34,8 @@ VertexFieldToPointFunction::VertexFieldToPointFunction()
 
 /* Parameters constructor */
 VertexFieldToPointFunction::VertexFieldToPointFunction(const Mesh & inputMesh,
-                                                       const UnsignedInteger dimension,
-                                                       const Indices & indices)
+    const UnsignedInteger dimension,
+    const Indices & indices)
   : FieldToPointFunctionImplementation(inputMesh, dimension, dimension)
   , indices_(indices)
 {

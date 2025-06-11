@@ -102,7 +102,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  if (x <= locations_[iLeft]) 
+  if (x <= locations_[iLeft])
   {
     if (enableExtrapolation_)
     {
@@ -110,7 +110,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
+      throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
     }
   }
 
@@ -123,7 +123,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
+      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
     }
   }
 
@@ -164,7 +164,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
         throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[0];
       }
     }
-    
+
     if (x >= locations_[iRight])
     {
       if (enableExtrapolation_)
@@ -177,7 +177,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
         throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
       }
     }
-    
+
     iLeft = PiecewiseLinearEvaluation::FindSegmentIndex(locations_, x, iLeft, isRegular_);
 
     const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
@@ -197,8 +197,8 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   if (values_.getSize() == 1) return Point(values_.getDimension());;
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-  
-  if (x <= locations_[iLeft]) 
+
+  if (x <= locations_[iLeft])
   {
     if (enableExtrapolation_)
     {
@@ -206,11 +206,11 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
+      throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
     }
   }
-  
-  
+
+
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight])
   {
@@ -297,7 +297,7 @@ void PiecewiseHermiteEvaluation::setEnableExtrapolation(const Bool & enableExtra
 {
   enableExtrapolation_ = enableExtrapolation;
 }
- 
+
 
 /* Derivatives accessor */
 Sample PiecewiseHermiteEvaluation::getDerivatives() const

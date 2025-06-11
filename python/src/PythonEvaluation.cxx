@@ -61,8 +61,8 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   if (PyObject_HasAttrString(pyObj_, "getInputDescription"))
   {
     ScopedPyObjectPointer descIn(PyObject_CallMethod(pyObj_,
-                                const_cast<char *>("getInputDescription"),
-                                const_cast<char *>("()")));
+                                 const_cast<char *>("getInputDescription"),
+                                 const_cast<char *>("()")));
     if (descIn.isNull())
       handleException();
     setInputDescription(checkAndConvert< _PySequence_, Description >(descIn.get()));

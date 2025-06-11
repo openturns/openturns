@@ -759,60 +759,60 @@ Scalar DistributionImplementation::computeCDFUnimodal(const Point & point, const
   UnsignedInteger iteration = 0;
   Indices locationIndices(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const SignedInteger step = (point[i] - location[i]) / scale[i];
-      if (step > 0)
-	locationIndices[i] = step;
-    }
+  {
+    const SignedInteger step = (point[i] - location[i]) / scale[i];
+    if (step > 0)
+      locationIndices[i] = step;
+  }
   Collection<Indices> todo(1, locationIndices);
   std::map<Indices, UnsignedInteger> done;
   const UnsignedInteger maximumIteration = SpecFunc::IPow(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultCDFIteration"), dimension_);
   Scalar delta = 0.0;
   std::map<Indices, UnsignedInteger>::iterator it;
   while ((iteration < maximumIteration) && (todo.getSize() > 0))
+  {
+    Indices shift(todo[0]);
+    todo.erase(todo.begin());
+    it = done.find(shift);
+    // Check if we have to compute the cell
+    if (it == done.end())
     {
-      Indices shift(todo[0]);
-      todo.erase(todo.begin());
-      it = done.find(shift);
-      // Check if we have to compute the cell
-      if (it == done.end())
-	{
-	  done[shift] = 1;
-	  Point b(point);
-	  Point a(point);
-	  for (UnsignedInteger i = 0; i < dimension_; ++i)
-	    {
-	      b[i] -= shift[i] * scale[i];
-	      a[i] = b[i] - scale[i];
-	    } // i
-	  const Interval box(a, b);
-	  delta = algo.integrate(pdf, box)[0];
-	  cdf += delta;
-	  // If the contribution is large enough, add the neighborhood of
-	  // the cell to the list
-	  if (delta > epsilon)
-	    {
-	      for (UnsignedInteger index = 0; index < dimension_; ++index)
-		{
-		  const UnsignedInteger shiftIndex = shift[index];
-		  // Try to move backward
-		  if (shiftIndex > 0)
-		    {
-		      shift[index] -= 1;
-		      it = done.find(shift);
-		      if (it == done.end()) todo.add(shift);
-		      shift[index] = shiftIndex;
-		    }
-		  // Move forward
-		  shift[index] += 1;
-		  it = done.find(shift);
-		  if (it == done.end()) todo.add(shift);
-		  shift[index] = shiftIndex;
-		} // index
-	    } // delta > eps
-	  ++iteration;
-	} // if (it == done.end())
-    } // (iteration < maximumIteration) && (todo.getSize() > 0)
+      done[shift] = 1;
+      Point b(point);
+      Point a(point);
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
+      {
+        b[i] -= shift[i] * scale[i];
+        a[i] = b[i] - scale[i];
+      } // i
+      const Interval box(a, b);
+      delta = algo.integrate(pdf, box)[0];
+      cdf += delta;
+      // If the contribution is large enough, add the neighborhood of
+      // the cell to the list
+      if (delta > epsilon)
+      {
+        for (UnsignedInteger index = 0; index < dimension_; ++index)
+        {
+          const UnsignedInteger shiftIndex = shift[index];
+          // Try to move backward
+          if (shiftIndex > 0)
+          {
+            shift[index] -= 1;
+            it = done.find(shift);
+            if (it == done.end()) todo.add(shift);
+            shift[index] = shiftIndex;
+          }
+          // Move forward
+          shift[index] += 1;
+          it = done.find(shift);
+          if (it == done.end()) todo.add(shift);
+          shift[index] = shiftIndex;
+        } // index
+      } // delta > eps
+      ++iteration;
+    } // if (it == done.end())
+  } // (iteration < maximumIteration) && (todo.getSize() > 0)
   return cdf;
 }
 
@@ -1504,11 +1504,11 @@ Scalar DistributionImplementation::computeEntropy() const
       // One way to fix it is to add smooth marginal distributions, here we use standard
       // normal distributions
       if (isCopula())
-	{
-	  const JointDistribution joint(Collection<Distribution>(dimension_, Normal()), *this);
-	  const EntropyKernel entropyKernel(&joint);
-	  return IteratedQuadrature().integrate(entropyKernel, joint.getRange())[0] - dimension_ * Normal().computeEntropy();
-	}
+      {
+        const JointDistribution joint(Collection<Distribution>(dimension_, Normal()), *this);
+        const EntropyKernel entropyKernel(&joint);
+        return IteratedQuadrature().integrate(entropyKernel, joint.getRange())[0] - dimension_ * Normal().computeEntropy();
+      }
       const EntropyKernel entropyKernel(this);
       return IteratedQuadrature().integrate(entropyKernel, range_)[0];
     } // Low dimension
@@ -3075,12 +3075,12 @@ Point DistributionImplementation::getMoment(const UnsignedInteger n) const
   if (n == 0) return Point(dimension_, 1.0);
   if ((n == 1) && isAlreadyComputedMean_) return mean_;
   if ((n == 2) && isAlreadyComputedMean_ && isAlreadyComputedCovariance_)
-    {
-      Point moments2(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	moments2[i] = covariance_(i, i) + mean_[i] * mean_[i];
-      return moments2;
-    }
+  {
+    Point moments2(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      moments2[i] = covariance_(i, i) + mean_[i] * mean_[i];
+    return moments2;
+  }
   return getShiftedMoment(n, Point(dimension_, 0.0));
 }
 
@@ -3090,12 +3090,12 @@ Point DistributionImplementation::getCentralMoment(const UnsignedInteger n) cons
   if (n == 0) return Point(dimension_, 1.0);
   if (n == 1) return Point(dimension_, 0.0);
   if ((n == 2) && isAlreadyComputedCovariance_)
-    {
-      Point variance(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	variance[i] = covariance_(i, i);
-      return variance;
-    }
+  {
+    Point variance(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      variance[i] = covariance_(i, i);
+    return variance;
+  }
   return getShiftedMoment(n, getMean());
 }
 
@@ -4898,7 +4898,7 @@ private:
 };
 
 Function DistributionImplementation::getTailDependenceFunction(const Distribution & distribution,
-                                                                const TailDependenceType tailDependenceType) const
+    const TailDependenceType tailDependenceType) const
 {
   String linkFormula;
   switch (tailDependenceType)
@@ -4992,7 +4992,7 @@ Graph DistributionImplementation::drawTailDependenceFunction(const TailDependenc
       break;
     }
     case LowerTail:
-     {
+    {
       legend = "$\\chi_L(u)$";
       title = "Lower tail dependence function";
       break;

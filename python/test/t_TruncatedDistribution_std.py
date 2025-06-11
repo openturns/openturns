@@ -213,7 +213,7 @@ candidates = [
     ot.JointDistribution([ot.Normal()] * 2),
     ot.BlockIndependentDistribution([ot.Normal(2), ot.Normal(2)]),
     ot.BlockIndependentCopula([ot.NormalCopula(2), ot.NormalCopula(2)]),
-    ot.Dirichlet([0.7, 0.3])
+    ot.Dirichlet([0.7, 0.3]),
 ]
 intervals = [
     ot.Interval(-1.0, 4.0),

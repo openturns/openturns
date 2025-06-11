@@ -1604,9 +1604,9 @@ Point DistFunc::pStudent(const Scalar nu,
 
 Scalar DistFunc::pStudent2D(const Scalar nu,
                             const Scalar x1,
-                           const Scalar x2,
-                           const Scalar rho,
-                           const Bool tail)
+                            const Scalar x2,
+                            const Scalar rho,
+                            const Bool tail)
 {
   return StudentFunctions::Student2DCDF(nu, x1, x2, rho, tail);
 }

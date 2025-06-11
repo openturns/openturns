@@ -224,9 +224,9 @@ Point SolverImplementation::solve(const Function &,
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &)";
 }
 
-  Point SolverImplementation::solve(const Function &,
-                                    const Point &,
-                                    const Interval &) const
+Point SolverImplementation::solve(const Function &,
+                                  const Point &,
+                                  const Interval &) const
 {
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &, const Interval&)";
 }

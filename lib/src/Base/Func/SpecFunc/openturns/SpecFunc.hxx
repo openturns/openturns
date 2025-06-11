@@ -237,7 +237,7 @@ OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
 
 // log-binomial coefficient C(n, k)
 OT_API Scalar LogBinomialCoefficient(const UnsignedInteger n,
-    const UnsignedInteger k);
+                                     const UnsignedInteger k);
 
 // Accurate summation
 OT_API Scalar AccurateSum(const Point & v);

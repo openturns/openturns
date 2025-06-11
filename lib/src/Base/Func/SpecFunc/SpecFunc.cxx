@@ -1293,12 +1293,12 @@ UnsignedInteger SpecFunc::IPow(const UnsignedInteger m, const UnsignedInteger n)
   UnsignedInteger exponent = n;
   Scalar factor = m;
   while (exponent)
-    {
-      if (exponent & 1)
-	res *= factor;
-      exponent >>= 1;
-      factor *= factor;
-    }
+  {
+    if (exponent & 1)
+      res *= factor;
+    exponent >>= 1;
+    factor *= factor;
+  }
   return res;
 }
 
@@ -1354,7 +1354,7 @@ UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
 }
 
 Scalar SpecFunc::LogBinomialCoefficient(const UnsignedInteger n,
-    const UnsignedInteger k)
+                                        const UnsignedInteger k)
 {
   if (k > n) return LowestScalar; // by convention
   if ((k == n) || (k == 0)) return 0.0;

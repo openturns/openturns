@@ -196,7 +196,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   Sample data1(0, 1);
   Sample data2(0, 1);
   Scalar vPrev = -SpecFunc::MaxScalar;
-  for (UnsignedInteger i =0; i < pointNumber; ++ i)
+  for (UnsignedInteger i = 0; i < pointNumber; ++ i)
   {
     const Scalar v = sortedSample(i, 0);
     if (v > vPrev)
@@ -340,19 +340,19 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
     throw InvalidDimensionException(HERE) << "Distribution dimension does not match the sample dimension";
   GridLayout grid(dimension, dimension);
   const Description description(sample.getDescription());
-  
+
   const Scalar axesMargin = ResourceMap::GetAsScalar("VisualTest-DrawPairsMarginals-AxesMargin");
-  
+
   const Point sampleMin(sample.getMin());
   const Point sampleMax(sample.getMax());
   const Point sampleRange(sampleMax - sampleMin);
-  const Point axesMin(sampleMin - axesMargin * sampleRange);  
+  const Point axesMin(sampleMin - axesMargin * sampleRange);
   const Point axesMax(sampleMax + axesMargin * sampleRange);
 
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     Graph pdfGraph(distribution.getMarginal(i).drawPDF(axesMin[i], axesMax[i]));
-    
+
     pdfGraph.setLegends(Description(1));
     pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
     pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
@@ -366,13 +366,13 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
       const Point minRange({axesMin[j], axesMin[i]});
       const Point maxRange({axesMax[j], axesMax[i]});
       const Interval marginInterval(Interval(minRange, maxRange));
-                                    
+
       graph.setBoundingBox(marginInterval);
 
       graph.add(cloud);
       grid.setGraph(i, j, graph);
-      }
     }
+  }
   return grid;
 }
 

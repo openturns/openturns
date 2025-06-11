@@ -1452,20 +1452,20 @@ Bool JointDistribution::isElliptical() const
   const NormalCopula* p_normalCopula = dynamic_cast<const NormalCopula*>(core_.getImplementation().get());
   // If the copula is a NormalCopula, check the marginal distributions
   if (p_normalCopula || hasIndependentCopula())
+  {
+    Bool normalMarginals = true;
+    for (UnsignedInteger i = 0; i < getDimension(); ++i)
     {
-      Bool normalMarginals = true;
-      for (UnsignedInteger i = 0; i < getDimension(); ++i)
-	{
-	  const Normal* p_normal = dynamic_cast<const Normal*>(distributionCollection_[i].getImplementation().get());
-	  // The marginal is not a normal distribution
-	  if (!p_normal)
-	    {
-	      normalMarginals = false;
-	      break;
-	    }
-	} // for i
-      if (normalMarginals) return true;
-    } // if (p_normalCopula || hasIndependentCopula())
+      const Normal* p_normal = dynamic_cast<const Normal*>(distributionCollection_[i].getImplementation().get());
+      // The marginal is not a normal distribution
+      if (!p_normal)
+      {
+        normalMarginals = false;
+        break;
+      }
+    } // for i
+    if (normalMarginals) return true;
+  } // if (p_normalCopula || hasIndependentCopula())
   // More involved case: Student copula with compatible Student marginals. As we must check the degrees of freedom, a dynamic cast is needed
   const StudentCopula* p_studentCopula = dynamic_cast<const StudentCopula*>(core_.getImplementation().get());
   // The copula is not a StudentCopula, as it is the last case we test it ends the method

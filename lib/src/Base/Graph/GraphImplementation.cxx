@@ -206,7 +206,7 @@ Drawable GraphImplementation::getDrawable(const UnsignedInteger index) const
 }
 
 void GraphImplementation::setDrawable(const UnsignedInteger index, const Drawable & drawable)
-{ 
+{
   if (!(index < drawablesCollection_.getSize())) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
   drawablesCollection_[index] = drawable;
 }

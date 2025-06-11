@@ -35,7 +35,9 @@ covarianceModel = ot.SquaredExponential([7.63, 2.11], [7.38])
 basis = ot.ConstantBasisFactory(inputDimension).build()
 
 # Gaussian Process Regression algorithm
-fit_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fit_algo = otexp.GaussianProcessFitter(
+    inputSample, outputSample, covarianceModel, basis
+)
 fit_algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
 fit_algo.run()
 gpr_algo = otexp.GaussianProcessRegression(fit_algo.getResult())

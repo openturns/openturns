@@ -201,10 +201,10 @@ private:
 
   // decompose elliptical distribution mu/cov
   Point decompose(const Distribution & distribution,
-		  const Indices & conditioningIndices,
-		  const Indices & nonConditioningIndices,
-		  const Point & conditioningValues,
-		  CovarianceMatrix & C) const;
+                  const Indices & conditioningIndices,
+                  const Indices & nonConditioningIndices,
+                  const Point & conditioningValues,
+                  CovarianceMatrix & C) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const override;
@@ -248,7 +248,7 @@ private:
 
   // for the use of generic conditional methods
   Bool useGenericConditionalMethods_ = true;
-  
+
 }; /* class PointConditionalDistribution */
 
 END_NAMESPACE_OPENTURNS

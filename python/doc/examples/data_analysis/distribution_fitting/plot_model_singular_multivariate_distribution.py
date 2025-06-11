@@ -97,9 +97,10 @@ view = viewer.View(draw(y_multi_ks, sample_Y))
 # means that one cell is created: the built copula is diffuse in :math:`[0,1]^2`. The estimated copula is
 # the independent copula.
 empBern_copula = ot.BernsteinCopulaFactory().buildAsEmpiricalBernsteinCopula(sample_Y)
-print('bin number computed m = ', empBern_copula.getBinNumber())
+print("bin number computed m = ", empBern_copula.getBinNumber())
 marginals = [
-    ot.KernelSmoothing().build(sample_Y.getMarginal(j)) for j in range(sample_Y.getDimension())
+    ot.KernelSmoothing().build(sample_Y.getMarginal(j))
+    for j in range(sample_Y.getDimension())
 ]
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))

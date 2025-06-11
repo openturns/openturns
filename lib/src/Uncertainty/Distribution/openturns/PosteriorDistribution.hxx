@@ -47,13 +47,13 @@ public:
                         const Sample & observations);
 
   PosteriorDistribution(const Distribution & conditionedDistribution,
-			const Distribution & conditioningDistribution,
-			const Sample & observations);
+                        const Distribution & conditioningDistribution,
+                        const Sample & observations);
 
   PosteriorDistribution(const Distribution & conditionedDistribution,
-			const Distribution & conditioningDistribution,
-			const Function & linkFunction,
-			const Sample & observations);
+                        const Distribution & conditioningDistribution,
+                        const Function & linkFunction,
+                        const Sample & observations);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;

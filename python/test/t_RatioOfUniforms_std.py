@@ -16,10 +16,9 @@ print("Algo optim=", ratioOfU.getOptimizationAlgorithm())
 
 # We create a distribution
 # distribution = ot.Dirichlet([1, 2, 3, 4, 5, 6, 7])
-R = ot.CorrelationMatrix(4, [1.0, 0.5, 0.2, 0.1,
-                             0.5, 1.0, 0.5, 0.2,
-                             0.2, 0.5, 1.0, 0.5,
-                             0.1, 0.2, 0.5, 1.0])
+R = ot.CorrelationMatrix(
+    4, [1.0, 0.5, 0.2, 0.1, 0.5, 1.0, 0.5, 0.2, 0.2, 0.5, 1.0, 0.5, 0.1, 0.2, 0.5, 1.0]
+)
 distribution = ot.Normal([0.0] * 4, [1.0] * 4, R)
 print("distribution = ", repr(distribution))
 

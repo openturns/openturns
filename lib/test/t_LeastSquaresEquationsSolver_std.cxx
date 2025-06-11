@@ -32,18 +32,18 @@ int main(int, char *[])
   try
   {
     /** Analytical construction */
-    Description input = {"x","y"};
-    Description formulas = {"y * x - sin(2 * x)","1 + cos(y) + x"};
+    Description input = {"x", "y"};
+    Description formulas = {"y * x - sin(2 * x)", "1 + cos(y) + x"};
     SymbolicFunction analytical(input, formulas);
 
     LeastSquaresEquationsSolver algo;
     algo.setResidualError(1e-5);
     algo.setMaximumCallsNumber(1000),
-    fullprint << "algo=" << algo << std::endl;
+                               fullprint << "algo=" << algo << std::endl;
     Point startingPoint = {2.0, 1.0};
     const Point optimalValue(2);
     Point solution(algo.solve(analytical, startingPoint));
-    fullprint << "Solve " << formulas << "= [0,0] for " << input <<std::endl;
+    fullprint << "Solve " << formulas << "= [0,0] for " << input << std::endl;
     fullprint << "[x,y] = " << solution << std::endl;
     fullprint << "algo=" << algo << std::endl;
     assert_almost_equal(analytical(solution), optimalValue, 1e-5, 1e-5);

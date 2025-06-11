@@ -49,7 +49,7 @@ public:
 
   /** Default constructor */
   DeconditionedRandomVector(const Distribution & distribution,
-                          const RandomVector & randomParameters);
+                            const RandomVector & randomParameters);
 
 
   /** Virtual constructor */

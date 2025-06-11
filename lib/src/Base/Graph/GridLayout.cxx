@@ -54,13 +54,13 @@ void GridLayout::add(const GridLayout & grid)
   for (UnsignedInteger i = 0; i < getNbRows(); ++i)
   {
     for (UnsignedInteger j = 0; j < getNbColumns(); ++j)
-      {
-        LOGDEBUG(OSS() << "Trying to add graphs at row " << i << " and column " << j);
-        Graph host(getGraph(i, j));
-        const Graph guest(grid.getGraph(i, j));
-        host.add(guest);
-        setGraph(i, j, host);
-      }
+    {
+      LOGDEBUG(OSS() << "Trying to add graphs at row " << i << " and column " << j);
+      Graph host(getGraph(i, j));
+      const Graph guest(grid.getGraph(i, j));
+      host.add(guest);
+      setGraph(i, j, host);
+    }
   }
 }
 

@@ -8,7 +8,7 @@ ot.TESTPREAMBLE()
 
 f1 = ot.SymbolicFunction(
     ["a0", "a1"],
-    ["-4 * exp((-25 / 8) * (a0^2 + a1^2)) + 7 * exp((-125 / 4) * (a0^2 + a1^2))"] * 2
+    ["-4 * exp((-25 / 8) * (a0^2 + a1^2)) + 7 * exp((-125 / 4) * (a0^2 + a1^2))"] * 2,
 )
 
 distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 2)

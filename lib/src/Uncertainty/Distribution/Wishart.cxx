@@ -184,46 +184,46 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
   const UnsignedInteger p = cholesky_.getDimension();
   // Special case for p == 1
   if (p == 1)
-    {
-      const Scalar m00 = m(0, 0);
-      if (m00 <= 0.0) return SpecFunc::LowestScalar;
-      const Scalar c00 = cholesky_(0, 0);
-      return 0.5 * ((nu_ - 2.0) * std::log(m00) - m00 / (c00 * c00)) + logNormalizationFactor_;
-    }
+  {
+    const Scalar m00 = m(0, 0);
+    if (m00 <= 0.0) return SpecFunc::LowestScalar;
+    const Scalar c00 = cholesky_(0, 0);
+    return 0.5 * ((nu_ - 2.0) * std::log(m00) - m00 / (c00 * c00)) + logNormalizationFactor_;
+  }
   if (p == 2)
-    {
-      const Scalar m00 = m(0, 0);
-      if (m00 <= 0.0) return SpecFunc::LowestScalar;
-      const Scalar m10 = m(1, 0);
-      const Scalar m11 = m(1, 1);
-      const Scalar mixed = m00 * m11 - m10 * m10;
-      if (mixed <= 0.0) return SpecFunc::LowestScalar;
-      const Scalar c00 = cholesky_(0, 0);
-      const Scalar c10 = cholesky_(1, 0);
-      const Scalar c11 = cholesky_(1, 1);
-      return 0.5 * ((nu_ - 3.0) * std::log(mixed) - m11 / (c11 * c11) + 2.0 * c10 * m10 / (c00 * c11 * c11) - m00 * (c10 * c10 + c11 * c11) / (c00 * c00 * c11 * c11))+ logNormalizationFactor_;
-    }
+  {
+    const Scalar m00 = m(0, 0);
+    if (m00 <= 0.0) return SpecFunc::LowestScalar;
+    const Scalar m10 = m(1, 0);
+    const Scalar m11 = m(1, 1);
+    const Scalar mixed = m00 * m11 - m10 * m10;
+    if (mixed <= 0.0) return SpecFunc::LowestScalar;
+    const Scalar c00 = cholesky_(0, 0);
+    const Scalar c10 = cholesky_(1, 0);
+    const Scalar c11 = cholesky_(1, 1);
+    return 0.5 * ((nu_ - 3.0) * std::log(mixed) - m11 / (c11 * c11) + 2.0 * c10 * m10 / (c00 * c11 * c11) - m00 * (c10 * c10 + c11 * c11) / (c00 * c00 * c11 * c11)) + logNormalizationFactor_;
+  }
   if (p == 3)
-    {
-      const Scalar m00 = m(0, 0);
-      if (m00 <= 0.0) return SpecFunc::LowestScalar;
-      const Scalar m10 = m(1, 0);
-      const Scalar m11 = m(1, 1);
-      const Scalar mixed = m00 * m11 - m10 * m10;
-      if (mixed <= 0.0) return SpecFunc::LowestScalar;
-      const Scalar m20 = m(2, 0);
-      const Scalar m21 = m(2, 1);
-      const Scalar m22 = m(2, 2);
-      const Scalar mixed2 = mixed * m22 - m00 * m21 * m21 + 2.0 * m10 * m20 * m21 - m11 * m20 * m20;
-      if (mixed2 <= 0.0) return SpecFunc::LowestScalar;
-      const Scalar c00 = cholesky_(0, 0);
-      const Scalar c10 = cholesky_(1, 0);
-      const Scalar c20 = cholesky_(2, 0);
-      const Scalar c11 = cholesky_(1, 1);
-      const Scalar c21 = cholesky_(2, 1);
-      const Scalar c22 = cholesky_(2, 2);
-      return 0.5 * ((nu_ - 4.0) * std::log(mixed2) + ((-m22 * std::pow(c11, 2.0) + 2 * m21 * c21 * c11 - m11 * (std::pow(c21, 2.0) + std::pow(c22, 2.0))) * std::pow(c00, 2.0) + (2 * m20 * c20 * std::pow(c11, 2.0) - 2 * c21 * (c10 * m20 + c20 * m10) * c11 + 2 * c10 * m10 * (std::pow(c21, 2.0) + std::pow(c22, 2.0))) * c00 - ((std::pow(c20, 2.0) + std::pow(c22, 2.0)) * std::pow(c11, 2.0) - 2 * c10 * c11 * c20 * c21 + std::pow(c10, 2.0) * (std::pow(c21, 2.0) + std::pow(c22, 2.0))) * m00) / std::pow(c00, 2.0) / std::pow(c11, 2.0) / std::pow(c22, 2.0)) + logNormalizationFactor_;
-    }
+  {
+    const Scalar m00 = m(0, 0);
+    if (m00 <= 0.0) return SpecFunc::LowestScalar;
+    const Scalar m10 = m(1, 0);
+    const Scalar m11 = m(1, 1);
+    const Scalar mixed = m00 * m11 - m10 * m10;
+    if (mixed <= 0.0) return SpecFunc::LowestScalar;
+    const Scalar m20 = m(2, 0);
+    const Scalar m21 = m(2, 1);
+    const Scalar m22 = m(2, 2);
+    const Scalar mixed2 = mixed * m22 - m00 * m21 * m21 + 2.0 * m10 * m20 * m21 - m11 * m20 * m20;
+    if (mixed2 <= 0.0) return SpecFunc::LowestScalar;
+    const Scalar c00 = cholesky_(0, 0);
+    const Scalar c10 = cholesky_(1, 0);
+    const Scalar c20 = cholesky_(2, 0);
+    const Scalar c11 = cholesky_(1, 1);
+    const Scalar c21 = cholesky_(2, 1);
+    const Scalar c22 = cholesky_(2, 2);
+    return 0.5 * ((nu_ - 4.0) * std::log(mixed2) + ((-m22 * std::pow(c11, 2.0) + 2 * m21 * c21 * c11 - m11 * (std::pow(c21, 2.0) + std::pow(c22, 2.0))) * std::pow(c00, 2.0) + (2 * m20 * c20 * std::pow(c11, 2.0) - 2 * c21 * (c10 * m20 + c20 * m10) * c11 + 2 * c10 * m10 * (std::pow(c21, 2.0) + std::pow(c22, 2.0))) * c00 - ((std::pow(c20, 2.0) + std::pow(c22, 2.0)) * std::pow(c11, 2.0) - 2 * c10 * c11 * c20 * c21 + std::pow(c10, 2.0) * (std::pow(c21, 2.0) + std::pow(c22, 2.0))) * m00) / std::pow(c00, 2.0) / std::pow(c11, 2.0) / std::pow(c22, 2.0)) + logNormalizationFactor_;
+  }
   try
   {
     // If the Cholesky factor is not defined, it means that M is not symmetric positive definite (an exception is thrown) and the PDF is zero
@@ -240,10 +240,10 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
     const TriangularMatrix A(cholesky_.solveLinearSystem(X).getImplementation());
     for (UnsignedInteger j = 0; j < p; ++j)
       for (UnsignedInteger i = j; i < p; ++i)
-	{
-	  const Scalar aij = A(i, j);
-	  logPDF -= 0.5 * aij * aij;
-	}
+      {
+        const Scalar aij = A(i, j);
+        logPDF -= 0.5 * aij * aij;
+      }
     return logPDF;
   }
   catch (...)
@@ -258,10 +258,10 @@ Scalar Wishart::computeCDF(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const UnsignedInteger p = cholesky_.getDimension();
   if (p == 1)
-    {
-      if (point[0] <= 0.0) return 0.0;
-      return DistFunc::pGamma(0.5 * nu_, 0.5 * point[0] / (cholesky_(0, 0) * cholesky_(0, 0)));
-    }
+  {
+    if (point[0] <= 0.0) return 0.0;
+    return DistFunc::pGamma(0.5 * nu_, 0.5 * point[0] / (cholesky_(0, 0) * cholesky_(0, 0)));
+  }
   const Scalar a = ResourceMap::GetAsScalar("Wishart-CDFScaleFactor");
   return DistributionImplementation::computeCDFUnimodal(point, getMean(), a * getStandardDeviation(), IteratedQuadrature(), std::pow(cdfEpsilon_, dimension_));
 }

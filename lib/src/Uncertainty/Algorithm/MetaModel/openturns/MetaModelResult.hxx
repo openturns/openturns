@@ -48,7 +48,7 @@ public:
                   const Sample & outputSample,
                   const Function & metaModel,
                   const Point & residuals = Point(), // @deprecated argument
-                  const Point & relativeErrors= Point()); // @deprecated argument
+                  const Point & relativeErrors = Point()); // @deprecated argument
 
   /** Virtual constructor */
   MetaModelResult * clone() const override;
