@@ -263,12 +263,9 @@ def plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, color, alpha=0.05)
     quantileAlpha = bilateralCI.getUpperBound()[0]
     sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
     n_test = x_test.getSize()
-    epsilon = ot.Sample(n_test, [1.0e-8])
     scaled_x_test = myTransform(x_test)
     gpr_condCov = otexp.GaussianProcessConditionalCovariance(gpr_result)
-    conditionalVariance = (
-        gpr_condCov.getConditionalMarginalVariance(scaled_x_test) + epsilon
-    )
+    conditionalVariance = gpr_condCov.getConditionalMarginalVariance(scaled_x_test)
     conditionalSigma = sqrt(conditionalVariance)
     metamodel_transf_data = gpr_result.getMetaModel()
     y_test = metamodel_transf_data(scaled_x_test)

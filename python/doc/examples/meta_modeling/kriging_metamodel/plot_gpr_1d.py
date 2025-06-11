@@ -246,13 +246,9 @@ print("Quantile alpha=%f" % (quantileAlpha))
 # returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
-# However, some coefficients in the diagonal are very close to zero and
-# nonpositive, which leads to an exception of the `sqrt` function.
-# This is why we add an epsilon on the diagonal (nugget factor), which prevents this issue.
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
-epsilon = ot.Sample(n_test, [1.0e-8])
 gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
-conditionalVariance = gccc.getConditionalMarginalVariance(x_test) + epsilon
+conditionalVariance = gccc.getConditionalMarginalVariance(x_test)
 conditionalSigma = sqrt(conditionalVariance)
 
 # %%

@@ -315,7 +315,7 @@ conditional_sigma_kriging = sqrt(conditional_variance_kriging)
 
 # %%
 gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
-conditional_variance_gpr = gccc.getConditionalMarginalVariance(x_test) + epsilon
+conditional_variance_gpr = gccc.getConditionalMarginalVariance(x_test)
 conditional_sigma_gpr = sqrt(conditional_variance_gpr)
 
 # %%

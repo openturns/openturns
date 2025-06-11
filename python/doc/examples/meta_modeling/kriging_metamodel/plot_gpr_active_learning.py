@@ -149,14 +149,12 @@ def plotMyBasicGPR(
         )
 
     gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
-    epsilon = ot.Sample(nbpoints, [1.0e-8])
-    conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid) + epsilon
+    conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid)
     conditionalSigma = np.sqrt(conditionalVariance)
     # Compute the quantile of the Normal distribution
     alpha = 1 - (1 - level) / 2
     quantileAlpha = ot.DistFunc.qNormal(alpha)
     # Draw the bounds
-    epsilon = 1.0e-8
     dataLower = [
         yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
     ]
