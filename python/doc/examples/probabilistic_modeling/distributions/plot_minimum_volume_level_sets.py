@@ -6,7 +6,6 @@ Draw minimum volume level sets
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 
@@ -251,8 +250,6 @@ def drawLevelSetContour2D(distribution, alpha, level_set, threshold, sampleSize=
 # %%
 graph, contour = drawLevelSetContour2D(mixture, alpha, levelSet, threshold)
 view = viewer.View(graph)
-plt.show()
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+viewer.View.ShowAll()

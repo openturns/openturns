@@ -893,9 +893,4 @@ plt.subplots_adjust(wspace=plot_space, hspace=plot_space)
 # parameter are close to each other, but not superimposed: the observations
 # significantly brought information to the variable :math:`\gamma` during
 # the calibration.
-
 otv.View.ShowAll()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

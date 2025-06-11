@@ -14,7 +14,6 @@ Use the FORM algorithm in case of several design points
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # We consider a standard bivariate Gaussian random vector :math:`X = (X_1, X_2)` :
@@ -139,10 +138,4 @@ print("    wrt design point 2 : ", pf2)
 
 # %%
 # Display the figures
-plt.show()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()
-
-# %%
+otv.View.ShowAll()

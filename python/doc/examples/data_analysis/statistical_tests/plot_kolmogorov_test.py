@@ -96,7 +96,3 @@ result.getThreshold()
 
 # %%
 result.getStatistic()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

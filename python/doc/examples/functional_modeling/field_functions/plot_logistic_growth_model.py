@@ -18,7 +18,6 @@ Logistic growth model
 from openturns.usecases import logistic_model
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
@@ -94,8 +93,6 @@ cloud.setLegend("Data")
 graph.add(cloud)
 graph.setLegendPosition("upper left")
 view = viewer.View(graph)
-plt.show()
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+viewer.ShowAll()

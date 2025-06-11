@@ -31,9 +31,7 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases.wingweight_function import WingWeightModel
-from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 m = WingWeightModel()
 
 # %%
@@ -219,7 +217,6 @@ graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     spearman_correlation, inputNames, title_spearman_graph
 )
 view = otv.View(graph)
-plt.show()
 
 # %%
 #
@@ -461,5 +458,4 @@ view4 = otv.View(graph4)
 # We can also see that the asymptotic p-values and p-values estimated by permutation are quite similar.
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

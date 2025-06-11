@@ -572,7 +572,3 @@ plt.xlabel("Measurements")
 plt.ylabel("Prediction medians")
 plt.legend(["Posterior", "Prior"])
 plt.show()
-
-# %%
-
-ot.ResourceMap.Reload()

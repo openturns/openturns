@@ -103,7 +103,3 @@ test_result
 # Rank the discrete models with respect to the BIC criteria:
 ot.FittingTest.BestModelBIC(sample, distributions)
 otv.View.ShowAll()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

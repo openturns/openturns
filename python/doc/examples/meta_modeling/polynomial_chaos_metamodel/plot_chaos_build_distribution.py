@@ -95,6 +95,3 @@ algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
 # %%
 # The previous constructor is the main topic of the example
 # :doc:`Create a polynomial chaos metamodel from a data set </auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos>`.
-
-# %%
-ot.ResourceMap.Reload()  # reset default settings
