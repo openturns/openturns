@@ -46,7 +46,6 @@ import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Creation of the metamodel

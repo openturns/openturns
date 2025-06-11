@@ -13,7 +13,6 @@ from openturns.usecases import ishigami_function
 # For that purpose, we are using the rank-based algorithm which provides the first order Sobol' indices.
 # We present the method on the :ref:`Ishigami function<use-case-ishigami>`.
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Definition of the model

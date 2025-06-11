@@ -13,7 +13,6 @@ Estimate a probability with Monte Carlo
 from openturns.usecases import stressed_beam
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :

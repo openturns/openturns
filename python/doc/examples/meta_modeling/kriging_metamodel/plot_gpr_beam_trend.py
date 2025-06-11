@@ -20,7 +20,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Definition of the model

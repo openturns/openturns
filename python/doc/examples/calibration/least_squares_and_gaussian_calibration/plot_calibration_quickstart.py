@@ -48,7 +48,6 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import flood_model
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

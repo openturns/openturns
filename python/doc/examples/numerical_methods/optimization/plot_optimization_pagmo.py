@@ -10,7 +10,6 @@ Multi-objective optimization using Pagmo
 import openturns as ot
 from openturns.viewer import View
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%

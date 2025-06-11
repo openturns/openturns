@@ -50,7 +50,6 @@ Gaussian process fitter: configure the optimization solver
 import openturns as ot
 import openturns.experimental as otexp
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We define the symbolic function which evaluates the output `Y` depending on the inputs `E`, `F`, `L` and `I`.

@@ -46,7 +46,6 @@ Trend computation
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a bi dimensional mesh

@@ -26,7 +26,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We define the model.

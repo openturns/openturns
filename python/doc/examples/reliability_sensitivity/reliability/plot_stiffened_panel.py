@@ -20,7 +20,6 @@ from openturns.usecases import stiffened_panel
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the stiffened panel model from the usecases module :

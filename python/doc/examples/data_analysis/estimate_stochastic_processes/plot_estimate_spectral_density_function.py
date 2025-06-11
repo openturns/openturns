@@ -22,7 +22,6 @@ Estimate a spectral density function
 import openturns as ot
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate some data

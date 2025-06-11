@@ -21,7 +21,6 @@ import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Set the random generator seed

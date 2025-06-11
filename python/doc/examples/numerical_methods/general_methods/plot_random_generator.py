@@ -18,7 +18,6 @@ import openturns as ot
 import os
 import time
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Example 0: using the time in milliseconds

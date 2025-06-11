@@ -10,7 +10,6 @@ Optimization using dlib
 import openturns as ot
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # List available algorithms

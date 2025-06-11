@@ -47,7 +47,6 @@ import openturns.viewer as otv
 from matplotlib import pyplot as plt
 from openturns.usecases import chaboche_model
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the observations

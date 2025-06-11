@@ -50,7 +50,6 @@ import openturns as ot
 from openturns import viewer
 import openturns.experimental as otexp
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We begin by defining the function :math:`\model` as a symbolic function.

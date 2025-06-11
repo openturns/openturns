@@ -26,7 +26,6 @@ import openturns.experimental as otexp
 import openturns.viewer as viewer
 
 ot.RandomGenerator.SetSeed(0)
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

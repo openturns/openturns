@@ -13,7 +13,6 @@ from matplotlib import pyplot as plt
 # sphinx_gallery_thumbnail_number = 4
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

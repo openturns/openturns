@@ -29,7 +29,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import matplotlib.pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 coordinates = ot.Sample(
     [

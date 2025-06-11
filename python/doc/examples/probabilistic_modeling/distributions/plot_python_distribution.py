@@ -22,7 +22,6 @@ import math as m
 import warnings
 
 warnings.filterwarnings("ignore")
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

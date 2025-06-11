@@ -24,7 +24,6 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The cantilever beam example can be accessed in the usecases module :

@@ -11,7 +11,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 # sphinx_gallery_thumbnail_number = 3
 
 # %%

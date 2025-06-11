@@ -30,7 +30,6 @@ Test identical distributions
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate 3 samples, `sample1` and `sample2` arise from the same distribution

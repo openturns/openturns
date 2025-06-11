@@ -9,7 +9,6 @@ Estimate moments from sample
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a sample

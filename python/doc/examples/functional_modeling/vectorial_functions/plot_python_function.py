@@ -17,7 +17,6 @@ import numpy as np
 import openturns as ot
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

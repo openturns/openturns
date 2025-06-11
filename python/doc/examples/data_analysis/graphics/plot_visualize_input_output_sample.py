@@ -14,7 +14,6 @@ Visualize pairs between two samples
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the model

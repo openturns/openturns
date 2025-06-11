@@ -10,7 +10,6 @@ Sort a sample
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 

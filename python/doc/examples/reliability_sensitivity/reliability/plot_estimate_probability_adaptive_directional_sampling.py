@@ -29,7 +29,6 @@ Use the Adaptive Directional Stratification Algorithm
 from openturns.usecases import cantilever_beam
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :

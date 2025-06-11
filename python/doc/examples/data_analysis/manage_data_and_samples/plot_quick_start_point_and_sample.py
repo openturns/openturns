@@ -26,7 +26,6 @@ A quick start guide to the `Point` and `Sample` classes
 import numpy as np
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The `Point` class

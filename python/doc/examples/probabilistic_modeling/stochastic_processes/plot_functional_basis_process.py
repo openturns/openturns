@@ -38,7 +38,6 @@ Create a functional basis process
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the coefficients distribution

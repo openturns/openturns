@@ -34,7 +34,6 @@ from openturns.usecases import flood_model
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We use the `FloodModel` data class that contains all the case parameters.

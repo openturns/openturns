@@ -11,7 +11,6 @@ import openturns.viewer as viewer
 import openturns as ot
 
 ot.RandomGenerator.SetSeed(0)
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate a sample

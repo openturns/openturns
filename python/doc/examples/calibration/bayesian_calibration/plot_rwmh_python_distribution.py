@@ -65,7 +65,6 @@ import numpy as np
 import openturns as ot
 from openturns.viewer import View
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(123)
 
 # %%

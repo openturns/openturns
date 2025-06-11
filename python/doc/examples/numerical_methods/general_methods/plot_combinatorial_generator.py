@@ -22,7 +22,6 @@ Combinatorial generators
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Tuples

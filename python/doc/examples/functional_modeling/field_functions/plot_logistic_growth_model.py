@@ -19,7 +19,6 @@ from openturns.usecases import logistic_model
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%

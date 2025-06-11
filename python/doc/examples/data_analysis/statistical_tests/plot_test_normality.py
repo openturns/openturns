@@ -15,7 +15,6 @@ Test Normality
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We first create the data :

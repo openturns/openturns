@@ -11,7 +11,6 @@ Compute grouped indices for the Ishigami function
 from openturns.usecases import ishigami_function
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the Ishigami test function from usecases module:

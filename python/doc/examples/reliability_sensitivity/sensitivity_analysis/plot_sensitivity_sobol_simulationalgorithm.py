@@ -59,7 +59,6 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the distribution and model from the example:

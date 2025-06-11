@@ -10,7 +10,6 @@ Create a composed function
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # assume f, g functions

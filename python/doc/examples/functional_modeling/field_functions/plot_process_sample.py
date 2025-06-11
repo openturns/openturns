@@ -27,7 +27,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from openturns.usecases import chaboche_model
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the model and the mesh

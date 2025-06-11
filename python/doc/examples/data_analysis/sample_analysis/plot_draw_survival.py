@@ -71,7 +71,6 @@ Draw a survival function
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 sigma = 1.4

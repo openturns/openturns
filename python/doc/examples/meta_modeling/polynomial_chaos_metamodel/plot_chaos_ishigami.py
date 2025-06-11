@@ -21,7 +21,6 @@ import openturns as ot
 import openturns.viewer as otv
 import math
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%

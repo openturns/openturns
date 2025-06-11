@@ -92,7 +92,6 @@ import openturns as ot
 from openturns.viewer import View
 import numpy as np
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(1)
 
 n = 10

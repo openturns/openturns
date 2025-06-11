@@ -21,7 +21,6 @@ import math as m
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the underlying random vector.

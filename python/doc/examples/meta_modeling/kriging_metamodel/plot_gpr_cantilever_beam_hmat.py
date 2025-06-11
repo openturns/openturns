@@ -18,7 +18,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the cantilever beam use case :

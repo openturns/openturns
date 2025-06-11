@@ -36,7 +36,6 @@ Create a stationary covariance model
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the amplitude vector (output dimension 3)

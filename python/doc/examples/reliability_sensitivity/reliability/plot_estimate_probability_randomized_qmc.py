@@ -10,7 +10,6 @@ Use a randomized QMC algorithm
 from openturns.usecases import cantilever_beam
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the data class containing the probabilistic modeling of the beam.

@@ -13,7 +13,6 @@ Create a Gaussian process from a cov. model using HMatrix
 import openturns as ot
 import openturns.viewer as viewer
 
-# ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Definition of the covariance model

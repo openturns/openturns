@@ -17,7 +17,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from numpy import square
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a Kronecker covariance function

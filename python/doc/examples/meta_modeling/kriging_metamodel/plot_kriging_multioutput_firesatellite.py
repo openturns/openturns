@@ -19,7 +19,6 @@ from openturns.usecases.fire_satellite import FireSatelliteModel
 from openturns.viewer import View
 import openturns.experimental as otexp
 
-ot.Log.Show(ot.Log.NONE)
 
 m = FireSatelliteModel()
 

@@ -14,7 +14,6 @@ import openturns as ot
 from openturns import viewer
 from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We generate a sample from the standard Normal distribution.

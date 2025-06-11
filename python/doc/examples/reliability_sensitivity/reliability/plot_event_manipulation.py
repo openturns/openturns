@@ -15,7 +15,6 @@ Simulate an Event
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create model f(x) = x1 + 2*x2

@@ -20,7 +20,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We consider a random vector which is the output of a model and an input distribution.
