@@ -8,7 +8,7 @@ Release process
 
 2. Reindent sources (utils/indent.sh)
 
-3. Increment version number X.Y(rc1) (utils/setVersionNumber.sh)
+3. Drop dev version suffix (utils/setVersionNumber.sh X.Y)
 
 4. Increment rpm package number (distro/rpm)
 
@@ -37,7 +37,7 @@ Release process
 
 14. Update `wheels <https://github.com/openturns/build-wheels>`_
 
-15. Set version X.Y+1, new changelog in master
+15. Set version X.Y+1dev, new changelog in master
 
 16. Drop deprecated methods listed in TODO file
 
