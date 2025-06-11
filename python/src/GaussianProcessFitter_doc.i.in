@@ -64,8 +64,8 @@ solver names.
 
 It is also possible to proceed as follows:
 
-* ask for the reduced log-likelihood function thanks to the :meth:`getObjectiveFunction` method,
-* optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimization algorithms
+* ask for the reduced log-likelihood function thanks to the :meth:`getReducedLogLikelihoodFunction` method,
+* optimize it with respect to the parameters :math:`\vect{\theta}` and :math:`\vect{\sigma}` using any optimization algorithms
   (that can take into account some additional constraints if needed),
 * set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 * tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
@@ -145,7 +145,7 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianProcessFitter::getObjectiveFunction()
+%feature("docstring") OT::GaussianProcessFitter::getReducedLogLikelihoodFunction()
 "Accessor to the log-likelihood function that writes as argument of the covariance's model parameters.
 
 Returns
@@ -177,7 +177,7 @@ Create the algorithm:
 
 Get the log-likelihood function:
 
->>> likelihoodFunction = algo.getObjectiveFunction()
+>>> likelihoodFunction = algo.getReducedLogLikelihoodFunction()
 "
 
 

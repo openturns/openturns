@@ -378,7 +378,7 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   // initial guess
   const Point initialParameters(reducedCovarianceModel_.getParameter());
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
-  Function reducedLogLikelihoodFunction(getObjectiveFunction());
+  Function reducedLogLikelihoodFunction(getReducedLogLikelihoodFunction());
   const Bool noNumericalOptimization = initialParameters.getSize() == 0 || !getOptimizeParameters();
   // Early exit if the parameters are known
   if (noNumericalOptimization)
@@ -637,7 +637,7 @@ GaussianProcessFitterResult GaussianProcessFitter::getResult()
 }
 
 
-Function GaussianProcessFitter::getObjectiveFunction()
+Function GaussianProcessFitter::getReducedLogLikelihoodFunction()
 {
   computeF();
   MemoizeFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));

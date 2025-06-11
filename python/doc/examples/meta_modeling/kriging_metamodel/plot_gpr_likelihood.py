@@ -48,7 +48,7 @@ print("Scale of the covariance model : %.3e" % theta[0])
 # %%
 # This hyperparameter is calibrated thanks to a maximization of the log-likelihood. We get this log-likehood as a function of :math:`\theta` :
 ot.ResourceMap.SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", True)
-reducedLogLikelihoodFunction = fitter.getObjectiveFunction()
+reducedLogLikelihoodFunction = fitter.getReducedLogLikelihoodFunction()
 
 # %%
 # We draw the reduced log-likelihood :math:`\mathcal{L}(\theta)` as a function
