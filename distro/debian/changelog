@@ -1,3 +1,9 @@
+openturns (1.25-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Julien Schueller <schueller@phimeca.com>  Wed, 11 Jun 2025 08:19:33 +0200
+
 openturns (1.24-1) experimental; urgency=medium
 
   * New upstream release

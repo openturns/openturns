@@ -14,7 +14,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 %__cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.24
+Version:        1.25
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -27,13 +27,14 @@ BuildRequires:  libxml2-devel
 %if ! 0%{?centos_version}
 BuildRequires:  hdf5-devel
 %endif
-BuildRequires:  boost-devel
 %if 0%{?suse_version}
 BuildRequires:  gcc11-c++
 BuildRequires:  mpc-devel
 BuildRequires:  cblas-devel
+BuildRequires:  libboost_headers1_75_0-devel
 %else
 BuildRequires:  libmpc-devel
+BuildRequires:  boost-devel
 %endif
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
@@ -139,6 +140,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} OMP_NUM_THREADS=1 OPENTURNS_NUM_THREADS=1
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Wed Jun 11 2025 Julien Schueller <schueller at phimeca dot com> 1.25-1
+- New upstream release
+
 * Wed Oct 23 2024 Julien Schueller <schueller at phimeca dot com> 1.24-1
 - New upstream release
 
