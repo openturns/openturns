@@ -9,8 +9,6 @@ import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
-
-
 # %%
 # Create a multivariate model with a :class:`~openturns.JointDistribution`
 # ------------------------------------------------------------------------

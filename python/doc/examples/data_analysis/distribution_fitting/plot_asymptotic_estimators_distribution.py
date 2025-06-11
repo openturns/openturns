@@ -14,10 +14,6 @@ from matplotlib import pyplot as plt
 
 
 # %%
-# Set the random generator seed
-ot.RandomGenerator.SetSeed(0)
-
-# %%
 # The standard Normal
 # -------------------
 # The parameters of the standard Normal distribution are estimated by a method of moments.

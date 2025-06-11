@@ -31,8 +31,6 @@ import numpy as np
 
 palette = ot.Drawable.BuildTableauPalette(5)
 
-ot.RandomGenerator.SetSeed(0)
-
 
 # %%
 #

@@ -9,8 +9,6 @@ import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 import math as m
 
-
-
 # %%
 # Creation of a regular grid
 # --------------------------

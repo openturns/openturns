@@ -13,8 +13,6 @@ import openturns as ot
 import openturns.viewer as viewer
 import math as m
 
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # Routine to draw a distribution cloud and a sample.
 

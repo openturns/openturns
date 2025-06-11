@@ -21,11 +21,6 @@ import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
 
-
-# %%
-# Set the random generator seed
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # Defining the marginals
 # ----------------------

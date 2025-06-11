@@ -8,8 +8,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-
-
 # %%
 # A continuous distribution
 # -------------------------

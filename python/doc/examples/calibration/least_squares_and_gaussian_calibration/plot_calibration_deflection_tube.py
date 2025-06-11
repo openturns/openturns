@@ -32,8 +32,6 @@ import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
-
-
 # %%
 # Create a calibration problem
 # ----------------------------

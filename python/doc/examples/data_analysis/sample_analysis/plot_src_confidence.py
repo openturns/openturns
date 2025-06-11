@@ -38,7 +38,6 @@ g.getOutputDescription()
 
 # %%
 # We produce a pair of input and output sample.
-ot.RandomGenerator.SetSeed(0)
 N = 100
 X = distribution.getSample(N)
 Y = g(X)

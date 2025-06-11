@@ -14,8 +14,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-
-
 # %%
 # We create the underlying distribution: a standard 2-dimensional normal distribution.
 distribution = ot.Normal(2)

@@ -17,10 +17,10 @@ import numpy as np
 import openturns as ot
 import math as m
 
-
-
 # %%
 # define a pure Python function from R^3 to R^2
+
+
 def regularFunc(X):
     x0, x1, x2 = X
     y0 = x0 + x1 + x2

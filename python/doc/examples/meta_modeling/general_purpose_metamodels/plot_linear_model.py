@@ -52,7 +52,6 @@ import openturns.viewer as otv
 # We first generate the data and we add noise to the output observations:
 
 # %%
-ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal(2)
 distribution.setDescription(["x", "y"])
 sampleSize = 1000

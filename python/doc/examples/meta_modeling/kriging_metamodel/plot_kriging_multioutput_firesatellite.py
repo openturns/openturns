@@ -41,7 +41,6 @@ inputDistribution = m.inputDistribution
 # We now generate the input and output training sets as 10 times the dimension of the input vector.
 
 # %%
-ot.RandomGenerator.SetSeed(0)
 experiment = ot.LHSExperiment(inputDistribution, 10 * m.dim)
 inputTrainingSet = experiment.generate()
 outputTrainingSet = model(inputTrainingSet)

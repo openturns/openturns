@@ -38,13 +38,9 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-# %%
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 # We define the function that we are going to approximate.
-
-# %%
 g = ot.SymbolicFunction(["x"], ["sin(2*pi_*x)"])
 
 # %%

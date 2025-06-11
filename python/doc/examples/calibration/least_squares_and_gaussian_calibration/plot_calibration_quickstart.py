@@ -48,8 +48,6 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import flood_model
 
-
-
 # %%
 # Define the observations
 # -----------------------

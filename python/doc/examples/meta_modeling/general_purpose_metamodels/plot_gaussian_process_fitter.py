@@ -17,7 +17,6 @@ import openturns.viewer as viewer
 # We create a model and a sample from this model.
 
 # %%
-ot.RandomGenerator.SetSeed(0)
 dimension = 2
 input_names = ["x1", "x2"]
 formulas = ["cos(0.1 * x1 + 0.2 * x2)"]

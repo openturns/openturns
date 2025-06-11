@@ -7,8 +7,6 @@ Test the copula
 import openturns as ot
 import openturns.viewer as viewer
 
-
-
 # %%
 # Copula fitting test using Kendall plot
 # --------------------------------------

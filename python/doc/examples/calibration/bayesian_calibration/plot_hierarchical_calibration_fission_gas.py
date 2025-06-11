@@ -58,11 +58,6 @@ nexp = fgr.measurement_values.getSize()  # number of sets of experimental condit
 models = fgr.models  # the nexp models
 
 # %%
-# Fix the random seed
-
-ot.RandomGenerator.SetSeed(0)
-
-# %%
 # Each experiment :math:`i` produced one measurement value,
 # which is used to define the likelihood of the associated model :math:`\model_i`
 # and latent variables :math:`x_{i, \mathrm{diff}}` and :math:`x_{i, \mathrm{crack}}`.

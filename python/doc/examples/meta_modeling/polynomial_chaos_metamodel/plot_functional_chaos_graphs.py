@@ -12,8 +12,6 @@ import openturns as ot
 import openturns.viewer as viewer
 
 
-
-# %%
 def drawFamily(factory, degreeMax=5):
 
     # Create a fine title

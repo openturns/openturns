@@ -21,22 +21,14 @@ from openturns.viewer import View
 import numpy as np
 from openturns import viewer
 
-
-
 # %%
 # Define the function, the threshold above which the system is considered in failure, and the input probability distribution.
-
-# %%
-
 g = ot.SymbolicFunction(["x"], ["0.5*x^2 + sin(5*x)"])
 threshold = 1.25
 distribution = ot.Normal(0, 0.4)
 
-
 # %%
 # Create the design of experiments.
-
-# %%
 dimension = 1
 DoESize = 4
 xMin = -2.0

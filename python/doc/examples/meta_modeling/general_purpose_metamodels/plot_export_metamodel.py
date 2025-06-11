@@ -21,7 +21,6 @@ distribution = beam.independentDistribution
 
 # %%
 # Generate a learning sample with Monte-Carlo simulation (or retrieve the design from experimental data).
-ot.RandomGenerator.SetSeed(0)
 N = 30  # size of the experimental design
 X = distribution.getSample(N)
 Y = g(X)

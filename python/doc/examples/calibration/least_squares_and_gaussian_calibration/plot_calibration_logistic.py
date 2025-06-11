@@ -41,8 +41,6 @@ import numpy as np
 import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
-
-
 # %%
 # We load the logistic model from the usecases module :
 lm = logistic_model.LogisticModel()

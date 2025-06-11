@@ -47,7 +47,6 @@ from matplotlib import pyplot as plt
 # We first create the function `model`.
 
 # %%
-ot.RandomGenerator.SetSeed(0)
 input_names = ["x1", "x2"]
 formulas = ["cos(x1 + x2)", "(x2 + 1) * exp(x1)"]
 model = ot.SymbolicFunction(input_names, formulas)

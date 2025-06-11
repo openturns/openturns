@@ -19,8 +19,6 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import stressed_beam
 
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # Create the probabilistic model
 # ------------------------------

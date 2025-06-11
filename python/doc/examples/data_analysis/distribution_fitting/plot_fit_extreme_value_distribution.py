@@ -8,12 +8,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-
-# %%
-# Set the random generator seed
-ot.RandomGenerator.SetSeed(0)
-
-
 # %%
 # The generalized extreme value distribution (GEV)
 # ------------------------------------------------
