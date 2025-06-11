@@ -4,136 +4,294 @@ Gaussian process regression
 ---------------------------
 
 Gaussian process regression (also known as Kriging) is a Bayesian
-technique that aim at approximating functions (most often in order to
-surrogate it because it is expensive to evaluate). In the following it
-is assumed we aim at creating a surrogate model of a scalar-valued model
-:math:`\cM: \vect{x} \mapsto y`. Note the implementation of
+technique that aims at approximating functions (most often in order to
+surrogate it because it is expensive to evaluate).
+
+Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model and a dataset
+:math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)`
+for all :math:`k`.
+
+The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that interpolates the data
+set. To build this metamodel, we follow the steps:
+
+- Step 1: Gaussian process fitting: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
+  :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
+  where :math:`\vect{\mu}` is the trend function and :math:`\vect{W}` is a Gaussian process of
+  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`;
+- Step 2:  Gaussian Process Regression: we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
+  Gaussian Process Regression denoted by
+  :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
+  is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
+- Step 3:  Gaussian Process Regression metamodel and its exploitation:  we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+  that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
+  the error of the metamodel, that is the variation of the Gaussian vector at a given point.
+
+
+Note that the implementation of a
 Gaussian process regression deals with vector-valued functions
-(:math:`\cM: \vect{x} \mapsto \vect{y}`), without simply looping over
-each output. It is also assumed the model is obtained over a design of
-experiments in order to produce a set of observations gathered in the
-following dataset:
-:math:`\left(\left(\vect{x}^{(i)}, y^{(i)}\right), i = 1, \ldots, m\right)`.
-Ultimately Gaussian process regression aims at producing a predictor (also known as a
-response surface or metamodel) denoted as :math:`\tilde{\cM}`.
+(:math:`\metaModel: \vect{x} \mapsto \vect{y}`), without simply looping over
+each output.
 
-We put the following Gaussian process prior on the model :math:`\cM`:
 
-.. math:: Y(\vect{x}) = \Tr{\vect{f}(\vect{x})} \vect{\beta} + Z(\vect{x})
+Step 1: Gaussian process fitting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-where:
-
--  :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` is a general linear
-   model based upon a functional basis
-   :math:`\vect{f} = \left(f_j, j = 1, \ldots, p\right)` and a vector of
-   coefficients
-   :math:`\vect{\beta} = \left(\beta_j, j = 1, \ldots, p\right)`,
-
--  :math:`Z` is a zero-mean stationary Gaussian process whose covariance
-   function reads:
-
-   .. math:: \mathbb{E}[Z(\vect{x})\,Z(\vect{x'})] = \sigma^2 R(\vect{x} - \vect{x'}, \vect{\theta})
-
-   where :math:`\sigma^2 > 0` is the variance and :math:`R` is the
-   correlation function that solely depends on the Manhattan distance
-   between input points :math:`\vect{x} - \vect{x'}` and a vector of
-   parameters :math:`\vect{\theta} \in \Rset^{n_\theta}`.
-
-Under the Gaussian process prior assumption, the observations
-:math:`\vect{Y} = \left(Y_i, i = 1, \ldots, m\right)` and a prediction
-:math:`Y(\vect{x})` at some unobserved input :math:`\vect{x}` are
-jointly normally distributed:
+The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample
+:math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
+:math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize}`. It is defined by:
 
 .. math::
 
-   \begin{pmatrix}
-         \vect{Y} \\
-         Y(\vect{x})
-       \end{pmatrix}
-       \thicksim
-       \cN_{m + 1}\left(
-         \begin{pmatrix}
-           \mat{F} \vect{\beta} \\
-           \Tr{\vect{f}(\vect{x})} \vect{\beta}
-         \end{pmatrix}
-         ,\,\sigma^2
-         \begin{pmatrix}
-           \mat{R} & \vect{r}(\vect{x}) \\
-           \vect{r}(\vect{x})^t & 1
-         \end{pmatrix}
-       \right)
+    \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
 
 where:
 
-.. math:: \mat{F} = \left[f_j\left(\vect{x}^{(i)}\right), i = 1, \ldots, m, j = 1, \ldots, p\right]
+.. math::
 
-is the regression matrix,
+    \vect{\mu}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
+       \end{array}
+     \right)
 
-.. math:: \mat{R} = \left[R\left(\vect{x}^{(i)} - \vect{x}^{(j)}, \vect{\theta}\right), i,\,j = 1, \ldots, m\right]
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and
+:math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions basis for :math:`1 \leq j \leq b` and
+:math:`1 \leq \ell \leq \outputDim`.
 
-is the observations’ correlation matrix, and:
+Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
+covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`, where (see
+:ref:`covariance_model` for more details on the notations):
 
-.. math:: \vect{r}(\vect{x}) = \Tr{\left(R\left(\vect{x} - \vect{x}^{(i)}, \vect{\theta}\right), i = 1, \ldots, m\right)}
+- :math:`\vect{\theta}` is the scale vector,
+- :math:`\vect{\sigma}` is the standard deviation vector,
+- :math:`\mat{R}` is the spatial correlation matrix between the components of :math:`\vect{W}`,
+- :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
 
-is the vector of cross-correlations between the prediction and the
-observations.
+Then, we have to estimate the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}`
+where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of
+:math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as
+*active*: by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`. See
+:class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
+parameters.
 
-As such, the GP predictor is defined as the following conditional
-distribution:
+The estimation is done by maximizing the *reduced* log-likelihood of the model (see its expression below).
 
-.. math:: \tilde{Y}(\vect{x}) = \left[Y(\vect{x}) \mid \vect{Y} = \vect{y}, \vect{\theta}=\vect{\theta}^*, \sigma^2=(\sigma^2)^*\right]
+**Estimation of the parameters:** We want to estimate all the parameters :math:`\left(\beta_j^\ell \right)` for
+:math:`1 \leq j \leq b`
+and :math:`1 \leq \ell \leq \outputDim`, and :math:`\vect{p}`.
 
-where :math:`\vect{\theta}^*` and :math:`(\sigma^2)^*` are the maximum
-likelihood estimates of the correlation parameters :math:`\vect{\theta}`
-and variance :math:`\sigma^2` (see references).
+We note:
 
-It can be shown (see references) that the predictor
-:math:`\tilde{Y}(\vect{x})` is also Gaussian:
+.. math::
 
-.. math:: \tilde{Y}(\vect{x}) = \cN_1\left(\mu_{\tilde{Y}}(\vect{x}), \sigma^2_{\tilde{Y}}(\vect{x})\right)
+    \vect{y} = \left(
+      \begin{array}{l}
+        \vect{y}_1 \\
+        \vdots  \\
+        \vect{y}_{\sampleSize}
+       \end{array}
+     \right) \in \Rset^{\outputDim \times \sampleSize},
+     \quad
+     \vect{m}_{\vect{\beta}} = \left(
+      \begin{array}{l}
+        \vect{\mu}(\vect{x}_1) \\
+        \vdots  \\
+        \vect{\mu}(\vect{x}_{\sampleSize})
+       \end{array}
+     \right) \in \Rset^{\outputDim \times \sampleSize}
 
--  with mean:
 
-   .. math:: \mu_{\tilde{Y}}(\vect{x}) = \Tr{\vect{f}(\vect{x})} \tilde{\vect{\beta}} + \Tr{\vect{r}(\vect{x})} \vect{\gamma}
+and:
 
-   where :math:`\underline{\tilde{\beta}}` is the generalized least
-   squares solution of the underlying linear regression problem:
+.. math::
 
-   .. math:: \tilde{\vect{\beta}} = \left(\Tr{\mat{F}} \mat{R}^{-1} \mat{F}\right)^{-1} \Tr{\mat{F}} \mat{R}^{-1} \vect{y}
+    \mat{C}_{\vect{p}} = \left(
+      \begin{array}{lcl}
+        \mat{C}_{11} & \dots &  \mat{C}_{1 \times \sampleSize}\\
+        \vdots &   & \vdots \\
+        \mat{C}_{\sampleSize \times 1} & \dots &  \mat{C}_{\sampleSize \times \sampleSize}
+       \end{array}
+     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
-    and
+where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+
+(\Rset)`.
 
-   .. math:: \vect{\gamma} = \mat{R}^{-1} \left(\vect{y} - \mat{F} \tilde{\vect{\beta}}\right)
+The likelihood of the Gaussian process on the data set is defined by:
 
--  and variance:
+.. math::
 
-   .. math::
+    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}
+    {(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}
+    \Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}
+    _{\vect{\beta}} \right)  \right]
 
-      \sigma^2_{\tilde{Y}}(\vect{x}) =
-              \sigma^2 \left[1 -
-                  \Tr{\vect{r}(\vect{x})} \mat{R}^{-1} \vect{r}(\vect{x})
-                  + \Tr{\vect{u}(\vect{x})} \left(\Tr{\mat{F}} \mat{R}^{-1} \mat{F}\right)^{-1} \vect{u}(\vect{x})
-                  \right]
+Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular
+matrix with positive diagonal such that
+:math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
+Therefore:
 
-   where:
+.. math::
+    :label: logLikelihoodGP
 
-   .. math:: \vect{u}(\vect{x}) = \Tr{\mat{F}} \mat{R}^{-1} \vect{r}(\vect{x}) - \vect{f}(\vect{x})
+    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize})
+    = cste - \log \det \mat{L}_{\vect{p}} -\dfrac{1}{2}  \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
+
+The maximization of :eq:`logLikelihoodGP` leads to the following optimality condition for :math:`\vect{\beta}`:
+
+.. math::
+
+    \vect{\beta}^*(\vect{p}^*)
+    = \argmin_{\vect{\beta}} \| \mat{L}_{\vect{p}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}}) \|^2_2
+
+This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation
+between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to
+a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
+
+In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
+then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which
+:math:`\sigma` has been substituted by 1, then:
+
+.. math::
+
+    \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
+    = \frac{1}{\sigma^2} \| \mat{L}_{\vect{q}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2_2
+
+showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality condition
+for :math:`\sigma` reads:
+
+.. math::
+
+    \vect{\sigma}^*(\vect{q}^*)
+    = \dfrac{1}{\sampleSize} \| \mat{L}_{\vect{q}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)})
+    \|^2_2
+
+which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and
+:math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
+
+This step is performed by the class :class:`~openturns.experimental.GaussianProcessFitter`.
+
+Step 2:  Gaussian Process Regression
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once the Gaussian process  :math:`\vect{Y}` has been estimated, the Gaussian process regression
+aims at conditioning it to the data set: we make the Gaussian process approximation become
+interpolating over the dataset.
+
+The final Gaussian process regression denoted by :math:`\vect{Z}` is defined by:
+
+.. math::
+    :label: GPRdef
+
+    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
+
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
+:math:`1 \leq k \leq \sampleSize`.
+
+Then, :math:`\vect{Z}` is a Gaussian process, which mean is defined by:
+
+.. math::
+
+   \Expect{\vect{Z}(\omega, \vect{x})\, | \,  \cC}  & =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}\\
+    & = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
+    \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
+
+where:
+
+.. math::
+
+    \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}
+    _{\sampleSize}))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}
+    _{\sampleSize})  \right) \in \cM_{\outputDim,\sampleSize \times \outputDim}(\Rset)
+
+and :math:`\vect{\gamma}` is defined by:
+
+.. math::
+    :label: gammaDefinition
+
+    \vect{\gamma} = \mat{C}^{-1} \left( \vect{y}_1 - \vect{\mu}( \vect{x}_1), \dots, \vect{y}_\sampleSize -
+    \vect{\mu}( \vect{x}_\sampleSize) \right) \in  \cM_{\sampleSize \times \outputDim, 1}(\Rset)
+
+where:
+
+.. math::
+
+    \mat{C} = \Cov{\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})}\in
+    \cM_{\sampleSize \times \outputDim, \sampleSize \times \outputDim}(\Rset)
+
+Finally, we get the following mean of the Gaussian process regression at the point :math:`\vect{x}`:
+
+.. math::
+    :label: expectationGPR
+
+    \Expect{\vect{Z}(\omega, \vect{x})} = \vect{\mu}(\vect{x}) + \sum_{i=1}
+    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i) \in \Rset^{\outputDim}
+
+The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defined by:
+
+.. math::
+    :label: covarianceGPR_point
+
+    \Cov{\vect{Z}(\omega, \vect{x})} & =  \Cov{\vect{Y}(\omega, \vect{x}), \vect{Y}(\omega,
+    \vect{x})} - \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
+    \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \mat{C}^{-1}\Cov{(\vect{Y}
+    (\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize})), \vect{Y}(\omega,
+    \vect{x})}
+
+with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
+defined by:
+
+.. math::
+    :label: covarianceGPR_sample
+
+    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
+        \left(
+          \begin{array}{lcl}
+            \Sigma_{11} & \dots & \Sigma_{1N} \\
+            \dots  \\
+            \Sigma_{N1} & \dots & \Sigma_{NN}
+          \end{array}
+        \right)
+
+where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
+
+This step is performed by the class :class:`~openturns.experimental.GaussianProcessRegression`.
+
+
+Step 3:  Gaussian Process Regression metamodel and its exploitation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
+
+.. math::
+    :label: GPRmetamodel
+
+    \metaModel(\vect{x}) = \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}.
+
+We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
+:class:`~openturns.experimental.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
+
 
 .. topic:: API:
 
+    - See :class:`~openturns.experimental.GaussianProcessFitter`
     - See :class:`~openturns.experimental.GaussianProcessRegression`
-    - See :class:`~openturns.KrigingAlgorithm`
+    - See :class:`~openturns.experimental.GaussianProcessConditionalCovariance`
 
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging`
+    - See :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_1d`
 
 
 .. topic:: References:
 
     - [dubourg2011]_
-    - S. Lophaven, H. Nielsen and J. Sondergaard, 2002, "DACE, A Matlab kriging toolbox", Technichal University of Denmark. https://www.omicron.dk/dace/dace.pdf
+    - S. Lophaven, H. Nielsen and J. Sondergaard, 2002, "DACE, A Matlab kriging toolbox", Technichal University
+      of Denmark. https://www.omicron.dk/dace/dace.pdf
     - T. Santner, B. Williams and W. Notz, 2003. "The design and analysis of computer experiments", Springer, New York.
     - C. Rasmussen and C. Williams, 2006, T. Dietterich (Ed.), "Gaussian processes for machine learning", MIT Press.
 

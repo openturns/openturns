@@ -10,6 +10,7 @@ Iterated Functions System
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+# sphinx_gallery_thumbnail_number = 4
 import math as m
 
 ot.Log.Show(ot.Log.NONE)
@@ -108,6 +109,7 @@ graph, s = drawIFS(
     f_i, skip=100, iterations=100000, batch_size=1, name="Fern", color="green"
 )
 print("Box counting dimension=%.3f" % s)
+# sphinx_gallery_thumbnail_number = 2
 view = viewer.View(graph)
 
 # %%

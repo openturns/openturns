@@ -5,20 +5,40 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+
 Parameters
 ----------
 gprResult :  :class:`~openturns.experimental.GaussianProcessRegressionResult`
-    The result class of a Gaussian process regression.
+    The result class built by :class:`~openturns.experimental.GaussianProcessRegression`.
 
 
 Notes
 -----
-The class provides services around conditional covariance of a Gaussian Process Regression
 
+
+Refer to :ref:`gaussian_process_regression` (step 3) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+
+
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model. The  Gaussian process approximation :math:`\vect{Y}` is defined by:
+
+.. math::
+
+    \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
+
+where :math:`\vect{\mu} : \Rset^\inputDim \rightarrow \Rset^outputDim` is the trend function and :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and a specified covariance function. The Gaussian process regression denoted by :math:`\vect{Z}` is defined by:
+
+.. math::
+
+    \vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \,  \cC
+
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for
+:math:`1 \leq k \leq \sampleSize`.
+
+The class provides services related to the conditional covariance of the Gaussian process regression :math:`\vect{Z}`.
 
 Examples
 --------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+Create the model :math:`g: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> from openturns.experimental import GaussianProcessRegression
@@ -51,24 +71,24 @@ Parameters
 x : sequence of float
     The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)` where the conditional mean of the output has to be evaluated (*N* can be equal to 1).
 
 Returns
 -------
 condMean : :class:`~openturns.Point`
-    The conditional mean :math:`\Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
-    Or the conditional mean matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
+    The conditional mean the Gaussian process regression :math:`\vect{Z}` defined in :eq:`GPRdef` at point :math:`\vect{x}` or on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`:
 
     .. math::
 
         \left(
           \begin{array}{l}
-            \Expect{\vect{Y}(\omega, \vect{\xi}_1)\, | \,  \cC}\\
+            \Expect{\vect{Z}(\omega, \vect{\xi}_1)}\\
             \dots  \\
-            \Expect{\vect{Y}(\omega, \vect{\xi}_M)\, | \,  \cC}
+            \Expect{\vect{Z}(\omega, \vect{\xi}_N)}
           \end{array}
         \right)
 
+    This vector is in :math:`\Rset^{N \times \outputDim}`.
 "
 
 
@@ -82,30 +102,17 @@ Parameters
 x : sequence of float
     The point :math:`\vect{x}` where the conditional covariance of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional covariance of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)` where the conditional covariance of the output has to be evaluated (*N* can be equal to 1).
 
 Returns
 -------
 condCov : :class:`~openturns.CovarianceMatrix`
-    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
-    Or the conditional covariance matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
-
-    .. math::
-
-        \left(
-          \begin{array}{lcl}
-            \Sigma_{11} & \dots & \Sigma_{1M} \\
-            \dots  \\
-            \Sigma_{M1} & \dots & \Sigma_{MM}
-          \end{array}
-        \right)
-
-    where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega, \vect{\xi}_j)\, | \,  \cC}`."
+    The conditional covariance of the Gaussian process regression  :math:`\vect{Z}` defined in :eq:`GPRdef` at point :math:`\vect{x}` is defined in :eq:`covarianceGPR_point`. When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is defined in :eq:`covarianceGPR_sample`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessConditionalCovariance::getDiagonalCovariance
-"Compute the conditional covariance of the Gaussian process on a point.
+"Compute the diagonal conditional covariance of the Gaussian process on a point.
 
 Parameters
 ----------
@@ -125,18 +132,20 @@ condCov : :class:`~openturns.CovarianceMatrix`
 Parameters
 ----------
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional marginal covariance of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)` where the conditional marginal covariance of the output has to be evaluated (*N* can be equal to 1).
 
 Returns
 -------
 condCov : :class:`~openturns.CovarianceMatrixCollection`
-    The collection of conditional covariance matrices :math:`\Cov{\vect{Y}(\omega, \vect{\xi})\, | \,  \cC}` at
-    each point of the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
+    The collection of conditional covariance matrices :math:`\Cov{\vect{Z}(\omega, \vect{\xi}_i)}
+    = \mat{\Sigma_{ii}}` for :math:`1 \leq i \leq N` defined in :eq:`covarianceGPR_sample`.
 
 Notes
 -----
 Each element of the collection corresponds to the conditional covariance with respect to the input learning set
-(e.g. a pointwise evaluation of the `getDiagonalCovariance`)."
+(e.g. a pointwise evaluation of the `getDiagonalCovariance`). The returned collection is
+of size :math:`N` and contains matrices in :math:`\cM_{\outputDim, \outputDim}(\Rset)`."
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GaussianProcessConditionalCovariance::getConditionalMarginalVariance
@@ -147,27 +156,33 @@ Parameters
 x : sequence of float
     The point :math:`\vect{x}` where the conditional variance of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional variance of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)` where the conditional variance of the output has to be evaluated (*N* can be equal to 1).
 marginalIndex : int
     Marginal of interest (for multiple outputs).
-    Default value is 0
+    
+    Default value is 0 (first component).
 marginalIndices : sequence of int
     Marginals of interest (for multiple outputs).
 
 Returns
 -------
 var : float
-      Variance of interest.
-      float if one point (x) and one marginal of interest (x, marginalIndex)
+      The variance of the specified marginal of the Gaussian process regression  :math:`\vect{Z}`
+      defined in :eq:`GPRdef` at the specified point.
 
 varPoint : sequence of float
-    The marginal variances
+    The marginal variances of each marginal of interest computed at each given point.
 
 
 Notes
 -----
-In case of fourth usage, the sequence of float is given as the concatenation of marginal variances 
-for each point in sampleX."
+If only one  marginal :math:`k`  of interest  and one point  :math:`\vect{x}` have been specified,
+the method returns :math:`\Var{Z_k(\omega, \vect{x})}` where :math:`\vect{Z}` is the Gaussian
+process regression  defined in :eq:`GPRdef`.
+
+If several marginal of interest :math:`(k_1, \dots, k_M)` or several points :math:`(\vect{\xi}_1,
+\dots, \vect{\xi}_N)` have been specified, the method returns the concatenation of
+sequence of variances :math:`(\Var{Z_{k_1}(\omega, \vect{\xi}_j)}, \dots, \Var{Z_{k_M}(\omega, \vect{\xi}_j)})` for each :math:`1 \leq j \leq N`."
 
 // ---------------------------------------------------------------------
 
@@ -179,7 +194,7 @@ Parameters
 pt : sequence of float
     The point :math:`\vect{x}` where the conditional distribution of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional distribution of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)` where the conditional distribution of the output has to be evaluated (*N* can be equal to 1).
 
 Returns
 -------
@@ -188,8 +203,12 @@ condDist : :class:`~openturns.Normal`
 
 Notes
 -----
-The conditional distribution :math:`\cN(\Expect{\vect{Y}}, \Cov{\vect{Y}})` has respectively conditional mean and covariance functions 
-implemented in :meth:`getConditionalMean` (respectively :meth:`getConditionalCovariance`)."
+The conditional distribution of the Gaussian
+process regression :math:`\vect{Z}` defined in :eq:`GPRdef` and computed at :math:`\vect{x}` or at :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`.
+In the first case, the method returns a Gaussian distribution of dimension :math:`\outputDim`,
+while in the second case, the method returns a Gaussian distribution of dimension
+:math:`N \times \outputDim`. The mean and the coarance matrix of the resulting distribution are
+computed by :meth:`getConditionalMean` and :meth:`getConditionalCovariance`."
 
 // ---------------------------------------------------------------------
 
@@ -199,6 +218,5 @@ implemented in :meth:`getConditionalMean` (respectively :meth:`getConditionalCov
 Returns
 -------
 metaModel : :class:`~openturns.Function`
-    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`.
-"
+    The Gaussian process regression metamodel :math:`\tilde{g}: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined in :eq:`GPRmetamodel`."
 

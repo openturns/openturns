@@ -103,9 +103,7 @@
 
 /* Uncertainty/Model */
 %include RatioOfUniforms.i
+%include GaussianProcessRandomVector.i
 
 /* Uncertainty/Process */
 %include ConditionedGaussianProcess.i
-
-/* Uncertainty/Model */
-%include GaussianProcessRandomVector.i

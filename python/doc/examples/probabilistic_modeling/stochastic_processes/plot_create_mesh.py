@@ -131,6 +131,7 @@ view = viewer.View(graphMappedBox)
 
 # %%
 # Finally we create a mesh of a heart in dimension 2.
+# sphinx_gallery_thumbnail_number = 6
 def meshHeart(ntheta, nr):
     # First, build the nodes
     nodes = ot.Sample(0, 2)

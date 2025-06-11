@@ -53,14 +53,14 @@ where:
     \mat{L}_{\rho}(\vect{s}, \vect{t})\,\Tr{\mat{L}_{\rho}(\vect{s}, \vect{t})}
     = \mat{\rho}(\vect{s}, \vect{t})
 
-The correlation function :math:`\mat{\rho}` may depend on additional
+where :math:`\mat{\rho}` is the correlation function: it may depend on additional
 specific parameters which are not made explicit here.
 
 The global correlation is given by two separate correlations:
 
     - the spatial correlation between the components of :math:`X_{\vect{t}}`
       which is given by the correlation matrix
-      :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` and the vector of marginal variances
+      :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` and the vector of marginal standard deviations
       :math:`\vect{\sigma} \in \Rset^{\inputDim}`.
       The spatial correlation does not depend on :math:`\vect{t} \in \cD`.
       For each  :math:`\vect{t}`, it links together the components of
@@ -102,6 +102,5 @@ The global correlation is given by two separate correlations:
 .. topic:: Examples:
 
     - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_create_stationary_covmodel`
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_user_stationary_covmodel`
     - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_userdefined_covariance_model`
 

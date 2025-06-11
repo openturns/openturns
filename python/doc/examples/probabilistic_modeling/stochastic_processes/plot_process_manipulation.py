@@ -1,6 +1,6 @@
 """
-Draw fields
-===========
+Manipulate stochastic processes
+===============================
 """
 
 # %%
@@ -131,6 +131,7 @@ fieldSample = process.getSample(number)
 
 # %%
 # Let us draw them the first marginal
+# sphinx_gallery_thumbnail_number = 5
 graph = fieldSample.drawMarginal(0, False)
 graph.setTitle("First marginal of 10 realizations of the process")
 graph.setXTitle("t")
