@@ -29,7 +29,6 @@ Test the design point with the Strong Maximum Test
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the model Y = x1 + 2*x2

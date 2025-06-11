@@ -7,7 +7,6 @@ Draw minimum volume level sets
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Draw minimum volume level set in 1D

@@ -10,7 +10,6 @@ Mix/max search using optimization
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the marginal distributions of the parameters

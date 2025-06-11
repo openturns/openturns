@@ -18,7 +18,6 @@ from openturns.viewer import View
 import numpy as np
 from openturns import viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 sampleSize = 4

@@ -24,7 +24,6 @@ Create a parametric function
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

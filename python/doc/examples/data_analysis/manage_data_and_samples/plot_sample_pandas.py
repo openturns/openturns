@@ -11,7 +11,6 @@ Link Pandas and OpenTURNS
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a sample from a 3-d Normal distribution

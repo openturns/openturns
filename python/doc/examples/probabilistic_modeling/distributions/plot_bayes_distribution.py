@@ -19,7 +19,6 @@ Create a Joint by Conditioning  distribution
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We consider the following case: :math:`X|\vect{\Theta} \sim \cN(\vect{\Theta})`

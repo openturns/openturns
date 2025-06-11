@@ -23,7 +23,6 @@ Truncate a  distribution
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # The original distribution
 distribution = ot.Gumbel(0.45, 0.6)

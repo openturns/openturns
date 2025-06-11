@@ -14,7 +14,6 @@ import openturns.viewer as viewer
 import numpy as np
 from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a composite random vector

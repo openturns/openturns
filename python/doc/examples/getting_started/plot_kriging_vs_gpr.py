@@ -38,7 +38,6 @@ from openturns import viewer
 from matplotlib import pyplot as plt
 import openturns.experimental as otexp
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # First let us introduce some useful function.

@@ -11,7 +11,6 @@ Polynomial chaos graphs
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

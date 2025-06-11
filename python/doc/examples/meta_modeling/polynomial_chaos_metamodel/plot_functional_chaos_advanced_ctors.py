@@ -34,7 +34,6 @@ Advanced polynomial chaos construction
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 model = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["1+x1*x2 + 2*x3^2+x4^4"])

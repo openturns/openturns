@@ -374,7 +374,6 @@ def computeSparseLeastSquaresFunctionalChaos(
 # We choose a sample size equal to 1000.
 
 # %%
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 input_names = im.inputDistribution.getDescription()

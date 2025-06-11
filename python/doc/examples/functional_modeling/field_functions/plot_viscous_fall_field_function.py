@@ -18,7 +18,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from openturns.usecases import viscous_free_fall
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Load the viscous free fall example.

@@ -18,7 +18,6 @@ Create a full or sparse polynomial chaos expansion
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the model

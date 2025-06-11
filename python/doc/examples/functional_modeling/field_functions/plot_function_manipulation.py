@@ -23,7 +23,6 @@ Function manipulation
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a vectorial function R ^n --> R^p

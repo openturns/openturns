@@ -57,7 +57,6 @@ Estimate a scalar ARMA process
 import openturns as ot
 
 ot.RandomGenerator.SetSeed(0)
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create an ARMA process

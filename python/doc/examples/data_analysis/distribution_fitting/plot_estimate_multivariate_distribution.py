@@ -17,7 +17,6 @@ Estimate a multivariate distribution
 import openturns as ot
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(0)
 
 # %%

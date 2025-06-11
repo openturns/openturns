@@ -18,7 +18,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate design of experiments

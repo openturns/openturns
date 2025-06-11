@@ -16,7 +16,6 @@ Select fitted distributions
 import openturns as ot
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a sample from a continuous distribution

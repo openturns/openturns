@@ -15,7 +15,6 @@ Various design of experiments
 import openturns as ot
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Monte-Carlo sampling in 2D

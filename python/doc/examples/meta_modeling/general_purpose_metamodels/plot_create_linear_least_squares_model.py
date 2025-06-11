@@ -55,7 +55,6 @@ Create a linear least squares model
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the model

@@ -80,7 +80,6 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import chaboche_model
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate the observations

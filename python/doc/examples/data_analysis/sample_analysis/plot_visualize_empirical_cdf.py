@@ -11,7 +11,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Then create a sample from a Gaussian distribution.

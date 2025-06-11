@@ -22,7 +22,6 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Definition of the model

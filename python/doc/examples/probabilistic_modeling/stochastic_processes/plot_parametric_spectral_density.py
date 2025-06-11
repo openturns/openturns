@@ -15,7 +15,6 @@ Create a parametric spectral density function
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # 1. Define a spectral density function from correlation matrix

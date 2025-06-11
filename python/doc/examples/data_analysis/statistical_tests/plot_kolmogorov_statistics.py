@@ -16,7 +16,6 @@ Kolmogorov-Smirnov : understand the statistics
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The `computeKSStatisticsIndex` function computes the Kolmogorov-Smirnov

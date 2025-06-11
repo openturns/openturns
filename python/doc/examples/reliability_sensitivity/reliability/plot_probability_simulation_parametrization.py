@@ -15,7 +15,6 @@ Specify a simulation algorithm
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the joint distribution of the parameters.

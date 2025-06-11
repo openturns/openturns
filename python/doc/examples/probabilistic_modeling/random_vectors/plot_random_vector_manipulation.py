@@ -14,7 +14,6 @@ Create a random vector
 
 # %%
 import openturns as ot
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Case 1: use the :class:`~openturns.RandomVector` class

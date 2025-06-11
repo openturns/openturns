@@ -10,7 +10,6 @@ Assemble copulas
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a collection of copulas

@@ -27,7 +27,6 @@ import openturns as ot
 import openturns.viewer
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We define a linear model with 5 independent Gaussian inputs and 2 outputs.

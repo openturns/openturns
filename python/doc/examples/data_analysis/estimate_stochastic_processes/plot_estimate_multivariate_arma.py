@@ -34,7 +34,6 @@ Estimate a multivariate ARMA process
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a 2-d ARMA process

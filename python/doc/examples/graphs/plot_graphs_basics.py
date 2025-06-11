@@ -19,7 +19,6 @@ import openturns as ot
 import openturns.viewer as viewer
 import matplotlib.pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 n = ot.Normal()

@@ -17,7 +17,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import numpy as np
 
-ot.Log.Show(ot.Log.NONE)
 ot.RandomGenerator.SetSeed(1)
 
 # %%

@@ -6,7 +6,6 @@ Test independence
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

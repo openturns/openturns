@@ -16,7 +16,6 @@ Fit a distribution by maximum likelihood
 import openturns as ot
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create data from the PDF of the Normal distribution with :math:`\mu=4`, :math:`\sigma=1.5`.

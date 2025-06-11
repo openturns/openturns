@@ -33,7 +33,6 @@ import openturns as ot
 import openturns.viewer as otv
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 
 
 def rastriginPy(X):

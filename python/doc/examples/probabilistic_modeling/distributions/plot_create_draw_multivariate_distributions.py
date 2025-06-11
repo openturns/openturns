@@ -9,7 +9,6 @@ import openturns as ot
 import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 
 # %%

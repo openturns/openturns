@@ -53,7 +53,6 @@ import openturns as ot
 import openturns.coupling_tools as ct
 import sys
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The following is the content of the `external_program.py` script.

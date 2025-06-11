@@ -35,7 +35,6 @@ Use the post-analytical importance sampling algorithm
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a model

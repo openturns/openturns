@@ -10,7 +10,6 @@ Extract the copula from a distribution
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a multivariate Normal distribution

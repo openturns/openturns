@@ -49,7 +49,6 @@ Defining Python and symbolic functions: a quick start introduction to functions
 import numpy as np
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We first define the input random vector of the function.

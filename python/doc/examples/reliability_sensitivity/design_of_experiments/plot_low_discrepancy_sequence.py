@@ -22,7 +22,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # 1. Sobol sequence

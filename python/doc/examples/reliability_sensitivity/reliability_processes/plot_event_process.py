@@ -39,7 +39,6 @@ Create an event based on a process
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a 2-d mesh

@@ -14,7 +14,6 @@ There are several possible ways to achieve this:
 import openturns as ot
 import pickle
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create objects to save

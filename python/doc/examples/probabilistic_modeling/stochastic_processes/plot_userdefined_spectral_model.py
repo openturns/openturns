@@ -45,7 +45,6 @@ import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the frequency grid:

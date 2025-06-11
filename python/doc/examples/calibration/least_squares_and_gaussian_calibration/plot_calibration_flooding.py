@@ -54,7 +54,6 @@ import numpy as np
 import openturns as ot
 
 ot.ResourceMap.SetAsUnsignedInteger("Normal-SmallDimension", 1)
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the observations

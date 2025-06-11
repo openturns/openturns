@@ -22,7 +22,6 @@ import openturns as ot
 import numpy as np
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :

@@ -30,7 +30,6 @@ from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :

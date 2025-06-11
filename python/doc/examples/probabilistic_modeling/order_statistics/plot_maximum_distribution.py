@@ -19,7 +19,6 @@ Create the distribution of the maximum of distributions
 import openturns as ot
 import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Case 1: The maximum correlated scalar distributions

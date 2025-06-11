@@ -11,7 +11,6 @@ Mix/max search and sensitivity from design
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the marginal distributions of the parameters.
