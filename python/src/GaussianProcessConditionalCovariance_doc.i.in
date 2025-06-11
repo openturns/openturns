@@ -177,12 +177,12 @@ varPoint : sequence of float
 Notes
 -----
 If only one  marginal :math:`k`  of interest  and one point  :math:`\vect{x}` have been specified,
-the method returns :math:`\Var{Z_k(\omega, \vect{x}}` where :math:`\vect{Z}` is the Gaussian
+the method returns :math:`\Var{Z_k(\omega, \vect{x})}` where :math:`\vect{Z}` is the Gaussian
 process regression  defined in :eq:`GPRdef`.
 
-If several marginal of interest :math:`k_1, \dots, k_M)` or several points :math:`(\vect{\xi}_1,
+If several marginal of interest :math:`(k_1, \dots, k_M)` or several points :math:`(\vect{\xi}_1,
 \dots, \vect{\xi}_N)` have been specified, the method returns the concatenation of
-sequence of variances :math:`(\Var{Z_{k_1}(\omega, \vect{\xi}_j}, \dots, \Var{Z_{k_M}(\omega, \vect{\xi}_j})` for each :math:`1 \leq j \leq N`."
+sequence of variances :math:`(\Var{Z_{k_1}(\omega, \vect{\xi}_j)}, \dots, \Var{Z_{k_M}(\omega, \vect{\xi}_j)})` for each :math:`1 \leq j \leq N`."
 
 // ---------------------------------------------------------------------
 

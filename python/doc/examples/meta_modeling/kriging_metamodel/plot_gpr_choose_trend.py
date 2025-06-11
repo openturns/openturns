@@ -26,7 +26,7 @@ import openturns.viewer as otv
 # Refer to :ref:`gaussian_process_regression` to get all the notations and the theoretical aspects.
 # In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_beam_trend` example,
 # we give another example of this method.
-# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_kriging_beam_arbitrary_trend` example,
+# In the :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_beam_arbitrary_trend` example,
 # we show how to configure an arbitrary trend.
 #
 # The model is the function :math:`g: \Rset \rightarrow \Rset` defined by:
