@@ -37,8 +37,8 @@ class OT_API Normal
 
   CLASSNAME
 
-    /** The NormalCopula class is closely related with the Normal class */
-    friend class NormalCopula;
+  /** The NormalCopula class is closely related with the Normal class */
+  friend class NormalCopula;
 
 public:
 

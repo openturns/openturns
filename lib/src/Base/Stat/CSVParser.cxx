@@ -44,8 +44,8 @@ CSVParser::CSVParser()
 }
 
 CSVParser::CSVParser(const String & fileName)
-: Object()
-, fileName_(fileName) {}
+  : Object()
+  , fileName_(fileName) {}
 
 
 /* String converter */
@@ -116,7 +116,7 @@ Sample CSVParser::load() const
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;
 
-  auto convLambda = [this, &oneOk](const std::string& pStr, Scalar& pVal)
+  auto convLambda = [this, &oneOk](const std::string & pStr, Scalar & pVal)
   {
     std::istringstream iss(pStr);
     iss.imbue(std::locale(std::locale::classic(), new CSVParserFormat(decimalSeparator_)));
@@ -124,8 +124,9 @@ Sample CSVParser::load() const
     if (iss.fail() || iss.bad() || !iss.eof())
     {
       const std::map<String, Scalar> infMap = {{"inf", SpecFunc::Infinity}, {"+inf", SpecFunc::Infinity}, {"-inf", -SpecFunc::Infinity},
-                                               {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
-                                               {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity}};
+        {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
+        {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity}
+      };
       // handle inf values
       if (infMap.count(pStr))
         pVal = infMap.at(pStr);

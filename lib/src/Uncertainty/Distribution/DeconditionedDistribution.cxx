@@ -325,17 +325,17 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
     {
       const Scalar wI = yPDF(i, 0);
       if (wI > 0.0)
-	try
-	  {
-	    Distribution dist(conditionedDistribution);
-	    dist.setWeight(wI);
-	    dist.setParameter(parameters[i]);
-	    atoms.add(dist);
-	  }
-	catch (...)
-	  {
-	    LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
-	  }
+        try
+        {
+          Distribution dist(conditionedDistribution);
+          dist.setWeight(wI);
+          dist.setParameter(parameters[i]);
+          atoms.add(dist);
+        }
+        catch (...)
+        {
+          LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
+        }
     } // Discrete measure
     // Now, update the underlying Mixture
     // Hide warnings
@@ -367,17 +367,17 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
     {
       const Scalar wI = yPDF(i, 0) * continuousWeights_[i];
       if (wI > 0.0)
-	try
-	  {
-	    Distribution dist(conditionedDistribution);
-	    dist.setWeight(wI);
-	    dist.setParameter(parameters[i]);
-	    atoms.add(dist);
-	  }
-	catch (...)
-	  {
-	    LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
-	  }
+        try
+        {
+          Distribution dist(conditionedDistribution);
+          dist.setWeight(wI);
+          dist.setParameter(parameters[i]);
+          atoms.add(dist);
+        }
+        catch (...)
+        {
+          LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
+        }
     } // Continuous measure
     // Now, update the underlying Mixture
     // Hide warnings
@@ -418,16 +418,16 @@ void DeconditionedDistribution::setConditionedAndConditioningDistributionsAndLin
     const Scalar wI = yPDF(i, 0) * continuousWeights_[i % continuousAtomsNumber];
     if (wI > 0.0)
       try
-	{
-	  Distribution dist(conditionedDistribution);
-	  dist.setWeight(wI);
-	  dist.setParameter(parameters[i]);
-	  atoms.add(dist);
-	  }
-	catch (...)
-	  {
-	    LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
-	  }	  
+      {
+        Distribution dist(conditionedDistribution);
+        dist.setWeight(wI);
+        dist.setParameter(parameters[i]);
+        atoms.add(dist);
+      }
+      catch (...)
+      {
+        LOGDEBUG(OSS() << "In DeconditionedDistribution, skip atom with parameter " << parameters[i] << " not compatible with conditioned distribution " << conditionedDistribution);
+      }
   }
   // Now, update the underlying Mixture
   // Hide warnings

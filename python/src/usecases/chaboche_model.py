@@ -112,7 +112,9 @@ class ChabocheModel:
             [self.Strain, self.R, self.C, self.Gamma]
         )
 
-        self.model = ot.SymbolicFunction(["Strain", "R", "C", "Gamma"], ["R - C * expm1(-Gamma * Strain) / Gamma"])
+        self.model = ot.SymbolicFunction(
+            ["Strain", "R", "C", "Gamma"], ["R - C * expm1(-Gamma * Strain) / Gamma"]
+        )
         self.model.setOutputDescription(["Stress"])
 
         self.data = ot.Sample(

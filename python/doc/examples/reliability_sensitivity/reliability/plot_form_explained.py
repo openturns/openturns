@@ -15,6 +15,7 @@ An illustrated example of a FORM probability estimate
 import openturns as ot
 import openturns.viewer as otv
 import numpy as np
+
 # sphinx_gallery_thumbnail_number = 8
 
 # %%

@@ -111,8 +111,12 @@ y_test = g(x_test)
 # %%
 # We plot the true function (continuous dashed curve) and train data (cloud points) on the same figure.
 graph = ot.Graph("Function of interest", "", "", True, "")
-graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Train points", color="red"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
+)
+graph.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="Train points", color="red")
+)
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
@@ -164,8 +168,16 @@ gprMetamodel = gpr_result.getMetaModel()
 graph = ot.Graph("Comparison data vs GP models", "", "", True, "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
-graph.add(plot_1d_data(x_test, krigingMM(x_test), legend="Kriging", color="blue", linestyle="dashed"))
-graph.add(plot_1d_data(x_test, gprMetamodel(x_test), legend="GPR", color="green", linestyle="dotdash"))
+graph.add(
+    plot_1d_data(
+        x_test, krigingMM(x_test), legend="Kriging", color="blue", linestyle="dashed"
+    )
+)
+graph.add(
+    plot_1d_data(
+        x_test, gprMetamodel(x_test), legend="GPR", color="green", linestyle="dotdash"
+    )
+)
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
@@ -194,15 +206,21 @@ ot.RandomGenerator.SetSeed(1235)
 epsilon = ot.Normal(0, 1.5).getSample(y_train.getSize())
 
 # %%
-kriging_algo_wnf = ot.KrigingAlgorithm(x_train, y_train + epsilon, covarianceModel, basis)
+kriging_algo_wnf = ot.KrigingAlgorithm(
+    x_train, y_train + epsilon, covarianceModel, basis
+)
 kriging_algo_wnf.setOptimizationAlgorithm(ot.NLopt("GN_DIRECT"))
 kriging_algo_wnf.run()
 kriging_result_wnf = kriging_algo_wnf.getResult()
 krigingMM_wnf = kriging_result_wnf.getMetaModel()
-print(f"Nugget factor estimated with Kriging class = {kriging_result_wnf.getCovarianceModel().getNuggetFactor()}")
+print(
+    f"Nugget factor estimated with Kriging class = {kriging_result_wnf.getCovarianceModel().getNuggetFactor()}"
+)
 
 # %%
-fitter_algo_wnf = otexp.GaussianProcessFitter(x_train, y_train + epsilon, covarianceModel, basis)
+fitter_algo_wnf = otexp.GaussianProcessFitter(
+    x_train, y_train + epsilon, covarianceModel, basis
+)
 fitter_algo_wnf.setOptimizationAlgorithm(ot.NLopt("GN_DIRECT"))
 fitter_algo_wnf.run()
 fitter_result_wnf = fitter_algo_wnf.getResult()
@@ -210,15 +228,37 @@ gpr_algo_wnf = otexp.GaussianProcessRegression(fitter_result_wnf)
 gpr_algo_wnf.run()
 gpr_result_wnf = gpr_algo_wnf.getResult()
 gprMetamodel_wnf = gpr_result_wnf.getMetaModel()
-print(f"Nugget factor estimated with GPR class = {gpr_result_wnf.getCovarianceModel().getNuggetFactor()}")
+print(
+    f"Nugget factor estimated with GPR class = {gpr_result_wnf.getCovarianceModel().getNuggetFactor()}"
+)
 
 # %%
 # We plot the test and train data
 graph = ot.Graph("test and train with noisy data", "", "", True, "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black"))
-graph.add(plot_1d_data(x_train, y_train + epsilon, type="Cloud", legend="Noisy data", color="red"))
-graph.add(plot_1d_data(x_test, krigingMM_wnf(x_test), legend="Kriging", color="blue", linestyle="dashed"))
-graph.add(plot_1d_data(x_test, gprMetamodel_wnf(x_test), legend="GPR", color="green", linestyle="dotdash"))
+graph.add(
+    plot_1d_data(
+        x_train, y_train + epsilon, type="Cloud", legend="Noisy data", color="red"
+    )
+)
+graph.add(
+    plot_1d_data(
+        x_test,
+        krigingMM_wnf(x_test),
+        legend="Kriging",
+        color="blue",
+        linestyle="dashed",
+    )
+)
+graph.add(
+    plot_1d_data(
+        x_test,
+        gprMetamodel_wnf(x_test),
+        legend="GPR",
+        color="green",
+        linestyle="dotdash",
+    )
+)
 graph.setAxes(True)
 graph.setAxes(True)
 graph.setXTitle("X")
@@ -259,7 +299,9 @@ print("Quantile alpha=%f" % (quantileAlpha))
 # %%
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 epsilon = ot.Sample(n_test, [1.0e-8])
-conditional_variance_kriging = kriging_result.getConditionalMarginalVariance(x_test) + epsilon
+conditional_variance_kriging = (
+    kriging_result.getConditionalMarginalVariance(x_test) + epsilon
+)
 conditional_sigma_kriging = sqrt(conditional_variance_kriging)
 
 # %%
@@ -280,7 +322,9 @@ conditional_sigma_gpr = sqrt(conditional_variance_gpr)
 # Let us compute the same conditional standard deviation when accounting for the noise.
 
 # %%
-conditional_variance_kriging_wnf = kriging_result_wnf.getConditionalMarginalVariance(x_test) + epsilon
+conditional_variance_kriging_wnf = (
+    kriging_result_wnf.getConditionalMarginalVariance(x_test) + epsilon
+)
 conditional_sigma_kriging_wnf = sqrt(conditional_variance_kriging_wnf)
 
 gccc_wnf = otexp.GaussianProcessConditionalCovariance(gpr_result_wnf)
@@ -312,10 +356,18 @@ mycolors = [120, 1.0, 1.0]
 # First let us evaluate the different confidence bounds
 
 # %%
-ci_lower_bound_km, ci_upper_bound_km = computeBoundsConfidenceInterval(krigingMM(x_test), quantileAlpha, conditional_sigma_kriging)
-ci_lower_bound_km_noise, ci_upper_bound_km_noise = computeBoundsConfidenceInterval(krigingMM_wnf(x_test), quantileAlpha, conditional_sigma_kriging_wnf)
-ci_lower_bound_gpr, ci_upper_bound_gpr = computeBoundsConfidenceInterval(gprMetamodel(x_test), quantileAlpha, conditional_sigma_gpr)
-ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise = computeBoundsConfidenceInterval(gprMetamodel_wnf(x_test), quantileAlpha, conditional_sigma_gpr_wnf)
+ci_lower_bound_km, ci_upper_bound_km = computeBoundsConfidenceInterval(
+    krigingMM(x_test), quantileAlpha, conditional_sigma_kriging
+)
+ci_lower_bound_km_noise, ci_upper_bound_km_noise = computeBoundsConfidenceInterval(
+    krigingMM_wnf(x_test), quantileAlpha, conditional_sigma_kriging_wnf
+)
+ci_lower_bound_gpr, ci_upper_bound_gpr = computeBoundsConfidenceInterval(
+    gprMetamodel(x_test), quantileAlpha, conditional_sigma_gpr
+)
+ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise = computeBoundsConfidenceInterval(
+    gprMetamodel_wnf(x_test), quantileAlpha, conditional_sigma_gpr_wnf
+)
 
 # %%
 # Now we loop over the different models
@@ -323,14 +375,14 @@ ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise = computeBoundsConfidenceInte
 # %%
 grid_layout = ot.GridLayout(2, 2)
 grid_layout.setTitle("Confidence interval with various models")
-graph = ot.Graph(
-    "Kriging API", "x", "y", True, ""
-)
+graph = ot.Graph("Kriging API", "x", "y", True, "")
 boundsPoly = ot.Polygon.FillBetween(x_test, ci_lower_bound_km, ci_upper_bound_km)
 boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[0], mycolors[1], mycolors[2]))
 boundsPoly.setLegend(" %d%% bounds" % ((1.0 - alpha) * 100))
 graph.add(boundsPoly)
-graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
+)
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, krigingMM(x_test), legend="Kriging", color="blue"))
 
@@ -344,14 +396,14 @@ grid_layout.setGraph(0, 0, graph)
 # Gaussian Process Regression
 
 # %%
-graph = ot.Graph(
-    "GPR API", "x", "y", True, ""
-)
+graph = ot.Graph("GPR API", "x", "y", True, "")
 boundsPoly = ot.Polygon.FillBetween(x_test, ci_lower_bound_gpr, ci_upper_bound_gpr)
 boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[0], mycolors[1], mycolors[2]))
 boundsPoly.setLegend(" %d%% bounds" % ((1.0 - alpha) * 100))
 graph.add(boundsPoly)
-graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
+)
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, gprMetamodel(x_test), legend="GPR", color="blue"))
 
@@ -365,16 +417,24 @@ grid_layout.setGraph(0, 1, graph)
 # Kriging with noise (old API)
 
 # %%
-graph = ot.Graph(
-    "Kriging API", "x", "y", True, ""
+graph = ot.Graph("Kriging API", "x", "y", True, "")
+boundsPoly = ot.Polygon.FillBetween(
+    x_test, ci_lower_bound_km_noise, ci_upper_bound_km_noise
 )
-boundsPoly = ot.Polygon.FillBetween(x_test, ci_lower_bound_km_noise, ci_upper_bound_km_noise)
 boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[0], mycolors[1], mycolors[2]))
 boundsPoly.setLegend(" %d%% bounds" % ((1.0 - alpha) * 100))
 graph.add(boundsPoly)
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
-graph.add(plot_1d_data(x_test, krigingMM_wnf(x_test), legend="Kriging + noise", color="blue", linestyle="dashed"))
+graph.add(
+    plot_1d_data(
+        x_test,
+        krigingMM_wnf(x_test),
+        legend="Kriging + noise",
+        color="blue",
+        linestyle="dashed",
+    )
+)
 
 graph.setAxes(True)
 graph.setXTitle("X")
@@ -386,16 +446,20 @@ grid_layout.setGraph(1, 0, graph)
 # Gaussian Process Regression with noise
 
 # %%
-graph = ot.Graph(
-    "GPR API", "x", "y", True, ""
+graph = ot.Graph("GPR API", "x", "y", True, "")
+boundsPoly = ot.Polygon.FillBetween(
+    x_test, ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise
 )
-boundsPoly = ot.Polygon.FillBetween(x_test, ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise)
 boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[0], mycolors[1], mycolors[2]))
 boundsPoly.setLegend(" %d%% bounds" % ((1.0 - alpha) * 100))
 graph.add(boundsPoly)
-graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
+)
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
-graph.add(plot_1d_data(x_test, gprMetamodel_wnf(x_test), legend="GPR + noise", color="blue"))
+graph.add(
+    plot_1d_data(x_test, gprMetamodel_wnf(x_test), legend="GPR + noise", color="blue")
+)
 
 graph.setAxes(True)
 graph.setXTitle("X")
@@ -429,7 +493,9 @@ trend_function = ot.SymbolicFunction("x", "-3.1710410094572903")
 # Then we define the Gaussian Process Regression relying on these parameters:
 
 # %%
-gpr_algo_noopt = otexp.GaussianProcessRegression(x_train, y_train, covariance_opt, trend_function)
+gpr_algo_noopt = otexp.GaussianProcessRegression(
+    x_train, y_train, covariance_opt, trend_function
+)
 gpr_algo_noopt.run()
 gpr_result_no_opt = gpr_algo_noopt.getResult()
 gpr_nopt_Metamodel = gpr_result_no_opt.getMetaModel()
@@ -439,7 +505,9 @@ gpr_nopt_Metamodel = gpr_result_no_opt.getMetaModel()
 
 # %%
 graph = ot.Graph("GPR with known trend", "", "", True, "")
-graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
+)
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, gpr_nopt_Metamodel(x_test), legend="GPR", color="green"))
 graph.setAxes(True)
@@ -474,9 +542,13 @@ krigingMM_hsn = kriging_result_hsn.getMetaModel()
 
 # %%
 graph = ot.Graph("Kriging with known noise", "", "", True, "")
-graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed"))
+graph.add(
+    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
+)
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
-graph.add(plot_1d_data(x_test, krigingMM_hsn(x_test), legend="Kriging+noise", color="green"))
+graph.add(
+    plot_1d_data(x_test, krigingMM_hsn(x_test), legend="Kriging+noise", color="green")
+)
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")

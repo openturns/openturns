@@ -415,13 +415,13 @@ CorrelationMatrix UserDefined::getSpearmanCorrelation() const
   // Build the correct weighted ranks and compute its mean along the way
   Point meanRank(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Distribution marginalI(getMarginal(i));
+    for (UnsignedInteger k = 0; k < size; ++k)
     {
-      const Distribution marginalI(getMarginal(i));
-      for (UnsignedInteger k = 0; k < size; ++k)
-	{
-	  rank(k, i) = marginalI.computeCDF(points_(k, i));
-	  meanRank[i] += probabilities_[k] * rank(k, i);
-	} // k
+      rank(k, i) = marginalI.computeCDF(points_(k, i));
+      meanRank[i] += probabilities_[k] * rank(k, i);
+    } // k
   } // i
   // Then, the covariance of the rank
   CorrelationMatrix spearman(dimension);
@@ -436,12 +436,12 @@ CorrelationMatrix UserDefined::getSpearmanCorrelation() const
   // Then, the correlation
   Point std(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      std[i] = std::sqrt(spearman(i, i));
-      for (UnsignedInteger j = 0; j < i; ++j)
-	spearman(i, j) /= std[i] * std[j];
-      spearman(i, i) = 1.0;
-    }
+  {
+    std[i] = std::sqrt(spearman(i, i));
+    for (UnsignedInteger j = 0; j < i; ++j)
+      spearman(i, j) /= std[i] * std[j];
+    spearman(i, i) = 1.0;
+  }
   return spearman;
 }
 

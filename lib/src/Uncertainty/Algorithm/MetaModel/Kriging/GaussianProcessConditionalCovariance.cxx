@@ -173,56 +173,56 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
   CovarianceMatrix result((sigmaXX - BtB).getImplementation());
 
   if (basis.getSize() > 0)
-    {
-  // Case of universal Kriging: compute the covariance due to the regression part
-  // Additional information have to be computed
-  // 1) compute F
-  LOGINFO("Compute the regression matrix F");
-  // 2) Interest is (F^t R^{-1} F)^{-1}
-  // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
-  // Solve first L phi = F
-  // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
-  //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
-  //                 = phiT_ * B - f(x)
-  LOGINFO("Compute psi = phi^t * B");
-  Matrix ux(phiT_ * B);
-  // compute f(x) & define u = psi - f(x)
-  LOGINFO("Compute f(x) & ux = psi - fx");
-  const UnsignedInteger basisSize = basis.getSize();
-  // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
-  // As we get B functions, total number of values is B * outputDimension
-  // Compute fx & ux = ux - fx
-  for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    // Compute phi_j (X)
-    // Here we use potential parallelism in the evaluation of the basis functions
-    // It generates a sample of shape (sampleSize, outputDimension)
-    const Sample basisSample(basis[j](xi));
-    for (UnsignedInteger i = 0; i < sampleSize; ++i)
-      for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
-        ux(j * outputDimension + outputMarginal, outputMarginal + i * outputDimension) -= basisSample(i, outputMarginal);
-  }
-
-  // interest now is to solve  G rho = ux
-  LOGINFO("Solve linear system G * rho = ux");
-  const Matrix rho(Gt_.solveLinearSystem(ux));
-  LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
-  result = result + rho.computeGram(true);
+    // Case of universal Kriging: compute the covariance due to the regression part
+    // Additional information have to be computed
+    // 1) compute F
+    LOGINFO("Compute the regression matrix F");
+    // 2) Interest is (F^t R^{-1} F)^{-1}
+    // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
+    // Solve first L phi = F
+    // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
+    //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
+    //                 = phiT_ * B - f(x)
+    LOGINFO("Compute psi = phi^t * B");
+    Matrix ux(phiT_ * B);
+    // compute f(x) & define u = psi - f(x)
+    LOGINFO("Compute f(x) & ux = psi - fx");
+    const UnsignedInteger basisSize = basis.getSize();
+    // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
+    // As we get B functions, total number of values is B * outputDimension
+    // Compute fx & ux = ux - fx
+    for (UnsignedInteger j = 0; j < basisSize; ++j)
+    {
+      // Compute phi_j (X)
+      // Here we use potential parallelism in the evaluation of the basis functions
+      // It generates a sample of shape (sampleSize, outputDimension)
+      const Sample basisSample(basis[j](xi));
+      for (UnsignedInteger i = 0; i < sampleSize; ++i)
+        for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
+          ux(j * outputDimension + outputMarginal, outputMarginal + i * outputDimension) -= basisSample(i, outputMarginal);
     }
+
+    // interest now is to solve  G rho = ux
+    LOGINFO("Solve linear system G * rho = ux");
+    const Matrix rho(Gt_.solveLinearSystem(ux));
+    LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+    result = result + rho.computeGram(true);
+  }
   // now check if the result has positive diagonal elements
   Scalar smallest = 0.0;
   for (UnsignedInteger i = 0; i < result.getDimension(); ++i)
-    {
-      const Scalar dII = result(i, i);
-      if (dII < smallest) smallest = dII;
-    }
+  {
+    const Scalar dII = result(i, i);
+    if (dII < smallest) smallest = dII;
+  }
   // If the smallest diagonal element is negative, shift the whole diagonal
   // in order to make it zero
   if (smallest < 0.0)
-    {
-      for (UnsignedInteger i = 0; i < result.getDimension(); ++i)
-	result(i, i) -= smallest;
-    }
+  {
+    for (UnsignedInteger i = 0; i < result.getDimension(); ++i)
+      result(i, i) -= smallest;
+  }
   return result;
 }
 
@@ -337,57 +337,57 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
 
     const Basis basis(result_.getBasis());
     if (basis.getSize() > 0)
+    {
+      // Case of universal Kriging: compute the covariance due to the regression part
+      // Additional information have to be computed
+      // 1) compute F
+      LOGINFO("Compute the regression matrix F");
+      // 2) Interest is (F^t R^{-1} F)^{-1}
+      // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
+      // Solve first L phi = F
+      // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
+      //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
+      //                 = phiT_ * B - f(x)
+      LOGINFO("Compute psi = phi^t * B");
+      // ux playing the role of psi
+      Matrix ux(phiT_ * B);
+      // compute f(x) & define u = psi - f(x)
+      LOGINFO("Compute f(x) & ux = psi - fx");
+      for (UnsignedInteger j = 0; j < basis.getSize(); ++j)
       {
-    // Case of universal Kriging: compute the covariance due to the regression part
-    // Additional information have to be computed
-    // 1) compute F
-    LOGINFO("Compute the regression matrix F");
-    // 2) Interest is (F^t R^{-1} F)^{-1}
-    // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
-    // Solve first L phi = F
-    // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
-    //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
-    //                 = phiT_ * B - f(x)
-    LOGINFO("Compute psi = phi^t * B");
-    // ux playing the role of psi
-    Matrix ux(phiT_ * B);
-    // compute f(x) & define u = psi - f(x)
-    LOGINFO("Compute f(x) & ux = psi - fx");
-    for (UnsignedInteger j = 0; j < basis.getSize(); ++j)
-    {
-      // Compute phi_j (X)
-      // Here we use potential parallelism in the evaluation of the basis functions
-      // It generates a sample of shape (sampleSize, outputDimension)
-      const Sample basisSample(basis[j](xi));
-      for (UnsignedInteger i = 0; i < sampleSize; ++i)
-        ux(j,  i) -= basisSample(i, 0);
-    }
-    // interest now is to solve  G rho = ux
-    LOGINFO("Solve linear system G * rho = ux");
-    const Matrix rho(Gt_.solveLinearSystem(ux));
-    LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
-    for (UnsignedInteger j = 0; j < rho.getNbColumns(); ++j)
-    {
-      Scalar sum = 0.0;
-      for (UnsignedInteger i = 0; i < rho.getNbRows(); ++i)
-        sum += rho(i, j) * rho(i, j);
-      result(j, 0) += sum;
-    }
-      } // universal kriging
+        // Compute phi_j (X)
+        // Here we use potential parallelism in the evaluation of the basis functions
+        // It generates a sample of shape (sampleSize, outputDimension)
+        const Sample basisSample(basis[j](xi));
+        for (UnsignedInteger i = 0; i < sampleSize; ++i)
+          ux(j,  i) -= basisSample(i, 0);
+      }
+      // interest now is to solve  G rho = ux
+      LOGINFO("Solve linear system G * rho = ux");
+      const Matrix rho(Gt_.solveLinearSystem(ux));
+      LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+      for (UnsignedInteger j = 0; j < rho.getNbColumns(); ++j)
+      {
+        Scalar sum = 0.0;
+        for (UnsignedInteger i = 0; i < rho.getNbRows(); ++i)
+          sum += rho(i, j) * rho(i, j);
+        result(j, 0) += sum;
+      }
+    } // universal kriging
     // now check if the result has positive elements
     Scalar smallest = 0.0;
     for (UnsignedInteger i = 0; i < result.getSize(); ++i)
-      {
-	const Scalar varI = result(i, 0);
-	if (varI < smallest) smallest = varI;
-      }
+    {
+      const Scalar varI = result(i, 0);
+      if (varI < smallest) smallest = varI;
+    }
     // If the smallest element is negative, shift the whole sample
     // in order to make it zero
     if (smallest < 0.0)
-      {
-	for (UnsignedInteger i = 0; i < result.getSize(); ++i)
-	  result(i, 0) -= smallest;
-      }
+    {
+      for (UnsignedInteger i = 0; i < result.getSize(); ++i)
+        result(i, 0) -= smallest;
+    }
     return result;
   } // end for if  outputdim=1
 

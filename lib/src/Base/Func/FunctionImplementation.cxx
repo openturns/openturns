@@ -287,7 +287,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
     }
     catch (const Exception & exc)
     {
-      throw InternalException(HERE) << "Function cannot compute gradient at point=" << inP << " msg: "<< exc.what();
+      throw InternalException(HERE) << "Function cannot compute gradient at point=" << inP << " msg: " << exc.what();
     }
   } // Usual gradient failed
 }

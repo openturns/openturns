@@ -10,6 +10,7 @@ Iterated Functions System
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
+
 # sphinx_gallery_thumbnail_number = 4
 import math as m
 
@@ -29,7 +30,7 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     # tweak search bounds
     xMin, xMax = 0.0, -m.log(dim) / m.log(max(all_r))
     fMax = fs([xMax])[0]
-    eps = ot.SpecFunc.Precision ** 0.5
+    eps = ot.SpecFunc.Precision**0.5
     if abs(fMax) < eps:
         xMax += eps
     s = ot.Brent().solve(fs, 0.0, xMin, xMax)

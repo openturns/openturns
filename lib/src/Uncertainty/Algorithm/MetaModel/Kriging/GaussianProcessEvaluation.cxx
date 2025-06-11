@@ -42,10 +42,10 @@ GaussianProcessEvaluation::GaussianProcessEvaluation()
 
 /* Constructor with parameters */
 GaussianProcessEvaluation::GaussianProcessEvaluation (const Basis & basis,
-                                                      const Sample & inputSample,
-                                                      const CovarianceModel & covarianceModel,
-                                                      const Point & beta,
-                                                      const Sample & gamma)
+    const Sample & inputSample,
+    const CovarianceModel & covarianceModel,
+    const Point & beta,
+    const Sample & gamma)
   : EvaluationImplementation()
   , basis_(basis)
   , inputSample_(inputSample)
@@ -111,14 +111,14 @@ struct GaussianProcessEvaluationPointFunctor
   Point accumulator_;
 
   GaussianProcessEvaluationPointFunctor(const Point & input,
-                                const GaussianProcessEvaluation & evaluation)
+                                        const GaussianProcessEvaluation & evaluation)
     : input_(input)
     , evaluation_(evaluation)
     , accumulator_(evaluation.getOutputDimension())
   {}
 
   GaussianProcessEvaluationPointFunctor(const GaussianProcessEvaluationPointFunctor & other,
-                                TBBImplementation::Split)
+                                        TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(other.evaluation_.getOutputDimension())
@@ -146,14 +146,14 @@ struct GaussianProcessEvaluationPointFunctor1D
   Scalar accumulator_;
 
   GaussianProcessEvaluationPointFunctor1D(const Point & input,
-                                  const GaussianProcessEvaluation & evaluation)
+                                          const GaussianProcessEvaluation & evaluation)
     : input_(input)
     , evaluation_(evaluation)
     , accumulator_(0.0)
   {}
 
   GaussianProcessEvaluationPointFunctor1D(const GaussianProcessEvaluationPointFunctor1D & other,
-                                  TBBImplementation::Split)
+                                          TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(0.0)
@@ -217,8 +217,8 @@ struct GaussianProcessEvaluationSampleFunctor
   UnsignedInteger trainingSize_;
 
   GaussianProcessEvaluationSampleFunctor(const Sample & input,
-                                 Sample & output,
-                                 const GaussianProcessEvaluation & evaluation)
+                                         Sample & output,
+                                         const GaussianProcessEvaluation & evaluation)
     : input_(input)
     , output_(output)
     , evaluation_(evaluation)
@@ -252,8 +252,8 @@ struct GaussianProcessEvaluationSampleFunctor1D
   UnsignedInteger trainingSize_;
 
   GaussianProcessEvaluationSampleFunctor1D(const Sample & input,
-                                   Sample & output,
-                                   const GaussianProcessEvaluation & evaluation)
+      Sample & output,
+      const GaussianProcessEvaluation & evaluation)
     : input_(input)
     , output_(output)
     , evaluation_(evaluation)

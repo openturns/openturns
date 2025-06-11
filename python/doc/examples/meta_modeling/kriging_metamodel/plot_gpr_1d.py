@@ -297,7 +297,11 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # %%
 # sphinx_gallery_thumbnail_number = 5
 graph = ot.Graph(
-    "Gaussian process regression surrogate model and confidence bounds", "X", "Y", True, ""
+    "Gaussian process regression surrogate model and confidence bounds",
+    "X",
+    "Y",
+    True,
+    "",
 )
 
 # Now we loop over the different values :

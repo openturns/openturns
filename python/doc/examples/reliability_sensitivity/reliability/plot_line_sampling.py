@@ -103,7 +103,13 @@ def drawLines(algo, n=10):
             uDot = uPoint.dot(alpha)
             uPoint = uPoint - alpha * uDot
             # draw segment origin -> design point
-            plt.plot((uPoint[0], dp[0]), (uPoint[1], dp[1]), color="blue", linestyle="--", linewidth=0.75)
+            plt.plot(
+                (uPoint[0], dp[0]),
+                (uPoint[1], dp[1]),
+                color="blue",
+                linestyle="--",
+                linewidth=0.75,
+            )
             # draw origin
             plt.plot(uPoint[0], uPoint[1], "ro", markersize=3)
             # draw design point

@@ -97,10 +97,10 @@ void CombinationsDistribution::computeRange()
   Point lowerBound(k_);
   Point upperBound(k_);
   for (UnsignedInteger i = 0; i < k_; ++i)
-    {
-      lowerBound[i] = i;
-      upperBound[i] = n_ - k_ + i;
-    }
+  {
+    lowerBound[i] = i;
+    upperBound[i] = n_ - k_ + i;
+  }
   const Interval::BoolCollection finiteLowerBound(k_, true);
   const Interval::BoolCollection finiteUpperBound(k_, true);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -116,14 +116,14 @@ Point CombinationsDistribution::getRealization() const
   // Build the complementary subset if its cardinal is smaller than k_
   const UnsignedInteger actualK = (k_ > n_ / 2 ? n_ - k_ : k_);
   while (integralRealization.getSize() < actualK)
+  {
+    const UnsignedInteger i = RandomGenerator::IntegerGenerate(n_);
+    if (flags[i] == 0)
     {
-      const UnsignedInteger i = RandomGenerator::IntegerGenerate(n_);
-      if (flags[i] == 0)
-        {
-          integralRealization.add(i);
-          flags[i] = 1;
-        }
-    } // while
+      integralRealization.add(i);
+      flags[i] = 1;
+    }
+  } // while
   // Did I built the complementary set?
   if (actualK != k_)
     integralRealization = integralRealization.complement(n_);
@@ -160,10 +160,10 @@ Scalar CombinationsDistribution::computePDF(const Point & point) const
 }
 
 Scalar CombinationsDistribution::exploreTree(const Scalar j,
-                                             const UnsignedInteger lower,
-                                             const UnsignedInteger upper,
-                                             const UnsignedInteger count,
-                                             const Point & xReduced) const
+    const UnsignedInteger lower,
+    const UnsignedInteger upper,
+    const UnsignedInteger count,
+    const Point & xReduced) const
 {
   const Scalar normalizationProba = (k_ - j) / (n_ - j);
   // Upper branch of the tree
@@ -259,10 +259,10 @@ Distribution CombinationsDistribution::getMarginal(const UnsignedInteger index) 
   // First, compute the probabilities on a log scale
   Point probabilities(n_ - k_ + 1, -SpecFunc::LogBinomialCoefficient(n_, k_));
   for (UnsignedInteger x = index; x <= n_ - k_ + index; ++x)
-    {
-      support(x - index, 0) = x;
-      probabilities[x - index] += SpecFunc::LogBinomialCoefficient(x, index) + SpecFunc::LogBinomialCoefficient(n_ - 1 - x, k_ - 1 - index);
-    }
+  {
+    support(x - index, 0) = x;
+    probabilities[x - index] += SpecFunc::LogBinomialCoefficient(x, index) + SpecFunc::LogBinomialCoefficient(n_ - 1 - x, k_ - 1 - index);
+  }
   // Then, go back to the [0, 1] interval
   for (UnsignedInteger j = 0; j <= n_ - k_; ++j)
     probabilities[j] = SpecFunc::Clip01(std::exp(probabilities[j]));
@@ -285,16 +285,16 @@ Distribution CombinationsDistribution::getMarginal(const Indices & indices) cons
   const Sample support(getSupport().getMarginal(indices));
   Point probabilities(support.getSize());
   for (UnsignedInteger j = 0; j < support.getSize(); ++j)
-    {
-      const UnsignedInteger j0 = indices[0];
-      const UnsignedInteger x0 = static_cast<UnsignedInteger>(support(j, 0));
-      const UnsignedInteger je = indices[outputDimension - 1];
-      const UnsignedInteger xe = static_cast<UnsignedInteger>(support(j, outputDimension - 1));
-      probabilities[j] += SpecFunc::LogBinomialCoefficient(x0, j0) + SpecFunc::LogBinomialCoefficient(n_ - xe - 1, k_ - je - 1);
-      for (UnsignedInteger i = 1; i < outputDimension - 1; ++i)
-        probabilities[j] += SpecFunc::LogBinomialCoefficient(xe, je);
-      probabilities[j] = SpecFunc::Clip01(std::exp(probabilities[j]));
-    }
+  {
+    const UnsignedInteger j0 = indices[0];
+    const UnsignedInteger x0 = static_cast<UnsignedInteger>(support(j, 0));
+    const UnsignedInteger je = indices[outputDimension - 1];
+    const UnsignedInteger xe = static_cast<UnsignedInteger>(support(j, outputDimension - 1));
+    probabilities[j] += SpecFunc::LogBinomialCoefficient(x0, j0) + SpecFunc::LogBinomialCoefficient(n_ - xe - 1, k_ - je - 1);
+    for (UnsignedInteger i = 1; i < outputDimension - 1; ++i)
+      probabilities[j] += SpecFunc::LogBinomialCoefficient(xe, je);
+    probabilities[j] = SpecFunc::Clip01(std::exp(probabilities[j]));
+  }
   UserDefined marginal(support, probabilities);
   marginal.setDescription(getDescription().select(indices));
   return marginal;
@@ -311,22 +311,22 @@ Sample CombinationsDistribution::getSupport(const Interval & interval) const
   const Interval inter(interval.intersect(range_));
   // Common case: get the full support
   if (inter == range_)
-    {
-      Sample result(size, dimension_);
-      for (UnsignedInteger i = 0; i < size; ++i)
-        for (UnsignedInteger j = 0; j < dimension_; ++j)
-            result(i, j) = intResult(i, j);
-      return result;
-    }
+  {
+    Sample result(size, dimension_);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        result(i, j) = intResult(i, j);
+    return result;
+  }
   Sample result(0, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      Point point(dimension_);
-      for (UnsignedInteger j = 0; j < dimension_; ++j)
-        point[j] = intResult(i, j);
-      if (inter.contains(point))
-        result.add(point);
-    }
+  {
+    Point point(dimension_);
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      point[j] = intResult(i, j);
+    if (inter.contains(point))
+      result.add(point);
+  }
   return result;
 }
 
@@ -344,15 +344,15 @@ void CombinationsDistribution::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
+  {
+    for (UnsignedInteger i = 0; i < j; ++i)
     {
-      for (UnsignedInteger i = 0; i < j; ++i)
-        {
-          const CovarianceMatrix covIJ(getMarginal({i, j}).getCovariance());
-          covariance_(i, j) = covIJ(0, 1);
-          covariance_(j, j) = covIJ(1, 1);
-          covariance_(i, i) = covIJ(0, 0);
-        }
+      const CovarianceMatrix covIJ(getMarginal({i, j}).getCovariance());
+      covariance_(i, j) = covIJ(0, 1);
+      covariance_(j, j) = covIJ(1, 1);
+      covariance_(i, i) = covIJ(0, 0);
     }
+  }
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -485,7 +485,7 @@ UnsignedInteger CombinationsDistribution::getN() const
 
 /* K/N accessor */
 void CombinationsDistribution::setKN(const UnsignedInteger k,
-                                      const UnsignedInteger n)
+                                     const UnsignedInteger n)
 {
   if (k == 0) throw InvalidArgumentException(HERE) << "Error: k must be > 0.";
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0.";

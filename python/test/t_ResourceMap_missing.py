@@ -7,7 +7,15 @@ import re
 ot.TESTPREAMBLE()
 
 # find all keys
-resourcemap_file = Path(__file__).parents[2].joinpath("lib").joinpath("src").joinpath("Base").joinpath("Common").joinpath("ResourceMap.cxx")
+resourcemap_file = (
+    Path(__file__)
+    .parents[2]
+    .joinpath("lib")
+    .joinpath("src")
+    .joinpath("Base")
+    .joinpath("Common")
+    .joinpath("ResourceMap.cxx")
+)
 resourcemap_lines = []
 with open(resourcemap_file) as f:
     resourcemap_lines += f.read().splitlines()
@@ -31,7 +39,13 @@ for line in resourcemap_lines:
             raise ValueError(f"got {key}")
 print(f"resourcemap: {len(resourcemap_content)} keys")
 
-conf_file = Path(__file__).parents[2].joinpath("lib").joinpath("etc").joinpath("openturns.conf.in")
+conf_file = (
+    Path(__file__)
+    .parents[2]
+    .joinpath("lib")
+    .joinpath("etc")
+    .joinpath("openturns.conf.in")
+)
 conf_lines = []
 with open(conf_file) as f:
     conf_lines += f.read().splitlines()
@@ -46,7 +60,7 @@ for line in conf_lines:
             conf_content[key] = int(value)
         elif vtype == "bool":
             assert value in ["true", "false"], f"value should be true|false got {value}"
-            conf_content[key] = (value == "true")
+            conf_content[key] = value == "true"
         elif vtype == "str":
             conf_content[key] = value
         else:
@@ -57,7 +71,9 @@ print(f"config: {len(conf_content)} keys")
 for key in resourcemap_content:
     if key in conf_content:
         if resourcemap_content[key] != conf_content[key]:
-            raise ValueError(f"key={key} RM={resourcemap_content[key]} CONF={conf_content[key]}")
+            raise ValueError(
+                f"key={key} RM={resourcemap_content[key]} CONF={conf_content[key]}"
+            )
     else:
         raise ValueError(f"missing {key} in rm")
 

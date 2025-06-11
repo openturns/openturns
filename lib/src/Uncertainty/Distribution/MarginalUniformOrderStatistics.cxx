@@ -37,14 +37,17 @@ static const Factory<MarginalUniformOrderStatistics> Factory_MarginalUniformOrde
 
 /* Default constructor */
 MarginalUniformOrderStatistics::MarginalUniformOrderStatistics()
-  : MarginalDistribution(UniformOrderStatistics(1), {0})
+  : MarginalDistribution(UniformOrderStatistics(1),
+{
+  0
+})
 {
   setName("MarginalUniformOrderStatistics");
 }
 
 /* Parameters constructor */
 MarginalUniformOrderStatistics::MarginalUniformOrderStatistics(const UnsignedInteger n,
-                                                               const Indices & indices)
+    const Indices & indices)
   : MarginalDistribution(UniformOrderStatistics(n), indices)
 {
   setName("MarginalUniformOrderStatistics");
@@ -113,20 +116,20 @@ Scalar MarginalUniformOrderStatistics::computeCDF(const Point & point) const
     return DistFunc::pBeta(indices_[0] + 1.0, getN() - indices_[0], point[0]);
   // Large N case leads to a stack overflow
   if (getN() > ResourceMap::GetAsUnsignedInteger("MarginalUniformOrderStatistics-LargeCaseCDF"))
+  {
+    if (PlatformInfo::HasFeature("cuba"))
     {
-      if (PlatformInfo::HasFeature("cuba"))
-	{
-	  const CubaIntegration algo("cuhre");
-	  return SpecFunc::Clip01(algo.integrate(Function(PDFWrapper(this)), Interval(Point(dimension_), point))[0]);
-	} // cuba
-      else
-	{
-	  SimplicialCubature algo;
-	  algo.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MarginalUniformOrderStatistics-MaximumCallsNumber"));
-	  const Mesh domain(simplex_.getVertices() * point, simplex_.getSimplices());
-	  return SpecFunc::Clip01(algo.integrate(Function(PDFWrapper(this)), domain)[0]);
-	} // simplicial
-    } // large case
+      const CubaIntegration algo("cuhre");
+      return SpecFunc::Clip01(algo.integrate(Function(PDFWrapper(this)), Interval(Point(dimension_), point))[0]);
+    } // cuba
+    else
+    {
+      SimplicialCubature algo;
+      algo.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("MarginalUniformOrderStatistics-MaximumCallsNumber"));
+      const Mesh domain(simplex_.getVertices() * point, simplex_.getSimplices());
+      return SpecFunc::Clip01(algo.integrate(Function(PDFWrapper(this)), domain)[0]);
+    } // simplicial
+  } // large case
   return MarginalDistribution::computeCDF(point);
 }
 

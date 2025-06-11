@@ -26,8 +26,8 @@ for rule in all_rules:
         ott.assert_almost_equal(sum(weights), 2.0)
 
 # check nesting
-mapN = {otexp.FejerExperiment.FEJERTYPE2: lambda n: 2 ** n - 1}
-mapN[otexp.FejerExperiment.CLENSHAWCURTIS] = lambda n: 2 ** n + 1
+mapN = {otexp.FejerExperiment.FEJERTYPE2: lambda n: 2**n - 1}
+mapN[otexp.FejerExperiment.CLENSHAWCURTIS] = lambda n: 2**n + 1
 for rule in [otexp.FejerExperiment.FEJERTYPE2, otexp.FejerExperiment.CLENSHAWCURTIS]:
     prev_nodes = None
     for N in [1, 2, 3, 4, 5]:

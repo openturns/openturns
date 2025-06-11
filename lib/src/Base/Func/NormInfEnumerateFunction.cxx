@@ -120,10 +120,10 @@ UnsignedInteger NormInfEnumerateFunction::inverse(const Indices & indices) const
   UnsignedInteger result = 0;
   // If no upper bound we can skip a full hypercube of indices
   if (upperBound_.getSize() < dimension)
-    {
-      const UnsignedInteger maxIndex = *std::max_element(indices.begin(), indices.end());
-      result = SpecFunc::IPow(maxIndex - 1, dimension);
-    }
+  {
+    const UnsignedInteger maxIndex = *std::max_element(indices.begin(), indices.end());
+    result = SpecFunc::IPow(maxIndex - 1, dimension);
+  }
   while ((*this)(result) != indices) ++result;
   return result;
 }

@@ -99,7 +99,12 @@ ott.assert_almost_equal(result.getProbabilityEstimate(), 4.57807e-07)
 print(f"-- 2 branch {'-' * 50}")
 
 X = ot.RandomVector(ot.Normal(2))
-g_twoBranch = ot.SymbolicFunction(["x1", "x2"], ["min(5 + 0.1 * (x1 - x2)^2 - (x1 + x2) / sqrt(2), 5 + 0.1 * (x1 - x2)^2 + (x1 + x2) / sqrt(2))"])
+g_twoBranch = ot.SymbolicFunction(
+    ["x1", "x2"],
+    [
+        "min(5 + 0.1 * (x1 - x2)^2 - (x1 + x2) / sqrt(2), 5 + 0.1 * (x1 - x2)^2 + (x1 + x2) / sqrt(2))"
+    ],
+)
 Y_twoBranch = ot.CompositeRandomVector(g_twoBranch, X)
 threshold = 1.5
 event_twoBranch = ot.ThresholdEvent(Y_twoBranch, ot.Less(), threshold)
@@ -210,10 +215,12 @@ ott.assert_almost_equal(result.getProbabilityEstimate(), 0.997749, 0.0, 1e-4)
 print(f"-- paraboloid {'-' * 50}")
 
 # model
-paraboloid = ot.SymbolicFunction(['u1', 'u2', 'u3', 'u4', 'u5'], ['- u5 + u1^2 + u2^2 + u3^2 + u4^2'])
+paraboloid = ot.SymbolicFunction(
+    ["u1", "u2", "u3", "u4", "u5"], ["- u5 + u1^2 + u2^2 + u3^2 + u4^2"]
+)
 b = 3.5
 db = 0.02
-t = 0.
+t = 0.0
 dim = 5
 U = ot.Normal(dim)
 X = ot.RandomVector(U)

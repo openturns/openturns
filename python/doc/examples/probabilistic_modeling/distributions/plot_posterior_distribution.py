@@ -135,7 +135,7 @@ posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
 #   :math:`KL\left(\cN_2\left(g(\vect{Y}_n^m)\right), \cN_2 \left(\vect{\theta}\right) \right)`.
 #
 theta_Bay = linkFunction(computeMode(posterior_Y))
-print('Theta Bay =', theta_Bay)
+print("Theta Bay =", theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
 dist_estimateur_Bay = posterior_Y
@@ -172,7 +172,7 @@ lh_est = lh_factory.buildEstimator(observations)
 #
 model_ML = lh_est.getDistribution()
 theta_ML = model_ML.getParameter()
-print('Theta ML = ', theta_Bay)
+print("Theta ML = ", theta_Bay)
 dist_estimator_ML = lh_est.getParameterDistribution().getMarginal([1, 3])
 interval_ML, beta = (
     dist_estimator_ML.computeBilateralConfidenceIntervalWithMarginalProbability(alpha)
@@ -341,7 +341,7 @@ sample_posterior = linkFunction(posterior_Y.getSample(100000)).getMarginal([1, 3
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 
 theta_Bay = linkFunction(computeMode(posterior_Y))
-print('Theta Bay =', theta_Bay)
+print("Theta Bay =", theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
 alpha = 0.95

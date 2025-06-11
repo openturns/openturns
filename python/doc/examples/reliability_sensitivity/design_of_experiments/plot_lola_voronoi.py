@@ -17,17 +17,23 @@ import openturns.viewer as otv
 # %%
 # Lets use Franke's bivariate function
 dim = 2
-f1 = ot.SymbolicFunction(["a0", "a1"],
-                         ["3 / 4 * exp(-1 / 4 * (((9 * a0 - 2) ^ 2) + ((9 * a1 - 2) ^ 2))) + 3 / 4 * exp(-1 / 49 * "
-                          "((9 * a0 + 1) ^ 2) - 1 / 10 * (9 * a1 + 1) ^ 2) + 1 / 2 * exp(-1 / 4 * (((9 * a0 - 7) ^ 2) "
-                          "+ (9 * a1 - 3) ^ 2)) - 1 / 5 * exp(-((9 * a0 - 4) ^ 2) - ((9 * a1 + 1) ^ 2))"])
+f1 = ot.SymbolicFunction(
+    ["a0", "a1"],
+    [
+        "3 / 4 * exp(-1 / 4 * (((9 * a0 - 2) ^ 2) + ((9 * a1 - 2) ^ 2))) + 3 / 4 * exp(-1 / 49 * "
+        "((9 * a0 + 1) ^ 2) - 1 / 10 * (9 * a1 + 1) ^ 2) + 1 / 2 * exp(-1 / 4 * (((9 * a0 - 7) ^ 2) "
+        "+ (9 * a1 - 3) ^ 2)) - 1 / 5 * exp(-((9 * a0 - 4) ^ 2) - ((9 * a1 + 1) ^ 2))"
+    ],
+)
 print(f1([0.5, 0.5]))
 distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 
 # %%
 # Plot the function
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
-graph = f1.draw(distribution.getRange().getLowerBound(), distribution.getRange().getUpperBound())
+graph = f1.draw(
+    distribution.getRange().getLowerBound(), distribution.getRange().getUpperBound()
+)
 contour = graph.getDrawable(0)
 contour.setLegend("model")
 graph.setTitle("Model")
@@ -47,7 +53,9 @@ def pyHessianNorm(X):
 
 
 hessNorm = ot.PythonFunction(f1.getInputDimension(), 1, pyHessianNorm)
-graph = hessNorm.draw(distribution.getRange().getLowerBound(), distribution.getRange().getUpperBound())
+graph = hessNorm.draw(
+    distribution.getRange().getLowerBound(), distribution.getRange().getUpperBound()
+)
 graph.setTitle("Hessian norm")
 graph.setXTitle("x1")
 graph.setYTitle("x2")
@@ -87,7 +95,7 @@ for i in range(10):
     graph.add(initial)
 
     if i > 0:
-        previous = ot.Cloud(algo.getInputSample()[len(x0):N])
+        previous = ot.Cloud(algo.getInputSample()[len(x0) : N])
         previous.setPointStyle("fcircle")
         previous.setColor("red")
         previous.setLegend(f"previous iterations ({N - len(x0)})")
@@ -132,7 +140,9 @@ yRef = f1(xRef)
 
 # %%
 # Build a metamodel from Sobol' samples
-xSobol = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, learnSize).generate()
+xSobol = ot.LowDiscrepancyExperiment(
+    ot.SobolSequence(), distribution, learnSize
+).generate()
 ySobol = f1(xSobol)
 runMetaModel(xSobol, ySobol, "Sobol")
 

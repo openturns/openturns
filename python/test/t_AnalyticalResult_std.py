@@ -28,14 +28,8 @@ myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 result = ot.AnalyticalResult(sigma, myEvent, False)
 
 print("result=", result)
-print(
-    "standard space design point=",
-    result.getStandardSpaceDesignPoint()
-)
-print(
-    "physical space design point=",
-    result.getPhysicalSpaceDesignPoint()
-)
+print("standard space design point=", result.getStandardSpaceDesignPoint())
+print("physical space design point=", result.getPhysicalSpaceDesignPoint())
 print(
     "is standard point origin in failure space? ",
     result.getIsStandardPointOriginInFailureSpace(),
@@ -43,11 +37,11 @@ print(
 print("importance factors=", result.getImportanceFactors())
 print(
     "importance factors(classical)=",
-    result.getImportanceFactors(ot.AnalyticalResult.CLASSICAL)
+    result.getImportanceFactors(ot.AnalyticalResult.CLASSICAL),
 )
 print(
     "importance factors(physical) =",
-    result.getImportanceFactors(ot.AnalyticalResult.PHYSICAL)
+    result.getImportanceFactors(ot.AnalyticalResult.PHYSICAL),
 )
 print("Hasofer reliability index=%.5f" % result.getHasoferReliabilityIndex())
 print("graph importance factors=", result.drawImportanceFactors())

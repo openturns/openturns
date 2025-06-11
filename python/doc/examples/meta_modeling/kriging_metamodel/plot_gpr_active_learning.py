@@ -197,7 +197,8 @@ def plotMyBasicGPR(
     graph.setAxes(True)
     graph.setGrid(True)
     graph.setTitle(
-        "Estimated probability = %f, Reference probability =  %f" % (proba, refProbability)
+        "Estimated probability = %f, Reference probability =  %f"
+        % (proba, refProbability)
     )
     graph.setXTitle("X")
     graph.setYTitle("Y")
@@ -223,6 +224,7 @@ view = viewer.View(graph)
 # It consists in finding the new point as the sample :math:`\mathbf{x}` in the Monte-Carlo experiment that minimizes  the following expression:
 # :math:`\frac{ \left| T - \hat{\mathcal{M}} ( \mathbf{x}) \right|}{\hat{\sigma}(\mathbf{x})}`
 # with :math:`\hat{\sigma}(\mathbf{x})` the square root of the marginal covariance of the Gaussian Process evaluated on :math:`\mathbf{x}`, and :math:`T` the event threshold (here 1.5)
+
 
 # %%
 def getNewPoint(X, gprResult, threshold):

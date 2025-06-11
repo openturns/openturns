@@ -29,7 +29,7 @@ for i1 in range(n1):
 nu = 3.0
 rho = 0.5
 for i in range(5):
-    x0 = x1 = 10.0 ** i
+    x0 = x1 = 10.0**i
     p = ot.DistFunc.pStudent2D(nu, x0, x1, rho)
     print(f"pStudent2D(nu={nu}, x0={x0}, x1={x1}, rho={rho})={p:.6g}")
 

@@ -107,13 +107,13 @@ public:
 
 private:
   static Matrix ComputeDesignMatrix(const UnsignedInteger parameterDimension,
-                                const UnsignedInteger outputDimension,
-                                const UnsignedInteger size,
-                                const Distribution & parameterPrior,
-                                const Matrix & gradientObservations,
-                                const Bool globalErrorCovariance,
-                                const CovarianceMatrix & errorCovariance,
-                                TriangularMatrix & errorInverseCholesky);
+                                    const UnsignedInteger outputDimension,
+                                    const UnsignedInteger size,
+                                    const Distribution & parameterPrior,
+                                    const Matrix & gradientObservations,
+                                    const Bool globalErrorCovariance,
+                                    const CovarianceMatrix & errorCovariance,
+                                    TriangularMatrix & errorInverseCholesky);
 
   /* The model observations */
   Sample modelObservations_;

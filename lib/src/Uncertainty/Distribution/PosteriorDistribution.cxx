@@ -46,9 +46,9 @@ PosteriorDistribution::PosteriorDistribution()
   setDeconditionedDistribution(deconditionedDistribution_);
 }
 
-  PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
-					       const Distribution & conditioningDistribution,
-					       const Sample & observations)
+PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
+    const Distribution & conditioningDistribution,
+    const Sample & observations)
   : DistributionImplementation()
   , deconditionedDistribution_()
   , observations_(observations)
@@ -57,10 +57,10 @@ PosteriorDistribution::PosteriorDistribution()
   setDeconditionedDistribution(DeconditionedDistribution(conditionedDistribution, conditioningDistribution));
 }
 
-  PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
-					       const Distribution & conditioningDistribution,
-					       const Function & linkFunction,
-					       const Sample & observations)
+PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
+    const Distribution & conditioningDistribution,
+    const Function & linkFunction,
+    const Sample & observations)
   : DistributionImplementation()
   , deconditionedDistribution_()
   , observations_(observations)
@@ -233,24 +233,24 @@ void PosteriorDistribution::setDeconditionedDistribution(const DeconditionedDist
   UnsignedInteger maxIter = 10;
   UnsignedInteger iter = 0;
   while (!done)
-    {
-      ++iter;
-      logNormalizationFactor_ = logScaling;
-      logNormalizationFactor_ = std::log(computeCDF(range_.getUpperBound())) + logScaling;
-      done = SpecFunc::IsNormal(logNormalizationFactor_) || (iter == maxIter);
-      if (logNormalizationFactor_ < 0.0)
-	logScaling -= std::pow(2.0, iter);
-      else
-	logScaling += std::pow(2.0, iter);
-    }
+  {
+    ++iter;
+    logNormalizationFactor_ = logScaling;
+    logNormalizationFactor_ = std::log(computeCDF(range_.getUpperBound())) + logScaling;
+    done = SpecFunc::IsNormal(logNormalizationFactor_) || (iter == maxIter);
+    if (logNormalizationFactor_ < 0.0)
+      logScaling -= std::pow(2.0, iter);
+    else
+      logScaling += std::pow(2.0, iter);
+  }
   if (!SpecFunc::IsNormal(logNormalizationFactor_))
     throw InvalidArgumentException(HERE) << "Error: unable to compute the log-normalization factor despite a rescaling of " << logScaling;
 
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isParallel_ = deconditionedDistribution_.getLinkFunction().getEvaluation().getImplementation()->isParallel()
-    && deconditionedDistribution_.getConditioningDistribution().getImplementation()->isParallel()
-    && deconditionedDistribution_.getConditionedDistribution().getImplementation()->isParallel();
+                && deconditionedDistribution_.getConditioningDistribution().getImplementation()->isParallel()
+                && deconditionedDistribution_.getConditionedDistribution().getImplementation()->isParallel();
   if (deconditionedDistribution_.getConditioningDistribution().isContinuous())
   {
     // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
@@ -360,10 +360,10 @@ Point PosteriorDistribution::getSkewness() const
   const Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   Description formulas(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      formulas[2 * i    ] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^2";
-      formulas[2 * i + 1] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^3";
-    }
+  {
+    formulas[2 * i    ] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^2";
+    formulas[2 * i + 1] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^3";
+  }
   const SymbolicFunction skewnessFunction(inputDescription, formulas);
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
   const Point varThird(deconditionedDistribution_.computeExpectation(normalizedLikelihood * skewnessFunction, getRange().getUpperBound()));
@@ -383,10 +383,10 @@ Point PosteriorDistribution::getKurtosis() const
   const Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   Description formulas(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      formulas[2 * i    ] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^2";
-      formulas[2 * i + 1] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^4";
-    }
+  {
+    formulas[2 * i    ] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^2";
+    formulas[2 * i + 1] = OSS() << "(" << inputDescription[i] << "-(" << mean[i] << "))^4";
+  }
   const SymbolicFunction kurtosisFunction(inputDescription, formulas);
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
   const Point varFourth(deconditionedDistribution_.computeExpectation(normalizedLikelihood * kurtosisFunction, getRange().getUpperBound()));

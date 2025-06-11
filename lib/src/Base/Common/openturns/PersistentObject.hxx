@@ -77,12 +77,12 @@ public:
 
   /** Move constructor */
   PersistentObject(PersistentObject && other) noexcept
-      : p_name_(other.p_name_)
-      , id_(other.id_)
-      , shadowedId_(other.shadowedId_)
-      , studyVisible_(other.studyVisible_)
-    {
-    }
+    : p_name_(other.p_name_)
+    , id_(other.id_)
+    , shadowedId_(other.shadowedId_)
+    , studyVisible_(other.studyVisible_)
+  {
+  }
 
   /**
    * Virtual constructor

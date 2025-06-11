@@ -183,7 +183,7 @@ void EfficientGlobalOptimization::run()
     outputSample = krigingResult_.getOutputSample();
   }
   UnsignedInteger size = inputSample.getSize();
-  
+
 
   const Scalar nuggetFactor = isGPR_ ? gprResult_.getCovarianceModel().getNuggetFactor() : krigingResult_.getCovarianceModel().getNuggetFactor();
   const Bool hasNoise = nuggetFactor > ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor");
@@ -393,7 +393,7 @@ void EfficientGlobalOptimization::run()
     }
   } // while
 
-   // update result to take new points into account
+  // update result to take new points into account
   krigingResult_ = krigingResult;
   gprResult_ = gprResult;
 

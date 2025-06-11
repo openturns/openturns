@@ -1931,23 +1931,32 @@ inline void SignalHandler(int /*signum*/)
 // and it seems we cannot use SWIG_AppendOutput instead
 inline PyObject* AppendOutput(PyObject* result, PyObject* obj)
 {
-  if (!result) {
+  if (!result)
+  {
     result = obj;
-  } else if (result == Py_None) {
+  }
+  else if (result == Py_None)
+  {
     Py_XDECREF(result);
     result = obj;
-  } else {
-    if (!PyList_Check(result)) {
+  }
+  else
+  {
+    if (!PyList_Check(result))
+    {
       PyObject *o2 = result;
       result = PyList_New(1);
-      if (result) {
+      if (result)
+      {
         PyList_SetItem(result, 0, o2);
-      } else {
+      }
+      else
+      {
         Py_XDECREF(obj);
         return o2;
       }
     }
-    PyList_Append(result,obj);
+    PyList_Append(result, obj);
     Py_XDECREF(obj);
   }
   return result;

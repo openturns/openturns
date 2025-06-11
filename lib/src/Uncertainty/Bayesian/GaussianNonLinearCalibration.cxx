@@ -385,7 +385,7 @@ void GaussianNonLinearCalibration::run()
 
     TriangularMatrix dummy;
     const Matrix Abar(GaussianLinearCalibration::ComputeDesignMatrix(parameterDimension, outputDimension, size, getParameterPrior(), gradientObservations,
-                                          globalErrorCovariance_, errorCovariance_, dummy));
+                      globalErrorCovariance_, errorCovariance_, dummy));
 
     // Compute the inverse Gram of the design matrix
     const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));

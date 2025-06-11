@@ -111,17 +111,17 @@ Normal::Normal(const Point & mean,
   {
     const Scalar cii = C(i, i);
     if (!(cii > 0.0))
-      {
-	sigma[i] = 0.0;
-	// throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
-      }
+    {
+      sigma[i] = 0.0;
+      // throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+    }
     else
-      {
-	sigma[i] = std::sqrt(cii);
-	for (UnsignedInteger j = 0; j < i; ++ j)
-	  if (sigma[j] > 0.0)
-	    R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
-      }
+    {
+      sigma[i] = std::sqrt(cii);
+      for (UnsignedInteger j = 0; j < i; ++ j)
+        if (sigma[j] > 0.0)
+          R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+    }
   }
   *this = Normal(mean, sigma, R);
 }
@@ -631,13 +631,13 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar Normal::computeConditionalQuantile(const Scalar q,
- 
+
     const Point & y) const
- 
+
 {
- 
+
   const UnsignedInteger conditioningDimension = y.getDimension();
- 
+
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no conditioning or independent copula
@@ -649,9 +649,9 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
     meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
 
   meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
-  return meanRos + sigmaRos * DistFunc::qNormal(q); 
+  return meanRos + sigmaRos * DistFunc::qNormal(q);
 }
- 
+
 Point Normal::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;

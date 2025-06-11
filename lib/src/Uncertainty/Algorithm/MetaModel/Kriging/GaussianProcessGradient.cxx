@@ -46,10 +46,10 @@ GaussianProcessGradient::GaussianProcessGradient()
 
 /* Constructor with parameters */
 GaussianProcessGradient::GaussianProcessGradient(const Basis & basis,
-                                                 const Sample & inputSample,
-                                                 const CovarianceModel & covarianceModel,
-                                                 const Point & beta,
-                                                 const Sample & gamma)
+    const Sample & inputSample,
+    const CovarianceModel & covarianceModel,
+    const Point & beta,
+    const Sample & gamma)
   : GradientImplementation()
   , basis_(basis)
   , inputSample_(inputSample)

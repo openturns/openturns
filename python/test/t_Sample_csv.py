@@ -158,14 +158,16 @@ with open(fname, "r") as f:
 
 # unicode description
 with open(fname, "w", encoding="utf-8") as f:
-    f.write("Pmax (bar);Tmax (°C)\n1.4138771410089075e+02;6.1158681591754430e+01\n3.3836092350059448e+02;1.0205155574810637e+02\n")
+    f.write(
+        "Pmax (bar);Tmax (°C)\n1.4138771410089075e+02;6.1158681591754430e+01\n3.3836092350059448e+02;1.0205155574810637e+02\n"
+    )
 aSample = ot.Sample.ImportFromCSVFile(fname, ";")
 assert aSample.getDescription()[1] == "Tmax (°C)"
 
 os.remove(fname)
 
 # unicode file name
-fname = 'Données'
+fname = "Données"
 with open(fname, "w") as f:
     f.write("X1;X2;X3;X4\n-1.2;2.3;3.4;-4.5\n5.6;-6.7;7.8;8.9\n-0.1;3.2;5.1;7.5\n")
 aSample = ot.Sample.ImportFromCSVFile(fname, ";")

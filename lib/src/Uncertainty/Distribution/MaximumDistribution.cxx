@@ -155,13 +155,13 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   if (allSame_) return variablesNumber_ * distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
   // General case, use finite difference
   if (!distribution_.hasIndependentCopula())
-    {
-      const Scalar x = point[0];
-      const Scalar epsilon = std::pow(quantileEpsilon_, 1.0 / 3.0) * (1.0 + std::abs(x));
-      const Scalar xp = x + epsilon;
-      const Scalar xm = x - epsilon;
-      return (computeCDF(xp) - computeCDF(xm)) / (xp - xm);
-    }
+  {
+    const Scalar x = point[0];
+    const Scalar epsilon = std::pow(quantileEpsilon_, 1.0 / 3.0) * (1.0 + std::abs(x));
+    const Scalar xp = x + epsilon;
+    const Scalar xm = x - epsilon;
+    return (computeCDF(xp) - computeCDF(xm)) / (xp - xm);
+  }
   // Special treatment of the independent copula case
   const UnsignedInteger size = distribution_.getDimension();
   Point marginalCDF(size);

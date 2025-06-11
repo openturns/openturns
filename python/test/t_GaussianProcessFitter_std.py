@@ -193,7 +193,9 @@ def bugfix_optim_no_feasible():
         [2.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0],
     )
 
-    algo = GaussianProcessFitter(inputTrainingSet, outputTrainingSet, covarianceModel, basis)
+    algo = GaussianProcessFitter(
+        inputTrainingSet, outputTrainingSet, covarianceModel, basis
+    )
     algo.setOptimizationBounds(scaleOptimizationBounds)
     algo.setOptimizeParameters(True)
     with ott.assert_raises(TypeError):

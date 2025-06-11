@@ -51,15 +51,15 @@ public:
 
   /** Performs the actual computation */
   virtual void run();
-  
+
   /** Starting point accessor */
   virtual void setStartingPoint(const Point & startingPoint);
   virtual Point getStartingPoint() const;
-  
+
   /** Starting sample accessor */
   virtual void setStartingSample(const Sample & startingSample);
   virtual Sample getStartingSample() const;
-    
+
   /** Problem accessor */
   virtual OptimizationProblem getProblem() const;
   virtual void setProblem(const OptimizationProblem & problem);

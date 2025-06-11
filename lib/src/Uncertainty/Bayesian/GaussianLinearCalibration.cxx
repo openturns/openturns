@@ -96,13 +96,13 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
 
 
 Matrix GaussianLinearCalibration::ComputeDesignMatrix(const UnsignedInteger parameterDimension,
-                                                      const UnsignedInteger outputDimension,
-                                                      const UnsignedInteger size,
-                                                      const Distribution & parameterPrior,
-                                                      const Matrix & gradientObservations,
-                                                      const Bool globalErrorCovariance,
-                                                      const CovarianceMatrix & errorCovariance,
-                                                      TriangularMatrix & errorInverseCholesky)
+    const UnsignedInteger outputDimension,
+    const UnsignedInteger size,
+    const Distribution & parameterPrior,
+    const Matrix & gradientObservations,
+    const Bool globalErrorCovariance,
+    const CovarianceMatrix & errorCovariance,
+    TriangularMatrix & errorInverseCholesky)
 {
   const UnsignedInteger dimension = errorCovariance.getDimension();
   // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter

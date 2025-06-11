@@ -198,7 +198,7 @@ CorrelationMatrix ArchimedeanCopula::computeUpperTailDependenceMatrix() const
   const Scalar lambdaU = 2.0 - 2.0 * computeArchimedeanGeneratorDerivative(2.0 * quantileEpsilon_) / computeArchimedeanGeneratorDerivative(quantileEpsilon_);
   /* For an archimedean copula, all the upper tail dependence indices are equal */
   for (UnsignedInteger j = 0; j < dimension_; ++j)
-    for (UnsignedInteger i = j+1; i < dimension_; ++i)
+    for (UnsignedInteger i = j + 1; i < dimension_; ++i)
       result(i, j) = lambdaU;
   return result;
 }
@@ -219,7 +219,7 @@ CorrelationMatrix ArchimedeanCopula::computeLowerTailDependenceMatrix() const
   const Scalar lambdaL = 2.0 * dphi0 / dphiDen;
   /* For an archimedean copula, all the lower tail dependence indices are equal */
   for (UnsignedInteger j = 0; j < dimension_; ++j)
-    for (UnsignedInteger i = j+1; i < dimension_; ++i)
+    for (UnsignedInteger i = j + 1; i < dimension_; ++i)
       result(i, j) = lambdaL;
   return result;
 }

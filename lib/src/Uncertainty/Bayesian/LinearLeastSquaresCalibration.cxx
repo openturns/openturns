@@ -123,10 +123,10 @@ void LinearLeastSquaresCalibration::run()
 }
 
 Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(const Point & thetaStar,
-										 const Point & r,
-										 const SquareMatrix & gramInverse,
-										 const UnsignedInteger outputDimension,
-										 Distribution & error)
+    const Point & r,
+    const SquareMatrix & gramInverse,
+    const UnsignedInteger outputDimension,
+    Distribution & error)
 {
   const Scalar varianceError = r.normSquare() / (r.getDimension() - thetaStar.getDimension());
   CovarianceMatrix covarianceThetaStar;
@@ -148,16 +148,16 @@ Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution
     throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable. Try to increase the \"LinearLeastSquaresCalibration-Regularization\" key in ResourceMap";
   }
   if (outputDimension > 0)
+  {
+    try
     {
-      try
-	{
-	  error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * varianceError).getImplementation());
-	}
-      catch (...)
-	{
-	  error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * SpecFunc::MaxScalar).getImplementation());
-	}
-    } // outputDimension > 0
+      error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * varianceError).getImplementation());
+    }
+    catch (...)
+    {
+      error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * SpecFunc::MaxScalar).getImplementation());
+    }
+  } // outputDimension > 0
   return parameterPosterior;
 }
 

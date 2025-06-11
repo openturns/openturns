@@ -145,11 +145,11 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
     {
       const String parameterName(activeParametersDescription[k]);
       if (parameterName.find("scale_") != String::npos)
-	{
-	  activeScalesPositions.add(k);
-	  // Extract the scale index from its description
-	  activeScalesIndices.add(std::stoi(parameterName.substr(parameterName.find("_") + 1, parameterName.size())));
-	}
+      {
+        activeScalesPositions.add(k);
+        // Extract the scale index from its description
+        activeScalesIndices.add(std::stoi(parameterName.substr(parameterName.find("_") + 1, parameterName.size())));
+      }
       if (activeParametersDescription[k].find("nuggetFactor") != String::npos) activeNugget.add(k);
     }
 
@@ -167,7 +167,7 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
       // Set the lower bound to 0 for nuggetFactor
       lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
-    
+
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
