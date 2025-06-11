@@ -269,7 +269,7 @@ The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
 .. math::
     :label: GPRmetamodel
 
-    \metaModel(\vect{x})  \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
+    \metaModel(\vect{x}) = \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}.
 
 We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
 :class:`~openturns.experimental.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
