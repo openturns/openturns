@@ -31,7 +31,7 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases.wingweight_function import WingWeightModel
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 m = WingWeightModel()

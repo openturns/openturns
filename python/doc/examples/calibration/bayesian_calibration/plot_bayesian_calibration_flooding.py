@@ -83,13 +83,11 @@ Bayesian calibration of the flooding model
 # -------------------------
 
 # %%
-import pylab as pl
+from matplotlib import pyplot as plt
 from openturns.usecases import flood_model
 import openturns.viewer as viewer
 import numpy as np
 import openturns as ot
-
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # A basic implementation of the probabilistic model is available in the usecases module :
@@ -342,6 +340,7 @@ viewer.View(
     figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
-pl.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
+plt.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
 
 # %%
+viewer.View.ShowAll()

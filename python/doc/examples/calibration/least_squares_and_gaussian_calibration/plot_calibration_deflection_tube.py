@@ -30,7 +30,7 @@ and observed output variables.
 from openturns.usecases import deflection_tube
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

@@ -39,7 +39,7 @@ from openturns.usecases import logistic_model
 import openturns as ot
 import numpy as np
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

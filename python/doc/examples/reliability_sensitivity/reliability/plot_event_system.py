@@ -14,7 +14,7 @@ Create unions or intersections of events
 #
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

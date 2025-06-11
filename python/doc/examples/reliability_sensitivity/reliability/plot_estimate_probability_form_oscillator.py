@@ -14,7 +14,7 @@ Using the FORM - SORM algorithms on a nonlinear function
 # %%
 from openturns.usecases import oscillator
 import openturns as ot
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 import numpy as np
 
 ot.Log.Show(ot.Log.NONE)

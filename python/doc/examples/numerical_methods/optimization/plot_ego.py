@@ -24,7 +24,7 @@ from openturns.usecases import ackley_function
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)

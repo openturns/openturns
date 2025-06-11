@@ -9,7 +9,7 @@ Iterated Functions System
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 # sphinx_gallery_thumbnail_number = 4
 import math as m
 

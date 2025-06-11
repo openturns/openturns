@@ -10,7 +10,7 @@ Plot the Smolyak quadrature
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 # %%
 # In the first example, we plot the nodes different levels of

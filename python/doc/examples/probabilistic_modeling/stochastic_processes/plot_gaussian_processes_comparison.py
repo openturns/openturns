@@ -26,12 +26,10 @@ Compare covariance models
 # * :math:`\boldsymbol{\theta}\in\mathbb{R}^d` is the scale.
 
 # %%
-import pylab as pl
+from matplotlib import pyplot as plt
 from openturns.viewer import View
 import openturns as ot
 import openturns.viewer as viewer
-
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Amplitude values
@@ -185,7 +183,7 @@ graph2 = plotCovarianceModel(myModel2, myTimeGrid, nbTrajectories)
 graph3 = plotCovarianceModel(myModel3, myTimeGrid, nbTrajectories)
 
 # %%
-fig = pl.figure(figsize=(20, 6))
+fig = plt.figure(figsize=(20, 6))
 ax1 = fig.add_subplot(1, 3, 1)
 _ = View(graph1, figure=fig, axes=[ax1])
 _ = ax1.set_title("Matern 5/2")
@@ -209,3 +207,4 @@ view = viewer.View(graph)
 
 # %%
 # We see that the exponential model produces very irregular trajectories.
+viewer.View.ShowAll()

@@ -29,10 +29,7 @@ Parallel coordinates graph as sensitivity tool
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # Create data to visualize
@@ -70,7 +67,7 @@ graphCobweb = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
 graphCobweb.setLegendPosition("lower right")
-view = viewer.View(graphCobweb)
+view = otv.View(graphCobweb)
 
 # %%
 # Example 2: rank based scale to describe the Y range
@@ -81,5 +78,7 @@ graphCobweb = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
 graphCobweb.setLegendPosition("lower right")
-view = viewer.View(graphCobweb)
-plt.show()
+view = otv.View(graphCobweb)
+
+# %%
+otv.View.ShowAll()

@@ -10,7 +10,7 @@ Evaluate the mean of a random vector by simulations
 # an incremental Monte Carlo sampling algorithm to estimate the mean of a random vector.
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 # %%
 # We shall use this algorithm for the :ref:`Ishigami function <use-case-ishigami>` that we load from the `usecases` module :

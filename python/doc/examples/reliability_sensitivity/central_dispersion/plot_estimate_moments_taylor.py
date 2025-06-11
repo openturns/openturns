@@ -12,7 +12,7 @@ In this example we are going to estimate mean and standard deviation of an outpu
 import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

@@ -48,7 +48,7 @@ The observations that we use in this study are simulated with the script
 # couple made of the flowrate and the corresponding river height.
 
 from openturns.usecases import flood_model
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 import openturns.viewer as otv
 import numpy as np
 import openturns as ot

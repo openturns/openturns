@@ -19,7 +19,7 @@ Create mixed deterministic and probabilistic designs of experiments
 import openturns as ot
 import math as m
 import openturns.viewer as viewer
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 ot.Log.Show(ot.Log.NONE)
 

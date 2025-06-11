@@ -5,8 +5,7 @@ Kriging : draw covariance models
 
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
-import pylab as pl
+from matplotlib import pyplot as plt
 
 # %%
 # Abstract
@@ -103,7 +102,7 @@ graphTraj.setLegends([r"$p = 0.25$", r"$p = 1$", r"$p = 2$"])
 
 # %%
 # We present each covariance model and the corresponding trajectory side by side.
-fig = pl.figure(figsize=(12, 4))
+fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
@@ -184,7 +183,7 @@ graphTraj.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1$"])
 
 # %%
 # We present each covariance model and the corresponding tracjectory side by side.
-fig = pl.figure(figsize=(12, 4))
+fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
@@ -266,7 +265,7 @@ graphTraj.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1$"])
 # %%
 # We present each covariance model and the corresponding tracjectory side by side.
 
-fig = pl.figure(figsize=(12, 4))
+fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
@@ -358,7 +357,7 @@ graphTraj.setLegends([r"$\nu = 1/2$", r"$\nu = 3/2$", r"$\nu = 5/2$"])
 
 # %%
 # We present each covariance model and the corresponding tracjectory side by side.
-fig = pl.figure(figsize=(12, 4))
+fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
@@ -440,12 +439,12 @@ graphTraj.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
 
 # %%
 # We present each covariance model and the corresponding tracjectory side by side.
-fig = pl.figure(figsize=(12, 4))
+fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
-_ = fig.suptitle("The Matern model : variation of the correlation length")
+_ = fig.suptitle("The Matern model: variation of the correlation length")
 
 # %%
 # From the previous figure we see that the trajectory of the Gaussian process is smoother with large
@@ -453,8 +452,4 @@ _ = fig.suptitle("The Matern model : variation of the correlation length")
 
 # %%
 # Display figures
-plt.show()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

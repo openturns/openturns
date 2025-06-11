@@ -27,7 +27,7 @@ Plot Smolyak multi-indices
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
+from matplotlib import pyplot as plt
 
 # %%
 # In the first example, we print the indices involved in
