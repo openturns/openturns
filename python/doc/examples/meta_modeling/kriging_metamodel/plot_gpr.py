@@ -1,12 +1,12 @@
 """
-Kriging : multiple input dimensions
-===================================
+Gaussian Process Regression: multiple input dimensions
+======================================================
 """
 
 # %%
-# In this example we are going to create an approximation of a model response using a kriging model.
+# In this example we are going to create an approximation of a model response using a GP model.
 # We consider a bidimensional function with Gaussian inputs.
-# Then we create a kriging metamodel with a constant basis and a :class:`~openturns.SquaredExponential` covariance.
+# Then we create a GP metamodel with a constant basis and a :class:`~openturns.SquaredExponential` covariance.
 #
 # We consider the function
 #
@@ -15,7 +15,7 @@ Kriging : multiple input dimensions
 #
 #
 # for any :math:`\vect{x} \in \Rset^2`.
-# We assume that :math:`X_1` and :math:`X_2` have a Gaussian distribution :
+# We assume that :math:`X_1` and :math:`X_2` have a Gaussian distribution:
 #
 # .. math::
 #    X_1 \sim \mathcal{N}(0,1) \textrm{ and } X_2 \sim \mathcal{N}(0,1).
@@ -23,6 +23,7 @@ Kriging : multiple input dimensions
 
 # %%
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.viewer as viewer
 
 ot.Log.Show(ot.Log.NONE)
@@ -46,12 +47,13 @@ x = distribution.getSample(samplesize)
 y = model(x)
 
 # %%
-# Then we create a Kriging metamodel, using a constant trend and a squared exponential covariance model.
-
-# %%
+# Then we create a GP metamodel, using a constant trend and a squared exponential covariance model.
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
-algo = ot.KrigingAlgorithm(x, y, covarianceModel, basis)
+fitter = otexp.GaussianProcessFitter(x, y, covarianceModel, basis)
+fitter.run()
+fitter_result = fitter.getResult()
+algo = otexp.GaussianProcessRegression(fitter_result)
 algo.run()
 result = algo.getResult()
 metamodel = result.getMetaModel()

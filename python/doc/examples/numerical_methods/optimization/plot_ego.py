@@ -27,7 +27,6 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
 ot.RandomGenerator.SetSeed(0)
-ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK")
 ot.Log.Show(ot.Log.NONE)
 
 

@@ -1,12 +1,12 @@
 """
-Kriging: propagate uncertainties
-================================
+Gaussian Process Regression: propagate uncertainties
+====================================================
 
-In this example we propagate uncertainties through a Kriging metamodel of the :ref:`Ishigami model<use-case-ishigami>`.
+In this example we propagate uncertainties through a GP metamodel of the :ref:`Ishigami model<use-case-ishigami>`.
 """
 
 import openturns as ot
-from matplotlib import pylab as plt
+import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -33,7 +33,7 @@ model = im.model
 ydata = model(xdata)
 
 # %%
-# We define our Kriging strategy :
+# We define our GP process:
 #
 #  - a constant basis in :math:`\mathbb{R}^3` ;
 #  - a squared exponential covariance function.
@@ -41,7 +41,10 @@ ydata = model(xdata)
 dimension = 3
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
-algo = ot.KrigingAlgorithm(xdata, ydata, covarianceModel, basis)
+fitter = otexp.GaussianProcessFitter(xdata, ydata, covarianceModel, basis)
+fitter.run()
+fitter_result = fitter.getResult()
+algo = otexp.GaussianProcessRegression(fitter_result)
 algo.run()
 result = algo.getResult()
 
@@ -90,4 +93,5 @@ view = otv.View(graph)
 # For reference, the exact mean of the Ishigami model is :
 print("Mean of the Ishigami model : %.3e" % im.expectation)
 
-plt.show()
+# %%
+otv.View.ShowAll()

@@ -6,7 +6,7 @@ In typical machine learning applications, Gaussian process regression
 surrogate models take several inputs,
 and those inputs are usually heterogeneous
 (e.g. in the :doc:`cantilever beam
-</auto_meta_modeling/kriging_metamodel/plot_kriging_cantilever_beam>` use case,
+</auto_meta_modeling/kriging_metamodel/plot_gpr_cantilever_beam>` use case,
 inputs are various physical quantities).
 
 In geostatistical applications however, inputs are typically spatial
