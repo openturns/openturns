@@ -25,8 +25,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
 
-ot.RandomGenerator.SetSeed(0)
-
 
 # %%
 # Ackley test-case

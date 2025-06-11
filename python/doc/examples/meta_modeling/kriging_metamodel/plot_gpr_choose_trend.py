@@ -71,7 +71,6 @@ model = ot.SymbolicFunction(["x"], ["x * sin(0.5 * x)"])
 # We use the following sample to train our metamodel.
 xmin = 0.0
 xmax = 10.0
-ot.RandomGenerator.SetSeed(0)
 nTrain = 8
 Xtrain = ot.Uniform(xmin, xmax).getSample(nTrain).sort()
 Xtrain

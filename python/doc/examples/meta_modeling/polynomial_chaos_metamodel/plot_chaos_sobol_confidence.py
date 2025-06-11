@@ -50,7 +50,6 @@ basis = ot.OrthogonalProductPolynomialFactory(marginals)
 
 # %%
 # Generate a learning sample with Monte-Carlo simulations (or retrieve the design from experimental data).
-ot.RandomGenerator.SetSeed(0)
 N = 35  # size of the experimental design
 X = distribution.getSample(N)
 Y = g(X)

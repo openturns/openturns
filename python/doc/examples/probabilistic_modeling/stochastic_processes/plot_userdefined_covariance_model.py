@@ -16,8 +16,6 @@ import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 import math as m
 
-
-
 # %%
 # Case 1: stationary covariance model
 # -----------------------------------

@@ -34,7 +34,6 @@ import openturns.viewer as otv
 import math as m
 
 
-
 def rastriginPy(X):
     A = 10.0
     delta = [x**2 - A * m.cos(2 * m.pi * x) for x in X]

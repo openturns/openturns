@@ -35,7 +35,6 @@ model = vff.model
 # %%
 # Generate a training sample.
 size = 2000
-ot.RandomGenerator.SetSeed(0)
 inputSample = distribution.getSample(size)
 outputSample = model(inputSample)
 

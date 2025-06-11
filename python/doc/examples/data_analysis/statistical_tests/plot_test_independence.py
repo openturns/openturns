@@ -6,8 +6,6 @@ Test independence
 # %%
 import openturns as ot
 
-
-
 # %%
 # Sample independence test
 # ------------------------

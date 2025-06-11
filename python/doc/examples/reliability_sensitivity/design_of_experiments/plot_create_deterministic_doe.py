@@ -8,8 +8,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pyplot as plt
 
-
-
 # %%
 # Four types of deterministic designs of experiments are available:
 #

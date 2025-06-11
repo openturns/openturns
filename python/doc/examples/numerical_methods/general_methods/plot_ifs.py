@@ -13,13 +13,10 @@ from matplotlib import pyplot as plt
 # sphinx_gallery_thumbnail_number = 4
 import math as m
 
-
-
 # %%
 # **Tree traversal algorithm (the chaos game)**
 
 
-# %%
 def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blue"):
     # Any set of initial points should work in theory
     initialPoints = ot.Normal(2).getSample(batch_size)

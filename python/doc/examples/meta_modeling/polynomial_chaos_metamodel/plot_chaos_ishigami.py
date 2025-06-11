@@ -21,8 +21,6 @@ import openturns as ot
 import openturns.viewer as otv
 import math
 
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # We load the Ishigami model :
 im = ishigami_function.IshigamiModel()

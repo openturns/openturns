@@ -12,12 +12,10 @@ In this example we are going to estimate mean and standard deviation of an outpu
 import openturns as ot
 import openturns.viewer as viewer
 import numpy as np
-from matplotlib import pyplot as plt
 
 
 # %%
 # Create a composite random vector
-ot.RandomGenerator.SetSeed(0)
 input_names = ["x1", "x2", "x3", "x4"]
 myFunc = ot.SymbolicFunction(input_names, ["cos(x2*x2+x4)/(x1*x1+1+x3^4)"])
 R = ot.CorrelationMatrix(4)
@@ -74,7 +72,6 @@ taylor.getGradientAtMean()
 # %%
 # Get the hessian value of the output at the mean point
 taylor.getHessianAtMean()
-plt.show()
 
 # %%
 # Using finite difference gradients
@@ -124,3 +121,6 @@ myFunc.setHessian(
 # We can then proceed in the same way as before
 Y = ot.CompositeRandomVector(myFunc, X)
 taylor = ot.TaylorExpansionMoments(Y)
+
+# %%
+viewer.View.ShowAll()

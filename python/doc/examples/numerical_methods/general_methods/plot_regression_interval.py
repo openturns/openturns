@@ -28,10 +28,7 @@ from openturns.usecases import linthurst
 
 
 # %%
-
 palette = ot.Drawable.BuildTableauPalette(5)
-
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 #

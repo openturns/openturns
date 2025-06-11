@@ -10,8 +10,6 @@ Plot the log-likelihood contours of a distribution
 import openturns.viewer as viewer
 import openturns as ot
 
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # Generate a sample
 # -----------------

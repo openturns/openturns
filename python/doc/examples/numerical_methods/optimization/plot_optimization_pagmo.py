@@ -10,8 +10,6 @@ Multi-objective optimization using Pagmo
 import openturns as ot
 from openturns.viewer import View
 
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # List available algorithms
 for algo in ot.Pagmo.GetAlgorithmNames():

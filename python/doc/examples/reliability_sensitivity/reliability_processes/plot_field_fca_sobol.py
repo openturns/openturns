@@ -48,7 +48,6 @@ X.setMesh(tg)
 
 # %%
 # Draw some input trajectories from our process
-ot.RandomGenerator.SetSeed(0)
 x = X.getSample(10)
 graph = x.drawMarginal(0)
 graph.setTitle(f"{x.getSize()} input trajectories")

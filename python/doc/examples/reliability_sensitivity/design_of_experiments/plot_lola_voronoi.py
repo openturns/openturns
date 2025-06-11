@@ -55,7 +55,6 @@ _ = otv.View(graph, square_axes=True)
 
 # %%
 # Lets define an initial design of experiments
-ot.RandomGenerator.SetSeed(0)
 N = 50
 x0 = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, N).generate()
 y0 = f1(x0)
