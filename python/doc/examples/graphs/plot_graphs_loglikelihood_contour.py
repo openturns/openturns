@@ -7,7 +7,6 @@ Plot the log-likelihood contours of a distribution
 # In this example, we show how to plot the bidimensionnal log-likelihood contours of function given a sample.
 
 # %%
-from matplotlib import pyplot as plt
 import openturns.viewer as viewer
 import openturns as ot
 
@@ -211,8 +210,5 @@ view = viewer.View(graphFineTune)
 palette = ot.Drawable.BuildTableauPalette(len(levels))
 view = viewer.View(graphFineTune, contour_kw={"colors": palette, "cmap": None})
 
-plt.show()
-
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+viewer.View.ShowAll()

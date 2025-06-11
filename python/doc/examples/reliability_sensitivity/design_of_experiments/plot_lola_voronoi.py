@@ -178,9 +178,5 @@ drawScore(algo.getHybridScore(), "hybrid")
 
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
-
-# %%
 # Show all plots
 otv.View.ShowAll()

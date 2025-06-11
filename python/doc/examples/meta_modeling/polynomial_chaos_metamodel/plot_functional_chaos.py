@@ -272,7 +272,3 @@ plt.show()
 #   For example, it might be interesting to
 #   try an integration rule instead of the least squares method.
 #   Notice that a specific design of experiments is required in this case.
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

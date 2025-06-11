@@ -12,7 +12,6 @@ Create a Gaussian process from a cov. model using HMatrix
 # %%
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pyplot as plt
 
 # ot.Log.Show(ot.Log.NONE)
 
@@ -75,11 +74,9 @@ ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon", 1e-7)
 sample = process.getSample(6)
 graph = sample.drawMarginal(0)
 view = viewer.View(graph)
-plt.show()
 
 # %%
 # We notice here that we are able to sample the covariance model over a mesh of size `10000`, which is usually tricky on a laptop. This is mainly due to the compression.
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+viewer.View.ShowAll()

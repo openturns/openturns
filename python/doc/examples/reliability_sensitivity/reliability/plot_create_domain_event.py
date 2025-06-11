@@ -12,7 +12,6 @@ Create a domain event
 #
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # We consider a standard unit Gaussian bivariate random vector :math:`\vect{X} = (X_1,X_2)` with
@@ -205,8 +204,4 @@ print("Basic estimator : %.4f" % (sum(samples)[0] / N))
 
 # %%
 # Display all figures
-plt.show()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

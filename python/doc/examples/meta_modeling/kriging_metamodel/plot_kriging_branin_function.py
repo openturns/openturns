@@ -189,7 +189,3 @@ print(gccc.getConditionalMarginalVariance(xdata, 0)[0:5])
 # %%
 # Display all figures
 otv.View.ShowAll()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

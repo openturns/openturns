@@ -740,8 +740,5 @@ view = otv.View(
 )
 plt.subplots_adjust(wspace=1.0, hspace=0.5)
 
-otv.View.ShowAll()
-
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

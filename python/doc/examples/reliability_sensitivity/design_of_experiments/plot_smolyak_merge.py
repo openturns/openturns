@@ -193,5 +193,4 @@ plt.tight_layout()
 # level increases.
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

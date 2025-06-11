@@ -314,9 +314,5 @@ graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
-# Reset ResourceMap
-ot.ResourceMap.Reload()
-
-# %%
 # Show all the graphs.
-view.ShowAll()
+otv.View.ShowAll()

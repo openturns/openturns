@@ -24,7 +24,6 @@ from openturns.usecases import ackley_function
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as viewer
-from matplotlib import pyplot as plt
 
 ot.RandomGenerator.SetSeed(0)
 ot.Log.Show(ot.Log.NONE)
@@ -316,8 +315,7 @@ graph = result.drawOptimalValueHistory()
 optimum_curve = ot.Curve(ot.Sample([[0, fexact[0][0]], [29, fexact[0][0]]]))
 graph.add(optimum_curve)
 view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
-plt.show()
+
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+viewer.View.ShowAll()
