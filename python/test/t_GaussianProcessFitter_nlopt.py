@@ -36,5 +36,5 @@ ott.assert_almost_equal(residual.computeCentralMoment(2), [1.06e-05], 1e-5, 1e-5
 ott.assert_almost_equal(
     conditionalCovariance.getParameter(), [0.619144, 0.000937], 5e-3, 1e-3
 )
-likelihood = algo.getObjectiveFunction()
+likelihood = algo.getReducedLogLikelihoodFunction()
 assert likelihood.getInputDimension() == 1, "likelihood dim"

@@ -69,7 +69,7 @@ public:
   GaussianProcessFitterResult getResult();
 
   /** Objective function (reduced log-Likelihood) accessor */
-  Function getObjectiveFunction();
+  Function getReducedLogLikelihoodFunction();
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
