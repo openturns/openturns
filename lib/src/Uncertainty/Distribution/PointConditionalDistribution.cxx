@@ -467,7 +467,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
       const Point mu(decompose(distribution_, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C));
       const Point mY(conditioningValues_ - mu.select(conditioningIndices_));
       const Scalar dy = mY.dot(distribution_.getMarginal(conditioningIndices_).getCovariance().solveLinearSystem(mY));
-      Student *p_student = dynamic_cast<Student *>(distribution_.getStandardDistribution().getImplementation().get());
+      const Student *p_student = dynamic_cast<Student *>(distribution_.getImplementation().get());
       const Scalar nu = p_student->getNu();
       const UnsignedInteger py = conditioningIndices_.getSize();
       C = CovarianceMatrix((C * std::sqrt((nu + dy) / (nu + py))).getImplementation());
