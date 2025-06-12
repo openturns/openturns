@@ -101,13 +101,6 @@ Main classes
     experimental.GaussianProcessRegressionResult
     experimental.GaussianProcessFitterResult
     experimental.GaussianProcessConditionalCovariance
-
-    :template: classWithPlot.rst_t
-    KrigingAlgorithm
-
-    :template: class.rst_t
-    KrigingResult
-    KrigingRandomVector
     experimental.GaussianProcessRandomVector
 
 Construction of the regression basis
