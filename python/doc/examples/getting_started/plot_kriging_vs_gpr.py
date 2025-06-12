@@ -4,7 +4,7 @@ Gaussian Process Regression vs KrigingAlgorithm
 """
 
 # %%
-# The goal of this example is to highlight the main changes between the old API involving :class:`~openturns.KrigingAlgorithm` and the new one.
+# The goal of this example is to highlight the main changes between the old API involving `KrigingAlgorithm` and the new one.
 #
 # It assumes a basic knowledge of Gaussian Process Regression.
 # For that purpose, we create a Gaussian Process Regression surrogate model for a function which has scalar real inputs and outputs.
@@ -133,7 +133,7 @@ basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 
 # %%
-# In the following, we use the :class:`~openturns.KrigingAlgorithm` class to fit the Gaussian Process Regression model (aka Kriging).
+# In the following, we use the `KrigingAlgorithm` class to fit the Gaussian Process Regression model (aka Kriging).
 
 # %%
 kriging_algo = ot.KrigingAlgorithm(x_train, y_train, covarianceModel, basis)
@@ -571,8 +571,8 @@ view = viewer.View(graph)
 # * Conditional covariance : :meth:`~openturns.KrigingResult.getConditionalCovariance`/ :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance`
 # * Known trend : no / yes (see : :class:`~openturns.experimental.GaussianProcessRegression` )
 # * Nugget factor : yes / yes
-# * Heteroscedastic noise : :meth:`~openturns.KrigingAlgorithm.setNoise` / no
-# * Fit the model : :meth:`~openturns.KrigingAlgorithm.run` / :meth:`~openturns.experimental.GaussianProcessFitter.run` + :meth:`~openturns.experimental.GaussianProcessRegression.run`
+# * Heteroscedastic noise : `KrigingAlgorithm.setNoise` / no
+# * Fit the model : `KrigingAlgorithm.run` / :meth:`~openturns.experimental.GaussianProcessFitter.run` + :meth:`~openturns.experimental.GaussianProcessRegression.run`
 
 # %%
 plt.show()
