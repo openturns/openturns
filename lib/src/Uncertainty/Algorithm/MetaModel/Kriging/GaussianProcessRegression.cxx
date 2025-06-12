@@ -150,24 +150,8 @@ void GaussianProcessRegression::run()
   metaModel.setGradient(new GaussianProcessGradient(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
-  // compute residual, relative error
-  const Point outputVariance(outputSample.computeVariance());
-  const Sample mY(metaModel(inputSample));
-  const Point squaredResiduals((outputSample - mY).computeRawMoment(2));
-
-  const UnsignedInteger size = inputSample.getSize();
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
-  for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
-  {
-    residuals[outputIndex] = std::sqrt(squaredResiduals[outputIndex] / size);
-    relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
-  }
   result_ = GaussianProcessRegressionResult(gaussianProcessFitterResult_, covarianceCoefficients);
-  // Set metamodel
   result_.setMetaModel(metaModel);
-  result_.setResiduals(residuals);
-  result_.setRelativeErrors(relativeErrors);
 }
 
 

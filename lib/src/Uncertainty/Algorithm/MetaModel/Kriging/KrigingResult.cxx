@@ -43,10 +43,8 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const Basis & basis,
                              const Point & trendCoefficients,
                              const CovarianceModel & covarianceModel,
-                             const Sample & covarianceCoefficients,
-                             const Point & residuals,
-                             const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
+                             const Sample & covarianceCoefficients)
+  : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -65,10 +63,8 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const CovarianceModel & covarianceModel,
                              const Sample & covarianceCoefficients,
                              const TriangularMatrix & covarianceCholeskyFactor,
-                             const HMatrix & covarianceHMatrix,
-                             const Point & residuals,
-                             const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
+                             const HMatrix & covarianceHMatrix)
+  : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)

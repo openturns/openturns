@@ -46,9 +46,7 @@ public:
   /** Standard constructor */
   MetaModelResult(const Sample & inputSample,
                   const Sample & outputSample,
-                  const Function & metaModel,
-                  const Point & residuals = Point(), // @deprecated argument
-                  const Point & relativeErrors = Point()); // @deprecated argument
+                  const Function & metaModel);
 
   /** Virtual constructor */
   MetaModelResult * clone() const override;
@@ -64,14 +62,6 @@ public:
   /** MetaModel accessor */
   virtual void setMetaModel(const Function & metaModel);
   virtual Function getMetaModel() const;
-
-  /** @deprecated Marginal residuals accessor */
-  virtual void setResiduals(const Point & residuals);
-  virtual Point getResiduals() const;
-
-  /** @deprecated Marginal relative errors accessor */
-  virtual void setRelativeErrors(const Point & relativeErrors);
-  virtual Point getRelativeErrors() const;
 
   /** String converter */
   String __repr__() const override;
@@ -89,12 +79,6 @@ protected:
 
   // The corresponding meta-model
   Function metaModel_;
-
-  // The marginal residuals
-  Point residuals_;
-
-  // The marginal relative errors
-  Point relativeErrors_;
 
 }; // class MetaModelResult
 

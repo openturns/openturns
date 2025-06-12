@@ -58,9 +58,7 @@ public:
                 const Basis & basis,
                 const Point & trendCoefficients,
                 const CovarianceModel & covarianceModel,
-                const Sample & covarianceCoefficients,
-                const Point & residuals = Point(),
-                const Point & relativeErrors = Point());
+                const Sample & covarianceCoefficients);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
   KrigingResult(const Sample & inputSample,
@@ -71,9 +69,7 @@ public:
                 const CovarianceModel & covarianceModel,
                 const Sample & covarianceCoefficients,
                 const TriangularMatrix & covarianceCholeskyFactor,
-                const HMatrix & covarianceHMatrix,
-                const Point & residuals = Point(),
-                const Point & relativeErrors = Point());
+                const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
   KrigingResult * clone() const override;

@@ -63,10 +63,7 @@ public:
                         const OrthogonalBasis & orthogonalBasis,
                         const Indices & I,
                         const Sample & alpha_k,
-                        const FunctionCollection & Psi_k,
-                        const Point & residuals = Point(),
-                        const Point & relativeErrors = Point()
-                       );
+                        const FunctionCollection & Psi_k);
 
   /** Virtual constructor */
   FunctionalChaosResult * clone() const override;

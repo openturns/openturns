@@ -160,21 +160,8 @@ void IntegrationExpansion::run()
   Matrix coefficientsAsMatrix(weightedOutput * designMatrix);
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
   coefficients.setData(*coefficientsAsMatrix.getImplementation());
-  // Compute the output approximation. We rely on the genProd() method to avoid an explicit transposition
-  const Matrix predictedOutput(coefficientsAsMatrix.getImplementation()->genProd(*designMatrix.getImplementation(), false, true));
-  Point relativeErrors(outputDimension);
-  Point residuals(outputDimension);
-  for (UnsignedInteger j = 0; j < outputDimension; ++j)
-  {
-    const Sample marginalOutputSample(outputSample_.getMarginal(j));
-    // Now the two errors
-    const Scalar quadraticResidual = (Point(*predictedOutput.getRow(j).getImplementation()) - marginalOutputSample.asPoint()).normSquare();
-    residuals[j] = std::sqrt(quadraticResidual) / sampleSize;
-    const Scalar empiricalError = quadraticResidual / sampleSize;
-    relativeErrors[j] = empiricalError / marginalOutputSample.computeVariance()[0];
-  }
   // Build the result
-  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_), residuals, relativeErrors);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(false);
   result_.setInvolvesModelSelection(false);
 }

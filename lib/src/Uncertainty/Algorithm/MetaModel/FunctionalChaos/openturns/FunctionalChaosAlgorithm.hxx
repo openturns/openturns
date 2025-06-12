@@ -129,11 +129,7 @@ public:
 private:
 
   /** Marginal computation */
-  void runMarginal(const UnsignedInteger marginalIndex,
-                   Indices & indices,
-                   Point & coefficients,
-                   Scalar & residual,
-                   Scalar & relativeError);
+  void runMarginal(const UnsignedInteger marginalIndex, Indices & indices, Point & coefficients);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   Function transformation_;

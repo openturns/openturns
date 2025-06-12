@@ -55,9 +55,7 @@ public:
                            const Basis & basis,
                            const Point & trendCoefficients,
                            const CovarianceModel & covarianceModel,
-                           const Scalar optimalLogLikelihood,
-                           const Point & residuals = Point(),
-                           const Point & relativeErrors = Point());
+                           const Scalar optimalLogLikelihood);
 
   /** Virtual constructor */
   GeneralLinearModelResult * clone() const override;

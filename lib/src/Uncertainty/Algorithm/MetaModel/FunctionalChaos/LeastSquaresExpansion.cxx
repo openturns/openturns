@@ -145,10 +145,6 @@ void LeastSquaresExpansion::run()
   LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
-  const Matrix weightedDesign(leastSquaresMethod.computeWeightedDesign());
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
-  const UnsignedInteger sampleSize = inputSample_.getSize();
   for (UnsignedInteger j = 0; j < outputDimension; ++j)
   {
     const Sample marginalOutputSample(outputSample_.getMarginal(j));
@@ -156,14 +152,9 @@ void LeastSquaresExpansion::run()
     const Point coeffsJ(leastSquaresMethod.solve(rhs));
     for (UnsignedInteger i = 0; i < activeFunctions_.getSize(); ++i)
       coefficients(i, j) = coeffsJ[i];
-    // Now the two errors
-    const Scalar quadraticResidual = (weightedDesign * coeffsJ - rhs).normSquare();
-    residuals[j] = std::sqrt(quadraticResidual) / sampleSize;
-    const Scalar empiricalError = quadraticResidual / sampleSize;
-    relativeErrors[j] = empiricalError / marginalOutputSample.computeVariance()[0];
   }
   // Build the result
-  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_), residuals, relativeErrors);
+  result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(true);
   result_.setInvolvesModelSelection(false);
 }

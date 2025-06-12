@@ -59,10 +59,8 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     const OrthogonalBasis & orthogonalBasis,
     const Indices & I,
     const Sample & alpha_k,
-    const FunctionCollection & Psi_k,
-    const Point & residuals,
-    const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension())), residuals, relativeErrors)
+    const FunctionCollection & Psi_k)
+  : MetaModelResult(inputSample, outputSample, ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension())))
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -111,8 +109,6 @@ String FunctionalChaosResult::__repr__() const
          << " indices=" << I_
          << " coefficients=" << alpha_k_
          << " reduced basis=" << Psi_k_
-         << " residuals=" << residuals_
-         << " relativeErrors=" << relativeErrors_
          << " composedMetaModel=" << composedMetaModel_
          << " metaModel=" << metaModel_
          << " isLeastSquares=" << isLeastSquares_
@@ -147,8 +143,6 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << "\n"
       << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
       << "- indices size=" << indicesSize << "\n"
-      << "- relative errors=" << relativeErrors_ << "\n"
-      << "- residuals=" << residuals_ << "\n"
       << "- is least squares=" << isLeastSquares_ << "\n"
       << "- is model selection=" << involvesModelSelection_ << "\n";
   oss << "\n";
@@ -410,9 +404,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
     orthogonalBasisMarginal,
     listOfActiveReducedIndices,
     activeCoefficients,
-    activeReducedBasis,
-    residuals_,
-    relativeErrors_
+    activeReducedBasis
   );
   return conditionalPCE;
 }

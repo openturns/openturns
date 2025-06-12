@@ -65,9 +65,7 @@ public:
                               const Point & trendCoefficients,
                               const CovarianceModel & covarianceModel,
                               const Scalar optimalLogLikelihood,
-                              const LinearAlgebra linearAlgebraMethod,
-                              const Point & residuals = Point(),
-                              const Point & relativeErrors = Point());
+                              const LinearAlgebra linearAlgebraMethod);
 
   /** Virtual constructor */
   GaussianProcessFitterResult * clone() const override;

@@ -325,26 +325,11 @@ void GaussianProcessFitter::run()
     metaModel = ConstantFunction(covarianceModel_.getInputDimension(), Point(covarianceModel_.getOutputDimension(), 0.0));
   }
 
-  // compute residual, relative error
-  const Point outputVariance(outputSample_.computeVariance());
-  const Sample mY(metaModel(inputSample_));
-  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
-
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
-
-  const UnsignedInteger size = inputSample_.getSize();
-  for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
-  {
-    residuals[outputIndex] = std::sqrt(squaredResiduals[outputIndex] / size);
-    relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
-  }
-
   // return optimized covmodel with the original active parameters (see analyticalAmplitude_)
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_, residuals, relativeErrors);
+  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_);
   result_.setRho(rho_);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula

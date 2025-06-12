@@ -37,15 +37,11 @@ MetaModelResult::MetaModelResult()
 /* Standard constructor */
 MetaModelResult::MetaModelResult(const Sample & inputSample,
                                  const Sample & outputSample,
-                                 const Function & metaModel,
-                                 const Point & residuals,
-                                 const Point & relativeErrors)
+                                 const Function & metaModel)
   : PersistentObject()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , metaModel_(metaModel)
-  , residuals_(residuals)
-  , relativeErrors_(relativeErrors)
 {
   if (metaModel.getInputDimension() != inputSample.getDimension())
     throw InvalidArgumentException(HERE) << "The input sample dimension (" << inputSample.getDimension() << ") must match the metamodel input dimension (" << metaModel.getInputDimension() << ")";
@@ -70,30 +66,6 @@ void MetaModelResult::setMetaModel(const Function & metaModel)
 Function MetaModelResult::getMetaModel() const
 {
   return metaModel_;
-}
-
-/* Marginal residuals accessor */
-void MetaModelResult::setResiduals(const Point & residuals)
-{
-  residuals_ = residuals;
-}
-
-Point MetaModelResult::getResiduals() const
-{
-  LOGWARN("MetaModelResult.getResiduals is deprecated, use MetaModelValidation.computeR2Score instead");
-  return residuals_;
-}
-
-/* Relative error accessor */
-void MetaModelResult::setRelativeErrors(const Point & relativeErrors)
-{
-  relativeErrors_ = relativeErrors;
-}
-
-Point MetaModelResult::getRelativeErrors() const
-{
-  LOGWARN("MetaModelResult.getRelativeErrors is deprecated, use MetaModelValidation.computeMeanSquaredError instead");
-  return relativeErrors_;
 }
 
 /* Sample accessor */
@@ -122,9 +94,7 @@ Sample MetaModelResult::getOutputSample() const
 String MetaModelResult::__repr__() const
 {
   OSS oss;
-  oss << " metaModel=" << metaModel_
-      << " residuals=" << residuals_
-      << " relativeErrors=" << relativeErrors_;
+  oss << " metaModel=" << metaModel_;
   return oss;
 }
 
@@ -135,8 +105,6 @@ void MetaModelResult::save(Advocate & adv) const
   adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "metaModel_", metaModel_ );
-  adv.saveAttribute( "residuals_", residuals_ );
-  adv.saveAttribute( "relativeErrors_", relativeErrors_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -149,8 +117,6 @@ void MetaModelResult::load(Advocate & adv)
     adv.loadAttribute( "outputSample_", outputSample_ );
   }
   adv.loadAttribute( "metaModel_", metaModel_ );
-  adv.loadAttribute( "residuals_", residuals_ );
-  adv.loadAttribute( "relativeErrors_", relativeErrors_ );
 }
 
 END_NAMESPACE_OPENTURNS

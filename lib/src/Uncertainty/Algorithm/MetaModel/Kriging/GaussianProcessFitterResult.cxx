@@ -48,10 +48,8 @@ GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSam
     const Point & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const Scalar optimalLogLikelihood,
-    const LinearAlgebra linearAlgebraMethod,
-    const Point & residuals,
-    const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors),
+    const LinearAlgebra linearAlgebraMethod)
+  : MetaModelResult(inputSample, outputSample, metaModel),
     regressionMatrix_(regressionMatrix),
     basis_(basis),
     beta_(trendCoefficients),

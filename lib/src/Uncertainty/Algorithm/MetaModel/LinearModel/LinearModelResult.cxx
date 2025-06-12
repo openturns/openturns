@@ -52,7 +52,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & leverages,
                                      const Point & cookDistances,
                                      const Scalar residualsVariance)
-  : MetaModelResult(inputSample, outputSample, metaModel, Point(1, 0.0), Point(1, 0.0))
+  : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , design_(design)
   , coefficients_(coefficients)

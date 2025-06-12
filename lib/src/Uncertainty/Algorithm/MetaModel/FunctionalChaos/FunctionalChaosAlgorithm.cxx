@@ -289,8 +289,6 @@ void FunctionalChaosAlgorithm::run()
   // polynomials with vector coefficients
   // We build the coefficients of the combination. As some indices may be
   // missing, we have to take care of the different sparsity patterns
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
   std::map<UnsignedInteger, Point> coefficientsMap;
   const Scalar smallCoefficient = ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
@@ -298,12 +296,8 @@ void FunctionalChaosAlgorithm::run()
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
     Indices marginalIndices;
     Point marginalAlpha_k;
-    Scalar marginalResidual = -1.0;
-    Scalar marginalRelativeError = -1.0;
     // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
-    runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
-    residuals[outputIndex] = marginalResidual;
-    relativeErrors[outputIndex] = marginalRelativeError;
+    runMarginal(outputIndex, marginalIndices, marginalAlpha_k);
     for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {
       // Deal only with non-zero coefficients
@@ -339,8 +333,7 @@ void FunctionalChaosAlgorithm::run()
   }
   // Build the result
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_,
-                                  inverseTransformation_, basis, I_k, alpha_k, Psi_k,
-                                  residuals, relativeErrors);
+                                  inverseTransformation_, basis, I_k, alpha_k, Psi_k);
   result_.setIsLeastSquares(projectionStrategy_.isLeastSquares());
   result_.setInvolvesModelSelection(adaptiveStrategy_.getImplementation()->involvesModelSelection() ||
                                     projectionStrategy_.getImplementation()->involvesModelSelection());
@@ -355,9 +348,7 @@ void FunctionalChaosAlgorithm::run()
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
-    Point & coefficients,
-    Scalar & residual,
-    Scalar & relativeError)
+    Point & coefficients)
 {
   // Initialize the projection basis Phi_k_p_ and I_p_
   LOGINFO("Compute the initial basis");
@@ -374,8 +365,6 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
       LOGINFO("Stop on small residual");
       indices = adaptiveStrategy_.getImplementation()->I_p_;
       coefficients = projectionStrategy_.getCoefficients();
-      residual = projectionStrategy_.getResidual();
-      relativeError = projectionStrategy_.getRelativeError();
       return;
     }
     LOGINFO("Adapt the basis");
@@ -387,8 +376,6 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   LOGINFO("No more basis adaptation");
   indices = adaptiveStrategy_.getImplementation()->I_p_;
   coefficients = projectionStrategy_.getCoefficients();
-  residual = projectionStrategy_.getResidual();
-  relativeError = projectionStrategy_.getRelativeError();
 }
 
 

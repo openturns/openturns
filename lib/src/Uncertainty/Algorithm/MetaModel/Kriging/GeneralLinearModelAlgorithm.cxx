@@ -367,26 +367,11 @@ void GeneralLinearModelAlgorithm::run()
     metaModel = ConstantFunction(covarianceModel_.getInputDimension(), Point(covarianceModel_.getOutputDimension(), 0.0));
   }
 
-  // compute residual, relative error
-  const Point outputVariance(outputSample_.computeVariance());
-  const Sample mY(metaModel(inputSample_));
-  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
-
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
-
-  const UnsignedInteger size = inputSample_.getSize();
-  for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
-  {
-    residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
-    relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
-  }
-
   // return optimized covmodel with the original active parameters (see analyticalAmplitude_)
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, residuals, relativeErrors);
+  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
   if (keepCholeskyFactor_)
@@ -400,8 +385,6 @@ void GeneralLinearModelAlgorithm::run()
     }
     result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   }
-  else
-    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, residuals, relativeErrors);
   hasRun_ = true;
 }
 
