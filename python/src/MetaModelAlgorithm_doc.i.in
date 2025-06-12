@@ -10,7 +10,7 @@ distribution : :class:`~openturns.Distribution`, optional
 
 See also
 --------
-LinearModelAlgorithm, KrigingAlgorithm, GeneralLinearModelAlgorithm, FunctionalChaosAlgorithm"
+LinearModelAlgorithm, GeneralLinearModelAlgorithm, FunctionalChaosAlgorithm"
 
 // ---------------------------------------------------------------------
 
