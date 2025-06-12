@@ -289,7 +289,7 @@ print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
 # In order to compute the regression error, we can consider the conditional variance.
-# Within the old API, the :meth:`~openturns.KrigingResult.getConditionalMarginalVariance` method returns the marginal variance `marVar`
+# Within the old API, the `KrigingResult.getConditionalMarginalVariance` method returns the marginal variance `marVar`
 # evaluated at each points in the given sample.
 # Then we can apply the sqrt function to get the standard deviation.
 # Notice that some coefficients in the diagonal are very close to zero and
@@ -310,8 +310,8 @@ conditional_sigma_kriging = sqrt(conditional_variance_kriging)
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 # Notice also that :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance` is similar to
-# :meth:`~openturns.KrigingResult.getConditionalCovariance`, and :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getDiagonalCovarianceCollection`
-# has a "twin" method :meth:`~openturns.KrigingResult.getConditionalMarginalCovariance`.,
+# `KrigingResult.getConditionalCovariance`, and :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getDiagonalCovarianceCollection`
+# has a "twin" method `KrigingResult.getConditionalMarginalCovariance`.,
 
 # %%
 gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
@@ -568,7 +568,7 @@ view = viewer.View(graph)
 # We can summarize the main differences hereafter (old API / new API):
 #
 # * Default optimization solver : :class:`~openturns.TNC`/:class:`~openturns.Cobyla`
-# * Conditional covariance : :meth:`~openturns.KrigingResult.getConditionalCovariance`/ :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance`
+# * Conditional covariance : `KrigingResult.getConditionalCovariance`/ :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance`
 # * Known trend : no / yes (see : :class:`~openturns.experimental.GaussianProcessRegression` )
 # * Nugget factor : yes / yes
 # * Heteroscedastic noise : `KrigingAlgorithm.setNoise` / no
