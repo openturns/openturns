@@ -21,6 +21,7 @@
  */
 
 #include <algorithm>
+#include <filesystem>
 #include <string>
 #include "openturns/OTconfig.hxx"
 #include "openturns/FieldImplementation.hxx"
@@ -728,7 +729,7 @@ void FieldImplementation::load(Advocate & adv)
 /* Export to VTK file */
 void FieldImplementation::exportToVTKFile(const String & fileName) const
 {
-  std::ofstream file(fileName.c_str(), std::ios::out);
+  std::ofstream file(std::filesystem::u8path(fileName));
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
   const String content(mesh_.streamToVTKFormat());
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
