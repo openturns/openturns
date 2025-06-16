@@ -18,10 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <filesystem>
 #include <iostream>
-#include <cstdlib>
 #include <cassert>
-#include <errno.h>
 
 #include "openturns/Log.hxx"
 #include "openturns/OTconfig.hxx"
@@ -289,16 +288,19 @@ void Log::SetFile(const FileName & file)
 
 
 /* Set the name of the log file */
-void Log::setFile(const FileName & file)
+void Log::setFile(const FileName & fileName)
 {
-  if (file.size())
-    push(Entry(INFO, String("Diverting log to file: ") + file));
+  if (fileName.size())
+    push(Entry(INFO, String("Diverting log to file: ") + fileName));
   push(Entry(INFO, "*** Log End ***"));
   delete p_file_;
-  TTY::ShowColors(file.size() == 0);
-  p_file_ = file.size() ? new std::ofstream(file.c_str()) : nullptr;
-  if (file.size())
+  p_file_ = nullptr;
+  TTY::ShowColors(fileName.size() == 0);
+  if (fileName.size())
+  {
+    p_file_ = new std::ofstream(std::filesystem::u8path(fileName));
     push(Entry(INFO, "*** Log Beginning ***"));
+  }
 }
 
 /* Color accessor */
