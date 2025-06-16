@@ -170,7 +170,11 @@ os.remove(fname)
 fname = "Données"
 with open(fname, "w") as f:
     f.write("X1;X2;X3;X4\n-1.2;2.3;3.4;-4.5\n5.6;-6.7;7.8;8.9\n-0.1;3.2;5.1;7.5\n")
-aSample = ot.Sample.ImportFromCSVFile(fname, ";")
-assert aSample.getSize() == 3
+aSample = ot.Sample.ImportFromTextFile(fname, ";")
+assert (aSample.getSize(), aSample.getDimension()) == (3, 4), "unicode/text"
+
+aSample.exportToCSVFile(fname)
+aSample = ot.Sample.ImportFromCSVFile(fname)
+assert (aSample.getSize(), aSample.getDimension()) == (3, 4), "unicode/csv"
 
 os.remove(fname)

@@ -20,6 +20,7 @@
  */
 #include <sstream>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
@@ -1939,7 +1940,7 @@ void SampleImplementation::exportToCSVFile(const FileName & fileName,
     throw InvalidArgumentException(HERE) << "Decimal separator must be a string of size 1, got " << decimalSeparator.size();
   if (separator == decimalSeparator)
     throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
-  std::ofstream csvFile(fileName);
+  std::ofstream csvFile(std::filesystem::u8path(fileName));
   if (csvFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << fileName;
 
