@@ -7,7 +7,7 @@ Viscous free fall: metamodel of a field function
 #
 # In this example, we present how to create the metamodel of a field function.
 # This example considers the :ref:`free fall model <use-case-viscous-fall>`.
-# We create the metamodel automatically using :class:`openturns.experimental.PointToFieldFunctionalChaosAlgorithm`
+# We create the metamodel automatically using :class:`openturns.PointToFieldFunctionalChaosAlgorithm`
 # and then also with a manual approach:
 # We first compute the Karhunen-Loève decomposition of a sample of trajectories.
 # Then we create a create a polynomial chaos which takes the inputs and returns
@@ -21,7 +21,6 @@ Viscous free fall: metamodel of a field function
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import viscous_free_fall
 
@@ -40,7 +39,7 @@ outputSample = model(inputSample)
 
 # %%
 # Compute the global metamodel
-algo = otexp.PointToFieldFunctionalChaosAlgorithm(
+algo = ot.PointToFieldFunctionalChaosAlgorithm(
     inputSample, outputSample, distribution
 )
 algo.run()

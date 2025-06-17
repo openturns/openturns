@@ -872,6 +872,7 @@ ot_add_python_module(metamodel metamodel_module.i
 		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                       IntegrationExpansion.i IntegrationExpansion_doc.i.in
                       FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
+                      PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                       FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in
                       FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i.in
                       UncertaintyMetaModelTemplateDefs.i
@@ -1011,7 +1012,6 @@ ot_add_python_module(experimental experimental_module.i
                      SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i.in
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i.in
                      LOLAVoronoi.i LOLAVoronoi_doc.i.in
-                     PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                      SamplePartition.i SamplePartition_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in

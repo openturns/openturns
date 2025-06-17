@@ -70,9 +70,6 @@
 /* Base/Algo */
 %include CubaIntegration.i
 
-/* Uncertainty/Algorithm/Metamodel */
-%include PointToFieldFunctionalChaosAlgorithm.i
-
 /* Uncertainty/Algorithm */
 %include SequentialSamplingAlgorithmImplementation.i
 %include SequentialSamplingAlgorithm.i

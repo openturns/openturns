@@ -1,10 +1,6 @@
 %feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm
 "Functional metamodel algorithm based on chaos decomposition.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 The present algorithm makes it possible to build a response surface of the
 function :math:`h` defined by the equation:
 
@@ -100,10 +96,10 @@ distribution : :class:`~openturns.Distribution`
 
 See Also
 --------
-openturns.FieldToPointFunctionalChaosAlgorithm
-openturns.FieldFunctionalChaosSobolIndices
-openturns.KarhunenLoeveAlgorithm
-openturns.FunctionalChaosAlgorithm
+FieldToPointFunctionalChaosAlgorithm
+FieldFunctionalChaosSobolIndices
+KarhunenLoeveAlgorithm
+FunctionalChaosAlgorithm
 
 Notes
 -----
@@ -132,7 +128,6 @@ or group of output variables.
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> mesh = ot.RegularGrid(0.0, 0.1, 20)
 >>> X = ot.Normal(4)
@@ -140,7 +135,7 @@ Examples
 >>> g = ot.SymbolicFunction(['t', 'x1', 'x2', 'x3', 'x4'], ['x1 + x2 * sin(t)', 'x2 + x3 * cos(t)', 'x4 * t'])
 >>> f = ot.VertexValuePointToFieldFunction(g, mesh)
 >>> y = f(x)
->>> algo = otexp.PointToFieldFunctionalChaosAlgorithm(x, y, X)
+>>> algo = ot.PointToFieldFunctionalChaosAlgorithm(x, y, X)
 >>> algo.setThreshold(4e-2)
 >>> # Temporarily lower the basis size for the sake of this example.
 >>> ot.ResourceMap.SetAsUnsignedInteger('FunctionalChaosAlgorithm-BasisSize', 100)

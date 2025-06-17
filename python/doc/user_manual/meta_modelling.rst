@@ -234,4 +234,4 @@ Functional chaos on fields
     FieldToPointFunctionalChaosAlgorithm
     FieldFunctionalChaosResult
     FieldFunctionalChaosSobolIndices
-    experimental.PointToFieldFunctionalChaosAlgorithm
+    PointToFieldFunctionalChaosAlgorithm

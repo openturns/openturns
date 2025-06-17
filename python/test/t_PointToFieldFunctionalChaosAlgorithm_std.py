@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -24,7 +23,7 @@ x = X.getSample(N)
 y = f(x)
 
 # run algo
-algo = otexp.PointToFieldFunctionalChaosAlgorithm(x, y, X)
+algo = ot.PointToFieldFunctionalChaosAlgorithm(x, y, X)
 algo.setThreshold(4e-2)
 algo.setRecompress(True)
 ot.ResourceMap.SetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", N)

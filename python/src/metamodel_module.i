@@ -86,6 +86,7 @@
 %include FieldFunctionalChaosResult.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+%include PointToFieldFunctionalChaosAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintyMetaModelTemplateDefs.i
