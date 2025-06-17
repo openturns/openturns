@@ -200,7 +200,7 @@ g_X02 = dist_X.getMarginal([0, 2]).drawPDF([-4.0, -1.0], [4.0, 1.0], [256] * 2)
 contour = g_X02.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
 contour.buildDefaultLevels(50)
-g_X02.setDrawable(contour, 0)
+g_X02.setDrawable(0, contour)
 g_X02.setTitle(r"$(X_0, X_2)$: iso-lines PDF")
 
 # %%
@@ -216,7 +216,7 @@ for index, cond_value in enumerate(cond_value_list):
     contour = g_cond.getDrawable(0).getImplementation()
     contour.setIsFilled(True)
     contour.buildDefaultLevels(50)
-    g_cond.setDrawable(contour, 0)
+    g_cond.setDrawable(0, contour)
     g_cond.setTitle(r"$(X_0, X_2)|X_1 = q($" + str(q_list[index]) + "): iso-lines PDF")
     g_cond.setXTitle(r"$x_0$")
     g_cond.setYTitle(r"$x_2$")
