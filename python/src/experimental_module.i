@@ -34,7 +34,6 @@
 
 /* Base/Stat */
 %include LatentVariableModel.i
-%include SamplePartition.i
 
 /* Base/Solver */
 %include LeastSquaresEquationsSolver.i

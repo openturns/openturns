@@ -3,10 +3,6 @@
 
 Class to define subset of points, and select new ones, see :meth:`getPeakOverThreshold`.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 sample : 2-d sequence of float
@@ -19,10 +15,9 @@ indices : sequence of int 2-tuple or sequence of int, optional
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> ref = ot.Uniform().getSample(10)
->>> sp1 = otexp.SamplePartition(ref, [[0, 3], [5, 9]])
->>> sp2 = otexp.SamplePartition(ref, [0, 1, 2, 3])
+>>> sp1 = ot.SamplePartition(ref, [[0, 3], [5, 9]])
+>>> sp2 = ot.SamplePartition(ref, [0, 1, 2, 3])
 "
 
 // ----------------------------------------------------------------------------
@@ -43,7 +38,7 @@ Returns
 -------
 peaks : :class:`~openturns.Sample`
     The peaks for each cluster
-clusters : :class:`openturns.experimental.SamplePartition`
+clusters : :class:`openturns.SamplePartition`
     The clusters partition
 "
 

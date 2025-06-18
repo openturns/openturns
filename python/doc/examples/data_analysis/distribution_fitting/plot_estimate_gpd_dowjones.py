@@ -9,7 +9,6 @@ Estimate a GPD on the Dow Jones Index data
 # Readers should refer to [coles2001]_ example 1.8 to get more details.
 import math as m
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import coles
 import pandas as pd
@@ -158,7 +157,7 @@ view = otv.View(graph)
 # cluster maximum series.
 # We denote by :math:`n_c` the number of clusters and
 # by :math:`n_u` the number of exceedances above :math:`u`.
-part = otexp.SamplePartition(scalTransfDataDJ)
+part = ot.SamplePartition(scalTransfDataDJ)
 r = 3
 peaks, clusters = part.getPeakOverThreshold(u, r)
 nc = len(peaks)

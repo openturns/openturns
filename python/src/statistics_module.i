@@ -20,6 +20,7 @@
 %import common_module.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
@@ -87,6 +88,7 @@
 %include HMatrix.i
 %include IsotropicCovarianceModel.i
 %include CorrelationAnalysis.i
+%include SamplePartition.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i

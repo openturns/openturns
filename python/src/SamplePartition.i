@@ -28,7 +28,7 @@ def __SamplePartition_ExtractFromDataFrame(full, partial):
 
     Returns
     -------
-    partition : :class:`openturns.experimental.SamplePartition`
+    partition : :class:`openturns.SamplePartition`
         The resulting partition
     """
 
@@ -38,6 +38,6 @@ def __SamplePartition_ExtractFromDataFrame(full, partial):
     # convert the full dataframe to a Sample
     full_sample = openturns.typ.Sample.BuildFromDataFrame(full)
 
-    return openturns.experimental.SamplePartition(full_sample, partial_indices)
+    return openturns.statistics.SamplePartition(full_sample, partial_indices)
 SamplePartition.ExtractFromDataFrame = __SamplePartition_ExtractFromDataFrame
 %}

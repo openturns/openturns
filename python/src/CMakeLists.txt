@@ -206,6 +206,7 @@ ot_add_python_module(statistics statistics_module.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i.in
                       LatentVariableModel.i LatentVariableModel_doc.i.in
+                      SamplePartition.i SamplePartition_doc.i.in
                    )
 
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
@@ -1013,7 +1014,6 @@ ot_add_python_module(experimental experimental_module.i
                      SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i.in
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i.in
                      LOLAVoronoi.i LOLAVoronoi_doc.i.in
-                     SamplePartition.i SamplePartition_doc.i.in
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i.in
