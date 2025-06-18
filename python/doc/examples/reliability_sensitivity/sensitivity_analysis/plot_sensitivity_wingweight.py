@@ -28,7 +28,6 @@ Example of sensitivity analyses on the wing weight model
 #
 #
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases.wingweight_function import WingWeightModel
 
@@ -362,7 +361,7 @@ view = otv.View(graph)
 sizeRankSobol = 800
 inputDesignRankSobol = m.inputDistribution.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
-myRankSobol = otexp.RankSobolSensitivityAlgorithm(
+myRankSobol = ot.RankSobolSensitivityAlgorithm(
     inputDesignRankSobol, outputDesignankSobol
 )
 indicesrankSobol = myRankSobol.getFirstOrderIndices()

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.testing import assert_almost_equal
 from openturns.usecases import ishigami_function
 
@@ -14,7 +13,7 @@ sampleY = im.model(sampleX)
 
 ot.ResourceMap.SetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100)
 
-mySobol = otexp.RankSobolSensitivityAlgorithm(sampleX, sampleY)
+mySobol = ot.RankSobolSensitivityAlgorithm(sampleX, sampleY)
 indices = mySobol.getFirstOrderIndices()
 assert_almost_equal(indices, [0.208654, 0.493591, -0.0669488], 1.0e-4, 1.0e-2)
 

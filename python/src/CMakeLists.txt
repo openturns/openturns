@@ -935,6 +935,7 @@ ot_add_python_module(simulation simulation_module.i
                       JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
                       MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
                       SobolIndicesExperiment.i SobolIndicesExperiment_doc.i.in
+                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i.in
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i.in
                       SimulationResult.i SimulationResult_doc.i.in
@@ -1022,7 +1023,6 @@ ot_add_python_module(experimental experimental_module.i
                      ConstantEvaluation.i ConstantEvaluation_doc.i.in
                      ConstantFunction.i ConstantFunction_doc.i.in
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i.in
-                     RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
                      FejerExperiment.i FejerExperiment_doc.i.in
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in

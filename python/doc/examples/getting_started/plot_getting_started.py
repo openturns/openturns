@@ -10,7 +10,6 @@ Getting started
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -125,7 +124,7 @@ _ = otv.View(graph)
 # For simplicity we can use a method that does not impose special requirements on the design of experiments
 sobol_x = distribution.getSample(5000)
 sobol_y = metamodel(sobol_x)
-algo = otexp.RankSobolSensitivityAlgorithm(sobol_x, sobol_y)
+algo = ot.RankSobolSensitivityAlgorithm(sobol_x, sobol_y)
 print(algo.getFirstOrderIndices())
 
 # %%

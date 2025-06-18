@@ -75,6 +75,7 @@
 %include ExpectationSimulationAlgorithm.i
 %include SobolSimulationResult.i
 %include SobolSimulationAlgorithm.i
+%include RankSobolSensitivityAlgorithm.i
 %include NAISResult.i
 %include NAIS.i
 %include CrossEntropyResult.i

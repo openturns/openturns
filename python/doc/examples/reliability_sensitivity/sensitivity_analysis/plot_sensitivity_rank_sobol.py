@@ -4,7 +4,6 @@ Sobol' sensitivity indices using rank-based algorithm
 """
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as viewer
 from openturns.usecases import ishigami_function
 
@@ -33,7 +32,7 @@ Y = im.model(X)
 
 # %%
 # Estimate Sobol' first order indices via rank-based algorithm.
-mySobol = otexp.RankSobolSensitivityAlgorithm(X, Y)
+mySobol = ot.RankSobolSensitivityAlgorithm(X, Y)
 indices = mySobol.getFirstOrderIndices()
 print("First order indices:", indices)
 

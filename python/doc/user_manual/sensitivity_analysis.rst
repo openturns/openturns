@@ -16,7 +16,7 @@ Refer to :ref:`sensitivity_sobol`.
     CorrelationAnalysis
     ANCOVA
     FAST
-    experimental.RankSobolSensitivityAlgorithm
+    RankSobolSensitivityAlgorithm
 
     :template: classWithPlot.rst_t
 

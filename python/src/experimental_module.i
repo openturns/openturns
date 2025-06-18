@@ -72,9 +72,6 @@
 %include QuantileConfidence.i
 %include LineSampling.i
 
-/*Uncertainty/Algorithm/Sensitivity */
-%include RankSobolSensitivityAlgorithm.i
-
 /* Uncertainty/Distribution */
 %include CombinationsDistribution.i
 %include PointConditionalDistribution.i
