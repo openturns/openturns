@@ -23,7 +23,7 @@ We denote by :math:`\lambda_U` or :math:`\chi` the upper tail dependence coeffic
 
 .. math::
 
-    \lambda_U = \chi = \lim_{u \to 1} \Pset[F_2(X_2) > u | F_1(X_1) > u]
+    \lambda_U = \chi = \lim_{u \to 1} \Prob{F_2(X_2) > u | F_1(X_1) > u}
 
 provided that the limit exists.
 
@@ -46,7 +46,7 @@ to :math:`1`. As a matter of fact, when :math:`u` is close to :math:`1`, we have
 
 .. math::
 
-    \chi(u) = 2 - \frac{1-C(u,u)}{1-u} + o(1) = \Pset[F_2(X_2) > u | F1(X_1) > u] + o(1)
+    \chi(u) = 2 - \frac{1-C(u,u)}{1-u} + o(1) = \Prob{F_2(X_2) > u | F1(X_1) > u} + o(1)
 
 which proves that:
 
@@ -97,19 +97,19 @@ given by the function :math:`\chi(u)` defined by:
 
 .. math::
 
-    \bar{\chi}(u) = \frac{\log (\Pset [F_1(X_1) > u] \Pset [F_2(X_2) > u])}{\log [F_1(X_1) > u, F_2(X_2) > u]}, \forall u \in [0,1]
+    \bar{\chi}(u) = \frac{\log (\Prob{F_1(X_1) > u}\Prob{F_2(X_2) > u})}{\log \Prob{F_1(X_1) > u, F_2(X_2) > u}}, \forall u \in [0,1]
 
 We show that:
 
 .. math::
 
-    \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
+    \bar{\chi}(u) = \frac{2 \log (1-u)}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
 
 where :math:`\bar{C}` is the copula survival function defined by:
 
 .. math::
 
-    \bar{C}(u_1, u_2) =  \Pset [U_1 > u_1, U_2 > u_2] = 1-u_1-u_2+C(u_1, u_2), \forall u \in [0,1]
+    \bar{C}(u_1, u_2) =  \Prob{U_1 > u_1, U_2 > u_2} = 1-u_1-u_2+C(u_1, u_2), \forall u \in [0,1]
 
 And we can define the upper extremal dependence coefficient by:
 
@@ -161,7 +161,7 @@ We denote by :math:`\lambda_L` the lower tail dependence coefficient:
 
 .. math::
 
-    \lambda_L = \lim_{u \to 0} [F_2(X_2) < u| F_1(X_1) < u]
+    \lambda_L = \lim_{u \to 0} \Prob{F_2(X_2) < u| F_1(X_1) < u}
 
 provided that the limit exists.
 
