@@ -639,6 +639,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       ParetoFactory.i ParetoFactory_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
                       GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in
+		      GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                       Geometric.i Geometric_doc.i.in
                       GeometricFactory.i GeometricFactory_doc.i.in
                       Gumbel.i Gumbel_doc.i.in
@@ -1016,7 +1017,6 @@ ot_add_python_module(experimental experimental_module.i
                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                      UniformOrderStatistics.i UniformOrderStatistics_doc.i.in
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i.in
-                     GeneralizedParetoValidation.i GeneralizedParetoValidation_doc.i.in
                      ConstantEvaluation.i ConstantEvaluation_doc.i.in
                      ConstantFunction.i ConstantFunction_doc.i.in
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i.in

@@ -135,7 +135,7 @@ for i in range(2):  # exclude u parameter (fixed)
 # even if the other plots appear to be reasonable. This is due to the fact that
 # the excesses can not be considered as independent: the transformed series
 # :math:`\tilde{X}_i` has a rich structure of temporal dependence.
-validation = otexp.GeneralizedParetoValidation(result_LL, scalTransfDataDJ)
+validation = ot.GeneralizedParetoValidation(result_LL, scalTransfDataDJ)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 
@@ -201,7 +201,7 @@ print(f"x100={xm_100.getMean()} ({xm_100.getStandardDeviation()}) theta={theta:.
 # We can see the fitted model works well. However, the large return level confidence intervals
 # obtained for extreme return levels makes it difficult to make reliable
 # predictions with any degree of certainty.
-validation = otexp.GeneralizedParetoValidation(result_LL, peaks)
+validation = ot.GeneralizedParetoValidation(result_LL, peaks)
 grid = validation.drawDiagnosticPlot()
 rlPlot = grid.getGraph(1, 0)
 rlPlot.setTitle(rlPlot.getTitle() + f" (u={u} r={r})")

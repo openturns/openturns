@@ -81,6 +81,7 @@
 #include "openturns/GeneralizedExtremeValueValidation.hxx"
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/GeneralizedParetoFactory.hxx"
+#include "openturns/GeneralizedParetoValidation.hxx"
 #include "openturns/Geometric.hxx"
 #include "openturns/GeometricFactory.hxx"
 #include "openturns/Gumbel.hxx"

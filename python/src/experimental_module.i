@@ -86,7 +86,6 @@
 %include MarginalUniformOrderStatistics.i
 %include PosteriorDistribution.i
 %include UniformOrderStatistics.i
-%include GeneralizedParetoValidation.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i

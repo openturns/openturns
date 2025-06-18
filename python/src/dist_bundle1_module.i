@@ -66,6 +66,7 @@
 %include CovariatesResult.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
+%include GeneralizedParetoValidation.i
 %include Geometric.i
 %include GeometricFactory.i
 %include Gumbel.i

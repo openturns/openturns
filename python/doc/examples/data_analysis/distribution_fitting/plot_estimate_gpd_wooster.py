@@ -137,7 +137,7 @@ for u in [-10.0, -20.0]:
         print(f"x100={xm_100.getMean()} ({xm_100.getStandardDeviation()})")
 
         # plot the return level
-        validation = otexp.GeneralizedParetoValidation(result_LL, peaks)
+        validation = ot.GeneralizedParetoValidation(result_LL, peaks)
         grid = validation.drawDiagnosticPlot()
         rlPlot = grid.getGraph(1, 0)
         rlPlot.setTitle(rlPlot.getTitle() + f" (u={u} r={r})")
