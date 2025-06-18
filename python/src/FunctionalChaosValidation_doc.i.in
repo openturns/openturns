@@ -1,11 +1,6 @@
 %feature("docstring") OT::FunctionalChaosValidation
 "Validate a functional chaos metamodel.
 
-
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 result : :class:`~openturns.FunctionalChaosResult`
@@ -17,7 +12,7 @@ splitter : :class:`~openturns.SplitterImplementation`, optional
 
 See also
 --------
-openturns.FunctionalChaosAlgorithm, openturns.FunctionalChaosResult
+FunctionalChaosAlgorithm, FunctionalChaosResult
 
 Notes
 -----
@@ -51,8 +46,7 @@ conditions are met.
   If model selection is involved, the naive methods based on the
   :class:`~openturns.LeaveOneOutSplitter` and :class:`~openturns.KFoldSplitter`
   classes can be used, but this can be much slower than the
-  analytical methods implemented in the :class:`~openturns.experimental.FunctionalChaosValidation`
-  class.
+  analytical methods implemented here.
   In many cases, however, the order of magnitude of the estimate from the
   analytical formula applied to a sparse model is correct: the estimate of
   the MSE is only slightly lower than the true value.
@@ -72,8 +66,8 @@ the :math:`i`-th prediction is the prediction of the linear model
 trained using the hold-out sample where the :math:`i`-th observation
 was removed.
 This produces a sample of residuals which can be retrieved using
-the :meth:`~openturns.experimental.FunctionalChaosValidation.getResidualSample` method.
-The :meth:`~openturns.experimental.FunctionalChaosValidation.drawValidation` method performs
+the :meth:`~openturns.FunctionalChaosValidation.getResidualSample` method.
+The :meth:`~openturns.FunctionalChaosValidation.drawValidation` method performs
 similarly.
 
 If the weights of the observations are not equal, the analytical method
@@ -106,7 +100,6 @@ prevents us from using the fast analytical formulas and get an
 accurate estimator of the MSE.
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> from math import pi
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
@@ -129,7 +122,7 @@ accurate estimator of the MSE.
 Validate the polynomial chaos expansion using leave-one-out cross-validation.
 
 >>> splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
->>> validation = otexp.FunctionalChaosValidation(result, splitterLOO)
+>>> validation = ot.FunctionalChaosValidation(result, splitterLOO)
 >>> r2Score = validation.computeR2Score()
 >>> print('R2 = ', r2Score[0])
 R2 =  0.99...
@@ -139,9 +132,7 @@ and set the :math:`k` parameter.
 
 >>> kParameter = 10
 >>> splitterKF = ot.KFoldSplitter(sampleSize, kParameter)
->>> validation = otexp.FunctionalChaosValidation(
-...     result, splitterKF
-... )
+>>> validation = ot.FunctionalChaosValidation(result, splitterKF)
 
 Draw the validation graph.
 

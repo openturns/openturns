@@ -80,6 +80,7 @@
 
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i
+%include FunctionalChaosValidation.i
 %include KrigingRandomVector.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i

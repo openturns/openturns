@@ -637,14 +637,14 @@ The generic cross-validation method can be implemented using the following class
 Since :class:`~openturns.LinearModelResult` is based on linear least
 squares, fast methods are implemented in :class:`~openturns.experimental.LinearModelValidation`.
 
-See :ref:`pce_cross_validation` and :class:`~openturns.experimental.FunctionalChaosValidation`
+See :ref:`pce_cross_validation` and :class:`~openturns.FunctionalChaosValidation`
 for specific methods for the the cross-validation of a polynomial chaos expansion.
 
 .. topic:: API:
 
     - See :class:`~openturns.MetaModelValidation`
     - See :class:`~openturns.experimental.LinearModelValidation`
-    - See :class:`~openturns.experimental.FunctionalChaosValidation`
+    - See :class:`~openturns.FunctionalChaosValidation`
     - See :class:`~openturns.KFoldSplitter`
     - See :class:`~openturns.LeaveOneOutSplitter`
 

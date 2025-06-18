@@ -89,7 +89,6 @@
 %include GeneralizedParetoValidation.i
 
 /* Uncertainty/Algorithm/Metamodel */
-%include FunctionalChaosValidation.i
 %include LinearModelValidation.i
 %include GaussianProcessFitterResult.i
 %include GaussianProcessFitter.i
