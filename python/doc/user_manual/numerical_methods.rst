@@ -45,7 +45,7 @@ Integration
     FilonQuadrature
     CubaIntegration
     SimplicialCubature
-    experimental.ExperimentIntegration
+    ExperimentIntegration
 
 .. autosummary::
     :toctree: _generated/

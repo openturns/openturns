@@ -1,10 +1,6 @@
 %feature("docstring") OT::ExperimentIntegration
 "Create a quadrature rule for numerical integration based on a weighted experiment.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 weightedExperiment : :class:`~openturns.WeightedExperiment`
@@ -27,13 +23,12 @@ Examples
 Integrate the Ishigami physical model.
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 32768
 >>> experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
->>> integration = otexp.ExperimentIntegration(experiment)
+>>> integration = ot.ExperimentIntegration(experiment)
 >>> approximatedOutputMean = integration.integrate(im.model)
 >>> print(approximatedOutputMean)
 [3.5...]
@@ -48,7 +43,7 @@ Compute the L2 norm of a function.
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 65536
 >>> experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
->>> integration = otexp.ExperimentIntegration(experiment)
+>>> integration = ot.ExperimentIntegration(experiment)
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
 >>> print(functionNorm)
 [3.7...]"
@@ -84,7 +79,6 @@ approximateIntegral : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
 >>> print(im.expectation)
@@ -93,7 +87,7 @@ Examples
 >>> sequence = ot.SobolSequence(im.dim)
 >>> experiment = ot.LowDiscrepancyExperiment(sequence, im.inputDistribution, 
 ...                                          sampleSize, False)
->>> integration = otexp.ExperimentIntegration(experiment)
+>>> integration = ot.ExperimentIntegration(experiment)
 >>> approximatedOutputMean = integration.integrate(im.model)
 >>> print(approximatedOutputMean[0])
 3.5..."
@@ -130,7 +124,6 @@ functionNorm : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> import math
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
@@ -141,7 +134,7 @@ Examples
 >>> sampleSize = 2 ** 12  # Sobol' sequence is a base 2 sequence
 >>> sequence = ot.SobolSequence(im.dim)
 >>> experiment = ot.LowDiscrepancyExperiment(sequence, im.inputDistribution, sampleSize, False)
->>> integration = otexp.ExperimentIntegration(experiment)
+>>> integration = ot.ExperimentIntegration(experiment)
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
 >>> print(functionNorm[0])
 3.7..."

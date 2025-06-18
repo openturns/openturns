@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
@@ -94,7 +93,7 @@ for index in range(len(listOfParametricFunctions)):
         ot.SobolSequence(), marginalDistribution, sampleSizeTest, True
     )
     # experiment = ot.MonteCarloExperiment(marginalDistribution, sampleSizeTest)
-    integration = otexp.ExperimentIntegration(experiment)
+    integration = ot.ExperimentIntegration(experiment)
     error = integration.computeL2Norm(
         conditionalPCEFunction - conditionalExpectationFunctionExact
     )

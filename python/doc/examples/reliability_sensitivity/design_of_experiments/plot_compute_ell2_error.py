@@ -10,7 +10,6 @@ Compute the L2 error between two functions
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.usecases import ishigami_function
 
 # %%
@@ -24,6 +23,6 @@ partOfIshigamiFunction = ot.SymbolicFunction(
 )
 sampleSize = 1000
 experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
-integration = otexp.ExperimentIntegration(experiment)
+integration = ot.ExperimentIntegration(experiment)
 functionError = integration.computeL2Norm(im.model - partOfIshigamiFunction)
 print(functionError)

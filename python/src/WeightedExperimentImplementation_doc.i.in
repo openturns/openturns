@@ -13,7 +13,7 @@ size : positive int
 
 See also
 --------
-openturns.experimental.ExperimentIntegration
+ExperimentIntegration
 
 Notes
 -----
@@ -79,7 +79,7 @@ which are in three groups:
    In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`.
 
 In order to estimate the expectation of the model using the nodes and weights,
-we suggest to use the :class:`~openturns.experimental.ExperimentIntegration` class."
+we suggest to use the :class:`~openturns.ExperimentIntegration` class."
 %enddef
 %feature("docstring") OT::WeightedExperimentImplementation
 OT_WeightedExperiment_doc

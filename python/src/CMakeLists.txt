@@ -789,6 +789,7 @@ ot_add_python_module(weightedexperiment weightedexperiment_module.i
                       TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
                       LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
                       MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
+                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
 		      SmolyakExperiment.i SmolyakExperiment_doc.i.in
                       SplitterImplementation.i SplitterImplementation_doc.i.in
                       KFoldSplitter.i KFoldSplitter_doc.i.in
@@ -1022,7 +1023,6 @@ ot_add_python_module(experimental experimental_module.i
                      ConstantFunction.i ConstantFunction_doc.i.in
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
-                     ExperimentIntegration.i ExperimentIntegration_doc.i.in
                      FejerExperiment.i FejerExperiment_doc.i.in
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
                      GaussianProcessFitterResult.i GaussianProcessFitterResult_doc.i.in
