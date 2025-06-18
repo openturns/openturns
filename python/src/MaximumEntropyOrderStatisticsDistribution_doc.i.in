@@ -22,7 +22,7 @@ In that case, we do not know :math:`Y` but we fix the marginals of its order sta
 
 Note that if the :math:`X_i \sim \beta(i, n-i+1)`, then :math:`\inputRV` is
 the joint distribution of the :math:`n` order statistics of :math:`Y \sim \cU([0,1])`.
-It is implemented by the class :class:`~openturns.experimental.UniformOrderStatistics`.
+It is implemented by the class :class:`~openturns.UniformOrderStatistics`.
 
 The marginals of  :math:`\inputRV` must be compatible with the order constraint
 :eq:`orderConstraint`. The library checks this compatibility by default. It requires that

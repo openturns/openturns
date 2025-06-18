@@ -1,10 +1,6 @@
 %feature("docstring") OT::UniformOrderStatistics
 "UniformOrderStatistics distribution.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 dimension : int
@@ -12,7 +8,7 @@ dimension : int
 
 See also
 --------
-openturns.MaximumEntropyOrderStatisticsDistribution
+MaximumEntropyOrderStatisticsDistribution
 
 Notes
 -----
@@ -66,20 +62,19 @@ and its PDF (if defined) by:
 
 Thus, to get the joint distribution of :math:`\vect{X}_{(1:n)}`, we use the
 :class:`~openturns.JointDistribution` whose all marginals are  :math:`\cL`
-and whose core is a :class:`~openturns.experimental.UniformOrderStatistics`.
+and whose core is a :class:`~openturns.UniformOrderStatistics`.
 
 Examples
 --------
 Create  joint distribution of :math:`\vect{U}_{(1:n)}` with :math:`n=10`:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> n = 10
->>> unif_orderStat = otexp.UniformOrderStatistics(n)
+>>> unif_orderStat = ot.UniformOrderStatistics(n)
 
 Create the joint distribution of :math:`\vect{X}_{(1:n)}` where
 :math:`X` is distributed as a Normal distribution, with zero mean and unit standard
 deviation:
 
 >>> X_dist = ot.Normal()
->>> normal_orderStat = ot.JointDistribution([X_dist]*n, otexp.UniformOrderStatistics(n))"
+>>> normal_orderStat = ot.JointDistribution([X_dist]*n, ot.UniformOrderStatistics(n))"

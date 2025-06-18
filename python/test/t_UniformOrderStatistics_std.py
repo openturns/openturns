@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
-distribution = otexp.UniformOrderStatistics(4)
+distribution = ot.UniformOrderStatistics(4)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 

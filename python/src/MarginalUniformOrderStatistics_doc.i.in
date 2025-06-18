@@ -6,7 +6,7 @@
     To use it, import the ``openturns.experimental`` submodule.
 
 This class gives access to the marginals of the joint distribution of the :math:`n` order statistics
-of the Uniform distribution over :math:`[0,1]`, implemented in the class :class:`~openturns.experimental.UniformOrderStatistics`.
+of the Uniform distribution over :math:`[0,1]`, implemented in the class :class:`~openturns.UniformOrderStatistics`.
 
 Parameters
 ----------
@@ -17,7 +17,7 @@ indices : sequence of int
 
 See also
 --------
-openturns.experimental.UniformOrderStatistics
+openturns.UniformOrderStatistics
 "
 
 // ---------------------------------------------------------------------
@@ -27,7 +27,7 @@ openturns.experimental.UniformOrderStatistics
 
 Parameters
 ----------
-uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
+uniformOrderStatistics : :class:`~openturns.UniformOrderStatistics`
     The underlying uniform order statistics distribution."
 
 // ---------------------------------------------------------------------
@@ -37,7 +37,7 @@ uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
 
 Returns
 -------
-uniformOrderStatistics : :class:`~openturns.experimental.UniformOrderStatistics`
+uniformOrderStatistics : :class:`~openturns.UniformOrderStatistics`
     The underlying uniform order statistics distribution."
 
 // ---------------------------------------------------------------------

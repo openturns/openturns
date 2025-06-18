@@ -1,5 +1,4 @@
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.viewer import View
 
 ot.RandomGenerator.SetSeed(0)
@@ -7,7 +6,7 @@ grid = ot.GridLayout(1, 2)
 pdf_2d = ot.Graph("Uniform order statistics, PDF", "x1", "x2", True)
 cdf_2d = ot.Graph("Uniform order statistics, CDF", "x1", "x2", True)
 
-distribution_2d = otexp.UniformOrderStatistics(2)
+distribution_2d = ot.UniformOrderStatistics(2)
 
 cloud = ot.Cloud(distribution_2d.getSample(1000))
 

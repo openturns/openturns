@@ -39,11 +39,10 @@ Compute the joint distribution of order statistics
 #
 # Thus, to get the joint distribution of :math:`\vect{X}_{(1:n)}`, we use the
 # :class:`~openturns.JointDistribution` whose all marginals are  :math:`X`
-# and whose core is a :class:`~openturns.experimental.UniformOrderStatistics`.
+# and whose core is a :class:`~openturns.UniformOrderStatistics`.
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import math as m
 
@@ -55,7 +54,7 @@ ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 # and the size of the order statistics:
 n = 100
 dist = ot.Normal()
-orderStat_dist = ot.JointDistribution([dist] * n, otexp.UniformOrderStatistics(n))
+orderStat_dist = ot.JointDistribution([dist] * n, ot.UniformOrderStatistics(n))
 
 
 # %%

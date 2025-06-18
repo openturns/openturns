@@ -77,7 +77,6 @@
 %include PointConditionalDistribution.i
 %include MarginalUniformOrderStatistics.i
 %include PosteriorDistribution.i
-%include UniformOrderStatistics.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i

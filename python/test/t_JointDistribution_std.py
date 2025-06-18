@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -101,7 +100,7 @@ cores.append(anotherCopula)
 atoms = [aCopula, anotherCopula]
 cores.append(ot.Mixture(atoms, [0.25, 0.75]))
 # With a non-copula core
-cores.append(otexp.UniformOrderStatistics(dim))
+cores.append(ot.UniformOrderStatistics(dim))
 # With a core which support is strictly included in the unit cube
 cores.append(ot.KernelMixture(ot.Beta(2.0, 3.0, 0.2, 0.8), [1.0] * dim, [[0.0] * dim]))
 ot.ResourceMap.SetAsBool("JointDistribution-UseGenericCovarianceAlgorithm", True)

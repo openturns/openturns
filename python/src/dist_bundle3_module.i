@@ -51,6 +51,7 @@
 %include UniformFactory.i
 %include UniformMuSigma.i
 %include UniformOverMesh.i
+%include UniformOrderStatistics.i
 %include UserDefined.i
 %include UserDefinedFactory.i
 %include VonMises.i
