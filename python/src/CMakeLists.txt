@@ -487,6 +487,7 @@ ot_add_python_module(algo algo_module.i
                       KarhunenLoeveAlgorithm.i KarhunenLoeveAlgorithm_doc.i.in
                       KarhunenLoeveValidation.i KarhunenLoeveValidation_doc.i.in
                       SimplicialCubature.i SimplicialCubature_doc.i.in
+                      CubaIntegration.i CubaIntegration_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )
 
@@ -1021,7 +1022,6 @@ ot_add_python_module(experimental experimental_module.i
                      ConstantFunction.i ConstantFunction_doc.i.in
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i.in
                      RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i.in
-                     CubaIntegration.i CubaIntegration_doc.i.in
                      ExperimentIntegration.i ExperimentIntegration_doc.i.in
                      FejerExperiment.i FejerExperiment_doc.i.in
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in

@@ -66,9 +66,6 @@
 /* Uncertainty/Process */
 %import model_process_module.i
 
-/* Base/Algo */
-%include CubaIntegration.i
-
 /* Uncertainty/Algorithm */
 %include SequentialSamplingAlgorithmImplementation.i
 %include SequentialSamplingAlgorithm.i

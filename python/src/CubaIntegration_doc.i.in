@@ -35,8 +35,8 @@ Examples
 --------
 Create a Cuba algorithm:
 
->>> import openturns.experimental as otexp
->>> algo = otexp.CubaIntegration('vegas')
+>>> import openturns as ot
+>>> algo = ot.CubaIntegration('vegas')
 "
 
 // ---------------------------------------------------------------------
@@ -59,10 +59,9 @@ value : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> f = ot.SymbolicFunction(['x', 'y', 'z'], ['sin(x) * cos(y) * exp(z)'])
 >>> interval = ot.Interval([0.0] * 3, [1.0] * 3)
->>> algoC = otexp.CubaIntegration('vegas')
+>>> algoC = ot.CubaIntegration('vegas')
 >>> value = algoC.integrate(f, interval)  # doctest: +SKIP
 "
 
