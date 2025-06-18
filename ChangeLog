@@ -9,6 +9,16 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (see MetaModelValidation)
+ * Removed alias for deprecated class ConditionalRandomVector
+ * UniformOrderStatistics left the experimental module
+ * RankSobolSensitivityAlgo left the experimental module
+ * ExperimentIntegration left the experimental module
+ * CubaIntegration left the experimental module
+ * SamplePartition left the experimental module
+ * GeneralizedParetoValid left the experimental module
+ * FunctionalChaosValidation left the experimental module
+ * PointToFieldFunctionaChaosAlgorithm left the experimental module
 
 === Documentation ===
 
