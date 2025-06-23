@@ -218,7 +218,7 @@ Scalar UniformOrderStatistics::computeConditionalPDF(const Scalar x,
   if (!y.isNonDecreasing()) return 0.0;
   const UnsignedInteger k = y.getDimension();
   const Scalar xKm1 = y[k - 1];
-  if (x <= xKm1) return 0.0;
+  if (x < xKm1) return 0.0;
   return (dimension_ - k) * std::pow((1.0 - x) / (1.0 - xKm1), dimension_ - k - 1.0) / (1.0 - xKm1);
 }
 
@@ -251,7 +251,7 @@ Scalar UniformOrderStatistics::computeConditionalCDF(const Scalar x,
   if (!y.isNonDecreasing()) return 0.0;
   const UnsignedInteger k = y.getDimension();
   const Scalar xKm1 = y[k - 1];
-  if (x <= xKm1) return 0.0;
+  if (x < xKm1) return 0.0;
   if (x >= 1.0) return 1.0;
   return 1.0 - std::pow((1.0 - x) / (1.0 - xKm1), dimension_ - k);
 }
@@ -267,7 +267,7 @@ Point UniformOrderStatistics::computeSequentialConditionalCDF(const Point & x) c
     // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
     // will be zero
     const Scalar xKm1 = x[k - 1];
-    if ((x[k] < xKm1)) return result;
+    if (x[k] < xKm1) return result;
     if (x[k] >= 1.0) result[k] = 1.0;
     result[k] = 1.0 - std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k);
   }
