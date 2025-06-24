@@ -73,6 +73,10 @@ def fitGPR(coordinates, observations, covarianceModel, basis):
     """
     Fit the parameters of a Gaussian Process Regression surrogate model.
     """
+    # Set the starting scale for the optimization.
+    scale_dimension = covarianceModel.getScale().getDimension()
+    covarianceModel.setScale([upper] * scale_dimension)
+
     # Prepare to fit Gaussian process hyperparameters.
     fitter = otexp.GaussianProcessFitter(
         coordinates, observations, covarianceModel, basis
@@ -80,7 +84,6 @@ def fitGPR(coordinates, observations, covarianceModel, basis):
 
     # Set the optimization bounds for the scale parameter to sensible values
     # given the data set.
-    scale_dimension = covarianceModel.getScale().getDimension()
     fitter.setOptimizationBounds(
         ot.Interval([lower] * scale_dimension, [upper] * scale_dimension)
     )
