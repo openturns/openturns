@@ -32,7 +32,7 @@ myDistribution = cb.distribution
 # Create the design of experiments
 # --------------------------------
 #
-# We consider a simple Monte-Carlo sample as a design of experiments.
+# We consider a simple Monte Carlo sample as a design of experiments.
 # This is why we generate an input sample using the method :meth:`~openturns.Distribution.getSample` of the
 # distribution. Then we evaluate the output using the `model` function.
 
@@ -60,31 +60,16 @@ basis = ot.ConstantBasisFactory(cb.dim).build()
 covarianceModel = ot.SquaredExponential(cb.dim)
 
 # %%
-# Typically, the optimization algorithm is quite good at setting sensible optimization bounds.
-# In this case, however, the range of the input domain is extreme.
-print("Lower and upper bounds of X_train:")
-print(X_train.getMin(), X_train.getMax())
-
-# %%
-# We need to manually define sensible optimization bounds.
-# Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1), we only need to set bounds on the scale parameter.
-scaleOptimizationBounds = ot.Interval(
-    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5]
-)
-
-# %%
-# Finally, we use the :class:`~openturns.experimental.GaussianProcessFitter` and `GaussianProcessRegression` classes to create the GPR metamodel.
+# Finally, we use the :class:`~openturns.experimental.GaussianProcessFitter` and :class:`~openturns.experimental.GaussianProcessRegression` classes to create the GPR metamodel.
 # It requires a training sample, a covariance kernel and a trend basis as input arguments.
 # We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensible choice here.
 # We must not forget to actually set the optimization bounds defined above.
-covarianceModel.setScale(X_train.getMax())
+covarianceModel.setScale(X_train.computeRange() * 0.5)
 fitter_algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-fitter_algo.setOptimizationBounds(scaleOptimizationBounds)
-
 
 # %%
 # The method :meth:`~openturns.experimental.GaussianProcessFitter.run`  of
-# the class :class:`~openturns.experimental.GaussianProcessFitter.run` optimizes the Gaussian process
+# the class :class:`~openturns.experimental.GaussianProcessFitter` optimizes the Gaussian process
 # hyperparameters and the method :meth:`~openturns.experimental.GaussianProcessRegression.run` of the class
 # :class:`~openturns.experimental.GaussianProcessRegression` conditions the
 # Gaussian process to the data set.
