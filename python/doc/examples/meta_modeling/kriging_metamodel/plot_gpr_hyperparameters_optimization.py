@@ -12,7 +12,7 @@ Gaussian process fitter: configure the optimization solver
 # In a Gaussian process regression, there are various types of parameters which are estimated from the data.
 #
 # * The parameters :math:`{\bf \beta}` associated with the deterministic trend. These parameters are computed based on linear least squares.
-# * The parameters of the covariance model. 
+# * The parameters of the covariance model.
 #
 # We only consider the following parameters of the covariance model:
 #
@@ -208,7 +208,7 @@ print(isOptimize)
 # %%
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds) 
+algo.setOptimizationBounds(scaleOptimizationBounds)
 
 # %%
 algo.run()

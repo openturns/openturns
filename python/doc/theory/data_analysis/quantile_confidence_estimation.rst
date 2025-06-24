@@ -58,20 +58,20 @@ rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
 
     \Prob{x_{\alpha} \leq X_{(k)}} \geq \beta \qquad
 
-As equation :eq:`EqOrderStatB` implies:
+As equation :eq:`EqOrderStatB` can be written as:
 
 .. math::
     :label: EqOrderStat2B
 
     1-F_{X_{(k)}}(x_{\alpha})\geq \beta
 
-This implies:
+or even as:
 
 .. math::
 
     F_{\sampleSize, \alpha}(k-1)\geq \beta
 
-The smallest rank :math:`k_{sol}` such that the previous equation is satisfied is:
+then, the smallest rank :math:`k_{sol}` such that the previous equation is satisfied is:
 
 .. math::
 
@@ -84,7 +84,7 @@ on the sample :math:`(x_1, \dots, x_\sampleSize)`.
 Here is a recap of the existence of solutions for this case:
 
 +------------------------+------------------+-------------------------------------+---------------------------------+
-| :math:`K_{sol}`        | :math:`\beta=0`  | :math:`0 < \beta < 1`               | :math:`\beta=1`                 |
+| :math:`k_{sol}`        | :math:`\beta=0`  | :math:`0 < \beta < 1`               | :math:`\beta=1`                 |
 +========================+==================+=====================================+=================================+
 | :math:`\alpha=0`       | 1                | 1                                   | 1                               |
 +------------------------+------------------+-------------------------------------+---------------------------------+
@@ -98,22 +98,24 @@ With:
 .. math::
     :label: EqOrderStatBgen
 
-    1+F_{n,\alpha}^{-1}(\beta) \text{if} 1-\alpha^n \geq \beta \text{else} \emptyset
+    k_{sol} = 1+F_{n,\alpha}^{-1}(\beta) & \text{if} \quad  1-\alpha^n \geq \beta \\
+    \emptyset & \text{else}
+
 
 Rank for a lower bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similarly for the lower bound we seek the greatest rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
+Given the same data as previoulsy, we seek the greatest rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
 
 .. math::
     :label: EqOrderStatA
 
-    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta \qquad
+    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta
 
 Here is a recap of the existence of solutions for this case:
 
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-| :math:`K_{sol}`        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
+| :math:`k_{sol}`        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
 +========================+======================================+=========================================+=================================+
 | :math:`\alpha=0`       | n                                    | :math:`\emptyset`                       | :math:`\emptyset`               |
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
@@ -127,26 +129,59 @@ With
 .. math::
     :label: EqOrderStatAgen
 
-    \emptyset \text{if} (1-\alpha)^n > 1 - \beta \\
-    \text{otherwise if there exists} k_0 | 1-\beta = F_{(\sampleSize,\alpha}(k_0 - 1) \text{then} k_{sol} = 1+F_{n,\alpha}^{-1}(1-\beta)
-    \text{and if not} k_{sol} = F_{n,\alpha}^{-1}(1-\beta)
+    \emptyset & \text{if} \quad  (1-\alpha)^n > 1 - \beta \\
+    k_{sol} = 1 + F_{n,\alpha}^{-1}(1-\beta) & \text{otherwise if} \quad  \exists k_0 \, | \, 1-\beta = F_{(\sampleSize,\alpha}(k_0 - 1) \\
+    k_{sol} = F_{n,\alpha}^{-1}(1-\beta) & \text{else}
+
 
 Ranks for bilateral bounds of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similarly for the lower bound we seek the ranks :math:`k_1, k_2 \in \llbracket 1, \sampleSize \rrbracket^2` such that:
+Given the same data as previoulsy, we can seek the ranks
+:math:`k_1, k_2 \in \llbracket 1, \sampleSize \rrbracket^2` as solution of different problems.
+
+The problem can be:
 
 .. math::
-    :label: EqOrderStatC
+    :label: EqOrderStatC3
 
-    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta \qquad
+    \begin{array}{ll}
+    (k_1, k_2) = & \argmin \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}\\
+                 & \mbox{s.t.} \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
+    \end{array}
 
-with :math:`k_2 - k_1` the smallest.
 
-Here is a recap of the existence of solutions for this case:
+or:
+
+.. math::
+    :label: EqOrderStatC4
+
+    \begin{array}{ll}
+    (k_1, k_2) = & \argmin (k_2-k_1)\\
+                 & \mbox{s.t.} \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
+    \end{array}
+
+
+or:
+
+.. math::
+    :label: EqOrderStatC1
+
+    \Prob{X_{(k_1)} \leq x_{\alpha} } \geq 1-\dfrac{1-\beta}{2}\\
+    \Prob{x_{\alpha} \leq X_{(k_2)}} \geq 1-\dfrac{1-\beta}{2}
+
+or with :math:`(k_1, k_2) = (k,n-k)` and :math:`k` the greatest integer such that:
+
+.. math::
+    :label: EqOrderStatC2
+
+    \Prob{X_{(k)} \leq x_{\alpha} \leq X_{(n-k+1)}} \geq \beta
+
+
+The solutions of :eq:`EqOrderStatC2` are gathered here:
 
 +------------------------+-------------------------------------------------+---------------------------------+-------------------------+
-| :math:`K_{sol}`        | :math:`\beta=0`                                 | :math:`0 < \beta < 1`           | :math:`\beta=1`         |
+| :math:`k_{sol}`        | :math:`\beta=0`                                 | :math:`0 < \beta < 1`           | :math:`\beta=1`         |
 +========================+=================================================+=================================+=========================+
 | :math:`\alpha=0`       | :math:`\Bigl\lfloor \frac{n}{2} \Bigr\rfloor`   | :math:`\emptyset`               | :math:`\emptyset`       |
 +------------------------+-------------------------------------------------+---------------------------------+-------------------------+
@@ -155,10 +190,12 @@ Here is a recap of the existence of solutions for this case:
 | :math:`\alpha=1`       | :math:`\Bigl\lfloor \frac{n}{2} \Bigr\rfloor`   | :math:`\emptyset`               | :math:`\emptyset`       |
 +------------------------+-------------------------------------------------+---------------------------------+-------------------------+
 
+The solutions of the other problems :eq:`EqOrderStatC3` and :eq:`EqOrderStatC4` are solutions of an optimization problem.
+
 Minimum sample size for an upper bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given :math:`\alpha`, :math:`\beta`, and order :math:`k`, we seek for the smallest sample size
+Given :math:`\alpha`, :math:`\beta`, and order :math:`1 \leq k \leq n`, we seek for the smallest sample size
 :math:`\sampleSize`
 such that the equation :eq:`EqOrderStatB` is satisfied. In order to do so, we solve the
 equation :eq:`EqOrderStat2B` with respect to the sample size :math:`\sampleSize`.
@@ -171,25 +208,25 @@ in the ordered sample :math:`(x_{(1)}, \dots, x_{(\sampleSize)})`.
 Here is a recap of the existence of solutions for this case:
 
 +--------------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-|                                | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
+|        :math:`n_{sol}`         | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
 +================================+======================================+=========================================+=================================+
-| :math:`0 \leq \alpha \leq 1`   | :math:`k \text{if} 1-\alpha^k \geq \beta \text{else} \emptyset`                                                  |
+| :math:`0 \leq \alpha \leq 1`   | :math:`k` if :math:`1-\alpha^k \geq \beta`, else :math:`\emptyset`                                               |
 +--------------------------------+------------------------------------------------------------------------------------------------------------------+
 
 Minimum sample size for a lower bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similarly for the lower bound, we seek for the smallest sample size :math:`\sampleSize`
-such that the equation :eq:`EqOrderStatA` is satisfied.
+Given the same data as previoulsy, we seek for the smallest sample size :math:`\sampleSize`
+such that equation :eq:`EqOrderStatA` is satisfied.
 
 Here is a recap of the existence of solutions for this case:
 
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-|                        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
+|       :math:`n_{sol}`  | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
 +========================+======================================+=========================================+=================================+
 | :math:`\alpha=0`       | :math:`k`                            | :math:`\emptyset`                       | :math:`\emptyset`               |
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-| :math:`0 < \alpha < 1` | :math:`\argmin \{n \geq k | f_{k,\alpha} \leq 1-\beta \}`                      | :math:`\emptyset`               |
+| :math:`0 < \alpha < 1` | :math:`\argmin \{n \geq k | F_{n,\alpha}(k-1) \leq 1-\beta \}`                 | :math:`\emptyset`               |
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
 | :math:`\alpha=1`       | :math:`k`                            | :math:`k`                               | :math:`k`                       |
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
@@ -198,20 +235,25 @@ Here is a recap of the existence of solutions for this case:
 Minimum sample size for bilateral bounds of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similarly for the bilateral bounds, we seek for the smallest sample size :math:`\sampleSize`
-such that the equation :eq:`EqOrderStatC` is satisfied.
+Given two order statistics :math:`(k_1, k_2)` with :math:`1 \leq k_1 < k_2 \leq n`, we seek for the smallest sample size :math:`\sampleSize`
+such that:
 
-Here is a recap of the existence of solutions for this case:
+.. math::
+    :label: EqOrderMinSizeBil
+
+    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
+
+Here is a recap of the existence of solutions:
 
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-|                        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
+|     :math:`n_{sol}`    | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
 +========================+======================================+=========================================+=================================+
 | :math:`\alpha=1`       | :math:`k_2`                          | :math:`\emptyset`                       | :math:`\emptyset`               |
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-| :math:`0 < \alpha < 1` | :math:`k_2` if :math:`1-\alpha^{k_2} - F_{k_2,\alpha}(k_1-1) \geq \beta` else :math:`\emptyset`                  |
-+------------------------+--------------------------------------------------------------------------------+---------------------------------+
-| :math:`\alpha=0`       | :math:`\emptyset` if :math:`k_1 \neq 0` and :math:`\beta > 0` else :math:`k_2`                                   |
-+------------------------+------------------------------------------------------------------------------------------------------------------+
+| :math:`0 < \alpha < 1` | :math:`k_2` if :math:`1-\alpha^{k_2} - F_{k_2,\alpha}(k_1-1) \geq \beta`, else :math:`\emptyset`                 |
++------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+| :math:`\alpha=0`       | :math:`k_2`                          | :math:`\emptyset`                                                         |
++------------------------+--------------------------------------+---------------------------------------------------------------------------+
 
 
 .. topic:: API:

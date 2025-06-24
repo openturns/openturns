@@ -80,8 +80,8 @@ Regression
     linear_regression
     regression_analysis
 
-Estimating a quantile
----------------------
+Estimation of a quantile
+------------------------
 
 .. toctree::
     :maxdepth: 1
