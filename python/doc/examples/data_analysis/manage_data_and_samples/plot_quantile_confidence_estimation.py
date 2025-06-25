@@ -14,8 +14,8 @@ Estimate a confidence interval of a quantile
 #
 # In this example, we consider the quantile of level :math:`\alpha = 95\%`,
 # with a confidence level of :math:`\beta = 90\%`.
-
-# %%
+#
+# See  :ref:`quantile_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
 import openturns.experimental as otexp
 import math as m
@@ -78,7 +78,8 @@ print(i_n, j_n)
 sortedSample = sample.sort()
 
 # %%
-# Get the asymptotic confidence interval :math:`\left[ X_{(i_n)}, X_{(j_n)}\right]`
+# Get the asymptotic confidence interval :math:`\left[ X_{(i_n)}, X_{(j_n)}\right]`.
+#
 # Care: the index in the sorted sample is :math:`i_n-1` and :math:`j_n-1`
 infQuantile = sortedSample[i_n - 1]
 supQuantile = sortedSample[j_n - 1]

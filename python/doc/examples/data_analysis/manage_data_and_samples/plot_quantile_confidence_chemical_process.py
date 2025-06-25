@@ -1,14 +1,14 @@
 """
-Estimate quantile confidence intervals from data
-================================================
+Estimate quantile confidence intervals from chemicel process data
+=================================================================
 """
 
 # %%
 # In this example, we introduce use two methods to estimate confidence intervals of the
 # :math:`\alpha` level quantile (:math:`\alpha \in [0,1]`).
 # This example is adapted from [meeker2017]_ pages 76 to 81.
-
-# %%
+#
+# See  :ref:`quantile_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
 import openturns.experimental as otexp
 
@@ -128,7 +128,8 @@ algo = otexp.QuantileConfidence(alpha, beta)
 
 # %%
 # Estimate bilateral rank.
-# Indices are given in the :math:`\llbracket 0, n-1 \rrbracket` integer interval whereas the book gives them in :math:`\llbracket 1, n \rrbracket`.
+#
+# Care: indices are given in the :math:`\llbracket 0, n-1 \rrbracket` integer interval whereas the book gives them in :math:`\llbracket 1, n \rrbracket`.
 n = len(sample)
 l, u = algo.computeBilateralRank(n)
 print(f"l={l} u={u}")
@@ -136,7 +137,7 @@ print(f"l={l} u={u}")
 # %%
 # Estimate the bilateral confidence interval of the 0.1 quantile from the order statistics:
 #
-# ..math::
+# .. math::
 #
 #    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
 #
