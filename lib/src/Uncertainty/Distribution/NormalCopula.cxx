@@ -139,7 +139,7 @@ struct NormalCopulaComputeSamplePolicy
 }; /* end struct NormalCopulaComputeSamplePolicy */
 
 /* Get a sample of the distribution */
-Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
+Sample NormalCopula::getSample(const UnsignedInteger size) const
 {
   if (hasIndependentCopula())
   {
@@ -156,18 +156,12 @@ Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
     const UnsignedInteger dimension = getDimension();
     const Sample normalSample(normal_.getSample(size));
     Sample result(size, dimension);
-    const NormalCopulaComputeSamplePolicy policy( normalSample, result );
-    TBBImplementation::ParallelFor( 0, size, policy );
+    const NormalCopulaComputeSamplePolicy policy(normalSample, result);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
   } // Non independent copula
-}
-
-Sample NormalCopula::getSample(const UnsignedInteger size) const
-{
-  if (isParallel_) return getSampleParallel(size);
-  return DistributionImplementation::getSample(size);
 }
 
 /* Get the DDF of the distribution */
