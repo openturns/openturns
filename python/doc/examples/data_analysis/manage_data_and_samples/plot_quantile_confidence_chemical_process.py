@@ -1,5 +1,5 @@
 """
-Estimate quantile confidence intervals from chemicel process data
+Estimate quantile confidence intervals from chemical process data
 =================================================================
 """
 
@@ -8,7 +8,7 @@ Estimate quantile confidence intervals from chemicel process data
 # :math:`\alpha` level quantile (:math:`\alpha \in [0,1]`).
 # This example is adapted from [meeker2017]_ pages 76 to 81.
 #
-# See  :ref:`quantile_confidence_estimation` to get details on the signification of these confidence interval.
+# See  :ref:`quantile_confidence_estimation`  and :ref:`quantile_asymptotic_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
 import openturns.experimental as otexp
 

@@ -1,7 +1,7 @@
 .. _quantile_confidence_estimation:
 
-Estimation of a quantile confidence interval
---------------------------------------------
+Exact quantile confidence interval based on order statistics
+------------------------------------------------------------
 
 We consider a random variable :math:`X` of dimension 1 and its quantile :math:`x_{\alpha}`
 of level :math:`\alpha` (:math:`\alpha \in [0, 1]`).
@@ -355,15 +355,17 @@ with :math:`\gamma = \max(\alpha, 1-\alpha)`.
 .. topic:: API:
 
     - See :class:`~openturns.experimental.QuantileConfidence`
+    - See :class:`~openturns.Sample`
 
 .. topic:: Examples:
 
     - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_confidence_estimation`
     - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_confidence_chemical_process`
+    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_confidence_exact_empirical`
 
 .. topic:: References:
 
     - [meeker2017]_
-    - Wilks, S. S. (1941). Determination of sample sizes for setting tolerance limits. The Annals of Mathematical Statistics, 12(1), 91-96
-    - Robert C.P., Casella G. (2004). Monte-Carlo Statistical Methods, Springer, ISBN 0-387-21239-6, 2nd ed.
-    - Rubinstein R.Y. (1981). Simulation and The Monte-Carlo methods, John Wiley & Sons
+    - [wilks1941]_
+    - [robert2004]_
+    - [rubinstein2017]_

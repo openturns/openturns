@@ -32,8 +32,7 @@ Build and validate a linear model
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pyplot as plt
+import openturns.viewer as otv
 
 
 # %%
@@ -63,12 +62,12 @@ print(
 # %%
 # Validate the model with a visual test
 graph = ot.VisualTest.DrawLinearModel(Xsample, Ysample, result)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw the graph of the residual values
 graph = ot.VisualTest.DrawLinearModelResidual(Xsample, Ysample, result)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Check the nullity of the regression linear model coefficients
@@ -90,4 +89,7 @@ print(
     resultLinearModelResidualMean.getPValue(),
 )
 print("p-value threshold = ", resultLinearModelResidualMean.getThreshold())
-plt.show()
+
+
+# %%
+otv.View.ShowAll()

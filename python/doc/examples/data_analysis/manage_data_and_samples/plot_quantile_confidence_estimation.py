@@ -1,6 +1,6 @@
 """
-Estimate a confidence interval of a quantile
-============================================
+Estimate quantile confidence intervals
+======================================
 """
 
 # %%
@@ -15,7 +15,7 @@ Estimate a confidence interval of a quantile
 # In this example, we consider the quantile of level :math:`\alpha = 95\%`,
 # with a confidence level of :math:`\beta = 90\%`.
 #
-# See  :ref:`quantile_confidence_estimation` to get details on the signification of these confidence interval.
+# See  :ref:`quantile_confidence_estimation`  and :ref:`quantile_asymptotic_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
 import openturns.experimental as otexp
 import math as m

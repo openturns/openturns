@@ -87,4 +87,5 @@ Estimation of a quantile confidence interval
     :maxdepth: 1
 
     quantile_confidence_estimation
+    quantile_asymptotic_confidence_estimation
 
