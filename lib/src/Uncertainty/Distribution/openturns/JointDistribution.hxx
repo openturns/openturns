@@ -87,9 +87,6 @@ public:
 
   /** Get one realization of the JointDistribution */
   Point getRealization() const override;
-protected:
-  Sample getSampleParallel(const UnsignedInteger size) const;
-public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the JointDistribution */
