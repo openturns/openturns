@@ -1,0 +1,39 @@
+%feature("docstring") OT::HiGHS
+"Linear optimization solver.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+This class exposes the linear solver from the `HiGHS <https://highs.dev/>`_ library.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    The problem
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> dim = 2
+>>> model = ot.SymbolicFunction(['x', 'y'], ['2*x+3*y+5'])
+>>> bounds = ot.Interval([-4.0] * dim, [4.0] * dim)
+>>> problem = ot.OptimizationProblem(model)
+>>> problem.setBounds(bounds)
+>>> algo = otexp.HiGHS(problem)
+>>> algo.run() # doctest: +SKIP
+>>> result = algo.getResult() # doctest: +SKIP
+>>> x_star = result.getOptimalPoint() # doctest: +SKIP
+>>> y_star = result.getOptimalValue() # doctest: +SKIP
+
+Notes
+-----
+HiGHS solver can be adapted using the parameters described `here <https://ergo-code.github.io/HiGHS/dev/options/definitions/>`_.
+These parameters can be modified through the :class:`~openturns.ResourceMap`.
+For every option ``optionName``, simply add a key named ``HiGHS-optionName`` with the value to use, as shown below::
+
+    >>> import openturns as ot
+    >>> ot.ResourceMap.AddAsBool('HiGHS-output_flag', True)
+    >>> ot.ResourceMap.AddAsUnsignedInteger('HiGHS-threads', 4)
+"

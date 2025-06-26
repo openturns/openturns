@@ -92,12 +92,6 @@ Description PlatformInfo::GetFeatures()
     Features_["dlib"] = false;
 #endif
 
-#ifdef OPENTURNS_HAVE_IPOPT
-    Features_["ipopt"] = true;
-#else
-    Features_["ipopt"] = false;
-#endif
-
 #ifdef OPENTURNS_HAVE_BONMIN
     Features_["bonmin"] = true;
 #else
@@ -108,6 +102,18 @@ Description PlatformInfo::GetFeatures()
     Features_["cminpack"] = true;
 #else
     Features_["cminpack"] = false;
+#endif
+
+#ifdef OPENTURNS_HAVE_HIGHS
+    Features_["highs"] = true;
+#else
+    Features_["highs"] = false;
+#endif
+
+#ifdef OPENTURNS_HAVE_IPOPT
+    Features_["ipopt"] = true;
+#else
+    Features_["ipopt"] = false;
 #endif
 
 #ifdef OPENTURNS_HAVE_PAGMO

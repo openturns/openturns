@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install openblas swig boost tbb nlopt cminpack ceres-solver cuba dlib hdf5 ipopt primesieve spectra pagmo nanoflann
+        brew install openblas swig boost tbb nlopt cminpack ceres-solver cuba dlib hdf5 highs ipopt primesieve spectra pagmo nanoflann
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
     - run: |
         cmake \
@@ -36,7 +36,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja "libblas=*=*netlib" mpc boost-cpp libcuba libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja "libblas=*=*netlib" mpc boost-cpp libcuba libxml2 hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp highs ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd
@@ -101,7 +101,7 @@ jobs:
           prepare: |
             pkg install -y cmake git devel/llvm devel/swig devel/boost-all devel/onetbb textproc/libxml2
             pkg install -y math/lapack science/hdf5 math/nanoflann math/spectra math/primesieve math/py-matplotlib
-            pkg install -y science/pagmo2 math/ipopt math/bonmin math/nlopt math/ceres-solver math/cminpack
+            pkg install -y science/pagmo2 math/highs math/ipopt math/bonmin math/nlopt math/ceres-solver math/cminpack
           run: |
             git config --global --add safe.directory .
             cmake -DCMAKE_INSTALL_PREFIX=~/.local -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wshadow -Werror -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE" -DSWIG_COMPILE_FLAGS="-O1 -Wno-shadow -Wno-unused-function" . || exit 1

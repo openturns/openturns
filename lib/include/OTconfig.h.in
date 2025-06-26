@@ -1,5 +1,7 @@
 /* include/OTconfig.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define if you have the `highs` library. */
+#cmakedefine OPENTURNS_HAVE_HIGHS
 
 /* Define if you have the `ipopt` library. */
 #cmakedefine OPENTURNS_HAVE_IPOPT
