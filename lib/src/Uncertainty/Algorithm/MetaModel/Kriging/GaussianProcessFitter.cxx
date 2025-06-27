@@ -361,7 +361,7 @@ void GaussianProcessFitter::run()
 Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
 {
   // initial guess
-  const Point initialParameters(reducedCovarianceModel_.getParameter());
+  Point initialParameters(reducedCovarianceModel_.getParameter());
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
   Function reducedLogLikelihoodFunction(getReducedLogLikelihoodFunction());
   const Bool noNumericalOptimization = initialParameters.getSize() == 0 || !getOptimizeParameters();
@@ -373,6 +373,14 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
     LOGINFO("No covariance parameter to optimize");
     LOGINFO(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
     return initialReducedLogLikelihood;
+  }
+  // Thus here we perform an optimization. First let us check the initial point is inside the
+  // optimization bounds search, otherwise define one arbitrary inside these bounds
+  if (!optimizationBounds_.contains(initialParameters))
+  {
+    // Define starting point for the optimization as the center of the bounds
+    // We should ensure somehow that the upper/lower bounds scale are nearly the same
+    initialParameters = (optimizationBounds_.getUpperBound() + optimizationBounds_.getLowerBound())/2;
   }
   // At this point we have an optimization problem to solve
   // Define the optimization problem
