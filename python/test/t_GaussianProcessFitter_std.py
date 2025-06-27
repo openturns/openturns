@@ -186,6 +186,9 @@ def bugfix_optim_no_feasible():
     myCov2 = ot.SquaredExponential([1.0] * m.dim)
     myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
 
+    # optimal we should get after the optimization process
+    optimal_cov_parameter = [1.05e+07, 1500, 1500, 50.7, 5.119, 4.807,
+                             5.238, 2.45, 2.302, 5.058, 7.188, 4.915]
     covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
     scaleOptimizationBounds = ot.Interval(
@@ -198,8 +201,19 @@ def bugfix_optim_no_feasible():
     )
     algo.setOptimizationBounds(scaleOptimizationBounds)
     algo.setOptimizeParameters(True)
-    with ott.assert_raises(TypeError):
-        algo.run()
+    algo.run()
+    # Get result & residual
+    result = algo.getResult()
+    residual = result.getMetaModel()(inputTrainingSet) - outputTrainingSet
+    # Define multivariate square function
+    sqr_func = ot.SymbolicFunction(["x", "y", "z"], ["x*x", "y*y", "z*z"])
+    # Squared residual
+    squared_epsilon = sqr_func(residual).computeMean()
+
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), optimal_cov_parameter, 5e-2, 1e-3
+    )
+    ott.assert_almost_equal(squared_epsilon, [1.932e-05, 49.7, 1.861], 5e-1, 1e-3)
 
 
 if __name__ == "__main__":
