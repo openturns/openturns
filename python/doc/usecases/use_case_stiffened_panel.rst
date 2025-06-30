@@ -85,7 +85,7 @@ where:
 - :math:`D` is the bending coefficient of the
   panel main surface:
 
-.. math:
+.. math::
     D = \frac{E_st_s^3}{12(1-\nu_s^2)};
 
 - :math:`k_{xy}` is the load factor associated to shear buckling. It is given as
