@@ -5,7 +5,7 @@ Compare the distribution of quantile estimators
 
 # %%
 # In this example, we consider the quantile of level :math:`\alpha` of a distribution
-# :math:`X`. Tho objective is to estimate some confidence intarvals based on order statisctics
+# :math:`X`. The objective is to estimate some confidence intervals based on order statistics
 # that bound the quantile
 # :math:`x_{\alpha}` with a given confidence :math:`\beta \in [0,1]`.
 #
@@ -18,7 +18,7 @@ Compare the distribution of quantile estimators
 # We draw the distribution of each estimator.
 #
 # In this example, we consider the quantile of level :math:`\alpha = 95\%`,
-# with a confidence level of :math:`\beta = 90\%`.
+# with a confidence level :math:`\beta = 90\%`.
 #
 # See  :ref:`quantile_confidence_estimation` and :ref:`quantile_asymptotic_confidence_estimation` to get theoretical details.
 import openturns as ot
@@ -37,26 +37,31 @@ alpha = 0.95
 beta = 0.90
 
 # %%
-# The exact value of :math:`x_{\alpha}` is known.
+# The exact value of :math:`x_{\alpha}` is known. We compute it in order to compare the
+# estimators to the exact value.
 x_alpha_exact = X_dist.computeQuantile(alpha)[0]
 print('Exact quantile = ', x_alpha_exact)
 
 # %%
 # We generate a sample of the variable.
-n = 500
+n = 501
 X_sample = X_dist.getSample(n)
 
 # %%
 # Now, we assume to know :math:`X` only through the generated sample.
 #
-# The empirical estimator of the  quantile of level :math:`\alpha` is defined by
-# :math:`\lceil \sampleSize n \rceil) -1` -th order statistics, denoted
+# The empirical estimator of :math:`x_{\alpha}` is defined by the
+# :math:`k_{emp}` -th order statistics, denoted
 # by :math:`X_{(k_{emp})}`,
-# where :math:`k_{emp} = (\lceil \sampleSize n \rceil) -1` where :math:`\lceil x \rceil` is the integer ceiling of :math:`x`.
+# where :math:`k_{emp} = (\lceil \sampleSize \alpha \rceil) -1`. The numerotation
+# :math:`\lceil x \rceil` designs the smallest integer value that is greater
+# than or equal to :math:`x` (we substract 1 because the python enumeration begins
+# at 0).
 # The value of this order statistics is computed on the sample.
 k_emp = int(n * alpha)
 empiricalQuantile = X_sample.computeQuantile(alpha)
 print('Empirical quantile = ', empiricalQuantile)
+print('Empirical order statistics = ', k_emp)
 
 # %%
 # Now, we want to get the exact unilateral confidence interval that provides an upper bound of :math:`x_{\alpha}` with the confidence
@@ -67,9 +72,10 @@ quantConf = otexp.QuantileConfidence(alpha, beta)
 k_up = quantConf.computeUnilateralRank(n)
 
 # %%
-# We can directly get the order statistics :math:`X_{(k_{up})}` evaluated on the sample
+# We can directly get the order statistics :math:`X_{(k_{up})}` evaluated on the sample.
 upper_bound = quantConf.computeUnilateralConfidenceInterval(X_sample)
 print('Upper bound of the quantile = ', upper_bound)
+print('Upper bound order statistics = ', k_up)
 
 # %%
 # To get the exact unilateral confidence interval that provides a lower bound of :math:`x_{\alpha}` with the confidence
@@ -82,22 +88,30 @@ k_low = quantConf.computeUnilateralRank(n, True)
 # We can directly get the order statistics :math:`X_{(k_{low})}` evaluated on the sample.
 lower_bound = quantConf.computeUnilateralConfidenceInterval(X_sample, True)
 print('Lower bound of the quantile = ', lower_bound)
+print('Lower bound order statistics = ', k_low)
 
 # %%
 # In order to draw the distribution of any order statistics of :math:`X`, we first create the distribution
-# of the :math:`\sampleSize` order statistics of :math:`X`, denoted by :math:`\vect{X}_{(1:n)} = (X_{(1)},\dots,X_{(n)})`.
+# of the :math:`\sampleSize` order statistics of :math:`X`, denoted by :math:`\vect{X}_{(0:\sampleSize-1)} = (X_{(0)},\dots,X_{(\sampleSize-1)})`.
 # This distribution as the following cumulative distribution function:
 #
 # .. math::
 #
-#    F_{\vect{X}_{(1:n)}}(\vect{x}) = F_{\vect{U}_{(1:n)}}(F(x_1), \dots, F(x_n))
+#    F_{\vect{X}_{(0:\sampleSize-1)}}(\vect{x}) = F_{\vect{U}_{(0:\sampleSize-1)}}(F(x_1), \dots, F(x_{\sampleSize}-1))
 #
 #
 # and its PDF (if defined) by:
 #
 # .. math::
 #
-#    f_{\vect{X}_{(1:n)}}(\vect{x}) = n!\prod_{i=1}^n f(x_i) \,\mathbf{1}_{\cS}(\vect{x})
+#    f_{\vect{X}_{(0:\sampleSize-1)}}(\vect{x}) = \sampleSize!\prod_{i=0}^{\sampleSize-1} f(x_i) \,\mathbf{1}_{\cS}(\vect{x})
+#
+# where :math:`F` and :math:`f` are respectively the cumulative distribution function and
+# probability density function of :math:`X` and :math:`\cS\subset\Rset^n` is defined by:
+#
+# .. math::
+#
+#   \cS=\left\{(x_1,\dots,x_n)\in[0,1]^n\,|\,0 \leq x_1 \leq \dots \leq x_n \leq 1\right\}.
 #
 # Thus :math:`\vect{X}_{(1:n)}` is defined as the joint distribution which marginals are all distributed
 # as :math:`X` and which core is the order statistics distribution of the Uniform(0,1) distribution.
@@ -139,7 +153,7 @@ g.add(line_exactQuant)
 #     \left \{ X_{(k_{up})} \leq x_{\alpha} \right \} \\
 #     \left \{ X_{(k_{low})} \geq x_{\alpha} \right \}
 #
-# Each evant has the probability :math:`1- \beta`.
+# Each event has the probability :math:`1- \beta`.
 #
 # To do that, we define a function that returns a sample created from a regular grid from xmin to xmax with npoints points.
 
@@ -194,7 +208,7 @@ otv.View.ShowAll()
 # %%
 # Now we can conclude that:
 #
-#  * the empirical estimator is centered on the real quantile,
-#  * the :math:`X_{(k_{up})}` estimator has a probability :math:`\beta` to be above the real quantile,
-#  * the :math:`X_{(k_{low})}` estimator has a probability :math:`\beta` to be under the real quantile.
+#  * the empirical estimator is centered on the true quantile,
+#  * the :math:`X_{(k_{up})}` estimator has a probability :math:`\beta` to be above the true quantile,
+#  * the :math:`X_{(k_{low})}` estimator has a probability :math:`\beta` to be under the true quantile.
 #

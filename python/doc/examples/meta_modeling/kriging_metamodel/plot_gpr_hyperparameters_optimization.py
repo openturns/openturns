@@ -433,8 +433,8 @@ multiStartSolver = ot.MultiStart(solver, starting_points)
 
 # %%
 # Finally, we configure the optimization algorithm so as to use the :class:`~openturns.MultiStart`
-# algorithm. We impose the bounds of the algorithm to be equal to the range of the distribution that
-# generates the starting points.
+# algorithm. The bounds of the algorithm are set to match the range of the distribution used to
+# generate the starting points.
 
 # %%
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)

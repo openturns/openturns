@@ -168,7 +168,7 @@ Bibliography
 .. [gamboa2022] Gamboa, F., Gremaud, P., Klein, T. & Lagnoux, A. *Global sensitivity analysis:
     A novel generation of mighty estimators based on rank statistics* Bernoulli 28(4): 2345-2374, 2022.
     `pdf <https://hal.science/hal-02474902v4/file/New_Look_Bernoulli_4.pdf>`__
-.. [garnier2008] Garnier, J.. *Quantile estimation* ECODOQUI 2008
+.. [garnier2008] Garnier, J. *Quantile estimation* ECODOQUI 2008
 .. [gautschi2004] Gautschi, W. (2004).
     *Orthogonal polynomials: computation and approximation.* OUP Oxford.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,

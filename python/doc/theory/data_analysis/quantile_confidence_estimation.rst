@@ -76,7 +76,7 @@ Then, the smallest rank :math:`k_{sol}` such that the previous equation is satis
 .. math::
 
     k_{sol} & = \min \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\geq \beta \}\\
-            & = 1 +  \min \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq \beta \}
+            & = 1 + \min \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq \beta \}
 
 An upper bound of :math:`x_{\alpha}` is estimated by the value of :math:`X_{(k_{sol})}`
 on the sample :math:`(x_1, \dots, x_\sampleSize)`.
@@ -93,12 +93,12 @@ Here is a recap of the existence of solutions for this case:
 | :math:`\alpha=1`       | 1                | :math:`\emptyset`                   | :math:`\emptyset`               |
 +------------------------+------------------+-------------------------------------+---------------------------------+
 
-With:
+where:
 
 .. math::
     :label: EqOrderStatBgen
 
-    k_{sol} & = 1+F_{\sampleSize,\alpha}^{-1}(\beta)   \quad \text{if} \quad  1-\alpha^\sampleSize \geq \beta \\
+    k_{sol} & = 1 + F_{\sampleSize,\alpha}^{-1}(\beta)   \quad \text{if} \quad  1-\alpha^\sampleSize \geq \beta \\
             & = \emptyset   \quad \text{else}
 
 
@@ -123,9 +123,9 @@ and finally as:
 
 .. math::
 
-    F_{\sampleSize, \alpha}(k-1)\leq 1-\beta
+    F_{\sampleSize, \alpha}(k - 1)\leq 1 - \beta
 
-Then, the greates rank :math:`k_{sol}` such that the previous equation is satisfied is:
+Then, the greatest rank :math:`k_{sol}` such that the previous equation is satisfied is:
 
 
 .. math::
@@ -145,7 +145,7 @@ Here is a recap of the existence of solutions for this case:
 | :math:`\alpha=1`       | :math:`\sampleSize`                  |  :math:`\sampleSize`                    | :math:`\sampleSize`             |
 +------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
 
-With:
+where:
 
 .. math::
     :label: EqOrderStatAgen
@@ -188,8 +188,8 @@ or:
 .. math::
     :label: EqOrderStatC1
 
-    \Prob{X_{(k_1)} \leq x_{\alpha} } \geq 1-\dfrac{1-\beta}{2}\\
-    \Prob{x_{\alpha} \leq X_{(k_2)}} \geq 1-\dfrac{1-\beta}{2}
+    \Prob{X_{(k_1)} \leq x_{\alpha} } \geq 1 - \dfrac{1-\beta}{2}\\
+    \Prob{x_{\alpha} \leq X_{(k_2)}} \geq 1 - \dfrac{1-\beta}{2}
 
 
 or with :math:`(k_1, k_2) = (k,\sampleSize-k+1)` and :math:`1 \leq k \leq \sampleSize` the greatest rank such that:
@@ -206,22 +206,22 @@ The solutions of :eq:`EqOrderStatC1` are respectively defined by:
 
 .. math::
 
-   \overline{F}_{(\sampleSize,\alpha)}(k_1-1) \leq \dfrac{1-\beta}{2} \\
-   F_{(\sampleSize,\alpha)}(k_2-1) \geq 1-\dfrac{1-\beta}{2}
+   \overline{F}_{(\sampleSize,\alpha)}(k_1 - 1) \leq \dfrac{1 - \beta}{2} \\
+   F_{(\sampleSize,\alpha)}(k_2 - 1) \geq 1-\dfrac{1 - \beta}{2}
 
 which leads to the respective solutions:
 
 .. math::
 
-    k_{1, sol} & = \max \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\leq \dfrac{1-\beta}{2} \}\\
-            & = 1+\max \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\leq \dfrac{1-\beta}{2} \}
+    k_{1, sol} & = \max \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\leq \dfrac{1 - \beta}{2} \}\\
+            & = 1 + \max \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\leq \dfrac{1-\beta}{2} \}
 
 and
 
 .. math::
 
-    k_{2, sol} & = \min \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\geq 1- \dfrac{1-\beta}{2} \}\\
-            & = 1 + \min \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq 1- \dfrac{1-\beta}{2} \}
+    k_{2, sol} & = \min \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k - 1)\geq 1- \dfrac{1 - \beta}{2} \}\\
+            & = 1 + \min \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq 1 - \dfrac{1 - \beta}{2} \}
 
 Then, the previous tables written for the lower and upper bounds can be used to find :math:`k_{1, sol}` and :math:`k_{2, sol}` respectively with
 :math:`\beta \rightarrow \dfrac{1-\beta}{2}` or :math:`\beta \rightarrow 1-\dfrac{1-\beta}{2}`.
@@ -350,7 +350,7 @@ The optimal :math:`\sampleSize` is determined using an optimization algorithm wh
 
     \left \lfloor \dfrac{\log (1-\beta)}{\log \gamma} \right \rfloor \leq n \leq \left \lfloor \dfrac{\log \left(\dfrac{1-\beta}{2}\right)}{\log \gamma} \right \rfloor
 
-with :math:`\gamma = \max(\alpha, 1-\alpha)`.
+where :math:`\gamma = \max(\alpha, 1-\alpha)`.
 
 .. topic:: API:
 

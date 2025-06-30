@@ -19,23 +19,22 @@ and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum.
 Empirical quantile estimator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We first detail the empirical estimator of the quantile :math:`x_{\foralpha}`.
-We denote by :math:`\hat{F}` the empirical cumulative distribution defined by:
+We first introduce the empirical estimator of the quantile :math:`x_{\alpha}`.
+We denote by :math:`\hat{F}` the empirical cumulative distribution function defined by:
 
  .. math::
 
         \hat{F}(x) = \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize 1_{X_i \leq x}
 
-
-Then, the empirical estimator  :math:`x_{\alpha}` is defined by:
+Then, the empirical estimator :math:`x_{\alpha}` is defined by:
 
  .. math::
 
-        \hat{X}_{\alpha} = \inf \{ x, \hat{F}(x) > \alpha \} = X_{(\lceil \sampleSize\alpha \rceil)}
+        \hat{X}_{\alpha} = \inf \{ x, \hat{F}(x) \geq \alpha \} = X_{(\lceil \sampleSize\alpha \rceil)}
 
-where :math:`\lceil x \rceil` is the integer ceiling of :math:`x`.
+where :math:`\lceil x \rceil` is the smallest integer value that is greater than or equal to :math:`x`.
 
-The empirical estimator is asymptoically normal (see [delmas2006]_, [garnier2008]_):
+The empirical estimator is asymptotically normal (see [delmas2006]_, [garnier2008]_):
 
  .. math::
 
@@ -51,8 +50,8 @@ the following asymptotic results:
         \dfrac{1}{\sampleSize^2}\right)\\
         \Var{\hat{X}_{\alpha}} & = \dfrac{\alpha(1-\alpha)}{(\sampleSize+2)p^2(x_{\alpha})} + O\left(\dfrac{1}{\sampleSize^2}\right)
 
-where :math:`p` is the (continuously differentiable) density of :math:`X`. This result is not very useful for the construvtion of a
-confidnece interval as :math:`p(x_{\alpha})` is not known!
+where :math:`p` is the (continuously differentiable) density of :math:`X`. This result is not very useful for the construction of a
+confidence interval as :math:`p(x_{\alpha})` is not known!
 
 
 Asymptotic quantile confidence interval
