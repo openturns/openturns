@@ -51,6 +51,13 @@ f = ot.SymbolicFunction(["y"], ["y", "1+y^2"])
 XgivenThetaDist = ot.Uniform()
 
 # %%
+# In this example, the range of :math:`\vect{X}` depends on its parameters which are random. The model is not regular.
+# We advice to change the discretization method that performs the integration.
+# By default, this method is the quadrature method *GaussProduct*. We prefer to use the *QMC*.
+# We use the :class:`~openturns.ResourceMap`.
+ot.ResourceMap.SetAsString('DeconditionedDistribution-ContinuousDiscretizationMethod', 'QMC')
+
+# %%
 # Create the deconditioned distribution of :math:`X`.
 XDist = ot.DeconditionedDistribution(XgivenThetaDist, YDist, f)
 XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
