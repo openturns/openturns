@@ -135,7 +135,7 @@ algo = otexp.QuantileConfidence(alpha, beta)
 #
 #    \begin{array}{ll}
 #    (l,u) = & \argmin \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}}\\
-#                 & \mbox{s.t.} \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}} \geq \beta
+#           & \mbox{s.t.} \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}} \geq \beta
 #    \end{array}
 #
 # Care: indices are given in the :math:`\llbracket 0, n-1 \rrbracket` integer interval whereas the book gives them in :math:`\llbracket 1, n \rrbracket`.
@@ -151,27 +151,168 @@ print(f"ci={ci}")
 # %%
 # In this example, we consider the quantile of level :math:`\alpha = 90\%`,
 # with a confidence level of :math:`\beta = 95\%` (see example 5.1 p. 81).
-new_alpha = 0.9
+new_alpha = 0.90
 algo.setAlpha(new_alpha)
 
 # %%
-# We now estimate the rank rank :math:`k_{low}` which is the largest rank :math:`k`  with
+# We get the bilateral confidence interval of the 0.91 quantile.
+l, u = algo.computeBilateralRank(n)
+print(f"l={l} u={u}")
+
+# %%
+ci = algo.computeBilateralConfidenceInterval(sample)
+print(f"ci={ci}")
+
+# %%
+# We can estimate the rank :math:`k_{low}` which is the largest rank :math:`k`  with
 # :math:`0 \leq k \leq \sampleSize -1` such that:
 #
 # .. math::
 #
 #    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta.
 #
-k = algo.computeUnilateralRank(n, True)
-print(f"k={k}")
+# We notice that the order statistics of the lower bound is the same as in the bilateral confidence interval.
+k_low = algo.computeUnilateralRank(n, True)
+print(f"k_low={k_low}")
 
 # %%
 # In other words, the interval :math:`\left[ X_{(k_{low})}, +\infty\right[` is a unilateral
 # confidence interval for the 0.9 quantile with confidence :math:`\beta`. We can directly
 # estimate this interval.
-ci = algo.computeUnilateralConfidenceInterval(sample, True)
-print(f"ci={ci}")
+ci_low = algo.computeUnilateralConfidenceInterval(sample, True)
+print(f"ci_low={ci_low}")
 
+# %%
+# We now estimate the rank :math:`k_{up}` which is the smallest rank :math:`k`  with
+# :math:`0 \leq k \leq \sampleSize -1` such that:
+#
+# .. math::
+#
+#    \Prob{X_{(k)} \geq x_{\alpha}} \geq \beta.
+#
+# We notice that the order statistics of the upper bound is slightly smaller than in the bilateral confidence interval.
+k_up = algo.computeUnilateralRank(n)
+print(f"k_up={k_up}")
+
+# %%
+# In other words, the interval :math:`\left]-\infty,  X_{(k_{up})}\right]` is a unilateral
+# confidence interval for the 0.9 quantile with confidence :math:`\beta`. We can directly
+# estimate this interval.
+ci_up = algo.computeUnilateralConfidenceInterval(sample)
+print(f"ci_up={ci_up}")
+
+# %%
+# We had the empirical estimation of the quantile, with the order statistics :math:`X_{(\lfloor \sampleSize \alpha, \rfloor)}`.
+emp_quant = sample.computeQuantile(new_alpha)[0]
+
+# %%
+# We illustrate here the confidence intervals we obtained. To do that, we
+# draw the empirical cumulative distribution function and the bounds of the bilateral confidence intervals.
+# We first draw the empirical cumulative distribution function.
+user_defined_dist = ot.UserDefined(sample)
+g = user_defined_dist.drawCDF(sample.getMin(), sample.getMax())
+
+# %%
+# Then we had the bounds of the bilateral confidence intervals.
+# First the bilateral interval.
+line_bil_low = ot.Curve(
+    [ci.getLowerBound(), ci.getLowerBound()],
+    [[0.0], [user_defined_dist.computeCDF(ci.getLowerBound())]],
+)
+line_bil_low.setLineStyle("dashed")
+
+# %%
+line_bil_up = ot.Curve(
+    [ci.getUpperBound(), ci.getUpperBound()],
+    [[0.0], [user_defined_dist.computeCDF(ci.getUpperBound())]],
+)
+line_bil_up.setLineStyle("dashed")
+line_bil_up.setColor(line_bil_low.getColor())
+
+# %%
+g.add(line_bil_low)
+g.add(line_bil_up)
+
+# %%
+# Then the unilateral confidence intervals.
+line_unil_low = ot.Curve(
+    [ci_low.getLowerBound(), ci_low.getLowerBound()],
+    [[0.0], [user_defined_dist.computeCDF(ci_low.getLowerBound())]],
+)
+line_unil_low.setLineStyle("dotted")
+
+# %%
+line_unil_up = ot.Curve(
+    [ci_up.getUpperBound(), ci_up.getUpperBound()],
+    [[0.0], [user_defined_dist.computeCDF(ci_up.getUpperBound())]],
+)
+line_unil_up.setLineStyle("dashed")
+
+# %%
+g.add(line_unil_low)
+g.add(line_unil_up)
+
+# %%
+# At last, the empirical estimation.
+line_emp = ot.Curve(
+    [[emp_quant], [emp_quant], [0.0]],
+    [
+        [0.0],
+        [user_defined_dist.computeCDF(emp_quant)],
+        [user_defined_dist.computeCDF(emp_quant)],
+    ],
+)
+line_bil_up.setLineStyle("dashed")
+
+# %%
+g.add(line_emp)
+
+# %%
+# We add some labels.
+text_bil_low = ot.Text([[ci.getLowerBound()[0], -0.1]], ["bilateral lower bound"])
+text_bil_up = ot.Text([[ci.getUpperBound()[0], -0.1]], ["bilateral upper bound"])
+text_low = ot.Text([[ci_low.getLowerBound()[0], -0.05]], ["unilateral lower bound"])
+text_up = ot.Text([[ci_up.getUpperBound()[0], -0.05]], ["unilateral upper bound"])
+text_emp = ot.Text([[emp_quant, -0.075]], ["emp quant"])
+text_emp_2 = ot.Text([[-0.1, 0.9]], ["quant level"])
+g.add(text_bil_low)
+g.add(text_bil_up)
+g.add(text_low)
+g.add(text_up)
+g.add(text_emp)
+g.add(text_emp_2)
+
+# %%
+g.setColors(
+    [
+        "#1f77b4",
+        "#ff7f0e",
+        "#ff7f0e",
+        "#9467bd",
+        "#d62728",
+        "black",
+        "#ff7f0e",
+        "#ff7f0e",
+        "#9467bd",
+        "#d62728",
+        "black",
+        "black",
+    ]
+)
+g.setLegends(
+    [
+        "Emp. CDF",
+        "Bilat CI: lower bound",
+        "Bilat CI: upper bound",
+        "Unilat CI: lower bound",
+        "Unilat CI: upper bound",
+        "Emp quant",
+    ]
+)
+g.setLegendPosition("bottomright")
+g.setTitle("Estimation of the quantile of level 0.9")
+g.setXTitle("x")
+view = otv.View(g)
 
 # %%
 # Display all the graphs.
