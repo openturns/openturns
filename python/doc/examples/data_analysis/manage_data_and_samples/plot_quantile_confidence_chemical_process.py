@@ -188,7 +188,7 @@ print(f"ci_low={ci_low}")
 #
 # .. math::
 #
-#    \Prob{X_{(k)} \qeq x_{\alpha}} \geq \beta.
+#    \Prob{X_{(k)} \geq x_{\alpha}} \geq \beta.
 #
 # We notice that the order statistics of the upper bound is slightly smaller than in the bilateral confidence interval.
 k_up = algo.computeUnilateralRank(n)
