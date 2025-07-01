@@ -55,8 +55,7 @@ X_sample = X_dist.getSample(n)
 # by :math:`X_{(k_{emp})}`,
 # where :math:`k_{emp} = (\lceil \sampleSize \alpha \rceil) -1`. The numerotation
 # :math:`\lceil x \rceil` designs the smallest integer value that is greater
-# than or equal to :math:`x` (we substract 1 because the python enumeration begins
-# at 0).
+# than or equal to :math:`x` (we subtract 1 because python numbering starts at 0).
 # The value of this order statistics is computed on the sample.
 k_emp = int(n * alpha)
 empiricalQuantile = X_sample.computeQuantile(alpha)
@@ -107,13 +106,13 @@ print('Lower bound order statistics = ', k_low)
 #    f_{\vect{X}_{(0:\sampleSize-1)}}(\vect{x}) = \sampleSize!\prod_{i=0}^{\sampleSize-1} f(x_i) \,\mathbf{1}_{\cS}(\vect{x})
 #
 # where :math:`F` and :math:`f` are respectively the cumulative distribution function and
-# probability density function of :math:`X` and :math:`\cS\subset\Rset^n` is defined by:
+# probability density function of :math:`X` and :math:`\cS \subset \Rset^\sampleSize` is defined by:
 #
 # .. math::
 #
-#   \cS=\left\{(x_1,\dots,x_n)\in[0,1]^n\,|\,0 \leq x_1 \leq \dots \leq x_n \leq 1\right\}.
+#   \cS=\left\{(x_0, \dots, x_{\sampleSize-1}) \in [0,1]^\sampleSize\,|\,0 \leq x_0 \leq \dots \leq x_{\sampleSize-1} \leq 1 \right\}.
 #
-# Thus :math:`\vect{X}_{(1:n)}` is defined as the joint distribution which marginals are all distributed
+# Thus :math:`\vect{X}_{(0:\sampleSize-1)}` is defined as the joint distribution which marginals are all distributed
 # as :math:`X` and which core is the order statistics distribution of the Uniform(0,1) distribution.
 # The  order statistics distribution of the Uniform(0,1) is created using the class
 # :class:`~openturns.UniformOrderStatistics` which only requires to define the dimension of the
@@ -123,7 +122,7 @@ normal_orderStat = ot.JointDistribution([X_dist] * n, unif_orderStat)
 
 # %%
 # Thus, the order statistics :math:`X_{(k_{emp})}`, :math:`X_{(k_{low})}` and :math:`X_{(k_{up})}` are the marginals
-# :math:`k_{emp}`, :math:`k_{low}` and :math:`k_{up}` of :math:`\vect{X}_{(1:n)}`.
+# :math:`k_{emp}`, :math:`k_{low}` and :math:`k_{up}` of :math:`\vect{X}_{(0:\sampleSize-1)}`.
 X_emp = normal_orderStat.getMarginal(k_emp)
 X_up = normal_orderStat.getMarginal(k_up)
 X_low = normal_orderStat.getMarginal(k_low)

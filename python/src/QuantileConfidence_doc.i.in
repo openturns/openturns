@@ -54,7 +54,7 @@ Examples
 %feature("docstring") OT::QuantileConfidence::computeUnilateralRank
 "Evaluate the rank of a quantile lower bound.
 
-The lower bounded rank :math:`k_{low}` is the largest rank :math:`k`  with :math:`0 \leq k \leq \sampleSize -1` such that:
+The lower rank :math:`k_{low}` is the largest rank :math:`k`  with :math:`0 \leq k \leq \sampleSize -1` such that:
 
 .. math::
 
@@ -63,7 +63,7 @@ The lower bounded rank :math:`k_{low}` is the largest rank :math:`k`  with :math
 In other words, the interval :math:`\left[ X_{(k_{low})}, +\infty\right[` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-The upper bounded rank :math:`k_{up}` is the smallest rank :math:`k` with :math:`0 \leq k \leq \sampleSize -1` such that:
+The upper rank :math:`k_{up}` is the smallest rank :math:`k` with :math:`0 \leq k \leq \sampleSize -1` such that:
 
 .. math::
 

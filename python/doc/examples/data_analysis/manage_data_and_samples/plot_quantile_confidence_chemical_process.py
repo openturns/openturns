@@ -11,6 +11,7 @@ Estimate quantile confidence intervals from chemical process data
 # See  :ref:`quantile_confidence_estimation`  and :ref:`quantile_asymptotic_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.viewer as otv
 
 # %%
 # The data represents the ordered measured amount of a chemical compound in parts per million (ppm)
@@ -127,7 +128,15 @@ beta = 0.95
 algo = otexp.QuantileConfidence(alpha, beta)
 
 # %%
-# Estimate bilateral rank.
+# Estimate bilateral rank: math:`(l,u') such that :math:`0 \leq l \< u \leq \sampleSize -1`
+# and defined by:
+#
+# .. math::
+#
+#    \begin{array}{ll}
+#    (l,u) = & \argmin \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}}\\
+#                 & \mbox{s.t.} \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}} \geq \beta
+#    \end{array}
 #
 # Care: indices are given in the :math:`\llbracket 0, n-1 \rrbracket` integer interval whereas the book gives them in :math:`\llbracket 1, n \rrbracket`.
 n = len(sample)
@@ -135,26 +144,35 @@ l, u = algo.computeBilateralRank(n)
 print(f"l={l} u={u}")
 
 # %%
-# Estimate the bilateral confidence interval of the 0.1 quantile from the order statistics:
-#
-# .. math::
-#
-#    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
-#
+# We can directly estimate the bilateral confidence interval of the 0.1 quantile from the order statistics defined the order statistics :math:`X_{(l)}` and :math:`X_{(u)}`.
 ci = algo.computeBilateralConfidenceInterval(sample)
 print(f"ci={ci}")
 
 # %%
 # In this example, we consider the quantile of level :math:`\alpha = 90\%`,
 # with a confidence level of :math:`\beta = 95\%` (see example 5.1 p. 81).
-algo.setAlpha(0.9)
+new_alpha = 0.9
+algo.setAlpha(new_alpha)
 
 # %%
-# Estimate the one-sided rank for the upper side (in :math:`\llbracket 0, n-1 \rrbracket`).
+# We now estimate the rank rank :math:`k_{low}` which is the largest rank :math:`k`  with
+# :math:`0 \leq k \leq \sampleSize -1` such that:
+#
+# .. math::
+#
+#    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta.
+#
 k = algo.computeUnilateralRank(n, True)
 print(f"k={k}")
 
 # %%
-# Estimate the one-sided upper quantile confidence interval of the 0.9 quantile
+# In other words, the interval :math:`\left[ X_{(k_{low})}, +\infty\right[` is a unilateral
+# confidence interval for the 0.9 quantile with confidence :math:`\beta`. We can directly
+# estimate this interval.
 ci = algo.computeUnilateralConfidenceInterval(sample, True)
 print(f"ci={ci}")
+
+
+# %%
+# Display all the graphs.
+otv.View.ShowAll()

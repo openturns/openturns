@@ -81,13 +81,14 @@ sortedSample = sample.sort()
 # Get the asymptotic confidence interval :math:`\left[ X_{(i_n)}, X_{(j_n)}\right]`.
 #
 # Care: the index in the sorted sample is :math:`i_n-1` and :math:`j_n-1`
+# because python numbering starts at 0.
 infQuantile = sortedSample[i_n - 1]
 supQuantile = sortedSample[j_n - 1]
 print(infQuantile, empiricalQuantile, supQuantile)
 
 # %%
 # This can be done using :class:`~openturns.experimental.QuantileConfidence`
-# when the ranks :math:`i_n` and :math:`j_n` are directly given in [0, n-1]
+# when the ranks :math:`i_n` and :math:`j_n` are directly given in :math:`\llbracket 0, \sampleSize-1 \rrbracket`.
 algo = otexp.QuantileConfidence(alpha, beta)
 i_n, j_n = algo.computeAsymptoticBilateralRank(n)
 ci = algo.computeAsymptoticBilateralConfidenceInterval(sample)
@@ -110,11 +111,11 @@ upperBoundQuantile = sample.sort()[-i - 1]
 print(upperBoundQuantile)
 
 # %%
-# We can also find this rank back from the size
+# We can also find this rank back from the size.
 k = algo.computeUnilateralRank(minSampleSize, True)
 print(k, minSampleSize - i - 1)
 
 # %%
-# The quantile bound is given in the same manner from the sample and the rank
+# The quantile bound is given in the same manner from the sample and the rank.
 ci = algo.computeUnilateralConfidenceInterval(sample, True)
 print(ci)

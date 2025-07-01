@@ -32,10 +32,10 @@ statistics :math:`X_{(k)}` are:
     \right)^{\sampleSize-k} p(x)
 
 We notice that :math:`F_{X_{(k)}}(x) = \overline{F}_{(\sampleSize,F(x))}(k-1)` where
-:math:`F_{(\sampleSize,F(x))}` is the cumulated
+:math:`F_{(\sampleSize,F(x))}` is the cumulative
 distribution function of the Binomial distribution :math:`\cB(\sampleSize,F(x))` and
 :math:`\overline{F}_{(\sampleSize,F(x))}(k) = 1 - F_{(\sampleSize,F(x))}(k)` is the
-complementary cumulated distribution fonction (also named survival function in dimension
+complementary cumulative distribution fonction (also named survival function in dimension
 1).
 Therefore:
 

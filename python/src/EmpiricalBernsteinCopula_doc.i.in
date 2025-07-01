@@ -51,7 +51,7 @@ the largest integer less than or equal to :math:`x`.
 
 Let :math:`B(r_i^j , s_i^j, 0, 1)` be a
 :class:`~openturns.Beta` distribution defined on :math:`[0,1]` parametrized by the shape parameters :math:`r_i^j` and
-:math:`s_i^j`. We denote by :math:`F_{B(r_i^j, s_i^j, 0, 1)}` its cumulated distribution function.
+:math:`s_i^j`. We denote by :math:`F_{B(r_i^j, s_i^j, 0, 1)}` its cumulative distribution function.
 
 Then the empirical Bernstein copula :math:`C^B_\sampleSize` is defined by:
 
