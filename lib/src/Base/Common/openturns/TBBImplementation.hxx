@@ -118,7 +118,7 @@ public:
 BEGIN_NAMESPACE_OPENTURNS
 
 // disables blas threading inside TBB parallel regions
-class TBBContext
+class OT_API TBBContext
 {
 public:
   TBBContext();
