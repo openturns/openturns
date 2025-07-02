@@ -202,7 +202,7 @@ ci_up = algo.computeUnilateralConfidenceInterval(sample)
 print(f"ci_up={ci_up}")
 
 # %%
-# We had the empirical estimation of the quantile, with the order statistics :math:`X_{(\lflorr \sampleSize \alpha, \rfloor)}`.
+# We had the empirical estimation of the quantile, with the order statistics :math:`X_{(\lfloor \sampleSize \alpha, \rfloor)}`.
 emp_quant = sample.computeQuantile(new_alpha)[0]
 
 # %%
