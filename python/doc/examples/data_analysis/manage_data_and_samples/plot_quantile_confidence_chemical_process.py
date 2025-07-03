@@ -210,7 +210,7 @@ emp_quant = sample.computeQuantile(new_alpha)[0]
 # draw the empirical cumulative distribution function and the bounds of the bilateral confidence intervals.
 # We first draw the empirical cumulative distribution function.
 user_defined_dist = ot.UserDefined(sample)
-g = user_defined_dist.drawCDF(sample.getMin(), sample.getMax())
+g = user_defined_dist.drawCDF(sample.getMin(), sample.getMax()*1.5)
 
 # %%
 # Then we had the bounds of the bilateral confidence intervals.
@@ -269,10 +269,10 @@ g.add(line_emp)
 
 # %%
 # We add some labels.
-text_bil_low = ot.Text([[ci.getLowerBound()[0], -0.1]], ["bilateral lower bound"])
-text_bil_up = ot.Text([[ci.getUpperBound()[0], -0.1]], ["bilateral upper bound"])
-text_low = ot.Text([[ci_low.getLowerBound()[0], -0.05]], ["unilateral lower bound"])
-text_up = ot.Text([[ci_up.getUpperBound()[0], -0.05]], ["unilateral upper bound"])
+text_bil_low = ot.Text([[ci.getLowerBound()[0], -0.1]], ["bilat. low. bound"])
+text_bil_up = ot.Text([[ci.getUpperBound()[0], -0.1]], ["bilat. up. bound"])
+text_low = ot.Text([[ci_low.getLowerBound()[0], -0.05]], ["unilat. low. bound"])
+text_up = ot.Text([[ci_up.getUpperBound()[0], -0.05]], ["unilat. up. bound"])
 text_emp = ot.Text([[emp_quant, -0.075]], ["emp quant"])
 text_emp_2 = ot.Text([[-0.1, 0.9]], ["quant level"])
 g.add(text_bil_low)
