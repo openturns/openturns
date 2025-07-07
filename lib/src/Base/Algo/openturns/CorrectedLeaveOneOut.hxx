@@ -55,7 +55,6 @@ public:
              const FunctionCollection & psi,
              const Indices & indices) const override;
 
-#ifndef SWIG
   Scalar run(const Sample & y,
              const Point & weight,
              const Indices & indices,
@@ -63,7 +62,6 @@ public:
 
   Scalar run(LeastSquaresMethod & method,
              const Sample & y) const override;
-#endif
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

@@ -82,6 +82,7 @@
 %include FunctionalChaosRandomVector.i
 %include FunctionalChaosValidation.i
 %include KrigingRandomVector.i
+%include LARSExpansion.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i

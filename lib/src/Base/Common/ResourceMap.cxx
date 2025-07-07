@@ -1539,6 +1539,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
   addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold"});
 
+  // LARSExpansion parameters //
+  addAsString("LARSExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
+
   // LeastSquaresExpansion parameters //
   addAsString("LeastSquaresExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 
