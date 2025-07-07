@@ -1787,6 +1787,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
+  addAsUnsignedInteger("LeastSquaresMetaModelSelection-SmallBasisSize", 10);
 
   // SimplicialCubature parameters //
   addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);

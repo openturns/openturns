@@ -130,6 +130,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   const Scalar alpha = std::max(1.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
   const Scalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold"));
   const Scalar maximumError = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumError"));
+  const UnsignedInteger smallBasisSize = ResourceMap::GetAsUnsignedInteger("LeastSquaresMetaModelSelection-SmallBasisSize");
   while ((basisSequenceFactory_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (basisSequenceFactory_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
   {
     // retrieve the i-th basis of the sequence
@@ -144,15 +145,18 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
     }
     else
     {
-      if (!(error <= alpha * minimumError))
+      if (basisSequenceFactory_.getImplementation()->currentIndices_.getSize() > smallBasisSize)
       {
-        LOGINFO(OSS() << "Error=" << error << " larger than " << alpha << "*" << minimumError << "=" << alpha * minimumError);
-        break;
-      }
-      if (error > maximumError)
-      {
-        LOGINFO(OSS() << "Error=" << error << " larger than " << maximumError);
-        break;
+        if (!(error <= alpha * minimumError))
+        {
+          LOGINFO(OSS() << "Error=" << error << " larger than " << alpha << "*" << minimumError << "=" << alpha * minimumError);
+          break;
+        }
+        if (error > maximumError)
+        {
+          LOGINFO(OSS() << "Error=" << error << " larger than " << maximumError);
+          break;
+        }
       }
     }
     if (!(minimumError >= errorThreshold))

@@ -1137,6 +1137,7 @@
   <LeastSquaresMetaModelSelection-MaximumError        value_float="0.5" />
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
   <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"   />
+  <LeastSquaresMetaModelSelection-SmallBasisSize value_int="10" />
 
   <!-- SimplicialCubature parameters -->
   <SimplicialCubature-DefaultMaximumAbsoluteError value_float="0.0" />
