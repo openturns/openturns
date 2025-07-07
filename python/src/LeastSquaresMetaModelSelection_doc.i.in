@@ -14,14 +14,14 @@ The stopping criteria for the model selection is defined through the following e
 :class:`~openturns.ResourceMap`: 
 
 - *LeastSquaresMetaModelSelection-ErrorThreshold*: if the error computed by cross validation is lesser than this threshold,
-   then the exploration is stopped. The default value is 0: this criteria is not activated by default.
+  then the exploration is stopped. The default value is 0: this criteria is not activated by default.
 - *LeastSquaresMetaModelSelection-MaximumError*: if the error computed by cross validation is greater than this threshold,
-   then the exploration is stopped (the error first decreases then increases when the basis complexity increases). The best
-   approximation obtained so far is returned. The default value is 0.5.
-- *LeastSquaresMetaModelSelection-alpha*: through the exploration, the minimum error :math:`e_{min}` is stored. If the
-   current error is greater than :math:`\alpha \times e_{min}`, then the exploration is stopped. The best approximation
-   obtained so far
-   is returned. The default value is 2. This value allows one to filter little fluctuations in the error computation.
+  then the exploration is stopped (the error first decreases then increases when the basis complexity increases). The best
+  approximation obtained so far is returned. The default value is 0.5.
+- *LeastSquaresMetaModelSelection-MaximumErrorFactor*: through the exploration, the minimum error :math:`e_{min}` is stored. If the
+  current error is greater than :math:`\alpha \times e_{min}`, then the exploration is stopped. The best approximation
+  obtained so far is returned.
+  The default value is 2. This value allows one to filter little fluctuations in the error computation.
 
 "
 
