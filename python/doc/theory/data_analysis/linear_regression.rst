@@ -239,7 +239,7 @@ The analysis of a linear regression model is presented in :ref:`regression_analy
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_linear_regression`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_linear_regression`
 
 .. topic:: References:
 

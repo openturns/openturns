@@ -137,7 +137,7 @@ coefficient is sometimes denoted by :math:`r`.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_sample_correlation`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_sample_correlation`
 
 .. topic:: References:
 
