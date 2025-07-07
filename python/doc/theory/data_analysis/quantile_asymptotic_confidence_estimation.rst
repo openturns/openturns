@@ -84,9 +84,9 @@ Then, we have:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_confidence_estimation`
-    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_confidence_chemical_process`
-    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_quantile_confidence_exact_empirical`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_quantile_confidence_estimation`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_quantile_confidence_chemical_process`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_quantile_confidence_exact_empirical`
 
 .. topic:: References:
 
