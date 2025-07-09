@@ -22,11 +22,10 @@ F = FUNC()
 print(
     ("in_dim=" + str(F.getInputDimension()) + " out_dim=" + str(F.getOutputDimension()))
 )
-
-print((F((10, 5))))
-
-print((F(((10, 5), (6, 7)))))
-
+y = F((10, 5))
+assert y == [15.0]
+y = F(((10, 5), (6, 7)))
+assert y == [[15.0], [13.0]]
 
 # Instance creation
 myFunc = ot.Function(F)
@@ -34,28 +33,27 @@ myFunc = ot.Function(F)
 # Copy constructor
 newFunc = ot.Function(myFunc)
 
-print(("myFunc input dimension= " + str(myFunc.getInputDimension())))
-print(("myFunc output dimension= " + str(myFunc.getOutputDimension())))
+assert myFunc.getInputDimension() == 2
+assert myFunc.getOutputDimension() == 1
 
 inPt = ot.Point(2, 2.0)
-print((repr(inPt)))
-
 outPt = myFunc(inPt)
-print((repr(outPt)))
+ott.assert_almost_equal(outPt, [4.0])
 
 outPt = myFunc((10.0, 11.0))
-print((repr(outPt)))
+ott.assert_almost_equal(outPt, [21.0])
 
 inSample = ot.Sample(10, 2)
 for i in range(10):
     inSample[i] = ot.Point((i, i))
-print((repr(inSample)))
 
 outSample = myFunc(inSample)
 print((repr(outSample)))
+ott.assert_almost_equal(outSample, [[2 * i] for i in range(10)])
 
 outSample = myFunc(((100.0, 100.0), (101.0, 101.0), (102.0, 102.0)))
 print((repr(outSample)))
+ott.assert_almost_equal(outSample, [[200], [202], [204]])
 
 # test PythonFunction
 
@@ -79,21 +77,25 @@ print("exec")
 myFunc = ot.PythonFunction(2, 1, a_exec)
 outSample = myFunc(a_sample)
 print(outSample)
+ott.assert_almost_equal(outSample, [[200], [202], [204]])
 
 print("exec + exec_sample")
 myFunc = ot.PythonFunction(2, 1, a_exec, a_exec_sample)
 outSample = myFunc(a_sample)
 print(outSample)
+ott.assert_almost_equal(outSample, [[200], [202], [204]])
 
 print("exec_sample only on a point")
 myFunc = ot.PythonFunction(2, 1, func_sample=a_exec_sample)
 outSample = myFunc([100.0, 100.0])
 print(outSample)
+ott.assert_almost_equal(outSample, [200])
 
 print("exec_sample only on a sample")
 myFunc = ot.PythonFunction(2, 1, func_sample=a_exec_sample)
 outSample = myFunc(a_sample)
 print(outSample)
+ott.assert_almost_equal(outSample, [[200], [202], [204]])
 
 # multiprocessing spawn method on win (& osx for py>38) duplicates the output
 cpus = -1 if sys.platform.startswith("linux") else None
@@ -101,11 +103,13 @@ print("distributed exec only on a point")
 myFunc = ot.PythonFunction(2, 1, a_exec, n_cpus=cpus)
 outSample = myFunc([100.0, 100.0])
 print(outSample)
+ott.assert_almost_equal(outSample, [200])
 
 print("distributed exec only on a sample")
 myFunc = ot.PythonFunction(2, 1, a_exec, n_cpus=cpus)
 outSample = myFunc(a_sample)
 print(outSample)
+ott.assert_almost_equal(outSample, [[200], [202], [204]])
 
 
 def a_grad(X):
@@ -142,7 +146,7 @@ else:
     raise Exception("no function not detected!")
 
 
-def a_exec(X):
+def a_exec2(X):
     Y = [0]
     if X[0] == 0.0:
         raise RuntimeError("Oups")
@@ -152,7 +156,7 @@ def a_exec(X):
 
 
 for n in range(2):
-    myFunc = ot.PythonFunction(1, 1, a_exec)
+    myFunc = ot.PythonFunction(1, 1, a_exec2)
     try:
         X = ot.Point(1, n)
         myFunc(X)
@@ -161,12 +165,12 @@ for n in range(2):
         print("exception handling: ok")
 
 
-def a_exec(X):
+def a_exec3(X):
     X[8000]  # index error
     return [X[0] + X[1]]
 
 
-myFunc = ot.PythonFunction(2, 1, a_exec)
+myFunc = ot.PythonFunction(2, 1, a_exec3)
 with ott.assert_raises(RuntimeError):
     myFunc([5, 6])
 
@@ -174,6 +178,7 @@ f = ot.PythonFunction(0, 3, lambda x: [42.0] * 3)
 x = []
 y = f(x)
 print("y=", y)
+ott.assert_almost_equal(y, [42.0] * 3)
 
 
 class BFunction(ot.OpenTURNSPythonFunction):
