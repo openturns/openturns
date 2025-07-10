@@ -54,6 +54,10 @@ if (Pagmo_FOUND)
   endif ()
 endif ()
 
+if (HiGHS_FOUND)
+  set_source_files_properties (Base/Optim/HiGHS.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # Exclude LibXML sources
 if (LIBXML2_FOUND)
   set_source_files_properties (Base/Common/XMLStorageManager.cxx Base/Common/XMLToolbox.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)

@@ -31,6 +31,7 @@
 
 /* Base/Optim */
 %import optim_module.i
+%include HiGHS.i
 
 /* Base/Stat */
 %include LatentVariableModel.i
