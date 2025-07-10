@@ -48,6 +48,9 @@ public:
   /** Generate next set of indices */
   Indices generate(Indices & indicesTest) const override;
 
+  /** Reset sequence state */
+  void reset() const override;
+
   /** Number of indices pairs accessor */
   UnsignedInteger getSize() const override;
 
@@ -66,6 +69,7 @@ public:
 private:
   UnsignedInteger k_ = 0;
   Indices shuffle_;
+  mutable UnsignedInteger start_ = 0;
 
 }; /* class KFoldSplitter */
 
