@@ -141,4 +141,3 @@ view = viewer.View(graph)
 # %%
 # Display all the graphs.
 viewer.View.ShowAll()
-
