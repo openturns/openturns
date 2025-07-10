@@ -144,7 +144,7 @@ l, u = algo.computeBilateralRank(n)
 print(f"l={l} u={u}")
 
 # %%
-# We can directly estimate the bilateral confidence interval of the 0.1 quantile from the order statistics defined the order statistics :math:`X_{(l)}` and :math:`X_{(u)}`.
+# We can directly estimate the bilateral confidence interval of the 0.1 quantile defined by the order statistics :math:`X_{(l)}` and :math:`X_{(u)}`.
 ci = algo.computeBilateralConfidenceInterval(sample)
 print(f"ci={ci}")
 
