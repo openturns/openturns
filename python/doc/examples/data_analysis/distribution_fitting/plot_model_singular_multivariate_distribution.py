@@ -4,10 +4,43 @@ Model a singular multivariate distribution
 """
 
 # %%
-# From time to time we need to model singular :math:`n_D` distributions
-# (e.g. the joint distribution of Karhunen Loeve coefficients for curves resulting from the transport of a low dimensional random vector).
-# A way to do that is to use an :class:`~openturns.EmpiricalBernsteinCopula` with a bin number equal to the sample size
-# (also called the empirical beta copula in this case).
+# The objective of the example is to show how to fit a singular copula
+# on a sample of dimension :math:`n_\inputDim` which might be high. For example,
+# this is the case when we want to fit the joint distribution of the :math:`n_\inputDim` Karhunen Loeve
+# coefficients in the Karhunen Loeve modelisation of a process.
+#
+# A way to do that is to use the  empirical Bernstein copula implemented in
+# :class:`~openturns.EmpiricalBernsteinCopula` through its factory
+# class:`~openturns.BernsteinCopulaFactory`.
+# This copula is parameterized by the number :math:`m` of cells. This set of cells
+# partitions the sample: all the points of the same cell are grouped into a single *global* point.
+#
+# The empirical Bernstein copula is a mixture of products of Beta laws centered on the global point of each cell.
+# We denote by :math:`N` the sample size. The number of global points varies according to the number of
+# cells considered (math:`m`):
+#
+# - :math:`m = N` means that all the sample has been retained: we create one cell around
+#   each point of the sample,
+# - :math:`m = 1` means the sample has been grouped into one single global point: we get the independent copula,
+# - :math:`1 < m < N` means that we create :math:`m` cells to group :math:`N` points.
+#
+# When  :math:`m = N`, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
+#
+# For the  empirical Bernstein copula defined in this way to be a copula,  :math:`m`  must divide :math:`N`.
+# Thus, if this is not the case, part of the sample is set aside in order to check this condition (see
+# :class:`~openturns.EmpiricalBernsteinCopula` for more details).
+#
+# A point's *zone of influence* is its cell. The larger :math:`m`, the smaller its zone of influence:
+# the final copula thus adheres strongly to the sample. The smaller :math:`m`, the larger
+# its zone of influence, and the more the final copula will be able to fill a large
+# area around it.
+#
+# So, if we know that the final copula is diffuse, we recommend to let the
+# :class:`~openturns.BernsteinCopulaFactory` automatically calculate the best number of cells to take. If
+# we know that the final copula is singular, we recommend to specify the value of :math:`m` to be equal
+# to the sample size :math:`N`.
+#
+# We illustrate the influence of  :math:`m` on a singular copula.
 
 import openturns as ot
 import openturns.viewer as viewer
@@ -93,9 +126,7 @@ view = viewer.View(draw(y_multi_ks, sample_Y))
 #   an empirical Bernstein copula.
 #
 # First, we do not specify the bin number :math:`m`. It is equal to the value computed by the default method, which is the
-# LogLikelihood criteria. We get :math:`m=1`, which
-# means that one cell is created: the built copula is diffuse in :math:`[0,1]^2`. The estimated copula is
-# the independent copula.
+# LogLikelihood criteria.
 empBern_copula = ot.BernsteinCopulaFactory().buildAsEmpiricalBernsteinCopula(sample_Y)
 print("bin number computed m = ", empBern_copula.getBinNumber())
 marginals = [
@@ -106,8 +137,13 @@ y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
 
 # %%
+# We see that the optimal number of cells is :math:`m = 1`: it means that one single cell is created.
+# The built copula is diffuse
+# in :math:`[0,1]^2` and the estimated copula is the independent copula.
+
+
+# %%
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
-# With this parametrization, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
 # In that case, it manages to reproduce its specific feature.
 empBern_copula = ot.BernsteinCopulaFactory().build(sample_Y, N)
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
