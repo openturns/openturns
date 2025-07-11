@@ -101,7 +101,7 @@ Bibliography
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
-.. [david1981] David, H.A. (1981). *Order statisctics.*, New-York:Wiley.
+.. [david1981] David, H.A. (1981). *Order statistics.*, New-York:Wiley.
 .. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
     Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
