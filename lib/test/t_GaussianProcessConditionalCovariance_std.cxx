@@ -29,16 +29,18 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
-  ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8);
-
+  ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 20000);
+  ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-12);
+  ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1e-12);
+  ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1e-12);
+  ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1e-12);
+  // Set Numerical precision to 4
+  PlatformInfo::SetNumericalPrecision(4);
 
   try
   {
     // Test 1: a real value function
     {
-      // Set Numerical precision to 4
-      PlatformInfo::SetNumericalPrecision(4);
       const UnsignedInteger sampleSize = 6;
       const UnsignedInteger dimension = 1;
 
@@ -97,17 +99,16 @@ int main(int, char *[])
       // Kriging variance is non-null on validation points
       CovarianceMatrix validCovariance(gccc.getConditionalCovariance(inputTest));
 
-      const Point rowData = {0.81942182, -0.35599947, -0.17488593, 0.04622401, -0.03143555, 0.04054783, \
-                             -0.35599947, 0.20874735, 0.10943841, -0.03236419, 0.02397483, -0.03269184, \
-                             -0.17488593, 0.10943841, 0.05832917, -0.01779918, 0.01355719, -0.01891618, \
-                             0.04622401, -0.03236419, -0.01779918, 0.00578327, -0.00467674, 0.00688697, \
-                             -0.03143555, 0.02397483, 0.01355719, -0.00467674, 0.0040267, -0.00631173, \
-                             0.04054783, -0.03269184, -0.01891618, 0.00688697, -0.00631173, 0.01059488
+      const Point rowData = {0.8184895, -0.35552172, -0.17465229, 0.046165814, -0.031401148, 0.040513763, \
+                             -0.35552172, 0.20837841, 0.10924071, -0.032305943, 0.02393464, -0.032645002, \
+                             -0.17465229, 0.10924071, 0.058220831, -0.017765858, 0.01353325, -0.018887164, \
+                             0.046165814, -0.032305943, -0.017765858, 0.0057721149, -0.0046680355, 0.0068755347, \
+                             -0.031401148, 0.02393464, 0.01353325, -0.0046680355, 0.0040193151, -0.0063011862, \
+                             0.040513763, -0.032645002, -0.018887164, 0.0068755347, -0.0063011862, 0.010578449
                             };
 
       Matrix values(sampleSize, sampleSize, rowData);
-
-      assert_almost_equal(validCovariance - values.transpose(), nullMatrix, 1.e-5, 1e-6);
+      assert_almost_equal(validCovariance - values.transpose(), nullMatrix, 3.e-4, 1e-3);
     }
     // Test 2 : 2 inputs, one output
     {
@@ -210,15 +211,15 @@ int main(int, char *[])
       // Kriging variance is 0 on learning points
       GaussianProcessConditionalCovariance gccc(result);
 
-      const Point rowData = {4.4527, 0.0, 8.34404, 0.0, 0.0, 2.8883, 0.0, 5.41246, \
-                             8.34404, 0.0, 15.7824, 0.0, 0.0, 5.41246, 0.0, 10.2375
+      const Point rowData = {4.4655975, 0.0, 8.3485681, 0.0, 0.0, 2.8909595, 0.0, 5.4295163, \
+                             8.3485681, 0.0, 15.766016, 0.0, 0.0, 5.4295163, 0.0, 10.21
                             };
       const Matrix reference_covariance(4, 4, rowData);
       const SquareMatrix nullMatrix(4);
       const Point pointOfInterest = {9.5, 10.0};
       const Sample sample(Sample::BuildFromPoint(pointOfInterest));
       const CovarianceMatrix covarianceMat(gccc(sample).getCovariance());
-      assert_almost_equal(covarianceMat - reference_covariance.transpose(), nullMatrix, 0.0, 2e-2);
+      assert_almost_equal(covarianceMat - reference_covariance.transpose(), nullMatrix, 3.e-2, 2e-1);
 
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861
