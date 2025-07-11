@@ -14,7 +14,7 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import branin_function
 import openturns.experimental as otexp
-
+ot.ResourceMap.SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 3000)
 
 # %%
 # We load the Branin-Hoo model from the usecases module and use the model (stored in `objectiveFunction`)
