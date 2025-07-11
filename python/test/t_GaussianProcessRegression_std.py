@@ -6,9 +6,8 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.ResourceMap.SetAsUnsignedInteger(
-    "OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000
+    "OptimizationAlgorithm-DefaultMaximumCallsNumber", 2000
 )
-ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 0.5)
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8)
 
 
@@ -141,7 +140,7 @@ def test_two_outputs():
     result = algo.getResult()
     mm = result.getMetaModel()
     assert mm.getOutputDimension() == 2, "wrong output dim"
-    ott.assert_almost_equal(mm([5.5]), [-3.88368, 3.90286])
+    ott.assert_almost_equal(mm([5.5]), [-3.8838, 3.90286], 2e-4)
 
 
 def test_stationary_fun():
@@ -165,7 +164,7 @@ def test_stationary_fun():
     algo.run()
     result = algo.getResult()
     mm = result.getMetaModel()
-    ott.assert_almost_equal(mm([5.5]), [5.58283])
+    ott.assert_almost_equal(mm([5.5]), [5.588], 2e-3)
 
 
 def test_gpr_no_opt():

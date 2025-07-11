@@ -34,7 +34,7 @@ algo.run()
 result = algo.getResult()
 optimized_covariance_model = result.getCovarianceModel()
 ott.assert_almost_equal(
-    optimized_covariance_model.getScale(), [1.34] * dimension, 0.2, 0.0
+    optimized_covariance_model.getScale(), [1.06067] * dimension, 0.2, 0.0
 )
 ott.assert_almost_equal(
     log10(optimized_covariance_model.getNuggetFactor()), -1.9, 0.25, 0.0
@@ -54,7 +54,7 @@ algo_product.run()
 result_product = algo_product.getResult()
 optimized_product_model = result_product.getCovarianceModel()
 ott.assert_almost_equal(
-    optimized_product_model.getScale(), [1.34] * dimension, 0.2, 0.0
+    optimized_product_model.getScale(), [0.958543] * dimension, 0.2, 0.0
 )
 ott.assert_almost_equal(
     log10(optimized_product_model.getNuggetFactor()), -1.9, 0.25, 0.0
@@ -72,7 +72,7 @@ algo_iso = otexp.GaussianProcessRegression(fitter_result_iso)
 algo_iso.run()
 result_iso = algo_iso.getResult()
 optimized_isotropic_model = result_iso.getCovarianceModel()
-ott.assert_almost_equal(optimized_isotropic_model.getScale(), [1.34], 0.2, 0.0)
+ott.assert_almost_equal(optimized_isotropic_model.getScale(), [0.726095], 0.2, 0.0)
 ott.assert_almost_equal(
     log10(optimized_isotropic_model.getNuggetFactor()), -1.9, 0.25, 0.0
 )

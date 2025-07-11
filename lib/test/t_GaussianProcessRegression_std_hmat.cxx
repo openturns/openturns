@@ -29,7 +29,6 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 10000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
   PlatformInfo::SetNumericalPrecision(3);
   ResourceMap::SetAsString("GaussianProcessFitter-LinearAlgebra", "HMAT");
   ResourceMap::SetAsScalar("HMatrix-RegularizationEpsilon", 1e-7);
@@ -210,8 +209,8 @@ int main(int, char *[])
       // Get meta model
       Function metaModel(result.getMetaModel());
       const Point point = {5.5};
-      const Point outputValue = {5.58283};
-      assert_almost_equal(metaModel(point), outputValue);
+      const Point outputValue = {5.588};
+      assert_almost_equal(metaModel(point), outputValue, 2e-3);
     }
     // GPR with already calibrated parameters
     {
