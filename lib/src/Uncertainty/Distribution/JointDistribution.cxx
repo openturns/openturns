@@ -410,7 +410,7 @@ struct ComposedDistributionComputeSamplePolicy
 }; /* end struct ComposedDistributionComputeSamplePolicy */
 
 /* Get a sample of the distribution */
-Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
+Sample JointDistribution::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!core_.isCopula() || !hasIndependentCopula())
@@ -419,8 +419,8 @@ Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
     // of possible parallelism of the getSample() method of the core
     const Sample coreSample(core_.getSample(size));
     Sample result(size, dimension);
-    const ComposedDistributionComputeSamplePolicy policy( coreSample, result, distributionCollection_ );
-    TBBImplementation::ParallelFor( 0, size, policy );
+    const ComposedDistributionComputeSamplePolicy policy(coreSample, result, distributionCollection_);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
@@ -445,12 +445,6 @@ Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
-}
-
-Sample JointDistribution::getSample(const UnsignedInteger size) const
-{
-  if (isParallel_) return getSampleParallel(size);
-  return DistributionImplementation::getSample(size);
 }
 
 /* Get the DDF of the JointDistribution */

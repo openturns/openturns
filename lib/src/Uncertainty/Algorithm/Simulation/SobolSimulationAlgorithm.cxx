@@ -156,6 +156,8 @@ void SobolSimulationAlgorithm::run()
       if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
       {
         LOGINFO(OSS() << "Maximum time exceeded");
+        if (outerSampling == 0)
+          throw InternalException (HERE) << "Stopped without enough samples";
         stop = true;
       }
 

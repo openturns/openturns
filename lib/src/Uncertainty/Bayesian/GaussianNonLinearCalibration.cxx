@@ -23,16 +23,11 @@
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/BootstrapExperiment.hxx"
-#include "openturns/LowDiscrepancyExperiment.hxx"
-#include "openturns/SobolSequence.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
-#include "openturns/MultiStart.hxx"
-#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

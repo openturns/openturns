@@ -41,6 +41,8 @@ KFoldSplitter::KFoldSplitter(const UnsignedInteger size, const UnsignedInteger k
   : SplitterImplementation(size)
   , k_(k)
 {
+  if (k > size)
+    throw InvalidArgumentException(HERE) << "The number of folds (" << k << ") cannot be greater than the sample size (" << size << ")";
   setRandomize(ResourceMap::GetAsBool("KFoldSplitter-Randomize"));
 }
 
@@ -55,18 +57,41 @@ Indices KFoldSplitter::generate(Indices & indicesTest) const
   if (currentIndex_ >= k_)
     throw OutOfBoundException(HERE) << "end of KFold set";
 
-  Indices indicesTrain;
-  indicesTest.clear();
-  for (UnsignedInteger i = 0; i < N_; ++ i)
+  const UnsignedInteger foldSize = (currentIndex_ >= N_ % k_) ? N_ / k_ : N_ / k_ + 1;
+
+  // test indices
+  indicesTest.resize(foldSize);
+  indicesTest.fill(start_);
+
+  // train indices
+  Indices indicesTrain(start_);
+  indicesTrain.fill();
+  if (currentIndex_ + 1 < k_)
   {
-    const UnsignedInteger si = shuffle_.getSize() ? shuffle_[i] : i;
-    if (i % k_ != currentIndex_)
-      indicesTrain.add(si);
-    else
-      indicesTest.add(si);
+    Indices after(N_ - foldSize - start_);
+    after.fill(start_ + foldSize);
+    indicesTrain.add(after);
   }
+
+  // take shuffle into account
+  if (shuffle_.getSize())
+  {
+    for (UnsignedInteger i = 0; i < indicesTest.getSize(); ++ i)
+      indicesTest[i] = shuffle_[indicesTest[i]];
+    for (UnsignedInteger i = 0; i < indicesTrain.getSize(); ++ i)
+      indicesTrain[i] = shuffle_[indicesTrain[i]];
+  }
+
+  start_ += foldSize;
   ++ currentIndex_;
   return indicesTrain;
+}
+
+/* Reset sequence state */
+void KFoldSplitter::reset() const
+{
+  SplitterImplementation::reset();
+  start_ = 0;
 }
 
 void KFoldSplitter::setRandomize(const Bool randomize)

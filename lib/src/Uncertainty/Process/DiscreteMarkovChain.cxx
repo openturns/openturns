@@ -19,6 +19,7 @@
  *
  */
 
+#include <filesystem>
 #include <iostream>
 #include "openturns/DiscreteMarkovChain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -317,12 +318,12 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
 }
 
 /* DOT export */
-void DiscreteMarkovChain::exportToDOTFile(const FileName & filename) const
+void DiscreteMarkovChain::exportToDOTFile(const FileName & fileName) const
 {
-  std::ofstream dotFile(filename.c_str());
+  std::ofstream dotFile(std::filesystem::u8path(fileName));
   if (dotFile.fail())
-    throw FileOpenException(HERE) << "Could not open file " << filename;
-  dotFile.imbue(std::locale("C"));
+    throw FileOpenException(HERE) << "Could not open file " << fileName;
+  dotFile.imbue(std::locale::classic());
   dotFile << "digraph " << getName() << " {\n";
   dotFile << "layout=" << ResourceMap::Get("DiscreteMarkovChain-DOTLayout") << "\n";
   dotFile << "node[shape=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeShape") << ", color=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeColor") << "]\n";
