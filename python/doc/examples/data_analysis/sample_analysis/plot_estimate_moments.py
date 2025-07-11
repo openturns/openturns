@@ -11,7 +11,7 @@ import openturns as ot
 
 
 # %%
-# Create a sample
+# We first define the model, the input distribution and the output distribution.
 
 # model f
 model = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2", "x2^2+x1"])

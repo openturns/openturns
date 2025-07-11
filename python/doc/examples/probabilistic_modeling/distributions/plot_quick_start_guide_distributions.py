@@ -9,8 +9,8 @@ Quick start guide to distributions
 #
 # In this example, we present classes for univariate and multivariate distributions.
 # We demonstrate the probabilistic programming capabilities of the library.
-# For univariate distributions, we show how to compute the probability density,
-# the cumulated probability density and the quantiles.
+# For univariate distributions, we show how to compute the probability density function (if any),
+# the cumulative distribution function and the quantiles.
 # We also show how to create graphics.
 # The :class:`~openturns.JointDistribution` class, which creates a distribution based on its
 # marginals and its copula, is presented.
@@ -61,14 +61,14 @@ view = viewer.View(graph)
 uniform.computePDF(3.5)
 
 # %%
-# The :meth:`~openturns.Distribution.drawCDF` method plots the cumulated distribution function.
+# The :meth:`~openturns.Distribution.drawCDF` method plots the cumulative distribution function.
 
 # %%
 graph = uniform.drawCDF()
 view = viewer.View(graph)
 
 # %%
-# The :meth:`~openturns.Distribution.computeCDF` method computes the value of the cumulated distribution function a given point.
+# The :meth:`~openturns.Distribution.computeCDF` method computes the value of the cumulative distribution function a given point.
 
 # %%
 uniform.computeCDF(3.5)

@@ -8,7 +8,7 @@ Generate random variates by inverting the CDF
 # Abstract
 # --------
 #
-# In this example, we show how to generate random variates by inversion of the cumulated distribution function.
+# In this example, we show how to generate random variates by inversion of the cumulative distribution function.
 # In simple situations, this method is rarely used in practice because of problems with performance,
 # statistical quality of the generated random variates and numerical accuracy of the generated numbers when we use floating point numbers.
 # However, it is an interesting method to know about because it is a building block for other algorithms and can be used to visualize the distribution of the generated numbers.
@@ -19,7 +19,7 @@ Generate random variates by inverting the CDF
 #
 # Let :math:`\beta>0` and :math:`\alpha>0` be two real parameters: :math:`\alpha` is a shape parameter and  :math:`\beta` is a scale parameter.
 #
-# The cumulated distribution function of the WeibullMin distribution (also referred as `Weibull distribution`) is:
+# The cumulative distribution function of the WeibullMin distribution (also referred as `Weibull distribution`) is:
 #
 # .. math::
 #    F(x) = 1 - \exp\left(-\frac{x-\gamma}{\beta}\right)^\alpha,

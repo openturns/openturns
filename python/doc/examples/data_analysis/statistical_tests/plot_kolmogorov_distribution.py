@@ -43,7 +43,7 @@ curve = ot.Curve([0, 1], [0, 1])
 curve.setLegend("Uniform")
 graph.add(curve)
 graph.setXTitle("X")
-graph.setTitle("Cumulated distribution function")
+graph.setTitle("Cumulative distribution function")
 view = viewer.View(graph)
 
 

@@ -17,23 +17,26 @@ beta : float, optional
 Notes
 -----
 This class estimates bounds of the quantile of level :math:`\alpha \in [0,1]` of the random variable :math:`X`
-with a confidence greater than :math:`\beta` using a given order statistics.
+with a confidence greater than :math:`\beta` using order statistics.
 
 Let :math:`x_{\alpha}` be the unknown quantile of level :math:`\alpha` of the random variable :math:`X` of dimension 1.
-Let :math:`(X_1, \dots, X_\sampleSize)` be a sample of independent and identically distributed variables according to :math:`X`.
+Let :math:`(X_0, \dots, X_{\sampleSize-1})` be a sample of independent and identically distributed variables according to :math:`X`.
 
 The bounds of the interval are computed from order statistics that we now introduce.
-Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
-:math:`X_{(k)}` is the :math:`k` -th maximum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`.
-
-For example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
-and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum.
+Let :math:`X_{(k)}` be the :math:`k+1` -th order statistics of :math:`(X_0, \dots, X_{\sampleSize-1})` for :math:`0 \leq k \leq \sampleSize -1`.
+For example, :math:`X_{(0)} = \min (X_0, \dots, X_{\sampleSize-1})`
+and :math:`X_{(\sampleSize -1)} = \max (X_0, \dots, X_{\sampleSize-1})`.
 
 We have:
 
 .. math::
 
-    X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}
+    X_{(0)} \leq X_{(1)} \leq \dots \leq X_{(\sampleSize -1)}
+
+Care: Python enumeration begins at 0 so that the mathematical :math:`X_{(k)}` order statistics of the theoretical file
+:ref:`quantile_confidence_estimation` where :math:`1 \leq k \leq n` corresponds to the order statistics :math:`X_{(k-1)}` given by the library
+with this class `QuantileConfidence`.
+
 
 Examples
 --------
@@ -49,9 +52,9 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuantileConfidence::computeUnilateralRank
-"Evaluate an unilateral rank of a quantile.
+"Evaluate the rank of a quantile lower bound.
 
-The lower tail rank :math:`k_{low}` is the largest integer :math:`k` such that:
+The lower rank :math:`k_{low}` is the largest rank :math:`k`  with :math:`0 \leq k \leq \sampleSize -1` such that:
 
 .. math::
 
@@ -60,22 +63,7 @@ The lower tail rank :math:`k_{low}` is the largest integer :math:`k` such that:
 In other words, the interval :math:`\left[ X_{(k_{low})}, +\infty\right[` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-It is given by:
-
-.. math::
-
-    k_{low} = \overline{F}^{-1}_{n, \alpha}(\beta)
-
-where :math:`\overline{F}^{-1}_{n, \alpha}` is the complementary quantile function 
-of the binomial distribution with parameters :math:`n` and :math:`\alpha`.
-
-The problem has a solution only if:
-
-.. math::
-
-    1 - (1 - \alpha)^n \geq \beta.
-
-The upper tail rank :math:`k_{up}` is the smallest integer :math:`k` such that:
+The upper rank :math:`k_{up}` is the smallest rank :math:`k` with :math:`0 \leq k \leq \sampleSize -1` such that:
 
 .. math::
 
@@ -83,32 +71,25 @@ The upper tail rank :math:`k_{up}` is the smallest integer :math:`k` such that:
 
 In other words, the interval :math:`\left]-\infty, X_{(k_{up})}\right]` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
-The solution is:
 
-.. math::
-
-    k_{up} = F^{-1}_{n, \alpha}(\beta)
-
-where :math:`F^{-1}_{n, \alpha}` is the quantile function of the cumulative distribution function of the 
-binomial distribution with parameters :math:`n` and :math:`\alpha`.
-The problem has a solution only if:
-
-.. math::
-
-    1 - \alpha^n \geq \beta.
+See  :ref:`quantile_confidence_estimation`
+to get the conditions of the existence of a solution and the solution for each case.
 
 Parameters
 ----------
 size : int
     Sample size
-tail : bool, optional
+lower_bounded : bool, optional
     True indicates the interval is bounded by a lower value.
-    False indicates the interval is bounded by an upper value. Default value is False.
+
+    False indicates the interval is bounded by an upper value.
+
+    Default value is False.
 
 Returns
 -------
 rank : int
-    Rank :math:`k \in \{0, \hdots, n-1\}`
+    Rank :math:`k`.
 
 Examples
 --------
@@ -125,37 +106,33 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuantileConfidence::computeBilateralRank
-"Evaluate the bilateral rank of a quantile.
+"Evaluate the ranks of a quantile bilateral bound.
 
-The bilateral ranks :math:`k_1, k_2` are the integers minimizing the probability:
-
-.. math::
-
-    \argmin_{0 \leq k_1 \leq k_2 \leq n - 1 \, | \, \Prob{k_1 < X \leq k_2} \geq \beta} \Prob{k_1 < X \leq k_2}
-
-where :math:`X \sim \cB(n, \alpha)` is the binomial distribution with parameters :math:`n` and :math:`\alpha`.
-
-so that:
+The ranks :math:`k_1, k_2` with :math:`0 \leq k_1, k_2 \leq \sampleSize -1` are defined by:
 
 .. math::
 
-    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta.
+    \begin{array}{ll}
+    (k_1, k_2) = & \argmin \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}\\
+                 & \mbox{s.t.} \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
+    \end{array}
 
-These ranks exist only if:
+In other words, the interval :math:`\left[ X_{(k_1)}, X_{(k_2)} \right[` is a bilateral confidence
+interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-.. math::
-
-    1 - \alpha^n - (1-\alpha)^n \ge \beta.
+See  :ref:`quantile_confidence_estimation`
+to get the conditions of the existence of a solution and the solution.
+ 
 
 Parameters
 ----------
 size : int
-    Sample size :math:`n`
+    Sample size :math:`\sampleSize`.
 
 Returns
 -------
 ranks : :class:`~openturns.Indices` of size 2
-    Pair of lower and upper ranks :math:`(k_1, k_2)` such that :math:`0 \leq k_1 \leq k_2 \leq n - 1`.
+    Pair of lower and upper ranks :math:`(k_1, k_2)`.
 
 Examples
 --------
@@ -174,44 +151,49 @@ Examples
 %feature("docstring") OT::QuantileConfidence::computeUnilateralConfidenceInterval
 "Evaluate an unilateral confidence interval of a quantile.
 
-The lower tail confidence interval is given by the order statistics:
+The lower bounded confidence interval  is given by the order statistics:
 
 .. math::
 
     [X_{(k_{low})}, +\infty[
 
-so that:
+where :math:`k_{low}` is the largest rank with :math:`0 \leq k_{low} \leq \sampleSize - 1` so that:
 
 .. math::
 
     \Prob{X_{(k_{low})} \leq x_{\alpha}} \geq \beta.
 
-and the upper tail confidence interval is given by the order statistics:
+The upper bounded confidence interval :
 
 .. math::
 
     ]-\infty, X_{(k_{up})}]
 
-so that:
+where :math:`k_{up}` is the smallest rank with :math:`0 \leq k_{up} \leq \sampleSize - 1` so that:
 
 .. math::
 
-    \Prob{x_{\alpha} \leq X_{(k_{up})}} \geq \beta.
+    \Prob{x_{\alpha} \leq X_{(k_{up})}} \geq \beta
 
-where the lower or upper ranks :math:`0 \leq k_{low} \leq n - 1, 0 \leq k_{up} \leq n - 1` are given by :meth:`computeUnilateralRank`.
+The lower or upper ranks :math:`k_{low}` and :math:`k_{up}` are given by :meth:`computeUnilateralRank`.
+
+The statistics values are evaluated from the given sample.
 
 Parameters
 ----------
 sample : 2-d sequence of float
     Quantile level
-tail : bool, optional
+lower_bounded : bool, optional
     True indicates the interval is bounded by a lower value.
-    False indicates the interval is bounded by an upper value. Default value is False.
+
+    False indicates the interval is bounded by an upper value.
+
+    Default value is False.
 
 Returns
 -------
 ci : :class:`~openturns.Interval`
-    Quantile confidence interval
+    Quantile confidence interval.
 
 Examples
 --------
@@ -235,23 +217,28 @@ The confidence interval for the quantile of level :math:`\alpha` is given by the
 
     [X_{(k_1)}, X_{(k_2)}]
 
-so that:
+where :math:`(k_1, k_2)`  are the ranks with :math:`0 \leq k_1 \leq k_2 \leq n - 1` defined by:
 
 .. math::
 
-    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
+    \begin{array}{ll}
+    (k_1, k_2) = & \argmin \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}\\
+                 & \mbox{s.t.} \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
+    \end{array}
 
-where the ranks :math:`0 \leq k_1 \leq k_2 \leq n - 1` are given by :meth:`computeBilateralRank`.
+The ranks :math:`(k_1, k_2)` are given by :meth:`computeBilateralRank`.
+
+The statistics values are evaluated from the given sample.
 
 Parameters
 ----------
 sample : 2-d sequence of float
-    Sample of the variable :math:`X`
+    Sample of the variable :math:`X`.
 
 Returns
 -------
 ci : :class:`~openturns.Interval`
-    Quantile confidence interval
+    Quantile confidence interval.
 
 Examples
 --------
@@ -267,66 +254,45 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuantileConfidence::computeUnilateralMinimumSampleSize
-"Evaluate the minimum sample size for the unilateral case.
+"Evaluate the minimum sample size for the unilateral confidence interval.
 
-For the lower bound the minimal unilateral sample size is the smallest integer :math:`n` such that:
-
-.. math::
-
-    \Prob{X_{(r)} \leq x_{\alpha}} \geq \beta.
-
-For the upper bound the minimal unilateral sample size is the smallest integer :math:`n` such that:
+The rank :math:`k \geq 0` is specified. The method computes the smallest sample size :math:`n` so that:
 
 .. math::
 
-    \Prob{x_{\alpha} \leq X_{(n-r-1)}} \geq \beta.
+    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta
 
-In the general case the minimum size of the sample is the smallest :math:`n` such that:
+in the case of a lower bound of the quantile of order :math:`\alpha`, and:
 
 .. math::
 
-    F_{n,\alpha}(n-r-1) \geq \beta
+    \Prob{x_{\alpha} \leq X_{(n-k-1)}} \geq \beta.
 
-where :math:`F_{n,\alpha}` is the cumulative distribution function of the Binomial distribution with parameters :math:`n` and :math:`\alpha`.
+in the case of an upper bound.
 
-When the rank :math:`r` is zero the solution is analytical.
+In other words, the interval :math:`\left] -\infty, X_{(k)} \right]` or :math:`\left[ X_{(k)}, +\infty \right[` is a unilateral confidence
+interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`. The statistics values are evaluated from the sample.
 
-- For the lower bound the minimum sample size is the integer that satisfies:
-
-  .. math::
-
-      1 - (1 - \alpha)^n \geq \beta
-
-  which is given by:
-
-  .. math::
-
-      n_{low} = \left\lceil \frac{\log(1-\beta)}{\log(1-\alpha)} \right\rceil.
-
-- And for the upper bound the minimum sample size is the integer that satisfies:
-
-  .. math::
-
-      1 - \alpha^n \geq \beta
-
-  which is given by:
-
-  .. math::
-
-      n_{up} = \left\lceil \frac{\log(1-\beta)}{\log(\alpha)} \right\rceil.
+See  :ref:`quantile_confidence_estimation`
+to get the conditions of the existence of a solution and the solution.
 
 Parameters
 ----------
-rank : int, optional
-    Rank of the quantile. Default value is 0.
-tail : bool, optional
+k : int, optional, :math:`k \geq 0`
+    Rank of the quantile.
+
+    Default value is 0.
+lower_bounded : bool, optional
     True indicates the interval is bounded by a lower value.
-    False indicates the interval is bounded by an upper value. Default value is False.
+
+    False indicates the interval is bounded by an upper value.
+
+    Default value is False.
 
 Returns
 -------
 size : int
-    Minimum sample size
+    Minimum sample size :math:`n`.
 
 Examples
 --------
@@ -343,35 +309,28 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuantileConfidence::computeBilateralMinimumSampleSize
-"Evaluate the minimum size of the sample for the bilateral case.
+"Evaluate the minimum size of the sample for the bilateral min - max confidence interval.
 
-The minimal bilateral sample size is the smallest integer :math:`n` such that:
-
-.. math::
-
-    \Prob{X_{(1)} \leq x_{\alpha} \leq X_{(n)}} \geq \beta.
-
-In other words, this is the minimum sample size such that the interval
-:math:`\left[X_{(1)}, X_{(n)} \right]` is a confidence interval of the quantile :math:`x_\alpha`
-with confidence :math:`\beta`.
-The solution of this problem is the minimum value of :math:`n` such that:
+The method determines the smallest sample size :math:`n` so that:
 
 .. math::
 
-    1-\alpha^n-(1-\alpha)^n \geq \beta
+    \Prob{X_{(0)} \leq x_{\alpha} \leq X_{(n-1)}} \geq \beta.
 
-The sample size :math:`n` is searched inside the bounds given by the inequality:
+In other words, the interval :math:`\left[X_{(0)}, X_{(n-1)} \right]` is a bilateral  confidence
+interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`, where
+:math:`X_{(0)} = \min(X_1, \dots, X_{n-1})`
+and :math:`X_{(n-1)} = \max(X_1, \dots, X_{n-1})`.
 
-.. math::
+The statistics values are evaluated from the sample.
 
-    \left\lfloor \frac{\log(1 - \beta)}{\log(\gamma)} \right\rfloor \leq n \leq \left\lceil \frac{\log(\frac{1-\beta}{2})}{\log(\gamma)} \right\rceil
-
-where :math:`\gamma = \max(\alpha, 1- \alpha)`.
+See  :ref:`quantile_confidence_estimation`
+to get the conditions of the existence of a solution and the solution.
 
 Returns
 -------
 size : int
-    Minimum sample size :math:`n`
+    Minimum sample size :math:`n`.
 
 Examples
 --------
@@ -393,7 +352,7 @@ Examples
 This method computes two integers :math:`(k_1, k_2)` such that:
 
 .. math::
-    \lim_{n \rightarrow \infty} \Prob{X_{(k_1)} \leq x_\alpha \leq X_{(k_2)}} = \beta, 0 \leq k_1 \leq k_2 \leq n - 1
+    \lim_{n \rightarrow \infty} \Prob{X_{(k_1)} \leq x_\alpha \leq X_{(k_2)}} = \beta, \quad 0 \leq k_1 \leq k_2 \leq n - 1
 
 In other words, the interval :math:`\left[X_{(k_1)}, X_{(k_2)} \right]` is an asymptotic
 confidence interval for :math:`x_\alpha` with asymptotic confidence :math:`\beta`.

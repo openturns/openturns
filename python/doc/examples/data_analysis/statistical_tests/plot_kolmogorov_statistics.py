@@ -10,7 +10,7 @@ Kolmogorov-Smirnov : understand the statistics
 #
 # * We generate a sample from a Normal distribution.
 # * We create a uniform distribution and estimate its parameters from the sample.
-# * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulated distribution function.
+# * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulative distribution function.
 
 # %%
 import openturns as ot
