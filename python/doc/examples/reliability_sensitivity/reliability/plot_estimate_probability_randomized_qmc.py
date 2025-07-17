@@ -4,24 +4,24 @@ Use a randomized QMC algorithm
 """
 
 # %%
-# In this example we are going to estimate a failure probability on the :ref:`cantilever beam <use-case-cantilever-beam>`.
+# In this example we are going to estimate a failure probability on the :ref:`stressed beam <use-case-stressed-beam>`.
 
 # %%
-from openturns.usecases import cantilever_beam
+from openturns.usecases import stressed_beam
 import openturns as ot
 
 
 # %%
 # We load the data class containing the probabilistic modeling of the beam.
-cb = cantilever_beam.CantileverBeam()
+sm = stressed_beam.AxialStressedBeam()
 
 # %%
 # We load the joint probability distribution of the input parameters :
-distribution = cb.distribution
+distribution = sm.distribution
 
 # %%
 # We load the model as well,
-model = cb.model
+model = sm.model
 
 # %%
 # We create the event whose probability we want to estimate.
@@ -29,7 +29,7 @@ model = cb.model
 # %%
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
+event = ot.ThresholdEvent(G, ot.Less(), 0.0)
 
 # %%
 # Define the low discrepancy sequence.
@@ -45,7 +45,7 @@ experiment = ot.LowDiscrepancyExperiment(sequence, 1)
 experiment.setRandomize(True)
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 algo.setMaximumCoefficientOfVariation(0.05)
-algo.setMaximumOuterSampling(int(1e5))
+algo.setMaximumOuterSampling(int(1e4))
 algo.run()
 
 # %%
