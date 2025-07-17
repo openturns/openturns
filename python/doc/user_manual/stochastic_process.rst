@@ -66,7 +66,7 @@ Categorical variables
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.LatentVariableModel
+    LatentVariableModel
 
 Spectral information
 ====================

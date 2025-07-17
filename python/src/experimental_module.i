@@ -32,9 +32,6 @@
 /* Base/Optim */
 %import optim_module.i
 
-/* Base/Stat */
-%include LatentVariableModel.i
-
 /* Base/Solver */
 %include LeastSquaresEquationsSolver.i
 
