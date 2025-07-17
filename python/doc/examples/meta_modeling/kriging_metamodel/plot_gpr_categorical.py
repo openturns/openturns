@@ -39,7 +39,7 @@ dist = ot.JointDistribution(
 )
 
 # %%
-# In this example, we compare the performances of the :class:`~openturns.experimental.LatentVariableModel`
+# In this example, we compare the performances of the :class:`~openturns.LatentVariableModel`
 # with a naive approach, which would consist in modeling each combination of categorical
 # variables through a separate and independent Gaussian process.
 
@@ -47,7 +47,7 @@ dist = ot.JointDistribution(
 # In order to deal with mixed continuous / categorical problems we can rely on the
 # :class:`~openturns.ProductCovarianceModel` class. We start here by defining the product kernel,
 # which combines :class:`~openturns.SquaredExponential` kernels for the continuous variables, and
-# :class:`~openturns.experimental.LatentVariableModel` for the categorical ones.
+# :class:`~openturns.LatentVariableModel` for the categorical ones.
 
 # %%
 latDim = 1  # Dimension of the latent space
@@ -55,7 +55,7 @@ activeCoord = 1 + latDim * (
     numberOfZLevels - 2
 )  # Nb of active coordinates in the latent space
 kx = ot.SquaredExponential(1)
-kz = otexp.LatentVariableModel(numberOfZLevels, latDim)
+kz = ot.LatentVariableModel(numberOfZLevels, latDim)
 kLV = ot.ProductCovarianceModel([kx, kz])
 kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
@@ -265,7 +265,7 @@ dist = ot.JointDistribution(
 # %%
 # As in the previous example, we start here by defining the product kernel,
 # which combines :class:`~openturns.SquaredExponential` kernels for the continuous variables, and
-# :class:`~openturns.experimental.LatentVariableModel` for the categorical ones.
+# :class:`~openturns.LatentVariableModel` for the categorical ones.
 
 # %%
 latDim = 2  # Dimension of the latent space
@@ -274,8 +274,8 @@ activeCoord = (
 )  # Nb ative coordinates in the latent space
 kx1 = ot.SquaredExponential(1)
 kx2 = ot.SquaredExponential(1)
-kz1 = otexp.LatentVariableModel(numberOfZLevels1, latDim)
-kz2 = otexp.LatentVariableModel(numberOfZLevels2, latDim)
+kz1 = ot.LatentVariableModel(numberOfZLevels1, latDim)
+kz2 = ot.LatentVariableModel(numberOfZLevels2, latDim)
 kLV = ot.ProductCovarianceModel([kx1, kx2, kz1, kz2])
 kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization

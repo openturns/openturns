@@ -87,6 +87,7 @@
 %include HMatrixImplementation.i
 %include HMatrix.i
 %include IsotropicCovarianceModel.i
+%include LatentVariableModel.i
 %include CorrelationAnalysis.i
 %include SamplePartition.i
 

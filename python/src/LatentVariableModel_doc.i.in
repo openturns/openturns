@@ -1,10 +1,6 @@
 %feature("docstring") OT::LatentVariableModel
 "Latent variable covariance function.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 nLevels : int
@@ -51,15 +47,15 @@ rely on a constant functional basis: please use the :class:`~openturns.ConstantB
 
 See Also
 --------
-openturns.CovarianceModel
+CovarianceModel
 
 Examples
 --------
 Create a latent model covariance function with a latent space of dimension 2, for a categorical variable 
 characterized by 3 levels:
 
->>> import openturns.experimental as otexp
->>> covModel = otexp.LatentVariableModel(3, 2)
+>>> import openturns as ot
+>>> covModel = ot.LatentVariableModel(3, 2)
 >>> activeCoordinates = [0.1, 0.3, -0.4]
 >>> covModel.setLatentVariables(activeCoordinates)
 >>> print(covModel(1, 2))

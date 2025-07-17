@@ -11,6 +11,7 @@
 ==== API changes ====
  * Removed deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (see MetaModelValidation)
  * Removed alias for deprecated class ConditionalRandomVector
+ * LatentVariableModel left the experimental module
  * UniformOrderStatistics left the experimental module
  * RankSobolSensitivityAlgo left the experimental module
  * ExperimentIntegration left the experimental module
