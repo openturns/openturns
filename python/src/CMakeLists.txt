@@ -62,6 +62,9 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   target_link_libraries (${MODULENAME} OT)
   target_link_libraries (${MODULENAME} Python::Module)
 
+  # https://github.com/swig/swig/issues/2638
+  target_compile_definitions(${MODULENAME} PRIVATE SWIG_PYTHON_SILENT_MEMLEAK)
+
   set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
   set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
 
