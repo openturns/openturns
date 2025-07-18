@@ -134,8 +134,8 @@ algo = otexp.QuantileConfidence(alpha, beta)
 # .. math::
 #
 #    \begin{array}{ll}
-#    (l,u) = & \argmin \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}}\\
-#           & \mbox{s.t.} \Prob{X_{(l)} \leq x_{\alpha} \leq X_{(u)}} \geq \beta
+#    (\ell,u) = & \argmin \Prob{X_{(\ell)} \leq x_{\alpha} \leq X_{(u)}}\\
+#           & \mbox{s.t.} \Prob{X_{(\ell)} \leq x_{\alpha} \leq X_{(u)}} \geq \beta
 #    \end{array}
 #
 # Care: indices are given in the :math:`\llbracket 0, n-1 \rrbracket` integer interval whereas the book gives them in :math:`\llbracket 1, n \rrbracket`.
