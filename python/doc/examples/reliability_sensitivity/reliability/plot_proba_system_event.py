@@ -10,7 +10,7 @@ Time variant system reliability problem
 #
 # We consider the following limit state function, defined as the difference between a degrading resistance :math:`r(t) = R - bt`  and a time-varying load :math:`S(t)`:
 #
-# .. math:
+# .. math::
 #   \begin{align*}
 #   g(t)= r(t) - S(t) = R - bt - S(t) \quad \forall t \in [0,T]
 #   \end{align*}
@@ -38,7 +38,7 @@ Time variant system reliability problem
 #    \nu^+(t) = \lim_{\Delta t \rightarrow 0+} \dfrac{\mathbb{P}\{ g(t) \ge 0 \cap g(t+\Delta t) \leq 0\} }{\Delta t}
 #
 #
-# For each :math:`t`, we note the random variable  :math:`Z_t = R - bt - S_t` where :math:`S_t = S(., t)`.
+# For each :math:`t`, we note the random variable  :math:`Z_t = g(t)`.
 #
 # To evaluate :math:`\nu^+(t)`, we need to consider the bivariate random vector :math:`(Z_t, Z_{t+\Delta t})`.
 #
@@ -58,7 +58,7 @@ Time variant system reliability problem
 # -------------------------------
 
 # %%
-# We define the bivariate random vector :math:`Y_t = (bt + S_t, b(t+\Delta t) + S_{t+\Delta t})`.
+# We define the bivariate random vector :math:`Y_t = (bt + S_t, b(t+\Delta t) + S_{t+\Delta t})` where :math:`S_t = S(., t)`.
 # Here, :math:`Y_t` is a bivariate Normal random vector:
 #
 # - with mean :math:`[bt, b(t+\delta t)]` and

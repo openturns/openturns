@@ -246,7 +246,7 @@ sample = ot.Normal(6).getSample(size)
 sample
 
 # %%
-# We can extract a point which index is explicitely known. For example, to get the point indexed by 0, we can write:
+# We can extract a point which index is explicitly known. For example, to get the point indexed by 0, we can write:
 point1 = sample[0]
 point1
 
@@ -264,19 +264,21 @@ selected_points
 
 # %%
 # We can also select the indices with a rule. For example, we want to extract all the points which third component is negative.
-selected_points = sample[[i for i in range(sample.getSize()) if sample[i,2]<0.0]]
+selected_points = sample[[i for i in range(sample.getSize()) if sample[i, 2] < 0.0]]
 selected_points
 
 # %%
 # or:
-selected_points = sample.select([i for i in range(sample.getSize()) if sample[i,2]<0.0])
+selected_points = sample.select(
+    [i for i in range(sample.getSize()) if sample[i, 2] < 0.0]
+)
 selected_points
 
 # %%
 # We can also extract some specified points reduced to some specified components. For example,
 # to get the points indexed by 0 and 1, and reduced to the components
 # indexed by 4 and 5, we can write:
-selected_points = sample[0:2, [4,5]]
+selected_points = sample[0:2, [4, 5]]
 selected_points
 
 # %%
