@@ -8,10 +8,8 @@ of level :math:`\alpha` (where :math:`\alpha \in [0, 1]`).
 We want to determine an asymptotic confidence interval of :math:`x_{\alpha}` with a confidence greater or equal to
 :math:`\beta`, using order statistics.
 
-Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
-
-Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
-Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)`:
+Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`. Let :math:`X_{(k)}` be the
+:math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)`:
 
 .. math::
     X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(\sampleSize)}.

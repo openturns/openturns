@@ -128,7 +128,7 @@ beta = 0.95
 algo = otexp.QuantileConfidence(alpha, beta)
 
 # %%
-# Estimate bilateral rank: math:`(l,u') such that :math:`0 \leq l \< u \leq \sampleSize -1`
+# Estimate bilateral rank: math:`(\ell,u)` such that :math:`0 \leq \ell \leq u \leq \sampleSize -1`
 # and defined by:
 #
 # .. math::
@@ -211,20 +211,21 @@ emp_quant = sample.computeQuantile(new_alpha)[0]
 # We first draw the empirical cumulative distribution function.
 user_defined_dist = ot.UserDefined(sample)
 g = user_defined_dist.drawCDF(sample.getMin(), sample.getMax() * 1.5)
+g = user_defined_dist.drawCDF(0.0, 60.0)
 
 # %%
 # Then we had the bounds of the bilateral confidence intervals.
 # First the bilateral interval.
 line_bil_low = ot.Curve(
     [ci.getLowerBound(), ci.getLowerBound()],
-    [[0.0], [user_defined_dist.computeCDF(ci.getLowerBound())]],
+    [[-0.15], [user_defined_dist.computeCDF(ci.getLowerBound())]],
 )
 line_bil_low.setLineStyle("dashed")
 
 # %%
 line_bil_up = ot.Curve(
     [ci.getUpperBound(), ci.getUpperBound()],
-    [[0.0], [user_defined_dist.computeCDF(ci.getUpperBound())]],
+    [[-0.20], [user_defined_dist.computeCDF(ci.getUpperBound())]],
 )
 line_bil_up.setLineStyle("dashed")
 line_bil_up.setColor(line_bil_low.getColor())
@@ -244,7 +245,7 @@ line_unil_low.setLineStyle("dotted")
 # %%
 line_unil_up = ot.Curve(
     [ci_up.getUpperBound(), ci_up.getUpperBound()],
-    [[0.0], [user_defined_dist.computeCDF(ci_up.getUpperBound())]],
+    [[-0.05], [user_defined_dist.computeCDF(ci_up.getUpperBound())]],
 )
 line_unil_up.setLineStyle("dashed")
 
@@ -257,7 +258,7 @@ g.add(line_unil_up)
 line_emp = ot.Curve(
     [[emp_quant], [emp_quant], [0.0]],
     [
-        [0.0],
+        [-0.10],
         [user_defined_dist.computeCDF(emp_quant)],
         [user_defined_dist.computeCDF(emp_quant)],
     ],
@@ -269,11 +270,11 @@ g.add(line_emp)
 
 # %%
 # We add some labels.
-text_bil_low = ot.Text([[ci.getLowerBound()[0], -0.1]], ["bilat. low. bound"])
-text_bil_up = ot.Text([[ci.getUpperBound()[0], -0.1]], ["bilat. up. bound"])
+text_bil_low = ot.Text([[ci.getLowerBound()[0], -0.2]], ["bilat. low. bound"])
+text_bil_up = ot.Text([[ci.getUpperBound()[0], -0.25]], ["bilat. up. bound"])
 text_low = ot.Text([[ci_low.getLowerBound()[0], -0.05]], ["unilat. low. bound"])
-text_up = ot.Text([[ci_up.getUpperBound()[0], -0.05]], ["unilat. up. bound"])
-text_emp = ot.Text([[emp_quant, -0.075]], ["emp quant"])
+text_up = ot.Text([[ci_up.getUpperBound()[0], -0.1]], ["unilat. up. bound"])
+text_emp = ot.Text([[emp_quant, -0.15]], ["emp quant"])
 text_emp_2 = ot.Text([[-0.1, 0.9]], ["quant level"])
 g.add(text_bil_low)
 g.add(text_bil_up)
@@ -309,7 +310,10 @@ g.setLegends(
         "Emp quant",
     ]
 )
-g.setLegendPosition("bottomright")
+
+g.setLegendCorner([1.0, 1.0])
+g.setLegendPosition("upper left")
+#g.setLegendPosition("bottomright")
 g.setTitle("Estimation of the quantile of level 0.9")
 g.setXTitle("x")
 view = otv.View(g)
