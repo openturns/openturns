@@ -530,9 +530,7 @@ Bibliography
     In Handbook of computational statistics (pp. 469-497). Springer, Berlin, Heidelberg.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
-.. [wilks1941] Wilks, S. S. *Determination of sample sizes for setting tolerance limits*. The Annals of Mathematical Statistics, 12(1),
-    91-96, 1941,
-    `pdf <https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-12/issue-1/Determination-of-Sample-Sizes-for-Setting-Tolerance-Limits/10.1214/aoms/1177731788.full>`__
+.. [wilks1948] Wilks, S. S. (1948). Order statistics. Bulletin of the American Mathematical Society, 54(1) :6–50.
 .. [robert2004] Robert C.P., Casella G. *Monte-Carlo Statistical Methods*, Springer, ISBN 0-387-21239-6, 2nd ed, 2004.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
