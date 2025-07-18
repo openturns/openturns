@@ -25,7 +25,7 @@ Bayesian calibration of the flooding model
 #    \vect{\theta} = (K_s,Z_v,Z_m).
 #
 #
-# The variables to calibrate are :math:`(K_s,Z_v,Z_m)` and are set to the following values:
+# The reference values are:
 #
 # .. math::
 #    K_s = 30, \qquad Z_v = 50, \qquad Z_m = 55.
@@ -34,41 +34,32 @@ Bayesian calibration of the flooding model
 # Observations
 # ------------
 #
-# In this section, we describe the statistical model associated with the :math:`n` observations.
-# The errors of the water heights are associated with a gaussian distribution with a zero mean and a standard variation equal to:
+# We consider the probabilistic model:
 #
 # .. math::
-#    \sigma=0.1.
+#    H =  \model(Q,K_s,Z_v,Z_m) + \epsilon
 #
-#
-# Therefore, the observed water heights are:
-#
-# .. math::
-#    H_i = G(Q_i,K_s,Z_v,Z_m) + \epsilon_i
-#
-#
-# for :math:`i=1,...,n` where
+# where:
 #
 # .. math::
 #    \epsilon \sim \mathcal{N}(0,\sigma^2)
 #
+# Thus, the error of the water height follows a normal distribution with a zero mean and a standard variation :math:`\sigma`.
 #
-# and we make the hypothesis that the observation errors are independent.
+# We have some observations :math:`\{(Q_i,h_i)\}_{i=1,...,\sampleSize}`. Each observation is a couple made of the flowrate
+# and the corresponding river height. We assume that the observations are associated to independent errors.
 # We consider a sample size equal to:
 #
 # .. math::
-#    n=20.
+#    \sampleSize = 10.
 #
-#
-# The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`,
-# i.e. each observation is a couple made of the flowrate and the corresponding river height.
 #
 # Variables
 # ---------
 #
 # - :math:`Q` : Input. Observed.
 # - :math:`K_s`, :math:`Z_v`, :math:`Z_m` : Input. Calibrated.
-# - :math:`H`: Output. Observed.
+# - :math:`h`: Output. Observed.
 #
 # Analysis
 # --------
@@ -94,9 +85,9 @@ import openturns as ot
 fm = flood_model.FloodModel()
 
 # %%
-# We define the model :math:`g` which has 4 inputs and one output H.
+# We define the model :math:`\metamodel` which has 4 inputs and one output :math:`h`.
 #
-# The nonlinear least squares does not take into account for bounds in the parameters.
+# The non linear least squares algorithm does not take into account bounds in the parameters.
 # Therefore, we ensure that the output is computed whatever the inputs.
 # The model fails into two situations:
 #
@@ -126,7 +117,7 @@ g = ot.MemoizeFunction(g)
 g.setOutputDescription(["H (m)"])
 
 # %%
-# We load the input distribution for :math:`Q`.
+# We load the input distribution for the flow :math:`Q`.
 Q = fm.Q
 
 # %%
@@ -141,38 +132,22 @@ Z_v.setDescription(["Zv (m)"])
 Z_m.setDescription(["Zm (m)"])
 
 # %%
-# We create the joint input distribution.
+# We create the joint input distribution of :math:`(Q, K_s, Z_v, Z_m)`.
 
 # %%
 inputRandomVector = ot.JointDistribution([Q, K_s, Z_v, Z_m])
 
 # %%
-# Create a Monte-Carlo sample of the output :math:`H`.
+# We import some noisy observations of the flow rate (column 0) and the height (column 1) already
+# stored of the  :ref:`flooding model<use-case-flood-model>` in the field *data*.
+Q_H_obs = fm.data
+Qobs = Q_H_obs.getMarginal(0)
+Hobs = Q_H_obs.getMarginal(1)
 
 # %%
-nbobs = 20
-inputSample = inputRandomVector.getSample(nbobs)
-outputH = g(inputSample)
-
-# %%
-# Generate the observation noise and add it to the output of the model.
-
-# %%
-sigmaObservationNoiseH = 0.1  # (m)
-noiseH = ot.Normal(0.0, sigmaObservationNoiseH)
-ot.RandomGenerator.SetSeed(0)
-sampleNoiseH = noiseH.getSample(nbobs)
-Hobs = outputH + sampleNoiseH
-
-# %%
-# Plot the Y observations versus the X observations.
-
-# %%
-Qobs = inputSample[:, 0]
-
-# %%
-graph = ot.Graph("Observations", "Q (m3/s)", "H (m)", True)
-cloud = ot.Cloud(Qobs, Hobs)
+graph = ot.Graph("Observations", "Q (m3/s)", "h (m)", True)
+cloud = ot.Cloud(Q_H_obs)
+# cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
 view = viewer.View(graph)
 
@@ -182,11 +157,14 @@ view = viewer.View(graph)
 # ----------------------------------
 
 # %%
-# Define the parametric model :math:`\vect z = f_Q(\vect\theta)` that associates each observation
+# We assume that the output of the model :math:`H` is random and follows a normal distribution with the standard
+# deviation :math:`\sigma = 0.5` and centered on :math:`\mu = \model(Q, K_s, Z_v, Z_m)`.
+#
+# Then, we define the parametric model :math:`\vect z = f_Q(\vect\theta)` that associates each observation
 # :math:`Q` and value of the parameters :math:`\vect \theta = (K_s, Z_v, Z_m)`
-# to the parameters of the distribution of the corresponding observation:
-# here :math:`\vect z=(\mu, \sigma)` with :math:`\mu = G(Q, K_s, Z_v, Z_m)`
-# and :math:`\sigma = 0.5`.
+# to the parameters :math:`\vect z=(\mu, \sigma)`.
+# We want to get the posterior distribution of the random vector :math:`\vect \Theta` that fits the best to the
+# observations :math:`(Q_i, h_i)_i`.
 
 
 # %%
@@ -202,8 +180,11 @@ linkFunction = ot.ParametricFunction(fullModel, [0], [np.nan])
 print(linkFunction)
 
 # %%
-# Define the value of the reference values of the :math:`\vect\theta` parameter.
-# In the Bayesian framework, this is called the mean of the *prior* Gaussian distribution. In the data assimilation framework, this is called the *background*.
+# We define the prior distribution of  :math:`\vect\Theta`. We assume that it is a normal distribution.
+# In the Bayesian framework, this is called the *prior* normal distribution. In the data assimilation framework, this
+# is called the *background*.
+# We assume that the prior distribution has independent components, that the mean marginal values are equal to the reference values
+# and that the marginal standard deviations are known.
 
 # %%
 KsInitial = 20.0
@@ -211,9 +192,6 @@ ZvInitial = 49.0
 ZmInitial = 51.0
 parameterPriorMean = [KsInitial, ZvInitial, ZmInitial]
 paramDim = len(parameterPriorMean)
-
-# %%
-# Define the covariance matrix of the parameters :math:`\vect\theta` to calibrate.
 
 # %%
 sigmaKs = 5.0
@@ -227,15 +205,12 @@ parameterPriorCovariance[1, 1] = sigmaZv**2
 parameterPriorCovariance[2, 2] = sigmaZm**2
 
 # %%
-# Define the prior distribution :math:`\pi(\vect\theta)` of the parameter :math:`\vect\theta`
-
-# %%
+# Define the prior distribution of :math:`\vect\Theta`.
 prior = ot.Normal(parameterPriorMean, parameterPriorCovariance)
 prior.setDescription(["Ks", "Zv", "Zm"])
 
 # %%
-# Define the distribution of observations :math:`\vect{y} | \vect{z}` conditional on model predictions.
-#
+# Define the distribution of the output :math:`H | \vect{z}` conditional on model predictions.
 # Note that its parameter dimension is the one of :math:`\vect{z}`, so the model must be adjusted accordingly.
 # In other words, the input argument of the `setParameter` method of the conditional distribution must be equal to the dimension of the output of the `model`.
 # Hence, we do not have to set the actual parameters: only the type of distribution is used.
@@ -254,7 +229,6 @@ proposal = [ot.Uniform(-5.0, 5.0), ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)]
 # %%
 # Build a Gibbs sampler
 # ---------------------
-
 initialState = parameterPriorMean
 mh_coll = [
     ot.RandomWalkMetropolisHastings(prior, initialState, proposal[i], [i])
@@ -265,20 +239,16 @@ for mh in mh_coll:
 sampler = ot.Gibbs(mh_coll)
 
 # %%
-# Generate a sample from the posterior distribution of :math:`\vect \theta`.
-
-# %%
+# Generate a sample from the posterior distribution of :math:`\vect \Theta`.
 sampleSize = 1000
 sample = sampler.getSample(sampleSize)
 
 # %%
 # Look at the acceptance rates of the random walk Metropolis-Hastings samplers.
-
 [mh.getAcceptanceRate() for mh in sampler.getMetropolisHastingsCollection()]
 
 # %%
-# Build the distribution of the posterior by kernel smoothing.
-
+# Build the posterior distribution of :math:`\vect \Theta` by kernel smoothing.
 kernel = ot.KernelSmoothing()
 posterior = kernel.build(sample)
 
