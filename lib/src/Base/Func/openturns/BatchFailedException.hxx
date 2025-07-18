@@ -48,8 +48,6 @@ public:
       throw InvalidArgumentException(HERE) << "indices size must match output size";
   }
 
-  virtual ~BatchFailedException() throw() {}
-
   template <class T> BatchFailedException & operator << (T obj)
   {
     this->Exception::operator << (obj);

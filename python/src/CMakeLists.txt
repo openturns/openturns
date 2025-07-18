@@ -5,7 +5,8 @@ add_definitions (${OPENTURNS_SWIG_DEFINITIONS})
 set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 
 # allows one to pass compile flags like -O1 to reduce memory usage
-set (SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
+set (SWIG_COMPILE_FLAGS "" CACHE STRING "C/C++ compiler flags used for wrapper code")
+set (SWIG_CXX_COMPILE_FLAGS "" CACHE STRING "C++ specific compiler flags used for wrapper code")
 
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
@@ -65,7 +66,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   # https://github.com/swig/swig/issues/2638
   target_compile_definitions(${MODULENAME} PRIVATE SWIG_PYTHON_SILENT_MEMLEAK)
 
-  set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
+  set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS} ${SWIG_CXX_COMPILE_FLAGS}")
   set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
 
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py

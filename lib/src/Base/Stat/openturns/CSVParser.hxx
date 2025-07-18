@@ -62,7 +62,7 @@ public:
     explicit CSVParserFormat(const char_type decimalSeparator)
       : decimalSeparator_(decimalSeparator) {}
 
-    char_type do_decimal_point() const
+    char_type do_decimal_point() const override
     {
       return decimalSeparator_;
     }

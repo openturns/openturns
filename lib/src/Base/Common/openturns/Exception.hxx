@@ -102,31 +102,31 @@ public:
   Exception(const Exception & other);
 
   /** Destructor */
-  virtual ~Exception() throw();
+  virtual ~Exception() noexcept;
 
   /** @copydoc Object::__repr__() const */
-  String __repr__() const throw();
+  String __repr__() const noexcept;
 
   /** Point accessor
    *
    * This method returns a string describing where the exception was launched.
    * No need to free the string.
    */
-  const char * where() const throw();
+  const char * where() const noexcept;
 
   /** Reason accessor
    *
    * This method returns a string describing what was the reason of the exception.
    * No need to free the string.
    */
-  const char * what() const throw();
+  const char * what() const noexcept override;
 
   /** Class name accessor
    *
    * This method returns a string containing the class of the exception.
    * No need to free the string.
    */
-  const char * type() const throw();
+  const char * type() const noexcept;
 
   /** Stream operator
    *
@@ -188,7 +188,7 @@ OT_API OStream & operator <<(OStream & OS, const Exception & obj);
   {                                                             \
   public:                                                       \
     CName (const PointInSourceFile & point);                    \
-    virtual ~CName () throw();                                  \
+    virtual ~CName () noexcept;                                  \
     template <class T> CName & operator << (T obj)              \
     {                                                           \
       this->Exception::operator << ( obj );                     \

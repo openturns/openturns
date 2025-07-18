@@ -96,11 +96,11 @@ class KeyValuePair : public Object
   Scalar value_;
 public:
   KeyValuePair(const String & key = "", Scalar value = 0.): key_(key), value_(value) {}
-  String __repr__() const
+  String __repr__() const override
   {
     return OSS() << key_ << " : " << value_;
   }
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     return OSS() << key_ << " : " << value_;
   }

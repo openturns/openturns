@@ -131,39 +131,39 @@ public:
     }
   }
 
-  ParetoFactoryResidualEvaluation * clone() const
+  ParetoFactoryResidualEvaluation * clone() const override
   {
     return new ParetoFactoryResidualEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return sample_.getSize();
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description(1, "gamma");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(sample_.getSize(), "r");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     const Scalar gamma = parameter[0];
     const UnsignedInteger size = sample_.getSize();

@@ -111,39 +111,39 @@ public:
       empiricalCDF_[i] = sample.computeEmpiricalCDF(sample[i]);
   }
 
-  LeastSquaresFactoryResidualEvaluation * clone() const
+  LeastSquaresFactoryResidualEvaluation * clone() const override
   {
     return new LeastSquaresFactoryResidualEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return unknownParameterIndices_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return sample_.getSize();
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description::BuildDefault(getInputDimension(), "theta");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(sample_.getSize(), "r");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     // Define conditinned distribution
     Distribution distribution(distribution_);

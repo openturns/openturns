@@ -15,7 +15,7 @@ public:
     }
   }
 
-  virtual OT::Scalar operator() (OT::UnsignedInteger i, OT::UnsignedInteger j) const
+  OT::Scalar operator() (OT::UnsignedInteger i, OT::UnsignedInteger j) const override
   {
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
@@ -24,7 +24,7 @@ public:
     return value;
   }
 private:
-  PyObject * pyObj_;
+  PyObject * pyObj_ = NULL;
 };
 
 class PythonHMatrixTensorRealAssemblyFunction : public OT::HMatrixTensorRealAssemblyFunction
@@ -38,7 +38,7 @@ public:
     }
   }
 
-  virtual void compute(OT::UnsignedInteger i, OT::UnsignedInteger j, OT::Matrix* localValues) const
+  void compute(OT::UnsignedInteger i, OT::UnsignedInteger j, OT::Matrix* localValues) const override
   {
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
@@ -47,7 +47,7 @@ public:
     *localValues = value;
   }
 private:
-  PyObject * pyObj_;
+  PyObject * pyObj_ = NULL;
 };
 
 %}

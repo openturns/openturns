@@ -1107,13 +1107,13 @@ public:
     // Nothing to do
   }
 
-  PDFKernelRandomMixture * clone() const
+  PDFKernelRandomMixture * clone() const override
   {
     return new PDFKernelRandomMixture(*this);
   }
 
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar pdf = p_atom1_->computePDF(u);
     if (pdf == 0.0) return 0.0;
@@ -1148,13 +1148,13 @@ public:
     // Nothing to do
   }
 
-  CDFKernelRandomMixture * clone() const
+  CDFKernelRandomMixture * clone() const override
   {
     return new CDFKernelRandomMixture(*this);
   }
 
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar pdf = p_atom1_->computePDF(u);
     if (pdf == 0.0) return 0.0;
@@ -1189,13 +1189,13 @@ public:
     // Nothing to do
   }
 
-  ComplementaryCDFKernelRandomMixture * clone() const
+  ComplementaryCDFKernelRandomMixture * clone() const override
   {
     return new ComplementaryCDFKernelRandomMixture(*this);
   }
 
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar pdf = p_atom1_->computePDF(u);
     if (pdf == 0.0) return 0.0;

@@ -67,52 +67,52 @@ public:
     // Nothing to do
   }
 
-  HalfSquaredNormEvaluation * clone() const
+  HalfSquaredNormEvaluation * clone() const override
   {
     return new HalfSquaredNormEvaluation(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << point.getDimension();
     return Point(1, 0.5 * point.normSquare());
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return dimension_;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description::BuildDefault(dimension_, "x");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "y");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "HalfSquaredNormEvaluation(" << dimension_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "HalfSquaredNormEvaluation(" << dimension_ << ")";
@@ -133,52 +133,35 @@ public:
     // Nothing to do
   }
 
-  HalfSquaredNormGradient * clone() const
+  HalfSquaredNormGradient * clone() const override
   {
     return new HalfSquaredNormGradient(*this);
   }
 
-  Matrix gradient(const Point & point) const
+  Matrix gradient(const Point & point) const override
   {
     if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << point.getDimension();
     return Matrix(dimension_, 1, point);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return dimension_;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
-  {
-    return Description::BuildDefault(dimension_, "x");
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(1, "y");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "HalfSquaredNormGradient(" << dimension_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "HalfSquaredNormGradient(" << dimension_ << ")";
@@ -200,12 +183,12 @@ public:
     // Nothing to do
   }
 
-  HalfSquaredNormHessian * clone() const
+  HalfSquaredNormHessian * clone() const override
   {
     return new HalfSquaredNormHessian(*this);
   }
 
-  SymmetricTensor hessian(const Point & point) const
+  SymmetricTensor hessian(const Point & point) const override
   {
     if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << point.getDimension();
     SymmetricTensor hess(dimension_, 1);
@@ -214,41 +197,24 @@ public:
     return hess;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return dimension_;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
-  {
-    return Description::BuildDefault(dimension_, "x");
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(1, "y");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "HalfSquaredNormHessian(" << dimension_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "HalfSquaredNormHessian(" << dimension_ << ")";

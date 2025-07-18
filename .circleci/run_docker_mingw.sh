@@ -18,9 +18,9 @@ MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PYMAJMIN=310
 PREFIX=${PWD}/install
 CFLAGS="-Wall -Wextra -Wpedantic -Werror" \
-CXXFLAGS="-Wall -Wextra -Wpedantic -Wshadow -Werror -D_GLIBCXX_ASSERTIONS" \
+CXXFLAGS="-Wall -Wextra -Wpedantic -Wshadow -Wsuggest-override -Werror -D_GLIBCXX_ASSERTIONS" \
 ${ARCH}-w64-mingw32-cmake \
-  -DSWIG_COMPILE_FLAGS="-O0 -Wno-unused-parameter -Wno-shadow" \
+  -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" -DSWIG_CXX_COMPILE_FLAGS="-Wno-suggest-override" \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_INSTALL_LIBDIR=${PREFIX}/lib \
   -DCMAKE_LINKER_TYPE=LLD \
   -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYMAJMIN} \

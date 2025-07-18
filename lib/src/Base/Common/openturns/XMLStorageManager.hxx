@@ -292,15 +292,15 @@ struct XMLInternalObject : public StorageManager::InternalObject
   XMLInternalObject() : node_(0) {}
   XMLInternalObject(XML::Node node) : node_(node) {}
   virtual ~XMLInternalObject() {}
-  virtual XMLInternalObject * clone() const
+  XMLInternalObject * clone() const override
   {
     return new XMLInternalObject(*this);
   }
-  virtual void first()
+  void first() override
   {
     node_ = XML::GetFirstChild( node_ );
   }
-  virtual void next()
+  void next() override
   {
     node_ = XML::GetNextNode( node_ );
   }
@@ -320,15 +320,15 @@ struct XMLStorageManagerState : public StorageManager::InternalObject
   XML::Node current_;
   XMLStorageManagerState() : root_(0), current_(0) {}
   virtual ~XMLStorageManagerState() {}
-  virtual XMLStorageManagerState * clone() const
+  XMLStorageManagerState * clone() const override
   {
     return new XMLStorageManagerState(*this);
   }
-  virtual void first()
+  void first() override
   {
     current_ = XML::GetFirstChild( current_ );
   }
-  virtual void next()
+  void next() override
   {
     current_ = XML::GetNextNode( current_ );
   }

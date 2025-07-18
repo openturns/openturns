@@ -135,12 +135,12 @@ public:
     // Nothing to do
   }
 
-  PDFKernelProductDistribution * clone() const
+  PDFKernelProductDistribution * clone() const override
   {
     return new PDFKernelProductDistribution(*this);
   }
 
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
@@ -188,12 +188,12 @@ public:
     // Nothing to do
   }
 
-  CDFKernelProductDistribution * clone() const
+  CDFKernelProductDistribution * clone() const override
   {
     return new CDFKernelProductDistribution(*this);
   }
 
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
@@ -230,12 +230,12 @@ public:
     // Nothing to do
   }
 
-  ComplementaryCDFKernelProductDistributionProductDistribution * clone() const
+  ComplementaryCDFKernelProductDistributionProductDistribution * clone() const override
   {
     return new ComplementaryCDFKernelProductDistributionProductDistribution(*this);
   }
 
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
@@ -269,12 +269,12 @@ public:
     // Nothing to do
   };
 
-  CFKernelProductDistribution * clone() const
+  CFKernelProductDistribution * clone() const override
   {
     return new CFKernelProductDistribution(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     Point value(2);
     const Scalar u = point[0];
@@ -285,12 +285,12 @@ public:
     return value;
   };
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 2;
   }

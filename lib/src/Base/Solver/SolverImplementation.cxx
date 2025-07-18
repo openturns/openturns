@@ -159,7 +159,12 @@ public:
     // Nothing to do
   }
 
-  Scalar operator() (const Scalar x) const
+  UniVariateFunctionFromFunction * clone() const override
+  {
+    return new UniVariateFunctionFromFunction(*this);
+  }
+
+  Scalar operator() (const Scalar x) const override
   {
     return function_(Point(1, x))[0];
   }

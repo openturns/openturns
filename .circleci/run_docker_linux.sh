@@ -27,9 +27,9 @@ mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DCMAKE_C_FLAGS="-Wall -Wextra -Wpedantic -Werror" \
-      -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wshadow -Werror -D_GLIBCXX_ASSERTIONS" \
+      -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wshadow -Wsuggest-override -Werror -D_GLIBCXX_ASSERTIONS" \
       -DCMAKE_LINKER_TYPE=MOLD \
-      -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" \
+      -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" -DSWIG_CXX_COMPILE_FLAGS="-Wno-suggest-override" \
       -DUSE_SPHINX=ON -DSPHINX_FLAGS="-W -T -j4" \
       ${source_dir}
 make install

@@ -177,12 +177,12 @@ public:
     // Nothing to do
   }
 
-  JointByConditioningCDFKernel * clone() const
+  JointByConditioningCDFKernel * clone() const override
   {
     return new JointByConditioningCDFKernel(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const Scalar pdfY = conditioningDistribution_.computePDF(point);
     if (pdfY == 0.0) return Point(1, 0.0);
@@ -193,22 +193,22 @@ public:
     return Point(1, pdfY * cdfX);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return conditioningDistribution_.getDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return conditioningDistribution_.getDescription();
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "JointByConditioningCDFKernel");
   }
@@ -411,12 +411,12 @@ public:
     // Nothing to do
   }
 
-  KernelCovariance * clone() const
+  KernelCovariance * clone() const override
   {
     return new KernelCovariance(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     Point value(outputDimension_);
     const Scalar pdf(distribution_.computePDF(point));
@@ -434,17 +434,17 @@ public:
     return value;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return dimension_;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return outputDimension_;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss(true);
     oss << "class=KernelCovariance"
@@ -455,7 +455,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss(false);
     oss << "KernelCovariance("

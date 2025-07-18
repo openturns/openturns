@@ -108,11 +108,11 @@ class PersistentCollection
 {
 public:
   /** Class name accessor */
-  static  String GetClassName()
+  static String GetClassName()
   {
     return PersistentCollectionGetClassName<T>();
   }
-  virtual String getClassName() const
+  String getClassName() const override
   {
     return PersistentCollection<T>::GetClassName();
   }
@@ -174,7 +174,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual PersistentCollection * clone() const
+  PersistentCollection * clone() const override
   {
     return new PersistentCollection(*this);
   }
@@ -182,20 +182,20 @@ public:
 
   /** String converter */
   inline
-  String __repr__() const
+  String __repr__() const override
   {
     return Collection<T>::__repr__();
   }
 
   inline
-  String __str__(const String & offset = "") const
+  String __str__(const String & offset = "") const override
   {
     return Collection<T>::__str__(offset);
   }
 
   /** Method save() stores the object through the StorageManager */
   inline
-  void save(Advocate & adv) const
+  void save(Advocate & adv) const override
   {
     PersistentObject::save(adv);
     adv.saveAttribute( "size", this->getSize() );
@@ -215,7 +215,7 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   inline
-  void load(Advocate & adv)
+  void load(Advocate & adv) override
   {
     PersistentObject::load(adv);
     UnsignedInteger size = 0;

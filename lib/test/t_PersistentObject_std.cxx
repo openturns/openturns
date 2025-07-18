@@ -29,7 +29,7 @@ class TestObject : public PersistentObject
 public:
   TestObject() : PersistentObject() {}
   virtual ~TestObject() {}
-  virtual TestObject * clone() const
+  TestObject * clone() const override
   {
     return new TestObject(*this);
   }
