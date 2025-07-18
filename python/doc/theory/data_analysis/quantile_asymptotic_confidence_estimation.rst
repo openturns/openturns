@@ -4,7 +4,7 @@ Asymptotic quantile confidence interval based on order statistics
 -----------------------------------------------------------------
 
 We consider a random variable :math:`X` of dimension 1 and its quantile :math:`x_{\alpha}`
-of level :math:`\alpha` (:math:`\alpha \in [0, 1]`).
+of level :math:`\alpha` (where :math:`\alpha \in [0, 1]`).
 We want to determine an asymptotic confidence interval of :math:`x_{\alpha}` with a confidence greater or equal to
 :math:`\beta`, using order statistics.
 
@@ -24,13 +24,13 @@ We denote by :math:`\hat{F}` the empirical cumulative distribution function defi
 
  .. math::
 
-        \hat{F}(x) = \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize 1_{X_i \leq x}
+        \hat{F}(x) = \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize \mathbb{1}_{X_i \leq x}
 
 Then, the empirical estimator :math:`x_{\alpha}` is defined by:
 
  .. math::
 
-        \hat{X}_{\alpha} = \inf \{ x, \hat{F}(x) \geq \alpha \} = X_{(\lceil \sampleSize\alpha \rceil)}
+        \hat{X}_{\alpha} = \inf \left\{ x, \hat{F}(x) \geq \alpha \right\} = X_{(\lceil \sampleSize\alpha \rceil)}
 
 where :math:`\lceil x \rceil` is the smallest integer value that is greater than or equal to :math:`x`.
 
@@ -38,7 +38,7 @@ The empirical estimator is asymptotically normal (see [delmas2006]_, [garnier200
 
  .. math::
 
-        \lim_{\sampleSize \to +\infty} \sqrt{\sampleSize}( \hat{X}_{\alpha}) - x_{\alpha}) = \cN(0, \sigma^2)
+        \lim_{\sampleSize \to +\infty} \sqrt{\sampleSize}( \hat{X}_{\alpha} - x_{\alpha}) = \cN(0, \sigma^2)
         \quad \mbox{with}  \quad \sigma^2 = \dfrac{\alpha(1-\alpha)}{p^2(x_{\alpha})}
 
 The empirical estimator has a bias and a variance of order :math:`1/\sampleSize` (see [david1981]_, [garnier2008]_, [Motoyama2025]_). We get
@@ -51,7 +51,7 @@ the following asymptotic results:
         \Var{\hat{X}_{\alpha}} & = \dfrac{\alpha(1-\alpha)}{(\sampleSize+2)p^2(x_{\alpha})} + O\left(\dfrac{1}{\sampleSize^2}\right)
 
 where :math:`p` is the (continuously differentiable) density of :math:`X`. This result is not very useful for the construction of a
-confidence interval as :math:`p(x_{\alpha})` is not known!
+confidence interval as :math:`p(x_{\alpha})` is not known.
 
 
 Asymptotic quantile confidence interval
