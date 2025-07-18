@@ -38,7 +38,7 @@ Model a singular multivariate distribution
 # So, if we know that the final copula is diffuse, we recommend to let the
 # :class:`~openturns.BernsteinCopulaFactory` automatically calculate the best number of cells to take. If
 # we know that the final copula is singular, we recommend to specify the value of :math:`m` to be equal
-# to the sample size :math:`N`.
+# to the sample size :math:`\sampleSize`.
 #
 # We illustrate the influence of  :math:`m` on a singular copula.
 
