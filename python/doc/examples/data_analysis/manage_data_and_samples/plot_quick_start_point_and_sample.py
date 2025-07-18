@@ -233,6 +233,58 @@ sample = ot.Sample([[0, 1], [2, 3], [4, 5]])
 sample
 
 # %%
+# Extract some specified points from a `Sample`
+# ---------------------------------------------
+#
+# We can extract some points from a Sample. There are several ways to do this.
+#
+# Let us create a Sample of dimension 3 and size 10.
+
+# %%
+size = 6
+sample = ot.Normal(6).getSample(size)
+sample
+
+# %%
+# We can extract a point which index is explicitely known. For example, to get the point indexed by 0, we can write:
+point1 = sample[0]
+point1
+
+# %%
+# To get the points indexed by 1 and 3, we can write:
+indices = [1, 3]
+selected_points = sample[indices]
+selected_points
+
+# %%
+# or:
+selected_points = sample.select(indices)
+selected_points
+
+
+# %%
+# We can also select the indices with a rule. For example, we want to extract all the points which third component is negative.
+selected_points = sample[[i for i in range(sample.getSize()) if sample[i,2]<0.0]]
+selected_points
+
+# %%
+# or:
+selected_points = sample.select([i for i in range(sample.getSize()) if sample[i,2]<0.0])
+selected_points
+
+# %%
+# We can also extract some specified points reduced to some specified components. For example,
+# to get the points indexed by 0 and 1, and reduced to the components
+# indexed by 4 and 5, we can write:
+selected_points = sample[0:2, [4,5]]
+selected_points
+
+# %%
+# or:
+selected_points = sample[0:2, 4:6]
+selected_points
+
+# %%
 # Interactions with Numpy
 # -----------------------
 #
