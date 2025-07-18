@@ -11,10 +11,10 @@ We want to determine an asymptotic confidence interval of :math:`x_{\alpha}` wit
 Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
 
 Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
-Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
-:math:`X_{(k)}` is the :math:`k` -th minimum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`. For
-example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
-and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum.
+Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)`:
+
+.. math::
+    X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(\sampleSize)}.
 
 Empirical quantile estimator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
