@@ -85,7 +85,7 @@ import openturns as ot
 fm = flood_model.FloodModel()
 
 # %%
-# We define the model :math:`\metamodel` which has 4 inputs and one output :math:`h`.
+# We define the model :math:`\model` which has 4 inputs and one output :math:`h`.
 #
 # The non linear least squares algorithm does not take into account bounds in the parameters.
 # Therefore, we ensure that the output is computed whatever the inputs.
