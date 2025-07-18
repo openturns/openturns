@@ -16,7 +16,7 @@ Model a singular multivariate distribution
 # partitions the sample: all the points of the same cell are grouped into a single *global* point.
 #
 # The empirical Bernstein copula is a mixture of products of Beta laws centered on the global point of each cell.
-# We denote by :math:`N` the sample size. The number of global points varies according to the number of
+# We denote by :math:`\sampleSize` the sample size. The number of global points varies according to the number of
 # cells considered (math:`m`):
 #
 # - :math:`m = N` means that all the sample has been retained: we create one cell around
@@ -24,9 +24,9 @@ Model a singular multivariate distribution
 # - :math:`m = 1` means the sample has been grouped into one single global point: we get the independent copula,
 # - :math:`1 < m < N` means that we create :math:`m` cells to group :math:`N` points.
 #
-# When  :math:`m = N`, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
+# When  :math:`m = \sampleSize`, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
 #
-# For the  empirical Bernstein copula defined in this way to be a copula,  :math:`m`  must divide :math:`N`.
+# For the  empirical Bernstein copula defined in this way to be a copula,  :math:`m`  must divide :math:`\sampleSize`.
 # Thus, if this is not the case, part of the sample is set aside in order to check this condition (see
 # :class:`~openturns.EmpiricalBernsteinCopula` for more details).
 #
