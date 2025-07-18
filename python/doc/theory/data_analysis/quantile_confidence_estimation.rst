@@ -366,6 +366,6 @@ where :math:`\gamma = \max(\alpha, 1-\alpha)`.
 .. topic:: References:
 
     - [meeker2017]_
-    - [wilks1941]_
+    - [wilks1948]_
     - [robert2004]_
     - [rubinstein2017]_
