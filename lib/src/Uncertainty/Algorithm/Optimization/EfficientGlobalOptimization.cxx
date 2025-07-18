@@ -98,12 +98,12 @@ public:
   {
   }
 
-  virtual ExpectedImprovementEvaluation * clone() const
+  ExpectedImprovementEvaluation * clone() const override
   {
     return new ExpectedImprovementEvaluation(*this);
   }
 
-  Point operator()(const Point & x) const
+  Point operator()(const Point & x) const override
   {
     return Point(1, computeAsScalar(x));
   }
@@ -124,7 +124,7 @@ public:
     return ei;
   }
 
-  Sample operator()(const Sample & theta) const
+  Sample operator()(const Sample & theta) const override
   {
     const UnsignedInteger size = theta.getSize();
     // avoid creating size points
@@ -139,7 +139,7 @@ public:
     return outS;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     if (isGPR_)
       return gprResult_.getMetaModel().getInputDimension();
@@ -147,7 +147,7 @@ public:
       return krigingResult_.getMetaModel().getInputDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }

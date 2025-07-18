@@ -64,23 +64,23 @@ public:
                     int & m,
                     int & nnz_jac_g, // Number of non-zero components in the Jacobian of g
                     int & nnz_h_lag, // Number of non-zero components in Hessian of Lagrangean
-                    ::Ipopt::TNLP::IndexStyleEnum & index_style);
+                    ::Ipopt::TNLP::IndexStyleEnum & index_style) override;
 
   bool get_variables_types( int n,
-                            VariableTypeTable var_types);
+                            VariableTypeTable var_types) override;
 
   bool get_variables_linearity( int n,
-                                LinearityTypeTable var_types);
+                                LinearityTypeTable var_types) override;
 
   bool get_constraints_linearity( int m,
-                                  LinearityTypeTable const_types);
+                                  LinearityTypeTable const_types) override;
 
   bool get_bounds_info( int n,
                         double* x_l,  // Lower bounds
                         double* x_u,  // Upper bounds
                         int m,
                         double* g_l,  // Lower bounds
-                        double* g_u); // Upper bounds
+                        double* g_u) override; // Upper bounds
 
   bool get_starting_point(int n,
                           bool init_x,
@@ -90,23 +90,23 @@ public:
                           double* z_U,
                           int m,
                           bool init_lambda,
-                          double* lambda);
+                          double* lambda) override;
 
   bool eval_f(int n,
               const double* x,
               bool new_x,
-              double& obj_value);
+              double& obj_value) override;
 
   bool eval_grad_f( int n,
                     const double* x,
                     bool new_x,
-                    double* grad_f);
+                    double* grad_f) override;
 
   bool eval_g(int n,
               const double* x,
               bool new_x,
               int m,
-              double* g);
+              double* g) override;
 
   bool eval_jac_g(int n,
                   const double* x,
@@ -115,7 +115,7 @@ public:
                   int nele_jac,
                   int* iRow,
                   int *jCol,
-                  double* values);
+                  double* values) override;
 
   bool eval_h(int n,
               const double* x,
@@ -127,13 +127,13 @@ public:
               int nele_hess,
               int* iRow,
               int* jCol,
-              double* values);
+              double* values) override;
 
   bool eval_gi(int n,
                const double* x,
                bool new_x,
                int i,
-               double& gi);
+               double& gi) override;
 
   bool eval_grad_gi(int n,
                     const double* x,
@@ -141,19 +141,19 @@ public:
                     int i,
                     int& nele_grad_gi,
                     int* jCol,
-                    double* values);
+                    double* values) override;
 
   void finalize_solution( ::Bonmin::TMINLP::SolverReturn status,
                           ::Ipopt::Index n,
                           const ::Ipopt::Number* x,
-                          ::Ipopt::Number obj_value);
+                          ::Ipopt::Number obj_value) override;
 
-  const ::Bonmin::TMINLP::BranchingInfo * branchingInfo() const
+  const ::Bonmin::TMINLP::BranchingInfo * branchingInfo() const override
   {
     return NULL;
   };
 
-  const ::Bonmin::TMINLP::SosInfo * sosConstraints() const
+  const ::Bonmin::TMINLP::SosInfo * sosConstraints() const override
   {
     return NULL;
   };

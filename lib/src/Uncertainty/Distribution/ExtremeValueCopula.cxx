@@ -209,12 +209,12 @@ public:
     // Nothing to do
   }
 
-  ConditionalCDF * clone() const
+  ConditionalCDF * clone() const override
   {
     return new ConditionalCDF(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const Scalar v = point[0];
     const Scalar logV = std::log(v);
@@ -226,34 +226,34 @@ public:
     return Point(1, conditionalCDF);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description(1, "v");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "ConditionalCDF");
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "ConditionalCDF(" << pickandFunction_.__str__() << ", " << u_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "ConditionalCDF(" << pickandFunction_.__str__() << ", " << u_ << ")";

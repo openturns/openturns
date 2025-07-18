@@ -45,7 +45,7 @@ public:
     // Nothing to do
   }
 
-  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
+  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const override
   {
     if (i == j)
     {

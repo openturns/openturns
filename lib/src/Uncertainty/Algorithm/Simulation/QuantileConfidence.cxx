@@ -214,22 +214,22 @@ public:
     // Nothing to do
   }
 
-  QuantileConfidenceEvaluation * clone() const
+  QuantileConfidenceEvaluation * clone() const override
   {
     return new QuantileConfidenceEvaluation(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     return {DistFunc::pBeta(rank_ + 1, point[0] - rank_, tail_ ? 1.0 - alpha_ : alpha_)};
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }

@@ -178,12 +178,12 @@ public:
     // Nothing to do
   }
 
-  KernelProbability * clone() const
+  KernelProbability * clone() const override
   {
     return new KernelProbability(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     // logNormalization_ = alpha_ * std::log(beta_) - SpecFunc::LogGamma(alpha_);    const Scalar z = point[0];
     const Scalar & y = point[0];
@@ -194,17 +194,17 @@ public:
     return Point(1, kernelValue);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss(true);
     oss << "class=KernelProbability"
@@ -217,7 +217,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss(false);
     oss << "KernelProbability("

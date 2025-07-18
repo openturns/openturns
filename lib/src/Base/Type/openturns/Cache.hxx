@@ -68,7 +68,7 @@ public:
   {
     return OT::String("Cache<") + OT::String(KeyType::GetClassName()) + OT::String(", ") + OT::String(ValueType::GetClassName()) + OT::String(">");
   }
-  virtual OT::String getClassName() const
+  virtual OT::String getClassName() const override
   {
     return Cache<KeyType, ValueType>::GetClassName();
   }
@@ -131,14 +131,14 @@ public:
   }
 
   /** Virtual constructor */
-  inline virtual Cache * clone() const
+  inline virtual Cache * clone() const override
   {
     return new Cache(*this);
   }
 
   /** String converter */
   inline
-  virtual String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "class=" << Cache::GetClassName()
@@ -266,7 +266,7 @@ public:
 
   /** Method save() stores the object through the StorageManager */
   inline
-  void save(Advocate & adv) const
+  void save(Advocate & adv) const override
   {
     const UnsignedInteger size = points_.size();
     PersistentCollection< KeyType >   keyColl(size);
@@ -288,7 +288,7 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   inline
-  void load(Advocate & adv)
+  void load(Advocate & adv) override
   {
     clear();
     PersistentObject::load(adv);

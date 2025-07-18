@@ -102,13 +102,13 @@ public:
   }
 
   /** Virtual constructor */
-  virtual Factory * clone() const
+  Factory * clone() const override
   {
     return new Factory(*this);
   }
 
   /** Method build() creates a new PersistentObject from the storage manager */
-  virtual PersistentObject * build(StorageManager & mgr) const
+  PersistentObject * build(StorageManager & mgr) const override
   {
     Advocate adv ( mgr.readObject() );
 
@@ -126,7 +126,7 @@ public:
   }
 
   /** Method assign() fills a PersistentObject with another one (must have same type) */
-  virtual void assign(PersistentObject & po, const PersistentObject & other) const
+  void assign(PersistentObject & po, const PersistentObject & other) const override
   {
     PERSISTENT & ref_po          = static_cast<PERSISTENT &>(po);
     const PERSISTENT & ref_other = static_cast<const PERSISTENT &>(other);

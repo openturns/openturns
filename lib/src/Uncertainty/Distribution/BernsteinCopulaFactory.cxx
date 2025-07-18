@@ -105,12 +105,12 @@ public:
     // Nothing to do
   }
 
-  LogLikelihoodObjective * clone() const
+  LogLikelihoodObjective * clone() const override
   {
     return new LogLikelihoodObjective(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const UnsignedInteger m = static_cast<UnsignedInteger>(point[0]);
     return Point(1, computeLogLikelihood(m));
@@ -133,34 +133,34 @@ public:
     return result / kFraction_;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description(1, "m");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "LogLikelihoodObjective");
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "LogLikelihoodObjective(" << learningSamples_.__str__() << ", " << validationSamples_.__str__() << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "LogLikelihoodObjective(" << learningSamples_.__str__() << ", " << validationSamples_.__str__() << ")";
@@ -190,7 +190,7 @@ public:
     // Nothing to do
   }
 
-  PenalizedCsiszarDivergenceObjective * clone() const
+  PenalizedCsiszarDivergenceObjective * clone() const override
   {
     return new PenalizedCsiszarDivergenceObjective(*this);
   }
@@ -209,7 +209,7 @@ public:
     return value / size;
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const UnsignedInteger m = static_cast<UnsignedInteger>(point[0]);
     return Point(1, computeCsiszar(m));
@@ -225,34 +225,34 @@ public:
     return delta * delta + alpha_ * Point(rhoS_ - rhoM).normSquare() / std::pow(copula.getDimension(), 2.0);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description(1, "m");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "PenalizedCsiszarDivergenceObjective");
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "PenalizedCsiszarDivergenceObjective(" << sample_.__str__() << ", " << objective_.__str__() << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "PenalizedCsiszarDivergenceObjective(" << sample_.__str__() << ", " << objective_.__str__() << ")";

@@ -67,7 +67,7 @@ public:
   }
 
   // Virtual constructor
-  virtual DlibSearchStrategyImplementation * clone() const
+  DlibSearchStrategyImplementation * clone() const override
   {
     return new DlibSearchStrategyImplementation(*this);
   }
@@ -161,7 +161,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibCgSearchStrategy * clone() const
+  DlibCgSearchStrategy * clone() const override
   {
     return new DlibCgSearchStrategy(*this);
   }
@@ -169,7 +169,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::cg_search_strategy().get_next_direction(x, f_value, funct_derivative);
   }
@@ -190,7 +190,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibBfgsSearchStrategy * clone() const
+  DlibBfgsSearchStrategy * clone() const override
   {
     return new DlibBfgsSearchStrategy(*this);
   }
@@ -198,7 +198,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::bfgs_search_strategy().get_next_direction(x, f_value, funct_derivative);
   }
@@ -224,7 +224,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibLbfgsSearchStrategy * clone() const
+  DlibLbfgsSearchStrategy * clone() const override
   {
     return new DlibLbfgsSearchStrategy(*this);
   }
@@ -232,7 +232,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::lbfgs_search_strategy(maxSize_).get_next_direction(x, f_value, funct_derivative);
   }
@@ -260,7 +260,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibNewtonSearchStrategy * clone() const
+  DlibNewtonSearchStrategy * clone() const override
   {
     return new DlibNewtonSearchStrategy(*this);
   }
@@ -268,7 +268,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::newton_search_strategy_obj<DlibHessian>(hessian_).get_next_direction(x, f_value, funct_derivative);
   }

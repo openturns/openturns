@@ -103,7 +103,7 @@ class TestFailed : public std::exception
 public:
   TestFailed(const std::string & message) : message_(message) {}
   ~TestFailed() throw() {}
-  const char * what() const throw()
+  const char * what() const noexcept override
   {
     return message_.c_str();
   }

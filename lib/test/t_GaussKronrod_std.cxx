@@ -39,12 +39,12 @@ public:
     // Nothing to do
   }
 
-  UniVariateSymbolicFunction * clone() const
+  UniVariateSymbolicFunction * clone() const override
   {
     return new UniVariateSymbolicFunction(*this);
   }
 
-  Scalar operator()(const Scalar x) const
+  Scalar operator()(const Scalar x) const override
   {
     return f_(Point(1, x))[0];
   }

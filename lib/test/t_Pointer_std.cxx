@@ -43,7 +43,7 @@ public:
     //     fullprint << "~TestClass ("
     //                << getName() << ")" << std::endl;
   }
-  virtual TestClass * clone() const
+  TestClass * clone() const override
   {
     return new TestClass(*this);
   }

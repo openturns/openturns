@@ -27,11 +27,11 @@ using namespace OT::Test;
 class MyTest : public Object
 {
 public:
-  virtual String __repr__() const
+  String __repr__() const override
   {
     return String("MyTest class");
   }
-  virtual String __str__(const String & )  const
+  String __str__(const String & )  const override
   {
     return String("What a beautiful print !");
   }

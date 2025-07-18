@@ -228,7 +228,7 @@ public:
     : ceres::IterationCallback()
     , algorithm_(algorithm) {}
 
-  virtual ceres::CallbackReturnType operator()(const ceres::IterationSummary & summary)
+  virtual ceres::CallbackReturnType operator()(const ceres::IterationSummary & summary) override
   {
     if (algorithm_.progressCallback_.first)
       algorithm_.progressCallback_.first(100.0 * summary.iteration / algorithm_.getMaximumIterationNumber(), algorithm_.progressCallback_.second);

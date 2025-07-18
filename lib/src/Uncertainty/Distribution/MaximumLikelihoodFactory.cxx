@@ -110,39 +110,39 @@ public:
     }
   }
 
-  LogLikelihoodEvaluation * clone() const
+  LogLikelihoodEvaluation * clone() const override
   {
     return new LogLikelihoodEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return unknownParameterIndices_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description::BuildDefault(getInputDimension(), "theta");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "lh");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     Scalar result = 0.0;
     // Define conditioned distribution
@@ -205,39 +205,22 @@ public:
     }
   }
 
-  LogLikelihoodGradient * clone() const
+  LogLikelihoodGradient * clone() const override
   {
     return new LogLikelihoodGradient(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return unknownParameterIndices_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
-  {
-    return Description::BuildDefault(getInputDimension(), "theta");
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(1, "lhG");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  Matrix gradient(const Point & parameter) const
+  Matrix gradient(const Point & parameter) const override
   {
     // Define conditioned distribution
     Distribution distribution(distribution_);

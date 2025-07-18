@@ -93,18 +93,18 @@ public:
     // Nothing to do
   }
 
-  int rows() const
+  int rows() const override
   {
     return rows_;
   }
 
-  int cols() const
+  int cols() const override
   {
     return cols_;
   }
 
   // Matrix/vector product operator
-  void perform_op(const Scalar * x_in, Scalar * y_out) const
+  void perform_op(const Scalar * x_in, Scalar * y_out) const override
   {
     // Convert double array to Eigen::VectorXd
     Point u(rows_);
@@ -120,7 +120,7 @@ public:
     std::copy(w.begin(), w.end(), y_out);
   }
 
-  CovarianceMatrix getC() const
+  CovarianceMatrix getC() const override
   {
     return C_;
   }
@@ -148,18 +148,18 @@ public:
     // Nothing to do
   }
 
-  int rows() const
+  int rows() const override
   {
     return rows_;
   }
 
-  int cols() const
+  int cols() const override
   {
     return cols_;
   }
 
   // Matrix/vector product operator
-  void perform_op(const Scalar * x_in, Scalar * y_out) const
+  void perform_op(const Scalar * x_in, Scalar * y_out) const override
   {
     // Convert double array to Eigen::VectorXd
     Point u(rows_);
