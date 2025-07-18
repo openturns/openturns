@@ -313,7 +313,6 @@ g.setLegends(
 
 g.setLegendCorner([1.0, 1.0])
 g.setLegendPosition("upper left")
-#g.setLegendPosition("bottomright")
 g.setTitle("Estimation of the quantile of level 0.9")
 g.setXTitle("x")
 view = otv.View(g)
