@@ -209,8 +209,8 @@ def execute(
     >>> cp = ct.execute('echo 42', capture_output=True, shell=True)
     >>> cp.returncode
     0
-    >>> int(cp.stdout)
-    42
+    >>> cp.stdout.strip()
+    b'42'
     """
 
     # split cmd if not in a shell before passing it to os.execvp()
