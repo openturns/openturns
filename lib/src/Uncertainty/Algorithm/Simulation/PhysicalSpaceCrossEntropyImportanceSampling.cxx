@@ -201,8 +201,8 @@ void PhysicalSpaceCrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 // Optimize auxiliary distribution parameters
 Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const
 {
-
-  Point initialCriticInputSamplePDFValue = initialDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint();
+  const Distribution initialDistribution(getInitialDistribution());
+  Point initialCriticInputSamplePDFValue = initialDistribution.computePDF(auxiliaryCriticInputSamples).asPoint();
 
   const UnsignedInteger numberOfSample = getMaximumOuterSampling() * getBlockSize();
 
@@ -235,5 +235,37 @@ Point PhysicalSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
   return auxiliaryParameters;
 }
 
+
+/* String converter */
+String PhysicalSpaceCrossEntropyImportanceSampling::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << CrossEntropyImportanceSampling::__repr__()
+      << " activeParameters=" <<  activeParameters_;
+  return oss;
+}
+
+
+/* Method save() stores the object through the StorageManager */
+void PhysicalSpaceCrossEntropyImportanceSampling::save(Advocate & adv) const
+{
+  CrossEntropyImportanceSampling::save(adv);
+  adv.saveAttribute("activeParameters_", activeParameters_);
+  adv.saveAttribute("initialAuxiliaryDistributionParameters_", initialAuxiliaryDistributionParameters_);
+  adv.saveAttribute("bounds_", bounds_);
+  adv.saveAttribute("solver_", solver_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void PhysicalSpaceCrossEntropyImportanceSampling::load(Advocate & adv)
+{
+  CrossEntropyImportanceSampling::load(adv);
+  adv.loadAttribute("activeParameters_", activeParameters_);
+  adv.loadAttribute("initialAuxiliaryDistributionParameters_", initialAuxiliaryDistributionParameters_);
+  adv.loadAttribute("bounds_", bounds_);
+  adv.loadAttribute("solver_", solver_);
+}
 
 END_NAMESPACE_OPENTURNS

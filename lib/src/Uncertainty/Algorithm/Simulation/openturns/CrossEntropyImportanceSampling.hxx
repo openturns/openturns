@@ -39,20 +39,23 @@ public:
   CrossEntropyImportanceSampling();
 
   /** Default constructor */
-  explicit  CrossEntropyImportanceSampling(const RandomVector & event,
-      const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
+  explicit CrossEntropyImportanceSampling(const RandomVector & event,
+    const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   CrossEntropyImportanceSampling * clone() const override;
 
-  /** Get quantileLevel */
-  Scalar getQuantileLevel() const;
+  virtual Distribution getInitialDistribution() const;
 
-  /** Set quantileLevel */
-  void setQuantileLevel(const Scalar & quantileLevel);
+  /** Quantile Level accessor */
+  void setQuantileLevel(const Scalar quantileLevel);
+  Scalar getQuantileLevel() const;
 
   /** Main function that computes the failure probability */
   void run() override;
+
+  /** String converter */
+  String __repr__() const override;
 
   /** Accessor to results */
   CrossEntropyResult getResult() const;
@@ -71,6 +74,11 @@ public:
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 protected:
 
   /** Limit state accessor */
@@ -87,9 +95,6 @@ protected:
 
   /** Select sample indices according to status */
   Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
-
-  // Initial distribution
-  Distribution initialDistribution_;
 
   // Auxiliary distribution
   Distribution auxiliaryDistribution_;

@@ -47,13 +47,18 @@ public:
   /** Virtual constructor */
   PhysicalSpaceCrossEntropyImportanceSampling * clone() const override;
 
-  /** Set solver */
+  /** String converter */
+  String __repr__() const override;
+
+  /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-
-
-  /** Get solver */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 protected:
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */

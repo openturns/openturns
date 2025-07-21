@@ -53,8 +53,12 @@ StandardSpaceCrossEntropyImportanceSampling::StandardSpaceCrossEntropyImportance
     const Scalar quantileLevel)
   : CrossEntropyImportanceSampling(event, quantileLevel)
 {
-  initialDistribution_ = Normal(initialDistribution_.getDimension());
-  auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
+  auxiliaryDistribution_ = Normal(getEvent().getAntecedent().getDistribution().getDimension());
+}
+
+Distribution StandardSpaceCrossEntropyImportanceSampling::getInitialDistribution() const
+{
+  return Normal(getEvent().getAntecedent().getDistribution().getDimension());
 }
 
 /* Input transformation accessor */
@@ -77,19 +81,21 @@ void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
 // Reset auxiliary distribution
 void StandardSpaceCrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 {
-  auxiliaryDistribution_ = Normal(initialDistribution_.getDimension());
+  auxiliaryDistribution_ = Normal(getEvent().getAntecedent().getDistribution().getDimension());
 }
 
 // Optimize auxiliary distribution parameters
 Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistributionParameters(const Sample & auxiliaryCriticInputSamples) const
 {
+  const Distribution initialDistribution(getInitialDistribution());
+
   //evaluate initial PDF on failure auxiliaryInputSamples
-  Point criticSamplesInitialPDFValue   = initialDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint();
+  Point criticSamplesInitialPDFValue   = initialDistribution.computePDF(auxiliaryCriticInputSamples).asPoint();
   //evaluate auxiliary PDF on failure auxiliaryInputSamples
   Point criticSamplesAuxiliaryPDFValue = auxiliaryDistribution_.computePDF(auxiliaryCriticInputSamples).asPoint();
 
   //evaluate initial PDF on failure auxiliaryInputSamples
-  Point criticSamplesInitialLogPDFValue   = initialDistribution_.computeLogPDF(auxiliaryCriticInputSamples).asPoint();
+  Point criticSamplesInitialLogPDFValue   = initialDistribution.computeLogPDF(auxiliaryCriticInputSamples).asPoint();
   //evaluate auxiliary PDF on failure auxiliaryInputSamples
   Point criticSamplesAuxiliaryLogPDFValue = auxiliaryDistribution_.computeLogPDF(auxiliaryCriticInputSamples).asPoint();
 
@@ -115,7 +121,7 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
     }
 
     if (sumPdfCritic == 0.)
-      throw InvalidRangeException(HERE) << "In PhysicalSpaceCrossEntropyImportanceSampling::run, sumPdfCritic is equal to zero.";
+      throw InvalidRangeException(HERE) << "In StandardSpaceCrossEntropyImportanceSampling::run, sumPdfCritic is equal to zero.";
 
     mean[i] = numeratorMeanCalculation / sumPdfCritic;
   }
@@ -148,6 +154,15 @@ Point StandardSpaceCrossEntropyImportanceSampling::optimizeAuxiliaryDistribution
 
 
   return auxiliaryParameters;
+}
+
+/* String converter */
+String StandardSpaceCrossEntropyImportanceSampling::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << CrossEntropyImportanceSampling::__repr__();
+  return oss;
 }
 
 END_NAMESPACE_OPENTURNS
