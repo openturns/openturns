@@ -94,7 +94,9 @@ Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
 
 - The entry `LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber` defines the number of extra closest neighbours
   around each reference point to consider for selection of the neighbourhood with greatest combined score used for the LOLA criterion.
-- The entry `LOLAVoronoi-DefaultVoronoiSamplingSize` controls the sampling size used
+- The entry `LOLAVoronoi-DefaultVoronoiMinimumSamplingSize` controls the minimal total sampling size used
+  to estimate the Voronoi cells relative volume or generate new candidates.
+- The entry `LOLAVoronoi-DefaultVoronoiMeanSamplingSize` controls the sampling size per candidate point used
   to estimate the Voronoi cells relative volume or generate new candidates.
 - The entry `LOLAVoronoi-MaximumCombinationsNumber` controls the maximum
   number of existing point subsets will be tested to get the best neighbourhood for the exploitation criterion.
@@ -137,26 +139,50 @@ Now add 2 blocks of 3 points:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LOLAVoronoi::setVoronoiSamplingSize
-"Voronoi sampling size accessor.
+%feature("docstring") OT::LOLAVoronoi::setVoronoiMinimumSamplingSize
+"Voronoi sampling minimum size accessor.
 
 Parameters
 ----------
-voronoiSamplingSize : int
-    The sampling size used to estimate the Voronoi cells relative volume or generate new candidates.
-    The default value is set to the `LOLAVoronoi-DefaultVoronoiSamplingSize` entry from :class:`~openturns.ResourceMap`.
+voronoiMinimumSamplingSize : int
+    The minimal total sampling size used to estimate the Voronoi cells relative volume or generate new candidates.
+    The default value is set to the `LOLAVoronoi-DefaultVoronoiMinimumSamplingSize` entry from :class:`~openturns.ResourceMap`.
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LOLAVoronoi::getVoronoiSamplingSize
-"Voronoi sampling size accessor.
+%feature("docstring") OT::LOLAVoronoi::getVoronoiMinimumSamplingSize
+"Voronoi minimal total sampling size accessor.
 
 Returns
 -------
-voronoiSamplingSize : int
-    The sampling size used to estimate the Voronoi cells relative volume or generate new candidates.
-    The default value is set to the `LOLAVoronoi-DefaultVoronoiSamplingSize` entry from :class:`~openturns.ResourceMap`.
+voronoiMinimumSamplingSize : int
+    The minimal total sampling size used to estimate the Voronoi cells relative volume or generate new candidates.
+    The default value is set to the `LOLAVoronoi-DefaultVoronoiMinimumSamplingSize` entry from :class:`~openturns.ResourceMap`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::setVoronoiMeanSamplingSize
+"Voronoi mean sampling size accessor.
+
+Parameters
+----------
+voronoiMeanSamplingSize : int
+    The sampling size per candidate point used to estimate the Voronoi cells relative volume or generate new candidates.
+    The default value is set to the `LOLAVoronoi-DefaultVoronoiMeanSamplingSize` entry from :class:`~openturns.ResourceMap`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LOLAVoronoi::getVoronoiMeanSamplingSize
+"Voronoi mean sampling size accessor.
+
+Returns
+-------
+voronoiMeanSamplingSize : int
+    The sampling size per candidate point used to estimate the Voronoi cells relative volume or generate new candidates.
+    The default value is set to the `LOLAVoronoi-DefaultVoronoiMeanSamplingSize` entry from :class:`~openturns.ResourceMap`.
 "
 
 // ---------------------------------------------------------------------

@@ -929,7 +929,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("LOLAVoronoi-UseTruncatedDistribution", false);
   addAsUnsignedInteger("LOLAVoronoi-MaximumCombinationsNumber", 100);
   addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
-  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiMinimumSamplingSize", 1000);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiMeanSamplingSize", 10);
   addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky", {"SVD", "Cholesky", "QR"});
   addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum", {"Maximum", "Average"});
 

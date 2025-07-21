@@ -54,9 +54,13 @@ public:
   // Generate a new sample
   Sample generate(const UnsignedInteger size) const override;
 
-  /** Voronoi sampling size accessor */
-  void setVoronoiSamplingSize(const UnsignedInteger voronoiSamplingSize);
-  UnsignedInteger getVoronoiSamplingSize() const;
+  /** Voronoi minimum sampling size accessor */
+  void setVoronoiMinimumSamplingSize(const UnsignedInteger voronoiSamplingSize);
+  UnsignedInteger getVoronoiMinimumSamplingSize() const;
+
+  /** Voronoi sampling ratio accessor */
+  void setVoronoiMeanSamplingSize(const UnsignedInteger voronoiMeanSamplingSize);
+  UnsignedInteger getVoronoiMeanSamplingSize() const;
 
   /** Neighbourhood candidates number accessor */
   void setNeighbourhoodCandidatesNumber(const UnsignedInteger neighbourhoodCandidatesNumber);
@@ -93,7 +97,8 @@ protected:
   // neighbourhood of each input point
   mutable Collection<Indices> neighbourhood_;
 
-  UnsignedInteger voronoiSamplingSize_ = 0;
+  UnsignedInteger voronoiMinimumSamplingSize_ = 0;
+  UnsignedInteger voronoiMeanSamplingSize_ = 0;
 
 }; /* class LOLAVoronoi */
 
