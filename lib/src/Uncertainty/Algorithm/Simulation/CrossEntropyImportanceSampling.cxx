@@ -45,7 +45,6 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
     const Scalar quantileLevel)
   : EventSimulation(event.getImplementation()->asComposedEvent())
-  , initialDistribution_(getEvent().getAntecedent().getDistribution())
   , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
   if (!(quantileLevel <= 1.0) || !(quantileLevel >= 0.0))
@@ -58,6 +57,11 @@ CrossEntropyImportanceSampling * CrossEntropyImportanceSampling::clone() const
   return new CrossEntropyImportanceSampling(*this);
 }
 
+Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
+{
+  return getEvent().getAntecedent().getDistribution();
+}
+
 // Get quantileLevel
 Scalar CrossEntropyImportanceSampling::getQuantileLevel() const
 {
@@ -65,7 +69,7 @@ Scalar CrossEntropyImportanceSampling::getQuantileLevel() const
 }
 
 // Set quantileLevel
-void CrossEntropyImportanceSampling::setQuantileLevel(const Scalar & quantileLevel)
+void CrossEntropyImportanceSampling::setQuantileLevel(const Scalar quantileLevel)
 {
   quantileLevel_ = quantileLevel;
 }
@@ -105,6 +109,8 @@ void CrossEntropyImportanceSampling::run()
   numberOfSteps_ = 0;
   crossEntropyResult_ = CrossEntropyResult();
 
+  const Distribution initialDistribution(getInitialDistribution());
+
   // Initialization of auxiliary distribution (in case of multiple runs of algorithms)
   resetAuxiliaryDistribution();
 
@@ -112,7 +118,7 @@ void CrossEntropyImportanceSampling::run()
   if (sampleSize < 2)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
-  Sample auxiliaryInputSample(0, initialDistribution_.getDimension());
+  Sample auxiliaryInputSample(0, initialDistribution.getDimension());
   Sample auxiliaryOutputSample(0, 1);
 
   const Function limitState(getLimitState());
@@ -184,7 +190,7 @@ void CrossEntropyImportanceSampling::run()
   while ((comparator(threshold, currentQuantile)) && (currentQuantile != threshold))
   {
     // Drawing of samples using auxiliary density and evaluation on limit state function
-    auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
+    auxiliaryInputSample = Sample(0, initialDistribution.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
 
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++i)
@@ -262,7 +268,7 @@ void CrossEntropyImportanceSampling::run()
   const Sample inputSampleCritic(auxiliaryInputSample.select(indicesCritic));
 
   // Evaluate initial log PDF in parallel on failure sample
-  const Sample logPDFInitCritic(initialDistribution_.computeLogPDF(inputSampleCritic));
+  const Sample logPDFInitCritic(initialDistribution.computeLogPDF(inputSampleCritic));
 
   // Evaluate auxiliary log PDF in parallel on failure sample
   const Sample logPDFAuxiliaryCritic(auxiliaryDistribution_.computeLogPDF(inputSampleCritic));
@@ -349,5 +355,49 @@ void CrossEntropyImportanceSampling::setKeepSample(const Bool keepSample)
   keepSample_ = keepSample;
 }
 
+
+/* String converter */
+String CrossEntropyImportanceSampling::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << EventSimulation::__repr__()
+      << " quantileLevel=" << quantileLevel_;
+  return oss;
+}
+
+
+/* Method save() stores the object through the StorageManager */
+void CrossEntropyImportanceSampling::save(Advocate & adv) const
+{
+  EventSimulation::save(adv);
+  adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
+  adv.saveAttribute("quantileLevel_", quantileLevel_);
+  adv.saveAttribute("crossEntropyResult_", crossEntropyResult_);
+
+  adv.saveAttribute("numberOfSteps_", numberOfSteps_);
+  adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
+
+  adv.saveAttribute("keepSample_", keepSample_);
+  adv.saveAttribute("inputSample_", inputSample_);
+  adv.saveAttribute("outputSample_", outputSample_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void CrossEntropyImportanceSampling::load(Advocate & adv)
+{
+  EventSimulation::load(adv);
+  adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
+  adv.loadAttribute("quantileLevel_", quantileLevel_);
+  adv.loadAttribute("crossEntropyResult_", crossEntropyResult_);
+
+  adv.loadAttribute("numberOfSteps_", numberOfSteps_);
+  adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);
+
+  adv.loadAttribute("keepSample_", keepSample_);
+  adv.loadAttribute("inputSample_", inputSample_);
+  adv.loadAttribute("outputSample_", outputSample_);
+}
 
 END_NAMESPACE_OPENTURNS
