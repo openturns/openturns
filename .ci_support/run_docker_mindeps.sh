@@ -1,5 +1,5 @@
 #!/bin/sh
-apt-get -y update && apt-get -y install git g++ python3-matplotlib libxml2-dev liblapack-dev cmake swig python3-dev libcminpack-dev libboost-math-dev
+apt-get -y update && apt-get -y install git g++ python3-matplotlib libxml2-dev liblapack-dev cmake swig python3-dev libcminpack-dev libboost-math-dev libnlopt-dev libnlopt-cxx-dev
 
 set -e
 git config --global --add safe.directory /io

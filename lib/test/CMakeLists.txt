@@ -191,9 +191,7 @@ endif()
 ot_check_test (SQP_std)
 ot_check_test (TNC_std)
 ot_check_test (NearestPointChecker_std)
-if (NLopt_FOUND)
-  ot_check_test (NLopt_std IGNOREOUT)
-endif ()
+ot_check_test (NLopt_std IGNOREOUT)
 ot_check_test (MultiStart_std IGNOREOUT)
 
 # Solver
@@ -654,11 +652,10 @@ ot_check_test (GaussianProcessFitter_std_hmat IGNOREOUT)
 ot_check_test (GaussianProcessRegression_std_hmat IGNOREOUT)
 endif ()
 
-if (NLopt_FOUND)
+# NLopt
 ot_check_test (GeneralLinearModelAlgorithm_nlopt)
 ot_check_test (GaussianProcessFitter_nlopt IGNOREOUT)
 ot_check_test (GaussianProcessRegression_nlopt IGNOREOUT)
-endif ()
 
 # Sensitivity
 ot_check_test (ANCOVA_std)
@@ -681,9 +678,7 @@ ot_check_test (SimulationSensitivityAnalysis_std)
 ot_check_test (QuadrantSampling_std)
 ot_check_test (AdaptiveDirectionalStratification_std)
 ot_check_test (NAIS_std IGNOREOUT)
-if (NLopt_FOUND)
 ot_check_test (PhysicalSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
-endif ()
 ot_check_test (StandardSpaceCrossEntropyImportanceSampling_std IGNOREOUT)
 # StatTests
 ot_check_test (VisualTest_std)
