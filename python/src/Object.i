@@ -78,4 +78,6 @@ def Object__repr_html_(self):
     lines = str(self).splitlines()
     return '<p>' + '<br>\n'.join(lines) + '</p>'
 Object._repr_html_ = Object__repr_html_
+
+Object.__deepcopy__ = lambda self, memodict : type(self)(self)
 %}
