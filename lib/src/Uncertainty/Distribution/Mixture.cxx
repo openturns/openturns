@@ -156,8 +156,8 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 {
   // Not const because the collection will be simplified and its size reduced
   UnsignedInteger size = coll.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Mixture based on an empty distribution collection.";
-  if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Cannot build a Mixture based on an empty distribution collection.";
+  if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "The number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
   Scalar maximumWeight = weights[0];
   Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
@@ -178,15 +178,17 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     throw InvalidArgumentException(HERE) << "Collection of distributions has atoms with too small total weight=" << weightSum << " for a threshold equal to Mixture-SmallWeight=" << smallWeight;
   // Second loop, keep only the atoms with a significant weight and update the sum
   weightSum = 0.0;
-  distributionCollection_ = DistributionCollection(0);
-  p_ = Point(0);
+  distributionCollection_.clear();
+  p_.clear();
   isCopula_ = true;
+  Indices removed;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar w = weights[i];
     if (w < smallWeight)
     {
-      LOGWARN(OSS() << "Removed the mixture's distribution #" << i << " with a too small weight=" << w << " wrt the maximum weight=" << maximumWeight);
+      if (removed.getSize() < 20)
+        removed.add(i);
     }
     else
     {
@@ -197,6 +199,11 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
       isCopula_ = isCopula_ && coll[i].isCopula();
     }
   } // i
+
+  if (removed.getSize())
+  {
+    LOGWARN(OSS() << "Pruned the mixture at indices " << removed.__str__().substr(0, 50) << "... wrt the maximum weight=" << maximumWeight);
+  }
 
   // Update the size of the collection as null-weighted distributions could have been dismissed
   size = distributionCollection_.getSize();
