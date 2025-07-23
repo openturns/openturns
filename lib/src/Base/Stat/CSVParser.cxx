@@ -182,13 +182,10 @@ Sample CSVParser::load() const
         // line may be incomplete
       }
     }
-    // reject empty components
+    // avoid empty components
     for (UnsignedInteger j = 0; j < description.getSize(); ++ j)
       if (description[j].empty())
-      {
-        description = Description::BuildDefault(result.getDimension(), "data_");
-        break;
-      }
+        description[j] = OSS() << "Unnamed_" << j;
     result.setDescription(description);
     result.erase(0, 1);
   }
