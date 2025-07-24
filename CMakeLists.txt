@@ -21,7 +21,6 @@ option (USE_BOOST                    "Use Boost for distribution computation"   
 option (USE_MPFR                     "Use MPFR for real valued special functions computation"                ${USE_EXTERNAL_LIBS})
 option (USE_MPC                      "Use MPC for complex valued special functions computation"              ${USE_EXTERNAL_LIBS})
 option (USE_SPHINX                   "Use sphinx for documentation"                                          OFF)
-option (USE_DOXYGEN                  "Use Doxygen for API documentation"                                     ${USE_EXTERNAL_LIBS})
 option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ${USE_EXTERNAL_LIBS})
 option (USE_CERES                    "Use Ceres Solver for additional optimization algorithms"               ${USE_EXTERNAL_LIBS})
 option (USE_CMINPACK                 "Use CMinpack for additional optimization algorithms"                   ${USE_EXTERNAL_LIBS})
@@ -212,10 +211,6 @@ if (HMAT_FOUND)
   list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${HMAT_INCLUDE_DIRS})
   list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${HMAT_LIBRARIES})
   list (APPEND OPENTURNS_ENABLED_FEATURES "hmat")
-endif ()
-
-if (USE_DOXYGEN)
-  find_package (Doxygen QUIET)
 endif ()
 
 if (USE_LIBXML2)

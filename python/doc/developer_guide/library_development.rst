@@ -68,7 +68,7 @@ First, add the class to the C++ library
 
 #. Create ``openturns/MyClass.hxx`` and ``MyClass.cxx`` in appropriate subdirectories of lib/src.
    The files must have the standard header comment, with a brief description
-   of the class in Doxygen form and the standard reference to the LGPL license.
+   of the class and the standard reference to the LGPL license.
 
    For the header file ``MyClass.hxx``, the interface must be embraced
    between the preprocessing clauses:
