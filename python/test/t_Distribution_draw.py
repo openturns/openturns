@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import os
 
 ot.TESTPREAMBLE()
 pointNumber = 251
@@ -43,23 +44,29 @@ graphCDF = dist2D.drawCDF([-4.0, -4.0], [4.0, 4.0])
 graphCDF = dist2D.drawCDF([101, 101])
 
 # Save and load objects
-study = ot.Study()
-file = "study.xml"
-study.setStorageManager(ot.XMLStorageManager(file))
-study.add("pdf", distND.getPDF())
-study.add("logpdf", distND.getLogPDF())
-study.add("cdf", distND.getCDF())
-study.save()
+if ot.PlatformInfo.HasFeature("libxml2"):
+    study = ot.Study()
+    file = "study_distribution_draw.xml"
+    study.setStorageManager(ot.XMLStorageManager(file))
+    study.add("pdf", distND.getPDF())
+    study.add("logpdf", distND.getLogPDF())
+    study.add("cdf", distND.getCDF())
+    study.save()
 
-study = ot.Study()
-study.setStorageManager(ot.XMLStorageManager(file))
-study.load()
-pdf = ot.Function()
-logpdf = ot.Function()
-cdf = ot.Function()
-study.fillObject("pdf", pdf)
-study.fillObject("logpdf", logpdf)
-study.fillObject("cdf", cdf)
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(file))
+    study.load()
+    pdf = ot.Function()
+    logpdf = ot.Function()
+    cdf = ot.Function()
+    study.fillObject("pdf", pdf)
+    study.fillObject("logpdf", logpdf)
+    study.fillObject("cdf", cdf)
+    os.remove(file)
+else:
+    pdf = distND.getPDF()
+    logpdf = distND.getLogPDF()
+    cdf = distND.getCDF()
 
 # Check drawing methods for ND distributions
 # PDF
