@@ -405,20 +405,6 @@ try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
 
-# on armel atomic must be explicitely linked
-if (UNIX AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  try_compile(OPENTURNS_HAVE_INLINE_ATOMIC
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/have_inline_atomic.cxx)
-  message(STATUS "Performing Test OPENTURNS_HAVE_INLINE_ATOMIC - ${OPENTURNS_HAVE_INLINE_ATOMIC}")
-  if (NOT OPENTURNS_HAVE_INLINE_ATOMIC)
-    find_library (ATOMIC_LIBRARY NAMES atomic)
-    if (ATOMIC_LIBRARY)
-      list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${ATOMIC_LIBRARY})
-    endif ()
-  endif ()
-endif ()
-
 # for consistent floating-point operations across architectures
 option (DISABLE_FP_CONTRACT "Disable floating-point contractions" ON)
 if (DISABLE_FP_CONTRACT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
