@@ -669,6 +669,11 @@ void EvaluationImplementation::setStopCallback(StopCallback callBack, void * sta
   stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
+void EvaluationImplementation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  detachCallback_ = std::pair<DetachCallback, void *>(callBack, state);
+}
+
 /* Method save() stores the object through the StorageManager */
 void EvaluationImplementation::save(Advocate & adv) const
 {

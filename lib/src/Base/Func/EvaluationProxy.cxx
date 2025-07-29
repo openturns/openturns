@@ -274,6 +274,11 @@ void EvaluationProxy::setStopCallback(StopCallback callBack, void * state)
   evaluation_.setStopCallback(callBack, state);
 }
 
+void EvaluationProxy::setDetachCallback(DetachCallback callBack, void * state)
+{
+  evaluation_.setDetachCallback(callBack, state);
+}
+
 /* Method save() stores the object through the StorageManager */
 void EvaluationProxy::save(Advocate & adv) const
 {

@@ -34,8 +34,6 @@ static const Factory<AggregatedEvaluation> Factory_AggregatedEvaluation;
 /* Default constructor */
 AggregatedEvaluation::AggregatedEvaluation()
   : EvaluationImplementation()
-  , functionsCollection_(0)
-  , outputDimension_(0)
 {
   // Nothing to do
 }
@@ -44,8 +42,6 @@ AggregatedEvaluation::AggregatedEvaluation()
 /* Parameters constructor */
 AggregatedEvaluation::AggregatedEvaluation(const FunctionCollection & functionsCollection)
   : EvaluationImplementation()
-  , functionsCollection_(0)
-  , outputDimension_(0)
 {
   setFunctionsCollection(functionsCollection);
 }
@@ -327,6 +323,12 @@ void AggregatedEvaluation::setStopCallback(StopCallback callBack, void * state)
 {
   for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
     functionsCollection_[i].setStopCallback(callBack, state);
+}
+
+void AggregatedEvaluation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    functionsCollection_[i].setDetachCallback(callBack, state);
 }
 
 END_NAMESPACE_OPENTURNS

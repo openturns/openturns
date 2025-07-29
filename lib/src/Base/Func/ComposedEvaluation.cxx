@@ -220,5 +220,10 @@ void ComposedEvaluation::setStopCallback(StopCallback callBack, void * state)
   rightFunction_.setStopCallback(callBack, state);
 }
 
+void ComposedEvaluation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  leftFunction_.setDetachCallback(callBack, state);
+  rightFunction_.setDetachCallback(callBack, state);
+}
 
 END_NAMESPACE_OPENTURNS

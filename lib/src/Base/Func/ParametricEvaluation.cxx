@@ -35,9 +35,6 @@ static const Factory<ParametricEvaluation> Factory_ParametricEvaluation;
 /* Default constructor */
 ParametricEvaluation::ParametricEvaluation()
   : EvaluationImplementation()
-  , function_()
-  , parametersPositions_(0)
-  , inputPositions_(0)
 {
   // Nothing to do
 }
@@ -49,8 +46,6 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
     const Bool parametersSet)
   : EvaluationImplementation()
   , function_(function)
-  , parametersPositions_(0)
-  , inputPositions_(0)
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   const UnsignedInteger setDimension = set.getSize();
@@ -303,6 +298,11 @@ Description ParametricEvaluation::getOutputDescription() const
 void ParametricEvaluation::setStopCallback(StopCallback callBack, void * state)
 {
   function_.setStopCallback(callBack, state);
+}
+
+void ParametricEvaluation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  function_.setDetachCallback(callBack, state);
 }
 
 /* Method save() stores the object through the StorageManager */

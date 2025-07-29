@@ -454,6 +454,11 @@ void FunctionImplementation::setStopCallback(StopCallback callBack, void * state
   evaluation_.setStopCallback(callBack, state);
 }
 
+void FunctionImplementation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  evaluation_.setDetachCallback(callBack, state);
+}
+
 /* Method save() stores the object through the StorageManager */
 void FunctionImplementation::save(Advocate & adv) const
 {
