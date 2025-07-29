@@ -179,6 +179,10 @@ public:
   typedef Bool (*StopCallback)(void * state);
   virtual void setStopCallback(StopCallback callBack, void * state = nullptr);
 
+  /** Detach callback */
+  typedef Bool (*DetachCallback)(void * state);
+  virtual void setDetachCallback(DetachCallback callBack, void * state = nullptr);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -210,6 +214,7 @@ private:
 
   // callbacks
   std::pair< StopCallback, void *> stopCallback_;
+  std::pair< DetachCallback, void *> detachCallback_;
 
 }; /* class EvaluationImplementation */
 

@@ -170,8 +170,11 @@ public:
                                    const Scalar vMax = -SpecFunc::Infinity) const;
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * state);
-  void setStopCallback(StopCallback callBack, void * state = nullptr);
+  void setStopCallback(EvaluationImplementation::StopCallback callBack, void * state = nullptr);
+
+  /** Detach callback */
+  void setDetachCallback(EvaluationImplementation::DetachCallback callBack, void * state = nullptr);
+
 
 }; /* class Evaluation */
 

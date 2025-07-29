@@ -283,10 +283,16 @@ GridLayout Evaluation::drawCrossCuts(const Point & centralPoint,
   return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimensionalCuts, isFilled, vMin, vMax);
 }
 
-void Evaluation::setStopCallback(StopCallback callBack, void * state)
+void Evaluation::setStopCallback(EvaluationImplementation::StopCallback callBack, void * state)
 {
   copyOnWrite();
   getImplementation()->setStopCallback(callBack, state);
+}
+
+void Evaluation::setDetachCallback(EvaluationImplementation::DetachCallback callBack, void * state)
+{
+  copyOnWrite();
+  getImplementation()->setDetachCallback(callBack, state);
 }
 
 END_NAMESPACE_OPENTURNS

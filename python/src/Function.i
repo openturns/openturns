@@ -47,6 +47,8 @@ OTTypedInterfaceObjectHelper(Function)
 %ignore OT::Function::getUseDefaultHessianImplementation;
 %ignore OT::Function::setUseDefaultHessianImplementation;
 
+%ignore OT::Function::setDetachCallback;
+
 %include openturns/Function.hxx
 
 namespace OT {
