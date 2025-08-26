@@ -13,15 +13,17 @@ and the different components :math:`X_i`.
 The basic method of hierarchical ordering using Pearson’s coefficients
 deals with the case where the variable :math:`Y` linearly
 depends on :math:`\inputDim` variables
-:math:`\left\{ X_1,\ldots,X_{\inputDim} \right\}` but this can be misleading
-when statistical dependencies or interactions between the variables
-:math:`X_i` (e.g. a crossed term :math:`X_i \times X_j`) exist. In such
-a situation, the partial correlation coefficients can be more useful in
-ordering the uncertainty hierarchically: the partial correlation
-coefficients :math:`\textrm{PCC}_{X_i,Y}` between the variables
-:math:`Y` and :math:`X_i` attempts to measure the residual influence
+:math:`\left\{ X_1,\ldots,X_{\inputDim} \right\}`.
+
+Partial Correlation Coefficients are also useful in this case
+but provide a different kind of information:
+the partial correlation
+coefficient :math:`\textrm{PCC}_{X_i,Y}` between the variables
+:math:`Y` and :math:`X_i` measures the residual influence
 of :math:`X_i` on :math:`Y` once influences from all other variables
 :math:`X_j` have been eliminated.
+In particular, if :math:`X_1` and :math:`X_2` are perfectly correlated,
+then :math:`\textrm{PCC}_{X_1,Y} = \textrm{PCC}_{X_2,Y} = 0`.
 
 The estimation for each partial correlation coefficient
 :math:`\textrm{PCC}_{X_i,Y}` uses a sample of size :math:`\sampleSize` denoted by
@@ -88,3 +90,4 @@ and the ranked output variable :math:`rY`.
     - [saltelli2000]_
     - [helton2003]_
     - [kleijnen1999]_
+    - [clouvel2025]_
