@@ -334,6 +334,33 @@ Distribution Histogram::getStandardRepresentative() const
 }
 
 /* Parameters value and description accessor */
+Histogram::PointWithDescriptionCollection Histogram::getParametersCollection() const
+{
+  PointWithDescriptionCollection parameters(3);
+  const UnsignedInteger size = width_.getSize();
+
+  parameters[0] = Point(1, first_);
+  parameters[0].setDescription(Description(1, "first"));
+  parameters[1] = width_;
+  Description description(size);
+  for (UnsignedInteger j = 0 ; j < size ; ++j)
+  {
+    OSS oss;
+    oss << "width_" << j;
+    description[j] = oss;
+  }
+  parameters[1].setDescription(description);
+  parameters[2] = height_;
+  for (UnsignedInteger j = 0 ; j < size ; ++j)
+  {
+    OSS oss;
+    oss << "height_" << j;
+    description[j] = oss;
+  }
+  parameters[2].setDescription(description);
+
+  return parameters;
+}
 
 /* Parameters value accessor */
 Point Histogram::getParameter() const

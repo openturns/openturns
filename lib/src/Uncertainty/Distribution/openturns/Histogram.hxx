@@ -104,6 +104,9 @@ public:
   Distribution getStandardRepresentative() const override;
 
   /** Parameters value and description accessor */
+  PointWithDescriptionCollection getParametersCollection() const override;
+
+  /** Parameters value and description accessor */
   Point getParameter() const override;
   void setParameter(const Point & parameter) override;
   Description getParameterDescription() const override;
