@@ -10,6 +10,7 @@
         "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow",
         "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow -Wsuggest-override -D_GLIBCXX_ASSERTIONS -fno-inline",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/install",
+        "BLA_VENDOR": "Generic",
         "SWIG_COMPILE_FLAGS": "-O1 -Wno-unused-parameter -Wno-shadow",
         "SWIG_CXX_COMPILE_FLAGS": "-Wno-suggest-override",
         "CMAKE_UNITY_BUILD": "OFF"
