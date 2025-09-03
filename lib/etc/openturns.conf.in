@@ -171,6 +171,7 @@
   <Pagmo-InitialSeed value_int="0" />
   <Pagmo-UnconstrainMethod value_str="death penalty" />
   <Pagmo-memory value_bool="false" />
+  <Pagmo-DefaultIncrementalEvolution value_bool="false" />
   <!-- gaco -->
   <Pagmo-gaco-ker value_int="63" />
   <Pagmo-gaco-q value_float="1.0" />

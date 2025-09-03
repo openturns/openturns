@@ -63,12 +63,16 @@ struct PagmoProblem
 {
   PagmoProblem() {};
 
-  PagmoProblem(const Pagmo *algorithm,
+  PagmoProblem(Pagmo *algorithm,
                Sample *evaluationInputHistory,
-               Sample *evaluationOutputHistory)
+               Sample *evaluationOutputHistory,
+               Sample *equalityHistory,
+               Sample *inequalityHistory)
     : algorithm_(algorithm)
     , evaluationInputHistory_(evaluationInputHistory)
     , evaluationOutputHistory_(evaluationOutputHistory)
+    , equalityHistory_(equalityHistory)
+    , inequalityHistory_(inequalityHistory)
   {
     if (!algorithm)
       throw InvalidArgumentException(HERE) << "PagmoProblem null algo";
@@ -95,6 +99,8 @@ struct PagmoProblem
     }
     *evaluationInputHistory_ = Sample(0, algorithm->getProblem().getDimension());
     *evaluationOutputHistory_ = Sample(0, algorithm->getProblem().getObjective().getOutputDimension());
+    *equalityHistory_ = Sample(0, algorithm->getProblem().getEqualityConstraint().getOutputDimension());
+    *inequalityHistory_ = Sample(0, algorithm->getProblem().getInequalityConstraint().getOutputDimension());
   }
 
   Point renumber(const Point & inP) const
@@ -111,21 +117,43 @@ struct PagmoProblem
   pagmo::vector_double fitness(const pagmo::vector_double & inv) const
   {
     const Point inP(renumber(Point(inv.begin(), inv.end())));
-    Point outP(algorithm_->getProblem().getObjective()(inP));
+    const Point outP(algorithm_->getProblem().getObjective()(inP));
     evaluationInputHistory_->add(inP);
     evaluationOutputHistory_->add(outP);
+    Point outV(outP);
     for (UnsignedInteger i = 0; i < outP.getDimension(); ++ i)
       if (!algorithm_->getProblem().isMinimization(i))
-        outP[i] *= -1.0;
+        outV[i] *= -1.0;// pagmo always minimizes
+
+    Scalar constraintError = 0.0;
+    const Scalar maximumConstraintError = algorithm_->getMaximumConstraintError();
     if (algorithm_->getProblem().hasEqualityConstraint())
-      outP.add(algorithm_->getProblem().getEqualityConstraint()(inP));
+    {
+      const Point equP(algorithm_->getProblem().getEqualityConstraint()(inP));
+      equalityHistory_->add(equP);
+      for (UnsignedInteger i = 0; i < equP.getDimension(); ++ i)
+        if (std::abs(equP[i]) > maximumConstraintError)
+          constraintError = std::max(constraintError, std::abs(equP[i]));
+      outV.add(equP);
+    }
+
     if (algorithm_->getProblem().hasInequalityConstraint())
-      outP.add(-1.0 * algorithm_->getProblem().getInequalityConstraint()(inP));// opposite convention for ineq constraints
+    {
+      const Point inequP(algorithm_->getProblem().getInequalityConstraint()(inP));
+      inequalityHistory_->add(inequP);
+      for (UnsignedInteger i = 0; i < inequP.getDimension(); ++ i)
+        if (inequP[i] < -maximumConstraintError)
+          constraintError = std::max(constraintError, std::abs(inequP[i]));
+      outV.add(-1.0 * inequP);// opposite convention for ineq constraints
+    }
 
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
     if (!(algorithm_->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
       throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << algorithm_->getMaximumTimeDuration() << " s)";
+    algorithm_->result_.setTimeDuration(timeDuration);
+    algorithm_->result_.setCallsNumber(evaluationInputHistory_->getSize());
+    algorithm_->result_.store(inP, outP, 0.0, 0.0, 0.0, constraintError, maximumConstraintError);
 
     // callbacks
     if (algorithm_->progressCallback_.first)
@@ -135,7 +163,7 @@ struct PagmoProblem
     }
     if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
       throw InterruptionException(HERE) << "User stopped optimization";
-    return outP.toStdVector();
+    return outV.toStdVector();
   }
 
   std::pair<pagmo::vector_double, pagmo::vector_double> get_bounds() const
@@ -184,7 +212,7 @@ struct PagmoProblem
       totalDimension += problem.getEqualityConstraint().getOutputDimension();
     if (problem.hasInequalityConstraint())
       totalDimension += problem.getInequalityConstraint().getOutputDimension();
-    Sample outS(0, totalDimension);
+    Sample outV(0, totalDimension);
     UnsignedInteger offset = 0;
     for (UnsignedInteger outerSampling = 0; outerSampling < blockNumber; ++ outerSampling)
     {
@@ -195,25 +223,49 @@ struct PagmoProblem
         const Point xsi(xs.begin() + offset + i * inputDimension, xs.begin() + offset + (i + 1) * inputDimension);
         inSb[i] = renumber(xsi);
       }
-      Sample outSb(problem.getObjective()(inSb));
+      const Sample outSb(problem.getObjective()(inSb));
       evaluationInputHistory_->add(inSb);
       evaluationOutputHistory_->add(outSb);
+      Sample outVb(outSb);
       for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
         for (UnsignedInteger j = 0; j < outputDimension; ++ j)
           if (!problem.isMinimization(j))
-            outSb(i, j) *= -1.0;
+            outVb(i, j) *= -1.0;
 
+      Point constraintError(effectiveBlockSize);
+      const Scalar maximumConstraintError = algorithm_->getMaximumConstraintError();
       if (problem.hasEqualityConstraint())
-        outSb.stack(problem.getEqualityConstraint()(inSb));
+      {
+        const Sample eqSb(problem.getEqualityConstraint()(inSb));
+        equalityHistory_->add(eqSb);
+        for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
+          for (UnsignedInteger j = 0; j < eqSb.getDimension(); ++ j)
+            if (std::abs(eqSb(i, j)) > maximumConstraintError)
+              constraintError[i] = std::max(constraintError[i], std::abs(eqSb(i, j)));
+        outVb.stack(eqSb);
+      }
       if (problem.hasInequalityConstraint())
-        outSb.stack(-1.0 * problem.getInequalityConstraint()(inSb));
-      outS.add(outSb);
+      {
+        const Sample ineqSb(problem.getInequalityConstraint()(inSb));
+        inequalityHistory_->add(ineqSb);
+        for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
+          for (UnsignedInteger j = 0; j < ineqSb.getDimension(); ++ j)
+            if (ineqSb(i, j) < -maximumConstraintError)
+              constraintError[i] = std::max(constraintError[i], std::abs(ineqSb(i, j)));
+        outVb.stack(-1.0 * ineqSb);
+      }
+      outV.add(outVb);
       offset += blockSize * inputDimension;
 
       std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
       const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
       if (!(algorithm_->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm_->getMaximumTimeDuration()))
         throw TimeoutException(HERE) << "Duration (" << timeDuration << "s) exceeds maximum duration (" << algorithm_->getMaximumTimeDuration() << " s)";
+      algorithm_->result_.setTimeDuration(timeDuration);
+      algorithm_->result_.setCallsNumber(evaluationInputHistory_->getSize());
+
+      for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
+        algorithm_->result_.store(inSb[i], outSb[i], 0.0, 0.0, 0.0, constraintError[i], maximumConstraintError);
 
       // callbacks
       if (algorithm_->progressCallback_.first)
@@ -224,7 +276,7 @@ struct PagmoProblem
       if (algorithm_->stopCallback_.first && algorithm_->stopCallback_.first(algorithm_->stopCallback_.second))
         throw InterruptionException(HERE) << "User stopped optimization";
     }
-    return outS.getImplementation()->getData().toStdVector();
+    return outV.getImplementation()->getData().toStdVector();
   }
 
   bool has_batch_fitness() const
@@ -253,10 +305,12 @@ struct PagmoProblem
     t0_ = t0;
   }
 
-  const Pagmo * algorithm_ = nullptr;
+  Pagmo *algorithm_ = nullptr;
   Indices renum_;
   Sample *evaluationInputHistory_ = nullptr;
   Sample *evaluationOutputHistory_ = nullptr;
+  Sample *equalityHistory_ = nullptr;
+  Sample *inequalityHistory_ = nullptr;
   std::chrono::steady_clock::time_point t0_;
 };
 #endif
@@ -270,6 +324,7 @@ static const Factory<Pagmo> Factory_Pagmo;
 Pagmo::Pagmo(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , seed_(ResourceMap::GetAsUnsignedInteger("Pagmo-InitialSeed"))
+  , incrementalEvolution_(ResourceMap::GetAsBool("Pagmo-DefaultIncrementalEvolution"))
 {
   setAlgorithmName(algoName);
 }
@@ -282,6 +337,7 @@ Pagmo::Pagmo(const OptimizationProblem & problem,
   : OptimizationAlgorithmImplementation()
   , startingSample_(startingSample)
   , seed_(ResourceMap::GetAsUnsignedInteger("Pagmo-InitialSeed"))
+  , incrementalEvolution_(ResourceMap::GetAsBool("Pagmo-DefaultIncrementalEvolution"))
 {
   setAlgorithmName(algoName);
   setProblem(problem);
@@ -345,7 +401,9 @@ void Pagmo::run()
 #ifdef OPENTURNS_HAVE_PAGMO
   Sample evaluationInputHistory;
   Sample evaluationOutputHistory;
-  PagmoProblem pproblem(this, &evaluationInputHistory, &evaluationOutputHistory);
+  Sample equalityHistory;
+  Sample inequalityHistory;
+  PagmoProblem pproblem(this, &evaluationInputHistory, &evaluationOutputHistory, &equalityHistory, &inequalityHistory);
   std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
   pproblem.setT0(t0);
   pagmo::problem prob(pproblem);
@@ -362,6 +420,7 @@ void Pagmo::run()
   }
 
   pagmo::algorithm algo;
+  const UnsignedInteger gen = incrementalEvolution_ ? 1 : getMaximumIterationNumber();
   if (algoName_ == "gaco")
   {
     // gaco(unsigned gen = 1u, unsigned ker = 63u, double q = 1.0, double oracle = 0., double acc = 0.01, unsigned threshold = 1u, unsigned n_gen_mark = 7u, unsigned impstop = 100000u, unsigned evalstop = 100000u, double focus = 0., bool memory = false, unsigned seed = pagmo::random_device::next())
@@ -376,7 +435,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, size);
-    pagmo::gaco algorithm_impl(getMaximumIterationNumber(), ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumCallsNumber(), focus, memory);
+    pagmo::gaco algorithm_impl(gen, ker, q, oracle, acc, threshold, n_gen_mark, impstop, getMaximumCallsNumber(), focus, memory);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -392,7 +451,7 @@ void Pagmo::run()
     const Scalar F = ResourceMap::GetAsScalar("Pagmo-de-F");
     const Scalar CR = ResourceMap::GetAsScalar("Pagmo-de-CR");
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-de-variant");
-    algo = pagmo::de(getMaximumIterationNumber(), F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
+    algo = pagmo::de(gen, F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
   }
   else if (algoName_ == "sade")
   {
@@ -400,19 +459,19 @@ void Pagmo::run()
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-sade-variant");
     const UnsignedInteger variant_adptv = ResourceMap::GetAsUnsignedInteger("Pagmo-sade-variant_adptv");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::sade(getMaximumIterationNumber(), variant, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
+    algo = pagmo::sade(gen, variant, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
   }
   else if (algoName_ == "de1220")
   {
     // de1220(unsigned gen = 1u, std::vector<unsigned> allowed_variants = de1220_statics<void>::allowed_variants, unsigned variant_adptv = 1u, double ftol = 1e-6, double xtol = 1e-6, bool memory = false, unsigned seed = pagmo::random_device::next())
     const UnsignedInteger variant_adptv = ResourceMap::GetAsUnsignedInteger("Pagmo-de1220-variant_adptv");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::de1220(getMaximumIterationNumber(), pagmo::de1220_statics<void>::allowed_variants, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
+    algo = pagmo::de1220(gen, pagmo::de1220_statics<void>::allowed_variants, variant_adptv, getMaximumResidualError(), getMaximumAbsoluteError(), memory);
   }
   else if (algoName_ == "gwo")
   {
     // gwo(unsigned gen = 1u, unsigned seed = pagmo::random_device::next())
-    algo = pagmo::gwo(getMaximumIterationNumber());
+    algo = pagmo::gwo(gen);
   }
   else if (algoName_ == "ihs")
   {
@@ -422,7 +481,7 @@ void Pagmo::run()
     const Scalar ppar_max = ResourceMap::GetAsScalar("Pagmo-ihs-ppar_max");
     const Scalar bw_min = ResourceMap::GetAsScalar("Pagmo-ihs-bw_min");
     const Scalar bw_max = ResourceMap::GetAsScalar("Pagmo-ihs-bw_max");
-    algo = pagmo::ihs(getMaximumIterationNumber(), phmcr, ppar_min, ppar_max, bw_min, bw_max);
+    algo = pagmo::ihs(gen, phmcr, ppar_min, ppar_max, bw_min, bw_max);
   }
   else if (algoName_ == "pso")
   {
@@ -435,7 +494,7 @@ void Pagmo::run()
     const UnsignedInteger neighb_type = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_type");
     const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    algo = pagmo::pso(getMaximumIterationNumber(), omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
+    algo = pagmo::pso(gen, omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
   }
   else if (algoName_ == "pso_gen")
   {
@@ -448,7 +507,7 @@ void Pagmo::run()
     const UnsignedInteger neighb_type = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_type");
     const UnsignedInteger neighb_param = ResourceMap::GetAsUnsignedInteger("Pagmo-pso-neighb_param");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    pagmo::pso_gen algorithm_impl(getMaximumIterationNumber(), omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
+    pagmo::pso_gen algorithm_impl(gen, omega, eta1, eta2, max_vel, variant, neighb_type, neighb_param, memory);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -461,7 +520,7 @@ void Pagmo::run()
   else if (algoName_ == "sea")
   {
     // sea(unsigned gen = 1u, unsigned seed = pagmo::random_device::next())
-    algo = pagmo::sea(getMaximumIterationNumber());
+    algo = pagmo::sea(gen);
   }
   else if (algoName_ == "sga")
   {
@@ -474,7 +533,7 @@ void Pagmo::run()
     const String crossover = ResourceMap::GetAsString("Pagmo-sga-crossover");
     const String mutation = ResourceMap::GetAsString("Pagmo-sga-mutation");
     const String selection = ResourceMap::GetAsString("Pagmo-sga-selection");
-    algo = pagmo::sga(getMaximumIterationNumber(), cr, eta_c, m, param_m, param_s, crossover, mutation, selection);
+    algo = pagmo::sga(gen, cr, eta_c, m, param_m, param_s, crossover, mutation, selection);
   }
   else if (algoName_ == "simulated_annealing")
   {
@@ -491,7 +550,7 @@ void Pagmo::run()
   {
     // bee_colony(unsigned gen = 1u, unsigned limit = 20u, unsigned seed = pagmo::random_device::next())
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-bee_colony-limit");
-    algo = pagmo::bee_colony(getMaximumIterationNumber(), limit);
+    algo = pagmo::bee_colony(gen, limit);
   }
 #ifdef PAGMO_WITH_EIGEN3
   else if (algoName_ == "cmaes")
@@ -504,7 +563,7 @@ void Pagmo::run()
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-cmaes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     const Bool force_bounds = getProblem().hasBounds();
-    pagmo::cmaes algorithm_impl(getMaximumIterationNumber(), cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
+    pagmo::cmaes algorithm_impl(gen, cc, cs, c1, cmu, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -523,7 +582,7 @@ void Pagmo::run()
     const Scalar sigma0 = ResourceMap::GetAsScalar("Pagmo-xnes-sigma0");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     const Bool force_bounds = getProblem().hasBounds();
-    algo = pagmo::xnes(getMaximumIterationNumber(), eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
+    algo = pagmo::xnes(gen, eta_mu, eta_sigma, eta_b, sigma0, getMaximumResidualError(), getMaximumAbsoluteError(), memory, force_bounds);
   }
 #endif
   else if (algoName_ == "nsga2")
@@ -541,7 +600,7 @@ void Pagmo::run()
     const Scalar eta_c = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_c");
     const Scalar m = ResourceMap::GetAsScalar("Pagmo-nsga2-m");
     const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-nsga2-eta_m");
-    pagmo::nsga2 algorithm_impl(getMaximumIterationNumber(), cr, eta_c, m, eta_m);
+    pagmo::nsga2 algorithm_impl(gen, cr, eta_c, m, eta_m);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -563,7 +622,7 @@ void Pagmo::run()
     const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
-    algo = pagmo::moead(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+    algo = pagmo::moead(gen, weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
   }
 #if PAGMO_VERSION_NR >= 201900
   else if (algoName_ == "moead_gen")
@@ -578,7 +637,7 @@ void Pagmo::run()
     const Scalar realb = ResourceMap::GetAsScalar("Pagmo-moead-realb");
     const UnsignedInteger limit = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-limit");
     const Bool preserve_diversity = ResourceMap::GetAsBool("Pagmo-moead-preserve_diversity");
-    pagmo::moead_gen algorithm_impl(getMaximumIterationNumber(), weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
+    pagmo::moead_gen algorithm_impl(gen, weight_generation, decomposition, neighbours, CR, F, eta_m, realb, limit, preserve_diversity);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -633,7 +692,7 @@ void Pagmo::run()
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
     if (!memory)
       ker = std::min(ker, size);
-    pagmo::maco algorithm_impl(getMaximumIterationNumber(), ker, q, threshold, n_gen_mark, getMaximumCallsNumber(), focus, memory);
+    pagmo::maco algorithm_impl(gen, ker, q, threshold, n_gen_mark, getMaximumCallsNumber(), focus, memory);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -654,7 +713,7 @@ void Pagmo::run()
     const UnsignedInteger leader_selection_range = ResourceMap::GetAsUnsignedInteger("Pagmo-nspso-leader_selection_range");
     const String diversity_mechanism = ResourceMap::GetAsString("Pagmo-nspso-diversity_mechanism");
     const Bool memory = ResourceMap::GetAsBool("Pagmo-memory");
-    pagmo::nspso algorithm_impl(getMaximumIterationNumber(), omega, c1, c2, chi, v_coeff, leader_selection_range, diversity_mechanism, memory);
+    pagmo::nspso algorithm_impl(gen, omega, c1, c2, chi, v_coeff, leader_selection_range, diversity_mechanism, memory);
 #if PAGMO_VERSION_NR >= 201901
     // requires https://github.com/esa/pagmo2/pull/575
     algorithm_impl.set_bfe(pagmo::bfe{});
@@ -668,6 +727,8 @@ void Pagmo::run()
     throw NotYetImplementedException(HERE) << algoName_;
   algo.set_verbosity(Log::HasDebug());
   algo.set_seed(seed_);
+
+  result_ = OptimizationResult(getProblem());
 
   // evaluate initial population
   pagmo::population pop(prob);
@@ -704,103 +765,86 @@ void Pagmo::run()
 #endif
 
   // evolve initial population over several generations
-  pop = algo.evolve(pop);
-
-  // retrieve results
-  result_ = OptimizationResult(getProblem());
-  result_.setCallsNumber(evaluationInputHistory.getSize());
-  result_.setIterationNumber(getMaximumIterationNumber());
-
-  std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
-  result_.setTimeDuration(timeDuration);
-
-  Scalar optimalValue = 0.0;
-  Sample finalPoints(0, getProblem().getDimension());
-
-  // retrieve final population
-  for (UnsignedInteger i = 0; i < pop.size(); ++ i)
+  const UnsignedInteger ngen = incrementalEvolution_ ? getMaximumIterationNumber() : 1;
+  for (UnsignedInteger igen = 1; igen <= ngen; ++ igen)
   {
-    const pagmo::vector_double x(pop.get_x()[i]);
-    const Point inP(pproblem.renumber(Point(x.begin(), x.end())));
-    finalPoints.add(inP);
-  }
+    pop = algo.evolve(pop);
 
-  // filter according to constraints
-  if (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
-  {
-    Sample finalPointsConstrained(0, getProblem().getDimension());
-    Sample ineqOutput;
-    if (getProblem().hasInequalityConstraint())
-      ineqOutput = getProblem().getInequalityConstraint()(finalPoints);
-    Sample eqOutput;
-    if (getProblem().hasEqualityConstraint())
-      eqOutput = getProblem().getEqualityConstraint()(finalPoints);
+    result_.setCallsNumber(evaluationInputHistory.getSize());
+    result_.setIterationNumber(igen);
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
+    result_.setTimeDuration(timeDuration);
+
+    Sample finalPoints(0, getProblem().getDimension());
+
+    // retrieve final population
     for (UnsignedInteger i = 0; i < pop.size(); ++ i)
     {
-      Bool ok = true;
+      const pagmo::vector_double x(pop.get_x()[i]);
+      const Point inP(pproblem.renumber(Point(x.begin(), x.end())));
+      finalPoints.add(inP);
+    }
+
+    // filter according to constraints
+    if (getProblem().hasInequalityConstraint() || getProblem().hasEqualityConstraint())
+    {
+      Sample finalPointsConstrained(0, getProblem().getDimension());
+      Sample ineqOutput;
       if (getProblem().hasInequalityConstraint())
-        for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
-          ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+      {
+        const DatabaseFunction xToIneq(evaluationInputHistory, inequalityHistory);
+        ineqOutput = xToIneq(finalPoints);
+      }
+      Sample eqOutput;
       if (getProblem().hasEqualityConstraint())
-        for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
-          ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
-      if (ok)
-        finalPointsConstrained.add(finalPoints[i]);
-    }
-    if (finalPointsConstrained.getSize())
-      finalPoints = finalPointsConstrained;
-  }
-
-  // we want to retrieve evaluations before penalization to avoid MaxScalar values
-  const DatabaseFunction xToY(evaluationInputHistory, evaluationOutputHistory);
-  const Sample finalValues(xToY(finalPoints));
-  result_.setFinalPoints(finalPoints);
-  result_.setFinalValues(finalValues);
-
-  const UnsignedInteger objectiveDimension = getProblem().getObjective().getOutputDimension();
-  if (objectiveDimension == 1)
-  {
-    Point optimalPoint;
-    for (UnsignedInteger i = 0; i < finalPoints.getSize(); ++ i)
-    {
-      const Point inP(finalPoints[i]);
-      const Point outP(finalValues[i]);
-      if (i == 0)
       {
-        optimalPoint = inP;
-        optimalValue = outP[0];
+        const DatabaseFunction xToEq(evaluationInputHistory, equalityHistory);
+        eqOutput = xToEq(finalPoints);
       }
-      if ((getProblem().isMinimization() && (outP[0] < optimalValue))
-          || (!getProblem().isMinimization() && (outP[0] > optimalValue)))
+      for (UnsignedInteger i = 0; i < pop.size(); ++ i)
       {
-        optimalPoint = inP;
-        optimalValue = outP[0];
+        Bool ok = true;
+        if (getProblem().hasInequalityConstraint())
+          for (UnsignedInteger j = 0; j < ineqOutput.getDimension(); ++ j)
+            ok = ok && (ineqOutput(i, j) >= -getMaximumConstraintError());
+        if (getProblem().hasEqualityConstraint())
+          for (UnsignedInteger j = 0; j < eqOutput.getDimension(); ++ j)
+            ok = ok && (std::abs(eqOutput(i, j)) <= getMaximumConstraintError());
+        if (ok)
+          finalPointsConstrained.add(finalPoints[i]);
       }
+      // we still want to return something in case there are no feasible points
+      if (finalPointsConstrained.getSize())
+        finalPoints = finalPointsConstrained;
     }
-    result_.setOptimalPoint(optimalPoint);
-    result_.setOptimalValue(Point(1, optimalValue));
-  }
-  else
-  {
-    // retrieve non-penalized output values instead of using pop.get_f
-    std::vector<std::vector<double> > popf;
-    for (UnsignedInteger i = 0; i < finalValues.getSize(); ++ i)
-    {
-      Point outP(finalValues[i]);
-      for (UnsignedInteger j = 0; j < outP.getDimension(); ++ j)
-        if (!getProblem().isMinimization(j))
-          outP[j] *= -1.0;
-      popf.push_back(outP.toStdVector());
-    }
-    // compute the fronts
-    std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(popf)));
-    Collection<Indices> frontIndices(fronts.size());
-    for (UnsignedInteger i = 0; i < fronts.size(); ++ i)
-      frontIndices[i] = Indices(fronts[i].begin(), fronts[i].end());
-    result_.setParetoFrontsIndices(IndicesCollection(frontIndices));
-  }
 
+    // we want to retrieve evaluations before penalization to avoid MaxScalar values
+    const DatabaseFunction xToY(evaluationInputHistory, evaluationOutputHistory);
+    const Sample finalValues(xToY(finalPoints));
+    result_.setFinalPoints(finalPoints);
+    result_.setFinalValues(finalValues);
+
+    if (getProblem().getObjective().getOutputDimension() > 1)
+    {
+      // retrieve non-penalized output values instead of using pop.get_f
+      std::vector<std::vector<double> > popf;
+      for (UnsignedInteger i = 0; i < finalValues.getSize(); ++ i)
+      {
+        Point outP(finalValues[i]);
+        for (UnsignedInteger j = 0; j < outP.getDimension(); ++ j)
+          if (!getProblem().isMinimization(j))
+            outP[j] *= -1.0;
+        popf.push_back(outP.toStdVector());
+      }
+      // compute the fronts
+      std::vector<std::vector<pagmo::pop_size_t> > fronts(std::get<0>(pagmo::fast_non_dominated_sorting(popf)));
+      Collection<Indices> frontIndices(fronts.size());
+      for (UnsignedInteger i = 0; i < fronts.size(); ++ i)
+        frontIndices[i] = Indices(fronts[i].begin(), fronts[i].end());
+      result_.setParetoFrontsIndices(IndicesCollection(frontIndices));
+    }
+  }
 #else
   throw NotYetImplementedException(HERE) << "No Pagmo support";
 #endif
@@ -900,6 +944,17 @@ UnsignedInteger Pagmo::getBlockSize() const
   return blockSize_;
 }
 
+/* Incremental mode accessor */
+void Pagmo::setIncrementalEvolution(Bool incrementalEvolution)
+{
+  incrementalEvolution_ = incrementalEvolution;
+}
+
+Bool Pagmo::getIncrementalEvolution() const
+{
+  return incrementalEvolution_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Pagmo::save(Advocate & adv) const
 {
@@ -908,6 +963,7 @@ void Pagmo::save(Advocate & adv) const
   adv.saveAttribute("startingSample_", startingSample_);
   adv.saveAttribute("seed_", seed_);
   adv.saveAttribute("blockSize_", blockSize_);
+  adv.saveAttribute("incrementalEvolution_", incrementalEvolution_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -924,6 +980,8 @@ void Pagmo::load(Advocate & adv)
   }
   adv.loadAttribute("seed_", seed_);
   adv.loadAttribute("blockSize_", blockSize_);
+  if (adv.hasAttribute("incrementalEvolution_")) // OT>=1.26
+    adv.loadAttribute("incrementalEvolution_", incrementalEvolution_);
 }
 
 END_NAMESPACE_OPENTURNS

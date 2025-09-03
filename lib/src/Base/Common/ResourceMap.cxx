@@ -820,6 +820,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Pagmo-InitialSeed", 0);
   addAsString("Pagmo-UnconstrainMethod", "death penalty");
   addAsBool("Pagmo-memory", false);
+  addAsBool("Pagmo-DefaultIncrementalEvolution", false);
   // gaco
   addAsUnsignedInteger("Pagmo-gaco-ker", 63);
   addAsScalar("Pagmo-gaco-q", 1.0);

@@ -231,3 +231,25 @@ Returns
 -------
 algoName : str
     The identifier of the algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::setIncrementalEvolution
+"Accessor to the evolution mode.
+
+Parameters
+----------
+incrementalGeneration : bool
+    Whether to externally loop over each generation instead of evolving all generations in one go,
+    allowing to continuously report the population and fronts in the result."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pagmo::getIncrementalEvolution
+"Accessor to the evolution mode.
+
+Returns
+-------
+incrementalGeneration : bool
+    Whether to externally loop over each generation instead of evolving all generations in one go,
+    allowing to continuously report the population and fronts in the result."

@@ -79,6 +79,10 @@ public:
   void setStartingSample(const Sample & startingSample) override;
   Sample getStartingSample() const override;
 
+  /** Incremental evolution accessor */
+  void setIncrementalEvolution(Bool incrementalEvolution);
+  Bool getIncrementalEvolution() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -101,6 +105,9 @@ private:
 
   // batch evaluation granularity
   UnsignedInteger blockSize_ = 1;
+
+  // external loop over generations to continuously update population/fronts in result
+  Bool incrementalEvolution_ = false;
 
 } ; /* class Pagmo */
 
