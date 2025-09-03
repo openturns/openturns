@@ -164,7 +164,7 @@ Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
   if (tau.norm() == 0)
-    return outputCovariance_(0, 0);
+    return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
 }
@@ -185,9 +185,11 @@ Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_ite
   }
   tauNorm = sqrt(tauNorm);
   if (tauNorm == 0)
-    return outputCovariance_(0, 0);
+    return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
+  // call getImplementation to avoid write accessor as outputCovariance_ is declared mutable
+  // which is triggering copyOnWrite resulting TBB threading issues
 }
 
 Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
@@ -197,7 +199,7 @@ Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
   if (std::abs(tau) <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0);
+    return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
 }
@@ -225,8 +227,8 @@ struct DiracCovarianceModelDiscretizePolicy
     {
       const UnsignedInteger indexBlock = index * dimension_;
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        for (UnsignedInteger i = 0; i < dimension_; ++i)
-          output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_(i, j);
+        for (UnsignedInteger i = j; i < dimension_; ++i)
+          output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_.getImplementation()->operator()(i, j);
     }
   }
 }; /* end struct DiracCovarianceModelDiscretizePolicy */
