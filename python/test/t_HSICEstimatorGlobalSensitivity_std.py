@@ -77,3 +77,13 @@ for key in [True, False]:
 
     pvaluesAs = hsic.getPValuesAsymptotic()
     ott.assert_almost_equal(pvaluesAs, [0.00000000, 0.33271992, 0.00165620])
+
+# thread-safety issue in DiracCovarianceModel
+for key in [True, False]:
+    ot.ResourceMap.SetAsBool("DiracCovarianceModel-CheckUnique", key)
+    n = 20
+    x = ot.Sample(n, 1)
+    y = ot.Sample(n, 1)
+    covs = [ot.DiracCovarianceModel()] * 2
+    for i in range(10000):
+        globHSIC = ot.HSICEstimatorGlobalSensitivity(covs, x, y, ot.HSICVStat())
