@@ -151,7 +151,7 @@ SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
   // If tau.norm1 is zero we compute the covariance matrix
   // Otherwise the returned value is 0
-  if (tau.norm() == 0)
+  if (tau.norm() <= SpecFunc::ScalarEpsilon)
     return outputCovariance_;
   else
     return SquareMatrix(outputDimension_).getImplementation();
@@ -163,7 +163,7 @@ Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
     throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
-  if (tau.norm() == 0)
+  if (tau.norm() <= SpecFunc::ScalarEpsilon)
     return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
@@ -184,7 +184,7 @@ Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_ite
     tauNorm += dx * dx;
   }
   tauNorm = sqrt(tauNorm);
-  if (tauNorm == 0)
+  if (tauNorm <= SpecFunc::ScalarEpsilon)
     return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
