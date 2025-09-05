@@ -56,3 +56,12 @@ OT_OptimizationProblem_getResidualFunction_doc
 OT_OptimizationProblem_hasResidualFunction_doc
 %feature("docstring") OT::OptimizationProblem::setVariablesType
 OT_OptimizationProblem_setVariablesType_doc
+
+%feature("docstring") OT::OptimizationProblem::isLinear
+OT_OptimizationProblem_isLinear_doc
+%feature("docstring") OT::OptimizationProblem::getLinearCost
+OT_OptimizationProblem_getLinearCost_doc
+%feature("docstring") OT::OptimizationProblem::getLinearConstraintCoefficients
+OT_OptimizationProblem_getLinearConstraintCoefficients_doc
+%feature("docstring") OT::OptimizationProblem::getLinearConstraintBounds
+OT_OptimizationProblem_getLinearConstraintBounds_doc

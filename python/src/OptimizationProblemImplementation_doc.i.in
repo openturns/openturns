@@ -442,8 +442,65 @@ isContinuous : bool
 %feature("docstring") OT::OptimizationProblemImplementation::isContinuous
 OT_OptimizationProblem_isContinuous_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_isLinear_doc
+"Check if the problem is linear.
+
+Returns
+-------
+isLinear : bool
+    Returns True if the problem is of linear type."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::isLinear
+OT_OptimizationProblem_isLinear_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getLinearCost_doc
+"Accessor to the linear cost.
+
+Only relevant for the linear problem type.
+
+Returns
+-------
+cost : :class:`~openturns.Point`
+    Linear cost term.
+"
+%enddef
+%feature("docstring") OT::OptimizationProblemImplementation::getLinearCost
+OT_OptimizationProblem_getLinearCost_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getLinearConstraintCoefficients_doc
+"Accessor to the linear constraint term.
+
+Only relevant for the linear problem type.
+
+Returns
+-------
+A : :class:`~openturns.Matrix`
+    Linear inequality constraint term.
+"
+%enddef
+%feature("docstring") OT::OptimizationProblemImplementation::getLinearConstraintCoefficients
+OT_OptimizationProblem_getLinearConstraintCoefficients_doc
 
 
+// ---------------------------------------------------------------------
 
+%define OT_OptimizationProblem_getLinearConstraintBounds_doc
+"Accessor to the linear constraint bounds.
 
+Only relevant for the linear problem type.
 
+Returns
+-------
+LU : :class:`~openturns.Interval`
+    Linear inequality constraint bounds.
+"
+%enddef
+%feature("docstring") OT::OptimizationProblemImplementation::getLinearConstraintBounds
+OT_OptimizationProblem_getLinearConstraintBounds_doc

@@ -6,26 +6,16 @@
     To use it, import the ``openturns.experimental`` submodule.
 
 This class exposes the linear solver from the `HiGHS <https://highs.dev/>`_ library.
+It is only meant to be used with linear (possibly mixed-integer) optimization problems.
 
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     The problem
 
-Examples
+See Also
 --------
->>> import openturns as ot
->>> import openturns.experimental as otexp
->>> dim = 2
->>> model = ot.SymbolicFunction(['x', 'y'], ['2*x+3*y+5'])
->>> bounds = ot.Interval([-4.0] * dim, [4.0] * dim)
->>> problem = ot.OptimizationProblem(model)
->>> problem.setBounds(bounds)
->>> algo = otexp.HiGHS(problem)
->>> algo.run() # doctest: +SKIP
->>> result = algo.getResult() # doctest: +SKIP
->>> x_star = result.getOptimalPoint() # doctest: +SKIP
->>> y_star = result.getOptimalValue() # doctest: +SKIP
+openturns.experimental.LinearProblem
 
 Notes
 -----
@@ -36,4 +26,47 @@ For every option ``optionName``, simply add a key named ``HiGHS-optionName`` wit
     >>> import openturns as ot
     >>> ot.ResourceMap.AddAsBool('HiGHS-output_flag', True)
     >>> ot.ResourceMap.AddAsUnsignedInteger('HiGHS-threads', 4)
+
+Examples
+--------
+Solve a mixed integer linear optimization problem with objective:
+
+.. math::
+
+    f = 1.1 x_0 + x_1
+
+with inequality constraints:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        & x_1 & \leq 7\\
+        5 & \leq x_0 + 2x_1 & \leq 15\\
+        6 & \leq 3x_0 + 2x_1 & \\
+    \end{eqnarray*}
+
+and bound constraints:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        0 & \leq x_0 & \leq 4\\
+        1 & \leq x_1 &
+    \end{eqnarray*}
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> cost = [1.1, 1.0]
+>>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
+>>> A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
+>>> LU = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
+>>> problem = otexp.LinearProblem(cost, bounds, A, LU)
+>>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
+>>> algo = otexp.HiGHS(problem)
+>>> algo.run() # doctest: +SKIP
+>>> result = algo.getResult() # doctest: +SKIP
+>>> x_star = result.getOptimalPoint() # doctest: +SKIP
+>>> y_star = result.getOptimalValue() # doctest: +SKIP
 "

@@ -18,6 +18,7 @@ Refer to :ref:`optimization_algorithm`.
     OptimizationProblem
     NearestPointProblem
     LeastSquaresProblem
+    experimental.LinearProblem
     OptimizationAlgorithm
     OptimizationResult
     AbdoRackwitz

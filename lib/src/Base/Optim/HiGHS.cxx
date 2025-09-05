@@ -23,7 +23,7 @@
 #include "openturns/OTconfig.hxx"
 
 #ifdef OPENTURNS_HAVE_HIGHS
-#include "Highs.h"
+#include <Highs.h>
 #endif
 
 #include <chrono>
@@ -47,22 +47,19 @@ HiGHS::HiGHS(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
 
 {
-  // Nothing to do here
+  checkProblem(problem);
 }
 
 
 /* Check whether this problem can be solved by this solver */
 void HiGHS::checkProblem(const OptimizationProblem & problem) const
 {
-  // Cannot solve multi-objective problems
-  if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "HiGHS does not support multi-objective optimization";
-
   // No LeastSquaresProblem / NearestPointProblem
-  if (problem.hasResidualFunction() || problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "HiGHS does not support least squares or nearest point problems";
+  if (problem.hasResidualFunction() || problem.hasLevelFunction() || problem.hasMultipleObjective())
+    throw InvalidArgumentException(HERE) << "HiGHS does not support multi-objective / least squares / nearest point problems";
 
-  if (problem.hasEqualityConstraint())
-    throw InvalidArgumentException(HERE) << "HiGHS does not support equality constraints";
+  if (!problem.isLinear())
+    throw InvalidArgumentException(HERE) << "HiGHS does not support non linear problems";
 }
 
 
@@ -77,17 +74,14 @@ void HiGHS::run()
 
   HighsModel model;
   model.lp_.num_col_ = problemDimension;
-  model.lp_.num_row_ = getProblem().getInequalityConstraint().getOutputDimension();
+  model.lp_.num_row_ = getProblem().getLinearConstraintCoefficients().getNbRows();
 
   // objective function
-  const Point origin(problemDimension, 0.0);
   model.lp_.sense_ = getProblem().isMinimization() ? ObjSense::kMinimize : ObjSense::kMaximize;
-  const Scalar f0 = getProblem().getObjective()(origin)[0];
-  model.lp_.offset_ = f0;
-  const Matrix grad0(getProblem().getObjective().gradient((origin)));
+  model.lp_.offset_ = 0.0;
   model.lp_.col_cost_.resize(model.lp_.num_col_);
   for (UnsignedInteger i = 0; i < problemDimension; ++ i)
-    model.lp_.col_cost_[i] = grad0(i, 0);
+    model.lp_.col_cost_[i] = getProblem().getLinearCost()[i];
 
   // bound constraints
   model.lp_.col_lower_ = std::vector<double>(model.lp_.num_col_, -SpecFunc::MaxScalar);
@@ -95,8 +89,10 @@ void HiGHS::run()
   if (getProblem().hasBounds())
     for (int col = 0; col < model.lp_.num_col_; ++ col)
     {
-      model.lp_.col_lower_[col] = getProblem().getBounds().getLowerBound()[col];
-      model.lp_.col_upper_[col] = getProblem().getBounds().getUpperBound()[col];
+      if (getProblem().getBounds().getFiniteLowerBound()[col])
+        model.lp_.col_lower_[col] = getProblem().getBounds().getLowerBound()[col];
+      if (getProblem().getBounds().getFiniteUpperBound()[col])
+        model.lp_.col_upper_[col] = getProblem().getBounds().getUpperBound()[col];
     }
 
   // variable types
@@ -115,7 +111,7 @@ void HiGHS::run()
     }
 
   // inequality constraints
-  if (getProblem().hasInequalityConstraint())
+  if (model.lp_.num_row_ > 0)
   {
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     model.lp_.a_matrix_.start_.resize(model.lp_.num_col_ + 1);
@@ -123,26 +119,28 @@ void HiGHS::run()
       model.lp_.a_matrix_.start_[col] = col * model.lp_.num_row_;
     model.lp_.a_matrix_.index_.resize(model.lp_.num_col_ * model.lp_.num_row_);
     model.lp_.a_matrix_.value_.resize(model.lp_.num_col_ * model.lp_.num_row_);
-    const Matrix ineqGrad0(getProblem().getInequalityConstraint().gradient((origin)));
     for (int col = 0; col < model.lp_.num_col_; ++ col)
       for (int row = 0; row < model.lp_.num_row_; ++ row)
       {
         model.lp_.a_matrix_.index_[col * model.lp_.num_row_ + row] = row;
-        model.lp_.a_matrix_.value_[col * model.lp_.num_row_ + row] = ineqGrad0(col, row);
+        model.lp_.a_matrix_.value_[col * model.lp_.num_row_ + row] = getProblem().getLinearConstraintCoefficients()(row, col);
       }
     model.lp_.row_lower_.resize(model.lp_.num_row_);
     model.lp_.row_upper_.resize(model.lp_.num_row_);
-    const Point ineq0(getProblem().getInequalityConstraint()(origin));
     for (int row = 0; row < model.lp_.num_row_; ++ row)
     {
-      model.lp_.row_lower_[row] = -ineq0[row];
+      model.lp_.row_lower_[row] = -SpecFunc::MaxScalar;
       model.lp_.row_upper_[row] = SpecFunc::MaxScalar;
+      if (getProblem().getLinearConstraintBounds().getFiniteLowerBound()[row])
+        model.lp_.row_lower_[row] = getProblem().getLinearConstraintBounds().getLowerBound()[row] - getMaximumConstraintError();
+      if (getProblem().getLinearConstraintBounds().getFiniteUpperBound()[row])
+        model.lp_.row_upper_[row] = getProblem().getLinearConstraintBounds().getUpperBound()[row] + getMaximumConstraintError();
     }
   }
 
   // Create a Highs instance
   Highs highs;
-  highs.setOptionValue("output_flag", false);
+  highs.setOptionValue("output_flag", Log::HasDebug());
   if (getMaximumTimeDuration() > 0.0)
     highs.setOptionValue("time_limit", getMaximumTimeDuration());
 

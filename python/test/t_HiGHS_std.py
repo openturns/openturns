@@ -7,13 +7,23 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 # inspired from highs example: https://github.com/ERGO-Code/HiGHS/blob/master/examples/call_highs_from_cpp.cpp
+# min f = 1.1*x_0 + x_1
+# ineq:
+#        x_1 <= 7
+#   5 <= x_0 + 2x_1 <= 15
+#   6 <= 3x_0 + 2x_1
+# bounds:
+#   0 <= x_0 <= 4; 1 <= x_1
 ot.ResourceMap.AddAsBool("HiGHS-output_flag", True)
-f = ot.SymbolicFunction(["x0", "x1"], ["1.1*x0+x1+3"])
 bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
-ineq = ot.SymbolicFunction(["x0", "x1"], ["7-x1", "x0+2*x1-5", "15-x0-2*x1", "3*x0+2*x1-6"])
-problem = ot.OptimizationProblem(f)
-problem.setBounds(bounds)
-problem.setInequalityConstraint(ineq)
+cost = [1.1, 1.0]
+A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
+LU = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
+problem = otexp.LinearProblem(cost, bounds, A, LU)
+print(problem)
+
+sol = {ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
+       ot.OptimizationProblemImplementation.INTEGER: [0.0, 3.0]}
 for vtype in [ot.OptimizationProblemImplementation.CONTINUOUS,
               ot.OptimizationProblemImplementation.INTEGER]:
     problem.setVariablesType([vtype] * 2)
@@ -23,6 +33,4 @@ for vtype in [ot.OptimizationProblemImplementation.CONTINUOUS,
     result = algo.getResult()
     print(result)
     x = result.getOptimalPoint()
-    sol = {ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
-           ot.OptimizationProblemImplementation.INTEGER: [0.0, 3.0]}
     ott.assert_almost_equal(x, sol[vtype])

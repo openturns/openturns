@@ -214,6 +214,27 @@ void OptimizationProblemImplementation::setLevelValue(Scalar /*levelValue*/)
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelValue";
 }
 
+/* Linear flag accessor */
+Bool OptimizationProblemImplementation::isLinear() const
+{
+  return false;
+}
+
+Point OptimizationProblemImplementation::getLinearCost() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearCost";
+}
+
+Matrix OptimizationProblemImplementation::getLinearConstraintCoefficients() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintCoefficients";
+}
+
+Interval OptimizationProblemImplementation::getLinearConstraintBounds() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintBounds";
+}
+
 /* Dimension accessor */
 UnsignedInteger OptimizationProblemImplementation::getDimension() const
 {

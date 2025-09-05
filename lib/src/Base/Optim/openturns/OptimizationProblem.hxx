@@ -97,6 +97,12 @@ public:
   void setResidualFunction(const Function & residualFunction);
   Bool hasResidualFunction() const;
 
+  /** Linear function accessor */
+  Point getLinearCost() const;
+  Matrix getLinearConstraintCoefficients() const;
+  Interval getLinearConstraintBounds() const;
+  Bool isLinear() const;
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 

@@ -101,6 +101,12 @@ public:
   virtual void setResidualFunction(const Function & residualFunction);
   virtual Bool hasResidualFunction() const;
 
+  /** Linear function accessor */
+  virtual Point getLinearCost() const;
+  virtual Matrix getLinearConstraintCoefficients() const;
+  virtual Interval getLinearConstraintBounds() const;
+  virtual Bool isLinear() const;
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 

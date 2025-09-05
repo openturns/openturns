@@ -31,6 +31,7 @@
 
 /* Base/Optim */
 %import optim_module.i
+%include LinearProblem.i
 %include HiGHS.i
 
 /* Base/Solver */
