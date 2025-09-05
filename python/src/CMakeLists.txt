@@ -1035,7 +1035,8 @@ ot_add_python_module(experimental experimental_module.i
                      GaussianProcessRegression.i GaussianProcessRegression_doc.i.in
                      GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i.in
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
-		     HiGHS.i HiGHS_doc.i.in
+                     HiGHS.i HiGHS_doc.i.in
+                     LinearProblem.i LinearProblem_doc.i.in
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i.in
                      RatioOfUniforms.i RatioOfUniforms_doc.i.in
                      QuantileConfidence.i QuantileConfidence_doc.i.in

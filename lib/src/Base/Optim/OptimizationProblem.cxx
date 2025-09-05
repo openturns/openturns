@@ -178,6 +178,31 @@ Bool OptimizationProblem::hasResidualFunction() const
   return getImplementation()->hasResidualFunction();
 }
 
+
+/* Linear function accessor */
+Point OptimizationProblem::getLinearCost() const
+{
+  return getImplementation()->getLinearCost();
+}
+
+
+Matrix OptimizationProblem::getLinearConstraintCoefficients() const
+{
+  return getImplementation()->getLinearConstraintCoefficients();
+}
+
+
+Interval OptimizationProblem::getLinearConstraintBounds() const
+{
+  return getImplementation()->getLinearConstraintBounds();
+}
+
+
+Bool OptimizationProblem::isLinear() const
+{
+  return getImplementation()->isLinear();
+}
+
 /* Dimension accessor */
 UnsignedInteger OptimizationProblem::getDimension() const
 {
