@@ -35,7 +35,7 @@ static const Factory<MemoizeFunction> Factory_MemoizeFunction;
 
 /* Default constructor */
 MemoizeFunction::MemoizeFunction ()
-  : FunctionImplementation()
+  : FunctionImplementation(new MemoizeEvaluation)
 {
   // Nothing to do
 }
@@ -149,7 +149,7 @@ Sample MemoizeFunction::getCacheOutput() const
 void MemoizeFunction::clearCache() const
 {
   MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
-  return p_evaluation->clearCache();
+  p_evaluation->clearCache();
 }
 
 
