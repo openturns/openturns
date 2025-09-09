@@ -24,7 +24,7 @@ Thus, if you create a :class:`~openturns.MemoizeFunction` from an unknown
 :class:`~openturns.Function`, it is better to call :meth:`clearHistory`.
 The cache size is initialized by the value of the :class:`~openturns.ResourceMap` `Cache-MaxSize` entry.
 
-By default, the cache mecanism and the history mecanism ar enabled.
+By default, the cache mechanism and the history mechanism ar enabled.
 
 See also
 --------
