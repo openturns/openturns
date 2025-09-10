@@ -210,16 +210,15 @@ int main(int, char *[])
       // Kriging variance is 0 on learning points
       GaussianProcessConditionalCovariance gccc(result);
 
-      const Point rowData = {4.4527, 0.0, 8.34404, 0.0, 0.0, 2.8883, 0.0, 5.41246, \
-                             8.34404, 0.0, 15.7824, 0.0, 0.0, 5.41246, 0.0, 10.2375
-                            };
+      const Point rowData = {2.724, 0, 3.407, 0, 0, 7082.9627, 0, 8859.2219, \
+                             3.407, 0, 4.545, 0, 0, 8859.2219, 0, 11818.623};
       const Matrix reference_covariance(4, 4, rowData);
       const SquareMatrix nullMatrix(4);
       const Point pointOfInterest = {9.5, 10.0};
       const Sample sample(Sample::BuildFromPoint(pointOfInterest));
       const CovarianceMatrix covarianceMat(gccc(sample).getCovariance());
-      assert_almost_equal(covarianceMat - reference_covariance.transpose(), nullMatrix, 0.0, 2e-2);
-
+      std::cout << covarianceMat << std::endl;
+      assert_almost_equal(covarianceMat, reference_covariance.transpose(), 0.0, 2e-2);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861
     {

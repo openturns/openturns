@@ -146,7 +146,9 @@ def test_two_outputs():
     result = algo.getResult()
     mm = result.getMetaModel()
     assert mm.getOutputDimension() == 2, "wrong output dim"
-    ott.assert_almost_equal(mm([5.5]), [-3.88, 3.90], 1e-2, 1e-3)
+    y = mm([5.5])
+    print(y)
+    ott.assert_almost_equal(y, [-3.95186, 3.79688], 1e-2, 1e-3)
 
 
 def test_stationary_fun():

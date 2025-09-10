@@ -72,10 +72,16 @@ It is also possible to proceed as follows:
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
-* *ResourceMap.SetAsBool('GaussianProcessFitter-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to
-  :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
-* *ResourceMap.SetAsBool('GaussianProcessFitter-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of
-  :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}` in the optimality condition for :math:`\sigma`.
+- The boolean entry *GaussianProcessFitter-UseAnalyticalAmplitudeEstimate* to use the reduction associated to
+  :math:`\sigma`.
+  It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
+- The boolean entry *GaussianProcessFitter-UnbiasedVariance* allows one to use the *unbiased* estimate of
+  :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}`
+  in the optimality condition for :math:`\sigma`.
+- Like other machine learning techniques, heteregeneous data (i.e., data defined with different orders of magnitude)
+  can have an impact on the training process of Gaussian Process Fitter.
+  The boolean entry *GaussianProcessFitter-OptimizationNormalization* decides whether
+  to scale input data during the hyperparameters optimization, see :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_normalization`
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
