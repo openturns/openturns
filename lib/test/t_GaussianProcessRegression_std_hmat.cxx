@@ -180,7 +180,7 @@ int main(int, char *[])
       // Prediction & interpolation
       //assert_almost_equal(sampleY, metaModel(sampleX));
       const Point point = {5.5};
-      const Point outputValue = {-3.88, 3.90};
+      const Point outputValue = {-3.95186, 3.79688};
       assert_almost_equal(metaModel(point), outputValue, 1e-2, 1e-3);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861

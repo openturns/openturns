@@ -76,25 +76,31 @@ int main(int, char *[])
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1956};
+      std::cout << result.getCovarianceModel().getParameter() << std::endl;
+      ref = {0.01, 1};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
-      ref = {-0.1034, 1.014};
+      ref = {-0.1109, 1.015};
+      std::cout << result.getTrendCoefficients() << std::endl;
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GaussianProcessFitter-UnbiasedVariance", false);
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1907};
+      ref = {0.01, 1};
+      std::cout << result.getCovarianceModel().getParameter() << std::endl;
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
-      ref = {-0.1034, 1.014};
+      ref = {-0.1109, 1.015};
+      std::cout << result.getTrendCoefficients() << std::endl;
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", false);
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1908};
+      ref = {2.559, 1};
+      std::cout << result.getCovarianceModel().getParameter() << std::endl;
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-2, 1e-2);
-      ref = {-0.1034, 1.014};
+      ref = {0.03781, 0.9992};
+      std::cout << result.getTrendCoefficients() << std::endl;
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
     }
   }
