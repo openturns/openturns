@@ -126,8 +126,9 @@ where:
   identically distributed and following the probability density function
   :math:`f_{\uY}`.
 
-The convergence graph of the probability estimator is plotted from the stored history of the values according to the
-given strategy.
+The convergence graph of the probability estimator is plotted from the stored history of the values (estimator values and its variance)
+according to the given strategy. To get the sample of values (estimator, variance), use the method :meth:`~openturns.ProbabilitySimulationAlgorithm.getConvergenceStrategy` and
+then the method :meth:`~openturns.HistoryStrategy.getSample()`.
 
 See also
 --------
