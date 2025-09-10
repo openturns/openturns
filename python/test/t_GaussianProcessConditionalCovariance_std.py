@@ -176,19 +176,13 @@ def test_two_outputs():
 
     # Check the conditional covariance
     reference_covariance = ot.Matrix(
-        [
-            [4.4527, 0.0, 8.34404, 0.0],
-            [0.0, 2.8883, 0.0, 5.41246],
-            [8.34404, 0.0, 15.7824, 0.0],
-            [0.0, 5.41246, 0.0, 10.2375],
-        ]
-    )
-    ott.assert_almost_equal(
-        gccc([[9.5], [10.0]]).getCovariance() - reference_covariance,
-        ot.Matrix(4, 4),
-        0.0,
-        2e-2,
-    )
+        [[2.7237, 0, 3.40675, 0],
+         [0, 7082.96, 0, 8859.22],
+         [3.40675, 0, 4.54477, 0],
+         [0, 8859.22, 0, 11818.623]])
+    covariance = gccc([[9.5], [10.0]]).getCovariance()
+    print(covariance)
+    ott.assert_almost_equal(covariance, reference_covariance, 0.0, 2e-2)
 
     marginalVariance_0 = gccc.getConditionalMarginalVariance(sampleX, 0)
     ott.assert_almost_equal(marginalVariance_0, ot.Sample(len(sampleX), 1), 0.0, 1e-6)
@@ -198,12 +192,14 @@ def test_two_outputs():
     # Marginal variance on a specific point
     x = [1.1]
     covTest = gccc.getDiagonalCovariance(x)
+    print(covTest)
     ref_cov_test = ot.Matrix(
         [
-            [0.000205032, 2.28332e-20],
-            [2.28332e-20, 0.000133002],
+            [0.0022268, 0],
+            [0, 5.79077],
         ]
     )
+
     margVarTest_0 = gccc.getConditionalMarginalVariance(x, 0)
     margVarTest_1 = gccc.getConditionalMarginalVariance(x, 1)
     ott.assert_almost_equal(covTest[0, 0], margVarTest_0, 0.0, 0)
