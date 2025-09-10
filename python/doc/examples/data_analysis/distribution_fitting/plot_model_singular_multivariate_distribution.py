@@ -9,26 +9,32 @@ Model a singular multivariate distribution
 # this is the case when we want to fit the joint distribution of the :math:`n_\inputDim` Karhunen Loeve
 # coefficients in the Karhunen Loeve modelisation of a process.
 #
-# A way to do that is to use the  empirical Bernstein copula implemented in
-# :class:`~openturns.EmpiricalBernsteinCopula` through its factory
-# class:`~openturns.BernsteinCopulaFactory`.
-# This copula is parameterized by the number :math:`m` of cells. This set of cells
-# partitions the sample: all the points of the same cell are grouped into a single *global* point.
+# We first show that when the copula is singular, using a kernel smoothing fitting might
+# not be a good idea.
 #
-# The empirical Bernstein copula is a mixture of products of Beta laws centered on the global point of each cell.
+# The good way to follow is to fit an empirical Bernstein copula implemented in
+# :class:`~openturns.EmpiricalBernsteinCopula` through its factory
+# class:`~openturns.BernsteinCopulaFactory`. This factory garantees that the
+# :class:`~openturns.EmpiricalBernsteinCopula` built is really a copula and not only a
+# core (ie a multivariate distribution which range is included in :math:`[0,1]^\inputDim`.
+# According to the level of singularity, the number :math:`m` of cells used to build the
+# empirical Bernstein copula differs: the higher the singularity, the larger :math:`m`.
+# 
+# The cells partition the sample: all the points of the same cell are grouped into a
+# single *global* point. The empirical Bernstein copula is a mixture of products of Beta
+# distributions centered on the global point of each cell.
+#
 # We denote by :math:`\sampleSize` the sample size. The number of global points varies according to the number of
 # cells considered (math:`m`):
 #
-# - :math:`m = N` means that all the sample has been retained: we create one cell around
-#   each point of the sample,
-# - :math:`m = 1` means the sample has been grouped into one single global point: we get the independent copula,
-# - :math:`1 < m < N` means that we create :math:`m` cells to group :math:`N` points.
+# - :math:`m = \sampleSize` means that all the sample has been retained: we create one cell around
+#   each point of the sample; in that case, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_;
+# - :math:`m = 1` means the sample has been grouped into one single global point: we get the independent copula;
+# - :math:`1 < m < \sampleSize` means that we create :math:`m` cells gathering several points.
 #
-# When  :math:`m = \sampleSize`, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
-#
-# For the  empirical Bernstein copula defined in this way to be a copula,  :math:`m`  must divide :math:`\sampleSize`.
-# Thus, if this is not the case, part of the sample is set aside in order to check this condition (see
-# :class:`~openturns.EmpiricalBernsteinCopula` for more details).
+# As the  empirical Bernstein copula defined in this way is a copula only if  :math:`m`  divides 
+# :math:`\sampleSize`, the class:`~openturns.BernsteinCopulaFactory` throws away
+# part of the sample is set aside in order to check this condition.
 #
 # A point's *zone of influence* is its cell. The larger :math:`m`, the smaller its zone of influence:
 # the final copula thus adheres strongly to the sample. The smaller :math:`m`, the larger
@@ -36,7 +42,7 @@ Model a singular multivariate distribution
 # area around it.
 #
 # So, if we know that the final copula is diffuse, we recommend to let the
-# :class:`~openturns.BernsteinCopulaFactory` automatically calculate the best number of cells to take. If
+# :class:`~openturns.BernsteinCopulaFactory` automatically calculate the optimal number of cells to take. If
 # we know that the final copula is singular, we recommend to specify the value of :math:`m` to be equal
 # to the sample size :math:`\sampleSize`.
 #
@@ -71,6 +77,8 @@ def draw(dist, Y):
 
 
 # %%
+# **Introduction**
+#
 # We consider the function :math:`f: \Rset^3 \rightarrow \Rset` defined by:
 #
 # .. math::
@@ -113,16 +121,24 @@ N = 200
 sample_Y = f(X.getSample(N))
 
 # %%
+# ** Multivariate kernel smoothing**
+#
 # We estimate the distribution of the output random vector :math:`\vect{Y}` by multivariate kernel smoothing.
 y_multi_ks = ot.KernelSmoothing().build(sample_Y)
 view = viewer.View(draw(y_multi_ks, sample_Y))
 
 # %%
+# We see that the fitting is not satisfactory: the empty regions have not been respected. The fitted copula is
+# diffuse and does not model the observed singularity correctly.
+
+# %%
+# ** Empirical Bernstein copula factory**
+#
 # Now, we estimate the distribution of :math:`\vect{Y}` splitting the estimation of the marginals
 # from the estimation of the copula:
 #
 # - the marginals are fitted by kernel smoothing,
-# - the copula is fitted using the Bernstein copula factory :class:`~openturns.BernsteinCopulaFactory` that builds
+# - the copula is fitted using the :class:`~openturns.BernsteinCopulaFactory` that builds
 #   an empirical Bernstein copula.
 #
 # First, we do not specify the bin number :math:`m`. It is equal to the value computed by the default method, which is the
@@ -139,8 +155,8 @@ view = viewer.View(draw(y_empBern, sample_Y))
 # %%
 # We see that the optimal number of cells is :math:`m = 1`: it means that one single cell is created.
 # The built copula is diffuse
-# in :math:`[0,1]^2` and the estimated copula is the independent copula.
-
+# in :math:`[0,1]^2` and the estimated copula is the independent copula. This is not satisfactpory. The optimal
+# :math:`m` is not correct for the signular copula we try to estimate.
 
 # %%
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
