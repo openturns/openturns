@@ -14,12 +14,12 @@ Model a singular multivariate distribution
 #
 # The good way to follow is to fit an empirical Bernstein copula implemented in
 # :class:`~openturns.EmpiricalBernsteinCopula` through its factory
-# class:`~openturns.BernsteinCopulaFactory`. This factory garantees that the
-# :class:`~openturns.EmpiricalBernsteinCopula` built is really a copula and not only a
-# core (ie a multivariate distribution which range is included in :math:`[0,1]^\inputDim`.
+# :class:`~openturns.BernsteinCopulaFactory`. This factory garantees that the built
+# :class:`~openturns.EmpiricalBernsteinCopula` is really a copula and not only a
+# core (ie a multivariate distribution which range is included in :math:`[0,1]^\inputDim`).
 # According to the level of singularity, the number :math:`m` of cells used to build the
 # empirical Bernstein copula differs: the higher the singularity, the larger :math:`m`.
-# 
+#
 # The cells partition the sample: all the points of the same cell are grouped into a
 # single *global* point. The empirical Bernstein copula is a mixture of products of Beta
 # distributions centered on the global point of each cell.
@@ -32,9 +32,9 @@ Model a singular multivariate distribution
 # - :math:`m = 1` means the sample has been grouped into one single global point: we get the independent copula;
 # - :math:`1 < m < \sampleSize` means that we create :math:`m` cells gathering several points.
 #
-# As the  empirical Bernstein copula defined in this way is a copula only if  :math:`m`  divides 
-# :math:`\sampleSize`, the class:`~openturns.BernsteinCopulaFactory` throws away
-# part of the sample is set aside in order to check this condition.
+# As the  empirical Bernstein copula defined in this way is a copula only if  :math:`m`  divides
+# :math:`\sampleSize`, the :class:`~openturns.BernsteinCopulaFactory` throws away
+# some part of the sample is set aside in order to check this condition.
 #
 # A point's *zone of influence* is its cell. The larger :math:`m`, the smaller its zone of influence:
 # the final copula thus adheres strongly to the sample. The smaller :math:`m`, the larger
@@ -77,7 +77,8 @@ def draw(dist, Y):
 
 
 # %%
-# **Introduction**
+# Introduction
+# ~~~~~~~~~~~~
 #
 # We consider the function :math:`f: \Rset^3 \rightarrow \Rset` defined by:
 #
@@ -121,7 +122,8 @@ N = 200
 sample_Y = f(X.getSample(N))
 
 # %%
-# ** Multivariate kernel smoothing**
+# Multivariate kernel smoothing
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # We estimate the distribution of the output random vector :math:`\vect{Y}` by multivariate kernel smoothing.
 y_multi_ks = ot.KernelSmoothing().build(sample_Y)
@@ -132,7 +134,8 @@ view = viewer.View(draw(y_multi_ks, sample_Y))
 # diffuse and does not model the observed singularity correctly.
 
 # %%
-# ** Empirical Bernstein copula factory**
+# Empirical Bernstein copula factory
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Now, we estimate the distribution of :math:`\vect{Y}` splitting the estimation of the marginals
 # from the estimation of the copula:
@@ -153,15 +156,18 @@ y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
 
 # %%
-# We see that the optimal number of cells is :math:`m = 1`: it means that one single cell is created.
-# The built copula is diffuse
-# in :math:`[0,1]^2` and the estimated copula is the independent copula. This is not satisfactpory. The optimal
-# :math:`m` is not correct for the signular copula we try to estimate.
+# We see that the optimal number of cells is :math:`m = 1`: it means that one single cell has been created.
+# The built copula  is the independent copula. It is diffuse
+# in :math:`[0,1]^2`. This is not satisfactory. The optimal
+# :math:`m` is not correct fot the singular copula we try to estimate.
 
 # %%
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
-# In that case, it manages to reproduce its specific feature.
 empBern_copula = ot.BernsteinCopulaFactory().build(sample_Y, N)
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
 viewer.View.ShowAll()
+
+# %%
+
+# In that case, the built copula manages to reproduce the specific feature we observe in the data.
