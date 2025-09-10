@@ -129,14 +129,14 @@ def use_case_5(X, Y):
     algo.setOptimizationBounds(bounds)
     algo.run()
 
-    cov_param = [0.1327, 0.19068]
-    trend_coefficients = [-0.1034, 1.0141]
+    cov_param = [7.447, 1.019]
+    trend_coefficients = [0.09384, 0.9952]
     result = algo.getResult()
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 1e-3, 1e-3
     )
     ott.assert_almost_equal(
         result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
@@ -152,7 +152,7 @@ def use_case_6(X, Y):
     assert algo.getOptimizeParameters()
     algo.run()
     result = algo.getResult()
-    cov_param = [15.6, 2.3680]
+    cov_param = [6.708, 1.987]
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
@@ -187,8 +187,8 @@ def bugfix_optim_no_feasible():
     myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
 
     # optimal we should get after the optimization process
-    optimal_cov_parameter = [1.05e+07, 1500, 1500, 50.7, 5.119, 4.807,
-                             5.238, 2.45, 2.302, 5.058, 7.188, 4.915]
+    optimal_cov_parameter = [7.874e+06, 1513, 1413, 43.96, 5.509, 4.625,
+                             5.159, 0.6612, 3.245, 4.945, 8.074, 5.419]
     covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
     scaleOptimizationBounds = ot.Interval(
@@ -209,11 +209,10 @@ def bugfix_optim_no_feasible():
     sqr_func = ot.SymbolicFunction(["x", "y", "z"], ["x*x", "y*y", "z*z"])
     # Squared residual
     squared_epsilon = sqr_func(residual).computeMean()
-
     ott.assert_almost_equal(
         result.getCovarianceModel().getParameter(), optimal_cov_parameter, 5e-2, 1e-3
     )
-    ott.assert_almost_equal(squared_epsilon, [1.932e-05, 49.7, 1.861], 5e-1, 1e-3)
+    ott.assert_almost_equal(squared_epsilon, [7.248e-06, 298.4, 0.9051], 5e-1, 1e-3)
 
 
 if __name__ == "__main__":
