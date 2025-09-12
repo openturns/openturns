@@ -647,18 +647,15 @@ Bool MatrixImplementation::isTriangular(Bool lower) const
 }
 
 /* Comparison operator */
-Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
+Bool MatrixImplementation::operator == (const MatrixImplementation & other) const
 {
-  const MatrixImplementation &lhs(*this);
   Bool equality = true;
-
-  if (&lhs != &rhs)   // Not the same object
+  if (this != &other)
   {
-    const Collection<Scalar> & refLhs(static_cast<const Collection<Scalar> >(lhs));
-    const Collection<Scalar> & refRhs(static_cast<const Collection<Scalar> >(rhs));
-    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && refLhs == refRhs);
+    const Collection<Scalar> & refLhs(*this);
+    const Collection<Scalar> & refRhs(other);
+    equality = (nbRows_ == other.nbRows_ && nbColumns_ == other.nbColumns_ && (refLhs == refRhs));
   }
-
   return equality;
 }
 
