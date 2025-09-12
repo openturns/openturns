@@ -169,14 +169,8 @@ class FloodModel:
         formula += "var Zc := H + Zv;"
         formula += "var Zd := Zb + Hd;"
         formula += "S := Zc - Zd;"
-        formula += "if (S < 0)"
-        formula += "    var Cost_Flooding := 0.2 - 0.8 * expm1(-1000 / S^4);"
-        formula += "else"
-        formula += "    Cost_Flooding := 1.0;"
-        formula += "if (Hd < 8)"
-        formula += "    var Cost_Dyke := 8.0 / 20.0;"
-        formula += "else"
-        formula += "    Cost_Dyke := Hd / 20.0;"
+        formula += "var Cost_Flooding := if (S < 0, 0.2 - 0.8 * expm1(-1000 / S^4), 1.0);"
+        formula += "var Cost_Dyke := max(Hd, 8.0) / 20.0;"
         formula += "C := Cost_Flooding + Cost_Dyke;"
 
         self.model = ot.SymbolicFunction(
