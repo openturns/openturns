@@ -3,8 +3,7 @@
 set -xe
 git config --global --add safe.directory /io
 
-uid=$1
-gid=$2
+UID_GID=$1
 
 env
 
@@ -28,7 +27,7 @@ time lcov --capture --directory . --output-file coverage.info --include "*.cxx" 
 genhtml --output-directory coverage coverage.info
 cp -v coverage.info coverage
 
-if test -n "${uid}" -a -n "${gid}"
+if test -n "${UID_GID}"
 then
-  sudo chown -R ${uid}:${gid} coverage && sudo cp -r coverage /io
+  sudo chown -R ${UID_GID} coverage && sudo cp -r coverage /io
 fi

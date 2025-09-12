@@ -3,8 +3,7 @@
 set -xe
 git config --global --add safe.directory /io
 
-uid=$1
-gid=$2
+UID_GID=$1
 
 env
 
@@ -35,11 +34,11 @@ cmake -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
       ${source_dir}
 make install
 find ~/.local/share/doc/openturns/html -name "*.zip" | xargs rm
-if test -n "${uid}" -a -n "${gid}"
+if test -n "${UID_GID}"
 then
   cp -r ~/.local/share/doc/openturns/html .
   zip -r openturns-doc.zip html/*
-  sudo chown ${uid}:${gid} openturns-doc.zip && sudo cp openturns-doc.zip ${source_dir}
+  sudo chown ${UID_GID} openturns-doc.zip && sudo cp openturns-doc.zip ${source_dir}
 fi
 ctest -R pyinstallcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 #make tests
