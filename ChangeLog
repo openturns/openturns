@@ -7,6 +7,8 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * HiGHS linear solver (openturns.experimental)
+ * LinearProblem (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (see MetaModelValidation)
@@ -24,9 +26,13 @@
 === Documentation ===
 
 === Python module ===
+ * Add deepcopy support for all objects
 
 === Miscellaneous ===
-
+ * New LOLA-Voronoi mean sampling size option to control sampling per candidate
+ * New Pagmo incremental evolution option to update result at each iteration
+ * Modified KFoldSplitter class to return non-interlaced folds
+ * Disable exprtk implicit multiplication for expresions like '3x' where the gradient was incorrect
 
 
 == 1.25 release (2025-06-12) == #release-1.25
