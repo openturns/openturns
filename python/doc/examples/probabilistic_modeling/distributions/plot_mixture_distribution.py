@@ -30,7 +30,7 @@ Create a mixture of distributions
 #
 # In the case where some of the :math:`\cL_i`  have a probability density function and
 # the other ones are discrete, then the mixture is not discrete and does not have a
-# probability density function. Its cumulated distribution function is defined by:
+# probability density function. Its cumulative distribution function is defined by:
 #
 # .. math::
 #    F_\inputRV(\vect{x}) =  \sum_{i=1}^N \alpha_i F_{\vect{X}_i}(\vect{x})
@@ -82,7 +82,7 @@ graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
-# We can draw the cumulated distribution function.
+# We can draw the cumulative distribution function.
 graph = distribution.drawCDF()
 graph.setTitle("Mixture of Triangular, Normal, Uniform")
 graph.setXTitle("x")
@@ -117,7 +117,7 @@ graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
-# We can draw the cumulated distribution function.
+# We can draw the cumulative distribution function.
 graph = distribution.drawCDF()
 graph.setTitle("Mixture of Gumbel copula, Clayton copula")
 graph.setXTitle(r"$x_0$")
@@ -275,7 +275,7 @@ graph.setLegendPosition("")
 view = otv.View(graph)
 
 # %%
-# We can draw the cumulated distribution function.
+# We can draw the cumulative distribution function.
 graph = distribution.drawCDF()
 graph.setTitle("Mixture of Poisson, Geometric")
 graph.setXTitle("x")
@@ -306,7 +306,7 @@ print(distribution)
 
 # %%
 # We cannot draw the probability distribution function as it is not defined.
-# But, we can draw the cumulated distribution function.
+# But, we can draw the cumulative distribution function.
 graph = distribution.drawCDF()
 graph.setTitle("Mixture of Normal, Poisson")
 graph.setXTitle("x")

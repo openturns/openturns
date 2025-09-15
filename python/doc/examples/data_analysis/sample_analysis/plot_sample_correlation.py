@@ -17,7 +17,6 @@ Estimate correlation coefficients
 from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -137,4 +136,8 @@ graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     spearman_correlation, input_names, "Spearman correlation coefficients"
 )
 view = viewer.View(graph)
-plt.show()
+
+
+# %%
+# Display all the graphs.
+viewer.View.ShowAll()

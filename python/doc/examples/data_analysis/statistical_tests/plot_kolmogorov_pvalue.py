@@ -8,7 +8,7 @@ Kolmogorov-Smirnov : understand the p-value
 #
 # * We generate a sample from a Gaussian distribution.
 # * We create a uniform distribution with known parameters.
-# * The Kolmogorov-Smirnov statistics is computed and plot on the empirical cumulated distribution function.
+# * The Kolmogorov-Smirnov statistics is computed and plot on the empirical cumulative distribution function.
 # * We plot the p-value as the area under the part of the curve exceeding the observed statistics.
 
 # %%

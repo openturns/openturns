@@ -32,7 +32,9 @@ last : int, :math:`first < last \leq m`, optional
 
 Examples
 --------
-Create a Sample
+For a more complete overview of the functionalities, please refer to :doc:`/auto_data_analysis/manage_data_and_samples/plot_quick_start_point_and_sample`.
+
+Create a Sample:
 
 >>> import openturns as ot
 >>> import numpy as np
@@ -42,26 +44,26 @@ Create a Sample
 1 : [ 0 0 ]
 2 : [ 0 0 ]
 
-Create a Sample from a (2d) array, list or tuple
+Create a Sample from a (2d) array, list or tuple:
 
 >>> import numpy as np
 >>> sample = ot.Sample(np.array([(1.0, 2.0), (3.0, 4.0), (5.0, 6.0)]))
 
-and back
+and back:
 
 >>> z = np.array(sample)
 
-Load a sample from a CSV file
+Load a sample from a CSV file:
 
 >>> sample = ot.Sample.ImportFromCSVFile('sample.csv', ',') # doctest: +SKIP
 
 Eventually samples may also be generated from probability distributions or
-experiments
+experiments:
 
 >>> random_sample = ot.Normal(2).getSample(10)
 >>> experiment = ot.LHSExperiment(ot.Normal(2), 10).generate()
 
-**Translation:** addition or subtraction of a (compatible) sample or a point, or a scalar which is promoted into a point of compatible dimension with equal components
+**Translation:** addition or subtraction of a (compatible) sample or a point, or a scalar which is promoted into a point of compatible dimension with equal components:
 
 >>> print(sample + sample)
 0 : [  2  4 ]

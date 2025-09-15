@@ -43,7 +43,7 @@ Estimate a GEV on race times data
 #       \tilde{\xi} & = \xi
 #     \end{align*}
 #
-# The cumulated distribution function of :math:`\tilde{M}_n`, denoted by :math:`\tilde{G}`, is defined by:
+# The cumulative distribution function of :math:`\tilde{M}_n`, denoted by :math:`\tilde{G}`, is defined by:
 #
 # .. math::
 #    \tilde{G}(z) = 1-G(-z) = 1-\exp \left( -\left[ 1-\tilde{\xi} \left( \dfrac{z-\tilde{\mu}}{\tilde{\sigma}}\right)\right]^{-1/\tilde{\xi}}\right)
@@ -108,7 +108,7 @@ print("Standard dev = ", parameterEstimate.getStandardDeviation())
 # - the probability-probability pot,
 # - the quantile-quantile pot,
 # - the return level plot,
-# - the data histogram and the density of the fitted model.
+# - the data histogram and the probability density function of the fitted model.
 validation = ot.GeneralizedExtremeValueValidation(result_LL, sample)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)

@@ -6,6 +6,10 @@ Notes
 This class builds an :class:`~openturns.EmpiricalBernsteinCopula` which is a non parametric fitting of
 the copula of a multivariate distribution.
 
+Using the class :class:`~openturns.BernsteinCopulaFactory` garantees to get a
+:class:`~openturns.EmpiricalBernsteinCopula` which is a copula and not only a core,
+i.e a multivariate distribution whose range is included in :math:`[0,1]^d` (see the documentation of the class to get more details).
+
 The keys of :class:`~openturns.ResourceMap` related to the class are:
 
 - the keys `BernsteinCopulaFactory-MinM` and `BernsteinCopulaFactory-MaxM` that define the range of :math:`m`

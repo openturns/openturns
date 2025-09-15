@@ -28,6 +28,9 @@ Bibliography
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://jimbeck.caltech.edu/papers_pdf/estimation_of_small_failure_probabilities.pdf>`__
+.. [Motoyama2025] Hitoshi Motoyama (2025) *The Bahadur representations of quantile estimators in general unequal probability sampling*,
+     Communications in Statistics - Theory and Methods, 54:13, 3820-3836, DOI: 10.1080/03610926.2024.2406382
+     `pdf <https://www.tandfonline.com/doi/epdf/10.1080/03610926.2024.2406382?needAccess=true>`__
 .. [baudin2015] Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015)
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
@@ -98,6 +101,7 @@ Bibliography
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
+.. [david1981] David, H.A. (1981). *Order statistics.*, New-York:Wiley.
 .. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
     Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
@@ -164,6 +168,7 @@ Bibliography
 .. [gamboa2022] Gamboa, F., Gremaud, P., Klein, T. & Lagnoux, A. *Global sensitivity analysis:
     A novel generation of mighty estimators based on rank statistics* Bernoulli 28(4): 2345-2374, 2022.
     `pdf <https://hal.science/hal-02474902v4/file/New_Look_Bernoulli_4.pdf>`__
+.. [garnier2008] Garnier, J. *Quantile estimation* ECODOQUI 2008
 .. [gautschi2004] Gautschi, W. (2004).
     *Orthogonal polynomials: computation and approximation.* OUP Oxford.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
@@ -525,6 +530,8 @@ Bibliography
     In Handbook of computational statistics (pp. 469-497). Springer, Berlin, Heidelberg.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
+.. [wilks1948] Wilks, S. S. (1948). Order statistics. Bulletin of the American Mathematical Society, 54(1) :6–50.
+.. [robert2004] Robert C.P., Casella G. *Monte-Carlo Statistical Methods*, Springer, ISBN 0-387-21239-6, 2nd ed, 2004.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 .. [xiu2010] Xiu, D. (2010).

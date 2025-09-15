@@ -4,10 +4,49 @@ Model a singular multivariate distribution
 """
 
 # %%
-# From time to time we need to model singular :math:`n_D` distributions
-# (e.g. the joint distribution of Karhunen Loeve coefficients for curves resulting from the transport of a low dimensional random vector).
-# A way to do that is to use an :class:`~openturns.EmpiricalBernsteinCopula` with a bin number equal to the sample size
-# (also called the empirical beta copula in this case).
+# The objective of the example is to show how to fit a singular copula
+# on a sample of dimension :math:`n_\inputDim` which might be high. For example,
+# this is the case when we want to fit the joint distribution of the :math:`n_\inputDim` Karhunen Loeve
+# coefficients in the Karhunen Loeve modelisation of a process.
+#
+# We first show that when the copula is singular, using a kernel smoothing fitting might
+# not be a good idea.
+#
+# The good way to follow is to fit an empirical Bernstein copula implemented in
+# :class:`~openturns.EmpiricalBernsteinCopula` through its factory
+# :class:`~openturns.BernsteinCopulaFactory`. This factory garantees that the built
+# :class:`~openturns.EmpiricalBernsteinCopula` is really a copula and not only a
+# core (ie a multivariate distribution which range is included in :math:`[0,1]^\inputDim`).
+# According to the level of singularity, the number :math:`m` of cells used to build the
+# empirical Bernstein copula differs: the higher the singularity, the larger :math:`m`.
+#
+# The cells partition the sample: all the points of the same cell are grouped into a
+# single *global* point. The empirical Bernstein copula is a mixture of products of Beta
+# distributions centered on the global point of each cell.
+#
+# We denote by :math:`\sampleSize` the sample size. The number of global points varies according to the number of
+# cells considered (math:`m`):
+#
+# - :math:`m = \sampleSize` means that all the sample has been retained: we create one cell around
+#   each point of the sample; in that case, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_;
+# - :math:`m = 1` means the sample has been grouped into one single global point: we get the independent copula;
+# - :math:`1 < m < \sampleSize` means that we create :math:`m` cells gathering several points.
+#
+# As the  empirical Bernstein copula defined in this way is a copula only if  :math:`m`  divides
+# :math:`\sampleSize`, the :class:`~openturns.BernsteinCopulaFactory` throws away
+# some part of the sample is set aside in order to check this condition.
+#
+# A point's *zone of influence* is its cell. The larger :math:`m`, the smaller its zone of influence:
+# the final copula thus adheres strongly to the sample. The smaller :math:`m`, the larger
+# its zone of influence, and the more the final copula will be able to fill a large
+# area around it.
+#
+# So, if we know that the final copula is diffuse, we recommend to let the
+# :class:`~openturns.BernsteinCopulaFactory` automatically calculate the optimal number of cells to take. If
+# we know that the final copula is singular, we recommend to specify the value of :math:`m` to be equal
+# to the sample size :math:`\sampleSize`.
+#
+# We illustrate the influence of  :math:`m` on a singular copula.
 
 import openturns as ot
 import openturns.viewer as viewer
@@ -38,6 +77,9 @@ def draw(dist, Y):
 
 
 # %%
+# Introduction
+# ~~~~~~~~~~~~
+#
 # We consider the function :math:`f: \Rset^3 \rightarrow \Rset` defined by:
 #
 # .. math::
@@ -80,22 +122,30 @@ N = 200
 sample_Y = f(X.getSample(N))
 
 # %%
+# Multivariate kernel smoothing
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 # We estimate the distribution of the output random vector :math:`\vect{Y}` by multivariate kernel smoothing.
 y_multi_ks = ot.KernelSmoothing().build(sample_Y)
 view = viewer.View(draw(y_multi_ks, sample_Y))
 
 # %%
+# We see that the fitting is not satisfactory: the empty regions have not been respected. The fitted copula is
+# diffuse and does not model the observed singularity correctly.
+
+# %%
+# Empirical Bernstein copula factory
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 # Now, we estimate the distribution of :math:`\vect{Y}` splitting the estimation of the marginals
 # from the estimation of the copula:
 #
 # - the marginals are fitted by kernel smoothing,
-# - the copula is fitted using the Bernstein copula factory :class:`~openturns.BernsteinCopulaFactory` that builds
+# - the copula is fitted using the :class:`~openturns.BernsteinCopulaFactory` that builds
 #   an empirical Bernstein copula.
 #
 # First, we do not specify the bin number :math:`m`. It is equal to the value computed by the default method, which is the
-# LogLikelihood criteria. We get :math:`m=1`, which
-# means that one cell is created: the built copula is diffuse in :math:`[0,1]^2`. The estimated copula is
-# the independent copula.
+# LogLikelihood criteria.
 empBern_copula = ot.BernsteinCopulaFactory().buildAsEmpiricalBernsteinCopula(sample_Y)
 print("bin number computed m = ", empBern_copula.getBinNumber())
 marginals = [
@@ -106,10 +156,18 @@ y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
 
 # %%
+# We see that the optimal number of cells is :math:`m = 1`: it means that one single cell has been created.
+# The built copula  is the independent copula. It is diffuse
+# in :math:`[0,1]^2`. This is not satisfactory. The optimal
+# :math:`m` is not correct fot the singular copula we try to estimate.
+
+# %%
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
-# With this parametrization, the empirical Bernstein copula is the *Beta copula* in the sens of [segers2016]_.
-# In that case, it manages to reproduce its specific feature.
 empBern_copula = ot.BernsteinCopulaFactory().build(sample_Y, N)
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
 view = viewer.View(draw(y_empBern, sample_Y))
 viewer.View.ShowAll()
+
+# %%
+
+# In that case, the built copula manages to reproduce the specific feature we observe in the data.
