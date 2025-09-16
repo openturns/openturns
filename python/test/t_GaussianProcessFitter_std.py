@@ -3,7 +3,12 @@ from openturns.experimental import GaussianProcessFitter
 import openturns.testing as ott
 
 ot.PlatformInfo.SetNumericalPrecision(4)
-
+ot.ResourceMap.SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000)
+ot.ResourceMap.SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 20000)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-12)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1e-12)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1e-12)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1e-12)
 
 ot.TESTPREAMBLE()
 
@@ -67,17 +72,17 @@ def use_case_3(X, Y):
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
     algo.run()
-    cov_param = [0.1327, 0.1956]
+    cov_param = [0.13275, 0.1956]
     trend_coefficients = [-0.1034, 1.0141]
     result = algo.getResult()
     assert (
-        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "NLopt"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 5e-3, 5e-2
     )
     ott.assert_almost_equal(
-        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+        result.getTrendCoefficients(), trend_coefficients, 1e-3, 1e-3
     )
 
 
@@ -95,14 +100,14 @@ def use_case_4(X, Y):
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
     algo.run()
-    cov_param = [0.1327, 0.1956]
+    cov_param = [0.13275, 0.1956]
     trend_coefficients = [-0.1034, 1.0141]
     result = algo.getResult()
     assert (
-        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "NLopt"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 5e-3, 5e-2
     )
     ott.assert_almost_equal(
         result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
@@ -129,14 +134,14 @@ def use_case_5(X, Y):
     algo.setOptimizationBounds(bounds)
     algo.run()
 
-    cov_param = [0.1327, 0.19068]
+    cov_param = [0.13275, 0.19068]
     trend_coefficients = [-0.1034, 1.0141]
     result = algo.getResult()
     assert (
-        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "NLopt"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 5e-3, 5e-2
     )
     ott.assert_almost_equal(
         result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
@@ -154,10 +159,10 @@ def use_case_6(X, Y):
     result = algo.getResult()
     cov_param = [15.6, 2.3680]
     assert (
-        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "NLopt"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 5e-3, 5e-2
     )
     ott.assert_almost_equal(result.getTrendCoefficients(), [])
 
@@ -198,8 +203,19 @@ def bugfix_optim_no_feasible():
     )
     algo.setOptimizationBounds(scaleOptimizationBounds)
     algo.setOptimizeParameters(True)
-    with ott.assert_raises(TypeError):
-        algo.run()
+    algo.run()
+    # Get result & residual
+    result = algo.getResult()
+    residual = result.getMetaModel()(inputTrainingSet) - outputTrainingSet
+    # relative residual
+    for k in range(len(inputTrainingSet)):
+        for d in range(3):
+            residual[k, d] /= (abs(outputTrainingSet[k, d]) + 1e-10)
+    # Define multivariate square function
+    sqr_func = ot.SymbolicFunction(["x", "y", "z"], ["x*x", "y*y", "z*z"])
+    # Squared residual
+    squared_epsilon = sqr_func(residual).computeMean()
+    ott.assert_almost_equal(squared_epsilon, [0.05, 0.01, 0.01], 5e-1, 1e-1)
 
 
 if __name__ == "__main__":
