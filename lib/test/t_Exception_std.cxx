@@ -104,7 +104,6 @@ int main(int, char *[])
   rc |= check< InvalidDimensionException >();
   rc |= check< NotYetImplementedException >();
   rc |= check< OutOfBoundException >();
-  rc |= check< XMLException >();
   rc |= check< XMLParserException >();
   rc |= check< InterruptionException >();
   rc |= check< NotSymmetricDefinitePositiveException >();
@@ -112,7 +111,6 @@ int main(int, char *[])
   rc |= check< NotDefinedException >();
   rc |= check< FileOpenException >();
   rc |= check< StudyFileParsingException >();
-  rc |= check< ObjectNotInStudyException >();
   rc |= check< ConfigurationFileParsingException >();
 
   return rc;
