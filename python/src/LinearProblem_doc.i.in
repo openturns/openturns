@@ -6,11 +6,11 @@ This defines a linear problem as:
 .. math::
 
     \min_{\vect{x} \in B} f(\vect{x}) = \vect{c}^T \vect{x} \\
-    \vect{l} \leq \mat{A} \vect{x} \leq \vect{u}
+    \vect{lc_l} \leq \mat{A} \vect{x} \leq \vect{lc_u}
 
 where :math:`B` are the problem bounds, :math:`\vect{c}` is the cost vector,
-:math:`\mat{A}` is the inequality constraint matrix term,
-and :math:`\vect{l}, \vect{u}` are the inequality constraints bounds terms.
+:math:`\mat{A}` is the constraint matrix term,
+and :math:`\vect{cb_l}, \vect{cb_u}` are the constraints bounds terms.
 
 Parameters
 ----------
@@ -20,8 +20,8 @@ bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B`
 A : :class:`~openturns.Matrix`
     Linear inequality constraints matrix :math:`\mat{A}`
-LU : :class:`~openturns.Interval`
-    Linear inequality constraints bounds terms :math:`\vect{l}, \vect{u}`
+cb : :class:`~openturns.Interval`
+    Linear inequality constraints bounds terms :math:`\vect{cb_l}, \vect{cb_u}`
 
 Examples
 --------
@@ -29,7 +29,7 @@ Define a mixed integer linear optimization problem with objective:
 
 .. math::
 
-    f = 1.1 x_0 + x_1
+    f = 1.1 x_0 + x_1, x_0 \in \Zset, x_1 \in \Rset
 
 with inequality constraints:
 
@@ -57,9 +57,9 @@ and bound constraints:
 >>> cost = [1.1, 1.0]
 >>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
 >>> A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
->>> LU = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
->>> problem = otexp.LinearProblem(cost, bounds, A, LU)
->>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)"
+>>> lcb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
+>>> problem = otexp.LinearProblem(cost, bounds, A, lcb)
+>>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER, ot.OptimizationProblemImplementation.CONTINUOUS])"
 
 // ---------------------------------------------------------------------
 
@@ -81,7 +81,7 @@ Returns
 -------
 A : :class:`~openturns.Matrix`
     Linear inequality constraint term.
-LU : :class:`~openturns.Interval`
+cb : :class:`~openturns.Interval`
     Linear inequality constraint bounds.
 "
 

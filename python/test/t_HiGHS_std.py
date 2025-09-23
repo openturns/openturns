@@ -18,8 +18,8 @@ ot.ResourceMap.AddAsBool("HiGHS-output_flag", True)
 bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
 cost = [1.1, 1.0]
 A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
-LU = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
-problem = otexp.LinearProblem(cost, bounds, A, LU)
+cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
+problem = otexp.LinearProblem(cost, bounds, A, cb)
 print(problem)
 
 sol = {ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
