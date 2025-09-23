@@ -166,18 +166,18 @@ void HiGHS::run()
     }
 
   HighsStatus return_status = highs.passModel(model);
-  if (return_status != HighsStatus::kOk)
-    throw InvalidArgumentException(HERE) << "Cannot initialize highs model";
+  if (return_status == HighsStatus::kError)
+    throw InvalidArgumentException(HERE) << "Cannot initialize highs model: " << highsStatusToString(return_status) ;
 
   // Solve the model
   return_status = highs.run();
-  if (return_status != HighsStatus::kOk)
-    throw InvalidArgumentException(HERE) << "Solve not ok";
+  if (return_status == HighsStatus::kError)
+    throw InternalException(HERE) << "HiGHS solve failed: " << highsStatusToString(return_status);
 
   // Get the model status
-  const HighsModelStatus& model_status = highs.getModelStatus();
-  if (model_status != HighsModelStatus::kOptimal)
-    throw InvalidArgumentException(HERE) << "Solve not optimal";
+  const HighsModelStatus model_status = highs.getModelStatus();
+  if (getCheckStatus() && model_status != HighsModelStatus::kOptimal)
+    throw InternalException(HERE) << "HiGHS model status: " << highs.modelStatusToString(model_status);
 
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
