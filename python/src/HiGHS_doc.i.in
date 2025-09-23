@@ -6,7 +6,7 @@
     To use it, import the ``openturns.experimental`` submodule.
 
 This class exposes the linear solver from the `HiGHS <https://highs.dev/>`_ library.
-It is only meant to be used with linear (possibly mixed-integer) optimization problems.
+It is only meant to be used with linear mixed-integer optimization problems.
 
 Parameters
 ----------
@@ -26,6 +26,8 @@ For every option ``optionName``, simply add a key named ``HiGHS-optionName`` wit
     >>> import openturns as ot
     >>> ot.ResourceMap.AddAsBool('HiGHS-output_flag', True)
     >>> ot.ResourceMap.AddAsUnsignedInteger('HiGHS-threads', 4)
+
+HiGHS prefers to solve problems with at least one integer (or binary) variable, but this is not actually enforced.
 
 Examples
 --------
@@ -61,8 +63,8 @@ and bound constraints:
 >>> cost = [1.1, 1.0]
 >>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
 >>> A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
->>> LU = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
->>> problem = otexp.LinearProblem(cost, bounds, A, LU)
+>>> cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
+>>> problem = otexp.LinearProblem(cost, bounds, A, cb)
 >>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
 >>> algo = otexp.HiGHS(problem)
 >>> algo.run() # doctest: +SKIP
