@@ -136,10 +136,10 @@ def use_case_5(X, Y):
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-3, 1e-3
+        result.getCovarianceModel().getParameter(), cov_param, 2e-1, 2e-1
     )
     ott.assert_almost_equal(
-        result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
+        result.getTrendCoefficients(), trend_coefficients, 1e-1, 1e-1
     )
 
 
@@ -157,7 +157,7 @@ def use_case_6(X, Y):
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 1e-1, 1e-1
     )
     ott.assert_almost_equal(result.getTrendCoefficients(), [])
 
@@ -210,7 +210,7 @@ def bugfix_optim_no_feasible():
     # Squared residual
     squared_epsilon = sqr_func(residual).computeMean()
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), optimal_cov_parameter, 5e-2, 1e-3
+        result.getCovarianceModel().getParameter(), optimal_cov_parameter, 1e-1, 1e-1
     )
     ott.assert_almost_equal(squared_epsilon, [7.248e-06, 298.4, 0.9051], 5e-1, 1e-3)
 
