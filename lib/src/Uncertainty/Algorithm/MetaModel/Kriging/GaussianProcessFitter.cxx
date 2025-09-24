@@ -395,7 +395,14 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
-    // Nothing to do if setStartingPoint is not defined
+    // Define starting point for the optimization as the center of the bounds if necessary
+    Sample initialPoints(solver_.getStartingSample());
+    for (UnsignedInteger i = 0; i < initialPoints.getSize(); ++ i)
+    {
+      if (!optimizationBounds_.contains(initialPoints[i]))
+        initialPoints[i] = (optimizationBounds_.getUpperBound() + optimizationBounds_.getLowerBound())/2;
+    }
+    solver_.setStartingSample(initialPoints);
   }
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
