@@ -288,6 +288,8 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   if (!(maximumAbsoluteCoefficient > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximum absolute coefficient is " << maximumAbsoluteCoefficient << ". Are all coefficients null?";
   // Second pass, remove the small coefficients
   const Scalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
+  Indices removedContributor;
+  Description removedComponent;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (absoluteCoefficients[i] > epsilon)
@@ -297,13 +299,19 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
         if (!(std::abs(currentCoefficient[j]) > epsilon))
         {
           currentCoefficient[j] = 0.0;
-          LOGWARN(OSS() << "set the component " << j << " of contributor " << i << "=" << currentCoefficient[j] << " to zero as it is too small");
+          if (removedComponent.getSize() < 20)
+            removedComponent.add(OSS() << i << ":" << j);
         }
       coefficients_.add(currentCoefficient);
       functionsCollection_.add(functionsCollection[i]);
     }
-    else LOGWARN(OSS() << "removed the contributor " << i << "=" << functionsCollection[i] << " from the linear combination as its coefficient " << absoluteCoefficients[i] << " is too small.");
+    else if (removedContributor.getSize() < 20)
+      removedContributor.add(i);
   }
+  if (removedContributor.getSize())
+    LOGINFO(OSS() << "Pruned the linear combinations contributors at indices " << removedContributor.__str__().substr(0, 50) << "... wrt the minimum coefficient=" << epsilon);
+  if (removedComponent.getSize())
+    LOGINFO(OSS() << "Pruned the linear combinations components at indices " << removedComponent.__str__().substr(0, 50) << "... wrt the minimum coefficient=" << epsilon);
   Description description(0);
   Description inputDescription(functionsCollection[0].getInputDescription());
   for (UnsignedInteger i = 0; i < inputDescription.getSize(); ++i)
