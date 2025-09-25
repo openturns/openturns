@@ -34,6 +34,11 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
+
+#if LIBXML_VERSION < 21400
+#define XML_PARSE_UNZIP 0
+#endif
+
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -62,7 +67,7 @@ XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
   if (!std::ifstream(std::filesystem::u8path(fileName)).good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
-  doc_ = xmlReadFile(fileName.c_str(), "UTF-8", 0);
+  doc_ = xmlReadFile(fileName.c_str(), "UTF-8", XML_PARSE_UNZIP);
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
 
