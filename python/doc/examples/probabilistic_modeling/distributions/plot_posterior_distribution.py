@@ -117,12 +117,12 @@ conditioning.setDescription(["Y0", "Y1"])
 # We have to decondition the :math:`\vect{X}|\vect{\Theta} = g(\vect{Y})` distribution with
 # respect to the  prior distribution :math:`\pi_{\vect{Y}}^{0,1}` in order to get the
 # final distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.CompoundDistribution`.
-deconditioned = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
+compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 
 # %%
-# Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the deconditioned distribution of :math:`\vect{X}` and
+# Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the compound distribution of :math:`\vect{X}` and
 # the sample.
-posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
+posterior_Y = otexp.PosteriorDistribution(compound, observations)
 
 # %%
 # From  :math:`\pi_{\vect{Y}}^\sampleSize`, we get:
@@ -335,8 +335,8 @@ linkFunction = ot.SymbolicFunction(
 )
 conditioning = ot.JointDistribution([ot.Triangular(-1.0, 0.0, 1.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
-deconditioned = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
-posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
+compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
+posterior_Y = otexp.PosteriorDistribution(compound, observations)
 sample_posterior = linkFunction(posterior_Y.getSample(100000)).getMarginal([1, 3])
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 
