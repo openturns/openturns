@@ -23,6 +23,7 @@
  * FunctionalChaosValidation left the experimental module
  * PointToFieldFunctionaChaosAlgorithm left the experimental module
  * Deprecated DeconditionedDistribution in favor of CompoundDistribution
+ * Deprecated DeconditionedRandomVector in favor of CompoundRandomVector
 
 === Documentation ===
 

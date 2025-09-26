@@ -73,7 +73,7 @@
 %include ThresholdEvent.i
 %include DomainEvent.i
 %include ProcessEvent.i
-%include DeconditionedRandomVector.i
+%include CompoundRandomVector.i
 %include StandardEvent.i
 %include IntersectionEvent.i
 %include UnionEvent.i
