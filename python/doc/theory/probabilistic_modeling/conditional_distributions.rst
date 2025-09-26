@@ -371,7 +371,7 @@ Case 3: Create a distribution whose parameters are random
 
 The objective is to create the marginal distribution of :math:`\inputRV` in Case 1.
 
-See the class :class:`~openturns.DeconditionedDistribution`.
+See the class :class:`~openturns.CompoundDistribution`.
 
 This class requires the following features:
 
@@ -450,7 +450,7 @@ with :math:`f_{\inputRV|\vect{\theta} = g(\vect{y})}` the PDF of the distributio
 where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})` and :math:`f_{\vect{Y}}` the PDF of the prior distribution
 of  :math:`\vect{Y}`.
 
-Note that the denominator  of :eq:`postPDF2` is the PDF of the deconditioned distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the
+Note that the denominator  of :eq:`postPDF2` is the PDF of the compound distribution of :math:`\inputRV|\vect{\Theta}=g(\vect{Y})` with respect to the
 prior distribution of :math:`\vect{Y}`.
 
 In the other cases, the PDF is the probability distribution function for the discrete components and the :math:`\int` are replaced by some :math:`\sum`.
@@ -464,7 +464,7 @@ In the other cases, the PDF is the probability distribution function for the dis
 
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_bayes_distribution`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_point_conditional_distribution`
-    - See :doc:`/auto_probabilistic_modeling/distributions/plot_deconditioned_distribution`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_compound_distribution`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_deconditioned_random_vector`
     - See :doc:`/auto_probabilistic_modeling/distributions/plot_posterior_distribution`
 

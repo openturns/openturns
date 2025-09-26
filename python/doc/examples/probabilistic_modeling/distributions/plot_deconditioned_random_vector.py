@@ -20,8 +20,8 @@ Create a deconditioned random vector
 # as the output of a function :math:`f` applied to an input random vector :math:`\vect{Y}`: :math:`\vect{\Theta} = f(\vect{Y})`.
 #
 # Note that in some restricted cases, it is possible to create the
-# distribution of :math:`\inputRV` using the class :class:`~openturns.DeconditionedDistribution`.
-# The :class:`~openturns.DeconditionedDistribution` offers a lot of methods attached to the distribution, in particular the
+# distribution of :math:`\inputRV` using the class :class:`~openturns.CompoundDistribution`.
+# The :class:`~openturns.CompoundDistribution` offers a lot of methods attached to the distribution, in particular the
 # computation of the PDF, CDF, the moments if any, :math:`\dots`. The advantage of the :class:`~openturns.DeconditionedRandomVector` relies
 # on the fact that it is fast to build and can be built in all cases. But it only offers the sampling capacity.
 #

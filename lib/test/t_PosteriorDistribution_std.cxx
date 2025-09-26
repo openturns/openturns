@@ -35,7 +35,7 @@ int main(int, char *[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    ResourceMap::SetAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 24);
+    ResourceMap::SetAsUnsignedInteger("CompoundDistribution-MarginalIntegrationNodesNumber", 24);
 
     UnsignedInteger observationsSize = 5;
     // Create a collection of distribution
@@ -69,7 +69,7 @@ int main(int, char *[])
       Distribution observationsDistribution(conditionedDistribution);
       observationsDistribution.setParameter(conditioningDistributionCollection[i].getMean());
       Sample observations(observationsDistribution.getSample(observationsSize));
-      PosteriorDistribution distribution(DeconditionedDistribution(conditionedDistribution, conditioningDistributionCollection[i]), observations);
+      PosteriorDistribution distribution(CompoundDistribution(conditionedDistribution, conditioningDistributionCollection[i]), observations);
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;

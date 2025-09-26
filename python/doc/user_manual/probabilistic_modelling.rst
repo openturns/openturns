@@ -180,7 +180,7 @@ Combining and transforming distributions
     CompositeDistribution
 
     :template: Distribution.rst_t
-    DeconditionedDistribution
+    CompoundDistribution
 
     :template: classWithPlot.rst_t
     experimental.PointConditionalDistribution
