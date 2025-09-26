@@ -54,7 +54,7 @@ PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDis
   , observations_(observations)
 {
   setName("PosteriorDistribution");
-  setDeconditionedDistribution(DeconditionedDistribution(conditionedDistribution, conditioningDistribution));
+  setDeconditionedDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution));
 }
 
 PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
@@ -66,11 +66,11 @@ PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDis
   , observations_(observations)
 {
   setName("PosteriorDistribution");
-  setDeconditionedDistribution(DeconditionedDistribution(conditionedDistribution, conditioningDistribution, linkFunction));
+  setDeconditionedDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction));
 }
 
 /* Parameters constructor */
-PosteriorDistribution::PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
+PosteriorDistribution::PosteriorDistribution(const CompoundDistribution & deconditionedDistribution,
     const Sample & observations)
   : DistributionImplementation()
   , deconditionedDistribution_()
@@ -219,7 +219,7 @@ void PosteriorDistribution::setParametersCollection(const PointCollection & )
 }
 
 /* Deconditioned distribution accessor */
-void PosteriorDistribution::setDeconditionedDistribution(const DeconditionedDistribution & deconditionedDistribution)
+void PosteriorDistribution::setDeconditionedDistribution(const CompoundDistribution & deconditionedDistribution)
 {
   if (observations_.getDimension() != deconditionedDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the deconditioned distribution must have the same dimension as the observations.";
   deconditionedDistribution_ = deconditionedDistribution;
@@ -262,7 +262,7 @@ void PosteriorDistribution::setDeconditionedDistribution(const DeconditionedDist
   } // isContinuous()
 }
 
-DeconditionedDistribution PosteriorDistribution::getDeconditionedDistribution() const
+CompoundDistribution PosteriorDistribution::getDeconditionedDistribution() const
 {
   return deconditionedDistribution_;
 }

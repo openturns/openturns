@@ -496,10 +496,10 @@
   <BurrFactory-ResidualPrecision value_float="1e-12"        />
   <BurrFactory-MaximumIteration  value_int="10" />
   
-  <!-- OT::DeconditionedDistribution parameters -->
-  <DeconditionedDistribution-MarginalIntegrationNodesNumber value_int="48"           />
-  <DeconditionedDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
-  <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
+  <!-- OT::CompoundDistribution parameters -->
+  <CompoundDistribution-MarginalIntegrationNodesNumber value_int="48"           />
+  <CompoundDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
+  <CompoundDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
   <!-- OT::PointConditionalDistribution parameters -->
   <PointConditionalDistribution-InitializeSampling value_bool="true"           />

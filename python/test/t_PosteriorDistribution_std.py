@@ -5,7 +5,7 @@ import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.ResourceMap.SetAsUnsignedInteger(
-    "DeconditionedDistribution-MarginalIntegrationNodesNumber", 24
+    "CompoundDistribution-MarginalIntegrationNodesNumber", 24
 )
 
 observationsSize = 5
@@ -30,7 +30,7 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
     distribution = otexp.PosteriorDistribution(
-        ot.DeconditionedDistribution(conditionedDistribution, conditioning),
+        ot.CompoundDistribution(conditionedDistribution, conditioning),
         observations,
     )
     dim = distribution.getDimension()
@@ -84,7 +84,7 @@ posterior = otexp.PosteriorDistribution()
 
 # Second constructor
 posterior = otexp.PosteriorDistribution(
-    ot.DeconditionedDistribution(conditioned, conditioning, link), observations
+    ot.CompoundDistribution(conditioned, conditioning, link), observations
 )
 
 # Third constructor

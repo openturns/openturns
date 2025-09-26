@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
-#include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/CompoundDistribution.hxx"
 #include "openturns/RatioOfUniforms.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ public:
   PosteriorDistribution();
 
   /** Parameters constructor */
-  PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
+  PosteriorDistribution(const CompoundDistribution & deconditionedDistribution,
                         const Sample & observations);
 
   PosteriorDistribution(const Distribution & conditionedDistribution,
@@ -95,8 +95,8 @@ public:
   /* Interface specific to PosteriorDistribution */
 
   /** Deconditioned distribution accessor */
-  void setDeconditionedDistribution(const DeconditionedDistribution & deconditionedDistribution);
-  DeconditionedDistribution getDeconditionedDistribution() const;
+  void setDeconditionedDistribution(const CompoundDistribution & deconditionedDistribution);
+  CompoundDistribution getDeconditionedDistribution() const;
 
   /** ConditionedDistribution distribution accessor */
   void setConditionedDistribution(const Distribution & conditionedDistribution);
@@ -156,7 +156,7 @@ private:
   void computeCovariance() const override;
 
   /** The underlying deconditioned distribution */
-  DeconditionedDistribution deconditionedDistribution_;
+  CompoundDistribution deconditionedDistribution_;
 
   /** The observations */
   Sample observations_;
