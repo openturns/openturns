@@ -2,7 +2,7 @@
 ==================================================
 
 conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  PosteriorDistribution(deconditioned distribution = CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+Distribution  PosteriorDistribution(compound distribution = CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -20,7 +20,7 @@ Independent copula=  False
 Mean point=  [0.408932,1.65873]  pdf=1.6238  cdf=0.26218
 Quantile= [0.946843,1.98454]
 CDF(quantile)=0.95
-margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(compound distribution = CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
@@ -30,7 +30,7 @@ margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned di
 margin PDF= [1.12641]
 margin CDF= [0.541543]
 margin quantile= [0.900147]
-margin= MarginalDistribution(distribution=PosteriorDistribution(deconditioned distribution = CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
+margin= MarginalDistribution(distribution=PosteriorDistribution(compound distribution = CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))), observations =
     [ X0        ]
 0 : [  1.4123   ]
 1 : [ -1.39926  ]
