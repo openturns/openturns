@@ -86,10 +86,10 @@ void JointByConditioningDistribution::computeRange()
   Interval::BoolCollection finiteUpperBound(conditioningDistribution_.getRange().getFiniteUpperBound());
 
   // Then, the conditioned distribution
-  lowerBound.add(deconditioned_.getRange().getLowerBound());
-  finiteLowerBound.add(deconditioned_.getRange().getFiniteLowerBound());
-  upperBound.add(deconditioned_.getRange().getUpperBound());
-  finiteUpperBound.add(deconditioned_.getRange().getFiniteUpperBound());
+  lowerBound.add(compound_.getRange().getLowerBound());
+  finiteLowerBound.add(compound_.getRange().getFiniteLowerBound());
+  upperBound.add(compound_.getRange().getUpperBound());
+  finiteUpperBound.add(compound_.getRange().getFiniteUpperBound());
 
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
@@ -124,9 +124,9 @@ JointByConditioningDistribution * JointByConditioningDistribution::clone() const
 Point JointByConditioningDistribution::getRealization() const
 {
   Point yx(conditioningDistribution_.getRealization());
-  Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParameter(linkFunction_(yx));
-  yx.add(deconditioned.getRealization());
+  Distribution compound(conditionedDistribution_);
+  compound.setParameter(linkFunction_(yx));
+  yx.add(compound.getRealization());
   return yx;
 }
 
@@ -141,13 +141,13 @@ Scalar JointByConditioningDistribution::computePDF(const Point & point) const
   std::copy(point.begin(), point.begin() + conditioningDimension, y.begin());
   const Scalar conditioningPDF = conditioningDistribution_.computePDF(y);
   if (conditioningPDF == 0.0) return 0.0;
-  Distribution deconditioned(conditionedDistribution_);
+  Distribution compound(conditionedDistribution_);
   const Point parameters(linkFunction_(y));
-  deconditioned.setParameter(parameters);
+  compound.setParameter(parameters);
   Point x(conditionedDimension);
   std::copy(point.begin() + conditioningDimension, point.end(), x.begin());
-  const Scalar deconditionedPDF = deconditioned.computePDF(x);
-  return deconditionedPDF * conditioningPDF;
+  const Scalar compoundPDF = compound.computePDF(x);
+  return compoundPDF * conditioningPDF;
 }
 
 /* Conditioned distribution accessor */
@@ -281,7 +281,7 @@ void JointByConditioningDistribution::setConditionedAndConditioningDistributions
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
   setDimension(conditioningDimension + conditionedDistribution.getDimension());
-  deconditioned_ = DeconditionedDistribution(conditionedDistribution, conditioningDistribution, linkFunction);
+  compound_ = CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction);
   computeRange();
 
   Description description(conditioningDistribution.getDescription());
@@ -312,7 +312,7 @@ Distribution JointByConditioningDistribution::getMarginal(const UnsignedInteger 
   // If the index is in the conditioning part
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   if (i < conditioningDimension) return conditioningDistribution_.getMarginal(i);
-  return deconditioned_.getMarginal(i - conditioningDimension);
+  return compound_.getMarginal(i - conditioningDimension);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -334,7 +334,7 @@ Distribution JointByConditioningDistribution::getMarginal(const Indices & indice
     if (indices[i] >= conditioningDimension)
       conditionedIndices.add(indices[i] - conditioningDimension);
   if (conditionedIndices.getSize() == size)
-    return deconditioned_.getMarginal(conditionedIndices);
+    return compound_.getMarginal(conditionedIndices);
   return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 

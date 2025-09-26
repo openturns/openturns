@@ -21,7 +21,7 @@ Then this class implements the random vector :math:`\inputRV`. Note that a :clas
 There is no restriction on the random vector :math:`\vect{\Theta}`. It can be created from any multivariate distribution or
 as the output of a function :math:`f` applied to an input random vector :math:`\vect{Y}`: :math:`\vect{\Theta} = f(\vect{Y})`.
 
-Note that in some restricted cases, it is possible to create the distribution of :math:`\inputRV` using the class :class:`~openturns.DeconditionedDistribution`.
+Note that in some restricted cases, it is possible to create the distribution of :math:`\inputRV` using the class :class:`~openturns.CompoundDistribution`.
 
 Examples
 --------

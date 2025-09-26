@@ -63,10 +63,10 @@ import openturns.viewer as otv
 import openturns.experimental as otexp
 
 ot.ResourceMap.SetAsUnsignedInteger(
-    "DeconditionedDistribution-MarginalIntegrationNodesNumber", 32
+    "CompoundDistribution-MarginalIntegrationNodesNumber", 32
 )
 ot.ResourceMap.SetAsString(
-    "DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct"
+    "CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct"
 )
 
 
@@ -116,8 +116,8 @@ conditioning.setDescription(["Y0", "Y1"])
 # %%
 # We have to decondition the :math:`\vect{X}|\vect{\Theta} = g(\vect{Y})` distribution with
 # respect to the  prior distribution :math:`\pi_{\vect{Y}}^{0,1}` in order to get the
-# final distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.DeconditionedDistribution`.
-deconditioned = ot.DeconditionedDistribution(conditioned, conditioning, linkFunction)
+# final distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.CompoundDistribution`.
+deconditioned = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 
 # %%
 # Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the deconditioned distribution of :math:`\vect{X}` and
@@ -335,7 +335,7 @@ linkFunction = ot.SymbolicFunction(
 )
 conditioning = ot.JointDistribution([ot.Triangular(-1.0, 0.0, 1.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
-deconditioned = ot.DeconditionedDistribution(conditioned, conditioning, linkFunction)
+deconditioned = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
 sample_posterior = linkFunction(posterior_Y.getSample(100000)).getMarginal([1, 3])
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)

@@ -56,7 +56,7 @@
 /* Must be after TruncatedDistribution */
 %include KernelSmoothing.i
 /* Must be after Mixture */
-%include DeconditionedDistribution.i
+%include CompoundDistribution.i
 %include Multinomial.i
 %include MultinomialFactory.i
 %include Polya.i
