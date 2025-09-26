@@ -43,7 +43,7 @@ public:
   PosteriorDistribution();
 
   /** Parameters constructor */
-  PosteriorDistribution(const CompoundDistribution & deconditionedDistribution,
+  PosteriorDistribution(const CompoundDistribution & compoundDistribution,
                         const Sample & observations);
 
   PosteriorDistribution(const Distribution & conditionedDistribution,
@@ -94,9 +94,9 @@ public:
 
   /* Interface specific to PosteriorDistribution */
 
-  /** Deconditioned distribution accessor */
-  void setDeconditionedDistribution(const CompoundDistribution & deconditionedDistribution);
-  CompoundDistribution getDeconditionedDistribution() const;
+  /** Compound distribution accessor */
+  void setCompoundDistribution(const CompoundDistribution & compoundDistribution);
+  CompoundDistribution getCompoundDistribution() const;
 
   /** ConditionedDistribution distribution accessor */
   void setConditionedDistribution(const Distribution & conditionedDistribution);
@@ -155,8 +155,8 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-  /** The underlying deconditioned distribution */
-  CompoundDistribution deconditionedDistribution_;
+  /** The underlying compound distribution */
+  CompoundDistribution compoundDistribution_;
 
   /** The observations */
   Sample observations_;
