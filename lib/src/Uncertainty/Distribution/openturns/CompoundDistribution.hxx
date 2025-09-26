@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The DeconditionedDistribution distribution
+ *  @brief The CompoundDistribution distribution
  *
  *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_DECONDITIONEDDISTRIBUTION_HXX
-#define OPENTURNS_DECONDITIONEDDISTRIBUTION_HXX
+#ifndef OPENTURNS_COMPOUNDDISTRIBUTION_HXX
+#define OPENTURNS_COMPOUNDDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/Mixture.hxx"
@@ -29,35 +29,35 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class DeconditionedDistribution
+ * @class CompoundDistribution
  *
- * The DeconditionedDistribution distribution.
+ * The CompoundDistribution distribution.
  */
-class OT_API DeconditionedDistribution
+class OT_API CompoundDistribution
   : public Mixture
 {
   CLASSNAME
 
-  /** The PosteriorDistribution class is closely linked with the DeconditionedDistribution class
+  /** The PosteriorDistribution class is closely linked with the CompoundDistribution class
       as they are the two parts of the Bayesian modeling using distributions */
   friend class PosteriorDistribution;
 
 public:
 
   /** Default constructor */
-  DeconditionedDistribution();
+  CompoundDistribution();
 
   /** Parameters constructor */
-  DeconditionedDistribution(const Distribution & conditionedDistribution,
+  CompoundDistribution(const Distribution & conditionedDistribution,
                             const Distribution & conditioningDistribution);
 
-  DeconditionedDistribution(const Distribution & conditionedDistribution,
+  CompoundDistribution(const Distribution & conditionedDistribution,
                             const Distribution & conditioningDistribution,
                             const Function & linkFunction);
 
   /** Comparison operator */
   using Mixture::operator ==;
-  Bool operator ==(const DeconditionedDistribution & other) const;
+  Bool operator ==(const CompoundDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -70,7 +70,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  DeconditionedDistribution * clone() const override;
+  CompoundDistribution * clone() const override;
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
@@ -85,7 +85,7 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
-  /* Interface specific to DeconditionedDistribution */
+  /* Interface specific to CompoundDistribution */
 
   /** Conditioned distribution accessor */
   void setConditionedDistribution(const Distribution & conditionedDistribution);
@@ -162,8 +162,8 @@ private:
   /** Values of the Dirac marginals */
   Point diracValues_;
 
-}; /* class DeconditionedDistribution */
+}; /* class CompoundDistribution */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_DECONDITIONEDDISTRIBUTION_HXX */
+#endif /* OPENTURNS_COMPOUNDDISTRIBUTION_HXX */

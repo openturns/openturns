@@ -18,18 +18,18 @@ coll1.add(ot.Uniform())
 d1 = ot.JointDistribution(coll1)
 # Test the different DOE
 ot.ResourceMap.SetAsUnsignedInteger(
-    "DeconditionedDistribution-MarginalIntegrationNodesNumber", 32
+    "CompoundDistribution-MarginalIntegrationNodesNumber", 32
 )
 ot.ResourceMap.SetAsUnsignedInteger(
-    "DeconditionedDistribution-MaximumIntegrationNodesNumber", 10000
+    "CompoundDistribution-MaximumIntegrationNodesNumber", 10000
 )
 for method in ["GaussProduct", "QMC", "MC"]:
     print("#" * 50)
     print("method=", method)
     ot.ResourceMap.SetAsString(
-        "DeconditionedDistribution-ContinuousDiscretizationMethod", method
+        "CompoundDistribution-ContinuousDiscretizationMethod", method
     )
-    distribution = ot.DeconditionedDistribution(d1, d2)
+    distribution = ot.CompoundDistribution(d1, d2)
     dim = distribution.getDimension()
     print("distribution=", distribution)
     print("Parameters ", distribution.getParametersCollection())
@@ -126,7 +126,7 @@ atoms.add(ot.Uniform(1.0, 2.0))
 conditioningDistributionCollection.add(ot.JointDistribution(atoms))
 for i in range(conditioningDistributionCollection.getSize()):
     print("conditioning distribution=", conditioningDistributionCollection[i])
-    distribution = ot.DeconditionedDistribution(
+    distribution = ot.CompoundDistribution(
         conditionedDistribution, conditioningDistributionCollection[i]
     )
     dim = distribution.getDimension()

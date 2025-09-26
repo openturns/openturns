@@ -125,7 +125,7 @@ for i in range(len(sigma0s)):
     sampler = ot.Gibbs([mean_sampler, std_sampler])
     realization = sampler.getRealization()
 
-    sigmay = ot.DeconditionedDistribution(ot.Normal(), prior).getStandardDeviation()[0]
+    sigmay = ot.CompoundDistribution(ot.Normal(), prior).getStandardDeviation()[0]
     w = size * sigma0**2.0 / (size * sigma0**2.0 + sigmay**2.0)
 
     print("prior variance= %.12g" % (sigma0**2.0))

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class DeconditionedDistribution for standard methods
+ *  @brief The test file of class CompoundDistribution for standard methods
  *
  *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -46,7 +46,7 @@ int main(int, char *[])
       coll1.add(Uniform());
       coll1.add(Uniform());
       JointDistribution d1(coll1);
-      DeconditionedDistribution distribution(d1, d2);
+      CompoundDistribution distribution(d1, d2);
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "distribution=" << distribution << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
@@ -124,7 +124,7 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
-      DeconditionedDistribution distribution(conditionedDistribution, conditioningDistributionCollection[i]);
+      CompoundDistribution distribution(conditionedDistribution, conditioningDistributionCollection[i]);
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
