@@ -36,25 +36,22 @@ static const Factory<PosteriorDistribution> Factory_PosteriorDistribution;
 /* Default constructor */
 PosteriorDistribution::PosteriorDistribution()
   : DistributionImplementation()
-  , deconditionedDistribution_()
-  , observations_()
 {
   setName("PosteriorDistribution");
   // First, set the observations
-  observations_ = Sample(1, Point(1, 0.5));
-  // Then, set the deconditioned distribution. It also set the dimension.
-  setDeconditionedDistribution(deconditionedDistribution_);
+  observations_ = Sample(1, Point({0.5}));
+  // Then, set the compound distribution. It also set the dimension.
+  setCompoundDistribution(compoundDistribution_);
 }
 
 PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
     const Sample & observations)
   : DistributionImplementation()
-  , deconditionedDistribution_()
   , observations_(observations)
 {
   setName("PosteriorDistribution");
-  setDeconditionedDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution));
+  setCompoundDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution));
 }
 
 PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDistribution,
@@ -62,30 +59,30 @@ PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDis
     const Function & linkFunction,
     const Sample & observations)
   : DistributionImplementation()
-  , deconditionedDistribution_()
+  , compoundDistribution_()
   , observations_(observations)
 {
   setName("PosteriorDistribution");
-  setDeconditionedDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction));
+  setCompoundDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction));
 }
 
 /* Parameters constructor */
-PosteriorDistribution::PosteriorDistribution(const CompoundDistribution & deconditionedDistribution,
+PosteriorDistribution::PosteriorDistribution(const CompoundDistribution & compoundDistribution,
     const Sample & observations)
   : DistributionImplementation()
-  , deconditionedDistribution_()
+  , compoundDistribution_()
   , observations_(observations)
 {
   setName("PosteriorDistribution");
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a posterior distribution with no observation.";
-  setDeconditionedDistribution(deconditionedDistribution);
+  setCompoundDistribution(compoundDistribution);
 }
 
 /* Comparison operator */
 Bool PosteriorDistribution::operator ==(const PosteriorDistribution & other) const
 {
   if (this == &other) return true;
-  return (deconditionedDistribution_ == other.deconditionedDistribution_) && (observations_ == other.observations_);
+  return (compoundDistribution_ == other.compoundDistribution_) && (observations_ == other.observations_);
 }
 
 Bool PosteriorDistribution::equals(const DistributionImplementation & other) const
@@ -101,7 +98,7 @@ String PosteriorDistribution::__repr__() const
   oss << "class=" << PosteriorDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " deconditioned distribution=" << deconditionedDistribution_
+      << " compound distribution=" << compoundDistribution_
       << " observations=" << observations_;
   return oss;
 }
@@ -109,7 +106,7 @@ String PosteriorDistribution::__repr__() const
 String PosteriorDistribution::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << "(deconditioned distribution = " << deconditionedDistribution_.__str__() << ", observations =\n" << offset << observations_.__str__(offset) << ")";
+  oss << getClassName() << "(compound distribution = " << compoundDistribution_.__str__() << ", observations =\n" << offset << observations_.__str__(offset) << ")";
   return oss;
 }
 
@@ -128,8 +125,8 @@ Point PosteriorDistribution::computeNormalizedLikelihood(const Point & y) const
 /* Compute the log-normalized likelihood of the observations */
 Scalar PosteriorDistribution::computeLogNormalizedLikelihood(const Point & y) const
 {
-  Distribution conditionedDistribution(deconditionedDistribution_.getConditionedDistribution());
-  conditionedDistribution.setParameter(deconditionedDistribution_.getLinkFunction()(y));
+  Distribution conditionedDistribution(compoundDistribution_.getConditionedDistribution());
+  conditionedDistribution.setParameter(compoundDistribution_.getLinkFunction()(y));
   return -logNormalizationFactor_ + conditionedDistribution.computeLogPDF(observations_).computeMean()[0] * observations_.getSize();
 }
 
@@ -163,7 +160,7 @@ private:
 Scalar PosteriorDistribution::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  return deconditionedDistribution_.getConditioningDistribution().computeLogPDF(point) + computeLogNormalizedLikelihood(point);
+  return compoundDistribution_.getConditioningDistribution().computeLogPDF(point) + computeLogNormalizedLikelihood(point);
 }
 
 /* Get the PDF of the distribution */
@@ -178,7 +175,7 @@ Scalar PosteriorDistribution::computeCDF(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
-  const Scalar cdf = deconditionedDistribution_.computeExpectation(normalizedLikelihood, point)[0];
+  const Scalar cdf = compoundDistribution_.computeExpectation(normalizedLikelihood, point)[0];
   return cdf;
 }
 
@@ -204,7 +201,7 @@ Sample PosteriorDistribution::getSample(const UnsignedInteger size) const
 /* Check if the distribution is constinuous */
 Bool PosteriorDistribution::isContinuous() const
 {
-  return deconditionedDistribution_.getConditioningDistribution().isContinuous();
+  return compoundDistribution_.getConditioningDistribution().isContinuous();
 }
 
 /* Parameters value and description accessor */
@@ -218,13 +215,13 @@ void PosteriorDistribution::setParametersCollection(const PointCollection & )
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)";
 }
 
-/* Deconditioned distribution accessor */
-void PosteriorDistribution::setDeconditionedDistribution(const CompoundDistribution & deconditionedDistribution)
+/* Compound distribution accessor */
+void PosteriorDistribution::setCompoundDistribution(const CompoundDistribution & compoundDistribution)
 {
-  if (observations_.getDimension() != deconditionedDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the deconditioned distribution must have the same dimension as the observations.";
-  deconditionedDistribution_ = deconditionedDistribution;
-  setDimension(deconditionedDistribution.getConditioningDistribution().getDimension());
-  setDescription(deconditionedDistribution.getConditioningDistribution().getDescription());
+  if (observations_.getDimension() != compoundDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the compound distribution must have the same dimension as the observations.";
+  compoundDistribution_ = compoundDistribution;
+  setDimension(compoundDistribution.getConditioningDistribution().getDimension());
+  setDescription(compoundDistribution.getConditioningDistribution().getDescription());
   // This must be done before to call computeCDF() for the normalization factor
   computeRange();
   // Fix the log-normalization at zero to compute its actual value using computeCDF()
@@ -248,10 +245,10 @@ void PosteriorDistribution::setDeconditionedDistribution(const CompoundDistribut
 
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-  isParallel_ = deconditionedDistribution_.getLinkFunction().getEvaluation().getImplementation()->isParallel()
-                && deconditionedDistribution_.getConditioningDistribution().getImplementation()->isParallel()
-                && deconditionedDistribution_.getConditionedDistribution().getImplementation()->isParallel();
-  if (deconditionedDistribution_.getConditioningDistribution().isContinuous())
+  isParallel_ = compoundDistribution_.getLinkFunction().getEvaluation().getImplementation()->isParallel()
+                && compoundDistribution_.getConditioningDistribution().getImplementation()->isParallel()
+                && compoundDistribution_.getConditionedDistribution().getImplementation()->isParallel();
+  if (compoundDistribution_.getConditioningDistribution().isContinuous())
   {
     // initialize ratio of uniforms method, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
     // r_ is a free parameter, could be optimized to maximize the acceptance ratio
@@ -262,45 +259,45 @@ void PosteriorDistribution::setDeconditionedDistribution(const CompoundDistribut
   } // isContinuous()
 }
 
-CompoundDistribution PosteriorDistribution::getDeconditionedDistribution() const
+CompoundDistribution PosteriorDistribution::getCompoundDistribution() const
 {
-  return deconditionedDistribution_;
+  return compoundDistribution_;
 }
 
 /* ConditionedDistribution distribution accessor */
 void PosteriorDistribution::setConditionedDistribution(const Distribution & conditionedDistribution)
 {
-  deconditionedDistribution_.setConditionedDistribution(conditionedDistribution);
-  setDeconditionedDistribution(deconditionedDistribution_);
+  compoundDistribution_.setConditionedDistribution(conditionedDistribution);
+  setCompoundDistribution(compoundDistribution_);
 }
 
 Distribution PosteriorDistribution::getConditionedDistribution() const
 {
-  return deconditionedDistribution_.getConditionedDistribution();
+  return compoundDistribution_.getConditionedDistribution();
 }
 
 /* ConditioningDistribution distribution accessor */
 void PosteriorDistribution::setConditioningDistribution(const Distribution & conditioningDistribution)
 {
-  deconditionedDistribution_.setConditioningDistribution(conditioningDistribution);
-  setDeconditionedDistribution(deconditionedDistribution_);
+  compoundDistribution_.setConditioningDistribution(conditioningDistribution);
+  setCompoundDistribution(compoundDistribution_);
 }
 
 Distribution PosteriorDistribution::getConditioningDistribution() const
 {
-  return deconditionedDistribution_.getConditioningDistribution();
+  return compoundDistribution_.getConditioningDistribution();
 }
 
 /* linkFunction accessor */
 void PosteriorDistribution::setLinkFunction(const Function & linkFunction)
 {
-  deconditionedDistribution_.setLinkFunction(linkFunction);
-  setDeconditionedDistribution(deconditionedDistribution_);
+  compoundDistribution_.setLinkFunction(linkFunction);
+  setCompoundDistribution(compoundDistribution_);
 }
 
 Function PosteriorDistribution::getLinkFunction() const
 {
-  return deconditionedDistribution_.getLinkFunction();
+  return compoundDistribution_.getLinkFunction();
 }
 
 
@@ -308,9 +305,9 @@ Function PosteriorDistribution::getLinkFunction() const
 void PosteriorDistribution::setObservations(const Sample & observations)
 {
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
-  if (observations.getDimension() != deconditionedDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the deconditioned distribution must have the same dimension as the observations.";
+  if (observations.getDimension() != compoundDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the compound distribution must have the same dimension as the observations.";
   observations_ = observations;
-  setDeconditionedDistribution(deconditionedDistribution_);
+  setCompoundDistribution(compoundDistribution_);
 }
 
 Sample PosteriorDistribution::getObservations() const
@@ -327,7 +324,7 @@ Scalar PosteriorDistribution::getLogNormalizationFactor() const
 /* Compute the numerical range of the distribution given the parameters values */
 void PosteriorDistribution::computeRange()
 {
-  setRange(deconditionedDistribution_.conditioningDistribution_.getRange());
+  setRange(compoundDistribution_.conditioningDistribution_.getRange());
 }
 
 /* Compute the mean of the distribution */
@@ -336,7 +333,7 @@ void PosteriorDistribution::computeMean() const
   const Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   const SymbolicFunction meanFunction(inputDescription, inputDescription);
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
-  mean_ = deconditionedDistribution_.computeExpectation(normalizedLikelihood * meanFunction, getRange().getUpperBound());
+  mean_ = compoundDistribution_.computeExpectation(normalizedLikelihood * meanFunction, getRange().getUpperBound());
   isAlreadyComputedMean_ = true;
 }
 
@@ -366,7 +363,7 @@ Point PosteriorDistribution::getSkewness() const
   }
   const SymbolicFunction skewnessFunction(inputDescription, formulas);
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
-  const Point varThird(deconditionedDistribution_.computeExpectation(normalizedLikelihood * skewnessFunction, getRange().getUpperBound()));
+  const Point varThird(compoundDistribution_.computeExpectation(normalizedLikelihood * skewnessFunction, getRange().getUpperBound()));
   Point skewness(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     skewness[i] = varThird[2 * i + 1] / std::pow(varThird[2 * i], 1.5);
@@ -389,7 +386,7 @@ Point PosteriorDistribution::getKurtosis() const
   }
   const SymbolicFunction kurtosisFunction(inputDescription, formulas);
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
-  const Point varFourth(deconditionedDistribution_.computeExpectation(normalizedLikelihood * kurtosisFunction, getRange().getUpperBound()));
+  const Point varFourth(compoundDistribution_.computeExpectation(normalizedLikelihood * kurtosisFunction, getRange().getUpperBound()));
   Point kurtosis(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     kurtosis[i] = varFourth[2 * i + 1] / std::pow(varFourth[2 * i], 2.0);
@@ -418,7 +415,7 @@ void PosteriorDistribution::computeCovariance() const
   }
   const SymbolicFunction covarianceFunction(inputDescription, formulas);
   const Function normalizedLikelihood(PosteriorDistributionNormalizedLikelihoodEvaluation(*this));
-  const Point result(deconditionedDistribution_.computeExpectation(normalizedLikelihood * covarianceFunction, getRange().getUpperBound()));
+  const Point result(compoundDistribution_.computeExpectation(normalizedLikelihood * covarianceFunction, getRange().getUpperBound()));
   index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -433,7 +430,7 @@ void PosteriorDistribution::computeCovariance() const
 void PosteriorDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
-  adv.saveAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
+  adv.saveAttribute( "compoundDistribution_", compoundDistribution_ );
   adv.saveAttribute( "observations_", observations_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
 }
@@ -442,9 +439,9 @@ void PosteriorDistribution::save(Advocate & adv) const
 void PosteriorDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
-  adv.loadAttribute( "deconditionedDistribution_", deconditionedDistribution_ );
+  adv.loadAttribute( "compoundDistribution_", compoundDistribution_ );
   adv.loadAttribute( "observations_", observations_ );
-  setDeconditionedDistribution(deconditionedDistribution_);
+  setCompoundDistribution(compoundDistribution_);
 }
 
 
