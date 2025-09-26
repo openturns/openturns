@@ -291,7 +291,7 @@ Random vectors
     :template: classWithPlot.rst_t
     PythonRandomVector
     CompositeRandomVector
-    DeconditionedRandomVector
+    CompoundRandomVector
 
     :template: class.rst_t
     ConstantRandomVector

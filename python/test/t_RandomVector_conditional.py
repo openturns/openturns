@@ -16,7 +16,7 @@ randomParameters = ot.RandomVector(distributionParameters)
 print("random parameters=", randomParameters)
 
 # We create a distribution-based conditional RandomVector
-vect = ot.DeconditionedRandomVector(distribution, randomParameters)
+vect = ot.CompoundRandomVector(distribution, randomParameters)
 print("vect=", vect)
 
 # Check standard methods of class RandomVector

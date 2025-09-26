@@ -1,14 +1,14 @@
-%feature("docstring") OT::DeconditionedRandomVector
+%feature("docstring") OT::CompoundRandomVector
 "Conditional random vector.
 
 Helper class for defining the random vector :math:`\vect{X}` such that  :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`, with :math:`\vect{\Theta}` a random vector of dimension the dimension of :math:`\vect{\Theta}`.
 
 Parameters
 ----------
-
-conditionedDist : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`\vect{\Theta}`.
-    
-parametersRandomVector : :class:`~openturns.RandomVector`, the parameters random vector :math:`\vect{\Theta}` of the `conditionedDist` distribution. 
+conditionedDist : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`\vect{\Theta}`.
+parametersRandomVector : :class:`~openturns.RandomVector`
+    the parameters random vector :math:`\vect{\Theta}` of the `conditionedDist` distribution. 
 
 Notes
 -----
@@ -33,7 +33,7 @@ Create a random vector:
 >>> distAlpha = ot.Uniform(0.0, 0.1)
 >>> distTheta = ot.JointDistribution([distGamma, distAlpha])
 >>> rvTheta = ot.RandomVector(distTheta)
->>> rvX = ot.DeconditionedRandomVector(distXgivenT, rvTheta)
+>>> rvX = ot.CompoundRandomVector(distXgivenT, rvTheta)
 
 Draw a sample:
 
@@ -41,7 +41,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::DeconditionedRandomVector::getRandomParameters
+%feature("docstring") OT::CompoundRandomVector::getRandomParameters
 "Accessor to the distribution's random parameter `randomParameters`.
 
 Returns
@@ -51,7 +51,7 @@ randomParameters : :class:`~openturns.RandomVector`, the random parameters :math
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::DeconditionedRandomVector::getDistribution
+%feature("docstring") OT::CompoundRandomVector::getDistribution
 "Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
 
 Returns

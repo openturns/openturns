@@ -7,3 +7,4 @@ Remove Wilks in some future version
 Remove deprecated method DistributionFactory.setKnownParameter(Point, Indices)
 Remove deprecated method Graph.setDrawable(Drawable, int)
 Remove DeconditionedDistribution alias in some future version
+Remove DeconditionedRandomVector alias in some future version
