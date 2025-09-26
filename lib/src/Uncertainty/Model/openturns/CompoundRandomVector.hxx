@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_DECONDITIONEDRANDOMVECTOR_HXX
-#define OPENTURNS_DECONDITIONEDRANDOMVECTOR_HXX
+#ifndef OPENTURNS_COMPOUNDRANDOMVECTOR_HXX
+#define OPENTURNS_COMPOUNDRANDOMVECTOR_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
@@ -33,11 +33,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class DeconditionedRandomVector
+ * @class CompoundRandomVector
  *
  * An implementation class for distribution-based random vectors
  */
-class OT_API DeconditionedRandomVector
+class OT_API CompoundRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME
@@ -45,15 +45,15 @@ class OT_API DeconditionedRandomVector
 public:
 
   /** Default constructor */
-  DeconditionedRandomVector();
+  CompoundRandomVector();
 
   /** Default constructor */
-  DeconditionedRandomVector(const Distribution & distribution,
+  CompoundRandomVector(const Distribution & distribution,
                             const RandomVector & randomParameters);
 
 
   /** Virtual constructor */
-  DeconditionedRandomVector * clone() const override;
+  CompoundRandomVector * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -95,9 +95,9 @@ private:
   /** The random vector defining the distribution parameters */
   RandomVector randomParameters_;
 
-}; /* class DeconditionedRandomVector */
+}; /* class CompoundRandomVector */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_DECONDITIONEDRANDOMVECTOR_HXX */
+#endif /* OPENTURNS_COMPOUNDRANDOMVECTOR_HXX */
