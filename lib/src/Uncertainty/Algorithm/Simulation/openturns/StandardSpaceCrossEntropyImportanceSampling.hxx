@@ -46,11 +46,10 @@ public:
   /** Virtual constructor */
   StandardSpaceCrossEntropyImportanceSampling * clone() const override;
 
-  Distribution getInitialDistribution() const override;
-
   /** String converter */
   String __repr__() const override;
 protected:
+  Distribution getInitialDistribution() const override;
 
   /** Limit state accessor */
   Function getLimitState() const override;
