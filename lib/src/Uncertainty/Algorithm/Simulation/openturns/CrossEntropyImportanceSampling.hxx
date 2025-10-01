@@ -45,8 +45,6 @@ public:
   /** Virtual constructor */
   CrossEntropyImportanceSampling * clone() const override;
 
-  virtual Distribution getInitialDistribution() const;
-
   /** Quantile Level accessor */
   void setQuantileLevel(const Scalar quantileLevel);
   Scalar getQuantileLevel() const;
@@ -80,6 +78,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 protected:
+  virtual Distribution getInitialDistribution() const;
 
   /** Limit state accessor */
   virtual Function getLimitState() const;
