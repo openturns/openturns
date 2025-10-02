@@ -8,7 +8,6 @@ ot.TESTPREAMBLE()
 ot.ResourceMap.SetAsUnsignedInteger(
     "OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000
 )
-ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 0.5)
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8)
 
 ot.PlatformInfo.SetNumericalPrecision(3)
@@ -170,7 +169,7 @@ def test_stationary_fun():
     algo.run()
     result = algo.getResult()
     mm = result.getMetaModel()
-    ott.assert_almost_equal(mm([5.5]), [5.58283])
+    ott.assert_almost_equal(mm([5.5]), [5.588], 2e-3)
 
 
 def test_gpr_no_opt():

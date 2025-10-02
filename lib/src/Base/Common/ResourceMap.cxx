@@ -1595,7 +1595,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationNuggetLowerBound", 1.0e-12);
-  addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
+  addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "LN_COBYLA");
   addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // KrigingAlgorithm parameters //
