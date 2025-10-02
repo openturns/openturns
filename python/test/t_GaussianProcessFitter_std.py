@@ -86,6 +86,7 @@ def use_case_4(X, Y):
     optim problem (scale)
     Biased variance estimate
     """
+    ot.ResourceMap.Reload()
     ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", False)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
@@ -113,6 +114,7 @@ def use_case_5(X, Y):
     """
     full optim problem (scale, amplitude)
     """
+    ot.ResourceMap.Reload()
     ot.ResourceMap.SetAsBool("GaussianProcessFitter-UnbiasedVariance", False)
     ot.ResourceMap.SetAsBool(
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
@@ -144,6 +146,7 @@ def use_case_5(X, Y):
 
 
 def use_case_6(X, Y):
+    ot.ResourceMap.Reload()
     ot.RandomGenerator.SetSeed(0)
     covarianceModel = ot.AbsoluteExponential()
     algo = GaussianProcessFitter(X, Y, covarianceModel)
@@ -152,7 +155,7 @@ def use_case_6(X, Y):
     assert algo.getOptimizeParameters()
     algo.run()
     result = algo.getResult()
-    cov_param = [6.708, 1.987]
+    cov_param = [15.6, 2.3680]
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
