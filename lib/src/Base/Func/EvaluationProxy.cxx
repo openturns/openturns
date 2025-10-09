@@ -293,4 +293,10 @@ void EvaluationProxy::load(Advocate & adv)
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 
+/* Evaluation accessor */
+Evaluation EvaluationProxy::getEvaluation() const
+{
+  return evaluation_;
+}
+
 END_NAMESPACE_OPENTURNS
