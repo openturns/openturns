@@ -123,6 +123,11 @@ Sample FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions(
   const Sample inputSample(functionalChaosResult.getInputSample());
   const FunctionCollection reducedBasis(functionalChaosResult.getReducedBasis());
   const UnsignedInteger reducedBasisSize = reducedBasis.getSize();
+  const UnsignedInteger sampleSize = inputSample.getSize();
+
+  if (reducedBasisSize >= sampleSize)
+    throw InvalidArgumentException(HERE) << "FunctionalChaosValidation: basis size for LOO (" << reducedBasisSize << ") must be lesser than the sample size (" << sampleSize << ")";
+
   const Function transformation(functionalChaosResult.getTransformation());
   const Sample standardSample(transformation(inputSample));
   DesignProxy designProxy(standardSample, reducedBasis);
