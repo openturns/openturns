@@ -72,8 +72,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
-  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
@@ -95,8 +93,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
-  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
@@ -119,7 +115,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCovariance_(spatialCovariance)
   , outputCovarianceCholeskyFactor_(0)
   , isDiagonal_(spatialCovariance.isDiagonal())
-  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
@@ -1020,8 +1015,12 @@ Description CovarianceModelImplementation::getFullParameterDescription() const
 /* Indices of the active parameters */
 void CovarianceModelImplementation::setActiveParameter(const Indices & active)
 {
-  if (!active.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the active parameter indices must be given in increasing order, here active=" << active;
   activeParameter_ = active;
+  std::sort(activeParameter_.begin(), activeParameter_.end());
+  auto last = std::unique(activeParameter_.begin(), activeParameter_.end());
+  activeParameter_.erase(last, activeParameter_.end());
+  if (activeParameter_ != active)
+    throw InvalidArgumentException(HERE) << "Active parameter indices must be unique";
 }
 
 Indices CovarianceModelImplementation::getActiveParameter() const
