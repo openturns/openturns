@@ -49,9 +49,12 @@ def Object___setstate__(self, state):
     import tempfile
     import os
 
-    # call ctor to initialize underlying cxx obj
-    # as it is instantiated from object.__new__
-    self.__init__()
+    # call ctor to initialize underlying cxx obj as it is instantiated from object.__new__
+    # look for ctor in the first parent class inside openturns module
+    for cls in self.__class__.__mro__:
+        if cls.__module__.startswith("openturns"):
+            cls.__init__(self)
+            break
 
     study = Study()
     outfile = tempfile.NamedTemporaryFile(delete=False, suffix='.xml')
