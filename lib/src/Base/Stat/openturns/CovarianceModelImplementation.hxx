@@ -218,13 +218,13 @@ protected:
   Point scale_;
 
   /** Input dimension */
-  UnsignedInteger inputDimension_;
+  UnsignedInteger inputDimension_ = 1;
 
   /** Amplitude values  */
   Point amplitude_;
 
   /** Output dimension */
-  UnsignedInteger outputDimension_;
+  UnsignedInteger outputDimension_ = 1;
 
   /** Correlation matrix of the output dependence structure */
   CorrelationMatrix outputCorrelation_;
@@ -236,13 +236,13 @@ protected:
   mutable TriangularMatrix outputCovarianceCholeskyFactor_;
 
   /** Flag to tell if the model is diagonal */
-  Bool isDiagonal_;
+  Bool isDiagonal_ = true;
 
   /** Flag to tell if the model is stationary */
-  Bool isStationary_;
+  Bool isStationary_ = false;
 
   /** Nugget factor */
-  Scalar nuggetFactor_;
+  Scalar nuggetFactor_ = 0.0;
 
   /** Active parameters */
   Indices activeParameter_;
