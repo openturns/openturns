@@ -23,3 +23,23 @@ for obj in obj_list:
     obj2 = pickle.load(src)
     print(("object: " + str(obj)))
     print(("same: " + str(obj2 == obj) + "\n"))
+
+
+# make sure we can serialize a derivated class
+class MySample(ot.Sample):
+    def __init__(self, sample):
+        super().__init__(sample)
+
+    def myFunction(self):
+        print("test")
+
+
+dist = ot.Normal([0, 0], [1, 1])
+sample = dist.getSample(20)
+mySample = MySample(sample)
+
+src = BytesIO()
+pickle.dump(mySample, src)
+
+src.seek(0)
+mySample_pkl = pickle.load(src)
