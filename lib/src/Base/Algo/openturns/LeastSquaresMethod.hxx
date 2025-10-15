@@ -40,7 +40,8 @@ class OT_API LeastSquaresMethod
 
 public:
 
-  typedef TypedInterfaceObject<LeastSquaresMethodImplementation>::Implementation  Implementation;
+  /* Some typedefs for easy reading */
+  typedef Pointer<LeastSquaresMethodImplementation> Implementation;
   typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
@@ -64,6 +65,10 @@ public:
   /** Constructor from implementation */
   LeastSquaresMethod(const LeastSquaresMethodImplementation & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  LeastSquaresMethod(LeastSquaresMethodImplementation * p_implementation);
+#endif
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
