@@ -23,7 +23,7 @@ im = ishigami_function.IshigamiModel()
 # %%
 # We build a design of experiments with a Latin Hypercube Sampling (LHS) for the three input variables
 # supposed independent.
-experiment = ot.LHSExperiment(im.inputDistribution, 30, False, True)
+experiment = ot.LHSExperiment(im.distribution, 30, False, True)
 xdata = experiment.generate()
 
 # %%
@@ -57,7 +57,7 @@ metamodel = result.getMetaModel()
 # metamodel instead of the exact model.
 #
 # We first create a random vector following the input distribution :
-X = ot.RandomVector(im.inputDistribution)
+X = ot.RandomVector(im.distribution)
 
 # %%
 # And then we create a random vector from the image of the input random vector

@@ -221,7 +221,7 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 nTrain = 100
-xTrain = im.inputDistribution.getSample(nTrain)
+xTrain = im.distribution.getSample(nTrain)
 yTrain = im.model(xTrain)
 
 # %%
@@ -295,7 +295,7 @@ chaosResult = ComputeSparseLeastSquaresFunctionalChaos(
     yTrain,
     multivariateBasis,
     basisSize,
-    im.inputDistribution,
+    im.distribution,
     sparse,
 )
 
@@ -396,7 +396,7 @@ for j in range(nTrain):
         yTrainLOO,
         multivariateBasis,
         basisSize,
-        im.inputDistribution,
+        im.distribution,
         sparse,
     )
     metamodelLOO = chaosResultLOO.getMetaModel()

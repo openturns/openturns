@@ -18,9 +18,9 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 # The `IshigamiModel` data class contains the input distribution of the random vector
-# :math:`\vect{X}=\Tr{(X_1, X_2, X_3)}` in `im.inputDistribution` and the Ishigami function in `im.model`.
+# :math:`\vect{X}=\Tr{(X_1, X_2, X_3)}` in `im.distribution` and the Ishigami function in `im.model`.
 # We also have access to the input variable names with:
-input_names = im.inputDistribution.getDescription()
+input_names = im.distribution.getDescription()
 
 
 # %%
@@ -28,7 +28,7 @@ input_names = im.inputDistribution.getDescription()
 
 # %%
 N = 100
-inputTrain = im.inputDistribution.getSample(N)
+inputTrain = im.distribution.getSample(N)
 outputTrain = im.model(inputTrain)
 
 # %%
@@ -45,7 +45,7 @@ enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    inputTrain, outputTrain, im.distribution, adaptiveStrategy, projectionStrategy
 )
 
 # %%

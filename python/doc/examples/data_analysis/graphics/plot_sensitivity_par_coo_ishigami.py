@@ -40,7 +40,7 @@ im = IshigamiModel()
 # the Ishigami function
 model = im.model
 # the input distribution
-inputDist = im.inputDistribution
+inputDist = im.distribution
 
 # %%
 # We create a random vector from out input distribution :

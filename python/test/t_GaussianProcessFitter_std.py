@@ -182,7 +182,8 @@ def bugfix_optim_no_feasible():
 
     m = FireSatelliteModel()
     model = m.model
-    inputDistribution = m.inputDistribution
+    inputDistribution = m.distribution
+
     experiment = ot.LHSExperiment(inputDistribution, 10 * m.dim)
     inputTrainingSet = experiment.generate()
     outputTrainingSet = model(inputTrainingSet)

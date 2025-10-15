@@ -9,4 +9,4 @@ Test the WingWeightModel data class on a reference point.
 ww = wingweight_function.WingWeightModel()
 
 
-assert_almost_equal(ww.model(ww.inputDistribution.getMean()), [267.625], 1e-2)
+assert_almost_equal(ww.model(ww.distribution.getMean()), [267.625], 1e-2)

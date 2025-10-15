@@ -42,16 +42,16 @@ m = WingWeightModel()
 # This graph allows one to have a first idea of the variations of the function in pair of dimensions.
 # The colors of each contour plot are comparable.
 
-lowerBound = m.inputDistribution.getRange().getLowerBound()
-upperBound = m.inputDistribution.getRange().getUpperBound()
+lowerBound = m.distribution.getRange().getLowerBound()
+upperBound = m.distribution.getRange().getUpperBound()
 
 nX = ot.ResourceMap.GetAsUnsignedInteger("Evaluation-DefaultPointNumber")
-description = m.inputDistribution.getDescription()
+description = m.distribution.getDescription()
 description.add("")
 m.model.setDescription(description)
 m.model.setName("wing weight model")
 grid = m.model.drawCrossCuts(
-    m.inputDistribution.getMean(),
+    m.distribution.getMean(),
     lowerBound,
     upperBound,
     [nX] * m.model.getInputDimension(),
@@ -91,10 +91,10 @@ fig.subplots_adjust(top=0.99, bottom=0.05, left=0.06, right=0.99)
 #
 # We create the input and output data for the estimation of the different sensitivity coefficients and we get the input variables description:
 
-inputNames = m.inputDistribution.getDescription()
+inputNames = m.distribution.getDescription()
 
 size = 500
-inputDesign = m.inputDistribution.getSample(size)
+inputDesign = m.distribution.getSample(size)
 outputDesign = m.model(inputDesign)
 
 # %%
@@ -233,7 +233,7 @@ view = otv.View(graph)
 
 # %%
 # We create a distribution-based RandomVector.
-X = ot.RandomVector(m.inputDistribution)
+X = ot.RandomVector(m.distribution)
 
 # %%
 # We create a composite RandomVector Y from X and m.model.
@@ -265,9 +265,9 @@ view = otv.View(graph)
 
 # %%
 sizeSobol = 1000
-sie = ot.SobolIndicesExperiment(m.inputDistribution, sizeSobol)
+sie = ot.SobolIndicesExperiment(m.distribution, sizeSobol)
 inputDesignSobol = sie.generate()
-inputNames = m.inputDistribution.getDescription()
+inputNames = m.distribution.getDescription()
 inputDesignSobol.setDescription(inputNames)
 inputDesignSobol.getSize()
 
@@ -309,9 +309,9 @@ view = otv.View(graph)
 # %%
 # We see that several Sobol' indices are negative, that is inconsistent with the theory. Therefore, a larger number of samples is required to get consistent indices
 sizeSobol = 10000
-sie = ot.SobolIndicesExperiment(m.inputDistribution, sizeSobol)
+sie = ot.SobolIndicesExperiment(m.distribution, sizeSobol)
 inputDesignSobol = sie.generate()
-inputNames = m.inputDistribution.getDescription()
+inputNames = m.distribution.getDescription()
 inputDesignSobol.setDescription(inputNames)
 inputDesignSobol.getSize()
 outputDesignSobol = m.model(inputDesignSobol)
@@ -334,10 +334,10 @@ view = otv.View(graph)
 # Now, we estimate the Sobol' indices using Polynomial Chaos Expansion.
 # We create a Functional Chaos Expansion.
 sizePCE = 800
-inputDesignPCE = m.inputDistribution.getSample(sizePCE)
+inputDesignPCE = m.distribution.getSample(sizePCE)
 outputDesignPCE = m.model(inputDesignPCE)
 
-algo = ot.FunctionalChaosAlgorithm(inputDesignPCE, outputDesignPCE, m.inputDistribution)
+algo = ot.FunctionalChaosAlgorithm(inputDesignPCE, outputDesignPCE, m.distribution)
 
 algo.run()
 result = algo.getResult()
@@ -359,7 +359,7 @@ view = otv.View(graph)
 # Furthermore, first order Sobol' indices can also been estimated in a data-driven way using a rank-based sensitivity algorithm.
 # In such a way, the estimation of sensitivity indices does not involve any surrogate model.
 sizeRankSobol = 800
-inputDesignRankSobol = m.inputDistribution.getSample(sizeRankSobol)
+inputDesignRankSobol = m.distribution.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
 myRankSobol = ot.RankSobolSensitivityAlgorithm(
     inputDesignRankSobol, outputDesignankSobol
@@ -387,7 +387,7 @@ view = otv.View(graph)
 # %%
 # We then estimate the HSIC indices using a data-driven approach.
 sizeHSIC = 250
-inputDesignHSIC = m.inputDistribution.getSample(sizeHSIC)
+inputDesignHSIC = m.distribution.getSample(sizeHSIC)
 outputDesignHSIC = m.model(inputDesignHSIC)
 
 covarianceModelCollection = []

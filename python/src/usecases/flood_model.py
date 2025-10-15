@@ -67,10 +67,9 @@ class FloodModel:
 
     model : :class:`~openturns.ParametricFunction`
         The flood model.
-        The function has input dimension 4 and output dimension 1.
-        More precisely, we have  :math:`\vect{X} = (Q, K_s, Z_v, Z_m)` and
-        :math:`Y = H`.
-        Its parameters are :math:`\theta = (B, L)`.
+        The function has input dimension 8 and output dimension 3.
+        More precisely, we have  :math:`\vect{X} = (Q, K_s, Z_v, Z_m, B, L, Z_b, H_d)` and
+        :math:`\vect{Y} = (H, S, C)`.
 
     distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
