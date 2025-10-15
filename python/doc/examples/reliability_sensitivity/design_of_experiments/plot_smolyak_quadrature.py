@@ -266,12 +266,12 @@ def drawQuadrature(
     data_loge = ot.Sample.BuildFromPoint(np.log(abserr_list))
     basis = ot.SymbolicFunction(["log_n"], ["1.0", "log_n"])
     designMatrix = basis(data_logn)
-    myLeastSquares = ot.LinearLeastSquares(designMatrix, data_loge)
-    myLeastSquares.run()
-    ls_fit = myLeastSquares.getMetaModel()
+    algo = ot.LinearLeastSquares(designMatrix, data_loge)
+    algo.run()
+    ls_fit = algo.getResult().getMetaModel()
     logerror_fit = ls_fit(basis(data_logn))
     error_fit = np.exp(logerror_fit).flatten()
-    alpha = myLeastSquares.getLinear()[1, 0]
+    alpha = algo.getLinear()[1, 0]
     #
     graph = ot.Graph()
     cloud = ot.Cloud(size_list, abserr_list)

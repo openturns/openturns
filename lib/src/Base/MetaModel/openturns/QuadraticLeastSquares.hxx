@@ -23,9 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Function.hxx"
+#include "openturns/MetaModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -58,6 +56,9 @@ public:
   /** Response surface computation */
   void run();
 
+  /** Result accessor */
+  MetaModelResult getResult() const;
+  
   /** Constant accessor */
   Point getConstant() const;
 
@@ -67,13 +68,15 @@ public:
   /** Quadratic accessor */
   SymmetricTensor getQuadratic() const;
 
-  /** Metamodel accessor */
+  /** @deprecated Metamodel accessor */
   Function getMetaModel() const;
 
   /** DataIn accessor */
+  Sample getInputSample() const;
   Sample getDataIn() const;
 
   /** DataOut accessor */
+  Sample getOutputSample() const;
   void setDataOut(const Sample & dataOut);
   Sample getDataOut();
 
@@ -87,7 +90,7 @@ protected:
 private:
   Sample dataIn_;
   Sample dataOut_;
-  Function responseSurface_;
+  MetaModelResult result_;
   Point constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;

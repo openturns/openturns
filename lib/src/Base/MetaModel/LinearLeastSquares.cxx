@@ -66,7 +66,7 @@ String LinearLeastSquares::__repr__() const
       << " name=" << getName()
       << " dataIn=" << dataIn_
       << " dataOut=" << dataOut_
-      << " responseSurface=" << responseSurface_
+      << " result=" << result_
       << " constant=" << constant_
       << " linear=" << linear_;
   return oss;
@@ -123,18 +123,30 @@ void LinearLeastSquares::run()
   } // output components
   const Point center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
-  responseSurface_.setEvaluation(new LinearEvaluation(center, constant_, linear_));
-  responseSurface_.setGradient(new ConstantGradient(linear_));
-  responseSurface_.setHessian(new ConstantHessian(SymmetricTensor(center.getDimension(), constant_.getDimension())));
+  Function responseSurface;
+  responseSurface.setEvaluation(new LinearEvaluation(center, constant_, linear_));
+  responseSurface.setGradient(new ConstantGradient(linear_));
+  responseSurface.setHessian(new ConstantHessian(SymmetricTensor(center.getDimension(), constant_.getDimension())));
+  result_ = MetaModelResult(dataIn_, dataOut_, responseSurface);
 }
 
 /* DataIn accessor */
+Sample LinearLeastSquares::getInputSample() const
+{
+  return dataIn_;
+}
+
 Sample LinearLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
+Sample LinearLeastSquares::getOutputSample() const
+{
+  return dataOut_;
+}
+
 Sample LinearLeastSquares::getDataOut() const
 {
   return dataOut_;
@@ -161,15 +173,18 @@ Matrix LinearLeastSquares::getLinear() const
 /* Metamodel accessor */
 Function LinearLeastSquares::getMetaModel() const
 {
-  return responseSurface_;
+  return result_.getMetaModel();
+}
+
+MetaModelResult LinearLeastSquares::getResult() const
+{
+  return result_;
 }
 
 void LinearLeastSquares::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute("dataIn_", dataIn_);
-  adv.saveAttribute("dataOut_", dataOut_);
-  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("result_", result_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
 }
@@ -178,9 +193,7 @@ void LinearLeastSquares::save(Advocate & adv) const
 void LinearLeastSquares::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute("dataIn_", dataIn_);
-  adv.loadAttribute("dataOut_", dataOut_);
-  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("result_", result_);
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);
 }
