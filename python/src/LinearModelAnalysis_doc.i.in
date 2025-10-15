@@ -84,7 +84,7 @@ tScores : :class:`~openturns.Point`
 
 Notes
 -----
-The T-test checks if the coefficient :math`\hat{a}_k` is statistically different from zero and is used under the Gaussian assumption of the error :math:`\varepsilon`. See [rawlings2001]_ (section 4.5.2 *Special cases of the general form* page 122) for more details.
+The T-test checks if the coefficient :math:`\hat{a}_k` is statistically different from zero and is used under the Gaussian assumption of the error :math:`\varepsilon`. See [rawlings2001]_ (section 4.5.2 *Special cases of the general form* page 122) for more details.
 
 For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`t_k` is computed as: 
 
@@ -109,14 +109,15 @@ pValues : :class:`~openturns.Point`
 
 Notes
 -----
-The T-test checks if the coefficient :math`\hat{a}_k` is statistically different from zero  and is used under the Gaussian assumption of the error :math:`\varepsilon`.
+The T-test checks if the coefficient :math:`\hat{a}_k` is statistically different from zero  and is used under the Gaussian assumption of the error :math:`\varepsilon`.
 
 The p-values of each coefficient estimate is computed from the t-scores defined in :eq:`tScores` with
 respect to the :class:`~openturns.Student` distribution
 with :math:`dof` degrees of freedom defined in :eq:`dofWithBase` or :eq:`dofNoBase`.
 
 These p-values are used under the Gaussian assumption of the error :math:`\varepsilon`. If the p-value is close to zero, we can
-reject the hypothesis that this coefficient is zero.
+reject the hypothesis that this coefficient is zero. If the p-value is close to 1, we can
+accept the hypothesis that this coefficient is zero.
 
 If the residuals are not Gaussian, this test is not appropriate and should not be used.
 "

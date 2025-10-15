@@ -3,49 +3,46 @@
 Pearson correlation coefficient
 -------------------------------
 
-Pearson’s correlation coefficient :math:`\rho_{U,V}` aims to measure
+The Pearson correlation coefficient :math:`\rho^P(X,Y)`  measures
 the strength of a linear relationship between two random variables
-:math:`U` and :math:`V`. It is defined as follows:
+:math:`X` and :math:`Y` with finite variance. It is defined as follows:
 
 .. math::
-
-   \begin{aligned}
-       \rho_{U,V} = \frac{\displaystyle \Cov{U,V}}{\sigma_U \sigma_V}
-     \end{aligned}
+       \rho^P(X,Y)= \frac{\displaystyle \Cov{X,Y}}{\sqrt{\Var{X}\Var{Y}}}
 
 where
-:math:`\Cov{U,V} = \Expect{ \left( U - m_U \right) \left( V - m_V \right) }`,
-:math:`m_U= \Expect{U}`, :math:`m_V= \Expect{V}`,
-:math:`\sigma_U= \sqrt{\Var{U}}` and :math:`\sigma_V= \sqrt{\Var{V}}`.
-If we have a sample made up of a set of :math:`N` pairs
-:math:`\left\{ (u_1,v_1),(u_2,v_2),\ldots,(u_N,v_N) \right\}`, Pearson’s
-correlation coefficient can be estimated using the formula:
+:math:`\Cov{X,Y} = \Expect{ \left( X - \Expect{X} \right) \left(Y - \Expect{Y}\right) }`.
+
+Let :math:`((x_1, y_1), \dots, (x_\sampleSize, y_\sampleSize))` be a sample generated from
+:math:`(X,Y)`. The Pearson  correlation coefficient is estimated:
 
 .. math::
+    :label: PearsonEstim
+    \hat{\rho}^P(X,Y) = \dfrac{\sum_{k=1}^\sampleSize (x_k- \bar{X})(y_k- \bar{Y})}
+    {\sqrt{\sum_{k=1}^\sampleSize(x_k- \bar{X})^2\sum_{k=1}^\sampleSize(y_k- \bar{Y})^2}}
 
-   \begin{aligned}
-       \widehat{\rho}_{U,V} = \frac{ \displaystyle \sum_{i=1}^N \left( u_i - \overline{u} \right) \left( v_i - \overline{v} \right) }{ \sqrt{\displaystyle \sum_{i=1}^N \left( u_i - \overline{u} \right)^2 \left( v_i - \overline{v} \right)^2} }
-     \end{aligned}
+where :math:`\bar{X} = \dfrac{1}{\sampleSize} \sum_{k=1}^\sampleSize x_k` and
+:math:`\bar{Y} = \dfrac{1}{\sampleSize} \sum_{k=1}^\sampleSize y_k` are the mean of each sample.
 
-where :math:`\overline{u}` and :math:`\overline{v}` represent the
-empirical means of the samples :math:`(u_1,\ldots,u_N)` and
-:math:`(v_1,\ldots,v_N)`.
 
-Pearson’s correlation coefficient takes values between -1 and 1. The
-closer its absolute value is to 1, the stronger the indication is that a
-linear relationship exists between variables :math:`U` and :math:`V`.
-The sign of Pearson’s coefficient indicates if the two variables
-increase or decrease in the same direction (positive coefficient) or in
-opposite directions (negative coefficient). We note that a correlation
-coefficient equal to 0 does not necessarily imply the independence of
-variables :math:`U` and :math:`V`: this property is in fact
-theoretically guaranteed only if :math:`U` and :math:`V` both follow a
-Normal distribution. In all other cases, there are two possible
-situations in the event of a zero Pearson’s correlation coefficient:
+We sum up some interesting features of the coefficient:
 
--  the variables :math:`U` and :math:`V` are in fact independent,
+- The Pearson’s correlation coefficient takes values between -1 and 1.
 
--  or a non-linear relationship exists between :math:`U` and :math:`V`.
+- If :math:`|\rho_P(X,Y)|=1` then there exists a linear relationship
+  between :math:`X` and :math:`Y`.
+
+- The closer its absolute value is to 1, the stronger the indication is
+  that a linear relationship exists between variables :math:`X` and
+  :math:`Y`. The sign of the Pearson’s coefficient indicates if the two
+  variables increase or decrease in the same direction (positive
+  coefficient) or in opposite directions (negative coefficient).
+
+- If :math:`X` and :mat:`Y` are independent, then :math:`\rho_P(X,Y)|=0`.
+
+- If :math:`\rho_P(X,Y)|=0`, it does not imply the independence of the variables
+  :math:`X` and :math:`Y`. It may only means that the relation between both variables
+  is not linear.
 
 .. plot::
 
