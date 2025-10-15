@@ -3891,11 +3891,17 @@ Graph DistributionImplementation::drawPDF(const UnsignedInteger pointNumber,
   if (dimension_ == 2) return drawPDF(Indices(2, pointNumber), logScale, logScale);
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D or 2D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
-  const Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
-  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
+  Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax") - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
+    // fully draw the support if small enough
+    if (getSupport().getSize() <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport"))
+    {
+      xMin = range_.getLowerBound()[0];
+      xMax = range_.getUpperBound()[0];
+    }
     Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
     Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
     if (b <= a)
@@ -4216,11 +4222,17 @@ Graph DistributionImplementation::drawLogPDF(const UnsignedInteger pointNumber,
   if (dimension_ == 2) return drawLogPDF(Indices(2, pointNumber), logScale, logScale);
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D or 2D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
-  const Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
-  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
+  Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax") - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
+    // fully draw the support if small enough
+    if (getSupport().getSize() <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport"))
+    {
+      xMin = range_.getLowerBound()[0];
+      xMax = range_.getUpperBound()[0];
+    }
     Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
     Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
     if (b <= a)
@@ -4493,11 +4505,17 @@ Graph DistributionImplementation::drawCDF(const UnsignedInteger pointNumber,
   if (dimension_ == 2) return drawCDF(Indices(2, pointNumber), logScale, logScale);
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D or 2D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
-  const Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
-  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
+  Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax") - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
+    // fully draw the support if small enough
+    if (getSupport().getSize() <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport"))
+    {
+      xMin = range_.getLowerBound()[0];
+      xMax = range_.getUpperBound()[0];
+    }
     Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
     Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
     if (b <= a)
@@ -4679,11 +4697,17 @@ Graph DistributionImplementation::drawSurvivalFunction(const UnsignedInteger poi
   if (dimension_ == 2) return drawSurvivalFunction(Indices(2, pointNumber), logScale, logScale);
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D or 2D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
-  const Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
-  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
+  Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax") - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
+    // fully draw the support if small enough
+    if (getSupport().getSize() <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport"))
+    {
+      xMin = range_.getLowerBound()[0];
+      xMax = range_.getUpperBound()[0];
+    }
     Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
     Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
     if (b <= a)
