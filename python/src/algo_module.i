@@ -38,6 +38,12 @@
 %include ApproximationAlgorithmImplementationFactory.i
 %include ClassifierImplementation.i
 %include Classifier.i
+%include DesignProxy.i
+%include LeastSquaresMethodImplementation.i
+%include LeastSquaresMethod.i
+%include CholeskyMethod.i
+%include QRMethod.i
+%include SVDMethod.i
 %include FittingAlgorithmImplementation.i
 %include FittingAlgorithm.i
 %include NearestNeighbourAlgorithmImplementation.i
@@ -54,12 +60,6 @@
 %include BoundingVolumeHierarchy.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
-%include DesignProxy.i
-%include LeastSquaresMethodImplementation.i
-%include LeastSquaresMethod.i
-%include CholeskyMethod.i
-%include QRMethod.i
-%include SVDMethod.i
 %include SparseMethod.i
 %include LeastSquaresMetaModelSelection.i
 %include LeastSquaresMetaModelSelectionFactory.i

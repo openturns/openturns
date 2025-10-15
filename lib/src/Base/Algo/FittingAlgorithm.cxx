@@ -85,6 +85,14 @@ Scalar FittingAlgorithm::run(const Sample & y,
   return getImplementation()->run(y, weight, indices, proxy);
 }
 
+Scalar FittingAlgorithm::run(const Sample & y,
+                             const Indices & indices,
+                             const DesignProxy & proxy) const
+{
+  return getImplementation()->run(y, indices, proxy);
+}
+
+
 Scalar FittingAlgorithm::run(LeastSquaresMethod & method,
                              const Sample & y) const
 {

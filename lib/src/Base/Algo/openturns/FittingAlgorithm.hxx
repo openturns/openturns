@@ -66,15 +66,17 @@ public:
              const FunctionCollection & psi,
              const Indices & indices) const;
 
-#ifndef SWIG
   Scalar run(const Sample & y,
              const Point & weight,
              const Indices & indices,
              const DesignProxy & proxy) const;
 
+  Scalar run(const Sample & y,
+             const Indices & indices,
+             const DesignProxy & proxy) const;
+             
   Scalar run(LeastSquaresMethod & method,
              const Sample & y) const;
-#endif
 
 }; /* class FittingAlgorithm */
 

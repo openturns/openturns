@@ -76,6 +76,13 @@ LeastSquaresMethod::LeastSquaresMethod(const LeastSquaresMethodImplementation & 
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+LeastSquaresMethod::LeastSquaresMethod(LeastSquaresMethodImplementation * p_implementation)
+  : TypedInterfaceObject<LeastSquaresMethodImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
 /* String converter */
 String LeastSquaresMethod::__repr__() const
 {

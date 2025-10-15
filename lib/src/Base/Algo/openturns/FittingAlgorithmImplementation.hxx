@@ -64,7 +64,6 @@ public:
                      const FunctionCollection & psi,
                      const Indices & indices) const;
 
-#ifndef SWIG
   virtual Scalar run(const Sample & y,
                      const Point & weight,
                      const Indices & indices,
@@ -76,8 +75,6 @@ public:
 
   virtual Scalar run(LeastSquaresMethod & method,
                      const Sample & y) const;
-
-#endif
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
