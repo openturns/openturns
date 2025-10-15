@@ -571,7 +571,10 @@ class View:
                     polygon_kw["edgecolor"] = drawable.ConvertFromName(
                         drawable.getEdgeColor()
                     )
-                self._ax[0].add_patch(matplotlib.patches.Polygon(data, **polygon_kw))
+                poly = matplotlib.patches.Polygon(data, **polygon_kw)
+                self._ax[0].add_patch(poly)
+                legend_handles.append(poly)
+                legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "PolygonArray":
                 polygonsNumber = drawable.getPalette().getSize()
