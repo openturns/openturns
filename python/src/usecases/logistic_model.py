@@ -59,7 +59,7 @@ class LogisticModel:
     distB : :class:`~openturns.Normal`
         `ot.Normal(b, 0.3 * b)`
 
-    distX : :class:`~openturns.JointDistribution`
+    distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -99,10 +99,13 @@ class LogisticModel:
         self.populationFactor = populationFactor
         self.a = a
         self.b = b
+
         self.distY0 = ot.Normal(self.y0, 0.1 * self.y0)
         self.distA = ot.Normal(self.a, 0.3 * self.a)
         self.distB = ot.Normal(self.b, 0.3 * self.b)
-        self.distX = ot.JointDistribution([self.distY0, self.distA, self.distB])
+        self.distribution = ot.JointDistribution([self.distY0, self.distA, self.distB])
+        self.inputDistribution = self.distribution  # deprecated
+
         # Observation points
         self.data = ot.Sample(
             [

@@ -111,7 +111,7 @@ print("Outputs:", cm.model.getOutputDescription())
 # We get the Chaboche model and the joint input distribution :
 
 # %%
-inputDistribution = cm.inputDistribution
+inputDistribution = cm.distribution
 print("inputDistribution:")
 inputDistribution
 

@@ -47,7 +47,7 @@ class DeflectionTube:
         d distribution
         `Dirac(0.1)`
 
-    inputDistribution : :class:`~openturns.JointDistribution`
+    distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     Examples
@@ -93,6 +93,7 @@ class DeflectionTube:
         self.Xd = ot.Dirac(0.1)
         self.Xd.setDescription(["Internal diameter"])
 
-        self.inputDistribution = ot.JointDistribution(
+        self.distribution = ot.JointDistribution(
             [self.XF, self.XL, self.Xa, self.XD, self.Xd, self.XE]
         )
+        self.inputDistribution = self.distribution  # deprecated

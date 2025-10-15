@@ -35,12 +35,12 @@ Examples
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polynomialCollection, enumerateFunction)
 >>> # experimental design
 >>> samplingSize = 75
->>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), im.inputDistribution, samplingSize)
+>>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), im.distribution, samplingSize)
 >>> # generate sample
 >>> x = experiment.generate()
 >>> y = im.model(x)
 >>> # iso transfo
->>> xToU = ot.DistributionTransformation(im.inputDistribution, productBasis.getMeasure())
+>>> xToU = ot.DistributionTransformation(im.distribution, productBasis.getMeasure())
 >>> u = xToU(x)
 >>> # build basis
 >>> degree = 10

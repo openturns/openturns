@@ -10,7 +10,7 @@ ot.TESTPREAMBLE()
 # Test integrate
 im = ishigami_function.IshigamiModel()
 sampleSize = 100000
-experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
+experiment = ot.MonteCarloExperiment(im.distribution, sampleSize)
 integration = ot.ExperimentIntegration(experiment)
 approximatedOutputMean = integration.integrate(im.model)
 rtol = 0.0
@@ -43,7 +43,7 @@ ott.assert_almost_equal(functionError[0], exactError, rtol, atol)
 # Test integrate with multi-variate output
 functionCollection = [im.model, im.model, im.model]
 multivariateIshigami = ot.AggregatedFunction(functionCollection)
-experiment = ot.MonteCarloExperiment(im.inputDistribution, sampleSize)
+experiment = ot.MonteCarloExperiment(im.distribution, sampleSize)
 integration = ot.ExperimentIntegration(experiment)
 approximatedOutputMean = integration.integrate(multivariateIshigami)
 rtol = 0.0

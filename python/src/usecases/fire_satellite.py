@@ -53,7 +53,7 @@ class FireSatelliteModel:
         Drag coefficient (-) distribution
         Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
 
-    inputDistribution : :class:`~openturns.JointDistribution`
+    distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.PythonFunction`
@@ -203,7 +203,7 @@ class FireSatelliteModel:
         self.Cd.setDescription(["Cd"])
 
         # Input distribution
-        self.inputDistribution = ot.JointDistribution(
+        self.distribution = ot.JointDistribution(
             [
                 self.H,
                 self.Pother,
@@ -216,10 +216,10 @@ class FireSatelliteModel:
                 self.Cd,
             ]
         )
-
-        self.inputDistribution.setDescription(
+        self.distribution.setDescription(
             ["H", "Pother", "Fs", "theta", "Lsp", "q", "RD", "Lalpha", "Cd"]
         )
+        self.inputDistribution = self.distribution  # deprecated
 
         # Definitions of models
         # Global model
@@ -233,7 +233,7 @@ class FireSatelliteModel:
             9, 1, multidisciplinaryAnalysisToTalTorque
         )
         self.modelTotalTorque.setInputDescription(
-            self.inputDistribution.getDescription()
+            self.distribution.getDescription()
         )
         self.modelTotalTorque.setOutputDescription(["Total Torque"])
 
@@ -245,7 +245,7 @@ class FireSatelliteModel:
             9, 1, multidisciplinaryAnalysisToTalPower
         )
         self.modelTotalPower.setInputDescription(
-            self.inputDistribution.getDescription()
+            self.distribution.getDescription()
         )
         self.modelTotalPower.setOutputDescription(["TotalPower"])
 
@@ -257,7 +257,7 @@ class FireSatelliteModel:
             9, 1, multidisciplinaryAnalysisSolarArrayArea
         )
         self.modelSolarArrayArea.setInputDescription(
-            self.inputDistribution.getDescription()
+            self.distribution.getDescription()
         )
         self.modelSolarArrayArea.setOutputDescription(["SolarArrayArea"])
 
