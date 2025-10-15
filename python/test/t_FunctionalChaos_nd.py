@@ -2,6 +2,7 @@
 
 import openturns as ot
 import math as m
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -189,6 +190,49 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         print("###################################")
         print(algo.getAdaptiveStrategy())
         print(algo.getProjectionStrategy())
+        # Check getMarginal() for a single output index
+        outputIndex = 0
+        marginalChaos = result.getMarginal(outputIndex)
+        marginalMetamodel = marginalChaos.getMetaModel()
+        marginalPredictions = marginalMetamodel(X)
+        metamodel = result.getMetaModel()
+        predictions = metamodel(X)
+        rawMarginalPredictions = predictions.getMarginal(outputIndex)
+        rtol = 1.0e7
+        atol = 1.0e7
+        ott.assert_almost_equal(marginalPredictions, rawMarginalPredictions, rtol, atol)
+        # Check the coefficients of the PCE using the same marginal output sample
+        marginalAlgo = ot.FunctionalChaosAlgorithm(X, Y.getMarginal(outputIndex), distribution, adaptiveStrategy)
+        marginalAlgo.setMaximumResidual(maximumResidual)
+        marginalAlgo.run()
+        marginalResult = marginalAlgo.getResult()
+        rawMarginalCoefficients = marginalResult.getCoefficients()
+        marginalCoefficients = marginalChaos.getCoefficients()
+        ott.assert_almost_equal(marginalCoefficients, rawMarginalCoefficients, rtol, atol)
+        rawMarginalIndices = marginalResult.getIndices()
+        marginalIndices = marginalChaos.getIndices()
+        assert marginalIndices == rawMarginalIndices
+
+        # Check getMarginal() for several output indices
+        marginalChaos = result.getMarginal([0, 1])
+        marginalMetamodel = marginalChaos.getMetaModel()
+        marginalPredictions = marginalMetamodel(X)
+        metamodel = result.getMetaModel()
+        predictions = metamodel(X)
+        rawMarginalPredictions = predictions.getMarginal([0, 1])
+        rtol = 1.0e7
+        atol = 1.0e7
+        ott.assert_almost_equal(marginalPredictions, rawMarginalPredictions, rtol, atol)
+        # Check getMarginal() for several output indices
+        marginalChaos = result.getMarginal([1, 0])
+        marginalMetamodel = marginalChaos.getMetaModel()
+        marginalPredictions = marginalMetamodel(X)
+        metamodel = result.getMetaModel()
+        predictions = metamodel(X)
+        rawMarginalPredictions = predictions.getMarginal([1, 0])
+        rtol = 1.0e7
+        atol = 1.0e7
+        ott.assert_almost_equal(marginalPredictions, rawMarginalPredictions, rtol, atol)
 
         # Post-process the results
         vector = ot.FunctionalChaosRandomVector(result)

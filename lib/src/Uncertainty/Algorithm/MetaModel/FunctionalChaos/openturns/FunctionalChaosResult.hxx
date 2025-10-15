@@ -132,6 +132,10 @@ public:
   Point getErrorHistory() const;
   Graph drawErrorHistory() const;
 
+  /** getMarginal accessor */
+  FunctionalChaosResult getMarginal(const UnsignedInteger indexOutput) const;
+  FunctionalChaosResult getMarginal(const Indices & indicesOutput) const;
+
 protected:
 
 private:

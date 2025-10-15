@@ -89,6 +89,59 @@ int main(int, char *[])
     std::cout << "ComposedMetamodel (html)= " << std::endl;
     std::cout << composedMetamodel._repr_html_() << std::endl;
 
+    // Get marginal
+    fullprint << "Get marginal" << std::endl;
+    const UnsignedInteger outputIndex = 0;
+    const FunctionalChaosResult marginalResult(result.getMarginal(outputIndex));
+    fullprint << "marginalResult= " << std::endl;
+    fullprint << marginalResult << std::endl;
+    const Function marginalMetaModel(marginalResult.getMetaModel());
+    const Sample marginalPredictions(marginalMetaModel(X));
+    const Function fullMetaModel(result.getMetaModel());
+    // Evaluate the predictions of the i-th marginal of the full PCE
+    const Sample predictions(fullMetaModel(X));
+    const Sample rawMarginalPredictions(predictions.getMarginal(outputIndex));
+    assert_almost_equal(marginalPredictions, rawMarginalPredictions);
+
+    // Compare coefficients and indices to the PCE built using the same marginal
+    FunctionalChaosAlgorithm marginalAlgo(X, Y.getMarginal(outputIndex), distribution, adaptiveStrategy, LeastSquaresStrategy());
+    marginalAlgo.run();
+    const FunctionalChaosResult rawMarginalResult(marginalAlgo.getResult());
+    const Sample rawMarginalCoefficients(rawMarginalResult.getCoefficients());
+    const Sample marginalCoefficients(marginalResult.getCoefficients());
+    assert_almost_equal(marginalCoefficients, rawMarginalCoefficients);
+    const Indices rawMarginalIndices(rawMarginalResult.getIndices());
+    const Indices marginalIndices(marginalResult.getIndices());
+    assert_equal(marginalIndices, rawMarginalIndices);
+
+    // Get marginal with several output indices
+    fullprint << "Get marginal with several output indices" << std::endl;
+    const Indices indices = {0, 1};
+    const FunctionalChaosResult marginalResult2(result.getMarginal(indices));
+    fullprint << "marginalResult2= " << std::endl;
+    fullprint << marginalResult2 << std::endl;
+    const Function marginalMetaModel2(marginalResult2.getMetaModel());
+    const Sample marginalPredictions2(marginalMetaModel2(X));
+    const Function fullMetaModel2(result.getMetaModel());
+    // Evaluate predictions of several marginals of the full PCE
+    const Sample predictions2(fullMetaModel2(X));
+    const Sample rawMarginalPredictions2(predictions2.getMarginal(indices));
+    assert_almost_equal(marginalPredictions2, rawMarginalPredictions2);
+
+    // Get marginal with several output indices
+    fullprint << "Get marginal with several output indices" << std::endl;
+    const Indices indices3 = {1, 0};
+    const FunctionalChaosResult marginalResult3(result.getMarginal(indices3));
+    fullprint << "marginalResult3= " << std::endl;
+    fullprint << marginalResult3 << std::endl;
+    const Function marginalMetaModel3(marginalResult3.getMetaModel());
+    const Sample marginalPredictions3(marginalMetaModel3(X));
+    const Function fullMetaModel3(result.getMetaModel());
+    // Evaluate predictions of several marginals of the full PCE
+    const Sample predictions3(fullMetaModel3(X));
+    const Sample rawMarginalPredictions3(predictions3.getMarginal(indices3));
+    assert_almost_equal(marginalPredictions3, rawMarginalPredictions3);
+
   } // try
   catch (TestFailed & ex)
   {

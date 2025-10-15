@@ -447,3 +447,23 @@ Returns
 residualsSample : :class:`~openturns.Sample`
     The sample of residuals :math:`r_{ji} = y_{ji} - \metaModel_i(\vect{x^{(j)}})`
     for :math:`i = 1, ..., n_Y` and :math:`j = 1, ..., n`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getMarginal
+"Get the marginal chaos.
+
+When the chaos expansion has several outputs, this method can be used
+to extract a particular marginal.
+If there are several outputs, zero marginal coefficients may occur: these
+are filtered out of the marginal chaos if possible.
+
+Parameters
+----------
+outputIndex : int or list of ints, :math:`0 \leq i < \outputDim`
+    The index or indices of the output marginal.
+
+Returns
+-------
+marginalPCE : :class:`~openturns.FunctionalChaosResult`
+    The marginal chaos."
