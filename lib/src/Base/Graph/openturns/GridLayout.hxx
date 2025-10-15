@@ -81,6 +81,9 @@ public:
   /** Add a GridLayout */
   void add(const GridLayout & grid);
 
+  /** Legend bounding box accessor */
+  void setLegendCorner(const Point & corner);
+
 private:
 
   /** Number of row/column */

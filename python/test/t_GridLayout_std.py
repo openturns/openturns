@@ -36,6 +36,9 @@ for j in range(grid2.getNbColumns()):
 
 grid.add(grid2)
 
+grid.setLegendPosition("upper left")
+grid.setLegendCorner([0.0, 0.5])
+
 if len(sys.argv) > 1:
     from openturns.viewer import View
 

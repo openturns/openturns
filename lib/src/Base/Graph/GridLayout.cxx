@@ -64,6 +64,12 @@ void GridLayout::add(const GridLayout & grid)
   }
 }
 
+void GridLayout::setLegendCorner(const Point & corner)
+{
+  for (UnsignedInteger i = 0; i < graphCollection_.getSize(); ++ i)
+    graphCollection_[i].setLegendCorner(corner);
+}
+
 /* String converter */
 String GridLayout::__repr__() const
 {
