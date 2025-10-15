@@ -23,9 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Function.hxx"
+#include "openturns/MetaModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,13 +61,18 @@ public:
   /** Linear accessor */
   Matrix getLinear() const;
 
-  /** Metamodel accessor */
+  /** Result accessor */
+  MetaModelResult getResult() const;
+
+  /** @deprecated Metamodel accessor */
   Function getMetaModel() const;
 
   /** Data in accessor */
+  Sample getInputSample() const;
   Sample getDataIn() const;
 
   /** Data out accessor */
+  Sample getOutputSample() const;
   void setDataOut(const Sample & dataOut);
   Sample getDataOut() const;
 
@@ -83,7 +86,7 @@ protected:
 private:
   Sample dataIn_;
   Sample dataOut_;
-  Function responseSurface_;
+  MetaModelResult result_;
   Point constant_;
   Matrix linear_;
 

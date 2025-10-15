@@ -72,7 +72,7 @@ int main(int, char *[])
       Sample dataOut(myFunc(data));
       QuadraticLeastSquares myLeastSquares(data, dataOut);
       myLeastSquares.run();
-      Function responseSurface(myLeastSquares.getMetaModel());
+      Function responseSurface(myLeastSquares.getResult().getMetaModel());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
       Point in(myFunc.getInputDimension(), 0.2);
