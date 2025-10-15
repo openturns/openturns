@@ -549,4 +549,51 @@ Graph FunctionalChaosResult::drawErrorHistory() const
   return result;
 }
 
+FunctionalChaosResult FunctionalChaosResult::getMarginal(const UnsignedInteger indexOutput) const
+{
+  return getMarginal(Indices({indexOutput}));
+}
+
+FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indicesOutput) const
+{
+  const UnsignedInteger outputDimension(outputSample_.getDimension());
+  if ((indicesOutput.getSize() == outputDimension) && indicesOutput.isIncreasing())
+    return *this;
+  if (!indicesOutput.check(outputDimension))
+    throw InvalidArgumentException(HERE) << "Requested indices exceed output dimension (" << outputDimension << ")";
+  const Sample marginalOutputSample(outputSample_.getMarginal(indicesOutput));
+  const Sample marginalCoefficients(alpha_k_.getMarginal(indicesOutput));
+
+  // Extract nonzero coefficients only
+  const UnsignedInteger numberOfCoefficients(marginalCoefficients.getSize());
+  // Set nonzero coefficients
+  const UnsignedInteger numberOfMarginalOutputDimensions = indicesOutput.getSize();
+  Indices nonzeroIndices(0);
+  Sample nonzeroCoefficients(0, numberOfMarginalOutputDimensions);
+  Collection<Function> nonzeroFunctions(0);
+  for (UnsignedInteger i = 0; i < numberOfCoefficients; ++ i)
+  {
+    Point marginalCoeff = marginalCoefficients[i];
+    if (marginalCoeff.normSquare() > 0.0)
+    {
+      nonzeroCoefficients.add(marginalCoeff);
+      nonzeroIndices.add(I_[i]);
+      nonzeroFunctions.add(Psi_k_[i]);
+    }
+  }
+
+  const FunctionalChaosResult marginalPCE(
+      inputSample_,
+      marginalOutputSample,
+      distribution_,
+      transformation_,
+      inverseTransformation_,
+      orthogonalBasis_,
+      nonzeroIndices,
+      nonzeroCoefficients,
+      nonzeroFunctions
+  );
+  return marginalPCE;
+}
+
 END_NAMESPACE_OPENTURNS
