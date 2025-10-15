@@ -82,15 +82,15 @@ Examples
 >>> X  = [[0.5,0.5], [-0.5,-0.5], [-0.5,0.5], [0.5,-0.5]]
 >>> X += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
 >>> Y = f(X)
->>> myLeastSquares = ot.LinearLeastSquares(X, Y)
->>> myLeastSquares.run()
->>> mm = myLeastSquares.getMetaModel()
+>>> algo = ot.LinearLeastSquares(X, Y)
+>>> algo.run()
+>>> mm = algo.getResult().getMetaModel()
 >>> x = [0.1, 0.1]
 >>> y = mm(x)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearLeastSquares::getDataIn
+%feature("docstring") OT::LinearLeastSquares::getInputSample
 "Get the input data.
 
 Returns
@@ -110,7 +110,7 @@ constantVector : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearLeastSquares::getDataOut
+%feature("docstring") OT::LinearLeastSquares::getOutputSample
 "Get the output data.
 
 Returns
@@ -141,12 +141,12 @@ linearMatrix : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearLeastSquares::getMetaModel
+%feature("docstring") OT::LinearLeastSquares::getResult
 "Get an approximation of the function.
 
 Returns
 -------
-approximation : :class:`~openturns.Function`
+result : :class:`~openturns.MetaModelResult`
     An approximation of the function :math:`h` by Linear Least Squares."
 
 // ---------------------------------------------------------------------

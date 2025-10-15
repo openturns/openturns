@@ -63,7 +63,7 @@ String QuadraticLeastSquares::__repr__() const
       << " name=" << getName ()
       << " dataIn=" << dataIn_
       << " dataOut=" << dataOut_
-      << " responseSurface=" << responseSurface_
+      << " result=" << result_
       << " constant=" << constant_
       << " linear=" << linear_
       << " quadratic=" << quadratic_;
@@ -144,16 +144,26 @@ void QuadraticLeastSquares::run()
     } // quadratic term
   } // output components
   const Point center(inputDimension, 0.0);
-  responseSurface_ = QuadraticFunction(center, constant_, linear_, quadratic_);
+  result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center, constant_, linear_, quadratic_));
 }
 
 /* DataIn accessor */
+Sample QuadraticLeastSquares::getInputSample() const
+{
+  return dataIn_;
+}
+
 Sample QuadraticLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
+Sample QuadraticLeastSquares::getOutputSample() const
+{
+  return dataOut_;
+}
+
 Sample QuadraticLeastSquares::getDataOut()
 {
   return dataOut_;
@@ -184,9 +194,15 @@ SymmetricTensor QuadraticLeastSquares::getQuadratic() const
 }
 
 /* Metamodel accessor */
+MetaModelResult QuadraticLeastSquares::getResult() const
+{
+  return result_;
+}
+
 Function QuadraticLeastSquares::getMetaModel() const
 {
-  return responseSurface_;
+  LOGWARN("QuadraticLeastSquares.getMetaModel is deprecated");
+  return result_.getMetaModel();
 }
 
 void QuadraticLeastSquares::save(Advocate & adv) const
@@ -194,7 +210,7 @@ void QuadraticLeastSquares::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("dataIn_", dataIn_);
   adv.saveAttribute("dataOut_", dataOut_);
-  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("result_", result_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
   adv.saveAttribute("quadratic_", quadratic_);
@@ -206,7 +222,7 @@ void QuadraticLeastSquares::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("dataIn_", dataIn_);
   adv.loadAttribute("dataOut_", dataOut_);
-  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("result_", result_);
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);
   adv.loadAttribute("quadratic_", quadratic_);

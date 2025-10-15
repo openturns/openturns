@@ -106,7 +106,7 @@ algo.getConstant()
 
 # %%
 # Get the metamodel.
-responseSurface = algo.getMetaModel()
+responseSurface = algo.getResult().getMetaModel()
 
 # %%
 # Plot the second output of our model with :math:`x_1=0.5`.

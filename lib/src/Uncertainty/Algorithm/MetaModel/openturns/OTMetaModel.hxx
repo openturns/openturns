@@ -27,7 +27,6 @@
 #include "openturns/OTLinearModel.hxx"
 
 #include "openturns/MetaModelAlgorithm.hxx"
-#include "openturns/MetaModelResult.hxx"
 #include "openturns/MetaModelValidation.hxx"
 
 #endif /* OPENTURNS_OTMETAMODEL_HXX */
