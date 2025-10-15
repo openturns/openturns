@@ -24,7 +24,7 @@ im = ishigami_function.IshigamiModel()
 # The Ishigami `model` and the distribution of the input variables are stored in
 # the `im` object :
 model = im.model
-distribution = im.inputDistribution
+distribution = im.distribution
 
 # %%
 # We create a random vector that follows the distribution of the input variables.

@@ -5,7 +5,7 @@ from openturns.usecases import ishigami_function
 ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 sampleSize = 500
-inputTrain = im.inputDistribution.getSample(sampleSize)
+inputTrain = im.distribution.getSample(sampleSize)
 outputTrain = im.model(inputTrain)
 multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.PenalizedLeastSquaresAlgorithmFactory()
@@ -17,7 +17,7 @@ enumerateFunction = multivariateBasis.getEnumerateFunction()
 basisSize = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    inputTrain, outputTrain, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    inputTrain, outputTrain, im.distribution, adaptiveStrategy, projectionStrategy
 )
 chaosalgo.run()
 result = chaosalgo.getResult()

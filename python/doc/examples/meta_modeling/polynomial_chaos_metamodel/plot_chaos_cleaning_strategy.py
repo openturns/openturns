@@ -357,9 +357,9 @@ def draw_polynomial_chaos_validation(
 # %%
 im = ishigami_function.IshigamiModel()
 
-im.inputDistribution.setDescription(["X_0", "X_1", "X_2"])
+im.distribution.setDescription(["X_0", "X_1", "X_2"])
 im.model.setOutputDescription(["Y"])
-print(im.inputDistribution)
+print(im.distribution)
 
 # %%
 #
@@ -376,9 +376,9 @@ print(im.inputDistribution)
 # with the :meth:`~openturns.EnumerateFunction.getStrataCumulatedCardinal` method.
 
 # %%
-dimension = im.inputDistribution.getDimension()
+dimension = im.distribution.getDimension()
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.inputDistribution.getMarginal(i) for i in range(dimension)]
+    [im.distribution.getMarginal(i) for i in range(dimension)]
 )
 
 totalDegree = 5  # Polynomial degree
@@ -407,7 +407,7 @@ print(standard_distribution)
 marginal_number_of_nodes = 6
 dim_input = im.model.getInputDimension()
 marginalDegrees = [marginal_number_of_nodes] * dim_input
-experiment = ot.GaussProductExperiment(im.inputDistribution, marginalDegrees)
+experiment = ot.GaussProductExperiment(im.distribution, marginalDegrees)
 X, W = experiment.generateWithWeights()
 Y = im.model(X)
 print("Sample size = ", X.getSize())
@@ -423,7 +423,7 @@ print("Sample size = ", X.getSize())
 # %%
 projectionStrategy = ot.IntegrationStrategy()
 chaosalgo = ot.FunctionalChaosAlgorithm(
-    X, W, Y, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    X, W, Y, im.distribution, adaptiveStrategy, projectionStrategy
 )
 chaosalgo.run()
 result = chaosalgo.getResult()
@@ -436,7 +436,7 @@ result = chaosalgo.getResult()
 # observations from the model.
 
 # %%
-view = draw_polynomial_chaos_validation(result, im.model, im.inputDistribution)
+view = draw_polynomial_chaos_validation(result, im.model, im.distribution)
 
 # %%
 #
@@ -521,11 +521,11 @@ def compute_cleaning_PCE(
         significanceFactor,
     )
     chaosalgo = ot.FunctionalChaosAlgorithm(
-        X, W, Y, im.inputDistribution, adaptiveStrategy, projectionStrategy
+        X, W, Y, im.distribution, adaptiveStrategy, projectionStrategy
     )
     chaosalgo.run()
     result = chaosalgo.getResult()
-    score_R2 = compute_polynomial_chaos_R2(result, im.model, im.inputDistribution)
+    score_R2 = compute_polynomial_chaos_R2(result, im.model, im.distribution)
     if verbose:
         print("R2 = %.2f%%" % (100.0 * score_R2))
         printCoefficientsTable(result)

@@ -53,7 +53,7 @@ print("Outputs:", dt.model.getOutputDescription())
 
 # %%
 sampleSize = 100
-inputSample = dt.inputDistribution.getSample(sampleSize)
+inputSample = dt.distribution.getSample(sampleSize)
 inputSample[0:5]
 
 # %%
