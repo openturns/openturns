@@ -357,8 +357,8 @@ def draw_polynomial_chaos_validation(
 # %%
 im = ishigami_function.IshigamiModel()
 
-im.inputDistribution.setDescription(["`X_0`", "`X_1`", "`X_2`"])
-im.model.setOutputDescription(["`Y`"])
+im.inputDistribution.setDescription(["X_0", "X_1", "X_2"])
+im.model.setOutputDescription(["Y"])
 print(im.inputDistribution)
 
 # %%

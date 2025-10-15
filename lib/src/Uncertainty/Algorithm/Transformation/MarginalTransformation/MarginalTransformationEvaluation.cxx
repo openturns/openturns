@@ -24,8 +24,6 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/JointDistribution.hxx"
-#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -74,19 +72,30 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
     if (inputDistributionCollection_[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using distributions with dimension > 1.";
     if (outputDistributionCollection_[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using distributions with dimension > 1.";
   }
+
   // Second, build the description of the transformation
-  Description description(Description::BuildDefault(size, "x"));
-  description.add(Description::BuildDefault(size, "y"));
+  Description description;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    description.add(inputDistributionCollection_[i].getDescription()[0]);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    description.add(outputDistributionCollection_[i].getDescription()[0]);
+  const auto iter = std::unique(description.begin(), description.end());
+  if (iter < description.end())
+  {
+    description = Description::BuildDefault(size, "x");
+    description.add(Description::BuildDefault(size, "y"));
+  }
   setDescription(description);
+
   if (simplify)
   {
+    const Description xNames(Description::BuildDefault(size, "x"));
     // Third, look for possible simplifications
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Distribution inputDistribution(inputDistributionCollection_[i]);
       const Distribution outputDistribution(outputDistributionCollection_[i]);
-      const String xName(getInputDescription()[i]);
-      const String yName(getOutputDescription()[i]);
+      const String xName(xNames[i]);
       const String inputClass(inputDistribution.getImplementation()->getClassName());
       const String outputClass(outputDistribution.getImplementation()->getClassName());
       const Point inputParameters(inputDistribution.getParametersCollection()[0]);

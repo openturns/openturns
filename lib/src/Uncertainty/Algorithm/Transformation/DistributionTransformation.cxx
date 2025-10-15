@@ -82,7 +82,7 @@ Function DistributionTransformation::Build (const Distribution & distribution,
         marginalZ.add(measure.getMarginal(i));
       }
       // The distributions have an independent copula, they can be converted one into another by marginal transformation. T is such that T(X) = Z
-      const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
+      const MarginalTransformationEvaluation evaluationT(marginalX, marginalZ);
       const MarginalTransformationGradient gradientT(evaluationT);
       const MarginalTransformationHessian hessianT(evaluationT);
       transformation = Function(evaluationT.clone(), gradientT.clone(), hessianT.clone());
@@ -115,7 +115,7 @@ Function DistributionTransformation::Build (const Distribution & distribution,
         else
         {
           LOGINFO("Non-normal standard space for input vector");
-          TX = Function(FunctionImplementation(RosenblattEvaluation(distribution.getImplementation()).clone()));
+          TX = Function(FunctionImplementation(RosenblattEvaluation(distribution).clone()));
         }
         Function invTZ;
         if (measure.getStandardDistribution().hasIndependentCopula())
@@ -126,7 +126,7 @@ Function DistributionTransformation::Build (const Distribution & distribution,
         else
         {
           LOGINFO("Non-normal standard space for basis");
-          invTZ = Function(FunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
+          invTZ = Function(FunctionImplementation(InverseRosenblattEvaluation(measure).clone()));
         }
         transformation = ComposedFunction(invTZ, TX);
       } // Different standard spaces
