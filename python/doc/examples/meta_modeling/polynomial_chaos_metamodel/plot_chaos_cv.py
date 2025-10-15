@@ -282,11 +282,11 @@ def compute_R2_score_by_kfold(
 
 # %%
 im = ishigami_function.IshigamiModel()
-im.inputDistribution.setDescription(["X0", "X1", "X2"])
+im.distribution.setDescription(["X0", "X1", "X2"])
 im.model.setOutputDescription(["$Y$"])
 ot.RandomGenerator.SetSeed(0)
 sample_size = 500
-X = im.inputDistribution.getSample(sample_size)
+X = im.distribution.getSample(sample_size)
 print("Input sample:")
 X[:5]
 
@@ -303,13 +303,13 @@ Y[:5]
 # function creates a sparse chaos using regression and the LARS method.
 
 # %%
-dimension = im.inputDistribution.getDimension()
+dimension = im.distribution.getDimension()
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    [im.inputDistribution.getMarginal(i) for i in range(dimension)]
+    [im.distribution.getMarginal(i) for i in range(dimension)]
 )
 totalDegree = 5  # Polynomial degree
 result = compute_sparse_least_squares_chaos(
-    X, Y, multivariateBasis, totalDegree, im.inputDistribution
+    X, Y, multivariateBasis, totalDegree, im.distribution
 )
 result
 
@@ -327,7 +327,7 @@ metamodel = result.getMetaModel()
 # In order to validate our polynomial chaos, we generate an extra pair of
 # input / output samples and use the :class:`~openturns.MetaModelValidation` class.
 test_sample_size = 200  # Size of the validation design of experiments
-inputTest = im.inputDistribution.getSample(test_sample_size)
+inputTest = im.distribution.getSample(test_sample_size)
 outputTest = im.model(inputTest)
 metamodelPredictions = metamodel(inputTest)
 validation = ot.MetaModelValidation(outputTest, metamodelPredictions)
@@ -372,7 +372,7 @@ scoreSampleSplit = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
     scoreSampleSplit[i] = compute_R2_score_by_splitting(
-        X, Y, multivariateBasis, totalDegree, im.inputDistribution, split_fraction
+        X, Y, multivariateBasis, totalDegree, im.distribution, split_fraction
     )
     print(f"Degree = {totalDegree}, score = {scoreSampleSplit[i, 0]:.4f}")
 
@@ -408,7 +408,7 @@ scoreSampleKFold = ot.Sample(len(degree_list), 1)
 for i in range(n_degrees):
     totalDegree = degree_list[i]
     scoreSampleKFold[i] = compute_R2_score_by_kfold(
-        X, Y, multivariateBasis, totalDegree, im.inputDistribution, kParameter
+        X, Y, multivariateBasis, totalDegree, im.distribution, kParameter
     )
     print(f"Degree = {totalDegree}, score = {scoreSampleKFold[i, 0]:.4f}")
 

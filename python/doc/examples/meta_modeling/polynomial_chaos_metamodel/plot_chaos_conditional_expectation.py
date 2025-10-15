@@ -296,14 +296,14 @@ def meanParametricPCE(chaosResult, indices):
         The parametric PCE.
         The reducedInputDimension is equal to inputDimension - indices.getSize().
     """
-    inputDistribution = chaosResult.getDistribution()
-    if not inputDistribution.hasIndependentCopula():
+    distribution = chaosResult.getDistribution()
+    if not distribution.hasIndependentCopula():
         raise ValueError(
             "The input distribution has a copula" "which is not independent"
         )
     # Create the parametric function
     pceFunction = chaosResult.getMetaModel()
-    xMean = inputDistribution.getMean()
+    xMean = distribution.getMean()
     referencePoint = xMean[indices]
     parametricPCEFunction = ot.ParametricFunction(pceFunction, indices, referencePoint)
     return parametricPCEFunction
@@ -376,9 +376,9 @@ def computeSparseLeastSquaresFunctionalChaos(
 # %%
 ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
-input_names = im.inputDistribution.getDescription()
+input_names = im.distribution.getDescription()
 sampleSize = 1000
-inputSample = im.inputDistribution.getSample(sampleSize)
+inputSample = im.distribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 
 
@@ -406,7 +406,7 @@ chaosResult = computeSparseLeastSquaresFunctionalChaos(
     outputSample,
     multivariateBasis,
     basisSize,
-    im.inputDistribution,
+    im.distribution,
 )
 print("Selected basis size = ", chaosResult.getIndices().getSize())
 chaosResult
@@ -456,9 +456,9 @@ print(parametricPCEFunction.getInputDimension())
 # Then we plot the parametric function depending on :math:`X_i`.
 
 # %%
-inputDimension = im.inputDistribution.getDimension()
+inputDimension = im.distribution.getDimension()
 npPoints = 100
-inputRange = im.inputDistribution.getRange()
+inputRange = im.distribution.getRange()
 inputLowerBound = inputRange.getLowerBound()
 inputUpperBound = inputRange.getUpperBound()
 # Create the palette with transparency
@@ -545,9 +545,9 @@ conditionalPCE
 # expectation of the PCE.
 
 # sphinx_gallery_thumbnail_number = 3
-inputDimension = im.inputDistribution.getDimension()
+inputDimension = im.distribution.getDimension()
 npPoints = 100
-inputRange = im.inputDistribution.getRange()
+inputRange = im.distribution.getRange()
 inputLowerBound = inputRange.getLowerBound()
 inputUpperBound = inputRange.getUpperBound()
 # Create the palette with transparency

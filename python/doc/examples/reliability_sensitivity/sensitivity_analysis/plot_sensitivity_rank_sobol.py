@@ -24,7 +24,7 @@ im = ishigami_function.IshigamiModel()
 # We generate an input sample of size 500 (and dimension 3).
 size = 500
 ot.RandomGenerator.SetSeed(10)
-X = im.inputDistribution.getSample(size)
+X = im.distribution.getSample(size)
 
 # %%
 # We compute the output by applying the Ishigami model to the input sample.

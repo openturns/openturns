@@ -13,7 +13,7 @@ Examples
 >>> import openturns as ot
 >>> from openturns.usecases import ishigami_function
 >>> im = ishigami_function.IshigamiModel()
->>> x = im.inputDistribution.getSample(100)
+>>> x = im.distribution.getSample(100)
 >>> y = im.model(x)
 >>> algo = ot.RankSobolSensitivityAlgorithm(x, y)
 >>> indices = algo.getFirstOrderIndices()
