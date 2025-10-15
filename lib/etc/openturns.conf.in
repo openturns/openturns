@@ -1011,6 +1011,7 @@
   <Distribution-SmallDimensionEntropy             value_int="3"       />
   <Distribution-RoughnessSamplingSize             value_int="524288"  />
   <Distribution-SmallDimensionRoughness           value_int="3"       />
+  <Distribution-SmallSupport                      value_int="10"      />
   <Distribution-SupportEpsilon                    value_float="1.0e-14" />
   <Distribution-TailDependenceEpsilon             value_float="1.0e-12"/>
   <Distribution-TailDependenceMargin              value_float="1.0e-3"/>

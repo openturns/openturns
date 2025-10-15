@@ -1662,6 +1662,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-SmallDimensionEntropy", 3);
   addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
   addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
+  addAsUnsignedInteger("Distribution-SmallSupport", 10);
   addAsScalar("Distribution-SupportEpsilon", 1.0e-14);
 
   // DiscreteMarkovChain parameters //
