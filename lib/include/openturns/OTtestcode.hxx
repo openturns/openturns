@@ -448,7 +448,7 @@ public:
     
     if (enablePDFAtlowerBound_)
     {
-        checkFiniteLowerBoundPDF();
+      checkFiniteLowerBoundPDF();
     }
 
     if (enablePDF_)
