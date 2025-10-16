@@ -111,7 +111,7 @@ void SobolSimulationAlgorithm::run()
   const UnsignedInteger dimension = model_.getInputDimension();
 
   // First, reset the convergence history
-  convergenceStrategy_.setDimension(4 * dimension);
+  convergenceStrategy_.setDimension(4 * dimension + 1);
 
   UnsignedInteger outerSampling = 0;
   const UnsignedInteger experimentSize = getExperimentSize();
@@ -297,6 +297,7 @@ void SobolSimulationAlgorithm::run()
     convergencePoint.add(meanTO);
     convergencePoint.add(reducedVarianceFO);
     convergencePoint.add(reducedVarianceTO);
+    convergencePoint.add(outerSampling);
     convergenceStrategy_.store(convergencePoint);
 
     // callbacks
@@ -379,7 +380,8 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
   {
     const Scalar expectationEstimate = convergenceSample(i, marginalIndex);
     const Scalar varianceEstimate = convergenceSample(i, 2 * dimension + marginalIndex);
-    dataEstimate(i, 0) = i + 1;
+    const Scalar outerIndex = convergenceSample(i, convergenceSample.getDimension() - 1);
+    dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = expectationEstimate;
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
@@ -388,8 +390,7 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
       const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
       const Scalar confidenceLength = 2.0 * xq * sqrt(varianceEstimate);
 
-      Point pt(2);
-      pt[0] = i + 1;
+      Point pt = {outerIndex + 1, 0.0};
       pt[1] = expectationEstimate - 0.5 * confidenceLength;
       dataLowerBound.add(pt);
       pt[1] = expectationEstimate + 0.5 * confidenceLength;
