@@ -170,7 +170,7 @@ pdf(17)=1.09834e-06
 projections=[Normal(mu = 4.24818, sigma = 4.37758),Gamma(k = 9.27664, lambda = 0.695762, gamma = -9.08487),Triangular(a = -9.72415, m = 4.24455, b = 18.2241),Uniform(a = -9.72415, b = 18.2241),Exponential(lambda = 0.0750016, gamma = -9.08487)]
 norms=class=Point name=Unnamed dimension=5 values=[0.122372,0.13956,0.192465,0.297767,0.44332]
 distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
-range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-20.8207,-28.1913] upper bound=class=Point name=Unnamed dimension=2 values=[20.8207,28.1913] finite lower bound=[1,1] finite upper bound=[1,1]
+range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-20.8207,-28.1913] upper bound=class=Point name=Unnamed dimension=2 values=[20.8207,28.1913] finite lower bound=[0,0] finite upper bound=[0,0]
 mean = class=Point name=Unnamed dimension=2 values=[0,0]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[6,-4,-4,11]
 sigma = class=Point name=Unnamed dimension=2 values=[2.44949,3.31662]
@@ -283,27 +283,27 @@ pdf      =0.110695
 pdf      =0.0922665
 pdf      =0.0710676
 3D distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Mixture name=Mixture dimension=1 distributionCollection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] base=class=Point name=Unnamed dimension=0 values=[] alias=[],class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=4 values=[1,0.5,-0.5,-0.05,1,-0.1,1,-0.05,1.2,-0.5,0.3,-0.8] constant=class=Point name=Unnamed dimension=3 values=[0,0,0]
-range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[-8.63316,-13.5259,-5.59038] upper bound=class=Point name=Unnamed dimension=3 values=[9.13316,13.7759,5.99038] finite lower bound=[1,1,1] finite upper bound=[1,1,1]
+range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[-8.63316,-13.5259,-5.59038] upper bound=class=Point name=Unnamed dimension=3 values=[9.13316,13.7759,5.99038] finite lower bound=[0,0,0] finite upper bound=[0,0,0]
 mean = class=Point name=Unnamed dimension=3 values=[0.25,0.125,0.2]
 cov = class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.11667,0.233333,-0.341667,0.233333,5.25771,-0.775,-0.341667,-0.775,0.473333]
 sigma = class=Point name=Unnamed dimension=3 values=[1.05672,2.29297,0.687992]
 entropy      =2.37519
-pdf      =0.0128814
-pdf      =0.0234842
-pdf      =0.0432697
-pdf      =0.044762
-pdf      =0.0129975
-pdf      =0.0247237
-pdf      =0.0400697
-pdf      =0.0348167
-pdf      =0.011291
-pdf      =0.0207392
-pdf      =0.0295955
-pdf      =0.0229623
-pdf      =0.00832467
-pdf      =0.0152402
-pdf      =0.0189734
-pdf      =0.0123168
+pdf      =0.0129098
+pdf      =0.0235598
+pdf      =0.0428888
+pdf      =0.0450388
+pdf      =0.0129346
+pdf      =0.0249347
+pdf      =0.0398986
+pdf      =0.0346726
+pdf      =0.0112035
+pdf      =0.0207729
+pdf      =0.0296826
+pdf      =0.0229155
+pdf      =0.00832244
+pdf      =0.0152309
+pdf      =0.0189705
+pdf      =0.0123756
 case 1, q=0.384146
 case 1, q comp=0.000393214
 case 2, q=-0.000393214

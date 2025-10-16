@@ -93,18 +93,18 @@ covariance= [[ 2.91748 ]]
 Point=  [0.5]
 ddf      =0.22745
 ddf (ref)= [0.227449]
-pdf      =0.075816
+pdf      =0.075818
 pdf (ref)=0.075816
-cdf      =0.014388
+cdf      =0.014389
 cdf (ref)=0.014388
 characteristic function=0.128000 + 0.704000i
 log characteristic function=-0.334715 + 1.390943i
-quantile      = [6.29579]
+quantile      = [6.2957]
 quantile (ref)= [6.29579]
 cdf(quantile)=0.950000
-quantile comp.= [0.817691]
+quantile comp.= [0.817679]
 cdfComp(quantileComp)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.817691]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.817679]
 Survival(inverseSurvival)=0.950000
 mean      = [3]
 mean (ref)= [3]
@@ -135,14 +135,14 @@ pdf( 13.096893 )=0.016889
 pdf( 22.661488 )=0.006940
 pdf( 32.226083 )=0.001821
 pdf( 41.790678 )=0.000305
-projections= [Normal(mu = -1.24816, sigma = 24.1246),Gamma(k = 9.52102, lambda = 0.127903, gamma = -75.6875),Triangular(a = -78.298, m = -1.24445, b = 75.798),Uniform(a = -78.298, b = 75.798),Exponential(lambda = 0.0134338, gamma = -75.6875)]
+projections= [Normal(mu = -1.24817, sigma = 24.1246),Gamma(k = 9.52103, lambda = 0.127903, gamma = -75.6876),Triangular(a = -78.2981, m = -1.24437, b = 75.798),Uniform(a = -78.2981, b = 75.798),Exponential(lambda = 0.0134337, gamma = -75.6876)]
 norms= [0.12216,0.139869,0.192376,0.297221,0.444576]
 distribution =  RandomMixture(
 Normal(mu = 0, sigma = 1) - 2 * Normal(mu = 0, sigma = 1) + Normal(mu = 0, sigma = 1)
 Normal(mu = 0, sigma = 1) + Normal(mu = 0, sigma = 1) - 3 * Normal(mu = 0, sigma = 1)
 )
-range =  [-20.8207, 20.8207]
-[-28.1913, 28.1913]
+range =  ]-inf (-20.8207), (20.8207) +inf[
+]-inf (-28.1913), (28.1913) +inf[
 mean =  [0,0]
 cov =  [[  6 -4 ]
  [ -4 11 ]]
@@ -264,30 +264,30 @@ Normal(mu = 0, sigma = 1) - 0.05 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 
 0.5 * Normal(mu = 0, sigma = 1) + Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) - 0.05 * Uniform(a = 0, b = 1) + 0.3 * Uniform(a = 0, b = 1)
 -0.5 * Normal(mu = 0, sigma = 1) - 0.1 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) + 1.2 * Uniform(a = 0, b = 1) - 0.8 * Uniform(a = 0, b = 1)
 )
-range =  [-8.63316, 9.13316]
-[-13.5259, 13.7759]
-[-5.59038, 5.99038]
+range =  ]-inf (-8.63316), (9.13316) +inf[
+]-inf (-13.5259), (13.7759) +inf[
+]-inf (-5.59038), (5.99038) +inf[
 mean =  [0.25,0.125,0.2]
 cov =  [[  1.11667   0.233333 -0.341667 ]
  [  0.233333  5.25771  -0.775    ]
  [ -0.341667 -0.775     0.473333 ]]
 sigma =  [1.05672,2.29297,0.687992]
-pdf      = 0.0128814
-pdf      = 0.0234842
-pdf      = 0.0432697
-pdf      = 0.044762
-pdf      = 0.0129975
-pdf      = 0.0247237
-pdf      = 0.0400697
-pdf      = 0.0348167
-pdf      = 0.011291
-pdf      = 0.0207392
-pdf      = 0.0295955
-pdf      = 0.0229623
-pdf      = 0.00832467
-pdf      = 0.0152402
-pdf      = 0.0189734
-pdf      = 0.0123168
+pdf      = 0.0129098
+pdf      = 0.0235598
+pdf      = 0.0428888
+pdf      = 0.0450388
+pdf      = 0.0129346
+pdf      = 0.0249347
+pdf      = 0.0398986
+pdf      = 0.0346726
+pdf      = 0.0112035
+pdf      = 0.0207729
+pdf      = 0.0296826
+pdf      = 0.0229155
+pdf      = 0.00832244
+pdf      = 0.0152309
+pdf      = 0.0189705
+pdf      = 0.0123756
 case 1, q=0.384146
 case 1, q comp=0.000393
 case 2, q=-0.000393
