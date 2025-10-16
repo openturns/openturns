@@ -241,9 +241,9 @@ Scalar EmpiricalBernsteinCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  if (binNumber_ == 1) return 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
+  if (binNumber_ == 1) return 1.0;
   Scalar pdfValue = 0.0;
   Point logX(dimension);
   Point log1mX(dimension);
@@ -270,9 +270,9 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  if (binNumber_ == 1) return 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return SpecFunc::LowestScalar;
+  if (binNumber_ == 1) return 0.0;
   Scalar sumPDFValue = 0.0;
   Point logX(dimension);
   Scalar log1mX = 0.0;
