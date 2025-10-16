@@ -377,17 +377,15 @@ void RandomMixture::computeRange()
     setRange(range);
     return;
   } // Analytical case
+  Point m(constant_);
+  Point s(dimension);
   if (dimension == 1)
   {
-    const Point m(1, getPositionIndicator());
-    const Point s(1, getDispersionIndicator());
-    setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
-    return;
+    m[0] = getPositionIndicator();
+    s[0] = getDispersionIndicator();
   } // dimension == 1
   else
   {
-    Point m(constant_);
-    Point s(getDimension());
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       for(UnsignedInteger i = 0; i < size; ++i)
@@ -398,10 +396,13 @@ void RandomMixture::computeRange()
         s[j] += std::pow(weights_(j, i) * sI, 2.0);
       }
     }
-    for (UnsignedInteger j = 0; j < dimension; ++j) s[j] = std::sqrt(s[j]);
-    setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
-    return;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      s[j] = std::sqrt(s[j]);
   } // dimension > 1
+  Interval intersection(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+  intersection.setFiniteLowerBound(finiteLowerBound); // restore flags
+  intersection.setFiniteUpperBound(finiteUpperBound);
+  setRange(intersection);
 }
 
 /* Comparison operator */
