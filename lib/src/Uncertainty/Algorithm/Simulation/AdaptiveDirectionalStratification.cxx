@@ -64,7 +64,7 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
 void AdaptiveDirectionalStratification::run()
 {
   // First, reset the convergence history
-  convergenceStrategy_.setDimension(2);
+  convergenceStrategy_.setDimension(3);
   result_ = ProbabilitySimulationResult();
   result_.setEvent(getEvent());
   result_.setBlockSize(1);
