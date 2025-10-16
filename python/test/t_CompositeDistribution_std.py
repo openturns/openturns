@@ -129,5 +129,5 @@ validation = ott.DistributionValidation(distribution)
 validation.skipEntropy()  # slow
 validation.skipMinimumVolumeInterval()  # wrong proba
 validation.skipMinimumVolumeLevelSet()  # slow
-validation.skipPDFAtLowerBound()  # Temporary and should be removed for proper testing
+validation.skipPDFAtLowerBound()  # Testing that the PDF is null at its lower bound if finite is a complex task
 validation.run()

@@ -80,6 +80,11 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Test::DistributionValidation::skipPDFAtLowerBound
+"Disables PDF test at the lower bound when the lower bound is finite"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Test::DistributionValidation::skipCDF
 "Disables CDF test."
 
