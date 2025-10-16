@@ -125,8 +125,10 @@
   <!-- OT:: FieldToPointConnection parameters -->
   <FieldToPointConnection-BlockSize value_int="256" />
 
+  <!-- OT:: FieldFunctionalChaosAlgorithm parameters -->
+  <FieldFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
+  
   <!-- OT:: FieldToPointFunctionalChaosAlgorithm parameters -->
-  <FieldToPointFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
   <FieldToPointFunctionalChaosAlgorithm-CopulaType value_str="Normal" />
 
   <!-- OT:: PointToFieldFunctionalChaosAlgorithm parameters -->

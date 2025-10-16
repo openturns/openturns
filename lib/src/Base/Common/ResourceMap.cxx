@@ -774,8 +774,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FieldToPointConnection parameters //
   addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
 
+  // FieldFunctionalChaosAlgorithm
+  addAsBool("FieldFunctionalChaosAlgorithm-DefaultRecompress", false);
+  
   // FieldToPointFunctionalChaosAlgorithm
-  addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
