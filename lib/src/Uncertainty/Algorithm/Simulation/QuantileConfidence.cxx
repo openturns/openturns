@@ -166,6 +166,13 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
 // compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k
 Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & sample, const Bool tail) const
 {
+  Scalar coverageOut = -1.0;
+  return computeUnilateralConfidenceIntervalWithCoverage(sample, coverageOut, tail);
+}
+
+// compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k and the actual coverage
+Interval QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool tail) const
+{
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Expected a sample of dimension 1";
   Point lowerBound(1, -SpecFunc::MaxScalar);
@@ -174,15 +181,18 @@ Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & 
   Interval::BoolCollection finiteUpperBound(1, false);
   const Sample sortedSample(sample.sort());
   const UnsignedInteger k = computeUnilateralRank(sample.getSize(), tail);
+  const Binomial binomial(sample.getSize(), getAlpha());
   if (tail)
   {
     lowerBound[0] = sortedSample(k, 0);
     finiteLowerBound[0] = true;
+    coverageOut = binomial.computeComplementaryCDF(k);
   }
   else
   {
     upperBound[0] = sortedSample(k, 0);
     finiteUpperBound[0] = true;
+    coverageOut = binomial.computeCDF(k);
   }
   return Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
 }
@@ -190,9 +200,18 @@ Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & 
 // compute interval of the form [X_k1; X_k2] from bilateral ranks k1, k2
 Interval QuantileConfidence::computeBilateralConfidenceInterval(const Sample & sample) const
 {
+  Scalar coverageOut = -1.0;
+  return computeBilateralConfidenceIntervalWithCoverage(sample, coverageOut);
+}
+
+// compute interval of the form [X_k1; X_k2] from bilateral ranks k1, k2 with actual coverage
+Interval QuantileConfidence::computeBilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut) const
+{
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Expected a sample of dimension 1";
   const Indices rank(computeBilateralRank(sample.getSize()));
+  const Binomial binomial(sample.getSize(), getAlpha());
+  coverageOut = binomial.computeCDF(rank[1]) - binomial.computeCDF(rank[0]);
   const Sample sortedSample(sample.sort());
   return Interval(Point({sortedSample(rank[0], 0)}), Point({sortedSample(rank[1], 0)}));
 }
