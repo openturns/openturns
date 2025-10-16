@@ -52,7 +52,9 @@ public:
 
   /** Compute confidence intervals */
   Interval computeUnilateralConfidenceInterval(const Sample & sample, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool tail = false) const;
   Interval computeBilateralConfidenceInterval(const Sample & sample) const;
+  Interval computeBilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut) const;
 
   /** Compute minimum sample size */
   UnsignedInteger computeUnilateralMinimumSampleSize(const UnsignedInteger rank = 0, const Bool tail = false) const;

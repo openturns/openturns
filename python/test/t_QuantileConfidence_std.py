@@ -125,8 +125,30 @@ p3 = 0.0
 for r in range(nreps):
     sample = distribution.getSample(n)
     interval1 = algo.computeUnilateralConfidenceInterval(sample)
+    interval1_bis, coverage1 = algo.computeUnilateralConfidenceIntervalWithCoverage(
+        sample
+    )
     interval2 = algo.computeUnilateralConfidenceInterval(sample, True)
+    interval2_bis, coverage2 = algo.computeUnilateralConfidenceIntervalWithCoverage(
+        sample, True
+    )
     interval3 = algo.computeBilateralConfidenceInterval(sample)
+    interval3_bis, coverage3 = algo.computeBilateralConfidenceIntervalWithCoverage(
+        sample
+    )
+
+    assert interval1 == interval1_bis
+    assert interval2 == interval2_bis
+    assert interval3 == interval3_bis
+
+    assert coverage1 >= beta
+    assert coverage2 >= beta
+    assert coverage3 >= beta
+
+    ott.assert_almost_equal(coverage1, 0.97, 0.005, 0.0)
+    ott.assert_almost_equal(coverage2, 0.96, 0.005, 0.0)
+    ott.assert_almost_equal(coverage3, 0.95, 0.005, 0.0)
+
     q = distribution.computeQuantile(alpha)
     if interval1.contains(q):
         p1 += 1.0 / nreps
@@ -134,10 +156,16 @@ for r in range(nreps):
         p2 += 1.0 / nreps
     if interval3.contains(q):
         p3 += 1.0 / nreps
+
 print(f"p1={p1:.6f} p2={p2:.6f} p3={p3:.6f}")
 assert p1 >= beta
 assert p2 >= beta
 assert p3 >= beta
+
+ott.assert_almost_equal(p1, coverage1, 0.005, 0.0)
+ott.assert_almost_equal(p2, coverage2, 0.01, 0.0)
+ott.assert_almost_equal(p3, coverage3, 0.005, 0.0)
+
 
 # minimum size
 print("minimum size ...")
