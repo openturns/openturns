@@ -103,5 +103,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(1)
 validation = ott.DistributionValidation(distribution)
-validation.skipPDFAtLowerBound() #Temporary and should be removed for proper testing
+validation.skipPDFAtLowerBound()  # Temporary and should be removed for proper testing
 validation.run()
