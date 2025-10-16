@@ -161,7 +161,7 @@ Scalar Histogram::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   Scalar x = point[0] - first_;
   const UnsignedInteger size = width_.getSize();
-  if ((x < 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
+  if ((x <= 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
   // Find the bin index by bisection
   UnsignedInteger iMin = 0;
   if (x < cumulatedWidth_[iMin]) return height_[iMin];
