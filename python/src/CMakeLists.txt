@@ -878,8 +878,9 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       FunctionalChaosValidation.i FunctionalChaosValidation_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
-		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
+                      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                       IntegrationExpansion.i IntegrationExpansion_doc.i.in
+                      FieldFunctionalChaosAlgorithm.i FieldFunctionalChaosAlgorithm_doc.i.in
                       FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
                       PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                       FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in

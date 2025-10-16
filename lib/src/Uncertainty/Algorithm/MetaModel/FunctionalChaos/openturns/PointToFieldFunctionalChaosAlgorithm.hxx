@@ -21,10 +21,7 @@
 #ifndef OPENTURNS_POINTTOFIELDFUNCTIONALCHAOSALGORITHM_HXX
 #define OPENTURNS_POINTTOFIELDFUNCTIONALCHAOSALGORITHM_HXX
 
-#include "openturns/FieldFunctionalChaosResult.hxx"
-#include "openturns/ProcessSample.hxx"
-
-#include <limits>
+#include "openturns/FieldFunctionalChaosAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API PointToFieldFunctionalChaosAlgorithm
-  : public PersistentObject
+  : public FieldFunctionalChaosAlgorithm
 {
   CLASSNAME
 public:
@@ -57,29 +54,13 @@ public:
   ProcessSample getOutputProcessSample() const;
 
   /** Block indices accessors */
-  Collection<Indices> getBlockIndices() const;
   void setBlockIndices(const Collection<Indices> & blockIndices);
-
-  /** Threshold accessors */
-  Scalar getThreshold() const;
-  void setThreshold(const Scalar threshold);
-
-  /** Number of modes accessors */
-  UnsignedInteger getNbModes() const;
-  void setNbModes(const UnsignedInteger nbModes);
-
-  /** Recompression flag accessors */
-  Bool getRecompress() const;
-  void setRecompress(const Bool recompress);
 
   /** String converter */
   String __repr__() const override;
 
   /** Response surface computation */
   void run();
-
-  /** Result accessor */
-  FieldFunctionalChaosResult getResult() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -93,22 +74,6 @@ protected:
   Sample inputSample_;
   ProcessSample outputProcessSample_;
   Distribution distribution_;
-
-  // independent component blocks
-  PersistentCollection<Indices> blockIndices_;
-
-  /** Number of eigenvalues management
-   *  The number of modes computed by 'run' method can be defined:
-   *  - by specifying the threshold of spectrum cut-off
-   *  - by specifying the number of modes to compute */
-  Scalar threshold_ = 0.0;
-  UnsignedInteger nbModes_ = std::numeric_limits<UnsignedInteger>::max();
-
-  // Whether to recompress KL modes
-  Bool recompress_ = false;
-
-  // result data
-  FieldFunctionalChaosResult result_;
 };
 
 END_NAMESPACE_OPENTURNS
