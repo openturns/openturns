@@ -244,7 +244,7 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
-  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
+  // const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
   const Point initialPoint(getParameterPrior().getMean());
@@ -252,65 +252,33 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   {
     const Bool upperRightGraph = (j == dimension - 1);
     Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
-    if (j == 0)
-    {
-      // Show the Y title only for the first graph
-      graph.setYTitle("PDF");
-    }
 
     // The graph must show:
     // + the full posterior PDF
     // + the full prior PDF if it does not shrink too much the posterior graph
     // + the initial point
 
-    // Dry run: draw everything using the natural parameters
-    // posterior
-    Drawable postPDF(getParameterPosterior().getMarginal(j).drawPDF().getDrawable(0));
-    const Scalar xMinPost = postPDF.getData().getMin()[0];
-    const Scalar xMaxPost = postPDF.getData().getMax()[0];
-
-    // initialPoint
-    const Scalar xInitialPoint = initialPoint[j];
-
-    // Compute min and max bounds of graphics
-    Scalar xMin;
-    Scalar xMax;
+    const Distribution priorJ(getParameterPrior().getMarginal(j));
+    const Distribution posteriorJ(getParameterPosterior().getMarginal(j));
+    Bool useLogScale = false;
     if (bayesian_)
     {
-      // In the Bayesian framework, only the prior and posterior matters.
-      // prior
-      Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF().getDrawable(0));
-      const Scalar xMinPrior = priorPDF.getData().getMin()[0];
-      const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
-
-      // Now, build the common range
-      xMin = std::min(xMinPrior, xMinPost);
-      xMax = std::max(xMaxPrior, xMaxPost);
+      const Scalar priorPDFMax = priorJ.drawPDF().getDrawable(0).getData().getMax()[1];
+      const Scalar postPDFMax = posteriorJ.drawPDF().getDrawable(0).getData().getMax()[1];
+      // use log pdf if scales are very different
+      useLogScale = std::abs(std::log(postPDFMax) - std::log(priorPDFMax)) > std::log(10.0);
     }
-    else
+
+    if (j == 0)
     {
-      // In the Least Squares framework, only the initial point and posterior matters.
-      // The initial point is just a point: this is why we need a margin here.
-      // The prior is flat: ignore it to compute the bounds.
-      // Now, build the common range
-      const Scalar xMinRaw = std::min(xMinPost, xInitialPoint);
-      const Scalar xMaxRaw = std::max(xMaxPost, xInitialPoint);
-      const Scalar xScaledRange = xRangeMarginFactor * (xMaxRaw - xMinRaw);
-      xMin = xMinRaw - xScaledRange;
-      xMax = xMaxRaw + xScaledRange;
+      // Show the Y title only for the first graph
+      graph.setYTitle(useLogScale ? "Log PDF" : "PDF");
     }
 
     if (bayesian_)
     {
-      Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
-      if (upperRightGraph)
-      {
-        priorPDF.setLegend("Prior");
-      }
-      else
-      {
-        priorPDF.setLegend("");
-      }
+      Drawable priorPDF(useLogScale ? priorJ.drawLogPDF().getDrawable(0) : priorJ.drawPDF().getDrawable(0));
+      priorPDF.setLegend(upperRightGraph ? "Prior" : "");
       priorPDF.setColor(priorColor_);
       priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
       graph.add(priorPDF);
@@ -318,39 +286,20 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     else
     {
       Sample data(1, 2);
-      data(0, 0) = xInitialPoint;
+      data(0, 0) = initialPoint[j];
       Cloud cloudStartingPoint;
       cloudStartingPoint = Cloud(data);
       cloudStartingPoint.setColor(priorColor_);
-      cloudStartingPoint.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
-      if (upperRightGraph)
-      {
-        cloudStartingPoint.setLegend("Starting point");
-      }
-      else
-      {
-        cloudStartingPoint.setLegend("");
-      }
+      cloudStartingPoint.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle"));
+      cloudStartingPoint.setLegend(upperRightGraph ? "Starting point" : "");
       graph.add(cloudStartingPoint);
     }
 
-    // Now draw everything using the common range
-    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0);
+    Drawable postPDF = useLogScale ? posteriorJ.drawLogPDF().getDrawable(0) : posteriorJ.drawPDF().getDrawable(0);
     if (upperRightGraph)
-    {
-      if (bayesian_)
-      {
-        postPDF.setLegend("Posterior");
-      }
-      else
-      {
-        postPDF.setLegend("Calibrated");
-      }
-    }
+      postPDF.setLegend(bayesian_ ? "Posterior" : "Calibrated");
     else
-    {
       postPDF.setLegend("");
-    }
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
