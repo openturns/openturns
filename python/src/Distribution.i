@@ -94,27 +94,28 @@ class PythonDistribution:
     dim : positive int
         the distribution dimension
 
+    Notes
+    -----
+    It is not necessary to implement all the methods. Only the *computeCDF()* and *getRange()* methods are mandatory.
+    All the methods which are not implemented are inherited from
+    :class:`~openturns.DistributionImplementation` which proposes some generic numerical methods.
+    
+    
     Examples
     --------
     Not useful on its own, see the examples section on how to inherit from it.
     """
-    def __init__(self, dim=0):
+    def __init__(self, dim=1):
+        super().__init__(dim)
         """
         Constructor.
         """
-        self.__dim = dim
 
-    def __str__(self):
-        return 'PythonDistribution -> #%d' % self.__dim
-
-    def __repr__(self):
-        return self.__str__()
-
-    def getDimension(self):
+    def getRange(self):
         """
-        Dimension accessor.
+        Range accessor. Optional, but highly recommanded
         """
-        return self.__dim
+        raise RuntimeError('You should define a method getRange() -> range, where range is an Interval')
 
     def computeCDF(self, X):
         """
