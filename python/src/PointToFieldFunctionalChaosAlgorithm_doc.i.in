@@ -114,7 +114,7 @@ it is also possible to recompress the modes at the global level with :func:`setR
 When enabled, the eigenvalues are gathered and sorted so as to find a global
 spectrum cut-off value by which the spectrum of each output is truncated.
 The default value can be set through the :class:`~openturns.ResourceMap` key
-*PointToFieldFunctionalChaosAlgorithm-DefaultRecompress*.
+*FieldFunctionalChaosAlgorithm-DefaultRecompress*.
 
 For the chaos metamodel step, it is possible to specify the basis size with
 the :class:`~openturns.ResourceMap` key *FunctionalChaosAlgorithm-BasisSize*.
@@ -175,99 +175,3 @@ Notes
 -----
 It computes the response surfaces and creates a
 :class:`~openturns.MetaModelResult` structure containing all the results."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::getResult
-"Result accessor.
-
-Returns
--------
-result : :class:`openturns.FieldFunctionalChaosResult`
-    Result class."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
-"Accessor to the output block indices.
-
-Parameters
-----------
-blockIndices : 2-d sequence of int
-    Independent output components indices."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::getBlockIndices
-"Accessor to the output block indices.
-
-Returns
--------
-blockIndices : :class:`~openturns.IndicesCollection`
-    Independent output components indices."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setNbModes
-"Accessor to the maximum number of modes to compute.
-
-Parameters
-----------
-n : int
-    The maximum number of modes to compute.
-    The actual number of modes also depends on the threshold criterion."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::getNbModes
-"Accessor to the maximum number of modes to compute.
-
-Returns
--------
-n : int
-    The maximum number of modes to compute.
-    The actual number of modes also depends on the threshold criterion."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setRecompress
-"Accessor to the recompression flag.
-
-Parameters
-----------
-recompress : bool
-    Whether to recompress the output Karhunen-Loeve decompositions.
-    The modes are truncated a second time according to a global eigen value
-    bound across output decompositions.
-    This can only be enabled if the scale of the output variable blocks is the same."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::getRecompress
-"Accessor to the recompression flag.
-
-Returns
--------
-recompress : bool
-    Whether to recompress the output Karhunen-Loeve decompositions.
-    This can only be enabled if the scale of the output variable blocks is the same."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setThreshold
-"Accessor to the eigenvalues cutoff ratio.
-
-Parameters
-----------
-s : float, :math:`\geq 0`
-    The threshold :math:`s`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::getThreshold
-"Accessor to the eigenvalues cutoff ratio.
-
-Returns
--------
-s : float, :math:`\geq 0`
-    The threshold :math:`s`."
