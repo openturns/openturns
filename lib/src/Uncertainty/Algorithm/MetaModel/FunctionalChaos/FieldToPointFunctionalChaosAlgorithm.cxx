@@ -19,10 +19,8 @@
  *
  */
 
-#include <limits>
 #include "openturns/FieldToPointFunctionalChaosAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/KarhunenLoeveProjection.hxx"
 #include "openturns/FieldToPointFunction.hxx"
@@ -57,8 +55,7 @@ static const Factory<FieldToPointFunctionalChaosAlgorithm> Factory_FieldToPointF
 
 /* Default constructor */
 FieldToPointFunctionalChaosAlgorithm::FieldToPointFunctionalChaosAlgorithm()
-  : PersistentObject()
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
+  : FieldFunctionalChaosAlgorithm()
 {
   // Nothing to do
 }
@@ -66,15 +63,12 @@ FieldToPointFunctionalChaosAlgorithm::FieldToPointFunctionalChaosAlgorithm()
 /* Constructor with parameters */
 FieldToPointFunctionalChaosAlgorithm::FieldToPointFunctionalChaosAlgorithm(const ProcessSample & inputProcessSample,
     const Sample & outputSample)
-  : PersistentObject()
+  : FieldFunctionalChaosAlgorithm()
   , inputProcessSample_(inputProcessSample)
   , outputSample_(outputSample)
-  , nbModes_(std::numeric_limits<UnsignedInteger>::max())
 {
   for (UnsignedInteger i = 0; i < inputProcessSample_.getDimension(); ++ i)
     blockIndices_.add(Indices(1, i));
-
-  setRecompress(ResourceMap::GetAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress"));
 }
 
 /* Virtual constructor */
@@ -95,59 +89,6 @@ Sample FieldToPointFunctionalChaosAlgorithm::getOutputSample() const
   return outputSample_;
 }
 
-/* Block indices accessors */
-Collection<Indices> FieldToPointFunctionalChaosAlgorithm::getBlockIndices() const
-{
-  return blockIndices_;
-}
-
-void FieldToPointFunctionalChaosAlgorithm::setBlockIndices(const Collection<Indices> & blockIndices)
-{
-  Indices flat;
-  for (UnsignedInteger i = 0; i < blockIndices.getSize(); ++ i)
-    flat.add(blockIndices[i]);
-  if ((flat.getSize() != inputProcessSample_.getDimension()) || !flat.check(inputProcessSample_.getDimension()))
-    throw InvalidArgumentException(HERE) << "Block indices does not match with input dimension";
-  blockIndices_ = blockIndices;
-}
-
-
-/* Threshold accessors */
-Scalar FieldToPointFunctionalChaosAlgorithm::getThreshold() const
-{
-  return threshold_;
-}
-
-void FieldToPointFunctionalChaosAlgorithm::setThreshold(const Scalar threshold)
-{
-  if (!(threshold <= 1.0 && threshold >= 0.0))
-    throw InvalidArgumentException(HERE) << "threshold must be between 0.0 and 1.0 but is " << threshold;
-
-  threshold_ = threshold;
-}
-
-/* Number of modes accessors */
-UnsignedInteger FieldToPointFunctionalChaosAlgorithm::getNbModes() const
-{
-  return nbModes_;
-}
-
-void FieldToPointFunctionalChaosAlgorithm::setNbModes(const UnsignedInteger nbModes)
-{
-  nbModes_ = nbModes;
-}
-
-/* Recompression flag accessors */
-Bool FieldToPointFunctionalChaosAlgorithm::getRecompress() const
-{
-  return recompress_;
-}
-
-void FieldToPointFunctionalChaosAlgorithm::setRecompress(const Bool recompress)
-{
-  recompress_ = recompress;
-}
-
 /* Centered sample flag accessor */
 void FieldToPointFunctionalChaosAlgorithm::setCenteredSample(const Bool centeredSample)
 {
@@ -157,12 +98,6 @@ void FieldToPointFunctionalChaosAlgorithm::setCenteredSample(const Bool centered
 Bool FieldToPointFunctionalChaosAlgorithm::getCenteredSample() const
 {
   return centeredSample_;
-}
-
-/* Result accessor */
-FieldFunctionalChaosResult FieldToPointFunctionalChaosAlgorithm::getResult() const
-{
-  return result_;
 }
 
 /* String converter */
@@ -280,13 +215,19 @@ Distribution FieldToPointFunctionalChaosAlgorithm::BuildDistribution(const Sampl
   return distribution;
 }
 
+void FieldToPointFunctionalChaosAlgorithm::setBlockIndices(const Collection<Indices> & blockIndices)
+{
+  Indices flat;
+  for (UnsignedInteger i = 0; i < blockIndices.getSize(); ++ i)
+    flat.add(blockIndices[i]);
+  if ((flat.getSize() != inputProcessSample_.getDimension()) || !flat.check(inputProcessSample_.getDimension()))
+    throw InvalidArgumentException(HERE) << "Block indices does not match with input dimension";
+  blockIndices_ = blockIndices;
+}
+
 /* Response surface computation */
 void FieldToPointFunctionalChaosAlgorithm::run()
 {
-  const UnsignedInteger size = inputProcessSample_.getSize();
-  Collection<KarhunenLoeveResult> klResultCollection(blockIndices_.getSize());
-  Point eigenValues;
-
   ProcessSample inputProcessSample(inputProcessSample_);
   InverseTrendTransform inverseTransform;
   if (!centeredSample_)
@@ -295,63 +236,12 @@ void FieldToPointFunctionalChaosAlgorithm::run()
     inputProcessSample = inverseTransform(inputProcessSample_);
   }
 
-  for (UnsignedInteger i = 0; i < blockIndices_.getSize(); ++ i)
-  {
-    const ProcessSample inputProcessSampleI(inputProcessSample.getMarginal(blockIndices_[i]));
-    const Bool centered = true;
-    KarhunenLoeveSVDAlgorithm algo(inputProcessSampleI, threshold_, centered);
-    algo.setNbModes(nbModes_);
-    algo.run();
-    eigenValues.add(algo.getResult().getEigenvalues());
-    klResultCollection[i] = algo.getResult();
-    LOGINFO(OSS() << "block #" << i << " indices=" << blockIndices_[i] << " ev size=" << algo.getResult().getEigenvalues().getDimension());
-  }
-
-  if (recompress_)
-  {
-    const Scalar cumulatedVariance = eigenValues.norm1();
-    std::sort(eigenValues.begin(), eigenValues.end(), [](const Scalar a, const Scalar b)
-    {
-      return a > b;
-    });
-    const UnsignedInteger nbModesMax = std::min(nbModes_, eigenValues.getSize());
-    // Find the cut-off in the eigenvalues
-    UnsignedInteger K = 0;
-    Scalar selectedVariance = 0.0; // sum of eigenvalues selected after cut-off is applied
-    do
-    {
-      selectedVariance += eigenValues[K];
-      ++ K;
-    }
-    while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance));
-    LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << eigenValues.getSize() << " computed");
-
-    const Scalar lambdaCut = eigenValues[K - 1];
-    for (UnsignedInteger i = 0; i < blockIndices_.getSize(); ++ i)
-    {
-      UnsignedInteger Ki = 1;// retain at least 1 mode
-      Point eigenValuesI(klResultCollection[i].getEigenvalues());
-      Scalar selectedVarianceI = eigenValuesI[0];
-      const Scalar cumulatedVarianceI = eigenValuesI.norm1();
-      while ((Ki < eigenValuesI.getSize()) && (eigenValuesI[Ki] >= lambdaCut))
-      {
-        selectedVarianceI += eigenValuesI[Ki];
-        ++ Ki;
-      }
-      eigenValuesI.resize(Ki);
-      Collection<Function> modesI(klResultCollection[i].getModes());
-      modesI.resize(Ki);
-      CovarianceModel covarianceI(RankMCovarianceModel(eigenValuesI, modesI));
-      ProcessSample modesAsProcessSampleI(klResultCollection[i].getModesAsProcessSample());
-      modesAsProcessSampleI.erase(Ki, modesAsProcessSampleI.getSize());
-      MatrixImplementation projectionMatrixI(*klResultCollection[i].getProjectionMatrix().getImplementation());
-      projectionMatrixI.resize(Ki, projectionMatrixI.getNbColumns());
-
-      klResultCollection[i] = KarhunenLoeveResult(covarianceI, klResultCollection[i].getThreshold(), eigenValuesI, modesI, modesAsProcessSampleI, projectionMatrixI, selectedVarianceI / cumulatedVarianceI);
-    }
-  }
+  // decompose input process
+  Collection<KarhunenLoeveResult> klResultCollection(blockIndices_.getSize());
+  decompose(inputProcessSample, klResultCollection);
 
   // the global input projection stacks projections of each block of variables
+  const UnsignedInteger size = inputProcessSample_.getSize();
   Sample modesSample(size, 0);
   Collection<Distribution> distributionBlocks(blockIndices_.getSize());
   Collection<FieldToPointFunction> projectionCollection(blockIndices_.getSize());
@@ -387,33 +277,22 @@ void FieldToPointFunctionalChaosAlgorithm::run()
   result_.setModesSample(modesSample);
 }
 
-
 /* Method save() stores the object through the StorageManager */
 void FieldToPointFunctionalChaosAlgorithm::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  FieldFunctionalChaosAlgorithm::save(adv);
   adv.saveAttribute("inputProcessSample_", inputProcessSample_);
   adv.saveAttribute("outputSample_", outputSample_);
-  adv.saveAttribute("blockIndices_", blockIndices_);
   adv.saveAttribute("centeredSample_", centeredSample_);
-  adv.saveAttribute("threshold_", threshold_);
-  adv.saveAttribute("nbModes_", nbModes_);
-  adv.saveAttribute("recompress_", recompress_);
-  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void FieldToPointFunctionalChaosAlgorithm::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  FieldFunctionalChaosAlgorithm::load(adv);
   adv.loadAttribute("inputProcessSample_", inputProcessSample_);
   adv.loadAttribute("outputSample_", outputSample_);
-  adv.loadAttribute("blockIndices_", blockIndices_);
   adv.loadAttribute("centeredSample_", centeredSample_);
-  adv.loadAttribute("threshold_", threshold_);
-  adv.loadAttribute("nbModes_", nbModes_);
-  adv.loadAttribute("recompress_", recompress_);
-  adv.loadAttribute("result_", result_);
 }
 
 END_NAMESPACE_OPENTURNS

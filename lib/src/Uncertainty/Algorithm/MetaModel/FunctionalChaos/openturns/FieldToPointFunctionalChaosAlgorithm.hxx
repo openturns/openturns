@@ -21,8 +21,7 @@
 #ifndef OPENTURNS_FIELDTOPOINTFUNCTIONALCHAOSALGORITHM_HXX
 #define OPENTURNS_FIELDTOPOINTFUNCTIONALCHAOSALGORITHM_HXX
 
-#include "openturns/FieldFunctionalChaosResult.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldFunctionalChaosAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API FieldToPointFunctionalChaosAlgorithm
-  : public PersistentObject
+  : public FieldFunctionalChaosAlgorithm
 {
   CLASSNAME
 public:
@@ -52,34 +51,18 @@ public:
   ProcessSample getInputProcessSample() const;
   Sample getOutputSample() const;
 
-  /** Block indices accessors */
-  Collection<Indices> getBlockIndices() const;
-  void setBlockIndices(const Collection<Indices> & blockIndices);
-
-  /** Threshold accessors */
-  Scalar getThreshold() const;
-  void setThreshold(const Scalar threshold);
-
-  /** Number of modes accessors */
-  UnsignedInteger getNbModes() const;
-  void setNbModes(const UnsignedInteger nbModes);
-
-  /** Recompression flag accessors */
-  Bool getRecompress() const;
-  void setRecompress(const Bool recompress);
-
   /** Centered sample flag accessor */
   void setCenteredSample(const Bool centered);
   Bool getCenteredSample() const;
+
+  /** Block indices accessors */
+  void setBlockIndices(const Collection<Indices> & blockIndices);
 
   /** String converter */
   String __repr__() const override;
 
   /** Response surface computation */
   void run();
-
-  /** Result accessor */
-  FieldFunctionalChaosResult getResult() const;
 
   /** Build distribution of KL modes */
   static Distribution BuildDistribution(const Sample & modesSample);
@@ -98,22 +81,6 @@ protected:
 
   // whether the sample is centered
   Bool centeredSample_ = false;
-
-  // independent component blocks
-  PersistentCollection<Indices> blockIndices_;
-
-  /** Number of eigenvalues management
-   *  The number of modes computed by 'run' method can be defined:
-   *  - by specifying the threshold of spectrum cut-off
-   *  - by specifying the number of modes to compute */
-  Scalar threshold_ = 0.0;
-  UnsignedInteger nbModes_ = 0;
-
-  // Whether to recompress KL modes
-  Bool recompress_ = false;
-
-  // result data
-  FieldFunctionalChaosResult result_;
 };
 
 END_NAMESPACE_OPENTURNS
