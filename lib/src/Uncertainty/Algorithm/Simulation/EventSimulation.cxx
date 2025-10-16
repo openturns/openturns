@@ -111,7 +111,7 @@ void EventSimulation::run()
    * a sample size > 2^32 by a combination of blockSize and outerSampling
    */
   // First, reset the convergence history
-  convergenceStrategy_.setDimension(2);
+  convergenceStrategy_.setDimension(3);
   UnsignedInteger outerSampling = 0;
   Scalar coefficientOfVariation = -1.0;
   Scalar standardDeviation = -1.0;
@@ -167,15 +167,12 @@ void EventSimulation::run()
     coefficientOfVariation = result_.getCoefficientOfVariation();
     standardDeviation = result_.getStandardDeviation();
     // Update the history
-    Point convergencePoint(2);
-    convergencePoint[0] = probabilityEstimate;
+    Point convergencePoint = {probabilityEstimate, -1.0, outerSampling * 1.0};
     // Get the variance estimate from the result in order to deal with simulation
     // methods that do not provide variance estimate (conventional value: -1.0)
     // It is checked using the value of the standard deviation
     if (standardDeviation >= 0.0)
       convergencePoint[1] = reducedVarianceEstimate;
-    else
-      convergencePoint[1] = -1.0;
     convergenceStrategy_.store(convergencePoint);
 
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -219,14 +216,14 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
   {
     const Scalar probabilityEstimate = convergenceSample(i, 0);
     const Scalar varianceEstimate = convergenceSample(i, 1);
-    dataEstimate(i, 0) = i + 1;
+    const Scalar outerIndex = convergenceSample(i, 2);
+    dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = probabilityEstimate;
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
     {
-      const Scalar confidenceLength = ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
-      Point pt(2);
-      pt[0] = i + 1;
+      const Scalar confidenceLength = ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getConfidenceLength(level);
+      Point pt = {outerIndex + 1, 0.0};
       pt[1] = probabilityEstimate - 0.5 * confidenceLength;
       dataLowerBound.add(pt);
       pt[1] = probabilityEstimate + 0.5 * confidenceLength;

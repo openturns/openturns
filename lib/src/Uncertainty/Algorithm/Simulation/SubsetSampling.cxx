@@ -74,7 +74,7 @@ SubsetSampling * SubsetSampling::clone() const
 void SubsetSampling::run()
 {
   // First, initialize some parameters
-  convergenceStrategy_.setDimension(2);
+  convergenceStrategy_.setDimension(3);
   numberOfSteps_ = 0;
   thresholdPerStep_.clear();
   gammaPerStep_.clear();
@@ -313,8 +313,8 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
 
     // store convergence at each block
     const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
-                          varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size
-                         };
+                          varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size,
+                          1.0 * i};
     convergenceStrategy_.store(convPt);
   }
   return probabilityEstimate;
