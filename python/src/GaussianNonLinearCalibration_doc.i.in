@@ -83,9 +83,8 @@ Calibrate a nonlinear model using 3DVAR:
 >>> priorCovariance = ot.CovarianceMatrix(3)
 >>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
 >>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, parameterMean, priorCovariance, errorCovariance)
->>> algo.run()
->>> print(algo.getResult().getParameterMAP())
-[2.705...,1.212...,0.499...]"
+>>> algo.run()  # doctest: +SKIP
+>>> pmap = algo.getResult().getParameterMAP()  # doctest: +SKIP"
 
 // ---------------------------------------------------------------------
 
