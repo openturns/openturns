@@ -20,16 +20,8 @@ myFunction = ot.SymbolicFunction(["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()
 
-# We create a normal distribution point of dimension 1
-mean = [0.0] * dim
-# E
-mean[0] = 50.0
-# F
-mean[1] = 1.0
-# L
-mean[2] = 10.0
-# I
-mean[3] = 5.0
+# E, F, L, I
+mean = [50.0, 1.0, 10.0, 5.0]
 sigma = [1.0] * dim
 R = ot.IdentityMatrix(dim)
 myDistribution = ot.Normal(mean, sigma, R)
@@ -133,6 +125,10 @@ for i, event in enumerate(all_events):
     myAlgo.setMaximumOuterSampling(250)
     myAlgo.setBlockSize(4)
     myAlgo.setMaximumCoefficientOfVariation(0.1)
+    try:
+        myAlgo.setKeepSample(True)
+    except Exception:
+        pass
     myAlgo.run()
     print("MonteCarlo result=", myAlgo.getResult())
     print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())

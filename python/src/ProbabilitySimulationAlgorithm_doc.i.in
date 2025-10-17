@@ -237,3 +237,34 @@ Returns
 -------
 experiment : :class:`~openturns.WeightedExperiment`
     The experiment that is sampled at each iteration."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ProbabilitySimulationAlgorithm::setKeepSample
+"Sample storage accessor.
+
+Parameters
+----------
+keepsample : bool
+    Whether to keep the working samples at each iteration."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ProbabilitySimulationAlgorithm::getInputSample
+"Input sample accessor.
+
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input sample."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ProbabilitySimulationAlgorithm::getOutputSample
+"Output sample accessor.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output sample."

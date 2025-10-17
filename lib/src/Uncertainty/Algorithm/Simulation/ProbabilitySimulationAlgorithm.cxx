@@ -24,7 +24,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
-
+#include "openturns/MonteCarloExperiment.hxx"
 BEGIN_NAMESPACE_OPENTURNS
 
 /*
@@ -46,7 +46,12 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVecto
     const HistoryStrategy & convergenceStrategy)
   : EventSimulation(event, convergenceStrategy)
 {
-  // Nothing to do
+  // Filter out if the event is composite
+  if (event_.isComposite())
+  {
+    isExperimentProvided_ = true;
+    setExperiment(MonteCarloExperiment());
+  }
 }
 
 /* Constructor with parameters */
@@ -80,6 +85,15 @@ WeightedExperiment ProbabilitySimulationAlgorithm::getExperiment() const
   return experiment_;
 }
 
+Sample ProbabilitySimulationAlgorithm::getInputSample() const
+{
+  return inputSample_;
+}
+
+Sample ProbabilitySimulationAlgorithm::getOutputSample() const
+{
+  return outputSample_;
+}
 
 /* String converter */
 String ProbabilitySimulationAlgorithm::__repr__() const
@@ -99,6 +113,17 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSample()
   return event_.getSample(blockSize_);
 }
 
+/* Keep event sample */
+void ProbabilitySimulationAlgorithm::setKeepSample(const Bool keepSample)
+{
+  if ((!getEvent().isComposite()) && keepSample)
+    throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm::setKeepSample is only available for composite events";
+  keepSample_ = keepSample;
+  // Clear previous samples
+  inputSample_ = Sample(0, getEvent().getFunction().getInputDimension());
+  outputSample_ = Sample(0, getEvent().getFunction().getOutputDimension());
+}
+
 Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
 {
   Point weights;
@@ -107,6 +132,12 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
   if (!experiment_.hasUniformWeights())
     for (UnsignedInteger i = 0; i < blockSize_; ++ i)
       blockSample(i, 0) *= weights[i];
+  // Store output sample
+  if(keepSample_)
+  {
+    inputSample_.add(inputSample);
+    outputSample_.add(blockSample);
+  }
   return blockSample;
 }
 
@@ -116,6 +147,9 @@ void ProbabilitySimulationAlgorithm::save(Advocate & adv) const
   EventSimulation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
   adv.saveAttribute("isExperimentProvided_", isExperimentProvided_);
+  adv.saveAttribute("keepSample_", keepSample_);
+  adv.saveAttribute("inputSample_", inputSample_);
+  adv.saveAttribute("outputSample_", outputSample_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -124,6 +158,12 @@ void ProbabilitySimulationAlgorithm::load(Advocate & adv)
   EventSimulation::load(adv);
   adv.loadAttribute("experiment_", experiment_);
   adv.loadAttribute("isExperimentProvided_", isExperimentProvided_);
+  if (adv.hasAttribute("keepSample_")) // OT>=1.26
+  {
+    adv.loadAttribute("keepSample_", keepSample_);
+    adv.loadAttribute("inputSample_", inputSample_);
+    adv.loadAttribute("outputSample_", outputSample_);
+  }
 }
 
 void ProbabilitySimulationAlgorithm::setBlockSize(const UnsignedInteger blockSize)

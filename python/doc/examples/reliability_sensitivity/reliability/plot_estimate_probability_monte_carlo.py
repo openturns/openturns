@@ -42,6 +42,7 @@ experiment = ot.MonteCarloExperiment()
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 algo.setMaximumCoefficientOfVariation(0.05)
 algo.setMaximumOuterSampling(int(1e5))
+algo.setKeepSample(True)
 algo.run()
 
 # %%
@@ -51,3 +52,7 @@ algo.run()
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
 print("Pf=", probability)
+
+# %%
+# Print the size of used sample and compare it with the budget size (1e5)
+print(f"Sample used to get the probability = {len(algo.getOutputSample())}")
