@@ -7,21 +7,20 @@ API
 This section details classes, functions included in the Python bindings.
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     base_objects
-    designs_of_experiments
-    functions
-    graphs
-    orthogonal_basis
     data_analysis
-    probabilistic_modelling
+    probabilistic_modeling
     stochastic_process
-    meta_modelling
-    central_tendency
-    calibration
+    surrogate_modeling
+    designs_of_experiments
     reliability
     sensitivity_analysis
+    functional_modeling
+    orthogonal_basis
+    calibration
     numerical_methods
+    graphs
     configuration
     usecases
