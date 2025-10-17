@@ -75,7 +75,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (!(xMax > xMin))
     throw InvalidArgumentException(HERE) << "Error: cannot estimate a Trapezoidal distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
 

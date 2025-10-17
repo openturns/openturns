@@ -1299,7 +1299,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSquare(Scalar & maximum
   Point currentEigenVector(dimension, 1.0);
   Point nextEigenVector(genVectProd(currentEigenVector));
   Scalar nextEigenValue = nextEigenVector.norm();
-  if (!SpecFunc::IsNormal(nextEigenValue))
+  if (!std::isfinite(nextEigenValue))
     throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
@@ -1327,7 +1327,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
   Point currentEigenVector(dimension, 1.0);
   Point nextEigenVector(symVectProd(currentEigenVector));
   Scalar nextEigenValue = nextEigenVector.norm();
-  if (!SpecFunc::IsNormal(nextEigenValue))
+  if (!std::isfinite(nextEigenValue))
     throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
@@ -1362,7 +1362,7 @@ Point MatrixImplementation::computeSingularValuesInPlace()
   // check for nans, cf https://github.com/Reference-LAPACK/lapack/issues/469
   for (UnsignedInteger j = 0; j < getNbColumns(); ++ j)
     for (UnsignedInteger i = 0; i < getNbRows(); ++ i)
-      if (!SpecFunc::IsNormal(operator()(i, j)))
+      if (!std::isfinite(operator()(i, j)))
         throw InvalidArgumentException(HERE) << "Cannot compute singular values due to nan/inf values";
 
   char jobz = 'N';

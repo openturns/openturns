@@ -75,7 +75,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
     sumSquares += xI * xI;
   }
   // Here we test on sumSquares in order to detect also overflows
-  if (!SpecFunc::IsNormal(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
+  if (!std::isfinite(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
   try
   {
     Rayleigh result(std::sqrt(0.5 * sumSquares / size), gamma);

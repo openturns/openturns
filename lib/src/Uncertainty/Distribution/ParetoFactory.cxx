@@ -69,7 +69,7 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
 {
   // numerically inverse the skewness
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
   const Scalar skewness = sample.computeSkewness()[0];
   const SymbolicFunction constraint("alpha", OSS() << "2*(1+alpha)/(alpha-3)*sqrt((alpha-2)/alpha)");
@@ -195,7 +195,7 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
   Scalar gamma = xMin - std::abs(xMin) / (2 + size);
   ParetoFactoryResidualEvaluation residualEvaluation(sample);

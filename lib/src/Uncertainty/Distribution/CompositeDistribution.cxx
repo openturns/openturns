@@ -179,7 +179,7 @@ void CompositeDistribution::update()
   {
     throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   }
-  if (!SpecFunc::IsNormal(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
+  if (!std::isfinite(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   probabilities_ = Point(1, antecedent_.computeCDF(xMin));
   increasing_ = Indices(0);
   Scalar fMin = values_[0];
@@ -196,7 +196,7 @@ void CompositeDistribution::update()
   {
     throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
   }
-  if (!SpecFunc::IsNormal(fpA)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
+  if (!std::isfinite(fpA)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
   Scalar b = a;
   Scalar fpB = fpA;
   for (UnsignedInteger i = 0; i < n; ++i)
@@ -212,7 +212,7 @@ void CompositeDistribution::update()
     {
       throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
     }
-    if (!SpecFunc::IsNormal(fpB)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
+    if (!std::isfinite(fpB)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
     try
     {
       const Scalar root = solver_.solve(derivative, 0.0, a, b, fpA, fpB);
@@ -226,7 +226,7 @@ void CompositeDistribution::update()
       {
         throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << root;
       }
-      if (!SpecFunc::IsNormal(root)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << root;
+      if (!std::isfinite(root)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << root;
       increasing_.add(value > values_[values_.getSize() - 1]);
       values_.add(value);
       probabilities_.add(antecedent_.computeCDF(root));
@@ -248,7 +248,7 @@ void CompositeDistribution::update()
   {
     throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
   }
-  if (!SpecFunc::IsNormal(value)) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
+  if (!std::isfinite(value)) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
   increasing_.add(value > values_[values_.getSize() - 1]);
   values_.add(value);
   probabilities_.add(Point(1, antecedent_.computeCDF(xMax)));
@@ -368,7 +368,7 @@ Scalar CompositeDistribution::computePDF(const Point & point) const
         const Matrix gradient(function_.gradient(fInvX));
         if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
         const Scalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
-        if (SpecFunc::IsNormal(denominator)) pdf += numerator / denominator;
+        if (std::isfinite(denominator)) pdf += numerator / denominator;
         LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator << ", pdf=" << pdf);
       }
     }

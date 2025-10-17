@@ -392,7 +392,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   try
   {
     for (UnsignedInteger i = 0; i < dimension; ++ i)
-      if (!SpecFunc::IsNormal(inP[i]))
+      if (!std::isfinite(inP[i]))
         throw InvalidArgumentException(HERE) << "TNC got a nan input value";
 
     outP = problem.getObjective().operator()(inP);

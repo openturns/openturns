@@ -352,7 +352,7 @@ try:
             "j=",
             j,
             "isnormal=",
-            ot.SpecFunc.IsNormal(point2[j]),
+            m.isfinite(point2[j]),
             "isnan=",
             m.isnan(point2[j]),
             "isinf=",

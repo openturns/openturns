@@ -274,7 +274,7 @@ Point Fehlberg::computeStep(Pointer<EvaluationImplementation> & transitionFuncti
     transitionFunction->setParameter(parameter);
     f[k + 1] = transitionFunction->operator()(yK);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
-      if (!SpecFunc::IsNormal(f(k + 1, j)))
+      if (!std::isfinite(f(k + 1, j)))
         throw InvalidArgumentException(HERE) << "Fehlberg: transition function returns " << Point(f[k + 1]).__str__() << " at " << yK.__str__() << " with t=" << tK;
   }
   Point PhiI(dimension);

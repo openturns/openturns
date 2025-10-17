@@ -69,7 +69,7 @@ WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a WeibullMin distribution from a constant sample.";
 
   const Point parameters = {mean, sigma, gamma};

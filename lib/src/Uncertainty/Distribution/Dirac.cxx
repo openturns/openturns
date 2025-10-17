@@ -323,7 +323,7 @@ void Dirac::setPoint(const Point & point)
   if (point.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Expected a point of dimension " << dimension;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
-    if (!SpecFunc::IsNormal(point[i])) throw InvalidArgumentException(HERE) << "Cannot build a Dirac from nan/inf values";
+    if (!std::isfinite(point[i])) throw InvalidArgumentException(HERE) << "Cannot build a Dirac from nan/inf values";
   point_ = point;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

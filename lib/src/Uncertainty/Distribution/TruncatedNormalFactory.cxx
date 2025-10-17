@@ -70,7 +70,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a TruncatedNormal distribution from a constant sample.";
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);
@@ -109,7 +109,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a TruncatedNormal distribution from a constant sample.";
 
   // X_norm = alpha * (X - beta)
@@ -165,7 +165,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   TruncatedNormal result(buildAsTruncatedNormal({mu, sigma, a, b}));
 
   // abort if distribution is not valid
-  if (!SpecFunc::IsNormal(result.getMean()[0]))
+  if (!std::isfinite(result.getMean()[0]))
     throw InvalidArgumentException(HERE) << "Likelihood-optimized TruncatedNormal is not valid";
 
   result.setDescription(sample.getDescription());

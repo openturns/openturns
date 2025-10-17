@@ -152,11 +152,11 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   const Scalar logUV = logU + logV;
   const Point ratio(1, logV / logUV);
   const Scalar A = pickandFunction_(ratio)[0];
-  if (!SpecFunc::IsNormal(A)) return SpecFunc::LowestScalar;
+  if (!std::isfinite(A)) return SpecFunc::LowestScalar;
   const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-  if (!SpecFunc::IsNormal(dA)) return SpecFunc::LowestScalar;
+  if (!std::isfinite(dA)) return SpecFunc::LowestScalar;
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
-  if (!SpecFunc::IsNormal(d2A)) return SpecFunc::LowestScalar;
+  if (!std::isfinite(d2A)) return SpecFunc::LowestScalar;
   return logUV * A - 2.0 * std::log(-logUV) - logUV + std::log((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]);
 }
 

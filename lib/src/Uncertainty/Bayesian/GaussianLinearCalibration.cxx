@@ -184,7 +184,7 @@ void GaussianLinearCalibration::run()
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
-    if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+    if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
 
   const Point thetaStar(getParameterMean() + deltaTheta);
   const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());

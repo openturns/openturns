@@ -349,7 +349,7 @@ void OptimizationResult::store(const Point & x,
   {
     Bool isNormal = true;
     for (UnsignedInteger j = 0; j < x.getDimension(); ++ j)
-      if (!SpecFunc::IsNormal(x[j]))
+      if (!std::isfinite(x[j]))
         isNormal = false;
     for (UnsignedInteger j = 0; j < y.getDimension(); ++ j)
       if (std::isnan(y[j]))
