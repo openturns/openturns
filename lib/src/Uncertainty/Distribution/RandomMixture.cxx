@@ -530,8 +530,8 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       constant_ += w * mixture->constant_;
       // Aggregate the weights
       const Matrix localWeights(w * mixture->weights_);
-      SampleImplementation localWeightsAsSample(localWeights.getNbColumns(), dimension);
-      localWeightsAsSample.setData(*localWeights.getImplementation());
+      Sample localWeightsAsSample(localWeights.getNbColumns(), dimension);
+      localWeightsAsSample.getImplementation()->setData(*localWeights.getImplementation());
       weightCandidates.add(localWeightsAsSample);
       // Aggregate the atoms
       atomCandidates.add(mixture->getDistributionCollection());
