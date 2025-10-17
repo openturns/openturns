@@ -55,6 +55,13 @@ public:
   WeightedExperiment getExperiment() const;
   void setExperiment(const WeightedExperiment & experiment);
 
+  /** Keep event sample */
+  void setKeepSample(const Bool keepSample);
+
+  /** Input/output sample accessor according to select flag */
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -70,6 +77,7 @@ public:
 protected:
 
   /** Compute the block sample and the points that realized the event */
+  Bool keepSample_ = false;
   Sample computeBlockSample() override;
   Sample computeBlockSampleComposite();
 
@@ -77,6 +85,9 @@ protected:
   WeightedExperiment experiment_;
   Bool isExperimentProvided_ = false;
 private:
+
+  Sample inputSample_;
+  Sample outputSample_;
 
 } ; /* class ProbabilitySimulationAlgorithm */
 
