@@ -500,7 +500,7 @@ We fit the linear model: :math:`X_3 = a_0 + a_1X_1 + a_2X_2` and we test if each
 >>> secondSample = sample.getMarginal(2)
 >>> test_result = ot.LinearModelTest.FullRegression(firstSample, secondSample)
 >>> for i in range(3):
->>>     print('Test for a' + str(i) + ' :' , test_result[i])
+...     print('Test for a' + str(i) + ' :' , test_result[i])
 Test for a0 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.82575 statistic=-0.220751 description=[]
 Test for a1 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.242986 statistic=1.17471 description=[]
 Test for a2 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.363986 statistic=0.912083 description=[]"

@@ -13,7 +13,7 @@ Create a customized distribution or copula
 # All the methods which are not overriden  are inherited from
 # :class:`~openturns.DistributionImplementation`: they are numerically derived from the *computeCDF()*
 # method, using some keys of the :class:`~openturns.ResourceMap` class.
-# 
+#
 # To create a :class:`~openturns.Copula`, the method *isCopula()* has to be overriden and return *True*.
 #
 # Then an instance of the new class can be passed on into a :class:`~openturns.Distribution` class.
@@ -27,15 +27,13 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-
 # %%
 # First inherit :class:`~openturns.PythonDistribution`:
 
 
-# %%
 class UniformNdPy(ot.PythonDistribution):
     def __init__(self, a=[0.0], b=[1.0]):
-        super(UniformNdPy, self).__init__(len(a))
+        super().__init__(len(a))
         if len(a) != len(b):
             raise ValueError("Invalid bounds")
         for i in range(len(a)):

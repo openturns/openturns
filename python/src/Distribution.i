@@ -96,7 +96,8 @@ class PythonDistribution:
 
     Notes
     -----
-    It is not necessary to implement all the methods. Only the *computeCDF()* and *getRange()* methods are mandatory.
+    It is not necessary to implement all the methods. Only the *computeCDF()* and *getRange()*
+    methods are mandatory.
     All the methods which are not implemented are inherited from
     :class:`~openturns.DistributionImplementation` which proposes some generic numerical methods.
     
@@ -106,7 +107,6 @@ class PythonDistribution:
     Not useful on its own, see the examples section on how to inherit from it.
     """
     def __init__(self, dim=1):
-        super().__init__(dim)
         """
         Constructor.
         """
@@ -115,7 +115,7 @@ class PythonDistribution:
         """
         Range accessor. Optional, but highly recommanded
         """
-        raise RuntimeError('You should define a method getRange() -> range, where range is an Interval')
+        raise RuntimeError('You must define a method getRange() -> range, where range is an Interval')
 
     def computeCDF(self, X):
         """
@@ -142,7 +142,7 @@ class SciPyDistribution(PythonDistribution):
     >>> distribution.getRealization()  # doctest: +SKIP
     """
     def __init__(self, dist):
-        super(SciPyDistribution, self).__init__(1)
+        super().__init__(1)
         if dist.__class__.__name__ not in ('rv_frozen', 'rv_continuous_frozen', 'rv_histogram', 'rv_discrete_frozen'):
             raise TypeError('Argument is not a scipy 1D distribution')
         self._dist = dist
@@ -269,7 +269,7 @@ class ChaospyDistribution(PythonDistribution):
     >>> distribution.getRealization()  # doctest: +SKIP
     """
     def __init__(self, dist):
-        super(ChaospyDistribution, self).__init__(len(dist))
+        super().__init__(len(dist))
         from chaospy import Iid, J, __version__
         independent = len(dist) == 1
         independent |= isinstance(dist, Iid)

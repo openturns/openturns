@@ -7,7 +7,7 @@ import math as m
 
 class UniformNdPy(ot.PythonDistribution):
     def __init__(self, a=[0.0], b=[1.0]):
-        super(UniformNdPy, self).__init__(len(a))
+        super().__init__(len(a))
         if len(a) != len(b):
             raise ValueError("Invalid bounds")
         for i in range(len(a)):
@@ -252,7 +252,7 @@ res = copula.computePDF([[0.5] * 2] * 10)
 
 class PoissonPy(ot.PythonDistribution):
     def __init__(self, lamb):
-        super(PoissonPy, self).__init__(1)
+        super().__init__(1)
         if lamb <= 0.0:
             raise ValueError("Expected a positive lambda")
         self.poisson_ = ot.Poisson(lamb)
