@@ -19,10 +19,6 @@
  *
  */
 
-#include <iostream>
-#include <cstdlib>
-#include <mutex>
-
 #include "openturns/OTconfig.hxx"
 
 #include "openturns/TBBImplementation.hxx"

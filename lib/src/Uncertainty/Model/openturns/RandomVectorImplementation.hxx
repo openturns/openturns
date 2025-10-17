@@ -29,7 +29,6 @@
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ComparisonOperator.hxx"
-#include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Process.hxx"
 
