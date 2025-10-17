@@ -1154,19 +1154,6 @@ result : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpecFunc::IsNormal
-"Check for non-NaN and non-Inf values.
-
-Parameters
-----------
-v : float
-
-Returns
--------
-result : bool"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SpecFunc::LogFactorial
 "Logarithm of the factorial function.
 

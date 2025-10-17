@@ -70,7 +70,7 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
-  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
+  if (!std::isfinite(a) || !std::isfinite(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Beta distribution from a constant sample.";
 
   const Scalar mu = sample.computeMean()[0];

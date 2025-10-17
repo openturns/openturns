@@ -357,7 +357,7 @@ void PointConditionalDistribution::update()
   {
     if (conditioningIndices_.getSize())
       logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
-    if (!SpecFunc::IsNormal(logNormalizationFactor_))
+    if (!std::isfinite(logNormalizationFactor_))
       throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
   }
 
@@ -555,7 +555,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         const Scalar xJ = conditioningValues_[j];
         logWi += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
       } // j
-      if (SpecFunc::IsNormal(logWi))
+      if (std::isfinite(logWi))
       {
         weights.add(std::exp(logWi));
         Collection<Distribution> atomComponents(dimension);

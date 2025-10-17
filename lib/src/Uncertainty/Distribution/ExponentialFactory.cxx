@@ -67,7 +67,7 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
   const Scalar sigma = sample.computeStandardDeviation()[0];
   // If sample with constant null data, build an approximation of Dirac(0) by hand
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Exponential distribution from a constant sample.";

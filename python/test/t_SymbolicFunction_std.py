@@ -201,7 +201,7 @@ f = ot.SymbolicFunction("x", "sqrt(x)")
 ev = f.getEvaluation()
 # triggers copyOnWrite, ev is no longer the Evaluation of f
 ev.setCheckOutput(False)
-print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(ev([-1.0])[0]))
+print(f, ", f([-1]) is normal?", m.isfinite(ev([-1.0])[0]))
 
 # joe copula bug
 f = ot.SymbolicFunction(["t"], ["(t*3)^(-1)"])

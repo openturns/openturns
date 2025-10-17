@@ -114,7 +114,7 @@ public:
     const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
     const Scalar sk2 = isGPR_ ? gprCov_.getConditionalMarginalVariance(x) : krigingResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk))
+    if (!std::isfinite(sk))
       return SpecFunc::LowestScalar;
     const Scalar ratio = fmMk / sk;
     Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);

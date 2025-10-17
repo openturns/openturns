@@ -66,7 +66,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
   const Scalar mu = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution if data contains NaN or Inf";
+  if (!std::isfinite(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution if data contains NaN or Inf";
   Scalar lambda = -1.0;
   const Scalar sigma = sample.computeStandardDeviation()[0];
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate an InverseNormal distribution from a constant sample.";

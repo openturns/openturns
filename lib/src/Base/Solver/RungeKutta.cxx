@@ -76,7 +76,7 @@ Sample RungeKutta::solve(const Point & initialState,
     const Scalar timeStep = newT - t;
     const Point phi(computeStep(transitionFunction, t, state, timeStep));
     for (UnsignedInteger j = 0; j < phi.getDimension(); ++ j)
-      if (!SpecFunc::IsNormal(phi[j]))
+      if (!std::isfinite(phi[j]))
         throw InvalidArgumentException(HERE) << "RungeKutta: Step is " << phi.__str__() << " at " << state.__str__() << " with t=" << t << " h=" << timeStep;
     state += timeStep * phi;
     result[i] = state;

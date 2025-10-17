@@ -343,7 +343,7 @@ int main(int, char *[])
       f.getEvaluation().getImplementation()->setCheckOutput(false);
       fullprint << "Trying to evaluate f=" << f.__str__() << " at x=-1.0" << std::endl;
       Point x(1, -1.0);
-      fullprint << "Result is normal? " << SpecFunc::IsNormal(f(x)[0]) << std::endl;
+      fullprint << "Result is normal? " << std::isfinite(f(x)[0]) << std::endl;
     }
   }
   catch (TestFailed & ex)
