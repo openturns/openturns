@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TBB_HXX
 #define OPENTURNS_TBB_HXX
 
-#include "openturns/Exception.hxx"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

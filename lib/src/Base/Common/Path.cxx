@@ -18,10 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <vector>                 // for std::vector
 #include <string>                 // for std::string
 #include <cstdlib>                // for getenv
-#include <cstring>                // for strdup
 
 #ifdef _WIN32
 #include "openturns/OTwindows.h"  // for GetModuleFileName

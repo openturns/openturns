@@ -23,8 +23,7 @@
 
 #include <atomic>
 
-#include "openturns/OTtypes.hxx"
-#include "openturns/OTdebug.h"
+#include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
