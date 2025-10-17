@@ -319,8 +319,8 @@ void GaussianNonLinearCalibration::run()
     error.setMu(residuals);
   else
   {
-    SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
-    residualsAsSample.setData(residuals);
+    Sample residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
+    residualsAsSample.getImplementation()->setData(residuals);
     error.setMu(residualsAsSample.computeMean());
   }
   // Compute the posterior distribution
