@@ -284,7 +284,7 @@ We can use the conditional covariance of :math:`\vect{Y}` in order to quantify t
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/kriging_metamodel/plot_gpr_1d`
+    - See :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_1d`
 
 
 .. topic:: References:

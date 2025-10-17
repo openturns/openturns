@@ -92,4 +92,4 @@ algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
 
 # %%
 # The previous constructor is the main topic of the example
-# :doc:`Create a polynomial chaos metamodel from a data set </auto_surrogate_modeling/polynomial_chaos_metamodel/plot_functional_chaos>`.
+# :doc:`Create a polynomial chaos metamodel from a data set </auto_surrogate_modeling/polynomial_chaos/plot_functional_chaos>`.
