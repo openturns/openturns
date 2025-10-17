@@ -40,4 +40,4 @@ model.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_parametric_spectral_density`
+    - See :doc:`/auto_stochastic_processes/plot_parametric_spectral_density`

@@ -1,6 +1,6 @@
-==================
-Stochastic process
-==================
+===========================
+Stochastic process modeling
+===========================
 
 .. currentmodule:: openturns
 

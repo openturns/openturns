@@ -63,9 +63,8 @@ at any point (see :class:`~openturns.OrthogonalUniVariatePolynomial`).
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
-    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_lognormal`
-
+    - See :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_functional_chaos`
+    - See :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_lognormal`
 
 .. topic:: References:
 

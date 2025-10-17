@@ -438,9 +438,9 @@ This corresponds to the following enumeration of the multi-indices:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
-    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_enumeratefunction`
-    - See :doc:`/auto_meta_modeling/fields_metamodels/plot_fieldfunction_metamodel`
+    - See :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_functional_chaos`
+    - See :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_enumeratefunction`
+    - See :doc:`/auto_surrogate_modeling/fields_surrogate_models/plot_fieldfunction_metamodel`
 
 .. topic:: References:
 

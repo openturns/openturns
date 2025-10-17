@@ -98,6 +98,6 @@ Then, the process :math:`Y` is built with the object
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_add_trend`
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_trend_transform`
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_box_cox_transform`
+    - See :doc:`/auto_stochastic_processes/plot_add_trend`
+    - See :doc:`/auto_stochastic_processes/plot_trend_transform`
+    - See :doc:`/auto_stochastic_processes/plot_box_cox_transform`

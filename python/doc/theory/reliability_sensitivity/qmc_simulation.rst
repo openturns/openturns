@@ -81,4 +81,4 @@ the sequence :math:`\{\vect{x}_1, \hdots, \vect{x}_\sampleSize\}`.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_randomized_qmc`
+    - See :doc:`/auto_reliability/reliability_analysis/plot_estimate_probability_randomized_qmc`
