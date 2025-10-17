@@ -110,6 +110,13 @@ class PythonDistribution:
         """
         Constructor.
         """
+        self.__dim = dim
+
+    def __str__(self):
+        return 'PythonDistribution -> #%d' % self.__dim
+
+    def __repr__(self):
+        return self.__str__()
 
     def getRange(self):
         """
