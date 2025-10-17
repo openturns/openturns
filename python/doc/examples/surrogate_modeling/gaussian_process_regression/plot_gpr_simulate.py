@@ -39,7 +39,7 @@ Gaussian Process Regression : generate trajectories from the metamodel
 # * a constant trend,
 # * a Matern covariance model.
 #
-# In the :doc:`/auto_surrogate_modeling/kriging_metamodel/plot_gpr_1d` example, we detail the estimation of this metamodel.
+# In the :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_1d` example, we detail the estimation of this metamodel.
 # Refer to it for further details: we only focus here on the simulation of new trajectories.
 #
 import openturns as ot

@@ -73,7 +73,7 @@ outputSample = model(inputSample)
 # To do this, the algorithm in :class:`~openturns.FunctionalChaosAlgorithm`
 # uses the :class:`~openturns.FunctionalChaosAlgorithm.BuildDistribution`
 # static method to fit the distribution to the input sample.
-# Please read :doc:`Fit a distribution from an input sample </auto_surrogate_modeling/polynomial_chaos_metamodel/plot_chaos_build_distribution>`
+# Please read :doc:`Fit a distribution from an input sample </auto_surrogate_modeling/polynomial_chaos/plot_chaos_build_distribution>`
 # for an example of this method.
 # The algorithm does this automatically using the Lilliefors test.
 # In order to make the algorithm a little faster, we reduce the
@@ -95,7 +95,7 @@ result
 # Not all coefficients are selected in this PCE.
 # Indeed, the default constructor of :class:`~openturns.FunctionalChaosAlgorithm`
 # creates a sparse PCE.
-# Please read :doc:`Create a full or sparse polynomial chaos expansion </auto_surrogate_modeling/polynomial_chaos_metamodel/plot_functional_chaos_database>`
+# Please read :doc:`Create a full or sparse polynomial chaos expansion </auto_surrogate_modeling/polynomial_chaos/plot_functional_chaos_database>`
 # for more details on this topic.
 
 # %%

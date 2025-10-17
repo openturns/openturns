@@ -40,7 +40,7 @@ distribution = ot.JointDistribution(
 # input parameters.
 # If not known, statistical inference can be used to select a possible
 # candidate, and fitting tests can validate such an hypothesis.
-# Please read :doc:`Fit a distribution from an input sample </auto_surrogate_modeling/polynomial_chaos_metamodel/plot_chaos_build_distribution>`
+# Please read :doc:`Fit a distribution from an input sample </auto_surrogate_modeling/polynomial_chaos/plot_chaos_build_distribution>`
 # for an example of this method.
 
 # %%
@@ -135,7 +135,7 @@ print("Value at ", xPoint, " is ", yPoint)
 # %%
 # Based on these results, we may want to validate our metamodel.
 # More details on this topic are presented in
-# :doc:`Validate a polynomial chaos </auto_surrogate_modeling/polynomial_chaos_metamodel/plot_chaos_draw_validation>`.
+# :doc:`Validate a polynomial chaos </auto_surrogate_modeling/polynomial_chaos/plot_chaos_draw_validation>`.
 
 # %%
 # Create a sparse PCE

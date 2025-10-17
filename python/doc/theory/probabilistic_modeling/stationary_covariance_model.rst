@@ -88,6 +88,6 @@ matrix :math:`\mat{R}` :
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_create_stationary_covmodel`
+    - See :doc:`/auto_stochastic_processes/plot_create_stationary_covmodel`
     - See
-      :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_userdefined_covariance_model` (Case 1)
+      :doc:`/auto_stochastic_processes/plot_userdefined_covariance_model` (Case 1)

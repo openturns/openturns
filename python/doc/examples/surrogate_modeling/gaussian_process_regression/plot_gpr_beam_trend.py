@@ -13,7 +13,7 @@ Gaussian Process Regression: choose a polynomial trend on the beam model
 # * :class:`~openturns.LinearBasisFactory`;
 # * :class:`~openturns.QuadraticBasisFactory`.
 #
-# In the :doc:`/auto_surrogate_modeling/kriging_metamodel/plot_gpr_choose_trend` example,
+# In the :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_choose_trend` example,
 # we give another example of this procedure.
 from openturns.usecases import cantilever_beam
 import openturns as ot
