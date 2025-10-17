@@ -8,7 +8,7 @@ ot.TESTPREAMBLE()
 class UniformNdPy(ot.PythonDistribution):
     def __init__(self, a=[-1.0], b=[1.0]):
         # https://github.com/uqfoundation/dill/issues/300
-        # super(UniformNdPy, self).__init__(len(a))
+        # super().__init__(len(a))
         ot.PythonDistribution.__init__(self, len(a))
         if len(a) != len(b):
             raise ValueError("Invalid bounds")
