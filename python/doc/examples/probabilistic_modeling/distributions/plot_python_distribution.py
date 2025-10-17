@@ -10,7 +10,7 @@ Create a customized distribution or copula
 # :class:`~openturns.Distribution` class.
 # It is not necessary to override all the methods: only the *computeCDF()* and *getRange()* methods
 # must be overridden.
-# All the methods which are not overriden  are inherited from
+# All the methods which are not overridden  are inherited from
 # :class:`~openturns.DistributionImplementation`: they are numerically derived from the *computeCDF()*
 # method, using some keys of the :class:`~openturns.ResourceMap` class.
 #

@@ -118,6 +118,12 @@ class PythonDistribution:
     def __repr__(self):
         return self.__str__()
 
+    def getDimension(self):
+        """
+        Dimension accessor.
+        """
+        return self.__dim
+
     def getRange(self):
         """
         Range accessor. Optional, but highly recommanded
