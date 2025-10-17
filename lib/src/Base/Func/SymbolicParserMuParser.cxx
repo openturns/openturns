@@ -134,7 +134,7 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
     {
       const Scalar value = expressions_[outputIndex]->Eval();
       // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
-      if (checkOutput_ && !SpecFunc::IsNormal(value))
+      if (checkOutput_ && !std::isfinite(value))
         throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       result[outputIndex] = value;
     } // outputIndex
@@ -181,7 +181,7 @@ struct SymbolicParserMuParserPolicy
         {
           const Scalar value = evaluation_.threadExpressions_[threadIndex][outputIndex]->Eval();
           // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
-          if (evaluation_.checkOutput_ && !SpecFunc::IsNormal(value))
+          if (evaluation_.checkOutput_ && !std::isfinite(value))
             throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
           output_(i, outputIndex) = value;
         }

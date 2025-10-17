@@ -234,13 +234,13 @@ void PosteriorDistribution::setCompoundDistribution(const CompoundDistribution &
     ++iter;
     logNormalizationFactor_ = logScaling;
     logNormalizationFactor_ = std::log(computeCDF(range_.getUpperBound())) + logScaling;
-    done = SpecFunc::IsNormal(logNormalizationFactor_) || (iter == maxIter);
+    done = std::isfinite(logNormalizationFactor_) || (iter == maxIter);
     if (logNormalizationFactor_ < 0.0)
       logScaling -= std::pow(2.0, iter);
     else
       logScaling += std::pow(2.0, iter);
   }
-  if (!SpecFunc::IsNormal(logNormalizationFactor_))
+  if (!std::isfinite(logNormalizationFactor_))
     throw InvalidArgumentException(HERE) << "Error: unable to compute the log-normalization factor despite a rescaling of " << logScaling;
 
   isAlreadyComputedMean_ = false;
