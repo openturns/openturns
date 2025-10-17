@@ -597,12 +597,13 @@ Point DistributionImplementation::getRealization() const
 /* Get a sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 {
-  SampleImplementation returnSample(size, dimension_);
+  Sample returnSample(size, dimension_);
   UnsignedInteger shift = 0;
+  auto start = returnSample.getImplementation()->data_begin();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Point point(getRealization());
-    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+    std::copy(point.begin(), point.end(), start + shift);
     shift += dimension_;
   }
   returnSample.setName(getName());
@@ -619,12 +620,13 @@ Point DistributionImplementation::getRealizationByInversion() const
 /* Get a sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
 {
-  SampleImplementation returnSample(size, dimension_);
+  Sample returnSample(size, dimension_);
   UnsignedInteger shift = 0;
+  auto start = returnSample.getImplementation()->data_begin();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Point point(computeSequentialConditionalQuantile(RandomGenerator::Generate(dimension_)));
-    std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+    std::copy(point.begin(), point.end(), start + shift);
     shift += dimension_;
   }
   returnSample.setName(getName());
@@ -635,7 +637,7 @@ Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger si
 Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
   static SobolSequence sequence(dimension_);
-  SampleImplementation returnSample(size, dimension_);
+  Sample returnSample(size, dimension_);
   const Sample u(sequence.generate(size));
   if (getDimension() == 1)
   {
@@ -645,10 +647,11 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
   else
   {
     UnsignedInteger shift = 0;
+    auto start = returnSample.getImplementation()->data_begin();
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       const Point point(computeSequentialConditionalQuantile(u[i]));
-      std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+      std::copy(point.begin(), point.end(), start + shift);
       shift += dimension_;
     }
   }
@@ -1852,12 +1855,13 @@ Sample DistributionImplementation::computeQuantileSequential(const Point & prob,
     const Bool tail) const
 {
   const UnsignedInteger size = prob.getSize();
-  SampleImplementation result(size, dimension_);
+  Sample result(size, dimension_);
   UnsignedInteger shift = 0;
-  for ( UnsignedInteger i = 0; i < size; ++ i )
+  auto start = result.getImplementation()->data_begin();
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Point point(computeQuantile(prob[i], tail));
-    std::copy(point.begin(), point.end(), result.data_begin() + shift);
+    std::copy(point.begin(), point.end(), start + shift);
     shift += dimension_;
   }
   return result;
