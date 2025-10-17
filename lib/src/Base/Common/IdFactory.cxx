@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/IdFactory.hxx"
+#include "openturns/AtomicInt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
