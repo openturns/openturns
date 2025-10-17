@@ -143,7 +143,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const Scalar stddev = sample.computeStandardDeviation()[0];
   if (stddev == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution from a constant sample.";
   const Scalar xi = -0.5 * (std::pow(mean / stddev, 2.0) - 1.0);
@@ -213,7 +213,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 {
   LOGINFO("Using method of exponential regression");
   const Scalar mu = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
@@ -257,7 +257,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const Sample sortedSample(sample.sort(0) - Point(1, u));
   // Compute the first probability weighted moment
   Scalar m = 0.0;

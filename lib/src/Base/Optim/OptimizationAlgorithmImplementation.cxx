@@ -83,7 +83,7 @@ Sample OptimizationAlgorithmImplementation::getStartingSample() const
 void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startingPoint)
 {
   for (UnsignedInteger j = 0; j < startingPoint.getDimension(); ++ j)
-    if (!SpecFunc::IsNormal(startingPoint[j]))
+    if (!std::isfinite(startingPoint[j]))
       throw InvalidArgumentException(HERE) << "Optimization starting point has nan/inf values: " << startingPoint;
   startingPoint_ = startingPoint;
 }

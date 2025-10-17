@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import math as m
 
 ot.TESTPREAMBLE()
 
@@ -118,17 +119,17 @@ for dim in range(1, 2):
     # Ticket #2306
     if dim == 2:
         condPDF = distribution.computeConditionalPDF(-0.1, [0.5])
-        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        assert m.isfinite(condPDF), "condPDF is not normal"
         condPDF = distribution.computeConditionalPDF(0.5, [0.5])
-        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        assert m.isfinite(condPDF), "condPDF is not normal"
         condPDF = distribution.computeConditionalPDF(0.6, [0.5])
-        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        assert m.isfinite(condPDF), "condPDF is not normal"
         condPDF = distribution.computeSequentialConditionalPDF([0.5, -0.1])
-        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        assert m.isfinite(condPDF), "condPDF is not normal"
         condPDF = distribution.computeSequentialConditionalPDF([0.5, 0.5])
-        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        assert m.isfinite(condPDF), "condPDF is not normal"
         condPDF = distribution.computeSequentialConditionalPDF([0.5, 0.6])
-        assert ot.SpecFunc.IsNormal(condPDF), "condPDF is not normal"
+        assert m.isfinite(condPDF), "condPDF is not normal"
 
     # Extract the marginals
     for i in range(dim):

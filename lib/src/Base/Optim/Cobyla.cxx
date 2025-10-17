@@ -223,7 +223,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   try
   {
     for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
-      if (!SpecFunc::IsNormal(inP[i]))
+      if (!std::isfinite(inP[i]))
         throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
     // evaluate the function on the clipped point (still penalized if outside the bounds)
