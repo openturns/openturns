@@ -137,7 +137,7 @@ algorithm is the *Stieltjes* algorithm.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
+    - See :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_functional_chaos`
 
 
 .. topic:: References:

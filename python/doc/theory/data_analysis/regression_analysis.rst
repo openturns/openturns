@@ -231,7 +231,7 @@ with :math:`n - p - 1` degrees of freedom (see [baron2014]_ page 401).
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/general_purpose_metamodels//plot_linear_model`
+    - See :doc:`/auto_surrogate_modeling/linear_regression//plot_linear_model`
 
 
 .. topic:: References:

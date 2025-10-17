@@ -292,7 +292,7 @@ trace of the limit state function on the sphere of radius
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_strong_maximum_test`
+    - See :doc:`/auto_reliability/reliability_analysis/plot_strong_maximum_test`
 
 
 .. topic:: References:

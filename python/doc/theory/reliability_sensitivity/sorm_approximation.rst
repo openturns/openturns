@@ -109,7 +109,7 @@ This formula is valid **only** in the normal standard space and if
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_form`
+    - See :doc:`/auto_reliability/reliability_analysis/plot_estimate_probability_form`
 
 
 .. topic:: References:

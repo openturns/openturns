@@ -322,5 +322,5 @@ to get both the optimal and assess the robustness of the optimum.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_box_cox_transform`
+    - See :doc:`/auto_stochastic_processes/plot_box_cox_transform`
 

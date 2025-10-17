@@ -78,5 +78,5 @@ The first and second order Taylor expansions are used in the following cases:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/general_purpose_metamodels/plot_taylor_approximation`
+    - See :doc:`/auto_surrogate_modeling/linear_regression/plot_taylor_approximation`
 

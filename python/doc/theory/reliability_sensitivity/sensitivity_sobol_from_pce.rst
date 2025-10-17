@@ -273,8 +273,8 @@ The next table presents the multi-indices involved in each Sobol' index.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_sobol`
-    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_functional_chaos_sensitivity`
+    - See :doc:`/auto_sensitivity_analysis/plot_sensitivity_sobol`
+    - See :doc:`/auto_sensitivity_analysis/plot_functional_chaos_sensitivity`
 
 .. topic:: References:
 

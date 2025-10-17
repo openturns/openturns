@@ -209,7 +209,7 @@ lowest error estimate is retained.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/fields_metamodels/plot_fieldfunction_metamodel`
+    - See :doc:`/auto_surrogate_modeling/fields_surrogate_models/plot_fieldfunction_metamodel`
 
 
 .. topic:: References:
