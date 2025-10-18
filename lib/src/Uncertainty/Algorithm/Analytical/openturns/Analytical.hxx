@@ -96,8 +96,8 @@ protected:
 
   friend class Factory<Analytical>;
 
-private:
   OptimizationAlgorithm nearestPointAlgorithm_;
+private:
   RandomVector event_;
   AnalyticalResult result_;
 

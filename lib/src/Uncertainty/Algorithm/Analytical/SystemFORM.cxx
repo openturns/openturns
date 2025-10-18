@@ -46,7 +46,7 @@ SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
 {
   setNearestPointAlgorithm(nearestPointAlgorithm);
   if (physicalStartingPoint.getSize())
-    setPhysicalStartingPoint(physicalStartingPoint);
+    nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
   setEvent(event);
 }
 
