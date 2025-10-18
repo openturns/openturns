@@ -52,30 +52,14 @@ bibliography: paper.bib
 OpenTURNS (www.openturns.org) is an open-source Python module built on a 
 C++ core library for probabilistic modeling, uncertainty quantification
 (UQ), and machine learning.
-UQ plays a critical role in robust decision-making during the design
-and operation of complex systems.
-It encompasses probabilistic modeling (multivariate distributions,
-stochastic processes), sampling, functional algebra, uncertainty
-propagation, sensitivity analysis, reliability, optimization, inverse
-problems, and surrogate modeling.
-Validated, well-tested and well-documented methods are essential for teaching, academic research, and industrial applications.
-However, many probabilistic modeling libraries are
-domain-specific, such as mechanical engineering, computational fluid
-dynamics, or hydrology, which limits the sharing of best
-practices...
-This underscores the need for a general-purpose,
-cross-disciplinary framework to probabilistic modeling.
-
-# Introduction
-
 OpenTURNS (Open source Treatment of Uncertainty, Risk ’N Statistics)
 is a general-purpose library for probabilistic modeling, uncertainty
 quantification, and machine learning, released under the LGPL license.
 It provides a unified interface through a Python package, granting
-access to a comprehensive set of state-of-the-art algorithms and
+users access to a comprehensive set of state-of-the-art algorithms and
 modeling tools.
 The library is supported by extensive, regularly updated
-documentation, including examples (in particular a Getting Started
+documentation, including examples (in particular, a Getting Started
 example), tutorials, and user guides.
 The documentation makes the library very user-friendly.
 OpenTURNS integrates seamlessly with NumPy, Pandas, and other
@@ -87,24 +71,46 @@ and reliability assessment.
 Its active community provides additional support and resources through 
 a Discourse forum and its website.
 
+## Statement of need
+
+UQ plays a critical role in robust decision-making during the design
+and operation of complex systems.
+It encompasses probabilistic modeling (multivariate distributions,
+stochastic processes), sampling, functional algebra, uncertainty
+propagation, sensitivity analysis, reliability, optimization, inverse
+problems, and surrogate modeling.
+Validated, well-tested and well-documented methods are essential for teaching, academic research, and industrial applications.
+However, many probabilistic modeling libraries are domain-specific, 
+focusing on fields such as mechanical engineering, computational fluid
+dynamics, or hydrology, which limits the sharing of best practices.
+This underscores the need for a general-purpose, cross-disciplinary
+framework for probabilistic modeling.
+
+Of course, other Python packages exist for Monte-Carlo
+sampling and other numerical methods [@virtanen2020scipy],
+statistical modeling [@seabold2010statsmodels], 
+machine learning [@pedregosa2011scikit], for providing UQ test 
+functions [@Wicaksono2023], and for quasi-Monte Carlo methods [@roy2023quasi]
+(among others).
+One of the goals of OpenTURNS is to provide a consistent interface to 
+these tasks in the UQ context.
+
 # Features
 
 OpenTURNS provides a wide range of multivariate probabilistic modeling
 features: more than 60 continuous and discrete distributions, 
 including extreme value distributions, copula-based models (more than 
-15 copulas), distributions defined by conditioning.
-It is also possible to determine exactly any univariate
-push-forward distribution (for example, the exact distribution of the
-cosine of a distribution).
+15 copulas), and distributions defined by conditioning.
+It is also possible to determine exactly any univariate push-forward
+distribution (for example, the exact distribution of the cosine of a
+distribution).
 User-defined distributions can be easily implemented and integrated
 natively.
 
-This powerful library allows multivariate distributions to be sampled 
-easily and very efficiently using general sampling algorithms 
+Multivariate distributions can be sampled using general sampling algorithms
 (Monte Carlo, LHS, and optimized LHS).
-It also provides quasi-random sequences based on widely used methods 
-(Quasi–Monte Carlo low-discrepancy sequences such as Sobol’ or
-Halton) for function exploration.
+OpenTURNS also provides quasi–Monte Carlo low-discrepancy sequences 
+(such as Sobol’ or Halton) for integration and model analysis.
 
 In addition, OpenTURNS offers modeling features for stationary 
 and non-stationary stochastic processes (ARMA processes, Gaussian 
@@ -145,7 +151,8 @@ OpenTURNS functions are designed to manage vector as well as field inputs. Their
 The documentation provides extensive examples of how to build and
 compose these functions.
 
-Several sensitivity and reliability indices can be used to rank the variables with respect to their importance on another variable.
+Several sensitivity and reliability indices can be used to quantify
+how influential a variable is to another variable.
 Notable examples include Standardized Regression Coefficients (SRC),
 Sobol’ indices, and Hilbert–Schmidt Independence Criterion (HSIC) indices. For the latter two, OpenTURNS provides the asymptotic distribution of
 the estimators, which allows the computation of confidence intervals.
@@ -172,8 +179,8 @@ The optimization of the hyperparameters of Gaussian process regression
 can be performed on an arbitrary subset of the hyperparameters, including,
 for example, the shape and amplitude parameters.
 
-In most cases, probabilistic analyses use optimization algorithms (e.g.,
-for unsupervised learning or calibration).
+In many cases, probabilistic analyses use optimization algorithms (e.g.,
+for supervised learning or calibration).
 OpenTURNS can be used to define a wide variety of optimization problems
 in a unified manner and provides users with solution algorithms from
 numerous existing libraries: NLOpt, Ipopt, PAGMO, Bonmin, Dlib,
@@ -190,7 +197,7 @@ and other algorithms including those from the Cuba library.
 
 # Usages
 
-OpenTURNS is widely used in research industrial engineering, and
+OpenTURNS is widely used in research, industrial engineering, and
 academic education.
 It has been integrated into university curricula (e.g., DTU Denmark) and
 engineering schools (e.g., ENSTA, ENPC, Centrale Nantes, Sigma Clermont,
@@ -200,17 +207,17 @@ Two stable releases are published annually, and the library is
 distributed through Conda, pip, and Debian repositories.
 
 The library has been introduced in several publications (e.g.,
-`@baudin:2016`).
-Its calibration features, for example, are introduced in `@baudin:2021`.
+[@baudin:2016]).
+Its calibration features, for example, are introduced in [@baudin:2021].
 The library is also used in several external packages.
 The benchmarking module otbenchmark, for example, is introduced in
-`@fekhari:2021`.
-Numerous application articles are based on OpenTURNS (e.g., `@Dutfoy:2023`
+[@fekhari:2021].
+Numerous application articles are based on OpenTURNS (e.g., [@Dutfoy:2023]
 on seismic risk assessment using the Gutenberg–Richter law).
 
-The Persalys graphical user interface, built on top of OpenTURNS,
-provides a graphical user interface performing UQ analyses
-with no (or minimal) Python programming (see www.persalys.fr)
+The Persalys graphical user interface [@persalys], built on top of OpenTURNS,
+enables users to perform UQ analyses with no (or minimal) Python
+programming.
 
 An annual User’s Day has been held since 2008, fostering collaboration
 and knowledge exchange among researchers, engineers, and educators.
