@@ -82,7 +82,7 @@ Sample SpaceFillingImplementation::normalize(const Sample & sample) const
   }
   if (!toNormalize) return sample;
 
-  LOGWARN(OSS() << "Sample must be normalized");
+  LOGDEBUG(OSS() << "Sample must be normalized");
   const Point delta(maxPoint - minPoint);
   Sample result(sample - minPoint);
   return result / delta;

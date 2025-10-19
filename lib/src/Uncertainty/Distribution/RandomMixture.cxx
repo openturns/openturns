@@ -1476,7 +1476,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
     for (UnsignedInteger j = 0; j < dimension_; ++j)
       grid(i, j) = mu[j] + ((2.0 * indices(i, j) + 1.0) / pointNumber[j] - 1.0) * b_sigma[j];
 
-  LOGWARN(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
+  LOGDEBUG(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
 
   Sample result(size, 1);
   // Special case when the distribution is analytical
