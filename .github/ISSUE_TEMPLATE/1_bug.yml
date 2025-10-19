@@ -15,7 +15,7 @@ body:
     attributes:
       label: How to reproduce the issue?
       description: Please add the minimal code that helps replicating the issue.
-      render: shell
+      render: Python
     validations:
       required: true
   - type: textarea
