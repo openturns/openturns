@@ -68,7 +68,7 @@ Distribution FittingTest::BestModelAIC(const Sample &sample,
     }
     catch (const Exception &ex)
     {
-      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+      LOGDEBUG(OSS(false) << "Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
   if (!builtAtLeastOne)
@@ -141,7 +141,7 @@ Distribution FittingTest::BestModelAICC(const Sample &sample,
     }
     catch (const Exception &ex)
     {
-      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+      LOGDEBUG(OSS(false) << "Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
   if (!builtAtLeastOne)
@@ -211,7 +211,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
     }
     catch (const Exception & ex)
     {
-      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+      LOGDEBUG(OSS(false) << "Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
   if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
@@ -287,7 +287,7 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
     // The factories can raise many different exceptions (InvalidArgumentException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
     catch (const Exception & ex)
     {
-      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+      LOGDEBUG(OSS(false) << "Impossible to use factory " << factory << ". Reason=" << ex);
     } // catch
   } // i
   if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
@@ -322,7 +322,7 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
     // The factories can raise many different exceptions (InvalidArgumentException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
     catch (const Exception & ex)
     {
-      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+      LOGDEBUG(OSS(false) << "Impossible to use factory " << factory << ". Reason=" << ex);
     } // catch
   } // i
   if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could be used for a Lilliefors test.";
@@ -386,7 +386,7 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
     }
     catch (const Exception &ex)
     {
-      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+      LOGDEBUG(OSS(false) << "Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
   if (!builtAtLeastOne)
