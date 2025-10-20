@@ -1326,9 +1326,7 @@ void DrawableImplementation::setData(const Point & data)
 /* Bounding box accessor */
 Interval DrawableImplementation::getBoundingBox() const
 {
-  Point min(data_.getMin());
-  Point max(data_.getMax());
-  return Interval(min, max);
+  return Interval(data_.getMin(), data_.getMax());
 }
 
 /* Accessor for color */
