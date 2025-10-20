@@ -26,7 +26,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OTconfig.hxx"
-#include "openturns/Pie.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -438,11 +438,42 @@ void GraphImplementation::computeBoundingBox() const
   Sample maxBoxes(0, 2);
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    if (drawablesCollection_[i].getData().getSize() != 0)
+    const Sample data(drawablesCollection_[i].getData());
+    const UnsignedInteger dataSize = data.getSize();
+    if (dataSize != 0)
     {
       const Interval boundingBox(drawablesCollection_[i].getBoundingBox());
-      minBoxes.add(boundingBox.getLowerBound());
-      maxBoxes.add(boundingBox.getUpperBound());
+      Point lb(boundingBox.getLowerBound());
+      Point ub(boundingBox.getUpperBound());
+
+      if ((logScale_ & LOGX) && (lb[0] <= 0.0))
+      {
+        // find positive minimum
+        Scalar lbx = SpecFunc::MaxScalar;
+        for (UnsignedInteger j = 0; j < dataSize; ++ j)
+        {
+          const Scalar vx = data(j, 0);
+          if ((vx > 0.0) && (vx < lbx))
+            lbx = vx;
+        }
+        lb[0] = lbx;
+      }
+
+      if ((logScale_ & LOGY) && (lb[1] <= 0.0))
+      {
+        // find positive minimum
+        Scalar lby = SpecFunc::MaxScalar;
+        for (UnsignedInteger j = 0; j < dataSize; ++ j)
+        {
+          const Scalar vy = data(j, 1);
+          if ((vy > 0.0) && (vy < lby))
+            lby = vy;
+        }
+        lb[1] = lby;
+      }
+
+      minBoxes.add(lb);
+      maxBoxes.add(ub);
     }
   }
   Point min(minBoxes.getMin());
@@ -451,14 +482,9 @@ void GraphImplementation::computeBoundingBox() const
   // apply margins:
   if (logScale_ & LOGX)
   {
-    if (min[0] > 0.0)
-    {
-      const Scalar margin = std::pow(10.0, xMargin_);
-      min[0] /= margin;
-      max[0] *= margin;
-    }
-    else
-      LOGWARN("Negative x values in log-scale axis");
+    const Scalar margin = std::pow(10.0, xMargin_);
+    min[0] /= margin;
+    max[0] *= margin;
   }
   else
   {
@@ -470,14 +496,9 @@ void GraphImplementation::computeBoundingBox() const
 
   if (logScale_ & LOGY)
   {
-    if (min[1] > 0.0)
-    {
-      const Scalar margin = std::pow(10.0, yMargin_);
-      min[1] /= margin;
-      max[1] *= margin;
-    }
-    else
-      LOGWARN("Negative y values in log-scale axis");
+    const Scalar margin = std::pow(10.0, yMargin_);
+    min[1] /= margin;
+    max[1] *= margin;
   }
   else
   {
