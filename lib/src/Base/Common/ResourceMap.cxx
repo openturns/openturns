@@ -1089,7 +1089,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("Field-AutomaticScaling", true);
   addAsScalar("Field-ArrowRatio", 0.01);
   addAsScalar("Field-ArrowScaling", 1.0);
-  addAsUnsignedInteger("Field-LevelNumber", 30);
+  addAsUnsignedInteger("Field-LevelNumber", 10);
 
   // SampleImplementation parameters
   addAsString("Sample-CSVFileSeparator", ";");
