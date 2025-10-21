@@ -11,9 +11,10 @@ Let :math:`(X,Y)` be two random variables which CDF are denoted by :math:`F_X` a
 Spearman’s rank correlation coefficient :math:`\rho^S(X,Y)` is defined by:
 
 .. math::
-    \rho^S(X,Y) = \dfrac{\Cov{F_X(X),F_Y(Y)}}{\sqrt{\Var{F_X(X)}\Var{F_(Y)}}}
+    \rho^S(X,Y) = \dfrac{\Cov{F_X(X),F_Y(Y)}}{\sqrt{\Var{F_X(X)}\Var{F_Y(Y)}}}
 
-where :math:`\Cov` is the covariance operator.
+where :math:`\Cov{.}` is the covariance operator and
+:math:`F_X` and :math:`F_Y` are the  respective CDF of :math:`X` and :math:`Y`.
 
 The Spearman correlation between two variables is equal to the
 :ref:`Pearson correlation coefficient <pearson_coefficient>` between the rank values of the variables:
@@ -21,11 +22,11 @@ The Spearman correlation between two variables is equal to the
 .. math::
     \rho^S(X,Y) = \rho^P(F_X(X), F_Y(Y))
 
-where :math:`F_X` and :math:`F_Y` are the  respective CDF of :math:`X` and :math:`Y`.
+
 If :math:`C` is the CDF of the copula of the random vector :math:`(X,Y)`, then we get:
 
 .. math::
-   \rho^S(X,Y) = \rho(F_X(X),F_Y(Y))=12\iint_{[0,1]^2}C(u,v)\,du\,dv-3
+   \rho^S(X,Y) = \rho(F_X(X),F_Y(Y)) = 12 \iint_{[0,1]^2} C(u,v)\,du\,dv - 3
 
 which shows that the  Spearman correlation is linked to the copula only.
 

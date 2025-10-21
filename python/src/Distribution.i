@@ -99,7 +99,7 @@ class PythonDistribution:
     It is not necessary to implement all the methods. Only the *computeCDF()* and *getRange()*
     methods are mandatory.
     All the methods which are not implemented are inherited from
-    :class:`~openturns.DistributionImplementation` which proposes some generic numerical methods.
+    :class:`~openturns.Distribution` which proposes some generic numerical methods.
     
     
     Examples
@@ -126,7 +126,7 @@ class PythonDistribution:
 
     def getRange(self):
         """
-        Range accessor. Optional, but highly recommanded
+        Range accessor. Optional, but highly recommended
         """
         raise RuntimeError('You must define a method getRange() -> range, where range is an Interval')
 
