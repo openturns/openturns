@@ -8,10 +8,10 @@ the strength of a linear relationship between two random variables
 :math:`X` and :math:`Y` with finite variance. It is defined as follows:
 
 .. math::
-       \rho^P(X,Y)= \frac{\displaystyle \Cov{X,Y}}{\sqrt{\Var{X}\Var{Y}}}
+       \rho^P(X,Y)= \dfrac{\Cov{X,Y}}{\sqrt{\Var{X}\Var{Y}}}
 
 where
-:math:`\Cov{X,Y} = \Expect{ \left( X - \Expect{X} \right) \left(Y - \Expect{Y}\right) }`.
+:math:`\Cov{X,Y} = \Expect{ \left( X - \Expect{X} \right) \left( Y - \Expect{Y} \right) }`.
 
 Let :math:`((x_1, y_1), \dots, (x_\sampleSize, y_\sampleSize))` be a sample generated from
 :math:`(X,Y)`. The Pearson  correlation coefficient is estimated:
@@ -23,7 +23,6 @@ Let :math:`((x_1, y_1), \dots, (x_\sampleSize, y_\sampleSize))` be a sample gene
 
 where :math:`\bar{X} = \dfrac{1}{\sampleSize} \sum_{k=1}^\sampleSize x_k` and
 :math:`\bar{Y} = \dfrac{1}{\sampleSize} \sum_{k=1}^\sampleSize y_k` are the mean of each sample.
-
 
 We sum up some interesting features of the coefficient:
 
