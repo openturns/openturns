@@ -21,8 +21,9 @@ secondSample : 2-d sequence of float
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 
 Returns
 -------
@@ -90,8 +91,9 @@ secondSample : 2-d sequence of float
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 
 Returns
 -------
@@ -158,8 +160,9 @@ secondSample : 2-d sequence of float
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 breakPoint : positive float :math:`< 1`
     Percentage of data to be taken as breakPoint in the variances. It must be
     :math:`< 1`, equal to 0.5 by default.
@@ -234,8 +237,9 @@ secondSample : 2-d sequence of float
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 
 Returns
 -------
@@ -308,10 +312,13 @@ linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 hypothesis : str
     Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
-    'Greater' than 0. Default is set to 'Equal' to 0.
+    'Greater' than 0.
+    
+    Default value is set to 'Equal' to 0.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 
 Returns
 -------
@@ -381,8 +388,9 @@ selection : sequence of int, maximum integer value :math:`< n`
     List of indices selecting which subsets of the first sample will successively
     be tested with the second sample through the regression test.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 
 Returns
 -------
@@ -434,6 +442,8 @@ significantly different from 0.
 >>> selection = [1]
 >>> test_result = ot.LinearModelTest.PartialRegression(firstSample, secondSample, selection)
 >>> print(test_result[1])
+class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.172847 statistic=1.39882 description=[]
+"
 
 // ---------------------------------------------------------------------
 
@@ -454,8 +464,9 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
+    Threshold p-value of the test (error Type I).
+    
+    Defaut value is 0.05.
 
 Returns
 -------
@@ -502,6 +513,7 @@ We fit the linear model: :math:`X_3 = a_0 + a_1X_1 + a_2X_2` and we test if each
 ...     print('Test for a' + str(i) + ' :' , test_result[i])
 Test for a0 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.82575 statistic=-0.220751 description=[]
 Test for a1 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.242986 statistic=1.17471 description=[]
-Test for a2 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.363986 statistic=0.912083 description=[]"
+Test for a2 : class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.363986 statistic=0.912083 description=[]
+"
 
 
