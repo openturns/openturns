@@ -572,6 +572,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     {
       // Compute the iso-values
       Point levels(levelsNumber);
+      Indices markedLevels(levelsNumber, 0);
       Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
@@ -632,23 +633,16 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
               if (v2 == v1) data[1] = x1;
               else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
             }
-            graph.add(Curve(data, palette[j], "solid"));
+            Curve curve(data, palette[j], "solid");
+            if (!markedLevels[j])
+            {
+              curve.setLegend(OSS() << level);
+              markedLevels[j] = 1;
+            }
+            graph.add(curve);
           } // (level >= v0) && (level <= v2)
         } // j
       } // i
-      // Simple colorbar
-      const Scalar minValue = marginalValues.getMin()[0];
-      const Scalar maxValue = marginalValues.getMax()[0];
-      const Point xMin(mesh_.getVertices().getMin());
-      for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
-      {
-        Cloud point(Sample(1, xMin));
-        point.setPointStyle("none");
-        point.setColor(palette[i]);
-        if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
-        else point.setLegend(" ");
-        graph.add(point);
-      }
     } // interpolate
     else
     {
@@ -686,17 +680,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           graph.add(point);
         }
       } // No simplex
-      // Simple colorbar
-      const Point xMin(mesh_.getVertices().getMin());
-      for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
-      {
-        Cloud point(Sample(1, xMin));
-        point.setPointStyle("none");
-        point.setColor(palette[(i * (size - 1)) / (levelsNumber - 1)]);
-        if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
-        else point.setLegend(" ");
-        graph.add(point);
-      }
+      // FIXME: restore legend: previously legend was attached to invisible objects
     } // !interpolate
   } // meshDimension == 2
   return graph;
