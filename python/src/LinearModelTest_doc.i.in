@@ -23,7 +23,7 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 
 Returns
 -------
@@ -93,7 +93,7 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 
 Returns
 -------
@@ -162,7 +162,7 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 breakPoint : positive float :math:`< 1`
     Percentage of data to be taken as breakPoint in the variances. It must be
     :math:`< 1`, equal to 0.5 by default.
@@ -239,7 +239,7 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 
 Returns
 -------
@@ -318,7 +318,7 @@ hypothesis : str
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 
 Returns
 -------
@@ -390,7 +390,7 @@ selection : sequence of int, maximum integer value :math:`< n`
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 
 Returns
 -------
@@ -466,7 +466,7 @@ secondSample : 2-d sequence of float
 level : positive float :math:`< 1`
     Threshold p-value of the test (error Type I).
     
-    Defaut value is 0.05.
+    Default value is 0.05.
 
 Returns
 -------
