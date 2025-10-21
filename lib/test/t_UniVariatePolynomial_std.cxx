@@ -82,6 +82,11 @@ int main(int, char *[])
     // Multiplication of two polynomials using FFT
     fullprint << "P1*P2=" << P1 * P2 << std::endl;
 
+    // Evaluation over a sample of dimension 1
+    Sample x = Sample::BuildFromPoint({1.0, 2.0, 3.0, 4.0, 5.0});
+    Sample y = P2(x);
+    Sample yRef = Sample::BuildFromPoint({-0.2, -0.3, -2.8, -7.7, -15.0});
+    assert_almost_equal(y, yRef);
   }
   catch (TestFailed & ex)
   {

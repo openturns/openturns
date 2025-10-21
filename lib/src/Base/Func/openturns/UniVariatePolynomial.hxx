@@ -72,6 +72,7 @@ public:
   /** UniVariatePolynomial are evaluated as functors */
   Scalar operator() (const Scalar x) const;
   Complex operator() (const Complex z) const;
+  Sample operator() (const Sample & x) const;
 
   /** UniVariatePolynomialImplementation derivative */
   Scalar gradient(const Scalar x) const;

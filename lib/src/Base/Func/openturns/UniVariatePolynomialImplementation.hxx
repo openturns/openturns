@@ -65,6 +65,7 @@ public:
   virtual String _repr_html_(const String & variableName) const;
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
+  using UniVariateFunctionImplementation::operator();
   Scalar operator() (const Scalar x) const override;
   Complex operator() (const Complex z) const;
 

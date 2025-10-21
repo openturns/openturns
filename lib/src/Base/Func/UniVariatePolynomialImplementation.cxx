@@ -195,7 +195,6 @@ Complex UniVariatePolynomialImplementation::operator() (const Complex z) const
   return y;
 }
 
-
 /* UniVariatePolynomialImplementation derivative */
 Scalar UniVariatePolynomialImplementation::gradient(const Scalar x) const
 {
