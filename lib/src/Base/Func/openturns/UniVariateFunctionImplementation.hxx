@@ -53,6 +53,7 @@ public:
 
   /** UniVariateFunctionImplementation are evaluated as functors */
   virtual Scalar operator() (const Scalar x) const;
+  virtual Sample operator() (const Sample & x) const;
 
   /** UniVariateFunctionImplementation gradient */
   virtual Scalar gradient(const Scalar x) const;
