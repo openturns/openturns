@@ -103,4 +103,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(1)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # FIXME: https://github.com/openturns/openturns/issues/3028
 validation.run()

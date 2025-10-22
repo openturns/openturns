@@ -160,7 +160,7 @@ Scalar GeneralizedPareto::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
-  if (z < 0.0) return 0.0;
+  if (z <= 0.0) return 0.0;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return 0.0;
   if (std::abs(xi_) < 1.0e-8) return std::exp(-z) * (1.0 - xi_ * z * (1.0 - 0.5 * z)) / sigma_;
   return std::exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
@@ -170,7 +170,7 @@ Scalar GeneralizedPareto::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
-  if (z < 0.0) return SpecFunc::LowestScalar;
+  if (z <= 0.0) return SpecFunc::LowestScalar;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return SpecFunc::LowestScalar;
   if (std::abs(xi_) < 1.0e-8) return -z + log1p(-xi_ * z * (1.0 - 0.5 * z)) - std::log(sigma_);
   return -(1.0 + 1.0 / xi_) * log1p(xi_ * z) - std::log(sigma_);

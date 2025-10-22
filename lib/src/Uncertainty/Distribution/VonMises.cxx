@@ -201,7 +201,7 @@ Scalar VonMises::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (std::abs(x - mu_) > M_PI) return 0.0;
+  if (std::abs(x - mu_) >= M_PI) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -210,7 +210,7 @@ Scalar VonMises::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (std::abs(x - mu_) > M_PI) return SpecFunc::LowestScalar;
+  if (std::abs(x - mu_) >= M_PI) return SpecFunc::LowestScalar;
   return normalizationFactor_ + kappa_ * std::cos(x - mu_);
 }
 

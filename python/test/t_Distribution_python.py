@@ -39,14 +39,14 @@ class UniformNdPy(ot.PythonDistribution):
     def computeCDF(self, X):
         prod = 1.0
         for i in range(len(self.a)):
-            if X[i] < self.a[i]:
+            if X[i] <= self.a[i]:
                 return 0.0
             prod *= min(self.b[i], X[i]) - self.a[i]
         return prod / self.factor
 
     def computePDF(self, X):
         for i in range(len(self.a)):
-            if X[i] < self.a[i]:
+            if X[i] <= self.a[i]:
                 return 0.0
             if X[i] > self.b[i]:
                 return 0.0

@@ -445,6 +445,12 @@ public:
     checkGeneral();
     checkRealization();
     checkComparison();
+    
+    if (enablePDFAtlowerBound_)
+    {
+      checkFiniteLowerBoundPDF();
+    }
+
     if (enablePDF_)
     {
       checkPDF();
@@ -493,6 +499,10 @@ public:
   void skipPDF()
   {
     enablePDF_ = false;
+  }
+  void skipPDFAtLowerBound()
+  {
+    enablePDFAtlowerBound_ = false;
   }
   void skipCDF()
   {
@@ -642,6 +652,7 @@ public:
   {
     fittingSamplingSize_ = fittingSamplingSize;
   }
+  
 
 private:
 
@@ -1360,8 +1371,19 @@ private:
     assert_almost_equal(xGrad, xGradFD, cdfTolerance_, cdfTolerance_, "transform grad " + distribution_.__repr__());
   }
 
+  void checkFiniteLowerBoundPDF() const
+  {
+    if (!distribution_.isContinuous() || distribution_.getDimension() != 1)
+      return;
+
+    LOGTRACE(OSS() << "checking PDF at lower bound, if finite...");
+    if (distribution_.getRange().getFiniteLowerBound()[0] && distribution_.computePDF(distribution_.getRange().getLowerBound())!=0.)
+      throw TestFailed(OSS() << "PDF at finite lower bound is " << distribution_.computePDF(distribution_.getRange().getLowerBound()) << " instead of 0" );
+  }
+  
   Distribution distribution_;
   Bool enablePDF_ = true;
+  Bool enablePDFAtlowerBound_ = true;
   Bool enableCDF_ = true;
   Bool enableComplementaryCDF_ = true;
   Bool enableDDF_ = true;
