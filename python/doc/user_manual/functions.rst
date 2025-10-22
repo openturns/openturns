@@ -24,9 +24,9 @@ General mathematical functions
     :template: classWithPlot.rst_t
     LinearFunction
     QuadraticFunction
+    DatabaseFunction
 
     :template: class.rst_t
-    DatabaseFunction
     PythonFunction
     OpenTURNSPythonFunction
     MemoizeFunction
