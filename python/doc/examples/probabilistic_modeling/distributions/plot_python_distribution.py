@@ -11,10 +11,10 @@ Create a customized distribution or copula
 # It is not necessary to override all the methods: only the *computeCDF()* and *getRange()* methods
 # must be overridden.
 # All the methods which are not overridden  are inherited from
-# :class:`~openturns.DistributionImplementation`: they are numerically derived from the *computeCDF()*
+# :class:`~openturns.Distribution`: they are numerically derived from the *computeCDF()*
 # method, using some keys of the :class:`~openturns.ResourceMap` class.
 #
-# To create a :class:`~openturns.Copula`, the method *isCopula()* has to be overridden and return *True*.
+# To create a copula, the method *isCopula()* has to be overridden and return *True*.
 #
 # Then an instance of the new class can be passed on into a :class:`~openturns.Distribution` class.
 

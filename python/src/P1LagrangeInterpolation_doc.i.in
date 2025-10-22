@@ -1,10 +1,6 @@
 %feature("docstring") OT::P1LagrangeInterpolation
 "P1 interpolation of values between two meshes.
 
-This class is a :class:`~openturns.FieldFunction`, it first builds a projection
-matrix between two meshes, and can then interpolate a :class:`~openturns.Field` defined
-on input mesh onto a :class:`~openturns.Field` defined on output mesh.
-
 Available constructors:
 
     P1LagrangeInterpolation(*inputMesh, outputMesh, dimension*)
@@ -26,24 +22,29 @@ enclosingSimplex : :class:`~openturns.EnclosingSimplexAlgorithm`
     Algorithm used to find the enclosing simplex of each output point in
     input mesh.  If a point is not contained in any mesh simplex, the
     nearest point is used.
+    
+    Default algorithm is :class:`~openturns.BoundingVolumeHierarchy` built
+    on the vertices and simplices of the *inputMesh*.
 
 nearestNeighbour : :class:`~openturns.NearestNeighbourAlgorithm`
     Algorithm used to find nearest neighbour of an output point, when it
     is not contained in any simplex of input mesh.
+    
+    Default algorithm is :class:`~openturns.KDTree` built on the vertices of the *inputMesh*.
 
 Notes
 -----
+A P1LagrangeInterpolation is a particular :class:`~openturns.FieldFunction`. It allows to
+evaluate a :class:`~openturns.FieldFunction` defined on a mesh (*inputMesh*)
+on another mesh (*outputMesh*) by piecewise linear interpolation.
 
-A :class:`~openturns.FieldFunction` is usually defined by three numbers,
-the input dimension, and dimensions of input and output fields.
-Before evaluating a :class:`~openturns.Field`, classes check that its
-dimensions are the ones which had been declared.
+The P1LagrangeInterpolation builds a projection
+matrix between the *inputMesh* and the *outputMesh*.
+Then, when evaluated on the field values attached to the *inputMesh*,
+it returns the field values attached to the *outputMesh*.
 
-This class is special because it can deal with fields of any dimension,
-and output field will have the same dimension as input field.  This
-dimension is passed to constructor, but method :meth:`setDimension` can
-be called to interpolate fields of different dimensions without having
-to rebuild the projection between meshes."
+The dimension of the field values can change. But the dimension of
+both meshes must be the same."
 
 // ---------------------------------------------------------------------
 

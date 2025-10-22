@@ -6,7 +6,7 @@ outputSample = [[0.2], [-2], [3.2], [4.0], [1.3]]
 f = ot.DatabaseFunction(inputSample, outputSample)
 
 ot.ResourceMap.SetAsBool("Contour-DefaultIsFilled", True)
-graph = f.draw([0.5, 0.5], [5.0, 6.0], [501]*2)
+graph = f.draw([0.5, 0.5], [5.0, 6.0], [501] * 2)
 data_cloud = ot.Cloud(inputSample)
 data_cloud.setPointStyle('star')
 data_cloud.setColor('red')
