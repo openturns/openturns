@@ -119,6 +119,7 @@ def use_case_5(X, Y):
     ot.ResourceMap.SetAsBool(
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
     )
+    ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 1.0)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
@@ -131,13 +132,15 @@ def use_case_5(X, Y):
     algo.setOptimizationBounds(bounds)
     algo.run()
 
-    cov_param = [6.419, 0.9466]
-    trend_coefficients = [0.08786, 0.9955]
+    cov_param = [0.1392, 0.1917]
+    trend_coefficients = [-0.1027, 1.014]
     result = algo.getResult()
 
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
+    print("optimal param", result.getCovarianceModel().getParameter())
+    print("optimal trend", result.getTrendCoefficients())
     ott.assert_almost_equal(
         result.getCovarianceModel().getParameter(), cov_param, 1e-3, 1e-3
     )
