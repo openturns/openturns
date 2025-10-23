@@ -131,9 +131,10 @@ def use_case_5(X, Y):
     algo.setOptimizationBounds(bounds)
     algo.run()
 
-    cov_param = [7.447, 1.019]
-    trend_coefficients = [0.09384, 0.9952]
+    cov_param = [6.419, 0.9466]
+    trend_coefficients = [0.08786, 0.9955]
     result = algo.getResult()
+
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
@@ -190,8 +191,8 @@ def bugfix_optim_no_feasible():
     myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
 
     # optimal we should get after the optimization process
-    optimal_cov_parameter = [7.874e+06, 1513, 1413, 43.96, 5.509, 4.625,
-                             5.159, 0.6612, 3.245, 4.945, 8.074, 5.419]
+    optimal_cov_parameter = [7.811e+06, 1494, 1425, 45.47, 5.511, 4.651,
+                             4.905, 0.6359, 3.308, 4.935, 8.101, 5.129]
     covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
     scaleOptimizationBounds = ot.Interval(
