@@ -34,7 +34,7 @@ nearestNeighbour : :class:`~openturns.NearestNeighbourAlgorithm`
 
 Notes
 -----
-A P1LagrangeInterpolation is a particular :class:`~openturns.FieldFunction`. It allows to
+A P1LagrangeInterpolation is a particular :class:`~openturns.FieldFunction`. It allows one to
 evaluate a :class:`~openturns.FieldFunction` defined on a mesh (*inputMesh*)
 on another mesh (*outputMesh*) by piecewise linear interpolation.
 
