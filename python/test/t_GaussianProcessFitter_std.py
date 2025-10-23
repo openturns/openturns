@@ -1,6 +1,7 @@
 import openturns as ot
 from openturns.experimental import GaussianProcessFitter
 import openturns.testing as ott
+from openturns.usecases.fire_satellite import FireSatelliteModel
 
 ot.PlatformInfo.SetNumericalPrecision(4)
 
@@ -170,14 +171,12 @@ def use_case_6(X, Y):
 
 
 def bugfix_optim_no_feasible():
-    from openturns.usecases.fire_satellite import FireSatelliteModel
+    ot.ResourceMap.Reload()
+    ot.RandomGenerator.SetSeed(0)
 
     m = FireSatelliteModel()
-
     model = m.model
     inputDistribution = m.inputDistribution
-
-    ot.RandomGenerator.SetSeed(0)
     experiment = ot.LHSExperiment(inputDistribution, 10 * m.dim)
     inputTrainingSet = experiment.generate()
     outputTrainingSet = model(inputTrainingSet)
