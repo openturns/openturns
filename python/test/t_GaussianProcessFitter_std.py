@@ -120,7 +120,7 @@ def use_case_5(X, Y):
     ot.ResourceMap.SetAsBool(
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
     )
-    ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 1.0)
+    ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 2.0)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
