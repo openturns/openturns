@@ -526,10 +526,10 @@ if (BUILD_PYTHON)
 
   option (USE_PYTHON_SABI "Use Python stable ABI" OFF)
   if (USE_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
-    find_package (Python 3.6 COMPONENTS Interpreter Development.SABIModule)
+    find_package (Python 3.8 COMPONENTS Interpreter Development.SABIModule)
     add_library (Python::Module ALIAS Python::SABIModule)
   else ()
-    find_package (Python 3.6 COMPONENTS Interpreter Development.Module)
+    find_package (Python 3.8 COMPONENTS Interpreter Development.Module)
   endif ()
 
   if (Python_FOUND)
