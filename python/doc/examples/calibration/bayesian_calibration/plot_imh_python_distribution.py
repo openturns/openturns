@@ -78,7 +78,7 @@ exact_PDF = ot.LinearCombinationFunction([f], [norm_fact])
 
 class NewDistribution(ot.PythonDistribution):
     def __init__(self):
-        super(NewDistribution, self).__init__(1)
+        super().__init__(1)
         self.PDF_ = exact_PDF
         self.logPDF_ = ot.ComposedFunction(
             ot.SymbolicFunction("x", "log(x)"), self.PDF_
@@ -142,7 +142,7 @@ view = otv.View(g)
 
 class NewDistribution_RoU(ot.PythonDistribution):
     def __init__(self):
-        super(NewDistribution_RoU, self).__init__(1)
+        super().__init__(1)
         self.PDF_ = exact_PDF
         self.logPDF_ = ot.ComposedFunction(
             ot.SymbolicFunction("x", "log(x)"), self.PDF_

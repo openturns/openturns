@@ -46,6 +46,8 @@ here is how the derived class is selected:
   :class:`~openturns.BoundingVolumeHierarchy` algorithm is chosen, otherwise
   it is :class:`~openturns.NaiveEnclosingSimplex`.
 
+By default, the algorithm is :class:`~openturns.BoundingVolumeHierarchy`.
+
 See also
 --------
 NaiveEnclosingSimplex, BoundingVolumeHierarchy, RegularGridEnclosingSimplex,
