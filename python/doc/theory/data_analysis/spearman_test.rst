@@ -37,7 +37,7 @@ where :math:`t(X,Y)` is the realization of
 means to commit a Type I error.
 
 When the null hypothesis :math:`\cH_0` is rejected, it means that there is a significant monotonic
-relationship between :math:`X` and :math:`Y`.
+relationship between both variables :math:`X` and :math:`Y`.
 
 .. topic:: API:
 

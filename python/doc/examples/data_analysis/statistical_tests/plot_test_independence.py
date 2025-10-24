@@ -59,7 +59,7 @@ print(
 )
 
 # %%
-# Conclusion: The Pearson test validates that there is no linear correlation between both samples:
+# **Conclusion**: The Pearson test validates that there is no linear correlation between both samples:
 # the null hypothesis assuming that the Pearson correlation coefficient is null is accepted. It
 # means that the components are independent.
 # In the general case, the Gaussian vector hypothesis must be validated!
@@ -78,7 +78,7 @@ print(
 )
 
 # %%
-# Conclusion: The Spearman test validates that there is no monotonic correlation between both samples:
+# **Conclusion**: The Spearman test validates that there is no monotonic correlation between both samples:
 # the null hypothesis assuming that the Spearman correlation coefficient is null is accepted.
 
 # %%
@@ -114,7 +114,7 @@ print(
 )
 
 # %%
-# Conclusion: The Chi2  test validates that both samples are independent:
+# **Conclusion**: The Chi2  test validates that both samples are independent:
 # the null hypothesis assuming the independence is accepted.
 
 
@@ -150,12 +150,12 @@ second_Sample = sample.getMarginal(2)
 test_results = ot.LinearModelTest.FullRegression(first_Sample, second_Sample)
 for i in range(len(test_results)):
     print(
-        "Coefficient a" + str(i) + " is significantly different from 0?",
+        "Coefficient a" + str(i) + " is equal to 0?",
         test_results[i].getBinaryQualityMeasure(),
         "p-value=%.6g" % test_results[i].getPValue(),
         "threshold=%.6g" % test_results[i].getThreshold(),
     )
 
 # %%
-# Conclusion: The test detects the independence between :math:`X_1` and :math:`X_3` and the
+# **Conclusion**: The test detects the independence between :math:`X_1` and :math:`X_3` and the
 # correlation between :math:`X_2` and :math:`X_3`. It also detects that :math:`a_0` is null.

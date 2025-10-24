@@ -36,7 +36,7 @@ We sum up some interesting features of the coefficient:
 - If :math:`|\rho_P(X,Y)|=1` then there exists a linear relationship
   between :math:`X` and :math:`Y`.
 
-- The closer math:`|\rho_P(X,Y)|` is to 1, the stronger the indication is
+- The closer :math:`|\rho_P(X,Y)|` is to 1, the stronger the indication is
   that a linear relationship exists between :math:`X` and
   :math:`Y`. The sign of the Pearson’s coefficient indicates if the two
   variables increase or decrease in the same direction (positive
@@ -131,8 +131,8 @@ We sum up some interesting features of the coefficient:
 
 .. topic:: API:
 
-    - See method :py:meth:`~openturns.CorrelationAnalysis.computeLinearCorrelation`
-    - See method :py:meth:`~openturns.Sample.computeLinearCorrelation`
+    - See :class:`~openturns.CorrelationAnalysis` class method :py:meth:`~openturns.CorrelationAnalysis.computeLinearCorrelation`
+    - See :class:`~openturns.Sample` class method :py:meth:`~openturns.Sample.computeLinearCorrelation`
 
 .. topic:: Examples:
 
