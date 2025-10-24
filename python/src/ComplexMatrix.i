@@ -42,7 +42,7 @@
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
-def ComplexMatrix___getattribute__(self, name):
+def _ComplexMatrix___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns()),
@@ -52,7 +52,7 @@ def ComplexMatrix___getattribute__(self, name):
                                                 'version': 3,
                                                 }
     return super(ComplexMatrix, self).__getattribute__(name)
-ComplexMatrix.__getattribute__ = ComplexMatrix___getattribute__
+ComplexMatrix.__getattribute__ = _ComplexMatrix___getattribute__
 %}
 
 

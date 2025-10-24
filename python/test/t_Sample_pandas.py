@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import pandas as pd
+
+# check indexation compatibility
+columns = ot.Description(["x1", "x2", "x3"])
+df1 = pd.DataFrame(index=["R1"], columns=columns)
+columns = ot.Point([1.0, 2.0, 3.0])
+df2 = pd.DataFrame(index=["R2"], columns=columns)
+columns = ot.Indices([1, 2, 3])
+df3 = pd.DataFrame(index=["R3"], columns=columns)
 
 sample = ot.Normal(3).getSample(10)
 

@@ -11,12 +11,12 @@
 %include openturns/SymmetricTensor.hxx
 
 %pythoncode %{
-def SymmetricTensor___getattribute__(self, name):
+def _SymmetricTensor___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.checkSymmetry()
     return super(SymmetricTensor, self).__getattribute__(name)
-SymmetricTensor.__getattribute__ = SymmetricTensor___getattribute__
+SymmetricTensor.__getattribute__ = _SymmetricTensor___getattribute__
 %}
 
 namespace OT {

@@ -44,3 +44,11 @@ OTCollectionOperatorsHelper(OT::Description, OT::String)
 
 } // Description
 } // OT
+
+// needed for compatibility with pandas indexation (see is_list_like internal method)
+%pythoncode %{
+def _Description___iter__(self):
+    for i in range(len(self)):
+        yield self[i]
+Description.__iter__ = _Description___iter__
+%}
