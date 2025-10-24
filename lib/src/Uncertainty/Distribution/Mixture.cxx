@@ -202,7 +202,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 
   if (removed.getSize())
   {
-    LOGWARN(OSS() << "Pruned the mixture at indices " << removed.__str__().substr(0, 50) << "... wrt the maximum weight=" << maximumWeight);
+    LOGINFO(OSS() << "Pruned the mixture at indices " << removed.__str__().substr(0, 50) << "... wrt the maximum weight=" << maximumWeight);
   }
 
   // Update the size of the collection as null-weighted distributions could have been dismissed
