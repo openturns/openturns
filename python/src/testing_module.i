@@ -33,9 +33,9 @@
 
 
 %pythoncode %{
-from contextlib import contextmanager
+import contextlib
 
-@contextmanager
+@contextlib.contextmanager
 def assert_raises(exception_class):
     """Checks for an exception to be raised.
 
