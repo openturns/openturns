@@ -22,7 +22,7 @@
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
-def ComplexTensor___getattribute__(self, name):
+def _ComplexTensor___getattribute__(self, name):
     """Implement attribute accesses."""
     if (name == '__array_interface__'):
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns(), self.getNbSheets()),
@@ -32,7 +32,7 @@ def ComplexTensor___getattribute__(self, name):
                                                 'version': 3,
                                                 }
     return object.__getattribute__(self, name)
-ComplexTensor.__getattribute__ = ComplexTensor___getattribute__
+ComplexTensor.__getattribute__ = _ComplexTensor___getattribute__
 %}
 
 namespace OT {
