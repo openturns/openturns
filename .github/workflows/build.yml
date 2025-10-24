@@ -6,6 +6,7 @@ jobs:
   macos:
     runs-on: macos-latest
     env:
+      MAKEFLAGS: -j3
       LDFLAGS: -L/opt/homebrew/opt/openblas/lib
       CPPFLAGS: -I/opt/homebrew/opt/openblas/include
       OPENTURNS_NUM_THREADS: 2
@@ -22,9 +23,9 @@ jobs:
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
-        make install -j3
-        make tests -j3
-        ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100 --schedule-random
+        make install
+        make tests
+        ctest -E GeneralizedParetoFactory_std ${MAKEFLAGS} --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest
