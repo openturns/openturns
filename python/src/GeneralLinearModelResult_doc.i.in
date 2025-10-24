@@ -88,7 +88,7 @@ Get the meta model:
 Returns
 -------
 trendCoef : :class:`~openturns.Point`
-    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`
 "
 
 // ---------------------------------------------------------------------
