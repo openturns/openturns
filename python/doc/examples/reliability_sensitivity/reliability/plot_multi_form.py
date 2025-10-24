@@ -10,18 +10,17 @@ Use the FORM algorithm in case of several design points
 # In this example we showcase the :class:`~openturns.MultiFORM` class which can perform a FORM analysis with several
 # design points.
 
-
 # %%
 import openturns as ot
 import openturns.viewer as otv
 
 # %%
-# We consider a standard bivariate Gaussian random vector :math:`X = (X_1, X_2)` :
+# We consider a standard bivariate Gaussian random vector :math:`X = (X_1, X_2)`:
 dim = 2
 dist = ot.Normal(dim)
 
 # %%
-# We can draw the bidimensional PDF of the distribution `dist` over :math:`[-5,5] \times [-5,5]` :
+# We can draw the bidimensional PDF of the distribution `dist` over :math:`[-5,5] \times [-5,5]`:
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
 graphPDF = dist.drawPDF([-5, -5], [5, 5])
 graphPDF.setTitle(r"2D-PDF of the input variables $(X_1, X_2)$")
@@ -42,13 +41,13 @@ view = otv.View(graphModel)
 
 
 # %%
-# We create random vectors for the input and output variables :
+# We create random vectors for the input and output variables:
 X = ot.RandomVector(dist)
 Y = ot.CompositeRandomVector(f, X)
 
 
 # %%
-# The failure domain :math:`\mathcal{D}` is :math:`\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / f(x) \geq 0 \}`
+# The failure domain :math:`\mathcal{D}` is :math:`\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / f(x) < 0 \}`
 failureEvent = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 
 
@@ -70,7 +69,8 @@ view = otv.View(graphModel)
 # %%
 # In the physical space the failure domain boundary is the dashed black curve. We recall that one of
 # the steps of the FORM method is to find the closest point of the failure domain boundary to the origin.
-# Here we see that the symmetry of the domain implies that two points exist, one in the :math:`x_1 \geq 0` half-space and the other in the :math:`x_1 \leq 0` half-space.
+# Here we see that the symmetry of the domain implies that two points exist;
+# one in the :math:`x_1 \geq 0` half-space and the other in the :math:`x_1 \leq 0` half-space.
 
 
 # %%
@@ -82,23 +82,23 @@ algo = ot.MultiFORM(solver, failureEvent)
 
 
 # %%
-# We are ready to run the algorithm and store the result in the :class:`~openturns.MultiFORM` class :
+# We are ready to run the algorithm and store the result in the :class:`~openturns.MultiFORM` class:
 algo.run()
 result = algo.getResult()
 
 # %%
-# We have access to the results with the getFORMResultCollection method which produces a collection of :class:`~openturns.FORMResult` :
+# We have access to the results with the getFORMResultCollection method which produces a collection of :class:`~openturns.FORMResult`:
 coll = result.getFORMResultCollection()
 
 # %%
-# The length of this collection is the number of design points :
+# The length of this collection is the number of design points:
 n_design_pts = len(coll)
 print("Number of design points :", n_design_pts)
 
 
 # %%
-# We have access to the design points with the getPhysicalSpaceDesignPoint method for each element of
-# the collection `coll`.
+# We have access to the design points with the getPhysicalSpaceDesignPoint method
+# for each element of the collection `coll`.
 designPointPhysicalSpace1 = coll[0].getPhysicalSpaceDesignPoint()
 designPointPhysicalSpace2 = coll[1].getPhysicalSpaceDesignPoint()
 print(coll[0].getPhysicalSpaceDesignPoint())
@@ -125,12 +125,13 @@ view = otv.View(graphModel)
 # Here we can clearly see that this would miss half of the information. That is why both design points are needed.
 
 # %%
-# For each design point we have a probability associated to the approximation by the half-space :
+# For each design point we have a probability associated to the approximation by the half-space:
 pf1 = coll[0].getEventProbability()
 pf2 = coll[1].getEventProbability()
 
 # %%
-# The probability of failure is the given by the :meth:`~openturns.MultiFORMResult.getEventProbability` which is the sum of the two previous probabilities `pf1` and `pf2` :
+# The probability of failure is the given by the :meth:`~openturns.MultiFORMResult.getEventProbability`
+# which is the sum of the two previous probabilities `pf1` and `pf2`:
 pf = result.getEventProbability()
 print("Probability of failure : ", pf)
 print("    wrt design point 1 : ", pf1)
