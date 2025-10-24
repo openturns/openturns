@@ -146,7 +146,7 @@ interval_Bay, beta = (
 print("Beta =", beta)
 print("Condifence interval Bay =\n", interval_Bay)
 print("Volume =", interval_Bay.getVolume())
-sample = model_Bay.getSample(1000000)
+sample = model_Bay.getSample(10000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
@@ -180,7 +180,7 @@ interval_ML, beta = (
 print("Beta =", beta)
 print("Condifence interval ML =\n", interval_ML)
 print("Volume =", interval_ML.getVolume())
-sample = model_ML.getSample(1000000)
+sample = model_ML.getSample(10000)
 dist_KL = (
     model_ML.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
@@ -337,7 +337,7 @@ conditioning = ot.JointDistribution([ot.Triangular(-1.0, 0.0, 1.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
 compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 posterior_Y = otexp.PosteriorDistribution(compound, observations)
-sample_posterior = linkFunction(posterior_Y.getSample(100000)).getMarginal([1, 3])
+sample_posterior = linkFunction(posterior_Y.getSample(10000)).getMarginal([1, 3])
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 
 theta_Bay = linkFunction(computeMode(posterior_Y))
@@ -351,7 +351,7 @@ interval_Bay, beta = (
 print("Beta =", beta)
 print("Condifence interval Bay =\n", interval_Bay)
 print("Volume =", interval_Bay.getVolume())
-sample = model_Bay.getSample(1000000)
+sample = model_Bay.getSample(10000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
