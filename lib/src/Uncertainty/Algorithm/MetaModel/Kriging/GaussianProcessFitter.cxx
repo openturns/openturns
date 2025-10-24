@@ -30,6 +30,7 @@
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -361,7 +362,7 @@ void GaussianProcessFitter::run()
 Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
 {
   // initial guess
-  const Point initialParameters(reducedCovarianceModel_.getParameter());
+  Point initialParameters(reducedCovarianceModel_.getParameter());
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
   Function reducedLogLikelihoodFunction(getReducedLogLikelihoodFunction());
   const Bool noNumericalOptimization = initialParameters.getSize() == 0 || !getOptimizeParameters();
@@ -374,11 +375,38 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
     LOGINFO(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
     return initialReducedLogLikelihood;
   }
+  // Thus here we perform an optimization. First let us check the initial point is inside the
+  // optimization bounds search, otherwise define one arbitrary inside these bounds
+  if (!optimizationBounds_.contains(initialParameters))
+  {
+    // Define starting point for the optimization as the center of the bounds
+    // We should ensure somehow that the upper/lower bounds scale are nearly the same
+    initialParameters = (optimizationBounds_.getUpperBound() + optimizationBounds_.getLowerBound())/2;
+  }
+
+  // internal normalization into (0,1)^n
+  Interval bounds(optimizationBounds_);
+  const Bool normalization = ResourceMap::GetAsBool("GaussianProcessFitter-OptimizationNormalization");
+  const UnsignedInteger parameterDimension = initialParameters.getDimension();
+  Function uToX;
+  if (normalization)
+  {
+    Matrix linear(parameterDimension, parameterDimension);
+    for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
+    {
+      linear(i, i) = (optimizationBounds_.getUpperBound()[i] - optimizationBounds_.getLowerBound()[i]);
+      initialParameters[i] = (initialParameters[i] - optimizationBounds_.getLowerBound()[i]) / linear(i, i);
+    }
+    uToX = LinearFunction(Point(parameterDimension), optimizationBounds_.getLowerBound(), linear);
+    reducedLogLikelihoodFunction = ComposedFunction(reducedLogLikelihoodFunction, uToX);
+    bounds = Interval(parameterDimension);
+  }
+
   // At this point we have an optimization problem to solve
   // Define the optimization problem
   OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
-  problem.setBounds(optimizationBounds_);
+  problem.setBounds(bounds);
   solver_.setProblem(problem);
   try
   {
@@ -387,7 +415,25 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   }
   catch (const NotDefinedException &) // setStartingPoint is not defined for the solver
   {
-    // Nothing to do if setStartingPoint is not defined
+    // Define starting point for the optimization as the center of the bounds if necessary
+    Sample initialPoints(solver_.getStartingSample());
+    for (UnsignedInteger i = 0; i < initialPoints.getSize(); ++ i)
+    {
+      if (!optimizationBounds_.contains(initialPoints[i]))
+        initialPoints[i] = (optimizationBounds_.getUpperBound() + optimizationBounds_.getLowerBound())/2;
+    }
+    solver_.setStartingSample(initialPoints);
+
+    if (normalization)
+    {
+      Point linear(parameterDimension);
+      for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
+        linear[j] = (optimizationBounds_.getUpperBound()[j] - optimizationBounds_.getLowerBound()[j]);
+      for (UnsignedInteger i = 0; i < initialPoints.getSize(); ++ i)
+        for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
+          initialPoints(i, j) = (initialPoints(i, j) - optimizationBounds_.getLowerBound()[j]) / linear[j];
+      solver_.setStartingSample(initialPoints);
+    }
   }
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
@@ -396,7 +442,10 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   if (!optimalLogLikelihoodPoint.getSize())
     throw InvalidArgumentException(HERE) << "optimization in GaussianProcessFitter did not yield feasible points";
   const Scalar optimalLogLikelihood = optimalLogLikelihoodPoint[0];
-  const Point optimalParameters(result.getOptimalPoint());
+  Point optimalParameters(result.getOptimalPoint());
+  if (normalization)
+    optimalParameters = uToX(optimalParameters);
+
   const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct

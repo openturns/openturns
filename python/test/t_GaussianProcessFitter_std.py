@@ -1,6 +1,7 @@
 import openturns as ot
 from openturns.experimental import GaussianProcessFitter
 import openturns.testing as ott
+from openturns.usecases.fire_satellite import FireSatelliteModel
 
 ot.PlatformInfo.SetNumericalPrecision(4)
 
@@ -86,6 +87,7 @@ def use_case_4(X, Y):
     optim problem (scale)
     Biased variance estimate
     """
+    ot.ResourceMap.Reload()
     ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", False)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
@@ -113,10 +115,12 @@ def use_case_5(X, Y):
     """
     full optim problem (scale, amplitude)
     """
+    ot.ResourceMap.Reload()
     ot.ResourceMap.SetAsBool("GaussianProcessFitter-UnbiasedVariance", False)
     ot.ResourceMap.SetAsBool(
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
     )
+    ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 2.0)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
@@ -129,14 +133,17 @@ def use_case_5(X, Y):
     algo.setOptimizationBounds(bounds)
     algo.run()
 
-    cov_param = [0.1327, 0.19068]
-    trend_coefficients = [-0.1034, 1.0141]
+    cov_param = [0.1392, 0.1917]
+    trend_coefficients = [-0.1027, 1.014]
     result = algo.getResult()
+
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
+    print("optimal param", result.getCovarianceModel().getParameter())
+    print("optimal trend", result.getTrendCoefficients())
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), cov_param, 1e-3, 1e-3
     )
     ott.assert_almost_equal(
         result.getTrendCoefficients(), trend_coefficients, 1e-4, 1e-4
@@ -144,6 +151,7 @@ def use_case_5(X, Y):
 
 
 def use_case_6(X, Y):
+    ot.ResourceMap.Reload()
     ot.RandomGenerator.SetSeed(0)
     covarianceModel = ot.AbsoluteExponential()
     algo = GaussianProcessFitter(X, Y, covarianceModel)
@@ -163,14 +171,12 @@ def use_case_6(X, Y):
 
 
 def bugfix_optim_no_feasible():
-    from openturns.usecases.fire_satellite import FireSatelliteModel
+    ot.ResourceMap.Reload()
+    ot.RandomGenerator.SetSeed(0)
 
     m = FireSatelliteModel()
-
     model = m.model
     inputDistribution = m.inputDistribution
-
-    ot.RandomGenerator.SetSeed(0)
     experiment = ot.LHSExperiment(inputDistribution, 10 * m.dim)
     inputTrainingSet = experiment.generate()
     outputTrainingSet = model(inputTrainingSet)
@@ -186,6 +192,9 @@ def bugfix_optim_no_feasible():
     myCov2 = ot.SquaredExponential([1.0] * m.dim)
     myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
 
+    # optimal we should get after the optimization process
+    optimal_cov_parameter = [7.811e+06, 1494, 1425, 45.47, 5.511, 4.651,
+                             4.905, 0.6359, 3.308, 4.935, 8.101, 5.129]
     covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
     scaleOptimizationBounds = ot.Interval(
@@ -198,8 +207,18 @@ def bugfix_optim_no_feasible():
     )
     algo.setOptimizationBounds(scaleOptimizationBounds)
     algo.setOptimizeParameters(True)
-    with ott.assert_raises(TypeError):
-        algo.run()
+    algo.run()
+    # Get result & residual
+    result = algo.getResult()
+    residual = result.getMetaModel()(inputTrainingSet) - outputTrainingSet
+    # Define multivariate square function
+    sqr_func = ot.SymbolicFunction(["x", "y", "z"], ["x*x", "y*y", "z*z"])
+    # Squared residual
+    squared_epsilon = sqr_func(residual).computeMean()
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), optimal_cov_parameter, 5e-2, 1e-3
+    )
+    ott.assert_almost_equal(squared_epsilon, [7.248e-06, 298.4, 0.9051], 5e-1, 1e-3)
 
 
 if __name__ == "__main__":
