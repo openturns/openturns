@@ -41,26 +41,26 @@ OTTypedInterfaceObjectHelper(Graph)
 %include openturns/Graph.hxx
 
 %pythoncode %{
-def Graph__repr_png_(self):
+def _Graph__repr_png_(self):
     """Get the PNG representation."""
     if openturns.common.ResourceMap.Get('View-ImageFormat') != 'png':
         raise NotImplementedError
     from .viewer import _ToImageString
     return _ToImageString(self)
-Graph._repr_png_ = Graph__repr_png_
+Graph._repr_png_ = _Graph__repr_png_
 
-def Graph__repr_svg_(self):
+def _Graph__repr_svg_(self):
     """Get the SVG representation."""
     if openturns.common.ResourceMap.Get('View-ImageFormat') != 'svg':
         raise NotImplementedError
     from .viewer import _ToImageString
     return _ToImageString(self)
-Graph._repr_svg_ = Graph__repr_svg_
+Graph._repr_svg_ = _Graph__repr_svg_
 
-def Graph__repr_html_(self):
+def _Graph__repr_html_(self):
     """Get the HTML representation."""
     raise NotImplementedError
-Graph._repr_html_ = Graph__repr_html_
+Graph._repr_html_ = _Graph__repr_html_
 %}
 
 namespace OT{  

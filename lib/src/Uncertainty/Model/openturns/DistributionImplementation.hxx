@@ -1946,21 +1946,18 @@ OT_API Distribution operator - (const DistributionImplementation & distribution)
 
 OT_API Distribution operator - (const DistributionImplementation::Implementation & p_distribution);
 
+OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
+                            const DistributionImplementation::Implementation & p_right);
 
+OT_API Distribution maximum(const DistributionImplementation & left,
+                            const DistributionImplementation::Implementation & p_right);
+
+OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
+                            const DistributionImplementation & right);
+
+OT_API Distribution maximum(const DistributionImplementation & left,
+                            const DistributionImplementation & right);
 #endif
-
-OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
-                            const DistributionImplementation::Implementation & p_right);
-
-OT_API Distribution maximum(const DistributionImplementation & left,
-                            const DistributionImplementation::Implementation & p_right);
-
-OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
-                            const DistributionImplementation & right);
-
-OT_API Distribution maximum(const DistributionImplementation & left,
-                            const DistributionImplementation & right);
-
 
 END_NAMESPACE_OPENTURNS
 
