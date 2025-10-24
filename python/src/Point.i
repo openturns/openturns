@@ -129,3 +129,10 @@ Point __neg__()
 
 } // OT
 
+// needed for compatibility with pandas indexation (see is_list_like internal method)
+%pythoncode %{
+def _Point___iter__(self):
+    for i in range(self.getSize()):
+        yield self[i]
+Point.__iter__ = _Point___iter__
+%}

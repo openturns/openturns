@@ -13,7 +13,7 @@
 %include openturns/Object.hxx
 
 %pythoncode %{
-def Object___getstate__(self):
+def _Object___getstate__(self):
     import tempfile
     import os
     state = {}
@@ -43,9 +43,9 @@ def Object___getstate__(self):
             pass # no h5 data
     return state
 
-Object.__getstate__ = Object___getstate__
+Object.__getstate__ = _Object___getstate__
 
-def Object___setstate__(self, state):
+def _Object___setstate__(self, state):
     import tempfile
     import os
 
@@ -75,12 +75,12 @@ def Object___setstate__(self, state):
         os.remove(h5filename)
     study.fillObject('instance', self)
 
-Object.__setstate__ = Object___setstate__
+Object.__setstate__ = _Object___setstate__
 
-def Object__repr_html_(self):
+def _Object__repr_html_(self):
     lines = str(self).splitlines()
     return '<p>' + '<br>\n'.join(lines) + '</p>'
-Object._repr_html_ = Object__repr_html_
+Object._repr_html_ = _Object__repr_html_
 
 Object.__deepcopy__ = lambda self, memodict : type(self)(self)
 %}
