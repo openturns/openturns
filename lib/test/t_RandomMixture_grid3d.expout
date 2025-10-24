@@ -78,7 +78,7 @@ Normal(mu = 0, sigma = 1) - 0.05 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 
 0.5 * Normal(mu = 0, sigma = 1) + Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) - 0.05 * Uniform(a = 0, b = 1) + 0.3 * Uniform(a = 0, b = 1)
 -0.5 * Normal(mu = 0, sigma = 1) - 0.1 * Mixture((w = 0.5, d = Normal(mu = 2, sigma = 1)), (w = 0.5, d = Normal(mu = -2, sigma = 1))) + 1.2 * Uniform(a = 0, b = 1) - 0.8 * Uniform(a = 0, b = 1)
 )
-range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[-8.63316,-13.5259,-5.59038] upper bound=class=Point name=Unnamed dimension=3 values=[9.13316,13.7759,5.99038] finite lower bound=[1,1,1] finite upper bound=[1,1,1]
+range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[-8.63316,-13.5259,-5.59038] upper bound=class=Point name=Unnamed dimension=3 values=[9.13316,13.7759,5.99038] finite lower bound=[0,0,0] finite upper bound=[0,0,0]
 mean = class=Point name=Unnamed dimension=3 values=[0.25,0.125,0.2]
 cov = class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.11667,0.233333,-0.341667,0.233333,5.25771,-0.775,-0.341667,-0.775,0.473333]
 sigma = class=Point name=Unnamed dimension=3 values=[1.05672,2.29297,0.687992]

@@ -26,7 +26,7 @@ X = ot.Normal([2.0, 3.0], [1.0, 1.0]).getSample(1000)
 Y = f(X)
 algo = ot.QuadraticLeastSquares(X, Y)
 algo.run()
-mm = algo.getMetaModel()
+mm = algo.getResult().getMetaModel()
 x = [2.0, 3.0]
 y = f(x)
 y2 = mm(x)

@@ -19,24 +19,24 @@
  *
  */
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/DeconditionedRandomVector.hxx"
+#include "openturns/CompoundRandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 
 
-CLASSNAMEINIT(DeconditionedRandomVector)
+CLASSNAMEINIT(CompoundRandomVector)
 
-static const Factory<DeconditionedRandomVector> Factory_DeconditionedRandomVector;
+static const Factory<CompoundRandomVector> Factory_CompoundRandomVector;
 
 /* Default constructor */
-DeconditionedRandomVector::DeconditionedRandomVector()
+CompoundRandomVector::CompoundRandomVector()
   : RandomVectorImplementation()
 {}
 
 /* Default constructor */
-DeconditionedRandomVector::DeconditionedRandomVector(const Distribution & distribution,
+CompoundRandomVector::CompoundRandomVector(const Distribution & distribution,
     const RandomVector & randomParameters)
   : RandomVectorImplementation(),
     distribution_(distribution),
@@ -50,16 +50,16 @@ DeconditionedRandomVector::DeconditionedRandomVector(const Distribution & distri
 }
 
 /* Virtual constructor */
-DeconditionedRandomVector * DeconditionedRandomVector::clone() const
+CompoundRandomVector * CompoundRandomVector::clone() const
 {
-  return new DeconditionedRandomVector(*this);
+  return new CompoundRandomVector(*this);
 }
 
 /* String converter */
-String DeconditionedRandomVector::__repr__() const
+String CompoundRandomVector::__repr__() const
 {
   OSS oss;
-  oss << "class=" << DeconditionedRandomVector::GetClassName()
+  oss << "class=" << CompoundRandomVector::GetClassName()
       << " distribution=" << distribution_
       << " random parameters=" << randomParameters_;
   return oss;
@@ -71,20 +71,20 @@ String DeconditionedRandomVector::__repr__() const
 
 
 /* Dimension accessor */
-UnsignedInteger DeconditionedRandomVector::getDimension() const
+UnsignedInteger CompoundRandomVector::getDimension() const
 {
   return distribution_.getDimension();
 }
 
 /* Realization accessor */
-Point DeconditionedRandomVector::getRealization() const
+Point CompoundRandomVector::getRealization() const
 {
   Point parameters;
   return getRealization(parameters);
 }
 
 /* Realization accessor */
-Point DeconditionedRandomVector::getRealization(Point & parameters) const
+Point CompoundRandomVector::getRealization(Point & parameters) const
 {
   parameters = randomParameters_.getRealization();
   distribution_.setParameter(parameters);
@@ -92,26 +92,26 @@ Point DeconditionedRandomVector::getRealization(Point & parameters) const
 }
 
 /* Distribution accessor */
-Distribution DeconditionedRandomVector::getDistribution() const
+Distribution CompoundRandomVector::getDistribution() const
 {
   return distribution_;
 }
 
 /* Random parameters accessor */
-RandomVector DeconditionedRandomVector::getRandomParameters() const
+RandomVector CompoundRandomVector::getRandomParameters() const
 {
   return randomParameters_;
 }
 
 
-Point DeconditionedRandomVector::getParameter() const
+Point CompoundRandomVector::getParameter() const
 {
   Point parameter(distribution_.getParameter());
   parameter.add(randomParameters_.getParameter());
   return parameter;
 }
 
-void DeconditionedRandomVector::setParameter(const Point & parameter)
+void CompoundRandomVector::setParameter(const Point & parameter)
 {
   const UnsignedInteger distributionParameterDimension = distribution_.getParameter().getDimension();
   const UnsignedInteger randomParametersParameterDimension = randomParameters_.getParameter().getDimension();
@@ -125,7 +125,7 @@ void DeconditionedRandomVector::setParameter(const Point & parameter)
   randomParameters_.setParameter(randomParametersParameter);
 }
 
-Description DeconditionedRandomVector::getParameterDescription() const
+Description CompoundRandomVector::getParameterDescription() const
 {
   Description description(distribution_.getParameterDescription());
   description.add(randomParameters_.getParameterDescription());
@@ -133,7 +133,7 @@ Description DeconditionedRandomVector::getParameterDescription() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void DeconditionedRandomVector::save(Advocate & adv) const
+void CompoundRandomVector::save(Advocate & adv) const
 {
   RandomVectorImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
@@ -141,7 +141,7 @@ void DeconditionedRandomVector::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void DeconditionedRandomVector::load(Advocate & adv)
+void CompoundRandomVector::load(Advocate & adv)
 {
   RandomVectorImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );

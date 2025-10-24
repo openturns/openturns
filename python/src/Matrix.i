@@ -327,7 +327,7 @@ fail:
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
-def Matrix___getattribute__(self, name):
+def _Matrix___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns()),
@@ -337,7 +337,7 @@ def Matrix___getattribute__(self, name):
                                                 'version': 3,
                                                 }
     return super(Matrix, self).__getattribute__(name)
-Matrix.__getattribute__ = Matrix___getattribute__
+Matrix.__getattribute__ = _Matrix___getattribute__
 %}
 
 namespace OT {

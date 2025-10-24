@@ -167,6 +167,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Evaluation accessor */
+  Evaluation getEvaluation() const;
 
 protected:
 

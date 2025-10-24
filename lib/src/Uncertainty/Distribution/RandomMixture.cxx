@@ -377,17 +377,15 @@ void RandomMixture::computeRange()
     setRange(range);
     return;
   } // Analytical case
+  Point m(constant_);
+  Point s(dimension);
   if (dimension == 1)
   {
-    const Point m(1, getPositionIndicator());
-    const Point s(1, getDispersionIndicator());
-    setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
-    return;
+    m[0] = getPositionIndicator();
+    s[0] = getDispersionIndicator();
   } // dimension == 1
   else
   {
-    Point m(constant_);
-    Point s(getDimension());
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       for(UnsignedInteger i = 0; i < size; ++i)
@@ -398,10 +396,13 @@ void RandomMixture::computeRange()
         s[j] += std::pow(weights_(j, i) * sI, 2.0);
       }
     }
-    for (UnsignedInteger j = 0; j < dimension; ++j) s[j] = std::sqrt(s[j]);
-    setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
-    return;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      s[j] = std::sqrt(s[j]);
   } // dimension > 1
+  Interval intersection(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+  intersection.setFiniteLowerBound(finiteLowerBound); // restore flags
+  intersection.setFiniteUpperBound(finiteUpperBound);
+  setRange(intersection);
 }
 
 /* Comparison operator */
@@ -529,8 +530,8 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       constant_ += w * mixture->constant_;
       // Aggregate the weights
       const Matrix localWeights(w * mixture->weights_);
-      SampleImplementation localWeightsAsSample(localWeights.getNbColumns(), dimension);
-      localWeightsAsSample.setData(*localWeights.getImplementation());
+      Sample localWeightsAsSample(localWeights.getNbColumns(), dimension);
+      localWeightsAsSample.getImplementation()->setData(*localWeights.getImplementation());
       weightCandidates.add(localWeightsAsSample);
       // Aggregate the atoms
       atomCandidates.add(mixture->getDistributionCollection());
@@ -1475,7 +1476,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
     for (UnsignedInteger j = 0; j < dimension_; ++j)
       grid(i, j) = mu[j] + ((2.0 * indices(i, j) + 1.0) / pointNumber[j] - 1.0) * b_sigma[j];
 
-  LOGWARN(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
+  LOGDEBUG(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
 
   Sample result(size, 1);
   // Special case when the distribution is analytical

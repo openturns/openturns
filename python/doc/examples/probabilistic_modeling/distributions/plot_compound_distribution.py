@@ -1,5 +1,5 @@
 """
-Create a deconditioned distribution
+Create a compound distribution
 ===================================
 """
 
@@ -19,7 +19,7 @@ Create a deconditioned distribution
 #    \vect{\Theta} & = f(\vect{Y})\\
 #    \vect{Y} & \sim \cL_{\vect{Y}}
 #
-# This example creates a :class:`~openturns.DeconditionedDistribution` which offers all the methods
+# This example creates a :class:`~openturns.CompoundDistribution` which offers all the methods
 # attached to the distributions.
 #
 # We consider the case where :math:`X` is of dimension 1 and follows a uniform distribution defined
@@ -55,11 +55,11 @@ XgivenThetaDist = ot.Uniform()
 # We advice to change the discretization method that performs the integration.
 # By default, this method is the quadrature method *GaussProduct*. We prefer to use the *QMC*.
 # We use the :class:`~openturns.ResourceMap`.
-ot.ResourceMap.SetAsString('DeconditionedDistribution-ContinuousDiscretizationMethod', 'QMC')
+ot.ResourceMap.SetAsString('CompoundDistribution-ContinuousDiscretizationMethod', 'QMC')
 
 # %%
-# Create the deconditioned distribution of :math:`X`.
-XDist = ot.DeconditionedDistribution(XgivenThetaDist, YDist, f)
+# Create the compound distribution of :math:`X`.
+XDist = ot.CompoundDistribution(XgivenThetaDist, YDist, f)
 XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
 XDist
 

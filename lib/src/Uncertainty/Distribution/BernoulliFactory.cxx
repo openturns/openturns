@@ -71,7 +71,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);
-    if (!SpecFunc::IsNormal(x))
+    if (!std::isfinite(x))
       throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution if data contains NaN or Inf";
     const SignedInteger iX = static_cast<SignedInteger>(std::round(x));
     if ((std::abs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1)))

@@ -774,8 +774,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FieldToPointConnection parameters //
   addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
 
+  // FieldFunctionalChaosAlgorithm
+  addAsBool("FieldFunctionalChaosAlgorithm-DefaultRecompress", false);
+  
   // FieldToPointFunctionalChaosAlgorithm
-  addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
@@ -1087,7 +1089,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("Field-AutomaticScaling", true);
   addAsScalar("Field-ArrowRatio", 0.01);
   addAsScalar("Field-ArrowScaling", 1.0);
-  addAsUnsignedInteger("Field-LevelNumber", 30);
+  addAsUnsignedInteger("Field-LevelNumber", 10);
 
   // SampleImplementation parameters
   addAsString("Sample-CSVFileSeparator", ";");
@@ -1151,10 +1153,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("BurrFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
-  // DeconditionedDistribution parameters //
-  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 48);
-  addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct", {"GaussProduct", "QMC", "MC"});
+  // CompoundDistribution parameters //
+  addAsUnsignedInteger("CompoundDistribution-MarginalIntegrationNodesNumber", 48);
+  addAsUnsignedInteger("CompoundDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct", {"GaussProduct", "QMC", "MC"});
 
   // PointConditionalDistribution parameters //
   addAsBool("PointConditionalDistribution-InitializeSampling", true);
@@ -1661,6 +1663,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-SmallDimensionEntropy", 3);
   addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
   addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
+  addAsUnsignedInteger("Distribution-SmallSupport", 10);
   addAsScalar("Distribution-SupportEpsilon", 1.0e-14);
 
   // DiscreteMarkovChain parameters //

@@ -125,8 +125,10 @@
   <!-- OT:: FieldToPointConnection parameters -->
   <FieldToPointConnection-BlockSize value_int="256" />
 
+  <!-- OT:: FieldFunctionalChaosAlgorithm parameters -->
+  <FieldFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
+  
   <!-- OT:: FieldToPointFunctionalChaosAlgorithm parameters -->
-  <FieldToPointFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
   <FieldToPointFunctionalChaosAlgorithm-CopulaType value_str="Normal" />
 
   <!-- OT:: PointToFieldFunctionalChaosAlgorithm parameters -->
@@ -432,7 +434,7 @@
   <Field-AutomaticScaling value_bool="true"  />
   <Field-ArrowRatio       value_float="0.01" />
   <Field-ArrowScaling     value_float="1.0"  />
-  <Field-LevelNumber      value_int="30"     />
+  <Field-LevelNumber      value_int="10"     />
 
   <!-- OT::SampleImplementation parameters -->
   <Sample-CSVFileSeparator      value_str=";"     />
@@ -496,10 +498,10 @@
   <BurrFactory-ResidualPrecision value_float="1e-12"        />
   <BurrFactory-MaximumIteration  value_int="10" />
   
-  <!-- OT::DeconditionedDistribution parameters -->
-  <DeconditionedDistribution-MarginalIntegrationNodesNumber value_int="48"           />
-  <DeconditionedDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
-  <DeconditionedDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
+  <!-- OT::CompoundDistribution parameters -->
+  <CompoundDistribution-MarginalIntegrationNodesNumber value_int="48"           />
+  <CompoundDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
+  <CompoundDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
 
   <!-- OT::PointConditionalDistribution parameters -->
   <PointConditionalDistribution-InitializeSampling value_bool="true"           />
@@ -1010,6 +1012,7 @@
   <Distribution-SmallDimensionEntropy             value_int="3"       />
   <Distribution-RoughnessSamplingSize             value_int="524288"  />
   <Distribution-SmallDimensionRoughness           value_int="3"       />
+  <Distribution-SmallSupport                      value_int="10"      />
   <Distribution-SupportEpsilon                    value_float="1.0e-14" />
   <Distribution-TailDependenceEpsilon             value_float="1.0e-12"/>
   <Distribution-TailDependenceMargin              value_float="1.0e-3"/>

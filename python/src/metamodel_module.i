@@ -73,7 +73,7 @@
 %include ThresholdEvent.i
 %include DomainEvent.i
 %include ProcessEvent.i
-%include DeconditionedRandomVector.i
+%include CompoundRandomVector.i
 %include StandardEvent.i
 %include IntersectionEvent.i
 %include UnionEvent.i
@@ -85,6 +85,7 @@
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i
+%include FieldFunctionalChaosAlgorithm.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
 %include PointToFieldFunctionalChaosAlgorithm.i

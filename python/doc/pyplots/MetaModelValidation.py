@@ -13,9 +13,9 @@ total_degree = 3
 polynomialCollection = ["x^%d" % (degree) for degree in range(1, total_degree + 1)]
 basis = ot.SymbolicFunction(["x"], polynomialCollection)
 designMatrix = basis(x_train)
-myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
-myLeastSquares.run()
-leastSquaresModel = myLeastSquares.getMetaModel()
+algo = ot.LinearLeastSquares(designMatrix, y_train)
+algo.run()
+leastSquaresModel = algo.getResult().getMetaModel()
 metaModel = ot.ComposedFunction(leastSquaresModel, basis)
 
 # Validate the metamodel

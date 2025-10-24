@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_PATH_HXX
 #define OPENTURNS_PATH_HXX
 
-#include <iostream>              // for std::ostream
 #include <vector>                // for std::vector
 #include "openturns/OTprivate.hxx"
 

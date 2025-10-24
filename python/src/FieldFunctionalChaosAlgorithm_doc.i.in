@@ -1,0 +1,98 @@
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm
+"Base class for field chaos."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::getResult
+"Result accessor.
+
+Returns
+-------
+result : :class:`openturns.FieldFunctionalChaosResult`
+    Result class."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::setBlockIndices
+"Accessor to the output block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Independent output components indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::getBlockIndices
+"Accessor to the output block indices.
+
+Returns
+-------
+blockIndices : :class:`~openturns.IndicesCollection`
+    Independent output components indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::setNbModes
+"Accessor to the maximum number of modes to compute.
+
+Parameters
+----------
+n : int
+    The maximum number of modes to compute.
+    The actual number of modes also depends on the threshold criterion."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::getNbModes
+"Accessor to the maximum number of modes to compute.
+
+Returns
+-------
+n : int
+    The maximum number of modes to compute.
+    The actual number of modes also depends on the threshold criterion."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::setRecompress
+"Accessor to the recompression flag.
+
+Parameters
+----------
+recompress : bool
+    Whether to recompress the output Karhunen-Loeve decompositions.
+    The modes are truncated a second time according to a global eigen value
+    bound across output decompositions.
+    This can only be enabled if the scale of the output variable blocks is the same."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::getRecompress
+"Accessor to the recompression flag.
+
+Returns
+-------
+recompress : bool
+    Whether to recompress the output Karhunen-Loeve decompositions.
+    This can only be enabled if the scale of the output variable blocks is the same."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::setThreshold
+"Accessor to the eigenvalues cutoff ratio.
+
+Parameters
+----------
+s : float, :math:`\geq 0`
+    The threshold :math:`s`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionalChaosAlgorithm::getThreshold
+"Accessor to the eigenvalues cutoff ratio.
+
+Returns
+-------
+s : float, :math:`\geq 0`
+    The threshold :math:`s`."

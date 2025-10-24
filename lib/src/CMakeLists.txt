@@ -121,11 +121,10 @@ target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
 target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
 
-set_property (TARGET OT PROPERTY CXX_STANDARD 17)
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
   target_link_libraries (OT PRIVATE stdc++fs)
 endif ()
-target_compile_features (OT PUBLIC cxx_std_11)
+target_compile_features (OT PUBLIC cxx_std_17)
 
 set_property (TARGET OT PROPERTY OPENTURNS_ENABLED_FEATURES "${OPENTURNS_ENABLED_FEATURES}")
 set_property (TARGET OT APPEND PROPERTY EXPORT_PROPERTIES "OPENTURNS_ENABLED_FEATURES")

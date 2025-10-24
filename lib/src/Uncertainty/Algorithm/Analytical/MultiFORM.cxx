@@ -132,7 +132,7 @@ void MultiFORM::run()
     {
       ++ designPointNumber;
       // the symmetric of the design point is the next starting point
-      setPhysicalStartingPoint(getEvent().getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(formResult.getStandardSpaceDesignPoint() * -1.0));
+      nearestPointAlgorithm_.setStartingPoint(getEvent().getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(formResult.getStandardSpaceDesignPoint() * -1.0));
       formResultCollection.add(formResult);
     }
 

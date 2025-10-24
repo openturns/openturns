@@ -9,7 +9,7 @@ distLambda = ot.Uniform(0.0, 1)
 distTheta = ot.JointDistribution([distLambda, distGamma])
 rvTheta = ot.RandomVector(distTheta)
 
-rvX = ot.DeconditionedRandomVector(distXgivenT, rvTheta)
+rvX = ot.CompoundRandomVector(distXgivenT, rvTheta)
 sampleX = rvX.getSample(1000)
 
 histX = ot.HistogramFactory().build(sampleX)

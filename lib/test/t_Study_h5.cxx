@@ -1163,7 +1163,7 @@ int main(int, char *[])
       for (UnsignedInteger j = 0; j < point2.getDimension(); ++ j)
       {
         std::cout << "j=" << j;
-        std::cout << " isnormal=" << SpecFunc::IsNormal(point2[j]);
+        std::cout << " isnormal=" << std::isfinite(point2[j]);
         std::cout << " isnan=" << std::isnan(point2[j]);
         std::cout << " isinf=" << std::isinf(point2[j]) << std::endl;
       }

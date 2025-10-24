@@ -155,10 +155,10 @@ Sample CSVParser::load() const
     }
   }
 
-  // headers if unparsable values on the first row
+  // headers if non-empty unparsable values on the first row
   Bool haveHeaders = false;
   for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (std::isnan(result(0, j)))
+    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)))
     {
       haveHeaders = true;
       break;

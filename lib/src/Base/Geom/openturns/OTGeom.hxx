@@ -21,6 +21,7 @@
 
 #ifndef OPENTURNS_OTGEOM_HXX
 #define OPENTURNS_OTGEOM_HXX
+
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Interval.hxx"

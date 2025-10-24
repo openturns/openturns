@@ -93,7 +93,7 @@ public:
     }
     const Point value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
     for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
-      if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
+      if (!std::isfinite(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
     return value;
   }
 
@@ -122,7 +122,7 @@ public:
       } // Loop over bound functions
       result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
       for (UnsignedInteger i = 0; i < outputDimension; ++i)
-        if (!SpecFunc::IsNormal(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+        if (!std::isfinite(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
     } // Loop over sample points
     return result;
   }

@@ -21,11 +21,9 @@
 #ifndef OPENTURNS_STUDY_HXX
 #define OPENTURNS_STUDY_HXX
 
-#include <iostream>              // for std::ostream
 #include <map>                   // for std::map
 #include "openturns/Object.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/StorageManager.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

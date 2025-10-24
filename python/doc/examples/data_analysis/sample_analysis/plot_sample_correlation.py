@@ -27,10 +27,10 @@ im = ishigami_function.IshigamiModel()
 # %%
 # Create X/Y data
 # We get the input variables description :
-input_names = im.inputDistribution.getDescription()
+input_names = im.distribution.getDescription()
 
 size = 100
-inputDesign = ot.SobolIndicesExperiment(im.inputDistribution, size, True).generate()
+inputDesign = ot.SobolIndicesExperiment(im.distribution, size, True).generate()
 outputDesign = im.model(inputDesign)
 
 # %%
