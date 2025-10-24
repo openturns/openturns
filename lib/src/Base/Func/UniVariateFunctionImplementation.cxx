@@ -66,6 +66,16 @@ Scalar UniVariateFunctionImplementation::operator() (const Scalar ) const
   throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::operator() (const Scalar x)";
 }
 
+Sample UniVariateFunctionImplementation::operator() (const Sample & x) const
+{
+  if (x.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension 1, got dimension " << x.getDimension();
+  const UnsignedInteger size = x.getSize();
+  Sample result(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result(i, 0) = (*this)(x(i, 0));
+  return result;
+}
+
 /* UniVariateFunctionImplementation gradient */
 Scalar UniVariateFunctionImplementation::gradient(const Scalar ) const
 {

@@ -73,6 +73,11 @@ Scalar UniVariateFunction::operator() (const Scalar x) const
   return getImplementation()->operator()(x);
 }
 
+Sample UniVariateFunction::operator() (const Sample & x) const
+{
+  return getImplementation()->operator()(x);
+}
+
 /* UniVariateFunctionImplementation gradient */
 Scalar UniVariateFunction::gradient(const Scalar x) const
 {
