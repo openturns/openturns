@@ -41,7 +41,7 @@ Pitfalls in  polynomial chaos expansion due to the input distribution
 #  - **Case 1:** we create a polynomial chaos surrogate model of :math:`\model`
 #    using the polynomials orthonormal with respect to the LogNormal distribution,
 #  - **Case 2:** we show how to obtain a higher-quality surrogate model
-#    using another polynomial family — the polynomials orthonormal
+#    using another polynomial family: the polynomials orthonormal
 #    with respect to the :class:`~openturns.Normal` distribution.
 
 # %%
@@ -55,13 +55,13 @@ from math import sqrt
 # -----------------------------------------------------------------------------
 #
 # In this section, we build the family of polynomials orthonormal with respect to the LogNormal distribution
-# using the :class:~openturns.AdaptiveStieltjesAlgorithm.
+# using the :class:`~openturns.AdaptiveStieltjesAlgorithm`.
 #
 # We build the polynomials up to degree 40; they are defined by their three-term recurrence coefficients.
 dist_X = ot.LogNormal()
 lower_Bound = dist_X.computeQuantile(0.01, False)
 upper_Bound = dist_X.computeQuantile(0.01, True)
-degreeMax = 40
+degreeMax = 30
 
 as_Algo = ot.AdaptiveStieltjesAlgorithm(dist_X)
 sample_Coeff = ot.Sample(0, 3)
@@ -271,7 +271,7 @@ print('degree = ', basis_Size_N - 1, 'L2 norme = ', sqrt(square_L2_N_Norm))
 # This function is analytical with an infinite radius of convergence, so its polynomial
 # approximation converges very quickly and does not require many polynomials.
 #
-# Finally, the resulting surrogate model is given by :math:`\tilde{h} \circ T^{-1}`.
+# Finally, the resulting surrogate model is given by :math:`\metaModel = \tilde{h} \circ T^{-1}`.
 #
 # Here, we facilitate the comparison between the surrogate model constructed from the polynomial family orthonormal
 # with respect to the LogNormal distribution up to degree 20,

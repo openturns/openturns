@@ -56,7 +56,7 @@ We sum up some interesting features of the coefficient:
 - If :math:`|\rho_S(X,Y)|=1` then there exists a monotonic function
   :math:`\varphi` such that :math:`Y=\varphi(X)`.
 
-- The closer math:`|\rho_S(X,Y)|` is to 1, the stronger the indication is
+- The closer :math:`|\rho_S(X,Y)|` is to 1, the stronger the indication is
   that a monotonic relationship exists between :math:`X` and
   :math:`Y`. The sign of the Spearman coefficient indicates if the two
   variables increase or decrease in the same direction (positive
@@ -154,8 +154,8 @@ coefficient.
 
 .. topic:: API:
 
-    - See method :py:meth:`~openturns.CorrelationAnalysis.computeSpearmanCorrelation`
-    - See method :py:meth:`~openturns.Sample.computeSpearmanCorrelation`
+    - See :class:`~openturns.CorrelationAnalysis` class method :py:meth:`~openturns.CorrelationAnalysis.computeSpearmanCorrelation`
+    - See :class:`~openturns.Sample` class method :py:meth:`~openturns.Sample.computeSpearmanCorrelation`
 
 .. topic:: Examples:
 
