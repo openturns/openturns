@@ -327,12 +327,14 @@ public:
 
     // Compute stop criterion
     const bool timeout = (dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration());
+
     bool stopSearch = ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
                        && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                        && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                       || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
                       || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber())
-                      || timeout;
+                      || timeout
+                      || (dlibAlgorithm_.stopCallback_.first && dlibAlgorithm_.stopCallback_.first(dlibAlgorithm_.stopCallback_.second));
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
@@ -537,9 +539,11 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
     }
   }
 
-  // Only "least_squares" and "least_squares_lm" support least squares problems
+  // "least_squares" and "least_squares_lm" require least squares problems
   if (problem.hasResidualFunction() && !(algoName_ == "least_squares" || algoName_ == "least_squares_lm"))
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support least squares problems.";
+  if ((algoName_ == "least_squares" || algoName_ == "least_squares_lm") && !problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm only support least squares problems.";
 
   // "least_squares", "least_squares_lm" and "trust_region" require non bounded variables
   if (problem.hasBounds() && (algoName_ == "least_squares" || algoName_ == "least_squares_lm" || algoName_ == "trust_region"))
