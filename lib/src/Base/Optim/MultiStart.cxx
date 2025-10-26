@@ -119,8 +119,6 @@ void MultiStart::run()
     {
       solver.run();
       const OptimizationResult localResult(solver.getResult());
-      if (!localResult.getOptimalPoint().getDimension())
-        throw InvalidArgumentException(HERE) << "no feasible point";
       ++ successNumber;
       LOGDEBUG(OSS() << "Local search succeeded with " << localResult.getStatusMessage());
 

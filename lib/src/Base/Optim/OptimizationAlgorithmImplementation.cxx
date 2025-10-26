@@ -289,8 +289,6 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   const Sample & inputHistory, const Sample & outputHistory,
   const Sample & inequalityHistory, const Sample & equalityHistory)
 {
-  // Update the result
-  result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = inputHistory.getSize();
   if (outputHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
@@ -366,15 +364,13 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     }
     result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   }
+  result_.setCallsNumber(size);
   if (!result_.getOptimalPoint().getDimension())
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    if (checkStatus_)
-      throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
-    else
-      LOGWARN(OSS() << "no feasible point found during optimization");
+    result_.setStatusMessage("No feasible point found |" + result_.getStatusMessage());
+    throw InvalidArgumentException(HERE) << "No feasible point found during optimization";
   }
-  result_.setCallsNumber(size);
 }
 
 

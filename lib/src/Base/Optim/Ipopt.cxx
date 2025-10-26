@@ -43,10 +43,10 @@ Ipopt::Ipopt()
   // Nothing to do
 }
 
-Ipopt::Ipopt( OptimizationProblem & problem)
+Ipopt::Ipopt(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
 {
-  // Nothing to do
+  checkProblem(getProblem());
 }
 
 /* Virtual constructor */
@@ -107,8 +107,7 @@ static void GetOptionsFromResourceMap(::Ipopt::SmartPtr<::Ipopt::OptionsList> op
 void Ipopt::run()
 {
 #ifdef OPENTURNS_HAVE_IPOPT
-  // Check problem
-  checkProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
 
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
@@ -149,9 +148,6 @@ void Ipopt::run()
   LOGDEBUG(optionsLog);
 
   const Sample inputHistory(ipoptProblem->getInputHistory());
-  setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),
-                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
   if (status < 0)
     result_.setStatus(OptimizationResult::FAILURE);
@@ -227,6 +223,10 @@ void Ipopt::run()
       break;
   }
   result_.setStatusMessage(statusMessage);
+
+  setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),
+                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
   if (status < 0)
   {

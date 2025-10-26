@@ -216,6 +216,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
 void CMinpack::run()
 {
 #ifdef OPENTURNS_HAVE_CMINPACK
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
   Point startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension)
@@ -389,8 +390,7 @@ void CMinpack::run()
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
                &ipvt[0], &qtf[0], &wa1[0], &wa2[0], &wa3[0], &wa4[0]);
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
-
+  result_ = OptimizationResult(getProblem());
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
   result_.setTimeDuration(timeDuration);
@@ -434,7 +434,7 @@ void CMinpack::run()
       result_.setStatusMessage("Unknown");
       throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
-  LOGDEBUG(OSS() << "CMinpack status: " << result_.getStatusMessage());
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

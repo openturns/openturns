@@ -43,7 +43,7 @@ public:
   /** Constructors */
   Ipopt();
 
-  explicit Ipopt( OptimizationProblem & problem);
+  explicit Ipopt(const OptimizationProblem & problem);
 
   /** Virtual constructor */
   Ipopt * clone() const override;
