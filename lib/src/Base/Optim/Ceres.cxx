@@ -249,6 +249,7 @@ protected:
 void Ceres::run()
 {
 #ifdef OPENTURNS_HAVE_CERES
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
@@ -500,11 +501,12 @@ void Ceres::run()
     time = summary.total_time_in_seconds;
   }
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setIterationNumber(iterationNumber);
   result_.setStatusMessage(ceres::TerminationTypeToString(termination_type));
   result_.setTimeDuration(time);
 
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   if (termination_type == ceres::FAILURE)
   {
     result_.setStatus(OptimizationResult::FAILURE);
