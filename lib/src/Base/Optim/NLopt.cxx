@@ -224,6 +224,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 void NLopt::run()
 {
 #ifdef OPENTURNS_HAVE_NLOPT
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
   Point startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension)
@@ -360,17 +361,18 @@ void NLopt::run()
   if (getProblem().hasInequalityConstraint() && (inequalityConstraintHistory_.getSize() != evaluationInputHistory_.getSize()))
     inequalityConstraintHistory_ = getProblem().getInequalityConstraint()(evaluationInputHistory_);
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(nlopt_result_to_string((nlopt_result)rc));
   if (rc == nlopt::MAXTIME_REACHED)
     result_.setStatus(OptimizationResult::TIMEOUT);
   else if ((rc == nlopt::MAXEVAL_REACHED) && (algoName_[0] != 'G')) // global algorithms never converge, do not return an error
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if (rc == nlopt::FORCED_STOP)
-    result_.setStatus(OptimizationResult::INTERRUPTION);
+    result_.setStatus(OptimizationResult::SUCCESS);
   else if (rc < 0)
     result_.setStatus(OptimizationResult::FAILURE);
 
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())

@@ -246,8 +246,6 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                 try
                 {
                   solver.run();
-                  if (!solver.getResult().getOptimalPoint().getDimension())
-                    throw InvalidArgumentException(HERE) << "no feasible point";
                   movedVertices.add(currentVertex + solver.getResult().getOptimalPoint());
                 }
                 catch(...)

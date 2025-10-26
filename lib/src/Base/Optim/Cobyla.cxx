@@ -76,6 +76,8 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
  */
 void Cobyla::run()
 {
+  result_ = OptimizationResult(getProblem());
+
   const UnsignedInteger dimension = getProblem().getDimension();
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
@@ -132,14 +134,16 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  const int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
   if (returnCode == COBYLA_MAXFUN)
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
+
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
