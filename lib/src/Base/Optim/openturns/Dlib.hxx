@@ -37,6 +37,7 @@ class OT_API Dlib :
   CLASSNAME
 
 public:
+  friend class DlibStopStrategy;
 
   /** Default constructor */
   Dlib();
