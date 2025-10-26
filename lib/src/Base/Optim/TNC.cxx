@@ -424,10 +424,12 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
+  int returnValue = 0;
+
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
   if (!(algorithm->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
-    return 1;
+    returnValue = 1;
 
   // callbacks
   if (algorithm->progressCallback_.first)
@@ -442,8 +444,9 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     else
       throw InternalException(HERE) << "Null p_nfeval";
     algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
+    returnValue = 1;
   }
-  return 0;
+  return returnValue;
 }
 
 END_NAMESPACE_OPENTURNS
