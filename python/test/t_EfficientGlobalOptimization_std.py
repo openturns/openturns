@@ -162,6 +162,7 @@ openturns.testing.assert_almost_equal(result.getOptimalValue(), [0.0], 1e-15, 2.
 
 # Cobyla out of bound test
 ot.RandomGenerator.SetSeed(0)
+ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 1.0)
 dim = 4
 model = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["x1*x1+x2^3*x1+x3+x4"])
 model = ot.MemoizeFunction(model)
