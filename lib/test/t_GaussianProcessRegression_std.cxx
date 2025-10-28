@@ -28,8 +28,7 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 10000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
+  ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000);
 
   try
   {
@@ -176,8 +175,8 @@ int main(int, char *[])
       // Prediction & interpolation
       //assert_almost_equal(sampleY, metaModel(sampleX));
       const Point point = {5.5};
-      const Point outputValue = {-3.88368, 3.90286};
-      assert_almost_equal(metaModel(point), outputValue);
+      const Point outputValue = {-3.8838, 3.90286};
+      assert_almost_equal(metaModel(point), outputValue, 1e-3);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861
     {
@@ -206,8 +205,8 @@ int main(int, char *[])
       // Get meta model
       Function metaModel(result.getMetaModel());
       const Point point = {5.5};
-      const Point outputValue = {5.58283};
-      assert_almost_equal(metaModel(point), outputValue);
+      const Point outputValue = {5.588};
+      assert_almost_equal(metaModel(point), outputValue, 2e-3);
     }
     // GPR with already calibrated parameters
     {

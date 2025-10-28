@@ -29,7 +29,6 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 10000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
 
   try
   {
