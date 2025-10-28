@@ -4,15 +4,19 @@ Create a customized distribution or copula
 """
 
 # %%
-# In this example we are going to create a distribution or copula.
+# In this example, we show how to create our own distribution or copula.
 #
-# The way to go is inheriting the :class:`~openturns.PythonDistribution`, get the  class and overload the methods of the :class:`~openturns.Distribution` object.
+# We use a :class:`~openturns.PythonDistribution` that overloads all the methods of the
+# :class:`~openturns.Distribution` class.
+# It is not necessary to override all the methods: only the *computeCDF()* and *getRange()* methods
+# must be overridden.
+# All the methods which are not overridden  are inherited from
+# :class:`~openturns.Distribution`: they are numerically derived from the *computeCDF()*
+# method, using some keys of the :class:`~openturns.ResourceMap` class.
 #
-# To create a Copula, the user has to overload `isCopula()` and return `True`.
+# To create a copula, the method *isCopula()* has to be overridden and return *True*.
 #
-# Then an instance of the new class can be passed on into a Distribution object.
-#
-# At least `computeCDF` should be overridden.
+# Then an instance of the new class can be passed on into a :class:`~openturns.Distribution` class.
 
 # %%
 import openturns as ot
@@ -23,15 +27,13 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-
 # %%
-# Inherit :class:`~openturns.PythonDistribution`:
+# First inherit :class:`~openturns.PythonDistribution`:
 
 
-# %%
 class UniformNdPy(ot.PythonDistribution):
     def __init__(self, a=[0.0], b=[1.0]):
-        super(UniformNdPy, self).__init__(len(a))
+        super().__init__(len(a))
         if len(a) != len(b):
             raise ValueError("Invalid bounds")
         for i in range(len(a)):
@@ -133,7 +135,7 @@ class UniformNdPy(ot.PythonDistribution):
 
 
 # %%
-# Let us instantiate the distribution:
+# Now instantiate the distribution:
 distribution = ot.Distribution(UniformNdPy([5, 6], [7, 9]))
 
 # %%
@@ -154,7 +156,7 @@ distribution.getMean()
 distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
 
 # %%
-# Now let us validate our distribution with :class:`openturns.testing.DistributionValidation`
+# We can validate the distribution with :class:`openturns.testing.DistributionValidation`
 # It automatically checks the consistency of most services and allows one to check for errors.
 checker = ott.DistributionValidation(distribution)
 checker.run()
