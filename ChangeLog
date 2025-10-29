@@ -9,6 +9,7 @@
 ==== New classes ====
  * HiGHS linear solver (openturns.experimental)
  * LinearProblem (openturns.experimental)
+ * FiniteOrthogonalFunctionFactory (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated MetaModelResult.set/getResiduals, MetaModelResult.set/getRelativeErrors (see MetaModelValidation)

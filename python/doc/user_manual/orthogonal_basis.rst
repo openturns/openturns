@@ -98,6 +98,7 @@ Orthogonal multivariate functions
     :template: class.rst_t
 
     SoizeGhanemFactory
+    experimental.FiniteOrthogonalFunctionFactory
 
 Making orthogonal multivariate functions from orthogonal univariate functions
 -----------------------------------------------------------------------------

@@ -48,5 +48,6 @@
 #include "openturns/HaarWaveletFactory.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
 #include "openturns/SoizeGhanemFactory.hxx"
+#include "openturns/FiniteOrthogonalFunctionFactory.hxx"
 
 #endif /* OPENTURNS_OTORTHOGONALBASIS_HXX */
