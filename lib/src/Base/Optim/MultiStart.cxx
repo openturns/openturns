@@ -174,7 +174,7 @@ void MultiStart::run()
       Bool stop = stopCallback_.first(stopCallback_.second);
       if (stop)
       {
-        LOGWARN(OSS() << "MultiStart was stopped by user");
+        LOGINFO(OSS() << "MultiStart was stopped by user");
         break;
       }
     }

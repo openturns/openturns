@@ -88,7 +88,7 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
 {
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
-    LOGWARN(OSS() << "Clearing constraints, bounds and variables types");
+    LOGINFO(OSS() << "Clearing constraints, bounds and variables types");
     // Clear constraints
     if (equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation() || inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation())
     {
