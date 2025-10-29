@@ -86,6 +86,10 @@ Bibliography
     *An introduction to orthogonal polynomials.* Dover publications.
 .. [chapelle2002] Chapelle, O., Vapnik, V., & Bengio, Y. (2002).
     *Model selection for small sample regression.* Machine Learning, 48(1-3), 9.
+.. [clouvel2025] Clouvel, L., Iooss, B., Chabridon, V., Il Idrissi, M. & Robin, F. (2025).
+    *An overview of variance-based importance measures in the linear regression context: comparative analyses and numerical tests*,
+    Socio-Environmental Systems Modeling, vol. 7, 18681, doi:10.18174/sesmo.18681
+    `pdf <https://sesmo.org/article/view/18681/18319>`__
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
