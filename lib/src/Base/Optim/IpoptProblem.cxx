@@ -281,7 +281,7 @@ bool IpoptProblem::eval_grad_f( int n,
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+    LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
     return false;
   }
 
@@ -320,7 +320,7 @@ bool IpoptProblem::eval_g(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
     std::copy(equalityConstraint.begin(), equalityConstraint.end(), g + k);
@@ -337,7 +337,7 @@ bool IpoptProblem::eval_g(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
     std::copy(inequalityConstraint.begin(), inequalityConstraint.end(), g + k);
@@ -390,7 +390,7 @@ bool IpoptProblem::eval_jac_g(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
@@ -411,7 +411,7 @@ bool IpoptProblem::eval_jac_g(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
@@ -476,7 +476,7 @@ bool IpoptProblem::eval_h(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
 
@@ -493,7 +493,7 @@ bool IpoptProblem::eval_h(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
@@ -512,7 +512,7 @@ bool IpoptProblem::eval_h(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)

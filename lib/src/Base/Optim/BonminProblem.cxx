@@ -281,7 +281,7 @@ bool BonminProblem::eval_f(int n,
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+    LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
     return false;
   }
   if (optimProblem_.isMinimization())
@@ -335,7 +335,7 @@ bool BonminProblem::eval_grad_f( int n,
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+    LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
     return false;
   }
 
@@ -374,7 +374,7 @@ bool BonminProblem::eval_g(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
     std::copy(equalityConstraint.begin(), equalityConstraint.end(), g + k);
@@ -391,7 +391,7 @@ bool BonminProblem::eval_g(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
     std::copy(inequalityConstraint.begin(), inequalityConstraint.end(), g + k);
@@ -444,7 +444,7 @@ bool BonminProblem::eval_jac_g(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
@@ -465,7 +465,7 @@ bool BonminProblem::eval_jac_g(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
@@ -530,7 +530,7 @@ bool BonminProblem::eval_h(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
 
@@ -547,7 +547,7 @@ bool BonminProblem::eval_h(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
@@ -566,7 +566,7 @@ bool BonminProblem::eval_h(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
@@ -615,7 +615,7 @@ bool BonminProblem::eval_gi(int n,
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+    LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
     return false;
   }
   return true;
@@ -653,7 +653,7 @@ bool BonminProblem::eval_grad_gi(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (int j = 0; j < n; ++j)
@@ -668,7 +668,7 @@ bool BonminProblem::eval_grad_gi(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Bonmin went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (int j = 0; j < n; ++j)

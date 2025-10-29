@@ -109,7 +109,7 @@ void NearestPointProblem::clearLevelFunction()
 {
   if (levelFunction_.getEvaluation().getImplementation()->isActualImplementation())
   {
-    LOGWARN(OSS() << "Clearing level function");
+    LOGINFO(OSS() << "Clearing level function");
     levelFunction_ = Function();
   }
   levelValue_ = 0.0;
