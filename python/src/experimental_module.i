@@ -50,7 +50,9 @@
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
 %import orthogonalbasis_module.i
-%import UncertaintyOrthogonalBasisTemplateDefs.i
+ /*%import UncertaintyOrthogonalBasisTemplateDefs.i*/
+%include UncertaintyOrthogonalBasisTemplateDefs.i
+%include FiniteOrthogonalFunctionFactory.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
