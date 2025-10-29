@@ -168,7 +168,7 @@ Examples
 >>> from openturns.usecases import ishigami_function
 >>> import openturns as ot
 >>> im = ishigami_function.IshigamiModel()
->>> sampleSize = 1000
+>>> sampleSize = 300
 >>> inputTrain = im.distribution.getSample(sampleSize)
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
@@ -261,7 +261,7 @@ Examples
 >>> import openturns as ot
 >>> import math
 >>> im = ishigami_function.IshigamiModel()
->>> sampleSize = 1000
+>>> sampleSize = 300
 >>> inputTrain = im.distribution.getSample(sampleSize)
 >>> outputTrain = im.model(inputTrain)
 >>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
