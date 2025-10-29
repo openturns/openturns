@@ -29,6 +29,7 @@ ot_add_source_file (FourierSeriesFactory.cxx)
 ot_add_source_file (HaarWaveletFactory.cxx)
 ot_add_source_file (OrthogonalProductFunctionFactory.cxx)
 ot_add_source_file (SoizeGhanemFactory.cxx)
+ot_add_source_file (FiniteOrthogonalFunctionFactory.cxx)
 
 ot_install_header_file (OTOrthogonalBasis.hxx)
 ot_install_header_file (OrthogonalFunctionFactory.hxx)
@@ -57,4 +58,5 @@ ot_install_header_file (FourierSeriesFactory.hxx)
 ot_install_header_file (HaarWaveletFactory.hxx)
 ot_install_header_file (OrthogonalProductFunctionFactory.hxx)
 ot_install_header_file (SoizeGhanemFactory.hxx)
+ot_install_header_file (FiniteOrthogonalFunctionFactory.hxx)
 
