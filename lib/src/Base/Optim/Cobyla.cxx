@@ -326,7 +326,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     // This value is passed to algocobyla. Any non-zero value should work but 1
     // is the most standard value.
     returnValue = 1;
-    LOGWARN(OSS() << "Cobyla was stopped by user");
+    LOGINFO(OSS() << "Cobyla was stopped by user");
     algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
   }
   return returnValue;

@@ -204,7 +204,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   }
   if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {
-    LOGWARN("CMinpack was stopped by user");
+    LOGINFO("CMinpack was stopped by user");
     return -1;
   }
   return 0;
