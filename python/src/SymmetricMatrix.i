@@ -15,12 +15,12 @@
 %include openturns/SymmetricMatrix.hxx
 
 %pythoncode %{
-def SymmetricMatrix___getattribute__(self, name):
+def _SymmetricMatrix___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.checkSymmetry()
     return super(SymmetricMatrix, self).__getattribute__(name)
-SymmetricMatrix.__getattribute__ = SymmetricMatrix___getattribute__
+SymmetricMatrix.__getattribute__ = _SymmetricMatrix___getattribute__
 %}
 
 namespace OT {

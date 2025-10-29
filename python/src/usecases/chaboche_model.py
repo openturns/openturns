@@ -45,7 +45,7 @@ class ChabocheModel:
     Gamma : :class:`~openturns.Normal` distribution
         `Normal(10.0, 2.0)`
 
-    inputDistribution : :class:`~openturns.JointDistribution`
+    distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
 
     model : :class:`~openturns.Function`
@@ -108,10 +108,10 @@ class ChabocheModel:
         self.Gamma = ot.Normal(10.0, 2.0)
         self.Gamma.setDescription(["Gamma"])
 
-        self.inputDistribution = ot.JointDistribution(
+        self.distribution = ot.JointDistribution(
             [self.Strain, self.R, self.C, self.Gamma]
         )
-
+        self.inputDistribution = self.distribution  # deprecated
         self.model = ot.SymbolicFunction(
             ["Strain", "R", "C", "Gamma"], ["R - C * expm1(-Gamma * Strain) / Gamma"]
         )

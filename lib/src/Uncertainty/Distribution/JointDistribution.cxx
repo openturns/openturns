@@ -440,8 +440,8 @@ Sample JointDistribution::getSample(const UnsignedInteger size) const
       shift += dimension;
     }
   }
-  SampleImplementation result(size, dimension);
-  result.setData(data);
+  Sample result(size, dimension);
+  result.getImplementation()->setData(data);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;

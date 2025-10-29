@@ -12,7 +12,7 @@ A :class:`~openturns.RandomVector` provides at least a way to generate realizati
 
 See also
 --------
-UsualRandomVector, CompositeRandomVector, DeconditionedRandomVector,
+UsualRandomVector, CompositeRandomVector, CompoundRandomVector,
 ConstantRandomVector, FunctionalChaosRandomVector, ThresholdEvent,
 PythonRandomVector"
 %enddef

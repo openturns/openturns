@@ -687,7 +687,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i.in
                       MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i.in
                       Mixture.i  Mixture_doc.i.in
-                      DeconditionedDistribution.i DeconditionedDistribution_doc.i.in
+                      CompoundDistribution.i CompoundDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
                       Polya.i Polya_doc.i.in
@@ -760,7 +760,7 @@ ot_add_python_module(bayesian bayesian_module.i
                       IndependentMetropolisHastings.i IndependentMetropolisHastings_doc.i.in
                       UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i.in
                       Gibbs.i Gibbs_doc.i.in
-                      DeconditionedRandomVector.i DeconditionedRandomVector_doc.i.in
+                      CompoundRandomVector.i CompoundRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
                     )
 
@@ -878,8 +878,9 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       FunctionalChaosValidation.i FunctionalChaosValidation_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
-		      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
+                      LeastSquaresExpansion.i LeastSquaresExpansion_doc.i.in
                       IntegrationExpansion.i IntegrationExpansion_doc.i.in
+                      FieldFunctionalChaosAlgorithm.i FieldFunctionalChaosAlgorithm_doc.i.in
                       FieldToPointFunctionalChaosAlgorithm.i FieldToPointFunctionalChaosAlgorithm_doc.i.in
                       PointToFieldFunctionalChaosAlgorithm.i PointToFieldFunctionalChaosAlgorithm_doc.i.in
                       FieldFunctionalChaosResult.i FieldFunctionalChaosResult_doc.i.in

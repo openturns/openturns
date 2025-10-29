@@ -240,13 +240,6 @@ NEW_EXCEPTION( NotYetImplementedException );
 NEW_EXCEPTION( OutOfBoundException );
 
 /**
- * @class XMLException
- * @brief Raised when a general XML error was detected
- * @internal
- */
-NEW_EXCEPTION( XMLException );
-
-/**
  * @class XMLParserException
  * @brief Raised when an XML error was detected during file parsing
  * @internal
@@ -294,13 +287,6 @@ NEW_EXCEPTION( FileOpenException );
  * @internal
  */
 NEW_EXCEPTION( StudyFileParsingException );
-
-/**
- * @class ObjectNotInStudyException
- * @brief Raised when a file does not belong to a saved study
- * @internal
- */
-NEW_EXCEPTION( ObjectNotInStudyException );
 
 /**
  * @class ConfigurationFileParsingException

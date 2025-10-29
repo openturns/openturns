@@ -6,9 +6,9 @@ from openturns.usecases import ishigami_function
 
 ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
-input_names = im.inputDistribution.getDescription()
+input_names = im.distribution.getDescription()
 n = 250
-sampleX = im.inputDistribution.getSample(n)
+sampleX = im.distribution.getSample(n)
 sampleY = im.model(sampleX)
 
 ot.ResourceMap.SetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize", 100)

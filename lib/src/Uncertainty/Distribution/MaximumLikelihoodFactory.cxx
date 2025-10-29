@@ -253,7 +253,7 @@ public:
     const Point logPdfGradient(logPdfGradientSample.computeMean());
 
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
-      if (!SpecFunc::IsNormal(logPdfGradient[j]))
+      if (!std::isfinite(logPdfGradient[j]))
         return result;
 
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);

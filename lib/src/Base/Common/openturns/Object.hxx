@@ -22,7 +22,6 @@
 #define OPENTURNS_OBJECT_HXX
 
 #include <iostream>              // for std::ostream
-#include <sstream>               // for std::ostringstream
 #include "openturns/OTprivate.hxx"
 
 

@@ -64,6 +64,7 @@ BEGIN_NAMESPACE_OPENTURNS
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNormal(const Scalar value)
 {
+  LOGWARN("SpecFunc.IsNormal is deprecated");
   return value - value == 0.0;
 }
 
@@ -308,7 +309,7 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
   Scalar epsilon = -1.0;
   const Scalar integral = GaussKronrod().integrate(integrand, Interval(ScalarEpsilon, upper), epsilon)[0];
   PlatformInfo::SetNumericalPrecision(precision);
-  if (!IsNormal(integral) || (integral == 0.0)) return LowestScalar;
+  if (!std::isfinite(integral) || (integral == 0.0)) return LowestScalar;
   return logFactor + std::log(integral);
 #endif
 }

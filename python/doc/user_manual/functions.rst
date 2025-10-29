@@ -261,7 +261,6 @@ as Python functions.
     SpecFunc.IncompleteGammaInverse
     SpecFunc.IPow
     SpecFunc.IRoot
-    SpecFunc.IsNormal
     SpecFunc.LambertW
     SpecFunc.Log1MExp
     SpecFunc.Log1p

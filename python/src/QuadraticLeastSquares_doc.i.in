@@ -86,13 +86,13 @@ Examples
 >>> Y = f(X)
 >>> algo = ot.QuadraticLeastSquares(X, Y)
 >>> algo.run()
->>> mm = algo.getMetaModel()
+>>> mm = algo.getResult().getMetaModel()
 >>> x = [0.1, 0.1]
 >>> y = mm(x)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticLeastSquares::getDataIn
+%feature("docstring") OT::QuadraticLeastSquares::getInputSample
 "Get the input data.
 
 Returns
@@ -112,7 +112,7 @@ constantVector : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticLeastSquares::getDataOut
+%feature("docstring") OT::QuadraticLeastSquares::getOutputSample
 "Get the output data.
 
 Returns
@@ -153,12 +153,12 @@ tensor : :class:`~openturns.SymmetricTensor`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticLeastSquares::getMetaModel
+%feature("docstring") OT::QuadraticLeastSquares::getResult
 "Get an approximation of the function.
 
 Returns
 -------
-approximation : :class:`~openturns.Function`
+result : :class:`~openturns.MetaModelResult`
     An approximation of the function :math:`h` by Quadratic Least Squares."
 
 // ---------------------------------------------------------------------

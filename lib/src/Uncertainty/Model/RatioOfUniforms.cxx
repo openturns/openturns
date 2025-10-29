@@ -326,7 +326,7 @@ Collection<MultiStart> RatioOfUniforms::initialize()
     Point candidate(sequence.generate());
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       candidate[j] = lb[j] + candidate[j] * (ub[j] - lb[j]);
-    if (SpecFunc::IsNormal(logUnscaledPDF_(candidate)[0]))
+    if (std::isfinite(logUnscaledPDF_(candidate)[0]))
     {
       startingPointsSupU.add(candidate);
       if (startingPointsSupU.getSize() == maximumMultiStart_)
@@ -370,7 +370,7 @@ Collection<MultiStart> RatioOfUniforms::initialize()
           Point candidate(sequence.generate());
           for (UnsignedInteger j = 0; j < dimension; ++ j)
             candidate[j] = candidate[j] * ub[j];
-          if (SpecFunc::IsNormal(logUnscaledPDF_(candidate)[0]))
+          if (std::isfinite(logUnscaledPDF_(candidate)[0]))
           {
             startingPointsSupV.add(candidate);
             if (startingPointsSupV.getSize() == maximumMultiStart_)
@@ -398,7 +398,7 @@ Collection<MultiStart> RatioOfUniforms::initialize()
           Point candidate(sequence.generate());
           for (UnsignedInteger j = 0; j < dimension; ++ j)
             candidate[j] = candidate[j] * lb[j];
-          if (SpecFunc::IsNormal(logUnscaledPDF_(candidate)[0]))
+          if (std::isfinite(logUnscaledPDF_(candidate)[0]))
           {
             startingPointsInfV.add(candidate);
             if (startingPointsInfV.getSize() == maximumMultiStart_)

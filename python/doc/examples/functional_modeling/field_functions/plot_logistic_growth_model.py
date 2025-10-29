@@ -32,7 +32,7 @@ uspop = lm.data.getMarginal(1)
 
 # %%
 # We get the input parameters distribution distX :
-distX = lm.distX
+distX = lm.distribution
 
 
 # %%

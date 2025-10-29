@@ -177,4 +177,10 @@ aSample.exportToCSVFile(fname)
 aSample = ot.Sample.ImportFromCSVFile(fname)
 assert (aSample.getSize(), aSample.getDimension()) == (3, 4), "unicode/csv"
 
+# empty components + non-empty parsable values should not land in the header
+with open(fname, "w") as f:
+    f.write(";;8\n;;2\n;;0")
+aSample = ot.Sample.ImportFromCSVFile(fname)
+assert (aSample.getSize(), aSample.getDimension()) == (3, 3), "parsable"
+
 os.remove(fname)

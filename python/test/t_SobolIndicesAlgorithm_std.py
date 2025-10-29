@@ -173,7 +173,7 @@ for sample_size in [100, 1000, 10000]:
     print("Size:", sample_size)
 
     # Method A : classical
-    X = ot.SobolIndicesExperiment(im.inputDistribution, sample_size).generate()
+    X = ot.SobolIndicesExperiment(im.distribution, sample_size).generate()
     Y = im.model(X)
     sobolIndicesAlgorithmA = ot.SaltelliSensitivityAlgorithm(X, Y, sample_size)
     computed_first_orderA = sobolIndicesAlgorithmA.getFirstOrderIndices()
