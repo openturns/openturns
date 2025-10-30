@@ -53,7 +53,12 @@ void ExpressionParser::InternalSetVariableID(const std::string & vname,
 int ExpressionParser::GetVariableID(const std::string & vname)
 {
   if (variable_.find(vname) != variable_.end()) return variable_[vname];
-  else return (IsVariableName(vname) ? PEV3UNKNOWNVAR : PEV3NOVARIABLE);
+  if (IsVariableName(vname))
+    {
+      error(vname);
+      return PEV3UNKNOWNVAR;
+    }
+  return PEV3NOVARIABLE;
 }
 
 // get variable name
@@ -96,6 +101,10 @@ bool ExpressionParser::IsVariableName(const std::string & vname)
             (vname == "besselY1") ||
             (vname == "sign")     ||
             (vname == "rint")     ||
+            (vname == "floor")    ||
+            (vname == "ceil")     ||
+            (vname == "trunc")    ||
+            (vname == "round")    ||
             (vname == "abs"));
 }
 
@@ -236,8 +245,13 @@ Expression ExpressionParser::prim(const bool get)
           else if (s == "besselY1") ret = BesselY1Link(ret);
           else if (s == "sign") ret = SignLink(ret);
           else if (s == "rint") ret = RintLink(ret);
+          else if (s == "floor") ret = FloorLink(ret);
+          else if (s == "ceil") ret = CeilLink(ret);
+          else if (s == "trunc") ret = TruncLink(ret);
+          else if (s == "round") ret = RoundLink(ret);
           else if (s == "abs") ret = AbsLink(ret);
           else error("unknown function");
+
           if (curr_tok_ != PEV3RP) error("bracket ) expected for end-of-function");
           else
           {

@@ -105,6 +105,11 @@ Complex UniVariatePolynomial::operator() (const Complex z) const
   return getImplementation()->operator()(z);
 }
 
+Sample UniVariatePolynomial::operator() (const Sample & x) const
+{
+  return getImplementation()->operator()(x);
+}
+
 
 /* UniVariatePolynomialImplementation derivative */
 Scalar UniVariatePolynomial::gradient(const Scalar x) const
