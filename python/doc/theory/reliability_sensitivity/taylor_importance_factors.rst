@@ -40,4 +40,4 @@ These importance factors are also called *importance factors derived from pertur
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/central_dispersion/plot_estimate_moments_taylor`
+    - See :doc:`/auto_reliability/central_dispersion/plot_estimate_moments_taylor`

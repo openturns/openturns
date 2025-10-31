@@ -48,6 +48,8 @@ Simulations methods
     EventSimulation
     ProbabilitySimulationAlgorithm
     ProbabilitySimulationResult
+    ExpectationSimulationAlgorithm
+    ExpectationSimulationResult
     DirectionalSampling
     PostAnalyticalSimulation
     PostAnalyticalControlledImportanceSampling
@@ -62,6 +64,15 @@ Simulations methods
     StandardSpaceCrossEntropyImportanceSampling
     CrossEntropyResult
     experimental.LineSampling
+
+Taylor expansion
+================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    TaylorExpansionMoments
 
 Quantile confidence
 ===================

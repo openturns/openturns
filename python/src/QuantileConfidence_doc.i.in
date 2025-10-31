@@ -208,6 +208,48 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage
+"Evaluate an unilateral confidence interval of a quantile.
+
+Refer to :func:`computeUnilateralConfidenceInterval()`
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Quantile level
+lower_bounded : bool, optional
+    True indicates the interval is bounded by a lower value.
+    False indicates the interval is bounded by an upper value.
+    Default value is False.
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Quantile confidence interval.
+
+coverage : float
+    If `lower_bounded` is True, then the `coverage` is the value of :math:`\Prob{X_{(k_1)} \leq x_{\alpha} })`.
+    Otherwise, the `coverage` is the value of :math:`\Prob{x_{\alpha} \leq X_{(k_2)}}`.
+    In both cases, the coverage is guaranteed to be greater or equal to :math:`\beta`.
+
+Notes
+-----
+Refer to :func:`computeUnilateralConfidenceInterval()`. In addition to the confidence interval,
+the method returns the supremum of :math:`\beta` for the confidence interval.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> sample = ot.Gumbel().getSample(100)
+>>> ci, coverage = algo.computeUnilateralConfidenceIntervalWithCoverage(sample)
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::QuantileConfidence::computeBilateralConfidenceInterval
 "Evaluate a bilateral confidence interval of a quantile.
 
@@ -249,6 +291,43 @@ Examples
 >>> algo = otexp.QuantileConfidence(alpha, beta)
 >>> sample = ot.Gumbel().getSample(60)
 >>> ci = algo.computeBilateralConfidenceInterval(sample)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileConfidence::computeBilateralConfidenceIntervalWithCoverage
+"Evaluate a bilateral confidence interval of a quantile.
+
+Refer to :func:`computeBilateralConfidenceInterval()`
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample of the variable :math:`X`.
+
+Returns
+-------
+ci : :class:`~openturns.Interval`
+    Quantile confidence interval.
+
+coverage : float
+    The `coverage` is the value of :math:`\Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}`.
+    The coverage is guaranteed to be greater or equal to :math:`\beta`.
+
+Notes
+-----
+Refer to :func:`computeBilateralConfidenceInterval()`. In addition to the confidence interval,
+the method returns the supremum of :math:`\beta` for the confidence interval.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> alpha = 0.05
+>>> beta = 0.95
+>>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> sample = ot.Gumbel().getSample(60)
+>>> ci, coverage = algo.computeBilateralConfidenceIntervalWithCoverage(sample)
 "
 
 // ---------------------------------------------------------------------

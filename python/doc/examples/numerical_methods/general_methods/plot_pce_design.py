@@ -17,7 +17,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 # In this advanced example, we use the :class:`~openturns.DesignProxy`
 # and :class:`~openturns.QRMethod` low level classes.
 # A naive implementation of this method is presented in
-# :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_cv`
+# :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_cv`
 # using K-Fold cross-validation.
 
 # %%
