@@ -1,0 +1,49 @@
+%feature("docstring") OT::FiniteOrthogonalFunctionFactory
+"FiniteOrthogonalFunction orthonormal multivariate functional family.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+For any multivariate distribution.
+
+Available constructor:
+    FiniteOrthogonalFunctionFactory(*functions, measure*)
+
+Parameters
+----------
+functions : list of :class:`~openturns.Function`
+    The finite set of functions orthogonal wrt the given measure.
+measure : :class:`~openturns.Distribution`
+    The measure defining the inner product of the factory.
+
+Notes
+-----
+This class implements a user-defined multivariate orthonormal basis associated with an arbitrary multidimensional distribution.
+
+See also
+--------
+StandardDistributionPolynomialFactory, OrthogonalProductPolynomialFactory, SoizeGhanemFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> mean = [0.0]*2
+>>> std = [1.0]*2
+>>> R = ot.CorrelationMatrix([[1.0, 0.8], [0.8, 1.0]])
+>>> distribution = ot.Normal(mean, std, R)
+>>> f0 = ot.SymbolicFunction(["x0", "x1"], ["1.0"])
+>>> f1 = ot.SymbolicFunction(["x0", "x1"], ["-4.0 * x0 / 3.0 + 5.0 * x1 / 3.0"])
+>>> f2 = ot.SymbolicFunction(["x0", "x1"], ["-x0 / sqrt(2.0) + x0^2 / sqrt(2)"])
+>>> f3 = ot.SymbolicFunction(["x0", "x1"], ["-4.0 / 3.0 - 1.8856180831656863539 * (-1.0 / sqrt(2.0) + x0^2 / sqrt(2.0)) + 5.0 * x0 * x1 / 3.0"])
+>>> functions = [f0, f1, f2, f3]
+>>> factory = otexp.FiniteOrthogonalFunctionFactory(functions, distribution)
+>>> point = [0.5]*2
+>>> for i in range(4):
+...     value = factory.build(i)(point)
+...     print('FiniteOrthogonalFunction_' + str(i) + '(' + str(point) + ')=' + str(value))
+FiniteOrthogonalFunction_0([0.5, 0.5])=[0.870518]
+FiniteOrthogonalFunction_1([0.5, 0.5])=[0.753891]
+FiniteOrthogonalFunction_2([0.5, 0.5])=[0.435259]
+"
