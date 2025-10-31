@@ -76,6 +76,8 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
  */
 void Cobyla::run()
 {
+  result_ = OptimizationResult(getProblem());
+
   const UnsignedInteger dimension = getProblem().getDimension();
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
@@ -132,14 +134,16 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  const int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(cobyla_rc_string[returnCode - COBYLA_MINRC]);
   if (returnCode == COBYLA_MAXFUN)
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
+
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -212,12 +216,10 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Convert the input vector to Point */
   Point inP(n);
   std::copy(x, x + n, inP.begin());
-  Point inClip(inP);
 
   const UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   const UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
   Point constraintValue(nbIneqConst + 2 * nbEqConst, -1.0);
-  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::Infinity);
 
   Point outP;
   try
@@ -226,36 +228,19 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
       if (!SpecFunc::IsNormal(inP[i]))
         throw InvalidArgumentException(HERE) << "Cobyla got a nan/inf input value";
 
-    // evaluate the function on the clipped point (still penalized if outside the bounds)
-    if (problem.hasBounds())
-    {
-      const Point lowerBound(problem.getBounds().getLowerBound());
-      const Point upperBound(problem.getBounds().getUpperBound());
-      const Scalar maximumConstraintError = algorithm->getMaximumConstraintError();
-      for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
-      {
-        if (problem.getBounds().getFiniteLowerBound()[i])
-          inClip[i] = std::max(inClip[i], lowerBound[i] - maximumConstraintError);
-        if (problem.getBounds().getFiniteUpperBound()[i])
-          inClip[i] = std::min(inClip[i], upperBound[i] + maximumConstraintError);
-      }
-    }
-    outP = problem.getObjective().operator()(inClip);
+    outP = problem.getObjective().operator()(inP);
 
     if (std::isnan(outP[0]))
       throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
 
-    // cobyla freezes when dealing with SpecFunc::Infinity
-    if (outP[0] > cobylaMaxScalar) outP[0] = cobylaMaxScalar;
-    if (outP[0] < -cobylaMaxScalar) outP[0] = -cobylaMaxScalar;
     *f = problem.isMinimization() ? outP[0] : -outP[0];
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Cobyla went to an abnormal point x=" << inClip.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
+    LOGWARN(OSS() << "Cobyla went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
 
     // penalize it
-    *f = problem.isMinimization() ? cobylaMaxScalar : cobylaMaxScalar;
+    *f = problem.isMinimization() ? SpecFunc::Infinity : -SpecFunc::Infinity;
     std::copy(constraintValue.begin(), constraintValue.end(), con);
 
     // exit gracefully
@@ -263,26 +248,26 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   }
   UnsignedInteger shift = 0;
 
-  /* Compute the inequality constraints at inP */
+  /* Compute the inequality constraints */
   if (problem.hasInequalityConstraint())
   {
-    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inClip));
+    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inP));
     algorithm->inequalityConstraintHistory_.add(constraintInequalityValue);
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
   }
 
-  /* Compute the equality constraints at inP */
+  /* Compute the equality constraints */
   if (problem.hasEqualityConstraint())
   {
-    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inClip);
+    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inP);
     algorithm->equalityConstraintHistory_.add(constraintEqualityValue);
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     shift += nbEqConst;
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
   }
 
-  /* Compute the bound constraints at inP */
+  /* Compute the bound constraints */
   if (problem.hasBounds())
   {
     const Interval bounds(problem.getBounds());
@@ -322,7 +307,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     // This value is passed to algocobyla. Any non-zero value should work but 1
     // is the most standard value.
     returnValue = 1;
-    LOGWARN(OSS() << "Cobyla was stopped by user");
+    LOGINFO(OSS() << "Cobyla was stopped by user");
     algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
   }
   return returnValue;

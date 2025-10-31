@@ -56,7 +56,7 @@ if (Pagmo_FOUND)
   endif ()
 endif ()
 
-if (HiGHS_FOUND)
+if (highs_FOUND)
   set_source_files_properties (Base/Optim/HiGHS.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 

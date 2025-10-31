@@ -109,6 +109,7 @@ void TNC::checkProblem(const OptimizationProblem & problem) const
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
 
   Point x(getStartingPoint());
@@ -208,15 +209,17 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  const int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = nullptr;
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
   if (returnCode == TNC_MAXFUN)
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
+
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -424,10 +427,12 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
+  int returnValue = 0;
+
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
   if (!(algorithm->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
-    return 1;
+    returnValue = 1;
 
   // callbacks
   if (algorithm->progressCallback_.first)
@@ -442,8 +447,9 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     else
       throw InternalException(HERE) << "Null p_nfeval";
     algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
+    returnValue = 1;
   }
-  return 0;
+  return returnValue;
 }
 
 END_NAMESPACE_OPENTURNS

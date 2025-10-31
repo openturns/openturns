@@ -934,6 +934,7 @@
   <!-- OT::GaussianProcessFitter parameters -->
   <GaussianProcessFitter-KeepCovariance                         value_bool="true"      />
   <GaussianProcessFitter-OptimizeParameters                     value_bool="true"      />
+  <GaussianProcessFitter-OptimizationNormalization              value_bool="true"      />
   <GaussianProcessFitter-UnbiasedVariance                       value_bool="true"      />
   <GaussianProcessFitter-UseAnalyticalAmplitudeEstimate         value_bool="true"      />
   <GaussianProcessFitter-DefaultOptimizationLowerBound          value_float="1.0e-2"  />

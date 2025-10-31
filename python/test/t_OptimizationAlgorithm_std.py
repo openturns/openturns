@@ -145,7 +145,11 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
         # not supported
         continue
     print(f"{name}...")
-    algo.run()
+    try:
+        algo.run()
+    except Exception:
+        # no feasible point
+        pass
     result = algo.getResult()
     status = algo.getResult().getStatus()
     msg = algo.getResult().getStatusMessage()
@@ -153,3 +157,32 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     print(f"{name}: {status} {msg} {calls}")
     assert len(result.getOptimalPoint()) == 0, "should not find point"
     assert status == ot.OptimizationResult.FAILURE, "should return FAILURE"
+
+# stop immediately
+rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+problem = ot.OptimizationProblem(rosenbrock)
+for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    algo = ot.OptimizationAlgorithm.GetByName(name)
+    try:
+        algo.setProblem(problem)
+        algo.setStartingPoint([0.0] * 2)
+    except Exception:
+        # not supported
+        continue
+    print(f"{name}...")
+    algo.setMaximumResidualError(1e-3)
+    algo.setMaximumCallsNumber(10000)
+    if name in list(ot.Bonmin.GetAlgorithmNames()) + ["Ipopt"]:
+        algo.setCheckStatus(False)  # optim fails with "Invalid number detected"
+
+    def ask_stop():
+        return True
+
+    algo.setStopCallback(ask_stop)
+    algo.run()
+    result = algo.getResult()
+    status = algo.getResult().getStatus()
+    msg = algo.getResult().getStatusMessage()
+    calls = algo.getResult().getCallsNumber()
+    print(f"{name}: {status} {msg} {calls}")
+    assert result.getIterationNumber() <= 1

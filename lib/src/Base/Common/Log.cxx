@@ -77,7 +77,7 @@ const Log::Severity Log::WARN    = 1 << 4;
 const Log::Severity Log::ERROR   = 1 << 5;
 const Log::Severity Log::TRACE   = 1 << 6;
 
-const Log::Severity Log::DEFAULT = Log::USER | Log::WARN | Log::ERROR | Log::TRACE;
+const Log::Severity Log::DEFAULT = Log::USER | Log::WARN | Log::ERROR;
 
 static AtomicInt Log_Severity_ = Log::DEFAULT;
 

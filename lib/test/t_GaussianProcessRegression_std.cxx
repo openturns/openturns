@@ -176,7 +176,8 @@ int main(int, char *[])
       // Prediction & interpolation
       //assert_almost_equal(sampleY, metaModel(sampleX));
       const Point point = {5.5};
-      const Point outputValue = {-3.88368, 3.90286};
+      const Point outputValue = {-3.9518568, 3.7968819};
+      std::cout << metaModel(point) << std::endl;
       assert_almost_equal(metaModel(point), outputValue);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861

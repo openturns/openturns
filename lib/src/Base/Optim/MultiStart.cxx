@@ -68,7 +68,6 @@ void MultiStart::checkSolver(const OptimizationAlgorithm & solver) const
 
 void MultiStart::setProblem(const OptimizationProblem & problem)
 {
-  checkStartingSampleConsistentWithOptimizationProblem(startingSample_, problem);
   OptimizationAlgorithmImplementation::setProblem(problem);
   solver_.setProblem(problem);
 }
@@ -85,6 +84,7 @@ void MultiStart::checkProblem(const OptimizationProblem & ) const
 void MultiStart::run()
 {
   if (startingSample_.getSize() == 0) throw InvalidArgumentException(HERE) << "No starting points are set.";
+  checkStartingSampleConsistentWithOptimizationProblem(startingSample_, getProblem());
   const UnsignedInteger problemDimension = getProblem().getDimension();
   if (problemDimension == 0) throw InvalidArgumentException(HERE) << "No problem has been set.";
   if (problemDimension != startingSample_.getDimension())
@@ -119,8 +119,6 @@ void MultiStart::run()
     {
       solver.run();
       const OptimizationResult localResult(solver.getResult());
-      if (!localResult.getOptimalPoint().getDimension())
-        throw InvalidArgumentException(HERE) << "no feasible point";
       ++ successNumber;
       LOGDEBUG(OSS() << "Local search succeeded with " << localResult.getStatusMessage());
 
@@ -176,7 +174,7 @@ void MultiStart::run()
       Bool stop = stopCallback_.first(stopCallback_.second);
       if (stop)
       {
-        LOGWARN(OSS() << "MultiStart was stopped by user");
+        LOGINFO(OSS() << "MultiStart was stopped by user");
         break;
       }
     }
@@ -242,7 +240,6 @@ Point MultiStart::getStartingPoint() const
 /* Starting sample accessor */
 void MultiStart::setStartingSample(const Sample & startingSample)
 {
-  checkStartingSampleConsistentWithOptimizationProblem(startingSample, getProblem());
   startingSample_ = startingSample;
 }
 

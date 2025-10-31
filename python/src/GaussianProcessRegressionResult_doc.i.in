@@ -168,9 +168,8 @@ the size of the functional basis. The column :math:`k` is defined as:
 
 Returns
 -------
-trendCoef : sequence of float
-    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})` as a
-    :class:`~openturns.Point`.
+trendCoef : :class:`~openturns.Point`
+    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})`
 
 Notes
 -----
