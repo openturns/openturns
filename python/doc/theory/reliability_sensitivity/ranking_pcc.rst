@@ -73,13 +73,13 @@ We can sort the sample in increasing order:
 .. math:
     x_{(1)} \leq x_{(2)} \leq \cdots \leq x_{(n)}.
 
-For any :math:`i \in \sampleSize`, the index :math:`j:=\text{rank}(x_i) \in \{1, ..., \sampleSize\}` 
-is the *rank* of the :math:`i`-th observation if :math:`x_i` is the :math:`j`-th largest observation 
+For any :math:`i \in \sampleSize`, the index :math:`j:=\text{rank}(x_i) \in \{1, ..., \sampleSize\}`
+is the *rank* of the :math:`i`-th observation if :math:`x_i` is the :math:`j`-th largest observation
 in the sample.
-In other words, the observation :math:`x_i` appears at the :math:`j`-th index in the ordered 
+In other words, the observation :math:`x_i` appears at the :math:`j`-th index in the ordered
 sample :math:`\{x_{(1)}, ..., x_{(\sampleSize)}\}`.
 
-Now that the rank of a random variable is defined, consider again the case of an input random 
+Now that the rank of a random variable is defined, consider again the case of an input random
 vector :math:`\inputRV = \left( X_1,\ldots,X_{\inputDim} \right)` and the output random variable :math:`Y`.
 The Partial Rank Correlation Coefficients (PRCC) are PRC coefficients computed on the rank
 of the input variables :math:`\text{rank}(\inputRV) = \left( \text{rank}(X_1),\ldots, \text{rank}(X_{\inputDim}) \right)`
