@@ -97,10 +97,7 @@ these tasks in the UQ context.
 OpenTURNS provides a wide range of multivariate probabilistic modeling
 features: more than 60 continuous and discrete distributions, 
 including extreme value distributions, copula-based models (more than 
-15 copulas), and distributions defined by conditioning.
-It is also possible to determine exactly any univariate push-forward
-distribution (for example, the exact distribution of the cosine of a
-distribution).
+15 copulas), and distribution transformations: truncation, conditioning, mixture, push-forward and distribution algebra etc.
 User-defined distributions can be easily implemented and integrated
 natively.
 
@@ -114,25 +111,15 @@ and non-stationary stochastic processes (ARMA processes, Gaussian
 processes in arbitrary dimensions) associated with several covariance 
 kernels (e.g., exponential, Matèrn, and squared exponential).
 
-OpenTURNS provides numerous possibilities for multivariate data analysis.
-Dependence indicators can be computed, such as Pearson and
-Spearman correlations.
-Furthermore, OpenTURNS can fit a multivariate 
-distribution to a sample using parametric and non-parametric
-methods.
-Copula estimation can also be performed using a copula model or the
-non-parametric Bernstein copula.
-OpenTURNS provides many tests to validate the estimation: quantitative
+The library provides extensive data analysis capabilities
+with dependency indicators can be computed (Pearson, Spearman correlations),
+inference of parametric and non-parametric univariate or multivariate probabilistic models including copula models, and many tests to validate the estimation (quantitative
 tests such as the Kolmogorov–Smirnov or Lilliefors tests, and
-graphical tests such as the quantile–quantile plot.
+graphical tests such as the quantile–quantile plot).
 
-OpenTURNS implements function algebra up to second order, enabling the
-exact calculation of gradients and Hessians of functions defined
-as compositions of functions providing their own gradients and
-Hessians.
-For instance, functions executed from the operating system's command
-line can be wrapped via coupling tools using text files for input and output.
-OpenTURNS functions are designed to manage vector as well as field inputs or outputs.
+The library provides an abstract representation of vectorial or field mathematical functions which allows for 
+composition, aggregation, symbolic or finite difference derivatives, caching, and more.
+It also includes tools for wrapping a black-box code interfaced by input/output files exchange.
 
 Several sensitivity and reliability indices can be used to quantify
 how influential a variable is to another variable.
@@ -152,8 +139,6 @@ system event, or an event based on a stochastic process.
 For supervised learning, OpenTURNS enables the construction
 of surrogate models from data, such as linear regression models,
 polynomial chaos expansion, and Gaussian process regression.
-OpenTURNS provides polynomial and functional orthogonal bases such 
-as Haar wavelets or Fourier series.
 This surrogate model can also be built for models with functional inputs.
 The optimization of the hyperparameters of Gaussian process regression
 can be performed on an arbitrary subset of the hyperparameters.
