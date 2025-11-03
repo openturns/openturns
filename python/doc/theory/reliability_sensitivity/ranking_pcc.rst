@@ -102,4 +102,4 @@ and the rank of the output variable :math:`\text{rank}(Y)`.
     - [saltelli2000]_
     - [helton2003]_
     - [kleijnen1999]_
-    - [clouvel2025]_
+    - [clouvel2025]_ section 4.3
