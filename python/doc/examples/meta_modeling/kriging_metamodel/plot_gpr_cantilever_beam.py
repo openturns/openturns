@@ -66,6 +66,8 @@ covarianceModel = ot.SquaredExponential(cb.dim)
 # We must not forget to actually set the optimization bounds defined above.
 covarianceModel.setScale(X_train.computeRange() * 0.5)
 fitter_algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+scaleOptimizationBounds = ot.Interval(0.1 * X_train.computeRange(), 4.0 * X_train.computeRange())
+fitter_algo.setOptimizationBounds(scaleOptimizationBounds)
 
 # %%
 # The method :meth:`~openturns.experimental.GaussianProcessFitter.run`  of
