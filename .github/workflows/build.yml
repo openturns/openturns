@@ -36,7 +36,7 @@ jobs:
       - name: Install
         shell: cmd
         run: |
-          conda install -y cmake swig ninja "libblas=*=*netlib" mpc boost-cpp libcuba libxml2-deve hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp highs ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
+          conda install -y cmake swig ninja "libblas=*=*netlib" mpc boost-cpp libcuba libxml2-devel hdf5 primesieve tbb-devel cminpack ceres-solver nlopt dlib-cpp highs ipopt pagmo-devel spectralib zlib nanoflann scipy pandas matplotlib-base dill
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: cmd
