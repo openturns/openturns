@@ -65,9 +65,38 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 
 XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
-  if (!std::ifstream(std::filesystem::u8path(fileName)).good())
+  std::ifstream inputFile(std::filesystem::u8path(fileName), std::ios_base::binary);
+  if (!inputFile.good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
-  doc_ = xmlReadFile(fileName.c_str(), "UTF-8", XML_PARSE_UNZIP);
+  const int bufferSize = 4096;
+  char buffer[bufferSize];
+  inputFile.read(buffer, 4);
+
+  // check utf8 BOM (text-mode only)
+  if (buffer[0] == '\xEF' && buffer[1] == '\xBB' && buffer[2] == '\xBF')
+  {
+    // skip BOM
+    inputFile.seekg(3);
+    xmlParserCtxtPtr ctxt;
+    ctxt = xmlCreatePushParserCtxt(NULL, NULL, buffer, 0, fileName.c_str());
+    if (ctxt == NULL) throw XMLParserException(HERE) << "Error in creating parser context for file " << fileName;
+    while (inputFile.good())
+    {
+      inputFile.read(buffer, bufferSize);
+      if (xmlParseChunk(ctxt, buffer, inputFile.gcount(), 0) != 0)
+        throw XMLParserException(HERE) << "Error parsing file " << fileName;
+    }
+    if (xmlParseChunk(ctxt, buffer, 0, 1) != 0)
+      throw XMLParserException(HERE) << "Error parsing file " << fileName;
+    if (!ctxt->wellFormed)
+      throw XMLParserException(HERE) << "Malformed file " << fileName;
+    doc_ = ctxt->myDoc;
+    xmlFreeParserCtxt(ctxt);
+  }
+  else
+  {
+    doc_ = xmlReadFile(fileName.c_str(), "UTF-8", XML_PARSE_UNZIP);
+  }
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
 
