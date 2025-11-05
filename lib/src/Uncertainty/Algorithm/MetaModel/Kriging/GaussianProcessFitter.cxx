@@ -167,7 +167,7 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
     if (activeNugget.getSize() > 0)
       // Set the lower bound to 0 for nuggetFactor
       lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
-    LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+    LOGINFO(OSS() <<  "For coherency we set scale upper bounds = " << upperBound.__str__());
 
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
