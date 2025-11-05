@@ -297,7 +297,7 @@ Scalar Student::computeProbability(const Interval & interval) const
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
     const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension())));
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
+    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return DistributionImplementation::computeProbability(interval);
   }
@@ -745,7 +745,7 @@ Description Student::getParameterDescription() const
 /* Nu accessor */
 void Student::setNu(const Scalar nu)
 {
-  if (nu <= 2.0) LOGWARN(OSS() << "Warning! As nu <= 2, the covariance of the distribution will not be defined");
+  if (nu <= 2.0) LOGWARN(OSS() << "As nu <= 2, the covariance of the distribution will not be defined");
   const UnsignedInteger dimension = getDimension();
   nu_ = nu;
   // Only set the covarianceScalingFactor if nu > 0, else its value is -1.0

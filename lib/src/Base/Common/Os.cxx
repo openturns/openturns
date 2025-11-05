@@ -51,7 +51,7 @@ void Os::Remove(const String& fileName)
   if (!ResourceMap::GetAsBool("Os-RemoveFiles")) return;
   if (!std::filesystem::remove(std::filesystem::u8path(fileName)))
   {
-    Log::Warn(OSS() << "Warning: cannot remove file " << fileName);
+    LOGWARN(OSS() << "Os: cannot remove file " << fileName);
   }
 }
 

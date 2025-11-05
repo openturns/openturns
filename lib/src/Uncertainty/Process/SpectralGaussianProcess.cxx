@@ -114,7 +114,7 @@ TriangularComplexMatrix SpectralGaussianProcess::getCholeskyFactor(const Unsigne
   TriangularComplexMatrix factor(computeCholeskyFactor(k));
   // There are still room to store the factor
   if (k < ResourceMap::GetAsUnsignedInteger("SpectralGaussianProcess-CholeskyCacheSize")) choleskyFactorsCache_.add(factor);
-  else LOGWARN(OSS() << "Warning! The cache for cholesky factors is full. Expect a big performance penalty. Increase the cache size using the ResourceMap key \"SpectralGaussianProcess-CholeskyCacheSize\" if you have enough memory.");
+  else LOGWARN(OSS() << "The cache for cholesky factors is full. Expect a big performance penalty. Increase the cache size using the ResourceMap key \"SpectralGaussianProcess-CholeskyCacheSize\" if you have enough memory.");
   return factor;
 }
 

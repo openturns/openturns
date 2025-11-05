@@ -201,7 +201,7 @@ Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) con
   if (solver.getStartingPoint().getDimension() != residual.getInputDimension())
   {
     Point effectiveParameter(distribution_.getParameter());
-    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << residual.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
+    LOGINFO(OSS() << "The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << residual.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
     // extract unknown values
     Point parameter;

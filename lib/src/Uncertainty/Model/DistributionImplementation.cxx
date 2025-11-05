@@ -5164,7 +5164,7 @@ void DistributionImplementation::setDescription(const Description & description)
   // Fourth, check if there was any duplicate
   if (it != test.end())
   {
-    LOGWARN(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Use default description instead.");
+    LOGWARN(OSS() << "The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Use default description instead.");
     description_ = Description::BuildDefault(dimension_, "X");
   }
   else description_ = description;

@@ -199,7 +199,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
         }
       }
     }
-    LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+    LOGWARN(OSS() << "For coherency we set scale upper bounds = " << upperBound.__str__());
 
     // We set the lower bound for the nugget factor to 0.
     const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());

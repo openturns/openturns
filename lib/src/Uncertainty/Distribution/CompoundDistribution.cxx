@@ -244,7 +244,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
     // All these quantities are needed for the upper class algorithms even if locally they are only useful for GaussProduct
     const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / continuousDimension)));
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "CompoundDistribution-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * continuousDimension) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"CompoundDistribution-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"CompoundDistribution-MarginalIntegrationNodesNumber\"");
+    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * continuousDimension) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"CompoundDistribution-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"CompoundDistribution-MarginalIntegrationNodesNumber\"");
     WeightedExperiment experiment;
     if (method == "GaussProduct")
       experiment = GaussProductExperiment(measure, Indices(continuousDimension, std::min(maximumNumber, candidateNumber)));
@@ -295,11 +295,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
   {
     Collection< Distribution > atoms(1, conditionedDistribution);
     atoms[0].setParameter(linkFunction_(diracValues_));
-    // Hide warnings
-    Log::Severity oldSeverity = Log::Flags();
-    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
-    Log::Show(oldSeverity & ~Log::WARN);
     return;
   }
   // First case: only Dirac and stochastic discrete marginals with at least one stochastic discrete marginal
@@ -338,11 +334,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
         }
     } // Discrete measure
     // Now, update the underlying Mixture
-    // Hide warnings
-    Log::Severity oldSeverity = Log::Flags();
-    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
-    Log::Show(oldSeverity & ~Log::WARN);
     return;
   } // No continuous marginal
   // Second case: only Dirac and continuous marginals with at least one continuous marginal
@@ -380,11 +372,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
         }
     } // Continuous measure
     // Now, update the underlying Mixture
-    // Hide warnings
-    Log::Severity oldSeverity = Log::Flags();
-    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
-    Log::Show(oldSeverity & ~Log::WARN);
     return;
   } // No discrete marginal
   // Third case: Dirac, stochastic discrete and continuous marginal distributions with at least one stochastic discrete marginal and one continuous marginal
@@ -430,11 +418,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
       }
   }
   // Now, update the underlying Mixture
-  // Hide warnings
-  Log::Severity oldSeverity = Log::Flags();
-  Log::Show(oldSeverity & ~Log::WARN);
   setDistributionCollection(atoms);
-  Log::Show(oldSeverity & ~Log::WARN);
 }
 
 /* Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */

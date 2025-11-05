@@ -216,7 +216,7 @@ void TaylorExpansionMoments::computeCovariance() const
           covariance_(i, j) += gradientAtMean_(l, i) * inputCovariance_(l, k) * gradientAtMean_(k, j);
     }
   /* We check that outputCovariance is really symmetric positive definite */
-  if (!covariance_.isPositiveDefinite()) LOGWARN(OSS() << "Warning! The covariance matrix computed by quadratic cumul is not positive definite outputCovariance=" << covariance_);
+  if (!covariance_.isPositiveDefinite()) LOGWARN(OSS() << "The covariance matrix computed by quadratic cumul is not positive definite outputCovariance=" << covariance_);
   isAlreadyComputedCovariance_ = true;
 } // TaylorExpansionMoments::computeCovariance()
 

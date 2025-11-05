@@ -443,7 +443,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       if (m_ > static_cast<UnsignedInteger>(n + 2)) currentInformationCriteria[0] = -2.0 * logLikelihood + 2.0 * (n + 1) * m_ / (m_ - n - 2);
       else
       {
-        LOGWARN(OSS() << "Warning! Unable to compute the corrected AIC criteria, too few data (" << m_ << ") for the model complexity (" << n + 1);
+        LOGWARN(OSS() << "Unable to compute the corrected AIC criteria, too few data (" << m_ << ") for the model complexity (" << n + 1);
         currentInformationCriteria[0] = SpecFunc::Infinity;
       }
       // Second, the AIC

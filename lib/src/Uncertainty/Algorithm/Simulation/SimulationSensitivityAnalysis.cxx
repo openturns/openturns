@@ -296,7 +296,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
         }
         catch (...)
         {
-          String msg("Warning! The importance factors associated with the");
+          String msg("The importance factors associated with the");
           if (probabilityScale) msg += " probability level ";
           else msg += " threshold ";
           msg = String(OSS() << msg << xValue << " are not defined");

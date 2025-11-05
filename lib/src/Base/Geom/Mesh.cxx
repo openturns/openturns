@@ -962,7 +962,7 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
   // Bording case: empty file
   if (file.eof())
   {
-    Log::Info(OSS() << "File " << fileName << " is empty.");
+    LOGINFO(OSS() << "File " << fileName << " is empty.");
     return Mesh();
   }
   // First, the header: it is made of 3 integers, the number of vertices, the number of simplices and the number of elements on the boundary, currently not used by OT

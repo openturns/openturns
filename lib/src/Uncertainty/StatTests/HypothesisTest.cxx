@@ -178,7 +178,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   }
   const UnsignedInteger df = (binNumberX - 1) * (binNumberY - 1);
   const Scalar pValue =  DistFunc::pGamma(0.5 * df, 0.5 * squaredSum, true);
-  Log::Debug ( OSS() << "In ChiSquared independence test : df = " << df << ", statistic = " << squaredSum << ", pValue = " << pValue );
+  LOGDEBUG(OSS() << "In ChiSquared independence test : df = " << df << ", statistic = " << squaredSum << ", pValue = " << pValue);
   return TestResult("ChiSquared", pValue > level, pValue, level, squaredSum);
 }
 
