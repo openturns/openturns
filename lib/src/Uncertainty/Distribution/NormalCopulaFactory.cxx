@@ -68,7 +68,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
   }
   catch (const NotSymmetricDefinitePositiveException &)
   {
-    LOGWARN(OSS() << "Warning! Unable to build a NormalCopula using Kendall's tau, trying Spearman's rho instead.");
+    LOGWARN(OSS() << "Unable to build a NormalCopula using Kendall's tau, trying Spearman's rho instead.");
     try
     {
       R = NormalCopula::GetCorrelationFromSpearmanCorrelation(sample.computeSpearmanCorrelation());

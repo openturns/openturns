@@ -97,7 +97,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   const Scalar denominator = SSR / dof;
   // The statistics follows a Fisher distribution
   const Scalar statistic = numerator / denominator;
-  Log::Debug(OSS() << "F-statistic = " << statistic);
+  LOGDEBUG(OSS() << "F-statistic = " << statistic);
   const Scalar pValue = FisherSnedecor(dofModel, dof).computeComplementaryCDF(statistic);
   return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
@@ -148,7 +148,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   // The statstic of test is then (xm - 0) / sd * sqrt(size)
   // The statistics follows a Student distribution
   const Scalar statistic = std::abs(mean) * std::sqrt(size * 1.0) / std;
-  Log::Debug(OSS() << "t-statistic = " << statistic);
+  LOGDEBUG(OSS() << "t-statistic = " << statistic);
   const Scalar pValue = 2.0 * DistFunc::pStudent(dof, statistic, true);
   return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
 }

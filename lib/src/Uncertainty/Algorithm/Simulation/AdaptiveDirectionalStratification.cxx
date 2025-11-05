@@ -161,7 +161,7 @@ void AdaptiveDirectionalStratification::run()
         }
 
       } // if pf > 0
-      Log::Debug(OSS() << "AdaptiveDirectionalStratification::run n=" << n << " i=" << i << " ni=" << ni << " pf=" << pf << " sigma=" << sigma[i]);
+      LOGDEBUG(OSS() << "AdaptiveDirectionalStratification::run n=" << n << " i=" << i << " ni=" << ni << " pf=" << pf << " sigma=" << sigma[i]);
 
     } // for i
 
@@ -187,7 +187,7 @@ void AdaptiveDirectionalStratification::run()
           if ((1 << k) & i)
             T_[k] += std::abs(T0(k, i) - T1(k, i));
 
-        Log::Debug(OSS() << "AdaptiveDirectionalStratification::run T[" << k << "]=" << T_[k]);
+        LOGDEBUG(OSS() << "AdaptiveDirectionalStratification::run T[" << k << "]=" << T_[k]);
       }
 
       // sort variables according to T statistic
@@ -202,7 +202,7 @@ void AdaptiveDirectionalStratification::run()
             order[j + 1] = swap;
           }
       for (UnsignedInteger k = 0; k < dimension; ++ k)
-        Log::Debug(OSS() << "AdaptiveDirectionalStratification::run #" << k << " T[" << order[k] << "]=" << T_[order[k]]);
+        LOGDEBUG(OSS() << "AdaptiveDirectionalStratification::run #" << k << " T[" << order[k] << "]=" << T_[order[k]]);
 
       // retrieve the p' variables contributing the most
       strataIndices = Indices();

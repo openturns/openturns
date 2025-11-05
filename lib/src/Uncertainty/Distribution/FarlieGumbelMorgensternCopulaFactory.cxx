@@ -68,7 +68,7 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
   // If it is not possible to use Kendall's tau to build the copula, try Spearman's rho
   if (std::abs(theta) > 1.0)
   {
-    LOGWARN(OSS() << "Warning! Unable to build a FarlieGumbelMorgensternCopula based on Kendall's tau: it leads to theta=" << theta << ". Trying to use Spearman's rho instead.");
+    LOGWARN(OSS() << "Unable to build a FarlieGumbelMorgensternCopula based on Kendall's tau: it leads to theta=" << theta << ". Trying to use Spearman's rho instead.");
     theta = 3.0 * sample.computeSpearmanCorrelation().operator()(0, 1);
     if (!(std::abs(theta) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula from Spearman's rho either: it leads to theta=" << theta;
   }

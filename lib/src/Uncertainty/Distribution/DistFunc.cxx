@@ -1712,7 +1712,7 @@ Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
   const Scalar p010 = 0.10;
   if (x < q001)
   {
-    LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
+    LOGWARN(OSS() << "Result p-value is missing. The return result is the 0.01 quantile level ");
     return (tail ? 1.0 - p001 : p001);
   }
 
@@ -1737,7 +1737,7 @@ Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
   }
 
   // Arbitrary we seek values until level 0.15
-  LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
+  LOGWARN(OSS() << "Result p-value is missing. The return result is the 0.10 quantile levels ");
   return (tail ? 1.0 - p010 : p010);
 }
 
@@ -1753,7 +1753,7 @@ Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
   const Scalar p010 = 0.10;
   if (x < q001)
   {
-    LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
+    LOGWARN(OSS() << "Result p-value is missing. The return result is the 0.01 quantile level ");
     return (tail ? 1.0 - p001 : p001);
   }
 
@@ -1776,7 +1776,7 @@ Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
     const Scalar b = p005 - a * q005;
     return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
-  LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
+  LOGWARN(OSS() << "Result p-value is missing. The return result is the 0.10 quantile levels ");
   return (tail ? 1.0 - p010 : p010);
 }
 
@@ -1792,7 +1792,7 @@ Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
   const Scalar p010 = 0.10;
   if (x < q001)
   {
-    LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
+    LOGWARN(OSS() << "Result p-value is missing. The return result is the 0.01 quantile level ");
     return (tail ? 1.0 - p001 : p001);
   }
 
@@ -1816,7 +1816,7 @@ Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
     return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
 
-  LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
+  LOGWARN(OSS() << "Result p-value is missing. The return result is the 0.10 quantile levels ");
   return (tail ? 1.0 - p010 : p010);
 }
 
@@ -1838,7 +1838,7 @@ Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
   const Scalar x010 = -3.13;
   if (prob < 0.01)
   {
-    LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
+    LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.01 ");
     return x001;
   }
 
@@ -1865,7 +1865,7 @@ Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
   // Arbitrary we seek values until level 0.15
   if (prob <= 0.15)
   {
-    LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
+    LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
   }
   throw NotYetImplementedException(HERE) << "In DistFunc::pDickeyFullerNoConstant(const Scalar x, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
@@ -1882,7 +1882,7 @@ Scalar DistFunc::qDickeyFullerConstant(const Scalar p,
   const Scalar x010 = -2.57;
   if (prob < 0.01)
   {
-    LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
+    LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.01 ");
     return x001;
   }
 
@@ -1909,7 +1909,7 @@ Scalar DistFunc::qDickeyFullerConstant(const Scalar p,
   // Arbitrary we seek values until level 0.15
   if (prob <= 0.15)
   {
-    LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
+    LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
   }
 
@@ -1927,7 +1927,7 @@ Scalar DistFunc::qDickeyFullerNoConstant(const Scalar p,
   const Scalar x010 = -1.62;
   if (prob < 0.01)
   {
-    LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
+    LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.01 ");
     return x001;
   }
 
@@ -1954,7 +1954,7 @@ Scalar DistFunc::qDickeyFullerNoConstant(const Scalar p,
   // Arbitrary we seek values until level 0.15
   if (prob <= 0.15)
   {
-    LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
+    LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
   }
   throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerNoConstant(const Scalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";

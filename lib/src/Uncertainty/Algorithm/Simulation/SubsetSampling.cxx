@@ -92,7 +92,7 @@ void SubsetSampling::run()
   const Function uToX(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
-    Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
+    LOGWARN(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
   if (seedNumber_ < 1)
@@ -176,7 +176,7 @@ void SubsetSampling::run()
     outputSample_.add(currentLevelSample_);
   }
 
-  Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
+  LOGINFO(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   // as long as the conditional failure domain do not overlap the global one
   while (!stop)
   {
@@ -250,7 +250,7 @@ void SubsetSampling::run()
 
     ++ numberOfSteps_;
 
-    Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
+    LOGINFO(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
