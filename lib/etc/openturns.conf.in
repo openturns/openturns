@@ -1112,7 +1112,6 @@
   <GaussianNonLinearCalibration-BootstrapSize  value_int="100" />
 
   <!-- OT::CalibrationResults parameters -->
-  <CalibrationResult-xRangeMarginFactor   value_float="0.2"  />
   <CalibrationResult-PriorLineStyle       value_str="dashed" />
   <CalibrationResult-PosteriorLineStyle   value_str="dotdash"/>
   <CalibrationResult-ObservationLineStyle value_str="solid"  />
