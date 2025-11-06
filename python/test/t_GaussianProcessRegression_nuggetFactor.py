@@ -20,7 +20,7 @@ x = distribution.getSample(samplesize)
 y = model(x) + ot.Normal(0.0, 0.1).getSample(samplesize)
 
 # Build the surrogate model
-basis = ot.ConstantBasisFactory(dimension).build()
+basis = ot.LinearBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential(dimension)
 covarianceModel.activateNuggetFactor(True)
 

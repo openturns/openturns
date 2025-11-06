@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.experimental import GaussianProcessFitter
+import openturns.experimental as otexp
 from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
@@ -34,7 +34,7 @@ for i in range(sampleSize):
 
 basis = ot.LinearBasisFactory(inputDimension).build()
 covarianceModel = ot.DiracCovarianceModel(inputDimension)
-algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
 algo.setKeepCholeskyFactor(True)
 algo.run()
 
