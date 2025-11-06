@@ -263,11 +263,9 @@ Default lower upper bounds value for all parameters is
 `GaussianProcessFitter-DefaultOptimizationLowerBound`
 resource map key.
 
-For scale parameters, default upper bounds are set as :math:`2`
-times the difference between the max and min values of `X` for
-each coordinate, `X` being the (transformed) input sample.
-The value :math:`2` is defined in resource map
-(`GaussianProcessFitter-DefaultOptimizationScaleFactor`).
+For scale parameters, default bounds are set as a factor of the difference between the max and min values of `X`
+for each coordinate of the input sample `X` thanks to the `GaussianProcessFitter-OptimizationLowerBoundScaleFactor`
+and `GaussianProcessFitter-OptimizationUpperBoundScaleFactor` :class:`~openturns.ResourceMap` entries.
 
 Finally for other parameters (amplitude,...), default upper bound is set
 to :math:`100` (corresponding resource map key is

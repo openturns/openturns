@@ -1595,9 +1595,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("GaussianProcessFitter-UnbiasedVariance", true);
   addAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", true);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
-  addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationNuggetLowerBound", 1.0e-12);
+  addAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 1.0e-3);
+  addAsScalar("GaussianProcessFitter-OptimizationUpperBoundScaleFactor", 2.0);
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
   addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 

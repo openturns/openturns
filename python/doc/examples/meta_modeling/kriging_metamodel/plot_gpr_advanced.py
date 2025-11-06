@@ -78,7 +78,6 @@ algogpfitter = otexp.GaussianProcessFitter(x, y, cov, basis)
 # algogpr.setOptimizationAlgorithm(ot.NLopt('GN_DIRECT'))
 lhsExperiment = ot.LHSExperiment(ot.Uniform(1e-1, 1e2), 50)
 algogpfitter.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), lhsExperiment.generate()))
-algogpfitter.setOptimizationBounds(ot.Interval([0.1], [1e2]))
 
 # 5. Run the algorithm
 algogpfitter.run()

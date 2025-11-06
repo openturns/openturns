@@ -20,7 +20,7 @@ x = distribution.getSample(samplesize)
 y = model(x) + ot.Normal(0.0, 0.1).getSample(samplesize)
 
 # Build the surrogate model
-basis = ot.ConstantBasisFactory(dimension).build()
+basis = ot.LinearBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential(dimension)
 covarianceModel.activateNuggetFactor(True)
 
@@ -53,9 +53,6 @@ algo_product = otexp.GaussianProcessRegression(fitter_result_product)
 algo_product.run()
 result_product = algo_product.getResult()
 optimized_product_model = result_product.getCovarianceModel()
-ott.assert_almost_equal(
-    optimized_product_model.getScale(), [0.874623, 0.491866, 0.84785], 0.2, 0.0
-)
 ott.assert_almost_equal(
     log10(optimized_product_model.getNuggetFactor()), -0.782689, 0.25, 0.0
 )

@@ -1,17 +1,10 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.experimental import (
-    GaussianProcessRegression,
-    GaussianProcessFitter,
-    GaussianProcessConditionalCovariance,
-)
+import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.ResourceMap.SetAsUnsignedInteger(
-    "OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000
-)
 ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 0.5)
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8)
 
@@ -39,7 +32,7 @@ def test_one_input_one_output():
     covarianceModel = ot.SquaredExponential()
 
     # create algorithm
-    fit_algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fit_algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
 
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(ot.Interval(X.getMin(), X.getMax()))
@@ -48,10 +41,10 @@ def test_one_input_one_output():
     # perform an evaluation
     fit_result = fit_algo.getResult()
 
-    algo = GaussianProcessRegression(fit_result)
+    algo = otexp.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = otexp.GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(X)
     ott.assert_almost_equal(mean, Y, 0.0, 1e-12)
@@ -109,7 +102,7 @@ def test_two_inputs_one_output():
     basis = ot.ConstantBasisFactory(inputDimension).build()
 
     # 4) GPF algorithm
-    fit_algo = GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(
         ot.Interval(inputSample.getMin(), inputSample.getMax())
@@ -119,12 +112,12 @@ def test_two_inputs_one_output():
     # perform an evaluation
     fit_result = fit_algo.getResult()
     # Regression algorithm
-    algo = GaussianProcessRegression(fit_result)
+    algo = otexp.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
 
     # 5) Kriging variance is 0 on learning points
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = otexp.GaussianProcessConditionalCovariance(result)
     covariance = gccc.getConditionalCovariance(inputSample)
 
     mean = gccc.getConditionalMean(inputSample)
@@ -160,16 +153,16 @@ def test_two_outputs():
     covarianceModel.setActiveParameter([])
     covarianceModel = ot.TensorizedCovarianceModel([covarianceModel] * 2)
 
-    fit_algo = GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+    fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.run()
 
     # perform an evaluation
     fit_result = fit_algo.getResult()
-    algo = GaussianProcessRegression(fit_result)
+    algo = otexp.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = otexp.GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(sampleX)
     ott.assert_almost_equal(mean, sampleY, 1e-5, 1e-8)
@@ -217,18 +210,18 @@ def test_stationary_fun():
     y = x + ot.Normal(0, 0.1).getSample(20)
     y.setDescription(["G0"])
 
-    fit_algo = GaussianProcessFitter(x, y, model, ot.LinearBasisFactory().build())
+    fit_algo = otexp.GaussianProcessFitter(x, y, model, ot.LinearBasisFactory().build())
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.run()
 
     # perform an evaluation
     fit_result = fit_algo.getResult()
-    algo = GaussianProcessRegression(fit_result)
+    algo = otexp.GaussianProcessRegression(fit_result)
 
     algo.run()
     result = algo.getResult()
 
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = otexp.GaussianProcessConditionalCovariance(result)
     variance = gccc.getConditionalMarginalVariance(x)
     ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-12, 1e-12)
 
@@ -254,10 +247,10 @@ def test_gpr_no_opt():
     covarianceModel = ot.SquaredExponential([1.6326932047296538], [4.895995962015954])
     trend_function = ot.SymbolicFunction("x", "1.49543")
     # GPR (comparable with test_one_input_one_output)
-    algo = GaussianProcessRegression(X, Y, covarianceModel, trend_function)
+    algo = otexp.GaussianProcessRegression(X, Y, covarianceModel, trend_function)
     algo.run()
     result = algo.getResult()
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = otexp.GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(X)
     ott.assert_almost_equal(mean, Y, 1e-5, 1e-8)

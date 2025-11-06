@@ -105,15 +105,13 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the Gaussian process regression, we first select a constant trend with the :class:`~openturns.ConstantBasisFactory` class.
+# In order to create the Gaussian process regression, we first select a constant trend with the :class:`~openturns.LinearBasisFactory` class.
 # Then we use a squared exponential covariance model.
 # Finally, we use the :class:`~openturns.experimental.GaussianProcessFitter` class to calibrate a covariance model for a Gaussian process regression,
 # taking the training sample, the covariance model and the trend basis as input arguments.
 # The scale parameters must be positive.
-
-# %%
 dimension = myDistribution.getDimension()
-basis = ot.ConstantBasisFactory(dimension).build()
+basis = ot.LinearBasisFactory(dimension).build()
 
 x_range = X_train.computeRange()
 print("x_range:")
@@ -121,15 +119,9 @@ print(x_range)
 scale_max_factor = 4.0  # Must be > 1, tune this to match your problem
 scale_min_factor = 0.1  # Must be < 1, tune this to match your problem
 maximum_scale_bounds = scale_max_factor * x_range
-minimum_scale_bounds = scale_min_factor * x_range
-scaleOptimizationBounds = ot.Interval(minimum_scale_bounds, maximum_scale_bounds)
-print("scaleOptimizationBounds")
-print(scaleOptimizationBounds)
 
 covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])
-covarianceModel.setScale(x_range * 0.5)
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds)
 algo.run()
 result = algo.getResult()
 
@@ -175,8 +167,6 @@ solverImplementation.getClassName()
 # The dimension of these bounds correspond to the spatial dimension of
 # the covariance model.
 # In the metamodeling context, this correspond to the input dimension of the model.
-
-# %%
 bounds = algo.getOptimizationBounds()
 bounds.getDimension()
 
@@ -192,8 +182,6 @@ print(ubounds)
 
 # %%
 # The :meth:`~openturns.experimental.GaussianProcessFitter.getOptimizeParameters` method returns `True` if these parameters are to be optimized.
-
-# %%
 isOptimize = algo.getOptimizeParameters()
 print(isOptimize)
 
@@ -204,11 +192,8 @@ print(isOptimize)
 
 # %%
 # The starting point of the optimization is based on the parameters of the covariance model.
-
-# %%
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds)
 
 # %%
 algo.run()
@@ -248,37 +233,27 @@ view = otv.View(g)
 # It is sometimes useful to completely disable the optimization of the parameters.
 # In order to see the effect of this, we first initialize the parameters of
 # the covariance model with the arbitrary values `[12.0, 34.0, 56.0, 78.0]`.
-
-# %%
 covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [91.0])
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 
 # %%
 # The :meth:`~openturns.experimental.GaussianProcessFitter.setOptimizeParameters` method can be
 # used to disable the optimization of the parameters.
-
-# %%
 algo.setOptimizeParameters(False)
 
 # %%
 # Then we run the algorithm and get the result.
-
-# %%
 algo.run()
 result = algo.getResult()
 
 # %%
 # We observe that the covariance model is unchanged:
 # the parameters have not been optimized, as required.
-
-# %%
 updated_covariance_model = result.getCovarianceModel()
 print(updated_covariance_model)
 
 # %%
 # The trend, however, is still optimized, using linear least squares.
-
-# %%
 result.getTrendCoefficients()
 
 # %%
@@ -292,13 +267,10 @@ result.getTrendCoefficients()
 
 # %%
 # Step 1: Run a first Gaussian process fitter algorithm.
-
-# %%
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds)
 algo.run()
 result = algo.getResult()
 
@@ -324,8 +296,6 @@ Y_train.getSize()
 
 # %%
 # Step 3: Create an updated Gaussian process fit, using the new point with the old covariance parameters.
-
-# %%
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 algo.setOptimizeParameters(False)
 algo.run()
@@ -340,7 +310,7 @@ def printCovarianceParameterChange(covarianceModel1, covarianceModel2):
     parameters2 = covarianceModel2.getFullParameter()
     for i in range(parameters1.getDimension()):
         deltai = abs(parameters1[i] - parameters2[i])
-        print("Change in the parameter #%d = %s" % (i, deltai))
+        print(f"Change in the parameter #{i} = {deltai}")
     return
 
 
@@ -360,13 +330,10 @@ printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 # %%
 # The following example shows how to set the local optimization solver.
 # We choose the `SLSQP` algorithm from :class:`~openturns.NLopt`.
-
-# %%
 problem = solver.getProblem()
 local_solver = ot.NLopt(problem, "LD_SLSQP")
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(scaleOptimizationBounds)
 algo.setOptimizationAlgorithm(local_solver)
 algo.run()
 result = algo.getResult()
@@ -401,8 +368,6 @@ Y_train = model(X_train)
 # First, we create a multivariate distribution, based on independent
 # :class:`~openturns.Uniform` marginals which have the bounds required
 # by the covariance model.
-
-# %%
 distributions = [ot.Uniform(lbounds[i], ubounds[i]) for i in range(dim)]
 boundedDistribution = ot.JointDistribution(distributions)
 
@@ -421,13 +386,7 @@ starting_points = LHS_design.getOptimalDesign()
 starting_points.getSize()
 
 # %%
-# We check that all the starting points are within the bounds.
-scaleOptimizationBounds.contains(starting_points)
-
-# %%
 # Then we create a :class:`~openturns.MultiStart` algorithm based on the LHS starting points.
-
-# %%
 solver.setMaximumIterationNumber(10000)
 multiStartSolver = ot.MultiStart(solver, starting_points)
 
@@ -435,10 +394,7 @@ multiStartSolver = ot.MultiStart(solver, starting_points)
 # Finally, we configure the optimization algorithm so as to use the :class:`~openturns.MultiStart`
 # algorithm. The bounds of the algorithm are set to match the range of the distribution used to
 # generate the starting points.
-
-# %%
 algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(boundedDistribution.getRange())
 algo.setOptimizationAlgorithm(multiStartSolver)
 algo.run()
 result = algo.getResult()
@@ -451,7 +407,7 @@ print(finetune_covariance_model)
 printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
 
 # %%
-# We see that there are no changes in the estimated parameters. This shows that the first optimization of the parameters worked fine.
+# We see that there are changes in the estimated parameters.
 
 
 # %%

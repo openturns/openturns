@@ -56,7 +56,7 @@ basis = ot.LinearBasisFactory(m.dim).build()
 
 # %%
 # For the purpose of illustration, we consider :class:`~openturns.MaternModel`.
-covarianceModel = ot.MaternModel([1.0] * m.dim, 2.5)
+covarianceModel = ot.MaternModel(inputTrainingSet.computeRange() * 0.1, 2.5)
 
 
 # %%

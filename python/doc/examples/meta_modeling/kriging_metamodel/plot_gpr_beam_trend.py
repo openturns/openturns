@@ -69,12 +69,7 @@ covariance_model = ot.SquaredExponential(dimension)
 # To create the Gaussian Process Regression metamodel, we first build the :math:`Y(\omega, x)` Gaussian process with the class
 # :class:`~openturns.experimental.GaussianProcessFitter`. It requires a training sample, a covariance kernel and a
 # trend basis as input arguments.
-# We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensible choice here.
-# We must not forget to actually set the optimization bounds defined above.
-covariance_model.setScale(X_train.computeRange() * 0.5)
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
-scaleOptimizationBounds = ot.Interval(0.1 * X_train.computeRange(), 4.0 * X_train.computeRange())
-algo_fit.setOptimizationBounds(scaleOptimizationBounds)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 
@@ -107,7 +102,6 @@ print(gpr_result_cst.getCovarianceModel())
 # we do not detail it.
 basis = ot.LinearBasisFactory(dimension).build()
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
-algo_fit.setOptimizationBounds(scaleOptimizationBounds)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 algo_gpr = otexp.GaussianProcessRegression(fit_result)
@@ -155,7 +149,6 @@ print(gpr_result_lin.getCovarianceModel())
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1e-6)
 basis = ot.QuadraticBasisFactory(dimension).build()
 algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
-algo_fit.setOptimizationBounds(scaleOptimizationBounds)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 algo_gpr = otexp.GaussianProcessRegression(fit_result)

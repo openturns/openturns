@@ -1,6 +1,6 @@
 """
-Example of multi output Gaussian Process Regression on the fire satellite model
-===============================================================================
+Multi-output Gaussian Process Regression on the fire satellite model
+====================================================================
 """
 
 # %%
@@ -16,22 +16,16 @@ Example of multi output Gaussian Process Regression on the fire satellite model
 # %%
 import openturns as ot
 from openturns.usecases.fire_satellite import FireSatelliteModel
-from openturns.viewer import View
 import openturns.experimental as otexp
-
-
-m = FireSatelliteModel()
+import openturns.viewer as otv
 
 # %%
 # We define the function that evaluates the outputs depending on the inputs.
-
-# %%
+m = FireSatelliteModel()
 model = m.model
 
 # %%
 # We also define the distribution of input variables to build the training and test sets.
-
-# %%
 inputDistribution = m.distribution
 
 
@@ -71,38 +65,13 @@ basis = ot.Basis(
 myCov1 = ot.MaternModel([1.0] * m.dim, 2.5)
 myCov2 = ot.SquaredExponential([1.0] * m.dim)
 myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
-
 covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
 # %%
-# The scaling of the data is really important when dealing with GP fitter,
-# especially considering the domain definition of the input variables (the
-# altitude varies in order of :math:`10^7` whereas the drag coefficient is around 1).
-# We thus define appropriate bounds for the training algorithm based on the
-# domain definition of each variable.
-
-# %%
-scaleOptimizationBounds = ot.Interval(
-    [1.0e6, 1.0e3, 1.0e3, 1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
-    [2.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0],
-)
-
-# %%
-# We can now define the scaled version of with GP fitter model.
-# First, we need to initialize the covariance model's parameters in accordance with the optimization bounds.
-covarianceModelParameters = (
-    0.5
-    * (
-        scaleOptimizationBounds.getUpperBound()
-        - scaleOptimizationBounds.getLowerBound()
-    )
-    + scaleOptimizationBounds.getLowerBound()
-)
-covarianceModel.setParameter(covarianceModelParameters)
+# We can now define the GP fitter model.
 fitter_algo = otexp.GaussianProcessFitter(
     inputTrainingSet, outputTrainingSet, covarianceModel, basis
 )
-fitter_algo.setOptimizationBounds(scaleOptimizationBounds)
 fitter_algo.setOptimizeParameters(True)
 
 # %%
@@ -112,15 +81,12 @@ fitter_result = fitter_algo.getResult()
 gpr_algo = otexp.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
-
 gprMetamodel = gpr_result.getMetaModel()
 
 # %%
 # Validation of metamodel
 # -----------------------
 # To validate the metamodel, we create a validation set of size equal to 50 times the input vector dimension to evaluate the functions.
-
-# %%
 ot.RandomGenerator.SetSeed(1)
 experimentTest = ot.LHSExperiment(inputDistribution, 50 * m.dim)
 inputTestSet = experimentTest.generate()
@@ -130,11 +96,12 @@ outputTestSet = model(inputTestSet)
 # Then, we use the :class:`~openturns.MetaModelValidation` class to validate the metamodel.
 metamodelPredictions = gprMetamodel(inputTestSet)
 val = ot.MetaModelValidation(outputTestSet, metamodelPredictions)
-
 r2Score = val.computeR2Score()
+print("R2=", r2Score)
 
+# %%
+# Graphical validation
 label = ["Total torque", "Total power", "Solar array area"]
-
 for i in range(3):
     graph = val.drawValidation().getGraph(0, i)
     graph.setLegends([""])
@@ -143,4 +110,7 @@ for i in range(3):
     graph.setXTitle("Exact function")
     graph.setYTitle("Metamodel prediction")
     graph.setTitle(label[i])
-    View(graph)
+    otv.View(graph)
+
+# %%
+otv.View.ShowAll()
