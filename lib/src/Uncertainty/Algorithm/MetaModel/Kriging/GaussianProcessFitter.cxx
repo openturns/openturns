@@ -131,11 +131,14 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    const Scalar scaleFactor(ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationScaleFactor"));
-    if (!(scaleFactor > 0))
-      throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
-    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationUpperBound"));
+    const Scalar lowerBoundScaleFactor = ResourceMap::GetAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor");
+    if (!(lowerBoundScaleFactor > 0.0))
+      throw InvalidArgumentException(HERE) << "GPR lower bound scale factor set in ResourceMap should be positive, got " << lowerBoundScaleFactor;
+    const Scalar upperBoundScaleFactor = ResourceMap::GetAsScalar("GaussianProcessFitter-OptimizationUpperBoundScaleFactor");
+    if (!(upperBoundScaleFactor > 0.0))
+      throw InvalidArgumentException(HERE) << "GPR upper bound scale factor set in ResourceMap should be positive, got " << upperBoundScaleFactor;
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound"));
+    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
     // check if some scales are active
     // check if nugget factor is active
@@ -159,14 +162,14 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
       const Point inputSampleRange(inputSample_.computeRange());
       for (UnsignedInteger k = 0; k < activeScalesPositions.getSize(); ++k)
       {
-        upperBound[k] = inputSampleRange[activeScalesIndices[k]] * scaleFactor;
-        if (upperBound[k] < lowerBound[k])
-          upperBound[k] += lowerBound[k];
+        const Scalar rangeK = inputSampleRange[activeScalesIndices[k]];
+        lowerBound[k] = rangeK * lowerBoundScaleFactor;
+        upperBound[k] = rangeK * upperBoundScaleFactor;
       } // k (upper bounds setting)
     } // if active scale
     if (activeNugget.getSize() > 0)
       // Set the lower bound to 0 for nuggetFactor
-      lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
+      lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar("GaussianProcessFitter-DefaultOptimizationNuggetLowerBound");
     LOGINFO(OSS() <<  "For coherency we set scale upper bounds = " << upperBound.__str__());
 
     optimizationBounds_ = Interval(lowerBound, upperBound);

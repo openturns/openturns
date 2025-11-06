@@ -82,12 +82,6 @@ def fitGPR(coordinates, observations, covarianceModel, basis):
         coordinates, observations, covarianceModel, basis
     )
 
-    # Set the optimization bounds for the scale parameter to sensible values
-    # given the data set.
-    fitter.setOptimizationBounds(
-        ot.Interval([lower] * scale_dimension, [upper] * scale_dimension)
-    )
-
     # Fit the GP hyperparameters.
     fitter.run()
     fitter_result = fitter.getResult()

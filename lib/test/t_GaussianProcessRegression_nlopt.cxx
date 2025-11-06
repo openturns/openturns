@@ -28,15 +28,11 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 10000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
 
   try
   {
     // Test 1: a real value function
     {
-      // Set Numerical precision to 4
-      PlatformInfo::SetNumericalPrecision(4);
       const UnsignedInteger sampleSize = 6;
       const UnsignedInteger dimension = 1;
 
@@ -178,9 +174,11 @@ int main(int, char *[])
       Function metaModel(result.getMetaModel());
       // Prediction & interpolation
       //assert_almost_equal(sampleY, metaModel(sampleX));
-      const Point point = {5.5};
-      const Point outputValue = {-3.88363, 3.90286};
-      assert_almost_equal(metaModel(point), outputValue);
+      const Point x = {5.5};
+      const Point outputValue = {-3.88371, 3.90286};
+      const Point y = metaModel(x);
+      std::cout << "y=" << y << std::endl;
+      assert_almost_equal(y, outputValue);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861
     {
@@ -211,7 +209,7 @@ int main(int, char *[])
       // Get meta model
       Function metaModel(result.getMetaModel());
       const Point point = {5.5};
-      const Point outputValue = {5.58838};
+      const Point outputValue = {5.58849};
       assert_almost_equal(metaModel(point), outputValue);
     }
 

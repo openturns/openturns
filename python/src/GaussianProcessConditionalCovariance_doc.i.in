@@ -41,8 +41,7 @@ Examples
 Create the model :math:`g: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> from openturns.experimental import GaussianProcessRegression
->>> from openturns.experimental import GaussianProcessConditionalCovariance
+>>> import openturns.experimental as otexp
 >>> trend = ot.SymbolicFunction(['x'],  ['1'])
 >>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
 >>> sampleY = trend(sampleX)
@@ -52,14 +51,12 @@ Create the algorithm:
 >>> covarianceModel = ot.SquaredExponential([1.0])
 >>> covarianceModel.setActiveParameter([])
 
->>> algo = GaussianProcessRegression(sampleX, sampleY, covarianceModel, trend)
+>>> algo = otexp.GaussianProcessRegression(sampleX, sampleY, covarianceModel, trend)
 >>> algo.run()
 >>> result = algo.getResult()
->>> condCov = GaussianProcessConditionalCovariance(result)
+>>> condCov = otexp.GaussianProcessConditionalCovariance(result)
 >>> c = condCov([1.1])
-
 "
-
 
 // ---------------------------------------------------------------------
 
