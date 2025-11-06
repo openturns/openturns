@@ -27,9 +27,8 @@ The next example creates a tensor-product basis of Fourier functions.
 >>> inputDimension = 3
 >>> familyColl = [ot.FourierSeriesFactory() for i in range(inputDimension)]
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
->>> fourierMultivariateBasis = ot.OrthogonalProductFunctionFactory(
->>>     familyColl, enumerateFunction
->>> )"
+>>> basis = ot.OrthogonalProductFunctionFactory(familyColl, enumerateFunction)
+"
 %enddef
 %feature("docstring") OT::FourierSeriesFactory
 OT_FourierSeriesFactory_doc
