@@ -1546,7 +1546,7 @@ MatrixImplementation MatrixImplementation::computeRegularizedCholesky() const
     throw InvalidArgumentException(HERE) << "In MatrixImplementation::computeRegularizedCholesky, could not compute the Cholesky factor."
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)
-    LOGWARN(OSS() <<  "Scaling up to " << cumulatedScaling << " was needed in order to factorize the matrix.");
+    LOGINFO(OSS() <<  "Scaling up to " << cumulatedScaling << " was needed in order to factorize the matrix.");
   return choleskyFactor;
 }
 

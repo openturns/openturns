@@ -141,7 +141,7 @@ void MultiStart::run()
     }
     catch (const Exception & ex)
     {
-      LOGDEBUG(OSS() << "Local search failed with " << ex);
+      LOGINFO(OSS() << "Local search " << i << "/" << size << " failed with " << ex);
     }
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();

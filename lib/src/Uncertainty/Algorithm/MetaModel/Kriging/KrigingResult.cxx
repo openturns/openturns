@@ -201,14 +201,14 @@ void KrigingResult::computePhi() const
 {
   // Nothing to do if the design matrix has already been computed
   if (Gt_.getNbRows() != 0) return;
-  LOGINFO("Solve linear system  L * phi= F");
+  LOGDEBUG("Solve linear system  L * phi= F");
   Matrix phi;
   if (0 != covarianceCholeskyFactor_.getNbRows())
     phi = covarianceCholeskyFactor_.solveLinearSystem(F_);
   else
     phi = covarianceHMatrix_.solveLower(F_);
   // Compute QR decomposition of Phi_
-  LOGINFO("Compute the QR decomposition of phi");
+  LOGDEBUG("Compute the QR decomposition of phi");
   Matrix G;
   phi.computeQR(G);
   Gt_ = G.transpose();
@@ -230,12 +230,12 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
 
   const Sample sample(xi);
   // 1) compute \sigma_{x,x}
-  LOGINFO("Compute interactions Sigma_xx");
+  LOGDEBUG("Compute interactions Sigma_xx");
   const CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
 
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditioned data & xi
-  LOGINFO("Compute cross-interactions sigmaYX");
+  LOGDEBUG("Compute cross-interactions sigmaYX");
   const Matrix crossCovariance(covarianceModel_.computeCrossCovariance(getInputSample(), sample));
   // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
@@ -243,26 +243,26 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   Matrix B;
   if (0 != covarianceCholeskyFactor_.getNbRows())
   {
-    LOGINFO("Solve L.B = SigmaYX");
+    LOGDEBUG("Solve L.B = SigmaYX");
     B = covarianceCholeskyFactor_.solveLinearSystem(crossCovariance);
   }
   else
   {
-    LOGINFO("Solve L.B = SigmaYX (h-mat version)");
+    LOGDEBUG("Solve L.B = SigmaYX (h-mat version)");
     B = covarianceHMatrix_.solveLower(crossCovariance);
   }
   // Use of gram to compute B^{t} * B
   // Default gram computes B*B^t
   // With transpose argument=true, it performs B^t*B
   // With full argument=false, lower triangular matrix B^t*B is not symmetrized
-  LOGINFO("Compute B^tB");
+  LOGDEBUG("Compute B^tB");
   const CovarianceMatrix BtB(B.computeGram(true));
 
   // Interest is to compute sigma_xx -= BtB
   // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
   // Symmetric : ok but not necessary definite. Here by definition it is!
   // So should we define  operator - & operator -= with covariances?
-  LOGINFO("Compute Sigma_xx-BtB");
+  LOGDEBUG("Compute Sigma_xx-BtB");
   CovarianceMatrix result(*sigmaXX.getImplementation() - *BtB.getImplementation() );
 
   // Case of simple Kriging
@@ -271,7 +271,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // Case of universal Kriging: compute the covariance due to the regression part
   // Additional information have to be computed
   // 1) compute F
-  LOGINFO("Compute the regression matrix F");
+  LOGDEBUG("Compute the regression matrix F");
   computeF();
   // 2) Interest is (F^t R^{-1} F)^{-1}
   // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
@@ -280,10 +280,10 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
   //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
   //                 = phiT_ * B - f(x)
-  LOGINFO("Compute psi = phi^t * B");
+  LOGDEBUG("Compute psi = phi^t * B");
   const Matrix psi(phiT_ * B);
   // compute f(x) & define u = psi - f(x)
-  LOGINFO("Compute f(x)");
+  LOGDEBUG("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
   Matrix fx(F_.getNbColumns(), sampleSize * outputDimension);
   // Fill fx => equivalent to F for the x data with transposition
@@ -301,13 +301,13 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
       for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
         fx(j * outputDimension + outputMarginal, outputMarginal + i * outputDimension) = basisSample(i, outputMarginal);
   }
-  LOGINFO("Compute ux = psi - fx");
+  LOGDEBUG("Compute ux = psi - fx");
   const Matrix ux(psi - fx);
 
   // interest now is to solve  G rho = ux
-  LOGINFO("Solve linear system G * rho = ux");
+  LOGDEBUG("Solve linear system G * rho = ux");
   const Matrix rho(Gt_.solveLinearSystem(ux));
-  LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+  LOGDEBUG("Compute Sigma_xx-BtB + rho^{t}*rho");
   result = result + rho.computeGram(true);
   return result;
 }
@@ -323,12 +323,12 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
 
   const Point data(point);
   // 1) compute \sigma_{x,x}
-  LOGINFO("Compute interactions Sigma_xx");
+  LOGDEBUG("Compute interactions Sigma_xx");
   const SquareMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
 
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditioned data & xi
-  LOGINFO("Compute cross-interactions sigmaYX");
+  LOGDEBUG("Compute cross-interactions sigmaYX");
   const Matrix crossCovariance(covarianceModel_.computeCrossCovariance(getInputSample(), data));
 
   // 3) Compute r^t R^{-1} r'(x)
@@ -337,26 +337,26 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   Matrix B;
   if (0 != covarianceCholeskyFactor_.getNbRows())
   {
-    LOGINFO("Solve L.B = SigmaYX");
+    LOGDEBUG("Solve L.B = SigmaYX");
     B = covarianceCholeskyFactor_.solveLinearSystem(crossCovariance);
   }
   else
   {
-    LOGINFO("Solve L.B = SigmaYX (h-mat version)");
+    LOGDEBUG("Solve L.B = SigmaYX (h-mat version)");
     B = covarianceHMatrix_.solveLower(crossCovariance);
   }
   // Use of gram to compute B^{t} * B
   // Default gram computes B*B^t
   // With transpose argument=true, it performs B^t*B
   // With full argument=false, lower triangular matrix B^t*B is not symmetrized
-  LOGINFO("Compute B^tB");
+  LOGDEBUG("Compute B^tB");
   const CovarianceMatrix BtB(B.computeGram(true));
 
   // Interest is to compute sigma_xx -= BtB
   // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
   // Symmetric : ok but not necessary definite. Here by definition it is!
   // So should we define  operator - & operator -= with covariances?
-  LOGINFO("Compute Sigma_xx-BtB");
+  LOGDEBUG("Compute Sigma_xx-BtB");
   CovarianceMatrix result(*sigmaXX.getImplementation() - *BtB.getImplementation() );
 
   // Case of simple Kriging
@@ -365,7 +365,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   // Case of universal Kriging: compute the covariance due to the regression part
   // Additional information have to be computed
   // 1) compute F
-  LOGINFO("Compute the regression matrix F");
+  LOGDEBUG("Compute the regression matrix F");
   computeF();
   // 2) Interest is (F^t R^{-1} F)^{-1}
   // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
@@ -374,10 +374,10 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
   //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
   //                 = phiT_ * B - f(x)
-  LOGINFO("Compute psi = phi^t * B");
+  LOGDEBUG("Compute psi = phi^t * B");
   const Matrix psi(phiT_ * B);
   // compute f(x) & define u = psi - f(x)
-  LOGINFO("Compute f(x)");
+  LOGDEBUG("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
   const UnsignedInteger outputDimension = getOutputSample().getDimension();
   Matrix fx(F_.getNbColumns(), outputDimension);
@@ -389,13 +389,13 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
     for (UnsignedInteger outputMarginal = 0; outputMarginal < outputDimension; ++outputMarginal)
       fx(j * outputDimension + outputMarginal, outputMarginal) = phiX[outputMarginal];
   }
-  LOGINFO("Compute ux = psi - fx");
+  LOGDEBUG("Compute ux = psi - fx");
   const Matrix ux(psi - fx);
 
   // interest now is to solve  G rho = ux
-  LOGINFO("Solve linear system G * rho = ux");
+  LOGDEBUG("Solve linear system G * rho = ux");
   const Matrix rho(Gt_.solveLinearSystem(ux));
-  LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+  LOGDEBUG("Compute Sigma_xx-BtB + rho^{t}*rho");
   result = result + rho.computeGram(true);
   return result;
 }
@@ -436,15 +436,15 @@ CovarianceMatrix KrigingResult::getConditionalMarginalCovariance(const Point & x
 Normal KrigingResult::operator()(const Sample & xi) const
 {
   // The Normal distribution is defined by its mean & covariance
-  LOGINFO("In KrigingResult::operator() : evaluating the mean");
+  LOGDEBUG("In KrigingResult::operator() : evaluating the mean");
   const Sample meanAsSample = getConditionalMean(xi);
   // Mean should be a Point ==> data are copied form the Sample to a Point
   const Point mean(meanAsSample.getImplementation()->getData());
-  LOGINFO("In KrigingResult::operator() : evaluating the covariance");
+  LOGDEBUG("In KrigingResult::operator() : evaluating the covariance");
   const CovarianceMatrix covarianceMatrix = getConditionalCovariance(xi);
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
   // Even if this check is done in Normal::Normal, we perform debugging
-  LOGINFO("In KrigingResult::operator() : evaluating the Normal distribution");
+  LOGDEBUG("In KrigingResult::operator() : evaluating the Normal distribution");
   if (!covarianceMatrix.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "In KrigingResult::operator(), the covariance matrix is not positive definite. The given points could be very close to the learning set. Could not build the Normal distribution";
   // Finally return the distribution
   return Normal(mean, covarianceMatrix);
@@ -485,7 +485,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
   {
     const Sample sample(xi);
     // 1) compute \sigma_{x,x}
-    LOGINFO("Compute interactions Sigma_xx");
+    LOGDEBUG("Compute interactions Sigma_xx");
     // Only diagonal of the discretization Matrix
     // First set sigmaXX
     const Point defaultPoint(inputDimension);
@@ -495,7 +495,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
 
     // 2) compute \sigma_{y,x}
     // compute r(x), the crossCovariance between the conditioned data & xi
-    LOGINFO("Compute cross-interactions sigmaYX");
+    LOGDEBUG("Compute cross-interactions sigmaYX");
     const Matrix crossCovariance(covarianceModel_.computeCrossCovariance(getInputSample(), sample));
     // 3) Compute r^t R^{-1} r'(x)
     // As we get the Cholesky factor L, we can solve triangular linear system
@@ -503,18 +503,18 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     Matrix B;
     if (0 != covarianceCholeskyFactor_.getNbRows())
     {
-      LOGINFO("Solve L.B = SigmaYX");
+      LOGDEBUG("Solve L.B = SigmaYX");
       B = covarianceCholeskyFactor_.solveLinearSystem(crossCovariance);
     }
     else
     {
-      LOGINFO("Solve L.B = SigmaYX (h-mat version)");
+      LOGDEBUG("Solve L.B = SigmaYX (h-mat version)");
       B = covarianceHMatrix_.solveLower(crossCovariance);
     }
     // We compute diag(B^t B)
     // We can notice that it corresponds to the sum of elements
     // for each column
-    LOGINFO("Compute B^tB & Sigma_xx-BtB");
+    LOGDEBUG("Compute B^tB & Sigma_xx-BtB");
     //const CovarianceMatrix BtB(B.computeGram(true));
     for (UnsignedInteger j = 0; j < B.getNbColumns(); ++j)
     {
@@ -530,7 +530,7 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // Case of universal Kriging: compute the covariance due to the regression part
     // Additional information have to be computed
     // 1) compute F
-    LOGINFO("Compute the regression matrix F");
+    LOGDEBUG("Compute the regression matrix F");
     computeF();
     // 2) Interest is (F^t R^{-1} F)^{-1}
     // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
@@ -539,10 +539,10 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
     //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
     //                 = phiT_ * B - f(x)
-    LOGINFO("Compute psi = phi^t * B");
+    LOGDEBUG("Compute psi = phi^t * B");
     const Matrix psi(phiT_ * B);
     // compute f(x) & define u = psi - f(x)
-    LOGINFO("Compute f(x)");
+    LOGDEBUG("Compute f(x)");
     // Note that fx = F^{T} for x in inputSample_
     Matrix fx(F_.getNbColumns(), sampleSize);
     // Fill fx => equivalent to F for the x data with transposition
@@ -555,13 +555,13 @@ Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       for (UnsignedInteger i = 0; i < sampleSize; ++i)
         fx(j,  i) = basisSample(i, 0);
     }
-    LOGINFO("Compute ux = psi - fx");
+    LOGDEBUG("Compute ux = psi - fx");
     const Matrix ux(psi - fx);
 
     // interest now is to solve  G rho = ux
-    LOGINFO("Solve linear system G * rho = ux");
+    LOGDEBUG("Solve linear system G * rho = ux");
     const Matrix rho(Gt_.solveLinearSystem(ux));
-    LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+    LOGDEBUG("Compute Sigma_xx-BtB + rho^{t}*rho");
     for (UnsignedInteger j = 0; j < rho.getNbColumns(); ++j)
     {
       Scalar sum = 0.0;

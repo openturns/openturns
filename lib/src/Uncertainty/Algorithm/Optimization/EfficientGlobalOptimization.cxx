@@ -384,10 +384,10 @@ void EfficientGlobalOptimization::run()
       else
       {
         KrigingAlgorithm algo(inputSample, outputSample, krigingResult.getCovarianceModel(), krigingResult.getBasis());
-        LOGINFO(OSS() << "Rebuilding kriging ...");
+        LOGDEBUG(OSS() << "Rebuilding kriging ...");
         algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
         algo.run();
-        LOGINFO(OSS() << "Rebuilding kriging - done");
+        LOGDEBUG(OSS() << "Rebuilding kriging - done");
         krigingResult = algo.getResult();
       }
     }
