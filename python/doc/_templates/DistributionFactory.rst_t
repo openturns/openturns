@@ -7,7 +7,7 @@
     import openturns as ot
     import openturns.experimental as otexp
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     if hasattr(ot, "{{ objname }}"):
@@ -29,7 +29,7 @@
             pdf_graph.setTitle(str(distribution))
             fig = plt.figure(figsize=(10, 4))
             pdf_axis = fig.add_subplot(111)
-            View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
+            otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
         else:
             sample = ref.getSample(500)
             distribution = factory.build(sample)
@@ -42,7 +42,7 @@
             pdf_graph.setTitle(str(distribution))
             fig = plt.figure(figsize=(10, 4))
             pdf_axis = fig.add_subplot(111)
-            View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
+            otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
 
 .. currentmodule:: {{ module }}
 

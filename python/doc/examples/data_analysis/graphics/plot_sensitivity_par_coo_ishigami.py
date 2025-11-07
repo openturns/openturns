@@ -30,7 +30,7 @@ Visualize sensitivity
 # %%
 from openturns.usecases.ishigami_function import IshigamiModel
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -85,7 +85,7 @@ graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Here we would like to conclude that the highest values of :math:`Y` are obtained from a specific input as the highlighted lines clearly follow one only path.
@@ -100,7 +100,7 @@ graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # A new path is then available ! That is the reason why we chose a quantile based ranking as the value based parallel plot involves a bit of guessing.
@@ -122,7 +122,7 @@ graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The parallel coordinates plot obtained is helpful : we see peculiar values for each marginal.
@@ -169,7 +169,7 @@ graph = ot.VisualTest.DrawParallelCoordinates(
     X, Y, minValue, maxValue, "red", quantileScale
 )
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We cannot extract any useful information from this parallel plot.

@@ -17,7 +17,7 @@ Create a Joint by Conditioning  distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -54,7 +54,7 @@ cloud = ot.Cloud(sample)
 cloud.setColor("red")
 cloud.setLegend("sample")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 view.ShowAll()

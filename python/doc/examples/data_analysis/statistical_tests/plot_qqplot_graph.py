@@ -8,7 +8,7 @@ Draw the QQ-Plot
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -24,12 +24,12 @@ distribution = ot.GumbelFactory().build(sample)
 # %%
 # Draw QQ plot
 graph = ot.VisualTest.DrawQQplot(sample, distribution)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Incorrect proposition
 graph = ot.VisualTest.DrawQQplot(sample, ot.WeibullMin())
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

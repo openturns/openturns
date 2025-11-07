@@ -5,7 +5,7 @@ Create a deterministic design of experiments
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 # %%
@@ -44,7 +44,7 @@ levels = [1.0, 1.5, 3.0]
 experiment = ot.Axial(2, levels)
 sample = experiment.generate()
 graph = drawBidimensionalSample(sample, "Axial")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Use \*= to rescale and += to move a design.
@@ -54,7 +54,7 @@ view = viewer.View(graph)
 sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample, "Axial")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Factorial design
@@ -67,7 +67,7 @@ sample = experiment.generate()
 sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample, "Factorial")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Composite design
@@ -83,7 +83,7 @@ sample = experiment.generate()
 sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample, "Composite")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Grid design
@@ -97,5 +97,5 @@ sample = experiment.generate()
 sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample, "Box")
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

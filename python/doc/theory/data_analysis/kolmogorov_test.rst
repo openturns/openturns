@@ -71,7 +71,7 @@ parameterized by :math:`\lambda = 0.07`, :math:`\gamma = 0`.
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     candidate = ot.Exponential(0.07, 0.0)
     graph = candidate.drawCDF(0.0, 30.0)
@@ -83,7 +83,7 @@ parameterized by :math:`\lambda = 0.07`, :math:`\gamma = 0`.
 
     graph.setTitle('CDF comparison')
     graph.setLegends(['Candidate CDF', 'Empirical CDF'])
-    View(graph)
+    otv.View(graph)
 
 
 .. topic:: API:

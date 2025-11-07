@@ -12,7 +12,7 @@ Visualize pairs between two samples
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -34,5 +34,5 @@ output_sample = model(input_sample)
 # %% Visualize the data
 graph = ot.VisualTest.DrawPairsXY(input_sample, output_sample)
 graph.setTitle("Clouds of input / output samples")
-view = viewer.View(graph)
-viewer.View.ShowAll()
+view = otv.View(graph)
+otv.View.ShowAll()

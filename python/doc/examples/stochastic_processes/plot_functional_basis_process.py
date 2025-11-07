@@ -36,7 +36,7 @@ Create a functional basis process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -66,4 +66,4 @@ N = 6
 sample = process.getSample(N)
 graph = sample.drawMarginal(0)
 graph.setTitle(str(N) + " realizations of functional basis process")
-view = viewer.View(graph)
+view = otv.View(graph)

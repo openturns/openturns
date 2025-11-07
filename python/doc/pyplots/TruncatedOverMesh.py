@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 ot.ResourceMap.Reload()
@@ -45,6 +45,6 @@ grid.setGraph(1, 0, pdf_2d)
 grid.setGraph(1, 1, cdf_2d)
 grid.setTitle("TruncatedOverMesh")
 grid.setLegendPosition("upper right")
-v = View(grid)
+v = otv.View(grid)
 fig = v.getFigure()
 fig.axes[1].legend(loc="best")

@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 lowerBound = [0.0, 0.0]
 upperBound = [1.0, 1.0]
@@ -30,4 +30,4 @@ graph.setTitle(
 graph.setXTitle("$x$")
 graph.setYTitle("$y$")
 
-view = View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)
+view = otv.View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)

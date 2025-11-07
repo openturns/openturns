@@ -8,7 +8,7 @@ Create a design of experiments with discrete and continuous variables
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -51,7 +51,7 @@ sample = experiment.generate()
 graph = ot.Graph("MonteCarloExperiment", "x0", "x1", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Any other type of design of experiments can be generated based on this distribution. The following example shows a LHS experiment.
@@ -67,5 +67,5 @@ sample = experiment.generate()
 graph = ot.Graph("LHSExperiment", "x0", "x1", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

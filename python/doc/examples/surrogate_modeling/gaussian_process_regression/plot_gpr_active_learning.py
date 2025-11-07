@@ -17,9 +17,8 @@ Gaussian Process-based active learning for reliability
 # %%
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
-from openturns import viewer
 
 # %%
 # Define the function, the threshold above which the system is considered in failure, and the input probability distribution.
@@ -61,7 +60,7 @@ graph.add(data)
 graph.setLegendPosition("lower right")
 graph.setAxes(True)
 graph.setGrid(True)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -210,7 +209,7 @@ def plotMyBasicGPR(
 # %%
 gprResult = createMyBasicGPR(X, Y)
 graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -265,7 +264,7 @@ Y.add(yNew)
 # %%
 gprResult = createMyBasicGPR(X, Y)
 graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The algorithm added in the domain.
@@ -278,7 +277,7 @@ for GPRStep in range(10):
     Y.add(yNew)
     gprResult = createMyBasicGPR(X, Y)
     graph = plotMyBasicGPR(gprResult, xMin, xMax, X, Y, event, sampleX, probability)
-    View(graph)
+    otv.View(graph)
 
 # %%
 # We can see that the metamodel only needs to be accurate near the event threshold to retrieve a precise estimation probability of failure.
@@ -298,4 +297,4 @@ for GPRStep in range(10):
 # * Echard, B. (2012). Assessment by kriging of the reliability of structures subjected to fatigue stress, Université Blaise Pascal, PhD thesis
 #
 
-View.ShowAll()
+otv.View.ShowAll()

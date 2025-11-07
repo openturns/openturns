@@ -5,7 +5,7 @@ Create a mesh
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 import math as m
 
@@ -51,7 +51,7 @@ graph = time_grid.draw()
 graph.setTitle("Time grid")
 graph.setXTitle("t")
 graph.setYTitle("")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -77,7 +77,7 @@ simplicies = [[0, 1], [1, 2], [2, 3]]
 mesh1D = ot.Mesh(vertices, simplicies)
 graph1 = mesh1D.draw()
 graph1.setTitle("One dimensional mesh")
-view = viewer.View(graph1)
+view = otv.View(graph1)
 
 # %%
 # We define a bidimensional mesh :
@@ -87,7 +87,7 @@ mesh2D = ot.Mesh(vertices, simplicies)
 graph2 = mesh2D.draw()
 graph2.setTitle("Bidimensional mesh")
 graph2.setLegendPosition("lower right")
-view = viewer.View(graph2)
+view = otv.View(graph2)
 
 # %%
 # We can also define a mesh which is a regularly meshed box in dimension 1 or 2.
@@ -103,7 +103,7 @@ myInterval = ot.Interval(lowerBound, upperBound)
 myMeshBox = myMesher.build(myInterval)
 mygraph3 = myMeshBox.draw()
 mygraph3.setTitle("Bidimensional mesh on a box")
-view = viewer.View(mygraph3)
+view = otv.View(mygraph3)
 
 # %%
 # It is possible to perform a transformation on a regularly meshed box.
@@ -123,7 +123,7 @@ newVertices = f(oldVertices)
 meshBox2.setVertices(newVertices)
 graphMappedBox = meshBox2.draw()
 graphMappedBox.setTitle("Mapped box mesh")
-view = viewer.View(graphMappedBox)
+view = otv.View(graphMappedBox)
 
 
 # %%
@@ -169,7 +169,7 @@ mesh4 = meshHeart(48, 16)
 graphMesh = mesh4.draw()
 graphMesh.setTitle("Bidimensional mesh")
 graphMesh.setLegendPosition("")
-view = viewer.View(graphMesh)
+view = otv.View(graphMesh)
 
 # %%
 # Display figures

@@ -5,7 +5,7 @@ Test the copula
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 # %%
 # Copula fitting test using Kendall plot
@@ -35,12 +35,12 @@ ot.ResourceMap.SetAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 25)
 # We can test a specific copula model for a given sample,
 copula_test = ot.GumbelCopula(3)
 graph = ot.VisualTest.DrawKendallPlot(sample1, copula_test)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # or test whether two samples have the same copula model
 graph = ot.VisualTest.DrawKendallPlot(sample1, sample2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The first test gives a positive result as the blue curve is near the identity line which is not the case for the second test.
@@ -99,9 +99,9 @@ contour_estCop.setLegend("Gumbel copula")
 contour_estCop.setColor("red")
 # Add the iso-curves graph into the cloud one
 myGraph.add(contour_estCop)
-view = viewer.View(myGraph)
+view = otv.View(myGraph)
 
 
 # %%
 # Display figures
-viewer.View.ShowAll()
+otv.View.ShowAll()

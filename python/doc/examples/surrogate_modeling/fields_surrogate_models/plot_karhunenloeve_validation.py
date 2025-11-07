@@ -10,7 +10,7 @@ Validation of a Karhunen-Loeve decomposition
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -38,27 +38,27 @@ validation = ot.KarhunenLoeveValidation(processSample, klresult)
 # %%
 # Plot the residual field.
 residualProcessSample = validation.computeResidual()
-view = viewer.View(residualProcessSample.drawMarginal(0))
+view = otv.View(residualProcessSample.drawMarginal(0))
 
 # %%
 # Plot the residual mean field.
 residualMean = validation.computeResidualMean()
-view = viewer.View(residualMean.drawMarginal(0))
+view = otv.View(residualMean.drawMarginal(0))
 
 # %%
 # Plot the residual standard deviation field.
 residualSigmaField = validation.computeResidualStandardDeviation()
-view = viewer.View(residualSigmaField.drawMarginal(0))
+view = otv.View(residualSigmaField.drawMarginal(0))
 
 # %%
 # Build the validation graph.
-view = viewer.View(validation.drawValidation())
+view = otv.View(validation.drawValidation())
 
 # %%
 # Build the weight graph.
-view = viewer.View(validation.drawObservationWeight(0))
+view = otv.View(validation.drawObservationWeight(0))
 
 # %%
 # Build the quality graph.
-view = viewer.View(validation.drawObservationQuality())
+view = otv.View(validation.drawObservationQuality())
 plt.show()

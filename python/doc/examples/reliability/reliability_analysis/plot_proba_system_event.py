@@ -78,7 +78,7 @@ Time variant system reliability problem
 
 # %%
 from math import sqrt
-from openturns.viewer import View
+import openturns.viewer as otv
 import openturns as ot
 
 
@@ -249,7 +249,7 @@ g.setLegends(["MC", "QMC", "FORM"])
 g.setLegendPosition("upper left")
 g.setXTitle("t")
 g.setYTitle("Outcrossing rate")
-view = View(g)
+view = otv.View(g)
 
 # %%
 # Display all the graphs

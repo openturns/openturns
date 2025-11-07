@@ -1,6 +1,6 @@
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 
 grid = ot.GridLayout(1, 2)
 pdf_2d = ot.Graph("CombinationsDistribution, PDF", "x1", "x2", True)
@@ -18,4 +18,4 @@ cdf_2d.setLegends([""])
 grid.setGraph(0, 0, pdf_2d)
 grid.setGraph(0, 1, cdf_2d)
 grid.setTitle("CombinationsDistribution")
-View(grid).ShowAll()
+otv.View(grid).ShowAll()

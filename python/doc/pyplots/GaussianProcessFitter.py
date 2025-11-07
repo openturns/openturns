@@ -1,6 +1,6 @@
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 
 f = ot.SymbolicFunction(["x"], ["x * sin(x)"])
 sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
@@ -27,4 +27,4 @@ graph.setLegendPosition("upper left")
 graph.setTitle(r"$y(x)=x * sin(x)$")
 graph.setYTitle(r"$f$")
 graph.setXTitle(r"$x$")
-View(graph, figure_kw={"figsize": (8, 4)})
+otv.View(graph, figure_kw={"figsize": (8, 4)})

@@ -19,7 +19,7 @@ Metamodel of a field function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -76,7 +76,7 @@ phi_X = result_X.getScaledModesAsProcessSample()
 lambda_X = result_X.getEigenvalues()
 
 graph_modes_X, graph_ev_X = drawKL(phi_X, lambda_X, mesh, "X")
-view = viewer.View(graph_modes_X)
+view = otv.View(graph_modes_X)
 
 
 # %%
@@ -132,7 +132,7 @@ result_Y = algo_Y.getResult()
 phi_Y = result_Y.getScaledModesAsProcessSample()
 lambda_Y = result_Y.getEigenvalues()
 graph_modes_Y, graph_ev_Y = drawKL(phi_Y, lambda_Y, mesh, "Y")
-view = viewer.View(graph_modes_Y)
+view = otv.View(graph_modes_Y)
 
 # %%
 # Compare eigenvalues of X and Y.
@@ -142,7 +142,7 @@ graph_ev_X.setYTitle(r"$\lambda_X, \lambda_Y$")
 graph_ev_X.setColors(["blue", "blue", "red", "red"])
 graph_ev_X.setLegends([r"$\lambda_X$", "", r"$\lambda_Y$", ""])
 graph_ev_X.setLegendPosition("upper right")
-view = viewer.View(graph_ev_X)
+view = otv.View(graph_ev_X)
 
 # %%
 # Perform the polynomial chaos expansion between Karhunen-Loève coefficients.
@@ -216,19 +216,19 @@ for i in range(iMax):
 graph_sample_Y_validation.setTitle(r"Comparison $Y_i$ and $\tilde{Y}_i$")
 graph_sample_Y_validation.setXTitle(r"$t$")
 graph_sample_Y_validation.setYTitle(r"$Y$, $\tilde{Y}$")
-view = viewer.View(graph_sample_Y_validation)
+view = otv.View(graph_sample_Y_validation)
 
 # %%
 graph_sample_X = sample_X_validation.drawMarginal(0)
 graph_sample_X.setTitle(r"Trajectory $X$")
 graph_sample_X.setXTitle(r"$t$")
 graph_sample_X.setYTitle(r"$X$")
-view = viewer.View(graph_sample_X)
+view = otv.View(graph_sample_X)
 
 # %%
 graph_sample_Y = sample_Y_validation.drawMarginal(0)
 graph_sample_Y.setTitle(r"Trajectory $Y$")
 graph_sample_Y.setXTitle(r"$t$")
 graph_sample_Y.setYTitle(r"$Y$")
-view = viewer.View(graph_sample_Y)
+view = otv.View(graph_sample_Y)
 plt.show()

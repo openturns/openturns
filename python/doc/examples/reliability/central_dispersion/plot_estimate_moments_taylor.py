@@ -10,7 +10,7 @@ In this example we are going to estimate mean and standard deviation of an outpu
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 
 
@@ -59,7 +59,7 @@ taylor.getImportanceFactors()
 # %%
 # draw importance factors
 graph = taylor.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Get the value of the output at the mean point
@@ -123,4 +123,4 @@ Y = ot.CompositeRandomVector(myFunc, X)
 taylor = ot.TaylorExpansionMoments(Y)
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

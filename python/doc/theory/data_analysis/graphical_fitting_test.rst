@@ -58,13 +58,13 @@ carried out to confirm this.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     distribution = ot.Normal(3.0, 2.0)
     sample = distribution.getSample(150)
     graph = ot.VisualTest.DrawQQplot(sample, distribution)
-    View(graph)
+    otv.View(graph)
 
 In this second example, the tested continuous distribution is clearly
 false.
@@ -72,14 +72,14 @@ false.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     distribution = ot.Normal(3.0, 3.0)
     distribution2 = ot.Normal(2.0, 1.0)
     sample = distribution.getSample(150)
     graph = ot.VisualTest.DrawQQplot(sample, distribution2)
-    View(graph)
+    otv.View(graph)
 
 
 Normal probability plot (Henry’s line)
@@ -110,13 +110,13 @@ should be carried out to confirm this.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     distribution = ot.Normal(10.0, 2.0)
     sample = distribution.getSample(50)
     graph = ot.VisualTest.DrawHenryLine(sample)
-    View(graph)
+    otv.View(graph)
 
 In this second example, the hypothesis of a normal distribution seems
 far less plausible because of the behavior for small values of
@@ -125,13 +125,13 @@ far less plausible because of the behavior for small values of
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     distribution = ot.LogNormal(2.0, 1.0, 0.0)
     sample = distribution.getSample(50)
     graph = ot.VisualTest.DrawHenryLine(sample)
-    View(graph)
+    otv.View(graph)
 
 
 
@@ -226,13 +226,13 @@ In the first example, the Kendall Plot test validates the use of the Frank copul
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula = ot.FrankCopula(1.5)
     sample = copula.getSample(100)
     graph = ot.VisualTest.DrawKendallPlot(sample, copula)
-    View(graph)
+    otv.View(graph)
 
 
 In the second example, the Kendall Plot test invalidates the use of the Frank copula for the given sample.
@@ -240,14 +240,14 @@ In the second example, the Kendall Plot test invalidates the use of the Frank co
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula = ot.FrankCopula(1.5)
     copula2 = ot.GumbelCopula(4.5)
     sample = copula.getSample(100)
     graph = ot.VisualTest.DrawKendallPlot(sample, copula2)
-    View(graph)
+    otv.View(graph)
 
 
 

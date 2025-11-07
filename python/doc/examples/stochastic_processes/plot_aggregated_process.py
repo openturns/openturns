@@ -8,7 +8,7 @@ Aggregate processes
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -27,7 +27,7 @@ myProcess2 = ot.WhiteNoise(ot.Triangular(), myMesh)
 # Draw values of a realization of the 2nd process
 marginal = ot.HistogramFactory().build(myProcess1.getRealization().getValues())
 graph = marginal.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create an aggregated process
@@ -39,5 +39,5 @@ marginal = ot.HistogramFactory().build(
     myAggregatedProcess.getRealization().getValues().getMarginal(0)
 )
 graph = marginal.drawPDF()
-viewer.View(graph)
+otv.View(graph)
 plt.show()

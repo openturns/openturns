@@ -13,7 +13,7 @@ Test Normality
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -24,13 +24,13 @@ sample1 = distribution.getSample(100)
 # %%
 # We draw the Henry line plot and expect a good fitting :
 graph = ot.VisualTest.DrawHenryLine(sample1)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # For comparison sake e draw the Henry line plot for a Beta distribution. The result is expected to be bad.
 sample2 = ot.Beta(0.7, 0.9, 0.0, 2.0).getSample(100)
 graph = ot.VisualTest.DrawHenryLine(sample2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

@@ -38,7 +38,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import math
 
 # %%
@@ -78,7 +78,7 @@ g = ot.PythonFunction(2, 1, fourBranch)
 graph = ot.Graph("Four Branch function", "x1", "x2", True, "upper right")
 drawfunction = g.draw([-8] * 2, [8] * 2, [100] * 2)
 graph.add(drawfunction)
-view = View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -203,7 +203,7 @@ for i, lv in enumerate(levels):
     graph.add(dr)
 
 # %%
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Draw the frontiers only
@@ -229,7 +229,7 @@ graph.setTitle("NAIS sampling: thresholds")
 graph.setXTitle(r"$x_1$")
 graph.setYTitle(r"$x_2$")
 
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Get all the input and output points that realized the event
@@ -258,6 +258,6 @@ dr = gIsoLines.getDrawable(0)
 dr.setLevels([0.0])
 dr.setColor("red")
 graph.add(dr)
-_ = View(graph)
+_ = otv.View(graph)
 
-View.ShowAll()
+otv.View.ShowAll()

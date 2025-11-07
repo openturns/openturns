@@ -8,7 +8,7 @@ Probabilistic design of experiments
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -22,12 +22,12 @@ N = 300
 experiment = ot.MonteCarloExperiment(distribution, N)
 sample = experiment.generate()
 graph = ot.Cloud(sample)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 2. LHS
 experiment = ot.LHSExperiment(distribution, N)
 sample = experiment.generate()
 graph = ot.Cloud(sample)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

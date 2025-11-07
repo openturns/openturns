@@ -30,7 +30,7 @@ Estimate a non stationary covariance function
 # %%
 import math as m
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -61,7 +61,7 @@ func.setDescription([":math:`s`", ":math:`t`", ":math:`cov`"])
 graph = func.draw([t0] * 2, [tmax] * 2)
 graph.setTitle("Original covariance model")
 graph.setLegendPosition("")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create data from a non stationary Normal process Omega * [0,T]--> R
@@ -96,5 +96,5 @@ estimatedModel = factory.build(sample)
 graph = estimatedModel.draw(0, 0, t0, tmax, 256, False)
 graph.setTitle("Estimated covariance model")
 graph.setLegendPosition("")
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

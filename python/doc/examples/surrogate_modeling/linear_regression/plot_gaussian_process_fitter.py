@@ -10,7 +10,7 @@ Create a general linear model metamodel
 # %%
 import openturns as ot
 import openturns.experimental as otexp
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -66,7 +66,7 @@ graphMetamodel = ot.ParametricFunction(responseSurface, [0], [x1value]).draw(xmi
 parametricModelGraph.add(graphMetamodel)
 parametricModelGraph.setLegends(["Model", "Meta-Model"])
 parametricModelGraph.setLegendPosition("upper right")
-view = viewer.View(parametricModelGraph)
+view = otv.View(parametricModelGraph)
 
 # %%
 view.ShowAll()

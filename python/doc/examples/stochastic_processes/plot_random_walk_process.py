@@ -25,7 +25,7 @@ Create a random walk process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -44,7 +44,7 @@ process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
 graph.setTitle("1D Random Walk with discrete steps")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 1-d random walk and continuous distribution
@@ -53,7 +53,7 @@ process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
 graph.setTitle("1D Random Walk with continuous steps")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Define the origin
@@ -71,7 +71,7 @@ sample = process.getSample(5)
 graph = ot.Graph("2D Random Walk with discrete steps", "X1", "X2", True)
 for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 2-d random walk and continuous distribution
@@ -81,5 +81,5 @@ sample = process.getSample(5)
 graph = ot.Graph("2D Random Walk with continuous steps", "X1", "X2", True)
 for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

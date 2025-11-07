@@ -8,7 +8,7 @@ Transform a distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -30,7 +30,7 @@ distribution3 = ot.WeibullMin(1.5, 2.0)
 distribution = distribution1 + distribution2
 print(distribution)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We might also use subtraction even with scalar values:
@@ -39,7 +39,7 @@ view = viewer.View(graph)
 distribution = 3.0 - distribution3
 print(distribution)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Product & inverse
@@ -51,7 +51,7 @@ view = viewer.View(graph)
 distribution = distribution1 * distribution2
 print(distribution)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We could also inverse a distribution :
@@ -60,7 +60,7 @@ view = viewer.View(graph)
 distribution = 1 / distribution1
 print(distribution)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Or compute a ratio distribution :
@@ -69,7 +69,7 @@ view = viewer.View(graph)
 ratio = distribution2 / distribution1
 print(ratio)
 graph = ratio.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Transformation using functions
@@ -102,7 +102,7 @@ view = viewer.View(graph)
 
 # %%
 graph = distribution1.log().drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # And for the `log2` function :
@@ -111,7 +111,7 @@ view = viewer.View(graph)
 f = ot.SymbolicFunction(["x"], ["log2(x)"])
 f.setDescription(["X", "ln(X)"])
 graph = ot.CompositeDistribution(f, distribution1).drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # If one wants a specific method, user might rely on the :class:`~openturns.CompositeDistribution` class.
@@ -140,19 +140,19 @@ f = ot.SymbolicFunction(["x"], ["sin(x)+cos(x)"])
 # We then create the composite distribution
 distribution = ot.CompositeDistribution(f, antecedent)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can also build a distribution with the simplified construction
 distribution = antecedent.exp()
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # and by using chained operators:
 distribution = antecedent.abs().sqrt()
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Display all figures

@@ -8,7 +8,7 @@ Draw the empirical CDF
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -27,7 +27,7 @@ sample = normal.getSample(size)
 # %%
 distribution = ot.UserDefined(sample)
 graph = distribution.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # If required, we can specify the interval that we want to draw.
@@ -37,5 +37,5 @@ view = viewer.View(graph)
 xmin = sample.getMin()[0] - 2.0
 xmax = sample.getMax()[0] + 2.0
 graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

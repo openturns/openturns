@@ -6,7 +6,7 @@
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     if "{{ objname }}" == "BlockIndependentCopula":
@@ -64,7 +64,7 @@
                 pdf_graph.setYTitle(r"$x_" + str(j) + r"$")
             if j == dimension-1:
                 pdf_graph.setXTitle(r"$x_" + str(i) + r"$")
-            View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=distribution.isCopula())
+            otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=distribution.isCopula())
     title = str(distribution)[:100].split("\n")[0]
     fig.suptitle(title)
 

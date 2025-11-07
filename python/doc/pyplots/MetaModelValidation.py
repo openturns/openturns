@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 # Define the model
@@ -24,4 +24,4 @@ y_test = model(x_test)
 metamodelPredictions = metaModel(x_test)
 val = ot.MetaModelValidation(y_test, metamodelPredictions)
 graph = val.drawValidation()
-View(graph)
+otv.View(graph)

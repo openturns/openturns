@@ -41,7 +41,7 @@ Create a spectral model
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 import math as m
 
@@ -103,5 +103,5 @@ graph = ot.Graph(
 curve = ot.Curve(x, "UserSpectral")
 graph.add(curve)
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

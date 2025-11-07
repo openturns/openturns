@@ -63,7 +63,7 @@ Posterior sampling using a PythonDistribution
 # %%
 import numpy as np
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(123)
 
@@ -204,7 +204,7 @@ for parameter_index in range(2):
     graph.add(priorGraph)
     graph.setLegends(["Posterior", "Prior"])
     grid.setGraph(0, parameter_index, graph)
-_ = View(grid)
+_ = otv.View(grid)
 
 # %%
 # Define an improper prior
@@ -242,8 +242,8 @@ for parameter_index in range(2):
     graph = posterior.getMarginal(parameter_index).drawPDF()
     graph.setLegends(["Posterior"])
     grid.setGraph(0, parameter_index, graph)
-_ = View(grid)
+_ = otv.View(grid)
 
 
 # %%
-View.ShowAll()
+otv.View.ShowAll()

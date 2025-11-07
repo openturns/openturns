@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import matplotlib.pyplot as plt
 
 # Define the vertices of the mesh
@@ -20,7 +20,7 @@ graph.add(mesh2D.draw())
 # Then, draw it
 fig = plt.figure(figsize=(16, 4))
 axis = fig.add_subplot(141)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
@@ -28,7 +28,7 @@ graph = ot.Graph("", "", "", True, "lower right")
 graph.add(mesh2DBoundary.draw())
 # Then, draw it
 axis = fig.add_subplot(142)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
@@ -36,7 +36,7 @@ graph = ot.Graph("", "", "", True, "lower right")
 graph.add(mesh2DBoundaryInside.draw())
 # Then, draw it
 axis = fig.add_subplot(143)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
@@ -50,5 +50,5 @@ graph = ot.Graph(
 graph.add(mesh2DBoundaryOutside.draw())
 # Then, draw it
 axis = fig.add_subplot(144)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)

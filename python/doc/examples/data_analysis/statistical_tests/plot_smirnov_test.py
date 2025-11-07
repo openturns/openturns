@@ -28,7 +28,7 @@ Test identical distributions
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -44,12 +44,12 @@ sample3 = distribution2.getSample(100)
 # %%
 # Visually compare `sample1` and `sample2` using QQ-plot
 graph = ot.VisualTest.DrawQQplot(sample1, sample2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Visually compare `sample1` and `sample3` using QQ-plot
 graph = ot.VisualTest.DrawQQplot(sample1, sample3)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Numerically test `sample1` against `sample2`

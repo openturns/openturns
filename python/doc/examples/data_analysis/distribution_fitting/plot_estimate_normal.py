@@ -15,7 +15,7 @@ Fit a parametric distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 # %%
@@ -41,7 +41,7 @@ print(distribution.getParameter())
 # We draw the fitted distribution
 graph = distribution.drawPDF()
 graph.setTitle("Fitted Normal distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Student distribution
@@ -67,7 +67,7 @@ print(distribution.getParameter())
 # Draw fitted distribution
 graph = distribution.drawPDF()
 graph.setTitle("Fitted Student distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Pareto distribution
@@ -88,7 +88,7 @@ print(distribution.getParameter())
 
 graph = distribution.drawPDF()
 graph.setTitle("Fitted Pareto distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 plt.show()

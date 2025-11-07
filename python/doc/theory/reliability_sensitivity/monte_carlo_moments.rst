@@ -76,7 +76,7 @@ integration.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     dist = ot.LogNormal()
     dist.setDescription(['Z'])
@@ -85,7 +85,7 @@ integration.
     histogram = ot.HistogramFactory().build(sample).drawPDF().getDrawable(0)
     histogram.setColor('blue')
     graph.add(histogram)
-    View(graph)
+    otv.View(graph)
 
 .. topic:: API:
 

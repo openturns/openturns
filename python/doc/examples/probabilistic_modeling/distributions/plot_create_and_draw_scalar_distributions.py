@@ -5,7 +5,7 @@ Create and draw scalar distributions
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 # %%
@@ -32,14 +32,14 @@ graphPDF = distribution.drawPDF()
 graphPDF.setTitle(
     r"PDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$"
 )
-view = viewer.View(graphPDF)
+view = otv.View(graphPDF)
 
 # %%
 graphCDF = distribution.drawCDF()
 graphCDF.setTitle(
     r"CDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$"
 )
-view = viewer.View(graphCDF)
+view = otv.View(graphCDF)
 
 
 # %%
@@ -61,12 +61,12 @@ print(sample)
 # We draw its PDF and its CDF :
 graphPDF = distribution.drawPDF()
 graphPDF.setTitle(r"PDF of a geometric distribution with parameter $p = 0.7$")
-view = viewer.View(graphPDF)
+view = otv.View(graphPDF)
 
 # %%
 graphCDF = distribution.drawCDF()
 graphCDF.setTitle(r"CDF of a geometric distribution with parameter $p = 0.7$")
-view = viewer.View(graphCDF)
+view = otv.View(graphCDF)
 
 # %%
 # Conclusion

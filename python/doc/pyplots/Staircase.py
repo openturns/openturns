@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal([0.5], [2.0], ot.CorrelationMatrix(1))
@@ -30,4 +30,4 @@ graph.add(staircase)
 fig = plt.figure(figsize=(4.5, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)

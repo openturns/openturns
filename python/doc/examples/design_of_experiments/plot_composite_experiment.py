@@ -10,7 +10,7 @@ Create a composite design of experiments
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -29,5 +29,5 @@ sample = experiment.generate()
 graph = ot.Graph("Composite design", "x1", "x2", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

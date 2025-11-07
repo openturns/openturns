@@ -24,7 +24,7 @@ Gaussian Process Regression: multiple input dimensions
 # %%
 import openturns as ot
 import openturns.experimental as otexp
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -82,7 +82,7 @@ graph.add(curve)
 graph.setLegendPosition("upper right")
 graph.setTitle("Sample size = %d" % (samplesize))
 graph.setXTitle("X2")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 view.ShowAll()

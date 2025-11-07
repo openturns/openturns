@@ -32,7 +32,7 @@ Quick start guide to optimization
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -59,7 +59,7 @@ rosenbrock = ot.MemoizeFunction(rosenbrock)
 # %%
 graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 graph.setTitle("Rosenbrock function")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the minimum is on the top right of the picture and the starting point is on the top left of the picture.
@@ -107,14 +107,14 @@ cloud.setColor("black")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
 graph.setTitle("Rosenbrock function")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the algorithm had to start from the top left of the banana and go to the top right.
 
 # %%
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The function value history make the path of the algorithm clear.
@@ -133,7 +133,7 @@ graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 graph.setTitle("Rosenbrock function solved with Cobyla")
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the algorithm made lots of evaluations in the bottom of the valley before getting in the neighbourhood of the minimum.
@@ -191,6 +191,6 @@ graph = rosenbrock.draw(lowerbound, upperbound, [100] * 2)
 graph.setTitle("Rosenbrock function solved with NLopt/LD_LBFGS")
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 plt.show()

@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -36,4 +36,4 @@ sample = myRV.getSample(1000)
 graph = ot.Graph("Sample from a PythonRandomVector", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-View(graph)
+otv.View(graph)

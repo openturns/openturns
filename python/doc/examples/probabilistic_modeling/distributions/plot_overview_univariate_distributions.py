@@ -16,7 +16,7 @@ Overview of univariate distribution management
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -56,7 +56,7 @@ from matplotlib import pyplot as plt
 # %%
 distribution = ot.Beta(2.5, 2.5, -1, 2)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The :class:`~openturns.BetaMuSigma` class provides another parametrization, based on the expectation :math:`\mu` and the standard deviation  :math:`\sigma` of the random variable:
@@ -137,7 +137,7 @@ S = B + E
 # %%
 graph = S.drawPDF()
 graph.setTitle("Sum of a beta and an exponential distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The exponential function of this distribution can be computed with the `exp` method.
@@ -148,7 +148,7 @@ sumexp = S.exp()
 # %%
 graph = sumexp.drawPDF()
 graph.setTitle("Exponential of a sum of a beta and an exponential")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The `CompositeDistribution` class for more general functions
@@ -181,7 +181,7 @@ dist = ot.CompositeDistribution(f, N)
 # %%
 graph = dist.drawPDF()
 graph.setTitle("Exponential of a gaussian random variable")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In order to check the previous distribution, we compare it with the LogNormal distribution.
@@ -190,7 +190,7 @@ view = viewer.View(graph)
 LN = ot.LogNormal()
 LN.setDescription(["LogNormal"])
 graph = LN.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -269,5 +269,5 @@ Q.setDescription(["Quartic Kernel"])
 
 # %%
 graph = Q.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

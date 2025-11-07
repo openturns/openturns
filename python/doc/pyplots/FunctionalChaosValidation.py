@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 from openturns.usecases import ishigami_function
 
 ot.RandomGenerator.SetSeed(0)
@@ -23,4 +23,4 @@ chaosalgo.run()
 result = chaosalgo.getResult()
 validation = ot.FunctionalChaosValidation(result)
 graph = validation.drawValidation()
-View(graph)
+otv.View(graph)

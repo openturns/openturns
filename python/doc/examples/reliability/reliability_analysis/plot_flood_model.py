@@ -15,7 +15,7 @@ Estimate a flooding probability
 # %%
 from openturns.usecases import flood_model
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -39,7 +39,7 @@ sampleSize = 1000
 inputSample = distribution.getSample(sampleSize)
 outputSample = model(inputSample)
 graph = ot.HistogramFactory().build(outputSample).drawPDF()
-_ = viewer.View(graph)
+_ = otv.View(graph)
 
 # %%
 # Define the event
@@ -90,5 +90,5 @@ print("Pf=", probability)
 
 # %%
 graph = result.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Create the mesher
 mesher = ot.IntervalMesher([10] * 2)
@@ -32,6 +32,6 @@ graph2_axis = fig.add_subplot(122)
 graph1_axis.set_xlim(auto=True)
 graph2_axis.set_xlim(auto=True)
 
-View(graph1, figure=fig, axes=[graph1_axis], add_legend=True)
-View(graph2, figure=fig, axes=[graph2_axis], add_legend=True)
+otv.View(graph1, figure=fig, axes=[graph1_axis], add_legend=True)
+otv.View(graph2, figure=fig, axes=[graph2_axis], add_legend=True)
 fig.suptitle("Mesh of an interval: diamond=False/True")

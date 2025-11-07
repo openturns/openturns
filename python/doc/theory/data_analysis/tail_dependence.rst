@@ -74,7 +74,7 @@ We illustrate two cases where the variables are:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -88,7 +88,7 @@ We illustrate two cases where the variables are:
     grid = ot.GridLayout(1,2)
     grid.setGraph(0,0,graph1)
     grid.setGraph(0,1,graph2)
-    View(grid)
+    otv.View(grid)
 
 **Upper extremal dependence coefficient**
 
@@ -128,7 +128,7 @@ We illustrate the function :math:`\bar{\chi}(u)` for both previous cases.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -142,7 +142,7 @@ We illustrate the function :math:`\bar{\chi}(u)` for both previous cases.
     grid2 = ot.GridLayout(1,2)
     grid2.setGraph(0,0,graph1)
     grid2.setGraph(0,1,graph2)
-    View(grid2)
+    otv.View(grid2)
 
 As a result, the pair :math:`(\chi, \bar{\chi})` can be used as a summary of extremal dependence of
 :math:`\vect{X} = (X_1, X_2)` as follows:
@@ -219,7 +219,7 @@ We illustrate two cases where the variables are:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -233,7 +233,7 @@ We illustrate two cases where the variables are:
     grid3 = ot.GridLayout(1,2)
     grid3.setGraph(0,0,graph1)
     grid3.setGraph(0,1,graph2)
-    View(grid3)
+    otv.View(grid3)
 
 **Lower extremal dependence coefficient**
 
@@ -270,7 +270,7 @@ the right.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -284,7 +284,7 @@ the right.
     grid4 = ot.GridLayout(1,2)
     grid4.setGraph(0,0,graph1)
     grid4.setGraph(0,1,graph2)
-    View(grid4)
+    otv.View(grid4)
 
 As a result, the pair :math:`(\chi_L, \bar{\chi}_L)` can be used as a summary of extremal dependence of
 :math:`\vect{X} = (X_1, X_2)` as follows:

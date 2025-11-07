@@ -69,7 +69,7 @@ with :math:`\sampleSize>10^2`, the asymptotic nature of the Central Limit Theore
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     f = ot.SymbolicFunction(['x'], ['17-exp(0.1*(x-1.0))'])
     graph = f.draw(0.0, 12.0)
@@ -99,7 +99,7 @@ with :math:`\sampleSize>10^2`, the asymptotic nature of the Central Limit Theore
     graph.setTitle('Monte Carlo simulation (Pf=0.048, N=1000)')
     graph.setLegends(['domain Df', 'simulations'])
     graph.setLegendPosition('upper right')
-    View(graph)
+    otv.View(graph)
 
 The method is also referred to as Direct sampling, Crude Monte Carlo method, Classical Monte Carlo integration.
 

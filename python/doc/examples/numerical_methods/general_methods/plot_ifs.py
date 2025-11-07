@@ -8,7 +8,7 @@ Iterated Functions System
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 # sphinx_gallery_thumbnail_number = 4
@@ -93,7 +93,7 @@ graph, s = drawIFS(
     f_i, skip=100, iterations=100000, batch_size=1, name="Spiral", color="blue"
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Fern
@@ -107,7 +107,7 @@ graph, s = drawIFS(
 )
 print("Box counting dimension=%.3f" % s)
 # sphinx_gallery_thumbnail_number = 2
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Dragon
@@ -118,7 +118,7 @@ graph, s = drawIFS(
     f_i, skip=100, iterations=100000, batch_size=1, name="Dragon", color="red"
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Sierpinski triangle
@@ -135,7 +135,7 @@ graph, s = drawIFS(
     color="magenta",
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()
 
 # %%

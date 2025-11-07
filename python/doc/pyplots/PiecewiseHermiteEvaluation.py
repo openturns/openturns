@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 locations = ot.RegularGrid(0.0, 0.25, 11).getVertices().asPoint()
 f = ot.SymbolicFunction(["x"], ["sin(pi_*x)"])
@@ -19,4 +19,4 @@ graph.add(draw_f)
 graph.add(func_H1.draw(-0.5, 3.0, 1024))
 graph.setColors(["lightblue", "blue", "red"])
 
-view = View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)
+view = otv.View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)

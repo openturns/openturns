@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 N = 100
@@ -36,4 +36,4 @@ for i, d in enumerate(drs):
     drs[i] = d
 g2.setDrawables(drs)
 g.add(g2)
-View(g)
+otv.View(g)

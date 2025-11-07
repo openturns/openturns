@@ -53,7 +53,7 @@ Create a linear least squares model
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -124,7 +124,7 @@ curve.setLineStyle("dashed")
 curve.setLegend("Linear L.S.")
 graph.add(curve)
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 view.ShowAll()

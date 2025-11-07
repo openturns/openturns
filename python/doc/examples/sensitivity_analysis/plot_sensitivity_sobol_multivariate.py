@@ -25,7 +25,7 @@ Estimate Sobol' indices for a function with multivariate output
 # %%
 import openturns as ot
 import openturns.viewer
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -100,7 +100,7 @@ print("Agg. total order indices: ", agg_total_order)
 
 # %%
 graph = sensitivityAnalysis.draw()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Since there are several outputs, the graph presents the aggregated Sobol' indices.

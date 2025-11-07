@@ -5,7 +5,7 @@ Create a random mixture
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -67,12 +67,12 @@ print("Probability : %.3f" % prb)
 # %%
 # We draw its PDF :
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw its CDF :
 graph = distribution.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -115,12 +115,12 @@ print("Probability : %.3g" % distribution.computeComplementaryCDF(100))
 # %%
 # We draw its PDF :
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # and its CDF :
 graph = distribution.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

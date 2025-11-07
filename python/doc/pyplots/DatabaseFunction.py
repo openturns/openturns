@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 inputSample = [[1.2, 1.0], [2.3, 0.8], [2.5, 2.3], [1.4, 4.1], [4.5, 5.3]]
 outputSample = [[0.2], [-2], [3.2], [4.0], [1.3]]
@@ -17,5 +17,5 @@ graph.setYTitle("$y$")
 graph.setTitle("Data-based function")
 graph.setLegendPosition('bottomright')
 
-view = View(graph)
+view = otv.View(graph)
 view.show()

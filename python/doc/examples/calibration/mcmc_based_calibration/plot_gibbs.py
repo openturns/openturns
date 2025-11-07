@@ -16,7 +16,7 @@ Gibbs sampling of the posterior distribution
 #
 
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
 
 ot.RandomGenerator.SetSeed(100)
@@ -41,7 +41,7 @@ graph = true_distribution.drawPDF()
 graph.setTitle("True distribution")
 graph.setXTitle("")
 graph.setLegends([""])
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # A natural step at this point is to introduce
@@ -145,6 +145,6 @@ graph.setTitle("Posterior density")
 graph.setLegendPosition("lower right")
 graph.setXTitle(r"$\mu_0$")
 graph.setYTitle(r"$\mu_1$")
-_ = View(graph)
+_ = otv.View(graph)
 
-View.ShowAll()
+otv.View.ShowAll()

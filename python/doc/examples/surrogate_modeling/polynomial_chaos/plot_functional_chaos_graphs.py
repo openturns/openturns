@@ -9,7 +9,7 @@ Polynomial chaos graphs
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 def drawFamily(factory, degreeMax=5):
@@ -46,16 +46,16 @@ alpha = 0.5
 beta = 1.5
 jacobiFamily = ot.JacobiFactory(alpha, beta)
 graph = drawFamily(jacobiFamily)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 laguerreFamily = ot.LaguerreFactory(2.75, 1)
 graph = drawFamily(laguerreFamily)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = drawFamily(ot.HermiteFactory())
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 view.ShowAll()

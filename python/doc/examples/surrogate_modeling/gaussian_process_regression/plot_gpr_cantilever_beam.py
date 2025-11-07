@@ -9,7 +9,7 @@ Gaussian Process Regression : cantilever beam model
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.experimental as otexp
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 # sphinx_gallery_thumbnail_number = 3
 
@@ -47,7 +47,7 @@ histo = ot.HistogramFactory().build(Y_train).drawPDF()
 histo.setXTitle("Vertical deviation (cm)")
 histo.setTitle("Distribution of the vertical deviation")
 histo.setLegends([""])
-view = viewer.View(histo)
+view = otv.View(histo)
 
 # %%
 # Create the metamodel
@@ -114,15 +114,15 @@ graph = ot.HistogramFactory().build(r).drawPDF()
 graph.setXTitle("Residuals (cm)")
 graph.setTitle("Distribution of the residuals")
 graph.setLegends([""])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first sign of good quality.
 # The method :meth:`~openturns.MetaModelValidation.drawValidation` compares the observed outputs and the metamodel outputs.
 graph = val.drawValidation()
 graph.setTitle("R2 = %.2f%%" % (100 * R2))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Display all figures
-viewer.View.ShowAll()
+otv.View.ShowAll()

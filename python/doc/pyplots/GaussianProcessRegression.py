@@ -1,6 +1,6 @@
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 
 f = ot.SymbolicFunction(["x"], ["x * sin(x)"])
 sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
@@ -41,4 +41,4 @@ graph.add(boundsPoly)
 graph.setLegends(["model", "meta model", "sample", boundsPoly_legend])
 graph.setLegendPosition("upper left")
 graph.setTitle("y(x)=x * sin(x)")
-View(graph, figure_kw={"figsize": (8, 4)})
+otv.View(graph, figure_kw={"figsize": (8, 4)})

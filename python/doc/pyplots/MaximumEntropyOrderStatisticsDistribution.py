@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 myDist = [ot.Beta(1.5, 1.7, 0.0, 1.0), ot.Beta(2.0, 2.3, 0.5, 1.2)]
 myOrderStatDist = ot.MaximumEntropyOrderStatisticsDistribution(myDist)
@@ -15,6 +15,6 @@ cdf_axis = fig.add_subplot(122)
 pdf_axis.set_xlim(auto=True)
 cdf_axis.set_xlim(auto=True)
 
-View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
-View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
+otv.View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
+otv.View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
 fig.suptitle("Max Entropy Order Statistics Distribution: pdf and cdf")

@@ -14,7 +14,7 @@ Kolmogorov-Smirnov : understand the statistics
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -125,7 +125,7 @@ print("D=", D, ", Index=", index, ", Obs.=", observation)
 
 # %%
 graph = drawKSDistance(sample, distribution, observation, D, distFactory)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

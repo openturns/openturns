@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 size = 100
@@ -8,4 +8,4 @@ sample = normal.getSample(size)
 
 QQPlot = ot.VisualTest.DrawCDFplot(sample, normal)
 
-View(QQPlot, figure_kw={"figsize": (4.5, 4.5)})
+otv.View(QQPlot, figure_kw={"figsize": (4.5, 4.5)})

@@ -11,7 +11,7 @@ and is provided below:
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
 import matplotlib.pyplot as plt
 from openturns.usecases import linthurst
@@ -201,7 +201,7 @@ for k, analysis in enumerate([analysis_full, analysis_forward, analysis_backward
     ax.xaxis.label.set_size(12)
     ax.yaxis.label.set_size(14)
     graph.setTitle("")
-    v = View(graph, figure=fig, axes=[ax])
+    v = otv.View(graph, figure=fig, axes=[ax])
 plt.tight_layout()
 
 

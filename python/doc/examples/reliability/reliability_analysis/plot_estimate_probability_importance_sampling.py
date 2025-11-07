@@ -22,7 +22,7 @@ Use the Importance Sampling algorithm
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -143,4 +143,4 @@ print(
 # method which displays the estimate and confidence interval evolution.
 graph = algo.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-view = viewer.View(graph)
+view = otv.View(graph)

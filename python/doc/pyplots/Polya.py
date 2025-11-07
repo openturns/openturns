@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 pdf_graph = ot.Graph("PDF graph", "x", "PDF", True, "upper right")
 cdf_graph = ot.Graph("CDF graph", "x", "CDF", True, "lower right")
@@ -20,6 +20,6 @@ for i, v in enumerate([(2, 0.83), (4, 0.66), (20, 0.33)]):
 fig = plt.figure(figsize=(10, 4))
 pdf_axis = fig.add_subplot(121)
 cdf_axis = fig.add_subplot(122)
-View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=True)
-View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=True)
+otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=True)
+otv.View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=True)
 fig.suptitle("Polya(r,p)")

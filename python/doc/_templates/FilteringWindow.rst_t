@@ -6,7 +6,7 @@
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     filteringWindow = ot.{{ objname }}()
     numPoints = 512
@@ -20,7 +20,7 @@
     graph.setColors(['red'])
     fig = plt.figure(figsize=(10, 4))
     filtering_axis = fig.add_subplot(111)
-    View(graph, figure=fig, axes=[filtering_axis], add_legend=False)
+    otv.View(graph, figure=fig, axes=[filtering_axis], add_legend=False)
 
 .. currentmodule:: {{ module }}
 

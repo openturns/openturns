@@ -34,7 +34,7 @@ Quick start guide to distributions
 # %%
 import openturns.viewer as otv
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -52,7 +52,7 @@ uniform = ot.Uniform(2, 5)
 
 # %%
 graph = uniform.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The :meth:`~openturns.Distribution.computePDF` method computes the probability distribution at a specific point.
@@ -65,7 +65,7 @@ uniform.computePDF(3.5)
 
 # %%
 graph = uniform.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The :meth:`~openturns.Distribution.computeCDF` method computes the value of the cumulative distribution function a given point.
@@ -86,7 +86,7 @@ sample
 # %%
 sample = uniform.getSample(1000)
 graph = ot.HistogramFactory().build(sample).drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Multivariate distributions with or without independent copula
@@ -144,7 +144,7 @@ showAxes = True
 graph = ot.Graph("X0~N, X1~U", "X0", "X1", showAxes)
 cloud = ot.Cloud(sample, "blue", "fsquare", "")  # Create the cloud
 graph.add(cloud)  # Then, add it to the graph
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the marginals are Gaussian and uniform and that the copula is independent.
@@ -167,7 +167,7 @@ copula
 
 # %%
 graph = copula.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Multivariate distribution with arbitrary copula
@@ -191,7 +191,7 @@ showAxes = True
 graph = ot.Graph("X0~N, X1~U, Ali-Mikhail-Haq copula", "X0", "X1", showAxes)
 cloud = ot.Cloud(sample, "blue", "fsquare", "")  # Create the cloud
 graph.add(cloud)  # Then, add it to the graph
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the sample is quite different from the previous sample with independent copula.
@@ -248,7 +248,7 @@ view = otv.View(grid)
 # %%
 X = ot.LogNormal()
 graph = X.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can truncate this distribution to the :math:`[1,2]` interval. We see that the PDF of the distribution becomes discontinuous at the truncation points 1 and 2.
@@ -256,7 +256,7 @@ view = viewer.View(graph)
 # %%
 Y = ot.TruncatedDistribution(X, 1.0, 2.0)
 graph = Y.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can also also truncate it with only a lower bound.
@@ -264,7 +264,7 @@ view = viewer.View(graph)
 # %%
 Y = ot.TruncatedDistribution(X, 1.0, ot.TruncatedDistribution.LOWER)
 graph = Y.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can finally truncate a distribution with an upper bound.
@@ -272,7 +272,7 @@ view = viewer.View(graph)
 # %%
 Y = ot.TruncatedDistribution(X, 2.0, ot.TruncatedDistribution.UPPER)
 graph = Y.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 plt.show()
 # %%

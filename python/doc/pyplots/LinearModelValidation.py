@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import openturns.experimental as otexp
 
 ot.RandomGenerator.SetSeed(0)
@@ -19,4 +19,4 @@ result = algo.getResult()
 splitter = ot.LeaveOneOutSplitter(sampleSize)
 validation = otexp.LinearModelValidation(result, splitter)
 graph = validation.drawValidation()
-View(graph)
+otv.View(graph)

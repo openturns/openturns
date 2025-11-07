@@ -25,7 +25,7 @@ Sobol' sensitivity indices from chaos
 # %%
 import openturns as ot
 from operator import itemgetter
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -83,7 +83,7 @@ sensitivityAnalysis
 first_order = [sensitivityAnalysis.getSobolIndex(i) for i in range(dimension)]
 total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(dimension)]
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We saw that total order indices are close to first order,

@@ -9,7 +9,7 @@ Create and manipulate an ARMA process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 # %%
@@ -122,7 +122,7 @@ graph0 = ts.drawMarginal(0)
 graph0.setTitle("One ARMA realization")
 graph0.setXTitle("t")
 graph0.setYTitle(r"$X_t$")
-view = viewer.View(graph0)
+view = otv.View(graph0)
 
 
 # %%
@@ -143,7 +143,7 @@ graph = sample.drawMarginal(0)
 graph.setTitle("Six realizations of the ARMA process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t$")
-view = viewer.View(graph)
+view = otv.View(graph)
 # plt.show()
 
 # We can obtain the current state of the ARMA process :
@@ -196,7 +196,7 @@ curve.setLineStyle("dashed")
 graph0.add(curve)
 graph0.setTitle("One ARMA realization and a possible future")
 # sphinx_gallery_thumbnail_number = 3
-view = viewer.View(graph0)
+view = otv.View(graph0)
 
 
 # %%
@@ -211,7 +211,7 @@ graph = possibleFuture_N.drawMarginal(0)
 graph.setTitle("Six possible futures of the ARMA process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

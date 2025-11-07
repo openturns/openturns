@@ -1,8 +1,8 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 f = ot.SymbolicEvaluation(["x"], ["y"], ["sin(pi_*sin(pi_*x))"])
 graph = ot.Graph(r"Function $x  \mapsto \sin(\pi \sin(\pi x))$", r"$x$", r"$y$", True)
 graph.add(f.draw(-0.5, 3.0, 1024))
 
-view = View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)
+view = otv.View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)

@@ -21,7 +21,7 @@ import numpy as np
 from openturns.usecases import stressed_beam
 
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -37,7 +37,7 @@ limitStateFunction = sm.model
 # We get the first marginal and draw it :
 R_dist = sm.distribution_R
 graph = R_dist.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We get the second marginal and draw it :
@@ -45,7 +45,7 @@ view = viewer.View(graph)
 # %%
 F_dist = sm.distribution_F
 graph = F_dist.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # These independent marginals define the joint distribution of the input parameters :
@@ -97,7 +97,7 @@ print("CV =", result.getCoefficientOfVariation())
 # %%
 graph = algoMC.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Using LHS simulation
@@ -133,7 +133,7 @@ print("CV =", result.getCoefficientOfVariation())
 # %%
 graph = algo.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -175,7 +175,7 @@ print("Pf =", probabilityFORM)
 
 # %%
 graph = resultFORM.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Using Directional sampling
@@ -217,7 +217,7 @@ print("CV =", result.getCoefficientOfVariation())
 # %%
 graph = algoDS.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Using importance sampling with FORM design point: FORM-IS

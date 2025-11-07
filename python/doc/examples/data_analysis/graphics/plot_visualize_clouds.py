@@ -8,7 +8,7 @@ Visualize clouds
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -30,7 +30,7 @@ cloud2 = ot.Cloud(sample2, "red", "fsquare", "Second Cloud")
 myGraph2d = ot.Graph("2d clouds", "x1", "x2", True, "upper right")
 myGraph2d.add(cloud1)
 myGraph2d.add(cloud2)
-view = viewer.View(myGraph2d)
+view = otv.View(myGraph2d)
 
 # %%
 # Create a 3-d sample
@@ -46,5 +46,5 @@ sample3 = ot.Normal(mean, sigma, R).getSample(N)
 # Draw clouds pairs
 graph3 = ot.VisualTest.DrawPairs(sample3)
 graph3.setTitle("3d clouds")
-view = viewer.View(graph3)
+view = otv.View(graph3)
 plt.show()
