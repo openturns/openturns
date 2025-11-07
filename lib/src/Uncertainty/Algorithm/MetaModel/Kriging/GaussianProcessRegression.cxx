@@ -110,7 +110,7 @@ GaussianProcessRegression * GaussianProcessRegression::clone() const
 Point GaussianProcessRegression::computeGamma() const
 {
   // Get cholesky factor & rho from gaussian fitter result
-  LOGINFO("Solve L^t.gamma = rho");
+  LOGDEBUG("Solve L^t.gamma = rho");
 
   const Point rho(gaussianProcessFitterResult_.getRho());
 
@@ -131,10 +131,10 @@ void GaussianProcessRegression::run()
 {
 
   // Covariance coefficients are computed once, ever if optimizer is fixed
-  LOGINFO("Compute the interpolation part");
+  LOGDEBUG("Compute the interpolation part");
   const Point gamma(computeGamma());
-  LOGINFO("Store the estimates");
-  LOGINFO("Build the output meta-model");
+  LOGDEBUG("Store the estimates");
+  LOGDEBUG("Build the output meta-model");
   Function metaModel;
 
   // We use directly the points
