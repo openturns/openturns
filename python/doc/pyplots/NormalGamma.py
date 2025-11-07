@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 distribution = ot.NormalGamma()
 
@@ -13,4 +13,4 @@ pdf_graph.setDrawable(0, pdf_contour)
 pdf_graph.setTitle(str(distribution))
 fig = plt.figure(figsize=(5, 5))
 pdf_axis = fig.add_subplot(111)
-View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
+otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)

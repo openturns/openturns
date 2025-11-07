@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -11,4 +11,4 @@ sample1.setName("data 1")
 
 kendallPlot = ot.VisualTest.DrawKendallPlot(sample1, copula2)
 
-View(kendallPlot, figure_kw={"figsize": (4.5, 4.5)})
+otv.View(kendallPlot, figure_kw={"figsize": (4.5, 4.5)})

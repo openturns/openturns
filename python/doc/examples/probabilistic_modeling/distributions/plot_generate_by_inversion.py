@@ -97,7 +97,7 @@ Generate random variates by inverting the CDF
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 
 # %%
@@ -162,7 +162,7 @@ histo.setLegends(["Sample"])
 wpdf = W.drawPDF()
 wpdf.setLegends(["Weibull"])
 histo.add(wpdf)
-view = viewer.View(histo)
+view = otv.View(histo)
 
 # %%
 # We see that the empirical histogram of the generated outcomes is close to the exact density of the Weibull distribution.
@@ -212,7 +212,7 @@ for i in range(n):
     curve.setColor("red")
     curve.setLineStyle("dashed")
     graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Show all the graphs.

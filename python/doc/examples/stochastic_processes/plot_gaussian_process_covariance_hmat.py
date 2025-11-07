@@ -11,7 +11,7 @@ Create a Gaussian process from a cov. model using HMatrix
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -72,10 +72,10 @@ ot.ResourceMap.SetAsScalar("HMatrix-RecompressionEpsilon", 1e-7)
 # We eventually draw samples of this covariance model.
 sample = process.getSample(6)
 graph = sample.drawMarginal(0)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We notice here that we are able to sample the covariance model over a mesh of size `10000`, which is usually tricky on a laptop. This is mainly due to the compression.
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

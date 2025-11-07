@@ -71,7 +71,7 @@ We sum up some interesting features of the coefficient:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 20
     ot.RandomGenerator.SetSeed(10)
@@ -86,12 +86,12 @@ We sum up some interesting features of the coefficient:
     cloud.setPointStyle('circle')
     cloud.setColor('orange')
     graph.add(cloud)
-    View(graph)
+    otv.View(graph)
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 20
     ot.RandomGenerator.SetSeed(10)
@@ -106,12 +106,12 @@ We sum up some interesting features of the coefficient:
     cloud.setPointStyle('circle')
     cloud.setColor('orange')
     graph.add(cloud)
-    View(graph)
+    otv.View(graph)
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 20
     ot.RandomGenerator.SetSeed(10)
@@ -126,12 +126,12 @@ We sum up some interesting features of the coefficient:
     cloud.setPointStyle('circle')
     cloud.setColor('orange')
     graph.add(cloud)
-    View(graph)
+    otv.View(graph)
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 20
     ot.RandomGenerator.SetSeed(10)
@@ -146,7 +146,7 @@ We sum up some interesting features of the coefficient:
     cloud.setPointStyle('circle')
     cloud.setColor('orange')
     graph.add(cloud)
-    View(graph)
+    otv.View(graph)
 
 Spearman’s coefficient is often referred to as the rank correlation
 coefficient.

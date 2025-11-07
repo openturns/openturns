@@ -288,7 +288,7 @@ two-dimensional case for various values of the parameter :math:`q`:
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     nrows=3
     ncols=4

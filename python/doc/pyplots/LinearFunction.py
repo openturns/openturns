@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 center = [0.0]
 constant = [3.0]
@@ -10,4 +10,4 @@ graph = f.draw(0.0, 10.0)
 graph.setTitle(r"Linear function $x \mapsto 2x+3$")
 graph.setXTitle(r"$x$")
 graph.setYTitle(r"$y$")
-View(graph, figure_kw={"figsize": (8, 4)}, add_legend=True)
+otv.View(graph, figure_kw={"figsize": (8, 4)}, add_legend=True)

@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 
 distX = ot.Normal(0.0, 10.0)
@@ -22,6 +22,6 @@ cdf_axis = fig.add_subplot(122)
 pdf_axis.set_xlim(auto=True)
 cdf_axis.set_xlim(auto=True)
 
-View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
-View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
+otv.View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
+otv.View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
 fig.suptitle("CompositeDistribution: f(x)=x+sin(x); L=Normal(0.0, 10.0): pdf and cdf")

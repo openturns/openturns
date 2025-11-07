@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import math as m
 
 ot.RandomGenerator.SetSeed(0)
@@ -38,4 +38,4 @@ algo.run()
 result = algo.getResult()
 graph = result.drawObservationsVsPredictions()
 
-View(graph)
+otv.View(graph)

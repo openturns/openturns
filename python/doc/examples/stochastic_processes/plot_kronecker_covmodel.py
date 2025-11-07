@@ -14,7 +14,7 @@ in addition to a scalar correlation function :math:`\\rho`.
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from numpy import square
 
 
@@ -65,7 +65,7 @@ graph.setYTitle("")
 graph.setTitle("")
 graph.setLegends(["Y1", "Y2"])
 graph.setLegendPosition("upper left")
-_ = viewer.View(graph)
+_ = otv.View(graph)
 
 # %%
 # Draw the trajectory on the complex plane.
@@ -79,7 +79,7 @@ diagonal = ot.Curve([-1.5, 1.5], [-1.5, 1.5])
 diagonal.setLineStyle("dotdash")
 diagonal.setColor("grey")
 graph.add(diagonal)
-_ = viewer.View(graph, square_axes=True)
+_ = otv.View(graph, square_axes=True)
 
 # %%
 # Change the correlation between the outputs
@@ -140,7 +140,7 @@ graph.setYTitle("")
 graph.setTitle("")
 graph.setLegends(["Y1", "Y2"])
 graph.setLegendPosition("upper left")
-_ = viewer.View(graph)
+_ = otv.View(graph)
 
 # %%
 graph = realization.draw()
@@ -151,4 +151,4 @@ diagonal = ot.Curve([-1.5, 1.5], [-1.5, 1.5])
 diagonal.setLineStyle("dotdash")
 diagonal.setColor("grey")
 graph.add(diagonal)
-_ = viewer.View(graph, square_axes=True)
+_ = otv.View(graph, square_axes=True)

@@ -28,7 +28,7 @@ Create a discrete Markov chain process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 # %%
@@ -102,7 +102,7 @@ process = ot.DiscreteMarkovChain(origin, transition, tgrid)
 real = process.getRealization()
 graph = real.drawMarginal(0)
 graph.setTitle("Discrete Markov chain")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Get several realizations
@@ -110,19 +110,19 @@ process.setTimeGrid(ot.RegularGrid(0.0, 1.0, 20))
 reals = process.getSample(3)
 graph = reals.drawMarginal(0)
 graph.setTitle("Discrete Markov chain, 3 realizations")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Markov chain future 10 steps
 future = process.getFuture(10)
 graph = future.drawMarginal(0)
 graph.setTitle("Markov chain future 10 steps")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Markov chain 3 different futures
 futures = process.getFuture(10, 3)
 graph = futures.drawMarginal(0)
 graph.setTitle("Three Markov chain futures, 10 steps")
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

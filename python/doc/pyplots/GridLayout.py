@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 grid = ot.GridLayout(2, 3)
 palette = ot.Drawable.BuildDefaultPalette(10)
@@ -18,4 +18,4 @@ for j in range(grid.getNbColumns()):
 graph = grid
 
 fig = plt.figure(figsize=(12, 8))
-View(graph, figure=fig, add_legend=True)
+otv.View(graph, figure=fig, add_legend=True)

@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.usecases import ishigami_function
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # data
 ot.RandomGenerator.SetSeed(0)
@@ -31,4 +31,4 @@ algo = ot.FunctionalChaosAlgorithm(
 algo.run()
 result = algo.getResult()
 graph = result.drawSelectionHistory()
-View(graph)
+otv.View(graph)

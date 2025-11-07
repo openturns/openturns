@@ -1,7 +1,7 @@
 import openturns as ot
 from math import exp
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 # Create the covariance function at (s,t)
@@ -92,4 +92,4 @@ cov_graph.setTitle("Non stationary covariance model estimation")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+otv.View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)

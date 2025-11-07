@@ -4,7 +4,7 @@ Sobol' sensitivity indices using rank-based algorithm
 """
 
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from openturns.usecases import ishigami_function
 
 # %%
@@ -50,7 +50,7 @@ ot.ResourceMap.SetAsScalar(
 
 graph = mySobol.draw()
 graph.setTitle("Sobol' indices")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 print("confidence intervals:", mySobol.getFirstOrderIndicesInterval())
 

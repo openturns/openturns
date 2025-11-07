@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 generator = ot.Normal(2)
@@ -13,4 +13,4 @@ for i in range(size):
 graph = ot.Graph("PolygonArray example", "x1", "x2", True)
 graph.add(ot.PolygonArray(array))
 
-View(graph, figure_kw={"figsize": (4, 4)})
+otv.View(graph, figure_kw={"figsize": (4, 4)})

@@ -21,7 +21,7 @@ Function manipulation
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -159,7 +159,7 @@ outputMarg = 1
 ptNb = 101
 # Draw the curve!
 graph = func3.draw(inputMarg, outputMarg, centralPt, zMin, zMax, ptNb)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Graph 2 : (x,z) -->  f_1(x,y_0,z)
@@ -180,7 +180,7 @@ ptNb = [101, 101]
 graph = func3.draw(
     firstInputMarg, secondInputMarg, outputMarg, centralPt, inputMin2, inputMax2, ptNb
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Graph 3 : simplified method for x -->  func1(x)
@@ -192,7 +192,7 @@ xMax3 = 1.5
 ptNb = 101
 # Draw the curve!
 graph = func1.draw(xMin3, xMax3, ptNb)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Graph 4 : (x,y) -->  func2(x,y)
@@ -207,6 +207,6 @@ outputMarg = 1
 # Specify the point number of the final curve
 ptNb = [101, 101]
 graph = func2.draw(inputMin4, inputMax4, ptNb)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%

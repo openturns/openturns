@@ -55,7 +55,7 @@ Use the Box-Cox transformation
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -77,13 +77,13 @@ myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 # Draw a field
 field = myXtProcess.getRealization()
 graph = field.drawMarginal(0)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw values
 marginal = ot.HistogramFactory().build(field.getValues())
 graph = marginal.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Build the transformed field through Box-Cox
@@ -94,5 +94,5 @@ myStabilizedField = myModelTransform(field)
 # Draw values
 marginal = ot.HistogramFactory().build(myStabilizedField.getValues())
 graph = marginal.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

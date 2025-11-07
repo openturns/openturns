@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 
 f = ot.SymbolicFunction(["x"], ["sin(x)"])
@@ -37,4 +37,4 @@ g.setTitle(r"Fejer algorithms example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(va
 g.setLegends(["f", "Fejer_1", "Fejer_2", "Clenshaw-Curtis"])
 g.setLegendPosition("upper right")
 
-View(g, figure_kw={"figsize": (8, 4)}, add_legend=True)
+otv.View(g, figure_kw={"figsize": (8, 4)}, add_legend=True)

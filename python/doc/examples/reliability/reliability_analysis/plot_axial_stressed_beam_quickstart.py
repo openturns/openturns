@@ -20,7 +20,7 @@ Estimate a probability with Monte-Carlo on axial stressed beam: a quick start gu
 from openturns.usecases import stressed_beam
 import openturns as ot
 import numpy as np
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -50,7 +50,7 @@ R = sm.distribution_R
 # %%
 # We draw the PDF of the first marginal.
 graph = R.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Our second marginal is a `Normal` univariate distribution:
@@ -59,7 +59,7 @@ F = sm.distribution_F
 # %%
 # We draw the PDF of the second marginal.
 graph = F.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In order to create the input distribution, we use the `JointDistribution` class which associates
@@ -112,7 +112,7 @@ G.computeCDF(0.0)
 sampleSize = 500
 sampleG = outputRandomVector.getSample(sampleSize)
 graph = ot.HistogramFactory().build(sampleG).drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Estimate the probability with Monte-Carlo
@@ -173,7 +173,7 @@ print("CV =", result.getCoefficientOfVariation())
 # %%
 graph = algoMC.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the 95% confidence interval becomes smaller and smaller and stabilizes at the end of the simulation.

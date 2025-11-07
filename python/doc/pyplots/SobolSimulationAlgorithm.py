@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
@@ -41,4 +41,4 @@ graph = algo.drawFirstOrderIndexConvergence(0)
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)

@@ -13,7 +13,7 @@ Create a quadratic function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -35,5 +35,5 @@ print(function(x))
 graph = (
     ot.ParametricFunction(function, [1, 2], [2.0, 1.0]).getMarginal(1).draw(0.0, 2.0)
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

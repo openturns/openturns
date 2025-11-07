@@ -47,20 +47,20 @@ Different types of design of experiments can be determined:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     d = ot.Axial([1.5, 2.5, 3.5], [1, 2, 3])
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Axial experiment")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # Factorial
     d = ot.Factorial([1.5, 2.5, 3.5], [1, 2, 3])
@@ -68,13 +68,13 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Factorial experiment")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # Composite
     d = ot.Composite([1.5, 2.5, 3.5], [1, 2, 3])
@@ -82,13 +82,13 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Composite experiment")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # Box
     d = ot.Box([3, 4, 5])
@@ -96,7 +96,7 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Box experiment")
-    View(g)
+    otv.View(g)
 
 
 | **Weighted design of experiments**
@@ -117,7 +117,7 @@ Different types of design of experiments can be determined:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # MonteCarlo
     d = ot.MonteCarloExperiment(ot.JointDistribution([ot.Uniform()]*3), 32)
@@ -125,13 +125,13 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("MonteCarlo experiment")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # LHS
     d = ot.LHSExperiment(ot.JointDistribution([ot.Uniform()]*3), 32)
@@ -139,13 +139,13 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("LHS experiment")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # Sobol
     d = ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.JointDistribution([ot.Uniform()]*3), 32)
@@ -153,13 +153,13 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Low discrepancy experiment")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # GaussProduct
     d = ot.GaussProductExperiment(ot.JointDistribution([ot.Uniform()]*3), [4,6,8])
@@ -167,7 +167,7 @@ Different types of design of experiments can be determined:
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Gauss product experiment")
-    View(g)
+    otv.View(g)
 
 
 
@@ -197,7 +197,7 @@ The following figures illustrates the different patterns obtained.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # Combinations
     d = ot.Combinations(3, 12)
@@ -205,13 +205,13 @@ The following figures illustrates the different patterns obtained.
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Combinations generator")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # KPermutations
     d = ot.KPermutations(3, 12)
@@ -219,13 +219,13 @@ The following figures illustrates the different patterns obtained.
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("KPermutations generator")
-    View(g)
+    otv.View(g)
 
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     # Tuples
     d = ot.Tuples([3, 4, 5])
@@ -233,7 +233,7 @@ The following figures illustrates the different patterns obtained.
     s.setDescription(["X1", "X2", "X3"])
     g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Tuples generator")
-    View(g)
+    otv.View(g)
 
 
 .. topic:: API:

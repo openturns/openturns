@@ -26,7 +26,7 @@ Estimate Sobol indices on a field to point function
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # %%
 # First build a process to generate the input data.
@@ -51,7 +51,7 @@ X.setMesh(tg)
 x = X.getSample(10)
 graph = x.drawMarginal(0)
 graph.setTitle(f"{x.getSize()} input trajectories")
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Generate input realizations and the corresponding output from a Field->Point function
@@ -118,7 +118,7 @@ for i in range(x.getDimension()):
     validation = ot.KarhunenLoeveValidation(x.getMarginal(i), kl_results[i])
     graph = validation.drawValidation().getGraph(0, 0)
     graph.setTitle(f"KL validation - marginal #{i} ratio={100.0 * ratios[i]:.2f} %")
-    View(graph)
+    otv.View(graph)
     graphs.append(graph)
 
 # %%
@@ -141,7 +141,7 @@ dr = gnorm.getDrawable(0)
 dr.setLevels([beta])
 dr.setLegend("99% level-set")
 graph.add(dr)
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Graphically validate the chaos result:
@@ -156,7 +156,7 @@ r2Score = validation.computeR2Score()
 print(f"R2={r2Score}")
 graph = validation.drawValidation()
 graph.setTitle(f"Chaos validation - R2={r2Score}")
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Perform an evaluation on a new realization and ensure the output
@@ -184,7 +184,7 @@ print(f"total order={sobol_0t}")
 # %%
 # Draw the Sobol' indices
 graph = sensitivity.draw()
-view = View(graph)
+view = otv.View(graph)
 
 # %%
-View.ShowAll()
+otv.View.ShowAll()

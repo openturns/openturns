@@ -17,7 +17,7 @@ Draw a field
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -31,7 +31,7 @@ interval = ot.Interval(lowerBound, upperBound)
 mesh = mesher.build(interval)
 graph = mesh.draw()
 graph.setTitle("Regular 2-d mesh")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create a field as a realization of a process
@@ -52,7 +52,7 @@ for i in range(len(values)):
 field = ot.Field(mesh, values)
 graph = field.draw()
 graph.setTitle("Field on 2-d mesh and 2-d values")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Compute the input mean of the field
@@ -62,21 +62,21 @@ field.getInputMean()
 # Draw the field without interpolation
 graph = field.drawMarginal(0, False)
 graph.setTitle("Marginal field (no interpolation)")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw the field with interpolation
 # sphinx_gallery_thumbnail_number = 4
 graph = field.drawMarginal(0)
 graph.setTitle("Marginal field (with interpolation)")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Deform the mesh from the field according to the values of the field
 # The dimension of the mesh (ie of its vertices) must be the same as the dimension of the field (i.e., its values)
 graph = field.asDeformedMesh().draw()
 graph.setTitle("Deformed 2-d mesh")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Export to the VTK format

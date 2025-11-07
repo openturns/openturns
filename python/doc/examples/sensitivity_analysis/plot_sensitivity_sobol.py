@@ -58,7 +58,7 @@ Estimate Sobol' indices for the Ishigami function by a sampling method: a quick 
 from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -87,11 +87,11 @@ sampleY = im.model(sampleX)
 
 # %%
 grid = ot.VisualTest.DrawPairsXY(sampleX, sampleY)
-_ = ot.viewer.View(grid, figure_kw={"figsize": (10.0, 4.0)})
+_ = otv.View(grid, figure_kw={"figsize": (10.0, 4.0)})
 
 # %%
 graph = ot.HistogramFactory().build(sampleY).drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the distribution of the output has two modes.
@@ -145,7 +145,7 @@ sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
 graph = sensitivityAnalysis.draw()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # - We see that the variable :math:`X_1`, with a total Sobol' index close
@@ -216,7 +216,7 @@ sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign,
 
 # %%
 graph = sensitivityAnalysis.draw()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 plt.show()
 # %%

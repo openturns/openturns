@@ -1,6 +1,6 @@
 import openturns as ot
 from math import pi
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Create the function
 ot.RandomGenerator.SetSeed(0)
@@ -35,4 +35,4 @@ dim_input = distribution.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
-View(ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order))
+otv.View(ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order))

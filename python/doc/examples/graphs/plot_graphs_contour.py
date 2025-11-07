@@ -16,7 +16,7 @@ A quick start guide to contours
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 # %%
 # We build a bidimensional function (function of `x` and `y`), define the study domain and the sample size
@@ -35,7 +35,7 @@ NY = 75
 
 # %%
 graph = f.draw([XMin, YMin], [XMax, YMax], [NX, NY])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The graph contains a unique drawable whose implementation is of class :class:`~openturns.Contour`
@@ -63,7 +63,7 @@ contour = ot.Contour(x, y, data)
 # %%
 graph = ot.Graph("Complex iso lines", "u1", "u2", True)
 graph.add(contour)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The previous graph does not show the associated color bar.
@@ -76,7 +76,7 @@ contour.setColorMap("inferno")
 contour.buildDefaultLevels(5)
 contour.setDrawLabels(False)
 graph.setDrawables([ot.Drawable(contour)])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # For such a function, contour lines are not easy to interpret.
@@ -84,7 +84,7 @@ view = viewer.View(graph)
 contour.setIsFilled(True)
 graph.setTitle("Complex filled contour")
 graph.setDrawables([ot.Drawable(contour)])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Sometimes the colors are not very distinct because some levels are very close while others are very far apart.
@@ -96,7 +96,7 @@ contour.setAlpha(0.3)
 contour.setHatches(["/", "\\", "/\\", "+", "*"])
 graph.setTitle("Complex filled contour with hatches")
 graph.setDrawables([ot.Drawable(contour)])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # When the function takes values very different in magnitude, it may be useful to change the norm which is
@@ -111,7 +111,7 @@ contour.setVmin(0.5)
 contour.setVmax(2)
 graph.setTitle("Complex contour with log norm and automatic levels")
 graph.setDrawables([ot.Drawable(contour)])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # These capabilities can also be leveraged for distributions.
@@ -148,7 +148,7 @@ contour = graph.getDrawable(0).getImplementation()
 contour.setIsFilled(True)
 contour.setColorMapNorm("log")
 graph.setDrawable(0, contour)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # If the color bar is not sufficiently meaningful, it is possible to add the labels of the values of each level line on the drawing.
@@ -160,6 +160,6 @@ contour = graph.getDrawable(1).getImplementation()
 contour.setDrawLabels(True)
 contour.setLabels(["{:.3g}".format(level) for level in contour.getLevels()])
 graph.setDrawable(1, contour)
-view = viewer.View(graph)
+view = otv.View(graph)
 
-viewer.View.ShowAll()
+otv.View.ShowAll()

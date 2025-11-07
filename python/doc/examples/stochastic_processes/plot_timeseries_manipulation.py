@@ -22,7 +22,7 @@ Manipulate a time series
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -84,10 +84,10 @@ myTimeSeries.getInputMean()
 # %%
 # Draw the marginal :math:`i` of the time series using linear interpolation
 graph = myTimeSeries.drawMarginal(0)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # With no interpolation
 graph = myTimeSeries.drawMarginal(0, False)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -11,4 +11,4 @@ sampleY = f(sampleX)
 
 graph = ot.VisualTest.DrawPairsXY(sampleX, sampleY)
 
-View(graph, figure_kw={"figsize": (6.0, 6.0)})
+otv.View(graph, figure_kw={"figsize": (6.0, 6.0)})

@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -53,11 +53,11 @@ graph.setLegendPosition("lower right")
 fig = plt.figure(figsize=(12, 4))
 axis = fig.add_subplot(131)
 axis.set_xlim(auto=True)
-View(graphMarginal1, figure=fig, axes=[axis], add_legend=True)
+otv.View(graphMarginal1, figure=fig, axes=[axis], add_legend=True)
 axis = fig.add_subplot(132)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis = fig.add_subplot(133)
 axis.set_xlim(auto=True)
-View(graphMarginal2, figure=fig, axes=[axis], add_legend=True)
+otv.View(graphMarginal2, figure=fig, axes=[axis], add_legend=True)
 fig.suptitle("Box Cox log-likelihood example")

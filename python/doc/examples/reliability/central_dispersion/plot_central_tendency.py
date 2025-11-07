@@ -11,7 +11,7 @@ Analyse the central tendency of a cantilever beam
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -60,7 +60,7 @@ print("taylor importance factors=", taylor_if)
 
 # %%
 graph = taylor.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that, at first order, the variable :math:`F` explains about 70% of the variance of the output :math:`Y`.
@@ -105,6 +105,6 @@ print("mean=", y_mean, "stddev=", y_stddev, "quantile@95%", y_quantile_95p)
 # %%
 graph = ot.KernelSmoothing().build(Y_s).drawPDF()
 graph.setTitle("Kernel smoothing approximation of the output distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 plt.show()

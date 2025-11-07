@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 mesh = ot.IntervalMesher([128]).build(ot.Interval(-1.0, 1.0))
@@ -16,4 +16,4 @@ g = validation.drawValidation()
 fig = plt.figure(figsize=(6, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=False)
+otv.View(g, figure=fig, axes=[axis], add_legend=False)

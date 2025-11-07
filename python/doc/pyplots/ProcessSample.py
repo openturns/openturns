@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 # Create a bivariate Gaussian process
@@ -16,4 +16,4 @@ sample_graph.setTitle("A sample of fields")
 
 fig = plt.figure(figsize=(10, 4))
 sample_axis = fig.add_subplot(111)
-View(sample_graph, figure=fig, axes=[sample_axis], add_legend=False)
+otv.View(sample_graph, figure=fig, axes=[sample_axis], add_legend=False)

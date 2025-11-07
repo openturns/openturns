@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -9,4 +9,4 @@ sample = normal.getSample(size)
 
 henryPlot = ot.VisualTest.DrawHenryLine(sample)
 
-View(henryPlot, figure_kw={"figsize": (4.5, 4.5)})
+otv.View(henryPlot, figure_kw={"figsize": (4.5, 4.5)})

@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import PlotDesign
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -13,4 +13,4 @@ design = lhs.generate()
 subdivisions = [size] * dim
 
 fig = plt.figure(figsize=(8, 8))
-PlotDesign(design, bounds, subdivisions, figure=fig)
+otv.PlotDesign(design, bounds, subdivisions, figure=fig)

@@ -1,7 +1,7 @@
 import openturns as ot
 from math import exp
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 
 # Create the frequency grid
@@ -53,4 +53,4 @@ myGraph.setLegendPosition("upper right")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)
-view = View(myGraph, figure=fig, axes=[cov_axis], add_legend=False)
+view = otv.View(myGraph, figure=fig, axes=[cov_axis], add_legend=False)

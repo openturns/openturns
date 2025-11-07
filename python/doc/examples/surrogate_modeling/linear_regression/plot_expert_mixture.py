@@ -33,7 +33,7 @@ Mixture of experts
 # %%
 import openturns as ot
 from matplotlib import pyplot as plt
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 
 
@@ -79,7 +79,7 @@ fc1 = ot.FunctionalChaosAlgorithm(X1, Y1, d1, adaptiveStrategy)
 fc1.run()
 mm1 = fc1.getResult().getMetaModel()
 graph = mm1.draw(-1.0, -1e-6)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Interval 2: :math:`[0.0, 1.0]`
@@ -90,7 +90,7 @@ fc2 = ot.FunctionalChaosAlgorithm(X2, Y2, d2, adaptiveStrategy)
 fc2.run()
 mm2 = fc2.getResult().getMetaModel()
 graph = mm2.draw(1e-6, 1.0)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Define the mixture
@@ -117,5 +117,5 @@ moe = ot.Function(evaluation)
 # %%
 # Draw the mixture of experts
 graph = moe.draw(-1.0, 1.0)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

@@ -10,7 +10,7 @@ Validate a polynomial chaos
 # %%
 from openturns.usecases import ishigami_function
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -93,7 +93,7 @@ r2Score
 # %%
 graph = val.drawValidation()
 graph.setTitle("R2=%.2f%%" % (r2Score * 100))
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()
 
 # %%

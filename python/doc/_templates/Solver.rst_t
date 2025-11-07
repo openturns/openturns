@@ -6,7 +6,7 @@
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     xMin = 0.0
     xMax= 3.0
@@ -45,7 +45,7 @@
     g.setTitle("Root finding using " + solver.getClassName())
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    View(g, figure=fig)
+    otv.View(g, figure=fig)
     plt.xlabel(r'$x$')
     plt.ylabel(r'$f(x)$')
     plt.grid()

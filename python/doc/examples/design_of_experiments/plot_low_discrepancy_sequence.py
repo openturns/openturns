@@ -19,7 +19,7 @@ Generate low discrepancy sequences
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -32,7 +32,7 @@ sample = sequence.generate(size)
 graph = ot.Graph("", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 2. Halton sequence
@@ -42,7 +42,7 @@ sample = sequence.generate(size)
 graph = ot.Graph("Halton", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 3. Halton sequence in high dimension: bad filling in upper dimensions
@@ -58,7 +58,7 @@ graph = ot.Graph(
 )
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 4. Scrambled Halton sequence in high dimension
@@ -75,7 +75,7 @@ graph = ot.Graph(
 )
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 5. Reverse Halton sequence
@@ -89,7 +89,7 @@ print(
 graph = ot.Graph("Reverse Halton", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # 6. Haselgrove sequence
@@ -99,7 +99,7 @@ sample = sequence.generate(size)
 graph = ot.Graph("Haselgrove", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Compare with uniform random sequence
@@ -112,5 +112,5 @@ print(
 graph = ot.Graph("Mersenne Twister", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

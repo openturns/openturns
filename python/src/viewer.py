@@ -1119,18 +1119,18 @@ def PlotDesign(
     Plot a sample in 2 dimensions.
 
     >>> import openturns as ot
-    >>> from openturns.viewer import PlotDesign
+    >>> import openturns.viewer as otv
     >>> dim = 2
     >>> X = [ot.Uniform()] * dim
     >>> distribution = ot.JointDistribution(X)
     >>> sampleSize = 10
     >>> sample = distribution.getSample(sampleSize)
-    >>> fig = PlotDesign(sample)
+    >>> fig = otv.PlotDesign(sample)
 
     Plot a sample in 5 dimensions.
 
     >>> import openturns as ot
-    >>> from openturns.viewer import PlotDesign
+    >>> import openturns.viewer as otv
     >>> dim = 5
     >>> size = 10
     >>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)]*dim)
@@ -1138,7 +1138,7 @@ def PlotDesign(
     >>> lhs = ot.LHSExperiment(distribution, size)
     >>> sample = lhs.generate()
     >>> subdivisions = [size]*dim
-    >>> fig = PlotDesign(sample, bounds, subdivisions)
+    >>> fig = otv.PlotDesign(sample, bounds, subdivisions)
     """
     # check that arguments are dictionaries
     axes_kw = View._CheckDict(axes_kw)

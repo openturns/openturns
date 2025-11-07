@@ -8,7 +8,7 @@ Fit a non parametric copula
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -26,11 +26,11 @@ distribution = ot.BernsteinCopulaFactory().build(sample)
 # %%
 # Draw fitted distribution
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Estimate a Normal copula using :class:`~openturns.KernelSmoothing`
 distribution = ot.KernelSmoothing().build(sample).getCopula()
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

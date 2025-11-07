@@ -23,7 +23,7 @@ Use the FORM - SORM algorithms
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -96,19 +96,19 @@ print(result.getPhysicalSpaceDesignPoint())
 # %%
 # Importance factors
 graph = result.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
 marginalSensitivity.setLegends(["E", "F", "L", "I"])
 marginalSensitivity.setLegendPosition("bottom")
-view = viewer.View(marginalSensitivity)
+view = otv.View(marginalSensitivity)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawEventProbabilitySensitivity()
 marginalSensitivity.setLegends(["E", "F", "L", "I"])
 marginalSensitivity.setLegendPosition("bottom")
-view = viewer.View(marginalSensitivity)
+view = otv.View(marginalSensitivity)
 
 # %%
 # Error history
@@ -116,7 +116,7 @@ optimResult = result.getOptimizationResult()
 graphErrors = optimResult.drawErrorHistory()
 graphErrors.setLegendPosition("bottom")
 graphErrors.setYMargin(0.0)
-view = viewer.View(graphErrors)
+view = otv.View(graphErrors)
 
 # %%
 # Get additional results with SORM

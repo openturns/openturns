@@ -26,7 +26,7 @@ FAST sensitivity indices
 # %%
 from openturns.usecases import ishigami_function
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -61,13 +61,13 @@ print("Total order FAST indices:", totalOrderIndices)
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     firstOrderIndices, distribution.getDescription(), "FAST first order indices"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     totalOrderIndices, distribution.getDescription(), "FAST total order indices"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()
 
 # %%

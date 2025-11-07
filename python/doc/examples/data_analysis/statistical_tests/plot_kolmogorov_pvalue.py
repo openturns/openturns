@@ -13,7 +13,7 @@ Kolmogorov-Smirnov : understand the p-value
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -128,7 +128,7 @@ graph.add(curve)
 graph.add(curveStat)
 graph.add(boundsPoly)
 graph.setTitle("Kolmogorov-Smirnov distribution (known parameters)")
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()
 
 # %%

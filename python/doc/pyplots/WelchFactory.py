@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 ot.ResourceMap.Reload()
@@ -87,4 +87,4 @@ graph.add(curve2)
 
 fig = plt.figure(figsize=(10, 4))
 graph_axis = fig.add_subplot(111)
-view = View(graph, figure=fig, axes=[graph_axis], add_legend=False)
+view = otv.View(graph, figure=fig, axes=[graph_axis], add_legend=False)

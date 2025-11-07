@@ -16,7 +16,7 @@ Export a field to VTK
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -30,7 +30,7 @@ interval = ot.Interval(lowerBound, upperBound)
 mesh = mesher.build(interval)
 graph = mesh.draw()
 graph.setTitle("Regular 2-d mesh")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We now create a field from a mesh and some values

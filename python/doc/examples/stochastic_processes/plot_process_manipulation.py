@@ -20,7 +20,7 @@ Manipulate stochastic processes
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -73,7 +73,7 @@ graph = mesh.draw()
 graph.setTitle("Time grid (mesh)")
 graph.setXTitle("t")
 graph.setYTitle("")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -93,7 +93,7 @@ graph = realization.drawMarginal(0, interpolate)
 graph.setTitle("First marginal of a realization of the process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t^0$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The same graph, but with interpolated values (default behaviour) :
@@ -101,7 +101,7 @@ graph = realization.drawMarginal(0)
 graph.setTitle("First marginal of a realization of the process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t^0$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -114,7 +114,7 @@ marginal0 = continuousRealization.getMarginal(0)
 graph = marginal0.draw(minMesh, maxMesh)
 graph.setTitle("First marginal of a P1-Lagrange continuous realization of the process")
 graph.setXTitle("t")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Please note that the `marginal0` object is a function. Consequently we can
@@ -135,7 +135,7 @@ graph = fieldSample.drawMarginal(0, False)
 graph.setTitle("First marginal of 10 realizations of the process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t^0$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Same graph, but with interpolated values :
@@ -143,7 +143,7 @@ graph = fieldSample.drawMarginal(0)
 graph.setTitle("First marginal of 10 realizations of the process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t^0$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

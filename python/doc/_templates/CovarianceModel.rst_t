@@ -6,7 +6,7 @@
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
     if "{{ objname }}" == "ExponentialModel":
         covarianceModel = ot.ExponentialModel([0.5], [5.0])
     elif "{{ objname }}" == "GeneralizedExponential":
@@ -39,7 +39,7 @@
             cov_graph.setTitle(title)
             fig = plt.figure(figsize=(10, 4))
             cov_axis = fig.add_subplot(111)
-            View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+            otv.View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
         else:
             def f(x):
                 return [covarianceModel([x[0]], [x[1]])[0, 0]]
@@ -49,7 +49,7 @@
             cov_graph.setTitle(title)
             fig = plt.figure(figsize=(10, 4))
             cov_axis = fig.add_subplot(111)
-            View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+            otv.View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
     elif covarianceModel.getInputDimension() == 2:
         scale = covarianceModel.getScale()
         if covarianceModel.isStationary():
@@ -61,7 +61,7 @@
             cov_graph.setTitle(title)
             fig = plt.figure(figsize=(10, 4))
             cov_axis = fig.add_subplot(111)
-            View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+            otv.View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
 
 .. currentmodule:: {{ module }}
 

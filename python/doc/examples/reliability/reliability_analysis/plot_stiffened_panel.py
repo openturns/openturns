@@ -18,7 +18,7 @@ Estimate a buckling probability
 # %%
 from openturns.usecases import stiffened_panel
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -41,7 +41,7 @@ sampleSize = 1000
 inputSample = distribution.getSample(sampleSize)
 outputSample = model(inputSample)
 graph = ot.HistogramFactory().build(outputSample).drawPDF()
-_ = viewer.View(graph)
+_ = otv.View(graph)
 
 # %%
 # Define the event
@@ -97,7 +97,7 @@ print("Pf (FORM)=%.3e" % probability, "nb evals=", n1 - n0)
 
 # %%
 graph = result.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Estimate the probability with SORM

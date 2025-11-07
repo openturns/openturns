@@ -42,7 +42,7 @@ Bayesian calibration of hierarchical fission gas release models
 # should not be expected to reproduce those of the paper.
 
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -390,7 +390,7 @@ for i in range(pair_plots.getNbRows()):
         graph.setYTitle(pair_plots.getGraph(i, 0).getYTitle())
         pair_plots.setGraph(i, j, graph)
 
-_ = View(pair_plots)
+_ = otv.View(pair_plots)
 
 # %%
 # Create an enhanced pair plots grid with histograms of the marginals on the diagonal.
@@ -409,7 +409,7 @@ for i in range(pair_plots.getNbRows()):
         if len(pair_plots.getGraph(i, j).getDrawables()) > 0:
             full_grid.setGraph(i + 1, j, pair_plots.getGraph(i, j))
 
-_ = View(full_grid)
+_ = otv.View(full_grid)
 
 
 # %%
@@ -431,7 +431,7 @@ for i in range(1, full_grid.getNbRows()):
         graph.setBoundingBox(contour.getBoundingBox())
         full_grid.setGraph(i, j, graph)
 
-_ = View(full_grid, scatter_kw={"alpha": 0.1})
+_ = otv.View(full_grid, scatter_kw={"alpha": 0.1})
 
 
 # %%

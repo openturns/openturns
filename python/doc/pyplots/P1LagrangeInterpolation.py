@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 lowerBound = [0.0, 0.0]
 upperBound = [1.0, 1.0]
@@ -42,5 +42,5 @@ grid.setGraph(0, 0, graph_1)
 grid.setGraph(0, 1, graph_2)
 
 
-view = View(grid)
+view = otv.View(grid)
 view.show()

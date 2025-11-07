@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 import math as m
 
 a = -m.pi
@@ -62,4 +62,4 @@ g.add(cloud)
 fig = plt.figure(figsize=(4, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=False)
+otv.View(g, figure=fig, axes=[axis], add_legend=False)

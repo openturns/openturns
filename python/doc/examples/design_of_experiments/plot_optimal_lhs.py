@@ -8,7 +8,7 @@ Optimize an LHS design of experiments
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -140,7 +140,7 @@ design = algo.generate()
 result = algo.getResult()
 # check history ==> draw criterion
 graph = result.drawHistoryCriterion()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Convergence needs to be performed

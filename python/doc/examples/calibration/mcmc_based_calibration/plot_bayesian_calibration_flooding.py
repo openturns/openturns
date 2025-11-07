@@ -76,7 +76,7 @@ Bayesian calibration of the flooding model
 # %%
 from matplotlib import pyplot as plt
 from openturns.usecases import flood_model
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 import openturns as ot
 
@@ -149,7 +149,7 @@ graph = ot.Graph("Observations", "Q (m3/s)", "h (m)", True)
 cloud = ot.Cloud(Q_H_obs)
 # cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -305,7 +305,7 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
 # %%
 # sphinx_gallery_thumbnail_number = 2
 grid = plot_bayesian_prior_vs_posterior_pdf(prior, posterior)
-viewer.View(
+otv.View(
     grid,
     figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
@@ -313,4 +313,4 @@ viewer.View(
 plt.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

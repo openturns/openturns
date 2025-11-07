@@ -22,7 +22,7 @@ Kolmogorov-Smirnov : get the statistics distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -44,7 +44,7 @@ curve.setLegend("Uniform")
 graph.add(curve)
 graph.setXTitle("X")
 graph.setTitle("Cumulative distribution function")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -157,7 +157,7 @@ graph.setLegends(["Empirical distribution"])
 graph.add(curve)
 graph.setTitle("Kolmogorov-Smirnov distribution (known parameters)")
 graph.setXTitle("KS-Statistics")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -200,7 +200,7 @@ graphP.setLegends(["Estimated parameters"])
 graph.add(graphP)
 graph.setTitle("Kolmogorov-Smirnov distribution")
 graph.setXTitle("KS-Statistics")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Display the graphs

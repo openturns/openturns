@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -19,4 +19,4 @@ lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 
 drawLinearModel = ot.VisualTest.DrawLinearModel(lmtest)
 
-View(drawLinearModel, figure_kw={"figsize": (5, 5)})
+otv.View(drawLinearModel, figure_kw={"figsize": (5, 5)})

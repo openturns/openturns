@@ -14,7 +14,7 @@ Add a trend to a process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -31,7 +31,7 @@ X = ot.GaussianProcess(covModel, grid)
 sample = X.getSample(6)
 sample.setName("X")
 graph = sample.drawMarginal(0)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Define a trend function
@@ -48,5 +48,5 @@ Y.setName("Y")
 sample = Y.getSample(6)
 sample.setName("Y")
 graph = sample.drawMarginal(0)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

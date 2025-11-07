@@ -34,7 +34,7 @@ Use the ANCOVA indices
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -97,7 +97,7 @@ print("ANCOVA correlated indices ", correlatedIndices)
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     indices, distribution.getDescription(), "ANCOVA indices (Sobol')"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
@@ -105,7 +105,7 @@ graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     distribution.getDescription(),
     "ANCOVA uncorrelated indices\n(part of physical variance in the model)",
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
@@ -113,5 +113,5 @@ graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     distribution.getDescription(),
     "ANCOVA correlated indices\n(part of variance due to the correlation)",
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

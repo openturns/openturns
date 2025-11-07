@@ -1,6 +1,6 @@
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Graph
 g = ot.Graph("Fejer quadratures", "nodes", "", True)
@@ -36,4 +36,4 @@ g.setTitle(r"Fejer experiment example")
 g.setLegends(["Fejer_1", "Fejer_2", "Clenshaw-Curtis"])
 g.setLegendPosition("upper right")
 
-View(g, figure_kw={"figsize": (8, 4)}, add_legend=True)
+otv.View(g, figure_kw={"figsize": (8, 4)}, add_legend=True)

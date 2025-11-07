@@ -23,7 +23,7 @@ from openturns.usecases import branin_function
 from openturns.usecases import ackley_function
 import openturns as ot
 import openturns.experimental as otexp
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -62,7 +62,7 @@ fexact
 # %%
 graph = model.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Ackley function")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the Ackley function has many local minimas. The global minimum, however, is unique and located at the center of the domain.
@@ -93,7 +93,7 @@ graph = ot.Graph(
 )
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We now create the GP metamodel.
@@ -155,7 +155,7 @@ fexact
 graph = result.drawOptimalValueHistory()
 optimum_curve = ot.Curve(ot.Sample([[0, fexact[0]], [29, fexact[0]]]))
 graph.add(optimum_curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 inputHistory = result.getInputSample()
@@ -171,7 +171,7 @@ cloud = ot.Cloud(inputHistory, "solution")
 cloud.setPointStyle("diamond")
 cloud.setColor("forestgreen")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the initial (black) points are dispersed in the whole domain,
@@ -217,7 +217,7 @@ fexact
 # %%
 graph = objectiveFunction.draw(lowerbound, upperbound, [100] * dim)
 graph.setTitle("Branin function")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Branin function has three local minimas.
@@ -239,7 +239,7 @@ graph = ot.Graph(
 )
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Configure the covariance model with the noise
@@ -302,7 +302,7 @@ cloud = ot.Cloud(inputHistory, "solution")
 cloud.setPointStyle("diamond")
 cloud.setColor("forestgreen")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the EGO algorithm reached the different optima locations.
@@ -311,8 +311,8 @@ view = viewer.View(graph)
 graph = result.drawOptimalValueHistory()
 optimum_curve = ot.Curve(ot.Sample([[0, fexact[0][0]], [29, fexact[0][0]]]))
 graph.add(optimum_curve)
-view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
+view = otv.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
 
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

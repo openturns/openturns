@@ -27,7 +27,7 @@ Create a white noise process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -50,7 +50,7 @@ process
 realization = process.getRealization()
 graph = realization.drawMarginal(0)
 graph.setTitle("Realization of a white noise with distribution N(0,1)")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw a sample
@@ -63,5 +63,5 @@ for k in range(sample.getSize()):
     drawable = graph.getDrawable(k)
     drawable.setLegend("realization " + str(k + 1))
     graph.setDrawable(k, drawable)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

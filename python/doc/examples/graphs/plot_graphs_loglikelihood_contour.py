@@ -7,7 +7,7 @@ Plot the log-likelihood contours of a distribution
 # In this example, we show how to plot the bidimensionnal log-likelihood contours of function given a sample.
 
 # %%
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import openturns as ot
 
 # %%
@@ -36,7 +36,7 @@ cloud = ot.Cloud(sample, zeros)
 cloud.setLegend("Sample")
 graph.add(cloud)
 graph.setLegendPosition("upper left")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -91,7 +91,7 @@ logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50] * 2)
 graphBasic.setXTitle(r"$\mu$")
 graphBasic.setYTitle(r"$\sigma$")
-view = viewer.View(graphBasic)
+view = otv.View(graphBasic)
 
 # %%
 # Customizing the number of levels
@@ -107,7 +107,7 @@ logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50] * 2)
 graphBasic.setXTitle(r"$\mu$")
 graphBasic.setYTitle(r"$\sigma$")
-view = viewer.View(graphBasic)
+view = otv.View(graphBasic)
 
 # %%
 # We get the underlying `Contour` object as a `Drawable`.
@@ -122,7 +122,7 @@ contour.buildDefaultLevels(50)
 
 manyLevelGraph = ot.Graph()
 manyLevelGraph.add(contour)
-view = viewer.View(manyLevelGraph)
+view = otv.View(manyLevelGraph)
 
 # %%
 # Using a rank-based normalization of the colors
@@ -135,7 +135,7 @@ view = viewer.View(manyLevelGraph)
 contour.setColorMapNorm("rank")
 rankGraph = ot.Graph()
 rankGraph.add(contour)
-view = viewer.View(rankGraph)
+view = otv.View(rankGraph)
 
 # %%
 # Fill the contour graph
@@ -148,7 +148,7 @@ view = viewer.View(rankGraph)
 contour.setIsFilled(True)
 filledGraph = ot.Graph()
 filledGraph.add(contour)
-view = viewer.View(filledGraph)
+view = otv.View(filledGraph)
 
 # %%
 # Getting the level values
@@ -192,7 +192,7 @@ contour.setColorBarPosition("")
 
 graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
 graphFineTune.setDrawables([contour])
-view = viewer.View(graphFineTune)
+view = otv.View(graphFineTune)
 
 # %%
 # Set multiple colors manually
@@ -205,7 +205,7 @@ view = viewer.View(graphFineTune)
 
 # Build a range of colors corresponding to the Tableau palette
 palette = ot.Drawable.BuildTableauPalette(len(levels))
-view = viewer.View(graphFineTune, contour_kw={"colors": palette, "cmap": None})
+view = otv.View(graphFineTune, contour_kw={"colors": palette, "cmap": None})
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

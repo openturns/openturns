@@ -14,7 +14,7 @@ Fit a non parametric distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 # %%
 # An introductory example
@@ -39,7 +39,7 @@ kernel_plot = estimated.drawPDF().getDrawable(0)
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can obtain the bandwdth parameter :
@@ -61,7 +61,7 @@ kernel_plot = estimated.drawPDF().getDrawable(0)
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS-Silverman"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Silverman rule of thumb to estimate the bandwidth provides a better estimate for the distribution. We can also study the impact of the kernel selection.
@@ -130,7 +130,7 @@ graph.setLegends(
     ["original", "KS-Normal", "KS-Triangular", "KS-Epanechnikov", "KS-Uniform"]
 )
 
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We observe that all the kernels produce very similar results in practice.
@@ -190,7 +190,7 @@ graph.add(kernelMB_plot)
 # %%
 graph.setLegends(["original", "KS-Silverman", "KS-Plugin", "KS-Mixed"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # As expected the Silverman seriously overfit the data and the other rules are more to the point.
@@ -248,7 +248,7 @@ graph.add(kernel2_plot)
 
 graph.setLegends(["original", "KS", "KS with boundary correction"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The boundary correction made has a remarkable impact on the quality of the estimate for the small values.
@@ -313,7 +313,7 @@ for i, distribution in enumerate(distCollection):
     graph.add(curve)
     grid.setGraph(i // 3, i % 3, graph)
 
-view = viewer.View(grid)
+view = otv.View(grid)
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

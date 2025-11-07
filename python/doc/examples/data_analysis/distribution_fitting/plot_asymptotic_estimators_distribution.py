@@ -9,7 +9,7 @@ Get the asymptotic distribution of the estimators
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -39,7 +39,7 @@ graph = paramDist.drawPDF()
 graph.setXTitle(r"$\mu$")
 graph.setYTitle(r"$\sigma$")
 graph.setTitle(r"Normal fitting : $(\mu, \sigma)$ iso-PDF")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -48,7 +48,7 @@ graph = paramDist.getMarginal(0).drawPDF()
 graph.setTitle(r"Normal fitting : PDF of $\mu$")
 graph.setXTitle(r"$\mu$")
 graph.setLegends(["PDF"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the scale parameter :math:`\sigma` distribution
@@ -56,7 +56,7 @@ graph = paramDist.getMarginal(1).drawPDF()
 graph.setTitle(r"Normal fitting : PDF of $\sigma$")
 graph.setXTitle(r"$\sigma$")
 graph.setLegends(["PDF"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We observe on the two previous figures that the distribution is Normal and centered around
@@ -94,7 +94,7 @@ graph = paramDist.getMarginal(0).drawPDF()
 graph.setTitle(r"Pareto fitting : PDF of $\beta$")
 graph.setXTitle(r"$\beta$")
 graph.setLegends(["PDF"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the shape parameter :math:`\alpha` distribution
@@ -102,7 +102,7 @@ graph = paramDist.getMarginal(1).drawPDF()
 graph.setTitle(r"Pareto fitting : PDF of $\alpha$")
 graph.setXTitle(r"$\alpha$")
 graph.setLegends(["PDF"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the location parameter :math:`\gamma` distribution
@@ -110,6 +110,6 @@ graph = paramDist.getMarginal(2).drawPDF()
 graph.setTitle(r"Pareto fitting : PDF of $\gamma$")
 graph.setXTitle(r"$\gamma$")
 graph.setLegends(["PDF"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 plt.show()

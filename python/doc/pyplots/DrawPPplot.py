@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 size = 100
@@ -8,4 +8,4 @@ sample = normal.getSample(size)
 
 graph = ot.VisualTest.DrawPPplot(sample, normal)
 
-View(graph, figure_kw={"figsize": (4.5, 4.5)})
+otv.View(graph, figure_kw={"figsize": (4.5, 4.5)})

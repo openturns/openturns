@@ -12,7 +12,7 @@ Create a custom covariance model
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 import math as m
 
@@ -74,7 +74,7 @@ curve = ot.Curve(x, "User Model")
 myGraph = ot.Graph("User covariance model", "Time", "Covariance function", True)
 myGraph.add(curve)
 myGraph.setLegendPosition("upper right")
-view = viewer.View(myGraph)
+view = otv.View(myGraph)
 
 
 # %%
@@ -120,7 +120,7 @@ func.setDescription(["$s$", "$t$", "$cov$"])
 # Then we can draw the function with default options.
 cov_graph = func.draw([-a] * 2, [a] * 2, [512] * 2)
 cov_graph.setLegendPosition("")
-view = viewer.View(cov_graph)
+view = otv.View(cov_graph)
 
 
 # %%
@@ -129,7 +129,7 @@ view = viewer.View(cov_graph)
 cov_graph = func.draw(
     0, 1, 0, [0] * 2, [-a] * 2, [a] * 2, [512] * 2, ot.GraphImplementation.NONE, True
 )
-view = viewer.View(cov_graph)
+view = otv.View(cov_graph)
 
 # %%
 # We can also draw the covariance model as a matrix, using the raw matshow.
@@ -152,4 +152,4 @@ plt.show()
 
 # %%
 # Display all figures
-viewer.View.ShowAll()
+otv.View.ShowAll()

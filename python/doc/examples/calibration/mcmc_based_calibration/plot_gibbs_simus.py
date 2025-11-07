@@ -89,7 +89,7 @@ Linear Regression with interval-censored observations
 # 1.4 Simulate the dataset
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
 
 ot.RandomGenerator.SetSeed(1)
@@ -134,7 +134,7 @@ graph.add(curve)
 graph.add(cloud_sim)
 graph.add(cloud_obs)
 graph.setLegends(["Trend", "$Y^{sim}$", "$Y^{obs}$"])
-_ = View(graph)
+_ = otv.View(graph)
 
 
 # %%
@@ -583,7 +583,7 @@ for parameter_index in range(3):
     graph.setLegends(["Posterior", "Prior", "True value"])
     graph.setXTitle(xlabs[parameter_index])
     grid.setGraph(0, parameter_index, graph)
-_ = View(grid)
+_ = otv.View(grid)
 
 
 # %%
@@ -607,7 +607,7 @@ pt = ot.Cloud([[theta_true[1, 0], tau_true]], "#2ca02c", "circle", "True value")
 graph.add(pt)
 grid.setGraph(1, 1, graph)
 
-_ = View(grid)
+_ = otv.View(grid)
 
 # %%
-View.ShowAll()
+otv.View.ShowAll()

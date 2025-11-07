@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Create the mesher
 mesher = ot.LevelSetMesher([50] * 2)
@@ -23,4 +23,4 @@ fig = plt.figure(figsize=(10, 4))
 graph_axis = fig.add_subplot(111)
 graph_axis.set_xlim(auto=True)
 
-View(graph, figure=fig, axes=[graph_axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[graph_axis], add_legend=True)

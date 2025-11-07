@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import PlotDesign
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 dim = 3
@@ -9,4 +9,4 @@ bounds = distribution.getRange()
 lhs = ot.LHSExperiment(distribution, size)
 sample = lhs.generate()
 subdivisions = [size] * dim
-fig = PlotDesign(sample, bounds, subdivisions)
+fig = otv.PlotDesign(sample, bounds, subdivisions)

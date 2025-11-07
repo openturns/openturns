@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -22,4 +22,4 @@ cobweb = ot.VisualTest.DrawParallelCoordinates(
 
 cobweb.setLegendCorner([1.0, 0.0])
 cobweb.setLegendPosition("lower right")
-View(cobweb, figure_kw={"figsize": (9, 5)})
+otv.View(cobweb, figure_kw={"figsize": (9, 5)})

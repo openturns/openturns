@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 mesh = ot.RegularGrid(-5.0, 0.1, 101)
@@ -43,6 +43,6 @@ y_graph = Y.getSample(N).drawMarginal(0)
 fig = plt.figure(figsize=(10, 4))
 x_axis = fig.add_subplot(121)
 y_axis = fig.add_subplot(122)
-View(x_graph, figure=fig, axes=[x_axis], add_legend=False)
-View(y_graph, figure=fig, axes=[y_axis], add_legend=False)
+otv.View(x_graph, figure=fig, axes=[x_axis], add_legend=False)
+otv.View(y_graph, figure=fig, axes=[y_axis], add_legend=False)
 fig.suptitle("Composite process")

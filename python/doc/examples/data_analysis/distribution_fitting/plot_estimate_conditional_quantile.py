@@ -18,7 +18,7 @@ Estimate a conditional quantile
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
 
 # %%
@@ -48,7 +48,7 @@ graph.add(cloud)
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("A sample from $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the isolines of the PDF of :math:`X` :
@@ -56,7 +56,7 @@ graph = distX.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We estimate the density with kernel smoothing :
@@ -70,7 +70,7 @@ graph = estimated.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$ estimated by kernel smoothing")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -101,7 +101,7 @@ graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In this case the :math:`Q_2` quantile is constant because of the independence of the marginals.
@@ -134,7 +134,7 @@ graph.add(cloud)
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("A sample from $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the isolines of the PDF of :math:`X` :
@@ -142,7 +142,7 @@ graph = distX.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We estimate the density with kernel smoothing :
@@ -155,7 +155,7 @@ graph = estimated.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$ estimated by kernel smoothing")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -186,7 +186,7 @@ graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Our estimated conditional quantile is a good approximate and should be better the more data we have. We can observe it by increasing the number of samples.

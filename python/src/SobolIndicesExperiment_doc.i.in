@@ -58,8 +58,8 @@ The type of :class:`~openturns.WeightedExperiment` depends on the value of ``'So
 Note that ``'QMC'`` is only possible if :math:`2 n_X \leqslant` :class:`~openturns.SobolSequence`:code:`.MaximumDimension`.
 If ``'QMC'`` is specified but :math:`2 n_X >` :class:`~openturns.SobolSequence`:code:`.MaximumDimension`, the class falls back to ``'LHS'``.
 
->>> from openturns import SobolSequence
->>> print(SobolSequence.MaximumDimension)
+>>> import openturns as ot
+>>> print(ot.SobolSequence.MaximumDimension)
 1111
 
 Regardless of the type of :class:`~openturns.WeightedExperiment`,

@@ -13,11 +13,9 @@ Advanced Gaussian process regression
 # %%
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
 import matplotlib.pyplot as plt
-import openturns.viewer as viewer
-
 
 # %%
 # Generate design of experiments
@@ -56,7 +54,7 @@ graph.add(cloud)
 graph.setLegends(["Function", "Data"])
 graph.setLegendPosition("upper left")
 graph.setTitle("Sample size = %d" % (n_pt))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create the Gaussian process regression algorithm
@@ -120,7 +118,7 @@ cloud.setColor("red")
 cloud.setLegend("Data")
 graph.add(cloud)
 graph.setLegendPosition("upper left")
-View(graph, axes=[ax1])
+otv.View(graph, axes=[ax1])
 
 # On the right, the conditional Gaussian process regression variance
 graph = ot.Graph("", "x", "Conditional Gaussian process regression variance", True, "")
@@ -140,7 +138,7 @@ sample[:, 1] = variance
 curve = ot.Curve(sample)
 curve.setColor("green")
 graph.add(curve)
-View(graph, axes=[ax2])
+otv.View(graph, axes=[ax2])
 
 fig.suptitle("Gaussian process regression result")
 
@@ -161,8 +159,8 @@ graph_ref_func = ref_func.draw(xmin, xmax, n_pts_plot)
 graph_gprMeta = gprMeta.draw(xmin, xmax, n_pts_plot)
 for graph in [graph_ref_func, graph_gprMeta]:
     graph.setTitle("")
-View(graph_ref_func, axes=[ax], plot_kw={"label": r"$x\sin(x)$"})
-View(
+otv.View(graph_ref_func, axes=[ax], plot_kw={"label": r"$x\sin(x)$"})
+otv.View(
     graph_gprMeta,
     plot_kw={"color": "green", "label": "prediction"},
     axes=[ax],
@@ -201,12 +199,12 @@ for i in range(krv_sample.getSize()):
         )
     else:
         ax.plot(values, krv_sample[i].asPoint(), "--", alpha=0.8)
-View(
+otv.View(
     graph_ref_func,
     axes=[ax],
     plot_kw={"color": "black", "label": r"$x\sin(x)$"},
 )
-View(
+otv.View(
     graph_gprMeta,
     axes=[ax],
     plot_kw={"color": "green", "label": "prediction"},
@@ -235,12 +233,12 @@ validation.computeR2Score()
 
 # %%
 graph = validation.drawValidation()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = validation.getResidualDistribution().drawPDF()
 graph.setXTitle("Residuals")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Nugget effect
@@ -298,13 +296,13 @@ ax.plot(
 ax.plot(x_plot, borne_inf_nugget, "--", color="orange")
 graph_gprMeta_nugget = gprMeta_nugget.draw(xmin, xmax, n_pts_plot)
 graph_gprMeta_nugget.setTitle("")
-View(graph_ref_func, axes=[ax], plot_kw={"label": "$x sin(x)$"})
-View(
+otv.View(graph_ref_func, axes=[ax], plot_kw={"label": "$x sin(x)$"})
+otv.View(
     graph_gprMeta_nugget,
     plot_kw={"color": "green", "label": "prediction with nugget"},
     axes=[ax],
 )
-View(
+otv.View(
     graph_gprMeta,
     plot_kw={
         "color": "green",

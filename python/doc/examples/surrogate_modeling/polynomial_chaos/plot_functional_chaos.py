@@ -39,7 +39,7 @@ Create a polynomial chaos metamodel from a data set
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -124,7 +124,7 @@ graph.add(curve)
 graph.setLegendPosition("lower right")
 graph.setXTitle("X2")
 graph.setTitle("Metamodel Validation, output #%d" % (outputIndex))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the metamodel fits approximately to the model, except
@@ -147,7 +147,7 @@ val = ot.MetaModelValidation(outputTest, metamodelPredictions)
 r2Score = val.computeR2Score()
 graph = val.drawValidation()
 graph.setTitle("Metamodel validation R2=" + str(r2Score))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The coefficient of determination is not extremely satisfactory for the
@@ -185,7 +185,7 @@ total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(inputDim
 input_names = model.getInputDescription()
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
 graph.setLegendPosition("center")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Testing the sensitivity to the degree
@@ -244,7 +244,7 @@ cloud.setPointStyle("diamond")
 graph.add(cloud)
 graph.setLegendPosition("upper left")
 graph.setLegendCorner([1.0, 1.0])
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.subplots_adjust(right=0.7)
 plt.show()
 

@@ -8,7 +8,7 @@ Multi-objective optimization using Pagmo
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # %%
 # List available algorithms
@@ -60,7 +60,7 @@ curve = ot.Curve(data)
 curve.setLegend(f"front {0}")
 graph.add(curve)
 graph.setGrid(True)
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # We show the Pareto front from successive generations
@@ -85,9 +85,9 @@ for k in range(len(fronts)):
     curve.setLegend(f"generation {k}")
     graph.add(curve)
 graph.setGrid(True)
-_ = View(graph)
+_ = otv.View(graph)
 
 
-View.ShowAll()
+otv.View.ShowAll()
 
 # %%

@@ -21,7 +21,7 @@ Estimate a stationary covariance function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -102,5 +102,5 @@ curveModel = ot.Curve(sampleT, sampleValueModel, "Exact model")
 curveModel.setColor("red")
 graph.add(curveModel)
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()

@@ -5,7 +5,7 @@ Create a Gaussian process
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -45,7 +45,7 @@ print(process)
 sample = process.getSample(6)
 graph = sample.drawMarginal(0)
 graph.setTitle("First marginal of six realizations of the process")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -77,7 +77,7 @@ print(process)
 sample = process.getSample(6)
 graph = sample.drawMarginal(0)
 graph.setTitle("First marginal of six realizations of the process")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Display figures

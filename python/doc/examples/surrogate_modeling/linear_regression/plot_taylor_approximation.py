@@ -26,7 +26,7 @@ Taylor approximations
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -85,7 +85,7 @@ curve.setLegend("Taylor")
 curve.setLineStyle("dashed")
 graph.add(curve)
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Second order Taylor expansion
@@ -129,7 +129,7 @@ curve.setLegend("Taylor")
 curve.setLineStyle("dashed")
 graph.add(curve)
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 view.ShowAll()

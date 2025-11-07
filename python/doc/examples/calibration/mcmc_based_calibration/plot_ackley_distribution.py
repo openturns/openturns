@@ -17,7 +17,7 @@ of the Metropolis-Hastings algorithm.
 # In the following we call it the "Ackley distribution".
 
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 from openturns.usecases import ackley_function
 from numpy import exp, format_float_scientific
 
@@ -178,7 +178,7 @@ contour.setLabels(
 )
 contour.setColorMapNorm("log")
 graph.add(contour)
-view = View(graph)
+view = otv.View(graph)
 
 # %%
 # Let us compare the histogram to the unnormalized PDF
@@ -190,7 +190,7 @@ graph = proposal.drawPDF()
 graph.setXTitle("")
 graph.add(scaled_ackley_pdf.draw(0, 0, [0.0, 1.5], -3.0, 3.0, 100))
 graph.setTitle("Conditional distribution of $X_0$ given $X_1 = 1.5$")
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # Let us now do the same think with `link_function_1`.
@@ -211,7 +211,7 @@ contour.setLabels(
 )
 contour.setColorMapNorm("log")
 graph.add(contour)
-view = View(graph)
+view = otv.View(graph)
 
 scaling = ot.SymbolicFunction("x", "3.1e-10 * x")
 scaled_ackley_pdf = ot.ComposedFunction(scaling, ackley_pdf)
@@ -219,7 +219,7 @@ graph = proposal.drawPDF()
 graph.setXTitle("")
 graph.add(scaled_ackley_pdf.draw(1, 0, [0.5, 0.0], -3.0, 3.0, 100))
 graph.setTitle("Conditional distribution of $X_1$ given $X_0 = 0.5$")
-_ = View(graph)
+_ = otv.View(graph)
 
 
 # %%
@@ -265,4 +265,4 @@ print(contour.getLabels())
 contour.setColorMapNorm("log")
 graph.add(contour)
 graph.add(ot.Cloud(sample, "black", "plus"))
-view = View(graph)
+view = otv.View(graph)

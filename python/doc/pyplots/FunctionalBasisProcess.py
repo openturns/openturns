@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 ot.RandomGenerator.SetSeed(0)
 f1 = ot.SymbolicFunction(["t"], ["sin(t)"])
@@ -21,4 +21,4 @@ graph.setTitle("Functional Basis Process")
 
 fig = plt.figure(figsize=(10, 4))
 fbp_axis = fig.add_subplot(111)
-view = View(graph, figure=fig, axes=[fbp_axis], add_legend=False)
+view = otv.View(graph, figure=fig, axes=[fbp_axis], add_legend=False)

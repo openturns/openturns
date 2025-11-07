@@ -40,11 +40,11 @@ Examples
 --------
 
 >>> import openturns as ot
->>> from openturns.experimental import LeastSquaresEquationsSolver
+>>> import openturns.experimental as otexp
 >>> inputs = ['x', 'y']
 >>> formulas = ['y*x-sin(2*x)', '1 + cos(y) + x']
 >>> analytical = ot.SymbolicFunction(inputs, formulas)
->>> algo = LeastSquaresEquationsSolver()
+>>> algo = otexp.LeastSquaresEquationsSolver()
 >>> algo.setResidualError(1e-8)
 >>> starting_point = [2.0, 1.0]
 >>> solution = algo.solve(analytical, starting_point)

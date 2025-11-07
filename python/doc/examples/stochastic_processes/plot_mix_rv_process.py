@@ -28,7 +28,7 @@ Create a process from random vectors and processes
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import math as m
 
 # %%
@@ -145,7 +145,7 @@ N = 10
 sampleZ_proc = Z_proc.getSample(N)
 graph = sampleZ_proc.drawMarginal(0)
 graph.setTitle(r"Some realizations of $Z(\omega, t)$")
-view = View(graph)
+view = otv.View(graph)
 
 # %%
 # 5. Evaluate the probability that :math:`Z(\omega, t) \in \mathcal{D}`

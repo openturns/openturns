@@ -24,7 +24,7 @@ Create a process sample from a sample
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from openturns.usecases import chaboche_model
 
 
@@ -72,7 +72,7 @@ graph = ot.Graph(
 )
 curve = ot.Curve(vertices, Y)
 graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The distribution of the input vector :math:`\vect{X}` is defined here:
@@ -114,7 +114,7 @@ for i in range(n_samples):
     curve = ot.Curve(vertices, Y_list[i])
     curve.setColor("blue")
     graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Creation of the process sample
@@ -160,10 +160,10 @@ curve = ot.Curve(vertices, process_sample_mean, "process sample mean")
 curve.setColor("red")
 graph.add(curve)
 graph.setLegendPosition("topleft")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Display all figures
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

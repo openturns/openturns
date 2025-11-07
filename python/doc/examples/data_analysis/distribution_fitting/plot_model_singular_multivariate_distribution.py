@@ -49,7 +49,7 @@ Model a singular multivariate distribution
 # We illustrate the influence of  :math:`m` on a singular copula.
 
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import math as m
 
 # %%
@@ -127,7 +127,7 @@ sample_Y = f(X.getSample(N))
 #
 # We estimate the distribution of the output random vector :math:`\vect{Y}` by multivariate kernel smoothing.
 y_multi_ks = ot.KernelSmoothing().build(sample_Y)
-view = viewer.View(draw(y_multi_ks, sample_Y))
+view = otv.View(draw(y_multi_ks, sample_Y))
 
 # %%
 # We see that the fitting is not satisfactory: the empty regions have not been respected. The fitted copula is
@@ -153,7 +153,7 @@ marginals = [
     for j in range(sample_Y.getDimension())
 ]
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
-view = viewer.View(draw(y_empBern, sample_Y))
+view = otv.View(draw(y_empBern, sample_Y))
 
 # %%
 # We see that the optimal number of cells is :math:`m = 1`: it means that one single cell has been created.
@@ -165,8 +165,8 @@ view = viewer.View(draw(y_empBern, sample_Y))
 # Now, we specify a bin number equal to the sample size: :math:`m = N` so that the built copula is very close to the sample.
 empBern_copula = ot.BernsteinCopulaFactory().build(sample_Y, N)
 y_empBern = ot.JointDistribution(marginals, empBern_copula)
-view = viewer.View(draw(y_empBern, sample_Y))
-viewer.View.ShowAll()
+view = otv.View(draw(y_empBern, sample_Y))
+otv.View.ShowAll()
 
 # %%
 

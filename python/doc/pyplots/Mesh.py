@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Define the vertices of the mesh
 vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
@@ -15,5 +15,5 @@ graph.add(mesh2D.draw())
 # Then, draw it
 fig = plt.figure(figsize=(4, 4))
 axis = fig.add_subplot(111)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)

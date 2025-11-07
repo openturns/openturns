@@ -15,7 +15,7 @@ Exploitation of simulation algorithm results
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -137,7 +137,7 @@ result.getImportanceFactors()
 
 # %%
 graph = result.drawImportanceFactors()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Display the confidence interval length centered around the MonteCarlo probability. The confidence interval is
@@ -166,7 +166,7 @@ print(
 # %%
 alpha = 0.90
 graph = algo.drawProbabilityConvergence(alpha)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Get the numerical samples of the input and output random vectors stored according to the History Strategy specified and used to evaluate the probability estimator and its variance.

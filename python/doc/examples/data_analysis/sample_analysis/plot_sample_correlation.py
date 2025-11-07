@@ -16,7 +16,7 @@ Estimate correlation coefficients
 # %%
 from openturns.usecases import ishigami_function
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -53,7 +53,7 @@ print(pcc_indices)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     pcc_indices, input_names, "PCC coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # PRCC coefficients
@@ -66,7 +66,7 @@ print(prcc_indices)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     prcc_indices, input_names, "PRCC coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # SRC coefficients
@@ -79,7 +79,7 @@ print(src_indices)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     src_indices, input_names, "SRC coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Normalized squared SRC coefficients (coefficients are made to sum to 1) :
@@ -92,7 +92,7 @@ print(squared_src_indices)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     squared_src_indices, input_names, "Squared SRC coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -106,7 +106,7 @@ print(srrc_indices)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     srrc_indices, input_names, "SRRC coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Pearson coefficients
@@ -120,7 +120,7 @@ print(pearson_correlation)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     pearson_correlation, input_names, "Pearson correlation coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Spearman coefficients
@@ -135,9 +135,9 @@ print(spearman_correlation)
 graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     spearman_correlation, input_names, "Spearman correlation coefficients"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
 # Display all the graphs.
-viewer.View.ShowAll()
+otv.View.ShowAll()

@@ -63,14 +63,14 @@ The diagram below provides an illustration of an ordered sample
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     sample = [[5.0], [6.0], [10.0], [22.0], [27.0]]
     xmin = 0.0
     xmax = 30.0
     graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
     graph.setTitle('Empirical CDF')
-    View(graph)
+    otv.View(graph)
 
 The method is similar for the case :math:`n_X>1`. The empirical
 probability distribution is a distribution created from a sample

@@ -17,7 +17,7 @@ Logistic growth model
 # %%
 from openturns.usecases import logistic_model
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 # %%
 # We load the logistic model from the usecases module :
@@ -89,7 +89,7 @@ cloud.setPointStyle("circle")
 cloud.setLegend("Data")
 graph.add(cloud)
 graph.setLegendPosition("upper left")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

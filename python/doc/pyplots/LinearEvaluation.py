@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 A = ot.Matrix(2, 1)
 A[0, 0] = 1.0
@@ -12,4 +12,4 @@ graph = func.draw([0.0, 0.0], [4.0, 4.0], [64] * 2)
 graph.setTitle(r"Linear function $(x,y) \mapsto (x-2) + 2(y-3) + 1.5$")
 graph.setXTitle(r"$x$")
 graph.setYTitle(r"$y$")
-View(graph, figure_kw={"figsize": (10, 4)}, add_legend=True)
+otv.View(graph, figure_kw={"figsize": (10, 4)}, add_legend=True)

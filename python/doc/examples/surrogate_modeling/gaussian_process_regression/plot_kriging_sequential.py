@@ -14,10 +14,8 @@ Sequentially adding new points to a Gaussian Process metamodel
 # %%
 import openturns as ot
 import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 import numpy as np
-from openturns import viewer
-
 
 # %%
 sampleSize = 4
@@ -44,7 +42,7 @@ graph = g.draw(xMin, xMax)
 data = ot.Cloud(X, Y)
 data.setColor("red")
 graph.add(data)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -155,7 +153,7 @@ def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
 # %%
 gprResult = createMyBasicGPfitter(X, Y)
 graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -206,7 +204,7 @@ Y.add(yNew)
 gprResult = createMyBasicGPfitter(X, Y)
 graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
 graph.setTitle("GP fitter #0")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The algorithm added a point to the right bound of the domain.
@@ -220,7 +218,7 @@ for krigingStep in range(5):
     gprResult = createMyBasicGPfitter(X, Y)
     graph = plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y)
     graph.setTitle("GP fitter #%d " % (krigingStep + 1) + graph.getTitle())
-    View(graph)
+    otv.View(graph)
 
 # %%
 # We observe that the second added point is the left bound of the domain.
@@ -235,4 +233,4 @@ for krigingStep in range(5):
 # The current example presents the naive implementation on the creation of a sequential design of experiments based on Gaussian Process metamodel.
 # More practical algorithms are presented in [ginsbourger2018]_.
 
-View.ShowAll()
+otv.View.ShowAll()

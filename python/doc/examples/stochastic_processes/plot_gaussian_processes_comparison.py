@@ -27,9 +27,8 @@ Compare covariance models
 
 # %%
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 import openturns as ot
-import openturns.viewer as viewer
 
 # %%
 # Amplitude values
@@ -63,7 +62,7 @@ n = 100
 myTimeGrid = ot.RegularGrid(xmin, step, n + 1)
 graph = myTimeGrid.draw()
 graph.setTitle("Regular grid")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Then we create the Gaussian process (by default the trend is zero).
@@ -85,7 +84,7 @@ type(sample)
 # %%
 graph = sample.drawMarginal(0)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -111,7 +110,7 @@ scale = [1.5]
 myModel = ot.SquaredExponential(scale, amplitude)
 graph = plotCovarianceModel(myModel, myTimeGrid, 10)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Modifying the scale parameter is here equivalent to stretch or contract the "time" :math:`x`.
@@ -122,7 +121,7 @@ scale = [0.5]
 myModel = ot.SquaredExponential(scale, amplitude)
 graph = plotCovarianceModel(myModel, myTimeGrid, 10)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Define the trend
@@ -146,7 +145,7 @@ nbTrajectories = 10
 sample = process.getSample(nbTrajectories)
 graph = sample.drawMarginal(0)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Other covariance models
@@ -185,13 +184,13 @@ graph3 = plotCovarianceModel(myModel3, myTimeGrid, nbTrajectories)
 # %%
 fig = plt.figure(figsize=(20, 6))
 ax1 = fig.add_subplot(1, 3, 1)
-_ = View(graph1, figure=fig, axes=[ax1])
+_ = otv.View(graph1, figure=fig, axes=[ax1])
 _ = ax1.set_title("Matern 5/2")
 ax2 = fig.add_subplot(1, 3, 2)
-_ = View(graph2, figure=fig, axes=[ax2])
+_ = otv.View(graph2, figure=fig, axes=[ax2])
 _ = ax2.set_title("Matern 3/2")
 ax3 = fig.add_subplot(1, 3, 3)
-_ = View(graph3, figure=fig, axes=[ax3])
+_ = otv.View(graph3, figure=fig, axes=[ax3])
 _ = ax3.set_title("Matern 1/2")
 
 # %%
@@ -203,8 +202,8 @@ myExpModel = ot.ExponentialModel(scale, amplitude)
 # %%
 graph = plotCovarianceModel(myExpModel, myTimeGrid, nbTrajectories)
 graph.setTitle("Exponential")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the exponential model produces very irregular trajectories.
-viewer.View.ShowAll()
+otv.View.ShowAll()

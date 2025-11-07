@@ -28,7 +28,7 @@ Use the Directional Sampling Algorithm
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -87,4 +87,4 @@ print("Pf=", probability)
 # method.
 graph = algo.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-view = viewer.View(graph)
+view = otv.View(graph)

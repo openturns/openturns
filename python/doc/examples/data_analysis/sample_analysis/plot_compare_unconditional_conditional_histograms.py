@@ -32,7 +32,7 @@ Compare unconditional and conditional histograms
 import numpy as np
 from openturns.usecases import flood_model
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -145,7 +145,7 @@ graph.setLegends(["Q"])
 graphConditionnalQ = conditionnedHistogram.drawPDF()
 graphConditionnalQ.setLegends([r"$Q | S > S_{%s}$" % (alpha)])
 graph.add(graphConditionnalQ)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

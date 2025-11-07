@@ -87,7 +87,7 @@ relationships, as in the following simple example where
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 1000
     #create a sample X
@@ -107,7 +107,7 @@ relationships, as in the following simple example where
     cloud.setPointStyle('times')
     graph.setDrawable(0, cloud)
     graph.setTitle('')
-    View(graph)
+    otv.View(graph)
 
 
 In this second example (still in dimension 1), the linear model is not
@@ -121,7 +121,7 @@ regression coefficients :math:`a_j`.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 1000
     #create a sample X
@@ -140,7 +140,7 @@ regression coefficients :math:`a_j`.
     cloud.setPointStyle('times')
     graph.setDrawable(0, cloud)
     graph.setTitle('')
-    View(graph)
+    otv.View(graph)
 
 
 The value of :math:`R^2` is a good indication of the goodness-of fit of
@@ -170,7 +170,7 @@ nor in he standard deviation.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 1000
     #create a sample X
@@ -190,7 +190,7 @@ nor in he standard deviation.
     graph.setDrawable(0, cloud)
     graph.setTitle('')
     # copy the graph in a file
-    View(graph)
+    otv.View(graph)
 
 
 The next example illustrates a less favorable situation: the mean value
@@ -201,7 +201,7 @@ be abandoned, or at least used very cautiously.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     N = 1000
     #create a sample X
@@ -220,7 +220,7 @@ be abandoned, or at least used very cautiously.
     cloud.setPointStyle('times')
     graph.setDrawable(0, cloud)
     graph.setTitle('')
-    View(graph)
+    otv.View(graph)
 
 The analysis of a linear regression model is presented in :ref:`regression_analysis`.
 

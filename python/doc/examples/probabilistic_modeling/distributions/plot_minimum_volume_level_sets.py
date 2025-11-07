@@ -5,7 +5,7 @@ Draw minimum volume level sets
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
 
 # %%
@@ -24,7 +24,7 @@ n = ot.Normal()
 
 # %%
 graph = n.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We want to compute the minimum volume `LevelSet` which contains `alpha` = 90% of the distribution.
@@ -95,7 +95,7 @@ def drawLevelSet1D(distribution, levelSet, alpha, threshold, sampleSize=100):
 
 # %%
 graph = drawLevelSet1D(n, levelSet, alpha, threshold)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # With a Normal, minimum volume Interval
@@ -130,7 +130,7 @@ def drawPDFAndInterval1D(distribution, interval, alpha):
 
 # %%
 graph = drawPDFAndInterval1D(n, interval, alpha)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # With a Mixture, minimum volume LevelSet
@@ -141,7 +141,7 @@ m = ot.Mixture([ot.Normal(-5.0, 1.0), ot.Normal(5.0, 1.0)], [0.2, 0.8])
 
 # %%
 graph = m.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 alpha = 0.9
@@ -153,7 +153,7 @@ threshold
 
 # %%
 graph = drawLevelSet1D(m, levelSet, alpha, threshold, 1000)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # With a Mixture, minimum volume Interval
@@ -168,7 +168,7 @@ interval
 
 # %%
 graph = drawPDFAndInterval1D(m, interval, alpha)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -198,7 +198,7 @@ mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.0])
 # %%
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "log")
 graph = mixture.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # For a multivariate distribution (with dimension greater than 1), the `computeMinimumVolumeLevelSetWithThreshold` uses Monte-Carlo sampling.
@@ -248,7 +248,7 @@ def drawLevelSetContour2D(distribution, alpha, level_set, threshold, sampleSize=
 
 # %%
 graph, contour = drawLevelSetContour2D(mixture, alpha, levelSet, threshold)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
-viewer.View.ShowAll()
+otv.View.ShowAll()

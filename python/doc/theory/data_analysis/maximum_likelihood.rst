@@ -65,7 +65,7 @@ method, in the particular case of a Gaussian probability distribution.
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     distribution = ot.Normal(4.0, 1.0)
     graph = distribution.drawPDF()
@@ -89,7 +89,7 @@ method, in the particular case of a Gaussian probability distribution.
         plt.text(x[i]-0.1, -0.015, 'x'+str(i+1))
         plt.text(0.0, y[i]-0.01, 'f_X(x'+str(i+1)+')')
 
-    View(graph, figure=fig, axes=[axis], add_legend=True)
+    otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 
 In general, in order to maximize the likelihood function classical
 optimization algorithms (e.g. gradient type) can be used. The Gaussian

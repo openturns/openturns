@@ -8,7 +8,7 @@ Define a distribution from quantiles
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # %%
 # We need as many quantile values as there are parameters
@@ -49,7 +49,7 @@ text_q2 = ot.Text([[q2, -0.1]], [r"$q_2$"])
 text_p2 = ot.Text([[0.0, p2]], [r"$p_2$"])
 graph.add(text_q2)
 graph.add(text_p2)
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # It is also possible to define a Histogram distribution from quantiles.
@@ -75,6 +75,6 @@ graph = histo_quant.drawCDF()
 curve_qi = ot.Cloud(quantiles, probabilities)
 curve_qi.setLegend("quantiles")
 graph.add(curve_qi)
-_ = View(graph)
+_ = otv.View(graph)
 
-View.ShowAll()
+otv.View.ShowAll()

@@ -7,7 +7,7 @@
     import openturns as ot
     import openturns.experimental as otexp
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     if "{{ objname }}" == "EmpiricalBernsteinCopula":
@@ -36,8 +36,8 @@
     fig = plt.figure(figsize=(10, 4))
     pdf_axis = fig.add_subplot(121)
     cdf_axis = fig.add_subplot(122)
-    View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
-    View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False, square_axes=True)
+    otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
+    otv.View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False, square_axes=True)
     title = str(copula)[:100].split("\n")[0]
     fig.suptitle(title)
 

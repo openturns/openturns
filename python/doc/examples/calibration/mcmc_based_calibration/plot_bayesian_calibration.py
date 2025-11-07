@@ -97,7 +97,7 @@ Bayesian calibration of a computer code
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -174,7 +174,7 @@ observations = ot.Cloud(x_obs, y_obs)
 graphModel.add(observations)
 graphModel.setLegends(["Model", "Observations"])
 graphModel.setLegendPosition("upper left")
-view = viewer.View(graphModel)
+view = otv.View(graphModel)
 
 # %%
 # Define the distribution of observations :math:`y | \vect{z}` conditional on model predictions.
@@ -314,7 +314,7 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
 # %%
 # sphinx_gallery_thumbnail_number = 2
 grid = plot_bayesian_prior_vs_posterior_pdf(prior, posterior)
-viewer.View(
+otv.View(
     grid,
     figure_kw={"figsize": (8.0, 3.0)},
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},

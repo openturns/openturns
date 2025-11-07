@@ -18,7 +18,7 @@ Create mixed deterministic and probabilistic designs of experiments
 # %%
 import openturns as ot
 import math as m
-import openturns.viewer as viewer
+import openturns.viewer as otv
 from matplotlib import pyplot as plt
 
 
@@ -65,6 +65,6 @@ doe = ot.Cloud(sample)
 doe.setColor("red")
 doe.setLegend("design")
 graph.add(doe)
-view = viewer.View(graph)
+view = otv.View(graph)
 plt.show()
 # %%
