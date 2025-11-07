@@ -76,10 +76,10 @@ void GaussianProcessConditionalCovariance::computePhi()
   const Matrix F(result_.getRegressionMatrix());
   if (F.getNbColumns() == 0) return;
   // Nothing to do if the design matrix has already been computed
-  LOGINFO("Solve linear system  L * phi= F");
+  LOGDEBUG("Solve linear system  L * phi= F");
   const Matrix phi(solveTriangularSystem(F));
   // Compute QR decomposition of Phi_
-  LOGINFO("Compute the QR decomposition of phi");
+  LOGDEBUG("Compute the QR decomposition of phi");
   Matrix G;
   (void) phi.computeQR(G);
   Gt_ = G.transpose();
@@ -146,30 +146,30 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
     throw InvalidArgumentException(HERE) << " In GaussianProcessConditionalCovariance::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel.getInputDimension() << ")";
 
   // 1) compute \sigma_{x,x}
-  LOGINFO("Compute interactions Sigma_xx");
+  LOGDEBUG("Compute interactions Sigma_xx");
   const CovarianceMatrix sigmaXX(covarianceModel.discretize(xi));
 
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditioned data & xi
-  LOGINFO("Compute cross-interactions sigmaYX");
+  LOGDEBUG("Compute cross-interactions sigmaYX");
   const Matrix crossCovariance(covarianceModel.computeCrossCovariance(result_.getInputSample(), xi));
   // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
   // We define B = L^{-1} * r(x)
-  LOGINFO("Solve L.B = SigmaYX");
+  LOGDEBUG("Solve L.B = SigmaYX");
   const Matrix B(solveTriangularSystem(crossCovariance));
   // Use of gram to compute B^{t} * B
   // Default gram computes B*B^t
   // With transpose argument=true, it performs B^t*B
   // With full argument=false, lower triangular matrix B^t*B is not symmetrized
-  LOGINFO("Compute B^tB");
+  LOGDEBUG("Compute B^tB");
   const CovarianceMatrix BtB(B.computeGram(true));
 
   // Interest is to compute sigma_xx -= BtB
   // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
   // Symmetric : ok but not necessary definite. Here by definition it is!
   // So should we define  operator - & operator -= with covariances?
-  LOGINFO("Compute Sigma_xx-BtB");
+  LOGDEBUG("Compute Sigma_xx-BtB");
   CovarianceMatrix result((sigmaXX - BtB).getImplementation());
 
   if (basis.getSize() > 0)
@@ -177,17 +177,17 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
     // Case of universal Kriging: compute the covariance due to the regression part
     // Additional information have to be computed
     // 1) compute F
-    LOGINFO("Compute the regression matrix F");
+    LOGDEBUG("Compute the regression matrix F");
     // 2) Interest is (F^t R^{-1} F)^{-1}
     // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
     // Solve first L phi = F
     // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
     //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
     //                 = phiT_ * B - f(x)
-    LOGINFO("Compute psi = phi^t * B");
+    LOGDEBUG("Compute psi = phi^t * B");
     Matrix ux(phiT_ * B);
     // compute f(x) & define u = psi - f(x)
-    LOGINFO("Compute f(x) & ux = psi - fx");
+    LOGDEBUG("Compute f(x) & ux = psi - fx");
     const UnsignedInteger basisSize = basis.getSize();
     // Basis \Phi is a function from R^{inputDimension} to R^{outputDimension}
     // As we get B functions, total number of values is B * outputDimension
@@ -204,9 +204,9 @@ CovarianceMatrix GaussianProcessConditionalCovariance::getConditionalCovariance(
     }
 
     // interest now is to solve  G rho = ux
-    LOGINFO("Solve linear system G * rho = ux");
+    LOGDEBUG("Solve linear system G * rho = ux");
     const Matrix rho(Gt_.solveLinearSystem(ux));
-    LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+    LOGDEBUG("Compute Sigma_xx-BtB + rho^{t}*rho");
     result = result + rho.computeGram(true);
   }
   // now check if the result has positive diagonal elements
@@ -306,7 +306,7 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
   if  (outputDimension == 1)
   {
     // 1) compute \sigma_{x,x}
-    LOGINFO("Compute interactions Sigma_xx");
+    LOGDEBUG("Compute interactions Sigma_xx");
     // Only diagonal of the discretization Matrix
     // First set sigmaXX
     const Point defaultPoint(inputDimension);
@@ -316,17 +316,17 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
 
     // 2) compute \sigma_{y,x}
     // compute r(x), the crossCovariance between the conditioned data & xi
-    LOGINFO("Compute cross-interactions sigmaYX");
+    LOGDEBUG("Compute cross-interactions sigmaYX");
     const Matrix crossCovariance(covarianceModel.computeCrossCovariance(result_.getInputSample(), xi));
     // 3) Compute r^t R^{-1} r'(x)
     // As we get the Cholesky factor L, we can solve triangular linear system
     // We define B = L^{-1} * r(x)
-    LOGINFO("Solve L.B = SigmaYX");
+    LOGDEBUG("Solve L.B = SigmaYX");
     const Matrix B(solveTriangularSystem(crossCovariance));
     // We compute diag(B^t B)
     // We can notice that it corresponds to the sum of elements
     // for each column
-    LOGINFO("Compute B^tB & Sigma_xx-BtB");
+    LOGDEBUG("Compute B^tB & Sigma_xx-BtB");
     for (UnsignedInteger j = 0; j < B.getNbColumns(); ++j)
     {
       Scalar sum = 0.0;
@@ -341,18 +341,18 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
       // Case of universal Kriging: compute the covariance due to the regression part
       // Additional information have to be computed
       // 1) compute F
-      LOGINFO("Compute the regression matrix F");
+      LOGDEBUG("Compute the regression matrix F");
       // 2) Interest is (F^t R^{-1} F)^{-1}
       // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
       // Solve first L phi = F
       // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
       //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
       //                 = phiT_ * B - f(x)
-      LOGINFO("Compute psi = phi^t * B");
+      LOGDEBUG("Compute psi = phi^t * B");
       // ux playing the role of psi
       Matrix ux(phiT_ * B);
       // compute f(x) & define u = psi - f(x)
-      LOGINFO("Compute f(x) & ux = psi - fx");
+      LOGDEBUG("Compute f(x) & ux = psi - fx");
       for (UnsignedInteger j = 0; j < basis.getSize(); ++j)
       {
         // Compute phi_j (X)
@@ -363,9 +363,9 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
           ux(j,  i) -= basisSample(i, 0);
       }
       // interest now is to solve  G rho = ux
-      LOGINFO("Solve linear system G * rho = ux");
+      LOGDEBUG("Solve linear system G * rho = ux");
       const Matrix rho(Gt_.solveLinearSystem(ux));
-      LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+      LOGDEBUG("Compute Sigma_xx-BtB + rho^{t}*rho");
       for (UnsignedInteger j = 0; j < rho.getNbColumns(); ++j)
       {
         Scalar sum = 0.0;
@@ -456,15 +456,15 @@ Normal GaussianProcessConditionalCovariance::operator()(const Point & xi) const
 Normal GaussianProcessConditionalCovariance::operator()(const Sample & xi) const
 {
   // The Normal distribution is defined by its mean & covariance
-  LOGINFO("In GaussianProcessConditionalCovariance::operator() : evaluating the mean");
+  LOGDEBUG("In GaussianProcessConditionalCovariance::operator() : evaluating the mean");
   const Sample meanAsSample(getConditionalMean(xi));
   // Mean should be a Point ==> data are copied form the Sample to a Point
   const Point mean(meanAsSample.getImplementation()->getData());
-  LOGINFO("In GaussianProcessConditionalCovariance::operator() : evaluating the covariance");
+  LOGDEBUG("In GaussianProcessConditionalCovariance::operator() : evaluating the covariance");
   const CovarianceMatrix covarianceMatrix = getConditionalCovariance(xi);
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
   // Even if this check is done in Normal::Normal, we perform debugging
-  LOGINFO("In GaussianProcessConditionalCovariance::operator() : evaluating the Normal distribution");
+  LOGDEBUG("In GaussianProcessConditionalCovariance::operator() : evaluating the Normal distribution");
   // Finally return the distribution
   return Normal(mean, covarianceMatrix);
 }

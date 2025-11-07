@@ -80,7 +80,7 @@ KrigingAlgorithm * KrigingAlgorithm::clone() const
 void KrigingAlgorithm::computeGamma()
 {
   // Get cholesky factor & rho from glm
-  LOGINFO("Solve L^t.gamma = rho");
+  LOGDEBUG("Solve L^t.gamma = rho");
   if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT")
   {
     gamma_ = covarianceCholeskyFactorHMatrix_.solveLower(rho_, true);
@@ -95,9 +95,9 @@ void KrigingAlgorithm::computeGamma()
 /* Perform regression */
 void KrigingAlgorithm::run()
 {
-  LOGINFO("Launch GeneralLinearModelAlgorithm for the optimization");
+  LOGDEBUG("Launch GeneralLinearModelAlgorithm for the optimization");
   glmAlgo_.run();
-  LOGINFO("End of GeneralLinearModelAlgorithm run");
+  LOGDEBUG("End of GeneralLinearModelAlgorithm run");
 
   // Covariance coefficients are computed once, ever if optimiser is fixed
   rho_ = glmAlgo_.getRho();
@@ -108,10 +108,10 @@ void KrigingAlgorithm::run()
     covarianceCholeskyFactorHMatrix_ = glmResult.getHMatCholeskyFactor();
   else
     covarianceCholeskyFactor_ = glmResult.getCholeskyFactor();
-  LOGINFO("Compute the interpolation part");
+  LOGDEBUG("Compute the interpolation part");
   computeGamma();
-  LOGINFO("Store the estimates");
-  LOGINFO("Build the output meta-model");
+  LOGDEBUG("Store the estimates");
+  LOGDEBUG("Build the output meta-model");
   Function metaModel;
 
   // We use directly the points
