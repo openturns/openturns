@@ -62,7 +62,10 @@ Case 3: Both distributions share the same standard space. Then we can define the
 .. math::
    T = T_2^{-1}\circ T_1
 
-Case 4: both distributions have different standard spaces. Then, we denote by :math:`T_i` the transformation that transforms :math:`d_i` into the normal distribution with zero mean, unit variance and identity correlation matrix. The final transformation :math:`T` is defined by:
+Case 4: both distributions have different standard spaces. Then, we denote by :math:`T_i` the
+transformation that transforms :math:`d_i` into the normal distribution with zero mean, unit variance
+and identity correlation matrix. The final transformation :math:`T` is defined by:
+
 
 .. math::
    T = T_2^{-1}\circ T_1

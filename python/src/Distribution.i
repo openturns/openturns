@@ -96,8 +96,8 @@ class PythonDistribution:
 
     Notes
     -----
-    It is not necessary to implement all the methods. Only the *computeCDF()* and *getRange()*
-    methods are mandatory.
+    It is not necessary to implement all the methods. Only the *computeCDF()*
+    a d *getDimension()* methods are mandatory. In addition, the  *getRange()* is mandatory in dimension more than 1.
     All the methods which are not implemented are inherited from
     :class:`~openturns.Distribution` which proposes some generic numerical methods.
     
