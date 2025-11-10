@@ -352,15 +352,15 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Pagmo only supports bounded problems";
   if (problem.hasResidualFunction() || problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Pagmo does not support least squares or nearest point problems";
-  const Description multiObjectiveAgorithms = {"nsga2", "moead",
+  const Description multiObjectiveAlgorithms = {"nsga2", "moead",
 #if PAGMO_VERSION_NR >= 201900
                                                "moead_gen",
 #endif
                                                "mhaco", "nspso"
                                               };
-  if ((problem.getObjective().getOutputDimension() > 1) && !multiObjectiveAgorithms.contains(getAlgorithmName()))
+  if ((problem.getObjective().getOutputDimension() > 1) && !multiObjectiveAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support multi-objective optimization";
-  if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAgorithms.contains(getAlgorithmName()))
+  if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " only supports multi-objective optimization";
   const Description integerAlgorithms = {"gaco", "ihs", "sga", "nsga2", "mhaco"};
   if (!problem.isContinuous() && !integerAlgorithms.contains(getAlgorithmName()))

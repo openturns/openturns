@@ -21,7 +21,6 @@
 
 #include "openturns/SymbolicParserMuParser.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/TBBImplementation.hxx"
 
 #include "muParser.h"

@@ -25,7 +25,6 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
-#include "openturns/SymbolicFunction.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/ThresholdEvent.hxx"

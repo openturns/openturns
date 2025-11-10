@@ -20,7 +20,6 @@
  */
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

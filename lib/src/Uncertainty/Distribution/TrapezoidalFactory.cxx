@@ -20,7 +20,6 @@
  */
 #include "openturns/TrapezoidalFactory.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"

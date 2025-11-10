@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/GammaFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

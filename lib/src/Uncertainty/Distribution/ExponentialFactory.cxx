@@ -20,7 +20,6 @@
  */
 #include "openturns/ExponentialFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

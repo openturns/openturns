@@ -22,7 +22,6 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 #ifdef OPENTURNS_HAVE_IPOPT

@@ -215,7 +215,7 @@ covEst : :class:`~openturns.UserDefinedStationaryCovarianceModel`
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::StationaryCovarianceModelFactory::getSpectralModelFactory
-"Accessor to the underlying Welch agorithm.
+"Accessor to the underlying Welch algorithm.
 
 Returns
 -------
@@ -225,7 +225,7 @@ spectralModelFactory : :class:`~openturns.WelchFactory`
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::StationaryCovarianceModelFactory::setSpectralModelFactory
-"Accessor to the underlying Welch agorithm.
+"Accessor to the underlying Welch algorithm.
 
 Parameters
 ----------

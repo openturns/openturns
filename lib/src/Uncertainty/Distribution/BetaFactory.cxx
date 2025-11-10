@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/BetaFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/BetaMuSigma.hxx"
 

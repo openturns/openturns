@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/Dirac.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Distribution.hxx"
