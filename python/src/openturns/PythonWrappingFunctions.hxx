@@ -761,7 +761,7 @@ void handleException()
     const String typeNameObj = checkAndConvert< _PyString_, String >(typeObj.get());
     exceptionMessage += ": " + typeNameObj;
 
-#if PY_VERSION_HEX >= 0x030C0000
+#if (PY_VERSION_HEX >= 0x030c0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030c0000)
     PyObject * exception = PyErr_GetRaisedException();
     ScopedPyObjectPointer nameObj(PyObject_Str(exception));
     const String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
