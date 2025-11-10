@@ -2,19 +2,19 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::Sample & gridOut ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
-%typemap(argout) OT::Sample & gridOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIGTYPE_p_OT__Sample,  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::Sample & gridOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN)); %}
 
 %typemap(in, numinputs=0) OT::Point & marginalProbOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & marginalProbOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point,  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::Point & marginalProbOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN)); %}
 
 %typemap(in, numinputs=0) OT::Point & thresholdOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & thresholdOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point,  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::Point & thresholdOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN)); %}
 
 %typemap(in, numinputs=0) OT::Scalar & marginalProbOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
-%typemap(argout) OT::Scalar & marginalProbOut %{ $result = OT::AppendOutput($result, PyFloat_FromDouble(*$1)); %}
+%typemap(argout) OT::Scalar & marginalProbOut %{ $result = OT::AppendOutput($result, OT::convert<OT::Scalar, OT::_PyFloat_>(*$1)); %}
 
 %typemap(in, numinputs=0) OT::Scalar & thresholdOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
-%typemap(argout) OT::Scalar & thresholdOut %{ $result = OT::AppendOutput($result, PyFloat_FromDouble(*$1)); %}
+%typemap(argout) OT::Scalar & thresholdOut %{ $result = OT::AppendOutput($result, OT::convert<OT::Scalar, OT::_PyFloat_>(*$1)); %}
 
 
 %{
