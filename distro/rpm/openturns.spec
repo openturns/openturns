@@ -1,20 +1,8 @@
 # norootforbuild
-%{?__python3: %global __python %{__python3}}
-%if 0%{?suse_version}
-%global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
-%else
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
-%endif
-
-%define __cmake %{_bindir}/cmake
-%define cmake \
-CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
-CXXFLAGS="${CXXFLAGS:-%optflags} -fno-lto" ; export CXXFLAGS ; \
-FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
-%__cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DBUILD_SHARED_LIBS:BOOL=ON
+%global python_sitearch %{_libdir}/python%(python3 -c "import sysconfig; print(sysconfig.get_python_version())")/site-packages
 
 Name:           openturns
-Version:        1.25
+Version:        1.26
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -24,41 +12,33 @@ Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%
 Source1:        %{name}-rpmlintrc
 BuildRequires:  gcc-c++, cmake, swig
 BuildRequires:  libxml2-devel
-%if ! 0%{?centos_version}
 BuildRequires:  hdf5-devel
-%endif
-%if 0%{?suse_version}
-BuildRequires:  gcc11-c++
-BuildRequires:  mpc-devel
-BuildRequires:  cblas-devel
-BuildRequires:  libboost_headers1_75_0-devel
-%else
-BuildRequires:  libmpc-devel
-BuildRequires:  boost-devel
-%endif
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
 BuildRequires:  cuba-devel
-%if 0%{?fedora_version} || 0%{?mageia}
 BuildRequires:  pagmo2-devel
-%endif
 BuildRequires:  python3-devel
 BuildRequires:  spectra-devel
 BuildRequires:  cminpack-devel
+BuildRequires:  nanoflann-devel
 %if 0%{?fedora_version}
-BuildRequires:  ceres-solver-devel
-BuildRequires:  suitesparse-devel
 BuildRequires:  coin-or-Ipopt-devel
 BuildRequires:  coin-or-Bonmin-devel
-BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
-BuildRequires:  pkgconfig(libavcodec), pkgconfig(libavdevice), pkgconfig(libjxl)
+BuildRequires:  zlib-devel
 BuildRequires:  flexiblas-devel
-BuildRequires:  primesieve-devel
 %else
 BuildRequires:  lapack-devel
+BuildRequires:  highs-devel
 %endif
-%if 0%{?fedora_version} >= 40
-BuildRequires:  nanoflann-devel
+%if 0%{?suse_version}
+BuildRequires:  mpc-devel
+BuildRequires:  cblas-devel
+BuildRequires:  Ipopt-devel
+BuildRequires:  libprimesieve-devel
+%else
+BuildRequires:  libmpc-devel
+BuildRequires:  boost-devel
+BuildRequires:  primesieve-devel
 %endif
 
 %description
@@ -84,11 +64,9 @@ Summary:        Uncertainty treatment library
 Group:          Productivity/Scientific/Math
 Requires:       python3
 Requires:       %{name}-libs = %{version}
-%if ! 0%{?centos_version}
 Requires:       python3-dill
 Requires:       python3-psutil
 Requires:       python3-packaging
-%endif
 
 %description -n python3-%{name}
 Python textual interface to OpenTURNS uncertainty library
@@ -97,23 +75,23 @@ Python textual interface to OpenTURNS uncertainty library
 %setup -q
 
 %build
-%if 0%{?suse_version}
-export CXX=/usr/bin/g++-11
-%endif
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
        -DSWIG_COMPILE_FLAGS="-O1" \
+       -DOPENTURNS_DOC_PATH=share/doc/openturns \
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
-make %{?_smp_mflags} OT
-make
+%cmake_build
 
 %install
-make install DESTDIR=%{buildroot}
+%cmake_install
 rm -r %{buildroot}%{_datadir}/doc/%{name}
 
 %check
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} OMP_NUM_THREADS=1 OPENTURNS_NUM_THREADS=1 ctest --output-on-failure %{?_smp_mflags} -E "cppcheck|ChaosSobol|Kriging" --timeout 1000 --schedule-random || echo "fail"
+export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
+export OMP_NUM_THREADS=1
+export OPENTURNS_NUM_THREADS=1
+%ctest --tests-regex pyinstallcheck --schedule-random --timeout 1000
 
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -140,92 +118,5 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} OMP_NUM_THREADS=1 OPENTURNS_NUM_THREADS=1
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
-* Wed Jun 11 2025 Julien Schueller <schueller at phimeca dot com> 1.25-1
+* Wed Nov 19 2025 Julien Schueller <schueller at phimeca dot com> 1.26-1
 - New upstream release
-
-* Wed Oct 23 2024 Julien Schueller <schueller at phimeca dot com> 1.24-1
-- New upstream release
-
-* Thu May 02 2024 Julien Schueller <schueller at phimeca dot com> 1.23-1
-- New upstream release
-
-* Tue Nov 14 2023 Julien Schueller <schueller at phimeca dot com> 1.22-1
-- New upstream release
-
-* Tue May 16 2023 Julien Schueller <schueller at phimeca dot com> 1.21-1
-- New upstream release
-
-* Wed Nov 02 2022 Julien Schueller <schueller at phimeca dot com> 1.20-1
-- New upstream release
-
-* Tue Apr 12 2022 Julien Schueller <schueller at phimeca dot com> 1.19-1
-- New upstream release
-
-* Fri Oct 15 2021 Julien Schueller <schueller at phimeca dot com> 1.18-1
-- New upstream release
-
-* Mon Apr 19 2021 Julien Schueller <schueller at phimeca dot com> 1.17-1
-- New upstream release
-
-* Mon Oct 19 2020 Julien Schueller <schueller at phimeca dot com> 1.16-1
-- New upstream release
-
-* Mon Apr 6 2020 Julien Schueller <schueller at phimeca dot com> 1.15-1
-- New upstream release
-
-* Tue Nov 12 2019 Julien Schueller <schueller at phimeca dot com> 1.14-1
-- New upstream release
-
-* Tue Apr 23 2019 Julien Schueller <schueller at phimeca dot com> 1.13-1
-- New upstream release
-
-* Tue Oct 2 2018 Julien Schueller <schueller at phimeca dot com> 1.12-1
-- New upstream release
-
-* Mon Apr 9 2018 Julien Schueller <schueller at phimeca dot com> 1.11-1
-- New upstream release
-
-* Wed Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
-- New upstream release
-
-* Mon Apr 3 2017 Julien Schueller <schueller at phimeca dot com> 1.9-1
-- New upstream release
-
-* Thu Jun 30 2016 Julien Schueller <schueller at phimeca dot com> 1.8-1
-- New upstream release
-
-* Mon Dec 7 2015 Julien Schueller <schueller at phimeca dot com> 1.7-1
-- New upstream release
-
-* Mon Jun 15 2015 Julien Schueller <schueller at phimeca dot com> 1.6-1
-- New upstream release
-
-* Wed Dec 3 2014 Julien Schueller <schueller at phimeca dot com> 1.5-1
-- New upstream release
-
-* Wed Jul 2 2014 Julien Schueller <schueller at phimeca dot com> 1.4-1
-- New upstream release
-
-* Tue Dec 17 2013 Julien Schueller <schueller at phimeca dot com> 1.3-1
-- New upstream release
-
-* Mon Jul 22 2013 Julien Schueller <schueller at phimeca dot com> 1.2-1
-- New upstream release
-
-* Wed Nov 28 2012 Julien Schueller <schueller at phimeca dot com> 1.1-1
-- New upstream release
-
-* Sat Feb 18 2012 Julien Schueller <schueller at phimeca dot com> 1.0-1
-- New upstream release
-
-* Sat Jul 30 2011 Julien Schueller <schueller at phimeca dot com> 0.15-1
-- New upstream release
-
-* Sat Apr 9 2011 Julien Schueller <schueller at phimeca dot com> 0.14.0-1
-- New upstream release
-
-* Sat Oct 9 2010 Julien Schueller <schueller at phimeca dot com> 0.13.2-1
-- New upstream release
-
-* Mon Nov 26 2007 Remy Pagniez 0.11.1-1
-- Initial package creation
