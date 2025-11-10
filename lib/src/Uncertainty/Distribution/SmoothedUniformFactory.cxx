@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/SmoothedUniformFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 

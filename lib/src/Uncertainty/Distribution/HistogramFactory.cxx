@@ -20,7 +20,6 @@
  */
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/WeibullMinFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"

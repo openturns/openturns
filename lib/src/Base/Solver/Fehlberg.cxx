@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Fehlberg.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

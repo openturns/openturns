@@ -23,7 +23,6 @@
 #include "openturns/Brent.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Text.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -20,7 +20,6 @@
  */
 #include "openturns/BernoulliFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Binomial.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

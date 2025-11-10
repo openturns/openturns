@@ -21,7 +21,6 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RungeKutta.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

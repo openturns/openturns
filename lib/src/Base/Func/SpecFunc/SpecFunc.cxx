@@ -52,7 +52,6 @@
 #else
 
 #include "openturns/GaussKronrod.hxx"
-#include "openturns/SymbolicFunction.hxx"
 #include "openturns/Interval.hxx"
 
 #endif
