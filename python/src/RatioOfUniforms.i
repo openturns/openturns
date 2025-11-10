@@ -1,7 +1,7 @@
 // SWIG file RatioOfUniforms.i
 
 %typemap(in, numinputs=0) OT::UnsignedInteger & tryNumberOut ($*ltype temp) %{ temp = OT::UnsignedInteger(); $1 = &temp; %}
-%typemap(argout) OT::UnsignedInteger & tryNumberOut %{ $result = OT::AppendOutput($result, PyLong_FromUnsignedLong(*$1)); %}
+%typemap(argout) OT::UnsignedInteger & tryNumberOut %{ $result = OT::AppendOutput($result, OT::convert<OT::UnsignedInteger, OT::_PyInt_>(*$1)); %}
 
 %{
 #include "openturns/RatioOfUniforms.hxx"
