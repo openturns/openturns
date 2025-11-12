@@ -1043,6 +1043,10 @@ ot_add_python_module(experimental experimental_module.i
                      QuantileConfidence.i QuantileConfidence_doc.i.in
                      LineSampling.i LineSampling_doc.i.in
                      GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i.in
+                     FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i.in
+                     PythonEvaluation.cxx
+                     PythonGradient.cxx
+                     PythonHessian.cxx
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
