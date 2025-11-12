@@ -126,16 +126,19 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
         }
     } // reducedCovarianceModel_.getDimension() == 1
   } // optimizeParameters_
-  LOGINFO(OSS() << "final active parameters=" << reducedCovarianceModel_.getActiveParameter());
+  LOGDEBUG(OSS() << "final active parameters=" << reducedCovarianceModel_.getActiveParameter());
   // Define the bounds of the optimization problem
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    const Scalar scaleFactor(ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationScaleFactor"));
-    if (!(scaleFactor > 0))
-      throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationLowerBound"));
-    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationUpperBound"));
+    const Scalar lowerBoundScaleFactor = ResourceMap::GetAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor");
+    if (!(lowerBoundScaleFactor > 0.0))
+      throw InvalidArgumentException(HERE) << "GPR lower bound scale factor set in ResourceMap should be positive, got " << lowerBoundScaleFactor;
+    const Scalar upperBoundScaleFactor = ResourceMap::GetAsScalar("GaussianProcessFitter-OptimizationUpperBoundScaleFactor");
+    if (!(upperBoundScaleFactor > 0.0))
+      throw InvalidArgumentException(HERE) << "GPR upper bound scale factor set in ResourceMap should be positive, got " << upperBoundScaleFactor;
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound"));
+    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
     // check if some scales are active
     // check if nugget factor is active
@@ -159,14 +162,14 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
       const Point inputSampleRange(inputSample_.computeRange());
       for (UnsignedInteger k = 0; k < activeScalesPositions.getSize(); ++k)
       {
-        upperBound[k] = inputSampleRange[activeScalesIndices[k]] * scaleFactor;
-        if (upperBound[k] < lowerBound[k])
-          upperBound[k] += lowerBound[k];
+        const Scalar rangeK = inputSampleRange[activeScalesIndices[k]];
+        lowerBound[k] = rangeK * lowerBoundScaleFactor;
+        upperBound[k] = rangeK * upperBoundScaleFactor;
       } // k (upper bounds setting)
     } // if active scale
     if (activeNugget.getSize() > 0)
       // Set the lower bound to 0 for nuggetFactor
-      lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar( "GaussianProcessFitter-DefaultOptimizationNuggetLowerBound" );
+      lowerBound[activeNugget[0]] = ResourceMap::GetAsScalar("GaussianProcessFitter-DefaultOptimizationNuggetLowerBound");
     LOGINFO(OSS() <<  "For coherency we set scale upper bounds = " << upperBound.__str__());
 
     optimizationBounds_ = Interval(lowerBound, upperBound);
@@ -223,7 +226,7 @@ void GaussianProcessFitter::computeF()
 {
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
-  LOGINFO("Compute the design matrix");
+  LOGDEBUG("Compute the design matrix");
   // No early exit based on the sample/basis size as F_ must be initialized with the correct dimensions
   // With a multivariate basis of size similar to output dimension, each ith-basis should be applied to elements
   // of corresponding marginal
@@ -297,8 +300,8 @@ void GaussianProcessFitter::run()
   //   discretization and factorization, and it computes beta_
   Scalar optimalLogLikelihood = maximizeReducedLogLikelihood();
 
-  LOGINFO("Store the estimates");
-  LOGINFO("Build the output meta-model");
+  LOGDEBUG("Store the estimates");
+  LOGDEBUG("Build the output meta-model");
   Collection<Function> marginalCollections(basis_.getSize());
   Collection<Function> marginalFunctions(outputDimension);
   Point beta_k(basis_.getSize());
@@ -371,8 +374,8 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   {
     // We only need to compute the log-likelihood function at the initial parameters in order to get the Cholesky factor and the trend coefficients
     const Scalar initialReducedLogLikelihood = reducedLogLikelihoodFunction(initialParameters)[0];
-    LOGINFO("No covariance parameter to optimize");
-    LOGINFO(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
+    LOGDEBUG("No covariance parameter to optimize");
+    LOGDEBUG(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
     return initialReducedLogLikelihood;
   }
   // Thus here we perform an optimization. First let us check the initial point is inside the
@@ -436,7 +439,7 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
       solver_.setStartingSample(initialPoints);
     }
   }
-  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
+  LOGDEBUG(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const OptimizationAlgorithm::Result result(solver_.getResult());
   const Point optimalLogLikelihoodPoint = result.getOptimalValue();
@@ -457,7 +460,7 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   }
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
-  LOGINFO(OSS() << evaluationNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+  LOGDEBUG(OSS() << evaluationNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
 
   return optimalLogLikelihood;
 }
@@ -506,7 +509,7 @@ Point GaussianProcessFitter::computeReducedLogLikelihood(const Point & parameter
   if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
-  LOGINFO(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
+  LOGDEBUG(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
   return Point(1, lastReducedLogLikelihood_);
 }
 

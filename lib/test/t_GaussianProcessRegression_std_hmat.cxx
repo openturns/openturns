@@ -28,19 +28,13 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 10000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
-  PlatformInfo::SetNumericalPrecision(3);
   ResourceMap::SetAsString("GaussianProcessFitter-LinearAlgebra", "HMAT");
   ResourceMap::SetAsScalar("HMatrix-RegularizationEpsilon", 1e-7);
-
 
   try
   {
     // Test 1: a real value function
     {
-      // Set Numerical precision to 4
-      PlatformInfo::SetNumericalPrecision(4);
       const UnsignedInteger sampleSize = 6;
       const UnsignedInteger dimension = 1;
 
@@ -180,7 +174,7 @@ int main(int, char *[])
       // Prediction & interpolation
       //assert_almost_equal(sampleY, metaModel(sampleX));
       const Point point = {5.5};
-      const Point outputValue = {-3.95186, 3.79688};
+      const Point outputValue = {-3.88407, 3.90308};
       assert_almost_equal(metaModel(point), outputValue, 1e-2, 1e-3);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861
@@ -210,7 +204,7 @@ int main(int, char *[])
       // Get meta model
       Function metaModel(result.getMetaModel());
       const Point point = {5.5};
-      const Point outputValue = {5.58283};
+      const Point outputValue = {5.58843};
       assert_almost_equal(metaModel(point), outputValue);
     }
     // GPR with already calibrated parameters

@@ -61,7 +61,6 @@ kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
 lowerBoundLV = [1e-4] * dim + [-10.0] * activeCoord
 upperBoundLV = [2.0] * dim + [10.0] * activeCoord
-boundsLV = ot.Interval(lowerBoundLV, upperBoundLV)
 # Distribution for the hyperparameters initialization
 initDistLV = ot.DistributionCollection()
 for i in range(len(lowerBoundLV)):
@@ -76,7 +75,6 @@ initDistLV = ot.JointDistribution(initDistLV)
 kIndependent = ot.SquaredExponential(1)
 lowerBoundInd = [1e-4]
 upperBoundInd = [20.0]
-boundsInd = ot.Interval(lowerBoundInd, upperBoundInd)
 initDistInd = ot.DistributionCollection()
 for i in range(len(lowerBoundInd)):
     initDistInd.add(ot.Uniform(lowerBoundInd[i], upperBoundInd[i]))
@@ -104,7 +102,6 @@ optAlgLV = ot.MultiStart(ot.Cobyla(), initSampleLV)
 basis = ot.ConstantBasisFactory(2).build()
 fitterLV = otexp.GaussianProcessFitter(x, y, kLV, basis)
 fitterLV.setOptimizationAlgorithm(optAlgLV)
-fitterLV.setOptimizationBounds(boundsLV)
 fitterLV.run()
 regressionLV = otexp.GaussianProcessRegression(fitterLV.getResult())
 regressionLV.run()
@@ -122,7 +119,6 @@ for z in range(2):
     basis = ot.ConstantBasisFactory(1).build()
     fitter_independent = otexp.GaussianProcessFitter(xLoc, yLoc, kIndependent, basis)
     fitter_independent.setOptimizationAlgorithm(optAlgInd)
-    fitter_independent.setOptimizationBounds(boundsInd)
     fitter_independent.run()
     regression_independent = otexp.GaussianProcessRegression(
         fitter_independent.getResult()
@@ -281,7 +277,6 @@ kLV.setNuggetFactor(1e-6)
 # Bounds for the hyperparameter optimization
 lowerBoundLV = [1e-4] * dim + [-10] * activeCoord
 upperBoundLV = [3.0] * dim + [10.0] * activeCoord
-boundsLV = ot.Interval(lowerBoundLV, upperBoundLV)
 # Distribution for the hyperparameters initialization
 initDistLV = ot.DistributionCollection()
 for i in range(len(lowerBoundLV)):
@@ -296,7 +291,6 @@ initDistLV = ot.JointDistribution(initDistLV)
 kIndependent = ot.SquaredExponential(2)
 lowerBoundInd = [1e-4, 1e-4]
 upperBoundInd = [3.0, 3.0]
-boundsInd = ot.Interval(lowerBoundInd, upperBoundInd)
 initDistInd = ot.DistributionCollection()
 for i in range(len(lowerBoundInd)):
     initDistInd.add(ot.Uniform(lowerBoundInd[i], upperBoundInd[i]))
@@ -327,7 +321,6 @@ for rep in range(3):
     basis = ot.ConstantBasisFactory(dim).build()
     fitterLV = otexp.GaussianProcessFitter(x, y, kLV, basis)
     fitterLV.setOptimizationAlgorithm(optAlgLV)
-    fitterLV.setOptimizationBounds(boundsLV)
     fitterLV.run()
     regressionLV = otexp.GaussianProcessRegression(fitterLV.getResult())
     regressionLV.run()
@@ -357,7 +350,6 @@ for rep in range(3):
                 xLoc, yLoc, kIndependent, basis
             )
             fitter_independent.setOptimizationAlgorithm(optAlgInd)
-            fitter_independent.setOptimizationBounds(boundsInd)
             fitter_independent.run()
             regression_independent = otexp.GaussianProcessRegression(
                 fitter_independent.getResult()
@@ -383,3 +375,4 @@ plt.ylabel("RMSE")
 # The obtained results show, for this test-case, a better modeling performance
 # when modeling the function as a mixed categorical/continuous function, rather
 # than relying on multiple purely continuous Gaussian processes.
+plt.show(block=True)

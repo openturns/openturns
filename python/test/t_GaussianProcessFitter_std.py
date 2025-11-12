@@ -1,10 +1,7 @@
 import openturns as ot
-from openturns.experimental import GaussianProcessFitter
+import openturns.experimental as otexp
 import openturns.testing as ott
 from openturns.usecases.fire_satellite import FireSatelliteModel
-
-ot.PlatformInfo.SetNumericalPrecision(4)
-
 
 ot.TESTPREAMBLE()
 
@@ -18,7 +15,7 @@ def use_case_1(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
-    algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getOptimizeParameters()
     assert algo.getKeepCholeskyFactor()
     algo.setKeepCholeskyFactor(False)
@@ -42,7 +39,7 @@ def use_case_2(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
-    algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getKeepCholeskyFactor()
     algo.setKeepCholeskyFactor(False)
     algo.setOptimizeParameters(False)
@@ -67,12 +64,12 @@ def use_case_3(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
-    algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
     algo.run()
-    cov_param = [0.01, 1]
-    trend_coefficients = [-0.1109, 1.015]
+    cov_param = [0.078, 1]
+    trend_coefficients = [-0.108701, 1.01472]
     result = algo.getResult()
     assert (
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
@@ -97,7 +94,7 @@ def use_case_4(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
-    algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getKeepCholeskyFactor()
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
@@ -108,11 +105,11 @@ def use_case_4(X, Y):
     )
     print(result.getCovarianceModel().getParameter())
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), [0.01, 1], 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), [0.078, 1], 1e-4, 1e-4
     )
     print(result.getTrendCoefficients())
     ott.assert_almost_equal(
-        result.getTrendCoefficients(), [-0.1109, 1.015], 1e-4, 1e-4
+        result.getTrendCoefficients(), [-0.108701, 1.01472], 1e-4, 1e-4
     )
 
 
@@ -129,7 +126,7 @@ def use_case_5(X, Y):
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
 
-    algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getKeepCholeskyFactor()
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
@@ -159,7 +156,7 @@ def use_case_6(X, Y):
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
     )
     covarianceModel = ot.AbsoluteExponential()
-    algo = GaussianProcessFitter(X, Y, covarianceModel)
+    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel)
     assert algo.getKeepCholeskyFactor()
     algo.setKeepCholeskyFactor(False)
     assert algo.getOptimizeParameters()
@@ -169,7 +166,7 @@ def use_case_6(X, Y):
         algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
     )
     print(result.getCovarianceModel().getParameter())
-    cov_param = [2.559, 1]
+    cov_param = [2.5522, 1]
     ott.assert_almost_equal(
         result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
     )
@@ -209,7 +206,7 @@ def bugfix_optim_no_feasible():
         [2.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0],
     )
 
-    algo = GaussianProcessFitter(
+    algo = otexp.GaussianProcessFitter(
         inputTrainingSet, outputTrainingSet, covarianceModel, basis
     )
     algo.setOptimizationBounds(scaleOptimizationBounds)
