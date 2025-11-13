@@ -23,6 +23,8 @@
 #include "openturns/Analytical.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NearestPointProblem.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/StandardEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -167,7 +169,10 @@ void Analytical::run()
 
   const Scalar limitStateTolerance = nearestPointAlgorithm.getMaximumConstraintError();
 
-  if (!(residual <= 1.1 * limitStateTolerance)) // 1.1 is added to prevent numerical approximation made in Cobyla for constraint satisfaction tolerance.
+  // to prevent numerical approximation made in Cobyla for constraint satisfaction tolerance
+  const Scalar toleranceFactor = ResourceMap::GetAsScalar("Analytical-LimitStateToleranceFactor");
+
+  if (!(residual <= toleranceFactor * limitStateTolerance))
     throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: " << limitStateTolerance;
 
 } /* Analytical::run() */

@@ -853,6 +853,9 @@
   <LineSampling-DefaultSearchOppositeDirection value_bool="true" />
   <LineSampling-DefaultAdaptiveImportantDirection value_bool="true" />
 
+  <!-- OT::Analytical parameters -->
+  <Analytical-LimitStateToleranceFactor value_float="1.1" />
+
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />
   <AnalyticalResult-MeanPointIntegrationNodesNumber value_int="255" />

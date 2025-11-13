@@ -31,8 +31,8 @@
 #include "openturns/RandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/GaussLegendre.hxx"
+#include "openturns/StandardEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -1508,6 +1508,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("LineSampling-DefaultSearchOppositeDirection", true);
   addAsBool("LineSampling-DefaultAdaptiveImportantDirection", true);
 
+  // Analytical parameters //
+  addAsScalar("Analytical-LimitStateToleranceFactor", 1.1);
+
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);
   addAsUnsignedInteger("AnalyticalResult-MeanPointIntegrationNodesNumber", 255);
