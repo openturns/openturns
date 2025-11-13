@@ -27,7 +27,6 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/RandomVector.hxx"
-#include "openturns/StandardEvent.hxx"
 #include "openturns/AnalyticalResult.hxx"
 
 

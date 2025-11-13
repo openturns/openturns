@@ -24,6 +24,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NearestPointProblem.hxx"
+#include "openturns/StandardEvent.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
