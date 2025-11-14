@@ -22,7 +22,7 @@
 
 if (MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES)
   # Already in cache, be silent
-  set (muParser_FIND_QUIETLY TRUE)
+  set (muparser_FIND_QUIETLY TRUE)
 endif ()
 
 find_path (MUPARSER_INCLUDE_DIR muParser.h
@@ -51,14 +51,14 @@ endif ()
 
 # check version
 set (_MUPARSER_VERSION_MATCH TRUE)
-if (muParser_FIND_VERSION AND MUPARSER_VERSION_STRING)
-  if (muParser_FIND_VERSION_EXACT)
-    if (${muParser_FIND_VERSION} VERSION_EQUAL ${MUPARSER_VERSION_STRING})
+if (muparser_FIND_VERSION AND MUPARSER_VERSION_STRING)
+  if (muparser_FIND_VERSION_EXACT)
+    if (${muparser_FIND_VERSION} VERSION_EQUAL ${MUPARSER_VERSION_STRING})
     else()
       set (_MUPARSER_VERSION_MATCH FALSE)
     endif ()
   else ()
-    if (${muParser_FIND_VERSION} VERSION_GREATER ${MUPARSER_VERSION_STRING})
+    if (${muparser_FIND_VERSION} VERSION_GREATER ${MUPARSER_VERSION_STRING})
       set (_MUPARSER_VERSION_MATCH FALSE)
     endif ()
   endif ()
@@ -84,7 +84,7 @@ endif ()
 # handle REQUIRED and QUIET options
 include (FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args (muParser
+find_package_handle_standard_args (muparser
   REQUIRED_VARS MUPARSER_LIBRARY _MUPARSER_VERSION_MATCH MUPARSER_LIBRARIES MUPARSER_INCLUDE_DIR
   VERSION_VAR MUPARSER_VERSION_STRING
 )
