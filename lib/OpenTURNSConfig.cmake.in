@@ -22,7 +22,6 @@
 #
 
 # Use the following variables to compile and link against OpenTURNS:
-#  OPENTURNS_FOUND              - True if OpenTURNS was found on your system
 #  OPENTURNS_DEFINITIONS        - Definitions needed to build with OpenTURNS
 #  OPENTURNS_INCLUDE_DIR        - Directory where OT.hxx can be found
 #  OPENTURNS_INCLUDE_DIRS       - List of directories of OpenTURNS and it's dependencies
@@ -40,70 +39,84 @@
 
 @PACKAGE_INIT@
 
-set ( OPENTURNS_FOUND 1 )
+set (OPENTURNS_DEFINITIONS  "@OPENTURNS_DEFINITIONS@")
+set_and_check (OPENTURNS_INCLUDE_DIR "@PACKAGE_OPENTURNS_INCLUDE_DIR@")
+set (OPENTURNS_INCLUDE_DIRS "@PACKAGE_OPENTURNS_INCLUDE_DIRS@")
+set (OPENTURNS_LIBRARY      "@OPENTURNS_LIBRARY@")
+set (OPENTURNS_LIBRARIES    "@OPENTURNS_LIBRARIES@")
+set (OPENTURNS_LIBRARY_DIRS "@PACKAGE_OPENTURNS_LIBRARY_DIRS@")
+set_and_check (OPENTURNS_ROOT_DIR "@PACKAGE_OPENTURNS_ROOT_DIR@")
 
-set ( OPENTURNS_DEFINITIONS  "@OPENTURNS_DEFINITIONS@" )
-set_and_check ( OPENTURNS_INCLUDE_DIR        "@PACKAGE_OPENTURNS_INCLUDE_DIR@" )
-set ( OPENTURNS_INCLUDE_DIRS "@PACKAGE_OPENTURNS_INCLUDE_DIRS@" )
-set ( OPENTURNS_LIBRARY      "@OPENTURNS_LIBRARY@" )
-set ( OPENTURNS_LIBRARIES    "@OPENTURNS_LIBRARIES@" )
-set ( OPENTURNS_LIBRARY_DIRS "@PACKAGE_OPENTURNS_LIBRARY_DIRS@" )
-set_and_check ( OPENTURNS_ROOT_DIR   "@PACKAGE_OPENTURNS_ROOT_DIR@" )
+set (OPENTURNS_VERSION_STRING "@OPENTURNS_VERSION_STRING@")
+set (OPENTURNS_VERSION_MAJOR  "@OPENTURNS_VERSION_MAJOR@")
+set (OPENTURNS_VERSION_MINOR  "@OPENTURNS_VERSION_MINOR@")
+set (OPENTURNS_VERSION_PATCH  "@OPENTURNS_VERSION_PATCH@")
 
-set ( OPENTURNS_VERSION_STRING "@OPENTURNS_VERSION_STRING@" )
-set ( OPENTURNS_VERSION_MAJOR  "@OPENTURNS_VERSION_MAJOR@" )
-set ( OPENTURNS_VERSION_MINOR  "@OPENTURNS_VERSION_MINOR@" )
-set ( OPENTURNS_VERSION_PATCH  "@OPENTURNS_VERSION_PATCH@" )
-
-set (OPENTURNS_SWIG_INCLUDE_DIRS "@PACKAGE_OPENTURNS_SWIG_INCLUDE_DIRS@")
-set (OPENTURNS_SWIG_DEFINITIONS   "@OPENTURNS_SWIG_DEFINITIONS@" )
+set (OPENTURNS_SWIG_INCLUDE_DIRS  "@PACKAGE_OPENTURNS_SWIG_INCLUDE_DIRS@")
+set (OPENTURNS_SWIG_DEFINITIONS   "@OPENTURNS_SWIG_DEFINITIONS@")
 set (OPENTURNS_PYTHON_MODULE_PATH "@PACKAGE_PYTHON_MODULE_PATH@")
 
 # static libraries dependencies are transitive so imported targets must be defined
 if (NOT @BUILD_SHARED_LIBS@)
-  include(CMakeFindDependencyMacro)
+  include (CMakeFindDependencyMacro)
 
-  if ("1" STREQUAL "@Ceres_FOUND@")
-    find_dependency(Ceres CONFIG)
+  if ("@Boost_FOUND@")
+    find_dependency (Boost CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@CMinpack_FOUND@")
-    find_dependency(CMinpack CONFIG)
+  if ("@Ceres_FOUND@")
+    find_dependency (Ceres CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@dlib_FOUND@")
-    find_dependency(dlib CONFIG)
+  if ("@CMinpack_FOUND@")
+    find_dependency (CMinpack CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@HMAT_FOUND@")
-    find_dependency (HMAT CONFIG)
+  if ("@dlib_FOUND@")
+    find_dependency (dlib CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@LibXml2_FOUND@")
-    find_dependency (LibXml2 CONFIG)
+  if ("@highs_FOUND@")
+    find_dependency (highs CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@NLopt_FOUND@")
-    find_dependency(NLopt CONFIG)
+  if ("@HMAT_FOUND@")
+    find_dependency (HMAT CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@Pagmo_FOUND@")
-    find_dependency(Pagmo CONFIG)
+  if ("@LibXml2_FOUND@")
+    find_dependency (LibXml2 QUIET)
   endif ()
 
-  if ("1" STREQUAL "@primesieve_FOUND@")
-    find_dependency(primesieve CONFIG)
+  if ("@muparser_FOUND@")
+    find_dependency (muparser CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@Spectra_FOUND@")
-    find_dependency(Spectra CONFIG)
+  if ("@nanoflann_FOUND@")
+    find_dependency (nanoflann CONFIG QUIET)
+  endif ()
+
+  if ("@NLopt_FOUND@")
+    find_dependency (NLopt CONFIG QUIET)
+  endif ()
+
+  if ("@Pagmo_FOUND@")
+    find_dependency (Pagmo CONFIG QUIET)
+  endif ()
+
+  if ("@primesieve_FOUND@")
+    find_dependency (primesieve CONFIG QUIET)
+  endif ()
+
+  if ("@Spectra_FOUND@")
+    find_dependency (Spectra CONFIG QUIET)
 
     # https://github.com/yixuan/spectra/pull/140
-    find_dependency(Eigen3 CONFIG)
+    find_dependency (Eigen3 CONFIG QUIET)
   endif ()
 
-  if ("1" STREQUAL "@TBB_FOUND@")
-    find_dependency(TBB CONFIG)
+  if ("@TBB_FOUND@")
+    find_dependency (TBB CONFIG QUIET)
   endif ()
 endif ()
 
