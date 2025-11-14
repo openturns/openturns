@@ -24,9 +24,9 @@ General mathematical functions
     :template: classWithPlot.rst_t
     LinearFunction
     QuadraticFunction
+    DatabaseFunction
 
     :template: class.rst_t
-    DatabaseFunction
     PythonFunction
     OpenTURNSPythonFunction
     MemoizeFunction
@@ -147,10 +147,8 @@ Evaluation functions
     PiecewiseHermiteEvaluation
     PiecewiseLinearEvaluation
 
-    :template: class.rst_t
-    P1LagrangeInterpolation
-
     :template: classWithPlot.rst_t
+    P1LagrangeInterpolation
     P1LagrangeEvaluation
 
     :template: class.rst_t

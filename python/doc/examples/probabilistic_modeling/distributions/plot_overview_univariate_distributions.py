@@ -238,7 +238,7 @@ class Quartic(ot.PythonDistribution):
     """
 
     def __init__(self):
-        super(Quartic, self).__init__(1)
+        super().__init__(1)
         self.c = 15.0 / 16
 
     def computeCDF(self, x):

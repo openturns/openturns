@@ -165,7 +165,7 @@ class CensoredWeibull(ot.PythonDistribution):
     """
 
     def __init__(self, beta=5000.0, alpha=2.0):
-        super(CensoredWeibull, self).__init__(2)
+        super().__init__(2)
         self.beta = beta
         self.alpha = alpha
 
