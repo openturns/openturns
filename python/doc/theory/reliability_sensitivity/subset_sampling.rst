@@ -271,7 +271,7 @@ interested reader could refer to the following references
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_subset_sampling`
+    - See :doc:`/auto_reliability/reliability_analysis/plot_subset_sampling`
 
 
 

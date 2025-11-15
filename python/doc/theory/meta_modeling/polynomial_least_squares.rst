@@ -113,7 +113,7 @@ such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_meta_modeling/general_purpose_metamodels/plot_create_linear_least_squares_model`
+    - See :doc:`/auto_surrogate_modeling/linear_regression/plot_create_linear_least_squares_model`
 
 
 .. topic:: References:
