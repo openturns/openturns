@@ -10,7 +10,7 @@ and the different components :math:`X_i`.
 
 The basic method of hierarchical ordering using Pearson’s coefficients deals with the case
 where the variable :math:`Y` depends linearly on the :math:`\inputDim` variables
-:math:`\left{ X_1,\ldots,X_{\inputDim} \right}`.
+:math:`\left\{ X_1,\ldots,X_{\inputDim} \right\}`.
 
 Partial Correlation Coefficients are also useful in this case
 but provide a different kind of information:
