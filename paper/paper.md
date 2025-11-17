@@ -57,7 +57,7 @@ users access to a comprehensive set of state-of-the-art algorithms and
 modeling tools.
 The library is supported by extensive, regularly updated
 documentation, including examples (in particular, a Getting Started
-example), tutorials, and user guides.
+example), various use cases, tutorials, and user guides.
 The documentation makes the library very user-friendly.
 OpenTURNS integrates seamlessly with NumPy, Pandas, and other
 scientific Python packages, allowing users to develop UQ
@@ -97,19 +97,19 @@ these tasks in the UQ context.
 OpenTURNS provides a wide range of multivariate probabilistic modeling
 features: more than 60 continuous and discrete distributions, 
 including extreme value distributions, copula-based models (more than 
-15 copulas), and distribution transformations: truncation, conditioning, mixture, push-forward and distribution algebra etc.
+15 copulas), and distribution transformations: truncation, conditioning, mixture, push-forward and distribution algebra, etc.
 User-defined distributions can be easily implemented and integrated
 natively.
 
 Multivariate distributions can be sampled using general sampling algorithms
-(Monte Carlo, LHS, and optimized LHS) and quasi–Monte Carlo
+(Monte-Carlo, Latin Hypercube Sampling - LHS, and optimized LHS) and quasi–Monte Carlo
 low-discrepancy sequences (such as Sobol’ or Halton) for integration
 and model analysis.
 
 OpenTURNS offers modeling features for stationary 
 and non-stationary stochastic processes (ARMA processes, Gaussian 
 processes in arbitrary dimensions) associated with several covariance 
-kernels (e.g., exponential, Matèrn, and squared exponential).
+kernels (e.g., exponential, Matérn, and squared exponential).
 
 The library provides extensive data analysis capabilities
 with dependency indicators can be computed (Pearson, Spearman correlations),
@@ -132,7 +132,7 @@ OpenTURNS implements numerous reliability algorithms for rare-event
 probabilities: classic algorithms such as the First-Order Reliability
 Method, Second-Order Reliability Method, subset sampling, and other
 variance reduction methods, as well as more recent ones such as
-Nonparametric Adaptive Importance Sampling (NAIS) and Cross-Entropy.
+Nonparametric Adaptive Importance Sampling (NAIS) and Importance Sampling by Cross-Entropy.
 An event can be a single event (for example, threshold exceedance), a
 system event, or an event based on a stochastic process.
 
@@ -166,8 +166,8 @@ academic education.
 It has been integrated into university curricula (e.g., DTU Denmark) and
 engineering schools (e.g., ENSTA, ENPC, Centrale Nantes, and others)
 for courses on reliability analysis, risk assessment, and UQ.
-Two stable releases are published annually, and the library is
-distributed through Conda, pip, and Debian repositories.
+Stable releases are published on a bi-annual basis, and the library is
+distributed through Conda, pip, and Debian repositories and available in linux, windows and macOs.
 
 The library has been introduced in several publications (e.g.,
 [@baudin:2016]).
