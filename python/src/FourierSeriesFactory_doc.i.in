@@ -25,7 +25,7 @@ The next example creates a tensor-product basis of Fourier functions.
 
 >>> import openturns as ot
 >>> inputDimension = 3
->>> familyColl = [ot.FourierSeriesFactory() for i in range(inputDimension)]
+>>> familyColl = [ot.FourierSeriesFactory()] * inputDimension
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 >>> basis = ot.OrthogonalProductFunctionFactory(familyColl, enumerateFunction)
 "
