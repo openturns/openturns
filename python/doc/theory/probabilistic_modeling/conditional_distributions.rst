@@ -470,5 +470,5 @@ In the other cases, the PDF is the probability distribution function for the dis
 
 .. topic:: References:
 
-    - [Feller1970]_ for an introduction to conditional distributions, chap. 3, section 2,
-    - [Kallenberg2021]_ for expert knowledge, chap. 3.
+    - [feller1970]_ for an introduction to conditional distributions, chap. 3, section 2,
+    - [kallenberg2021]_ for expert knowledge, chap. 3.
