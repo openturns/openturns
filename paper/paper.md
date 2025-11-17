@@ -167,7 +167,8 @@ It has been integrated into university curricula (e.g., DTU Denmark) and
 engineering schools (e.g., ENSTA, ENPC, Centrale Nantes, and others)
 for courses on reliability analysis, risk assessment, and UQ.
 Stable releases are published on a bi-annual basis, and the library is
-distributed through Conda, pip, and Debian repositories and available in linux, windows and macOs.
+distributed through Conda, pip, and Debian repositories and available in 
+Linux, Windows and MacOs.
 
 The library has been introduced in several publications (e.g.,
 [@baudin:2016]).
