@@ -154,17 +154,17 @@ private:
   Point    standardSpaceDesignPoint_;
   mutable Point    physicalSpaceDesignPoint_;
   RandomVector limitStateVariable_;
-  Bool isStandardPointOriginInFailureSpace_;
-  mutable Scalar hasoferReliabilityIndex_;
+  Bool isStandardPointOriginInFailureSpace_ = false;
+  mutable Scalar hasoferReliabilityIndex_ = 0.0;
   mutable PointWithDescription importanceFactors_;
   mutable PointWithDescription classicalImportanceFactors_;
   mutable PointWithDescription physicalImportanceFactors_;
   mutable Sensitivity hasoferReliabilityIndexSensitivity_;
   mutable Point meanPointInStandardEventDomain_;
-  mutable Bool isAlreadyComputedImportanceFactors_;
-  mutable Bool isAlreadyComputedClassicalImportanceFactors_;
-  mutable Bool isAlreadyComputedPhysicalImportanceFactors_;
-  mutable Bool isAlreadyComputedHasoferReliabilityIndexSensitivity_;
+  mutable Bool isAlreadyComputedImportanceFactors_ = false;
+  mutable Bool isAlreadyComputedClassicalImportanceFactors_ = false;
+  mutable Bool isAlreadyComputedPhysicalImportanceFactors_ = false;
+  mutable Bool isAlreadyComputedHasoferReliabilityIndexSensitivity_ = false;
   OptimizationResult optimizationResult_;
 }; // class AnalyticalResult
 END_NAMESPACE_OPENTURNS
