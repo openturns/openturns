@@ -38,29 +38,24 @@ sphinx_gallery.gen_gallery
 Docstrings (in separate SWIG header files)
 ------------------------------------------
 
-OpenTURNS main featured language is C++. We then use `SWIG <http://swig.org/>`_
-in order to generate the Python interface. Hence, docstrings are defined
-within **dedicated SWIG header files** (:file:`$OT_SOURCE_DIR/python/src/*_doc.i.in`)
-and are then included in the main SWIG header files
-(:file:`$OT_SOURCE_DIR/python/src/*.i`).
+OpenTURNS main featured language is C++.
+We then use `SWIG <http://swig.org/>`_ in order to generate the Python interface.
+Hence, docstrings are defined in **dedicated SWIG files** (:file:`$OT_SOURCE_DIR/python/src/*_doc.i`)
+which are then included in the main SWIG files (:file:`$OT_SOURCE_DIR/python/src/*.i`).
 
 For instance, the docstrings for the :class:`~openturns.Arcsine` distribution
-are defined in :file:`Arcsine_doc.i.in`, and this docstring file is then
-included in :file:`Arcsine.i` using a `%include Arcsine_doc.i`.
+are defined in :file:`Arcsine_doc.i`, and this docstring file is then
+included in :file:`Arcsine.i` using: `%include Arcsine_doc.i`.
 
 .. note::
 
-    Note the difference between the name of the docstring file in the source
-    tree (:file:`Arcsine_doc.i.in`) and its reference in :file:`Arcsine.i`.
-    The :file:`.in` suffix disappeared because the docstring files are
-    preprocessed by CMake in order to escape LaTeX backslashes for SWIG and
-    Python.
+    Note that double quotes (`"`) cannot be used inside the docstrings
+    because they are already used to delimit the docstrings.
 
-    Note also that the use of double quotes (`"`) in docstrings is forbidden.
-    This is because SWIG uses them to delimit the docstrings.
+    For similar reasons to avoid escaping latex commands in docstrings
+    the text can be enclosed inside the `RAW(...)RAW` raw docstring delimiters.
 
-Here are a few recommendations you'd better read in order to help us enhancing
-the docstrings coverage.
+Here are a few recommendations to read in order to help keep writing consistent docstrings.
 
 Docstring conventions
 ~~~~~~~~~~~~~~~~~~~~~
@@ -109,7 +104,7 @@ implementation first, we can then refer to the same defined
 blocks for documenting the object itself.
 
 For instance the main docstring of the :class:`~openturns.Distribution`
-object is defined and referred to in the :file:`DistributionImplementation_doc.i.in`
+object is defined and referred to in the :file:`DistributionImplementation_doc.i`
 SWIG header file::
 
     ...
@@ -120,7 +115,7 @@ SWIG header file::
     OT_Distribution_doc
     ...
 
-and it is then only being referred to in the :file:`Distribution_doc.i.in`
+and it is then only being referred to in the :file:`Distribution_doc.i`
 SWIG header file::
 
     ...
