@@ -51,18 +51,8 @@ AnalyticalResult::AnalyticalResult(const Point & standardSpaceDesignPoint,
                                    const RandomVector & limitStateVariable,
                                    const Bool isStandardPointOriginInFailureSpace):
   PersistentObject(),
-  standardSpaceDesignPoint_(0),
-  physicalSpaceDesignPoint_(0),
   limitStateVariable_(limitStateVariable),
-  isStandardPointOriginInFailureSpace_(isStandardPointOriginInFailureSpace),
-  hasoferReliabilityIndex_(0.0),
-  importanceFactors_(0),
-  classicalImportanceFactors_(0),
-  hasoferReliabilityIndexSensitivity_(0),
-  isAlreadyComputedImportanceFactors_(false),
-  isAlreadyComputedClassicalImportanceFactors_(false),
-  isAlreadyComputedPhysicalImportanceFactors_(false),
-  isAlreadyComputedHasoferReliabilityIndexSensitivity_(false)
+  isStandardPointOriginInFailureSpace_(isStandardPointOriginInFailureSpace)
 {
   /* we use the attribute accessor in order to compute automatically all the other attributes */
   setStandardSpaceDesignPoint(standardSpaceDesignPoint);
@@ -71,19 +61,8 @@ AnalyticalResult::AnalyticalResult(const Point & standardSpaceDesignPoint,
 /* Default constructor, needed by SWIG */
 AnalyticalResult::AnalyticalResult():
   PersistentObject(),
-  standardSpaceDesignPoint_(0),
-  physicalSpaceDesignPoint_(0),
-  // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
-  limitStateVariable_(ThresholdEvent()),
-  isStandardPointOriginInFailureSpace_(false),
-  hasoferReliabilityIndex_(0.0),
-  importanceFactors_(0),
-  classicalImportanceFactors_(0),
-  hasoferReliabilityIndexSensitivity_(0),
-  isAlreadyComputedImportanceFactors_(false),
-  isAlreadyComputedClassicalImportanceFactors_(false),
-  isAlreadyComputedPhysicalImportanceFactors_(false),
-  isAlreadyComputedHasoferReliabilityIndexSensitivity_(false)
+  // Fake event
+  limitStateVariable_(ThresholdEvent())
 {
   // Nothing to do
 }
@@ -112,12 +91,12 @@ void AnalyticalResult::setStandardSpaceDesignPoint(const Point & standardSpaceDe
 /* PhysicalSpaceDesignPoint evaluation */
 void AnalyticalResult::computePhysicalSpaceDesignPoint() const
 {
-  /* Compute the physical design point */
-  physicalSpaceDesignPoint_ = limitStateVariable_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint_);
-  /* we give to the physical space design point the description of the input random vector */
-  //physicalSpaceDesignPoint_.setDescription(limitStateVariable_.getImplementation()->getAntecedent().getDescription());
+  const Distribution distribution(limitStateVariable_.getImplementation()->getAntecedent().getDistribution());
+  if (standardSpaceDesignPoint_.getDimension() != distribution.getDimension())
+    throw InvalidDimensionException(HERE) << "AnalyticalResult expected a design point of dimension " << distribution.getDimension()
+                                          << ", got " << standardSpaceDesignPoint_.getDimension();
 
-  /* we give to the physical space design point the name Physical Design Point */
+  physicalSpaceDesignPoint_ = distribution.getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint_);
   physicalSpaceDesignPoint_.setName("Physical Space Design Point");
 }
 
