@@ -496,8 +496,8 @@ OT_Drawable_GetValidLineStyles_doc
 Returns
 -------
 pointStyle : str
-    Style of the points within the drawable element. Use
-    :meth:GetValidPointStyles for a list of available values.
+    Style of the points within the drawable element.
+    Use :meth:`GetValidPointStyles` for a list of available values.
 
 Examples
 --------
@@ -516,8 +516,8 @@ OT_Drawable_getPointStyle_doc
 Parameters
 ----------
 pointStyle : str
-    Style of the points within the drawable element. Use
-    :meth:`GetValidPointStyles` for a list of available values."
+    Style of the points within the drawable element.
+    Use :meth:`GetValidPointStyles` for a list of available values."
 %enddef
 %feature("docstring") OT::DrawableImplementation::setPointStyle
 OT_Drawable_setPointStyle_doc
