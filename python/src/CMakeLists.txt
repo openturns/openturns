@@ -15,7 +15,6 @@ add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      ARGS -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      COMMENT "Swig runtime header")
 add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h)
-add_custom_target (generate_docstrings)
 add_custom_target (pylib)
 
 set (OPENTURNS_PYTHON_MODULES)
@@ -28,31 +27,16 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   if (${ARGC} GREATER 2)
     set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
   endif ()
-  list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS generate_docstrings openturns/PythonWrappingFunctions.hxx)
+  list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS openturns/PythonWrappingFunctions.hxx)
 
   set (swig_other_sources)
-  set (docstring_sources)
   foreach (it ${ARGN})
     if (${it} MATCHES ".*\\.i$")
       ot_install_swig_file (${it})
-    elseif (${it} MATCHES ".*_doc\\.i\\.in$")
-      list (APPEND docstring_sources ${it})
-
-      # for install target
-      get_filename_component (DOCSTRING_FILE_BASENAME ${it} NAME_WE)
-      list (APPEND SWIGFILES ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i)
     else ()
       list (APPEND swig_other_sources "${it}")
     endif ()
   endforeach ()
-
-  # handle docstring generation
-  add_custom_target (generate_${MODULENAME}_docstrings
-                      COMMAND ${CMAKE_COMMAND} -DDOCSTRING_SOURCES="${docstring_sources}"
-                      -DCURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTIMES=x1
-                      -P ${PROJECT_SOURCE_DIR}/cmake/escape_backslash.cmake
-                      DEPENDS ${docstring_sources})
-  add_dependencies (generate_docstrings generate_${MODULENAME}_docstrings)  
 
   # swig_add_module is deprecated
   swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})

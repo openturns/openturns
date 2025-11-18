@@ -83,7 +83,7 @@ for key in conf_content:
         raise ValueError(f"extra {key} in config")
 
 # find all docstring files
-docstring_files = Path(__file__).parents[1].joinpath("src").glob("*_doc.i.in")
+docstring_files = Path(__file__).parents[1].joinpath("src").glob("*_doc.i")
 docstring_lines = []
 for docstring_file in docstring_files:
     with open(docstring_file, errors="replace") as f:
