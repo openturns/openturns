@@ -14,6 +14,7 @@ Refer to :ref:`sensitivity_sobol`.
     :template: class.rst_t
 
     CorrelationAnalysis
+    TaylorExpansionMoments
     ANCOVA
     FAST
     RankSobolSensitivityAlgorithm
