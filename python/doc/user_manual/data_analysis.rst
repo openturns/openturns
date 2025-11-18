@@ -255,3 +255,11 @@ Iterative statistics
     IterativeMoments
     IterativeThresholdExceedance
 
+Quantile confidence
+===================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.QuantileConfidence

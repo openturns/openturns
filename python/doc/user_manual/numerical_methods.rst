@@ -36,6 +36,22 @@ Refer to :ref:`optimization_algorithm`.
     SQP
     TNC
 
+Non linear solvers
+==================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    Solver
+    experimental.LeastSquaresEquationsSolver
+
+    :template: Solver.rst_t
+    Bisection
+    Brent
+    Secant
+
+
 Integration
 ===========
 
