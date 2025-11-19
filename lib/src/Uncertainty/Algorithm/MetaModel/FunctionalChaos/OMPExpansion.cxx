@@ -63,7 +63,6 @@ OMPExpansion::OMPExpansion(const Sample & inputSample,
 			     const Distribution & distribution)
   : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
 {
-  std::cerr << "In OMPExpansion(const Sample & inputSample, const Point & weights, const Sample & outputSample, const Distribution & distribution, const Bool isLARS)" << std::endl;
   // Extract the basis from the adaptive strategy attribute of the base class
   basis_ = getAdaptiveStrategy().getBasis();
   // The basis size is the maximum dimension of the adaptive strategy
@@ -281,100 +280,8 @@ void OMPExpansion::run()
 	  }
 	// Update the residuals
 	const Matrix designMatrix(leastSquaresMethod.computeWeightedDesign());
-	// Coeffieicnts used to update the residual
-	Point c;
-	// Least Angle Regression Stepwise
-	if (isLARS_)
-	  {
-	    UnsignedInteger candidatePredictor = 0;
-	    // find the predictor most correlated with the current residual only after
-	    // the constant function has been introduced
-	    const Point cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
-	    Scalar cMax = -1.0;
-	    if (iterations == 0)
-	      {
-		cMax = std::abs(cC[0]);
-	      }
-	    else
-	      {
-		for (UnsignedInteger j = 0; j < basisSize; ++ j)
-		  if (!inPredictors_[j])
-		    {
-		      const Scalar cAbs = std::abs(cC[j]);
-		      if (cAbs > cMax)
-			{
-			  cMax = cAbs;
-			  candidatePredictor = j;
-			}
-		    } // if
-	      }
-	    LOGDEBUG(OSS() << "predictor=" << candidatePredictor << " residual=" << cMax);
-	    
-	    // add the predictor index
-	    predictors_.add(candidatePredictor);
-	    inPredictors_[candidatePredictor] = 1;
-	    const UnsignedInteger globalPredictor = method.getInitialIndices()[candidatePredictor];
-	    addedPsi_k_ranks_.add(globalPredictor);
-	    currentIndices_.add(globalPredictor);
-	    method.update(addedPsi_k_ranks_, conservedPsi_k_ranks_, removedPsi_k_ranks_);
-	    
-	    // Starting from here, predictors_ has a size at least equal to 1
-	    // store the sign of the correlation
-	    UnsignedInteger predictorsSize = predictors_.getSize();
-	    Point sC(predictorsSize);
-	    for (UnsignedInteger j = 0; j < predictorsSize; ++ j) sC[j] = (cC[predictors_[j]] < 0.0 ? -1.0 : 1.0);
-	    // store correlations of the inactive set
-	    Point cI;
-	    for (UnsignedInteger j = 0; j < basisSize; ++ j)
-	      if (!inPredictors_[j]) cI.add(cC[j]);
-	    
-	    LOGDEBUG(OSS() << "matrix of elements of the inactive set built.");
-	    
-	    const Matrix mPsiAk(method.computeWeightedDesign());
-	    
-	    LOGDEBUG(OSS() << "matrix of elements of the active set built.");
-	    
-	    const Point ga1(method.solveNormal(sC));
-	    LOGDEBUG(OSS() << "Solved normal equation.");
-	    
-	    // normalization coefficient
-	    const Scalar cNorm = 1.0 / sqrt(sC.dot(ga1));
-	    
-	    // descent direction
-	    const Point descentDirectionAk(cNorm * ga1);
-	    const Point u(mPsiAk * descentDirectionAk);
-	    const Point d2(mPsiX_.getImplementation()->genVectProd(u, true));
-	    Point d;
-	    for (UnsignedInteger j = 0; j < basisSize; ++ j)
-	      if (!inPredictors_[j]) d.add(d2[j]);
-	    
-	    // compute step
-	    Scalar step = cMax / cNorm;
-	    for (UnsignedInteger j = 0; j < basisSize - predictorsSize; ++ j)
-	      {
-		Scalar lhs = (cMax - cI[j]) / (cNorm - d[j]);
-		Scalar rhs = (cMax + cI[j]) / (cNorm + d[j]);
-		if (lhs > 0.0)
-		  step = std::min(step, lhs);
-		if (rhs > 0.0)
-		  step = std::min(step, rhs);
-	      }
-	    
-	    // update mu
-	    mu_ += step * u;
-	    
-	    // update coefficients
-	    for (UnsignedInteger j = 0; j < predictorsSize; ++ j)
-	      {
-		coefficients_[predictors_[j]] += step * descentDirectionAk[j];
-	      }
-	  } // LARS
-	// or orthogonal matching pursuit
-	else
-	  {
-	    c = coefficients;
-	  }
-	residuals = rhs - designMatrix * c;
+	// Orthogonal matching pursuit
+	residuals = rhs - designMatrix * coefficients;
       } // Loop over the basis functions
     // Store the best selection for the current output index
     for (UnsignedInteger j = 0; j < bestSelection.getSize(); ++j)
@@ -438,17 +345,6 @@ FittingAlgorithm OMPExpansion::getFittingAlgorithm() const
 void OMPExpansion::setFittingAlgorithm(const FittingAlgorithm & fitting)
 {
   fitting_ = fitting;
-}
-
-/* Method to get/set the LARS update wrt the OMP update */
-Bool OMPExpansion::getIsLARS() const
-{
-  return isLARS_;
-}
-
-void OMPExpansion::setIsLARS(const Bool isLARS)
-{
-  isLARS_ = isLARS;
 }
 
 /* String converter */
