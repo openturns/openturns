@@ -170,6 +170,9 @@ private:
   /** Error history */
   Point errorHistory_;
 
+  /** Cut point in history */
+  Indices historyCutPoints_ = {0, 1};
+  
   /** Is regression? */
   Bool isLeastSquares_ = true;
 

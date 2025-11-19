@@ -424,6 +424,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "indicesHistory_", indicesHistory_ );
   adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
   adv.saveAttribute( "errorHistory_", errorHistory_ );
+  adv.saveAttribute( "historyCutPoints_", historyCutPoints_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
 }
@@ -446,6 +447,10 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "indicesHistory_", indicesHistory_ );
     adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
     adv.loadAttribute( "errorHistory_", errorHistory_ );
+    if (adv.hasAttribute("historyCutPoints_"))
+      {
+	adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );	
+      }
   }
   if (adv.hasAttribute("isLeastSquares_"))
   {
@@ -456,24 +461,19 @@ void FunctionalChaosResult::load(Advocate & adv)
 
 IndicesCollection FunctionalChaosResult::getIndicesHistory() const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "getIndicesHistory is only available for 1-d output dimension "
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
   return IndicesCollection(indicesHistory_);
 }
 
 Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "getCoefficientsHistory is only available for 1-d output dimension "
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
   return coefficientsHistory_;
 }
 
-void FunctionalChaosResult::setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory)
+void FunctionalChaosResult::setSelectionHistory(const Collection<Indices> & indicesHistory, const Collection<Point> & coefficientsHistory, const Indices & historyCutPoints)
 {
   indicesHistory_ = indicesHistory;
   coefficientsHistory_ = coefficientsHistory;
+  historyCutPoints_ = historyCutPoints;
 }
 
 Graph FunctionalChaosResult::drawSelectionHistory() const
