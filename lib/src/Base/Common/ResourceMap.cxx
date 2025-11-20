@@ -226,9 +226,15 @@ Bool ResourceMap::HasStringEnum(const String & key)
   return GetInstance().lock().hasStringEnum(key);
 }
 
+void ResourceMap::Reset()
+{
+  GetInstance().lock().reset();
+}
+
 void ResourceMap::Reload()
 {
-  return GetInstance().lock().reload();
+  LOGWARN("ResourceMap.Reload is deprecated in favor of Reset");
+  Reset();
 }
 
 void ResourceMap::RemoveKey(const String & key)
@@ -243,12 +249,8 @@ std::vector<String> ResourceMap::FindKeys(const String & substr)
 
 /* Default constructor */
 ResourceMap::ResourceMap()
-  : mapString_()
-  , mapScalar_()
-  , mapUnsignedInteger_()
-  , mapBool_()
 {
-  reload();
+  reset();
 }
 
 /* Method for retrieving information from the resource map */
@@ -1818,7 +1820,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("View-ImageFormat", "png");
 }
 
-void ResourceMap::reload()
+void ResourceMap::reset()
 {
   const std::vector<String> allKeys(getKeys());
   for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)

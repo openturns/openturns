@@ -93,7 +93,9 @@ public:
   /** Remove a key */
   static void RemoveKey(const String & key);
 
-  /** Reload configuration */
+  /** Reset configuration */
+  static void Reset();
+  // @deprecated
   static void Reload();
 
   /** Get the list of keys associated to a class */
@@ -268,8 +270,8 @@ protected:
   /** Load the configuration defined at installation time */
   void loadDefaultConfiguration();
 
-  /** Reload configuration */
-  void reload();
+  /** Reset configuration */
+  void reset();
 
   /** Get the list of keys associated to a class */
   std::vector<String> findKeys(const String & substr);

@@ -143,7 +143,7 @@ Examples
 >>> result = algo.getResult()
 >>> metamodel = result.getPointToFieldMetaModel()
 >>> y0hat = metamodel(x[0])
->>> ot.ResourceMap.Reload()
+>>> ot.ResourceMap.Reset()
 "
 
 // ---------------------------------------------------------------------

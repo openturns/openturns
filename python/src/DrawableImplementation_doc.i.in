@@ -143,7 +143,7 @@ Examples
 >>> ot.ResourceMap.SetAsString('Drawable-DefaultPaletteName', 'Tableau')
 >>> print(ot.Drawable.BuildDefaultPalette(4))
 [#1f77b4,#ff7f0e,#2ca02c,#d62728]
->>> ot.ResourceMap.Reload()"
+>>> ot.ResourceMap.Reset()"
 %enddef
 %feature("docstring") OT::DrawableImplementation::BuildDefaultPalette
 OT_Drawable_BuildDefaultPalette_doc
