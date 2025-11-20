@@ -87,13 +87,15 @@ RandomGeneratorState RandomGenerator::GetState()
   return state;
 }
 
+void RandomGenerator::Reset()
+{
+  SetSeed(ResourceMap::GetAsUnsignedInteger("RandomGenerator-InitialSeed"));
+}
+
 void RandomGenerator::Initialize()
 {
   if (!IsInitialized_)
-  {
-    SetSeed(ResourceMap::GetAsUnsignedInteger("RandomGenerator-InitialSeed"));
-    IsInitialized_ = true;
-  }
+    Reset();
 }
 
 /* Generate a pseudo-random number uniformly distributed over ]0, 1[ */

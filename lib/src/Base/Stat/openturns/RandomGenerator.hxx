@@ -61,6 +61,9 @@ public:
   /** Generate a pseudo-random vector of integers uniformly distributed over [[0,...,n-1]] */
   static UnsignedIntegerCollection IntegerGenerate(const UnsignedInteger size, const UnsignedInteger n);
 
+  /* Reset with default seed */
+  static void Reset();
+
 private:
   /** Default constructor */
   RandomGenerator();
