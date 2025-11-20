@@ -157,7 +157,7 @@ Bibliography
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
-.. [Feller1970] Feller W.,
+.. [feller1970] Feller W.,
     *An Introduction to Probability Theory and Its Application*, John Wiley \& Sons,
     2nd edition, Vol. 2.
 .. [fischer2017] Fischer, R. (2017). *Modelling the dependence of order
@@ -249,7 +249,7 @@ Bibliography
     *Simple boundary correction for kernel density estimation*,
     Statistics and Computing. Vol. 3, Issue 3, 1993, pp. 135-146,
     https://doi.org/10.1007/BF00147776
-.. [Kallenberg2021] Kallenberg, O.
+.. [kallenberg2021] Kallenberg, O.
     *Fundations of Modern Probability*,
     Springer, 3rd edition, 2021.
 .. [Keutelian1991] Hovhannes Keutelian.

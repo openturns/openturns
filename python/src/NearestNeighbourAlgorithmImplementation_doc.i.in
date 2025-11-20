@@ -35,6 +35,8 @@ here is how the derived class is selected:
 * If input dimension is 1, :class:`~openturns.NearestNeighbour1D` is selected.
 * Otherwise, :class:`~openturns.KDTree` is selected.
 
+By default, the algorithm is :class:`~openturns.KDTree`.
+
 See also
 --------
 KDTree, NearestNeighbour1D, RegularGridNearestNeighbour, NaiveNearestNeighbour
