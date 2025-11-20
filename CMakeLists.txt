@@ -41,63 +41,6 @@ option (BUILD_SHARED_LIBS            "Build shared libraries"                   
 # Defines our own module path
 list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-if (POLICY CMP0022)
-  # INTERFACE_LINK_LIBRARIES defines the link interface
-  cmake_policy (SET CMP0022 NEW)
-endif()
-
-if (POLICY CMP0057)
-  # Support new IN_LIST if() operator
-  cmake_policy (SET CMP0057 NEW)
-endif ()
-
-if (POLICY CMP0068)
-  # RPATH settings on macOS do not affect install_name
-  cmake_policy (SET CMP0068 NEW)
-endif ()
-
-if (POLICY CMP0093)
-  # FindBoost reports Boost_VERSION in x.y.z format
-  cmake_policy (SET CMP0093 NEW)
-endif ()
-
-if (POLICY CMP0058)
-  # Ninja requires custom command byproducts to be explicit
-  cmake_policy (SET CMP0058 NEW)
-endif()
-
-if(POLICY CMP0042)
-  # Set MACOSX_RPATH to ON
-  cmake_policy(SET CMP0042 NEW)
-endif()
-
-if (POLICY CMP0054)
-  cmake_policy (SET CMP0054 NEW)
-endif ()
-
-if (POLICY CMP0056)
-  cmake_policy (SET CMP0056 NEW)
-endif ()
-
-if (POLICY CMP0066)
-  cmake_policy (SET CMP0066 NEW)
-endif ()
-
-if (POLICY CMP0074)
-  # find_package() uses <PackageName>_ROOT variables
-  cmake_policy(SET CMP0074 NEW)
-endif ()
-
-if (POLICY CMP0078)
-  # swig standard target names
-  cmake_policy(SET CMP0078 NEW)
-endif ()
-
-if (POLICY CMP0086)
-  # UseSWIG honors SWIG_MODULE_NAME via -module flag
-  cmake_policy(SET CMP0086 NEW)
-endif ()
-
 set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME)
 
 include (GNUInstallDirs)
