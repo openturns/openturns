@@ -2,7 +2,6 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import ishigami_function
 
-ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 sampleSize = 500
 inputTrain = im.distribution.getSample(sampleSize)

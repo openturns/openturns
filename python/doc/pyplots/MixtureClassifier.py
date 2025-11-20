@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 Id = ot.IdentityMatrix(2)
 atoms = [
     ot.Normal([1.0, 2.0], [0.5, 0.8], Id),

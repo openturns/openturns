@@ -2,9 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
-ot.ResourceMap.Reload()
-
 # Generate sample with the given plane
 size = 20
 dim = 2

@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 R = ot.CorrelationMatrix(2)
 for i in range(1, 2):
     R[i, i - 1] = -0.25

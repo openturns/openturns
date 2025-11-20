@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 # 3-d test
 R1 = ot.CovarianceMatrix(3)

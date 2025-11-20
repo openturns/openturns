@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 experiment1 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [3])
 experiment2 = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [5])

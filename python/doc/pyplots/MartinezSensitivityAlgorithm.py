@@ -2,8 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
-
 
 def flooding(X):
     Hd = 3.0

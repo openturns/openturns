@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 grid = ot.GridLayout(1, 2)
 pdf_2d = ot.Graph("Uniform order statistics, PDF", "x1", "x2", True)
 cdf_2d = ot.Graph("Uniform order statistics, CDF", "x1", "x2", True)

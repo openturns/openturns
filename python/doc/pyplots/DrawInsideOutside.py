@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 domain = ot.Interval([-2.0, -1.0, 1.0], [2.0, 1.0, 3.0])
 uniform = ot.Uniform(-3.0, 4.0)

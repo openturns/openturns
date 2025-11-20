@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 sample = ot.Normal(3).getSample(100)
 distribution = ot.JointDistribution(

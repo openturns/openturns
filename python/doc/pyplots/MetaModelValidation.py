@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 # Define the model
 dist = ot.Uniform(-3.0, 3.0)
 model = ot.SymbolicFunction(["x"], ["sin(x)"])

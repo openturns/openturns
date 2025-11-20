@@ -2,8 +2,6 @@ import openturns as ot
 import openturns.viewer as otv
 import math as m
 
-ot.RandomGenerator.SetSeed(0)
-
 
 def flooding(X):
     L, B = 5.0e3, 300.0

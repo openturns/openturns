@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 # Create a bivariate Gaussian process
 myTG = ot.RegularGrid(0.0, 0.01, 100)
 myCov = ot.ExponentialModel([3.0], [1.2])

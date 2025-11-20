@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal([0.5], [2.0], ot.CorrelationMatrix(1))
 sample = distribution.getSample(200)
 
