@@ -103,3 +103,11 @@ Notes
 This method fixes a particular state of the random generator algorithm
 thanks to the seed :math:`n`. The seed of the random generator is automatically
 initialized to 0 when a session is launched."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RandomGenerator::Reset
+"Reset to the default state of the random generator.
+
+Uses the default initial seed set in the :class:`~openturns.ResourceMap` entry `RandomGenerator-InitialSeed`.
+"
