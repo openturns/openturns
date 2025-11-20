@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 distXgivenT = ot.Exponential()
 distGamma = ot.Uniform(1.0, 2.0)
 distLambda = ot.Uniform(0.0, 1)

@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 # Generate sample with the given plane
 distribution = ot.JointDistribution([ot.Uniform(0, 1)] * 2)

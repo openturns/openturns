@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 mesh = ot.IntervalMesher([128]).build(ot.Interval(-1.0, 1.0))
 threshold = 0.001
 model = ot.AbsoluteExponential([1.0])

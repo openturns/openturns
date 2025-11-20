@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 dimension = 2
 R = ot.CorrelationMatrix(dimension)

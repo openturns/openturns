@@ -1,8 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
-ot.ResourceMap.Reload()
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
 
 grid = ot.GridLayout(2, 2)

@@ -5,7 +5,6 @@ from openturns.usecases import ishigami_function
 import openturns.viewer as otv
 
 # data
-ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 N = 1000
 g = im.model

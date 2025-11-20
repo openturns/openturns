@@ -1,8 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
-
 
 class NormalTruncatedToBall(ot.PythonRandomVector):
     def __init__(self, dim, max_dist):

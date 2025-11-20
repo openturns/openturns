@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 size = 100
 copula1 = ot.FrankCopula(1.5)

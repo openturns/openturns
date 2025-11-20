@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 N = 512
 a = 20.0
 # myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))

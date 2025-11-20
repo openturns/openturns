@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 f1 = ot.SymbolicFunction(["t"], ["sin(t)"])
 f2 = ot.SymbolicFunction(["t"], ["cos(t)*cos(t)"])
 myBasis = ot.Basis([f1, f2])

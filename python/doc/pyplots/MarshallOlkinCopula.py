@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 distribution_2d = ot.MarshallOlkinCopula(0.3, 0.7)
 title = f"Marshall-Olkin copula CDF and sample: alpha = {distribution_2d.getAlpha()}, beta = {distribution_2d.getBeta()}"
 

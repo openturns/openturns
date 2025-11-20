@@ -1,7 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 dim = 3
 size = 10
 distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * dim)

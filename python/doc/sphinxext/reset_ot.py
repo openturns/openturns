@@ -5,9 +5,8 @@ def reset_ot(gallery_conf, fname):
     import openturns as ot
 
     ot.Log.Show(ot.Log.NONE)
-    ot.ResourceMap.Reload()
-    seed = ot.ResourceMap.GetAsUnsignedInteger("RandomGenerator-InitialSeed")
-    ot.RandomGenerator.SetSeed(seed)
+    ot.ResourceMap.Reset()
+    ot.RandomGenerator.Reset()
 
     # explicitly set agg backend
     import matplotlib

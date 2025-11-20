@@ -3,7 +3,6 @@ from math import pi
 import openturns.viewer as otv
 
 # Create the function
-ot.RandomGenerator.SetSeed(0)
 formula = ["sin(X1) + 7. * sin(X2)^2 + 0.1 * X3^4 * sin(X1)"]
 input_names = ["X1", "X2", "X3"]
 g = ot.SymbolicFunction(input_names, formula)

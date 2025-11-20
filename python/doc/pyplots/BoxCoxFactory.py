@@ -2,7 +2,6 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 
 # Define a bi dimensional mesh as a box
 indices = ot.Indices([40, 20])
