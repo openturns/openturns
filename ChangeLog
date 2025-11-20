@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.26 release (in-progress) == #release-1.26
+== 1.26 release (2025-11-25) == #release-1.26
 
 === Library ===
 
@@ -20,7 +20,7 @@
  * ExperimentIntegration left the experimental module
  * CubaIntegration left the experimental module
  * SamplePartition left the experimental module
- * GeneralizedParetoValid left the experimental module
+ * GeneralizedParetoValidation left the experimental module
  * FunctionalChaosValidation left the experimental module
  * PointToFieldFunctionaChaosAlgorithm left the experimental module
  * Deprecated DeconditionedDistribution in favor of CompoundDistribution
@@ -29,6 +29,9 @@
  * Deprecated ResourceMap.Reload in favor of Reset
 
 === Documentation ===
+ * Added the example 'Pitfalls in  polynomial chaos expansion due to the input distribution'
+ * Improved Pearson and Spearman theory files
+ * Improved API and examples index
 
 === Python module ===
  * Add deepcopy support for all objects
@@ -38,6 +41,57 @@
  * New Pagmo incremental evolution option to update result at each iteration
  * Modified KFoldSplitter class to return non-interlaced folds
  * Disable exprtk implicit multiplication for expresions like '3x' where the gradient was incorrect
+ * Improved GPR hyperparameter optimization using normalization and better scale bounds initialization
+ * Compute interval coverage for QuantileConfidence
+ * New FunctionalChaosResult.getMarginal method
+ * In ProbabilitySimulationAlgorithm, add getInput/getOutputSample
+ * Improve deepcopy support
+
+=== Bug fixes (total 44) ===
+ * #2461 (use MetaModelResult in Taylor/LeastSquares metamodels)
+ * #2464 (The Polygon does not plot its legend)
+ * #2569 (Plotting graphic missing in Example file)
+ * #2700 (GridLayout.setCorner and GridLayout.setLegendPosition('upper right'))
+ * #2761 (The name of the attributes is not consistent in the use cases)
+ * #2863 (The PythonDistribution does not document its features)
+ * #2873 (The doc of SpaceFillingMinDist has issues)
+ * #2907 (PDF draw of histogram or UserDefined distribution based on sample from a discrete distribution)
+ * #2920 (Error while loading object inherited from openTURNS classes with pickle)
+ * #2925 (We cannot evaluate a univariate polynomial on a sample)
+ * #2927 (drawParameterDistributions does not draw posterior distribution)
+ * #2936 (The doc of DesignProxy is almost empty)
+ * #2938 (The calibration of the flooding model using Bayesian methods can be improved)
+ * #2942 (EV3 don't throw on unknown function)
+ * #2945 (constant chaos)
+ * #2948 (The FittingAlgorithm.run(leastSquaresMethod, outputSample) method is hidden in Python)
+ * #2957 (CovarianceModel parameters: Sort the active parameters and remove the duplicated ones)
+ * #2976 (The example "Estimate quantile confidence intervals from data" could be improved)
+ * #2977 (There is no example of Sample indexing from integers)
+ * #2981 (A constraint equation is not displayed)
+ * #2982 (Analytical cross validation can fail when the number of coefficients is equal to number of parameters)
+ * #2983 (KFoldSplitter produces interlaced folds)
+ * #2985 (There is no FunctionalChaosResult.getMarginal())
+ * #2990 (QuantileConfidence does not evaluate the actual coverage probability of an interval)
+ * #2993 (plot_functions_grad_hess.html has issues)
+ * #2996 (getGradient and getHessian have broken docs)
+ * #2997 (DistributionTransformation has no API doc)
+ * #2998 (DistributionTransformation does not propagate the descriptions)
+ * #2999 (Impossibility to run a copy of NAIS algorithm)
+ * #3000 (Access of input/output samples from monte carlo simulation)
+ * #3002 (Random segmentation fault when computing HSIC between categorical variables)
+ * #3006 (Monte Carlo convergence graph)
+ * #3008 (ot.MemoizeFunction().clearCache() kills Python)
+ * #3011 (implicit multiplication null gradient)
+ * #3014 (The DeconditionedDistribution class should be renamed to CompoundDistribution)
+ * #3020 (The help page on Spearman's correlation coefficient can be improved)
+ * #3025 (The description of the FloodModel is wrong)
+ * #3027 (Doc / Theory / Directional simulation / Missing figure)
+ * #3028 (SmoothedUniform has a range with finite lower and upper bounds)
+ * #3032 (A plot in logarithmic scale can collapse)
+ * #3039 (Typo in the MultiFORM example)
+ * #3040 (Deprecation warning with MultiFORM)
+ * #3043 (GPR: improve optim default bounds)
+ * #3042 (getPointStyle() has a formatting issue)
 
 
 == 1.25 release (2025-06-12) == #release-1.25
