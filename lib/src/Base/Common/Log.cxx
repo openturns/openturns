@@ -29,16 +29,16 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 static std::mutex Log_InstanceMutex_;
-static Log * Log_P_instance_ = 0;
+static Pointer<Log> Log_P_instance_;
 static const Log_init static_initializer_Log;
 
 static inline
-_Prefix make_prefix( const _Prefix::Value & color, const _Prefix::Value & nocolor, const _Prefix::Value & prefix)
+_Prefix make_prefix(const _Prefix::Value & color, const _Prefix::Value & nocolor, const _Prefix::Value & prefix)
 {
   return _Prefix( color, nocolor, prefix );
 }
 
-std::ostream & operator << ( std::ostream & os, const _Prefix & pfx )
+std::ostream & operator << (std::ostream & os, const _Prefix & pfx)
 {
   return os << (TTY::ColoredOutput() ? pfx.color_ : pfx.nocolor_) << pfx.prefix_;
 }
@@ -52,7 +52,7 @@ Log_init::Log_init()
     Log_P_instance_ = new Log;
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log Beginning ***"));
   });
-  assert(Log_P_instance_);
+  assert(Log_P_instance_.get());
 }
 
 Log_init::~Log_init()
@@ -61,8 +61,7 @@ Log_init::~Log_init()
   std::call_once(flag, [&]()
   {
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log End ***"));
-    delete Log_P_instance_;
-    Log_P_instance_ = 0;
+    Log_P_instance_.reset();
   });
 }
 
@@ -77,19 +76,13 @@ const Log::Severity Log::WARN    = 1 << 4;
 const Log::Severity Log::ERROR   = 1 << 5;
 const Log::Severity Log::TRACE   = 1 << 6;
 
-const Log::Severity Log::DEFAULT = Log::USER | Log::WARN | Log::ERROR | Log::TRACE;
+const Log::Severity Log::DEFAULT = Log::USER | Log::WARN | Log::ERROR;
 
 static AtomicInt Log_Severity_ = Log::DEFAULT;
 
 
 /* Constructor */
 Log::Log()
-  : logName_(),
-    openturnsLogSeverityVariableName_("OPENTURNS_LOG_SEVERITY"),
-    p_file_(0),
-    previousMessage_(),
-    count_(0),
-    repeat_(1)
 {
   logName_[NONE]    = make_prefix( String(TTY::GetColor(TTY::DEFAULT)), "", "   " );
   logName_[ALL]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT)), "", "ALL" );
@@ -101,22 +94,13 @@ Log::Log()
   logName_[TRACE]   = make_prefix( String(TTY::GetColor(TTY::YELLOWFG)), "", "TRA" );
 
   initSeverityFromEnvironment();
-
 }
 
 
-/* Destructor */
-Log::~Log()
-{
-  delete p_file_;
-  p_file_ = 0;
-}
-
-
-/* Set Severity according to Openturns LogSeverity Variable */
+/* Set Severity according to environment variable */
 void Log::initSeverityFromEnvironment()
 {
-  const char * logSeverityVariableContent = getenv(openturnsLogSeverityVariableName_);
+  const char * logSeverityVariableContent = getenv("OPENTURNS_LOG_SEVERITY");
   if (logSeverityVariableContent != NULL)
   {
     String severityVariableContent(logSeverityVariableContent);
@@ -143,7 +127,7 @@ void Log::initSeverityFromEnvironment()
     }
     while (endPos != static_cast<SignedInteger>(severityVariableContent.size()));
 
-    Show( theSeverity );
+    Show(theSeverity);
   }
 }
 
@@ -164,6 +148,7 @@ MutexLockSingleton<Log> Log::GetInstance()
 
 void Log::Reset()
 {
+  GetInstance().lock().reset();
 }
 
 
@@ -238,23 +223,30 @@ void Log::Flush()
  *  and a message counting how much identical messages were
  *  received after that.
  */
-void Log::Repeat(Bool r)
+void Log::Repeat(const Bool repeat)
 {
-  GetInstance().lock().repeat(r);
+  GetInstance().lock().repeat(repeat);
 }
 
-void Log::repeat(Bool r)
+void Log::repeat(const Bool repeat)
 {
-  repeat_ = r ? 1 : 0;
+  repeat_ = repeat ? 1 : 0;
 }
 
 void Log::flush()
 {
-  printRepeatedMessage( previousMessage_ );
+  printRepeatedMessage(previousMessage_);
   previousMessage_ = Entry();
   count_ = 0;
 }
 
+void Log::reset()
+{
+  Log_Severity_ = Log::DEFAULT;
+  p_file_.reset();
+  repeat_ = 1;
+  initSeverityFromEnvironment();
+}
 
 /* Append an entry at the end of the list */
 void Log::push(const Entry & entry)
@@ -265,8 +257,8 @@ void Log::push(const Entry & entry)
     if (entry.sev_ != Log::TRACE && repeat_.get() && entry == previousMessage_) ++count_;
     else
     {
-      printRepeatedMessage( previousMessage_ );
-      previousMessage_ = entry ;
+      printRepeatedMessage(previousMessage_);
+      previousMessage_ = entry;
       count_ = 0;
       os << logName_[entry.sev_] << " - " << entry.msg_ << TTY::GetColor(TTY::DEFAULT) << std::endl;
     }
@@ -293,8 +285,7 @@ void Log::setFile(const FileName & fileName)
   if (fileName.size())
     push(Entry(INFO, String("Diverting log to file: ") + fileName));
   push(Entry(INFO, "*** Log End ***"));
-  delete p_file_;
-  p_file_ = nullptr;
+  p_file_.reset();
   TTY::ShowColors(fileName.size() == 0);
   if (fileName.size())
   {
