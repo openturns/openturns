@@ -26,6 +26,7 @@
  * Deprecated DeconditionedDistribution in favor of CompoundDistribution
  * Deprecated DeconditionedRandomVector in favor of CompoundRandomVector
  * Deprecated SpecFunc.IsNormal (use std::isfinite or math.isfinite)
+ * Deprecated ResourceMap.Reload in favor of Reset
 
 === Documentation ===
 
