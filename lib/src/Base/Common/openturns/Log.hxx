@@ -32,6 +32,7 @@
 #include "openturns/AtomicInt.hxx"
 #include "openturns/TTY.hxx"
 #include "openturns/MutexLock.hxx"
+#include "openturns/Pointer.hxx"
 
 
 #define LOGDEBUG(st)   do { if (OT::Log::HasDebug()  ) OT::Log::Debug(st);   } while(0)
@@ -55,7 +56,7 @@ struct _Prefix
   _Prefix( const Value & color, const Value & nocolor, const Value & prefix) : color_(color), nocolor_(nocolor), prefix_(prefix) {}
 };
 
-std::ostream & operator << ( std::ostream & os, const _Prefix & pfx );
+std::ostream & operator << (std::ostream & os, const _Prefix & pfx);
 
 #endif
 
@@ -90,10 +91,8 @@ public:
   static const Severity NONE;
   static const Severity ALL;
 
-#ifndef SWIG
-  /** Change the Log */
+  /** Reset state */
   static void Reset();
-#endif
 
   /** Log messages according to the DBG level
    * @param msg The message to be logged
@@ -157,7 +156,7 @@ public:
   /** Set the level flags for the messages logged to the file
    * @param flags An integer built from ORed level flags
    */
-  static void Show(Severity flags);
+  static void Show(const Severity flags);
 
   /** Get the current level flags
    * @return An integer built from ORed level flags
@@ -176,7 +175,7 @@ public:
    *  and a message counting how much identical messages were
    *  received after that.
    */
-  static void Repeat( Bool repeat );
+  static void Repeat(const Bool repeat);
 
   /** Color  accessors. */
   static void SetColor(const Log::Severity severity,
@@ -198,14 +197,14 @@ public:
     }
   }; /* end struct Entry */
 #endif
-  ~Log();
 
 private:
   Log();
   void push(const Entry & entry);
   void printRepeatedMessage(const Entry & entry);
   void flush();
-  void repeat( Bool r );
+  void reset();
+  void repeat(const Bool repeat);
   void setColor(const Log::Severity severity,
                 const String & color);
   String getColor(const Log::Severity severity) const;
@@ -216,19 +215,16 @@ private:
   /** Human readable log */
   mutable std::map<Severity, _Prefix > logName_;
 
-  /** The environment variable name */
-  const char * openturnsLogSeverityVariableName_;
-
   /** Set Severity according to Openturns LogSeverity Variable */
   void initSeverityFromEnvironment();
 
   /** The file where to write messages */
-  std::ostream * p_file_ = nullptr;
+  Pointer<std::ostream> p_file_;
 
   /** Remember the previous message */
   mutable Entry previousMessage_;
   mutable UnsignedInteger count_ = 0;
-  mutable AtomicInt repeat_;
+  mutable AtomicInt repeat_ = 1;
 
   friend struct Log_init; /* friendship for static member initialization */
 }; /* end class Log */

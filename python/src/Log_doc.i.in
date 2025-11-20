@@ -224,3 +224,9 @@ Returns
 -------
 has_log : bool
     Whether the level is enabled"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Reset
+"Reset settings."

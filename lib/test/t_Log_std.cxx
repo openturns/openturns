@@ -77,7 +77,7 @@ int main(int, char *[])
   typedef void (*FUNC) (void);
   FUNC functions[nbFunctions] = { printDebug, printInfo, printUser, printWarn, printError, printTrace };
 
-  Log::Show( Log::ALL );
+  Log::Show(Log::ALL);
   Log::SetFile("Log_check.log");
 
   // Create a thread for messages of every level
@@ -93,6 +93,11 @@ int main(int, char *[])
 //
 //   if (actualLength != expectedLength)
 //     throw TestFailed("unexpected log length");
+
+  // check reset restores the default
+  Log::Reset();
+  if (Log::HasDebug())
+    throw TestFailed("unexpected trace level");
 
   return ExitCode::Success;
 }
