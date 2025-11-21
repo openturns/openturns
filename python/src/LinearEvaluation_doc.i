@@ -1,0 +1,81 @@
+%feature("docstring") OT::LinearEvaluation
+R"RAW(Linear numerical math evaluation implementation.
+
+Parameters
+----------
+center : sequence of float
+    Vector :math:`\vect{b}`.
+constant : sequence of float
+    Vector :math:`\vect{c}`.
+linear : :class:`~openturns.Matrix`
+    Matrix :math:`\mat{A}`.
+
+Notes
+-----
+This class implements the evaluation of a linear :class:`~openturns.Function` :math:`f` defined as:
+
+.. math::
+
+    f : & \Rset^d \rightarrow \Rset^p  \\
+        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c}
+
+where:
+
+- :math:`\mat{A}` is a matrix with :math:`d` lines and :math:`p` columns,
+- :math:`\vect{b}` is a vector in  :math:`\Rset^d`,
+- :math:`\vect{c}` is a vector in :math:`\Rset^p`.
+
+See also
+--------
+Function
+
+Examples
+--------
+In this example, we create the linear function :math:`f: \Rset^2 \rightarrow \Rset` such that
+:math:`f(x,y) = 2x + 3y-1`. Then we have:
+
+.. math::
+
+    \mat{A} = \left( \begin{array}{cc}
+    2  \\
+    3
+    \end{array}\right), \vect{b} = \Tr{(0,0)}, \vect{c} = (-1)
+
+>>> import openturns as ot
+>>> A = ot.Matrix(2,1)
+>>> A[0,0] = 2
+>>> A[1,0] = 3
+>>> b = [2.0, 3.0]
+>>> c = [4.0]
+>>> f = ot.LinearEvaluation(b,c,A)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearEvaluation::getCenter
+R"RAW(Accessor to the center.
+
+Returns
+-------
+center : :class:`~openturns.Point`
+    The center :math:`\vect{b}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearEvaluation::getConstant
+R"RAW(Accessor to the constant.
+
+Returns
+-------
+constant : :class:`~openturns.Point`
+    The constant :math:`\vect{c}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearEvaluation::getLinear
+R"RAW(Accessor to the matrix.
+
+Returns
+-------
+linear : :class:`~openturns.Matrix`
+    The matrix :math:`\mat{A}`.)RAW"

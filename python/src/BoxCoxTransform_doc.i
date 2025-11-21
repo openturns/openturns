@@ -1,0 +1,129 @@
+%feature("docstring") OT::BoxCoxTransform
+R"RAW(BoxCox transformation.
+
+Refer to :ref:`boxcox_transformation`.
+
+Available constructors:
+    BoxCoxTransform(*lambdaVect, shiftVect*)
+
+    BoxCoxTransform(*lambda, shift*)
+
+Parameters
+----------
+lambdaVect : sequence of float
+    The  :math:`(\lambda_1, \dots, \lambda_d)` parameter.
+shiftVect : sequence of float
+    The  :math:`(\alpha_1, \dots, \alpha_d)` parameter. 
+
+    Default is :math:`(\alpha_1, \dots, \alpha_d)=(0, \dots, 0)`.
+lambda : float
+    The  :math:`\lambda` parameter in the univariate case.
+shift : float
+    The   :math:`\alpha` parameter in the univariate case.
+
+    Default is :math:`\alpha = 0`.
+
+
+Notes
+-----
+The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` writes for each component :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset`:
+
+.. math::
+
+    h_{\lambda_i, \alpha_i} (x)= 
+    \left\{
+    \begin{array}{ll}
+    \dfrac{(x+\alpha_i)^{\lambda_i}-1}{\lambda} & \lambda_i \neq 0 \\
+    \log(x+\alpha_i)                        & \lambda_i = 0
+    \end{array}
+    \right.
+
+for all :math:`x+\alpha_i >0`.
+
+The inverse Box Cox transformation writes:
+
+.. math::
+
+    \begin{array}{lcl}
+      h_{\lambda_i, \alpha_i}^{-1}(y) & = &
+      \left\{
+      \begin{array}{ll}
+    \displaystyle (\lambda_i y + 1)^{\frac{1}{\lambda_i}} - \alpha_i & \lambda_i \neq 0 \\
+    \displaystyle \exp(y) - \alpha_i                         & \lambda_i = 0
+      \end{array}
+      \right.
+    \end{array}
+
+Examples
+--------
+
+Create a Box Cox transformation:
+
+>>> import openturns as ot
+>>> myLambda = 0.1
+>>> myBoxCox = ot.BoxCoxTransform(myLambda)
+
+Estimate a transformation from a sample:
+
+>>> mySample = ot.Exponential(2).getSample(100)
+>>> myModelTransform = ot.BoxCoxFactory().build(mySample)
+
+Apply ot to the sample:
+
+>>> myNormalSample = myModelTransform(mySample)
+
+>>> hist = ot.HistogramFactory().build(myNormalSample)
+>>> graph = hist.drawPDF()
+
+Apply it to a field:
+
+>>> myIndices= ot.Indices([10,5])
+>>> myMesher=ot.IntervalMesher(myIndices)
+>>> myInterval = ot.Interval([0.0, 0.0], [2.0, 1.0])
+>>> myMesh=myMesher.build(myInterval)
+>>> amplitude=[1.0]
+>>> scale=[0.2, 0.2]
+>>> myCovModel=ot.ExponentialModel(scale, amplitude)
+>>> myXproc=ot.GaussianProcess(myCovModel, myMesh)
+>>> g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
+>>> myDynTransform = ot.ValueFunction(g, myMesh)
+>>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
+
+>>> myField = myXtProcess.getRealization()
+>>> myModelTransform = ot.BoxCoxFactory().build(myField)
+>>> myStabilizedField = myModelTransform(myField.getValues())
+
+>>> marginal = ot.HistogramFactory().build(myStabilizedField)
+>>> graph2 = marginal.drawPDF()
+)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::BoxCoxTransform::getLambda
+R"RAW(Accessor to the :math:`\vect{\lambda}` parameter.
+
+Returns
+-------
+myLambda : :class:`~openturns.Point`
+    The :math:`\vect{\lambda}` parameter.
+
+)RAW"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::BoxCoxTransform::getShift
+R"RAW(Accessor to the :math:`\vect{\alpha}` parameter.
+
+Returns
+-------
+myLambda : :class:`~openturns.Point`
+    The :math:`\vect{\Lambda}` parameter.
+
+)RAW"
+// ---------------------------------------------------------------------
+%feature("docstring") OT::BoxCoxTransform::getInverse
+"Accessor to the inverse Box Cox transformation.
+
+Returns
+-------
+myInverseBoxCox : :class:`~openturns.InverseBoxCoxTransform`
+    The inverse Box Cox transformation.
+
+"

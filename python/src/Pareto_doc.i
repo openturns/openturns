@@ -1,0 +1,113 @@
+%feature("docstring") OT::Pareto
+R"RAW(Pareto distribution.
+
+Its cumulative distribution function and its probability density function are defined as:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        F_X(x) & = & 1 - \left( \frac{x- \gamma}{\beta} \right) ^{-\alpha},  \quad \forall x \geq \gamma + \beta \\
+        p_X(x) & = & \dfrac{\alpha}{\beta} \left( \frac{x- \gamma}{\beta} \right) ^{-\alpha-1},  \quad \forall x \geq \gamma + \beta
+    \end{eqnarray*}
+
+with :math:`\alpha > 0` and :math:`\beta >0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \gamma + \frac{\alpha}{\alpha + 1}\beta
+                         \quad \text{ if } \alpha > 1 \\
+        \Var{X} & = & \dfrac{\alpha}{\alpha-2}\left(\dfrac{\beta}{\alpha - 1} \right)^2 \quad \text{ if } \alpha > 2 \\
+        Skew[X] & = & \dfrac{2(1+\alpha)}{\alpha-3}\sqrt{\dfrac{\alpha-2}{\alpha}} \quad \text{ if } \alpha > 3
+    \end{eqnarray*}
+
+Parameters
+----------
+beta : float
+    Scale parameter :math:`\beta > 0`.
+
+    Default value is 1.0.
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`.
+
+    Default value is 1.0.
+gamma : float
+    Location parameter :math:`\gamma`.
+
+    Default value is 0.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Pareto(1.0, 1.0, 0.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::getBeta
+R"RAW(Accessor to the distribution's scale parameter :math:`\beta`.
+
+Returns
+-------
+sigma : float
+    Scale parameter :math:`\beta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::getAlpha
+R"RAW(Accessor to the distribution's shape parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Shape parameter :math:`\alpha`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::setBeta
+R"RAW(Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\alpha \in \Rset`
+    Scale parameter :math:`\beta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::setAlpha
+R"RAW(Accessor to the distribution's shape parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::setGamma
+R"RAW(Accessor to the distribution's location parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float, :math:`u \in \Rset`
+    Gamma parameter :math:`\gamma`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::getGamma
+R"RAW(Accessor to the distribution's location parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Gamma parameter :math:`\gamma`.)RAW"

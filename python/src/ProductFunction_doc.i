@@ -1,0 +1,18 @@
+%feature("docstring") OT::ProductFunction
+R"RAW(Product function.
+
+The function is the product function :math:`f\times g`.
+
+Parameters
+----------
+f,g : two :class:`~openturns.FunctionImplementation`
+    The functions to multiply.
+
+Examples
+--------
+>>> import openturns as ot
+>>> g = ot.SymbolicFunction(['x1', 'x2'], ['x1'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'], ['x2'])
+>>> product = f * g
+>>> print(product([3, 4]))
+[12])RAW"

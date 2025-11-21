@@ -1,0 +1,37 @@
+%feature("docstring") OT::AggregatedFunction
+R"RAW(Aggregated function.
+
+The built function stacks all the outputs from each function in the list.
+
+:math:`functionCollection  = (f_1, \hdots, f_N)`
+where :math:`\forall 1 \leq i \leq N, \,     f_i: \Rset^n \rightarrow \Rset^{p_i}`
+
+.. math::
+
+    agregFct \left|\begin{array}{rcl}
+                  \Rset^n & \rightarrow & \Rset^{p} \\
+                  \vect{X} & \mapsto & \displaystyle (f_1(\vect{X}), \hdots, f_N(\vect{X}))^t
+              \end{array}\right.
+
+with
+
+.. math::
+
+    p = \sum_{i=1}^N p_i
+
+Parameters
+----------
+functionCollection : sequence of :class:`~openturns.Function`
+    Functions to aggregate.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1^2 + x2', 'x1 + x2 + x3'])
+>>> f2 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1 + 2 * x2 + x3', 'x1 + x2 - x3'])
+>>> functions = [f1, f2]
+>>> agregFct = ot.AggregatedFunction(functions)
+>>> print(agregFct([1.0, 2.0, 3.0]))
+[3,6,8,0])RAW"

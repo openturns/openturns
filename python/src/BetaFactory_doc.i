@@ -1,0 +1,144 @@
+%feature("docstring") OT::BetaFactory
+R"RAW(Beta factory.
+
+Notes
+-----
+Let :math:`n` be the sample sample size. 
+Let :math:`x_{(1)}` be the sample minimum and :math:`x_{(n)}` be the sample maximum.
+Let :math:`\delta` be the sample range:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \delta = x_{(n)} - x_{(1)}.
+    \end{eqnarray*}
+
+Then the distribution bounds are computed from the equations:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \hat{a} &=& x_{(1)} - \frac{\delta}{n + 2}, \\
+      \hat{b} &=& x_{(n)} + \frac{\delta}{n + 2}.
+    \end{eqnarray*}
+
+Let :math:`\bar{x}` be the sample mean and :math:`\hat{\sigma}^2` be the sample
+unbiased variance.
+The remaining parameters are estimated using the method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \hat{\alpha} & = & \left(\frac{\bar{x} - \hat{a}}{\hat{b} - \hat{a}}\right) \left( \frac{\left(\hat{b} - \bar{x}\right)\left(\bar{x} - \hat{a}\right)}{\hat{\sigma}^2}-1\right) \\
+      \hat{\beta}  & = & \left(\frac{\hat{b} - \bar{x}}{\bar{x} - \hat{a}}\right) \hat{\alpha}
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, Beta
+
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.Beta` 
+are estimated from a sample. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 10000
+>>> distribution = ot.Beta(0.2, 0.4, -1.0, 2.0)
+>>> sample = distribution.getSample(size)
+>>> factory = ot.BetaFactory()
+>>> estimated_dist = factory.build(sample)
+>>> estimated_beta = factory.buildAsBeta(sample)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BetaFactory::buildAsBeta
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsBeta()
+
+    buildAsBeta(*sample*)
+
+    buildAsBeta(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Beta`.
+
+Returns
+-------
+dist : :class:`~openturns.Beta`
+    The estimated distribution as a Beta.
+    
+    In the first usage, the default Bernoulli distribution is built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BetaFactory::buildEstimator
+"Build the Beta distribution and the parameters distribution.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+parameters : :class:`~openturns.DistributionParameters`
+    Optional, the parametrization.
+
+Returns
+-------
+resDist : :class:`~openturns.DistributionFactoryResult`
+    The results.
+
+Examples
+--------
+Create a sample and fit a Beta distribution and the native parameters distribution:
+
+>>> import openturns as ot
+>>> sample = ot.Beta().getSample(10)
+>>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 10)
+>>> fittedRes = ot.BetaFactory().buildEstimator(sample)
+
+Fit a Beta distribution in another parametrization:
+
+>>> fittedRes2 = ot.BetaFactory().buildEstimator(sample, ot.BetaMuSigma())
+
+Get the fitted Beta distribution and its parameters:
+
+>>> fittedBeta =  fittedRes.getDistribution()
+>>> print fittedBeta
+Beta(k = 1.0452, lambda = 0.996212, Beta = 0.00031485)
+>>> fittedParameters = fittedBeta.getParameter()
+
+Get the asymptotic parameters distribution: 
+
+>>> paramDist = fittedRes.getParameterDistribution()
+
+Determine the confidence interval al level 0.9 with minimum volume:
+
+>>> ot.ResourceMap.SetAsUnsignedInteger('Distribution-MinimumVolumeLevelSetSamplingSize', 100)
+>>> confInt, level = paramDist.computeMinimumVolumeIntervalWithMarginalProbability(0.9)
+
+Determine the bilateral confidence interval al level 0.9:
+
+>>> confInt, level = paramDist.computeBilateralConfidenceIntervalWithMarginalProbability(0.9)
+
+Determine the right unilateral confidence interval al level 0.9:
+
+>>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9)
+
+Determine the left unilateral confidence interval al level 0.9:
+
+>>> confInt, level = paramDist.computeUnilateralConfidenceIntervalWithMarginalProbability(0.9, True)
+>>> ot.ResourceMap.Reset()
+"

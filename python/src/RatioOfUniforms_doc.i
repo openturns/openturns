@@ -1,0 +1,489 @@
+%feature("docstring") OT::RatioOfUniforms
+R"RAW(Ratio of Uniforms simulation algorithm.
+
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Available constructors:
+    RatioOfUniforms(*dist*)
+
+    RatioOfUniforms(*logUnscaledF, rangeF, isScaled*)
+    
+Parameters
+----------
+dist : :class:`~openturns.Distribution`
+    Distribution to sample.
+    
+    With that constructor, the range is the distribution range and *isScaled* = True.
+
+logUnscaledPDF : :class:`~openturns.Function`
+   Function :math:`\log F` such that :math:`f = F\, 1_{I}`  is proportional to the PDF :math:`p` we want to sample.
+
+rangeF : :class:`~openturns.Interval`
+    Interval :math:`I \subset \Rset^\inputDim` outside which :math:`p=0`.
+
+isScaled : bool, optional
+    Flag telling if the input *logUnscaledPDF* is such that :math:`f = F\, 1_{I}` is an actual PDF of a distribution.
+    
+    Default value is False.
+
+Notes
+-----
+This algorithm samples a multivariate distribution whose probability density probability is known up to a multiplicative factor, see [stadlober1990]_ for the unidimensional case and [gobet2016]_ for the multivariate case.
+
+Let :math:`p` be a probability density function of dimension :math:`\inputDim` and
+:math:`f: \Rset^\inputDim \rightarrow \Rset^+` a function such that:
+
+.. math::
+
+    p(\vect{x}) = cf(\vect{x})\quad  \forall \vect{x} \in \Rset^\inputDim
+    
+with :math:`c \in \Rset^+_*`. We can write :math:`f` as:
+
+.. math::
+
+    f(\vect{x}) = F(\vect{x})\, 1_{I}\quad \forall \vect{x}  \in I
+
+with :math:`I \subset \Rset^\inputDim`. It implies that the numerical range of :math:`p` is inluced in :math:`I`. We note:
+
+.. math::
+
+   I = \prod_{i=1}^\inputDim \left[a_i, b_i \right]
+
+If the function :math:`f` is an actual PDF and :math:`I` its numerical range, then :math:`c=1`.
+In the general case, :math:`c` is unknown and assumed to be difficult to compute.
+
+Let :math:`r \in \Rset^+_*`. By default, :math:`r=1`. Let :math:`A_{f,r}` be the domain defined by:
+
+.. math::
+
+    A_{f,r} & = \left\{ (u, v_1, \dots, v_\inputDim) \in \Rset^{\inputDim+1}\, |\, 0 \leq u \leq f\left(\dfrac{v_1}{u^r},
+    \dots, \dfrac{v_\inputDim}{u^r}\right)^{\frac{1}{1+r\inputDim}}\right \}
+
+The Lebesgue measure of :math:`A_{f,r}`  is equal to :math:`\dfrac{1}{c(1+rd)}`.
+
+Let :math:`(U, V_1, \dots, V_\inputDim)` be a random variable uniformly distributed on  :math:`A_{f,r}`.
+Then, :math:`\left( \dfrac{V_1}{U^r}, \dots, \dfrac{V_\inputDim}{U^r}\right)` is a random vector
+distributed according to :math:`p`.
+
+Under the condition that the functions :math:`\vect{x} \rightarrow f(\vect{x})^{\frac{1}{1+r\inputDim}}` and
+:math:`\vect{x} \rightarrow x_if(\vect{x})^{\frac{1}{1+r\inputDim}}` for all :math:`i` are bounded, then the domain
+:math:`A_{f,r}` is bounded and can be included in a rectangular bounding box :math:`\tilde{A}_{f,r}`
+defined by:
+
+.. math::
+    :label: tildeArf_def
+
+    \tilde{A}_{f,r} & = \left[0, \sup_{\vect{x}} f(\vect{x})^{\frac{1}{1+r\inputDim}} \right] \times \prod_i
+    \left[ \inf_{\vect{x}} x_i f(\vect{x})^{\frac{r}{1+r\inputDim}} ,  \sup_{\vect{x}} x_i f(\vect{x})^{\frac{r}
+    {1+r\inputDim}}\right]\\
+                    & = [0, u_{sup}] \times \prod_{i=1}^d [v_{inf, i}, v_{sup, i}]
+
+
+This allows one to sample uniformly the set :math:`A_{f,r}` by rejection sampling inside
+:math:`\tilde{A}_{f,r}`.
+
+**How to calculate the rectangular bounding box** :math:`\tilde{A}_{f,r}` **?**
+
+The upper bound :math:`u_{sup}` is calculated by maximizing the log of the function rather than the function:
+
+.. math::
+
+    \sup_{\vect{x}} \log f(\vect{x})
+
+To compute the second part of :math:`\tilde{A}_{f,r}`, we note that:
+
+- If the upper bound :math:`b_i \leq 0`, then:
+
+  .. math::
+
+      v_{sup, i} = \sup_{\vect{x}} x_i f(\vect{x})^{\frac{r}{1+rd}} =\sup_{\vect{x}, x_i \leq 0} x_i
+      f(\vect{x})^{\frac{r}{1+r\inputDim}} = 0
+
+  Otherwise, we solve the maximization problem for :math:`x_i \in \Rset^+`:
+
+  .. math::
+
+      v_{inf, i} = \sup_{\vect{x}} x_i f(\vect{x})^{\frac{r}{1+r\inputDim}} =\sup_{\vect{x}, x_i \geq 0} x_i
+      f(\vect{x})^{\frac{r}{1+r\inputDim}}
+
+  which is equivalent to the problem:
+
+  .. math::
+
+      \sup_{\vect{x}, x_i \geq 0} \log x_i  + \dfrac{r}{1+r\inputDim} \log f(\vect{x})
+
+- If the lower bound :math:`a_i \geq 0`, then:
+
+  .. math::
+
+      \inf_{\vect{x}} x_i f(\vect{x})^{\frac{r}{1+rd}} = \inf_{\vect{x}, x_i \geq 0} x_i
+      f(\vect{x})^{\frac{r}{1+r\inputDim}} = 0
+
+  Otherwise, we solve the minimization problem for :math:`x_i \in \Rset^-` and note that:
+
+  .. math::
+
+    \inf_{\vect{x} } x_i f(\vect{x})^{\frac{r}{1+r\inputDim}} = \inf_{\vect{x},  x_i \leq 0 } x_i
+    f(\vect{x})^{\frac{r}{1+r\inputDim}} = - \sup_{\vect{x},  x_i \leq 0 } |x_i| f(\vect{x})^{\frac{r
+    }{1+r\inputDim}}
+
+  which is equivalent to the problem:
+
+  .. math::
+
+     \sup_{\vect{x}, x_i \leq 0} \log |x_i|  + \dfrac{r}{1+r\inputDim} \log f(\vect{x})
+
+For the effective solution of these optimization problems, the initial point :math:`\vect{x}_0` must be
+such that :math:`f(\vect{x}_0)>0`. Such points are found by scrolling through a Sobol multivariate
+low discrepancy sequence: the maximum number of points of the sequence
+to generate is fixed by the entry *RatioOfUniforms-CandidateNumber* of :class:`~openturns.ResourceMap`. The maximum number of
+points selected as starting points is controlled by the entry *RatioOfUniforms-MaximumMultiStart*.
+All the optimization problems are solved using a :class:`~openturns.MultiStart`
+algorithm based on these selected starting points. When no point has been selected, an exception is sent.
+
+The acceptance ratio of the rejection algorithm is defined by:
+
+.. math::
+   :label: acceptRatio
+   
+   \tau_{accept} =  \frac{|A_{f,r}|}{|\tilde{A}_{f,r}|} = \dfrac{1}{c(1+r\inputDim)} \dfrac{1}{u_{sup}
+   \prod_{i=1}^d \left(v_{sup, i} - v_{inf, i} \right)}
+
+It is computed by the *initialize* method: if :math:`c=1`, the rate is computed by :eq:`acceptRatio`.
+If not, it is estimated as :eq:`acceptRatioEstimate`.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *RatioOfUniforms-OptimizationAlgorithm*: the optimization algorithm used to compute the bounding box of
+  :math:`\tilde{A}_{f,r}`,
+- *RatioOfUniforms-CandidateNumber*: maximum number of points of the Sobol low discrepancy sequence of dimension
+  :math:`\inputDim` used to find admissible starting points,
+- *RatioOfUniforms-MaximumMultiStart*: maximum number of points selected as starting points
+  for the multistart optimization algorithm,
+- *RatioOfUniforms-NormalizationSampleSize*: size of the sample used to estimate the acceptance ratio.
+
+
+Examples
+--------
+Create a ratio of uniforms algorithm and get the multistart optimization problems used to
+compute the bounds of :math:`\tilde{A}_{f,r}`:
+
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> from math import pi
+>>> f = ot.SymbolicFunction('x', '(1.5+sin(x))*exp(x)')
+>>> log_UnscaledPDF = ot.ComposedFunction(ot.SymbolicFunction('x', 'log(x)'), f)
+>>> range_PDF = ot.Interval(0.0, 2.0 * pi)
+>>> ratioOfU = otexp.RatioOfUniforms(log_UnscaledPDF, range_PDF, False)
+>>> collMultiStart = ratioOfU.initialize()
+>>> x = ratioOfU.getRealization()
+>>> sample = ratioOfU.getSample(10)
+>>> ratioOfU = otexp.RatioOfUniforms(ot.Student(8.5, 3))
+)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::setLogUnscaledPDFAndRange
+R"RAW(Accessor to the function :math:`\log F` and the range :math:`I`.
+
+Parameters
+----------
+logUnscaledPDF : :class:`~openturns.Function`
+  Function :math:`\log F` where :math:`F\, 1_{I} \propto p`, the PDF we want to sample.
+
+rangeF : :class:`~openturns.Interval`
+    Interval :math:`I \in \Rset^\inputDim` outside which :math:`p=0`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::setOptimizationAlgorithm
+R"RAW(Accessor to the optimization algorithm.
+
+Parameters
+----------
+algo : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm that computes the bounds of :math:`\tilde{A}_{f,r}`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::setCandidateNumber
+R"RAW(Accessor to the maximum number of points tested to find admissible starting points.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    Maximum number of points tested to find admissible points for the optimization algorithm.
+
+Notes
+-----
+As long as the number of selected starting points is less than the number
+defined in :class:`~openturns.ResourceMap`,
+entry *RatioOfUniforms-MaximumMultiStart*, a new point of the Sobol low
+discrepancy sequence of dimension :math:`\inputDim` is considered. The maximum
+points of the Sobol sequence is :math:`n`. If no starting point has been
+selected, a warning is sent.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getCandidateNumber
+R"RAW(Accessor to the maximum number of points tested to find admissible starting points.
+
+Returns
+-------
+n : int, :math:`n>0`
+    Maximum number of points tested to find admissible points for the optimization algorithm.
+
+Notes
+-----
+As long as the number of selected starting points is less than the number
+defined in :class:`~openturns.ResourceMap`,
+entry *RatioOfUniforms-MaximumMultiStart*, a new point of the Sobol low
+discrepancy sequence of dimension :math:`\inputDim` is considered. The maximum
+points of the Sobol sequence is :math:`n`. If no starting point has been
+selected, a warning is sent.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::setMaximumMultiStart
+R"RAW(Accessor to the maximum number of starting points for the multistart algorithm.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    Maximum number of starting points for the multistart algorithm.
+
+Notes
+-----
+A tested point :math:`\vect{x} \in I` is kept as a starting point of the multistart algorithm if :math:`f(\vect{x})>0`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getMaximumMultiStart
+R"RAW(Accessor to the maximum number of starting points for the multistart algorithm.
+
+Returns
+-------
+n : int
+    Maximum number of starting points for the multistart algorithm.
+
+Notes
+-----
+A tested point :math:`\vect{x} \in I` is a starting point of the multistart algorithm if :math:`f(\vect{x})>0`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getLogUnscaledPDF
+R"RAW(Accessor to the function :math:`\log F`.
+
+Returns
+-------
+logUnscaledPDF : :class:`~openturns.Function`,
+   Function :math:`\log F` such that :math:`f = F\, 1_{I}`  is proportional to the PDF :math:`p` we want to sample.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getRange
+R"RAW(Accessor to the interval :math:`I` where the function :math:`f\propto p`.
+
+Returns
+-------
+rangeF : :class:`~openturns.Interval`
+    Interval :math:`I \subset \Rset^\inputDim` where the function :math:`f\propto p`.
+
+Notes
+-----
+As :math:`p \propto f = F\, 1_I`, then :math:`p = 0` outside :math:`I`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getAcceptanceRatio
+R"RAW(Accessor to the acceptance ratio.
+
+Returns
+-------
+accepRatio : float, :math:`0 \leq \tau_{accept} \leq 1`,
+    Acceptance ratio :math:`\tau_{accept}`.
+
+Notes
+-----
+The acceptance ratio is computed at the initialization of the class by the ethod *initialize*, according to :eq:`acceptRatio` where :math:`c=1` 
+if the class has been created with a log-PDF and estimated by :eq:`acceptRatioEstimate` in the other case.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::setR
+"Accessor to the :math:`r` parameter.
+
+Parameters
+----------
+r : float
+    The :math:`r` parameter.
+
+Notes
+-----
+This method triggers the initialization of the class."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getR
+"Accessor to the :math:`r` parameter.
+
+Returns
+-------
+r : float
+    The :math:`r` parameter."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::initialize
+R"RAW(Trigger to the initializationof the class.
+
+
+Returns
+-------
+collMutliStart : collection of :class:`~openturns.MultiStart`
+    Collection of the multistart optimization algorithms used to compute the bounds of :math:`\tilde{A}_{f,r}`.
+
+Notes
+-----
+A call to that method triggers the computation of the bounding box :math:`\tilde{A}_{f,r}`
+and the estimation of the acceptance ratio.
+
+The methods returns a collection of multistart optimization algorithms containing:
+
+- the multistart optimization algorithm used to compute :math:`u_{sup}`,
+- for each :math:`i`, the multistart optimization algorithm used to compute :math:`v_{inf, i}` if required, the one used to
+  compute :math:`v_{sup, i}` if required.
+
+Then, the size of the collection of :class:`~openturns.MultiStart` is less than :math:`2\inputDim + 1` and at least 1.
+These multistart optimization algorithms give access to the starting points used to compute the optimization problem and all the results associated.
+
+Within the initialization of the class, the acceptance ratio is computed: 
+
+- If the class has been created with a scaled function, the acceptance ratio is defined by :eq:`acceptRatio` where
+  :math:`c=1`. If the acceptance ratio is greater than 1, then it means that the optimization problem has not worked
+  well and a warning is sent.
+- If the class has been created with an unscaled function, the acceptance ratio is estimated with the method
+  *getSampleWithTryNumber*: if :math:`n_{try}` is the number of realizations uniformly generated inside
+  :math:`\tilde{A}_{f,r}` to get :math:`n_{accept}` accepted realizations, then we have:
+
+  .. math::
+     :label: acceptRatioEstimate
+
+     \hat{\tau}_{accept} = \dfrac{n_{accept}}{n_{try}}
+
+  In that case, :math:`\hat{\tau}_{accept}` is always less than 1.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::isInitialized
+R"RAW(Flag telling if the algorithm has been initialized.
+
+Returns
+-------
+answer: bool
+    Flag telling if the bounding box :math:`\tilde{A}_{f,r}` and the acceptance ratio
+    has already been computed.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getRealization
+"Generate a realization.
+
+Returns
+-------
+point: :class:`~openturns.Point`
+    A pseudo-random realization of the distribution."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getOptimizationAlgorithm
+R"RAW(Accessor to the optimization algorithm.
+
+Returns
+-------
+algo : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm that computes the bounds of :math:`\tilde{A}_{f,r}`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getSample
+"Generate a sample.
+
+Returns
+-------
+sample: :class:`~openturns.Sample`
+    A pseudo-random sample of the distribution."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getSupU
+R"RAW(Accessor to the :math:`U`-upper bound of :math:`\tilde{A}_{f,r}`.
+
+Returns
+-------
+supU : float, positive
+    The :math:`U`-upper bound of :math:`\tilde{A}_{f,r}` defined in :eq:`tildeArf_def`.
+
+Notes
+-----
+The :math:`U`-upper bound of :math:`\tilde{A}_{f,r}` is  :math:`\sup_{\vect{x}} f(\vect{x})^{\frac{1}{1+r\inputDim}}`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getInfV
+R"RAW(Accessor to the :math:`V`-lower bound of :math:`\tilde{A}_{f,r}`.
+
+Returns
+-------
+infV : :class:`~openturns.Point`
+    The :math:`V`-lower bound of :math:`\tilde{A}_{f,r}` defined in :eq:`tildeArf_def`.
+
+Notes
+-----
+The :math:`V`-lower bound of :math:`\tilde{A}_{f,r}` is
+:math:`\left( \inf_{\vect{x}} x_i f(\vect{x})^{\frac{r}{1+r\inputDim}} \right)_{1 \leq i \leq \inputDim}`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getSupV
+R"RAW(Accessor to the :math:`V`-upper bound of :math:`\tilde{A}_{f,r}`.
+
+Returns
+-------
+infV : :class:`~openturns.Point`
+    The :math:`V`-upper bound of :math:`\tilde{A}_{f,r}` defined in :eq:`tildeArf_def`.
+
+Notes
+-----
+The :math:`V`-upper bound of :math:`\tilde{A}_{f,r}` is
+:math:`\left( \sup_{\vect{x}} x_i f(\vect{x})^{\frac{r}{1+r\inputDim}} \right)_{1 \leq i \leq \inputDim}`.)RAW"
+
+// --------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getSampleWithTryNumber
+R"RAW(Sample with number of realizations needed to get it.
+
+Parameters
+----------
+size : int,
+    The number of accepted realizations of the rejection algorithm.
+
+Returns
+-------
+sample: :class:`~openturns.Sample`,
+    A pseudo-random realization of the distribution of size *size*.
+
+tryNumber : int,
+    The number realizations needed to produce *size* accepted realizations.
+
+Notes
+-----
+The rejection algorithm produces *tryNumber* realizations of the uniform distribution on :math:`\tilde{A}_{f,r}` to produce *size* realizations inside :math:`A_{f,r}`.)RAW"
+
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::RatioOfUniforms::getC
+R"RAW(Accessor to the :math:`c` normalization factor.
+
+Returns
+-------
+c : float, :math:`c >0`,
+    The :math:`c` normalization factor.
+
+Notes
+-----
+If the class has been created with a scaled function, then :math:`c=1`.
+
+If the class has been created with an unscaled function, the acceptance ratio is estimated at the initialization
+of the class by the method *initialize*. From :math:`\hat{\tau}_{accept}` defined in :eq:`acceptRatioEstimate`,
+we get an estimate of the  normalization factor defined by:
+
+.. math::
+
+  \hat{c} = \dfrac{1}{\hat{\tau}_{accept}(1+r\inputDim)} \dfrac{1}{u_{sup}\prod_{i=1}^d \left(v_{sup, i} - v_{inf, i} \right)}
+
+)RAW"

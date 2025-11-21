@@ -1,0 +1,54 @@
+%feature("docstring") OT::BinomialFactory
+R"RAW(Binomial factory.
+
+Notes
+-----
+The estimation is done by maximizing the likelihood of the sample.
+
+| We initialize the value of :math:`(n,p_n)` to
+  :math:`\displaystyle\left(\left\lceil\frac{\Hat{x}_n^2}{\Hat{x}_n-\Hat{\sigma}_n^2}\right\rceil, \frac{\Hat{x}_n}{n}\right)`
+  where :math:`\Hat{x}_n` is the empirical mean of the sample
+  :math:`(x_1, \hdots, x_n)`, and :math:`\Hat{\sigma}_n^2` its unbiased
+  empirical variance.
+| Then, we evaluate the likelihood of the sample with respect to the
+  Binomial distribution parameterized with
+  :math:`\displaystyle\left(\left\lceil\frac{\Hat{x}_n^2}{\Hat{x}_n-\Hat{\sigma}_n^2}\right\rceil, \frac{\Hat{x}_n}{n}\right)`.
+  By testing successively :math:`n+1` and :math:`n-1` instead of
+  :math:`n`, we determine the variation of the likelihood of the sample
+  with respect to the Binomial distribution parameterized with
+  :math:`(n+1,p_{n+1})` and :math:`(n-1,p_{n-1})`. We then iterate in
+  the direction that makes the likelihood decrease, until the likelihood
+  stops decreasing. The last couple is the one selected.
+
+See also
+--------
+DistributionFactory, Binomial)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BinomialFactory::buildAsBinomial
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsBinomial()
+
+    buildAsBinomial(*sample*)
+
+    buildAsBinomial(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Binomial`.
+
+Returns
+-------
+distribution : :class:`~openturns.Binomial`
+    The estimated distribution as a Binomial.
+    
+    In the first usage, the default Binomial distribution is built."
+

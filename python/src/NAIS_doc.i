@@ -1,0 +1,198 @@
+%feature("docstring") OT::NAIS
+R"RAW(Nonparametric Adaptive Importance Sampling (NAIS) algorithm.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we are computing the probability of.
+
+quantileLevel : float  :math:`0<quantileLevel<1`
+    Intermediate quantile level.
+
+Notes
+-----
+The following explanations are given for a failure event defined as :math:`g(\mathbf{X})<T` with :math:`\mathbf{X}` 
+a random vector following a joint PDF :math:`f_\mathbf{X}`, :math:`T` a threshold and :math:`g` a limit state function,
+without loss of generality.
+
+The Importance Sampling (IS) probability estimate :math:`\widehat{P}^\text{IS}` is given by:
+
+.. math::
+
+    \widehat{P}^\text{IS}=\frac{1}{N} \sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i)<T} \frac{h_0(\mathbf{x}_i)}{h(\mathbf{x}_i)},
+
+with :math:`h_0 = f_\mathbf{X}` the PDF of :math:`\mathbf{X}`, :math:`h` the auxiliary PDF of Importance Sampling, 
+:math:`N` the number of independent samples generated with :math:`h` and :math:`{\mathbf{1}}_{g(\mathbf{x}_i)<T}` the 
+indicator function of the failure domain. 
+
+The optimal density minimizing the variance of the estimator :math:`h_{opt}` is defined as:
+
+.. math::
+
+    h_{opt}=\frac{{\mathbf{1}}_{g(x)<T}h_0}{P},
+
+with :math:`P` the failure probability which is inaccessible in practice since this probability is the quantity of interest
+and unknown. 
+
+The objective of Non parametric Adaptive Importance Sampling (NAIS) [morio2015]_ is to approximate 
+the IS optimal auxiliary density :math:`h_{opt}` from the preceding equation 
+with a kernel density function (e.g. Gaussian kernel). 
+Its iterative principle is described by the following steps.
+
+1. :math:`k=1` and set the quantile level :math:`\rho \in [0,1]`
+
+2. Generate the population :math:`\mathbf{x}_1^{(k)},...,\mathbf{x}_N^{(k)}` according to the PDF :math:`h_{k-1}`, apply the 
+   function :math:`g` in order to have :math:`y_1^{(k)}=g(\mathbf{x}_1^{(k)}),...,y_N^{(k)} = g(\mathbf{x}_N^{(k)})`
+
+3. Compute the empirical quantile of level :math:`\rho` :math:`q_k=\max(T,y^{(k)}_{\left \lfloor \rho N \right\rfloor})`
+
+4. Estimate :math:`I_k= \frac{1}{kN} \displaystyle \sum_{j=1}^{k}\sum_{i=1}^{N} {\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}` 
+
+5. Update the Gaussian kernel sampling PDF with:
+
+   .. math::
+
+       h_{k}(\mathbf{x})=\frac{1}{k N I_k \det\left(B_{k+1}\right)}\sum_{j=1}^{k}\sum_{i=1}^{N}  w_{j}(\mathbf{x}_i^{(j)})K_d\left(B_{k+1}^{-1}\left(\mathbf{x}-\mathbf{x}_i^{(j)}\right)\right)
+
+   where :math:`K_d` is the PDF of the standard :math:`d`-dimensional normal distribution,
+   :math:`B_{k+1}=\text{diag}(b^1_{k+1},...,b^d_{k+1})` 
+   and :math:`w_j={\mathbf{1}}_{g(\mathbf{x}_i^{(j)}) \leq q_k} \frac{h_0(\mathbf{x}_i^{(j)})}{h_{j-1}(\mathbf{x}_i^{(j)})}`. 
+   The coefficients of the matrix :math:`B_{k+1}` can be approximated (Silverman Rule) or postulated according to the AMISE 
+   (Asymptotic Mean Integrated Square Error) criterion for example.
+
+6. If :math:`q_k>T`, :math:`k\leftarrow k+1`, go to Step 2
+
+7. Estimate the probability :math:`\widehat{P}^{NAIS}(g(\mathbf{\mathbf{X}}<T))=\frac{1}{N}\displaystyle \sum_{i=1}^{N} \mathbf{1}_{g(\mathbf{x}_i^{(k)})<T} \frac{h_0(\mathbf{x}_i^{(k)})}{h_{k-1}(\mathbf{x}_i^{(k)})}`
+
+The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
+
+See also
+--------
+SubsetSampling
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # We create the function defining the limit state
+>>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> # We define a joint PDF of interest 
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> # We create a 'usual' RandomVector from the Distribution
+>>> vect = ot.RandomVector(myDistribution)
+>>> # We create a composite random vector
+>>> output = ot.CompositeRandomVector(myFunction, vect)
+>>> # We create an event from this RandomVector
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), -10.0)
+>>> # We create a NAIS algorithm
+>>> algo = ot.NAIS(myEvent, 0.1)
+>>> # Perform the simulation
+>>> algo.run()
+)RAW"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getInputSample
+"Input sample accessor.
+
+Parameters
+----------
+step : int
+    Iteration index
+select : int, optional
+    Selection flag:
+
+    - EVENT0 : points not realizing the event are selected
+    - EVENT1 : points realizing the event are selected
+    - BOTH : all points are selected (default)
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input sample."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getOutputSample
+"Output sample accessor.
+
+Parameters
+----------
+step : int
+    Iteration index
+select : int, optional
+    Selection flag:
+
+    - EVENT0 : points not realizing the event are selected
+    - EVENT1 : points realizing the event are selected
+    - BOTH : all points are selected (default)
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output sample."
+
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getThresholdPerStep
+"Threshold accessor.
+
+Returns
+-------
+threshold : :class:`~openturns.Point`
+    Threshold values at each step."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getStepsNumber
+"Subset steps number accessor.
+
+Returns
+-------
+n : int
+    Number of subset steps, including the initial Monte Carlo sampling."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getQuantileLevel
+"Accessor to the intermediate quantile level.
+
+Returns
+-------
+quantileLevel : float
+    Intermediate quantile level."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::setQuantileLevel
+"Accessor to the intermediate quantile level.
+
+Parameters
+----------
+quantileLevel : float  :math:`0<quantileLevel<1`
+    Intermediate quantile level."
+    
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getWeights
+"Auxiliary distribution input sample associated weights accessor of the final NAIS step.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    Auxiliary distribution input sample associated weights."    
+    
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::setKeepSample
+"Sample storage accessor.
+
+Parameters
+----------
+keepsample : bool
+    Whether to keep the working samples at each iteration."
+    
+    
+    
+    

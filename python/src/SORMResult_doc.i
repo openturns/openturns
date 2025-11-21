@@ -1,0 +1,131 @@
+%feature("docstring") OT::SORMResult
+"Result of a SORM analysis.
+
+Notes
+-----
+Structure created by the method run() of the :class:`~openturns.SORM`
+class and obtained thanks to its method getResult().
+
+Parameters
+----------
+designPoint : sequence of float
+    Design point in the standard space resulting from the optimization
+    algorithm.
+limitStateVariable : :class:`~openturns.RandomVector`
+    Event of which the probability is calculated.
+isInFailureSpace : bool
+    Indicates whether the origin of the standard space is in the failure space.
+
+
+See also
+--------
+Analytical, AnalyticalResult, FORM, FORMResult, StrongMaximumTest"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getEventProbabilityBreitung
+"Accessor to the failure probability :math:`P_{Breitung}`.
+
+Returns
+-------
+probability : positive float
+    The SORM failure probability :math:`P_{Breitung}` according to the
+    :ref:`Breitung <Breitung_formula>` approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getEventProbabilityHohenbichler
+"Accessor to the failure probability :math:`P_{Hohenbichler}`.
+
+Returns
+-------
+probability : positive float
+    The SORM failure probability :math:`P_{Hohenbichler}` according to the
+    :ref:`Hohenbichler <Hohenbichler_formula>` approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getEventProbabilityTvedt
+"Accessor to the failure probability :math:`P_{Tvedt}`.
+
+Returns
+-------
+probability : positive float
+    The SORM failure probability :math:`P_{Tvedt}` according to the
+    :ref:`Tvedt <Tvedt_formula>` approximation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getGeneralisedReliabilityIndexBreitung
+R"RAW(Accessor to the Generalised Reliability Index Breitung.
+
+Returns
+-------
+index : float
+    Generalised reliability index evaluated from the Breitung SORM failure
+    probability.
+
+    .. math::
+
+        \beta_{Breitung} = \left \{
+        \begin{array}{ll}
+        \displaystyle -\Phi(P_{Breitung})
+        & \text{if the standard space origin is not in the failure space} \\
+        \displaystyle \Phi(P_{Breitung}) & \text{otherwise}
+        \end{array}
+        \right.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getGeneralisedReliabilityIndexHohenbichler
+R"RAW(Accessor to the Generalised Reliability Index Hohenbichler.
+
+Returns
+-------
+index : float
+    Generalised reliability index evaluated from the Hohenbichler SORM failure
+    probability.
+
+    .. math::
+
+        \beta_{Hohenbichler} = \left \{
+        \begin{array}{ll}
+        \displaystyle -\Phi(P_{Hohenbichler})
+        & \text{if the standard space origin is not in the failure space} \\
+        \displaystyle \Phi(P_{Hohenbichler}) & \text{otherwise}
+        \end{array}
+        \right.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getGeneralisedReliabilityIndexTvedt
+R"RAW(Accessor to the Generalised Reliability Index Tvedt.
+
+Returns
+-------
+index : float
+    Generalised reliability index evaluated from the Tvedt SORM failure
+    probability.
+
+    .. math::
+
+        \beta_{Tvedt} = \left \{
+        \begin{array}{ll}
+        \displaystyle -\Phi(P_{Tvedt})
+        & \text{if the standard space origin is not in the failure space} \\
+        \displaystyle \Phi(P_{Tvedt}) & \text{otherwise}
+        \end{array}
+        \right.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SORMResult::getSortedCurvatures
+R"RAW(Accessor to the sorted curvatures.
+
+Returns
+-------
+curvatures : :class:`~openturns.Point`
+    Curvatures of the standard limite state function at the standard design
+    point :math:`(\kappa_i)_{1 \leq i \leq n-1}` with :math:`n` the dimension
+    of the random vector :math:`\vect{X}`.)RAW"

@@ -1,0 +1,116 @@
+%feature("docstring") OT::NonStationaryCovarianceModelFactory
+R"RAW(Estimation of a non stationary covariance model.
+
+Refer to :ref:`estimate_non_stationary_covariance_model`.
+
+Notes
+-----
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate process of dimension *d* where :math:`\cD \in \Rset^n`. 
+We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of the mesh :math:`\cM \in \cD`.
+
+*X* is supposed to be a second order process and we note :math:`C : \cD \times \cD \rightarrow \mathcal{M}_{d \times d}(\mathbb{R})` its covariance function. *X* may be stationary or non stationary as well.
+
+We suppose that we have *K* fields and we note :math:`(\vect{x}_0^k, \dots, \vect{x}_{N-1}^k)` the values of the field *k* on the mesh :math:`\cM`.
+
+We recall that the covariance function *C* writes:
+
+.. math::
+
+    \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \quad C(\vect{s}, \vect{t}) = \Expect{\left(X_{\vect{s}}-m(\vect{s})\right)\Tr{\left(X_{\vect{t}}-m(\vect{t})\right)}}
+
+
+where the mean function :math:`m: \cD \rightarrow \Rset^d` is defined by:
+
+.. math::
+
+    \forall \vect{t}\in \cD , \quad m(\vect{t}) = \Expect{X_{\vect{t}}}
+
+
+First, we estimate the covariance function *C* on the vertices of the mesh :math:`\cM` using the empirical mean estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        & \forall \vect{t}_i \in \cM, \quad m(\vect{t}_i) \simeq \frac{1}{K} \sum_{k=1}^{K} \vect{x}_i^k \\
+        & \forall (\vect{t}_i, \vect{t}_j) \in \cD \times \cD, \quad C(\vect{t}_i, \vect{t}_j) \simeq \frac{1}{K} \sum_{k=1}^{K} \left( \vect{x}_i^k - m(\vect{t}_i) \right) \Tr{\left( \vect{x}_j^k - m(\vect{t}_j) \right)}
+    \end{eqnarray*}
+
+
+Then, we build a covariance function defined on :math:`\cD \times \cD` which is a piecewise constant function defined on :math:`\cD \times \cD` by:
+
+.. math::
+
+    \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \, C(\vect{s}, \vect{t}) = C(\vect{t}_k, \vect{t}_l)
+
+where *k* is such that :math:`\vect{t}_k` is the vertex of :math:`\cM` the nearest to :math:`\vect{s}` and :math:`\vect{t}_l` the nearest to :math:`\vect{t}`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonStationaryCovarianceModelFactory::build
+"Estimate the covariance model.
+
+Parameters
+----------
+sampleFields : :class:`~openturns.ProcessSample`
+    The fields used to estimate the covariance model which is not supposed to be stationary.
+
+Returns
+-------
+covEst : :class:`~openturns.CovarianceModel`
+    The estimated covariance model.
+
+Examples
+--------
+Create the covariance model, a mesh and a process:
+
+>>> import openturns as ot
+>>> myModel = ot.AbsoluteExponential([0.1]*2)
+>>> myMesh = ot.IntervalMesher([10]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+>>> myProcess = ot.GaussianProcess(myModel, myMesh)
+
+Generate 10 fields:
+
+>>> mySample = myProcess.getSample(10)
+
+Estimate the covariance model without supposing the stationarity:
+
+>>> myEstCov = ot.NonStationaryCovarianceModelFactory().build(mySample)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel
+"Estimate the covariance model as a User defined covariance model.
+
+Parameters
+----------
+sampleFields : :class:`~openturns.ProcessSample`
+    The fields used to estimate the covariance model.
+isCentered : bool, optional
+    Flag telling if the given sample is from a centered process or if it has to be centered by the empirical mean. Default value is *False*.
+
+Returns
+-------
+covEst : :class:`~openturns.UserDefinedCovarianceModel`
+    The estimated covariance model that can be used as  a :class:`~openturns.UserDefinedCovarianceModel`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix
+"Estimate the covariance model as a covariance matrix.
+
+Parameters
+----------
+sampleFields : :class:`~openturns.ProcessSample`
+    The fields used to estimate the covariance model.
+isCentered : bool, optional
+    Flag telling if the given sample is from a centered process or if it has to be centered by the empirical mean. Default value is *False*.
+
+Returns
+-------
+covEst : :class:`~openturns.CovarianceMatrix`
+    The unbiased estimation of the discretization of the covariance function over the mesh defining the given sample.
+"

@@ -1,0 +1,126 @@
+%feature("docstring") OT::SimplicialCubature
+"Integration over a mesh.
+
+Notes
+-----
+This is a reimplementation of the method described in [genz2003]_.
+The original matlab file can be found at https://www.math.wsu.edu/faculty/genz/software/software.html.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]]
+>>> simplicies = [[0, 1, 2]]
+>>> mesh = ot.Mesh(vertices, simplicies)
+>>> algo = ot.SimplicialCubature()
+>>> f = ot.SymbolicFunction(['x1', 'x2'], ['exp(x1 + x2)'])
+>>> value = algo.integrate(f, mesh)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::integrate
+R"RAW(Evaluation of the integral of :math:`f` on a mesh.
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
+    The integrand function.
+mesh : :class:`~openturns.Mesh`
+    The mesh on which to integrate.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]]
+>>> simplicies = [[0, 1, 2]]
+>>> mesh = ot.Mesh(vertices, simplicies)
+>>> algo = ot.SimplicialCubature()
+>>> f = ot.SymbolicFunction(['x1', 'x2'], ['exp(x1 + x2)'])
+>>> value = algo.integrate(f, mesh)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::setRule
+"Integration rule accessor.
+
+Parameters
+----------
+rule : int in [1, 4]
+    The integration rule."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::getRule
+"Integration rule accessor.
+
+Returns
+-------
+rule : int in [1, 4]
+    The integration rule."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::setMaximumCallsNumber
+"Maximum calls number accessor.
+
+Parameters
+----------
+maxEval : int
+    The maximum function calls number."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::getMaximumCallsNumber
+"Maximum calls number accessor.
+
+Returns
+-------
+maxEval : int
+    The maximum function calls number."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::setMaximumAbsoluteError
+"Maximum absolute error accessor.
+
+Parameters
+----------
+maxAbsError : float
+    The maximum absolute error."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::getMaximumAbsoluteError
+"Maximum absolute error accessor.
+
+Returns
+-------
+maxAbsError : float
+    The maximum absolute error."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::setMaximumRelativeError
+"Maximum relative error accessor.
+
+Parameters
+----------
+maxRelError : float
+    The maximum relative error."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimplicialCubature::getMaximumRelativeError
+"Maximum relative error accessor.
+
+Returns
+-------
+maxRelError : float
+    The maximum relative error."

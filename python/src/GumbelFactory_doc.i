@@ -1,0 +1,49 @@
+%feature("docstring") OT::GumbelFactory
+R"RAW(Gumbel factory.
+
+Notes
+-----
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\beta} = \frac{\sqrt{6}}{\pi}\Hat{\sigma}_x\\
+      \displaystyle\Hat{\gamma} = \bar{x}_n - \frac{\gamma_e \sqrt{6}}{\pi}\Hat{\sigma}_x\\
+    \end{eqnarray*}
+
+with :math:`\gamma_e \simeq 0.57721` as Euler's constant.
+
+See also
+--------
+DistributionFactory, Gumbel)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GumbelFactory::buildAsGumbel
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsGumbel()
+
+    buildAsGumbel(*sample*)
+
+    buildAsGumbel(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Gumbel`.
+
+Returns
+-------
+distribution : :class:`~openturns.Gumbel`
+    The estimated distribution as a Gumbel.
+    
+    In the first usage, the default Gumbel distribution is built."
+
+

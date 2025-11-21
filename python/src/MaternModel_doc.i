@@ -1,0 +1,94 @@
+%feature("docstring") OT::MaternModel
+R"RAW(Matern covariance function.
+
+Available constructors:
+    MaternModel(*spatialDim=1*)
+
+    MaternModel(*scale, nu*)
+
+    MaternModel(*scale, amplitude, nu*)
+
+Parameters
+----------
+spatialDim : int
+    Spatial dimension :math:`n`.
+    When not fulfilled, the input dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
+    By default, equal to 1.
+scale : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    The size of :math:`\vect{\theta}` is the input dimension.
+amplitude : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+nu : float, :math:`\nu \geq 0`
+    Coefficient :math:`\nu`.
+
+Notes
+-----
+The *Matern* function is a stationary covariance function with dimension :math:`d=1`.
+
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *Matern* function is defined by:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sigma^2 \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right)^{\nu} \mathrm{K}_{\nu} \left(\sqrt{2 \nu} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
+
+The correlation function :math:`\rho` writes:
+
+.. math::
+
+    \rho(\vect{s}, \vect{t}) = \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right)^{\nu} \mathrm{K}_{\nu} \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
+
+
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a standard Matern covariance function:
+
+>>> import openturns as ot
+>>> covModel = ot.MaternModel(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(covModel(s, t))
+[[ 0.974477 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covModel(tau))
+[[ 0.894994 ]]
+
+Create a  Matern covariance function specifying the scale vector and :math:`\nu`:
+
+>>> covModel2 = ot.MaternModel([1.5, 2.5], 2.3)
+>>> covModel2bis = ot.MaternModel([1.5]*3, 2.3)
+
+Create a  Matern covariance function specifying the scale vector, the amplitude and :math:`\nu`:
+
+>>> covModel3 = ot.MaternModel([1.5, 2.5], [3.5], 4.5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaternModel::setNu
+R"RAW(Nu accessor.
+
+Parameters
+----------
+nu : float, :math:`\nu \geq 0`
+    Coefficient :math:`\nu`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaternModel::getNu
+R"RAW(Nu accessor.
+
+Returns
+-------
+nu : float, :math:`\nu \geq 0`
+    Coefficient :math:`\nu`.)RAW"

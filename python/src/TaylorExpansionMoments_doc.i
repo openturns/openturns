@@ -1,0 +1,136 @@
+%feature("docstring") OT::TaylorExpansionMoments
+R"RAW(Moments approximations from Taylor expansions.
+
+
+Parameters
+----------
+limitStateVariable : :class:`~openturns.RandomVector`
+    It must be of type *Composite*, which means it must have
+    been defined with the class :class:`~openturns.CompositeRandomVector`.
+
+Notes
+-----
+Assuming that :math:`\uX` has finite first and second order moments and that :math:`h` is sufficiently smooth,
+a Taylor expansion of the function :math:`h` is used to approximate the mean and variance
+of the random vector :math:`\uY = h(\uX)`.
+
+Refer to Refer to :ref:`Taylor Expansion Moments <taylor_expansion_moments>` for details on the expressions of the approximations:
+
+- the first-order  expansion of :math:`h` yields an approximation of the mean and the variance of :math:`\uY`;
+- the second-order  expansion of :math:`h` yields an approximation of the mean :math:`\uY`.
+
+Refer to :ref:`Taylor Importance Factors <taylor_importance_factors>` for details on the importance factors of each input on the output.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myFunc = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'],
+...     ['(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)', 'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
+>>> R = ot.CorrelationMatrix(4)
+>>> for i in range(4):
+...     R[i, i - 1] = 0.25
+>>> distribution = ot.Normal([0.2]*4, [0.1, 0.2, 0.3, 0.4], R)
+>>> # We create a distribution-based RandomVector
+>>> X = ot.RandomVector(distribution)
+>>> # We create a composite RandomVector Y from X and myFunc
+>>> Y = ot.CompositeRandomVector(myFunc, X)
+>>> # We create a Taylor expansion method to approximate moments
+>>> myTaylorExpansionMoments = ot.TaylorExpansionMoments(Y)
+>>> print(myTaylorExpansionMoments.getMeanFirstOrder())
+[0.0384615,0.932544])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getCovariance
+"Get the approximation of the covariance matrix.
+
+Returns
+-------
+covariance : :class:`~openturns.CovarianceMatrix`
+    Approximation of the covariance matrix from 
+    the first-order Taylor expansion."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getGradientAtMean
+"Get the gradient of the function at the mean point.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    Gradient of :math:`h` at
+    the mean point of the input random vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getHessianAtMean
+"Get the hessian of the function.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricTensor`
+    Hessian of the Function which defines the random vector at
+    the mean point of the input random vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getImportanceFactors
+"Get the importance factors.
+
+Returns
+-------
+factors : :class:`~openturns.Point`
+    Importance factors of the inputs : only when randVect is of dimension 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getLimitStateVariable
+"Get the limit state variable.
+
+Returns
+-------
+limitStateVariable : :class:`~openturns.RandomVector`
+    The :math:`Y` output random vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getMeanFirstOrder
+R"RAW(Get the first-order approximation of the mean.
+
+Returns
+-------
+mean : :class:`~openturns.Point`
+    Approximation of :math:`\Expect{Y}` 
+    from the first-order Taylor expansion.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getMeanSecondOrder
+R"RAW(Get the second-order approximation of the mean.
+
+Returns
+-------
+mean : :class:`~openturns.Point`
+    Approximation of :math:`\Expect{Y}` 
+    from the second-order Taylor expansion.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::getValueAtMean
+R"RAW(Get the value of the function at the mean point.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Value :math:`h(\Expect{\uX})`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TaylorExpansionMoments::drawImportanceFactors
+"Draw the importance factors.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Pie graph of the importance factors."

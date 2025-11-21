@@ -1,0 +1,214 @@
+%feature("docstring") OT::HistogramFactory
+R"RAW(Histogram factory.
+
+Notes
+-----
+The range is :math:`[\min(data), \max(data)]`. 
+
+See the :meth:`~openturns.HistogramFactory.computeBandwidth` method for the bandwidth selection. 
+
+Examples
+--------
+Create an histogram:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> histogram = ot.HistogramFactory().build(sample)
+
+Create an histogram from a number of bins:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> binNumber = 10
+>>> histogram = ot.HistogramFactory().build(sample, binNumber)
+
+Create an histogram from a bandwidth:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> bandwidth = 0.5
+>>> histogram = ot.HistogramFactory().build(sample, bandwidth)
+
+Create an histogram from a first value and widths:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> first = -4
+>>> width = ot.Point(7, 1.)
+>>> histogram = ot.HistogramFactory().build(sample, first, width)
+
+Compute bandwidth with default robust estimator:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> factory = ot.HistogramFactory()
+>>> factory.computeBandwidth(sample)
+0.8207...
+
+Compute bandwidth with optimal estimator:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> factory = ot.HistogramFactory()
+>>> factory.computeBandwidth(sample, False)
+0.9175...
+
+See also
+--------
+DistributionFactory, Histogram)RAW"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::buildAsHistogram
+"Estimate the distribution as native distribution.
+
+If the sample is constant, the range of the histogram would be zero. 
+In this case, the range is set to be a factor of the `Distribution-DefaultCDFEpsilon` 
+key of the :class:`~openturns.ResourceMap`. 
+
+**Available usages**:
+
+    buildAsHistogram()
+
+    buildAsHistogram(*sample*)
+
+    buildAsHistogram(*sample*, *binNumber*)
+
+    buildAsHistogram(*sample*, *bandwidth*)
+
+    buildAsHistogram(*sample*, *first*, *width*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+binNumber : int
+    The number of classes. 
+bandwidth : float
+    The width of each class. 
+first : float
+    The lower bound of the first class. 
+width : 1-d sequence of float
+    The widths of the classes. 
+
+Returns
+-------
+distribution : :class:`~openturns.Histogram`
+    The estimated distribution as a Histogram.
+    
+    In the first usage, the default Histogram distribution is built."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::computeBandwidth
+R"RAW(Compute the bandwidth.
+
+Notes
+-----
+The bandwidth of the histogram is based on the asymptotic mean integrated squared 
+error (AMISE). 
+
+When `useQuantile` is `True` (the default), the bandwidth is based on the 
+quantiles of the sample.
+For any :math:`\alpha\in(0,1]`, let :math:`q_n(\alpha)` be the empirical quantile 
+at level :math:`\alpha` of the sample. 
+Let :math:`Q_1` and :math:`Q_3` be the first and last quartiles of the 
+sample: 
+
+.. math::
+
+    Q_3 = q_n(0.75), \qquad Q_1 = q_n(0.25),
+
+and let :math:`IQR` be the inter-quartiles range:
+
+.. math::
+
+    IQR = Q_3 - Q_1.
+
+In this case, the bandwidth is the robust estimator of the AMISE-optimal bandwidth,
+known as Freedman and Diaconis rule [freedman1981]_:
+
+.. math::
+
+    h = \frac{IQR}{2\Phi^{-1}(0.75)} \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
+
+where :math:`\Phi^{-1}` is the quantile function of the gaussian standard 
+distribution. 
+The expression :math:`\frac{IQR}{2\Phi^{-1}(0.75)}` is the normalized inter-quartile range 
+and is equal to the standard deviation of the gaussian distribution. 
+The normalized inter-quartile range is a robust estimator of the scale of the 
+distribution (see [wand1994]_, page 60). 
+
+When `useQuantile` is `False`, the bandwidth is the AMISE-optimal one, 
+known as Scott's rule (see [scott2015]_ eq. 3.16 page 59): 
+
+.. math::
+
+    h = \sigma_n \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
+
+where :math:`\sigma_n^2` is the unbiased variance of the data.
+This estimator is optimal for the gaussian distribution (see [scott1992]_). 
+In this case, the AMISE is :math:`O(n^{-2/3})`. 
+
+
+If the bandwidth is computed as zero (for example, if the sample is constant), 
+then the `Distribution-DefaultQuantileEpsilon` key 
+of the :class:`~openturns.ResourceMap` is used instead. 
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+bandwidth : float
+    The estimated bandwidth.
+useQuantile : bool, optional (default=`True`)
+    If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule. 
+    Otherwise, use the optimal bandwidth estimator based on Scott's rule.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::buildFromQuantiles
+R"RAW(Build from quantiles.
+
+We consider an histogram distribution with :math:`K` bins. 
+Given a set of probabilities :math:`p_1, ..., p_K \in [0, 1]` 
+and a set of quantiles :math:`q_1, ..., q_K \in \Rset`, 
+we compute the parameters of the distribution such that:
+
+.. math::
+
+    \Prob{X \leq q_i} = p_i
+
+for :math:`i = 1, ..., K`.
+ 
+Parameters
+----------
+lowerBound : float
+    Lower bound.
+probabilities : sequence of float
+    The probabilities.
+quantiles : sequence of float
+    Quantiles of the desired distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Histogram`
+    Estimated distribution.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ref_dist = ot.Normal()
+>>> lowerBound = -3.0
+>>> N = 10
+>>> probabilities = [(i+1) / N for i in range(N)]
+>>> quantiles = [ref_dist.computeQuantile(pi)[0] for pi in probabilities]
+>>> factory = ot.HistogramFactory()
+>>> dist = factory.buildFromQuantiles(lowerBound, probabilities, quantiles)
+)RAW"

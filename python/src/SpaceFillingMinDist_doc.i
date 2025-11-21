@@ -1,0 +1,62 @@
+%define OT_SpaceFillingMinDist_doc
+R"RAW(Space filling minimal distance criterion.
+
+See also
+--------
+SpaceFilling, SpaceFillingC2, SpaceFillingPhiP
+
+Notes
+-----
+Compute the criterion based on the minimal distance of sample points denoted by :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)` where :math:`\vect{x}_k \in \Rset^\inputDim`:
+
+.. math::
+    :nowrap:
+
+    \begin{equation*}
+      \phi_{min}((\vect{x}_1, \dots, \vect{x}_\sampleSize)) = \min_{i \neq j} \norm{ \vect{x}^{(i)} - \vect{x}^{(j)} }
+    \end{equation*}
+
+
+If at least one of the sample points does not belong to the cube :math:`[-1,1]^\inputDim`
+(i.e. not all components belong to the interval :math:`[-1,1]`),
+then the whole sample is rescaled.
+Let :math:`\vect{x}_{max}` (resp. :math:`\vect{x}_{min}`) denote the point
+containing the component-wise maximum (resp. minimum) values of the sample,
+the actual formula is in this case:
+
+.. math::
+    :nowrap:
+
+    \begin{equation*}
+      \phi_{min}(X) = \min_{i \neq j} \norm{ \frac{\vect{x}^{(i)} - \vect{x}^{(j)}}{\vect{x}_{max} - \vect{x}_{min}} }
+    \end{equation*}
+)RAW"
+%enddef
+%feature("docstring") OT::SpaceFillingMinDist
+OT_SpaceFillingMinDist_doc
+// ---------------------------------------------------------------------
+%define OT_SpaceFillingMinDist_evaluate_doc
+"Compute the MinDist criterion for a specific design.
+
+Parameters
+----------
+design : :class:`~openturns.Sample` or 2-d array like
+    The design
+
+Returns
+-------
+crit : float
+    The MinDist criterion
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Build an LHS using openturns class
+>>> lhs = ot.LHSExperiment(ot.Uniform(), 100)
+>>> design = lhs.generate()
+>>> # Compute the MinDist criterion
+>>> crit = ot.SpaceFillingMinDist().evaluate(design)"
+%enddef
+%feature("docstring") OT::SpaceFillingMinDist::evaluate
+OT_SpaceFillingMinDist_evaluate_doc
+// ---------------------------------------------------------------------

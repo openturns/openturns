@@ -1,0 +1,27 @@
+%feature("docstring") OT::LinearBasisFactory
+R"RAW(Linear basis factory.
+
+The linear basis is the collection of functions :math:`\psi_k: \mathbb{R}^d \mapsto \mathbb{R}` for :math:`0 \leq k \leq d` defined:
+
+.. math::
+
+    \psi_0(x_1, \dots, x_d) & = 1 \\
+    \psi_k(x_1, \dots, x_d) & = x_k \mbox{for } 1 \leq k \leq d
+
+Parameters
+----------
+dimension : int
+    Input dimension :math:`d` of the basis.
+
+See also
+--------
+BasisFactory, ConstantBasisFactory, QuadraticBasisFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> basis = ot.LinearBasisFactory(2).build()
+>>> psi_1 = basis.build(1)
+>>> print(psi_1)
+class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+ [ 0 ]])RAW"

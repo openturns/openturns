@@ -1,0 +1,32 @@
+%feature("docstring") OT::NearestPointProblem
+R"RAW(Nearest point problem.
+
+This defines a nearest point problem:
+
+.. math::
+
+    \min_{x} \frac{1}{2}\|x\|_2^2 \\
+    g(x) = v
+
+where :math:`\| \cdot\|_2` is the euclidian norm. 
+
+In other words, this is a minimum norm problem 
+with a general nonlinear constraint. 
+
+Parameters
+----------
+level : :class:`~openturns.Function`
+    The level function :math:`g`.
+value : float
+    The level value :math:`v`.
+
+Examples
+--------
+
+Define an optimization problem to find the point :math:`(x_1, x_2, x_3, x_4)` with minimum euclidian norm which satisfies :math:`x_1+2x_2-3x_3+4x_4=3`.
+
+>>> import openturns as ot
+>>> levelFunction = ot.SymbolicFunction(
+...     ['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.NearestPointProblem(levelFunction, 3.0)
+)RAW"

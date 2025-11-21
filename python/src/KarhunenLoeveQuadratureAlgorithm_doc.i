@@ -1,0 +1,163 @@
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm
+R"RAW(Computation of Karhunen-Loeve decomposition using Quadrature approximation.
+
+Available constructors:
+    KarhunenLoeveQuadratureAlgorithm(*domain, bounds, covariance, experiment, basis, basisSize, mustScale, s*)
+
+    KarhunenLoeveQuadratureAlgorithm(*domain, bounds, covariance, marginalDegree, s*)
+
+Parameters
+----------
+domain : :class:`~openturns.Domain`
+    The domain on which the covariance model and the Karhunen-Loeve eigenfunctions (modes) are discretized.
+bounds : :class:`~openturns.Interval`
+    Numerical bounds of the domain.
+covariance : :class:`~openturns.CovarianceModel`
+    The covariance function to decompose.
+experiment : :class:`~openturns.WeightedExperiment`
+    The points and weights used in the quadrature approximation.
+basis : sequence of :class:`~openturns.Function`
+    The basis in which the eigenfunctions are projected.
+marginalDegree : int
+    The maximum degree to take into account in the tensorized Legendre basis.
+mustScale : bool
+    Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
+s : float, :math:`\geq0`
+    The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
+
+Notes
+-----
+The Karhunen-Loeve quadrature algorithm solves the Fredholm problem  associated to the covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
+
+The Karhunen-Loeve quadrature approximation consists in replacing the integral by a quadrature approximation: if :math:`(\omega_\ell, \vect{\xi}_\ell)_{1 \leq \ell \leq L}` is the weighted experiment (see :class:`~openturns.WeightedExperiment`) associated to the measure :math:`\mu`, then for all functions measurable wrt :math:`\mu`, we have:
+
+.. math::
+
+    \int_{\Rset^n} f(\vect{x}) \mu(\vect{x})\, d\vect{x} \simeq \sum_{\ell=1}^{\ell=L} \omega_\ell f(\vect{\xi}_\ell)
+
+If we note :math:`\eta_{\ell}=\omega_{\ell}\dfrac{1_{\cD}(\vect{\xi}_{\ell})}{\mu(\vect{\xi}_{\ell})}`, we build a more general quadrature approximation :math:`(\eta_\ell, \xi_\ell)_{1 \leq l \leq L}` such that:
+
+.. math::
+
+    \int_{\cD} f(\vect{t})  \, d\vect{t} \simeq \sum_{\ell=1}^L \eta_\ell f(\vect{\xi}_\ell)
+
+where only the points :math:`\vect{\xi}_\ell \in \cD` are considered. 
+
+We introduce the matrices :math:`\mat{\Theta}=(\mat{\Theta}_{ij})_{1 \leq i \leq L, 1 \leq j \leq P} \in \cM_{Ld, Pd}(\Rset)` such that :math:`\mat{\Theta}_{ij} = \theta_{j}(\vect{\xi}_i)\mat{I}_d`, :math:`\mat{C}_{\ell, \ell'} =  \mat{C}(\vect{\xi}_{\ell},\vect{\xi}_{\ell'})` and :math:`\mat{W}= \mathrm{diag} (\mat{W}_{ii})_{1 \leq i \leq L} \in \cM_{Ld, Ld}(\Rset)` such that :math:`\mat{W}_{ii} = \eta_i \mat{I}_d`.
+
+The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^d)}=1` and the orthogonality of the :math:`\vect{\varphi}_k` in :math:`L^2(\cD, \Rset^d)` leads to:
+
+.. math::
+    :label: contNorm
+    
+      \Tr{\vect{\Phi}} \,\Tr{\mat{\Theta}} \,\mat{W}\, \mat{\Theta} \,\vect{\Phi}=\mat{I}
+
+
+The  **Galerkin** approach leads to the following generalized eigenvalue problem:
+
+.. math::
+    :label: EqFinQuadGalerkin
+
+     \Tr{\mat{\Theta}} \,\mat{W} \,\mat{C}  \,\mat{W} \,\mat{\Theta}\,\vect{\Phi}_k = \lambda_k  \Tr{\mat{\Theta}}\, \mat{W}\,\mat{\Theta}\,\vect{\Phi}_k
+
+where :math:`\Tr{\mat{\Theta}}\, \mat{W} \,\mat{C} \, \mat{W}\, \mat{\Theta}` and :math:`\Tr{\mat{\Theta}}\, \mat{W}\, \mat{\Theta}\in \cM_{Pd,Pd}(\Rset)`.
+
+The  **collocation** approach leads to the following generalized eigenvalue problem:
+
+.. math::
+    :label: EqFinQuadCollocation
+
+     \mat{C}\, \mat{W} \,\mat{\Theta}\, \vect{\Phi}_k = \lambda_k \mat{\Theta}\,\vect{\Phi}_k
+
+Equations :eq:`EqFinQuadGalerkin` and  :eq:`EqFinQuadCollocation` are equivalent  when :math:`\mat{\Theta}` is invertible.
+
+OpenTURNS solves the equation :eq:`EqFinQuadGalerkin`.
+
+The second constructor is a short-hand to the first one, where *basis* is the tensorized Legendre basis (see :class:`~openturns.OrthogonalProductPolynomialFactory` and :class:`~openturns.LegendreFactory`), *experiment* is a tensorized Gauss-Legendre quadrature (see :class:`~openturns.GaussProductExperiment`), *basisSize* is equal to *marginalDegree* to the power the dimension of *domain* and *mustScale* is set to *True*.
+
+
+Examples
+--------
+Discretize the domain :math:`\cD` and create a covariance model:
+
+>>> import openturns as ot
+>>> bounds = ot.Interval([-1.0]*2, [1.0]*2)
+>>> domain = ot.MeshDomain(ot.IntervalMesher([10]*2).build(bounds))
+>>> s = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+
+Give the basis used to decompose the eigenfunctions: 
+
+here, the 10 first Legendre polynomials family:
+
+>>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
+>>> functions = [basis.build(i) for i in range(10)]
+
+Create the weighted experiment of the quadrature approximation: here, a Monte Carlo experiment from the measure orthogonal wrt the Legendre polynomials family:
+
+>>> experiment = ot.MonteCarloExperiment(basis.getMeasure(), 1000)
+
+Create the Karhunen-Loeve Quadrature algorithm:
+
+>>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, bounds, model, experiment, functions, True, s)
+
+Run it!
+
+>>> algorithm.run()
+>>> result = algorithm.getResult()
+)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::run
+"Computation of the eigenvalues and eigenfunctions values at the quadrature points.
+
+Notes
+-----
+Runs the algorithm and creates the result structure :class:`~openturns.KarhunenLoeveResult`."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getDomain
+R"RAW(Accessor to the domain.
+
+Returns
+-------
+domain : :class:`~openturns.Domain`
+The domain  :math:`\cD_N` that discretizes the domin :math:`\cD`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasis
+"Accessor to the functional basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The basis in which the eigenfunctions are projected."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasisSize
+"Accessor to the number of elements in the functional basis.
+
+Returns
+-------
+basisSize : int
+    The number of elements of the functional basis considered.
+    The basis in which the eigenfunctions are projected."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getExperiment
+"Accessor to the points and weights of the quadrature approximation.
+
+Returns
+-------
+experiment : :class:`~openturns.WeightedExperiment`
+    The points and weights used in the quadrature approximation."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getMustScale
+"Accessor to scale option.
+
+Returns
+-------
+mustScale : bool
+    Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not."
+

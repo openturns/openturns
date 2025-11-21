@@ -1,0 +1,157 @@
+%feature("docstring") OT::MeixnerDistribution
+R"RAW(Meixner distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\left(2 \cos(\alpha / 2)\right)^{2 \delta}}
+                  {2 \beta \pi \Gamma(2 \delta)}
+             \exp\left(\frac{\alpha (x - \gamma)}{\beta}\right)
+             \left|\Gamma\left(\delta + i \frac{x - \gamma}{\beta}
+                               \right)\right|^2,
+             \quad x \in \Rset
+
+with :math:`\beta, \delta > 0`, :math:`\alpha \in [-\pi; \pi]`,
+:math:`\gamma \in \Rset` and where :math:`i^2 = -1`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \beta \delta \tan(\alpha / 2) + \gamma \\
+        \Var{X} & = & \frac{\beta^2 \delta}{1 + \cos(\alpha)}
+    \end{eqnarray*}
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter.
+    
+    Default value is 1.0.
+alpha : float, :math:`\alpha \in [-\pi; \pi]`
+    Skewness parameter.
+    
+    Default value is 0.0.
+delta : float, :math:`\delta > 0`
+    Shape parameter.
+    
+    Default value is 1.0.
+gamma : float
+    Position parameter :math:`\gamma`.
+    
+    Default value is 0.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.MeixnerDistribution(1.0, 0.0, 1.0, 0.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getBeta
+R"RAW(Accessor to the distribution's scale parameter :math:`\beta`.
+
+Returns
+-------
+beta : float
+    Scale parameter :math:`\beta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getAlpha
+R"RAW(Accessor to the distribution's skewness parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Skewness parameter :math:`\alpha`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getDelta
+R"RAW(Accessor to the distribution's shape parameter :math:`\delta`.
+
+Returns
+-------
+delta : float
+    Shape parameter :math:`\delta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getGamma
+R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Position parameter :math:`\gamma`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setBeta
+R"RAW(Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setAlpha
+R"RAW(Accessor to the distribution's skewness parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [-\pi; \pi]`
+    Skewness parameter :math:`\alpha`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setDelta
+R"RAW(Accessor to the distribution's shape parameter :math:`\delta`.
+
+Parameters
+----------
+delta : float, :math:`\delta > 0`
+    Shape parameter :math:`\delta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setGamma
+R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float, :math:`\gamma \in \Rset`
+    Position parameter :math:`\gamma`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setOptimizationAlgorithm
+"Accessor to the optimization solver.
+
+Parameters
+----------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for the optimization of the internal sampling bounds."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getOptimizationAlgorithm
+"Accessor to the optimization solver.
+
+Returns
+-------
+solver : :class:`~openturns.OptimizationAlgorithm`
+    The solver used for the optimization of the internal sampling bounds."

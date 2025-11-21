@@ -1,0 +1,257 @@
+%feature("docstring") OT::StrongMaximumTest
+R"RAW(Strong Maximum Test.
+
+Refer to :ref:`strong_maximum_test`.
+
+Available constructors:
+    StrongMaximumTest(*event, designPoint, importanceLevel, accuracyLevel, confidenceLevel*)
+
+    StrongMaximumTest(*event, designPoint, importanceLevel, accuracyLevel, pointNumber*)
+
+Parameters
+----------
+event : :class:`~openturns.StandardEvent`
+    Failure event :math:`\cD_f` defining in the standard space (U-space).
+designPoint : sequence of float
+    Design point in the standard space resulting from the optimization
+    algorithm.
+importanceLevel : float, :math:`0 < \varepsilon < 1`
+    Importance level.
+accuracyLevel : float, :math:`\tau > 0`
+    Accuracy level. It is recommended to take :math:`\tau \leq 4`.
+confidenceLevel : positive float, :math:`0 < (1-q) < 1`
+    Confidence level.
+pointNumber : int, :math:`N > 0`
+    Number of points used to perform the Strong Maximum Test, evaluated by the
+    limit state function.
+
+Notes
+-----
+The Strong Maximum Test helps to evaluate the quality of the design point
+:math:`P^*` resulting from the optimization algorithm launched for example by
+the :class:`~openturns.Analytical` class or its derived classes
+:class:`~openturns.FORM` and :class:`~openturns.SORM`.
+It checks whether the design point computed is :
+
+- the *true* design point, which means a global maximum point,
+
+- a *strong* design point, which means that there is no other local maximum
+  located on the event boundary and which likelihood is slightly inferior to
+  the design point one.
+
+The Strong Maximum Test will sample the sphere centered on the origin of the
+standard space and of radius :
+:math:`R = \beta_{HL} (1 + \tau \delta_{\varepsilon})` with :math:`\tau > 0`,
+:math:`\delta_{\varepsilon}=\sqrt{1 - 2 \frac{ln(\varepsilon)}{\beta_{HL}^2}} - 1`
+and :math:`\beta_{HL}` the Hasofer-Lind reliability index.
+
+The number :math:`N` of the simulations sampling the sphere of radius :math:`R`
+is determined to ensure that the test detects with a probability greater than
+:math:`(1-q)` any point of :math:`\cD_f` outside the design point vicinity
+which contribution to :math:`P_f` is not negligeable (i.e. which density value
+in the U-space is greater than :math:`\varepsilon` times the density value at
+the design point).
+
+See also
+--------
+Analytical, SORM, FORM, SORMResult, FORMResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> vect = ot.RandomVector(myDistribution)
+>>> output = ot.CompositeRandomVector(myFunction, vect)
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
+>>> # FORM analyse to get the design point
+>>> solver = ot.AbdoRackwitz()
+>>> solver.setStartingPoint([50.0, 1.0, 10.0, 5.0])
+>>> myAlgo = ot.FORM(solver, myEvent)
+>>> myAlgo.run()
+>>> FORMresult = myAlgo.getResult()
+>>> designPoint = FORMresult.getStandardSpaceDesignPoint()
+>>> # Strong Max Test
+>>> myStandardEvent = ot.StandardEvent(myEvent)
+>>> myTest = ot.StrongMaximumTest(myStandardEvent, designPoint, 0.15, 3, 0.99)
+>>> myTest.run()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getAccuracyLevel
+R"RAW(Accessor to the accuracy level.
+
+Returns
+-------
+accuracy : positive float
+    Accuracy level :math:`\tau`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getConfidenceLevel
+"Accessor to the confidence level.
+
+Returns
+-------
+level : positive float
+    Confidence level :math:`(1-q)`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getDeltaEpsilon
+R"RAW(Accessor to the parameter :math:`\delta_{\varepsilon}`.
+
+Returns
+-------
+delta_epsilon : float
+    :math:`\delta_{\varepsilon} = \sqrt{1 - 2 \frac{ln(\varepsilon)}{\beta^2}} - 1`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getDesignPointVicinity
+R"RAW(Accessor to the design point vinicity.
+
+Returns
+-------
+vicinity : float, :math:`v > 0`
+    Design point vinicity :math:`v = \frac{1} {1 + \tau \delta_{\varepsilon}}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getEvent
+R"RAW(Accessor to the event in the standard space.
+
+Returns
+-------
+event : :class:`~openturns.StandardEvent`
+    Failure event :math:`\cD_f` in the standard space on which is based the
+    Strong Maximum Test.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getFarDesignPointVerifyingEventPoints
+"Accessor to the points verifying the event and far of the design point.
+
+Returns
+-------
+points : :class:`~openturns.Sample`
+    The points of the discretized sphere which are out of the vicinity of
+    the standard design point and which verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getFarDesignPointVerifyingEventValues
+"Accessor to values of the limit state function.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    The values of the limit state function on the points of the
+    discretized sphere which are out of the vicinity of the standard design
+    point and which verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getFarDesignPointViolatingEventPoints
+"Accessor to the points not verifying the event and far of the design point.
+
+Returns
+-------
+points : :class:`~openturns.Sample`
+    The points of the discretized sphere which are out of the vicinity of
+    the standard design point and which don't verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getFarDesignPointViolatingEventValues
+"Accessor to values of the limit state function.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    The values of the limit state function on the points of the
+    discretized sphere which are out of the vicinity of the standard design
+    point and which don't verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getImportanceLevel
+R"RAW(Accessor to the importance level.
+
+Returns
+-------
+level : float
+    Importance level :math:`\varepsilon`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getNearDesignPointVerifyingEventPoints
+"Accessor to the points verifying the event and near of the design point.
+
+Returns
+-------
+points : :class:`~openturns.Sample`
+    The points of the discretized sphere which are inside the vicinity of
+    the standard design point and which verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getNearDesignPointVerifyingEventValues
+"Accessor to values of the limit state function.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    The values of the limit state function on the points of the
+    discretized sphere which are inside the vicinity of the standard design
+    point and which verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getNearDesignPointViolatingEventPoints
+"Accessor to the points not verifying the event and near of the design point.
+
+Returns
+-------
+point : :class:`~openturns.Sample`
+    The points of the discretized sphere which are out of the vicinity of
+    the standard design point and which don't verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getNearDesignPointViolatingEventValues
+"Accessor to values of the limit state function.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    The values of the limit state function on the points of the
+    discretized sphere which are inside the vicinity of the standard design
+    point and which don't verify the event."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getPointNumber
+"Accessor to the number of points.
+
+Returns
+-------
+number : int, :math:`N > 0`
+    Number of points used to perform the Strong Maximum Test, evaluated by the
+    limit state function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::getStandardSpaceDesignPoint
+"Accessor to the design point in the standard space.
+
+Returns
+-------
+point : :class:`~openturns.Point`
+    Design point in the standard space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StrongMaximumTest::run
+"Perform the Strong Maximum Test."

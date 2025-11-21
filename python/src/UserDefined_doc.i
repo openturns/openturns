@@ -1,0 +1,108 @@
+%feature("docstring") OT::UserDefined
+R"RAW(UserDefined distribution.
+
+Parameters
+----------
+points : 2-d sequence of float
+    List of :math:`n` points of dimension :math:`d` :math:`\vect{x}_i`, :math:`i = 1, \ldots, n`.
+    
+weights : sequence of float, optional
+    List of :math:`n` weights :math:`p_i`, :math:`i = 1, \ldots, n`.
+    If :math:`\sum_{i=1}^n p_i \neq 1`, the weights are normalized.
+    Default value is [1].
+
+Notes
+-----
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = \vect{x}_i} = p_i, \quad i = 1,\ldots,n.
+
+Its first moment is:
+
+.. math::
+
+    \Expect{X} = \sum_{i=1}^n p_i \vect{x}_i.
+
+Sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3.
+It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :meth:`~openturns.DistFunc.rDiscrete`.
+
+Examples
+--------
+Create a 1d-distribution:
+
+>>> import openturns as ot
+>>> points = ot.Sample([[1.0], [2.0], [3.0]])
+>>> weights = [0.4, 0.5, 1.0]
+>>> my_distribution = ot.UserDefined(points, weights)
+>>> print(my_distribution)
+UserDefined({x = [1], p = 0.210526}, {x = [2], p = 0.263158}, {x = [3], p = 0.526316})
+
+Create a 3d-distribution:
+
+>>> points = ot.Sample(4, 3)
+>>> for i in range(4):
+...     for j in range(3):
+...         points[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
+>>> distribution = ot.UserDefined(points, [0.3,0.2,0.25,0.25])
+>>> print(distribution)
+UserDefined({x = [10.1,10.2,10.3], p = 0.3}, {x = [20.1,20.2,20.3], p = 0.2}, {x = [30.1,30.2,30.3], p = 0.25}, {x = [40.1,40.2,40.3], p = 0.25})
+
+Create :math:`\mathcal{U}[\![9,19]\!]`, the discrete uniform distribution on the set {9, 10, ..., 19}
+with equal weights:
+
+>>> points = [[i] for i in range(9, 20)]
+>>> distribution = ot.UserDefined(points)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::getX
+"Accessor to the distribution's :math:`x` parameter.
+
+Returns
+-------
+coll : :class:`~openturns.Sample`
+    Collection of points."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::getP
+"Accessor to the distribution's :math:`p` parameter.
+
+Returns
+-------
+coll : :class:`~openturns.Point`
+    Collection of weights."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::setData
+"Accessor to the distribution's :math:`x` and :math:`p` parameters.
+
+Parameters
+----------
+points : :class:`~openturns.Sample`
+    Collection of points
+weights : :class:`~openturns.Point`
+    Associated weights"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UserDefined::compactSupport()
+R"RAW(Compact the support of the distribution.
+
+Compact by concatenating points of distance less than :math:`\varepsilon`
+and adding their weights.
+
+Notes
+-----
+The :math:`\varepsilon` has a default value associated to the
+:class:`~openturns.ResourceMap` key *Distribution-SupportEpsilon*.
+
+The method is always used for any univariate distributions and for upper
+dimensions, it is only used when the number of points defining the support is
+less than a limit specified by the :class:`~openturns.ResourceMap` key
+*UserDefined-SmallSize*. By default, the size limit is equal to :math:`1e4`.
+)RAW"

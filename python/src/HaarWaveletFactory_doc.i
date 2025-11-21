@@ -1,0 +1,21 @@
+%define OT_HaarWaveletFactory_doc
+R"RAW(Haar wavelet function factory.
+
+Generates the Haar basis defined as follows:
+
+.. math::
+
+    \begin{array}{lcl}
+      \psi_0(x) & = & \fcar{[0, 1]}{x} \\
+      \psi_n(x) & = & \frac{1}{2^{j/2}}\left[\fcar{[\frac{k}{2^j},\frac{k+1/2}{2^j}]}{x}-\fcar{[\frac{k+1/2}{2^j},\frac{k+1}{2^j}]}{x}\right]
+    \end{array}
+
+where :math:`n = 2^j + k`, :math:`0 \leq k < 2^j`, :math:`0 \leq j`.
+
+See also
+--------
+OrthogonalUniVariatePolynomialFunctionFactory)RAW"
+%enddef
+%feature("docstring") OT::HaarWaveletFactory
+OT_HaarWaveletFactory_doc
+

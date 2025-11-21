@@ -1,0 +1,94 @@
+%feature("docstring") OT::Binomial
+R"RAW(Binomial distribution.
+
+Parameters
+----------
+n : int, :math:`n \in \Nset`
+    The number of Bernoulli trials.
+
+    Default value is 1.
+p : float, :math:`0 \leq p \leq 1`
+    The success probability of the Bernoulli trial.
+
+    Default value is 0.5.
+
+Notes
+-----
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{X = k} = C_n^k p^k (1-p)^{n-k},
+                   \quad \forall k \in \{0, \ldots, n\}
+
+with :math:`n \in \Nset` and :math:`0 \leq p \leq 1`.
+It is evaluated using  Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_,
+with the further improvements mentioned in [dimitriadis2016]_, see :meth:`~openturns.DistFunc.dBinomial`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & n\,p \\
+        \Var{X} & = & n\,p\,(1-p)
+    \end{eqnarray*}
+
+The sampling is done using the rejection algorithm described in [hormann1993]_, see :meth:`~openturns.DistFunc.rBinomial`.
+    
+See Also
+--------
+Bernoulli
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Binomial(10, 0.5)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Binomial::getP
+"Accessor to the success probability parameter.
+
+Returns
+-------
+p : float
+    The success probability of the Bernoulli trial."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Binomial::getN
+"Accessor to the number of trials.
+
+Returns
+-------
+n : int
+    The number of Bernoulli trials."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Binomial::setP
+R"RAW(Accessor to the success probability parameter.
+
+Parameters
+----------
+p : float, :math:`0 \leq p \leq 1`
+    The success probability of the Bernoulli trial.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Binomial::setN
+R"RAW(Accessor to the number of trials.
+
+Parameters
+----------
+n : int, :math:`n \in \Nset`
+    The number of Bernoulli trials.)RAW"

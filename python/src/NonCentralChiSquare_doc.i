@@ -1,0 +1,121 @@
+%feature("docstring") OT::NonCentralChiSquare
+R"RAW(NonCentralChiSquare distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \sum_{j=0}^{\infty} e^{-\lambda}
+                                 \frac{\lambda^j}{j!}p_{\chi^2(\nu + 2j)}(x),
+             \quad x \in [0; +\infty[
+
+where :math:`p_{\chi^2(q)}` is the probability density function of a
+:math:`\chi^2(q)` random variate.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \nu + \lambda \\
+        \Var{X} & = & 2(\nu + 2\lambda)
+    \end{eqnarray*}
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degree of freedom.
+    
+    Default value is 5.0.
+lambda : float, :math:`\lambda \geq 0`
+    Non-centrality parameter :math:`\lambda`.
+    
+    Default value is 0.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.NonCentralChiSquare(6.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::getNu
+R"RAW(Accessor to the distribution's generalised number degrees of freedom.
+
+Returns
+-------
+nu : float
+    Generalised number degrees of freedom :math:`\nu`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::getLambda
+R"RAW(Accessor to the distribution's non-centrality parameter :math:`\lambda`.
+
+Returns
+-------
+lambda : float
+    Non-centrality parameter :math:`\lambda`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setNu
+R"RAW(Accessor to the distribution's generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom :math:`\nu`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setLambda
+R"RAW(Accessor to the distribution's non-centrality parameter :math:`\lambda`.
+
+Parameters
+----------
+lambda : float
+    Non-centrality parameter :math:`\lambda`.)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setNuLambda
+R"RAW(Accessor to the distribution's non-centrality parameters.
+
+Parameters :math:`\lambda` and generalised number degrees of freedom.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Generalised number degrees of freedom :math:`\nu`.
+lambda : float
+    Non-centrality parameter :math:`\lambda`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::getMaximumIteration
+"Accessor to the maximum iteration number for PDF and CDF computation.
+
+Returns
+-------
+maximumIteration : int
+    Maximum iteration number for :class:`~openturns.DistFunc.dNonCentralChiSquare` and
+    :class:`~openturns.DistFunc.pNonCentralChiSquare`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonCentralChiSquare::setMaximumIteration
+"Accessor to the maximum iteration number for PDF and CDF computation.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum iteration number for :class:`~openturns.DistFunc.dNonCentralChiSquare` and
+    :class:`~openturns.DistFunc.pNonCentralChiSquare`."

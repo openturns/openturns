@@ -1,0 +1,44 @@
+%feature("docstring") OT::AliMikhailHaqCopulaFactory
+R"RAW(AliMikhailHaq copula factory.
+
+Notes
+-----
+We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
+
+The parameter :math:`\Hat{\theta}_n` is solution of:
+
+.. math::
+
+    \displaystyle \Hat{\tau}_n = \displaystyle \frac{3\theta-2}{3\theta} - \frac{2(1-\theta)^2\ln(1-\theta)}{3\theta^2}
+
+See also
+--------
+DistributionFactory, AliMikhailHaqCopula)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula
+R"RAW(Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsAliMikhailHaqCopula()
+
+    buildAsAliMikhailHaqCopula(*sample*)
+
+    buildAsAliMikhailHaqCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data of dimension 2.
+param : sequence of float of size 1
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.AliMikhailHaqCopula`
+    The estimated copula as an AliMikhailHaq copula.
+    
+    In the first usage, the default AliMikhailHaq copula is built.)RAW"

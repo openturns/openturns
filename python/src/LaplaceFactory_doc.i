@@ -1,0 +1,47 @@
+%feature("docstring") OT::LaplaceFactory
+R"RAW(Laplace factory.
+
+Notes
+-----
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\mu}_n = x_{1/2}\\
+      \displaystyle\Hat{\lambda}_n = \frac{1}{n}\sum_{i=1}^n|x_i-\Hat{\mu}_n|
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, Laplace)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LaplaceFactory::buildAsLaplace
+"Estimate the distribution as native distribution.
+
+
+**Available usages**:
+
+    buildAsLaplace()
+
+    buildAsLaplace(*sample*)
+
+    buildAsLaplace(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Laplace`.
+
+Returns
+-------
+distribution : :class:`~openturns.Laplace`
+    The estimated distribution as a Laplace.
+    
+    In the first usage, the default Laplace distribution is built."
+

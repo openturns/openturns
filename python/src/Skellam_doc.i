@@ -1,0 +1,127 @@
+%feature("docstring") OT::Skellam
+R"RAW(Skellam distribution.
+
+Parameters
+----------
+lambda1 : float, :math:`\lambda_1 > 0`
+    First :class:`~openturns.Poisson` distribution's parameter.
+
+    Default value is 1.0.
+
+lambda2 : float, :math:`\lambda_2 > 0`
+    Second :class:`~openturns.Poisson` distribution's parameter.
+
+    Default value is 1.0.
+
+Notes
+-----
+The Skellan distribution takes its values in :math:`\Zset`.
+It is the distribution of :math:`(X_1 - X_2)` for :math:`(X_1, X_2)` independent
+and respectively distributed according to Poisson(:math:`\lambda_i`).
+
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{X = k} = 2 \Prob{Y = 2 \lambda_1},
+                   \quad \forall k \in \Zset
+
+where Y is distributed according to the :class:`~openturns.NonCentralChiSquare`
+distribution :math:`\chi^2_{\nu, \delta}`, with :math:`\nu=2(k+1)` and
+:math:`\delta=2\lambda_2`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \lambda_1 - \lambda_2 \\
+        \Var{X} & = & \lambda_1 + \lambda_2
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Skellam(10.0, 5.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::getLambda1
+R"RAW(Accessor to the first Poisson distribution's parameter :math:`\lambda_1`.
+
+Returns
+-------
+lambda1 : float
+    First Poisson distribution's parameter :math:`\lambda_1`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::getLambda2
+R"RAW(Accessor to the second Poisson distribution's parameter :math:`\lambda_2`.
+
+Returns
+-------
+lambda2 : float
+    Second Poisson distribution's parameter :math:`\lambda_2`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::setLambda1
+R"RAW(Accessor to the first Poisson distribution's parameter :math:`\lambda_1`.
+
+Parameters
+----------
+lambda1 : float, :math:`\lambda_1 >0`
+    First Poisson distribution's parameter :math:`\lambda_1`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::setLambda2
+R"RAW(Accessor to the second Poisson distribution's parameter :math:`\lambda_2`.
+
+Parameters
+----------
+lambda2 : float, :math:`\lambda_2 >0`
+    Second Poisson distribution's parameter :math:`\lambda_2`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::setLambda1Lambda2
+R"RAW(Accessor to the Poisson distributions' parameters.
+
+Namely :math:`\lambda_1` and :math:`\lambda_2`.
+
+Parameters
+----------
+lambda1 : float, :math:`\lambda_1 >0`
+    First Poisson distribution's parameter :math:`\lambda_1`.
+lambda2 : float, :math:`\lambda_2 >0`
+    Second Poisson distribution's parameter :math:`\lambda_2`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::setMaximumIteration
+"Accessor to the maximum PDF/CDF iteration number.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Skellam::getMaximumIteration
+"Accessor to the maximum PDF/CDF iteration number.
+
+Returns
+-------
+maximumIteration : int
+    Maximum number of iterations for the PDF/CDF computation."
