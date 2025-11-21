@@ -124,8 +124,8 @@ public:
   TBBContext();
   ~TBBContext();
 private:
-  int ompNumThreads_;
-  int openblasNumThreads_;
+  int ompNumThreads_ = 0;
+  int openblasNumThreads_ = 0;
 };
 
 class OT_API TBBImplementation
