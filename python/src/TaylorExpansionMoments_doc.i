@@ -80,7 +80,7 @@ hessian : :class:`~openturns.SymmetricTensor`
 
 Returns
 -------
-factors : :class:`~openturns.Point`
+factors : :class:`~openturns.PointWithDescription`
     Importance factors of the inputs : only when randVect is of dimension 1."
 
 // ---------------------------------------------------------------------
