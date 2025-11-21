@@ -200,7 +200,7 @@ g.setXTitle('x')
 view = otv.View(g)
 
 # %%
-# Display all the graphs.
+# Display all the figures.
 otv.View.ShowAll()
 
 

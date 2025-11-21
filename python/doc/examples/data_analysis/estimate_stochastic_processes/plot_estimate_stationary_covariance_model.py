@@ -22,8 +22,6 @@ Estimate a stationary covariance function
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create some 1-d Normal process data with an Exponential covariance model
@@ -103,4 +101,6 @@ curveModel.setColor("red")
 graph.add(curveModel)
 graph.setLegendPosition("upper right")
 view = otv.View(graph)
-plt.show()
+
+# %%
+otv.View.ShowAll()

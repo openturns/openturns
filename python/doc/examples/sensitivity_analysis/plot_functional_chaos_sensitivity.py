@@ -26,7 +26,6 @@ Sobol' sensitivity indices from chaos
 import openturns as ot
 from operator import itemgetter
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -93,4 +92,6 @@ for i in range(dimension):
         sij = sensitivityAnalysis.getSobolIndex([i, j])
         print(f"{input_names[i]} & {input_names[j]}: {sij:.4f}")
 
-plt.show()
+# %%
+# Display all figures
+otv.View.ShowAll()

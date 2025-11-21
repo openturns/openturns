@@ -249,3 +249,7 @@ plt.tight_layout()
 # The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity
 # should take into account the influence of 2 regression variables as well as the constant term. This is consistent with the results previously
 # obtained.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

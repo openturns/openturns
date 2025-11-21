@@ -105,3 +105,7 @@ view = otv.View(graph)
 # %%
 # Since there are several outputs, the graph presents the aggregated Sobol' indices.
 # The aggregated Sobol' indices indicate that the input variable which has the largest impact on the variability of the several outputs is `x2`.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

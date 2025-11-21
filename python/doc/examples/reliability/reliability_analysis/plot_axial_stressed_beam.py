@@ -347,3 +347,7 @@ printMethodSummary("FORM-IS", probabilityFORMIS, numberOfFunctionEvaluationsFORM
 # * The FORM-IS method produces 2 correct digits and has a small number of function evaluations.i
 #   It has an intermediate performance equal to :math:`2.37\times 10^{-3}` (correct digits/evaluation).
 #   It combines the best of the both worlds: it has the small number of function evaluation of FORM computation and the confidence interval of Monte-Carlo simulation.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

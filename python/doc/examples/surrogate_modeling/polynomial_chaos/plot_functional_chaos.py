@@ -246,7 +246,6 @@ graph.setLegendPosition("upper left")
 graph.setLegendCorner([1.0, 1.0])
 view = otv.View(graph)
 plt.subplots_adjust(right=0.7)
-plt.show()
 
 # %%
 # We see that a low total degree is not sufficient to describe the
@@ -270,3 +269,7 @@ plt.show()
 #   For example, it might be interesting to
 #   try an integration rule instead of the least squares method.
 #   Notice that a specific design of experiments is required in this case.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

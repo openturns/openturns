@@ -23,8 +23,6 @@ Distribution manipulation
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create an 1-d distribution
@@ -189,4 +187,7 @@ qMax = 0.9
 nbrPoints = 101
 quantileGraph = dist_2.drawQuantile(qMin, qMax, nbrPoints)
 view = otv.View(quantileGraph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

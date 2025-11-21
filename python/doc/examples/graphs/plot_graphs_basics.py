@@ -300,4 +300,7 @@ fig
 
 # %%
 view = otv.View(graph, plot_kw={"color": "blue"})
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

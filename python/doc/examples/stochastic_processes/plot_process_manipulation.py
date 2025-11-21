@@ -21,8 +21,6 @@ Manipulate stochastic processes
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We create a mesh -a time grid- which is a :class:`~openturns.RegularGrid` :
@@ -153,19 +151,21 @@ view = otv.View(graph)
 # We can extract any marginal of the process with the `getMarginal` method.
 # Beware the numerotation begins at 0 ! It may be not implemented yet for
 # some processes.
-# The extracted marginal is a 1-d Gaussian process :
+# The extracted marginal is a 1-d Gaussian process
 print(process.getMarginal([1]))
 
 # %%
-# If we extract simultaneously two indices we build a 2-d Gaussian process :
+# If we extract simultaneously two indices we build a 2-d Gaussian process
 print(process.getMarginal([0, 2]))
 
 # %%
-# We can check whether the process is Gaussian or not :
+# We can check whether the process is Gaussian or not
 print("Is normal ? ", process.isNormal())
 
 # %%
-# and the stationarity as well :
+# and the stationarity as well
 print("Is stationary ? ", process.isStationary())
 
-plt.show()
+# %%
+# Display all figures
+otv.View.ShowAll()

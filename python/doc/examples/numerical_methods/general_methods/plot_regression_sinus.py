@@ -432,3 +432,7 @@ view = otv.View(graph)
 # most of the observations.
 # The confidence interval of the observations is much larger than the
 # C.I. of the mean, as expected from the statistical model.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

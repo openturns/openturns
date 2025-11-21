@@ -9,8 +9,6 @@ Create the ordinal sum of copulas
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create a collection of copulas
@@ -29,4 +27,7 @@ graph.setXTitle("x")
 graph.setYTitle("y")
 graph.setLegendPosition("")
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

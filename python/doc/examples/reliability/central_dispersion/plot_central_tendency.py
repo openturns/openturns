@@ -12,7 +12,6 @@ Analyse the central tendency of a cantilever beam
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -107,4 +106,5 @@ graph = ot.KernelSmoothing().build(Y_s).drawPDF()
 graph.setTitle("Kernel smoothing approximation of the output distribution")
 view = otv.View(graph)
 
-plt.show()
+# %%
+otv.View.ShowAll()

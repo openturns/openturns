@@ -144,3 +144,6 @@ print(
 graph = algo.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
+
+# %%
+otv.View.ShowAll()

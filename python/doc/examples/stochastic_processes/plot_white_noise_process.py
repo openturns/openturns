@@ -28,8 +28,6 @@ Create a white noise process
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Define the distribution
@@ -64,4 +62,7 @@ for k in range(sample.getSize()):
     drawable.setLegend("realization " + str(k + 1))
     graph.setDrawable(k, drawable)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

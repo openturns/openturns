@@ -33,7 +33,6 @@ Quick start guide to optimization
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -193,4 +192,6 @@ cloud = ot.Cloud(inputSample)
 graph.add(cloud)
 view = otv.View(graph)
 
-plt.show()
+# %%
+# Display all figures
+otv.View.ShowAll()

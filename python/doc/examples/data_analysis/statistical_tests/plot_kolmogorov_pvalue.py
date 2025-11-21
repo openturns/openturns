@@ -14,13 +14,9 @@ Kolmogorov-Smirnov : understand the p-value
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We generate a sample from a standard Gaussian distribution.
-
-# %%
 dist = ot.Normal()
 samplesize = 10
 sample = dist.getSample(samplesize)
@@ -129,8 +125,10 @@ graph.add(curveStat)
 graph.add(boundsPoly)
 graph.setTitle("Kolmogorov-Smirnov distribution (known parameters)")
 view = otv.View(graph)
-plt.show()
 
 # %%
 # We observe that the p-value is the area of the curve which corresponds to
 # the KS distances greater than the observed KS statistics.
+
+# %%
+otv.View.ShowAll()

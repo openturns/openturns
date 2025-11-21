@@ -6,7 +6,6 @@ Create and draw scalar distributions
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # A continuous distribution
@@ -77,4 +76,4 @@ view = otv.View(graphCDF)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

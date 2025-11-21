@@ -233,3 +233,7 @@ print(
 #
 # where :math:`F_R` is the cumulative distribution function of the random variable :math:`R`.
 #
+
+# %%
+# Display all figures
+otv.View.ShowAll()

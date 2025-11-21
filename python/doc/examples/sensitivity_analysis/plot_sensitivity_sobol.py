@@ -59,8 +59,6 @@ from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We load the Ishigami model from the usecases model :
@@ -218,6 +216,9 @@ sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign,
 graph = sensitivityAnalysis.draw()
 view = otv.View(graph)
 
-plt.show()
 # %%
 # We see that the results do not change significantly in this particular situation.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

@@ -320,6 +320,7 @@ otv.View(
     legend_kw={"bbox_to_anchor": (1.0, 1.0), "loc": "upper left"},
 )
 plt.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
-plt.show()
 
 # %%
+# Display all figures
+otv.View.ShowAll()

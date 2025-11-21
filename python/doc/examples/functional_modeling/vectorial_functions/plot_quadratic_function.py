@@ -14,8 +14,6 @@ Create a quadratic function
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # create a quadratic function
@@ -36,4 +34,7 @@ graph = (
     ot.ParametricFunction(function, [1, 2], [2.0, 1.0]).getMarginal(1).draw(0.0, 2.0)
 )
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

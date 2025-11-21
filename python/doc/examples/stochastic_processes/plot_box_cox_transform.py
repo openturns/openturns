@@ -56,8 +56,6 @@ Use the Box-Cox transformation
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Define a process
@@ -95,4 +93,7 @@ myStabilizedField = myModelTransform(field)
 marginal = ot.HistogramFactory().build(myStabilizedField.getValues())
 graph = marginal.drawPDF()
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

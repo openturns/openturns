@@ -32,11 +32,8 @@ Quick start guide to distributions
 # - :class:`~openturns.WeibullMin`.
 
 # %%
-import openturns.viewer as otv
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # The uniform distribution
@@ -274,7 +271,10 @@ Y = ot.TruncatedDistribution(X, 2.0, ot.TruncatedDistribution.UPPER)
 graph = Y.drawPDF()
 view = otv.View(graph)
 
-plt.show()
 # %%
 # In the specific case of the Gaussian distribution, the specialized :class:`~openturns.TruncatedNormal` distribution can be used
 # instead of the generic :class:`~openturns.TruncatedDistribution` class.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

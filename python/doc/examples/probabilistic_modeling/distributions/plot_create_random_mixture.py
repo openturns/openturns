@@ -6,7 +6,6 @@ Create a random mixture
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -27,16 +26,16 @@ from matplotlib import pyplot as plt
 
 
 # %%
-# We create the distributions associated to the input random variables :
+# We create the distributions associated to the input random variables
 X1 = ot.Exponential(1.5)
 X2 = ot.Normal(4.0, 1.0)
 
 # %%
-# We define an offset `a0` :
+# We define an offset `a0`
 a0 = 2.0
 
 # %%
-# We create the `weights` :
+# We create the `weights`
 weight = [5.0, 1.0]
 
 # %%
@@ -100,29 +99,28 @@ print(sample)
 N = 20
 
 # %%
-# We create a collection of identically distributed :math:`X_i` :
+# We create a collection of identically distributed :math:`X_i`
 coll = [X] * N
 
 # %%
-# We create the weights and an affine combination :
+# We create the weights and an affine combination
 weight = [1.0] * N
 distribution = ot.RandomMixture(coll, weight)
 
 # %%
-# We compute the probability to exceed a sum of 100 after 20 dice rolls :
+# We compute the probability to exceed a sum of 100 after 20 dice rolls
 print("Probability : %.3g" % distribution.computeComplementaryCDF(100))
 
 # %%
-# We draw its PDF :
+# We draw its PDF
 graph = distribution.drawPDF()
 view = otv.View(graph)
 
 # %%
-# and its CDF :
+# and its CDF
 graph = distribution.drawCDF()
 view = otv.View(graph)
 
-
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

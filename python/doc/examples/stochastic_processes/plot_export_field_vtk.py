@@ -17,8 +17,6 @@ Export a field to VTK
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # First, we define a regular 2-d mesh
@@ -48,5 +46,5 @@ field = ot.Field(mesh, values)
 field.exportToVTKFile("field.vtk")
 
 # %%
-# Display figures
-plt.show()
+# Display all figures
+otv.View.ShowAll()

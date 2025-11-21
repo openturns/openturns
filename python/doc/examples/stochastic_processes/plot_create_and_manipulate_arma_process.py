@@ -10,7 +10,6 @@ Create and manipulate an ARMA process
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # Create an ARMA process
@@ -144,7 +143,6 @@ graph.setTitle("Six realizations of the ARMA process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t$")
 view = otv.View(graph)
-# plt.show()
 
 # We can obtain the current state of the ARMA process :
 armaState = process.getState()
@@ -213,7 +211,6 @@ graph.setXTitle("t")
 graph.setYTitle(r"$X_t$")
 view = otv.View(graph)
 
-
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

@@ -15,7 +15,6 @@ Optimization with constraints
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -57,4 +56,7 @@ print("x^=", result.getOptimalPoint())
 # draw optimal value history
 graph = result.drawOptimalValueHistory()
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

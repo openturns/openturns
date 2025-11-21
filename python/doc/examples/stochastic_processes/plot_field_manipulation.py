@@ -18,8 +18,6 @@ Draw a field
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # First, define a regular 2-d mesh
@@ -84,4 +82,6 @@ field.exportToVTKFile("field.vtk")
 with open("field.vtk") as f:
     print(f.read()[:100])
 
-plt.show()
+# %%
+# Display all figures
+otv.View.ShowAll()

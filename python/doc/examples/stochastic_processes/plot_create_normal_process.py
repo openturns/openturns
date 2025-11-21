@@ -6,8 +6,6 @@ Create a Gaussian process
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create a Gaussian process from a covariance model
@@ -80,5 +78,5 @@ graph.setTitle("First marginal of six realizations of the process")
 view = otv.View(graph)
 
 # %%
-# Display figures
-plt.show()
+# Display all figures
+otv.View.ShowAll()

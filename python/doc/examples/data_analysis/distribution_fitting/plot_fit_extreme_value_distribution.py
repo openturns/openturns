@@ -6,7 +6,6 @@ Fit an extreme value distribution
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # The generalized extreme value distribution (GEV)
@@ -187,4 +186,6 @@ view = otv.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(-1.0, 10.0)
 
-plt.show()
+# %%
+# Display all graphs
+otv.View.ShowAll()

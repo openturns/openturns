@@ -566,4 +566,7 @@ plt.plot(bisector, bisector, "--", c="black")
 plt.xlabel("Measurements")
 plt.ylabel("Prediction medians")
 plt.legend(["Posterior", "Prior"])
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

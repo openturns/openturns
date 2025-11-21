@@ -185,8 +185,11 @@ view = otv.View(
 )
 
 plt.tight_layout()
-plt.show()
 
 # %%
 # We see that the number of nodes increases when the level increases.
 # This growth depends on the dimension of the problem.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

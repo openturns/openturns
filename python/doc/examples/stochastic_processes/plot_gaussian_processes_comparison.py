@@ -26,9 +26,9 @@ Compare covariance models
 # * :math:`\boldsymbol{\theta}\in\mathbb{R}^d` is the scale.
 
 # %%
-from matplotlib import pyplot as plt
 import openturns.viewer as otv
 import openturns as ot
+import matplotlib.pyplot as plt
 
 # %%
 # Amplitude values

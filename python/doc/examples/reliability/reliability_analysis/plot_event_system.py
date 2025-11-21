@@ -14,7 +14,6 @@ Create unions or intersections of events
 #
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # **Intersection**
@@ -305,4 +304,4 @@ print("Probability of the event (SystemFORM) : %.4f" % prbSystemFORM)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

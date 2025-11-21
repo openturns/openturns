@@ -27,8 +27,6 @@ FAST sensitivity indices
 from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We load the :ref:`Ishigami model <use-case-ishigami>` from the usecases module :
@@ -68,6 +66,7 @@ graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     totalOrderIndices, distribution.getDescription(), "FAST total order indices"
 )
 view = otv.View(graph)
-plt.show()
 
 # %%
+# Display all figures
+otv.View.ShowAll()

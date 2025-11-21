@@ -100,4 +100,5 @@ plt.tight_layout()
 # tensorization of univariate difference quadratures.
 
 # %%
-plt.show()
+# Display all figures
+otv.View.ShowAll()

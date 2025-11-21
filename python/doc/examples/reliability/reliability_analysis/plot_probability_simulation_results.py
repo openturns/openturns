@@ -16,13 +16,9 @@ Exploitation of simulation algorithm results
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create the joint distribution of the parameters.
-
-# %%
 distribution_R = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
 distribution_F = ot.Normal(75e3, 5e3)
 marginals = [distribution_R, distribution_F]
@@ -30,8 +26,6 @@ distribution = ot.JointDistribution(marginals)
 
 # %%
 # Create the model.
-
-# %%
 model = ot.SymbolicFunction(["R", "F"], ["R-F/(pi_*100.0)"])
 
 # %%
@@ -183,4 +177,6 @@ inputSampleStored
 estimator_probability_sample = algo.getConvergenceStrategy().getSample()[0]
 estimator_variance_sample = algo.getConvergenceStrategy().getSample()[1]
 print(estimator_probability_sample, estimator_variance_sample)
-plt.show()
+
+# %%
+otv.View.ShowAll()

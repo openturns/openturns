@@ -7,7 +7,6 @@ Create and draw multivariate distributions
 # In this example we create and draw multidimensional distributions.
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # Create a multivariate model with a :class:`~openturns.JointDistribution`
@@ -244,4 +243,4 @@ view = otv.View(graph)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

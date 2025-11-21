@@ -109,3 +109,5 @@ fig = otv.PlotDesign(sample, bounds)
 fig.set_size_inches(10, 10)
 
 # %%
+# Display all figures
+otv.View.ShowAll()

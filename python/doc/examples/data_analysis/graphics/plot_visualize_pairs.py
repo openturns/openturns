@@ -9,8 +9,6 @@ Visualize pairs
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create data to visualize
@@ -24,4 +22,7 @@ sample = distribution.getSample(200)
 # Create cloud pairs graphs
 graph = ot.VisualTest.DrawPairs(sample)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

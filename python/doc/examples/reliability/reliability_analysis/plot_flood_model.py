@@ -16,8 +16,6 @@ Estimate a flooding probability
 from openturns.usecases import flood_model
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We load the flooding model from the usecases module :
@@ -87,8 +85,8 @@ print("Pf=", probability)
 
 # %%
 # Importance factors.
-
-# %%
 graph = result.drawImportanceFactors()
 view = otv.View(graph)
-plt.show()
+
+# %%
+otv.View.ShowAll()

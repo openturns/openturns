@@ -20,8 +20,6 @@ Generate low discrepancy sequences
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # 1. Sobol sequence
@@ -113,4 +111,7 @@ graph = ot.Graph("Mersenne Twister", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

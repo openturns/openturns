@@ -139,5 +139,5 @@ view = otv.View(graph)
 
 
 # %%
-# Display all the graphs.
+# Display all the figures.
 otv.View.ShowAll()

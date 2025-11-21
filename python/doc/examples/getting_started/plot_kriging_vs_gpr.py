@@ -34,8 +34,7 @@ Gaussian Process Regression vs KrigingAlgorithm
 
 # %%
 import openturns as ot
-from openturns import viewer
-from matplotlib import pyplot as plt
+import openturns.viewer as otv
 import openturns.experimental as otexp
 
 
@@ -121,7 +120,7 @@ graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We use the :class:`~openturns.ConstantBasisFactory` class to define the trend and the :class:`~openturns.MaternModel` class to define the covariance model.
@@ -182,7 +181,7 @@ graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the Gaussian process regression estimated with both classes is interpolating.
@@ -264,7 +263,7 @@ graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Compute confidence bounds
@@ -345,7 +344,7 @@ graph.add(curve)
 graph.setColors(["blue", "red"])
 graph.setLegends(["kriging", "GPR"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Select the green colors using HSV values (for the confidence interval)
@@ -467,7 +466,7 @@ graph.setYTitle("Y")
 graph.setLegendPosition("upper right")
 grid_layout.setGraph(1, 1, graph)
 
-view = viewer.View(grid_layout)
+view = otv.View(grid_layout)
 
 # %%
 # We see that the confidence intervals are small in the regions where two
@@ -514,7 +513,7 @@ graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The given GPR matches with the data as expected !
@@ -553,7 +552,7 @@ graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The result is slightly different from the previous ones. We take into account that each output `y_train` is potentially "random".
@@ -575,4 +574,5 @@ view = viewer.View(graph)
 # * Fit the model : `KrigingAlgorithm.run` / :meth:`~openturns.experimental.GaussianProcessFitter.run` + :meth:`~openturns.experimental.GaussianProcessRegression.run`
 
 # %%
-plt.show()
+# Display all figures
+otv.View.ShowAll()

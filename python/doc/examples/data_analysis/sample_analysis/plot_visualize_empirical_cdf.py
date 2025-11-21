@@ -9,8 +9,6 @@ Draw the empirical CDF
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Then create a sample from a Gaussian distribution.
@@ -38,4 +36,6 @@ xmin = sample.getMin()[0] - 2.0
 xmax = sample.getMax()[0] + 2.0
 graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
 view = otv.View(graph)
-plt.show()
+
+# %%
+otv.View.ShowAll()

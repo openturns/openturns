@@ -10,8 +10,6 @@ Get the asymptotic distribution of the estimators
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # The standard Normal
@@ -112,4 +110,6 @@ graph.setXTitle(r"$\gamma$")
 graph.setLegends(["PDF"])
 view = otv.View(graph)
 
-plt.show()
+# %%
+# Display all graphs
+otv.View.ShowAll()

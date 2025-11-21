@@ -11,8 +11,6 @@ Validate a polynomial chaos
 from openturns.usecases import ishigami_function
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Model description
@@ -94,7 +92,10 @@ r2Score
 graph = val.drawValidation()
 graph.setTitle("R2=%.2f%%" % (r2Score * 100))
 view = otv.View(graph)
-plt.show()
 
 # %%
 # The metamodel has a good predictivity, since the points are almost on the first diagonal.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

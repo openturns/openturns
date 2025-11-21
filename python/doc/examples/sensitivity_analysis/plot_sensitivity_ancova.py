@@ -35,8 +35,6 @@ Use the ANCOVA indices
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create the model (x1,x2) --> (y) = (4.*x1+5.*x2)
@@ -114,4 +112,7 @@ graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
     "ANCOVA correlated indices\n(part of variance due to the correlation)",
 )
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

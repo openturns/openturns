@@ -14,8 +14,6 @@ Create a symbolic function
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # create a symbolic function
@@ -39,4 +37,7 @@ print("x=", x, "df(x)=", function.gradient(x))
 # draw isocontours of f around [2,3]
 graph = function.draw(0, 1, 0, [2.0, 3.0], [1.5, 2.5], [2.5, 3.5])
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

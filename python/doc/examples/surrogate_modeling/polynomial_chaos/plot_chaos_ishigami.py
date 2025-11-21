@@ -266,4 +266,5 @@ for i in range(basisSize):
         )
 
 # %%
-view.show()
+# Display all figures
+otv.View.ShowAll()

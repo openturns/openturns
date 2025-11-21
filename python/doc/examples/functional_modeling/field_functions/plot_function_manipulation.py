@@ -210,3 +210,5 @@ graph = func2.draw(inputMin4, inputMax4, ptNb)
 view = otv.View(graph)
 
 # %%
+# Display all figures
+otv.View.ShowAll()

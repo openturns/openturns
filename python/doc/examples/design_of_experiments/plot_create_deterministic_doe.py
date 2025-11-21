@@ -6,7 +6,6 @@ Create a deterministic design of experiments
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # Four types of deterministic designs of experiments are available:
@@ -98,4 +97,7 @@ sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample, "Box")
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

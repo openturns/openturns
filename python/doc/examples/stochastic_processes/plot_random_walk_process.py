@@ -26,8 +26,6 @@ Create a random walk process
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Define the origin
@@ -82,4 +80,7 @@ graph = ot.Graph("2D Random Walk with continuous steps", "X1", "X2", True)
 for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()
