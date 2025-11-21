@@ -1,0 +1,272 @@
+%feature("docstring") OT::TimeVaryingResult
+R"RAW(Estimation result class for a non stationary GEV or GPD model.
+
+Parameters
+----------
+factory : :class:`~openturns.DistributionFactory`
+    Parent distribution factory.
+data : 2-d sequence of float
+    Sample drawn from :math:`Z_t`.
+parameterFunction : :class:`~openturns.Function`
+    The  function :math:`t \mapsto \vect{\theta}(t)`.
+timeStamps : 2-d sequence of float
+    Values of :math:`t`.
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{\beta}`.
+normalizationFunction : :class:`~openturns.LinearFunction`
+    The normalization function :math:`t \mapsto \tau(t)`.
+llh : float
+    Maximum log-likelihood.
+
+Notes
+-----
+This class is created by the method
+:meth:`~openturns.GeneralizedParetoFactory.buildTimeVarying` of the classes
+:class:`~openturns.GeneralizedExtremeValueFactory` and
+:class:`~openturns.GeneralizedParetoFactory`.
+
+Let :math:`Z_t` be a non stationary random variable which follows a GEV distribution or whose excesses above :math:`u` follow a GPD. The parameters of the GEV or GPD model depend on :math:`t`:
+
+.. math::
+
+    Z_t & \sim \mbox{GEV}(\mu(t), \sigma(t), \xi(t))\\
+    Z_t & \sim \mbox{GPD}(\sigma(t), \xi(t), u)
+
+For the GPD, the threshold :math:`u` is assumed to be known.
+
+We denote by :math:`(z_{t_1}, \dots, z_{t_n})` the values of
+:math:`Z_t` on the time stamps :math:`(t_1, \dots, t_n)`.
+
+For numerical reasons, the time stamps have been normalized using the linear function:
+
+.. math::
+
+    \tau(t) = \dfrac{t-c}{d}
+
+Let :math:`\vect{\theta} = (\theta_1, \dots, \theta_p)` be the set of parameters :math:`(\mu, \sigma, \xi)` for the GEV model and :math:`(\sigma, \xi)` for the GPD. Each component :math:`\theta_q` can be written
+as a function of :math:`t`: 
+
+.. math::
+
+    \theta_q(t)  = h_q\left(\sum_{i=1}^{d_{\theta_q}} \beta_i^{\theta_q} \varphi_i^{\theta_q}(\tau(t))\right)
+
+where:
+
+- :math:`d_{\theta_q}` is the size of the functional basis involved in the modelling of
+  :math:`\theta_q`,
+- :math:`h_q: \Rset \mapsto \Rset` is usually referred to as the *inverse-link function* of
+  the component :math:`\theta_q`,
+- each :math:`\varphi_i^{\theta_q}` is a scalar function :math:`\Rset \mapsto \Rset`,
+- each :math:`\beta_i^{j} \in \Rset`.
+
+We denote by :math:`\vect{\beta} = (\beta_1^{\theta_1}, \dots, \beta_{d_{\theta_1}}^{\theta_1}, \dots, \beta_1^{\theta_p}, \dots, \beta_{d_{\theta_p}}^{\theta_p})` the complete vector of parameters.
+
+The estimator of the vector  :math:`\vect{\beta}` maximizes the likelihood of the Parent distribution (ie the distribution of :math:`Z_t`).
+
+See also
+--------
+GeneralizedExtremeValueFactory)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getDistribution
+"Accessor to the Parent distribution at a given time.
+
+Parameters
+----------
+t : float
+    Time value.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The Parent distribution at time *t*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getTimeGrid
+"Accessor to the time grid.
+
+Returns
+-------
+timeGrid : :class:`~openturns.Sample`
+    Values of :math:`t`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getParameterDistribution
+R"RAW(Accessor to the distribution of :math:`\vect{\beta}`.
+
+Returns
+-------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the  estimator of :math:`\vect{\beta}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::setParameterDistribution
+R"RAW(Accessor to the distribution of of :math:`\vect{\beta}`.
+
+Parameters
+----------
+parameterDistribution : :class:`~openturns.Distribution`
+    The distribution of the estimator of :math:`\vect{\beta}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getParameterFunction
+R"RAW(Parameter function accessor.
+
+Returns
+-------
+parameterFunction : :class:`~openturns.Function`
+    The  function :math:`t \mapsto \vect{\theta}(t)`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getNormalizationFunction
+R"RAW(Normalizing function accessor.
+
+Returns
+-------
+normalizeFunction : :class:`~openturns.Function`
+    The  function :math:`t \mapsto \tau(t)`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getOptimalParameter
+R"RAW(Optimal parameter accessor.
+
+Returns
+-------
+optimalParameter : :class:`~openturns.Point`
+    Optimal vector of parameters :math:`\vect{\beta}`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::setLogLikelihood
+"Optimal log-likelihood value accessor.
+
+Parameters
+----------
+llh : float
+    Maximum log-likelihood.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::getLogLikelihood
+"Optimal log-likelihood value accessor.
+
+Returns
+-------
+llh : float
+    Maximum log-likelihood.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawParameterFunction
+R"RAW(Draw the parameter function.
+
+Parameters
+----------
+parameterIndex : int, 
+    The index :math:`q` specifying the component of :math:`\theta_q`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph of :math:`t \mapsto \theta_q(t)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawQuantileFunction
+R"RAW(Draw the quantile function.
+
+Parameters
+----------
+p : float
+    The quantile level.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Quantile function graph.
+
+Notes
+-----
+The quantile function is the function :math:`t \mapsto q_p(t)` where :math:`q_p(t)` is
+the quantile of order :math:`p` of the Parent distribution at time :math:`t`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TimeVaryingResult::drawDiagnosticPlot
+R"RAW(Draw the 4 usual diagnostic plots.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Returns a grid of 4 graphs:
+     - the QQ-plot,
+     - the PP-plot,
+     - the return level graph (with confidence lines),
+     - the density graph.
+
+Notes
+-----
+Let :math:`Z_t` be a non stationary random variable which follows a GEV distribution or whose excesses above :math:`u` follow a GPD.
+The parameters of the GEV or GPD model depend on :math:`t`:
+
+.. math::
+
+    Z_t & \sim \mbox{GEV}(\mu(t), \sigma(t), \xi(t))\\
+    Z_t & \sim \mbox{GPD}(\sigma(t), \xi(t), u)
+
+Then, the standardized variables :math:`\hat{Z}_t` defined respectively by:
+
+.. math::
+
+    \hat{Z}_t & = \dfrac{1}{\xi(t)} \log \left[1 + \xi(t)\left( \dfrac{Z_t-\mu(t)}{\sigma(t)} \right)\right] \\
+    \hat{Z}_t & = \dfrac{1}{\xi(t)} \log \left[1 + \xi(t)\left( \dfrac{Z_t-u}{\sigma(t)}      \right)\right]
+
+respectively follows the standard Gumbel distribution (which is the GEV model with :math:`(\mu, \sigma, \xi) = (0, 1, 0)`) or the standard Exponential distribution (which is the GPD with :math:`(\sigma, \xi, u) = (1, 0, 0)`).
+
+Then, the 4 usual diagnostic graphs are built from the transformed data compared to the
+Gumbel or Exponential model:
+
+- the *probability-probability* plot,
+- the *quantile-quantile* plot,
+- the *return level* plot,
+- the data histogram with the Gumbel/Exponential distribution.
+
+If :math:`(\hat{z}_{(1)}, \dots, \hat{z}_{(n)})` denotes the ordered transformed data,
+the graphs are defined as follows.
+
+The *probability-probability* plot consists of the points (respectively for the GEV and GPD models):
+
+.. math::
+    \left\{ \left( i/(n+1),\exp (-\exp (-\hat{z}_{(i)})) \right), i=1, \dots , n\right\}\\
+    \left\{ \left( i/(n+1), 1- \exp(-\tilde{z}_{(i)})    \right), i=1, \dots , n\right\}
+
+The *quantile-quantile* plot consists of the points (respectively for the GEV and GPD models):
+
+.. math::
+    \left\{  \left(  \hat{z}_{(i)},  -\log(-\log(i/(n+1)))  \right), i=1, \dots , n\right\} \\
+    \left\{ \left(   \tilde{z}_{(i)}, -\log(1-i/(n+1))      \right), i=1, \dots , n\right\}
+    
+The *return level* plot consists of the points:
+
+.. math::
+    \left\{ \left( m, \hat{z}_m \right), m> 0 \right\}
+
+and the points:
+
+.. math::
+    \left\{ \left( m, \hat{z}_{m}^{emp} \right), m> 0 \right\}
+
+where :math:`\hat{z}_{m}^{emp}` is the empirical :math:`m`-block return level (for the GEV model) or the :math:`m`-observation return level (for the GPD model)  of the transformed data and :math:`\hat{z}_{m}` the
+same quantity evaluated from the Gumbel/Exponential distribution.)RAW"

@@ -1,0 +1,441 @@
+%feature("docstring") OT::HypothesisTest::ChiSquared
+"Test whether two discrete samples are independent.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension 1.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+openturns.HypothesisTest.Pearson
+openturns.HypothesisTest.Spearman
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Poisson(3), ot.Binomial(10, 0.3)]
+>>> distribution = ot.JointDistribution(distCol)
+>>> sample = distribution.getSample(30)
+>>> test_result = ot.HypothesisTest.ChiSquared(sample[:,0], sample[:,1])
+>>> print(test_result)
+class=TestResult name=Unnamed type=ChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.855945 statistic=4.74502 description=[]
+>>> independent_samples = test_result.getBinaryQualityMeasure()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::FullPearson
+R"RAW(Test whether two discrete samples are independent.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` of size of size :math:`n`.
+
+See Also
+--------
+openturns.HypothesisTest.Pearson
+openturns.HypothesisTest.PartialPearson
+
+Notes
+-----
+The Full Pearson Test is the independence Pearson test between 2 samples:
+*firstSample* of dimension *n* and *secondSample* of dimension 1. If
+*firstSample[i]* is the sample extracted from *firstSample*
+(:math:`i^{th}` coordinate of each point of the sample), FullPearson
+performs the independence Pearson test simultaneously on *firstSample[i]* and 
+secondSample. For all *i*, it is supposed that the couple (*firstSample[i]* and
+*secondSample*) is issued from a gaussian vector.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal()] * 3
+>>> S = ot.CorrelationMatrix(3)
+>>> S[0, 2] = 0.9
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.JointDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :2]
+>>> secondSample = sample[:, 2]
+>>> test_result = ot.HypothesisTest.FullPearson(firstSample, secondSample)
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 statistic=13.61 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 statistic=-0.133027 description=[]]
+>>> independent_samples = test_result[0].getBinaryQualityMeasure()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::FullSpearman
+R"RAW(Test whether two samples have no rank correlation.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    Sample of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Sample of dimension 1.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` of size :math:`n`, one result per component of the first sample.
+
+See Also
+--------
+openturns.HypothesisTest.Spearman
+openturns.HypothesisTest.PartialSpearman
+
+Notes
+-----
+The Full Spearman Test is used to check the hypothesis of no rank correlation
+between two samples: *firstSample* of dimension :math:`n` and *secondSample* of
+dimension 1. The test is done marginal by marginal on the first sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.SymbolicFunction(['x'], ['x', 'x^2'])
+>>> testedSample = func(sample)
+>>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample, 0.05)
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]
+>>> no_rank_correlation = test_result[1].getBinaryQualityMeasure()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::PartialPearson
+R"RAW(Test whether two discrete samples are independent.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+selection : sequence of integers, maximum integer value :math:`< n`
+    List of indices selecting which subsets of the first sample will successively
+    be tested with the second sample through the Pearson test.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` for each sample.
+
+See Also
+--------
+openturns.HypothesisTest.Pearson
+openturns.HypothesisTest.FullPearson
+
+Notes
+-----
+The Partial Pearson Test is used to check the independence between two samples:
+*firstSample* of dimension *n* and *secondSample* of dimension 1. The parameter
+*selection* enables to select specific subsets of the *firstSample* to be tested.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal(), ot.Normal(), ot.Normal()]
+>>> S = ot.CorrelationMatrix(4)
+>>> S[0, 3] = 0.9
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.JointDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :3]
+>>> secondSample = sample[:, 3]
+>>> test_result = ot.HypothesisTest.PartialPearson(firstSample, secondSample, [0, 2])
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 statistic=9.91178 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 statistic=-1.33717 description=[]]
+>>> independent_samples = test_result[0].getBinaryQualityMeasure()
+)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::PartialSpearman
+R"RAW(Test whether two sample have no rank correlation.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+indices : sequence of integers, maximum integer value :math:`< n`
+    Indices selecting which subsets of the first sample will successively
+    be tested with the second sample through the Spearman test.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` for each selected component.
+
+See Also
+--------
+openturns.HypothesisTest.Spearman
+openturns.HypothesisTest.FullSpearman
+
+Notes
+-----
+The Partial Spearman Test is used to check hypothesis of no rank correlation
+between two samples: *firstSample* of dimension :math:`n` and *secondSample* of
+dimension 1. The parameter *selection* enables to select specific subsets of
+marginals of *firstSample* to be tested.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> func = ot.SymbolicFunction(['x'], ['x', 'x^2', 'x^3', 'sin(5*x)'])
+>>> testedSample = func(sample)
+>>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 statistic=-0.569502 description=[]
+>>> no_rank_correlation = test_result[1].getBinaryQualityMeasure()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::Pearson
+R"RAW(Test whether two discrete samples are independent.
+
+Refer to :ref:`pearson_test`.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+openturns.HypothesisTest.Spearman
+
+Notes
+-----
+The Pearson Test is used to check whether two samples which are assumed to form
+a gaussian vector are independent (based on the evaluation of the linear
+correlation coefficient).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distCol = [ot.Normal(), ot.Normal()]
+>>> firstSample = ot.Normal().getSample(30)
+>>> secondSample = ot.Normal().getSample(30)
+>>> test_result = ot.HypothesisTest.Pearson(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 statistic=0.019302 description=[]
+>>> independent_samples = test_result.getBinaryQualityMeasure()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::Spearman
+R"RAW(Test whether two samples have no rank correlation.
+
+Refer to :ref:`spearman_test`.
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`, optional
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Structure containing the result of the test.
+
+See Also
+--------
+openturns.HypothesisTest.Pearson
+
+Notes
+-----
+The Spearman Test is used to check whether two samples of dimension 1
+have no rank correlation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> firstSample = distribution.getSample(30)
+>>> func = ot.SymbolicFunction(['x'], ['x^2'])
+>>> secondSample = func(firstSample)
+>>> test_result = ot.HypothesisTest.Spearman(firstSample, secondSample)
+>>> print(test_result)
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]
+>>> no_rank_correlation = test_result.getBinaryQualityMeasure()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::TwoSamplesKolmogorov
+R"RAW(Test whether two samples follows the same distribution.
+
+If the p-value is high, then we cannot reject the hypothesis that the
+distributions of the two samples are the same.
+
+Parameters
+----------
+sample1 : 2-d float array
+    A continuous distribution sample.
+sample2 : 2-d float array
+    Another continuous distribution sample, can be of different size.
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
+    Default value is 0.05
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Notes
+-----
+This statistical test might be used to compare two samples :math:`\{x_1, \ldots, x_N\}`
+and :math:`\{x^{'}_1, \ldots, x^{'}_M\}` (of sizes not necessarily equal).
+The goal is to determine whether these two samples come from
+the same probability distribution or not. (without any information of the underlying
+distribution under the null hypothesis)
+
+As application, if null hypothesis could not be rejected, the two samples could be
+be aggregated in order to increase the robustness of further statistical analysis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample1 = ot.Normal().getSample(20)
+>>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
+>>> test_result = ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
+>>> print(test_result)
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 statistic=0.216667 description=[sampleNormal vs sample Normal]
+>>> same_distribution = test_result.getBinaryQualityMeasure()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::LikelihoodRatioTest
+R"RAW(Nested likelihood model selection.
+
+This test helps selecting between two nested models :math:`\mathcal{M}_0 \subset \mathcal{M}_1`
+estimated by likelihood maximization.
+
+Suppose that  :math:`\mathcal{M}_1` is a model with :math:`d`-dimensional parameter  :math:`\vect{\theta} = (\vect{\theta}^{(1)}, \vect{\theta}^{(2)})` where :math:`\vect{\theta}^{(1)}` is a :math:`k`-dimensional subset of :math:`\vect{\theta}`. We suppose that :math:`\mathcal{M}_0` is obtained by constraining  :math:`\vect{\theta}^{(1)}` to be equal to a fixed value denoted by :math:`\vect{\theta}^{(1)}_0`. Then :math:`\mathcal{M}_0` is a model with parameter :math:`\vect{\theta}^{(2)}`.
+
+Let :math:`\hat{\vect{\theta}}` denote the maximum likelihood estimator of :math:`\vect{\theta}` for model :math:`\mathcal{M}_1` and :math:`\ell(\hat{\vect{\theta}})`  its maximized log-likelihood.
+
+The profile log-likelihood for :math:`\vect{\theta}^{(1)}` is defined as:
+
+.. math::
+
+    l_p(\vect{\theta}^{(1)}) = \max_{\vect{\theta}^{(2)}} \ell(\vect{\theta}^{(1)}, \vect{\theta}^{(2)})
+
+We define the profile deviance statistic depending on :math:`\vect{\theta}^{(1)}` as the maximized log-likelihood with respect to :math:`\vect{\theta}^{(2)}` when :math:`\vect{\theta}^{(1)}` is frozen: 
+
+.. math::
+
+    \mathcal{D}_p (\theta^{(1)}) = 2(\ell(\hat{\vect{\theta}}) - l_p(\vect{\theta}^{(1)}))
+
+Under suitable regularity conditions, for large :math:`n`, :math:`\mathcal{D}_p (\theta^{(1)})` follows a :math:`\chi^2_k` distribution.  
+
+We use the profile deviance statistic to define the :math:`(1-\alpha)` confidence region
+for the true value of parameter :math:`\vect{\theta}^{(1)}`:
+
+.. math::
+
+    \mathcal{C}_{\alpha} = \left\{\vect{\theta}^{(1)} : \mathcal{D}_p (\theta^{(1)}) \leq c_{\alpha} \right\}
+
+where :math:`c_{\alpha}` is the :math:`(1-\alpha)` quantile of the :math:`\chi^2_k` distribution.
+The level :math:`\alpha` is the Type 1 error of the test, which means the mistaken rejection of model :math:`\mathcal{M}_0`.
+
+
+In order to test the validity of model :math:`\mathcal{M}_0` with parameter
+:math:`(\vect{\theta}^{(1)}_0, \vect{\theta}^{(2)})` relative to :math:`\mathcal{M}_1` with parameter
+:math:`(\vect{\theta}^{(1)}, \vect{\theta}^{(2)})` at the :math:`\alpha`-level of
+significance, we check the value :math:`\mathcal{D}_p (\theta^{(1)}_0)`:
+
+- if :math:`\mathcal{D}_p (\theta^{(1)}_0) \leq c_{\alpha}`, we accept :math:`\mathcal{M}_0` rather than :math:`\mathcal{M}_1`,
+- if :math:`\mathcal{D}_p (\theta^{(1)}_0) \geq c_{\alpha}`, we reject :math:`\mathcal{M}_0` in favor of :math:`\mathcal{M}_1`.
+
+
+Parameters
+----------
+model0NbParameters : int, :math:`\geq 1`,
+    Number of parameters of  :math:`\mathcal{M}_0`
+m0llh : float
+    :math:`\mathcal{M}_0` log-likelihood
+model1NbParameters : int, :math:`\geq 1`,
+    Number of parameters of  :math:`\mathcal{M}_1`
+m1llh : float
+    :math:`\mathcal{M}_1` log-likelihood
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    Risk of wrongly rejecting :math:`\mathcal{M}_0`
+    Default value is 0.05
+
+Notes
+-----
+Both models must have been estimated on the same data.
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+)RAW"

@@ -1,0 +1,402 @@
+%define OT_Field_doc
+R"RAW(Base class for Fields.
+
+Available constructors:
+    Field(*mesh, dim*)
+
+    Field(*mesh, values*)
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+       Each vertice of the mesh is in :math:`\cD` a domain of :math:`\Rset^n`.
+dim : int
+      Dimension :math:`d` of the values.
+values : 2-d sequence of float of dimension :math:`d`
+    The values associated to the vertices of the mesh. The size of *values* is
+    equal to the number of vertices in the associated mesh. So we must have the
+    equality between *values.getSize()* and *mesh.getVerticesNumber()*.
+
+Notes
+-----
+A field :math:`F` is an association between vertices and values: 
+
+.. math::
+
+    F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}
+
+where the :math:`(\vect{t}_i)_{1 \leq i \leq N}` are the vertices of a mesh of the domain :math:`\cD` and :math:`(\vect{v}_i)_{1 \leq i \leq N}` are the associated values.
+
+Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^d)^N` where :math:`N` is the number of vertices of the mesh :math:`\cM_N` of the domain :math:`\cD \subset \Rset^n`.
+
+
+Examples
+--------
+Create a field:
+
+>>> import openturns as ot
+>>> myVertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
+>>> mySimplicies = [[0,1,2], [1,2,3], [2,3,4], [2,4,5], [0,2,5]]
+>>> myMesh = ot.Mesh(myVertices, mySimplicies)
+>>> myValues = [[2.0],[2.5],[4.0], [4.5], [6.0], [7.0]]
+>>> myField = ot.Field(myMesh, myValues)
+
+Draw the field:
+
+>>> myGraph = myField.draw()
+)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation
+OT_Field_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_asDeformedMesh_doc
+"Get the mesh deformed according to the values of the field.
+
+Parameters
+----------
+verticesPadding : sequence of int
+       The positions at which the coordinates of vertices are set to zero when extending the vertices dimension. By default the sequence is empty.
+valuesPadding : sequence of int
+       The positions at which the components of values are set to zero when extending the values dimension. By default the sequence is empty.
+
+Returns
+-------
+deformedMesh : :class:`~openturns.Mesh`
+    The initial mesh is deformed as follows: each vertex of the mesh is
+    translated by the value of the field at this vertex. Only works when
+    the input dimension :math:`n`: is equal to the dimension of the field
+    :math:`d` after extension."
+%enddef
+%feature("docstring") OT::FieldImplementation::asDeformedMesh
+OT_Field_asDeformedMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_draw_doc
+"Draw the first marginal of the field if the input dimension is less than 2.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Calls *drawMarginal(0, False)*.
+
+See also
+--------
+drawMarginal"
+%enddef
+%feature("docstring") OT::FieldImplementation::draw
+OT_Field_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_drawMarginal_doc
+R"RAW(Draw one marginal field if the input dimension is less than 2.
+
+Parameters
+----------
+index : int
+    The selected marginal.
+interpolate : bool
+    Indicates whether the values at the vertices are linearly interpolated.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    - If the dimension of the mesh is :math:`n=1` and *interpolate=True*: it
+      draws the graph of the piecewise linear function based on the selected
+      marginal values of the field and the vertices coordinates
+      (in :math:`\Rset`).
+
+    - If the dimension of the mesh is :math:`n=1` and *interpolate=False*: it
+      draws the cloud of points which coordinates are (vertex, value of the
+      marginal *index*).
+
+    - If the dimension of the mesh is :math:`n=2` and *interpolate=True*: it
+      draws several iso-values curves of the selected marginal, based on a
+      piecewise linear interpolation within the simplices (triangles) of the
+      mesh. You get an empty graph if the vertices are not connected through
+      simplicies.
+
+    - If the dimension of the mesh is :math:`n=2` and *interpolate=False*: if
+      the vertices are connected through simplicies, each simplex is drawn with
+      a color defined by the mean of the values of the vertices of the simplex.
+      In the other case, it draws each vertex colored by its value.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::drawMarginal
+OT_Field_drawMarginal_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_exportToVTKFile_doc
+"Create the VTK format file of the field.
+
+Parameters
+----------
+myVTKFile : str
+    Name of the output file. No extension is append to the filename.
+
+Notes
+-----
+Creates the VTK format file that contains the mesh and the associated values
+that can be visualised with the open source software
+`Paraview <http://www.paraview.org/>`_ ."
+%enddef
+%feature("docstring") OT::FieldImplementation::exportToVTKFile
+OT_Field_exportToVTKFile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_getDescription_doc
+"Get the description of the field values.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the vertices and values of the field, size :math:`n+d`."
+%enddef
+%feature("docstring") OT::FieldImplementation::getDescription
+OT_Field_getDescription_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getOutputDimension_doc
+"Get the dimension :math:`d` of the values.
+
+Returns
+-------
+d : int
+    Dimension of the field values: :math:`d`."
+%enddef
+%feature("docstring") OT::FieldImplementation::getOutputDimension
+OT_Field_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getMesh_doc
+R"RAW(Get the mesh on which the field is defined.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    Mesh over which the domain :math:`\cD` is discretized.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::getMesh
+OT_Field_getMesh_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getSample_doc
+"Get the values of the field.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    Values associated to the mesh. The size of the sample is the number of
+    vertices of the mesh and the dimension is the dimension of the values
+    (:math:`d`)."
+%enddef
+%feature("docstring") OT::FieldImplementation::getSample
+OT_Field_getSample_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getSize_doc
+"Get the number of values inside the field.
+
+Returns
+-------
+size : int
+    Number :math:`N` of vertices in the mesh."
+%enddef
+%feature("docstring") OT::FieldImplementation::getSize
+OT_Field_getSize_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getInputDimension_doc
+R"RAW(Get the dimension of the domain :math:`\cD`.
+
+Returns
+-------
+n : int
+    Dimension of the domain :math:`\cD`: :math:`n`.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::getInputDimension
+OT_Field_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getInputMean_doc
+R"RAW(Get the input weighted mean of the values of the field.
+
+Returns
+-------
+inputMean : :class:`~openturns.Point`
+    Weighted mean of the  values of the field, weighted by the volume of each
+    simplex.
+
+Notes
+-----
+The input mean of the field is defined by:
+
+.. math::
+
+   \displaystyle \frac{1}{V} \sum_{S_i \in \cM} \left( \frac{1}{n+1}\sum_{k=0}^{n} \vect{v}_{i_k}\right) |S_i|
+
+where :math:`S_i` is the simplex of index :math:`i` of the mesh, :math:`|S_i|`
+its volume and :math:`(\vect{v}_{i_0}, \dots, \vect{v}_{i_n})` the values of
+the field associated to the  vertices of :math:`S_i`, and
+:math:`\displaystyle V=\sum_{S_i \in \cD} |S_i|`.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::getInputMean
+OT_Field_getInputMean_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getOutputMean_doc
+R"RAW(Get the mean of the values of the field.
+
+Returns
+-------
+temporalMean : :class:`~openturns.Point`
+    Mean of the values of the field.
+
+Notes
+-----
+If we note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values in
+:math:`\Rset^d` of the field, then the temporal mean is defined by:
+
+.. math::
+
+   \displaystyle  \frac{1}{N} \sum_{i=0}^{N-1} \vect{v}_i
+
+Only makes sense in the case of a regular grid.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::getOutputMean
+OT_Field_getOutputMean_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_norm_doc
+"Compute the (:math:`L^2`) norm.
+
+Returns
+-------
+norm : float
+    The field's norm computed using the mesh weights."
+%enddef
+%feature("docstring") OT::FieldImplementation::norm
+OT_Field_norm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_getTimeGrid_doc
+R"RAW(Get the mesh as a time grid if it is 1D and regular.
+
+Returns
+-------
+timeGrid : :class:`~openturns.RegularGrid`
+    Mesh of the field when it can be interpreted as a 
+    :class:`~openturns.RegularGrid`. We check if the vertices of the mesh are
+    scalar and are regularly spaced in :math:`\Rset` but we don't check if the
+    connectivity of the mesh is conform to the one of a regular grid (without
+    any hole and composed of ordered instants).)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::getTimeGrid
+OT_Field_getTimeGrid_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getValueAtIndex_doc
+R"RAW(Get the value of the field at the vertex of the given index.
+
+Parameters
+----------
+index : int
+    Vertex of the mesh of index *index*.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    The value of the field associated to the selected vertex, in :math:`\Rset^d`.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::getValueAtIndex
+OT_Field_getValueAtIndex_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getValues_doc
+"Get the values of the field.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    Values associated to the mesh. The size of the sample is the number of
+    vertices of the mesh and the dimension is the dimension of the values
+    (:math:`d`)."
+%enddef
+%feature("docstring") OT::FieldImplementation::getValues
+OT_Field_getValues_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_setDescription_doc
+"Set the description of the vertices and values of the field.
+
+Parameters
+----------
+myDescription : :class:`~openturns.Description`
+    Description of the field values. Must be of size :math:`n+d` and give the
+    description of the vertices and the values."
+%enddef
+%feature("docstring") OT::FieldImplementation::setDescription
+OT_Field_setDescription_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_setValueAtIndex_doc
+R"RAW(Assign the value of the field to the vertex at the given index.
+
+Parameters
+----------
+index : int
+    Index that characterizes one vertex of the mesh.
+value : :class:`~openturns.Point` in :math:`\Rset^d`.
+    New value assigned to the selected vertex.)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::setValueAtIndex
+OT_Field_setValueAtIndex_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_setValues_doc
+"Assign values to a field.
+
+Parameters
+----------
+values : 2-d sequence of float
+    Values assigned to the mesh. The size of the values is the number of
+    vertices of the mesh and the dimension is :math:`d`."
+%enddef
+%feature("docstring") OT::FieldImplementation::setValues
+OT_Field_setValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_getMarginal_doc
+"Marginal accessor.
+
+Parameters
+----------
+i : int or sequence of int
+    Index of the marginal.
+
+Returns
+-------
+value : :class:`~openturns.Field`.
+    Marginal field."
+%enddef
+%feature("docstring") OT::FieldImplementation::getMarginal
+OT_Field_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_asSample_doc
+"Convert to Sample.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Data as a Sample object."
+%enddef
+%feature("docstring") OT::FieldImplementation::asSample
+OT_Field_asSample_doc

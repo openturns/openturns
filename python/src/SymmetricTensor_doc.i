@@ -1,0 +1,129 @@
+%feature("docstring") OT::SymmetricTensor
+R"RAW(Symmetric tensor.
+
+Available constructors:
+    SymmetricTensor(*n_rows, n_sheets*)
+
+    SymmetricTensor(*n_rows, n_sheets, values*)
+
+    SymmetricTensor(*sequence*)
+
+Parameters
+----------
+n_rows : int, :math:`n_r > 0`
+    Number of rows and columns.
+n_sheets : int, :math:`n_s > 0`
+    Number of sheets.
+values : sequence of float with size :math:`n_r \times n_r \times n_s`, optional
+    Values. **column-major** ordering is used (like Fortran) for
+    reshaping the flat list of values.
+    If not mentioned, a zero tensor is created.
+sequence : sequence of float
+    Values.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymmetricTensor(2, 2, [0, 1]))
+sheet #0
+[[ 0 1 ]
+ [ 1 0 ]]
+sheet #1
+[[ 0 0 ]
+ [ 0 0 ]]
+>>> T = ot.SymmetricTensor(2, 3, range(2*2*3))
+>>> print(T)
+sheet #0
+[[  0  1 ]
+ [  1  3 ]]
+sheet #1
+[[  4  5 ]
+ [  5  7 ]]
+sheet #2
+[[  8  9 ]
+ [  9 11 ]]
+
+Get or set terms:
+
+>>> print(T[0, 0, 0])
+0.0
+>>> T[0, 0, 0] = 1.0
+>>> print(T[0, 0, 0])
+1.0
+
+Create an openturns tensor from a sequence:
+
+>>> T = ot.SymmetricTensor([[[1.0, 2.0, 3.0], [7.0, 8.0, 9.0]], [[7.0, 8.0, 9.0], [10.0, 11.0, 12.0]]])
+>>> print(T)
+sheet #0
+[[  1  7 ]
+ [  7 10 ]]
+sheet #1
+[[  2  8 ]
+ [  8 11 ]]
+sheet #2
+[[  3  9 ]
+ [  9 12 ]]
+
+Here we detail how the tensor is built with the hessian of the function
+:math:`g: \Rset^2 \rightarrow \Rset^2` defined by:
+
+.. math::
+
+   & g(x_1,x_2) = (g_1(x_1,x_2), g_2(x_1,x_2))\\
+   & g_1(x_1,x_2) = x_1^2x_2 + 2x_1x_2^2\\
+   & g_2(x_1,x_2) = x_1^3x_2
+
+
+Then the hessian tensor of :math:`g` at the point :math:`(x_1, x_2)` is composed of 2 sheets:
+
+.. math::
+
+    \left( \dfrac{\partial^2 g_1}{\partial x_i \partial x_j} \right)_{1 \leq i,j \leq 2} = \left(
+    \begin{array}{cc}
+    2x_2 & 2x_1+4x_2 \\
+    2x_1+4x_2 & 4x_1
+    \end{array}
+    \right)
+
+and:
+
+.. math::
+
+    \left( \dfrac{\partial^2 g_2}{\partial x_i \partial x_j} \right)_{1 \leq i,j \leq 2}= \left(
+    \begin{array}{cc}
+    6x_1x_2 & 3x_1^2 \\
+    3x_1^2 & 0
+    \end{array}
+    \right)
+
+>>> g = ot.SymbolicFunction(['x1', 'x2'], ['x1*x1*x2 + 2*x1*x2*x2', 'x1*x1*x1*x2'])
+>>> point_0 = [1.0, 1.0]
+>>> hessian_mat = g.hessian(point_0)
+>>> print(hessian_mat)
+sheet #0
+[[ 2 6 ]
+ [ 6 4 ]]
+sheet #1
+[[ 6 3 ]
+ [ 3 0 ]]
+
+>>> dimX = g.getInputDimension()
+>>> dimY = g.getOutputDimension()
+>>> for k in range(dimY):
+...     for i in range(dimX):
+...         for j in range(dimX):
+...             print(f'H[{i}, {j}, {k}] = {hessian_mat[i, j, k]}')
+H[0, 0, 0] = 2.0
+H[0, 1, 0] = 6.0
+H[1, 0, 0] = 6.0
+H[1, 1, 0] = 4.0
+H[0, 0, 1] = 6.0
+H[0, 1, 1] = 3.0
+H[1, 0, 1] = 3.0
+H[1, 1, 1] = 0.0)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymmetricTensor::checkSymmetry
+"Check if the internal representation is really symmetric."

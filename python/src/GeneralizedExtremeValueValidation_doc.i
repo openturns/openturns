@@ -1,0 +1,116 @@
+%feature("docstring") OT::GeneralizedExtremeValueValidation
+"Validation of GeneralizedExtremeValue inference.
+
+Parameters
+----------
+result : :class:`~openturns.DistributionFactoryResult`
+    Inference result to validate.
+sample : 2-d sequence of float
+    Data on which the inference was performed.
+
+See also
+--------
+GeneralizedExtremeValueFactory"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::drawDiagnosticPlot
+R"RAW(Draw the 4 usual diagnostic plots.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Returns a grid of 4 graphs:
+     - the QQ-plot,
+     - the PP-plot,
+     - the return level graph (with confidence lines),
+     - the density graph.
+
+Notes
+-----
+The 4 graphs are the *probability-probability* plot, the *quantile-quantile* plot, the *return level* plot, the data histogram with the fitted model density.
+
+
+If :math:`(z_{(1)} \leq z_{(2)} \leq \dots \leq z_{(n)})` denotes the ordered block maximum data and :math:`\hat{G}` the cumulative distribution function of the GEV distribution fitted on the data, the graphs are defined as follows.
+
+The *probability-probability* plot consists of the points:
+
+.. math::
+    \left\{ \left( i/(n+1), \hat{G}(z_{(i)}) \right), i=1, \dots , m\right\}
+
+
+The *quantile-quantile* plot consists of the points:
+
+.. math::
+    \left\{  \left(  z_{(i)},  \hat{G}^{-1}(i/(n+1))  \right), i=1, \dots , n\right\} 
+
+The *return level* plot consists of the points:
+
+.. math::
+    \left\{ \left( m, \hat{z}_m\right), m> 0\right\}
+
+and the points:
+
+.. math::
+    \left\{ \left( m, z_{m}^{emp}\right), m> 0\right\}
+
+where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
+:math:`m`-block return level calculated with the fitted GEV.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::drawReturnLevel
+R"RAW(Draw the return level with confidence interval.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The return level graph.
+
+Notes
+-----
+The *return level* plot consists of the points:
+
+.. math::
+    \left\{ \left( m, \hat{z}_m\right), m >0 \right\}
+
+and the points:
+
+.. math::
+    \left\{ \left( m, z_{m}^{emp}\right), m> 0\right\}
+
+where :math:`z_{m}^{emp}` is the empirical :math:`m`-block return level and :math:`\hat{z}_{m}` the 
+:math:`m`-block return level calculated with the fitted GEV.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::drawPDF
+"Draw the estimated density and the data histogram.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The estimated density and the data histogram.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::setConfidenceLevel
+"Confidence level accessor.
+
+Parameters
+----------
+level : float
+    Confidence level for the confidence lines.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValueValidation::getConfidenceLevel
+"Confidence level accessor.
+
+Returns
+-------
+level : float
+    Confidence level for the confidence lines.
+"

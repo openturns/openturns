@@ -1,0 +1,158 @@
+%feature("docstring") OT::Gamma
+R"RAW(Gamma distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\lambda}{\Gamma(k)}
+             \left(\lambda (x - \gamma)\right)^{k - 1}
+             \exp\left(- \lambda (x - \gamma)\right),
+             \quad x \in [\gamma; +\infty[
+
+with :math:`k, \lambda > 0` and :math:`\gamma \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{k}{\lambda} + \gamma \\
+        \Var{X} & = & \frac{k}{\lambda^2}
+    \end{eqnarray*}
+
+Parameters
+----------
+k : float
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+    
+    Default value is 1.0.
+lambda : float
+    Rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
+    
+    Default value is 1.0.
+gamma : float, optional
+    Location parameter :math:`\gamma`.
+    
+    Default value is 0.0.
+
+Notes
+-----
+It is possible to create a Gamma distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.GammaMuSigma`. In that case, all the results are presented in that new parametrization.
+
+In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(k, \lambda, \gamma)`.
+
+Examples
+--------
+Create a distribution from its native parameters :math:`(k, \lambda, \gamma)`:
+
+>>> import openturns as ot
+>>> myDist = ot.Gamma(1.0, 1.0, 0.0)
+
+Create a it from the alternative parametrization :math:`(\mu, \lambda, \gamma)`:
+
+>>> myDist2 = ot.Gamma()
+>>> myDist2.setParameter(ot.GammaMuSigma()([1.0, 1.0, 0.0]))
+
+Create it from :math:`(\mu, \lambda, \gamma)` and keep that parametrization for the remaining study: 
+
+>>> myParam = ot.GammaMuSigma(1.5, 2.5, -0.5)
+>>> myDist3 = ot.ParametrizedDistribution(myParam)
+
+Draw a sample:
+
+>>> sample = myDist.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getK
+"Accessor to the distribution's shape parameter :math:`k`.
+
+Returns
+-------
+k : float
+    Shape parameter :math:`k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getLambda
+R"RAW(Accessor to the distribution's rate parameter :math:`\lambda`.
+
+Returns
+-------
+lambda : float
+    Rate parameter :math:`\lambda`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getGamma
+R"RAW(Accessor to the distribution's location parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Location parameter :math:`\gamma`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::getSigma
+R"RAW(Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setK
+"Accessor to the distribution's shape parameter :math:`k`.
+
+Parameters
+----------
+k : float, :math:`k > 0`
+    Shape parameter :math:`k`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setLambda
+R"RAW(Accessor to the distribution's rate parameter :math:`\lambda`.
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Rate parameter :math:`\lambda`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setGamma
+R"RAW(Accessor to the distribution's location parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float, :math:`\gamma \in \Rset`
+    Location parameter :math:`\gamma`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Gamma::setMuSigma
+R"RAW(Accessor to the distribution's mean and standard deviation.
+
+Parameters
+----------
+mu : float, :math:`\mu > \gamma`
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation.)RAW"

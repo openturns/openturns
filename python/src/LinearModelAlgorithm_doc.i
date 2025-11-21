@@ -1,0 +1,182 @@
+%feature("docstring") OT::LinearModelAlgorithm
+R"RAW(Class used to create a linear regression model.
+
+Parameters
+----------
+XSample : 2-d sequence of float
+    The input samples of a model.
+
+YSample : 2-d sequence of float
+    The output samples of a model, must be of dimension 1.
+
+basis : :class:`~openturns.Basis`
+    Optional.
+    The :math:`\phi` basis .
+
+See Also
+--------
+LinearModelResult
+
+Notes
+-----
+This class fits a  linear regression model between a scalar variable :math:`Y` and some
+:math:`p` scalar regressors :math:`(X_1, \dots, X_p)`. The model is estimated from
+:math:`\sampleSize` experiences that have provided an output sample
+of :math:`Y` related to an input sample of the regressors :math:`\vect{X} = (X_1, \dots, X_p)`.
+
+Let :math:`\vect{Y} = (Y_1, \dots, Y_\sampleSize)` be
+the output sample and :math:`(\vect{X}^1, \dots, \vect{X}^\sampleSize)` the input
+sample, where :math:`\vect{X}^i = (X_1^i, \dots, X_p^i)`.
+
+The linear model can be defined with or without a functional basis. If no basis is
+specified, the model is:
+
+.. math::
+    :label: modelNoBase
+
+    Y = a_0 + \sum_{k=1}^{p} a_k X_k + \epsilon
+
+where :math:`a_0, a_1, ..., a_{p} \in \Rset` are scalar coefficients and
+:math:`\epsilon` a random
+variable with zero mean and constant variance :math:`\sigma^2` independent from
+the coefficients :math:`a_k`.
+
+Let the :math:`\hat{Y}_i` for :math:`1 \leq i \leq \sampleSize` be the fitted values, defined by:
+
+.. math::
+    :label: fittedValue
+
+    \hat{Y}_i = \hat{a}_0 + \sum_{k=1}^{p} \hat{a}_k X_k^i
+
+where :math:`\hat{\vect{a}} = (\hat{a}_0, \dots, \hat{a}_p)` is the estimate of  :math:`\vect{a}`.
+
+If a functional basis is specified, let :math:`p'` be its dimension and 
+:math:`\phi_j : \Rset^{p} \rightarrow \Rset` for :math:`j \in \{1, ..., p'\}`  be the :math:`j`-th basis function. The linear model is:
+
+.. math::
+    :label: modelWithBase
+
+    Y = \sum_{j=1}^{p'} a_j \phi_j(\vect{X}) + \epsilon
+
+where :math:`\vect{a} = (a_1, \dots, a_{p'})` and :math:`\epsilon` have the same properties as in the previous
+case.
+
+
+The fitted values :math:`\hat{Y}_i`  for :math:`1 \leq i \leq \sampleSize` are defined by:
+
+.. math::
+    :label: fittedValue2
+
+    \hat{Y}_i = \sum_{j=1}^{p'} \hat{a}_j \phi_j(\vect{X}^i)
+
+where :math:`\hat{\vect{a}} = (\hat{a}_1, \dots, \hat{a}_{p'})` is the estimate of the :math:`\vect{a}`.
+
+We define the residual of the :math:`i`-th experience by: 
+
+.. math::
+    :label: residualDef
+
+    \varepsilon_i & = Y_i -  \hat{Y}_i
+
+
+The algorithm still estimates the coefficients
+:math:`\vect{a}` as well as the variance :math:`\sigma^2`.
+The coefficients are evaluated using a linear least squares method,
+by default the `QR` method.
+User might also choose `SVD` or `Cholesky` by
+setting the `LinearModelAlgorithm-DecompositionMethod` key of the :class:`~openturns.ResourceMap`.
+Here are a few guidelines to choose the appropriate decomposition method:
+
+- The Cholesky can be safely used if the functional basis is orthogonal
+  and the sample is drawn from the corresponding distribution,
+  because this ensures that the columns of the design matrix are
+  asymptotically orthogonal when the sample size increases.
+  In this case, evaluating the Gram matrix does not increase
+  the condition number.
+- Selecting the decomposition method can also be based on the sample size.
+
+Please read the :meth:`~openturns.LeastSquaresMethod.Build` help page
+for details on this topic.
+
+The :class:`~openturns.LinearModelAnalysis` class can be used for a detailed
+analysis of the linear model result.
+
+No scaling is involved in this method.
+The scaling of the data, if any, is the responsibility of the user of the algorithm.
+This may be useful if, for example, we use a linear model (without functional basis)
+with very different input magnitudes and use the Cholesky decomposition
+applied to the associated Gram matrix.
+In this case, the Cholesky method may fail to produce accurate results.
+
+Examples
+--------
+>>> import openturns as ot
+>>> func = ot.SymbolicFunction(
+...     ['x1', 'x2', 'x3'],
+...     ['x1 + x2 + sin(x2 * 2 * pi_)/5 + 1e-3 * x3^2']
+... )
+>>> dimension = 3
+>>> distribution = ot.JointDistribution([ot.Normal()] * dimension)
+>>> inputSample = distribution.getSample(20)
+>>> outputSample = func(inputSample)
+>>> algo = ot.LinearModelAlgorithm(inputSample, outputSample)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> design = result.getDesign()
+>>> gram = design.computeGram()
+>>> leverages = result.getLeverages()
+
+In order to access the projection matrix, we build the least squares method.
+
+>>> lsMethod = result.buildMethod()
+>>> projectionMatrix = lsMethod.getH()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    The Xsample which has been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getBasis
+R"RAW(Accessor to the input basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The basis of the regression model.
+
+Notes
+-----
+If a functional basis has been provided in the constructor, then we get it back:
+:math:`(\phi_k)_{1 \leq k \leq p'}`.
+Otherwise, the functional basis is composed of the projections :math:`\phi_k : \Rset^p \rightarrow \Rset`
+such that :math:`\phi_k(\vect{x}) = x_k` for :math:`1 \leq k \leq p`, completed with the constant function:
+:math:`\phi_0 : \vect{x} \rightarrow 1`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    The Ysample which had been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getResult
+"Accessor to the result of the algorithm.
+
+Returns
+-------
+result : :class:`~openturns.LinearModelResult`
+    All the results of the algorithm."
+

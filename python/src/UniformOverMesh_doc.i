@@ -1,0 +1,93 @@
+%feature("docstring") OT::UniformOverMesh
+R"RAW(UniformOverMesh distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{|\cD|}, \quad x \in \cD
+
+with :math:`\cD\subset\Rset^n` a mesh of dimension :math:`n`.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Mesh defining the domain of the distribution.
+
+See also
+--------
+TruncatedOverMesh
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x', 'y'], ['sin(x)*sin(y)'])
+>>> levelSet = ot.LevelSet(f, ot.Less(), 0.2)
+>>> box = ot.Interval([-5.0]*2, [5.0]*2)
+>>> mesh = ot.LevelSetMesher([50]*2).build(levelSet, box, False)
+>>> distribution = ot.UniformOverMesh(mesh)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+
+Explore some of the attributes:
+
+>>> mesh = distribution.getMesh()
+>>> algo = distribution.getIntegrationAlgorithm()
+>>> distribution.setIntegrationAlgorithm(ot.GaussLegendre([10] * 2))
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UniformOverMesh::getMesh
+"Accessor to the distribution's mesh.
+
+Returns
+-------
+mesh : ;class:`~openturns.Mesh`
+    Mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UniformOverMesh::getIntegrationAlgorithm
+"Accessor to the integration algorithm used to compute the CDF.
+
+Returns
+-------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    Integration algorithm used to compute the CDF. Default value is
+    :class:`~openturns.GaussLegendre` with a marginal integration node number
+    specified by the `UniformOverMesh-MarginalIntegrationNodesNumber` key in
+    :class:`~openturns.ResourceMap` if the total number of nodes doesn't exceed
+    a value specified by the `UniformOverMesh-MaximumIntegrationNodesNumber` key
+    in :class:`~openturns.ResourceMap`, otherwise the marginal integration node
+    number is decreased.:class:`~openturns.IteratedQuadrature`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UniformOverMesh::setMesh
+"Accessor to the distribution's mesh.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::UniformOverMesh::setIntegrationAlgorithm
+"Accessor to the integration algorithm used to compute the CDF.
+
+Parameters
+----------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    Integration algorithm used to compute the CDF. Default value is
+    :class:`~openturns.GaussLegendre` with a marginal integration node number
+    specified by the `UniformOverMesh-MarginalIntegrationNodesNumber` key in
+    :class:`~openturns.ResourceMap` if the total number of nodes doesn't exceed
+    a value specified by the `UniformOverMesh-MaximumIntegrationNodesNumber` key
+    in :class:`~openturns.ResourceMap`, otherwise the marginal integration node
+    number is decreased."

@@ -1,0 +1,133 @@
+%feature("docstring") OT::SpectralGaussianProcess
+R"RAW(Spectral Gaussian process.
+
+Available constructors:
+    SpectralGaussianProcess(*spectralModel, timeGrid*)
+
+    SpectralGaussianProcess(*spectralModel, maxFreq, N*)
+
+Parameters
+----------
+
+timeGrid : :class:`~openturns.RegularGrid`
+    The time grid associated to the process.
+    The algorithm is only implemented when the mesh is a regular grid.
+spectralModel : :class:`~openturns.SpectralModel`
+maxFreq : float
+    Equal to the maximal frequency minus :math:`\Delta f`.
+N : float
+    The number of points in the frequency grid, which is equal to the number of
+    time stamps of the time grid.
+
+Notes
+-----
+
+- In the first usage, we fix the time grid and the second order model (spectral
+  density model) which implements the process. The frequency discretization is
+  deduced from the time discretization by the formulas
+  :math:`f_{max} = \frac{1}{\Delta t}, \quad \Delta f = \frac{1}{t_{max}}, N = \frac{f_{max}}{\Delta f}= \frac{t_{max}}{\Delta t}`
+
+- In the second usage, the process is fixed in the frequency domain. *fmax*
+  value and *N* induce the time grid. Care: the maximal frequency used in the
+  computation is not *fmax* but :math:`(1-1/N)fmax = fmax - \Delta f`.
+
+- In the third usage, the spectral model is given and the other arguments are
+  the same as the first usage.
+
+- In the fourth usage, the spectral model is given and the other arguments are
+  the same as the second usage.
+
+The first call of :meth:`getRealization` might be time consuming because it
+computes :math:`N` hermitian matrices of size :math:`d \times \ d`, where
+:math:`d` is the dimension of the spectral model. These matrices are factorized
+and stored in order to be used for each call of the *getRealization* method.
+
+Examples
+--------
+Create a *SpectralGaussianProcess* from a spectral model and a time grid:
+
+>>> import openturns as ot
+>>> amplitude = [1.0, 2.0]
+>>> scale = [4.0, 5.0]
+>>> spatialCorrelation = ot.CorrelationMatrix(2)
+>>> spatialCorrelation[0,1] = 0.8
+>>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
+>>> mySpectralModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
+>>> mySpectNormProc1 = ot.SpectralGaussianProcess(mySpectralModel, myTimeGrid)
+
+)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::getFFTAlgorithm
+"Get the FFT algorithm used to generate realizations of the spectral Gaussian process.
+
+Returns
+-------
+fftAlgo : :class:`~openturns.FFT`
+    FFT algorithm used to generate realizations of the spectral Gaussian process.
+    By default, it is the :class:`~openturns.KissFFT` algorithm.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::setFFTAlgorithm
+"Set the FFT algorithm used to generate realizations of the spectral Gaussian process.
+
+Parameters
+----------
+fftAlgo : :class:`~openturns.FFT`
+    FFT algorithm that will be used to generate realizations of the spectral
+    Gaussian process. The :class:`~openturns.KissFFT` is provided.
+    More efficient implementations are provided by the *openturns-fftw* module.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::getFrequencyStep
+R"RAW(Get the frequency step :math:`\Delta f` used to discretize the spectral model.
+
+Returns
+-------
+freqStep : float
+    The frequency step :math:`\Delta f` used to discretize the spectral model.
+)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::getFrequencyGrid
+"Get the frequency grid used to discretize the spectral model.
+
+Returns
+-------
+freqGrid : :class:`~openturns.RegularGrid`
+    The frequency grid used to discretize the spectral model.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::getMaximalFrequency
+R"RAW(Get the maximal frequency used in the computation.
+
+Returns
+-------
+freqMax : float
+    The maximal frequency used in the computation: :math:`(1-1/N)fmax = fmax - \Delta f`.
+)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::getNFrequency
+"Get the  number of points in the frequency grid.
+
+Returns
+-------
+freqGrid : :class:`~openturns.RegularGrid`
+    The number :math:`N` of points in the frequency grid, which is equal to the
+    number of time stamps of the time grid.
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpectralGaussianProcess::getSpectralModel
+"Get the spectral model.
+
+Returns
+-------
+specMod : :class:`~openturns.SpectralModel`
+    The spectral model defining the process.
+"

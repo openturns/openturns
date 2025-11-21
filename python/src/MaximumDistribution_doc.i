@@ -1,0 +1,120 @@
+%feature("docstring") OT::MaximumDistribution
+R"RAW(Maximum distribution.
+
+Let :math:`\inputRV = (X_1, \dots, X_\inputDim)` be a random vector of dimension
+:math:`\inputDim \geq 1`. This class implements the distribution of:
+
+.. math::
+    Y = \max(X_1, ... , X_\inputDim).
+
+Available constructors:
+    MaximumDistribution(*distribution*)
+
+    MaximumDistribution(*collection*)
+
+    MaximumDistribution(*distribution, size*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution of :math:`\inputRV = (X_1, \dots, X_ \inputDim)`
+    with :math:`\inputDim \geq 1`.
+collection : sequence of :class:`~openturns.Distribution`
+    The collection of scalar distributions :math:`X_i` for :math:`1 \leq i \leq \inputDim`.
+size : int
+    Integer :math:`d \geq 1`.
+
+Notes
+-----
+In the first constructor, the distribution of :math:`\inputRV` is given. Then,
+the CDF of :math:`Y` is defined by:
+
+.. math::
+    F_Y(y) = \Prob{X_1 \leq y, \dots, X_\inputDim\leq y} = F_{\inputRV}(y, \dots, y).
+
+In the second constructor, :math:`d` marginal distribution are given and the  :math:`X_i`
+are assumed to be independent, with CDF denoted by :math:`F_i`. Then, the CDF of :math:`Y` is defined by:
+
+.. math::
+    F_Y(y) = \prod_{i=1}^\inputDim F_i(y).
+
+In the third constructor, the :math:`X_i` are assumed to be independent and identically
+distributed according to the given scalar distribution. Then, the CDF of :math:`Y` is defined by:
+
+.. math::
+    F_Y(y) = F_1^\inputDim(y).
+
+Examples
+--------
+Let note: 
+
+.. math::
+    X_1  \sim \cU(2.5, 3.5) \\
+    X_2  \sim \mbox{Log-}\cU(1.0, 1.2) \\
+    X_3  \sim \cT(2.0, 3.0, 4.0) \\
+    C  \sim \mbox{ClaytonCopula}(1.2)
+
+We denote by :math:`(X_1,X_2, X_3)` the random vector where the  :math:`X_i` are
+correlated with the copula :math:`C`, and
+:math:`(\tilde{X}_1,\tilde{X}_2, \tilde{X}_3)` the random vector where the
+:math:`\tilde{X}_i` are distributed as :math:`X_i` and are independent.
+
+>>> import openturns as ot
+>>> dist_X1 = ot.Uniform(2.5, 3.5)
+>>> dist_X2 = ot.LogUniform(1.0, 1.2)
+>>> dist_X3 = ot.Triangular(2.0, 3.0, 4.0)
+>>> coll = [dist_X1, dist_X2, dist_X3]
+>>> cop = ot.BlockIndependentCopula([ot.ClaytonCopula(1.2), ot.IndependentCopula(1)])
+
+Create the distribution defined by:
+
+.. math::
+    Y_1 = \max(X_1,X_2, X_3).
+
+>>> dist_X = ot.JointDistribution(coll, cop)
+>>> dist_Y_1 = ot.MaximumDistribution(dist_X)
+
+Create the distribution defined by:
+
+.. math::
+    Y_2 = \max(\tilde{X}_1,\tilde{X}_2, \tilde{X}_3).
+
+>>> dist_Y_2 = ot.MaximumDistribution(coll)
+
+which is equivalent to write:
+
+>>> dist_X_tilde = ot.JointDistribution(coll)
+>>> dist_Y_2 = ot.MaximumDistribution(dist_X_tilde)
+
+Create the distribution defined by:
+
+.. math::
+    Y_3 = \max(X_1, X_4, X_5).
+
+where :math:`X_1, X_4, X_5` are independent and identically distributed as :math:`X_1`.
+
+>>> dist_Y_3 = ot.MaximumDistribution(dist_X1, 3)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumDistribution::getDistribution
+"Accessor to the underlying distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The underlying distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumDistribution::setDistribution
+"Accessor to the underlying distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The underlying distribution."
+
+// ---------------------------------------------------------------------
+

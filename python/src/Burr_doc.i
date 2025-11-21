@@ -1,0 +1,75 @@
+%feature("docstring") OT::Burr
+R"RAW(Burr distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = c k \frac{x^{c - 1}}{(1 + x^c)^{k + 1}}, \quad x \in \Rset^{+*}
+
+with :math:`c, k > 0`.
+
+Its only, first-order moment is:
+
+.. math::
+
+    \Expect{X} = k {\rm B}(k - 1 / c, 1 + 1 / c)
+
+where :math:`\rm B` denotes Euler's beta function.
+
+Parameters
+----------
+c : float, :math:`c > 0`
+
+    Default value is 1.0.
+k : float, :math:`k > 0`
+
+    Default value is 1.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Burr(2.0, 3.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Burr::getC
+"Accessor to the parameter :math:`c`.
+
+Returns
+-------
+c : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Burr::getK
+"Accessor to the parameter :math:`k`.
+
+Returns
+-------
+k : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Burr::setC
+"Accessor to the parameter :math:`c`.
+
+Parameters
+----------
+c : float, :math:`c > 0`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Burr::setK
+"Accessor to the parameter :math:`k`.
+
+Parameters
+----------
+k : float, :math:`k > 0`"

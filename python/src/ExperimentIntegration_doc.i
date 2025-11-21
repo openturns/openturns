@@ -1,0 +1,140 @@
+%feature("docstring") OT::ExperimentIntegration
+"Create a quadrature rule for numerical integration based on a weighted experiment.
+
+Parameters
+----------
+weightedExperiment : :class:`~openturns.WeightedExperiment`
+    The weighted experimental design.
+
+See also
+--------
+openturns.WeightedExperiment
+
+Notes
+-----
+This class creates an integration method using a weighted experimental
+design.
+It can be used on a function with arbitrary input and
+output.
+
+
+Examples
+--------
+Integrate the Ishigami physical model.
+
+>>> import openturns as ot
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sampleSize = 32768
+>>> experiment = ot.MonteCarloExperiment(im.distribution, sampleSize)
+>>> integration = ot.ExperimentIntegration(experiment)
+>>> approximatedOutputMean = integration.integrate(im.model)
+>>> print(approximatedOutputMean)
+[3.5...]
+
+Compute the L2 norm of a function.
+
+>>> im = ishigami_function.IshigamiModel()
+>>> centeredIshigamiFunction = ot.SymbolicFunction(
+...     ['x1', 'x2', 'x3'],
+...     ['sin(x1) + 7 * (sin(x2))^2 + 0.1 * x3^4 * sin(x1) - 3.5']
+... )
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sampleSize = 65536
+>>> experiment = ot.MonteCarloExperiment(im.distribution, sampleSize)
+>>> integration = ot.ExperimentIntegration(experiment)
+>>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
+>>> print(functionNorm)
+[3.7...]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExperimentIntegration::integrate
+R"RAW(Integrate the function.
+
+This method returns an approximation of the expected value of the physical model:
+
+.. math::
+
+    \Expect{ \model(\inputRV)}
+    = \int_{\physicalInputSpace} \model(\inputReal) 
+    \inputProbabilityDensityFunction(\inputReal) d\inputReal
+
+where :math:`\inputProbabilityDensityFunction` is the probability density 
+function of the input random vector :math:`\inputRV`.
+
+Parameters
+----------
+g : :class:`~openturns.Function`
+    The function to integrate.
+
+Returns
+-------
+approximateIntegral : :class:`~openturns.Point`
+    The approximated integral of the function.
+    The dimension of the :class:`~openturns.Point` is equal
+    to the output dimension of the function `g`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> print(im.expectation)
+3.5
+>>> sampleSize = 2 ** 12  # Sobol' sequence is a base 2 sequence
+>>> sequence = ot.SobolSequence(im.dim)
+>>> experiment = ot.LowDiscrepancyExperiment(sequence, im.distribution, 
+...                                          sampleSize, False)
+>>> integration = ot.ExperimentIntegration(experiment)
+>>> approximatedOutputMean = integration.integrate(im.model)
+>>> print(approximatedOutputMean[0])
+3.5...)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExperimentIntegration::computeL2Norm
+R"RAW(Compute the norm of the function.
+
+This method returns an approximation of the :math:`L^2(\inputProbabilityDensityFunction)` norm of the physical model:
+
+.. math::
+
+    \|\model\|_{L^2(\inputProbabilityDensityFunction)}
+    & = \left( \Expect{\model(\inputRV)^2} \right)^{1/2} \\
+    & = \left( \int_{\physicalInputSpace} \left(\model(\inputReal)\right)^2
+    \inputProbabilityDensityFunction(\inputReal) d\inputReal \right)^{1/2}
+
+where :math:`\inputProbabilityDensityFunction` is the probability density 
+function of the input random vector.
+
+Parameters
+----------
+g : :class:`~openturns.Function`
+    The function which norm is to be computed.
+
+Returns
+-------
+functionNorm : :class:`~openturns.Point`
+    The approximated L2 norm of the function.
+    The dimension of the :class:`~openturns.Point` is equal
+    to the output dimension of the function `g`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import math
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> print(math.sqrt(im.variance))
+3.72...
+>>> centeredIshigamiFunction = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+... ['sin(x1) + 7 * (sin(x2))^2 + 0.1 * x3^4 * sin(x1) - 3.5'])
+>>> sampleSize = 2 ** 12  # Sobol' sequence is a base 2 sequence
+>>> sequence = ot.SobolSequence(im.dim)
+>>> experiment = ot.LowDiscrepancyExperiment(sequence, im.distribution, sampleSize, False)
+>>> integration = ot.ExperimentIntegration(experiment)
+>>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
+>>> print(functionNorm[0])
+3.7...)RAW"

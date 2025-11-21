@@ -1,0 +1,293 @@
+%feature("docstring") OT::LogNormalFactory
+R"RAW(Lognormal factory distribution.
+
+See also
+--------
+DistributionFactory, LogNormal
+
+Notes
+-----
+Several estimators to build a LogNormal distribution from a scalar sample
+are proposed. The default strategy is using the local likelihood maximum estimator.
+
+**Moments based estimator:**
+
+Lets denote:
+
+- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical
+  mean of the sample, 
+- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2`
+  its empirical variance,
+- :math:`\displaystyle a_{3,n} = \sqrt{n} \frac{\sum_{i=1}^n (x_i - \overline{x}_n)^3}{ \left( \sum_{i=1}^n (x_i - \overline{x}_n)^2 \right)^{3/2}}`
+  its empirical skewness.
+
+We note :math:`\omega = e^{\sigma_l^2}`. The estimator :math:`\hat{\omega}_n` of
+:math:`\omega` is the positive root of the relation:
+
+.. math::
+    :label: omega_moment_relation
+
+    \omega^3 + 3 \omega^2 - (4 + a_{3,n}^2) = 0
+
+Then we estimate :math:`(\hat{\mu}_{ln}, \hat{\sigma}_{ln}, \hat{\gamma}_{n})`
+using:
+
+.. math::
+    :label: moment_estimator
+
+    \hat{\mu}_{ln} &= \log \hat{\beta}_{n} \\
+    \hat{\sigma}_{ln} &= \sqrt{ \log \hat{\omega}_{n} } \\
+    \hat{\gamma}_{ln} &= \overline{x}_n - \hat{\beta}_{n} \sqrt{ \hat{\omega}_{n} }
+
+where :math:`\displaystyle \hat{\beta}_{n} = \frac{s_n}{\hat{\omega}_{n} (\hat{\omega}_{n} - 1)}`.
+
+**Modified moments based estimator:**
+
+Using :math:`\overline{x}_n` and :math:`s_n^2` previously defined, the third
+equation is:
+
+.. math::
+    :label: expected_modified_moment
+
+    \Eset[ \log (X_{(1)} - \gamma)] = \log (x_{(1)} - \gamma)
+
+The quantity :math:`\displaystyle EZ_1 (n) = \frac{\Eset[ \log (X_{(1)} - \gamma)] - \mu_l}{\sigma_l}`
+is the mean of the first order statistics of a standard normal sample of size
+:math:`n`. We have:
+
+.. math::
+    :label: EZ1_equation
+
+    EZ_1(n) = \int_\Rset nz\phi(z) (1 - \Phi(z))^{n-1}\di{z}
+
+where :math:`\varphi` and :math:`\Phi` are the PDF and CDF of the standard
+normal distribution. The estimator :math:`\hat{\omega}_{n}` of :math:`\omega` is
+obtained as the solution of:
+
+.. math::
+    :label: omega_modified_moment_relation
+
+    \omega (\omega - 1) - \kappa_n \left[ \sqrt{\omega} - e^{EZ_1(n)\sqrt{\log \omega}} \right]^2 = 0
+
+where :math:`\displaystyle \kappa_n = \frac{s_n^2}{(\overline{x}_n - x_{(1)})^2}`.
+Then we have :math:`(\hat{\mu}_{ln}, \hat{\sigma}_{ln}, \hat{\gamma}_{n})` using
+the relations defined for the moments based estimator :eq:`moment_estimator`.
+
+**Local maximum likelihood estimator:**
+
+The following sums are defined:
+
+.. math::
+
+    S_0 &= \sum_{i=1}^n \frac{1}{x_i - \gamma} \\
+    S_1 &= \sum_{i=1}^n \log (x_i - \gamma) \\
+    S_2 &= \sum_{i=1}^n \log^2 (x_i - \gamma) \\
+    S_3 &= \sum_{i=1}^n \frac{\log (x_i - \gamma)}{x_i - \gamma}
+
+The Maximum Likelihood estimator of :math:`(\mu_{l}, \sigma_{l}, \gamma)` is 
+defined by:
+
+.. math::
+    :label: ln_mll_estimator
+
+    \hat{\mu}_{l,n} &= \frac{S_1(\hat{\gamma})}{n} \\
+    \hat{\sigma}_{l,n}^2 &= \frac{S_2(\hat{\gamma})}{n} - \hat{\mu}_{l,n}^2
+
+Thus, :math:`\hat{\gamma}_n` satisfies the relation:
+
+.. math::
+    :label: ln_mll_relation
+
+    S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_3(\gamma) = 0
+
+under the constraint :math:`\gamma \leq \min x_i`.
+
+**Least squares method estimator:**
+
+The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:
+
+.. math::
+
+    \min{\gamma} \norm{\Phi^{-1}(\hat{F}_n(x_i)) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
+
+where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
+
+When :math:`\gamma` is known and the :math:`x_i` follow a Log-Normal distribution then
+we use linear least-squares to solve the relation:
+
+.. math::
+  :label: least_squares_estimator_lognormal
+
+    \Phi^{-1}(\hat{F}_n(x_i)) = a_1 \log(x_i - \gamma) + a_0
+
+And the remaining parameters are estimated with:
+
+.. math::
+
+    \hat{\sigma}_l &= \frac{1}{a_1}\\
+    \hat{\mu}_l &= -a_0 \hat{\sigma}_l
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.LogNormal(1.5, 2.5, -1.5).getSample(1000)
+>>> estimated = ot.LogNormalFactory().build(sample)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::build
+"Build the distribution.
+
+**Available usages**:
+
+    build()
+
+    build(*sample*)
+
+    build(*sample, method*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+method : int
+    An integer corresponding to a specific estimator method:
+
+    - 0 : Local likelihood maximum estimator
+    - 1 : Modified moment estimator
+    - 2 : Method of moment estimator
+    - 3 : Least squares method.
+
+    The default value is 0. It is stored in :class:`~openturns.ResourceMap`, key *LogNormalFactory-EstimationMethod*. 
+
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The built distribution.
+
+Notes
+-----
+See the :meth:`buildAsLogNormal` method.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildAsLogNormal
+"Build the distribution as a LogNormal type.
+
+**Available usages**:
+
+    buildAsLogNormal()
+
+    buildAsLogNormal(*sample*)
+
+    buildAsLogNormal(*sample, method*)
+
+    buildAsLogNormal(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+method : int
+    An integer ranges from 0 to 2 corresponding to a specific estimator method:
+
+    - 0 : Local likelihood maximum estimator
+    - 1 : Modified moment estimator
+    - 2 : Method of moment estimator
+    - 3 : Least squares method.
+
+    Default value is 0. It is stored in  :class:`~openturns.ResourceMap`, key `LogNormalFactory-EstimationMethod`. 
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The estimated distribution as a LogNormal.
+
+Notes
+-----
+In the first usage, the default :class:`~openturns.LogNormal` distribution is built.
+
+In the second usage, the parameters are evaluated according the following strategy:
+
+- It first uses the local likelihood maximum based estimator. 
+- It uses the modified moments based estimator if the resolution of
+  :eq:`ln_mll_relation` is not possible.
+- It uses the moments based estimator, which are always defined, if
+  the resolution of :eq:`omega_modified_moment_relation` is not possible.
+
+In the third usage, the parameters of the :class:`~openturns.LogNormal` are estimated using the given method.
+  
+In the fourth usage, a :class:`~openturns.LogNormal` distribution corresponding to the given parameters is built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildMethodOfLocalLikelihoodMaximization
+"Build the distribution based on the local likelihood maximum estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildMethodOfModifiedMoments
+"Build the distribution based on the modified moments estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildMethodOfMoments
+"Build the distribution based on the method of moments estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildMethodOfLeastSquares
+R"RAW(Build the distribution based on the least-squares estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+gamma : float, optional
+    The :math:`\gamma` parameter estimate
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution.)RAW"

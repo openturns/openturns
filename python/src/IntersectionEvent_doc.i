@@ -1,0 +1,79 @@
+%feature("docstring") OT::IntersectionEvent
+R"RAW(Event defined as the intersection of several events.
+
+The occurrence of all the events is necessary for the system event to occur (parallel system):
+
+.. math::
+
+    E_{sys} = \bigcap_{i=1}^N E_i
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.RandomVector`
+    Collection of events, evaluated from left to right.
+    Ordering the least probable events first can help to avoid evaluating the last ones.
+    In case the ranking of the probabilities of the events is unknown,
+    it can be quickly estimated with (for example) a FORM analysis
+    of each individual event.
+
+See also
+--------
+UnionEvent
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> f1 = ot.SymbolicFunction(['x1', 'x2'], ['x1'])
+>>> f2 = ot.SymbolicFunction(['x1', 'x2'], ['x2'])
+>>> Y1 = ot.CompositeRandomVector(f1, X)
+>>> Y2 = ot.CompositeRandomVector(f2, X)
+>>> e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
+>>> e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
+>>> event = ot.IntersectionEvent([e1, e2])
+
+Then it can be used for sampling (or with simulation algorithms):
+
+>>> p = event.getSample(1000).computeMean()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getAntecedent
+"Accessor to the antecedent random vector.
+
+Returns
+-------
+antecedent : :class:`~openturns.RandomVector`
+    Defined as the root cause."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getFunction
+"Accessor to the function.
+
+Returns
+-------
+function : :class:`~openturns.Function`
+    Composed function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::setEventCollection
+"Accessor to sub events.
+
+Parameters
+----------
+events : sequence of :class:`~openturns.RandomVector`
+    List of sub events."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getEventCollection
+"Accessor to sub events.
+
+Returns
+-------
+events : :class:`~openturns.RandomVectorCollection`
+    List of sub events."

@@ -1,0 +1,116 @@
+%feature("docstring") OT::JointByConditioningDistribution
+R"RAW(Bayes distribution.
+
+Helper class for defining the distribution of the random vector :math:`(\vect{Y},\vect{X})`
+where :math:`\vect{Y}` follows the distribution :math:`\mathcal{L}_{\vect{Y}}`
+and :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`
+where :math:`\vect{\Theta}=g(\vect{Y})` with :math:`g` a given function of input dimension
+the dimension of :math:`\mathcal{L}_{\vect{Y}}` and output dimension the dimension of :math:`\vect{\Theta}`.
+
+This distribution is limited to the continuous case, ie when both the conditioning and the conditioned distributions are continuous.
+Its probability density function is defined as:
+
+.. math::
+
+    f_{(\vect{Y}, \vect{X})}(\vect{y}, \vect{x}) = f_{\vect{X}|\vect{\theta}=g(\vect{y})}(\vect{x}|g(\vect{y})) f_{\vect{Y}}( \vect{y})
+
+with :math:`f_{\vect{X}|\vect{\theta}=g(\vect{y})}` the PDF of the distribution of :math:`\vect{X}|\vect{\Theta}` 
+where :math:`\vect{\Theta}` has been replaced by :math:`g(\vect{y})`,
+:math:`f_{\vect{Y}}` the PDF of :math:`\vect{Y}` and :math:`g` the linking function.
+
+Parameters
+----------
+conditionedDist : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`g(\vect{Y})`.
+conditioningDist : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{Y}`, specified with its parameters.
+linkFunction : :class:`~openturns.Function`, optional
+    The function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist`
+    and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+    By default it is chosen as the identity function.
+
+Notes
+-----
+With the default constructor, the resulting random vector :math:`(Y,X)` is uniformly
+distributed on the parallelogram which vertices are :math:`(-1,-1); (0,-1); (2,1); (1,1)`.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> conditioningDist = ot.Normal(0.0, 1.0)
+>>> g = ot.SymbolicFunction(['y'], ['y', '0.1+y^2'])
+>>> conditionedDist = ot.Normal()
+>>> jointDist = ot.JointByConditioningDistribution(conditionedDist, conditioningDist, g)
+
+Draw a sample:
+
+>>> sample = jointDist.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointByConditioningDistribution::getConditionedDistribution
+R"RAW(Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+
+Returns
+-------
+conditionedDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`g(\vect{Y})`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointByConditioningDistribution::getConditioningDistribution
+R"RAW(Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
+
+Returns
+-------
+conditioningDistribution : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{Y}`, specified with its parameters.
+)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointByConditioningDistribution::getLinkFunction
+R"RAW(Accessor to the distribution's conditioned distribution parameter `linkFunction`.
+
+Returns
+-------
+linkFunction : :class:`~openturns.Function`
+    The function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension
+    of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointByConditioningDistribution::setConditionedDistribution
+R"RAW(Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+
+Parameters
+----------
+conditionedDistribution : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{X}|\vect{\Theta}`,
+    whose parameters will be overwritten by :math:`g(\vect{Y})`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointByConditioningDistribution::setConditioningDistribution
+R"RAW(Accessor to the distribution's conditioned distribution parameter `conditioningDistribution`.
+
+Parameters
+----------
+conditioningDistribution : :class:`~openturns.Distribution`
+    The distribution of :math:`\vect{Y}`, specified with its parameters.
+)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointByConditioningDistribution::setLinkFunction
+R"RAW(Accessor to the distribution's conditioned distribution parameter `linkFunction`.
+
+Parameters
+----------
+linkFunction : :class:`~openturns.Function`
+    The function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist`
+    and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+)RAW"

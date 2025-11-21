@@ -1,0 +1,55 @@
+%feature("docstring") OT::BootstrapExperiment
+R"RAW(Bootstrap experiment.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Points to defined a :class:`~openturns.UserDefined` distribution
+    :math:`\mu`.
+
+Notes
+-----
+BootstrapExperiment is a random weighted design of experiments.
+Calling the :class:`BootstrapExperiment` constructor is equivalent to calling the
+:class:`~openturns.WeightedExperiment` constructor as follows:
+
+``WeightedExperiment(UserDefined(sample), sample.getSize())``
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = [[i,i+1] for i in range(5)]
+>>> experiment = ot.BootstrapExperiment(sample)
+>>> print(experiment.generate())
+    [ v0 v1 ]
+0 : [ 4  5  ]
+1 : [ 1  2  ]
+2 : [ 1  2  ]
+3 : [ 1  2  ]
+4 : [ 2  3  ]
+>>> print(experiment.getDistribution())
+UserDefined({x = [0,1], p = 0.2}, {x = [1,2], p = 0.2}, {x = [2,3], p = 0.2}, {x = [3,4], p = 0.2}, {x = [4,5], p = 0.2})
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BootstrapExperiment::GenerateSelection
+R"RAW(Generate a list of indices of points with replacement.
+
+Parameters
+----------
+size : positive int
+    Number of indices to choose.
+n : positive int
+    Upper bound of the interval in which the indices are chosen.
+
+Returns
+-------
+selection : :class:`~openturns.Indices`
+    Sequence of size *size* of indices :math:`i` such that :math:`0\leq i<n`.
+)RAW"

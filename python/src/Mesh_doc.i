@@ -1,0 +1,790 @@
+%feature("docstring") OT::Mesh
+R"RAW(Mesh.
+
+Available constructors:
+    Mesh(*dim=1*)
+
+    Mesh(*vertices*)
+
+    Mesh(*vertices, simplices, checkValidity*)
+
+Parameters
+----------
+dim : int, :math:`dim \geq 0`
+    The dimension of the vertices. By default, it creates only one
+    vertex of dimension :math:`dim` with components equal to 0.
+vertices : 2-d sequence of float
+    Vertices' coordinates in :math:`\Rset^{dim}`.
+simplices : 2-d sequence of int
+    List of simplices defining the topology of the mesh. The simplex
+    :math:`[i_1, \dots, i_{dim+1}]` connects the vertices of indices
+    :math:`(i_1, \dots, i_{dim+1})` in :math:`\Rset^{dim}`. In dimension 1, a
+    simplex is an interval :math:`[i_1, i_2]`; in dimension 2, it is a
+    triangle :math:`[i_1, i_2, i_3]`.
+checkMeshValidity : bool, optional
+    Whether to check if the mesh is valid at the instance creation or if the validation
+    should be delayed until required e.g. when calling :meth:`computeWeights`.
+    The validity check consists in looking for non-overlapping
+    simplices, no unused vertex, no simplices with duplicate vertices and
+    no coincident vertices.
+    Default value is set to false in resource map key `Mesh-CheckValidity`
+
+
+See also
+--------
+RegularGrid
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define the vertices of the mesh
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
+>>> # Define the simplices of the mesh
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> # Create the mesh of dimension 2
+>>> mesh2d = ot.Mesh(vertices, simplices)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::ImportFromMSHFile
+"Import mesh from FreeFem 2-d mesh files.
+
+Parameters
+----------
+MSHFile : str
+    A MSH ASCII file.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    Mesh defined in the file *MSHFile*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isNumericallyEmpty
+R"RAW(Check if the mesh is numerically empty.
+
+Returns
+-------
+isEmpty : bool
+    Flag telling whether the mesh is numerically empty, i.e. if its numerical
+    volume is inferior or equal to :math:`\epsilon` (defined in the
+    :class:`~openturns.ResourceMap`:
+    :math:`\epsilon` = Domain-SmallVolume).
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> print(mesh2d.isNumericallyEmpty())
+False)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::checkPointInSimplex
+"Check if a point is inside a simplex.
+
+Parameters
+----------
+point : sequence of float
+    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
+index : int
+    Integer characterizes one simplex of the mesh.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether *point* is inside the simplex of index *index*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> # Create a point A inside the simplex
+>>> pointA = [0.6, 0.3]
+>>> print(mesh2d.checkPointInSimplex(pointA, 0))
+True
+>>> # Create a point B outside the simplex
+>>> pointB = [1.1, 0.6]
+>>> print(mesh2d.checkPointInSimplex(pointB, 0))
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::checkPointInSimplexWithCoordinates
+"Check if a point is inside a simplex and returns its barycentric coordinates.
+
+Parameters
+----------
+point : sequence of float
+    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
+index : int
+    Integer characterizes one simplex of the mesh.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether *point* is inside the simplex of index *index*.
+coordinates : :class:`~openturns.Point`
+    The barycentric coordinates of the given point wrt the vertices of the simplex.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> # Create a point A inside the simplex
+>>> pointA = [0.6, 0.3]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointA, 0))
+[True, class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+>>> # Create a point B outside the simplex
+>>> pointB = [1.1, 0.6]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
+[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]
+
+Notes
+-----
+The tolerance for the check on the barycentric coordinates can be tweaked
+using the key `Mesh-VertexEpsilon`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::checkPointInNeighbourhoodWithCoordinates
+"Check if a point is inside a simplex and returns its barycentric coordinates.
+
+Parameters
+----------
+point : sequence of float
+    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
+index : int
+    Integer characterizes a vertex of the mesh.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether *point* is inside a simplex containing vertex *index*.
+simplex : int
+    Index of the simplex containing this point.
+coordinates : :class:`~openturns.Point`
+    The barycentric coordinates of the given point with respect to the vertices
+    of the simplex.
+.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> # Create a point A inside the simplex
+>>> pointA = [0.6, 0.3]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointA, 0))
+[True, class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+>>> # Create a point B outside the simplex
+>>> pointB = [1.1, 0.6]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
+[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::computeSimplicesVolume
+"Compute the volume of all simplices.
+
+Returns
+-------
+volume : :class:`~openturns.Point`
+    Volume of all simplices. It corresponds to the *intrinsic* volume, eg the surface of a mesh made of degenerated simplices in 3D.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> dim = mesh2d.getIntrinsicDimension()
+>>> vol2d = mesh2d.computeSimplicesVolume()
+>>> simplices = [[0, 1, 1], [1, 2, 2], [2, 0, 0]]
+>>> mesh1d_in_2d = ot.Mesh(vertices, simplices)
+>>> dim = mesh1d_in_2d.getIntrinsicDimension()
+>>> vol1d = mesh1d_in_2d.computeSimplicesVolume()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::computeP1Gram
+R"RAW(Compute the P1 Lagrange finite element gram matrix of the mesh.
+
+Returns
+-------
+gram : :class:`~openturns.CovarianceMatrix`
+    P1 Lagrange finite element gram matrix of the mesh.
+
+Notes
+-----
+The P1 Lagrange finite element space associated to a mesh with vertices :math:`(\vect{x}_i)_{i=1,\hdots,n}` is the space of piecewise-linear functions generated by the functions :math:`(\phi_i)_{i=1,\hdots,n}`, where :math:`\phi_i(\vect{x_i})=1`, :math:`\phi_i(\vect{x_j})=0` for :math:`j\neq i` and the restriction of :math:`\phi_i` to any simplex is an affine function. The vertices that are not included into at least one simplex are not taken into account.
+
+The gram matrix of the mesh is defined as the symmetric positive definite matrix :math:`\mat{K}` whose generic element :math:`K_{i,j}` is given by:
+
+.. math::
+
+    \forall i,j=1,\hdots,n,\quad K_{i,j}=\int_{\cD}\phi_i(\vect{x})\phi_j(\vect{x})\di{\vect{x}}
+
+This method is used in several algorithms related to stochastic process representation such as the Karhunen-Loeve decomposition.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Define the vertices of the mesh
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
+>>> # Define the simplices of the mesh
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> # Create the mesh of dimension 2
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> print(mesh2d.computeP1Gram())
+[[ 0.0833333 0.0416667 0.0416667 0         ]
+ [ 0.0416667 0.125     0.0625    0.0208333 ]
+ [ 0.0416667 0.0625    0.125     0.0208333 ]
+ [ 0         0.0208333 0.0208333 0.0416667 ]]
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::draw
+"Draw the mesh.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    If the dimension of the mesh is 1, it draws the corresponding interval,
+    using the :meth:`draw1D` method; if the dimension is 2, it draws the
+    triangular simplices, using the :meth:`draw2D` method; if the dimension is
+    3, it projects the simplices on the plane of the two first components,
+    using the :meth:`draw3D` method with its default parameters, superposing
+    the simplices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::draw1D
+"Draw the mesh of dimension 1.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Draws the line linking the vertices of the mesh when the mesh is of
+    dimension 1.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> vertices = [[0.5], [1.5], [2.1], [2.7]]
+>>> simplices = [[0, 1], [1, 2], [2, 3]]
+>>> mesh1d = ot.Mesh(vertices, simplices)
+>>> # Create a graph
+>>> aGraph = mesh1d.draw1D()
+>>> # Draw the mesh
+>>> View(aGraph).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::draw2D
+"Draw the mesh of dimension 2.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Draws the edges of each simplex, when the mesh is of dimension 2.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> # Create a graph
+>>> aGraph = mesh2d.draw2D()
+>>> # Draw the mesh
+>>> View(aGraph).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::draw3D
+R"RAW(Draw the bidimensional projection of the mesh.
+
+Available usages:
+    draw3D(*drawEdge=True, thetaX=0.0, thetaY=0.0, thetaZ=0.0, shading=False, rho=1.0*)
+
+    draw3D(*drawEdge, rotation, shading, rho*)
+
+Parameters
+----------
+drawEdge : bool
+    Tells if the edge of each simplex has to be drawn.
+thetaX : float
+    Gives the value of the rotation along the X axis in radian.
+thetaY : float
+    Gives the value of the rotation along the Y axis in radian.
+thetaZ : float
+    Gives the value of the rotation along the Z axis in radian.
+rotation : :class:`~openturns.SquareMatrix`
+    Operates a rotation on the mesh before its projection of the plane of the
+    two first components.
+shading  : bool
+    Enables to give a visual perception of depth and orientation.
+rho : float, :math:`0 \leq \rho \leq 1`
+    Contraction factor of the simplices. If :math:`\rho < 1`, all the
+    simplices are contracted and appear deconnected: some holes are created,
+    which enables to see inside the mesh. If :math:`\rho = 1`, the simplices
+    keep their initial size and appear connected. If :math:`\rho = 0`, each
+    simplex is reduced to its gravity center.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Draws the bidimensional projection of the mesh on the :math:`(x,y)` plane.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> from math import cos, sin, pi
+>>> vertices = [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0],
+...             [0.0, 1.0, 1.0], [1.0, 0.0, 0.0], [1.0, 0.0, 1.0],
+...             [1.0, 1.0, 0.0], [1.0, 1.0, 1.0]]
+>>> simplices = [[0, 1, 2, 4], [3, 5, 6, 7],[1, 2, 3, 6],
+...              [1, 2, 4, 6], [1, 3, 5, 6], [1, 4, 5, 6]]
+>>> mesh3d = ot.Mesh(vertices, simplices)
+>>> # Create a graph
+>>> aGraph = mesh3d.draw3D()
+>>> # Draw the mesh
+>>> View(aGraph).show()
+>>> rotation = ot.SquareMatrix(3)
+>>> rotation[0, 0] = cos(pi / 3.0)
+>>> rotation[0, 1] = sin(pi / 3.0)
+>>> rotation[1, 0] = -sin(pi / 3.0)
+>>> rotation[1, 1] = cos(pi / 3.0)
+>>> rotation[2, 2] = 1.0
+>>> # Create a graph
+>>> aGraph = mesh3d.draw3D(True, rotation, True, 1.0)
+>>> # Draw the mesh
+>>> View(aGraph).show()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::exportToVTKFile
+"Export the mesh to a VTK file.
+
+Parameters
+----------
+myVTKFile.vtk : str
+    Name of the created file which contains the mesh and the associated random
+    values that can be visualized with the open source software
+    `Paraview <http://www.paraview.org/>`_."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getDescription
+"Description accessor.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the vertices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.Mesh()
+>>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
+>>> vertices.setDescription(['X', 'Y'])
+>>> mesh.setVertices(vertices)
+>>> print(mesh.getDescription())
+[X,Y]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setDescription
+"Description accessor.
+
+Parameters
+----------
+description : sequence of str
+    Description of the vertices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.Mesh()
+>>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
+>>> mesh.setVertices(vertices)
+>>> mesh.setDescription(['X', 'Y'])
+>>> print(mesh.getDescription())
+[X,Y]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getSimplex
+R"RAW(Get the simplex of a given index.
+
+Parameters
+----------
+index : int
+    Index characterizing one simplex of the mesh.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices defining the simplex of index *index*. The simplex
+    :math:`[i_1, \dots, i_{n+1}]` relies the vertices of index
+    :math:`(i_1, \dots, i_{n+1})` in :math:`\Rset^{dim}`. In dimension 1, a
+    simplex is an interval :math:`[i_1, i_2]`; in dimension 2, it is a
+    triangle :math:`[i_1, i_2, i_3]`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> print(mesh2d.getSimplex(0))
+[0,1,2]
+>>> print(mesh2d.getSimplex(1))
+[1,2,3])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getSimplices
+R"RAW(Get the simplices of the mesh.
+
+Returns
+-------
+indicesCollection : collection of :class:`~openturns.Indices`
+    List of indices defining all the simplices. The simplex
+    :math:`[i_1, \dots, i_{n+1}]` relies the vertices of index
+    :math:`(i_1, \dots, i_{n+1})` in :math:`\Rset^{dim}`. In dimension 1, a
+    simplex is an interval :math:`[i_1, i_2]`; in dimension 2, it is a
+    triangle :math:`[i_1, i_2, i_3]`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> print(mesh2d.getSimplices())
+[[0,1,2],[1,2,3]])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getSimplicesNumber
+"Get the number of simplices of the mesh.
+
+Returns
+-------
+number : int
+    Number of simplices of the mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getVertex
+R"RAW(Get the vertex of a given index.
+
+Parameters
+----------
+index : int
+    Index characterizing one vertex of the mesh.
+
+Returns
+-------
+vertex : :class:`~openturns.Point`
+    Coordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
+    where :math:`dim` is the dimension of the vertices of the mesh.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplices = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> print(mesh2d.getVertex(1))
+[1,0]
+>>> print(mesh2d.getVertex(0))
+[0,0])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getVertices
+R"RAW(Get the vertices of the mesh.
+
+Returns
+-------
+vertices : :class:`~openturns.Sample`
+    Coordinates in :math:`\Rset^{dim}` of the vertices,
+    where :math:`dim` is the dimension of the vertices of the mesh.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplices = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> print(mesh2d.getVertices())
+0 : [ 0 0 ]
+1 : [ 1 0 ]
+2 : [ 1 1 ])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getVerticesNumber
+"Get the number of vertices of the mesh.
+
+Returns
+-------
+number : int
+    Number of vertices of the mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getVolume
+"Get the volume of the mesh.
+
+Returns
+-------
+volume : float
+    Geometrical volume of the mesh which is the sum of its simplices' volumes.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> mesh2d = ot.Mesh(vertices, simplices)
+>>> mesh2d.getVolume()
+0.75"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isRegular
+"Check if the mesh is regular (only for 1-d meshes).
+
+Returns
+-------
+isRegular : bool
+    Tells if the mesh is regular or not.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.5], [1.5], [2.4], [3.5]]
+>>> simplices = [[0, 1], [1, 2], [2, 3]]
+>>> mesh1d = ot.Mesh(vertices, simplices)
+>>> print(mesh1d.isRegular())
+False
+>>> vertices = [[0.5], [1.5], [2.5], [3.5]]
+>>> mesh1d = ot.Mesh(vertices, simplices)
+>>> print(mesh1d.isRegular())
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isValid
+"Check the mesh validity.
+
+Returns
+-------
+validity : bool
+    Tells if the mesh is valid i.e. if there is non-overlaping simplices,
+    no unused vertex, no simplices with duplicate vertices and no coincident
+    vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setSimplices
+R"RAW(Set the simplices of the mesh.
+
+Parameters
+----------
+indices : 2-d sequence of int
+    List of indices defining all the simplices. The simplex
+    :math:`[i_1, \dots, i_{n+1}]` relies the vertices of index
+    :math:`(i_1, \dots, i_{n+1})` in :math:`\Rset^{dim}`. In dimension 1, a
+    simplex is an interval :math:`[i_1, i_2]`; in dimension 2, it is a
+    triangle :math:`[i_1, i_2, i_3]`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.Mesh()
+>>> simplices = [[0, 1, 2], [1, 2, 3]]
+>>> mesh.setSimplices(simplices)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setVertex
+R"RAW(Set a vertex of a given index.
+
+Parameters
+----------
+index : int
+    Index of the vertex to set.
+vertex : sequence of float
+    Cordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
+    where :math:`dim` is the dimension of the vertices of the mesh.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplices = [[0, 1, 2]]
+>>> mesh = ot.Mesh(vertices, simplices)
+>>> vertex = [0.0, 0.5]
+>>> mesh.setVertex(0, vertex)
+>>> print(mesh.getVertices())
+0 : [ 0   0.5 ]
+1 : [ 1   0   ]
+2 : [ 1   1   ])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setVertices
+R"RAW(Set the vertices of the mesh.
+
+Parameters
+----------
+vertices : 2-d sequence of float
+    Cordinates in :math:`\Rset^{dim}` of the vertices,
+    where :math:`dim` is the dimension of the vertices of the mesh.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.Mesh()
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> mesh.setVertices(vertices)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::streamToVTKFormat
+"Give a VTK representation of the mesh.
+
+Returns
+-------
+stream : str
+    VTK representation of the mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::computeWeights
+"Compute an approximation of an integral defined over the mesh.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    Weights such that an integral of a function over the mesh
+    is a weighted sum of its values at the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::fixOrientation()
+"Make all the simplices positively oriented.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 2, 1]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> print(mesh2d.getSimplices())
+[[0,2,1]]
+>>> mesh2d.fixOrientation()
+>>> print(mesh2d.getSimplices())
+[[2,0,1]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isEmpty
+"Check whether the mesh is empty.
+
+Returns
+-------
+empty : bool
+    Tells if the mesh is empty, ie if its volume is null."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getDimension
+"Dimension accessor.
+
+Returns
+-------
+dimension : int
+    Dimension of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getIntrinsicDimension
+"Intrinsic dimension accessor.
+
+Returns
+-------
+dimension : int
+    Dimension of the simplices. It differs from the dimension if the last indices are repeated in the definition of the simplices."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Mesh::getLowerBound
+"Lower bound accessor.
+
+Returns
+-------
+lower_bound : :class:`~openturns.Point`
+    Min of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getUpperBound
+"Upper bound accessor.
+
+Returns
+-------
+upper_bound : :class:`~openturns.Point`
+    Max of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::intersect
+"Compute the intersection with another mesh.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Another mesh.
+
+Returns
+-------
+intersection : :class:`~openturns.Mesh`
+    The intersection mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getSubMesh
+"Compute the sub-mesh by filtering simplices.
+
+Parameters
+----------
+simplicesIndices : sequence of int
+    Indices of simplices to retain.
+
+Returns
+-------
+subMesh : :class:`~openturns.Mesh`
+    The sub-mesh."

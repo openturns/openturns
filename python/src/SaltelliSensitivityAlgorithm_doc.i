@@ -1,0 +1,85 @@
+%feature("docstring") OT::SaltelliSensitivityAlgorithm
+R"RAW(Sensitivity analysis using Saltelli method.
+
+Available constructors:
+    SaltelliSensitivityAlgorithm(*inputDesign, outputDesign, N*)
+
+    SaltelliSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
+
+    SaltelliSensitivityAlgorithm(*experiment, model, computeSecondOrder*)
+
+Parameters
+----------
+inputDesign : :class:`~openturns.Sample`
+    Design for the evaluation of sensitivity indices, obtained with the
+    :class:`~openturns.SobolIndicesExperiment`:code:`.`:meth:`~openturns.SobolIndicesExperiment.generate`
+    method
+outputDesign : :class:`~openturns.Sample`
+    Design for the evaluation of sensitivity indices, obtained as the evaluation
+    of a Function (model) on the previous inputDesign
+distribution : :class:`~openturns.Distribution`
+    Input probabilistic model.
+    Should have independent copula
+experiment : :class:`~openturns.WeightedExperiment`
+    Experiment for the generation of two independent samples.
+N : int
+    Size of samples to generate
+model : :class:`~openturns.Function`
+    Model to evaluate input samples.
+computeSecondOrder : bool
+    If True, design that will be generated contains elements for the evaluation
+    of second order indices.
+
+Notes
+-----
+This class analyzes the influence of each component of a random vector
+:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on a random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
+The [saltelli2002]_ method is used to estimate both first
+and total order indices.
+Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
+The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respectively:
+
+.. math::
+
+   \widehat{V}_i & =  \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)  \tilde{\vect{g}}(\vect{E}_k) 
+   - \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)\right) 
+   \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)\right) \\
+   \widehat{V}_{-i} & =  \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)  \tilde{\vect{g}}(\vect{E}_k) 
+   - \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)\right) 
+   \left(\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)\right)
+
+where :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
+
+The class constructor ``SaltelliSensitivityAlgorithm(inputDesign, outputDesign, N)``
+requires a specific structure for the  ``outputDesign``, and therefore for the  ``inputDesign`` .
+The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
+(see example below). Otherwise, results will be **worthless**.
+
+
+
+See also
+--------
+SobolIndicesAlgorithm
+
+Examples
+--------
+
+Estimate first and total order Sobol' indices:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
+>>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
+>>> distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> # Define designs to pre-compute
+>>> size = 10000
+>>> inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()
+>>> outputDesign = model(inputDesign)
+>>> # sensitivity analysis algorithm
+>>> sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
+>>> print(sensitivityAnalysis.getFirstOrderIndices())
+[0.302745,0.460846,0.0066916]
+>>> print(sensitivityAnalysis.getTotalOrderIndices())
+[0.574996,0.427126,0.256689])RAW"
+

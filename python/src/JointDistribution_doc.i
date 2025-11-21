@@ -1,0 +1,133 @@
+%feature("docstring") OT::JointDistribution
+R"RAW(Joint distribution.
+
+A :class:`~openturns.JointDistribution` is a multivariate distribution of dimension :math:`\inputDim`,
+which is built from:
+
+- :math:`\inputDim` scalar distributions whose cumulative distribution functions are
+  denoted by :math:`(F_1, \dots, F_\inputDim)`, called the  *instrumental marginals*,
+- and a core :math:`K` which is a multivariate distribution of dimension :math:`\inputDim` whose range is
+  included in :math:`[0,1]^\inputDim`.
+
+The cumulative distribution function :math:`F` of the resulting distribution is written as:
+
+.. math::
+
+    F(x_1, \cdots, x_\inputDim) = K(F_1(x_1), \cdots, F_\inputDim(x_\inputDim))
+
+If :math:`K` is a copula :math:`C`, then the  instrumental marginals are the marginal distributions
+of the resulting distribution and we get:
+
+.. math::
+
+    F(x_1, \cdots, x_\inputDim) = C(F_1(x_1), \cdots, F_\inputDim(x_\inputDim))
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of :math:`\inputDim` scalar distributions
+    called the *instrumental marginals*.
+    
+    If *core* is a copula, these distributions are the scalar marginal distributions of the
+    joint distribution.
+core : :class:`~openturns.Distribution`, optional
+    A distribution over :math:`[0,1]^\inputDim`. 
+    
+    By default, the :class:`~openturns.IndependentCopula` of dimension :math:`\inputDim`.
+
+See also
+--------
+SklarCopula
+
+Examples
+--------
+Use a copula:
+
+>>> import openturns as ot
+>>> copula = ot.GumbelCopula(2.0)
+>>> marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
+>>> distribution = ot.JointDistribution(marginals, copula)
+
+Use a non-copula core:
+
+>>> core = ot.Dirichlet([2.0, 1.5, 2.5])
+>>> instrumental_marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
+>>> distribution = ot.JointDistribution(instrumental_marginals, core)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::getDistributionCollection
+"Get the instrumental marginals of the distribution.
+
+Returns
+-------
+distributions : list of :class:`~openturns.Distribution`
+    List of the instrumental marginals of the distribution.
+
+Notes
+-----
+If the core :math:`K` is a copula, the instrumental marginals are the marginals of
+the resulting distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::setDistributionCollection
+"Set the instrumental marginals of the distribution.
+
+Parameters
+----------
+distributions : list of :class:`~openturns.Distribution`
+    List of the instrumental marginals of the distribution.
+
+Notes
+-----
+If the core :math:`K` is a copula, the instrumental marginals are the marginals of
+the resulting distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::setCopula
+"Set the copula of the distribution.
+
+Parameters
+----------
+copula : :class:`~openturns.Distribution`
+    Copula of the distribution.
+
+Notes
+-----
+In that case, the core :math:`K` is the specified copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::getCore
+R"RAW(Get the core of the distribution.
+
+Returns
+-------
+core : :class:`~openturns.Distribution`
+    Core :math:`K` of the distribution.
+
+Notes
+-----
+A core is a multivariate distribution whose range is
+included in the unit hypercube :math:`[0, 1]^\inputDim`.
+It is not always the copula of the distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JointDistribution::setCore
+R"RAW(Set the core of the distribution.
+
+Parameters
+----------
+core : :class:`~openturns.Distribution`
+    Core :math:`K` of the distribution.
+
+Notes
+-----
+A core is a multivariate distribution whose range is
+included in the unit hypercube :math:`[0, 1]^\inputDim`.
+It is not always the copula of the distribution.
+)RAW"

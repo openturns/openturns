@@ -1,0 +1,110 @@
+%feature("docstring") OT::Rice
+R"RAW(Rice distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = 2\frac{x}{\beta^2}p_{\chi^2(2,\frac{\nu^2}{\beta^2})}
+             \left(\frac{x^2}{\beta^2}\right),
+             \quad x \in [0; +\infty[
+
+where :math:`p_{\chi^2(\nu, \lambda)}` is the probability density function of a
+:class:`~openturns.NonCentralChiSquare` distribution.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \beta \sqrt{\frac{\pi}{2}}
+                         \mathrm{L}_{1/2}\left(-\frac{\nu^2}{2\beta^2}\right) \\
+        \Var{X} & = & 2\beta^2 + \nu^2 - \frac{\pi\beta^2}{2}
+                      \mathrm{L}_{1/2}^2\left(\frac{-\nu^2}{2\beta^2}\right)
+    \end{eqnarray*}
+
+where :math:`\mathrm{L}_q(x)` denotes a Laguerre polynomial.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter.
+
+    Default value is 1.0.
+nu : float, :math:`\nu \geq 0`
+    Location parameter.
+
+    Default value is 1.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Rice()
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::getBeta
+R"RAW(Accessor to the distribution's scale parameter :math:`\beta`.
+
+Returns
+-------
+beta : float
+    Scale parameter :math:`\beta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::getNu
+R"RAW(Accessor to the distribution's location parameter :math:`\nu`.
+
+Returns
+-------
+nu : float
+    Location parameter :math:`\nu`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::setBeta
+R"RAW(Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::setNu
+R"RAW(Accessor to the distribution's location parameter :math:`\nu`.
+
+Parameters
+----------
+nu : float, :math:`\nu >= 0`
+    Location parameter :math:`\nu`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::setMaximumIteration
+"Accessor to the maximum CDF iteration number.
+
+Parameters
+----------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Rice::getMaximumIteration
+"Accessor to the maximum CDF iteration number.
+
+Returns
+-------
+maximumIteration : int
+    Maximum number of iterations for the CDF computation."

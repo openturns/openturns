@@ -1,0 +1,97 @@
+%feature("docstring") OT::Wilks
+R"RAW(Class to estimate a confidence interval on a quantile.
+
+Refer to :ref:`quantile_confidence_estimation`.
+
+Parameters
+----------
+X : :class:`~openturns.RandomVector`,
+    A random vector of dimension 1.
+
+Notes
+-----
+This static class estimates an upper bound of the quantile of level :math:`\alpha \in [0,1]` of the random variable :math:`X`
+with a confidence greater than :math:`\beta`, using a given order statistics.
+
+Let :math:`x_{\alpha}` be the unknown quantile of level :math:`\alpha` of the random variable :math:`X` of dimension 1.
+Let :math:`(X_1, \dots, X_\sampleSize)` be a sample of independent and identically distributed variables according to :math:`X`.
+Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
+:math:`X_{(k)}` is the :math:`k` -th maximum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`.
+For example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
+and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum. We have:
+
+.. math::
+
+    X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}
+
+Given :math:`\alpha`, :math:`\beta` and :math:`i`, the class estimates the minimal size :math:`\sampleSize` such that:
+
+.. math::
+
+    \Prob{x_{\alpha} \leq X_{(\sampleSize-i)}} \geq \beta
+
+Once the minimal size :math:`\sampleSize`  has been estimated, a sample of size :math:`\sampleSize` can be generated from
+:math:`X` and an upper bound of :math:`x_{\alpha}` is estimated by the value of the :math:`X_{(\sampleSize-i)}` on the sample.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wilks::ComputeSampleSize
+R"RAW(Evaluate the minimum size of the sample.
+
+Parameters
+----------
+alpha : positive float in :math:`[0,1)`
+    The level :math:`\alpha` of the quantile.
+beta : positive float in :math:`[0,1)`,
+    The confidence level on the upper bound.
+i : int
+    The index such that :math:`X_{(\sampleSize -i)}` is an upper bound of :math:`x_{\alpha}`
+    with confidence :math:`\beta`.
+    Default value is :math:`i = 0`.
+
+Returns
+-------
+n : int,
+    The minimum size of the sample.
+
+Notes
+-----
+The minimum sample size :math:`\sampleSize` is such that:
+
+.. math::
+
+    \Prob{x_{\alpha} \leq X_{(\sampleSize-i)}} \geq \beta
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wilks::computeQuantileBound
+R"RAW(Evaluate an upper bound of a quantile.
+
+Parameters
+----------
+alpha : positive float in :math:`[0,1)`
+    The level :math:`\alpha` of the quantile.
+beta : positive float in :math:`[0,1)`
+    The confidence level on the upper bound.
+i : int
+    The index such that :math:`X_{(\sampleSize -i)}` is an upper bound of :math:`x_{\alpha}`
+    with confidence level :math:`\beta`.
+    Default value is :math:`i = 0`.
+
+Returns
+-------
+upperBound : :class:`~openturns.Point`
+    The estimate of the quantile upper bound.
+
+Notes
+-----
+The method starts by evaluating the minimum sample size :math:`\sampleSize` such that:
+
+.. math::
+
+    \Prob{x_{\alpha} \leq X_{(\sampleSize-i)}} \geq \beta
+
+Then, it generates a sample of size  :math:`\sampleSize` from the random vector :math:`X`. The upper bound of :math:`x_{\alpha}`
+is :math:`x_{(\sampleSize-i)}`, that is, the :math:`\sampleSize - i`-th observation in the ordered sample.
+)RAW"

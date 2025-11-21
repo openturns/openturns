@@ -1,0 +1,101 @@
+%feature("docstring") OT::Wishart
+R"RAW(Wishart distribution.
+
+Parameters
+----------
+V : 2-d sequence of float
+    Scale matrix, positive definite of size :math:`p`.
+
+    Default value is [[1.0]].
+nu : float, :math:`\nu > p - 1`
+    Degrees of freedom.
+
+    Default value is 1.0.
+
+See Also
+--------
+InverseWishart
+
+Notes
+-----
+The distribution is of dimension :math:`\frac{p(p+1)}{2}` (without the symmetry terms). Its CDF is computed using a generic algorithm controlled by a positive scale associated to the entry *Wishart-CDFScaleFactor* of :class:`~openturns.ResourceMap`.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> p = 3
+>>> nu = p + 1.0
+>>> distribution = ot.Wishart(ot.CovarianceMatrix(p), nu)
+
+Get a realization as covariance matrix:
+
+>>> matrix = distribution.getRealizationAsMatrix()
+>>> print(matrix)
+[[ 5.16322 2.73917 3.26582 ]
+ [ 2.73917 2.63329 2.61323 ]
+ [ 3.26582 2.61323 3.65668 ]]
+
+Get a realization (to be interpreted as the lower triangle terms of the matrix,
+line by line as a flat vector):
+
+>>> flat = distribution.getRealization()
+>>> print(flat)
+[5.82928,-5.5291,18.3127,-0.787297,2.42298,0.465375]
+
+Draw a sample (also in flat format):
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wishart::getNu
+"Accessor to the degrees of freedom parameter.
+
+Returns
+-------
+nu : float
+    Degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wishart::setNu
+R"RAW(Accessor to the degrees of freedom parameter.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wishart::getV
+"Accessor to the scale parameter.
+
+Returns
+-------
+V : :class:`~openturns.CovarianceMatrix`
+    Scale matrix, positive definite of size :math:`p`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wishart::setV
+"Accessor to the scale parameter.
+
+Parameters
+----------
+V : 2-d sequence of float
+    Scale matrix, positive definite of size :math:`p`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Wishart::getRealizationAsMatrix
+"Get one realization of the distribution as a covariance matrix.
+
+Returns
+-------
+V : :class:`~openturns.CovarianceMatrix`
+    A realization as a matrix"

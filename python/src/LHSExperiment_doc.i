@@ -1,0 +1,209 @@
+%feature("docstring") OT::LHSExperiment
+R"RAW(LHS experiment.
+
+Available constructors:
+    LHSExperiment(*size, alwaysShuffle, randomShift*)
+
+    LHSExperiment(*distribution, size, alwaysShuffle, randomShift*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` used to generate the set of input data.
+size : positive int
+    Number :math:`\mathrm{card}\,I` of points that will be generated in the experiment.
+alwaysShuffle : bool
+    Flag to tell if the shuffle must be regenerated at each call to generate
+    or not.
+    Default is *False*: the shuffle is generated once and for all.
+
+randomShift : bool
+    Flag to tell if the point selected in each cell of the shuffle is the center
+    of the cell (*randomshift* is *False*) or if it is drawn wrt the restriction
+    of the distribution to the cell.
+    Default is *True*.
+
+Notes
+-----
+LHSExperiment is a random weighted design of experiments ([stein1987]_, [santner2003]_ page 127).
+The method generates a sample of points :math:`\inputReal_i` according to the
+distribution :math:`\inputMeasure` with the Latin Hypercube Sample (LHS) technique: some cells are determined,
+with the same probabilistic content according to the distribution, each line
+and each column contains exactly one cell, then points are selected among these
+selected cells. The weights associated to the points are all equal to
+:math:`\frac{1}{\sampleSize}` where :math:`\sampleSize` is the sample size.
+When recalled, the :meth:`generate` method generates a new
+sample: the point selection within the cells changes but not the cells
+selection. To change the cell selection, it is necessary to create a new 
+`LHSExperiment`.
+
+.. warning::
+
+    When the distribution has a non-independent copula, the sample obtained by inverse
+    isoprobabilistic transformation of an LHS experiment does not have the same properties
+    as the original LHS experiment but can still be used to efficiently estimate
+    threshold exceedance probabilities, especially when the copula is normal
+    (as in this case the isoprobabilistic transformation is linear) and the limit-state is linear.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+Create an *LHSExperiment*:
+
+>>> import openturns as ot
+
+Generate the sample reusing the initial shuffle and using a random shift:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5, False, True)
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  0.887671 -0.647818 ]
+1 : [  0.107683  1.15851  ]
+2 : [  0.453077 -1.04742  ]
+3 : [ -0.928012  0.409732 ]
+4 : [ -0.290539  0.16153  ]
+>>> print(experiment.generate())
+    [ X0         X1         ]
+0 : [  1.52938   -0.343515  ]
+1 : [ -0.0703427  2.36353   ]
+2 : [  0.576091  -1.79398   ]
+3 : [ -2.11636    0.619315  ]
+4 : [ -0.699601  -0.0570674 ]
+
+Generate the sample using a new shuffle and a random shift:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5, True, True)
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  0.887671 -0.647818 ]
+1 : [  0.107683  1.15851  ]
+2 : [  0.453077 -1.04742  ]
+3 : [ -0.928012  0.409732 ]
+4 : [ -0.290539  0.16153  ]
+>>> print(experiment.generate())
+    [ X0         X1         ]
+0 : [ -1.72695   -0.591043  ]
+1 : [ -0.240653  -0.0406593 ]
+2 : [  0.828719   2.12547   ]
+3 : [  2.37061    0.508903  ]
+4 : [ -0.668296  -1.11573   ]
+
+Generate the sample reusing the initial shuffle and using a constant shift:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5, False, False)
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  1.28155  -0.524401 ]
+1 : [  0         1.28155  ]
+2 : [  0.524401 -1.28155  ]
+3 : [ -1.28155   0.524401 ]
+4 : [ -0.524401  0        ]
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  1.28155  -0.524401 ]
+1 : [  0         1.28155  ]
+2 : [  0.524401 -1.28155  ]
+3 : [ -1.28155   0.524401 ]
+4 : [ -0.524401  0        ]
+
+Generate the sample using a new shuffle and using a constant shift:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5, True, False)
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  1.28155  -0.524401 ]
+1 : [  0         1.28155  ]
+2 : [  0.524401 -1.28155  ]
+3 : [ -1.28155   0.524401 ]
+4 : [ -0.524401  0        ]
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  0.524401 -0.524401 ]
+1 : [  0         1.28155  ]
+2 : [ -1.28155   0        ]
+3 : [ -0.524401  0.524401 ]
+4 : [  1.28155  -1.28155  ]
+)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::getShuffle
+"Return the cell randomization.
+
+Returns
+-------
+shuffle : :class:`~openturns.Matrix`
+    For each point, the indices of the shuffled components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::ComputeShuffle
+R"RAW(Generate a new cell randomization for external use.
+
+Parameters
+----------
+dimension : positive int
+    Number of input dimension.
+totalSize : positive int
+    Number :math:`\mathrm{card}\,I` of points that need to be shuffled.
+
+Returns
+-------
+shuffle : :class:`~openturns.Matrix`
+    For each point, the indices of the shuffled components.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::getAlwaysShuffle
+"Cell randomization flag accessor.
+
+Returns
+-------
+alwaysShuffle : bool
+    Flag to tell if the shuffle must be regenerated at each call to generate
+    or not.
+    Default is *False*: the shuffle is generated once and for all."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::setAlwaysShuffle
+"Cell randomization flag accessor.
+
+Parameters
+----------
+alwaysShuffle : bool
+    Flag to tell if the shuffle must be regenerated at each call to generate
+    or not.
+    Default is *False*: the shuffle is generated once and for all."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::setRandomShift
+"Randomization flag accessor.
+
+Parameters
+----------
+randomShift : bool
+    Flag to tell if the point selected in each cell of the shuffle is the center
+    of the cell (*randomshift* is *False*) or if it is drawn wrt the restriction
+    of the distribution to the cell.
+    Default is *True*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LHSExperiment::getRandomShift
+"Randomization flag accessor.
+
+Returns
+-------
+randomShift : bool
+    Flag to tell if the point selected in each cell of the shuffle is the center
+    of the cell (*randomshift* is *False*) or if it is drawn wrt the restriction
+    of the distribution to the cell.
+    Default is *True*."

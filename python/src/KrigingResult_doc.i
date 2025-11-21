@@ -1,0 +1,324 @@
+%feature("docstring") OT::KrigingResult
+R"RAW(Kriging result.
+
+Available constructors:
+    KrigingResult(*inputSample, outputSample, metaModel, basis, trendCoefficients, covarianceModel, covarianceCoefficients*)
+
+    KrigingResult(*inputSample, outputSample, metaModel, basis, trendCoefficients, covarianceModel, covarianceCoefficients, covarianceCholeskyFactor, covarianceHMatrix*)
+
+
+Parameters
+----------
+inputSample, outputSample : 2-d sequence of float
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
+metaModel : :class:`~openturns.Function`
+    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
+basis :  :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^d \rightarrow \Rset^p)` for each :math:`l \in [1, b]`.
+    Its size should be equal to zero if the trend is not estimated.
+trendCoefficients :  :class:`~openturns.Point`
+   The trend coefficients vectors  :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance function of the Gaussian process.
+covarianceCoefficients : 2-d sequence of float
+    The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
+covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
+    The Cholesky factor :math:`\mat{L}` of :math:`\mat{C}`.
+covarianceHMatrix :  :class:`~openturns.HMatrix`
+    The *hmat* implementation of :math:`\mat{L}`.
+
+
+Notes
+-----
+The Kriging meta model :math:`\tilde{\cM}` is defined by:
+
+.. math::
+    :label: metaModelKrig
+    
+    \tilde{\cM}(\vect{x}) =  \vect{\mu}(\vect{x}) + \Expect{\vect{Y}(\omega, \vect{x})\,| \,\cC}
+
+where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for each :math:`k \in [1, N]`.
+    
+Equation :eq:`metaModelKrig` writes:
+
+.. math::
+
+    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,\vect{x}_1),\dots,\vect{Y}(\omega, \vect{x}_N))}\vect{\gamma}
+
+where 
+
+.. math::
+
+    \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1),\dots,\vect{Y}(\omega, \vect{x}_N))} = \left(\mat{C}(\vect{x},\vect{x}_1)|\dots|\mat{C}(\vect{x},\vect{x}_N)\right)\in \cM_{p,NP}(\Rset)
+
+and 
+
+.. math::
+    :label: gammaEq
+
+    \vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})
+
+At the end, the meta model writes:
+
+.. math::
+    :label: metaModelKrigFinal
+
+    \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \sum_{i=1}^N \gamma_i  \mat{C}(\vect{x},\vect{x}_i)
+
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
+>>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
+>>> sampleY = f(sampleX)
+
+Create the algorithm:
+
+>>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
+>>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
+>>> algoKriging = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
+>>> algoKriging.run()
+
+Get the result:
+
+>>> resKriging = algoKriging.getResult()
+
+Get the meta model:
+
+>>> metaModel = resKriging.getMetaModel()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getCovarianceCoefficients
+R"RAW(Accessor to the covariance coefficients.
+
+Returns
+-------
+covCoeff : :class:`~openturns.Sample`
+    The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getTrendCoefficients
+R"RAW(Accessor to the trend coefficients.
+
+Returns
+-------
+trendCoef : :class:`~openturns.Point`
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getCovarianceModel
+"Accessor to the covariance model.
+
+Returns
+-------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model of the Gaussian process *W* with its optimized parameters.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getBasis
+R"RAW(Accessor to the functional basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^d \rightarrow \Rset^p)` for each :math:`l \in [1, b]`.
+
+Notes
+-----
+If the trend is not estimated, the collection is empty. 
+)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getConditionalMean
+R"RAW(Compute the conditional mean of the Gaussian process on a point or a sample of points.
+
+Available usages:
+    getConditionalMean(x)
+
+    getConditionalMean(sampleX)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condMean : :class:`~openturns.Point`
+    The conditional mean :math:`\Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
+    Or the conditional mean matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
+
+    .. math::
+
+        \left(
+          \begin{array}{l}
+            \Expect{\vect{Y}(\omega, \vect{\xi}_1)\, | \,  \cC}\\
+            \dots  \\
+            \Expect{\vect{Y}(\omega, \vect{\xi}_M)\, | \,  \cC}
+          \end{array}
+        \right)
+
+)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getConditionalCovariance
+R"RAW(Compute the conditional covariance of the Gaussian process on a point (or several points).
+
+Available usages:
+    getConditionalCovariance(x)
+
+    getConditionalCovariance(sampleX)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional covariance of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional covariance of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condCov : :class:`~openturns.CovarianceMatrix`
+    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
+    Or the conditional covariance matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
+
+    .. math::
+
+        \left(
+          \begin{array}{lcl}
+            \Sigma_{11} & \dots & \Sigma_{1M} \\
+            \dots  \\
+            \Sigma_{M1} & \dots & \Sigma_{MM}
+          \end{array}
+        \right)
+
+    where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega, \vect{\xi}_j)\, | \,  \cC}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getConditionalMarginalCovariance
+R"RAW(Compute the conditional covariance of the Gaussian process on a point (or several points).
+
+
+Available usages:
+    getConditionalMarginalCovariance(x)
+
+    getConditionalMarginalCovariance(sampleX)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional marginal covariance of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional marginal covariance of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condCov : :class:`~openturns.CovarianceMatrix`
+    The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
+
+condCov : :class:`~openturns.CovarianceMatrixCollection`
+    The collection of conditional covariance matrices :math:`\Cov{\vect{Y}(\omega, \vect{\xi})\, | \,  \cC}` at
+    each point of the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
+
+Notes
+-----
+In case input parameter is a of type :class:`~openturns.Sample`, each element of the collection corresponds to the conditional
+covariance with respect to the input learning set (pointwise evaluation of the getConditionalCovariance).)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getConditionalMarginalVariance
+R"RAW(Compute the conditional variance of the Gaussian process on a point (or several points).
+
+
+Available usages:
+    getConditionalMarginalVariance(x, marginalIndex)
+
+    getConditionalMarginalVariance(sampleX, marginalIndex)
+
+    getConditionalMarginalVariance(x, marginalIndices)
+
+    getConditionalMarginalVariance(sampleX, marginalIndices)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional variance of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional variance of the output has to be evaluated (*M* can be equal to 1).
+marginalIndex : int
+    Marginal of interest (for multiple outputs).
+    Default value is 0
+marginalIndices : sequence of int
+    Marginals of interest (for multiple outputs).
+
+Returns
+-------
+var : float
+      Variance of interest.
+      float if one point (x) and one marginal of interest (x, marginalIndex)
+
+varPoint : sequence of float
+    The marginal variances
+
+
+Notes
+-----
+In case of fourth usage, the sequence of float is given as the concatenation of marginal variances 
+for each point in sampleX.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::operator()
+R"RAW(Compute the conditional Gaussian distribution on a new point / sample conditionally to the observed paths.
+
+Available usages:
+    KrigingResult(pt)
+
+    KrigingResult(sampleX)
+
+Parameters
+----------
+pt : sequence of float
+    The point :math:`\vect{x}` where the conditional distribution of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional distribution of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condDist : :class:`~openturns.Normal`
+    The conditional Gaussian distribution.
+
+Notes
+-----
+The conditional distribution :math:`\cN(\Expect{\vect{Y}}, \Cov{\vect{Y}})` has respectively conditional mean and covariance functions 
+implemented in :meth:`getConditionalMean` (respectively :meth:`getConditionalCovariance`).)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingResult::getMetaModel
+R"RAW(Accessor to the metamodel.
+
+Returns
+-------
+metaModel : :class:`~openturns.Function`
+    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
+)RAW"
+

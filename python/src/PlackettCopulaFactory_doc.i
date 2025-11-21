@@ -1,0 +1,44 @@
+%feature("docstring") OT::PlackettCopulaFactory
+R"RAW(Plackett Copula factory.
+
+Notes
+-----
+The parameter is estimated using the following equation:
+
+:math:`\Hat{\theta}_n` is solution of
+
+.. math::
+
+    \displaystyle \Hat{\tau}_n = \frac{4m_n^2}{(1-2m_n)^2}
+
+where :math:`m_n` is the value of the empirical CDF :math:`F_n` at the median point :math:`({U_1}_{\lceil n/2 \rceil},{U_2}_{\lceil n/2 \rceil})` of the sample :math:`({U_1}_k,{U_2}_k)_{k\in\{1,\dots,n\}}`.
+
+See also
+--------
+DistributionFactory, PlackettCopula)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlackettCopulaFactory::buildAsPlackettCopula
+R"RAW(Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsPlackettCopula()
+
+    buildAsPlackettCopula(*sample*)
+
+    buildAsPlackettCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data of dimension 2.
+param : sequence of float of size 1
+   The parameter :math:`\theta`.
+
+Returns
+-------
+copula : :class:`~openturns.PlackettCopula`
+    The estimated copula as a Plackett copula.
+    
+    In the first usage, the default Plackett copula is built.)RAW"

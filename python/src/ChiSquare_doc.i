@@ -1,0 +1,60 @@
+%feature("docstring") OT::ChiSquare
+R"RAW(:math:`\chi^2` distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{2^{- \nu / 2} x^{\nu / 2 - 1} \exp(- x / 2)}
+                  {\Gamma(\nu / 2)}, \quad x \in \Rset^{+*}
+
+with :math:`\nu > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \nu \\
+        \Var{X} & = & 2 \nu
+    \end{eqnarray*}
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.
+
+    Default value is 1.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.ChiSquare(2.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ChiSquare::getNu
+"Accessor to the degrees of freedom parameter.
+
+Returns
+-------
+nu : float
+    Degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ChiSquare::setNu
+R"RAW(Accessor to the degrees of freedom parameter.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.)RAW"

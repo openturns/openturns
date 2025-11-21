@@ -1,0 +1,758 @@
+%feature("docstring") OT::VisualTest::DrawHenryLine
+R"RAW(Draw an Henry plot.
+
+Refer to :ref:`graphical_fitting_test`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested (univariate) sample.
+normal_distribution : :class:`~openturns.Normal`, optional
+    Tested (univariate) normal distribution.
+
+    If not given, this will build a :class:`~openturns.Normal` distribution
+    from the given sample using the :class:`~openturns.NormalFactory`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The Henry plot is a visual fitting test for the normal distribution. It
+opposes the sample quantiles to those of the standard normal distribution
+(the one with zero mean and unit variance) by plotting the following points
+could:
+
+.. math::
+
+    \left(x^{(i)},
+          \Phi^{-1}\left(\widehat{F}\left(x^{(i)}\right)\right)
+    \right), \quad i = 1, \ldots, m
+
+where :math:`\widehat{F}` denotes the empirical CDF of the sample and
+:math:`\Phi^{-1}` denotes the quantile function of the standard normal
+distribution.
+
+If the given sample fits to the tested normal distribution (with mean
+:math:`\mu` and standard deviation :math:`\sigma`), then the points should be
+close to be aligned (up to the uncertainty associated with the estimation
+of the empirical probabilities) on the **Henry line** whose equation reads:
+
+.. math::
+
+    y = \frac{x - \mu}{\sigma}, \quad x \in \Rset
+
+The Henry plot is a special case of the more general QQ-plot.
+
+See Also
+--------
+openturns.VisualTest.DrawQQplot
+openturns.FittingTest.Kolmogorov
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal(2.0, 0.5)
+>>> sample = distribution.getSample(30)
+
+Draw an Henry plot against a given (wrong) Normal distribution:
+
+>>> henry_graph = ot.VisualTest.DrawHenryLine(sample, distribution)
+>>> henry_graph.setTitle(f'Henry plot against given {ot.Normal(3.0, 1.0)}')
+>>> View(henry_graph).show()
+
+Draw an Henry plot against an inferred Normal distribution:
+
+>>> henry_graph = ot.VisualTest.DrawHenryLine(sample)
+>>> henry_graph.setTitle('Henry plot against inferred Normal distribution')
+>>> View(henry_graph).show()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawQQplot
+R"RAW(Draw a QQ-plot.
+
+Refer to :ref:`qqplot_graph`.
+
+Available usages:
+    VisualTest.DrawQQplot(*sample1, sample2, n_points*)
+
+    VisualTest.DrawQQplot(*sample1, distribution*);
+
+Parameters
+----------
+sample1, sample2 : 2-d sequences of float
+    Tested samples.
+ditribution : :class:`~openturns.Distribution`
+    Tested model.
+n_points : int, optional
+    The number of points that is used for interpolating the empirical CDF of
+    the two samples (with possibly different sizes).
+
+    It will default to *DistributionImplementation-DefaultPointNumber* from
+    the :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The QQ-plot is a visual fitting test for univariate distributions. It
+opposes the sample quantiles to those of the tested quantity (either a
+distribution or another sample) by plotting the following points cloud:
+
+.. math::
+
+    \left(x^{(i)},
+          \theta\left(\widehat{F}\left(x^{(i)}\right)\right)
+    \right), \quad i = 1, \ldots, m
+
+where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
+sample and :math:`\theta` denotes either the quantile function of the tested
+distribution or the empirical quantile function of the second tested sample.
+
+If the given sample fits the tested distribution or sample, then the points
+should be almost aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bisector**  whose
+equation is:
+
+.. math::
+
+    y = x, \quad x \in \Rset
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
+>>> sample = distribution.getSample(30)
+>>> sample.setDescription(['Sample'])
+
+Draw a QQ-plot against a given (inferred) distribution:
+
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
+>>> QQ_plot = ot.VisualTest.DrawQQplot(sample, tested_distribution)
+>>> View(QQ_plot).show()
+
+Draw a two-sample QQ-plot:
+
+>>> another_sample = distribution.getSample(50)
+>>> another_sample.setDescription(['Another sample'])
+>>> QQ_plot = ot.VisualTest.DrawQQplot(sample, another_sample)
+>>> View(QQ_plot).show()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPPplot
+R"RAW(Draw a PP-plot.
+
+Available usages:
+    VisualTest.DrawPPplot(*sample1, sample2, n_points*)
+
+    VisualTest.DrawPPplot(*sample1, distribution*);
+
+Parameters
+----------
+sample1, sample2 : 2-d sequences of float
+    Tested samples.
+ditribution : :class:`~openturns.Distribution`
+    Tested model.
+n_points : int, optional
+    The number of points that is used for interpolating the empirical CDF of
+    the two samples (with possibly different sizes).
+
+    It will default to *DistributionImplementation-DefaultPointNumber* from
+    the :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The PP-plot is a visual fitting test for univariate distributions. It
+opposes the sample quantiles to those of the tested quantity (either a
+distribution or another sample) by plotting the following points cloud:
+
+.. math::
+
+    \left(x^{(i)},
+          \widehat{F}\left(x^{(i)}\right)
+    \right), \quad i = 1, \ldots, m
+
+where :math:`\widehat{F}` denotes the empirical CDF of the (first) tested
+sample.
+
+If the given sample fits the tested distribution or sample, then the points
+should be almost aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bisector**  whose
+equation is:
+
+.. math::
+
+    y = x, \quad x \in \Rset
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
+>>> sample = distribution.getSample(30)
+>>> sample.setDescription(['Sample'])
+
+Draw a PP-plot against a given (inferred) distribution:
+
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
+>>> graph = ot.VisualTest.DrawQQplot(sample, tested_distribution)
+>>> View(graph).show()
+
+Draw a two-sample PP-plot:
+
+>>> another_sample = distribution.getSample(50)
+>>> another_sample.setDescription(['Another sample'])
+>>> graph = ot.VisualTest.DrawQQplot(sample, another_sample)
+>>> View(graph).show()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawCDFplot
+R"RAW(Draw a CDF-plot.
+
+Refer to :ref:`qqplot_graph`.
+
+Available usages:
+    VisualTest.DrawCDFplot(*sample1, sample2*)
+
+    VisualTest.DrawCDFplot(*sample1, distribution*);
+
+Parameters
+----------
+sample1, sample2 : 2-d sequences of float
+    Tested samples.
+ditribution : :class:`~openturns.Distribution`
+    Tested model.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The CDF-plot is a visual fitting test for univariate distributions. It
+opposes the normalized sample ranks to those of the tested quantity (either a
+distribution or another sample) by plotting the following points cloud:
+
+.. math::
+
+    \left(\dfrac{i+1/2}{m},
+          F(x^{(i)})
+    \right), \quad i = 1, \ldots, m
+
+where :math:`F` denotes either the CDF function of the tested
+distribution or the empirical CDF of the second tested sample.
+
+If the given sample fits to the tested distribution or sample, then the points
+should be almost aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bisector**  whose
+equation is:
+
+.. math::
+
+    y = x, \quad x \in [0,1]
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
+>>> sample = distribution.getSample(30)
+>>> sample.setDescription(['Sample'])
+
+Draw a CDF-plot against a given (inferred) distribution:
+
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
+>>> CDF_plot = ot.VisualTest.DrawCDFplot(sample, tested_distribution)
+>>> View(CDF_plot).show()
+
+Draw a two-sample CDF-plot:
+
+>>> another_sample = distribution.getSample(50)
+>>> another_sample.setDescription(['Another sample'])
+>>> CDF_plot = ot.VisualTest.DrawCDFplot(sample, another_sample)
+>>> View(CDF_plot).show()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawParallelCoordinates
+R"RAW(Draw a parallel coordinates plot.
+
+Parameters
+----------
+inputSample : 2-d sequence of float of dimension :math:`n`
+    Input sample :math:`\vect{X}`.
+outputSample : 2-d sequence of float of dimension :math:`1`
+    Output sample :math:`Y`.
+Ymin, Ymax : float such that *Ymax > Ymin*
+    Values to select lines which will colore in *color*. Must be in
+    :math:`[0,1]` if *quantileScale=True*.
+color : str
+    Color of the specified curves.
+quantileScale : bool
+    Flag indicating the scale of the *Ymin* and *Ymax*. If
+    *quantileScale=True*, they are expressed in the rank based scale;
+    otherwise, they are expressed in the :math:`Y`-values scale.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+Let's suppose a model :math:`f: \Rset^n \mapsto \Rset`, where
+:math:`f(\vect{X})=Y`.
+The parallel coordinates graph enables to visualize all the combinations of the input
+variables which lead to a specific range of the output variable.
+
+Each column represents one component :math:`X_i` of the input vector
+:math:`\vect{X}`. The last column represents the scalar output variable
+:math:`Y`.
+
+For each point :math:`\vect{X}^j` of *inputSample*, each component :math:`X_i^j`
+is noted on its respective axe and the last mark is the one which corresponds
+to the associated :math:`Y^j`. A line joins all the marks. Thus, each point of
+the sample corresponds to a particular line on the graph.
+
+The scale of the axes are quantile based : each axe runs between 0 and 1 and
+each value is represented by its quantile with respect to its marginal
+empirical distribution.
+
+It is interesting to select, among those lines, the ones which correspond to a
+specific range of the output variable. These particular lines selected are
+colored differently in *color*. This specific range is defined with *Ymin* and
+*Ymax* in the quantile based scale of :math:`Y` or in its specific scale. In
+that second case, the range is automatically converted into a quantile based
+scale range.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> inputSample = ot.Normal(2).getSample(15)
+>>> inputSample.setDescription(['X0', 'X1'])
+>>> formula = ['cos(X0)+cos(2*X1)']
+>>> model = ot.SymbolicFunction(['X0', 'X1'], formula)
+>>> outputSample = model(inputSample)
+
+Draw a parallel plot:
+
+>>> parplot = ot.VisualTest.DrawParallelCoordinates(inputSample, outputSample, 1.0, 2.0, 'red', False)
+>>> View(parplot).show()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawKendallPlot
+"Draw kendall plot.
+
+Refer to :ref:`graphical_fitting_test`.
+
+Available usages:
+    VisualTest.DrawKendallPlot(*sample, distribution*)
+
+    VisualTest.DrawKendallPlot(*sample, sample2*)
+
+Parameters
+----------
+sample, sample2 : 2-d sequence of float
+    Samples to draw.
+distribution : :class:`~openturns.Distribution`
+    Distribution used to plot the second cloud
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 100
+>>> copula1 = ot.FrankCopula(1.5)
+>>> copula2 = ot.GumbelCopula(4.5)
+>>> sample1 = copula1.getSample(size)
+>>> sample1.setName('data 1')
+>>> sample2 = copula2.getSample(size)
+>>> sample2.setName('data 2')
+>>> kendallPlot1 = ot.VisualTest.DrawKendallPlot(sample1, copula2)
+>>> View(kendallPlot1).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLinearModel
+"Plot a 1D linear model.
+
+Parameters
+----------
+inputSample, outputSample : 2-d sequence of float (optional)
+    X and Y coordinates of the points the test is to be performed on.
+    If *inputSample* and *outputSample* were the training samples
+    of the linear model, there is no need to supply them (see example below).
+linearModelResult : :class:`~openturns.LinearModelResult`
+    Linear model to plot.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dimension = 2
+>>> R = ot.CorrelationMatrix(dimension)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dimension, [2.0]* dimension, R)
+>>> size = 200
+>>> sample2D = distribution.getSample(size)
+>>> firstSample = ot.Sample(size, 1)
+>>> secondSample = ot.Sample(size, 1)
+>>> for i in range(size):
+...     firstSample[i] = [sample2D[i, 0]]
+...     secondSample[i] = [sample2D[i, 1]]
+>>> # Generate training Samples
+>>> inputTrainSample = firstSample[0:size//2]
+>>> outputTrainSample = secondSample[0:size//2]
+>>> # Generate test Samples
+>>> inputTestSample = firstSample[size//2:]
+>>> outputTestSample = secondSample[size//2:]
+>>> # Define and get the result of the linear model
+>>> lmtest = ot.LinearModelAlgorithm(inputTrainSample, outputTrainSample).getResult()
+>>> # Visual test on the training samples: no need to supply them again
+>>> drawLinearModelVTest = ot.VisualTest.DrawLinearModel(lmtest)
+>>> View(drawLinearModelVTest).show()
+>>> # Visual test on the test samples
+>>> drawLinearModelVTest2 = ot.VisualTest.DrawLinearModel(inputTestSample, outputTestSample, lmtest)
+>>> View(drawLinearModelVTest2).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLinearModelResidual
+"Plot a 1D linear model's residuals.
+
+Parameters
+----------
+inputSample, outputSample : 2-d sequence of float, optional
+    X and Y coordinates of the points the test is to be performed on.
+    If *inputSample* and *outputSample* were the training samples
+    of the linear model, there is no need to supply them (see example below).
+linearModelResult : :class:`~openturns.LinearModelResult`
+    Linear model to plot.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dimension = 2
+>>> R = ot.CorrelationMatrix(dimension)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dimension, [2.0]* dimension, R)
+>>> size = 200
+>>> sample2D = distribution.getSample(size)
+>>> firstSample = ot.Sample(size, 1)
+>>> secondSample = ot.Sample(size, 1)
+>>> for i in range(size):
+...     firstSample[i] = [sample2D[i, 0]]
+...     secondSample[i] = [sample2D[i, 1]]
+>>> # Generate training Samples
+>>> inputTrainSample = firstSample[0:size//2]
+>>> outputTrainSample = secondSample[0:size//2]
+>>> # Generate test Samples
+>>> inputTestSample = firstSample[size//2:]
+>>> outputTestSample = secondSample[size//2:]
+>>> # Define and get the result of the linear model
+>>> lmtest = ot.LinearModelAlgorithm(inputTrainSample, outputTrainSample).getResult()
+>>> # Visual test on the training samples: no need to supply them again
+>>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(lmtest)
+>>> View(drawLinearModelVTest).show()
+>>> # Visual test on the test samples
+>>> drawLinearModelVTest2 = ot.VisualTest.DrawLinearModelResidual(inputTestSample, outputTestSample, lmtest)
+>>> View(drawLinearModelVTest2).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPairs
+"Draw 2-d projections of a multivariate sample.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Samples to draw.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph object
+
+Notes
+-----
+The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
+The color is given by the first individual color in the default palette.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sample = distribution.getSample(size)
+>>> clouds = ot.VisualTest.DrawPairs(sample)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::VisualTest::DrawPairsXY
+"Draw 2-d projections between marginals of two samples.
+
+Parameters
+----------
+sampleX : 2-d sequence of float
+    First sample.
+sampleY : 2-d sequence of float
+    Second sample. It must have the same size as the first sample.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph object
+
+Notes
+-----
+This method allows one to draw the relationships between the margins of two samples.
+This consists of a collection of 2-d projections of the marginals of sampleY (in lines)
+with respect to the marginals of sampleX (in columns).
+The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
+The color is given by the first individual color in the default palette.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sampleX = distribution.getSample(size)
+>>> sampleY = distribution.getSample(size)
+>>> clouds = ot.VisualTest.DrawPairsXY(sampleX, sampleY)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPairsMarginals
+"Draw 2-d projections of a multivariate sample plus marginals.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Samples to draw.
+distribution : :class:`~openturns.Distribution`
+    Distribution from which marginals are drawn
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sample = distribution.getSample(size)
+>>> distribution = ot.JointDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
+>>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawUpperTailDependenceFunction
+R"RAW(Draw the upper tail dependence function.
+
+The function is defined in :ref:`tail_dependence`. It is estimated from data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of the function :math:`u \mapsto \chi(u) = \lambda_U(u)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawUpperTailDependenceFunction(sample)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawUpperExtremalDependenceFunction
+R"RAW(Draw the upper extremal dependence function.
+
+The function is defined in :ref:`tail_dependence`. It is estimated from data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph  of the function :math:`u \mapsto \bar{\chi}(u)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawUpperExtremalDependenceFunction(sample)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLowerTailDependenceFunction
+R"RAW(Draw the lower tail dependence function.
+
+The function is defined in :ref:`tail_dependence`. It is estimated from data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of the function :math:`u \mapsto \chi_L(u)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawLowerTailDependenceFunction(sample)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLowerExtremalDependenceFunction
+R"RAW(Draw the lower extremal dependence function.
+
+The function is defined in  :ref:`tail_dependence`. It is estimated from data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Bivariate sample
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph  of the function :math:`u \mapsto \bar{\chi}_L(u)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.FrankCopula().getSample(100)
+>>> graph = ot.VisualTest.DrawLowerExtremalDependenceFunction(sample)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawInsideOutside
+"Draw the 2D projections of a sample, colored according to whether or not the points belong to the domain.
+The projections grid is returned as a :class:`~openturns.GridLayout`.
+
+Parameters
+----------
+domain : :class:`~openturns.Domain`
+    Domain on which each point is tested: does the domain contain it or not.
+sample : 2-d sequence of floats
+    Sample with the same dimension as the domain.
+inColor : str
+    Color used to draw points belonging to the domain.
+outColor : str
+    Color used to draw points not belonging to the domain.
+
+Notes
+-----
+Draws the 2D projections of the sample onto all coordinate pairs in the domain space.
+Each sample is drawn as a small square colored with the color *inColor*
+if it belongs to the domain and with the color *outColor* otherwise.
+
+The limits of the graphs are those of the sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> domain = ot.Interval([-2.0, -1.0, 1.0], [2.0, 1.0, 3.0])
+>>> uniform = ot.Uniform(-3.0, 4.0)
+>>> dist = ot.JointDistribution([uniform] * 3)
+>>> sample = dist.getSample(200)
+>>> grid = ot.VisualTest.DrawInsideOutside(domain, sample)
+>>> View(grid).show()"

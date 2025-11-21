@@ -1,0 +1,96 @@
+%feature("docstring") OT::SphericalModel
+R"RAW(Spherical covariance function.
+
+Available constructors:
+    SphericalModel(*spatialDim=1*)
+
+    SphericalModel(*scale, amplitude*)
+
+    SphericalModel(*scale, amplitude, radius*)
+
+Parameters
+----------
+spatialDim : int
+    Spatial dimension :math:`n`.
+    By default, equal to 1.
+scale : sequence of positive floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    The size of :math:`\vect{\theta}` is the input dimension.
+amplitude : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+radius : float, :math:`a > 0`
+    Radius of the sphere on which the covariance model is not zero.
+    By default, equal to 1.
+
+
+Notes
+-----
+The *spherical* function is a stationary covariance function with dimension :math:`d=1`.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *spherical*  function is defined on the sphere which ray is :math:`a`:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sigma^2  \left[1 - \frac{1}{2a} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2  \left(3 -  \frac{1}{a^2}\left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2^2\right) \right], \quad \forall (\vect{s}, \vect{t}), \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2 \leq a
+
+The function is equal to zero outside the sphere.
+
+The correlation function :math:`\rho` writes:
+
+.. math::
+
+    \rho(\vect{s}, \vect{t}) = 1 - \frac{1}{2a} \left\|\vect{s} - \vect{t}\right\|_2 \left(3 - \frac{1}{a^2}\left\| \vect{s} - \vect{t} \right\|_2^2\right), \quad \forall (\vect{s}, \vect{t}), \left\|  \vect{s} - \vect{t} \right\|_2 \leq a
+
+and is equal to zero outside the sphere.
+
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a standard spherical covariance function:
+
+>>> import openturns as ot
+>>> covModel = ot.SphericalModel(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(covModel(s, t))
+[[ 0.789282 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covModel(tau))
+[[ 0.54147 ]]
+
+Create a  spherical covariance function specifying the scale, amplitude vectors:
+
+>>> covarianceModel = ot.SphericalModel([0.2, 0.3], [2.5])
+
+Create a  squared exponential covariance function specifying the scale vector, the amplitude and radius:
+
+>>> covModel3 = ot.SphericalModel([0.2, 0.3], [2.5], 2.3)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SphericalModel::setRadius
+"Accessor to the radius.
+
+Parameters
+----------
+radius : float, :math:`a > 0`
+    Radius of the sphere on which the covariance model is not zero."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SphericalModel::getRadius
+"Accessor to the radius.
+
+Returns
+-------
+radius : float, :math:`a > 0`
+    Radius of the sphere on which the covariance model is not zero."

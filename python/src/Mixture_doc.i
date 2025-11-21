@@ -1,0 +1,67 @@
+%feature("docstring") OT::Mixture
+R"RAW(Build a linear combination of probability density functions.
+
+The probability density function of a *Mixture* is defined by:
+
+.. math::
+
+    f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1
+
+Parameters
+----------
+collDist : sequence of :class:`~openturns.Distribution`,
+    The collection of distributions which compose the linear combination.
+weights : sequence of float, optional
+    A sequence with each component :math:`\geq 0`, of dimension equal to the
+    size of *collDist*. The collection of weights applied to the collection of
+    distributions. By default, the weights fulfilled inside
+    each distribution are used (if any), thanks to the method
+    *collDist[i].setWeight(myWeight)*. If not set, the weights are all
+    taken equal to 1. The weights are automatically normalized so that their
+    sum is equal to 1.
+
+Examples
+--------
+Create a *Mixture*:
+
+>>> import openturns as ot
+>>> collDist = [ot.Triangular(1.0, 2.0, 4.0), ot.Normal(-1.0, 1.0), ot.Uniform(5.0, 6.0)]
+>>> weight = [0.4, 1.0, 0.2]
+>>> myMixture = ot.Mixture(collDist, weight)
+)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Mixture::getDistributionCollection
+"Accessor to the distribution collection.
+
+Returns
+-------
+collDist : :class:`~openturns.Distribution`,
+    The collection of distributions which compose the linear combination."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Mixture::setDistributionCollection
+"Set the distribution collection.
+
+Parameters
+----------
+collDist : :class:`~openturns.Distribution`,
+    The collection of distributions which compose the linear combination."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Mixture::getWeights
+R"RAW(Get the weights.
+
+Returns
+-------
+weights : :class:`~openturns.Point` with each component :math:`\geq 0`.)RAW"
+
+
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Mixture::setWeights
+R"RAW(Set the weights.
+
+Parameters
+----------
+weights : sequence of float with each component :math:`\geq 0`.)RAW"

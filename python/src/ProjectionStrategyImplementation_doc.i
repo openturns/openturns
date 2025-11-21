@@ -1,0 +1,295 @@
+%define OT_ProjectionStrategy_doc
+R"RAW(Base class for the evaluation strategies of the approximation coefficients.
+
+Available constructors:
+    ProjectionStrategy(*projectionStrategy*)
+
+Parameters
+----------
+projectionStrategy : :class:`~openturns.ProjectionStrategy`
+    A projection strategy which is a :class:`~openturns.LeastSquaresStrategy` or
+    an :class:`~openturns.IntegrationStrategy`.
+
+See also
+--------
+FunctionalChaosAlgorithm, LeastSquaresStrategy, IntegrationStrategy
+
+Notes
+-----
+Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`,
+:math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance:
+:math:`g\in L_{\cL_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
+
+The functional chaos  expansion approximates :math:`\vect{Y}` using an isoprobabilistic 
+transformation *T* and an orthonormal multivariate basis :math:`(\Psi_k)_{k \in \Nset}` 
+of :math:`L^2_{\mu}(\Rset^d,\Rset)`. See :class:`~openturns.FunctionalChaosAlgorithm` 
+to get more details. 
+
+The meta model of :math:`g`, based on the functional chaos decomposition of 
+:math:`f = g \circ T^{-1}` writes:
+
+.. math::
+
+    \tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k  \circ T
+
+where *K* is a non empty finite set of indices, whose cardinality is denoted by *P*.
+
+We detail the case where :math:`p=1`.
+
+The vector  :math:`\vect{\alpha} = (\alpha_k)_{k \in K}`  is  equivalently defined by:
+
+.. math::
+    :label: defArgMin
+
+    \vect{\alpha} = \argmin_{\vect{\alpha} \in \Rset^K} \Expect{ \left( g \circ T^{-1}(\vect{Z}) -  \sum_{k \in K} \alpha_k \Psi_k (\vect{Z})\right)^2 }
+
+and:
+
+.. math::
+    :label: defEsp
+
+    \alpha_k =  <g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z})>_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
+
+where :math:`\vect{Z} = T(\vect{X})` and the mean :math:`\Expect{.}` is evaluated with respect to the measure :math:`\mu`.
+
+It corresponds to two points of view: 
+   
+    - relation :eq:`defArgMin`  means that the coefficients 
+      :math:`(\alpha_k)_{k \in K}` minimize the quadratic error between  the model and 
+      the polynomial approximation. Use :class:`~openturns.LeastSquaresStrategy`.
+
+    - relation :eq:`defEsp` means that :math:`\alpha_k` is the scalar product of the 
+      model with the *k-th* element of the orthonormal basis :math:`(\Psi_k)_{k \in \Nset}`.
+      Use :class:`~openturns.IntegrationStrategy`.
+
+In both cases, the mean :math:`\Expect{.}` is approximated by a linear quadrature formula:
+
+.. math::
+    :label: approxEsp
+
+    \Expect{ f(\vect{Z})} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
+
+where *f* is a function in :math:`L^1(\mu)`. 
+
+In the approximation :eq:`approxEsp`, the set *I*, the points :math:`(\Xi_i)_{i \in I}` 
+and the weights :math:`(\omega_i)_{i \in I}` are evaluated from different methods 
+implemented in the :class:`~openturns.WeightedExperiment`.
+
+The convergence criterion used to evaluate the coefficients is based on the residual value 
+defined in the :class:`~openturns.FunctionalChaosAlgorithm`.)RAW"
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation
+OT_ProjectionStrategy_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getCoefficients_doc
+R"RAW(Accessor to the coefficients.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    Coefficients :math:`(\alpha_k)_{k \in K}`.)RAW"
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getCoefficients
+OT_ProjectionStrategy_getCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getExperiment_doc
+"Accessor to the experiments.
+
+Returns
+-------
+exp : :class:`~openturns.WeightedExperiment`
+    Weighted experiment used to evaluate the coefficients."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getExperiment
+OT_ProjectionStrategy_getExperiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setInputSample_doc
+"Accessor to the input sample.
+
+Parameters
+----------
+X : :class:`~openturns.Sample`
+    Input Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setInputSample
+OT_ProjectionStrategy_setInputSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getInputSample_doc
+"Accessor to the input sample.
+
+Returns
+-------
+X : :class:`~openturns.Sample`
+    Input Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getInputSample
+OT_ProjectionStrategy_getInputSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getMeasure_doc
+R"RAW(Accessor to the measure.
+
+Returns
+-------
+mu : Distribution
+    Measure :math:`\mu` defining the scalar product.)RAW"
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getMeasure
+OT_ProjectionStrategy_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setOutputSample_doc
+"Accessor to the output sample.
+
+Parameters
+----------
+Y : :class:`~openturns.Sample`
+    Output Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setOutputSample
+OT_ProjectionStrategy_setOutputSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getOutputSample_doc
+"Accessor to the output sample.
+
+Returns
+-------
+Y : :class:`~openturns.Sample`
+    Output Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getOutputSample
+OT_ProjectionStrategy_getOutputSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getRelativeError_doc
+"Accessor to the relative error.
+
+Returns
+-------
+e : float
+    Relative error."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getRelativeError
+OT_ProjectionStrategy_getRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getResidual_doc
+"Accessor to the residual.
+
+Returns
+-------
+er : float
+    Residual error."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getResidual
+OT_ProjectionStrategy_getResidual_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setWeights_doc
+"Accessor to the weights.
+
+Parameters
+----------
+w : :class:`~openturns.Point`
+    Weights of the design of experiments."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setWeights
+OT_ProjectionStrategy_setWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getWeights_doc
+"Accessor to the weights.
+
+Returns
+-------
+w : :class:`~openturns.Point`
+    Weights of the design of experiments."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getWeights
+OT_ProjectionStrategy_getWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setExperiment_doc
+"Accessor to the design of experiment.
+
+Parameters
+----------
+exp : :class:`~openturns.WeightedExperiment`
+    Weighted design of experiment."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setExperiment
+OT_ProjectionStrategy_setExperiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setMeasure_doc
+R"RAW(Accessor to the measure.
+
+Parameters
+----------
+m : Distribution
+    Measure :math:`\mu` defining the scalar product.)RAW"
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setMeasure
+OT_ProjectionStrategy_setMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_getDesignProxy_doc
+"Accessor to the design proxy.
+
+Parameters
+----------
+designProxy : :class:`~openturns.DesignProxy`
+    The design matrix."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::getDesignProxy
+OT_ProjectionStrategy_getDesignProxy_doc
+
+%define OT_ProjectionStrategy_isLeastSquares_doc
+"Get the least squares flag.
+
+There are two methods to compute the coefficients: integration
+or least squares.
+
+Returns
+-------
+isLeastSquares : bool
+    True if the coefficients are estimated from least squares."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::isLeastSquares
+OT_ProjectionStrategy_isLeastSquares_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_involvesModelSelection_doc
+"Get the model selection flag.
+
+A model selection method can be used to select the coefficients
+of the decomposition which enable to best predict the output.
+Model selection can lead to a sparse functional chaos expansion.
+
+Returns
+-------
+involvesModelSelection : bool
+    True if the method involves a model selection method."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::involvesModelSelection
+OT_ProjectionStrategy_involvesModelSelection_doc

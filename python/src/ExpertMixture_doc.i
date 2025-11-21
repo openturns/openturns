@@ -1,0 +1,102 @@
+%feature("docstring") OT::ExpertMixture
+R"RAW(Expert mixture defining a piecewise function according to a classifier.
+
+This implements an expert mixture which is a piecewise function :math:`f`
+defined by the collection of functions :math:`(f_i)_{i=1, \ldots, n_c}` given in
+*basis* and according to a *classifier*:
+
+.. math::
+
+    f(\vect{x}) = f_i(\vect{x})
+    
+if :math:`\vect{z} \in \text{Class}_i` where the :math:`n_c \in \Nset` classes are defined by the classifier.
+
+In supervised mode the classifier partitions the input and output space at once:
+
+.. math::
+
+    \vect{z} = (\vect{x}, f(\vect{x}))
+
+whereas in non-supervised mode only the input space is partitioned:
+
+.. math::
+
+    \vect{z} = \vect{x}
+
+Parameters
+----------
+basis : sequence of :class:`~openturns.Function`
+    A basis
+classifier : :class:`~openturns.Classifier`
+    A classifier
+supervised : bool (default=True)
+    In supervised mode, the classifier partitions the space
+    of :math:`(\vect{x}, f(\vect{x}))` whereas in non-supervised mode the
+    classifier only partitions the input space.
+
+Examples
+--------
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(2)
+>>> R[0, 1] = -0.99
+>>> d1 = ot.Normal([-1.0, 1.0], [1.0, 1.0], R)
+>>> R[0, 1] = 0.99
+>>> d2 = ot.Normal([1.0, 1.0], [1.0, 1.0], R)
+>>> distribution = ot.Mixture([d1, d2], [1.0]*2)
+>>> classifier = ot.MixtureClassifier(distribution)
+>>> f1 = ot.SymbolicFunction(['x'], ['-x'])
+>>> f2 = ot.SymbolicFunction(['x'], ['x'])
+>>> experts = [f1, f2]
+>>> mixtureOfExperts = ot.ExpertMixture(experts, classifier)
+>>> print(mixtureOfExperts([-0.3]))
+[0.3]
+>>> print(mixtureOfExperts([0.1]))
+[0.1]
+
+Notes
+-----
+The number of experts must match the number of classes of the classifier.
+
+See also
+--------
+Classifier, MixtureClassifier)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpertMixture::getExperts
+R"RAW(Accessor the basis.
+
+Returns
+-------
+basis : collection of :class:`~openturns.Function`
+    The collection of functions :math:`(f_i)_{i=1, \ldots, n_c}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpertMixture::setExperts
+R"RAW(Accessor the basis.
+
+Parameters
+----------
+basis : :class:`~openturns.Basis`
+    The collection of functions :math:`(f_i)_{i=1, \ldots, n_c}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpertMixture::getClassifier
+"Accessor the classifier.
+
+Returns
+-------
+classifier : :class:`~openturns.Classifier`
+    The classifier."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpertMixture::setClassifier
+"Accessor the classifier.
+
+Parameters
+----------
+classifier : :class:`~openturns.Classifier`
+    The classifier."

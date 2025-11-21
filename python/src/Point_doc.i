@@ -1,0 +1,382 @@
+%feature("docstring") OT::Point
+"Real vector.
+
+Parameters
+----------
+dimension : int, :math:`n > 0`, optional
+    The number of components.
+value : float, optional
+    The components value.
+    Default creates a null vector.
+
+Examples
+--------
+Create a Point
+
+>>> import openturns as ot
+>>> x = ot.Point(3, 1.0)
+>>> x
+class=Point name=Unnamed dimension=3 values=[1,1,1]
+
+Get or set terms
+
+>>> print(x[0])
+1.0
+>>> x[0] = 0.0
+>>> print(x[0])
+0.0
+>>> print(x[:2])
+[0,1]
+
+Create a Point from a flat (1d) array, list or tuple
+
+>>> import numpy as np
+>>> y = ot.Point((0.0, 1.0, 2.0))
+>>> y = ot.Point(range(3))
+>>> y = ot.Point(np.arange(3))
+
+and back
+
+>>> z = np.array(y)
+
+Addition, subtraction (with compatible dimensions)
+
+>>> print(x + y)
+[0,2,3]
+>>> print(x - y)
+[0,0,-1]
+
+Multiplication, division with a scalar
+
+>>> print(x * 3.0)
+[0,3,3]
+>>> print(x / 3.0)
+[0,0.333333,0.333333]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::add
+"Appends a scalar component (in-place).
+
+Parameters
+----------
+value : float
+    The component to append.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2)
+>>> x.add(1.0)
+>>> print(x)
+[0,0,1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::clear
+"Resets the vector to zero dimension.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2)
+>>> x.clear()
+>>> x
+class=Point name=Unnamed dimension=0 values=[]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isIncreasing
+"Check if the components are in increasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.isIncreasing()
+True
+>>> x = ot.Point([1.0, 1.0, 3.0])
+>>> x.isIncreasing()
+False
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isIncreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isNonDecreasing
+"Check if the components are in nondecreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.isNonDecreasing()
+True
+>>> x = ot.Point([1.0, 1.0, 3.0])
+>>> x.isNonDecreasing()
+True
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isNonDecreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isDecreasing
+"Check if the components are in decreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([3.0, 2.0, 1.0])
+>>> x.isDecreasing()
+True
+>>> x = ot.Point([3.0, 3.0, 1.0])
+>>> x.isDecreasing()
+False
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isIncreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isNonIncreasing
+"Check if the components are in nonincreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([3.0, 2.0, 1.0])
+>>> x.isNonIncreasing()
+True
+>>> x = ot.Point([3.0, 3.0, 1.0])
+>>> x.isNonIncreasing()
+True
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isNonIncreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isMonotonic
+"Check if the components are in nonincreasing or nondecreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.isMonotonic()
+True
+>>> x = ot.Point([2.0, 2.0, 1.0])
+>>> x.isMonotonic()
+True
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isMonotonic()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::getDescription
+"Accessor to the componentwise description.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the components.
+
+See Also
+--------
+setDescription"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::getDimension
+"Accessor to the vector's dimension.
+
+Returns
+-------
+n : int
+    The number of components in the vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::setDescription
+"Accessor to the componentwise description.
+
+Parameters
+----------
+description : sequence of str
+    Description of the components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::getSize
+"Accessor to the vector's dimension (or size).
+
+Returns
+-------
+n : int
+    The number of components in the vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::norm
+R"RAW(Compute the Euclidean (:math:`L^2`) norm.
+
+The Euclidean (:math:`L^2`) norm of a vector is defined as:
+
+.. math::
+
+    \norm{\vect{x}} = \norm{\vect{x}}_2
+                    = \sqrt{\sum_{i=1}^n x_i^2}
+
+Returns
+-------
+norm : float
+    The vector's Euclidean norm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.norm()
+3.741657...)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::norm1
+R"RAW(Compute the :math:`L^1` norm.
+
+The :math:`L^1` norm of a vector is defined as:
+
+.. math::
+
+    \norm{\vect{x}}_1 = \sum_{i=1}^n |x_i|
+
+Returns
+-------
+norm : float
+    The vector's :math:`L^1` norm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.norm1()
+6.0)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::normInf
+R"RAW(Compute the :math:`L^{\inf}` norm.
+
+The :math:`L^{\inf}` norm of a vector is defined as:
+
+.. math::
+
+    \norm{\vect{x}}_{\inf} = \max_{i=1}^n |x_i|
+
+Returns
+-------
+norm : float
+    The vector's :math:`L^{\inf}` norm.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.normInf()
+3.0)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::normSquare
+"Compute the squared Euclidean norm.
+
+Returns
+-------
+norm : float
+    The vector's squared Euclidean norm.
+
+See Also
+--------
+norm
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.normSquare()
+14.0"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::normalize
+"Compute the normalized vector with respect to its Euclidean norm.
+
+Returns
+-------
+normalized_vector : :class:`~openturns.Point`
+    The normalized vector with respect to its Euclidean norm.
+
+See Also
+--------
+norm
+
+Raises
+------
+RuntimeError : If the Euclidean norm is zero.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> print(x.normalize())
+[0.267261,0.534522,0.801784]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::normalizeSquare
+"Compute the normalized vector with respect to its squared Euclidean norm.
+
+Returns
+-------
+normalized_vector : normalized_vector : :class:`~openturns.Point`
+    The normalized vector with respect to its squared Euclidean norm.
+
+See Also
+--------
+normSquare
+
+Raises
+------
+RuntimeError : If the squared Euclidean norm is zero.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> print(x.normalizeSquare())
+[0.0714286,0.285714,0.642857]"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::dot
+"Compute the scalar product.
+
+Parameters
+----------
+point : sequence of float
+    Scalar product second argument
+
+Returns
+-------
+dot : float
+    Scalar product
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> prod = x.dot([4, 5, 6])"

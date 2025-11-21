@@ -1,0 +1,137 @@
+%feature("docstring") OT::CorrelationAnalysis
+"Correlation analysis methods.
+
+Provides elementary sensitivity analysis methods
+to determine the influence of each component of a random vector
+over a single one-dimensional variable.
+
+Parameters
+----------
+firstSample : 2-d list of float
+    Values taken by a random vector.
+secondSample : 2-d list of float
+    Values taken by a single one-dimensional random variable.
+
+See also
+--------
+LinearModelAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> firstSample = ot.Normal(3).getSample(100)
+>>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
+>>> secondSample = model(firstSample)
+>>> correlationAnalysis = ot.CorrelationAnalysis(firstSample, secondSample)
+>>> cor = correlationAnalysis.computeLinearCorrelation()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computePCC
+"Correlation evaluation based on the Partial Correlation Coefficient.
+
+Refer to :ref:`ranking_pcc`.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The PCC coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computePRCC
+"Correlation evaluation based on the Partial Rank Correlation Coefficient.
+
+Refer to :ref:`ranking_pcc`.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The PRCC coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeLinearCorrelation
+"Correlation evaluation based on the linear (Pearson) correlation coefficient.
+
+Refer to :ref:`pearson_coefficient`.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The linear (Pearson) coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeSpearmanCorrelation
+"Correlation evaluation based on the Spearman correlation coefficient.
+
+Refer to :ref:`spearman_coefficient`.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The Spearman coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeKendallTau
+R"RAW(Correlation evaluation based on Kendall's :math:`\tau` coefficient.
+
+See the :class:`~openturns.Sample` :meth:`~openturns.Sample.computeKendallTau` method for details.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    Kendall's :math:`\tau` coefficients evaluated between the *secondSample*
+    and each coordinate of the *firstSample*.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeSRC
+"Correlation evaluation based on the Standard Regression Coefficient.
+
+Refer to :ref:`ranking_src`.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The SRC evaluated between the *secondSample* and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeSRRC
+"Correlation evaluation based on the Standard Rank Regression Coefficient.
+
+Refer to :ref:`ranking_src`.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The SRRC evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeSquaredSRC
+"Correlation evaluation based on the square of the Standard Regression Coefficient.
+
+Refer to :ref:`ranking_src`.
+
+Parameters
+----------
+normalize : bool
+    If True, coefficients sum to one.
+    Default value is False.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The squared SRC evaluated between the *secondSample*
+    and each coordinate of the *firstSample*."

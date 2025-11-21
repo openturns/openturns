@@ -1,0 +1,375 @@
+%define OT_Process_doc
+R"RAW(Base class for stochastic processes.
+
+Notes
+-----
+The Process class enables to model a stochastic process.
+
+A multivariate stochastic process :math:`X` of dimension :math:`d` is defined
+by:
+
+.. math::
+
+    X: \Omega \times\cD \mapsto \Rset^d
+
+where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of
+:math:`\Rset^n` discretized on the mesh :math:`\cM`, :math:`\vect{t}\in \cD` is
+a multivariate index and :math:`X(\omega, \vect{t}) \in \Rset^d`.
+
+A realization of the process :math:`X`, for a given :math:`\omega \in \Omega`
+is :math:`X(\omega): \cD  \mapsto \Rset^d` defined by:
+
+.. math::
+
+    X(\omega)(\vect{t}) = X(\omega, \vect{t})
+
+:math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` is the random variable at
+index :math:`\vect{t} \in \cD` defined by:
+
+.. math::
+
+    X_{\vect{t}}(\omega) = X(\omega, \vect{t})
+
+
+A Process object can be created only through its derived classes:
+
+:class:`~openturns.SpectralGaussianProcess`,
+:class:`~openturns.GaussianProcess`,
+:class:`~openturns.CompositeProcess`, :class:`~openturns.ARMA`,
+:class:`~openturns.RandomWalk`, :class:`~openturns.FunctionalBasisProcess`
+and :class:`~openturns.WhiteNoise`.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation
+OT_Process_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getContinuousRealization_doc
+R"RAW(Get a continuous realization.
+
+Returns
+-------
+realization : :class:`~openturns.Function`
+    According to the process, the continuous realizations are built:
+
+    - either using a dedicated functional model if it exists: e.g. a functional
+      basis process.
+
+    - or using an interpolation from a discrete realization of the process on
+      :math:`\cM`: in dimension :math:`d=1`, a linear interpolation and in
+      dimension :math:`d \geq 2`, a piecewise constant function (the value at a
+      given position is equal to the value at the nearest vertex of the mesh of
+      the process).)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getContinuousRealization
+OT_Process_getContinuousRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getDescription_doc
+"Get the description of the process.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the process."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getDescription
+OT_Process_getDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_setDescription_doc
+"Set the description of the process.
+
+Parameters
+----------
+description : sequence of str
+    Description of the process."
+%enddef
+%feature("docstring") OT::ProcessImplementation::setDescription
+OT_Process_setDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getOutputDimension_doc
+R"RAW(Get the dimension of the domain :math:`\cD`.
+
+Returns
+-------
+d : int
+    Dimension of the domain :math:`\cD`.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getOutputDimension
+OT_Process_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getFuture_doc
+R"RAW(Prediction of the :math:`N` future iterations of the process.
+
+Parameters
+----------
+stepNumber : int, :math:`N \geq 0`
+    Number of future steps.
+size : int, :math:`size \geq 0`, optional
+    Number of futures needed. Default is 1.
+
+Returns
+-------
+prediction : :class:`~openturns.ProcessSample` or :class:`~openturns.TimeSeries`
+    :math:`N` future iterations of the process.
+    If :math:`size = 1`, *prediction* is a :class:`~openturns.TimeSeries`.
+    Otherwise, it is a :class:`~openturns.ProcessSample`.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getFuture
+OT_Process_getFuture_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getMarginal_doc
+R"RAW(Get the :math:`k^{th}` marginal of the random process.
+
+Parameters
+----------
+k : int or list of ints :math:`0 \leq k < d`
+    Index of the marginal(s) needed.
+
+Returns
+-------
+marginals : :class:`~openturns.Process`
+    Process defined with marginal(s) of the random process.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getMarginal
+OT_Process_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getMesh_doc
+R"RAW(Get the mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    Mesh over which the domain :math:`\cD` is discretized.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getMesh
+OT_Process_getMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_setMesh_doc
+R"RAW(Set the mesh.
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Mesh over which the domain :math:`\cD` is discretized.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::setMesh
+OT_Process_setMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getMeshDimension_doc
+"Get the dimension of the mesh.
+
+Returns
+-------
+n : int
+    Dimension :math:`n` of the mesh."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getMeshDimension
+OT_Process_getMeshDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getRealization_doc
+"Get a realization of the process.
+
+Returns
+-------
+realization : :class:`~openturns.Field`
+    Contains a mesh over which the process is discretized and the values of the
+    process at the vertices of the mesh."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getRealization
+OT_Process_getRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getSample_doc
+R"RAW(Get :math:`n` realizations of the process.
+
+Parameters
+----------
+n : int, :math:`n \geq 0`
+    Number of realizations of the process needed.
+
+Returns
+-------
+processSample : :class:`~openturns.ProcessSample`
+    :math:`n` realizations of the random process. A process sample is a
+    collection of fields which share the same mesh :math:`\cM \in \Rset^n`.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getSample
+OT_Process_getSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getInputDimension_doc
+R"RAW(Get the dimension of the domain :math:`\cD`.
+
+Returns
+-------
+n : int
+    Dimension of the domain :math:`\cD`: :math:`n`.)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getInputDimension
+OT_Process_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getCovarianceModel_doc
+"Accessor to the covariance model.
+
+Returns
+-------
+cov_model : :class:`~openturns.CovarianceModel`
+    Covariance model, if any."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getCovarianceModel
+OT_Process_getCovarianceModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getTrend_doc
+"Accessor to the trend.
+
+Returns
+-------
+trend : :class:`~openturns.TrendTransform`
+    Trend, if any."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getTrend
+OT_Process_getTrend_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getTimeGrid_doc
+R"RAW(Get the time grid of observation of the process.
+
+Returns
+-------
+timeGrid : :class:`~openturns.RegularGrid`
+    Time grid of a process when the mesh associated to the
+    process can be interpreted as a :class:`~openturns.RegularGrid`. We check
+    if the vertices of the mesh are scalar and are regularly spaced in
+    :math:`\Rset` but we don't check if the connectivity of the mesh is conform
+    to the one of a regular grid (without any hole and composed of ordered
+    instants).)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::getTimeGrid
+OT_Process_getTimeGrid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_setTimeGrid_doc
+R"RAW(Set the time grid of observation of the process.
+
+Returns
+-------
+timeGrid : :class:`~openturns.RegularGrid`
+    Time grid of observation of the process when the mesh associated to the
+    process can be interpreted as a :class:`~openturns.RegularGrid`. We check
+    if the vertices of the mesh are scalar and are regularly spaced in
+    :math:`\Rset` but we don't check if the connectivity of the mesh is conform
+    to the one of a regular grid (without any hole and composed of ordered
+    instants).)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::setTimeGrid
+OT_Process_setTimeGrid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_isComposite_doc
+"Test whether the process is composite or not.
+
+Returns
+-------
+isComposite : bool
+    *True* if the process is composite (built upon a function and a process)."
+%enddef
+%feature("docstring") OT::ProcessImplementation::isComposite
+OT_Process_isComposite_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_isNormal_doc
+R"RAW(Test whether the process is normal or not.
+
+Returns
+-------
+isNormal : bool
+    *True* if the process is normal.
+
+Notes
+-----
+A stochastic process is normal if all its finite dimensional joint
+distributions are normal, which means that for all :math:`k \in \Nset` and
+:math:`I_k \in \Nset^*`, with :math:`cardI_k=k`, there is
+:math:`\vect{m}_1, \dots, \vect{m}_k \in \Rset^d` and
+:math:`\mat{C}_{1,\dots,k}\in\mathcal{M}_{kd,kd}(\Rset)` such that:
+
+.. math::
+
+    \Expect{\exp\left\{i\Tr{\vect{X}}_{I_k} \vect{U}_{k}  \right\}} =
+    \exp{\left\{i\Tr{\vect{U}}_{k}\vect{M}_{k}-\frac{1}{2}\Tr{\vect{U}}_{k}\mat{C}_{1,\dots,k}\vect{U}_{k}\right\}}
+
+where :math:`\Tr{\vect{X}}_{I_k} = (\Tr{X}_{\vect{t}_1}, \hdots, \Tr{X}_{\vect{t}_k})`,
+:math:`\\Tr{vect{U}}_{k} = (\Tr{\vect{u}}_{1}, \hdots, \Tr{\vect{u}}_{k})` and
+:math:`\Tr{\vect{M}}_{k} = (\Tr{\vect{m}}_{1}, \hdots, \Tr{\vect{m}}_{k})` and
+:math:`\mat{C}_{1,\dots,k}` is the symmetric matrix:
+
+.. math::
+
+  \mat{C}_{1,\dots,k} = \left(
+  \begin{array}{cccc}
+    C(\vect{t}_1, \vect{t}_1) &C(\vect{t}_1, \vect{t}_2) & \hdots & C(\vect{t}_1, \vect{t}_{k}) \\
+    \hdots & C(\vect{t}_2, \vect{t}_2)  & \hdots & C(\vect{t}_2, \vect{t}_{k}) \\
+    \hdots & \hdots & \hdots & \hdots \\
+    \hdots & \hdots & \hdots & C(\vect{t}_{k}, \vect{t}_{k})
+  \end{array}
+  \right)
+
+A Gaussian process is entirely defined by its mean function :math:`m` and its
+covariance function :math:`C` (or correlation function :math:`R`).)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::isNormal
+OT_Process_isNormal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_isStationary_doc
+R"RAW(Test whether the process is stationary or not.
+
+Returns
+-------
+isStationary : bool
+    *True* if the process is stationary.
+
+Notes
+-----
+A process :math:`X` is stationary if its distribution is invariant by
+translation: :math:`\forall k \in \Nset`,
+:math:`\forall (\vect{t}_1, \dots, \vect{t}_k) \in \cD`,
+:math:`\forall \vect{h}\in \Rset^n`, we have:
+
+.. math::
+
+    (X_{\vect{t}_1}, \dots, X_{\vect{t}_k})
+    \stackrel{\mathcal{D}}{=} (X_{\vect{t}_1+\vect{h}}, \dots, X_{\vect{t}_k+\vect{h}})
+)RAW"
+%enddef
+%feature("docstring") OT::ProcessImplementation::isStationary
+OT_Process_isStationary_doc

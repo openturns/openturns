@@ -1,0 +1,201 @@
+%feature("docstring") OT::CleaningStrategy
+R"RAW(Cleaning truncation strategy.
+
+Available constructors:
+    CleaningStrategy(*orthogonalBasis, maximumDimension*)
+
+    CleaningStrategy(*orthogonalBasis, maximumDimension, maximumSize, 
+    significanceFactor*)
+
+Parameters
+----------
+orthogonalBasis : :class:`~openturns.OrthogonalBasis`
+    An OrthogonalBasis.
+maximumDimension : positive int
+    Maximum index of the basis function that can be used by the :class:`~openturns.EnumerateFunction`.
+maximumSize : positive int, :math:`maximumSize \leq maximumDimension`
+    Maximum number of functions used in the meta model.
+    Its default value is the `CleaningStrategy-DefaultMaximumSize` key of
+    the :class:`~openturns.ResourceMap`.
+significanceFactor : float 
+    Parameter used as a threshold factor for selecting the efficient coefficients of
+    the basis. The actual threshold is the product of the
+    *significanceFactor* with the maximum magnitude of the current
+    coefficients.
+    Its default value is the `CleaningStrategy-DefaultSignificanceFactor` key of
+    the :class:`~openturns.ResourceMap`.
+
+See also
+--------
+AdaptiveStrategy, FixedStrategy
+
+Notes
+-----
+The cleaning strategy aims at building a PC expansion containing
+only a subset of the coefficients of the full expansion.
+Hence, this strategy can lead to a sparse expansion which can
+limit the chances of potential surrogate model overfitting.
+
+Let *maximumDimension* be the number of coefficients in the full expansion
+and let *maximumSize* be the maximum number of coefficients defined
+by the user. On output, at most *maximumSize*
+coefficients are selected.
+Let :math:`\epsilon` be the value of the *significanceFactor*.
+The method proceeds as follows:
+
+- Generate an initial PC basis made of the *maximumSize* first functions
+  (according to the adopted :class:`~openturns.EnumerateFunction`), or
+  equivalently an initial set of indices :math:`\cK = \{0, \ldots, maximumSize - 1\}`.
+
+- Discard from the basis any function :math:`\Psi_j` associated with 
+  an insignificant coefficient :math:`a_j`, i.e. such that:
+
+.. math::
+
+    |a_j| \leq \epsilon \max_{ k \in \cK, k \neq 0 } |a_k|.
+
+- Add the next function to the current basis :math:`\cK` according to the :class:`~openturns.EnumerateFunction` used.
+- Reiterate the procedure until the first *maximumDimension* functions have been considered.
+
+
+Examples
+--------
+In the next example, we select, among the `maximumDimension = 100` first polynomials of
+the multivariate basis, those which have the `maximumSize = 20` most
+significant contribution (greatest absolute value of the coefficients), with respect to the
+significance factor :math:`10^{-4}`.
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # Define the model
+>>> inputDim = 1
+>>> model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
+>>> # Create the input distribution
+>>> distribution = ot.JointDistribution([ot.Uniform()]*inputDim)
+>>> # Construction of the multivariate orthonormal basis
+>>> polyColl = [0.0]*inputDim
+>>> for i in range(distribution.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> maximumDimension = 100
+>>> maximumSize = 20
+>>> significanceFactor = 1e-4
+>>> adaptiveStrategy = ot.CleaningStrategy(
+...     productBasis, maximumDimension, maximumSize, significanceFactor
+... )
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getCurrentVectorIndex
+"Accessor to the current vector index.
+
+Returns
+-------
+index : int
+    Current index of the basis term."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getMaximumSize
+"Accessor to the maximum number of functions used.
+
+Returns
+-------
+maximumSize : int
+    Maximum number of significant terms of the basis.
+
+See also
+--------
+setMaximumSize"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::getSignificanceFactor
+"Accessor to the significance factor.
+
+Returns
+-------
+significanceFactor : float
+    Value of the significance factor.
+
+See also
+--------
+setSignificanceFactor"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::setMaximumSize
+"Accessor to the maximum number of functions used.
+
+Parameters
+----------
+maximumSize : int
+    Maximum number of significant terms of the basis.
+
+See also
+--------
+getMaximumSize"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::setSignificanceFactor
+"Accessor to the significance factor.
+
+Parameters
+----------
+significanceFactor : float
+    Value of the significance factor.
+
+See also
+--------
+getSignificanceFactor"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CleaningStrategy::updateBasis
+"Update the basis for the next iteration of approximation.
+
+In this strategy, the *residual* and the *relativeError* input arguments
+are ignored.
+
+Parameters
+----------
+alpha_k : sequence of floats
+    The coefficients of the expansion at this step.
+residual : float
+    The current value of the residual. Ignored.
+relativeError : float
+    The relative error. Ignored.
+
+Examples
+--------
+>>> import openturns as ot
+>>> dimension = 3
+>>> enumerateFunction = ot.LinearEnumerateFunction(dimension)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(
+...     [ot.LegendreFactory()] * dimension, enumerateFunction
+... )
+>>> degree = 6
+>>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree)
+>>> maximumDimension = 100
+>>> maximumSize = 20
+>>> significanceFactor = 1e-4
+>>> adaptiveStrategy = ot.CleaningStrategy(
+...     productBasis, maximumDimension, maximumSize, significanceFactor
+... )
+>>> adaptiveStrategy.computeInitialBasis()
+>>> print(adaptiveStrategy.getCurrentVectorIndex())
+20
+>>> psi = adaptiveStrategy.getPsi()
+>>> print(len(psi))
+20
+>>> alpha_k = [3.5, 0.1, 0.0, -0.2, 0.0, 0.3, 0.0, -0.4, 0.0, -0.5]
+>>> residual = 0.0  # Ignored
+>>> relativeError = 0.0  # Ignored
+>>> adaptiveStrategy.updateBasis(alpha_k, residual, relativeError)
+>>> psi = adaptiveStrategy.getPsi()
+>>> print(len(psi))
+7"

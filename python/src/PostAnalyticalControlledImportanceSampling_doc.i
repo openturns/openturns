@@ -1,0 +1,148 @@
+%feature("docstring") OT::PostAnalyticalControlledImportanceSampling
+R"RAW(Post analytical controlled importance sampling.
+
+Importance sampling algorithm around the design point, controlled by
+the tangent hyperplane.
+
+Parameters
+----------
+analyticalResult : :class:`~openturns.AnalyticalResult`
+    Result structure.
+
+Notes
+-----
+Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`, distributed according to
+the measure :math:`\inputMeasure`, and :math:`\model: \Rset^\inputDim \rightarrow \Rset`
+be the *limit state function* (where we only wrote the random input parameters). We define the event
+:math:`\cD_f` by:
+
+.. math::
+
+    \cD_f = \{\vect{x} \in \Rset^{\inputDim} \, | \,\model(\vect{x}) \leq 0\}
+
+The post analytical controlled importance sampling algorithm estimates the probability of the domain :math:`\cD_f`:
+
+.. math::
+
+    P_f = \Prob{\model\left( \inputRV \right) \leq 0}
+        = \int_{\Rset^{\inputDim}} \mathbf{1}_{\{\model(\vect{x}) \leq 0 \}}\inputMeasure(\vect{x})\di{\vect{x}}
+
+
+The post analytical controlled importance sampling algorithm is  a variance reduction sampling
+method, which is
+performed in the standard space, where the random vector follows a spherical distribution (see
+:ref:`isoprobabilistic_transformation` to get more details).
+It is an additive correction of the :class:`~openturns.FORM` approximation of the probability
+:math:`P_f`. See
+:class:`~openturns.Analytical` for the description of the first steps of the FORM analysis.
+
+Let :math:`\ell` be the function defined by: 
+
+.. math::
+
+    \ell(\vect{u}) = \vect{u}^*.\vect{u} - \beta^2
+
+where :math:`\vect{u}^*` is the design point in the standard space, and :math:`\beta` the distance
+of the design point from the origin of the standard space: :math:`\beta = \| \vect{u}^*\|`.
+
+The tangent hyperplane at the design point in the standard space is defined by the equation:
+
+.. math::
+
+    \{ \vect{u} \in \Rset^{\inputDim} \, | \,  \ell(\vect{u}) = 0 \}
+
+Let :math:`G: \Rset^\inputDim \rightarrow \Rset` be the model in the standard space: if :math:`T` is the iso-probabilistic
+transformation such that :math:`T(\vect{X}) = \vect{U}`, then:
+
+.. math::
+
+   G(\vect{u}) = \model \circ T^{-1}(\vect{u})
+
+Let :math:`\cD_f^{std}` be the domain :math:`\cD_f` in the standard space. We assume that the domain
+:math:`\cD_f^{std}` does not contain the origin of the standard space. Thus, it is defined by:
+
+.. math::
+
+    \cD_f^{std} & = \{\vect{u} \in \Rset^{\inputDim} \, | \,   G(\vect{u}) \leq 0  \} \\
+          & = \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \geq 0  \} \cup
+          \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \leq 0 , G(\vect{u}) \leq 0 \}
+          \setminus
+          \{\vect{u} \in \Rset^{\inputDim} \, | \,   \ell(\vect{u}) \geq 0 , G(\vect{u}) \geq 0 \}
+
+Thus, we have:
+
+.. math::
+
+    P_f & = \Prob{\ell(\vect{U}) \geq 0} + \Prob{\ell(\vect{U}) \leq 0,  G(\RVU) \leq 0} -
+    \Prob{\ell(\vect{U}) \geq 0,  G(\RVU) \geq 0}\\
+        & = \Prob{\ell(\vect{U}) \geq 0} + \delta_1 - \delta_2
+
+where :math:`\Prob{\ell(\vect{U} \geq 0} = E(-\beta)` is known exactly. :math:`E` is the univariate
+standard CDF of the spherical distribution in the standard space.
+
+If :math:`\delta_1 \ll \Prob{\ell(\vect{U} \geq 0}`
+and :math:`\delta_2 \ll \Prob{\ell(\vect{U} \geq 0}`, then we use :math:`\ell(\vect{U})` as a
+controlled
+variable and we use an importance sampling around the design point in the standard space.
+
+We denote by :math:`(\vect{u}_i)_{1 \leq i \leq \sampleSize}` a sample generated from the spherical
+distribution
+centered on the origin of the standard space, whose pdf is denoted by :math:`e`. Let :math:`e^*` be
+the pdf of the
+spherical distribution centered on the design point :math:`\vect{u}^*`.
+
+The estimate of :math:`P_f` is defined by:
+
+.. math::
+
+    \tilde{P}_f & =  E(-\beta) + \tilde{\delta}_1 - \tilde{\delta}_2\\
+                & = E(-\beta) + \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize \left( 1_{ \left \{ \ell(\vect{u})_i \leq 0,
+    G(\vect{u}_i)  \leq 0 \right\} } - 1_{ \left \{ \ell(\vect{u})_i \geq 0,  G(\vect{u}_i)  \geq
+    0\right \} } \right) \dfrac{e(\vect{u}_i)}{e^*(\vect{u}_i)}
+
+The hypotheses :math:`\delta_1 \ll \Prob{\ell(\vect{U} \geq 0}`
+and :math:`\delta_2 \ll \Prob{\ell(\vect{U} \geq 0}` are verified if the FORM
+approximation is valid.
+
+The coefficient of variation of :math:`\tilde{P}_f` is:
+
+.. math::
+
+    \Cov{\tilde{P}_f}  = \dfrac{ \sqrt{ \Var{ \tilde{P}_f}}}{\Expect{\tilde{P}_f}} 
+                      = \dfrac{ \sqrt{ \Var{ \tilde{\delta}_1 - \tilde{\delta}_2 } }}
+                     { E(-\beta) + \Expect{\tilde{\delta}_1 - \tilde{\delta}_2} } \ll  \dfrac{ \sqrt{ \Var{ \tilde{\delta}_1 - \tilde{\delta}_2 } } } {\Expect{\tilde{\delta}_1 - \tilde{\delta}_2}}
+
+See also
+--------
+PostAnalyticalImportanceSampling
+
+Examples
+--------
+>>> import openturns as ot
+
+Create the output random vector :math:`Y = \model(\inputRV)`:
+
+>>> f = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> X = ot.RandomVector(distribution)
+>>> Y = ot.CompositeRandomVector(f, X)
+
+Create the event :math:`\cD_f = \{\vect{x} \in \Rset^{\inputDim} \, | \,\model(\vect{x}) \leq -3.0\}`:
+
+>>> event = ot.ThresholdEvent(Y, ot.Less(), -3.0)
+
+Create the FORM algorithm and launch it:
+
+>>> solver = ot.AbdoRackwitz()
+>>> solver.setStartingPoint(distribution.getMean())
+>>> analytical = ot.FORM(solver, event)
+>>> analytical.run()
+>>> analyticalResult = analytical.getResult()
+
+Create the post analytical importance sampling algorithm and launch it:
+
+>>> algo = ot.PostAnalyticalControlledImportanceSampling(analyticalResult)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> pf = result.getProbabilityEstimate()
+)RAW"

@@ -1,0 +1,32 @@
+%feature("docstring") OT::IndependentCopula
+R"RAW(Independent copula.
+
+The Independent copula is defined by:
+
+.. math::
+
+    C(u_1, \cdots, u_n) = \prod_{i=1}^n u_i
+
+for :math:`u_i \in [0, 1]`
+
+Parameters
+----------
+n : int
+    Dimension of the copula, :math:`n \geq 1`.
+    Default value is 2.
+
+See also
+--------
+Distribution
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.IndependentCopula(3)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)
+)RAW"

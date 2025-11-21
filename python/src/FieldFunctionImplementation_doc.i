@@ -1,0 +1,253 @@
+%define OT_FieldFunction_doc
+R"RAW(Function mapping a field to a field.
+
+Parameters
+----------
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh
+inputDim : int, :math:`\geq 1`
+    Dimension :math:`d` of the values of the input field
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh
+outputDim : int, :math:`\geq 1`
+    Dimension :math:`d'` of the values of the output field
+
+Notes
+-----
+A FieldFunction acts on fields to produce fields:
+
+.. math::
+
+    f: \left| \begin{array}{rcl}
+                \cM_N \times (\Rset^d)^N & \rightarrow & \cM_{N'} \times (\Rset^{d'})^{N'} \\
+                F & \mapsto & F'
+              \end{array} \right.
+
+with  :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`,  :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.
+
+A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`
+of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex
+of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^d`.
+
+The constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
+The instantiation of such an object is used to extract an actual :class:`~openturns.FieldFunction` from a  :class:`~openturns.Study`.
+
+See also
+--------
+PythonFieldFunction, OpenTURNSPythonFieldFunction 
+
+
+Examples
+--------
+Using the class :class:`~openturns.OpenTURNSPythonFieldFunction` allows one to define a persistent state between the evaluations of the function.
+
+For example, we create the function which maps a field to another field sharing the same mesh and such that each value :math:`\vect{x}` of the input field is mapped into :math:`2\vect{x}`.
+
+>>> import openturns as ot
+>>> class FUNC(ot.OpenTURNSPythonFieldFunction):
+...     def __init__(self):
+...         # first argument:
+...         mesh = ot.RegularGrid(0.0, 0.1, 11)
+...         super(FUNC, self).__init__(mesh, 2, mesh, 2)
+...         self.setInputDescription(['R', 'S'])
+...         self.setOutputDescription(['T', 'U'])
+...     def _exec(self, X):
+...         Xs = ot.Sample(X)
+...         Y = Xs * ([2.0]*Xs.getDimension())
+...         return Y
+>>> F = FUNC()
+
+Create the associated FieldFunction: 
+
+>>> myFunc = ot.FieldFunction(F)
+
+It is also possible to create a FieldFunction from a python function as follows:
+
+>>> mesh = ot.RegularGrid(0.0, 0.1, 11)
+>>> def myPyFunc(X):
+...     Xs = ot.Sample(X)
+...     values = Xs * ([2.0]*Xs.getDimension())
+...     return values
+>>> inputDim = 2
+>>> outputDim = 2
+>>> myFunc = ot.PythonFieldFunction(mesh, inputDim, mesh, outputDim, myPyFunc)
+
+Evaluate the function on a field:
+
+>>> X = ot.Field(mesh, ot.Normal(2).getSample(11))
+>>> Y = myFunc(X)
+)RAW"
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation
+OT_FieldFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getCallsNumber_doc
+"Get the number of calls of the function.
+
+Returns
+-------
+callsNumber : int
+    Counts the number of times the function has been called since its
+    creation."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getCallsNumber
+OT_FieldFunction_getCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getInputDescription_doc
+"Get the description of the input field values.
+
+Returns
+-------
+inputDescription : :class:`~openturns.Description`
+    Description of the input field values."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getInputDescription
+OT_FieldFunction_getInputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getInputDimension_doc
+"Get the dimension of the input field values.
+
+Returns
+-------
+d : int
+    Dimension :math:`d` of the input field values."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getInputDimension
+OT_FieldFunction_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getMarginal_doc
+R"RAW(Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d'`
+    Indice(s) of the marginal(s) to be extracted.
+
+Returns
+-------
+fieldFunction : :class:`~openturns.FieldFunction`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`.)RAW"
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getMarginal
+OT_FieldFunction_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_setInputMesh_doc
+R"RAW(Set the mesh associated to the input domain.
+
+Parameters
+----------
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh :math:`\cM_{N'}`.)RAW"
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::setInputMesh
+OT_FieldFunction_setInputMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getInputMesh_doc
+R"RAW(Get the mesh associated to the input domain.
+
+Returns
+-------
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh :math:`\cM_{N'}`.)RAW"
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getInputMesh
+OT_FieldFunction_getInputMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_setOutputMesh_doc
+R"RAW(Set the mesh associated to the output domain.
+
+Parameters
+----------
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh :math:`\cM_{N'}`.)RAW"
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::setOutputMesh
+OT_FieldFunction_setOutputMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getOutputMesh_doc
+R"RAW(Get the mesh associated to the output domain.
+
+Returns
+-------
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh :math:`\cM_{N'}`.)RAW"
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getOutputMesh
+OT_FieldFunction_getOutputMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_isActingPointwise_doc
+"Whether the function acts point-wise.
+
+Returns
+-------
+pointWise : bool
+    Returns true if the function evaluation at each vertex depends only on the
+    vertex or the value at the vertex."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::isActingPointwise
+OT_FieldFunction_isActingPointwise_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getOutputDescription_doc
+"Get the description of the output field values.
+
+Returns
+-------
+outputDescription : :class:`~openturns.Description`
+    Description of the output field values."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getOutputDescription
+OT_FieldFunction_getOutputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_getOutputDimension_doc
+"Get the dimension of the output field values.
+
+Returns
+-------
+d' : int
+    Dimension :math:`d'` of the output field values."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getOutputDimension
+OT_FieldFunction_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionImplementation::setInputDescription
+"Set the description of the input field values.
+
+Parameters
+----------
+inputDescription : sequence of str
+    Description of the input field values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldFunctionImplementation::setOutputDescription
+"Set the description of the output field values.
+
+Parameters
+----------
+outputDescription : sequence of str
+    Describes the outputs of the output field values."
