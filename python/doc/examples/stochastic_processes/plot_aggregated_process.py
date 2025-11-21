@@ -9,8 +9,6 @@ Aggregate processes
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create processes to aggregate
@@ -40,4 +38,7 @@ marginal = ot.HistogramFactory().build(
 )
 graph = marginal.drawPDF()
 otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

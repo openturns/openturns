@@ -9,8 +9,6 @@ Create a Gauss product design
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Define the underlying distribution, degrees
@@ -28,4 +26,7 @@ graph = ot.Graph("GP design", "x1", "x2", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

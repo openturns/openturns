@@ -23,8 +23,6 @@ Manipulate a time series
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create the RegularGrid
@@ -90,4 +88,7 @@ view = otv.View(graph)
 # With no interpolation
 graph = myTimeSeries.drawMarginal(0, False)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

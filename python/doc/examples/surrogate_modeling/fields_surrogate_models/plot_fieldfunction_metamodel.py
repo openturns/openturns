@@ -20,8 +20,6 @@ Metamodel of a field function
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create the input model.
@@ -231,4 +229,7 @@ graph_sample_Y.setTitle(r"Trajectory $Y$")
 graph_sample_Y.setXTitle(r"$t$")
 graph_sample_Y.setYTitle(r"$Y$")
 view = otv.View(graph_sample_Y)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

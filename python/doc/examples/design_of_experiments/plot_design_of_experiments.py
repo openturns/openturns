@@ -165,3 +165,7 @@ fig.set_size_inches(6, 6)
 # We have elementary intervals in 2 dimensions, each having a volume equal to 1/12.
 # Since there are 36 points, the Halton sequence is so that each elementary interval contains exactly 36/12 = 3 points.
 # Notice that each elementary interval is closed on the left (or bottom) and open on the right (or top).
+
+# %%
+# Display all figures
+otv.View.ShowAll()

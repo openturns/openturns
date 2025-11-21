@@ -314,8 +314,6 @@ otv.View(
 legend = ax.legend()
 ax.autoscale()
 
-plt.show()
-
 # %%
 # We validate the model with the nugget effect:
 # its predictivity factor is slightly improved.
@@ -323,3 +321,7 @@ plt.show()
 validation_nugget = ot.MetaModelValidation(y_valid, gprMeta_nugget(x_valid))
 print("R2 score with nugget: ", validation_nugget.computeR2Score())
 print("R2 score without nugget: ", validation.computeR2Score())
+
+# %%
+# Display all figures
+otv.View.ShowAll()

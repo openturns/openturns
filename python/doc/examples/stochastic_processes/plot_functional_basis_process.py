@@ -67,3 +67,7 @@ sample = process.getSample(N)
 graph = sample.drawMarginal(0)
 graph.setTitle(str(N) + " realizations of functional basis process")
 view = otv.View(graph)
+
+# %%
+# Display all figures
+otv.View.ShowAll()

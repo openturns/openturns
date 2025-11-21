@@ -9,8 +9,6 @@ Probabilistic design of experiments
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create the target distribution
@@ -30,4 +28,7 @@ experiment = ot.LHSExperiment(distribution, N)
 sample = experiment.generate()
 graph = ot.Cloud(sample)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

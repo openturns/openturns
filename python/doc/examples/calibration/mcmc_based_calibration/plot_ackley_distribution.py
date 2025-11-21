@@ -266,3 +266,7 @@ contour.setColorMapNorm("log")
 graph.add(contour)
 graph.add(ot.Cloud(sample, "black", "plus"))
 view = otv.View(graph)
+
+# %%
+# Display all figures
+otv.View.ShowAll()

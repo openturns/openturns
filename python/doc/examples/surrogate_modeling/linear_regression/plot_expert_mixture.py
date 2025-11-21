@@ -32,7 +32,6 @@ Mixture of experts
 
 # %%
 import openturns as ot
-from matplotlib import pyplot as plt
 import openturns.viewer as otv
 import numpy as np
 
@@ -118,4 +117,7 @@ moe = ot.Function(evaluation)
 # Draw the mixture of experts
 graph = moe.draw(-1.0, 1.0)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

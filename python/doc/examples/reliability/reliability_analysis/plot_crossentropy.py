@@ -357,3 +357,6 @@ print("Modified quantile level:", physicalSpaceIS4.getQuantileLevel())
 
 # %%
 # The optimized auxiliary distribution with a dependency between the two marginals allows one to better fit the failure domain, resulting in a lower coefficient of variation.
+
+# %%
+otv.View.ShowAll()

@@ -252,5 +252,5 @@ g.setYTitle("Outcrossing rate")
 view = otv.View(g)
 
 # %%
-# Display all the graphs
+# Display all the figures
 view.ShowAll()

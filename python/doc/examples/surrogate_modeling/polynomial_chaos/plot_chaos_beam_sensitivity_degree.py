@@ -17,7 +17,7 @@ Polynomial chaos is sensitive to the degree
 # %%
 import openturns as ot
 import numpy as np
-import openturns.viewer
+import openturns.viewer as otv
 import matplotlib.pyplot as plt
 
 # %%
@@ -197,7 +197,7 @@ for totalDegree in range(1, maxDegree + 1):
         multivariateBasis, chaosResult, inputTest, outputTest, totalDegree
     )
     ax = fig.add_subplot(1, maxDegree, totalDegree)
-    _ = ot.viewer.View(graph, figure=fig, axes=[ax])
+    _ = otv.View(graph, figure=fig, axes=[ax])
     plt.suptitle("Metamodel validation")
 
 # %%
@@ -283,8 +283,6 @@ N = 50  # size of the train design
 r2Sample = computeSampleR2(N, n_valid, numberAttempts, maxDegree)
 plotR2Boxplots(r2Sample, N)
 
-plt.show()
-
 # %%
 # When the sample size increases, the :math:`R^2` computation becomes less sensitive to the polynomial degree.
 
@@ -307,3 +305,7 @@ plt.show()
 # * "Metamodel-Based Sensitivity Analysis: Polynomial Chaos Expansions and Gaussian Processes", Loïc Le Gratiet, Stefano Marelli, Bruno Sudret,
 #   Handbook of Uncertainty Quantification, 2017, Springer International Publishing.
 #
+
+# %%
+# Display all figures
+otv.View.ShowAll()

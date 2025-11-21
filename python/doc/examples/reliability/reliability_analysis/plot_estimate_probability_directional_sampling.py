@@ -88,3 +88,7 @@ print("Pf=", probability)
 graph = algo.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
+
+# %%
+# Display all figures
+otv.View.ShowAll()

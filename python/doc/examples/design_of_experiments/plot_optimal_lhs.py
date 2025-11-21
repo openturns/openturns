@@ -9,8 +9,6 @@ Optimize an LHS design of experiments
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # **LHS and space filling**
@@ -147,4 +145,7 @@ view = otv.View(graph)
 # New algo starting from this design
 algo = ot.SimulatedAnnealingLHS(design, distribution, space_filling, temperatureProfile)
 design = algo.generate()
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

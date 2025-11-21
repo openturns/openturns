@@ -15,8 +15,6 @@ Add a trend to a process
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create a process
@@ -49,4 +47,7 @@ sample = Y.getSample(6)
 sample.setName("Y")
 graph = sample.drawMarginal(0)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

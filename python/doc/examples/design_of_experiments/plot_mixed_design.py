@@ -19,13 +19,9 @@ Create mixed deterministic and probabilistic designs of experiments
 import openturns as ot
 import math as m
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Define the underlying random vector.
-
-# %%
 dim = 2
 R = ot.CorrelationMatrix(dim)
 distribution = ot.Normal([2.0, 3.0], [0.5, 2.0], R)
@@ -33,8 +29,6 @@ rv = ot.RandomVector(distribution)
 
 # %%
 # Define the structure of the design of experiments.
-
-# %%
 levels = [1.0, 2.0, 3.0]
 experiment = ot.Axial(dim, levels)
 sample = experiment.generate()
@@ -66,5 +60,7 @@ doe.setColor("red")
 doe.setLegend("design")
 graph.add(doe)
 view = otv.View(graph)
-plt.show()
+
 # %%
+# Display all figures
+otv.View.ShowAll()

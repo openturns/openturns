@@ -9,8 +9,6 @@ Visualize clouds
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create 2-d samples to visualize
@@ -47,4 +45,6 @@ sample3 = ot.Normal(mean, sigma, R).getSample(N)
 graph3 = ot.VisualTest.DrawPairs(sample3)
 graph3.setTitle("3d clouds")
 view = otv.View(graph3)
-plt.show()
+
+# %%
+otv.View.ShowAll()

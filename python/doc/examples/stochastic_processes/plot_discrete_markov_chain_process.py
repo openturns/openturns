@@ -125,4 +125,7 @@ futures = process.getFuture(10, 3)
 graph = futures.drawMarginal(0)
 graph.setTitle("Three Markov chain futures, 10 steps")
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

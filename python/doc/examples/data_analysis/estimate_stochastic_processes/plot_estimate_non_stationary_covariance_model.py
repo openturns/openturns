@@ -31,8 +31,6 @@ Estimate a non stationary covariance function
 import math as m
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create the time grid
@@ -97,4 +95,6 @@ graph = estimatedModel.draw(0, 0, t0, tmax, 256, False)
 graph.setTitle("Estimated covariance model")
 graph.setLegendPosition("")
 view = otv.View(graph)
-plt.show()
+
+# %%
+otv.View.ShowAll()

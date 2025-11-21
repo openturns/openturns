@@ -31,8 +31,6 @@ Visualize sensitivity
 from openturns.usecases.ishigami_function import IshigamiModel
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We load the :ref:`Ishigami model<use-case-ishigami>` from the `usecases` module :
@@ -180,4 +178,4 @@ view = otv.View(graph)
 
 # %%
 # Display figures
-plt.show()
+otv.View.ShowAll()

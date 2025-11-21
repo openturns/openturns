@@ -17,7 +17,6 @@ Overview of univariate distribution management
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 
 # %%
@@ -270,4 +269,7 @@ Q.setDescription(["Quartic Kernel"])
 # %%
 graph = Q.drawPDF()
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

@@ -141,3 +141,7 @@ Pf = result.getProbabilityEstimate()
 print("Pf (sim) = %.3e" % Pf, "nb evals=", n1 - n0)
 width = result.getConfidenceLength(0.95)
 print("C.I (95%)=[" + "%.3e" % (Pf - 0.5 * width), ",%.3e" % (Pf + 0.5 * width), "]")
+
+# %%
+# Display all figures
+otv.View.ShowAll()

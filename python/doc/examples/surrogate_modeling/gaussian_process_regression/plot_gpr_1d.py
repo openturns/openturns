@@ -47,7 +47,7 @@ Gaussian Process Regression : quick-start
 # * a Matern covariance model.
 #
 import openturns as ot
-from openturns import viewer
+import openturns.viewer as otv
 import openturns.experimental as otexp
 
 
@@ -104,7 +104,7 @@ graph.add(
     plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
 )
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Creation of the surrogate model
@@ -153,7 +153,7 @@ g_trend = trend_func.draw(xmin, xmax, 256)
 g_trend.setTitle(r"Trend function of the Gaussian process $Y$")
 g_trend.setXTitle(r"$x$")
 g_trend.setYTitle(r"$\mu(x)$")
-view = viewer.View(g_trend)
+view = otv.View(g_trend)
 
 # %%
 # The class :class:`~openturns.experimental.GaussianProcessRegression` is built from the  Gaussian process :math:`Y` and makes
@@ -203,7 +203,7 @@ graph.add(
 )
 graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We observe that the Gaussian process regression surrogate model is interpolating. This is what is meant by
@@ -258,7 +258,7 @@ graph = ot.Graph(
 )
 curve = ot.Curve(x_test, conditionalSigma)
 graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -317,7 +317,7 @@ graph.add(
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We see that the confidence intervals are small in the regions where two
@@ -328,4 +328,4 @@ view = viewer.View(graph)
 
 # %%
 # Display all figures.
-viewer.View.ShowAll()
+otv.View.ShowAll()

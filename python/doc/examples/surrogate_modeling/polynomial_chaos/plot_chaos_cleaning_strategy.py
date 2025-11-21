@@ -746,3 +746,7 @@ score_R2 = compute_cleaning_PCE(
 # We see that the :class:`~openturns.CleaningStrategy` class performs correctly in
 # this particular case. We have seen how to select the hyperparameters which
 # produce the best :math:`R^2` score.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

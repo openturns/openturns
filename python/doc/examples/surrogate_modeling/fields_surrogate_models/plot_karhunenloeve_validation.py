@@ -11,8 +11,6 @@ Validation of a Karhunen-Loeve decomposition
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create a Gaussian process.
@@ -61,4 +59,7 @@ view = otv.View(validation.drawObservationWeight(0))
 # %%
 # Build the quality graph.
 view = otv.View(validation.drawObservationQuality())
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

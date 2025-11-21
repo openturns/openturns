@@ -24,8 +24,6 @@ Use the FORM - SORM algorithms
 from openturns.usecases import cantilever_beam
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We load the model from the usecases module :
@@ -148,8 +146,6 @@ sorm_result.getEventProbabilityHohenbichler()
 # ... with Tvedt approximation
 sorm_result.getEventProbabilityTvedt()
 
-plt.show()
-
 # %%
 # FORM analysis with finite difference gradient
 # ---------------------------------------------
@@ -193,3 +189,6 @@ event.setName("deviation")
 algo = ot.FORM(optimAlgo, event)
 algo.run()
 result = algo.getResult()
+
+# %%
+otv.View.ShowAll()

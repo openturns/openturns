@@ -20,7 +20,6 @@ Deterministic design of experiments
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # We will use the following function to plot bi-dimensional samples.
@@ -92,4 +91,7 @@ sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample, "Box")
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

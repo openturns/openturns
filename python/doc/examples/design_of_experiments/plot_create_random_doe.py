@@ -12,7 +12,6 @@ Create a random design of experiments
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 
 # %%
 # We create the underlying distribution: a standard 2-dimensional normal distribution.
@@ -50,5 +49,5 @@ graph.add(cloud)
 view = otv.View(graph)
 
 # %%
-# Display figures
-plt.show()
+# Display all figures
+otv.View.ShowAll()

@@ -332,4 +332,7 @@ view = otv.View(
     figure_kw={"figsize": (5.0, 3.0)},
 )
 plt.tight_layout()
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

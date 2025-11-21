@@ -11,8 +11,6 @@ Create a threshold event
 #
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # We consider a standard Gaussian random vector :math:`X` and build a random vector from this distribution.
@@ -84,4 +82,4 @@ view = otv.View(graph)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

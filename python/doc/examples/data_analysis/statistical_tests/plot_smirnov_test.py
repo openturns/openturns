@@ -70,3 +70,7 @@ print(
     "p-value=%.6g" % test_result.getPValue(),
     "threshold=%.6g" % test_result.getThreshold(),
 )
+
+# %%
+# Display all figures
+otv.View.ShowAll()

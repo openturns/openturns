@@ -9,8 +9,6 @@ Draw an histogram
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create data to visualize
@@ -22,4 +20,6 @@ sample = normal.getSample(size)
 # Draw histogram
 graph = ot.HistogramFactory().build(sample).drawPDF()
 view = otv.View(graph)
-plt.show()
+
+# %%
+otv.View.ShowAll()

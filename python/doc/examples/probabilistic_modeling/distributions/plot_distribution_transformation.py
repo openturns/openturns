@@ -9,13 +9,9 @@ Transform a distribution
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
-# We define some (classical) distributions :
-
-# %%
+# We define some (classical) distributions
 distribution1 = ot.Uniform(0.0, 1.0)
 distribution2 = ot.Uniform(0.0, 2.0)
 distribution3 = ot.WeibullMin(1.5, 2.0)
@@ -156,4 +152,4 @@ view = otv.View(graph)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

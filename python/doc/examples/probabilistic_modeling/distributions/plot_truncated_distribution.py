@@ -66,5 +66,5 @@ graph.add(ot.Cloud(truncatedKS.getSample(200)))
 view = otv.View(graph)
 
 # %%
-# Display all the graphs
+# Display all the figures
 view.ShowAll()

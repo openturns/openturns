@@ -6,7 +6,6 @@ Create a mesh
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
 import math as m
 
 # %%
@@ -172,5 +171,5 @@ graphMesh.setLegendPosition("")
 view = otv.View(graphMesh)
 
 # %%
-# Display figures
-plt.show()
+# Display all figures
+otv.View.ShowAll()

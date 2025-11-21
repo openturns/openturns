@@ -56,3 +56,7 @@ print("confidence intervals:", mySobol.getFirstOrderIndicesInterval())
 
 # %%
 # It is possible that Sobol' indices estimates take negative values, that is inconsistent with the theory. Therefore, a larger number of samples is required to get consistent indices.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

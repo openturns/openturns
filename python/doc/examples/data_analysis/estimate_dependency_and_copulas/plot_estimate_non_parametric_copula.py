@@ -9,8 +9,6 @@ Fit a non parametric copula
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # Create data
@@ -33,4 +31,7 @@ view = otv.View(graph)
 distribution = ot.KernelSmoothing().build(sample).getCopula()
 graph = distribution.drawPDF()
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()

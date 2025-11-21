@@ -152,3 +152,7 @@ diagonal.setLineStyle("dotdash")
 diagonal.setColor("grey")
 graph.add(diagonal)
 _ = otv.View(graph, square_axes=True)
+
+# %%
+# Display all figures
+otv.View.ShowAll()

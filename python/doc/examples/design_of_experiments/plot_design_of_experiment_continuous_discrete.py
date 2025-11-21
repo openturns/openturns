@@ -9,8 +9,6 @@ Create a design of experiments with discrete and continuous variables
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-
 
 # %%
 # To create the first marginal of the distribution, we select a univariate discrete distribution.
@@ -68,4 +66,7 @@ graph = ot.Graph("LHSExperiment", "x0", "x1", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)
-plt.show()
+
+# %%
+# Display all figures
+otv.View.ShowAll()
