@@ -200,7 +200,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "OpenTURNS"
-copyright = "2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca"
+copyright = "2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
