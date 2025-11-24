@@ -7,7 +7,7 @@ R"RAW(Conditioned Gaussian process.
 
 Parameters
 ----------
-gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+gprResult : :class:`~openturns.GaussianProcessRegressionResult`
     Structure that contains all the elements of Gaussian Process Regression computations.
 mesh : :class:`~openturns.Mesh`
     Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
@@ -17,7 +17,7 @@ Notes
 This class helps to generate fields from the conditioned gaussian process resulting
 from a Gaussian process regression algorithm.
 
-Refer to the documentation of :class:`~openturns.experimental.GaussianProcessRegression` to get details on
+Refer to the documentation of :class:`~openturns.GaussianProcessRegression` to get details on
 the notations.
 
 Examples
@@ -47,13 +47,13 @@ We define the functions basis to estimate the trend: this basis only contains co
 >>> basis = ot.ConstantBasisFactory(dim).build()
 
 We estimate the Gaussian process regression, using first the class
-:class:`~openturns.experimental.GaussianProcessFitter`, then
-using the class :class:`~openturns.experimental.GaussianProcessRegression`:
+:class:`~openturns.GaussianProcessFitter`, then
+using the class :class:`~openturns.GaussianProcessRegression`:
 
->>> fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
+>>> fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 >>> fitter_algo.run()
 >>> fitter_result = fitter_algo.getResult()
->>> gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+>>> gpr_algo = ot.GaussianProcessRegression(fitter_result)
 >>> gpr_algo.run()
 >>> gpr_result = gpr_algo.getResult()
 

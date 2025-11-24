@@ -102,9 +102,9 @@ view = otv.View(graph)
 # %%
 covarianceModel = ot.MaternModel([1.0] * dim, [0.5], 2.5)
 basis = ot.ConstantBasisFactory(dim).build()
-fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 fitter.run()
-gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr = ot.GaussianProcessRegression(fitter.getResult())
 gpr.run()
 
 # %%
@@ -249,9 +249,9 @@ covarianceModel.setNuggetFactor(noise)
 # %%
 # Build the initial GP
 basis = ot.ConstantBasisFactory(dim).build()
-fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 fitter.run()
-gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr = ot.GaussianProcessRegression(fitter.getResult())
 gpr.run()
 
 # %%

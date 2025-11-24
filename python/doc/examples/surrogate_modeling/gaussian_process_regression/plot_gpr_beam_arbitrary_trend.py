@@ -10,8 +10,8 @@ Gaussian Process Regression: choose an arbitrary trend
 # we show how to configure a polynomial trend.
 #
 # In general, any collection of multivariate functions can be used as the
-# `basis` argument of a :class:`~openturns.experimental.GaussianProcessFitter` or a
-# :class:`~openturns.experimental.GaussianProcessRegression`.
+# `basis` argument of a :class:`~openturns.GaussianProcessFitter` or a
+# :class:`~openturns.GaussianProcessRegression`.
 # In practice, it might not be convenient to create a multivariate basis and
 # this is why we sometimes create it by tensorization of univariate functions.
 # In this example, we first use Legendre polynomials as our univariate functions,
@@ -20,7 +20,6 @@ Gaussian Process Regression: choose an arbitrary trend
 # For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.experimental as otexp
 
 
 # %%
@@ -96,8 +95,8 @@ covariance_model = ot.SquaredExponential([1.0] * dimension, [1.0])
 
 # %%
 # First, we estimate a Gaussian process approximating the model with the class
-# :class:`~openturns.experimental.GaussianProcessFitter`.
-algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+# :class:`~openturns.GaussianProcessFitter`.
+algo_fit = ot.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 print("First run: algo GPFitter = ", algo_fit.getOptimizationAlgorithm())
 algo_fit.setOptimizationAlgorithm(ot.TNC())
 algo_fit.run()
@@ -106,8 +105,8 @@ fitter_result = algo_fit.getResult()
 # %%
 # Then, we condition the estimated gaussian process to
 # make it interpolate the data set using the class
-# :class:`~openturns.experimental.GaussianProcessRegression`.
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+# :class:`~openturns.GaussianProcessRegression`.
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 
@@ -116,7 +115,7 @@ gpr_result = gpr_algo.getResult()
 gpr_metamodel = gpr_result.getMetaModel()
 
 # %%
-# The method :meth:`~openturns.experimental.GaussianProcessRegressionResult.getTrendCoefficients` returns the
+# The method :meth:`~openturns.GaussianProcessRegressionResult.getTrendCoefficients` returns the
 # coefficients of the trend. We see that the number of coefficients in the trend corresponds to the number of
 # functions in the basis.
 print(gpr_result.getTrendCoefficients())
@@ -156,12 +155,12 @@ for i in range(numberOfTrendCoefficients):
 basis = ot.Basis(functions)
 
 # %%
-algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+algo_fit = ot.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 print("Second run: algo GPFitter = ", algo_fit.getOptimizationAlgorithm())
 algo_fit.setOptimizationAlgorithm(ot.TNC())
 algo_fit.run()
 fitter_result = algo_fit.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 print(gpr_result.getTrendCoefficients())

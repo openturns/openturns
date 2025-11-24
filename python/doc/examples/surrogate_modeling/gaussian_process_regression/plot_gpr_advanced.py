@@ -70,7 +70,7 @@ cov = ot.MaternModel([1.0], [2.5], 1.5)
 print(cov)
 
 # 3. Gaussian process fitter algorithm
-algogpfitter = otexp.GaussianProcessFitter(x, y, cov, basis)
+algogpfitter = ot.GaussianProcessFitter(x, y, cov, basis)
 
 # 4. Optimization
 # algogpr.setOptimizationAlgorithm(ot.NLopt('GN_DIRECT'))
@@ -82,7 +82,7 @@ algogpfitter.run()
 gpfitterResult = algogpfitter.getResult()
 
 # 6. Gaussian process regression algorithm
-algogpr = otexp.GaussianProcessRegression(gpfitterResult)
+algogpr = ot.GaussianProcessRegression(gpfitterResult)
 
 # 7. Run the algorithm
 algogpr.run()
@@ -131,7 +131,7 @@ graph.add(cloud)
 # Sample for the variance
 sample = ot.Sample(n_pts_plot, 2)
 sample[:, 0] = x_plot
-variance = otexp.GaussianProcessConditionalCovariance(
+variance = ot.GaussianProcessConditionalCovariance(
     gprResult
 ).getConditionalMarginalVariance(x_plot)
 sample[:, 1] = variance
@@ -251,10 +251,10 @@ cov.activateNuggetFactor(True)
 # %%
 # We have to run the optimization algorithm again.
 
-algogpfitter = otexp.GaussianProcessFitter(x, y, cov, basis)
+algogpfitter = ot.GaussianProcessFitter(x, y, cov, basis)
 algogpfitter.setOptimizationAlgorithm(ot.NLopt("GN_DIRECT"))
 algogpfitter.run()
-algogpr_nugget = otexp.GaussianProcessRegression(algogpfitter.getResult())
+algogpr_nugget = ot.GaussianProcessRegression(algogpfitter.getResult())
 algogpr_nugget.run()
 
 # %%
@@ -271,7 +271,7 @@ print("Optimal trend coefficients = {}".format(gprResult_nugget.getTrendCoeffici
 
 # %%
 gprMeta_nugget = gprResult_nugget.getMetaModel()
-gpr_conditional_covariance = otexp.GaussianProcessConditionalCovariance(
+gpr_conditional_covariance = ot.GaussianProcessConditionalCovariance(
     gprResult_nugget
 )
 variance = gpr_conditional_covariance.getConditionalMarginalVariance(x_plot)

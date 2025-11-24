@@ -16,7 +16,6 @@ Multi-output Gaussian Process Regression on the fire satellite model
 # %%
 import openturns as ot
 from openturns.usecases.fire_satellite import FireSatelliteModel
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # %%
@@ -69,7 +68,7 @@ covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
 # %%
 # We can now define the GP fitter model.
-fitter_algo = otexp.GaussianProcessFitter(
+fitter_algo = ot.GaussianProcessFitter(
     inputTrainingSet, outputTrainingSet, covarianceModel, basis
 )
 fitter_algo.setOptimizeParameters(True)
@@ -78,7 +77,7 @@ fitter_algo.setOptimizeParameters(True)
 # We run the algorithm and get the metamodel.
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 gprMetamodel = gpr_result.getMetaModel()

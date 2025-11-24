@@ -1,5 +1,4 @@
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 from openturns.usecases.fire_satellite import FireSatelliteModel
 
@@ -15,7 +14,7 @@ def use_case_1(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
-    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getOptimizeParameters()
     assert algo.getKeepCholeskyFactor()
     algo.setKeepCholeskyFactor(False)
@@ -39,7 +38,7 @@ def use_case_2(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
-    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getKeepCholeskyFactor()
     algo.setKeepCholeskyFactor(False)
     algo.setOptimizeParameters(False)
@@ -64,7 +63,7 @@ def use_case_3(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
-    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
     algo.run()
@@ -94,7 +93,7 @@ def use_case_4(X, Y):
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
-    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getKeepCholeskyFactor()
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
@@ -126,7 +125,7 @@ def use_case_5(X, Y):
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
 
-    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     assert algo.getKeepCholeskyFactor()
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
@@ -156,7 +155,7 @@ def use_case_6(X, Y):
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
     )
     covarianceModel = ot.AbsoluteExponential()
-    algo = otexp.GaussianProcessFitter(X, Y, covarianceModel)
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel)
     assert algo.getKeepCholeskyFactor()
     algo.setKeepCholeskyFactor(False)
     assert algo.getOptimizeParameters()
@@ -179,7 +178,7 @@ def use_case_7(X, Y):
     ot.ResourceMap.SetAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 0.0)
     covarianceModel = ot.AbsoluteExponential()
     with ott.assert_raises(TypeError):
-        algo = otexp.GaussianProcessFitter(X, Y, covarianceModel)
+        algo = ot.GaussianProcessFitter(X, Y, covarianceModel)
         algo.run()
 
 
@@ -216,7 +215,7 @@ def bugfix_optim_no_feasible():
         [2.0e7, 2.0e3, 2.0e3, 1e2, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0],
     )
 
-    algo = otexp.GaussianProcessFitter(
+    algo = ot.GaussianProcessFitter(
         inputTrainingSet, outputTrainingSet, covarianceModel, basis
     )
     algo.setOptimizationBounds(scaleOptimizationBounds)

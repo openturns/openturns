@@ -79,11 +79,6 @@
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
-%include GaussianProcessFitterResult.i
-%include GaussianProcessFitter.i
-%include GaussianProcessRegressionResult.i
-%include GaussianProcessRegression.i
-%include GaussianProcessConditionalCovariance.i
 %include EfficientGlobalOptimization.i
 
 /* Uncertainty/Model */

@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -14,7 +13,7 @@ covarianceModel = ot.SquaredExponential([1.0], [1.0])
 model = ot.SymbolicFunction(["x"], ["x - 0.6 * cos(x/3)"])
 Y = model(X)
 basis = ot.QuadraticBasisFactory(inputDimension).build()
-algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
 algo.setKeepCholeskyFactor(False)
 algo.setOptimizationAlgorithm(ot.NLopt("LN_NELDERMEAD"))
 algo.run()

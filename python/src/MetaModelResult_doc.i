@@ -10,13 +10,13 @@ metaModel : :class:`~openturns.Function`
 
 Notes
 -----
-Structure created by the method run() of :class:`~openturns.experimental.GaussianProcessRegression`
+Structure created by the method run() of :class:`~openturns.GaussianProcessRegression`
 or :class:`~openturns.FunctionalChaosAlgorithm` and obtained thanks to the
 method getResult() of these classes.
 
 See also
 --------
-openturns.LinearModelResult, openturns.FunctionalChaosResult, openturns.experimental.GaussianProcessRegressionResult"
+openturns.LinearModelResult, openturns.FunctionalChaosResult, openturns.GaussianProcessRegressionResult"
 
 // ---------------------------------------------------------------------
 

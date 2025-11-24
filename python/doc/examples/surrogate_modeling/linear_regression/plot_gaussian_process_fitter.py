@@ -5,11 +5,10 @@ Create a general linear model metamodel
 
 # %%
 # In this example we create a global approximation of a model response using a general linear model.
-# We show how to use the :class:`~openturns.experimental.GaussianProcessFitter` class, which estimates the parameters of the model.
+# We show how to use the :class:`~openturns.GaussianProcessFitter` class, which estimates the parameters of the model.
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -26,13 +25,13 @@ x = distribution.getSample(100)
 y = model(x)
 
 # %%
-# We create a :class:`~openturns.experimental.GaussianProcessFitter` based on a quadratic basis.
+# We create a :class:`~openturns.GaussianProcessFitter` based on a quadratic basis.
 # The `run` method estimates the coefficients of the trend and the hyperparameters of the covariance model.
 
 # %%
 basis = ot.QuadraticBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([1] * dimension, [1.0])
-algo = otexp.GaussianProcessFitter(x, y, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(x, y, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 

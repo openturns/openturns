@@ -58,9 +58,9 @@ openturns.testing.assert_almost_equal(result.getOptimalValue(), [-0.979476], 1e-
 # with GPR
 covarianceModel = ot.SquaredExponential([2.50057] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
-fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 fitter.run()
-gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr = ot.GaussianProcessRegression(fitter.getResult())
 gpr.run()
 
 # EGO
@@ -109,9 +109,9 @@ inputSample = experiment.generate()
 outputSample = model(inputSample)
 covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
-fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 fitter.run()
-gpr = otexp.GaussianProcessRegression(fitter.getResult())
+gpr = ot.GaussianProcessRegression(fitter.getResult())
 gpr.run()
 algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(10)

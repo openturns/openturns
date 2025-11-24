@@ -118,20 +118,20 @@ basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 
 # %%
-# We estimate the Gaussian process :math:`Y` with the class :class:`~openturns.experimental.GaussianProcessFitter`.
-fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
+# We estimate the Gaussian process :math:`Y` with the class :class:`~openturns.GaussianProcessFitter`.
+fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
 print(fitter_result)
 
 # %%
 # We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the
-# :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
+# :meth:`~openturns.GaussianProcessFitter.run` method, while the :math:`\nu`
 # parameter has remained unchanged, as expected.
 #
 # Then, we condition the gaussian process to make it interpolate the data set using the class
-# :class:`~openturns.experimental.GaussianProcessRegression`.
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+# :class:`~openturns.GaussianProcessRegression`.
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 print(gpr_result)

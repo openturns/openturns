@@ -94,13 +94,13 @@ Main classes
     :toctree: _generated/
     :template: classWithPlot.rst_t
 
-    experimental.GaussianProcessRegression
-    experimental.GaussianProcessFitter
+    GaussianProcessRegression
+    GaussianProcessFitter
 
     :template: class.rst_t
-    experimental.GaussianProcessRegressionResult
-    experimental.GaussianProcessFitterResult
-    experimental.GaussianProcessConditionalCovariance
+    GaussianProcessRegressionResult
+    GaussianProcessFitterResult
+    GaussianProcessConditionalCovariance
     experimental.GaussianProcessRandomVector
 
 Construction of the regression basis

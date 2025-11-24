@@ -17,7 +17,6 @@ Gaussian Process Regression: choose a polynomial trend on the beam model
 # we give another example of this procedure.
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -67,16 +66,16 @@ covariance_model = ot.SquaredExponential(dimension)
 
 # %%
 # To create the Gaussian Process Regression metamodel, we first build the :math:`Y(\omega, x)` Gaussian process with the class
-# :class:`~openturns.experimental.GaussianProcessFitter`. It requires a training sample, a covariance kernel and a
+# :class:`~openturns.GaussianProcessFitter`. It requires a training sample, a covariance kernel and a
 # trend basis as input arguments.
-algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+algo_fit = ot.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 
 # %%
 # Then, we condition the process :math:`Y(\omega, x)` to the data set with the class
-# :class:`~openturns.experimental.GaussianProcessRegression`.
-algo_gpr = otexp.GaussianProcessRegression(fit_result)
+# :class:`~openturns.GaussianProcessRegression`.
+algo_gpr = ot.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
@@ -85,7 +84,7 @@ gpr_result_cst = algo_gpr.getResult()
 metamodel_cst = gpr_result_cst.getMetaModel()
 
 # %%
-# The :meth:`~openturns.experimental.GaussianProcessRegressionResult.getTrendCoefficients` method returns the coefficients of the trend.
+# The :meth:`~openturns.GaussianProcessRegressionResult.getTrendCoefficients` method returns the coefficients of the trend.
 # The constant trend always has only one coefficient (if there is one single output).
 print(gpr_result_cst.getTrendCoefficients())
 
@@ -101,10 +100,10 @@ print(gpr_result_cst.getCovarianceModel())
 # The basis is built with the :class:`~openturns.LinearBasisFactory` class. The same methodology is followed:
 # we do not detail it.
 basis = ot.LinearBasisFactory(dimension).build()
-algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+algo_fit = ot.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
-algo_gpr = otexp.GaussianProcessRegression(fit_result)
+algo_gpr = ot.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 gpr_result_lin = algo_gpr.getResult()
 metamodel_lin = gpr_result_lin.getMetaModel()
@@ -148,10 +147,10 @@ print(gpr_result_lin.getCovarianceModel())
 #
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1e-6)
 basis = ot.QuadraticBasisFactory(dimension).build()
-algo_fit = otexp.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
+algo_fit = ot.GaussianProcessFitter(X_train, Y_train, covariance_model, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
-algo_gpr = otexp.GaussianProcessRegression(fit_result)
+algo_gpr = ot.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 gpr_result_quad = algo_gpr.getResult()
 metamodel_quad = gpr_result_quad.getMetaModel()

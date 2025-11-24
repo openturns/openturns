@@ -3,11 +3,6 @@ R"RAW(Fit gaussian process models
 
 Refer to :ref:`gaussian_process_regression`.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
-
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
@@ -96,7 +91,6 @@ Examples
 Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> g = ot.SymbolicFunction(['x'], ['x + x * sin(x)'])
 >>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = g(inputSample)
@@ -109,7 +103,7 @@ Create the algorithm:
 >>> basis = ot.Basis([g1, g2, g3])
 >>> covarianceModel = ot.SquaredExponential([1.0])
 >>> covarianceModel.setActiveParameter([])
->>> algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
 Get the resulting  metamodel which is the trend function of the Gaussian process:
@@ -125,7 +119,7 @@ Get the resulting  metamodel which is the trend function of the Gaussian process
 
 Returns
 -------
-result : :class:`~openturns.experimental.GaussianProcessFitterResult`
+result : :class:`~openturns.GaussianProcessFitterResult`
     Structure containing all the results obtained after computation
     and created by the method :py:meth:`run`.
 "
@@ -170,7 +164,6 @@ Examples
 Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> g = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
 >>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = g(inputSample)
@@ -179,7 +172,7 @@ Create the algorithm:
 
 >>> basis = ot.ConstantBasisFactory().build()
 >>> covarianceModel = ot.SquaredExponential(1)
->>> algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
 Get the log-likelihood function:
@@ -196,7 +189,7 @@ Get the log-likelihood function:
 Notes
 -----
 It computes the response surface and creates a
-:class:`~openturns.experimental.GaussianProcessFitterResult` structure containing all the results."
+:class:`~openturns.GaussianProcessFitterResult` structure containing all the results."
 
 // ---------------------------------------------------------------------
 
@@ -313,9 +306,9 @@ Returns
 linAlgMethod : int
     The used linear algebra method to fit the model:
 
-    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+    - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
 
 // ---------------------------------------------------------------------
 
@@ -327,6 +320,6 @@ Parameters
 linAlgMethod : int
     The used linear algebra method to fit the model:
 
-    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+    - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."

@@ -23,7 +23,6 @@ Gaussian Process Regression: multiple input dimensions
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -49,10 +48,10 @@ y = model(x)
 # Then we create a GP metamodel, using a constant trend and a squared exponential covariance model.
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
-fitter = otexp.GaussianProcessFitter(x, y, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(x, y, covarianceModel, basis)
 fitter.run()
 fitter_result = fitter.getResult()
-algo = otexp.GaussianProcessRegression(fitter_result)
+algo = ot.GaussianProcessRegression(fitter_result)
 algo.run()
 result = algo.getResult()
 metamodel = result.getMetaModel()

@@ -7,7 +7,7 @@ R"RAW(GaussianProcessRandom vector, a conditioned Gaussian process.
 
 Parameters
 ----------
-gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+gprResult : :class:`~openturns.GaussianProcessRegressionResult`
     Structure that contains elements of computation of a Gaussian Process Regression algorithm
 points : 1-d or 2-d sequence of float
     Sequence of values defining a :class:`~openturns.Point` or a :class:`~openturns.Sample`.
@@ -16,7 +16,7 @@ Notes
 -----
 GaussianProcessRandomVector helps to create Gaussian random vector, :math:`Y: \Rset^n \mapsto \Rset^d`, with stationary covariance function  :math:`\cC^{stat}: \Rset^n \mapsto \cM_{d \times d}(\Rset)`, conditionally to some observations.
 
-Let :math:`Y(x=x_1)=y_1,\cdots,Y(x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.experimental.GaussianProcessRegression`:
+Let :math:`Y(x=x_1)=y_1,\cdots,Y(x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.GaussianProcessRegression`:
 
 .. math::
 
@@ -28,7 +28,7 @@ with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a general linear model, :math:
 
     \mathbb{E}[Z(\vect{x}), Z(\vect{\tilde{x}})] = \sigma^2 \cC^{stat}_{\theta}(\vect{x} - \vect{\tilde{x}})
 
-The objective is to generate realizations of the random vector :math:`Y`, on new points :math:`\vect{\tilde{x}}`, conditionally to these observations. For that purpose, :class:`~openturns.experimental.GaussianProcessRegression` build such a prior and stores results in a :class:`~openturns.experimental.GaussianProcessRegressionResult` structure on a first step. This structure is given as input argument.
+The objective is to generate realizations of the random vector :math:`Y`, on new points :math:`\vect{\tilde{x}}`, conditionally to these observations. For that purpose, :class:`~openturns.GaussianProcessRegression` build such a prior and stores results in a :class:`~openturns.GaussianProcessRegressionResult` structure on a first step. This structure is given as input argument.
 
 Then, in a second step, both the prior and the covariance on input points :math:`\vect{\tilde{x}}`, conditionally to the previous observations, are evaluated (respectively :math:`Y(\vect{\tilde{x}})` and :math:`\cC^{stat}_{\theta}(\vect{\tilde{x}})`).
 
@@ -51,9 +51,9 @@ Create the algorithm:
 >>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
 >>> covarianceModel = ot.SquaredExponential([1.0])
 >>> covarianceModel.setActiveParameter([])
->>> fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+>>> fit_algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 >>> fit_algo.run()
->>> gpr_algo = otexp.GaussianProcessRegression(fit_algo.getResult())
+>>> gpr_algo = ot.GaussianProcessRegression(fit_algo.getResult())
 >>> gpr_algo.run()
 
 Get the results:
@@ -105,5 +105,5 @@ getRealization"
 
 Returns
 -------
-gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+gprResult : :class:`~openturns.GaussianProcessRegressionResult`
     The structure containing the elements of a Gaussian Process Regression."

@@ -6,7 +6,6 @@ In this example we propagate uncertainties through a GP metamodel of the :ref:`I
 """
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -41,10 +40,10 @@ ydata = model(xdata)
 dimension = 3
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
-fitter = otexp.GaussianProcessFitter(xdata, ydata, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(xdata, ydata, covarianceModel, basis)
 fitter.run()
 fitter_result = fitter.getResult()
-algo = otexp.GaussianProcessRegression(fitter_result)
+algo = ot.GaussianProcessRegression(fitter_result)
 algo.run()
 result = algo.getResult()
 

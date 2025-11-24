@@ -4,7 +4,6 @@ Gaussian Process Regression: choose a polynomial trend
 """
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # %%
@@ -160,16 +159,16 @@ basis = ot.ConstantBasisFactory(dimension).build()
 # but not the third one (which is the :math:`\nu` parameter).
 #
 # First, we build the :math:`Y(\omega, x)` Gaussian process with the class
-# :class:`~openturns.experimental.GaussianProcessFitter`.
+# :class:`~openturns.GaussianProcessFitter`.
 covarianceModel = ot.MaternModel([1.0], [1.0], 2.5)
-algo_fit = otexp.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
+algo_fit = ot.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 
 # %%
 # Then, we condition the process :math:`Y(\omega, x)` to the data set with the class
-# :class:`~openturns.experimental.GaussianProcessRegression`.
-algo_gpr = otexp.GaussianProcessRegression(fit_result)
+# :class:`~openturns.GaussianProcessRegression`.
+algo_gpr = ot.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
@@ -217,14 +216,14 @@ print("Amplitude parameter: %.3e" % sigma)
 # We can display the trend function computed on the transformed data:
 # :math:`\mu \left(\dfrac{x-m}{\sigma}\right)` where :math:(m, \sigma)` is the mean and standard
 # deviation of the input data set. We use the method
-# :meth:`~openturns.experimental.GaussianProcessFitterResult.getTrendCoefficients`.
+# :meth:`~openturns.GaussianProcessFitterResult.getTrendCoefficients`.
 c0 = fit_result.getTrendCoefficients()
 print("The trend is the curve mu((x-m)/sigma) = %.6e" % c0[0])
 
 # %%
 # We can also get the trend function acting on the transformed data using the method
-# :meth:`~openturns.experimental.GaussianProcessFitterResult.getMetaModel` of the
-# class :class:`~openturns.experimental.GaussianProcessFitterResult`.
+# :meth:`~openturns.GaussianProcessFitterResult.getMetaModel` of the
+# class :class:`~openturns.GaussianProcessFitterResult`.
 trend_transformed_data = fit_result.getMetaModel()
 trend_transformed_data
 
@@ -254,7 +253,7 @@ view = otv.View(graph)
 
 # %%
 # Now, we want to plot some confidence bounds of the metamodel. We use the class
-# :class:`~openturns.experimental.GaussianProcessConditionalCovariance` which is built from the Gaussian
+# :class:`~openturns.GaussianProcessConditionalCovariance` which is built from the Gaussian
 # Process Regression result. We create a function to plot confidence bounds.
 
 
@@ -264,7 +263,7 @@ def plot_GPRConfidenceBounds(gpr_result, x_test, myTransform, color, alpha=0.05)
     sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
     n_test = x_test.getSize()
     scaled_x_test = myTransform(x_test)
-    gpr_condCov = otexp.GaussianProcessConditionalCovariance(gpr_result)
+    gpr_condCov = ot.GaussianProcessConditionalCovariance(gpr_result)
     conditionalVariance = gpr_condCov.getConditionalMarginalVariance(scaled_x_test)
     conditionalSigma = sqrt(conditionalVariance)
     metamodel_transf_data = gpr_result.getMetaModel()
@@ -323,11 +322,11 @@ basis = ot.LinearBasisFactory(dimension).build()
 
 # %%
 # We build the :math:`Y(\omega, x)` Gaussian process, then we condition it to the data set.
-algo_fit = otexp.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
+algo_fit = ot.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 
-algo_gpr = otexp.GaussianProcessRegression(fit_result)
+algo_gpr = ot.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
@@ -392,11 +391,11 @@ basis = ot.QuadraticBasisFactory(dimension).build()
 
 # %%
 # We build the :math:`Y(\omega, x)` Gaussian process, then we condition it to the data set.
-algo_fit = otexp.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
+algo_fit = ot.GaussianProcessFitter(scaledXtrain, Ytrain, covarianceModel, basis)
 algo_fit.run()
 fit_result = algo_fit.getResult()
 
-algo_gpr = otexp.GaussianProcessRegression(fit_result)
+algo_gpr = ot.GaussianProcessRegression(fit_result)
 algo_gpr.run()
 
 # %%
