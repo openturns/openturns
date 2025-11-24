@@ -170,7 +170,7 @@ for :math:`\sigma` reads:
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and
 :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
 
-This step is performed by the class :class:`~openturns.experimental.GaussianProcessFitter`.
+This step is performed by the class :class:`~openturns.GaussianProcessFitter`.
 
 Step 2:  Gaussian Process Regression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -258,7 +258,7 @@ defined by:
 
 where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
 
-This step is performed by the class :class:`~openturns.experimental.GaussianProcessRegression`.
+This step is performed by the class :class:`~openturns.GaussianProcessRegression`.
 
 
 Step 3:  Gaussian Process Regression metamodel and its exploitation
@@ -272,14 +272,14 @@ The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
     \metaModel(\vect{x}) = \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}.
 
 We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
-:class:`~openturns.experimental.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
+:class:`~openturns.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
 
 
 .. topic:: API:
 
-    - See :class:`~openturns.experimental.GaussianProcessFitter`
-    - See :class:`~openturns.experimental.GaussianProcessRegression`
-    - See :class:`~openturns.experimental.GaussianProcessConditionalCovariance`
+    - See :class:`~openturns.GaussianProcessFitter`
+    - See :class:`~openturns.GaussianProcessRegression`
+    - See :class:`~openturns.GaussianProcessConditionalCovariance`
 
 
 .. topic:: Examples:

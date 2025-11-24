@@ -20,13 +20,13 @@ def build_gpr_result(inputSample, outputSample, covarianceModel, basis):
     """
     From data & covariance model, build a Gaussian Process Regression result
     """
-    fitter_algo = otexp.GaussianProcessFitter(
+    fitter_algo = ot.GaussianProcessFitter(
         inputSample, outputSample, covarianceModel, basis
     )
     fitter_algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
     fitter_algo.run()
     fitter_result = fitter_algo.getResult()
-    gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+    gpr_algo = ot.GaussianProcessRegression(fitter_result)
     gpr_algo.run()
     gpr_result = gpr_algo.getResult()
     return gpr_result
@@ -116,10 +116,10 @@ ott.assert_almost_equal(sample.getSize(), 3, 0, 0)
 ott.assert_almost_equal(sample.getDimension(), 2, 0, 0)
 
 # 2D use case (#2769) with GPR
-fitter_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel)
+fitter_algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)

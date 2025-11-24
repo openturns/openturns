@@ -82,6 +82,11 @@
 %include FunctionalChaosRandomVector.i
 %include FunctionalChaosValidation.i
 %include KrigingRandomVector.i
+%include GaussianProcessFitterResult.i
+%include GaussianProcessFitter.i
+%include GaussianProcessRegressionResult.i
+%include GaussianProcessRegression.i
+%include GaussianProcessConditionalCovariance.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i

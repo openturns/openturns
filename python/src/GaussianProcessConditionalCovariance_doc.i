@@ -1,23 +1,14 @@
 %feature("docstring") OT::GaussianProcessConditionalCovariance
 R"RAW(Conditional covariance post processing of a Gaussian Process Regression result.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
-
 Parameters
 ----------
-gprResult :  :class:`~openturns.experimental.GaussianProcessRegressionResult`
-    The result class built by :class:`~openturns.experimental.GaussianProcessRegression`.
-
+gprResult :  :class:`~openturns.GaussianProcessRegressionResult`
+    The result class built by :class:`~openturns.GaussianProcessRegression`.
 
 Notes
 -----
-
-
 Refer to :ref:`gaussian_process_regression` (step 3) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
-
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model. The  Gaussian process approximation :math:`\vect{Y}` is defined by:
 
@@ -41,7 +32,6 @@ Examples
 Create the model :math:`g: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> trend = ot.SymbolicFunction(['x'],  ['1'])
 >>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
 >>> sampleY = trend(sampleX)
@@ -51,10 +41,10 @@ Create the algorithm:
 >>> covarianceModel = ot.SquaredExponential([1.0])
 >>> covarianceModel.setActiveParameter([])
 
->>> algo = otexp.GaussianProcessRegression(sampleX, sampleY, covarianceModel, trend)
+>>> algo = ot.GaussianProcessRegression(sampleX, sampleY, covarianceModel, trend)
 >>> algo.run()
 >>> result = algo.getResult()
->>> condCov = otexp.GaussianProcessConditionalCovariance(result)
+>>> condCov = ot.GaussianProcessConditionalCovariance(result)
 >>> c = condCov([1.1])
 )RAW"
 

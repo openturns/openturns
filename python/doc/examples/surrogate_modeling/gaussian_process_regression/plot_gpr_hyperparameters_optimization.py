@@ -26,7 +26,7 @@ Gaussian process fitter: configure the optimization solver
 #   Often, the parameter :math:`{\bf \theta}` is a scale parameter.
 #   This step involves an optimization algorithm.
 #
-# All these parameters are estimated with the :class:`~openturns.experimental.GaussianProcessFitter` class.
+# All these parameters are estimated with the :class:`~openturns.GaussianProcessFitter` class.
 #
 # The estimation of the :math:`\vect{\theta}` parameters is the step which has the highest CPU cost.
 # Moreover, the maximization of likelihood may be associated with difficulties e.g. many local maximums or even the non convergence of the optimization algorithm.
@@ -48,7 +48,6 @@ Gaussian process fitter: configure the optimization solver
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -107,7 +106,7 @@ Y_train = model(X_train)
 # %%
 # In order to create the Gaussian process regression, we first select a constant trend with the :class:`~openturns.LinearBasisFactory` class.
 # Then we use a squared exponential covariance model.
-# Finally, we use the :class:`~openturns.experimental.GaussianProcessFitter` class to calibrate a covariance model for a Gaussian process regression,
+# Finally, we use the :class:`~openturns.GaussianProcessFitter` class to calibrate a covariance model for a Gaussian process regression,
 # taking the training sample, the covariance model and the trend basis as input arguments.
 # The scale parameters must be positive.
 dimension = myDistribution.getDimension()
@@ -121,12 +120,12 @@ scale_min_factor = 0.1  # Must be < 1, tune this to match your problem
 maximum_scale_bounds = scale_max_factor * x_range
 
 covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 
 # %%
-# The :meth:`~openturns.experimental.GaussianProcessFitter.run` method has optimized the hyperparameters of the metamodel.
+# The :meth:`~openturns.GaussianProcessFitter.run` method has optimized the hyperparameters of the metamodel.
 #
 # We can then print the constant trend of the metamodel, which have been
 # estimated using the least squares method.
@@ -146,7 +145,7 @@ print(basic_covariance_model)
 # ---------------------------
 
 # %%
-# The :meth:`~openturns.experimental.GaussianProcessFitter.getOptimizationAlgorithm` method
+# The :meth:`~openturns.GaussianProcessFitter.getOptimizationAlgorithm` method
 # returns the optimization algorithm used to optimize the
 # :math:`\vect{\theta}` parameters of the
 # :class:`~openturns.SquaredExponential` covariance model.
@@ -162,7 +161,7 @@ solverImplementation = solver.getImplementation()
 solverImplementation.getClassName()
 
 # %%
-# The :meth:`~openturns.experimental.GaussianProcessFitter.getOptimizationBounds` method
+# The :meth:`~openturns.GaussianProcessFitter.getOptimizationBounds` method
 # returns the bounds.
 # The dimension of these bounds correspond to the spatial dimension of
 # the covariance model.
@@ -181,7 +180,7 @@ print("ubounds")
 print(ubounds)
 
 # %%
-# The :meth:`~openturns.experimental.GaussianProcessFitter.getOptimizeParameters` method returns `True` if these parameters are to be optimized.
+# The :meth:`~openturns.GaussianProcessFitter.getOptimizeParameters` method returns `True` if these parameters are to be optimized.
 isOptimize = algo.getOptimizeParameters()
 print(isOptimize)
 
@@ -193,7 +192,7 @@ print(isOptimize)
 # %%
 # The starting point of the optimization is based on the parameters of the covariance model.
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 
 # %%
 algo.run()
@@ -213,7 +212,7 @@ print(basic_covariance_model)
 # We draw the graphs that validate the meta model.
 
 # %%
-algo_gpr = otexp.GaussianProcessRegression(result)
+algo_gpr = ot.GaussianProcessRegression(result)
 algo_gpr.run()
 metamodel = algo_gpr.getResult().getMetaModel()
 X_test = myDistribution.getSample(100)
@@ -234,10 +233,10 @@ view = otv.View(g)
 # In order to see the effect of this, we first initialize the parameters of
 # the covariance model with the arbitrary values `[12.0, 34.0, 56.0, 78.0]`.
 covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [91.0])
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 
 # %%
-# The :meth:`~openturns.experimental.GaussianProcessFitter.setOptimizeParameters` method can be
+# The :meth:`~openturns.GaussianProcessFitter.setOptimizeParameters` method can be
 # used to disable the optimization of the parameters.
 algo.setOptimizeParameters(False)
 
@@ -270,7 +269,7 @@ result.getTrendCoefficients()
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 
@@ -296,7 +295,7 @@ Y_train.getSize()
 
 # %%
 # Step 3: Create an updated Gaussian process fit, using the new point with the old covariance parameters.
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 algo.setOptimizeParameters(False)
 algo.run()
 result = algo.getResult()
@@ -333,7 +332,7 @@ printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 problem = solver.getProblem()
 local_solver = ot.NLopt(problem, "LD_SLSQP")
 covarianceModel = ot.SquaredExponential(maximum_scale_bounds, [1.0])
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 algo.setOptimizationAlgorithm(local_solver)
 algo.run()
 result = algo.getResult()
@@ -394,7 +393,7 @@ multiStartSolver = ot.MultiStart(solver, starting_points)
 # Finally, we configure the optimization algorithm so as to use the :class:`~openturns.MultiStart`
 # algorithm. The bounds of the algorithm are set to match the range of the distribution used to
 # generate the starting points.
-algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 algo.setOptimizationAlgorithm(multiStartSolver)
 algo.run()
 result = algo.getResult()

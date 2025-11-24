@@ -35,7 +35,6 @@ Gaussian Process Regression vs KrigingAlgorithm
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 
 # %%
@@ -143,20 +142,20 @@ krigingMM = kriging_result.getMetaModel()
 # %%
 # We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the `run` method.
 # The default optimization method (used here) is the :class:`~openturns.TNC`
-# With the new API, the :class:`~openturns.experimental.GaussianProcessFitter` class  is used to fit the
-# gaussian process and :class:`~openturns.experimental.GaussianProcessRegression` to get the conditioned model.
+# With the new API, the :class:`~openturns.GaussianProcessFitter` class  is used to fit the
+# gaussian process and :class:`~openturns.GaussianProcessRegression` to get the conditioned model.
 
 # %%
-fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
+fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 gprMetamodel = gpr_result.getMetaModel()
 
 # %%
-# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the :meth:`~openturns.experimental.GaussianProcessFitter.run` method.
+# We observe that the `scale` and `amplitude` hyper-parameters have been optimized by the :meth:`~openturns.GaussianProcessFitter.run` method.
 # The default optimization method (used here) is the :class:`~openturns.Cobyla`, which is different from the old API.
 # Then we get the metamodel with `getMetaModel` for evaluating the outputs of the metamodel on the test design of experiments.
 
@@ -217,13 +216,13 @@ print(
 )
 
 # %%
-fitter_algo_wnf = otexp.GaussianProcessFitter(
+fitter_algo_wnf = ot.GaussianProcessFitter(
     x_train, y_train + epsilon, covarianceModel, basis
 )
 fitter_algo_wnf.setOptimizationAlgorithm(ot.NLopt("GN_DIRECT"))
 fitter_algo_wnf.run()
 fitter_result_wnf = fitter_algo_wnf.getResult()
-gpr_algo_wnf = otexp.GaussianProcessRegression(fitter_result_wnf)
+gpr_algo_wnf = ot.GaussianProcessRegression(fitter_result_wnf)
 gpr_algo_wnf.run()
 gpr_result_wnf = gpr_algo_wnf.getResult()
 gprMetamodel_wnf = gpr_result_wnf.getMetaModel()
@@ -304,16 +303,16 @@ conditional_variance_kriging = (
 conditional_sigma_kriging = sqrt(conditional_variance_kriging)
 
 # %%
-# Within the new API, the :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` applies
+# Within the new API, the :meth:`~openturns.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` applies
 # and returns the marginal variance `marVar`
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
-# Notice also that :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance` is similar to
-# `KrigingResult.getConditionalCovariance`, and :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getDiagonalCovarianceCollection`
+# Notice also that :meth:`~openturns.GaussianProcessConditionalCovariance.getConditionalCovariance` is similar to
+# `KrigingResult.getConditionalCovariance`, and :meth:`~openturns.GaussianProcessConditionalCovariance.getDiagonalCovarianceCollection`
 # has a "twin" method `KrigingResult.getConditionalMarginalCovariance`.,
 
 # %%
-gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
+gccc = ot.GaussianProcessConditionalCovariance(gpr_result)
 conditional_variance_gpr = gccc.getConditionalMarginalVariance(x_test)
 conditional_sigma_gpr = sqrt(conditional_variance_gpr)
 
@@ -326,7 +325,7 @@ conditional_variance_kriging_wnf = (
 )
 conditional_sigma_kriging_wnf = sqrt(conditional_variance_kriging_wnf)
 
-gccc_wnf = otexp.GaussianProcessConditionalCovariance(gpr_result_wnf)
+gccc_wnf = ot.GaussianProcessConditionalCovariance(gpr_result_wnf)
 conditional_variance_gpr_wnf = gccc_wnf.getConditionalMarginalVariance(x_test) + epsilon
 conditional_sigma_gpr_wnf = sqrt(conditional_variance_gpr_wnf)
 
@@ -492,7 +491,7 @@ trend_function = ot.SymbolicFunction("x", "-3.1710410094572903")
 # Then we define the Gaussian Process Regression relying on these parameters:
 
 # %%
-gpr_algo_noopt = otexp.GaussianProcessRegression(
+gpr_algo_noopt = ot.GaussianProcessRegression(
     x_train, y_train, covariance_opt, trend_function
 )
 gpr_algo_noopt.run()
@@ -567,11 +566,11 @@ view = otv.View(graph)
 # We can summarize the main differences hereafter (old API / new API):
 #
 # * Default optimization solver : :class:`~openturns.TNC`/:class:`~openturns.Cobyla`
-# * Conditional covariance : `KrigingResult.getConditionalCovariance`/ :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalCovariance`
-# * Known trend : no / yes (see : :class:`~openturns.experimental.GaussianProcessRegression` )
+# * Conditional covariance : `KrigingResult.getConditionalCovariance`/ :meth:`~openturns.GaussianProcessConditionalCovariance.getConditionalCovariance`
+# * Known trend : no / yes (see : :class:`~openturns.GaussianProcessRegression` )
 # * Nugget factor : yes / yes
 # * Heteroscedastic noise : `KrigingAlgorithm.setNoise` / no
-# * Fit the model : `KrigingAlgorithm.run` / :meth:`~openturns.experimental.GaussianProcessFitter.run` + :meth:`~openturns.experimental.GaussianProcessRegression.run`
+# * Fit the model : `KrigingAlgorithm.run` / :meth:`~openturns.GaussianProcessFitter.run` + :meth:`~openturns.GaussianProcessRegression.run`
 
 # %%
 # Display all figures

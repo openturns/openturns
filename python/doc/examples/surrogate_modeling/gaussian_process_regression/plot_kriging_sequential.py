@@ -13,7 +13,6 @@ Sequentially adding new points to a Gaussian Process metamodel
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import numpy as np
 
@@ -58,9 +57,9 @@ def createMyBasicGPfitter(X, Y):
     """
     basis = ot.ConstantBasisFactory(dimension).build()
     covarianceModel = ot.MaternModel([1.0], 1.5)
-    fitter = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     fitter.run()
-    algo = otexp.GaussianProcessRegression(fitter.getResult())
+    algo = ot.GaussianProcessRegression(fitter.getResult())
     algo.run()
     gprResult = algo.getResult()
     return gprResult
@@ -99,7 +98,7 @@ def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     yFunction = g(xGrid)
     yKrig = meta(xGrid)
     # Compute the conditional covariance
-    gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
+    gpcc = ot.GaussianProcessConditionalCovariance(gprResult)
     epsilon = ot.Sample(nbpoints, [1.0e-8])
     conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid) + epsilon
     conditionalSigma = sqrt(conditionalVariance)
@@ -172,7 +171,7 @@ def getNewPoint(xMin, xMax, gprResult):
     """
     nbpoints = 50
     xGrid = linearSample(xMin, xMax, nbpoints)
-    gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
+    gpcc = ot.GaussianProcessConditionalCovariance(gprResult)
     conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid)
     iMaxVar = int(np.argmax(conditionalVariance))
     xNew = xGrid[iMaxVar, 0]

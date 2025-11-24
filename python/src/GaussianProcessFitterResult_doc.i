@@ -1,10 +1,6 @@
 %feature("docstring") OT::GaussianProcessFitterResult
 R"RAW(Gaussian process fitter result.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Refer to :ref:`gaussian_process_regression`.
 
 Parameters
@@ -28,15 +24,15 @@ optimalLogLikelihood : float
 linAlgMethod : int
     The used linear algebra method to fit the model:
 
-    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+    - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
 
 Notes
 -----
-The structure is usually created by the method :py:meth:`~openturns.experimental.GaussianProcessFitter.run` of the class
-:class:`~openturns.experimental.GaussianProcessFitter` and obtained with its method
-:py:meth:`~openturns.experimental.GaussianProcessFitter.getResult()`.
+The structure is usually created by the method :py:meth:`~openturns.GaussianProcessFitter.run` of the class
+:class:`~openturns.GaussianProcessFitter` and obtained with its method
+:py:meth:`~openturns.GaussianProcessFitter.getResult()`.
 
 Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
 
@@ -62,7 +58,6 @@ Examples
 Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> g = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
 >>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
 >>> sampleY = g(sampleX)
@@ -71,7 +66,7 @@ Create the algorithm:
 
 >>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
 >>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
->>> algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+>>> algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 >>> algo.run()
 
 Get the result:
@@ -124,9 +119,9 @@ Returns
 linAlgMethod : int
     The used linear algebra method to fit the model:
 
-    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+    - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
 "
 
 // ---------------------------------------------------------------------

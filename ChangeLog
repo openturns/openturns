@@ -10,6 +10,9 @@
 
 ==== API changes ====
  * PointConditionalDistribution left the experimental module
+ * GaussianProcessFitter, GaussianProcessFitterResult left the experimental module
+ * GaussianProcessRegression, GaussianProcessRegressionResult left the experimental module
+ * GaussianProcessConditionalCovariance left the experimental module
 
 === Documentation ===
 

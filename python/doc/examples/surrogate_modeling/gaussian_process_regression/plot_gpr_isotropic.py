@@ -26,7 +26,6 @@ in the library by the :class:`~openturns.IsotropicCovarianceModel` class.
 # %%
 import numpy as np
 import openturns as ot
-import openturns.experimental as otexp
 import matplotlib.pyplot as plt
 
 
@@ -78,7 +77,7 @@ def fitGPR(coordinates, observations, covarianceModel, basis):
     covarianceModel.setScale([upper] * scale_dimension)
 
     # Prepare to fit Gaussian process hyperparameters.
-    fitter = otexp.GaussianProcessFitter(
+    fitter = ot.GaussianProcessFitter(
         coordinates, observations, covarianceModel, basis
     )
 
@@ -87,7 +86,7 @@ def fitGPR(coordinates, observations, covarianceModel, basis):
     fitter_result = fitter.getResult()
 
     # Based on the GP hyperparameters perform the regression.
-    regression = otexp.GaussianProcessRegression(fitter_result)
+    regression = ot.GaussianProcessRegression(fitter_result)
     regression.run()
     result = regression.getResult()
     surrogate = result.getMetaModel()

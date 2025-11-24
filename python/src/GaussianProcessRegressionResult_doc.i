@@ -1,24 +1,20 @@
 %feature("docstring") OT::GaussianProcessRegressionResult
 R"RAW(Gaussian process regression (aka kriging) result.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Refer to :ref:`gaussian_process_regression`.
 
 Parameters
 ----------
-gpfitResult : :class:`~openturns.experimental.GaussianProcessFitterResult`
+gpfitResult : :class:`~openturns.GaussianProcessFitterResult`
     Structure result of a gaussian process fitter.
 covarianceCoefficients : 2-d sequence of float
     The :math:`\vect{\gamma}` defined in :eq:`gammaDefinition`.
 
 Notes
 -----
-The structure is usually created by the method :py:meth:`~openturns.experimental.GaussianProcessRegression.run`, and obtained thanks to the `getResult()` method.
+The structure is usually created by the method :py:meth:`~openturns.GaussianProcessRegression.run`, and obtained thanks to the `getResult()` method.
 
-Refer to the documentation of :class:`~openturns.experimental.GaussianProcessRegression` to get details on
+Refer to the documentation of :class:`~openturns.GaussianProcessRegression` to get details on
 the notations.
 
 Examples
@@ -26,7 +22,6 @@ Examples
 Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> g = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
 >>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
 >>> sampleY = g(sampleX)
@@ -35,12 +30,12 @@ Create the algorithm:
 
 >>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
 >>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
->>> fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+>>> fit_algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 >>> fit_algo.run()
 
 Create the interpolating Gaussian process approximation:
 
->>> algo = otexp.GaussianProcessRegression(fit_algo.getResult())
+>>> algo = ot.GaussianProcessRegression(fit_algo.getResult())
 >>> algo.run()
 
 Get the resulting interpolating metamodel :math:`\metaModel`:
@@ -96,9 +91,9 @@ Returns
 linAlgMethod : int
     The used linear algebra method to fit the model:
 
-    - otexp.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
+    - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - otexp.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
 "
 
 // ---------------------------------------------------------------------

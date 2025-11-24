@@ -10,7 +10,6 @@ Gaussian process regression: draw the likelihood
 # In this short example we draw the log-likelihood as a function of the scale
 # parameter of a covariance model.
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -34,7 +33,7 @@ covarianceModel = ot.MaternModel([1.0], 1.5)
 
 # %%
 # We are now ready to fit the Gaussian Process parameters and store the result :
-fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 fitter.run()
 fitter_result = fitter.getResult()
 

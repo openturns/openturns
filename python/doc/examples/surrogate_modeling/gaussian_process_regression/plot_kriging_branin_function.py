@@ -13,7 +13,6 @@ from numpy import sqrt
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import branin_function
-import openturns.experimental as otexp
 
 
 # %%
@@ -65,7 +64,7 @@ print(bm.objectiveFunction(sample1))
 # Optimization of GP hyperparameters and conditioning to data
 # -----------------------------------------------------------
 #
-# We use the :class:`~openturns.experimental.GaussianProcessFitter` class to perform the GP fitter analysis.
+# We use the :class:`~openturns.GaussianProcessFitter` class to perform the GP fitter analysis.
 # We first generate a design of experiments with LHS and store the input training points in `xdata`
 experiment = ot.LHSExperiment(
     ot.JointDistribution([ot.Uniform(0.0, 1.0), ot.Uniform(0.0, 1.0)]),
@@ -91,11 +90,11 @@ covarianceModel = ot.SquaredExponential([0.1] * dimension, [1.0])
 
 # %%
 # We have all the components to build a GP fitter  algorithm and run it :
-fitter_algo = otexp.GaussianProcessFitter(xdata, ydata, covarianceModel, basis)
+fitter_algo = ot.GaussianProcessFitter(xdata, ydata, covarianceModel, basis)
 fitter_algo.setOptimizeParameters(True)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 print(gpr_result)
@@ -107,7 +106,7 @@ print(gpr_result)
 # We get the metamodel (mean of the conditioned Gaussian Process) and the variance estimation.
 # We draw the GP metamodel of the Branin function.
 gprMetamodel = gpr_result.getMetaModel()
-gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
+gccc = ot.GaussianProcessConditionalCovariance(gpr_result)
 
 
 graphBasic = gprMetamodel.draw([0.0, 0.0], [1.0, 1.0], [100] * 2)

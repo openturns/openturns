@@ -8,7 +8,6 @@ Gaussian Process Regression : cantilever beam model
 # We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size 20.
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # sphinx_gallery_thumbnail_number = 3
@@ -60,29 +59,29 @@ basis = ot.ConstantBasisFactory(cb.dim).build()
 covarianceModel = ot.SquaredExponential(cb.dim)
 
 # %%
-# Finally, we use the :class:`~openturns.experimental.GaussianProcessFitter` and :class:`~openturns.experimental.GaussianProcessRegression` classes to create the GPR metamodel.
+# Finally, we use the :class:`~openturns.GaussianProcessFitter` and :class:`~openturns.GaussianProcessRegression` classes to create the GPR metamodel.
 # It requires a training sample, a covariance kernel and a trend basis as input arguments.
-fitter_algo = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+fitter_algo = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 
 # %%
-# The method :meth:`~openturns.experimental.GaussianProcessFitter.run`  of
-# the class :class:`~openturns.experimental.GaussianProcessFitter` optimizes the Gaussian process
-# hyperparameters and the method :meth:`~openturns.experimental.GaussianProcessRegression.run` of the class
-# :class:`~openturns.experimental.GaussianProcessRegression` conditions the
+# The method :meth:`~openturns.GaussianProcessFitter.run`  of
+# the class :class:`~openturns.GaussianProcessFitter` optimizes the Gaussian process
+# hyperparameters and the method :meth:`~openturns.GaussianProcessRegression.run` of the class
+# :class:`~openturns.GaussianProcessRegression` conditions the
 # Gaussian process to the data set.
 #
 # We can then print the constant trend of the metamodel, estimated using the least squares method.
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 gprMetamodel = gpr_result.getMetaModel()
 
 # %%
-# The method :meth:`~openturns.experimental.GaussianProcessRegressionResult.getTrendCoefficients` of
+# The method :meth:`~openturns.GaussianProcessRegressionResult.getTrendCoefficients` of
 # the class
-# :class:`~openturns.experimental.GaussianProcessRegressionResult` returns the coefficients of the trend.
+# :class:`~openturns.GaussianProcessRegressionResult` returns the coefficients of the trend.
 print(gpr_result.getTrendCoefficients())
 
 # %%

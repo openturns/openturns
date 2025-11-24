@@ -16,7 +16,7 @@ Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
     The optimization problem to solve
-gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+gprResult : :class:`~openturns.GaussianProcessRegressionResult`
     The result of the metamodel on the first design of experiment
 
 Notes
@@ -87,9 +87,9 @@ Examples
 >>> yMin0 = outputSample.getMin()
 >>> covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 >>> basis = ot.ConstantBasisFactory(dim).build()
->>> fitter = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+>>> fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 >>> fitter.run()
->>> gpr = otexp.GaussianProcessRegression(fitter.getResult())
+>>> gpr = ot.GaussianProcessRegression(fitter.getResult())
 >>> gpr.run()
 >>> algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 >>> algo.setMaximumCallsNumber(2)
@@ -318,5 +318,5 @@ Once :meth:`run` has been called, it returns an updated result that takes new ob
 
 Returns
 -------
-gprResult : :class:`~openturns.experimental.GaussianProcessRegressionResult`
+gprResult : :class:`~openturns.GaussianProcessRegressionResult`
     Result that takes all observations into account."

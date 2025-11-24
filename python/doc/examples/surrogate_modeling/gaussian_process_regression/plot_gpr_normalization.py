@@ -23,7 +23,6 @@ Gaussian Process Regression: Normalization for optimization
 import openturns as ot
 from openturns.usecases.fire_satellite import FireSatelliteModel
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 
 # %%
@@ -67,12 +66,12 @@ ot.ResourceMap.SetAsBool("GaussianProcessFitter-OptimizationNormalization", Fals
 
 # %%
 # We run the algorithm and get the metamodel.
-fitter_algo = otexp.GaussianProcessFitter(
+fitter_algo = ot.GaussianProcessFitter(
     inputTrainingSet, outputTrainingSet, covarianceModel, basis
 )
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 
@@ -122,12 +121,12 @@ ot.ResourceMap.SetAsBool("GaussianProcessFitter-OptimizationNormalization", True
 # We run the algorithm and get the metamodel.
 
 # %%
-fitter_algo = otexp.GaussianProcessFitter(
+fitter_algo = ot.GaussianProcessFitter(
     inputTrainingSet, outputTrainingSet, covarianceModel, basis
 )
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 

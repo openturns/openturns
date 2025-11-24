@@ -16,7 +16,6 @@ Gaussian Process-based active learning for reliability
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import numpy as np
 
@@ -100,9 +99,9 @@ def createMyBasicGPR(X, Y):
     """
     basis = ot.ConstantBasisFactory(dimension).build()
     covarianceModel = ot.MaternModel([1.0], 1.5)
-    fitter = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
     fitter.run()
-    algo = otexp.GaussianProcessRegression(fitter.getResult())
+    algo = ot.GaussianProcessRegression(fitter.getResult())
     algo.run()
     gprResult = algo.getResult()
     return gprResult
@@ -147,7 +146,7 @@ def plotMyBasicGPR(
             / sampleX.getSize()
         )
 
-    gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
+    gpcc = ot.GaussianProcessConditionalCovariance(gprResult)
     conditionalVariance = gpcc.getConditionalMarginalVariance(xGrid)
     conditionalSigma = np.sqrt(conditionalVariance)
     # Compute the quantile of the Normal distribution
@@ -229,7 +228,7 @@ def getNewPoint(X, gprResult, threshold):
     Returns a new point to be added to the design of experiments.
     This point maximizes the U criterion.
     """
-    gpcc = otexp.GaussianProcessConditionalCovariance(gprResult)
+    gpcc = ot.GaussianProcessConditionalCovariance(gprResult)
     response = gprResult.getMetaModel()(X)
     conditionalVariance = gpcc.getConditionalMarginalVariance(X)
 

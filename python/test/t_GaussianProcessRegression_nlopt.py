@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 
@@ -24,7 +23,7 @@ def test_one_input_one_output():
     covarianceModel = ot.SquaredExponential()
 
     # create algorithm
-    fit_algo = otexp.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
 
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(ot.Interval(X.getMin(), X.getMax()))
@@ -34,7 +33,7 @@ def test_one_input_one_output():
     # perform an evaluation
     fit_result = fit_algo.getResult()
 
-    algo = otexp.GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
     ott.assert_almost_equal(result.getMetaModel()(X), Y)
@@ -75,7 +74,7 @@ def test_two_inputs_one_output():
     basis = ot.ConstantBasisFactory(inputDimension).build()
 
     # 4) GPF algorithm
-    fit_algo = otexp.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(
         ot.Interval(inputSample.getMin(), inputSample.getMax())
@@ -86,7 +85,7 @@ def test_two_inputs_one_output():
     # perform an evaluation
     fit_result = fit_algo.getResult()
     # Regression algorithm
-    algo = otexp.GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
     algo.run()
 
     result = algo.getResult()
@@ -120,14 +119,14 @@ def test_two_outputs():
     covarianceModel.setActiveParameter([])
     covarianceModel = ot.TensorizedCovarianceModel([covarianceModel] * 2)
 
-    fit_algo = otexp.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationAlgorithm(ot.NLopt("LN_NELDERMEAD"))
     fit_algo.run()
 
     # perform an evaluation
     fit_result = fit_algo.getResult()
-    algo = otexp.GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
     mm = result.getMetaModel()
@@ -147,14 +146,14 @@ def test_stationary_fun():
     y = x + ot.Normal(0, 0.1).getSample(20)
     y.setDescription(["G0"])
 
-    fit_algo = otexp.GaussianProcessFitter(x, y, model, ot.LinearBasisFactory().build())
+    fit_algo = ot.GaussianProcessFitter(x, y, model, ot.LinearBasisFactory().build())
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationAlgorithm(ot.NLopt("LN_NELDERMEAD"))
     fit_algo.run()
 
     # perform an evaluation
     fit_result = fit_algo.getResult()
-    algo = otexp.GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
 
     algo.run()
     result = algo.getResult()

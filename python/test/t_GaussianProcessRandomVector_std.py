@@ -35,17 +35,17 @@ covarianceModel = ot.SquaredExponential([7.63, 2.11], [7.38])
 basis = ot.ConstantBasisFactory(inputDimension).build()
 
 # Gaussian Process Regression algorithm
-fit_algo = otexp.GaussianProcessFitter(
+fit_algo = ot.GaussianProcessFitter(
     inputSample, outputSample, covarianceModel, basis
 )
 fit_algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
 fit_algo.run()
-gpr_algo = otexp.GaussianProcessRegression(fit_algo.getResult())
+gpr_algo = ot.GaussianProcessRegression(fit_algo.getResult())
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 
 # Gaussian Process Conditional Covariance
-gpcc = otexp.GaussianProcessConditionalCovariance(gpr_result)
+gpcc = ot.GaussianProcessConditionalCovariance(gpr_result)
 # Get meta model
 metaModel = gpr_result.getMetaModel()
 outData = metaModel(inputValidSample)

@@ -48,7 +48,6 @@ Gaussian Process Regression : quick-start
 #
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 
 # %%
@@ -125,7 +124,7 @@ basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 
 # %%
-# The class :class:`~openturns.experimental.GaussianProcessFitter`  builds the Gaussian process :math:`Y` defined by:
+# The class :class:`~openturns.GaussianProcessFitter`  builds the Gaussian process :math:`Y` defined by:
 #
 # .. math::
 #
@@ -141,7 +140,7 @@ covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 #
 # The coefficients of the trend function and the active covariance model parameters are estimated by
 # maximizing the *reduced* log-likelihood of the model.
-fitter_algo = otexp.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
+fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
 print(fitter_result)
@@ -156,7 +155,7 @@ g_trend.setYTitle(r"$\mu(x)$")
 view = otv.View(g_trend)
 
 # %%
-# The class :class:`~openturns.experimental.GaussianProcessRegression` is built from the  Gaussian process :math:`Y` and makes
+# The class :class:`~openturns.GaussianProcessRegression` is built from the  Gaussian process :math:`Y` and makes
 # the  Gaussian process approximation :math:`\vect{Z}` interpolate the data set and is defined as:
 #
 # .. math::
@@ -173,17 +172,17 @@ view = otv.View(g_trend)
 #
 # where the :math:`\gamma_i` are called the *covariance coefficients* and :math:`C` the covariance function of the Matérn
 # covariance model.
-gpr_algo = otexp.GaussianProcessRegression(fitter_result)
+gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
 print(gpr_result)
 
 # %%
 # We observe that the `scale` and `amplitude` parameters have been optimized by the
-# :meth:`~openturns.experimental.GaussianProcessFitter.run` method, while the :math:`\nu`
+# :meth:`~openturns.GaussianProcessFitter.run` method, while the :math:`\nu`
 # parameter has remained unchanged.
 # Then we get the surrogate model with
-# :meth:`~openturns.experimental.GaussianProcessFitterResult.getMetaModel` and we
+# :meth:`~openturns.GaussianProcessFitterResult.getMetaModel` and we
 # evaluate the outputs of the surrogate model on the test
 # design of experiments.
 
@@ -242,12 +241,12 @@ print("Quantile alpha=%f" % (quantileAlpha))
 # The Gaussian process regression computed on the sample :math:`(\xi_1, \dots, \xi_N)` is a Gaussian vector. It is possible to
 # get the variance of each :math:`\vect{Z}_i(\omega) = \vect{Y}(\omega, \vect{\xi}_i)\, | \,  \cC` for :math:`1 \leq i \leq N`
 # with
-# the :meth:`~openturns.experimental.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
+# the :meth:`~openturns.GaussianProcessConditionalCovariance.getConditionalMarginalVariance` method. That method
 # returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
 sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
-gccc = otexp.GaussianProcessConditionalCovariance(gpr_result)
+gccc = ot.GaussianProcessConditionalCovariance(gpr_result)
 conditionalVariance = gccc.getConditionalMarginalVariance(x_test)
 conditionalSigma = sqrt(conditionalVariance)
 

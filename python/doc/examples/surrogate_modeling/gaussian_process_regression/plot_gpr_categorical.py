@@ -10,7 +10,6 @@ Gaussian Process Regression: surrogate model with continuous and categorical var
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -100,10 +99,10 @@ optAlgLV = ot.MultiStart(ot.Cobyla(), initSampleLV)
 # %%
 # Create and train the Gaussian process models
 basis = ot.ConstantBasisFactory(2).build()
-fitterLV = otexp.GaussianProcessFitter(x, y, kLV, basis)
+fitterLV = ot.GaussianProcessFitter(x, y, kLV, basis)
 fitterLV.setOptimizationAlgorithm(optAlgLV)
 fitterLV.run()
-regressionLV = otexp.GaussianProcessRegression(fitterLV.getResult())
+regressionLV = ot.GaussianProcessRegression(fitterLV.getResult())
 regressionLV.run()
 resLV = regressionLV.getResult()
 
@@ -117,10 +116,10 @@ for z in range(2):
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(1).build()
-    fitter_independent = otexp.GaussianProcessFitter(xLoc, yLoc, kIndependent, basis)
+    fitter_independent = ot.GaussianProcessFitter(xLoc, yLoc, kIndependent, basis)
     fitter_independent.setOptimizationAlgorithm(optAlgInd)
     fitter_independent.run()
-    regression_independent = otexp.GaussianProcessRegression(
+    regression_independent = ot.GaussianProcessRegression(
         fitter_independent.getResult()
     )
     regression_independent.run()
@@ -147,8 +146,8 @@ for z in range(numberOfZLevels):
 
     predMeanLV = resLV.getMetaModel()(xPltInd)
     predMeanInd = resIndependentList[z].getMetaModel()(xPltInd[:, 0])
-    cond_covLV = otexp.GaussianProcessConditionalCovariance(resLV)
-    cond_independent = otexp.GaussianProcessConditionalCovariance(resIndependentList[z])
+    cond_covLV = ot.GaussianProcessConditionalCovariance(resLV)
+    cond_independent = ot.GaussianProcessConditionalCovariance(resIndependentList[z])
     predSTDLV = np.sqrt(cond_covLV.getConditionalMarginalVariance(xPltInd))
     predSTDInd = np.sqrt(cond_independent.getConditionalMarginalVariance(xPltInd[:, 0]))
 
@@ -319,10 +318,10 @@ for rep in range(3):
 
     # Create and train the Gaussian process models
     basis = ot.ConstantBasisFactory(dim).build()
-    fitterLV = otexp.GaussianProcessFitter(x, y, kLV, basis)
+    fitterLV = ot.GaussianProcessFitter(x, y, kLV, basis)
     fitterLV.setOptimizationAlgorithm(optAlgLV)
     fitterLV.run()
-    regressionLV = otexp.GaussianProcessRegression(fitterLV.getResult())
+    regressionLV = ot.GaussianProcessRegression(fitterLV.getResult())
     regressionLV.run()
     resLV = regressionLV.getResult()
 
@@ -346,12 +345,12 @@ for rep in range(3):
 
             # Create and train the Gaussian process models
             basis = ot.ConstantBasisFactory(2).build()
-            fitter_independent = otexp.GaussianProcessFitter(
+            fitter_independent = ot.GaussianProcessFitter(
                 xLoc, yLoc, kIndependent, basis
             )
             fitter_independent.setOptimizationAlgorithm(optAlgInd)
             fitter_independent.run()
-            regression_independent = otexp.GaussianProcessRegression(
+            regression_independent = ot.GaussianProcessRegression(
                 fitter_independent.getResult()
             )
             regression_independent.run()

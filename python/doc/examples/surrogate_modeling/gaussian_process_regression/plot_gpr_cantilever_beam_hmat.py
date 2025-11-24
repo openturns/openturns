@@ -15,7 +15,6 @@ Gaussian Process Regression: Cantilever beam model using HMAT
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -78,15 +77,15 @@ print("Lower and upper bounds of X_train:")
 print(X_train.getMin(), X_train.getMax())
 
 # %%
-# Finally, we use the :class:`~openturns.experimental.GaussianProcessRegression` class to create the GP metamodel.
+# Finally, we use the :class:`~openturns.GaussianProcessRegression` class to create the GP metamodel.
 # It requires a training sample, a covariance kernel and a trend basis as input arguments.
 # We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensitive choice here.
 # We must not forget to actually set the optimization bounds defined above.
 covarianceModel.setScale(X_train.getMax())
-fitter = otexp.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
+fitter = ot.GaussianProcessFitter(X_train, Y_train, covarianceModel, basis)
 fitter.run()
 fitter_result = fitter.getResult()
-algo = otexp.GaussianProcessRegression(fitter_result)
+algo = ot.GaussianProcessRegression(fitter_result)
 
 
 # %%
