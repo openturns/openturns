@@ -112,8 +112,8 @@ if (NOT BUILD_SHARED_LIBS)
 endif ()
 
 # soversion
-set_target_properties (OT PROPERTIES SOVERSION 0.27)
-set (LIB_VERSION 0.27.0)
+set_target_properties (OT PROPERTIES SOVERSION 0.28)
+set (LIB_VERSION 0.28.0)
 set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
 
 target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
