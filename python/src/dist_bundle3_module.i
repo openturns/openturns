@@ -22,6 +22,7 @@
 /* Uncertainty/Distribution (except copulas) */
 %include OrderStatisticsMarginalChecker.i
 %include ParametrizedDistribution.i
+%include PointConditionalDistribution.i
 %include Poisson.i
 %include PoissonFactory.i
 %include ProductDistribution.i

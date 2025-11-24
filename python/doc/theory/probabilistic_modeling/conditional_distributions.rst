@@ -46,7 +46,7 @@ The objective is to create the distribution of:
     \inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI
 
 
-See the class :class:`~openturns.experimental.PointConditionalDistribution`.
+See the class :class:`~openturns.PointConditionalDistribution`.
 
 This class requires the following features:
 

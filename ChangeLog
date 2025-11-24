@@ -1,5 +1,24 @@
 = New Features =
 
+== 1.27 release (in progress) == #release-1.27
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * PointConditionalDistribution left the experimental module
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+
+
 == 1.26 release (2025-11-25) == #release-1.26
 
 === Library ===

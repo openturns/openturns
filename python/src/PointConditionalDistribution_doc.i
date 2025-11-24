@@ -1,10 +1,6 @@
 %feature("docstring") OT::PointConditionalDistribution
 R"RAW(Distribution conditioned by a deterministic vector.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim`. Let :math:`\cI \subset \{1, \dots, \inputDim \}`
 be a set of indices of components of  :math:`\inputRV`, :math:`\overline{\cI}` its complementary in
 :math:\{1, \dots, \inputDim \}` and :math:`\vect{x}_\cI` a real vector of dimension equal to the cardinal of :math:`\cI`.
@@ -177,14 +173,13 @@ Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> indices = [1]
 >>> values = [2.0]
 >>> normal = ot.Normal(3)
 >>> R = ot.CorrelationMatrix(3)
 >>> R[1, 0] = R[2, 0] = R[2, 1] = 0.9
 >>> normal.setR(R)
->>> distribution = otexp.PointConditionalDistribution(normal, indices, values)
+>>> distribution = ot.PointConditionalDistribution(normal, indices, values)
 >>> sample = distribution.getSample(2)
 )RAW"
 

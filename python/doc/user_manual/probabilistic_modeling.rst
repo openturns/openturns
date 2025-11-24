@@ -183,7 +183,7 @@ Combining and transforming distributions
     CompoundDistribution
 
     :template: classWithPlot.rst_t
-    experimental.PointConditionalDistribution
+    PointConditionalDistribution
 
     :template: Distribution.rst_t
     CumulativeDistributionNetwork

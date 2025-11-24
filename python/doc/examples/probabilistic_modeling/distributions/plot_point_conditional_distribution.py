@@ -18,7 +18,6 @@ Create a Point Conditional Distribution
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 
@@ -68,7 +67,7 @@ g_cond = coll_marg[0].drawPDF()
 g_cond.setLegends([r"dist of $X_0$"])
 for index, cond_value in enumerate(cond_value_list):
     cond_value = cond_value_list[index]
-    cond_dist = otexp.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
+    cond_dist = ot.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
     draw = cond_dist.drawPDF().getDrawable(0)
     draw.setLegend(r"$x_1 = q($" + str(q_list[index]) + ")")
     g_cond.add(draw)
@@ -132,7 +131,7 @@ g_cond = coll_marg[0].drawPDF()
 g_cond.setLegends([r"dist of $X_0$"])
 for index, cond_value in enumerate(cond_value_list):
     cond_value = cond_value_list[index]
-    cond_dist = otexp.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
+    cond_dist = ot.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
     # Here, we shift the distribution to make it visible!
     draw = ((index / 10.0) + cond_dist).drawPDF().getDrawable(0)
     draw.setLegend(r"$x_1 = q($" + str(q_list[index]) + ")")
@@ -211,7 +210,7 @@ graph_list.append(g_X02)
 
 for index, cond_value in enumerate(cond_value_list):
     cond_value = cond_value_list[index]
-    cond_dist = otexp.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
+    cond_dist = ot.PointConditionalDistribution(dist_X, cond_indices, [cond_value])
     g_cond = cond_dist.drawPDF([-4.0, -1.0], [4.0, 1.0], [256] * 2)
     contour = g_cond.getDrawable(0).getImplementation()
     contour.setIsFilled(True)
@@ -261,7 +260,7 @@ view = otv.View(grid)
 #    X_0 | X_1 = -9.0
 #
 dist_X = ot.JointDistribution([ot.Normal(), ot.Normal()], ot.ClaytonCopula(2.0))
-cond_dist = otexp.PointConditionalDistribution(dist_X, [1], [-9.0])
+cond_dist = ot.PointConditionalDistribution(dist_X, [1], [-9.0])
 
 g_cond = cond_dist.drawPDF(-10.0, -8.0, 256)
 g_cond.setTitle(r"$X_0|X_1 = -9$: iso-lines PDF")
