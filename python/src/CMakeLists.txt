@@ -686,6 +686,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
 ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       OrderStatisticsMarginalChecker.i OrderStatisticsMarginalChecker_doc.i
                       ParametrizedDistribution.i ParametrizedDistribution_doc.i
+		      PointConditionalDistribution.i PointConditionalDistribution_doc.i
                       Poisson.i Poisson_doc.i
                       PoissonFactory.i PoissonFactory_doc.i
                       ProductDistribution.i ProductDistribution_doc.i
@@ -715,7 +716,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Uniform.i Uniform_doc.i
                       UniformFactory.i UniformFactory_doc.i
                       UniformMuSigma.i UniformMuSigma_doc.i
-		             UniformOverMesh.i UniformOverMesh_doc.i
+                      UniformOverMesh.i UniformOverMesh_doc.i
                       UserDefined.i UserDefined_doc.i
                       UserDefinedFactory.i UserDefinedFactory_doc.i
                       UniformOrderStatistics.i UniformOrderStatistics_doc.i
@@ -1003,7 +1004,6 @@ ot_add_python_module(testing testing_module.i
 
 ot_add_python_module(experimental experimental_module.i
                      CombinationsDistribution.i CombinationsDistribution_doc.i
-                     PointConditionalDistribution.i PointConditionalDistribution_doc.i
                      SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i

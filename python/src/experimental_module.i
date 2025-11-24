@@ -74,7 +74,6 @@
 
 /* Uncertainty/Distribution */
 %include CombinationsDistribution.i
-%include PointConditionalDistribution.i
 %include MarginalUniformOrderStatistics.i
 %include PosteriorDistribution.i
 
