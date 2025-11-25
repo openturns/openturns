@@ -26,11 +26,13 @@ outputSample = model(inputSample)
 covarianceModel = ot.SquaredExponential([0.3, 0.25], [1.0])
 covarianceModel.setNuggetFactor(0.96)  # assume constant noise var
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-kriging.run()
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.run()
+gpr = ot.GaussianProcessRegression(fitter.getResult())
+gpr.run()
 
 # EGO
-algo = otexp.EfficientGlobalOptimization(problem, kriging.getResult())
+algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(14)
 algo.setAEITradeoff(0.66)
 algo.run()
