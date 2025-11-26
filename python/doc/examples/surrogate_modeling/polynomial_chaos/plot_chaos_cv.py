@@ -184,13 +184,14 @@ def compute_R2_score_by_kfold(
 
     Returns
     -------
-    r2Score : float
-        The R2 score.
+    r2Score : Point(outputDimension)
+        The R2 score for each output dimension.
     """
     #
     sampleSize = inputSample.getSize()
+    outputDimension = outputSample.getDimension()
     splitter = ot.KFoldSplitter(sampleSize, kParameter)
-    r2_score_sample = ot.Sample(0, 1)
+    r2_score_sample = ot.Sample(0, outputDimension)
     for indicesTrain, indicesTest in splitter:
         inputSampleTrain, inputSampleTest = (
             inputSample[indicesTrain],
