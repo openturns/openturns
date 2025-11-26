@@ -23,6 +23,7 @@
 #define OPENTURNS_OTUNCERTAINTYOPTIMIZATION_HXX
 
 #include "openturns/EfficientGlobalOptimization.hxx"
+#include "openturns/SequentialSamplingAlgorithm.hxx"
 #include "openturns/LOLAVoronoi.hxx"
 
 #endif /* OPENTURNS_OTUNCERTAINTYOPTIMIZATION_HXX */
