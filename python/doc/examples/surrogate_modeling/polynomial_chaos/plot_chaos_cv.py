@@ -153,74 +153,6 @@ def compute_R2_score_by_splitting(
 
 
 # %%
-# The next function computes the mean squared error by K-Fold.
-
-
-# %%
-def computeMSENaiveKFold(
-    inputSample,
-    outputSample,
-    multivariateBasis,
-    totalDegree,
-    distribution,
-    kParameter=5,
-):
-    """
-    Compute mean squared error by (naive) KFold.
-
-    Parameters
-    ----------
-    inputSample : Sample(size, input_dimension)
-        The inputSample dataset.
-    outputSample : Sample(size, output_dimension)
-        The outputSample dataset.
-    multivariateBasis : multivariateBasis
-        The multivariate chaos multivariateBasis.
-    totalDegree : int
-        The total degree of the chaos polynomial.
-    distribution : Distribution.
-        The distribution of the input variable.
-    kParameter : int, in (2, sampleSize)
-        The parameter K.
-
-    Returns
-    -------
-    mse : Point(output_dimension)
-        The mean squared error.
-    """
-    #
-    sampleSize = inputSample.getSize()
-    outputDimension = outputSample.getDimension()
-    splitter = ot.KFoldSplitter(sampleSize, kParameter)
-    squaredResiduals = ot.Sample(sampleSize, outputDimension)
-    for indicesTrain, indicesTest in splitter:
-        inputSampleTrain, inputSampleTest = (
-            inputSample[indicesTrain],
-            inputSample[indicesTest],
-        )
-        outputSampleTrain, outputSampleTest = (
-            outputSample[indicesTrain],
-            outputSample[indicesTest],
-        )
-        chaosResultKFold = compute_sparse_least_squares_chaos(
-            inputSampleTrain,
-            outputSampleTrain,
-            multivariateBasis,
-            totalDegree,
-            distribution,
-        )
-        metamodelKFold = chaosResultKFold.getMetaModel()
-        predictionsKFold = metamodelKFold(inputSampleTest)
-        residualsKFold = outputSampleTest - predictionsKFold
-        foldSize = indicesTest.getSize()
-        for j in range(outputDimension):
-            for i in range(foldSize):
-                squaredResiduals[indicesTest[i], j] = residualsKFold[i, j] ** 2
-    mse = squaredResiduals.computeMean()
-    return mse
-
-
-# %%
 # The next function computes the :math:`R^2` score by K-Fold.
 
 
@@ -256,19 +188,31 @@ def compute_R2_score_by_kfold(
         The R2 score.
     """
     #
-    mse = computeMSENaiveKFold(
-        inputSample,
-        outputSample,
-        multivariateBasis,
-        totalDegree,
-        distribution,
-        kParameter,
-    )
-    sampleVariance = outputSample.computeCentralMoment(2)
-    outputDimension = outputSample.getDimension()
-    r2Score = ot.Point(outputDimension)
-    for i in range(outputDimension):
-        r2Score[i] = 1.0 - mse[i] / sampleVariance[i]
+    sampleSize = inputSample.getSize()
+    splitter = ot.KFoldSplitter(sampleSize, kParameter)
+    r2_score_sample = ot.Sample(0, 1)
+    for indicesTrain, indicesTest in splitter:
+        inputSampleTrain, inputSampleTest = (
+            inputSample[indicesTrain],
+            inputSample[indicesTest],
+        )
+        outputSampleTrain, outputSampleTest = (
+            outputSample[indicesTrain],
+            outputSample[indicesTest],
+        )
+        chaosResultKFold = compute_sparse_least_squares_chaos(
+            inputSampleTrain,
+            outputSampleTrain,
+            multivariateBasis,
+            totalDegree,
+            distribution,
+        )
+        metamodelKFold = chaosResultKFold.getMetaModel()
+        predictionsKFold = metamodelKFold(inputSampleTest)
+        val = ot.MetaModelValidation(outputSampleTest, predictionsKFold)
+        r2_local = val.computeR2Score()
+        r2_score_sample.add(r2_local)
+    r2Score = r2_score_sample.computeMean()
     return r2Score
 
 
