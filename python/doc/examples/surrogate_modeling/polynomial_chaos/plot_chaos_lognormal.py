@@ -31,9 +31,8 @@ Pitfalls in  polynomial chaos expansion due to the input distribution
 # .. math::
 #    \model(x) = \dfrac{1}{x}.
 #
-# Let the random variable :math:`X` follow a :class:`~openturns.LogNormal` :math:`\mathcal{LN}(0,1)`
+# Let the random variable :math:`X` follow a :class:`~openturns.LogNormal` :math:`\mathcal{LN}(0,1, 0)`
 # distribution whose PDF is denoted by :math:`\mu`.
-# This distribution is not characterized by the infinite sequence of its moments.
 #
 # This particular case is discussed in [ernst2012]_.
 #
@@ -81,15 +80,6 @@ for i in range(degreeMax):
 
 # %%
 # We build a set of polynomials with increasing degrees.
-# For each polynomial, we display its value at :math:`x = 0`.
-#
-# We anticipate that the vicinity of :math:`x = 0` will cause difficulties
-# for the surrogate model of :math:`\model`, since
-# :math:`\lim_{x \rightarrow 0} \model(x) = +\infty`.
-# Given that the polynomials take *reasonable values* in the vicinity of :math:`x = 0`,
-# we expect the polynomial surrogate model to require
-# very large linear coefficients in order to reproduce high values near :math:`x = 0`,
-# which may lead to numerical cancellation issues.
 #
 # We explore polynomial degrees up to 20.
 deg_list = [5, 10, 20]
@@ -108,7 +98,15 @@ g.setLegendPosition("topleft")
 view = otv.View(g)
 
 # %%
-# Moreover, we print the value of the first polynomials at :math:`x = 0`: they have alternates signs.
+# Moreover, we print the value of the first polynomials at :math:`x = 0`: they have alternating signs.
+#
+# We anticipate that the vicinity of :math:`x = 0` will cause difficulties
+# for the surrogate model of :math:`\model`, since
+# :math:`\lim_{x \rightarrow 0} \model(x) = +\infty`.
+# Given that the polynomials take *reasonable values* in the vicinity of :math:`x = 0`,
+# we expect the polynomial surrogate model to require
+# very large linear coefficients in order to reproduce high values near :math:`x = 0`,
+# which may lead to numerical cancellation issues.
 for deg in range(6):
     coeff_poly_deg = sample_coeff[0:deg]
     poly_deg = ot.OrthogonalUniVariatePolynomial(coeff_poly_deg)
@@ -118,7 +116,7 @@ for deg in range(6):
 # We observe that the polynomials up to degree 20:
 #
 # - they are computed in a stable manner, as indicated by their smooth graphs,
-# - they take reasonable values on the interval :math:`[0, 25]`,
+# - they take reasonable values on the interval :math:`[0, 10]`,
 # - the sign of the polynomials at :math:`x = 0` alternates with the degree.
 #   Then the value of the surrogate model in the vicinity of :math:`x = 0` which has to be large
 #   will be obtained as the sum of real values with opposite signs and large magnitudes.
@@ -168,7 +166,7 @@ r2_score_LN = valid_meta_model_LN.computeR2Score()[0]
 r2_score_LN
 
 # %%
-# In the following graph, we see that the points are far away from the diagonal: the surrogate mmodel is
+# In the following graph, we see that the points are far away from the diagonal: the surrogate model is
 # not accurate, in particular in the center part of the LogNormal distribution.
 # Let the center part of the LogNormal distribution be defined as the interval
 # :math:`I = [q_{0.1}, q_{0.9}] \simeq [0.27, 3.6]` where  :math:`q_{0.1}` is the quantile of order 0.1
@@ -240,7 +238,7 @@ view = otv.View(graph_LN)
 # We note that the graph of the surrogate model is not smooth, from degree 9,
 # which is due to massive cancellation: we see that for the surrogate model of degree 9,
 # all the coefficients have a large magnitude (of order :math:`10^{14}`), have the same sign but
-# they multiply polynomials of alternative sign. As a result, the computatin of the surrogate
+# they multiply polynomials of alternating sign. As a result, the computation of the surrogate
 # model is prone to numerical cancellation issues, as anticipated earlier.
 
 # %%
@@ -248,17 +246,17 @@ view = otv.View(graph_LN)
 # ---------------------------------------------------------------------------
 #
 # We choose to modify the parametrisation of the model in order to expand the composed model
-# w.r.t. the the family of polynomials orthonormal with respect to the
+# w.r.t. the family of polynomials orthonormal with respect to the
 # :class:`~openturns.Normal` distribution. The Normal distribution is
 # characterized by its infinite sequence of moments. We use the isoprobabilistic transformation
 # :math:`T` which maps the LogNormal distribution into the Normal distribution. It is defined by:
 #
 # .. math::
-#    T(x) = e^z
+#    T(z) = e^z
 #
 # Thus, the polynomial chaos expansion is constructed for :math:`h(z) = g \circ T(z) = e^{-z}`.
 # This function is analytical with an infinite radius of convergence, so its polynomial
-# approximation converges very quickly and does not require many polynomials to get spetral convergence.
+# approximation converges very quickly and does not require many polynomials to get spectral convergence.
 #
 # We construct the surrogate model as before, using only the polynomials up to degree 5.
 basis_N = ot.OrthogonalProductPolynomialFactory(
@@ -311,7 +309,7 @@ view = otv.View(graph_N)
 #
 # This is an example where:
 #
-# - the use of a polynomial approximation space does not lead to a convergince sequence of surrogate models,
+# - the use of a polynomial approximation space does not lead to a convergence sequence of surrogate models,
 # - the use of the isoprobabilistic transformation is beneficial.
 size = 100000
 sample_in = dist_X.getSample(size)
