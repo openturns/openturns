@@ -242,7 +242,7 @@ view = otv.View(graph_LN)
 # all the coefficients have a large magnitude (of order :math:`10^{14}`), have the same sign but
 # they multiply polynomials of alternative sign. As a result, the computatin of the surrogate
 # model is prone to numerical cancellation issues, as anticipated earlier.
-#
+
 # %%
 # Case 2: PCE using orthonormal polynomial family w.r.t. another distribution
 # ---------------------------------------------------------------------------
@@ -253,7 +253,7 @@ view = otv.View(graph_LN)
 # characterized by its infinite sequence of moments. We use the isoprobabilistic transformation
 # :math:`T` which maps the LogNormal distribution into the Normal distribution. It is defined by:
 #
-# ..math::
+# .. math::
 #    T(x) = e^z
 #
 # Thus, the polynomial chaos expansion is constructed for :math:`h(z) = g \circ T(z) = e^{-z}`.
