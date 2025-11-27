@@ -62,7 +62,7 @@ Change the filtering window:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::WelchFactory::build
-"Estimate the spetral model.
+"Estimate the spectral model.
 
 Available usages:
     build(*myTimeSeries*)
