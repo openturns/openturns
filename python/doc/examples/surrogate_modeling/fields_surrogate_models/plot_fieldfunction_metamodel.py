@@ -80,7 +80,7 @@ view = otv.View(graph_modes_X)
 # %%
 # Sample the input process.
 print("Sample the input process")
-size = 500
+size = 300
 sample_X = process_X.getSample(size)
 
 # %%
