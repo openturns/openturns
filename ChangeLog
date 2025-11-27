@@ -13,6 +13,7 @@
  * GaussianProcessFitter, GaussianProcessFitterResult left the experimental module
  * GaussianProcessRegression, GaussianProcessRegressionResult left the experimental module
  * GaussianProcessConditionalCovariance left the experimental module
+ * PosteriorDistribution left the experimental module
 
 === Documentation ===
 

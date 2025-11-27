@@ -424,7 +424,7 @@ The objective is to create the posterior distribution of :math:`\vect{Y}` given 
 :math:`\vect{X}`.
 
 
-See the class :class:`~openturns.experimental.PosteriorDistribution`.
+See the class :class:`~openturns.PosteriorDistribution`.
 
 This class requires the following features:
 

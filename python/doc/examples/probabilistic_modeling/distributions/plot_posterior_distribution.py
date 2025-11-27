@@ -44,7 +44,7 @@ Compare frequentist and Bayesian estimation
 #
 # The second case is such that the link function :math:`g_2` is not bijective on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
-# The Bayesian approach uses the :class:`~openturns.experimental.PosteriorDistribution` that estimates the posterior distribution of :math:`\vect{Y}` denoted by
+# The Bayesian approach uses the :class:`~openturns.PosteriorDistribution` that estimates the posterior distribution of :math:`\vect{Y}` denoted by
 # :math:`\pi_{\vect{Y}}^\sampleSize` maximizing the likelihood of the conditioned model on the sample, weighted by the prior distribution
 # :math:`\pi_{\vect{Y}}^0`. From the :math:`\pi_{\vect{Y}}^\sampleSize` distribution, we extract the vector of modes
 # denoted by :math:`\vect{Y}_n^m`: this point maximizes :math:`\pi_{\vect{Y}}^\sampleSize`.
@@ -60,7 +60,6 @@ Compare frequentist and Bayesian estimation
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 ot.ResourceMap.SetAsUnsignedInteger(
     "CompoundDistribution-MarginalIntegrationNodesNumber", 32
@@ -122,7 +121,7 @@ compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 # %%
 # Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the compound distribution of :math:`\vect{X}` and
 # the sample.
-posterior_Y = otexp.PosteriorDistribution(compound, observations)
+posterior_Y = ot.PosteriorDistribution(compound, observations)
 
 # %%
 # From  :math:`\pi_{\vect{Y}}^\sampleSize`, we get:
@@ -336,7 +335,7 @@ linkFunction = ot.SymbolicFunction(
 conditioning = ot.JointDistribution([ot.Triangular(-1.0, 0.0, 1.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
 compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
-posterior_Y = otexp.PosteriorDistribution(compound, observations)
+posterior_Y = ot.PosteriorDistribution(compound, observations)
 sample_posterior = linkFunction(posterior_Y.getSample(10000)).getMarginal([1, 3])
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 

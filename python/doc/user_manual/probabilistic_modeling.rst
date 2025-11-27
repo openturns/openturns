@@ -204,7 +204,7 @@ Combining and transforming distributions
 
     MixedHistogramUserDefined
     OrderStatisticsMarginalChecker
-    experimental.PosteriorDistribution
+    PosteriorDistribution
 
 .. autosummary::
     :toctree: _generated/

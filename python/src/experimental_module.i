@@ -75,7 +75,6 @@
 /* Uncertainty/Distribution */
 %include CombinationsDistribution.i
 %include MarginalUniformOrderStatistics.i
-%include PosteriorDistribution.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i

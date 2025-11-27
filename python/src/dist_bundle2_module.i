@@ -61,6 +61,7 @@
 %include MultinomialFactory.i
 %include Polya.i
 %include PolyaFactory.i
+%include PosteriorDistribution.i
 %include NonCentralChiSquare.i
 %include NonCentralStudent.i
 %include Normal.i

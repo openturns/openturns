@@ -676,6 +676,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MultinomialFactory.i MultinomialFactory_doc.i
                       Polya.i Polya_doc.i
                       PolyaFactory.i PolyaFactory_doc.i
+                      PosteriorDistribution.i PosteriorDistribution_doc.i
                       NonCentralChiSquare.i NonCentralChiSquare_doc.i
                       NonCentralStudent.i NonCentralStudent_doc.i
                       Normal.i Normal_doc.i
@@ -1012,7 +1013,6 @@ ot_add_python_module(experimental experimental_module.i
                      SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i
-                     PosteriorDistribution.i PosteriorDistribution_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      ConstantEvaluation.i ConstantEvaluation_doc.i
                      ConstantFunction.i ConstantFunction_doc.i

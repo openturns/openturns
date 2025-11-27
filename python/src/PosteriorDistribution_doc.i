@@ -1,10 +1,6 @@
 %feature("docstring") OT::PosteriorDistribution
 R"RAW(Distribution conditioned by observations.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Let :math:`\inputRV` be a random vector such that :math:`\inputRV|\vect{\Theta}` follows the distribution
 :math:`\mathcal{L}_{\inputRV|\vect{\Theta}}`,
 with :math:`\vect{\Theta}=g(\vect{Y})` and :math:`\vect{Y}` following the prior distribution :math:`\mathcal{L}_{\vect{Y}}`. The function
@@ -51,13 +47,11 @@ observations : 2-d sequence of float
 
 See Also
 --------
-openturns.CompoundDistribution
-openturns.MetropolisHastings
+CompoundDistribution, MetropolisHastings
 
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> conditionedDistribution = ot.Normal()
 >>> # Compound distribution
@@ -70,7 +64,7 @@ Examples
 >>> observationsDistribution.setParameter(conditioning.getMean())
 >>> observations = observationsDistribution.getSample(observationsSize)
 >>> # Posterior distribution
->>> distribution = otexp.PosteriorDistribution(compound, observations)
+>>> distribution = ot.PosteriorDistribution(compound, observations)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.ResourceMap.SetAsUnsignedInteger(
@@ -29,7 +28,7 @@ for conditioning in conditioningDistributionCollection:
     observationsDistribution = ot.Distribution(conditionedDistribution)
     observationsDistribution.setParameter(conditioning.getMean())
     observations = observationsDistribution.getSample(observationsSize)
-    distribution = otexp.PosteriorDistribution(
+    distribution = ot.PosteriorDistribution(
         ot.CompoundDistribution(conditionedDistribution, conditioning),
         observations,
     )
@@ -80,20 +79,20 @@ conditioning = ot.Uniform(0.5, 1.5)
 observations = conditioned.getSample(10)
 
 # First constructor
-posterior = otexp.PosteriorDistribution()
+posterior = ot.PosteriorDistribution()
 
 # Second constructor
-posterior = otexp.PosteriorDistribution(
+posterior = ot.PosteriorDistribution(
     ot.CompoundDistribution(conditioned, conditioning, link), observations
 )
 
 # Third constructor
-posterior = otexp.PosteriorDistribution(
+posterior = ot.PosteriorDistribution(
     conditioned, ot.IndependentCopula(2), observations
 )
 
 # Fourth constructor
-posterior = otexp.PosteriorDistribution(conditioned, conditioning, link, observations)
+posterior = ot.PosteriorDistribution(conditioned, conditioning, link, observations)
 
 # Accessors to the arguments of the constructor
 print("conditioned=", posterior.getConditionedDistribution())
