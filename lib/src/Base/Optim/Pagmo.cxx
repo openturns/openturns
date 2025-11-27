@@ -615,7 +615,7 @@ void Pagmo::run()
     // moead(unsigned gen = 1u, std::string weight_generation = "grid", std::string decomposition = "tchebycheff", population::size_type neighbours = 20u, double CR = 1.0, double F = 0.5, double eta_m = 20., double realb = 0.9, unsigned limit = 2u, bool preserve_diversity = true, unsigned seed = pagmo::random_device::next())
     const String weight_generation = ResourceMap::GetAsString("Pagmo-moead-weight_generation");
     const String decomposition = ResourceMap::GetAsString("Pagmo-moead-decomposition");
-    const UnsignedInteger neighbours = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-neighbours");
+    const UnsignedInteger neighbours = std::min(ResourceMap::GetAsUnsignedInteger("Pagmo-moead-neighbours"), size - 1);
     const Scalar CR = ResourceMap::GetAsScalar("Pagmo-moead-CR");
     const Scalar F = ResourceMap::GetAsScalar("Pagmo-moead-F");
     const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-moead-eta_m");
@@ -630,7 +630,7 @@ void Pagmo::run()
     // moead_gen(unsigned gen = 1u, std::string weight_generation = "grid", std::string decomposition = "tchebycheff", population::size_type neighbours = 20u, double CR = 1.0, double F = 0.5, double eta_m = 20., double realb = 0.9, unsigned limit = 2u, bool preserve_diversity = true, unsigned seed = pagmo::random_device::next())
     const String weight_generation = ResourceMap::GetAsString("Pagmo-moead-weight_generation");
     const String decomposition = ResourceMap::GetAsString("Pagmo-moead-decomposition");
-    const UnsignedInteger neighbours = ResourceMap::GetAsUnsignedInteger("Pagmo-moead-neighbours");
+    const UnsignedInteger neighbours = std::min(ResourceMap::GetAsUnsignedInteger("Pagmo-moead-neighbours"), size - 1);
     const Scalar CR = ResourceMap::GetAsScalar("Pagmo-moead-CR");
     const Scalar F = ResourceMap::GetAsScalar("Pagmo-moead-F");
     const Scalar eta_m = ResourceMap::GetAsScalar("Pagmo-moead-eta_m");
