@@ -9,9 +9,8 @@ for i in range(8):
     g.setXTitle('x')
     g.setYTitle(r'$\varphi_' + str(i) + '(x)$')
     g.setTitle('')
-    grid.setGraph(i//4, i%4, g)
+    grid.setGraph(i // 4, i % 4, g)
 
 v = otv.View(grid)
 fig = v.getFigure()
 fig.axes[1].legend(loc="best")
-
