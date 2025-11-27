@@ -285,7 +285,7 @@ im = ishigami_function.IshigamiModel()
 im.distribution.setDescription(["X0", "X1", "X2"])
 im.model.setOutputDescription(["$Y$"])
 ot.RandomGenerator.SetSeed(0)
-sample_size = 500
+sample_size = 400
 X = im.distribution.getSample(sample_size)
 print("Input sample:")
 X[:5]
