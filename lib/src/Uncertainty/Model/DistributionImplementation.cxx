@@ -617,47 +617,63 @@ Point DistributionImplementation::getRealizationByInversion() const
   return getSampleByInversion(1)[0];
 }
 
+
+struct DistributionSequentialConditionalQuantilePolicy
+{
+  const DistributionImplementation & distribution_;
+  const Sample input_;
+  Sample & output_;
+
+  DistributionSequentialConditionalQuantilePolicy(const DistributionImplementation & distribution,
+                                                  const Sample & input,
+                                                  Sample & output)
+    : distribution_(distribution)
+    , input_(input)
+    , output_(output)
+  {}
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+  {
+    const UnsignedInteger dimension = distribution_.getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    auto start = output_.getImplementation()->data_begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      if (dimension == 1)
+        output_(i, 0) = distribution_.computeScalarQuantile(input_(i, 0));
+      else
+      {
+        const Point point(distribution_.computeSequentialConditionalQuantile(input_[i]));
+        std::copy(point.begin(), point.end(), start + shift);
+        shift += dimension;
+      }
+    }
+  }
+};
+
 /* Get a sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
 {
-  Sample returnSample(size, dimension_);
-  UnsignedInteger shift = 0;
-  auto start = returnSample.getImplementation()->data_begin();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    const Point point(computeSequentialConditionalQuantile(RandomGenerator::Generate(dimension_)));
-    std::copy(point.begin(), point.end(), start + shift);
-    shift += dimension_;
-  }
-  returnSample.setName(getName());
-  returnSample.setDescription(getDescription());
-  return returnSample;
+  Sample u(size, dimension_);
+  u.getImplementation()->setData(RandomGenerator::Generate(dimension_ * size));
+  Sample result(size, dimension_);
+  const DistributionSequentialConditionalQuantilePolicy policy(*this, u, result);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  result.setName(getName());
+  result.setDescription(getDescription());
+  return result;
 }
 
 Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
   static SobolSequence sequence(dimension_);
-  Sample returnSample(size, dimension_);
   const Sample u(sequence.generate(size));
-  if (getDimension() == 1)
-  {
-    for (UnsignedInteger i = 0; i < size; ++ i)
-      returnSample(i, 0) = computeScalarQuantile(u(i, 0));
-  }
-  else
-  {
-    UnsignedInteger shift = 0;
-    auto start = returnSample.getImplementation()->data_begin();
-    for (UnsignedInteger i = 0; i < size; ++ i)
-    {
-      const Point point(computeSequentialConditionalQuantile(u[i]));
-      std::copy(point.begin(), point.end(), start + shift);
-      shift += dimension_;
-    }
-  }
-  returnSample.setName(getName());
-  returnSample.setDescription(getDescription());
-  return returnSample;
+  Sample result(size, dimension_);
+  const DistributionSequentialConditionalQuantilePolicy policy(*this, u, result);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
+  result.setName(getName());
+  result.setDescription(getDescription());
+  return result;
 }
 
 Function DistributionImplementation::getPDF() const
