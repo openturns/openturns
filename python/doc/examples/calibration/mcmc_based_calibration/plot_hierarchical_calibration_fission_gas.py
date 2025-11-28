@@ -565,7 +565,7 @@ plt.xscale("log")
 plt.plot(bisector, bisector, "--", c="black")
 plt.xlabel("Measurements")
 plt.ylabel("Prediction medians")
-plt.legend(["Posterior", "Prior"])
+_ = plt.legend(["Posterior", "Prior"])
 
 # %%
 # Display all figures
