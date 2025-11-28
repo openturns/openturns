@@ -37,7 +37,7 @@ marginal = ot.HistogramFactory().build(
     myAggregatedProcess.getRealization().getValues().getMarginal(0)
 )
 graph = marginal.drawPDF()
-otv.View(graph)
+_ = otv.View(graph)
 
 # %%
 # Display all figures
