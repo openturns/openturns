@@ -1,4 +1,7 @@
 from sphinx_gallery.scrapers import matplotlib_scraper
+import matplotlib as mpl
+
+mpl.rcParams["svg.hashsalt"] = "42"
 
 
 def matplotlib_svg_scraper(*args, **kwargs):

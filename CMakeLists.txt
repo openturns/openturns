@@ -38,6 +38,11 @@ option (USE_NANOFLANN                "Use nanoflann for Nearest Neighbor search"
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
+if (POLICY CMP0177)
+  # install() DESTINATION paths are normalized (cmake 3.31)
+  cmake_policy (SET CMP0177 NEW)
+endif ()
+
 # Defines our own module path
 list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
