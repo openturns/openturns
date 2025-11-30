@@ -222,7 +222,7 @@ def compute_R2_score_by_kfold(
 # ----------------------------
 
 # %%
-# We start by generating the input and output samples. We use a sample size equal to 1000.
+# We start by generating the input and output samples. We use a sample size equal to 200.
 
 
 # %%
@@ -230,7 +230,7 @@ im = ishigami_function.IshigamiModel()
 im.distribution.setDescription(["X0", "X1", "X2"])
 im.model.setOutputDescription(["$Y$"])
 ot.RandomGenerator.SetSeed(0)
-sample_size = 500
+sample_size = 200
 X = im.distribution.getSample(sample_size)
 print("Input sample:")
 X[:5]
