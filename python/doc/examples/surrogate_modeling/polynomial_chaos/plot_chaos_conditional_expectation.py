@@ -371,33 +371,33 @@ def computeSparseLeastSquaresFunctionalChaos(
 # %%
 # In the next cell, we create a training sample from the
 # Ishigami test function.
-# We choose a sample size equal to 1000.
+# We choose a sample size equal to 500.
 
 # %%
 ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 input_names = im.distribution.getDescription()
-sampleSize = 1000
+sampleSize = 500
 inputSample = im.distribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 
 
 # %%
 # We then create a sparce PCE of the Ishigami function using
-# a candidate basis up to the total degree equal to 12.
-# This leads to 455 candidate coefficients.
+# a candidate basis up to the total degree equal to 10.
+# This leads to 285 candidate coefficients.
 # The coefficients are computed from least squares.
 
 # %%
 multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
-totalDegree = 12
+totalDegree = 10
 enumerateFunction = multivariateBasis.getEnumerateFunction()
 basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 print("Basis size = ", basisSize)
 
 # %%
 # Finally, we create the PCE.
-# Only 61 coefficients are selected by the :class:`~openturns.LARS`
+# Only 28 coefficients are selected by the :class:`~openturns.LARS`
 # algorithm.
 
 # %%

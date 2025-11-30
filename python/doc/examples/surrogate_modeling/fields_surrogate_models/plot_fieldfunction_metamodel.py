@@ -30,7 +30,7 @@ a = 1
 # Reference correlation length
 b = 0.5
 # Number of vertices in the mesh
-N = 100
+N = 50
 # Bandwidth of the smoothers
 h = 0.05
 
@@ -66,7 +66,7 @@ def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
 
 # %%
 # Compute the decomposition of the input process.
-threshold = 0.0001
+threshold = 0.01
 algo_X = ot.KarhunenLoeveP1Algorithm(mesh, process_X.getCovarianceModel(), threshold)
 algo_X.run()
 result_X = algo_X.getResult()
