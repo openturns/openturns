@@ -109,7 +109,7 @@ This set is *orthonormal* with respect to :math:`\mu_{\vect{Z}}` if:
 .. math::
    :label: orthonorm
 
-    \scalarproduct{\psi_k}{\Psi_{\ell}}_{L^2\left(\mu_{\vect{Z}}\right)}  =  \delta_{k,\ell}
+    \scalarproduct{\psi_k}{\psi_{\ell}}_{L^2\left(\mu_{\vect{Z}}\right)}  =  \delta_{k,\ell}
 
 for any :math:`k, \ell \geq 0` where :math:`\delta_{k, \ell}` is the Kronecker symbol:
 
@@ -133,7 +133,7 @@ Furthermore, we require that the first element be:
   .. math::
     :label: defPsi0
 
-      \Psi_0 = 1
+      \psi_0 = 1
 
 The orthogonality of the functions imply:
 
@@ -145,7 +145,7 @@ The equation :eq:`defPsi0` implies:
 
   .. math::
 
-       \Expect{\psi_{i}(\vect{Z})} = \Expect{\Psi_{i}(\vect{Z})\Psi_{0}(\vect{Z})}
+       \Expect{\psi_{i}(\vect{Z})} = \Expect{\psi_{i}(\vect{Z})\psi_{0}(\vect{Z})}
        = 0
 
 for any :math:`i\neq 0`.
@@ -470,7 +470,7 @@ the following multivariate functions are orthonormal with respect to
 
   .. math::
 
-      \Psi_{\idx}(\vect{z})
+      \psi_{\idx}(\vect{z})
       = \left( \dfrac{\mu_{Z_1}(z_1) \cdots \mu_{Z_{n_X}}(z_{n_X})}{\mu_{\vect{Z}}(\vect{z})} \right)^{\frac{1}{2}}\;
       \prod_{i=1}^{n_X} \pi^{(i)}_{\alpha_{i}}(z_{i})
 
