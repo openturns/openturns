@@ -84,6 +84,167 @@ int main(int, char *[])
     fullprint << "Confidence intervals with level=" << alpha << " : "  << interval << std::endl;
   }
 
+  {
+    // Tests for asymptotic distributions
+    // Note: the code that computes the reference values is in the Python script (t_LinearModelAnalysis_std.py)
+    fullprint << "Tests for asymptotic distributions" << std::endl;
+
+    RandomGenerator::SetSeed(0);
+    const UnsignedInteger sample_size = 1000;
+    const Scalar true_standard_deviation = 0.1;
+    const Point coefficients{3.0, 2.0, -1.0};
+    const Description input_variables{"x1", "x2", "a0", "a1", "a2"};
+    const Description formula(1, "a0 + a1 * x1 + a2 * x2");
+    const SymbolicFunction f(input_variables, formula);
+    const ParametricFunction model(f, {2, 3, 4}, coefficients);
+    const UnsignedInteger number_of_parameters = coefficients.getDimension();
+    const UnsignedInteger input_dimension = number_of_parameters - 1;
+    const Normal distribution(input_dimension);
+    const Normal error_distribution(0.0, true_standard_deviation);
+    const Sample input_sample(distribution.getSample(sample_size));
+    const Sample output_sample(model(input_sample));
+    const Sample error_sample(error_distribution.getSample(sample_size));
+    const Sample noisy_output_sample(output_sample + error_sample);
+    LinearModelAlgorithm algo(input_sample, noisy_output_sample);
+    const LinearModelResult result(algo.getResult());
+    const LinearModelAnalysis analysis(result);
+
+    // Asymptotic coefficients distribution
+    const Normal coefficients_distribution(analysis.getCoefficientsDistribution());
+    assert_equal(coefficients_distribution.getDimension(), (UnsignedInteger)3);
+    const Point computed_parameters0(coefficients_distribution.getMarginal(0).getParameter());
+    const Point computed_parameters1(coefficients_distribution.getMarginal(1).getParameter());
+    const Point computed_parameters2(coefficients_distribution.getMarginal(2).getParameter());
+    const Point expected_parameters0{3.0, 0.00316346};
+    const Point expected_parameters1{2.0, 0.00320948};
+    const Point expected_parameters2{-1.0, 0.00316354};
+    Scalar atol = 2.0e-1 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters0, expected_parameters0, 0.0, atol);
+    atol = 2.0e-3 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters1, expected_parameters1, 0.0, atol);
+    atol = 7.0e-2 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters2, expected_parameters2, 0.0, atol);
+
+    // Asymptotic variance distribution (Gaussian noise)
+    Distribution variance_distribution(analysis.getVarianceDistribution(true));
+    assert_equal(variance_distribution.getImplementation()->getClassName(), std::string("Gamma"));
+    Point computed_parameters(variance_distribution.getParameter());
+    Point expected_parameters{498.5, 49850.0, 0.0};
+    atol = 5.0e4 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol);
+
+    // Asymptotic variance distribution (arbitrary noise)
+    variance_distribution = analysis.getVarianceDistribution(false);
+    assert_equal(variance_distribution.getImplementation()->getClassName(), std::string("Normal"));
+    computed_parameters = variance_distribution.getParameter();
+    expected_parameters = {0.01, 0.000447886};
+    atol = 9.0e-3 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol);
+
+    // Asymptotic prediction distribution
+    Point x0{1.5, 2.5};
+    const Normal prediction_distribution(analysis.getPredictionDistribution(x0));
+    computed_parameters = prediction_distribution.getParameter();
+    expected_parameters = {3.5, 0.00978034};
+    atol = 4.0e-1 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol);
+
+    // Asymptotic observation distribution
+    x0 = {1.5, 2.5};
+    const Normal observation_distribution(analysis.getOutputObservationDistribution(x0));
+    computed_parameters = observation_distribution.getParameter();
+    expected_parameters = {3.5, 0.100477};
+    atol = 4.0e-1 / std::sqrt(sample_size);
+    assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol);
+  }
+
+  {
+    fullprint << "Test checkSampleSize exception" << std::endl;
+    
+    // Create a small sample
+    UnsignedInteger size = 5;
+    Sample x(size, 1);
+    Sample y(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      x[i][0] = i;
+      y[i][0] = 1.0 + 0.5 * i;
+    }
+
+    LinearModelAlgorithm algo(x, y);
+    LinearModelAnalysis analysis(algo.getResult());
+
+    // Force a high threshold to trigger the exception
+    ResourceMap::SetAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions", 10);
+
+    // Verification of exception throw for distributions
+    try
+    {
+      analysis.getCoefficientsDistribution();
+      // If we reach this line, the test must fail
+      throw TestFailed("InvalidArgumentException not thrown by getCoefficientsDistribution despite small sample size.");
+    }
+    catch (const InvalidArgumentException & ex)
+    {
+      fullprint << "Caught expected InvalidArgumentException: " << ex.what()<< std::endl;
+    }
+
+    // Reset ResourceMap to default values
+    ResourceMap::Reset();
+  }
+
+  {
+    fullprint << "Test x0 dimension exception" << std::endl;
+    // Sample with valid size
+    UnsignedInteger size = 20;
+    Sample x(size, 1);
+    Sample y(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      x[i][0] = i;
+      y[i][0] = 1.0 + 0.5 * i;
+    }
+    LinearModelAlgorithm algo(x, y);
+    LinearModelAnalysis analysis(algo.getResult());
+
+    try
+    {
+      // The model expects dimension 1, we provide dimension 2
+      Point x0(2, 0.0); 
+      analysis.getPredictionDistribution(x0);
+      throw TestFailed("InvalidArgumentException not thrown for invalid x0 dimension");
+    }
+    catch (const InvalidArgumentException & ex)
+    {
+      fullprint << "Caught expected InvalidArgumentException for invalid x0 dimension: " << ex.what() << std::endl;
+    }
+  }
+  {
+    fullprint << "Test LinearModelAnalysis constructor exception (DOF <= 0)" << std::endl;
+
+    // A sample of size 2 for a model with 2 parameters (intercept + slope)
+    // results in 0 degrees of freedom.
+    UnsignedInteger size = 2;
+    Sample x(size, 1);
+    Sample y(size, 1);
+    x[0][0] = 1.0; x[1][0] = 2.0;
+    y[0][0] = 1.1; y[1][0] = 2.1;
+
+    LinearModelAlgorithm algo(x, y);
+    LinearModelResult result(algo.getResult());
+
+    try
+    {
+      // This should throw because DOF <= 0
+      LinearModelAnalysis analysis(result);
+      throw TestFailed("InvalidArgumentException not thrown by LinearModelAnalysis constructor with null DOF.");
+    }
+    catch (const InvalidArgumentException & ex)
+    {
+      fullprint << "Caught expected exception: " << ex.what() << std::endl;
+    }
+  }
+
   return ExitCode::Success;
 
 }

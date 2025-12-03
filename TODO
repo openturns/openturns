@@ -7,3 +7,7 @@ Remove UserDefined alias in some future version
 Remove UserDefinedFactory alias in some future version
 Remove MixedHistogramUserDefined alias in some future version
 Remove RandomMixture alias in some future version
+Remove deprecated LinearModelResult from formula and coefficientsNames
+Remove deprecated LinearModelResult.getFormula()
+Remove deprecated LinearModelResult.getCoefficientsNames()
+Remove deprecated LinearModelResult.buildMethod()

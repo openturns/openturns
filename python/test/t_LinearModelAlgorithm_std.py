@@ -57,7 +57,7 @@ leverages = result.getLeverages()
 leverages_reference = [0.0864939, 0.0797831, 0.0735447, 0.0677578, 0.0624023, 0.0574582]
 ott.assert_almost_equal(leverages[0:6], leverages_reference, 1e-6, 0.0)
 
-lsMethod = result.buildMethod()
+lsMethod = result.getLeastSquaresMethod()
 projectionMatrix = lsMethod.getH()
 assert projectionMatrix.getNbRows() == size
 assert projectionMatrix.getNbColumns() == size

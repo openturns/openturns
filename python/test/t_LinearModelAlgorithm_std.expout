@@ -17,6 +17,7 @@ LinearModelResult
 - residuals variance=0.00991604
 - has intercept=true
 - is model selection=false
+- least squares method=class=QRMethod
 
 
 trend coefficients =  [0.978992,0.110565,9.99924]
@@ -35,6 +36,7 @@ LinearModelResult
 - residuals variance=0.00991604
 - has intercept=true
 - is model selection=false
+- least squares method=class=QRMethod
 
 
 [-2,4] 0
