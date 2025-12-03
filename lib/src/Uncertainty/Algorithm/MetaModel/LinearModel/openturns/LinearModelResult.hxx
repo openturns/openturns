@@ -54,6 +54,20 @@ public:
                     const Sample & outputSample,
                     const Function & metaModel,
                     const Point & coefficients,
+                    const Sample & sampleResiduals,
+                    const Sample & standardizedResiduals,
+                    const Point & diagonalGramInverse,
+                    const Point & leverages,
+                    const Point & cookDistances,
+                    const Scalar residualsVariance);
+
+  /** @deprecated Constructor with parameters */
+  LinearModelResult(const Sample & inputSample,
+                    const Basis & basis,
+                    const Matrix & design,
+                    const Sample & outputSample,
+                    const Function & metaModel,
+                    const Point & coefficients,
                     const String & formula,
                     const Description & coefficientsNames,
                     const Sample & sampleResiduals,
@@ -75,15 +89,17 @@ public:
   virtual Basis getBasis() const;
   virtual Sample getFittedSample() const;
   virtual Matrix getDesign() const;
+  virtual LeastSquaresMethod getLeastSquaresMethod() const;
+  virtual void setLeastSquaresMethod(const LeastSquaresMethod & leastSquaresMethod);
 
-  /** Condensed formula accessor */
+  /** Coefficients accessor */
   virtual Point getCoefficients() const;
   virtual Point getCoefficientsStandardErrors() const;
 
-  /** Condensed formula accessor */
+  /** @deprecatedCondensed formula accessor */
   virtual String getFormula() const;
 
-  /** Coefficients names accessor */
+  /** @deprecated Coefficients names accessor */
   virtual Description getCoefficientsNames() const;
 
   /** Residuals accessor */
@@ -118,7 +134,7 @@ public:
   /** Adjusted R-squared */
   Scalar getAdjustedRSquared() const;
 
-  /** Least squares method accessor */
+  /** @deprecated Least squares method accessor */
   virtual LeastSquaresMethod buildMethod() const;
 
   /** involvesModelSelection accessor */
@@ -136,12 +152,16 @@ public:
 private:
 
   void checkIntercept();
+  static Description BuildDefaultCoefficientsNames(const Basis & basis);
 
   /** basis */
   Basis basis_;
 
   /** input data */
   Matrix design_;
+
+  /** Least squares method */
+  LeastSquaresMethod leastSquaresMethod_;
 
   /** Coefficients */
   Point coefficients_;
@@ -171,7 +191,7 @@ private:
   Scalar residualsVariance_ = 0.0;
 
   /** hasIntercept */
-  Bool hasIntercept_;
+  Bool hasIntercept_ = false;
 
   /** involvesModelSelection */
   Bool involvesModelSelection_ = false;

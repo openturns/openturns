@@ -561,19 +561,27 @@ void LinearModelStepwiseAlgorithm::run()
     cookDistances[i] = (1.0 / p) * standardizedResiduals(i, 0) * standardizedResiduals(i, 0) * (leverages[i] / (1.0 - leverages[i]));
   }
 
-  Description coefficientsNames(0);
   Collection<Function> currentFunctions;
   for (Indices::const_iterator it = currentIndices_.begin(); it != currentIndices_.end(); ++it)
   {
-    coefficientsNames.add(basis_[*it].__str__());
     currentFunctions.add(basis_[*it]);
   }
   LinearCombinationFunction metaModel(currentFunctions, regression);
-
-  result_ = LinearModelResult(inputSample_, Basis(currentFunctions), currentX_, outputSample_, metaModel,
-                              regression, currentFunctions.__str__(), coefficientsNames, residualSample, standardizedResiduals,
+  const Basis basis(currentFunctions);
+  result_ = LinearModelResult(inputSample_, basis, currentX_, outputSample_, metaModel,
+                              regression, residualSample, standardizedResiduals,
                               diagonalGramInverse, leverages, cookDistances, sigma2[0]);
   result_.setInvolvesModelSelection(true);
+  const DesignProxy designProxy(inputSample_, basis);
+  const UnsignedInteger basisSize = basis.getSize();
+  Indices addedIndices(basisSize);
+  addedIndices.fill();
+  const String methodName(ResourceMap::GetAsString("LinearModelResult-DecompositionMethod"));
+  LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName, designProxy, addedIndices);
+  Indices conservedIndices(0);
+  Indices removedIndices(0);
+  leastSquaresMethod.update(addedIndices, conservedIndices, removedIndices);
+  result_.setLeastSquaresMethod(leastSquaresMethod);
   hasRun_ = true;
 }
 
