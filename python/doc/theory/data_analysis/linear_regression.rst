@@ -34,14 +34,14 @@ and is defined as:
 The estimators for the regression coefficients
 :math:`\widehat{a}_0,\widehat{a}_1,\ldots,\widehat{a}_{K}`, and the
 standard deviation :math:`\sigma` are obtained from a sample of
-:math:`(X^i,X^{j_1},\ldots,X^{j_K})`, that is a set of :math:`N` values
-:math:`(x^i_1,x_1^{j_1},\ldots,x_1^{j_K})`,…,\ :math:`(x^i_n,x_n^{j_1},\ldots,x_n^{j_K})`.
+:math:`(X^i,X^{j_1},\ldots,X^{j_K})`, that is a set of :math:`\sampleSize` values
+:math:`(x_1^i,x_1^{j_1},\ldots,x_1^{j_K})`,…,\ :math:`(x_\sampleSize^i,x_\sampleSize^{j_1},\ldots,x_\sampleSize^{j_K})`.
 They are determined via the least-squares method:
 
 .. math::
 
     \begin{aligned}
-       \left\{ \widehat{a}_0,\widehat{a}_1,\ldots,\widehat{a}_{K} \right\} = \textrm{argmin} \sum_{k=1}^n \left[ x^i_k - a_0 - \sum_{j \in \{ j_1,\ldots,j_K \} } a_j x^j_k \right]^2
+       \left\{ \widehat{a}_0,\widehat{a}_1,\ldots,\widehat{a}_{K} \right\} = \textrm{argmin} \sum_{k=1}^\sampleSize \left[ x^i_k - a_0 - \sum_{j \in \{ j_1,\ldots,j_K \} } a_j x^j_k \right]^2
      \end{aligned}
 
 In other words, the principle is to minimize the total quadratic
@@ -53,11 +53,11 @@ zero, which may indicate that the variable :math:`X^{j_\ell}` does not
 bring valuable information to forecast :math:`X^i`. A classical statistical
 test to identify such situations is available: Fisher’s test.
 For each estimated coefficient :math:`\widehat{a}_\ell`, an important
-characteristic is the so-called “:math:`p`-value” of Fisher’s test. The
+characteristic is the so-called “*p*-value” of Fisher’s test. The
 coefficient is said to be “significant” if and only if
 :math:`\alpha_{\ell \textrm{lim}}` is greater than a value
 :math:`\alpha` chosen by the user (typically 5% or 10%). The higher the
-:math:`p`-value, the more significant the coefficient.
+*p*-value, the more significant the coefficient.
 
 Another important characteristic of the adjusted linear model is the
 coefficient of determination :math:`R^2`. This quantity indicates the
@@ -67,17 +67,17 @@ model:
 .. math::
 
     \begin{aligned}
-       R^2 = \frac{ \displaystyle \sum_{k=1}^n \left( x^i_k - \overline{x}^i \right)^2 - \sum_{k=1}^n \left( x^i_k - \widehat{x}_k^i \right)^2 }{ \sum_{k=1}^n \left( x^i_k - \overline{x}^i \right)^2 }
+       R^2 = \frac{ \displaystyle \sum_{k=1}^\sampleSize \left( x^i_k - \overline{x}^i \right)^2 - \sum_{k=1}^\sampleSize \left( x^i_k - \widehat{x}_k^i \right)^2 }{ \sum_{k=1}^\sampleSize \left( x^i_k - \overline{x}^i \right)^2 }
      \end{aligned}
 
 where :math:`\overline{x}^i` denotes the empirical mean of the sample
-:math:`\left\{ x^i_1,\ldots,x^i_n  \right\}`.
+:math:`\left\{ x^i_1,\ldots,x_\sampleSize^i  \right\}`.
 
 Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
 of the linear model, whereas a value close to 0 indicates that the
 linear model does not provide a relevant forecast. A statistical test
 allows one to detect significant values of :math:`R^2`. Again, a
-:math:`p`-value is provided: the higher the :math:`p`-value, the more
+*p*-value is provided: the higher the *p*-value, the more
 significant the coefficient of determination.
 
 By definition, the multiple regression model is only relevant for linear
@@ -114,7 +114,7 @@ In this second example (still in dimension 1), the linear model is not
 relevant because of the exponential shape of the relation. But a linear
 approach would be useful on the transformed problem
 :math:`X^2 = a_0 + a_1 \exp X^1`. In other words, what is important is
-that the relationships between :math:`X^i` and the variables
+that the relationship between :math:`X^i` and the variables
 :math:`X^{j_1}`,…,\ :math:`X^{j_K}` is linear with respect to the
 regression coefficients :math:`a_j`.
 
@@ -146,8 +146,8 @@ regression coefficients :math:`a_j`.
 The value of :math:`R^2` is a good indication of the goodness-of fit of
 the linear model. However, several other verifications have to be
 carried out before concluding that the linear model is satisfactory. For
-instance, one has to pay attentions to the “residuals”
-:math:`\{ u_1,\ldots,u_N \}` of the regression:
+instance, one has to pay attention to the “residuals”
+:math:`\{ u_1,\ldots,u_\sampleSize \}` of the regression:
 
 .. math::
 
@@ -157,15 +157,15 @@ instance, one has to pay attentions to the “residuals”
 
 A residual is thus equal to the difference between the observed value
 of :math:`X^i` and the average forecast provided by the linear model. A
-key-assumption for the robustness of the model is that the
-characteristics of the residuals do not depend on the value of
+key assumption for the robustness of the model is that the
+characteristics of the residuals do not depend on the values of
 :math:`X^i,X^{j_1},\dots,X^{j_K}`: the mean value should be close
 to 0 and the standard deviation should be constant. Thus, plotting the
-residuals versus these variables can fruitful.
+residuals versus these variables can be fruitful.
 
 In the following example, the behavior of the residuals is
 satisfactory: no particular trend can be detected neither in the mean
-nor in he standard deviation.
+nor in the standard deviation.
 
 .. plot::
 

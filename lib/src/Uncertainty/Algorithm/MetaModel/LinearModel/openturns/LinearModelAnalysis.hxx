@@ -65,6 +65,12 @@ public:
   Point getCoefficientsPValues() const;
   Interval getCoefficientsConfidenceInterval(const Scalar level = 0.95) const;
 
+  /** Asymptotic distributions */
+  Normal getCoefficientsDistribution();
+  Distribution getVarianceDistribution(Bool gaussian = true) const;
+  Normal getPredictionDistribution(const Point & x0);
+  Normal getOutputObservationDistribution(const Point & x0);
+
   /** Fisher test */
   Scalar getFisherScore() const;
   Scalar getFisherPValue() const;
@@ -84,7 +90,7 @@ public:
   /** Cramer Von mises normality test of the residuals */
   TestResult getNormalityTestCramerVonMises() const;
 
-  /* [0] Draw model versus fitted values */
+  /** [0] Draw model versus fitted values */
   Graph drawModelVsFitted() const;
 
   /** [1] Draw a plot of residuals versus fitted values  */
@@ -113,8 +119,20 @@ public:
 
 private:
 
+  void checkSampleSize() const;
+
+  SymmetricMatrix getGramInverse();
+
+  Normal computeDistributionForPredictionOrObservation(const Point & x0, Bool observation);
+
   /** linear model result */
   LinearModelResult linearModelResult_;
+
+  /** Inverse of Gram matrix */
+  SymmetricMatrix gramInverse_;
+
+  /** Whether gramInverse_ has been computed */
+  Bool gramInverseComputed_ = false;
 
 }; /* class LinearModelAnalysis */
 

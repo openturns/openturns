@@ -2,7 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
-from math import sin
+from math import sin, sqrt
 
 ot.TESTPREAMBLE()
 
@@ -91,3 +91,130 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     test_result.getPValue(), linear_model_analysis.getFisherPValue(), 0, 0
 )
+
+# Tests for asymptotic distributions
+
+ot.RandomGenerator.SetSeed(0)
+sample_size = 1000
+true_standard_deviation = 0.1
+coefficients = ot.Point([3.0, 2.0, -1.0])
+f = ot.SymbolicFunction(["x1", "x2", "a0", "a1", "a2"], ["a0 + a1 * x1 + a2 * x2"])
+model = ot.ParametricFunction(f, [2, 3, 4], coefficients)
+number_of_parameters = len(coefficients)
+input_dimension = number_of_parameters - 1
+distribution = ot.Normal(input_dimension)
+error_distribution = ot.Normal(0.0, true_standard_deviation)
+input_sample = distribution.getSample(sample_size)
+output_sample = model(input_sample)
+error_sample = error_distribution.getSample(sample_size)
+noisy_output_sample = output_sample + error_sample
+algo = ot.LinearModelAlgorithm(input_sample, noisy_output_sample)
+result = algo.getResult()
+analysis = ot.LinearModelAnalysis(result)
+
+# Asymptotic coefficients distribution
+coefficients_distribution = analysis.getCoefficientsDistribution()
+assert coefficients_distribution.getClassName() == "Normal"
+assert coefficients_distribution.getDimension() == 3
+computed_parameters0 = coefficients_distribution.getMarginal(0).getParameter()
+computed_parameters1 = coefficients_distribution.getMarginal(1).getParameter()
+computed_parameters2 = coefficients_distribution.getMarginal(2).getParameter()
+"""
+true_variance = true_standard_deviation**2
+designMatrix = result.getDesign()
+gramMatrix = designMatrix.computeGram()
+inverseGramMatrix = gramMatrix.inverse()
+covarianceMatrix = ot.CovarianceMatrix(true_variance * inverseGramMatrix)
+expected_distribution = ot.Normal(coefficients, covarianceMatrix)
+expected_parameters0 = expected_distribution.getMarginal(0).getParameter()
+expected_parameters1 = expected_distribution.getMarginal(1).getParameter()
+expected_parameters2 = expected_distribution.getMarginal(2).getParameter()
+"""
+expected_parameters0 = ot.Point([3.0, 0.00316346])
+expected_parameters1 = ot.Point([2.0, 0.00320948])
+expected_parameters2 = ot.Point([-1.0, 0.00316354])
+atol = 2.0e-1 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters0, expected_parameters0, 0.0, atol)
+atol = 2.0e-3 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters1, expected_parameters1, 0.0, atol)
+atol = 7.0e-2 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters2, expected_parameters2, 0.0, atol)
+
+# Asymptotic variance distribution (Gaussian noise)
+variance_distribution = analysis.getVarianceDistribution(True)
+assert variance_distribution.getImplementation().getClassName() == "Gamma"
+computed_parameters = variance_distribution.getParameter()
+"""
+true_variance = true_standard_deviation**2
+shape_parameter = (sample_size - number_of_parameters) / 2
+scale_parameter = 2 * true_variance / (sample_size - number_of_parameters)
+rate_parameter = 1.0 / scale_parameter
+location_parameter = 0.0
+expected_parameters = ot.Point([shape_parameter, rate_parameter, location_parameter])
+"""
+expected_parameters = ot.Point([498.5, 49850.0, 0.0])
+atol = 5.0e4 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol)
+
+# Asymptotic variance distribution (arbitrary noise)
+variance_distribution = analysis.getVarianceDistribution(False)
+assert variance_distribution.getImplementation().getClassName() == "Normal"
+computed_parameters = variance_distribution.getParameter()
+"""
+true_variance = true_standard_deviation**2
+distribution_mean = true_variance
+distribution_variance = 2 * true_variance**2 / (sample_size - number_of_parameters)
+distribution_std = sqrt(distribution_variance)
+expected_parameters = ot.Point([distribution_mean, distribution_std])
+"""
+expected_parameters = ot.Point([0.01, 0.000447886])
+atol = 9.0e-3 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol)
+
+# Asymptotic prediction distribution
+x0 = ot.Point([1.5, 2.5])
+prediction_distribution = analysis.getPredictionDistribution(x0)
+assert prediction_distribution.getClassName() == "Normal"
+computed_parameters = prediction_distribution.getParameter()
+"""
+true_variance = true_standard_deviation**2
+x = ot.Matrix(number_of_parameters, 1)
+basis = result.getBasis()
+for i in range(number_of_parameters):
+    f = basis.build(i)
+    x[i, 0] = f(x0)[0]
+prediction = x.transpose() * coefficients
+designMatrix = result.getDesign()
+gramMatrix = designMatrix.computeGram()
+inverseGramMatrix = gramMatrix.inverse()
+m = x.transpose() * inverseGramMatrix * x
+sigma = sqrt(m[0, 0] * true_variance)
+expected_parameters = ot.Point([prediction[0], sigma])
+"""
+expected_parameters = ot.Point([3.5, 0.00978034])
+atol = 4.0e-1 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol)
+
+# Asymptotic observation distribution
+x0 = ot.Point([1.5, 2.5])
+observation_distribution = analysis.getOutputObservationDistribution(x0)
+assert observation_distribution.getClassName() == "Normal"
+computed_parameters = observation_distribution.getParameter()
+"""
+true_variance = true_standard_deviation**2
+x = ot.Matrix(number_of_parameters, 1)
+basis = result.getBasis()
+for i in range(number_of_parameters):
+    f = basis.build(i)
+    x[i, 0] = f(x0)[0]
+prediction = x.transpose() * coefficients
+designMatrix = result.getDesign()
+gramMatrix = designMatrix.computeGram()
+inverseGramMatrix = gramMatrix.inverse()
+m = x.transpose() * inverseGramMatrix * x
+sigma = sqrt((1 + m[0, 0]) * true_variance)
+expected_parameters = ot.Point([prediction[0], sigma])
+"""
+expected_parameters = ot.Point([3.5, 0.100477])
+atol = 4.0e-1 / sqrt(sample_size)
+ott.assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol)
