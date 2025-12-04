@@ -66,10 +66,10 @@ public:
   Interval getCoefficientsConfidenceInterval(const Scalar level = 0.95) const;
 
   /** Asymptotic distributions */
-  Normal getCoefficientsDistribution();
-  Distribution getVarianceDistribution(Bool gaussian = true) const;
-  Normal getPredictionDistribution(const Point & x0);
-  Normal getOutputObservationDistribution(const Point & x0);
+  Normal getCoefficientsDistribution() const;
+  Distribution getVarianceDistribution(const Bool gaussian = true) const;
+  Normal getPredictionDistribution(const Point & x0) const;
+  Normal getOutputObservationDistribution(const Point & x0) const;
 
   /** Fisher test */
   Scalar getFisherScore() const;
@@ -121,18 +121,12 @@ private:
 
   void checkSampleSize() const;
 
-  SymmetricMatrix getGramInverse();
+  SymmetricMatrix getGramInverse() const;
 
-  Normal computeDistributionForPredictionOrObservation(const Point & x0, Bool observation);
+  Normal computeDistributionForPredictionOrObservation(const Point & x0, const Bool observation) const;
 
   /** linear model result */
   LinearModelResult linearModelResult_;
-
-  /** Inverse of Gram matrix */
-  SymmetricMatrix gramInverse_;
-
-  /** Whether gramInverse_ has been computed */
-  Bool gramInverseComputed_ = false;
 
 }; /* class LinearModelAnalysis */
 

@@ -286,8 +286,8 @@ coefficients = ot.Point([3.0, 2.0, -1.0])
 coefficients_dimension = coefficients.getDimension()
 grid = ot.GridLayout(1, coefficients_dimension)
 for i in range(coefficients_dimension):
-    estimator = "coefficient_%d" % i
-    description = r"$\hat{a}_%d$" % i
+    estimator = f"coefficient_{i}"
+    description = rf"$\hat{{a}}_{i}$"
     graph = plot_sample_by_kernel_smoothing(sample_size, true_standard_deviation, coefficients, estimator, repetitions_size, coefficients[i], description)
     if i > 0:
         graph.setYTitle("")

@@ -59,7 +59,7 @@ def center_distribution(distribution, mean):
         corrected_shape = corrected_rate * mean[0]
         return ot.Gamma(corrected_shape, corrected_rate)
     else:
-        raise ValueError("Unsupported distribution type: %s" % distribution.getClassName())
+        raise ValueError("Unsupported distribution type: " + distribution.getClassName())
 
 def test_estimator(sample_size, standard_deviation, coefficients, repetitions_size, estimator, gaussian=None, x0=None):
     # Compute the asymptotic distribution of the estimator
@@ -76,7 +76,7 @@ def test_estimator(sample_size, standard_deviation, coefficients, repetitions_si
     elif estimator == "observation":
         distribution = analysis.getOutputObservationDistribution(x0)
     else:
-        raise ValueError("Unknown estimator: %s" % estimator)
+        raise ValueError("Unknown estimator: " + estimator)
 
     # Get an estimator sample
     RV = ot.RandomVector(pyRV)
@@ -88,11 +88,12 @@ def test_estimator(sample_size, standard_deviation, coefficients, repetitions_si
 
     # Perform a Kolmogorov-Smirnov test
     test_result = ot.FittingTest.Kolmogorov(sample_estimator, distribution)
-    print("p-value %s: %f" % (estimator, test_result.getPValue()))
+    p_value = test_result.getPValue()
+    print(f"p-value {estimator}: {p_value:.4f}")
 
     # Draw the QQ-plot
     graph = ot.VisualTest.DrawQQplot(sample_estimator, distribution)
-    graph.setTitle("QQ-plot (%s)" % estimator)
+    graph.setTitle(f"QQ-plot ({estimator})")
     otv.View(graph)
 
 

@@ -265,18 +265,13 @@ void LinearModelAnalysis::checkSampleSize() const
     throw InvalidArgumentException(HERE) << "The sample size is too small (must be at least " << minSize << ")";
 }
 
-SymmetricMatrix LinearModelAnalysis::getGramInverse()
+SymmetricMatrix LinearModelAnalysis::getGramInverse() const
 {
-  if (!gramInverseComputed_)
-  {
-    gramInverse_ = linearModelResult_.getDesign().computeGram().inverse();
-    gramInverseComputed_ = true;
-  }
-  return gramInverse_;
+  return linearModelResult_.getDesign().computeGram().inverse();
 }
 
 /* Asymptotic distribution of the coefficients */
-Normal LinearModelAnalysis::getCoefficientsDistribution()
+Normal LinearModelAnalysis::getCoefficientsDistribution() const
 {
   checkSampleSize();
 
@@ -288,7 +283,7 @@ Normal LinearModelAnalysis::getCoefficientsDistribution()
 }
 
 /* Asymptotic distribution of the variance of the residuals */
-Distribution LinearModelAnalysis::getVarianceDistribution(Bool gaussian) const
+Distribution LinearModelAnalysis::getVarianceDistribution(const Bool gaussian) const
 {
   checkSampleSize();
 
@@ -309,7 +304,7 @@ Distribution LinearModelAnalysis::getVarianceDistribution(Bool gaussian) const
   }
 }
 
-Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const Point & x0, Bool observation)
+Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const Point & x0, const Bool observation) const
 {
   checkSampleSize();
 
@@ -338,13 +333,13 @@ Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const 
 }
 
 /* Asymptotic distribution of the prediction on an input */
-Normal LinearModelAnalysis::getPredictionDistribution(const Point & x0)
+Normal LinearModelAnalysis::getPredictionDistribution(const Point & x0) const
 {
   return computeDistributionForPredictionOrObservation(x0, false);
 }
 
 /* Asymptotic distribution of the observed output for an input */
-Normal LinearModelAnalysis::getOutputObservationDistribution(const Point & x0)
+Normal LinearModelAnalysis::getOutputObservationDistribution(const Point & x0) const
 {
   return computeDistributionForPredictionOrObservation(x0, true);
 }

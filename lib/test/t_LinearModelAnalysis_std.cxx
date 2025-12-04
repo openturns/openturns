@@ -105,7 +105,7 @@ int main(int, char *[])
     const Sample noisy_output_sample = output_sample + error_sample;
     LinearModelAlgorithm algo(input_sample, noisy_output_sample);
     const LinearModelResult result(algo.getResult());
-    LinearModelAnalysis analysis(result);
+    const LinearModelAnalysis analysis(result);
 
     // Asymptotic coefficients distribution
     const Normal coefficients_distribution(analysis.getCoefficientsDistribution());
