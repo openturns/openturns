@@ -294,13 +294,13 @@ Distribution LinearModelAnalysis::getVarianceDistribution(const Bool gaussian) c
   {
     const Scalar k = (sampleSize - p) / 2.0;
     const Scalar lambda = k / residualsVariance;
-    return Distribution(new Gamma(k, lambda));
+    return Gamma(k, lambda);
   }
   else
   {
     const Scalar mu = residualsVariance;
     const Scalar sd = residualsVariance * std::sqrt(2.0 * sampleSize) / (sampleSize - p);
-    return Distribution(new Normal(mu, sd));
+    return Normal(mu, sd);
   }
 }
 
@@ -308,7 +308,7 @@ Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const 
 {
   checkSampleSize();
 
-  const Basis basis = linearModelResult_.getBasis();
+  const Basis basis(linearModelResult_.getBasis());
   if (x0.getDimension() != basis.getInputDimension())
     throw InvalidArgumentException(HERE) << "The point has an invalid dimension (expected: " << basis.getInputDimension() << ")";
 
@@ -317,12 +317,13 @@ Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const 
   Matrix x(size, 1);
   for(UnsignedInteger i = 0; i < size; i++)
   {
-    const Function f = basis[i];
+    const Function f(basis[i]);
     x(i, 0) = f(x0)[0];
   }
 
-  const Point prediction = x.transpose() * linearModelResult_.getCoefficients();
-  const Matrix m = x.transpose() * getGramInverse() * x;
+  const Point prediction(x.transpose() * linearModelResult_.getCoefficients());
+  // M = X^T.G^{-1}.X
+  const Matrix m = x.getImplementation()->genProd(*getGramInverse().getImplementation(), true, false).symProd(*x.getImplementation(), 'L');
   const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
   Scalar sigma2 = m(0, 0) * residualsVariance;
   if (observation)
