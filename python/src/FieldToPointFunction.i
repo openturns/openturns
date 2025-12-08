@@ -18,10 +18,10 @@ namespace OT {
   canConvert< _PyObject_, OT::FieldToPointFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunction, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::FieldToPointFunction *"), SWIG_POINTER_NO_NULL))) {
       OT::FieldToPointFunction * p_nmf = reinterpret_cast< OT::FieldToPointFunction * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunctionImplementation, 0 ))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::FieldToPointFunctionImplementation *"), 0 ))) {
       OT::FieldToPointFunctionImplementation * p_impl = reinterpret_cast< OT::FieldToPointFunctionImplementation * >(ptr);
       return p_impl != NULL;
     } else {
@@ -35,10 +35,10 @@ namespace OT {
   convert< _PyObject_, OT::FieldToPointFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunction, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::FieldToPointFunction *"), SWIG_POINTER_NO_NULL))) {
       OT::FieldToPointFunction * p_nmf = reinterpret_cast< OT::FieldToPointFunction * >( ptr );
       return *p_nmf;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldToPointFunctionImplementation, 0))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::FieldToPointFunctionImplementation *"), 0))) {
       OT::FieldToPointFunctionImplementation * p_impl = reinterpret_cast< OT::FieldToPointFunctionImplementation * >(ptr);
       return *p_impl;
     } else if (!PyCallable_Check(pyObj)) {
@@ -64,7 +64,7 @@ namespace OT {
 FieldToPointFunction(PyObject * pyObj)
 {
   void * ptr = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0)))
+  if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Object *"), 0)))
   {
     throw OT::InvalidArgumentException(HERE) << "Argument should be a pure python object";
   }
