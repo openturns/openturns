@@ -155,10 +155,11 @@ Sample CSVParser::load() const
     }
   }
 
-  // headers if non-empty unparsable values on the first row
+  // headers if there exist any non-empty non-nan unparsable value on the first row
   Bool haveHeaders = false;
+  const Description nanVariants = {"nan", "NAN", "NaN"};
   for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)))
+    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !nanVariants.contains(doc.GetCell<std::string>(j, 0)))
     {
       haveHeaders = true;
       break;
