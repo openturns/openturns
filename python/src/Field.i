@@ -76,7 +76,7 @@ PyObject * __getitem__(PyObject * args) const {
       if (index < 0)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point result(self->at(index));
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
   }
 

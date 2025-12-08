@@ -223,7 +223,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
       result.setDescription(self->getDescription());
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(args))
     {
@@ -246,7 +246,7 @@ PyObject * __getitem__(PyObject * args) const
         result.at(i) = self->at(index);
       }
       result.setDescription(self->getDescription());
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PyObject_HasAttrString(args, "__int__"))
     {
@@ -260,7 +260,7 @@ PyObject * __getitem__(PyObject * args) const
       if (index < 0)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point result(self->at(index));
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
   }
 
@@ -310,7 +310,7 @@ PyObject * __getitem__(PyObject * args) const
       OT::Point result(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
         result.at(j) = self->at(index1, start2 + j * step2);
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -333,7 +333,7 @@ PyObject * __getitem__(PyObject * args) const
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
       }
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
   }
   else if (PySlice_Check(obj1))
@@ -363,7 +363,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size1; ++ i)
         result.at(i, 0) = self->at(start1 + i * step1, index2);
       result.setDescription(OT::Description(1, self->getDescription()[index2]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySlice_Check(obj2))
     {
@@ -386,7 +386,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         description[j] = entireDescription[start2 + j*step2];
       result.setDescription(description);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -418,7 +418,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[indices2[j]];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
   }
   else if (PySequence_Check(obj1))
@@ -457,7 +457,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size1; ++ i)
         result.at(i, 0) = self->at(indices1[i], index2);
       result.setDescription(OT::Description(1, self->getDescription()[index2]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySlice_Check(obj2))
     {
@@ -480,7 +480,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[start2 + j*step2];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -512,7 +512,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[indices2[j]];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
   }
   else
@@ -541,7 +541,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Sample temp;
       OT::Sample *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
@@ -556,7 +556,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
       OT::Sample temp;
       OT::Sample *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
@@ -589,7 +589,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -646,7 +646,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -679,7 +679,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -701,7 +701,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
     OT::Sample temp;
     OT::Sample *val = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
@@ -787,7 +787,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
     OT::Sample temp;
     OT::Sample *val = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
