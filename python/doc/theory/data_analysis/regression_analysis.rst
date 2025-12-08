@@ -243,7 +243,7 @@ The estimated variance of the error follows a Gamma distribution in case of Gaus
 .. math::
     :label: linRegVarDist1
 
-    \hat{\sigma}^2 \sim Gamma(\alpha, \theta)
+    \hat{\sigma}^2 \sim \operatorname{Gamma}(\alpha, \theta)
 
 with :math:`\alpha = \frac{\sampleSize - p}{2}` and :math:`\theta = \frac{2\sigma^2}{\sampleSize - p}`.
 

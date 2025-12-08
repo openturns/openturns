@@ -86,6 +86,7 @@ int main(int, char *[])
 
   {
     // Tests for asymptotic distributions
+    // Note: the code that computes the reference values is in the Python script (t_LinearModelAnalysis_std.py)
 
     RandomGenerator::SetSeed(0);
     const UnsignedInteger sample_size = 1000;

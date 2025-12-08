@@ -173,9 +173,9 @@ Notes
 -----
 The distribution is given by :eq:`linRegCoefDist` where:
 
-- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
 - the variance :math:`\sigma^2` of the residuals is approximated by
-  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -218,9 +218,9 @@ Notes
 -----
 The distribution is given by :eq:`linRegPredictDist` where:
 
-- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
 - the variance :math:`\sigma^2` of the residuals is approximated by
-  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -242,9 +242,9 @@ Notes
 -----
 The distribution is based on :eq:`linRegPredictDist` and :eq:`linRegOutputDist` where:
 
-- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
 - the variance :math:`\sigma^2` of the residuals is approximated by
-  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------

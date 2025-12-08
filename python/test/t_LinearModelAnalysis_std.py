@@ -120,6 +120,7 @@ computed_parameters0 = coefficients_distribution.getMarginal(0).getParameter()
 computed_parameters1 = coefficients_distribution.getMarginal(1).getParameter()
 computed_parameters2 = coefficients_distribution.getMarginal(2).getParameter()
 """
+The script below computes the reference values.
 true_variance = true_standard_deviation**2
 designMatrix = result.getDesign()
 gramMatrix = designMatrix.computeGram()
