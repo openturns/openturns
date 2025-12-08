@@ -115,21 +115,26 @@ Sample CSVParser::load() const
   rapidcsv::Document doc(stream, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;
+  const std::map<String, Scalar> specMap = {{"inf", SpecFunc::Infinity}, {"+inf", SpecFunc::Infinity}, {"-inf", -SpecFunc::Infinity},
+    {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
+    {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity},
+    {"nan", std::numeric_limits<Scalar>::quiet_NaN()}, {"NaN", std::numeric_limits<Scalar>::quiet_NaN()},
+    {"NAN", std::numeric_limits<Scalar>::quiet_NaN()},
+  };
 
-  auto convLambda = [this, &oneOk](const std::string & pStr, Scalar & pVal)
+  auto convLambda = [this, specMap, &oneOk](const std::string & pStr, Scalar & pVal)
   {
     std::istringstream iss(pStr);
     iss.imbue(std::locale(std::locale::classic(), new CSVParserFormat(decimalSeparator_)));
     iss >> pVal;
     if (iss.fail() || iss.bad() || !iss.eof())
     {
-      const std::map<String, Scalar> infMap = {{"inf", SpecFunc::Infinity}, {"+inf", SpecFunc::Infinity}, {"-inf", -SpecFunc::Infinity},
-        {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
-        {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity}
-      };
-      // handle inf values
-      if (infMap.count(pStr))
-        pVal = infMap.at(pStr);
+      // handle special values
+      if (specMap.count(pStr))
+      {
+        pVal = specMap.at(pStr);
+        oneOk = true;
+      }
       else
         // invalid values are set to nan
         pVal = std::numeric_limits<Scalar>::quiet_NaN();
@@ -155,10 +160,10 @@ Sample CSVParser::load() const
     }
   }
 
-  // headers if non-empty unparsable values on the first row
+  // headers if there exist any non-empty non-special unparsable value on the first row
   Bool haveHeaders = false;
   for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)))
+    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specMap.count(doc.GetCell<std::string>(j, 0)))
     {
       haveHeaders = true;
       break;

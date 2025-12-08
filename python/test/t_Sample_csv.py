@@ -183,4 +183,16 @@ with open(fname, "w") as f:
 aSample = ot.Sample.ImportFromCSVFile(fname)
 assert (aSample.getSize(), aSample.getDimension()) == (3, 3), "parsable"
 
+# reject nan in header
+with open(fname, "w") as f:
+    f.write("1;2;nan\n1;2;3\n4;5;6")
+aSample = ot.Sample.ImportFromCSVFile(fname)
+assert (aSample.getSize(), aSample.getDimension()) == (3, 3), "nan header"
+
+# all-nan is ok
+with open(fname, "w") as f:
+    f.write("X1;X2;X3\nnan;nan;nan\n")
+aSample = ot.Sample.ImportFromCSVFile(fname)
+assert (aSample.getSize(), aSample.getDimension()) == (1, 3), "all nan"
+
 os.remove(fname)
