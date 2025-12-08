@@ -915,7 +915,9 @@
   <LinearModelAnalysis-IdentifiersNumber           value_int="3" />
   <LinearModelAnalysis-PrintEllipsisThreshold value_int="20"     />
   <LinearModelAnalysis-SmallPValueFormat      value_str="{:.4e}" />
-  <LinearModelAnalysis-LargePValueFormat      value_int="{:.4f}" />
+  <LinearModelAnalysis-LargePValueFormat      value_str="{:.4f}" />
+  <LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions value_int="20" />
+  <LinearModelAnalysis-MinimumSigma           value_float="1.0e-5" />
 
   <!-- OT::LinearModelValidation parameters -->
   <LinearModelValidation-ModelSelection            value_bool="false" />
