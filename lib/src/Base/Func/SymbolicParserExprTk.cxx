@@ -172,22 +172,13 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   if (outputDimension == 0) return Sample(inS.getSize(), 0);
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
-  if (size < smallSize_)
+  if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
   {
-    // account for the penalty on small samples
-    for (UnsignedInteger i = 0; i < size; ++ i)
-      result[i] = operator()(inS[i]);
+    threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
+    threadStack_.resize(TBBImplementation::GetThreadsNumber());
   }
-  else
-  {
-    if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
-    {
-      threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
-      threadStack_.resize(TBBImplementation::GetThreadsNumber());
-    }
-    const SymbolicParserExprTkPolicy policy(inS, result, *this);
-    TBBImplementation::ParallelFor(0, size, policy);
-  }
+  const SymbolicParserExprTkPolicy policy(inS, result, *this);
+  TBBImplementation::ParallelFor(0, size, policy, smallSize_);
   return result;
 }
 
