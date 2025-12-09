@@ -12,6 +12,9 @@
 //* Define if you have the `pagmo` library. */
 #cmakedefine OPENTURNS_HAVE_PAGMO
 
+//* Define if you have the `Qhull` library. */
+#cmakedefine OPENTURNS_HAVE_QHULL
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #cmakedefine OPENTURNS_HAVE_DLFCN_H
 

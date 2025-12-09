@@ -1014,8 +1014,10 @@ ot_add_python_module(experimental experimental_module.i
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
+                     ConvexHullMesher.i ConvexHullMesher_doc.i
                      ConstantEvaluation.i ConstantEvaluation_doc.i
                      ConstantFunction.i ConstantFunction_doc.i
+                     ConvexHullMesher.i ConvexHullMesher_doc.i
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i

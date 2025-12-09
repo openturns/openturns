@@ -255,6 +255,9 @@ ot_pyinstallcheck_test (DomainDifference_std)
 ot_pyinstallcheck_test (DomainIntersection_std)
 ot_pyinstallcheck_test (DomainUnion_std)
 ot_pyinstallcheck_test (DomainDisjunctiveUnion_std)
+if (QHULL_FOUND)
+ot_pyinstallcheck_test (ConvexHullMesher_std IGNOREOUT)
+endif ()
 
 ## Graph
 ot_pyinstallcheck_test (BarPlot_std)
