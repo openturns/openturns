@@ -689,6 +689,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SymbolicParserExprTk-SmallSize", 100);
   addAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth", 400);
   addAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth", 10000);
+  addAsBool("SymbolicParserExprTk-DisableCommutativeCheck", true);
 
   // SymbolicParserMuParser parameters
   addAsUnsignedInteger("SymbolicParserMuParser-SmallSize", 1000);

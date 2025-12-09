@@ -245,7 +245,8 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
   exprtk::parser<Scalar> parser;
   parser.settings().set_max_stack_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth"));
   parser.settings().set_max_node_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth"));
-  parser.settings().disable_commutative_check(); // implicit multiplication like '3x' not supported by the gradient parser
+  if (ResourceMap::GetAsBool("SymbolicParserExprTk-DisableCommutativeCheck"))
+    parser.settings().disable_commutative_check(); // implicit multiplication like '3x' not supported by the gradient parser
   // For each parser of a formula, do
   for (UnsignedInteger outputIndex = 0; outputIndex < numberOfParsers; ++ outputIndex)
   {
