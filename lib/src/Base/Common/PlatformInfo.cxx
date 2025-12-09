@@ -193,6 +193,12 @@ Description PlatformInfo::GetFeatures()
 #else
     Features_["cuba"] = false;
 #endif
+
+#ifdef OPENTURNS_HAVE_QHULL
+    Features_["qhull"] = true;
+#else
+    Features_["qhull"] = false;
+#endif
   }
 
   Description keys;

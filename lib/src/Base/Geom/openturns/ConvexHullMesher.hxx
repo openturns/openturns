@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir Geom
+ *  @brief Meshing algorithm for points
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,25 +18,44 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#ifndef OPENTURNS_CONVEXHULLMESHER_HXX
+#define OPENTURNS_CONVEXHULLMESHER_HXX
 
-#ifndef OPENTURNS_OTGEOM_HXX
-#define OPENTURNS_OTGEOM_HXX
-
-#include "openturns/DomainImplementation.hxx"
-#include "openturns/Domain.hxx"
-#include "openturns/Interval.hxx"
-#include "openturns/IntervalMesher.hxx"
-#include "openturns/LevelSet.hxx"
-#include "openturns/LevelSetMesher.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/MeshDomain.hxx"
-#include "openturns/BoundaryMesher.hxx"
-#include "openturns/RegularGrid.hxx"
-#include "openturns/DomainComplement.hxx"
-#include "openturns/DomainIntersection.hxx"
-#include "openturns/DomainUnion.hxx"
-#include "openturns/DomainDisjunctiveUnion.hxx"
-#include "openturns/DomainDifference.hxx"
-#include "openturns/ConvexHullMesher.hxx"
+#include "openturns/ResourceMap.hxx"
 
-#endif /* OPENTURNS_OTGEOM_HXX */
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class ConvexHullMesher
+ */
+class OT_API ConvexHullMesher
+  : public PersistentObject
+{
+  CLASSNAME
+public:
+
+  /** Default constructor */
+  ConvexHullMesher();
+
+   /** Virtual constructor */
+  ConvexHullMesher * clone() const override;
+
+  /** String converter */
+  String __repr__() const override;
+
+  /** String converter */
+  String __str__(const String & offset = "") const override;
+
+  /* Here is the interface that all derived class must implement */
+  virtual Mesh build(const Sample & points) const;
+
+protected:
+
+private:
+
+}; /* class ConvexHullMesher */
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_INTERVALMESHER_HXX */

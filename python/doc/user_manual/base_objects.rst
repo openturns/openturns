@@ -56,6 +56,7 @@ Domains
 
     Mesh
     BoundaryMesher
+    experimental.ConvexHullMesher
 
 Matrices
 ========
