@@ -12,3 +12,4 @@ This library bundles several third-party codes with various licenses compatible 
 - TNC optimization solver (lib/src/Base/Optim/algotnc.*) under Expat license, see COPYING.tnc
 - Gauss Legendre quadrature from FastGL library (lib/src/Base/Algo/fastgl*) under BSD license, see COPYING.fastGL
 - Rapidcsv parser library (lib/src/Base/Stat/rapidcsv.h) under BSD license, see COPYING.rapidcsv
+- earcut.hpp polygon triangulation library (lib/src/Base/Geom/earcut.hpp) under BSD license, see COPYING.earcut
