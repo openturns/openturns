@@ -258,6 +258,7 @@ ot_pyinstallcheck_test (DomainDisjunctiveUnion_std)
 if (QHULL_FOUND)
 ot_pyinstallcheck_test (ConvexHullMesher_std IGNOREOUT)
 endif ()
+ot_pyinstallcheck_test (PolygonMesher_std IGNOREOUT)
 
 ## Graph
 ot_pyinstallcheck_test (BarPlot_std)

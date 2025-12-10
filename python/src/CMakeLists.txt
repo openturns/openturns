@@ -1030,6 +1030,7 @@ ot_add_python_module(experimental experimental_module.i
                      LineSampling.i LineSampling_doc.i
                      GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                     PolygonMesher.i PolygonMesher_doc.i
                      PythonEvaluation.cxx
                      PythonGradient.cxx
                      PythonHessian.cxx

@@ -8,6 +8,7 @@
 
 ==== New classes ====
  * ConvexHullMesher
+ * PolygonMesher
 
 ==== API changes ====
  * PointConditionalDistribution left the experimental module
