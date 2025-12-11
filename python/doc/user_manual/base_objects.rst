@@ -56,6 +56,8 @@ Domains
 
     Mesh
     BoundaryMesher
+    experimental.ConvexHullMesher
+    experimental.PolygonMesher
 
 Matrices
 ========

@@ -216,6 +216,8 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Nearest neighbor search (optional)    | `nanoflann <https://github.com/jlblancoc/nanoflann>`_                           | 1.3.2             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Geometry algorithms (optional)        | `Qhull <http://www.qhull.org/>`_                                                | 2020.2            |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Python support                        | `Python <https://www.python.org/>`_                                             | 3.8               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Plotting library (optional)           | `Matplotlib <https://matplotlib.org/>`_                                         | 3.0               |
@@ -270,6 +272,8 @@ We would like to acknowledge the following codes that are included into the libr
 | Quadrature                            | `FastGL <https://sourceforge.net/projects/fastgausslegendrequadrature/>`_                       |
 +---------------------------------------+-------------------------------------------------------------------------------------------------+
 | CSV parser                            | `Rapidcsv <https://github.com/d99kris/rapidcsv>`_                                               |
++---------------------------------------+-------------------------------------------------------------------------------------------------+
+| Polygon triangulation                 | `earcut.hpp <https://github.com/mapbox/earcut.hpp>`_                                            |
 +---------------------------------------+-------------------------------------------------------------------------------------------------+
 
 Compilation infrastructure

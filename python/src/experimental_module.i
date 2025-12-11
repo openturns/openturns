@@ -40,6 +40,8 @@
 %include ConstantEvaluation.i
 %include ConstantFunction.i
 %include VertexFieldToPointFunction.i
+%include ConvexHullMesher.i
+%include PolygonMesher.i
 
 /* Uncertainty/Model */
 
