@@ -54,7 +54,7 @@ set (OPENTURNS_LIBRARY_PATH ${CMAKE_INSTALL_LIBDIR} CACHE STRING "The directory 
 set (OPENTURNS_BIN_PATH ${CMAKE_INSTALL_BINDIR} CACHE STRING "Binary install path")
 set (OPENTURNS_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR} CACHE STRING "The directory where the header files are installed")
 set (OPENTURNS_CONFIG_CMAKE_PATH ${CMAKE_INSTALL_LIBDIR}/cmake/openturns CACHE STRING "The directory where the CMake files are installed")
-set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR} CACHE STRING "The directory where the configuration file is installed")
+set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR}/openturns CACHE STRING "The directory where the configuration file is installed")
 set (OPENTURNS_DATA_PATH ${CMAKE_INSTALL_DATAROOTDIR} CACHE STRING "The directory where the common files are installed")
 set (OPENTURNS_DOC_PATH ${CMAKE_INSTALL_DOCDIR} CACHE STRING "The directory where the license files are installed")
 

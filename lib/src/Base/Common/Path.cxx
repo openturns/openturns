@@ -61,9 +61,6 @@ const char * Path::OpenturnsConfigPathVariableName_ = "OPENTURNS_CONFIG_PATH";
 /* The HOME subdirectory path */
 const char * Path::HomeConfigSubdirectory_ = "/openturns/etc";
 
-/* The 'openturns' configuration subdirectory path */
-const char * Path::PrefixConfigSubdirectory_ = "/openturns";
-
 /*
  * Default constructor
  */
@@ -187,15 +184,14 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   {
     directory = String(otHome);
 #ifndef _WIN32
-    directory += "/etc";
-    directory += PrefixConfigSubdirectory_;
+    directory += "/etc/openturns";
 #endif
     dirExists = Os::IsDirectory(directory);
   }
   if (!dirExists)
   {
     // See in NOTE above why we use c_str() here
-    directory = String() + String(SYSCONFIG_PATH).c_str() + PrefixConfigSubdirectory_;
+    directory = String() + String(SYSCONFIG_PATH).c_str();
   }
   directoryList.push_back(directory);
 
