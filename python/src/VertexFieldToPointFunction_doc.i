@@ -34,11 +34,11 @@ where :math:`v_{i_k}` is the node of index :math:`i_k` of the mesh :math:`\cM_N`
 Parameters
 ----------
 inputMesh : :class:`~openturns.Mesh`
-    Mesh
+    Mesh, :math:`\cM_N`
 dimension : int
-    Input, output dimension
+    Input, output dimension, :math:`d \geq 1`
 indices : sequence of int
-    Mesh indices
+    Mesh indices, :math:`I`
 
 Examples
 --------
