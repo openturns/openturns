@@ -5,7 +5,8 @@ R"RAW(Restriction of a field function at a specific node.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Let :math:`\cM_N` be a mesh of size :math:`N`, :math:`I \in \llbracket 0, N-1 \rrbracket` be a set of indices of
+Let :math:`\cM_N` be a mesh of size :math:`N`, :math:`I = \{ i_0, \dots, i_{N'-1} \} \in \llbracket 0, N-1 \rrbracket`
+be a set of indices of
 cardinal :math:`N' \leq N` and let :math:`d \geq 1` be an integer.
 
 A VertexFieldToPointFunction :math:`f` is defined by:
@@ -21,7 +22,7 @@ where :math:`F'` is a vector such that for all :math:`k \in \llbracket 0, N'-1 \
 
 .. math::
 
-    F'[dk:(k+1)d] = F(v_{i_k})
+    F'[dk:(k+1)d] = F(v_{i_k}) \in \Rset^d
 
 where :math:`v_{i_k}` is the node of index :math:`i_k` of the mesh :math:`\cM_N`. In other words, we have:
 
