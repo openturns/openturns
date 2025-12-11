@@ -1,5 +1,5 @@
 %feature("docstring") OT::VertexFieldToPointFunction
-R"RAW(Restriction of a field function at a specific node.
+R"RAW(Restriction of a field function at some specific nodes.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
