@@ -38,6 +38,7 @@
   <SymbolicParserExprTk-SmallSize value_int="100" />
   <SymbolicParserExprTk-MaxStackDepth value_int="400" />
   <SymbolicParserExprTk-MaxNodeDepth value_int="10000" />
+  <SymbolicParserExprTk-DisableCommutativeCheck value_bool="true" />
 
   <!-- OT::SymbolicParserMuParser parameters -->
   <SymbolicParserMuParser-SmallSize value_int="1000" />

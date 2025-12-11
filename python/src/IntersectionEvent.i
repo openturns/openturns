@@ -17,11 +17,11 @@ namespace OT {
   canConvert< _PyObject_, OT::RandomVector >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__RandomVector, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::RandomVector *"), SWIG_POINTER_NO_NULL))) {
       OT::RandomVector * p_it = reinterpret_cast< OT::RandomVector * >(ptr);
       return p_it != NULL;
     }
-    else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__RandomVectorImplementation, SWIG_POINTER_NO_NULL))) {
+    else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::RandomVectorImplementation *"), SWIG_POINTER_NO_NULL))) {
       OT::RandomVectorImplementation * p_impl = reinterpret_cast< OT::RandomVectorImplementation * >(ptr);
       return p_impl != NULL;
     }
@@ -34,11 +34,11 @@ namespace OT {
   convert< _PyObject_, OT::RandomVector >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__RandomVector, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::RandomVector *"), SWIG_POINTER_NO_NULL))) {
       OT::RandomVector * p_mf = reinterpret_cast< OT::RandomVector * >(ptr);
       return *p_mf;
     }
-    else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__RandomVectorImplementation, SWIG_POINTER_NO_NULL))) {
+    else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::RandomVectorImplementation *"), SWIG_POINTER_NO_NULL))) {
       OT::RandomVectorImplementation * p_impl = reinterpret_cast< OT::RandomVectorImplementation * >(ptr);
       return *p_impl;
     }

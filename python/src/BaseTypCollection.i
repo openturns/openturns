@@ -10,7 +10,7 @@ namespace OT {
   canConvert< _PySequence_, Indices >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Indices, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Indices *"), SWIG_POINTER_NO_NULL))) {
       Indices * p_it = reinterpret_cast< Indices * >(ptr);
       return p_it != NULL;
     } else {

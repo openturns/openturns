@@ -18,10 +18,10 @@ namespace OT {
   canConvert< _PyObject_, OT::FieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::FieldFunction *"), SWIG_POINTER_NO_NULL))) {
       OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, SWIG_POINTER_NO_NULL))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::FieldFunctionImplementation *"), SWIG_POINTER_NO_NULL))) {
       OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >( ptr );
       return p_impl != NULL;
     } else {
@@ -35,10 +35,10 @@ namespace OT {
   convert< _PyObject_, OT::FieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, 0 ) ) ) {
+    if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::FieldFunction *"), 0 ) ) ) {
       OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >( ptr );
       return *p_nmf;
-    } else if ( SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, SWIG_POINTER_NO_NULL))) {
+    } else if ( SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::FieldFunctionImplementation *"), SWIG_POINTER_NO_NULL))) {
       OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >(ptr);
       return *p_impl;
     } else if (!PyCallable_Check(pyObj)) {
@@ -64,7 +64,7 @@ namespace OT {
 FieldFunction(PyObject * pyObj)
 {
   void * ptr = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0)))
+  if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Object *"), 0)))
   {
     throw OT::InvalidArgumentException(HERE) << "Argument should be a pure python object";
   }

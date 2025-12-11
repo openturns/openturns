@@ -22,7 +22,6 @@
 #define OPENTURNS_CONDITIONEDGAUSSIANPROCESS_HXX
 
 #include "openturns/GaussianProcess.hxx"
-#include "openturns/KrigingResult.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,10 +40,6 @@ public:
 
   /** Default constructor */
   ConditionedGaussianProcess();
-
-  /** Standard constructor  */
-  ConditionedGaussianProcess(const KrigingResult & result,
-                             const Mesh & mesh);
 
   /** Standard constructor  */
   ConditionedGaussianProcess(const GaussianProcessRegressionResult & result,
@@ -93,9 +88,6 @@ protected:
 private:
   /** InputDimension */
   UnsignedInteger inputDimension_;
-
-  /** KrigingResult */
-  KrigingResult krigingResult_;
 
   /** Gaussian process result */
   GaussianProcessRegressionResult gprResult_;

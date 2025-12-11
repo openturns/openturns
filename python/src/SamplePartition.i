@@ -2,7 +2,7 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::SamplePartition & clusters ($*ltype temp) %{ temp = OT::SamplePartition(); $1 = &temp; %}
-%typemap(argout) OT::SamplePartition & clusters %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::SamplePartition(*$1), SWIGTYPE_p_OT__SamplePartition,  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::SamplePartition & clusters %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::SamplePartition(*$1), SWIG_TypeQuery("OT::SamplePartition *"),  SWIG_POINTER_OWN)); %}
 
 %{
 #include "openturns/SamplePartition.hxx"

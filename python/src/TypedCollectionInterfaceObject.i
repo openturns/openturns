@@ -56,11 +56,11 @@ namespace OT {
   canConvert< _PyObject_, OT::Interface >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Interface, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Interface *"), SWIG_POINTER_NO_NULL))) {
       OT::Interface * p_it = reinterpret_cast< OT::Interface * >(ptr);
       return p_it != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, SWIG_POINTER_NO_NULL))) {
-      OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Implementation *"), SWIG_POINTER_NO_NULL))) {
+      OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >(ptr);
       return p_impl != NULL;
     }
     return false;
@@ -72,10 +72,10 @@ namespace OT {
   convert< _PyObject_, OT::Interface >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Interface, SWIG_POINTER_NO_NULL))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Interface *"), SWIG_POINTER_NO_NULL))) {
       OT::Interface * p_it = reinterpret_cast< OT::Interface * >(ptr);
       return *p_it;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, SWIG_POINTER_NO_NULL))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Implementation *"), SWIG_POINTER_NO_NULL))) {
       OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >(ptr);
       return *p_impl;
     }
