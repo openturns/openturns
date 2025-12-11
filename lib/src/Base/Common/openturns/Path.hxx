@@ -95,14 +95,6 @@ protected:
    */
   static const char * HomeConfigSubdirectory_;
 
-  /**
-   * @var static const char * Path::PrefixConfigSubdirectory_
-   *
-   * The 'prefix' subdirectory path
-   */
-  static const char * PrefixConfigSubdirectory_;
-
-
 private:
   /** Get the parent directory */
   static FileName GetParentDirectory(const FileName & fileName);
