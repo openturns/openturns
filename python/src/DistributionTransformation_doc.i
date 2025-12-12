@@ -4,19 +4,7 @@
 Parameters
 ----------
 left, right : :class:`~openturns.Distribution`
-    The transformation that maps *left* into *right*."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::DistributionTransformation::inverse
-R"RAW(Inverse isoprobabilistic transformation.
-
-Returns
--------
-inverseT : :class:`~openturns.DistributionTransformation`
-    The inverse transformation.
-    
-Notes
+    The transformation that maps *left* into *right*.Notes
 -----
 The DistributionTransformation maps the distribution *left* into the distribution *right*
 with the transformation :math:`T`.
@@ -69,4 +57,28 @@ and identity correlation matrix. The final transformation :math:`T` is defined b
 
 .. math::
    T = T_2^{-1}\circ T_1
+Examples
+--------
+>>> import openturns as ot
+>>> distLeft = ot.JointDistribution([ot.Uniform(-1, 1)]*2, ot.ClaytonCopula(1.2))
+>>> distRight = ot.Normal(2)
+>>> transf = ot.DistributionTransformation(distLeft, distRight)
+>>> pointOutput = transf([0, 0])
+>>> print(point_output)
+[0,-0.150769]
+>>> transfInverse = transf.inverse()
+>>> pointInit = transfInverse(pointOutput)
+[0,-1.11022e-15]
 )RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionTransformation::inverse
+R"RAW(Inverse isoprobabilistic transformation.
+
+Returns
+-------
+inverseT : :class:`~openturns.DistributionTransformation`
+    The inverse transformation.#
+    
+
