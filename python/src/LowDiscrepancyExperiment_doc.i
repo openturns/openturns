@@ -11,28 +11,37 @@ Available constructors:
 Parameters
 ----------
 size : positive int
-    Number :math:`N` of points of the sequence.
+    Number :math:`n` of points of the sequence.
 sequence : :class:`~openturns.LowDiscrepancySequence`
-    Sequence of points :math:`(u_1, \cdots, u_N)` with low discrepancy.
+    Low discrepancy sequence type.
+
     If not specified, the sequence is a :class:`~openturns.SobolSequence`.
 distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` of dimension :math:`n`.
-    The low discrepancy sequence :math:`(u_1, \cdots, u_N)` is uniformly
-    distributed over :math:`[0,1]^n`. We use an iso-probabilistic transformation
-    from the independent copula of dimension :math:`n` to the given distribution.
-    The weights are all equal to :math:`1/N`.
 restart : bool
     Flag to tell if the low discrepancy sequence must be restarted from
     its initial state at each change of distribution or not.
+
     Default is *True*: the sequence is restarted at each change of
     distribution.
 
 Notes
 -----
-The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
-according to the distribution :math:`\mu`. When the :meth:`generate`
-method is called again, the generated sample changes. In case of dependent
-marginals, the approach based on [cambou2017]_ is used.
+The :meth:`generate` method generates a low discrepancy sequence :math:`(u_1, \cdots, u_n)`
+over :math:`[0,1]^n` using the Sobol sequence if no particular other sequence has been fixed
+through the parameter *sequence*.
+
+Then we use an :ref:`Isoprobabilistic transformations <isoprobabilistic_transformation>` that
+maps the independent copula of dimension :math:`n`
+into the distribution given through the parameter *distribution*: the sample :math:`(u_1, \cdots, u_n)`
+is transformed into the sample :math:`(x_1, \cdots, x_n)` that is finally returned.
+
+The weights are all equal to :math:`1/n`.
+
+When the :meth:`generate` method is called again, the generated sample changes. But as soon as the
+parameter *distribution* is modified, the sequence is restarted at its initial state.
+
+Refer to [cambou2017]_ to get more details especially when *distribution* has dependent components.
 
 See also
 --------

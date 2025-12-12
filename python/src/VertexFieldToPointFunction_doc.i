@@ -1,29 +1,44 @@
 %feature("docstring") OT::VertexFieldToPointFunction
-R"RAW(Restriction of a field function at a specific node.
+R"RAW(Restriction of a field function at some specific nodes.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Assuming :math:`f` is a function :math:`f : \Rset^{d} \rightarrow \cM_{N'} \times (\Rset^{d'})^{N'}`
-with :math:`\cM_{N'}` a mesh of :math:`\cD' \subset \Rset^{n'}`.,
-the vertex function extract the values matching the mesh index :math:`i \in [1, N']`
+Let :math:`\cM_N` be a mesh of size :math:`N`, :math:`I = \{ i_0, \dots, i_{N'-1} \} \in \llbracket 0, N-1 \rrbracket`
+be a set of indices of
+cardinal :math:`N' \leq N` and let :math:`d \geq 1` be an integer.
+
+A VertexFieldToPointFunction :math:`f` is defined by:
 
 .. math::
 
     f: \left| \begin{array}{rcl}
-               \cM_N \times (\Rset^d)^N & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+               \cF(\cM_N \times \Rset^d ) & \rightarrow & (\Rset^d)^{N'} \\
                 F & \mapsto & F'
               \end{array} \right.
+
+where :math:`F'` is a vector such that for all :math:`k \in \llbracket 0, N'-1 \rrbracket`, we have:
+
+.. math::
+
+    F'[dk:(k+1)d] = F(v_{i_k}) \in \Rset^d
+
+where :math:`v_{i_k}` is the node of index :math:`i_k` of the mesh :math:`\cM_N`. In other words, we have:
+
+.. math::
+
+    F' = (F(v_{i_0}), \dots, F(v_{i_{N'-1}}))
+
 
 Parameters
 ----------
 inputMesh : :class:`~openturns.Mesh`
-    Mesh
+    Mesh, :math:`\cM_N`
 dimension : int
-    Input, output dimension
+    Input, output dimension, :math:`d \geq 1`
 indices : sequence of int
-    Mesh indices
+    Mesh indices, :math:`I`
 
 Examples
 --------

@@ -89,6 +89,9 @@ Orthogonal univariate function families
     :template: OrthogonalUniVariateFunctionFamily.rst_t
 
     FourierSeriesFactory
+
+    :template: classWithPlot.rst_t
+
     HaarWaveletFactory
 
 Orthogonal multivariate functions
