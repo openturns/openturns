@@ -311,10 +311,16 @@ class ChaospyDistribution(PythonDistribution):
 
     def computePDF(self, X):
         pdf = self._dist.pdf(X)
+        # 0d np.array or np.float
+        if hasattr(pdf, "item"):
+            pdf = pdf.item()
         return pdf
 
     def computeCDF(self, X):
         cdf = self._dist.cdf(X)
+        # 0d np.array or np.float
+        if hasattr(cdf, "item"):
+            cdf = cdf.item()
         return cdf
 
     def getMean(self):
