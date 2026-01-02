@@ -190,17 +190,22 @@ for name in ["gaco", "ihs", "sga"]:
     print(name, x, y)
     if name != "ihs":
         assert y[0] < 200.0, str(y)
+print("-" * 20)
 
 
 # check internal reordering of integer components
 def minlp_obj2(x):
     x1, x2, x3 = x
+    if float(int(x1)) != x1:
+        raise ValueError(f"x1 should be int got {x1}")
+    if max(abs(x2), abs(x3)) > 4.5:
+        raise ValueError(f"x2,x3 not in bounds got {x2},{x3}")
     return [x1 + 100 * (x3 - x2**2) ** 2 + (1 - x2) ** 2]
 
 
 f = ot.PythonFunction(3, 1, minlp_obj2)
-bounds = ot.Interval([-5.0] * 3, [5.0] * 3)
-pop0 = ot.JointDistribution([ot.Poisson()] + [ot.Uniform(-5.0, 5.0)] * 2).getSample(100)
+bounds = ot.Interval([-5, -4.5, -4.5], [5, 4.5, 4.5])
+pop0 = ot.JointDistribution([ot.Poisson()] + [ot.Uniform(-4.5, 4.5)] * 2).getSample(100)
 problem = ot.OptimizationProblem(f)
 problem.setBounds(bounds)
 problem.setVariablesType(
