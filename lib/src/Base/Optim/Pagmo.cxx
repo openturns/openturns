@@ -103,13 +103,16 @@ struct PagmoProblem
     *inequalityHistory_ = Sample(0, algorithm->getProblem().getInequalityConstraint().getOutputDimension());
   }
 
-  Point renumber(const Point & inP) const
+  Point renumber(const Point & inP, const Bool uToX = true) const
   {
     Point result(inP);
     if (renum_.getSize())
     {
       for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
-        result[i] = inP[renum_[i]];
+        if (uToX)
+          result[i] = inP[renum_[i]]; // pagmo -> OT
+        else
+          result[renum_[i]] = inP[i]; // OT -> pagmo
     }
     return result;
   }
@@ -168,8 +171,8 @@ struct PagmoProblem
 
   std::pair<pagmo::vector_double, pagmo::vector_double> get_bounds() const
   {
-    const pagmo::vector_double lb2(renumber(algorithm_->getProblem().getBounds().getLowerBound()).toStdVector());
-    const pagmo::vector_double ub2(renumber(algorithm_->getProblem().getBounds().getUpperBound()).toStdVector());
+    const pagmo::vector_double lb2(renumber(algorithm_->getProblem().getBounds().getLowerBound(), false).toStdVector());
+    const pagmo::vector_double ub2(renumber(algorithm_->getProblem().getBounds().getUpperBound(), false).toStdVector());
     return std::make_pair(lb2, ub2);
   }
 
@@ -384,16 +387,22 @@ void Pagmo::run()
   {
     const Point inP(startingSample[i]);
     if (!getProblem().getBounds().contains(inP))
-      LOGWARN(OSS() << "Starting point " << i << " lies outside bounds");
+      LOGWARN(OSS() << "Starting point #" << i << " (" << inP << ") lies outside bounds");
     if (!getProblem().isContinuous())
     {
       const Indices types(getProblem().getVariablesType());
+      const Point lowerBound(getProblem().getBounds().getLowerBound());
+      const Point upperBound(getProblem().getBounds().getUpperBound());
       for (UnsignedInteger j = 0; j < getProblem().getDimension(); ++ j)
       {
         if (types[j] != OptimizationProblemImplementation::CONTINUOUS && std::trunc(inP[j]) != inP[j])
-          throw InvalidArgumentException(HERE) << "Starting sample components must have integral values";
+          throw InvalidArgumentException(HERE) << "Starting sample components must have integral values, got " << inP[j];
+        if (types[j] != OptimizationProblemImplementation::CONTINUOUS && std::trunc(lowerBound[j]) != lowerBound[j])
+          throw InvalidArgumentException(HERE) << "Lower bound must have integral values, got " << lowerBound[j];
+        if (types[j] != OptimizationProblemImplementation::CONTINUOUS && std::trunc(upperBound[j]) != upperBound[j])
+          throw InvalidArgumentException(HERE) << "Upper bound must have integral values, got " << upperBound[j];
         if (types[j] == OptimizationProblemImplementation::BINARY && (std::round(inP[j]) != 0.0) && (std::round(inP[j]) != 1.0))
-          throw InvalidArgumentException(HERE) << "Starting sample components must have binary values";
+          throw InvalidArgumentException(HERE) << "Starting sample components must have binary values, got " << inP[j];
       }
     }
   }
@@ -743,7 +752,7 @@ void Pagmo::run()
     const UnsignedInteger effectiveBlockSize = ((outerSampling == (blockNumber - 1)) && (size % blockSize)) ? (size % blockSize) : blockSize;
     Sample inSb(effectiveBlockSize, inputDimension);
     for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
-      inSb[i] = startingSample[i + outerSampling * blockSize];
+      inSb[i] = pproblem.renumber(startingSample[i + outerSampling * blockSize], false);
     const pagmo::vector_double inV(inSb.getImplementation()->getData().toStdVector());
     const pagmo::vector_double outV(prob.batch_fitness(inV));
     const UnsignedInteger nf = outV.size() / effectiveBlockSize;
@@ -758,7 +767,7 @@ void Pagmo::run()
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Point inP(startingSample[i]);
-    pagmo::vector_double x(pproblem.renumber(inP).toStdVector());
+    pagmo::vector_double x(pproblem.renumber(inP, false).toStdVector());
     pagmo::vector_double y(prob.fitness(x));
     pop.push_back(x, y);
   }
