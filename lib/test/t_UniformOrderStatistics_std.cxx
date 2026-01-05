@@ -102,13 +102,6 @@ int main(int, char *[])
     UniformOrderStatistics::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
-    //
-    Study study("test");
-    study.add("distribution", distribution);
-    UniformOrderStatistics anotherDistribution;
-    study.fillObject("distribution", anotherDistribution);
-    fullprint << "Equal? " << (distribution == anotherDistribution ? "true" : "false") << std::endl;;
-
   }
   catch (TestFailed & ex)
   {

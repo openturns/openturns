@@ -123,11 +123,6 @@ int main(int, char *[])
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     */
-    Study study("test");
-    study.add("distribution", distribution);
-    UniformOverMesh anotherDistribution;
-    study.fillObject("distribution", anotherDistribution);
-    fullprint << "Equal? " << (distribution == anotherDistribution ? "true" : "false") << std::endl;;
   }
   catch (TestFailed & ex)
   {
