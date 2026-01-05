@@ -19,13 +19,13 @@ def ishigamiAB():
 # Calculs exacts
 def ishigamiSAExact(a, b):
     meanY = a / 2.0
-    varY = 1.0 / 2.0 + a ** 2 / 8 + b * pi ** 4 / 5 + b ** 2 * pi ** 8 / 18
-    S1 = (1.0 / 2.0 + b * pi ** 4 / 5 + b ** 2 * pi ** 8 / 50) / varY
-    S2 = (a ** 2 / 8) / varY
+    varY = 1.0 / 2.0 + a**2 / 8 + b * pi**4 / 5 + b**2 * pi**8 / 18
+    S1 = (1.0 / 2.0 + b * pi**4 / 5 + b**2 * pi**8 / 50) / varY
+    S2 = (a**2 / 8) / varY
     S3 = 0
     # S12 = 0;
     # S23 = 0;
-    S13 = b ** 2 * pi ** 8 / 2.0 * (1.0 / 9.0 - 1.0 / 25.0) / varY
+    S13 = b**2 * pi**8 / 2.0 * (1.0 / 9.0 - 1.0 / 25.0) / varY
     # S123 = 0;
     ST1 = S1 + S13
     ST2 = S2
