@@ -73,38 +73,19 @@ int main(int, char *[])
     dist2D.drawCDF(Point(2, -4.0), Point(2, 4.0));
     dist2D.drawCDF(Indices(2, 101));
 
-    // Save and load objects
-    Study study;
-    String file("study.xml");
-    study.setStorageManager(XMLStorageManager(file));
-    study.add("pdf", distND.getPDF());
-    study.add("logpdf", distND.getLogPDF());
-    study.add("cdf", distND.getCDF());
-    study.save();
-
-    study = Study();
-    study.setStorageManager(XMLStorageManager(file));
-    study.load();
-    Function pdf;
-    Function logpdf;
-    Function cdf;
-    study.fillObject("pdf", pdf);
-    study.fillObject("logpdf", logpdf);
-    study.fillObject("cdf", cdf);
-
     // Check drawing methods for ND distributions
     // PDF
     distND.drawMarginal1DPDF(2, -4.0, 4.0, 101);
     distND.drawMarginal2DPDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
-    pdf.drawCrossCuts(Point(5, 0.), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), true, false, 0.0, 1.0);
+    distND.getPDF().drawCrossCuts(Point(5, 0.), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), true, false, 0.0, 1.0);
     // log-PDF
     distND.drawMarginal1DLogPDF(2, -4.0, 4.0, 101);
     distND.drawMarginal2DLogPDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
-    logpdf.drawCrossCuts(Point(5, 0.0), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), true, false, -14.0, -11.0);
+    distND.getLogPDF().drawCrossCuts(Point(5, 0.0), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), true, false, -14.0, -11.0);
     // CDF
     distND.drawMarginal1DCDF(2, -4.0, 4.0, 101);
     distND.drawMarginal2DCDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
-    cdf.drawCrossCuts(Point(5, 0.0), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), false, true, 0.0, 1.0);
+    distND.getCDF().drawCrossCuts(Point(5, 0.0), Point(5, -4.0), Point(5, 4.0), Indices(5, 10), false, true, 0.0, 1.0);
     // Quantile
     dist2D.drawQuantile();
     dist2D.drawQuantile(101);
