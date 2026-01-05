@@ -5,7 +5,7 @@ set -e
 # pip install flake8 doc8 
 # TODO: reduce max line length
 
-PATH=~/.local/bin/:$PATH flake8 python/ --ignore=W503,E203 --max-line-length=185
+PATH=~/.local/bin/:$PATH flake8 python/ validation --ignore=W503,E203 --max-line-length=185
 
 PATH=~/.local/bin/:$PATH doc8 python/doc/ --ignore D000 --ignore-path python/doc/theory/meta_modeling/orthogonal_polynomials.rst --ignore-path python/doc/theory/reliability_sensitivity/sensitivity_sobol.rst --max-line-length 185
 
