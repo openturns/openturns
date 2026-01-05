@@ -356,6 +356,10 @@ if (USE_NANOFLANN)
   endif ()
 endif ()
 
+# for std::call_once
+find_package (Threads QUIET REQUIRED)
+list (APPEND OPENTURNS_PRIVATE_LIBRARIES Threads::Threads)
+
 if (MSVC)
   # Disable some warnings
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4275 /wd4996")
