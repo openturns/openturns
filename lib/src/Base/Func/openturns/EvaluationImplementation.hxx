@@ -204,17 +204,16 @@ protected:
   /** Whether to check the output for invalid values */
   Bool checkOutput_ = true;
 
-private:
+  // callbacks
+  std::pair< StopCallback, void *> stopCallback_;
+  std::pair< DetachCallback, void *> detachCallback_;
 
+private:
   /** The description of the input components */
   Description inputDescription_;
 
   /** The description of the input components */
   Description outputDescription_;
-
-  // callbacks
-  std::pair< StopCallback, void *> stopCallback_;
-  std::pair< DetachCallback, void *> detachCallback_;
 
 }; /* class EvaluationImplementation */
 
