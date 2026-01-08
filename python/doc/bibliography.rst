@@ -175,6 +175,8 @@ Bibliography
 .. [garnier2008] Garnier, J. *Quantile estimation* ECODOQUI 2008
 .. [gautschi2004] Gautschi, W. (2004).
     *Orthogonal polynomials: computation and approximation.* OUP Oxford.
+.. [genest2003] Genest, C. & Boies, JC. *Detecting Dependence with Kendall Plots.*
+    The American Statistician 57(4): 275-284, 2003.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003.
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
