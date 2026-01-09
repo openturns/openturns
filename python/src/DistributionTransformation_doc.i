@@ -88,7 +88,7 @@ R"RAW(Inverse isoprobabilistic transformation.
 Returns
 -------
 inverseT : :class:`~openturns.DistributionTransformation`
-    The inverse transformation.#
+    The inverse transformation.
 )RAW"
     
 
