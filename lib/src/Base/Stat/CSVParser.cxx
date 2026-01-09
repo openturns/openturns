@@ -108,7 +108,6 @@ Sample CSVParser::load() const
     throw InvalidArgumentException(HERE) << "The comment marker must be different from the field and decimal separators";
   pLineReaderParams.mCommentPrefix = commentMarkers[0];
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
-  Description description;
   std::ifstream stream;
   stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
   stream.open(std::filesystem::u8path(fileName_), std::ios::binary);
@@ -177,7 +176,7 @@ Sample CSVParser::load() const
 
   if (haveHeaders)
   {
-    description.resize(doc.GetColumnCount());
+    Description description(doc.GetColumnCount());
     for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
     {
       try
@@ -188,11 +187,10 @@ Sample CSVParser::load() const
       {
         // line may be incomplete
       }
-    }
-    // avoid empty components
-    for (UnsignedInteger j = 0; j < description.getSize(); ++ j)
+      // avoid empty components
       if (description[j].empty())
         description[j] = OSS() << "Unnamed_" << j;
+    }
     result.setDescription(description);
     result.erase(0, 1);
   }
