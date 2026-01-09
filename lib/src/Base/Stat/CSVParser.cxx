@@ -121,11 +121,13 @@ Sample CSVParser::load() const
     {"nan", std::numeric_limits<Scalar>::quiet_NaN()}, {"NaN", std::numeric_limits<Scalar>::quiet_NaN()},
     {"NAN", std::numeric_limits<Scalar>::quiet_NaN()},
   };
+  std::istringstream iss;
+  iss.imbue(std::locale(std::locale::classic(), new CSVParserFormat(decimalSeparator_)));
 
-  auto convLambda = [this, specMap, &oneOk](const std::string & pStr, Scalar & pVal)
+  auto convLambda = [&iss, specMap, &oneOk](const std::string & pStr, Scalar & pVal)
   {
-    std::istringstream iss(pStr);
-    iss.imbue(std::locale(std::locale::classic(), new CSVParserFormat(decimalSeparator_)));
+    iss.clear();
+    iss.str(pStr);
     iss >> pVal;
     if (iss.fail() || iss.bad() || !iss.eof())
     {
