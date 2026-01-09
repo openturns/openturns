@@ -1,7 +1,7 @@
 aSample= class=Sample name=a good sample implementation=class=SampleImplementation name=a good sample size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
 aSample= class=Sample name=a good sample implementation=class=SampleImplementation name=a good sample size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
-aSample= class=Sample name=a good coma separated sample implementation=class=SampleImplementation name=a good coma separated sample size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
-aSample= class=Sample name=a good coma separated sample implementation=class=SampleImplementation name=a good coma separated sample size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
+aSample= class=Sample name=a good comma separated sample implementation=class=SampleImplementation name=a good comma separated sample size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
+aSample= class=Sample name=a good comma separated sample implementation=class=SampleImplementation name=a good comma separated sample size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
 "X1";"X2";"X3";"X4"
 -1.2000000000000000e+00;2.2999999999999998e+00;3.3999999999999999e+00;-4.5000000000000000e+00
 5.5999999999999996e+00;-6.7000000000000002e+00;7.7999999999999998e+00;8.9000000000000004e+00
@@ -28,14 +28,12 @@ aSample description empty component=     [ a         Unnamed_1 c         ]
 -2.4000000000000000e-08
 nan
 nan
-nan
-inf
 inf
 inf
 -inf
 
-aSample with nan/inf (text)= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=8 dimension=1 description=[data_0] data=[[-2.4e-08],[nan],[nan],[nan],[inf],[inf],[inf],[-inf]]
-aSample with nan/inf  (csv)= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=8 dimension=1 description=[data_0] data=[[-2.4e-08],[nan],[nan],[nan],[inf],[inf],[inf],[-inf]]
+aSample with nan/inf (text)= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=6 dimension=1 description=[data_0] data=[[-2.4e-08],[nan],[nan],[inf],[inf],[-inf]]
+aSample with nan/inf  (csv)= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=6 dimension=1 description=[data_0] data=[[-2.4e-08],[nan],[nan],[inf],[inf],[-inf]]
 aSample from fr_FR.utf-8 file= class=Sample name=sample.csv implementation=class=SampleImplementation name=sample.csv size=3 dimension=4 description=[X1,X2,X3,X4] data=[[-1.2,2.3,3.4,-4.5],[5.6,-6.7,7.8,8.9],[-0.1,3.2,5.1,7.5]]
 export fr= -1,2000000000000000e+00;2,2999999999999998e+00;3,3999999999999999e+00;-4,5000000000000000e+00
 

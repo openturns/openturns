@@ -376,6 +376,11 @@ try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
 
+try_compile(OPENTURNS_HAVE_STD_FROM_CHARS_DOUBLE
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/std_from_chars_double.cxx
+  CXX_STANDARD 17)
+
 # for consistent floating-point operations across architectures
 option (DISABLE_FP_CONTRACT "Disable floating-point contractions" ON)
 if (DISABLE_FP_CONTRACT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")

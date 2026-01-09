@@ -120,3 +120,6 @@
 
 /* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+
+/* Define to 1 if you have the `std::from_chars` with double argument. */
+#cmakedefine OPENTURNS_HAVE_STD_FROM_CHARS_DOUBLE
