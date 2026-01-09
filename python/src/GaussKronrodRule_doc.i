@@ -71,15 +71,6 @@ otherGaussWeights : :class:`~openturns.Point`
     The  weights :math:`(\omega_k)_{1 \leq k \leq n}`)RAW"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::GaussKronrodRule::getOtherGaussNodes
-R"RAW(Accessor to the positive nodes used in the Gauss-Kronrod approximation.
-
-Returns
--------
-otherKronrodNodes : :class:`~openturns.Point`
-    The  positive nodes :math:`(\xi_k)_{1 \leq k \leq n}`
-)RAW"
-// ---------------------------------------------------------------------
 %feature("docstring") OT::GaussKronrodRule::getOtherKronrodWeights
 R"RAW(Accessor to the weights used in the Gauss-Kronrod approximation.
 

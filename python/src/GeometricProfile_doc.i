@@ -31,33 +31,3 @@ Define the profile: :math:`T(i) = 10 (0.9)^{i}` for :math:`0 \leq i \leq 100` :
 %enddef
 %feature("docstring") OT::GeometricProfile
 OT_GeometricProfile_doc
-// ---------------------------------------------------------------------
-%define OT_GeometricProfile_call_doc
-R"RAW(Compute the temperature :math:`T(i)`.
-
-Parameters
-----------
-i : int
-    The index at which the temperature is computed.
-
-Returns
--------
-temperature :  float
-    The temperature :math:`T(i)`.
-
-Examples
---------
-Define the profile: :math:`T(i) = 10 (0.9)^{i}` for  :math:`0 \leq i \leq 100` and compute it at :math:`i=5`:
-
->>> import openturns as ot
->>> T0 = 10.0
->>> iMax = 100
->>> c = 0.90
->>> geometricProfile = ot.GeometricProfile(T0, c, iMax)
->>> temperature = geometricProfile(5)
->>> print(temperature)
-5.9049...)RAW"
-%enddef
-%feature("docstring") OT::GeometricProfile::operator()
-OT_GeometricProfile_call_doc
-// ---------------------------------------------------------------------

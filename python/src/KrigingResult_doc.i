@@ -286,33 +286,6 @@ for each point in sampleX.)RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingResult::operator()
-R"RAW(Compute the conditional Gaussian distribution on a new point / sample conditionally to the observed paths.
-
-Available usages:
-    KrigingResult(pt)
-
-    KrigingResult(sampleX)
-
-Parameters
-----------
-pt : sequence of float
-    The point :math:`\vect{x}` where the conditional distribution of the output has to be evaluated.
-sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional distribution of the output has to be evaluated (*M* can be equal to 1).
-
-Returns
--------
-condDist : :class:`~openturns.Normal`
-    The conditional Gaussian distribution.
-
-Notes
------
-The conditional distribution :math:`\cN(\Expect{\vect{Y}}, \Cov{\vect{Y}})` has respectively conditional mean and covariance functions 
-implemented in :meth:`getConditionalMean` (respectively :meth:`getConditionalCovariance`).)RAW"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::KrigingResult::getMetaModel
 R"RAW(Accessor to the metamodel.
 

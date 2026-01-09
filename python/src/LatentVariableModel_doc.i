@@ -120,16 +120,6 @@ latentDimension : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LatentVariableModel::getNLevels
-"Number of levels accessor.
-
-Returns
--------
-nLevels : int
-    Number of levels characterizing the categorical variable."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LatentVariableModel::setFullParameter
 R"RAW(Set the full parameters of the covariance function.
 

@@ -58,23 +58,3 @@ Examples
 %feature("docstring") OT::ExperimentImplementation::generate
 OT_Experiment_generate_doc
 
-// ---------------------------------------------------------------------
-
-%define OT_Experiment_setImplementation_doc
-"Accessor to the underlying implementation.
-
-Parameters
-----------
-implementation : ExperimentImplementation
-    An ExperimentImplementation object.
-
-Examples
---------
->>> import openturns as ot
->>> myExperiment = ot.Experiment(ot.MonteCarloExperiment(ot.Normal(2),5))
->>> myExperimentImplementation = myExperiment.getImplementation()
->>> mySecondExperiment = ot.Experiment()
->>> mySecondExperiment.setImplementation(myExperimentImplementation)"
-%enddef
-%feature("docstring") OT::ExperimentImplementation::setImplementation
-OT_Experiment_setImplementation_doc

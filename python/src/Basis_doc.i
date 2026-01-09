@@ -18,5 +18,3 @@ OT_Basis_isFinite_doc
 OT_Basis_isOrthogonal_doc
 %feature("docstring") OT::Basis::add
 OT_Basis_add_doc
-%feature("docstring") OT::Basis::isTensorProduct
-OT_Basis_isTensorProduct_doc

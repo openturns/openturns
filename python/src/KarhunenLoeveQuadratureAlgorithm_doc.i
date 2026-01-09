@@ -134,16 +134,6 @@ basis : :class:`~openturns.Basis`
     The basis in which the eigenfunctions are projected."
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasisSize
-"Accessor to the number of elements in the functional basis.
-
-Returns
--------
-basisSize : int
-    The number of elements of the functional basis considered.
-    The basis in which the eigenfunctions are projected."
-
-// ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getExperiment
 "Accessor to the points and weights of the quadrature approximation.
 

@@ -75,31 +75,11 @@ ARCoeff : :class:`~openturns.ARMACoefficients`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ARMA::setARCoefficients
-"Accessor to the AR coefficients of the ARMA process.
-
-Parameters
-----------
-ARCoeff : :class:`~openturns.ARMACoefficients`
-    The AR coefficients of the linear recurrence defining the process."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::ARMA::getMACoefficients
 "Accessor to the MA coefficients of the ARMA process.
 
 Returns
 -------
-MACoeff : :class:`~openturns.ARMACoefficients`
-    The MA coefficients of the linear recurrence defining the process."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::ARMA::setMACoefficients
-"Accessor to the MA coefficients of the ARMA process.
-
-Parameters
-----------
 MACoeff : :class:`~openturns.ARMACoefficients`
     The MA coefficients of the linear recurrence defining the process."
 
