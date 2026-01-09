@@ -80,6 +80,10 @@ _ = otv.View(graph, square_axes=True)
 
 # %%
 # Instantiate the algorithm from the initial DOE and the distribution
+# The algorithm can be fined-tuned using keys in ResourceMap, see
+# the API documentation. It can have a major impact on the performance
+# of the algorithm. In particular, if your distribution has independent
+# components you may set "LOLAVoronoi-UseTruncatedDistribution" to True.
 algo = otexp.LOLAVoronoi(x0, y0, distribution)
 
 # %%
