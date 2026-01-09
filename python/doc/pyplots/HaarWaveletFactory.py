@@ -1,5 +1,6 @@
 import openturns as ot
 import openturns.viewer as otv
+import matplotlib.pyplot as plt
 
 grid = ot.GridLayout(2, 4)
 for i in range(8):

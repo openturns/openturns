@@ -4,7 +4,7 @@ The Ishigami function
 =====================
 
 The Ishigami function of Ishigami & Homma (1990) is  recurrent test case for sensitivity analysis methods and uncertainty.
-Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. (2009)). We consider the function
+Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. (2009)). We consider the function:
 
 .. math::
    \model(x_1,x_2,x_3) = \sin(x_1)+a \sin (x_2)^2 + b X_3^4 \sin(x_1)

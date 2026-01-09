@@ -89,5 +89,6 @@ Returns
 -------
 inverseT : :class:`~openturns.DistributionTransformation`
     The inverse transformation.#
+)RAW"
     
 
