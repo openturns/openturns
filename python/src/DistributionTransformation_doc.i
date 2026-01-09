@@ -1,5 +1,5 @@
 %feature("docstring") OT::DistributionTransformation
-"R"RAW(Isoprobabilistic transformation.
+R"RAW(Isoprobabilistic transformation.
 
 Parameters
 ----------
@@ -62,7 +62,8 @@ and identity correlation matrix. The final transformation :math:`T` is defined b
 
 Examples
 --------
-We create a transformation :math:`T` that maps the bivariate random vector :math:`(X_1, X_2)` such that :math:`X_1` and
+We create a transformation :math:`T` that maps the bivariate random vector :math:`(X_1, X_2)` such that :math:`X_1`
+and
 :math:`X_2` follow a Uniform distribution on :math:`[-1,1]`, with a Clayton copula parameterized by
 :math:`\theta = 1.2`, into the bivariate Gaussian random vector :math:`(Y_1, Y_2)` with zero mean, unit variance and
 independent components.

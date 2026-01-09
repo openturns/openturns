@@ -7,20 +7,24 @@ The Ishigami function of Ishigami & Homma (1990) is  recurrent test case for sen
 Let :math:`a=7` and :math:`b=0.1` (see Crestaux et al. (2007) and Marrel et al. (2009)). We consider the function
 
 .. math::
-   g(X_1,X_2,X_3) = \sin(X_1)+a \sin (X_2)^2 + b X_3^4 \sin(X_1)
+   \model(x_1,x_2,x_3) = \sin(x_1)+a \sin (x_2)^2 + b X_3^4 \sin(x_1)
 
 
-for any :math:`X_1,X_2,X_3\in[-\pi,\pi]`
+for any :math:`(x_1,x_2,x_3) \in[-\pi,\pi]^3`
 We assume that the random variables :math:`X_1,X_2,X_3` are independent and have the uniform marginal distribution in the interval from :math:`-\pi` to :math:`\pi`:
 
 .. math::
-   X_1,X_2,X_3\sim \mathcal{U}(-\pi,\pi).
+   (X_1,X_2,X_3) \sim \otimes \mathcal{U}(-\pi,\pi).
 
+We consider the random variable :math:`Y` defined by:
+
+.. math::
+    Y = \model(X_1,X_2,X_3)
 
 Analysis
 --------
 
-The expectation and the variance of :math:`Y` are
+The moments of any order of the random variable  :math:`Y` are finite. The expectation and the variance of :math:`Y` are:
 
 .. math::
     \Expect{Y}  = \frac{a}{2}
@@ -32,7 +36,7 @@ and
     \Var{Y} = \frac{1}{2} +  \frac{a^2}{8} +  \frac{b^2 \pi^8}{18} +  \frac{b\pi^4}{5}.
 
 
-The Sobol' decomposition variances are
+The Sobol' decomposition variances are:
 
 .. math::
     V_1     = \frac{1}{2} \left(1 + b\frac{\pi^4}{5} \right)^2, \qquad

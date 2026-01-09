@@ -11,6 +11,10 @@ for i in range(8):
     g.setTitle('')
     grid.setGraph(i // 4, i % 4, g)
 
-v = otv.View(grid)
+v = otv.View(
+    grid,
+    figure_kw={"figsize": (8.0, 3.0)},
+ )
+plt.subplots_adjust(right=0.8, bottom=0.2, wspace=0.3)
 fig = v.getFigure()
 fig.axes[1].legend(loc="best")
