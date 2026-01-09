@@ -18,8 +18,6 @@ OT_Process_getMarginal_doc
 OT_Process_getMesh_doc
 %feature("docstring") OT::Process::setMesh
 OT_Process_setMesh_doc
-%feature("docstring") OT::Process::getMeshDimension
-OT_Process_getMeshDimension_doc
 %feature("docstring") OT::Process::getRealization
 OT_Process_getRealization_doc
 %feature("docstring") OT::Process::getSample

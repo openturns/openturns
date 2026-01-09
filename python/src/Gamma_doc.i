@@ -97,26 +97,6 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Gamma::getMu
-"Accessor to the distribution's mean.
-
-Returns
--------
-mu : float
-    Mean."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gamma::getSigma
-R"RAW(Accessor to the distribution's standard deviation.
-
-Returns
--------
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Gamma::setK
 "Accessor to the distribution's shape parameter :math:`k`.
 
@@ -145,14 +125,3 @@ Parameters
 gamma : float, :math:`\gamma \in \Rset`
     Location parameter :math:`\gamma`.)RAW"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gamma::setMuSigma
-R"RAW(Accessor to the distribution's mean and standard deviation.
-
-Parameters
-----------
-mu : float, :math:`\mu > \gamma`
-    Mean.
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"

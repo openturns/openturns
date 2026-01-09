@@ -41,17 +41,6 @@ values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ARMAState::setX
-"Accessor to the last values of the ARMA process.
-
-Parameters
-----------
-values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
-    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
-"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::ARMAState::getEpsilon
 "Accessor to the last values of the noise defining the ARMA process.
 

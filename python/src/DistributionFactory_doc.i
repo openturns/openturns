@@ -6,10 +6,6 @@ OT_DistributionFactory_doc
 OT_DistributionFactory_build_doc
 %feature("docstring") OT::DistributionFactory::buildEstimator
 OT_DistributionFactory_buildEstimator_doc
-%feature("docstring") OT::DistributionFactory::getBootstrapSize
-OT_DistributionFactory_getBootstrapSize_doc
-%feature("docstring") OT::DistributionFactory::setBootstrapSize
-OT_DistributionFactory_setBootstrapSize_doc
 %feature("docstring") OT::DistributionFactory::setKnownParameter
 OT_DistributionFactory_setKnownParameter_doc
 %feature("docstring") OT::DistributionFactory::getKnownParameterValues

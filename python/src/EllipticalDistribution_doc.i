@@ -202,21 +202,6 @@ The :math:`\mat{R}` matrix is defined in :eq:`shapeMatrix2`.)RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EllipticalDistribution::getShape
-R"RAW(Accessor to the :math:`\mat{\Sigma}` matrix.
-
-Returns
--------
-sigmaMatrix : :class:`openturns.CorrelationMatrix`
-    The matrix :math:`\mat{Sigma}`.
-    
-Notes
------
-The shape matrix is computed from the :math:`\mat{R}` matrix and the
-scale parameter :math:`\vect{\sigma}` as in :eq:`shapeMatrix2`.)RAW"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::EllipticalDistribution::setMu
 R"RAW(Accessor to the location parameter :math:`\vect{\mu}`.
 

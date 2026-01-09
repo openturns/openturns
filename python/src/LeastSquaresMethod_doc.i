@@ -26,8 +26,6 @@ OT_LeastSquaresMethod_getGramInverseTrace_doc
 OT_LeastSquaresMethod_getH_doc
 %feature("docstring") OT::LeastSquaresMethod::getHDiag
 OT_LeastSquaresMethod_getHDiag_doc
-%feature("docstring") OT::LeastSquaresMethod::trashDecomposition
-OT_LeastSquaresMethod_trashDecomposition_doc
 %feature("docstring") OT::LeastSquaresMethod::update
 OT_LeastSquaresMethod_update_doc
 

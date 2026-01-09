@@ -496,31 +496,6 @@ OT_CovarianceModel_setOutputCorrelation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_operator_doc
-R"RAW(Evaluate the covariance function.
-
-Available usages:
-    __call__(s, t)
-
-    __call__(tau)
-
-Parameters
-----------
-s, t : floats or sequences of float
-    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
-tau : float or sequence of float
-    Multivariate index :math:`\vect{\tau} \in \cD`.
-
-Returns
--------
-covariance : CovarianceMatrix
-    The evaluation of the covariance function.)RAW"
-%enddef
-%feature("docstring") OT::CovarianceModelImplementation::operator()
-OT_CovarianceModel_operator_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_CovarianceModel_setActiveParameter_doc
 R"RAW(Accessor to the active parameter set.
 

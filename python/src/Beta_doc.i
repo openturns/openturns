@@ -111,26 +111,6 @@ b : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Beta::getMu
-"Accessor to the distribution's mean.
-
-Returns
--------
-mu : float
-    Mean."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Beta::getSigma
-R"RAW(Accessor to the distribution's standard deviation.
-
-Returns
--------
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Beta::setAlpha
 R"RAW(Accessor to the distribution's shape parameter :math:`\alpha`.
 
@@ -168,18 +148,6 @@ Parameters
 ----------
 b : float, :math:`b > a`
     Upper bound."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Beta::setMuSigma
-R"RAW(Accessor to the distribution's mean and standard deviation.
-
-Parameters
-----------
-mu : float
-    Mean.
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -63,16 +63,6 @@ Then we validate this metamodel using a test sample.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MetaModelValidation::getInputSample
-"Accessor to the input sample.
-
-Returns
--------
-inputSample : :class:`~openturns.Sample`
-    Input sample of a model evaluated apart."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MetaModelValidation::getOutputSample
 "Accessor to the output sample.
 

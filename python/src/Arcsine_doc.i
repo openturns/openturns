@@ -81,26 +81,6 @@ b : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Arcsine::getMu
-"Accessor to the distribution's mean.
-
-Returns
--------
-mu : float
-    Mean."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Arcsine::getSigma
-"Accessor to the distribution's standard deviation.
-
-Returns
--------
-sigma : float
-    Standard deviation."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Arcsine::setA
 "Accessor to the distribution's lower bound.
 
@@ -118,23 +98,3 @@ Parameters
 ----------
 b : float, :math:`a < b`
     Upper bound."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Arcsine::setMu
-"Accessor to the distribution's mean.
-
-Parameters
-----------
-mu : float
-    Mean."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Arcsine::setSigma
-R"RAW(Accessor to the distribution's standard deviation.
-
-Parameters
-----------
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"

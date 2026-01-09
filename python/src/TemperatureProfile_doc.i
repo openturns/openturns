@@ -3,9 +3,6 @@
 %feature("docstring") OT::TemperatureProfile
 OT_TemperatureProfile_doc
 
-%feature("docstring") OT::TemperatureProfile::operator()
-OT_TemperatureProfile_call_doc
-
 %feature("docstring") OT::TemperatureProfile::getIMax
 OT_TemperatureProfile_getIMax
 

@@ -20,5 +20,3 @@ OT_SpectralModel_getInputDimension_doc
 OT_SpectralModel_setAmplitude_doc
 %feature("docstring") OT::SpectralModel::setScale
 OT_SpectralModel_setScale_doc
-%feature("docstring") OT::SpectralModel::operator()
-OT_SpectralModel_operator_doc

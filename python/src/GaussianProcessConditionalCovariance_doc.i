@@ -171,39 +171,3 @@ If several marginal of interest :math:`(k_1, \dots, k_M)` or several points :mat
 \dots, \vect{\xi}_N)` have been specified, the method returns the concatenation of
 sequence of variances :math:`(\Var{Z_{k_1}(\omega, \vect{\xi}_j)}, \dots, \Var{Z_{k_M}(\omega, \vect{\xi}_j)})` for each :math:`1 \leq j \leq N`.)RAW"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GaussianProcessConditionalCovariance::operator()
-R"RAW(Compute the conditional Gaussian distribution on a new point / sample conditionally to the observed paths.
-
-Parameters
-----------
-pt : sequence of float
-    The point :math:`\vect{x}` where the conditional distribution of the output has to be evaluated.
-sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)` where the conditional distribution of the output has to be evaluated (*N* can be equal to 1).
-
-Returns
--------
-condDist : :class:`~openturns.Normal`
-    The conditional Gaussian distribution.
-
-Notes
------
-The conditional distribution of the Gaussian
-process regression :math:`\vect{Z}` defined in :eq:`GPRdef` and computed at :math:`\vect{x}` or at :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`.
-In the first case, the method returns a Gaussian distribution of dimension :math:`\outputDim`,
-while in the second case, the method returns a Gaussian distribution of dimension
-:math:`N \times \outputDim`. The mean and the coarance matrix of the resulting distribution are
-computed by :meth:`getConditionalMean` and :meth:`getConditionalCovariance`.)RAW"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GaussianProcessConditionalCovariance::getMetaModel
-R"RAW(Accessor to the metamodel.
-
-Returns
--------
-metaModel : :class:`~openturns.Function`
-    The Gaussian process regression metamodel :math:`\tilde{g}: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined in :eq:`GPRmetamodel`.)RAW"
-

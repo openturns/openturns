@@ -176,20 +176,6 @@ False"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Point::getDescription
-"Accessor to the componentwise description.
-
-Returns
--------
-description : :class:`~openturns.Description`
-    Description of the components.
-
-See Also
---------
-setDescription"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Point::getDimension
 "Accessor to the vector's dimension.
 
@@ -197,16 +183,6 @@ Returns
 -------
 n : int
     The number of components in the vector."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Point::setDescription
-"Accessor to the componentwise description.
-
-Parameters
-----------
-description : sequence of str
-    Description of the components."
 
 // ---------------------------------------------------------------------
 

@@ -93,16 +93,6 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LogNormal::getMu
-"Accessor to the distribution's mean.
-
-Returns
--------
-mu : float
-    Mean."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LogNormal::getMuLog
 R"RAW(Accessor to the distribution's location parameter :math:`\mu_\ell`.
 
@@ -113,16 +103,6 @@ mu_log : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LogNormal::getSigma
-"Accessor to the distribution's standard deviation.
-
-Returns
--------
-sigma : float
-    Standard deviation."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LogNormal::getSigmaLog
 R"RAW(Accessor to the distribution's scale parameter :math:`\sigma_\ell`.
 
@@ -130,16 +110,6 @@ Returns
 -------
 sigma_log : float
     Scale parameter :math:`\sigma_\ell`.)RAW"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LogNormal::getSigmaOverMu
-R"RAW(Accessor to the distribution's coefficient of variation (if defined).
-
-Returns
--------
-cov : float
-    Coefficient of variation :math:`\sigma/\mu, \mu \neq 0`.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -170,15 +140,3 @@ Parameters
 ----------
 sigma_log : float, :math:`\sigma_\ell > 0`
     Scale parameter :math:`\sigma_\ell`.)RAW"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LogNormal::setMuSigma
-R"RAW(Accessor to the distribution's mean and standard deviation.
-
-Parameters
-----------
-mu : float, :math:`\mu > \gamma`
-    Mean.
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"

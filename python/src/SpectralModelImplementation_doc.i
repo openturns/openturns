@@ -191,21 +191,3 @@ scale : :class:`~openturns.Point`
 %feature("docstring") OT::SpectralModelImplementation::setScale
 OT_SpectralModel_setScale_doc
 
-// ---------------------------------------------------------------------
-
-%define OT_SpectralModel_operator_doc
-"Evaluate the spectral density function for a specific frequency.
-
-Parameters
-----------
-f : float
-    Frequency value.
-
-Returns
--------
-spd : HermitianMatrixs
-    The evaluation of spectral density function at frequency f."
-
-%enddef
-%feature("docstring") OT::SpectralModelImplementation::operator()
-OT_SpectralModel_operator_doc

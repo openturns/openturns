@@ -650,32 +650,6 @@ OT_Graph_setGridColor_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_getFileName_doc
-"Accessor to the name of the file containing the Graph.
-
-Returns
--------
-fileName : str
-    Name of the file containing the Graph."
-%enddef
-%feature("docstring") OT::GraphImplementation::getFileName
-OT_Graph_getFileName_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Graph_getPath_doc
-"Accessor to the file path excluding the suffix.
-
-Returns
--------
-path : str
-    Path of the file containing the Graph."
-%enddef
-%feature("docstring") OT::GraphImplementation::getPath
-OT_Graph_getPath_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Graph_setXMargin_doc
 "Accessor to the horizontal margin size.
 

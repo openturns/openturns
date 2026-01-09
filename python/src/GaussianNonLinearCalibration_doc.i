@@ -88,26 +88,6 @@ Calibrate a nonlinear model using 3DVAR:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianNonLinearCalibration::getModelObservations
-"Accessor to the model evaluation at the parameterMean.
-
-Returns
--------
-modelObservation : :class:`~openturns.Sample`
-    Evaluation of the model at the parameterMean point."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::GaussianNonLinearCalibration::getGradientObservations
-"Accessor to the model gradient at the `parameterMean`.
-
-Returns
--------
-gradientObservation : :class:`~openturns.Matrix`
-    Gradient of the model at the `parameterMean` point."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::GaussianNonLinearCalibration::getParameterMean
 "Accessor to the parameter `parameterMean`.
 

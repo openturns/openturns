@@ -109,26 +109,6 @@ outputDistCol : :class:`~openturns.DistributionCollection`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MarginalTransformationEvaluation::setParameterSide
-"Accessor to the parameter side flag.
-
-Parameters
-----------
-param_side : int
-    The location of the parameters."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MarginalTransformationEvaluation::getParameterSide
-"Accessor to the parameter side flag.
-
-Returns
--------
-param_side : int
-    The location of the parameters."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MarginalTransformationEvaluation::setInputDistributionCollection
 "Accessor to the input distribution collection.
 

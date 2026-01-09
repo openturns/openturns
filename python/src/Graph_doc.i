@@ -80,10 +80,6 @@ OT_Graph_setGrid_doc
 OT_Graph_getGridColor_doc
 %feature("docstring") OT::Graph::setGridColor
 OT_Graph_setGridColor_doc
-%feature("docstring") OT::Graph::getFileName
-OT_Graph_getFileName_doc
-%feature("docstring") OT::Graph::getPath
-OT_Graph_getPath_doc
 %feature("docstring") OT::Graph::setXMargin
 OT_Graph_setXMargin_doc
 %feature("docstring") OT::Graph::setYMargin

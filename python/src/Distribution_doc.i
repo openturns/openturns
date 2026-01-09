@@ -200,10 +200,6 @@ OT_Distribution_getStandardDistribution_doc
 OT_Distribution_getStandardRepresentative_doc
 %feature("docstring") OT::Distribution::getSupport
 OT_Distribution_getSupport_doc
-%feature("docstring") OT::Distribution::getSupportEpsilon
-OT_Distribution_getSupportEpsilon_doc
-%feature("docstring") OT::Distribution::setSupportEpsilon
-OT_Distribution_setSupportEpsilon_doc
 %feature("docstring") OT::Distribution::getSingularities
 OT_Distribution_getSingularities_doc
 %feature("docstring") OT::Distribution::getProbabilities
@@ -222,8 +218,6 @@ OT_Distribution_isDiscrete_doc
 OT_Distribution_isElliptical_doc
 %feature("docstring") OT::Distribution::isIntegral
 OT_Distribution_isIntegral_doc
-%feature("docstring") OT::Distribution::isParallel
-OT_Distribution_isParallel_doc
 %feature("docstring") OT::Distribution::setDescription
 OT_Distribution_setDescription_doc
 %feature("docstring") OT::Distribution::setParametersCollection

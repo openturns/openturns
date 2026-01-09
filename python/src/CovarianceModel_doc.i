@@ -54,8 +54,6 @@ OT_CovarianceModel_set_nugget_factor_doc
 OT_CovarianceModel_setParameter_doc
 %feature("docstring") OT::CovarianceModel::setOutputCorrelation
 OT_CovarianceModel_setOutputCorrelation_doc
-%feature("docstring") OT::CovarianceModel::operator()
-OT_CovarianceModel_operator_doc
 %feature("docstring") OT::CovarianceModel::setActiveParameter
 OT_CovarianceModel_setActiveParameter_doc
 %feature("docstring") OT::CovarianceModel::getActiveParameter

@@ -171,19 +171,6 @@ OT_Process_setMesh_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Process_getMeshDimension_doc
-"Get the dimension of the mesh.
-
-Returns
--------
-n : int
-    Dimension :math:`n` of the mesh."
-%enddef
-%feature("docstring") OT::ProcessImplementation::getMeshDimension
-OT_Process_getMeshDimension_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Process_getRealization_doc
 "Get a realization of the process.
 
