@@ -16,6 +16,7 @@ Coles datasets
 - The **wavesurge** sample consist in measurements of wave and surge heights in south-west England.
 - The **venice** sample gives the ten largest sea levels from 1931 to 1981,
   excluding 1935 in which only six values are available.
+- The **dowjones** sample records the daily values of the Dow Jones stock market index from 1995 to 2000.
 
 References
 ----------
