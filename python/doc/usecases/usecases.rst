@@ -25,7 +25,7 @@ Contents
    use_case_fire_satellite
    use_case_wingweight
    use_case_oscillator
-   coles
+   use_case_coles
    use_case_linthurst
    use_case_stiffened_panel
    use_case_fission_gas
