@@ -103,6 +103,8 @@ UnsignedInteger Mesh::getDimension() const
 /* Intrinsic dimension accessor */
 UnsignedInteger Mesh::getIntrinsicDimension() const
 {
+  if (!getSimplicesNumber())
+    return 0;
   UnsignedInteger verticesPerSimplex = 1;
   UnsignedInteger lastIndex = simplices_(0, 0);
   while ((verticesPerSimplex <= dimension_) && (simplices_(0, verticesPerSimplex) != lastIndex))
