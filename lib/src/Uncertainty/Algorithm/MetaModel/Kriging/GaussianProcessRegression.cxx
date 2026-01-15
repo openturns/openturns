@@ -89,7 +89,7 @@ GaussianProcessRegression::GaussianProcessRegression(const Sample & inputSample,
     throw InvalidArgumentException(HERE) << "GaussianProcessRegression : trend output dimension is " << trendFunction.getOutputDimension() << ", expected " << outputDimension;
 
   const Sample detrended(outputSample_ - trendFunction(inputSample_));
-  // Launch a fit
+  // Launch a fitter without actually fitting, just discretize
   GaussianProcessFitter algo(inputSample_, detrended, covarianceModel_);
   algo.setKeepCholeskyFactor(true);
   algo.setOptimizeParameters(false);

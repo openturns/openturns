@@ -83,6 +83,9 @@ public:
   /** Process coefficients accessor */
   Sample getCovarianceCoefficients() const;
 
+  /** Fitter result accessor */
+  GaussianProcessFitterResult getGaussianProcessFitterResult() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

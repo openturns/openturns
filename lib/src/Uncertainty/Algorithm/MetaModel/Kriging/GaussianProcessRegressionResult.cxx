@@ -133,6 +133,12 @@ HMatrix GaussianProcessRegressionResult::getHMatCholeskyFactor() const
   return gpfResult_.getHMatCholeskyFactor();
 }
 
+/* Fitter result accessor */
+GaussianProcessFitterResult GaussianProcessRegressionResult::getGaussianProcessFitterResult() const
+{
+  return gpfResult_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void GaussianProcessRegressionResult::save(Advocate & adv) const
 {
