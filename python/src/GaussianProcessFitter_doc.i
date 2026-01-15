@@ -69,7 +69,7 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
 
 - The boolean entry *GaussianProcessFitter-UseAnalyticalAmplitudeEstimate* to use the reduction associated to
   :math:`\sigma`.
-  It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
+  It has no effect if :math:`\outputDim > 1` or if :math:`\outputDim=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
 - The boolean entry *GaussianProcessFitter-UnbiasedVariance* allows one to use the *unbiased* estimate of
   :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}`
   in the optimality condition for :math:`\sigma`.

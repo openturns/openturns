@@ -14,15 +14,15 @@ for all :math:`k`.
 The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that interpolates the data
 set. To build this metamodel, we follow the steps:
 
-- Step 1: Gaussian process fitting: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
+- **Step 1: Gaussian process fitting**: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
   where :math:`\vect{\mu}` is the trend function and :math:`\vect{W}` is a Gaussian process of
   dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`;
-- Step 2:  Gaussian Process Regression: we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
+- **Step 2:  Gaussian Process Regression**: we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
-- Step 3:  Gaussian Process Regression metamodel and its exploitation:  we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+- **Step 3:  Gaussian Process Regression metamodel and its exploitation**:  we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
   that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
   the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
@@ -64,9 +64,9 @@ Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputD
 covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`, where (see
 :ref:`covariance_model` for more details on the notations):
 
-- :math:`\vect{\theta}` is the scale vector,
-- :math:`\vect{\sigma}` is the standard deviation vector,
-- :math:`\mat{R}` is the spatial correlation matrix between the components of :math:`\vect{W}`,
+- :math:`\vect{\theta} \in \Rset^\inputDim` is the scale vector,
+- :math:`\vect{\sigma} \in \Rset^\outputDim` is the standard deviation vector,
+- :math:`\mat{R} \in \cS_{\outputDim}^+(\Rset)` is the spatial correlation matrix between the components of :math:`\vect{W}`,
 - :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
 
 Then, we have to estimate the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}`
@@ -123,9 +123,9 @@ The likelihood of the Gaussian process on the data set is defined by:
 .. math::
 
     \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}
-    {(2\pi)^{\inputDim \times \sampleSize/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}
+    {(2\pi)^{\outputDim \times \sampleSize/2} |\det \left(\mat{C}_{\vect{p}}\right)|^{1/2}} \exp\left( -\dfrac{1}{2}
     \Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}
-    _{\vect{\beta}} \right)  \right]
+    _{\vect{\beta}} \right)  \right)
 
 Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular
 matrix with positive diagonal such that
@@ -135,37 +135,38 @@ Therefore:
 .. math::
     :label: logLikelihoodGP
 
-    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize})
-    = cste - \log \det \mat{L}_{\vect{p}} -\dfrac{1}{2}  \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
+    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
+    = \alpha - \log \left( \det \left(\mat{L}_{\vect{p}}\right) \right)
+    -\dfrac{1}{2}  \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2_2
 
-The maximization of :eq:`logLikelihoodGP` leads to the following optimality condition for :math:`\vect{\beta}`:
+where :matrh:`\alpha \in \Rset` is a constant independent of :math:`\vect{\beta}` and :math:`\vect{p}`. The maximization of :eq:`logLikelihoodGP` leads to the following optimality condition for :math:`\vect{\beta}`:
 
 .. math::
 
     \vect{\beta}^*(\vect{p}^*)
-    = \argmin_{\vect{\beta}} \| \mat{L}_{\vect{p}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}}) \|^2_2
+    = \argmin_{\vect{\beta}} \left\| \mat{L}_{\vect{p}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2
 
 This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation
 between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to
 a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
-In the particular case where :math:`d_{\outputDim}=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
+In the particular case where :math:`\outputDim=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
 then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which
 :math:`\sigma` has been substituted by 1, then:
 
 .. math::
 
-    \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
-    = \frac{1}{\sigma^2} \| \mat{L}_{\vect{q}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2_2
+    \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2 
+    = \frac{1}{\sigma^2} \left\| \mat{L}_{\vect{q}}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2
 
-showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality condition
+showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only. The optimality condition
 for :math:`\sigma` reads:
 
 .. math::
 
     \vect{\sigma}^*(\vect{q}^*)
-    = \dfrac{1}{\sampleSize} \| \mat{L}_{\vect{q}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)})
-    \|^2_2
+    =\dfrac{1}{\sampleSize} 
+    \left\| \mat{L}_{\vect{q}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)}\right) \right\|^2_2.
 
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and
 :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
