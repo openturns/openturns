@@ -149,7 +149,7 @@ This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is
 between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to
 a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
-In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
+In the particular case where :math:`d_{\outputDim}=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
 then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which
 :math:`\sigma` has been substituted by 1, then:
 
@@ -193,7 +193,7 @@ Then, :math:`\vect{Z}` is a Gaussian process, which mean is defined by:
 
 .. math::
 
-   \Expect{\vect{Z}(\omega, \vect{x})\, | \,  \cC}  & =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}\\
+   \Expect{\vect{Z}(\omega, \vect{x})}  & =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}\\
     & = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
     \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
 
@@ -269,7 +269,8 @@ The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
 .. math::
     :label: GPRmetamodel
 
-    \metaModel(\vect{x}) = \Expect{\vect{Z}(\omega, \vect{x})} =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}.
+    \metaModel(\vect{x}) = \Expect{\vect{Z}(\omega, \vect{x})} =  \vect{\mu}(\vect{x}) + \sum_{i=1}
+    ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i).
 
 We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
 :class:`~openturns.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.

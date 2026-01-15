@@ -73,10 +73,11 @@ independent components.
 >>> distRight = ot.Normal(2)
 >>> transf = ot.DistributionTransformation(distLeft, distRight)
 >>> pointOutput = transf([0, 0])
->>> print(point_output)
+>>> print(pointOutput)
 [0,-0.150769]
 >>> transfInverse = transf.inverse()
 >>> pointInit = transfInverse(pointOutput)
+>>> print(pointInit)
 [0,-1.11022e-15]
 )RAW"
 
