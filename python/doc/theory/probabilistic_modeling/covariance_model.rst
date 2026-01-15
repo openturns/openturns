@@ -44,7 +44,7 @@ In a general way, the covariance models write:
 where:
 
 - :math:`\vect{\theta} \in \Rset^{\sampleSize}` is the *scale* parameter
-- :math:`\vect{\sigma} \in \Rset^{\inputDim}` id the *amplitude* parameter
+- :math:`\vect{\sigma} \in \Rset^{\inputDim}` is the *amplitude* parameter
 - :math:`\mat{L}_{\rho}(\vect{s}, \vect{t})` is the Cholesky factor of
   :math:`\mat{\rho}(\vect{s}, \vect{t})`:
 
