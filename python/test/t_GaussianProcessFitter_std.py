@@ -10,7 +10,7 @@ def use_case_1(X, Y):
     optim problem (scale)
     Dirac model
     """
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
@@ -34,7 +34,7 @@ def use_case_2(X, Y):
     """
     No optim with Dirac model
     """
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(inputDimension)
@@ -59,7 +59,7 @@ def use_case_3(X, Y):
     full optim problem (scale)
     analytical variance estimate
     """
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
@@ -88,7 +88,7 @@ def use_case_4(X, Y):
     optim problem (scale)
     Biased variance estimate
     """
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", False)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
@@ -116,7 +116,7 @@ def use_case_5(X, Y):
     """
     full optim problem (scale, amplitude)
     """
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     ot.ResourceMap.SetAsBool("GaussianProcessFitter-UnbiasedVariance", False)
     ot.ResourceMap.SetAsBool(
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
@@ -150,7 +150,7 @@ def use_case_5(X, Y):
 
 def use_case_6(X, Y):
     ot.RandomGenerator.SetSeed(0)
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     ot.ResourceMap.SetAsBool(
         "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
     )
@@ -174,7 +174,7 @@ def use_case_6(X, Y):
 
 def use_case_7(X, Y):
     ot.RandomGenerator.SetSeed(0)
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
     ot.ResourceMap.SetAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 0.0)
     covarianceModel = ot.AbsoluteExponential()
     with ott.assert_raises(TypeError):
@@ -182,9 +182,25 @@ def use_case_7(X, Y):
         algo.run()
 
 
+def use_case_8(X, Y):
+    ot.RandomGenerator.SetSeed(0)
+    ot.ResourceMap.Reset()
+    covarianceModel = ot.AbsoluteExponential()
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    algo.run()
+    result = algo.getResult()
+    scale0, amplitude0 = result.getCovarianceModel().getParameter()
+    algo.setNoise([1.0] * len(X))
+    algo.run()
+    result = algo.getResult()
+    scale1, amplitude1 = result.getCovarianceModel().getParameter()
+    assert scale1 < scale0, "scale comparison"
+    assert amplitude1 < amplitude0, "amplitude comparison"
+
+
 def bugfix_optim_no_feasible():
     ot.RandomGenerator.SetSeed(0)
-    ot.ResourceMap.Reload()
+    ot.ResourceMap.Reset()
 
     m = FireSatelliteModel()
     model = m.model
@@ -261,5 +277,6 @@ if __name__ == "__main__":
     use_case_5(X, Y)
     use_case_6(X, Y)
     use_case_7(X, Y)
+    use_case_8(X, Y)
     # fix https://github.com/openturns/openturns/issues/2953
     bugfix_optim_no_feasible()

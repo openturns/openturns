@@ -65,6 +65,15 @@ It is also possible to proceed as follows:
 * set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 * tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
+A centered Gaussian noise :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`
+can be taken into account for each output value with :func:`setNoise()`:
+
+.. math::
+    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+
+see algo :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise`.
+
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
 - The boolean entry *GaussianProcessFitter-UseAnalyticalAmplitudeEstimate* to use the reduction associated to
@@ -326,3 +335,25 @@ linAlgMethod : int
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
     - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::setNoise
+R"RAW(Output sample noise variance accessor.
+
+Parameters
+----------
+noise : sequence of :class:`~openturns.CovarianceMatrix` or sequence of float
+    The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::getNoise
+R"RAW(Output sample noise variance accessor.
+
+Returns
+-------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+)RAW"
