@@ -424,6 +424,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "indicesHistory_", indicesHistory_ );
   adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
   adv.saveAttribute( "errorHistory_", errorHistory_ );
+  adv.saveAttribute( "historyCutPoints_", historyCutPoints_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
 }
@@ -446,6 +447,10 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "indicesHistory_", indicesHistory_ );
     adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
     adv.loadAttribute( "errorHistory_", errorHistory_ );
+    if (adv.hasAttribute("historyCutPoints_"))
+      {
+	adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );	
+      }
   }
   if (adv.hasAttribute("isLeastSquares_"))
   {
@@ -454,34 +459,42 @@ void FunctionalChaosResult::load(Advocate & adv)
   }
 }
 
-IndicesCollection FunctionalChaosResult::getIndicesHistory() const
+IndicesCollection FunctionalChaosResult::getIndicesHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "getIndicesHistory is only available for 1-d output dimension "
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  return IndicesCollection(indicesHistory_);
+  if (outputIndex > metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+  Collection<Indices> selectedIndices;
+  std::copy(indicesHistory_.begin() + historyCutPoints_[outputIndex], indicesHistory_.begin() + historyCutPoints_[outputIndex + 1], std::back_inserter(selectedIndices));
+  return IndicesCollection(selectedIndices);
 }
 
 Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "getCoefficientsHistory is only available for 1-d output dimension "
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
+  if (outputIndex > metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+  Collection<Point> selectedCoefficients;
+  std::copy(coefficientsHistory_.begin() + historyCutPoints_[outputIndex], coefficientsHistory_.begin() + historyCutPoints_[outputIndex + 1], std::back_inserter(selectedCoefficients));
   return coefficientsHistory_;
 }
 
-void FunctionalChaosResult::setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory)
+void FunctionalChaosResult::setSelectionHistory(const Collection<Indices> & indicesHistory, const Collection<Point> & coefficientsHistory, const Indices & historyCutPoints)
 {
+  if (indicesHistory.getSize() != metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given indices history size=" << indicesHistory.getSize() << " should be equal to " << metaModel_.getOutputDimension();
+  if (coefficientsHistory.getSize() != metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given coefficients history size=" << coefficientsHistory.getSize() << " should be equal to " << metaModel_.getOutputDimension();
+  if (historyCutPoints.getSize() != metaModel_.getOutputDimension() + 1) throw InvalidArgumentException(HERE) << "Error: the given history cut points size=" << historyCutPoints.getSize() << " must be equal to " << metaModel_.getOutputDimension() + 1;
+  if (!historyCutPoints.isStrictlyIncreasing()) throw InvalidArgumentException(HERE) << "Error: the given history cut points must be in strictly increasing order";
   indicesHistory_ = indicesHistory;
   coefficientsHistory_ = coefficientsHistory;
+  historyCutPoints_ = historyCutPoints;
 }
 
-Graph FunctionalChaosResult::drawSelectionHistory() const
+Graph FunctionalChaosResult::drawSelectionHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "drawSelectionHistory is only available for 1-d output dimension"
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  const UnsignedInteger size = indicesHistory_.getSize();
+  if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+
+  // extract the relevant part of the histories
+  const IndicesCollection outputIndicesHistory(getIndicesHistory(outputIndex));
+  const Collection<Point> outputCoefficientsHistory(getCoefficientsHistory(outputIndex));
+  
+  const UnsignedInteger size = outputIndicesHistory.getSize();
   if (!size)
     throw InvalidArgumentException(HERE) << "No selection history available";
 
@@ -490,20 +503,20 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   UnsignedInteger coefId = 0;
   Indices uniqueBasisIndices;
   for (UnsignedInteger i = 0; i < size; ++ i)
-    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
-      if (indicesMap.find(indicesHistory_[i][j]) == indicesMap.end())
+    for (UnsignedInteger j = 0; j < outputIndicesHistory[i].getSize(); ++ j)
+      if (indicesMap.find(outputIndicesHistory[i][j]) == indicesMap.end())
       {
-        indicesMap[indicesHistory_[i][j]] = coefId;
+        indicesMap[outputIndicesHistory[i][j]] = coefId;
         ++ coefId;
-        uniqueBasisIndices.add(indicesHistory_[i][j]);
+        uniqueBasisIndices.add(outputIndicesHistory[i][j]);
       }
   Sample valuesY(size + 1, coefId);
   Sample valuesX(size + 1, 1);
   for (UnsignedInteger i = 0; i < size + 1; ++ i)
     valuesX(i, 0) = i;
   for (UnsignedInteger i = 0; i < size; ++ i)
-    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
-      valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
+    for (UnsignedInteger j = 0; j < outputIndicesHistory[i].getSize(); ++ j)
+      valuesY(i + 1, indicesMap[outputIndicesHistory[i][j]]) = outputCoefficientsHistory[i][j];
   Graph result("Selection history", "iteration", "coefficient", true, "upper right");
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
