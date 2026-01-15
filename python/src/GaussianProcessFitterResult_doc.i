@@ -142,13 +142,24 @@ function in :eq:`metaModelGPF`.)RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianProcessFitterResult::getNoise
+%feature("docstring") OT::GaussianProcessFitterResult::getCenteredProcess
 R"RAW(Accessor to the Gaussian process.
 
 Returns
 -------
-process : :class:`~openturns.Process`
-    The Gaussian process :math:`\vect{W}` its the optimized parameters.
+process : :class:`~openturns.GaussianProcess`
+    The Gaussian process :math:`\vect{W}` with its the optimized parameters.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getNoise
+R"RAW(Output sample noise variance accessor.
+
+Returns
+-------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`.
 )RAW"
 
 // ---------------------------------------------------------------------
