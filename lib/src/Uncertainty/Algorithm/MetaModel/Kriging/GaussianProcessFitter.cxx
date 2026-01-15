@@ -41,17 +41,6 @@ static const Factory<GaussianProcessFitter> Factory_GaussianProcessFitter;
 /* Default constructor */
 GaussianProcessFitter::GaussianProcessFitter()
   : MetaModelAlgorithm()
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basis_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
 {
   // Nothing to do
 }
@@ -61,17 +50,6 @@ GaussianProcessFitter::GaussianProcessFitter(const Sample & inputSample,
     const CovarianceModel & covarianceModel,
     const Basis & basis)
   : MetaModelAlgorithm(inputSample, outputSample)
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basis_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
 {
   // Set covariance model
   setCovarianceModel(covarianceModel);
@@ -103,7 +81,7 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
   const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
   if (!optimizeParameters_) reducedCovarianceModel_.setActiveParameter(Indices());
   // Second, check if the amplitude parameter is unique and active
-  else if (ResourceMap::GetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate"))
+  else if (ResourceMap::GetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate") && !noise_.getSize())
   {
     // The model has to be of dimension 1
     if (reducedCovarianceModel_.getOutputDimension() == 1)
@@ -333,7 +311,7 @@ void GaussianProcessFitter::run()
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_);
+  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, noise_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_);
   result_.setRho(rho_);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
@@ -521,6 +499,22 @@ Scalar GaussianProcessFitter::computeLapackLogDeterminantCholesky()
 
   LOGDEBUG("Discretize the covariance model");
   CovarianceMatrix C(reducedCovarianceModel_.discretize(inputSample_));
+
+  if (noise_.getSize() > 0)
+  {
+    LOGDEBUG("Add noise to the covariance matrix");
+    UnsignedInteger shift = 0;
+    const UnsignedInteger size = inputSample_.getSize();
+    const UnsignedInteger outputDimension = reducedCovarianceModel_.getOutputDimension();
+    for (UnsignedInteger k = 0; k < size; ++ k)
+    {
+      for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+        for (UnsignedInteger i = j; i < outputDimension; ++ i)
+          C(shift + i, shift + j) += noise_[k](i, j);
+      shift += outputDimension;
+    }
+  }
+
   if (C.getDimension() < 20)
     LOGDEBUG(OSS(false) << "C=\n" << C);
   LOGDEBUG("Compute the Cholesky factor of the covariance matrix");
@@ -564,6 +558,9 @@ Scalar GaussianProcessFitter::computeHMatLogDeterminantCholesky()
 {
   // Using the hypothesis that parameters = scale & model writes : C(s,t) = \sigma^2 * R(s,t) with R a correlation function
   LOGDEBUG(OSS(false) << "Compute the HMAT log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
+
+  if (noise_.getSize() > 0)
+    throw NotYetImplementedException(HERE) << "Noise is not be handled with HMAT method";
 
   const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getOutputDimension();
 
@@ -727,6 +724,44 @@ void GaussianProcessFitter::setMethod(const LinearAlgebra method)
   }
 }
 
+/* Noise accessor */
+void GaussianProcessFitter::setNoise(const CovarianceMatrixCollection & noise)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    if (noise[i].getDimension() != outputSample_.getDimension())
+      throw InvalidArgumentException(HERE) << "The noise must match the output dimension at index " << i;
+    if (!noise[i].isPositiveDefinite())
+      throw InvalidArgumentException(HERE) << "The noise must be SPD at index " << i;
+  }
+  noise_ = noise;
+
+  // If we update noise, we need to reset
+  reset();
+}
+
+void GaussianProcessFitter::setNoise(const Point & noise)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (!(noise[i] >= 0.0))
+      throw InvalidArgumentException(HERE) << "The noise must be positive, got " << noise[i] << " at index " << i;
+  noise_.resize(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    noise_[i] = CovarianceMatrix(1, {noise[i]});
+
+  // If we update noise, we need to reset
+  reset();
+}
+
+GaussianProcessFitter::CovarianceMatrixCollection GaussianProcessFitter::getNoise() const
+{
+  return noise_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void GaussianProcessFitter::save(Advocate & adv) const
 {
@@ -748,6 +783,7 @@ void GaussianProcessFitter::save(Advocate & adv) const
   adv.saveAttribute( "optimizeParameters_", optimizeParameters_ );
   adv.saveAttribute( "analyticalAmplitude_", analyticalAmplitude_ );
   adv.saveAttribute( "lastReducedLogLikelihood_", lastReducedLogLikelihood_ );
+  adv.saveAttribute( "noise_", noise_ );
 }
 
 
@@ -773,6 +809,8 @@ void GaussianProcessFitter::load(Advocate & adv)
   adv.loadAttribute( "optimizeParameters_", optimizeParameters_ );
   adv.loadAttribute( "analyticalAmplitude_", analyticalAmplitude_ );
   adv.loadAttribute( "lastReducedLogLikelihood_", lastReducedLogLikelihood_ );
+  if (adv.hasAttribute("noise_"))
+    adv.loadAttribute( "noise_", noise_ );
 }
 
 END_NAMESPACE_OPENTURNS

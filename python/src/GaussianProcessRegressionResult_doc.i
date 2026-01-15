@@ -114,13 +114,13 @@ This metamodel is interpolating the data set.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianProcessRegressionResult::getNoise
+%feature("docstring") OT::GaussianProcessRegressionResult::getCenteredProcess
 R"RAW(Accessor to the Gaussian process.
 
 Returns
 -------
-process : :class:`~openturns.Process`
-    The Gaussian process :math:`\vect{W}` its the optimized parameters.
+process : :class:`~openturns.GaussianProcess`
+    The Gaussian process :math:`\vect{W}` with its the optimized parameters.
 )RAW"
 
 // ---------------------------------------------------------------------
