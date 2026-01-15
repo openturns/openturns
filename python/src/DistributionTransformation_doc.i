@@ -72,13 +72,13 @@ independent components.
 >>> distLeft = ot.JointDistribution([ot.Uniform(-1, 1)]*2, ot.ClaytonCopula(1.2))
 >>> distRight = ot.Normal(2)
 >>> transf = ot.DistributionTransformation(distLeft, distRight)
->>> pointOutput = transf([0, 0])
+>>> pointOutput = transf([0.5, 0.5])
 >>> print(pointOutput)
-[0,-0.150769]
+[0.67449,0.31932]
 >>> transfInverse = transf.inverse()
 >>> pointInit = transfInverse(pointOutput)
 >>> print(pointInit)
-[0,-1.11022e-15]
+[0.5,0.5]
 )RAW"
 
 // ---------------------------------------------------------------------
