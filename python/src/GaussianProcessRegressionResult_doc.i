@@ -171,4 +171,14 @@ Notes
 As the same basis is used for each marginal output, each :math:`\vect{\beta}^\ell` vector is of dimension
 :math:`b`, the size of the functional basis.
 )RAW"
+
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessRegressionResult::getGaussianProcessFitterResult
+"Accessor to the fitting result.
+
+Returns
+-------
+result : :class:`~openturns.GaussianProcessFitterResult`
+    The fitting result.
+"
