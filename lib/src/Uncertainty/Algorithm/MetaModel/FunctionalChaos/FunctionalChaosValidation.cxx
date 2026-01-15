@@ -171,14 +171,14 @@ Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
 /* Method save() stores the object through the StorageManager */
 void FunctionalChaosValidation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  MetaModelValidation::save(adv);
   adv.saveAttribute( "functionalChaosResult_", functionalChaosResult_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void FunctionalChaosValidation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  MetaModelValidation::load(adv);
   adv.loadAttribute( "functionalChaosResult_", functionalChaosResult_ );
 }
 
