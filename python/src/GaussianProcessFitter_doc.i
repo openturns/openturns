@@ -76,7 +76,10 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
 - Like other machine learning techniques, heteregeneous data (i.e., data defined with different orders of magnitude)
   can have an impact on the training process of Gaussian Process Fitter.
   The boolean entry *GaussianProcessFitter-OptimizationNormalization* decides whether
-  to scale input data during the hyperparameters optimization, see :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
+  to internally scale the hyperparameters during the optimization using a min-max transformation:
+  :math:`\theta\prime = \frac{\theta - \theta_{min}}{\theta_{max} - \theta_{min}}`
+  The input data itself is not directly normalized to avoid introducing an additional transformation to the metamodel.
+  see also :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
