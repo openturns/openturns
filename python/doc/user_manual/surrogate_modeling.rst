@@ -100,6 +100,7 @@ Main classes
     :template: class.rst_t
     GaussianProcessRegressionResult
     GaussianProcessFitterResult
+    experimental.GaussianProcessRegressionCrossValidation
     GaussianProcessConditionalCovariance
     experimental.GaussianProcessRandomVector
 

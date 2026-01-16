@@ -193,6 +193,10 @@ Bibliography
     Chapman \& Hall/CRC.
 .. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
     Wiley StatsRef: Statistics Reference Online, Wiley
+.. [ginsbourger2025] Ginsbouger, D., & Schärer, C. (2025).
+    *Fast calculation of Gaussian Process Multiple-Fold Cross-Validation Residuals and their Covariances*,
+    Journal of Computational and Graphical Statistics, 34:1, 1-14.
+    `pdf <https://www.tandfonline.com/doi/pdf/10.1080/10618600.2024.2353633>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__

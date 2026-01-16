@@ -851,6 +851,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       GaussianProcessFitter.i GaussianProcessFitter_doc.i
                       GaussianProcessRegressionResult.i GaussianProcessRegressionResult_doc.i
                       GaussianProcessRegression.i GaussianProcessRegression_doc.i
+                      GaussianProcessRegressionCrossValidation.i GaussianProcessRegressionCrossValidation_doc.i
                       GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i

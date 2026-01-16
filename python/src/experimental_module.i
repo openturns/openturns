@@ -79,6 +79,7 @@
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
 %include EfficientGlobalOptimization.i
+%include GaussianProcessRegressionCrossValidation.i
 
 /* Uncertainty/Model */
 %include RatioOfUniforms.i
