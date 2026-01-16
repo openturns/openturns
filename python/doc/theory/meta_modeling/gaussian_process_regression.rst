@@ -22,7 +22,8 @@ set. To build this metamodel, we follow the steps:
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
-- **Step 3:  Gaussian Process Regression metamodel and its exploitation**:  we define the metamodel as :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
+- **Step 3:  Gaussian Process Regression metamodel and its exploitation**:  we define the metamodel as
+  :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
   that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
   the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
@@ -43,7 +44,7 @@ The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` 
 .. math::
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
-
+python/doc/theory/meta_modeling/gaussian_process_regression.rst
 where:
 
 .. math::
@@ -135,11 +136,12 @@ Therefore:
 .. math::
     :label: logLikelihoodGP
 
-    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) 
+    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize})
     = \alpha - \log \left( \det \left(\mat{L}_{\vect{p}}\right) \right)
     -\dfrac{1}{2}  \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2_2
 
-where :matrh:`\alpha \in \Rset` is a constant independent of :math:`\vect{\beta}` and :math:`\vect{p}`. The maximization of :eq:`logLikelihoodGP` leads to the following optimality condition for :math:`\vect{\beta}`:
+where :math:`\alpha \in \Rset` is a constant independent of :math:`\vect{\beta}` and :math:`\vect{p}`.
+The maximization of :eq:`logLikelihoodGP` leads to the following optimality condition for :math:`\vect{\beta}`:
 
 .. math::
 
@@ -156,7 +158,7 @@ then a further reduction is possible. In this case, if :math:`\vect{q}` is the v
 
 .. math::
 
-    \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2 
+    \left\| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \right\|^2
     = \frac{1}{\sigma^2} \left\| \mat{L}_{\vect{q}}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2
 
 showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only. The optimality condition
@@ -165,7 +167,7 @@ for :math:`\sigma` reads:
 .. math::
 
     \vect{\sigma}^*(\vect{q}^*)
-    =\dfrac{1}{\sampleSize} 
+    =\dfrac{1}{\sampleSize}
     \left\| \mat{L}_{\vect{q}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{q}^*)}\right) \right\|^2_2.
 
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and
