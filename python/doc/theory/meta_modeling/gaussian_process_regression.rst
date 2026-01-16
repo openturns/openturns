@@ -44,7 +44,7 @@ The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` 
 .. math::
 
     \vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})
-python/doc/theory/meta_modeling/gaussian_process_regression.rst
+
 where:
 
 .. math::

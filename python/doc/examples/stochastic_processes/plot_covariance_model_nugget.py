@@ -34,7 +34,7 @@ Create a covariance model with and without nugget effect
 #
 #  .. math::
 #      :label: cor_with_noise
-# 
+#
 #      \rho_{nugget}(\vect{s}, \vect{t}) &  =
 #          \left |
 #          \begin{array}{l}
@@ -47,15 +47,13 @@ Create a covariance model with and without nugget effect
 #
 #  .. math::
 #      :label: cov_with_noise
-# 
+#
 #      C_{nugget}(\vect{s}, \vect{t}) = C(\vect{s}, \vect{t}) + \sigma^2_{nugget} \mat{C}^{spatial} 1_{\vect{s} = \vect{t}}
 #
 
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pyplot as plt
-import math as m
 
 # %%
 # First we create a covariance function for a process defined on :math:`\cD \in \Rset` and with scalar outputs. We use the
@@ -76,9 +74,9 @@ g.setTitle('Without nugget effect')
 g_nugget = cov_model_with_nugget.draw()
 g_nugget.setTitle('With nugget effect')
 
-grid = ot.GridLayout(1,2)
-grid.setGraph(0,0, g)
-grid.setGraph(0,1, g_nugget)
+grid = ot.GridLayout(1, 2)
+grid.setGraph(0, 0, g)
+grid.setGraph(0, 1, g_nugget)
 view = otv.View(grid)
 otv.View.ShowAll()
 

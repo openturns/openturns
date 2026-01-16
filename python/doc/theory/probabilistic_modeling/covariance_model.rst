@@ -33,6 +33,7 @@ In a general way, the covariance models write:
 
 .. math::
     :label: def_cov
+
     C(\vect{s}, \vect{t}) = \mat{L}_{\rho}\left(\dfrac{\vect{s}}{\theta},
                             \dfrac{\vect{t}}{\theta}\right)\,
                             \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
@@ -50,6 +51,7 @@ where:
 
 .. math::
     :label: def_rho_general
+
     \mat{L}_{\rho}(\vect{s}, \vect{t})\,\Tr{\mat{L}_{\rho}(\vect{s}, \vect{t})}
     = \mat{\rho}(\vect{s}, \vect{t})
 
@@ -82,6 +84,7 @@ The global correlation is given by two separate correlations:
 
 .. math::
     :label: def_cov_rho
+
     C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}\right)\,
                             \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
@@ -90,10 +93,11 @@ The global correlation is given by two separate correlations:
 
 .. topic:: API:
 
-    - Refer to the general page *Stochastic process modeling - Remporal information* of the API documentation.
+    - Refer to the general page *Stochastic process modeling - Temporal information* of the API documentation.
 
 .. topic:: Examples:
 
     - See :doc:`/auto_stochastic_processes/plot_create_stationary_covmodel`
     - See :doc:`/auto_stochastic_processes/plot_userdefined_covariance_model`
+    - See :doc:`/auto_stochastic_processes/plot_covariance_model_nugget`
 

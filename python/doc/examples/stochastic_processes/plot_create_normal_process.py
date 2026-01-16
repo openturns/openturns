@@ -21,7 +21,6 @@ import openturns.viewer as otv
 # domain :math:`\cD \in \Rset` from its covariance model.
 #
 # See :ref:`Covariance models <covariance_model>` to get more details on covariance models.
-#  
 #
 # We first define a covariance model. We use a :class:`~openturns.MaternModel` model. By default, the nugget factor
 # is equal to :math:`10^{-12}`. That is why we set it to zero.
@@ -35,7 +34,7 @@ myModel.setNuggetFactor(0.0)
 tmin = 0.0
 N = 200
 tmax = 5
-step = (tmin - tmax) / (N-1)
+step = (tmin - tmax) / (N - 1)
 myTimeGrid = ot.RegularGrid(tmin, step, N)
 
 # %%
@@ -63,12 +62,12 @@ view = otv.View(graph)
 # It means that the covariance function of the process is modified as written in :eq:`cov_with_noise`
 # and the correlation function as written in :eq:`cor_with_noise`.
 #
-# It transforms the process by adding a white noise of dimension :math:`d` with zero mean and a variance equal to
-# :math:`\sigma_{nugget}^2 \mat{I}_d`:
+# It transforms the process by adding a white noise of dimension :math:`d` with zero mean and a covariance matrix equal to
+# :math:`\sigma^2_{nugget} \mat{C}^{spatial}`:
 #
 # ..math::
 #   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
-#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \sigma_{nugget}^2 \mat{I}_d)
+#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \sigma^2_{nugget} \mat{C}^{spatial})
 #
 # We fix :math:`\sigma_{nugget} = 0.05`.
 sigma_nugget = 0.05
@@ -77,7 +76,7 @@ process_nugget = ot.GaussianProcess(myModel, myTimeGrid)
 print(process_nugget)
 
 # %%
-# We draw some realizations of the Gaussian process. We notice that the 
+# We draw some realizations of the Gaussian process. We notice that the
 # realizations of the process with nugget factor are more chaotic thant the other ones.
 sample_nugget = process_nugget.getSample(n_real)
 graph_nugget = sample_nugget.drawMarginal(0)
