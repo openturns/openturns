@@ -32,7 +32,7 @@ If the process is a second order process, we note:
 In a general way, the covariance models write:
 
 .. math::
-
+    :label: def_cov
     C(\vect{s}, \vect{t}) = \mat{L}_{\rho}\left(\dfrac{\vect{s}}{\theta},
                             \dfrac{\vect{t}}{\theta}\right)\,
                             \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
@@ -49,7 +49,7 @@ where:
   :math:`\mat{\rho}(\vect{s}, \vect{t})`:
 
 .. math::
-
+    :label: def_rho_general
     \mat{L}_{\rho}(\vect{s}, \vect{t})\,\Tr{\mat{L}_{\rho}(\vect{s}, \vect{t})}
     = \mat{\rho}(\vect{s}, \vect{t})
 
@@ -81,7 +81,7 @@ The global correlation is given by two separate correlations:
           Then, the covariance model writes:
 
 .. math::
-
+    :label: def_cov_rho
     C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}\right)\,
                             \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
@@ -90,14 +90,7 @@ The global correlation is given by two separate correlations:
 
 .. topic:: API:
 
-    - See :class:`~openturns.AbsoluteExponential`
-    - See :class:`~openturns.DiracCovarianceModel`
-    - See :class:`~openturns.ExponentialModel`
-    - See :class:`~openturns.ExponentiallyDampedCosineModel`
-    - See :class:`~openturns.GeneralizedExponential`
-    - See :class:`~openturns.MaternModel`
-    - See :class:`~openturns.UserDefinedStationaryCovarianceModel`
-    - See :class:`~openturns.SquaredExponential`
+    - Refer to the general page *Stochastic process modeling - Remporal information* of the API documentation.
 
 .. topic:: Examples:
 

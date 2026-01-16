@@ -1,80 +1,115 @@
 """
-Create a Gaussian process
-=========================
+Create a Gaussian process including nugget effect
+=================================================
 """
+
+# %%
+# This example shows how to create a Gaussian process:
+# - from its covariance function,
+# - from its covariance function including a nugget effect,
+# - from its spectral density in the stationary case.
 
 # %%
 import openturns as ot
 import openturns.viewer as otv
 
 # %%
-# Create a Gaussian process from a covariance model
-# -------------------------------------------------
+# Create a Gaussian process from its covariance model
+# ---------------------------------------------------
 #
-# In this paragraph we build a Gaussian process from its covariance model.
-
-
-# %%
-# We first define a covariance model :
-
-# %%
-defaultDimension = 1
-# Amplitude values
-amplitude = [1.0] * defaultDimension
-# Scale values
-scale = [1.0] * defaultDimension
-# Covariance model
-myModel = ot.AbsoluteExponential(scale, amplitude)
+# Here, we create a Gaussian process :math:`\vect{X}: \Omega \times \cD \rightarrow \Rset` on a
+# domain :math:`\cD \in \Rset` from its covariance model.
+#
+# See :ref:`Covariance models <covariance_model>` to get more details on covariance models.
+#  
+#
+# We first define a covariance model. We use a :class:`~openturns.MaternModel` model. By default, the nugget factor
+# is equal to :math:`10^{-12}`. That is why we set it to zero.
+amplitude = [1.0]
+scale = [1.0]
+myModel = ot.MaternModel(scale, amplitude, 2.5)
+myModel.setNuggetFactor(0.0)
 
 # %%
-# We define a mesh,
+# We define a mesh that discretizes the domain :math:`\cD`. We use a  :class:`~openturns.RegularGrid`.
 tmin = 0.0
-step = 0.1
-n = 11
-myTimeGrid = ot.RegularGrid(tmin, step, n)
+N = 200
+tmax = 5
+step = (tmin - tmax) / (N-1)
+myTimeGrid = ot.RegularGrid(tmin, step, N)
 
 # %%
-# and create the process :
+# We create the Gaussian process from the covariance model and the mesh.
 process = ot.GaussianProcess(myModel, myTimeGrid)
 print(process)
 
 # %%
-# We draw the first marginal of a sample of size 6 :
-sample = process.getSample(6)
+# We draw some realizations of the Gaussian process.
+n_real = 3
+sample = process.getSample(n_real)
 graph = sample.drawMarginal(0)
-graph.setTitle("First marginal of six realizations of the process")
+graph.setTitle("Processs realizations")
 view = otv.View(graph)
 
 
 # %%
-# Create a Gaussian process from spectral density
-# -----------------------------------------------
+# Add a nugget effect to the Gaussian process
+# -------------------------------------------
 #
-# In this paragraph we build a Gaussian process from its spectral density.
+# Here, we add a nugget effect to the Gaussian process. Refer to the example **Create a covariance model with and without nugget
+# effect** which illustrates the impact of the nugget effect on a covariance model.
 #
+# We use the previous Gaussian process. We add a nugget factor :math:`\sigma_{nugget}`.
+# It means that the covariance function of the process is modified as written in :eq:`cov_with_noise`
+# and the correlation function as written in :eq:`cor_with_noise`.
+#
+# It transforms the process by adding a white noise of dimension :math:`d` with zero mean and a variance equal to
+# :math:`\sigma_{nugget}^2 \mat{I}_d`:
+#
+# ..math::
+#   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
+#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \sigma_{nugget}^2 \mat{I}_d)
+#
+# We fix :math:`\sigma_{nugget} = 0.05`.
+sigma_nugget = 0.05
+myModel.setNuggetFactor(sigma_nugget**2)
+process_nugget = ot.GaussianProcess(myModel, myTimeGrid)
+print(process_nugget)
 
 # %%
-# We first define a spectral model :
-amplitude = [1.0, 2.0]
-scale = [4.0, 5.0]
-spatialCorrelation = ot.CorrelationMatrix(2)
-spatialCorrelation[0, 1] = 0.8
-mySpectralModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
+# We draw some realizations of the Gaussian process. We notice that the 
+# realizations of the process with nugget factor are more chaotic thant the other ones.
+sample_nugget = process_nugget.getSample(n_real)
+graph_nugget = sample_nugget.drawMarginal(0)
+graph_nugget.setTitle("Processs realizations with nugget effect")
+view = otv.View(graph_nugget)
 
 # %%
-# As usual we define a mesh,
+# Create a Gaussian process from its spectral density
+# ---------------------------------------------------
+#
+# Here, we create a Gaussian process :math:`\vect{X}: \Omega \times \cD \rightarrow \Rset` on a
+# domain :math:`\cD \in \Rset` from its spectral density.
+#
+# We first define a spectral model. We use a :class:`~openturns.CauchyModel`.
+amplitude = [1.0]
+scale = [4.0]
+mySpectralModel = ot.CauchyModel(scale, amplitude)
+
+# %%
+# We define the associated mesh which is a :class:`~openturns.RegularGrid`.
 myTimeGrid = ot.RegularGrid(0.0, 0.1, 20)
 
 # %%
-# and create the process thereafter
+# We create the Gaussian process using a :class:`~openturns.SpectralGaussianProcess`.
 process = ot.SpectralGaussianProcess(mySpectralModel, myTimeGrid)
 print(process)
 
 # %%
-# Eventually we draw the first marginal of a sample of size 6 :
-sample = process.getSample(6)
+# Eventually we draw some realizations of the Gaussian process.
+sample = process.getSample(n_real)
 graph = sample.drawMarginal(0)
-graph.setTitle("First marginal of six realizations of the process")
+graph.setTitle("Processs realizations")
 view = otv.View(graph)
 
 # %%
