@@ -11,6 +11,7 @@ Generates the Haar basis defined as follows:
     \end{array}
 
 where :math:`n = 2^j + k`, :math:`0 \leq k < 2^j`, :math:`0 \leq j`.
+This basis is orthonormal with respect to the uniform distribution on :math:`[0, 1]`.
 
 See also
 --------
