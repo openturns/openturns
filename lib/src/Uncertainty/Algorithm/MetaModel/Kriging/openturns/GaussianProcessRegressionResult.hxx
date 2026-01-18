@@ -78,7 +78,7 @@ public:
   Matrix getRegressionMatrix() const;
 
   /** process accessor */
-  Process getNoise() const;
+  Process getNoiseProcess() const;
 
   /** Process coefficients accessor */
   Sample getCovarianceCoefficients() const;

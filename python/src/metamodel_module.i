@@ -8,6 +8,7 @@
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
+#include "openturns/OTProcess.hxx"
 #include "openturns/OTWeightedExperiments.hxx"
 #include "openturns/OTOrthogonalBasis.hxx"
 #include "openturns/OTMetaModel.hxx"
@@ -22,11 +23,15 @@
 %include BaseFuncCollection.i
 %import base_module.i
 
-/* Uncertainty/Model */
+/* Uncertainty/Process */
+%import model_process_module.i
+// GaussianProcessFitterResult::getNoiseProcess() returns GaussianProcess
+%import GaussianProcess.i
+
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import UncertaintyModelCopulaTemplateDefs.i
-// KrigingResult::operator() returns Normal
+// GaussianProcessRegressionResult::operator() returns Normal
 %import Normal.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */

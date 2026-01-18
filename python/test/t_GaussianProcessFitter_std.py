@@ -182,6 +182,31 @@ def use_case_7(X, Y):
         algo.run()
 
 
+def use_case_8(X, Y):
+    ot.RandomGenerator.SetSeed(0)
+    ot.ResourceMap.Reload()
+    ot.ResourceMap.SetAsBool(
+        "GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False
+    )
+    covarianceModel = ot.AbsoluteExponential()
+    algo = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    algo.setNoise([0*0.01 * (i+1) for i in range(len(X))])
+    assert algo.getKeepCholeskyFactor()
+    algo.setKeepCholeskyFactor(False)
+    assert algo.getOptimizeParameters()
+    algo.run()
+    result = algo.getResult()
+    assert (
+        algo.getOptimizationAlgorithm().getImplementation().getClassName() == "Cobyla"
+    )
+    print(result.getCovarianceModel().getParameter())
+    cov_param = [2.55922, 1]
+    ott.assert_almost_equal(
+        result.getCovarianceModel().getParameter(), cov_param, 1e-4, 1e-4
+    )
+    ott.assert_almost_equal(result.getTrendCoefficients(), [])
+
+
 def bugfix_optim_no_feasible():
     ot.RandomGenerator.SetSeed(0)
     ot.ResourceMap.Reload()
@@ -261,5 +286,6 @@ if __name__ == "__main__":
     use_case_5(X, Y)
     use_case_6(X, Y)
     use_case_7(X, Y)
+    use_case_8(X, Y)
     # fix https://github.com/openturns/openturns/issues/2953
     bugfix_optim_no_feasible()

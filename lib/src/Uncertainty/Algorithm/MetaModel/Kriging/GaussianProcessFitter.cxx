@@ -103,7 +103,7 @@ void GaussianProcessFitter::setCovarianceModel(const CovarianceModel & covarianc
   const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
   if (!optimizeParameters_) reducedCovarianceModel_.setActiveParameter(Indices());
   // Second, check if the amplitude parameter is unique and active
-  else if (ResourceMap::GetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate"))
+  else if (ResourceMap::GetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate") && (!noise_.getSize()))
   {
     // The model has to be of dimension 1
     if (reducedCovarianceModel_.getOutputDimension() == 1)
@@ -333,7 +333,7 @@ void GaussianProcessFitter::run()
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_);
+  result_ = GaussianProcessFitterResult(inputSample_, outputSample_, noise_, metaModel, F_, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, method_);
   result_.setRho(rho_);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
@@ -521,6 +521,26 @@ Scalar GaussianProcessFitter::computeLapackLogDeterminantCholesky()
 
   LOGDEBUG("Discretize the covariance model");
   CovarianceMatrix C(reducedCovarianceModel_.discretize(inputSample_));
+  if (noise_.getSize() > 0)
+  {
+    LOGDEBUG("Add noise to the covariance matrix");
+    CovarianceMatrix & Ci = noise_[0];
+    const UnsignedInteger outputDimension = outputSample_.getDimension();
+    // Loop over the input points, ie over the
+    // (outputDimension, outputDimension) diagonal blocks
+    // baseIndex points to the diagonal element of C corresponding to the
+    // (0,0) element of the diagonal block
+    UnsignedInteger baseIndex = 0;
+    for (UnsignedInteger i = 0; i < inputSample_.getSize(); ++i)
+      {
+	Ci = noise_[i];
+	// Loop over the noise matrix to update the diagonal block
+	for (UnsignedInteger k = 0; k < outputDimension; ++k)
+	  for (UnsignedInteger j = k; j < outputDimension; ++j)
+	    C(baseIndex + j, baseIndex + k) += Ci(j, k);
+	baseIndex += outputDimension;
+      } // for i
+  } // noise_.getSize() > 0
   if (C.getDimension() < 20)
     LOGDEBUG(OSS(false) << "C=\n" << C);
   LOGDEBUG("Compute the Cholesky factor of the covariance matrix");
@@ -727,6 +747,52 @@ void GaussianProcessFitter::setMethod(const LinearAlgebra method)
   }
 }
 
+/* Observation noise accessor */
+void GaussianProcessFitter::setNoise(const Point & noise)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
+  // Currently setNoise is not handled with HMAT
+  // We should first rework on the hmat side to promote this possibility
+  if (getMethod() == GaussianProcessFitterResult::HMAT)
+    throw NotYetImplementedException(HERE) << "Noise is not be handled with HMAT method";
+  noise_ = CovarianceMatrixCollection(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise must be positive";
+      noise_[i] = CovarianceMatrix(1);
+      noise_[i](0, 0) = noise[i];
+    }
+  // If we update noise, we need to reset
+  reset();  
+}
+
+void GaussianProcessFitter::setNoise(const CovarianceMatrixCollection & noise)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
+  // Currently setNoise is not handled with HMAT
+  // We should first rework on the hmat side to promote this possibility
+  if (getMethod() == GaussianProcessFitterResult::HMAT)
+    throw NotYetImplementedException(HERE) << "Noise is not be handled with HMAT method";
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  CovarianceMatrix cI;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      cI = noise[i];
+      if (cI.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Expected noise matrices of dimension=" << outputDimension << ", got a noise matrix of dimension="  << cI.getDimension();
+      if (!(cI.isPositiveDefinite())) throw InvalidArgumentException(HERE) << "Noise must be positive semidefinite";
+    }
+  noise_ = noise;
+  // If we update noise, we need to reset
+  reset();
+}
+
+GaussianProcessFitter::CovarianceMatrixCollection GaussianProcessFitter::getNoise() const
+{
+  return noise_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void GaussianProcessFitter::save(Advocate & adv) const
 {
@@ -748,6 +814,7 @@ void GaussianProcessFitter::save(Advocate & adv) const
   adv.saveAttribute( "optimizeParameters_", optimizeParameters_ );
   adv.saveAttribute( "analyticalAmplitude_", analyticalAmplitude_ );
   adv.saveAttribute( "lastReducedLogLikelihood_", lastReducedLogLikelihood_ );
+  adv.saveAttribute( "noise_", noise_ );
 }
 
 
@@ -773,6 +840,7 @@ void GaussianProcessFitter::load(Advocate & adv)
   adv.loadAttribute( "optimizeParameters_", optimizeParameters_ );
   adv.loadAttribute( "analyticalAmplitude_", analyticalAmplitude_ );
   adv.loadAttribute( "lastReducedLogLikelihood_", lastReducedLogLikelihood_ );
+  adv.loadAttribute( "noise_", noise_ );
 }
 
 END_NAMESPACE_OPENTURNS

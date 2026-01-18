@@ -116,9 +116,9 @@ GaussianProcessRegressionResult::LinearAlgebra GaussianProcessRegressionResult::
 }
 
 /* process accessor */
-Process GaussianProcessRegressionResult::getNoise() const
+Process GaussianProcessRegressionResult::getNoiseProcess() const
 {
-  return gpfResult_.getNoise();
+  return gpfResult_.getNoiseProcess();
 }
 
 /* Method that returns the covariance factor - Lapack */

@@ -46,6 +46,8 @@ class OT_API GaussianProcessFitter
 public:
 
   typedef GaussianProcessFitterResult::LinearAlgebra LinearAlgebra;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
+  typedef PersistentCollection<CovarianceMatrix> CovarianceMatrixPersistentCollection;
 
   /** Default constructor */
   GaussianProcessFitter();
@@ -86,6 +88,11 @@ public:
   /** Accessor to keep cholesky (for Regression usage)*/
   Bool getKeepCholeskyFactor() const;
   void setKeepCholeskyFactor(const Bool keepCholeskyFactor);
+
+  /** Observation noise accessor */
+  void setNoise(const Point & noise);
+  void setNoise(const CovarianceMatrixCollection & noise);
+  CovarianceMatrixCollection getNoise() const;
 
   // method accessors
   void setMethod(const LinearAlgebra method);
@@ -244,6 +251,9 @@ private:
 
   /** Cache of the last computed reduced log-likelihood */
   Scalar lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
+
+  /** Noise variance of the output sample */
+  CovarianceMatrixPersistentCollection noise_;
 }; // class GaussianProcessFitter
 
 

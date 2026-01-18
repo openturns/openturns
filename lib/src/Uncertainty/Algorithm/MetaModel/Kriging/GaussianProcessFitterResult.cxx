@@ -23,8 +23,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/GaussianProcess.hxx"
-#include "openturns/WhiteNoise.hxx"
 #include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -42,6 +40,7 @@ GaussianProcessFitterResult::GaussianProcessFitterResult()
 /* Constructor with parameters & Cholesky factor */
 GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSample,
     const Sample & outputSample,
+							 const CovarianceMatrixCollection & noise,
     const Function & metaModel,
     const Matrix & regressionMatrix,
     const Basis & basis,
@@ -58,7 +57,8 @@ GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSam
     linearAlgebraMethod_(linearAlgebraMethod),
     hasCholeskyFactor_(false),
     covarianceCholeskyFactor_(),
-    covarianceHMatrix_()
+    covarianceHMatrix_(),
+    noise_(noise)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
@@ -127,22 +127,16 @@ GaussianProcessFitterResult::LinearAlgebra GaussianProcessFitterResult::getLinea
 }
 
 /* process accessor */
-Process GaussianProcessFitterResult::getNoise() const
+GaussianProcess GaussianProcessFitterResult::getNoiseProcess() const
 {
-  // Define noise process
-  if (getCovarianceModel().getClassName() == "DiracCovarianceModel")
-  {
-    // Here it is assumed that the covariance model parameters are the
-    // marginal amplitude.
-    const Point sigma(getCovarianceModel().getParameter());
-    const CorrelationMatrix R(getCovarianceModel().getOutputCorrelation());
-    const Normal dist(Point(sigma.getSize(), 0.0), sigma, R);
-    const WhiteNoise noise(dist);
-    return noise;
-  }
-  // Other covariance models
   const GaussianProcess noise(getCovarianceModel(), Mesh(getInputSample()));
   return noise;
+}
+
+/* Output sample noise accessor */
+GaussianProcessFitterResult::CovarianceMatrixCollection GaussianProcessFitterResult::getNoise() const
+{
+  return noise_;
 }
 
 /* Method that returns the covariance factor - Lapack */
@@ -202,6 +196,7 @@ void GaussianProcessFitterResult::save(Advocate & adv) const
   adv.saveAttribute("linearAlgebraMethod_", linearAlgebraMethod);
   adv.saveAttribute("hasCholeskyFactor_", hasCholeskyFactor_);
   adv.saveAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
+  adv.saveAttribute("noise_", noise_);
 }
 
 
@@ -220,6 +215,7 @@ void GaussianProcessFitterResult::load(Advocate & adv)
   linearAlgebraMethod_ = static_cast<LinearAlgebra>(linearAlgebraMethod);
   adv.loadAttribute("hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
+  adv.loadAttribute("noise_", noise_);
 }
 
 
