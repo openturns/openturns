@@ -36,7 +36,6 @@ static const Factory<PythonGradient> Factory_PythonGradient;
 /* Default constructor */
 PythonGradient::PythonGradient()
   : GradientImplementation()
-  , pyObj_(0)
 {
   // Nothing to do
 }
@@ -163,7 +162,7 @@ UnsignedInteger PythonGradient::getInputDimension() const
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  const UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -174,7 +173,7 @@ UnsignedInteger PythonGradient::getOutputDimension() const
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  const UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
   return dim;
 }
 
