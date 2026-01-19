@@ -80,6 +80,10 @@ public:
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
+  /** Improvement noise function accessor */
+  void setNoiseFunction(const Function & noiseFunction);
+  Function getNoiseFunction() const;
+
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
@@ -119,6 +123,9 @@ private:
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_ = 0.0;
 
+  // noise function
+  Function noiseFunction_;
+  
   Sample expectedImprovement_;
 
 } ; /* class EfficientGlobalOptimization */

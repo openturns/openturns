@@ -10,6 +10,7 @@ formula = "((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/8*pi_)*cos(x1)+10-54.
 branin = ot.SymbolicFunction(["x1", "x2"], [formula])
 transfo = ot.SymbolicFunction(["u1", "u2"], ["15*u1-5", "15*u2"])
 model = ot.ComposedFunction(branin, transfo)
+noiseFunction = ot.SymbolicFunction(["x1", "x2"], ["0.96"])  # assume constant noise var
 
 # problem
 problem = ot.OptimizationProblem()
@@ -24,9 +25,10 @@ outputSample = model(inputSample)
 
 # with kriging
 covarianceModel = ot.SquaredExponential([0.3, 0.25], [1.0])
-covarianceModel.setNuggetFactor(0.96)  # assume constant noise var
 basis = ot.ConstantBasisFactory(dim).build()
 fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+noise = [x[0] for x in noiseFunction(inputSample)]
+fitter.setNoise(noise)
 fitter.run()
 gpr = ot.GaussianProcessRegression(fitter.getResult())
 gpr.run()
@@ -35,6 +37,7 @@ gpr.run()
 algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
 algo.setMaximumCallsNumber(14)
 algo.setAEITradeoff(0.66)
+algo.setNoiseFunction(noiseFunction)
 algo.run()
 result = algo.getResult()
 print("iteration=", result.getIterationNumber())
