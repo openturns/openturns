@@ -68,10 +68,12 @@ class ExpectedImprovementEvaluation : public EvaluationImplementation
 public:
   ExpectedImprovementEvaluation (const Scalar optimalValue,
                                  const GaussianProcessRegressionResult & gprResult,
+                                 const Function & noiseFunction,
                                  const Bool isMinimization)
     : EvaluationImplementation()
     , optimalValue_(optimalValue)
     , gprResult_(gprResult)
+    , noiseFunction_(noiseFunction)
     , gprCov_(gprResult)
     , isMinimization_(isMinimization)
   {
@@ -92,14 +94,17 @@ public:
     const Scalar mx = gprCov_.getConditionalMean(x)[0];
     const Scalar fmMk = isMinimization_ ? optimalValue_ - mx : mx - optimalValue_;
     const Scalar sk2 = gprCov_.getConditionalMarginalVariance(x);
-    const Scalar sk = sqrt(sk2);
+    const Scalar sk = std::sqrt(sk2);
     if (!std::isfinite(sk))
       return SpecFunc::LowestScalar;
     const Scalar ratio = fmMk / sk;
     Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
-    const Scalar nuggetFactor = gprResult_.getCovarianceModel().getNuggetFactor();
-    if (nuggetFactor > ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-      ei *= (1.0 - sqrt(nuggetFactor) / sqrt(nuggetFactor + sk2));
+    if (noiseFunction_.getOutputDimension() == 1) // if provided
+    {
+      const Scalar noiseVariance = noiseFunction_(x)[0];
+      if (!(noiseVariance >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+      ei *= (1.0 - std::sqrt(noiseVariance) / std::sqrt(noiseVariance + sk2));
+    }
     return ei;
   }
 
@@ -131,8 +136,8 @@ public:
 protected:
   Scalar optimalValue_;
   GaussianProcessRegressionResult gprResult_;
+  Function noiseFunction_;
   GaussianProcessConditionalCovariance gprCov_;
-  Function noiseModel_;
 
   // whether the global problem is a miminization (the improvement criterion is always maximized)
   Bool isMinimization_ = true;
@@ -149,10 +154,17 @@ void EfficientGlobalOptimization::run()
   inputSample = gprResult_.getInputSample();
   outputSample = gprResult_.getOutputSample();
   UnsignedInteger size = inputSample.getSize();
-
-
-  const Scalar nuggetFactor = gprResult_.getCovarianceModel().getNuggetFactor();
-  const Bool hasNoise = nuggetFactor > ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor");
+  Point noise(size);
+  const Bool hasNoise = noiseFunction_.getEvaluation().getImplementation()->isActualImplementation();
+  if (hasNoise)
+  {
+    Sample noiseSample(noiseFunction_(inputSample));
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      noise[i] = noiseSample(i, 0);
+      if (!(noise[i] > 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+    }
+  }
   UnsignedInteger evaluationNumber = 0;
   Bool exitLoop = false;
 
@@ -204,7 +216,7 @@ void EfficientGlobalOptimization::run()
       {
         const Point x(inputSample[i]);
         const Scalar sk2 = gpcCov.getConditionalMarginalVariance(x);
-        const Scalar u = mx(i, 0) + aeiTradeoff_ * sqrt(sk2);
+        const Scalar u = mx(i, 0) + aeiTradeoff_ * std::sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalValueSubstitute))
             || (!problem.isMinimization() && (u > optimalValueSubstitute)))
         {
@@ -213,7 +225,7 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, gprResult, problem.isMinimization()));
+    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, gprResult, noiseFunction_, problem.isMinimization()));
 
     // use multi-start to optimize the improvement criterion when using the default solver
     OptimizationAlgorithm solver(solver_);
@@ -313,6 +325,13 @@ void EfficientGlobalOptimization::run()
     ++ size;
     ++ iterationNumber;
 
+    if (hasNoise)
+    {
+      const Point newNoise(noiseFunction_(newPoint));
+      if (!(newNoise[0] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise function must be positive";
+      noise.add(newNoise[0]);
+    }
+
     // callbacks
     if (progressCallback_.first)
     {
@@ -334,6 +353,8 @@ void EfficientGlobalOptimization::run()
       if ((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0))
       {
         GaussianProcessFitter fitter(inputSample, outputSample, gprResult.getCovarianceModel(), gprResult.getBasis());
+        if (hasNoise)
+          fitter.setNoise(noise);
         fitter.run();
         algo = GaussianProcessRegression(fitter.getResult());
       }
@@ -453,6 +474,19 @@ Scalar EfficientGlobalOptimization::getAEITradeoff() const
   return aeiTradeoff_;
 }
 
+void EfficientGlobalOptimization::setNoiseFunction(const Function & noiseFunction)
+{
+  const UnsignedInteger dimension = getProblem().getDimension();
+  if (noiseFunction.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise function must be of dimension " << dimension;
+  if (noiseFunction.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise function must be 1-d";
+  noiseFunction_ = noiseFunction;
+}
+
+Function EfficientGlobalOptimization::getNoiseFunction() const
+{
+  return noiseFunction_;
+}
+
 /* GP result accessor (especially useful after run() has been called) */
 GaussianProcessRegressionResult EfficientGlobalOptimization::getGaussianProcessRegressionResult() const
 {
@@ -470,6 +504,7 @@ void EfficientGlobalOptimization::save(Advocate & adv) const
   adv.saveAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
   adv.saveAttribute("correlationLengthFactor_", correlationLengthFactor_);
   adv.saveAttribute("aeiTradeoff_", aeiTradeoff_);
+  adv.saveAttribute("noiseFunction_", noiseFunction_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -483,6 +518,8 @@ void EfficientGlobalOptimization::load(Advocate & adv)
   adv.loadAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
   adv.loadAttribute("correlationLengthFactor_", correlationLengthFactor_);
   adv.loadAttribute("aeiTradeoff_", aeiTradeoff_);
+  if (adv.hasAttribute("noiseFunction_"))
+    adv.loadAttribute("noiseFunction_", noiseFunction_);
 }
 
 END_NAMESPACE_OPENTURNS
