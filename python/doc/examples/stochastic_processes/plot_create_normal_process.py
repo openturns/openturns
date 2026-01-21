@@ -66,12 +66,12 @@ view = otv.View(graph)
 #
 # Adding a nugget factor modifies the covariance model. It transforms the process by adding a white noise
 # of dimension :math:`d` with zero mean and a covariance matrix equal to
-# :math:`\varepsilon^2_{nugget} \mat{C}^{spatial}`:
+# :math:`\varepsilon_{nugget} \mat{C}^{spatial}`:
 #
 # ..math::
 #
 #   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
-#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \varepsilon^2_{nugget} \mat{C}^{spatial})
+#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \varepsilon_{nugget} \mat{C}^{spatial})
 #
 # We fix :math:`\varepsilon_{nugget} = 0.05`.
 sigma_nugget = 0.05

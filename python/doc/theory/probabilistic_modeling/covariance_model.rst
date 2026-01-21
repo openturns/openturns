@@ -31,16 +31,17 @@ If the process is a second order process, we denote by:
 
 The library assumes that:
 
-    - the *spatial* correlation :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` between the components of :math:`X_{\vect{t}}`
-    and the vector of marginal standard deviations :math:`\vect{\sigma} \in \Rset^{\inputDim}`
-    do not depend on :math:`\vect{t} \in \cD`,
-    - the correlation between :math:`X_{\vect{s}}` and  :math:`X_{\vect{t}}`
-    which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})` is such that :math:`X^i_{\vect{t}}`
-    depends only on :math:`X^i_{\vect{s}}` and that this link does not depend on the component
-    :math:`i`. In that case, :math:`\mat{\rho}(\vect{s}, \vect{t})` can be
-    defined from the scalar function :math:`\rho(\vect{s}, \vect{t}) \in \Rset` by
-    :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_{\inputDim}`.
-    We have :math:`\rho(\vect{s}, \vect{s}) = 1`.
+- the *spatial* correlation :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` between the components of :math:`X_{\vect{t}}`
+  and the vector of marginal standard deviations :math:`\vect{\sigma} \in \Rset^{\inputDim}`
+  do not depend on :math:`\vect{t} \in \cD`,
+- the correlation between :math:`X_{\vect{s}}` and  :math:`X_{\vect{t}}`
+  which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})` is such that :math:`X^i_{\vect{t}}`
+  depends only on :math:`X^i_{\vect{s}}` and that this link does not depend on the component
+  :math:`i`. In that case, :math:`\mat{\rho}(\vect{s}, \vect{t})` can be
+  defined from the scalar function :math:`\rho(\vect{s}, \vect{t}) \in \Rset` by
+  :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_{\inputDim}`.
+  We have :math:`\rho(\vect{s}, \vect{s}) = 1`.
+
 
 Then, the covariance model is written as:
 
@@ -49,10 +50,10 @@ Then, the covariance model is written as:
 
     \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}\right)\,
-                            \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,
-                            \mbox{Diag}(\vect{\sigma}), \quad
+                            \diag{\vect{\sigma}} \, \mat{R} \,
+                            \diag{\vect{\sigma}}, \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
-  
+
 or:
 
 .. math::
@@ -60,16 +61,16 @@ or:
 
     \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}
-                                \right)\, C^{spatial}(\vect{s}, \vect{t}) \quad
+                                \right)\, \mat{C}^{spatial}(\vect{s}, \vect{t}) \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
-    
+
 where:
 
 - :math:`\vect{\theta} \in \Rset^{\sampleSize}` is the *scale* parameter,
 - :math:`\vect{\sigma} \in \Rset^{\inputDim}` is the *amplitude* parameter,
 - :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` is the *spatial* correlation matrix,
-- :math:`C^{spatial}(\vect{s}, \vect{t}) = \mbox{Diag}(\vect{\sigma}) \, \mat{R} \, \mbox{Diag}(\vect{\sigma})` is the *spatial*
-  covariance matrix.
+- :math:`\mat{C}^{spatial}(\vect{s}, \vect{t}) = \diag{\vect{\sigma}} \, \mat{R} \, \diag{\vect{\sigma}}`
+  is the *spatial* covariance matrix.
 
 The library allows one to model a **nugget effect**. The nugget effect represents a noise observed in the output
 values of a process. This noise may be, for example, a measurement noise coming from a sensor with finite precision.
