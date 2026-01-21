@@ -55,29 +55,33 @@ view = otv.View(graph)
 # Add a nugget effect to the Gaussian process
 # -------------------------------------------
 #
-# Here, we add a nugget effect to the Gaussian process. Refer to the example **Create a covariance model with and without nugget
-# effect** which illustrates the impact of the nugget effect on a covariance model.
+# Here, we add a nugget effect to the Gaussian process. We use the previous Gaussian process. We add a nugget factor
+# :math:`\varepsilon_{nugget}`.
 #
-# We use the previous Gaussian process. We add a nugget factor :math:`\sigma_{nugget}`.
-# It means that the covariance function of the process is modified as written in :eq:`cov_with_noise`
-# and the correlation function as written in :eq:`cor_with_noise`.
+# Refer to :ref:`Covariance models <covariance_model>` to get more details on covariance models and the introduction of a
+# nugget factor, and in particular see equation :eq:`Css`.
 #
-# It transforms the process by adding a white noise of dimension :math:`d` with zero mean and a covariance matrix equal to
-# :math:`\sigma^2_{nugget} \mat{C}^{spatial}`:
+# Refer also to the example :doc:`/auto_stochastic_processes/plot_covariance_model_nugget` which illustrates
+# the impact of the nugget effect on a covariance model.
+#
+# Adding a nugget factor modifies the covariance model. It transforms the process by adding a white noise
+# of dimension :math:`d` with zero mean and a covariance matrix equal to
+# :math:`\varepsilon^2_{nugget} \mat{C}^{spatial}`:
 #
 # ..math::
-#   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
-#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \sigma^2_{nugget} \mat{C}^{spatial})
 #
-# We fix :math:`\sigma_{nugget} = 0.05`.
+#   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
+#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \varepsilon^2_{nugget} \mat{C}^{spatial})
+#
+# We fix :math:`\varepsilon_{nugget} = 0.05`.
 sigma_nugget = 0.05
-myModel.setNuggetFactor(sigma_nugget**2)
+myModel.setNuggetFactor(sigma_nugget)
 process_nugget = ot.GaussianProcess(myModel, myTimeGrid)
 print(process_nugget)
 
 # %%
 # We draw some realizations of the Gaussian process. We notice that the
-# realizations of the process with nugget factor are more chaotic thant the other ones.
+# realizations of the process with nugget factor are more chaotic than the other ones.
 sample_nugget = process_nugget.getSample(n_real)
 graph_nugget = sample_nugget.drawMarginal(0)
 graph_nugget.setTitle("Processs realizations with nugget effect")

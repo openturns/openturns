@@ -13,7 +13,8 @@ Create a covariance model with and without nugget effect
 #
 # The noise is characterized by the scalar
 # :math:`\varepsilon_{nugget}` which is added to the correlation function evaluated on each :math:`(\vect{s}, \vect{s})` where
-# :math:`\vect{s} \in \cD`. See :ref:`Covariance models <covariance_model>` to get more details on covariance models and the introduction of a nugget factor, anbd in particular see equation :eq:`Css`.
+# :math:`\vect{s} \in \cD`. See :ref:`Covariance models <covariance_model>` to get more details on covariance models and
+# the introduction of a nugget factor, and in particular see equation :eq:`Css`.
 
 # %%
 import openturns as ot
