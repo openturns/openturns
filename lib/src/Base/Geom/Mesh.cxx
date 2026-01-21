@@ -178,10 +178,11 @@ Indices Mesh::getSimplex(const UnsignedInteger index) const
 /* Check the mesh validity */
 void Mesh::checkValidity() const
 {
-
   if (hasBeenChecked_) return;
+
   // Check the vertices: no duplicate, no unused vertex
   // Check the simplices: no simplex with duplicate vertices, no simplex with unknown vertex, no simplex with a number of vertices different from dimension+1
+  Indices arity(getVerticesNumber(), 0);
   for (UnsignedInteger i = 0; i < getSimplicesNumber(); ++ i)
   {
     Indices simplex(getSimplex(i));
@@ -190,7 +191,16 @@ void Mesh::checkValidity() const
 
     if (*std::max_element(simplex.begin(), simplex.end()) >= getVerticesNumber())
       throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " = " << simplex << " refers to an unknown vertex";
+
+    for (UnsignedInteger j = 0; j <= getDimension(); ++ j)
+      ++ arity[simplex[j]];
   }
+
+  // Check for unused vertex
+  const UnsignedInteger unusedVertexIndex = arity.find(0);
+  if (unusedVertexIndex < getVerticesNumber())
+    throw InvalidArgumentException(HERE) << "Vertex #" << unusedVertexIndex << " is unconnected";
+
   // Check that no ball can be included into the intersection of two simplices
   // One it has been checked everything is ok
   hasBeenChecked_ = true;
