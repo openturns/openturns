@@ -50,8 +50,8 @@ Then, the covariance model is written as:
 
     \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}\right)\,
-                            \diag{\vect{\sigma}} \, \mat{R} \,
-                            \diag{\vect{\sigma}}, \quad
+                            \diag(\vect{\sigma}) \, \mat{R} \,
+                            \diag(\vect{\sigma}), \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
 
 or:
@@ -69,7 +69,7 @@ where:
 - :math:`\vect{\theta} \in \Rset^{\sampleSize}` is the *scale* parameter,
 - :math:`\vect{\sigma} \in \Rset^{\inputDim}` is the *amplitude* parameter,
 - :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` is the *spatial* correlation matrix,
-- :math:`\mat{C}^{spatial}(\vect{s}, \vect{t}) = \diag{\vect{\sigma}} \, \mat{R} \, \diag{\vect{\sigma}}`
+- :math:`\mat{C}^{spatial}(\vect{s}, \vect{t}) = \diag(\vect{\sigma}) \, \mat{R} \, \diag(\vect{\sigma})`
   is the *spatial* covariance matrix.
 
 The library allows one to model a **nugget effect**. The nugget effect represents a noise observed in the output

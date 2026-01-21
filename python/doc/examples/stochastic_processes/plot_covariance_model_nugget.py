@@ -23,7 +23,7 @@ import openturns.viewer as otv
 # %%
 # First we create a covariance function for a process defined on :math:`\cD \in \Rset` and with scalar outputs. We use the
 # :class:`~openturns.SquaredExponential` with unit scale, unit amplitude. By default, the nugget factor is equal to
-# :math:`10^{-12}` wich allows the regularization of the ocnvariance matrix. We set it to zero.
+# :math:`10^{-12}` which allows the regularization of the ocnvariance matrix. We set it to zero.
 # sphinx_gallery_thumbnail_number = 1
 cov_model = ot.SquaredExponential()
 cov_model.setNuggetFactor(0.0)
