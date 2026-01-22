@@ -1,4 +1,4 @@
-//                                               -*- C++ -*-
+/*                                               -*- C++ -*-
 /**
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.
@@ -37,6 +37,23 @@ typedef Collection<Function> FunctionCollection;
 CLASSNAMEINIT(LeastSquaresExpansion)
 
 static const Factory<LeastSquaresExpansion> Factory_LeastSquaresExpansion;
+
+namespace
+{
+
+static UnsignedInteger ComputeBasisSizeFromActive(const Indices & activeFunctions)
+{
+  if (activeFunctions.getSize() == 0)
+    throw InvalidArgumentException(HERE) << "Error: activeFunctions is empty";
+
+  UnsignedInteger maxIndex = 0;
+  for (UnsignedInteger i = 0; i < activeFunctions.getSize(); ++i)
+    if (activeFunctions[i] > maxIndex) maxIndex = activeFunctions[i];
+
+  return maxIndex + 1;
+}
+
+} // end anonymous namespace
 
 
 /* Default constructor */
@@ -105,6 +122,43 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
   // The active functions. By default all the functions are active
   activeFunctions_ = Indices(basisSize_);
   activeFunctions_.fill();
+}
+
+/* Nouveau constructeur : sélection explicite d'indices (sans poids) */
+LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const OrthogonalBasis & basis,
+    const Indices & activeFunctions,
+    const String & methodName)
+  : LeastSquaresExpansion(inputSample,
+                          Point(inputSample.getSize(), 1.0 / inputSample.getSize()),
+                          outputSample,
+                          distribution,
+                          basis,
+                          ComputeBasisSizeFromActive(activeFunctions),
+                          methodName)
+{
+  setActiveFunctions(activeFunctions);
+}
+
+/* Nouveau constructeur : sélection explicite d'indices (avec poids) */
+LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const OrthogonalBasis & basis,
+    const Indices & activeFunctions,
+    const String & methodName)
+  : LeastSquaresExpansion(inputSample,
+                          weights,
+                          outputSample,
+                          distribution,
+                          basis,
+                          ComputeBasisSizeFromActive(activeFunctions),
+                          methodName)
+{
+  setActiveFunctions(activeFunctions);
 }
 
 
