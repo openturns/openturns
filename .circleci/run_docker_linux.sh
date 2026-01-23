@@ -38,7 +38,7 @@ if test -n "${UID_GID}"
 then
   cp -r ~/.local/share/doc/openturns/html .
   zip -r openturns-doc.zip html/*
-  sudo chown ${UID_GID} openturns-doc.zip && sudo cp openturns-doc.zip ${source_dir}
+  sudo chown ${UID_GID} openturns-doc.zip && sudo cp -p openturns-doc.zip ${source_dir}
 fi
 ctest -R pyinstallcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 #make tests
