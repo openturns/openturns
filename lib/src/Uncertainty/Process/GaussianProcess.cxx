@@ -29,6 +29,7 @@
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/ConstantFunction.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -195,11 +196,26 @@ void GaussianProcess::setSamplingMethod(const SamplingMethod samplingMethod)
 Field GaussianProcess::getRealization() const
 {
   Sample values;
-  if ((getOutputDimension() == 1) && (samplingMethod_ == 2))
-    values = getRealizationGibbs();
-  else if (samplingMethod_ == 1)
-    values = getRealizationHMatrix();
-  else values = getRealizationCholesky();
+  // Check if the process is a white noise
+  if (covarianceModel_.getClassName() == "DiracCovarianceModel")
+    {
+      // In this case, the points attached to each vertex is a realization
+      // of the centered Normal distribution with covariance equal to the
+      // output covariance of the Dirac model
+      const Point zero(getInputDimension());
+      const CovarianceMatrix outputCovariance(covarianceModel_(zero).getImplementation());
+      // We could avoid the cost of the creation of a Normal at each call
+      // but is it worth the burden (new attribute, flag)?
+      values = Normal(zero, outputCovariance).getSample(mesh_.getVerticesNumber());
+    } // DiracCovarianceModel
+  else
+    {
+      if ((getOutputDimension() == 1) && (samplingMethod_ == 2))
+	values = getRealizationGibbs();
+      else if (samplingMethod_ == 1)
+	values = getRealizationHMatrix();
+      else values = getRealizationCholesky();
+    }
   // If constant trend
   if (isTrendStationary())
   {
