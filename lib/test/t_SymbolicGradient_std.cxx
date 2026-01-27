@@ -48,6 +48,11 @@ int main(int, char *[])
     point[0] =  4.0;
     point[1] = -4.0;
     fullprint << "value at " << point << "=" << gradient.gradient(point) << std::endl;
+    // Check for symbolic differentiation with constants
+    {
+      SymbolicEvaluation f(Description(1, "x"), Description(1, "y"), Description(1, "e_*x^2+x*_e+cos(pi_*x)+sin(x*pi_)"));
+      fullprint << SymbolicGradient(f).getFormula(0, 0) << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {
