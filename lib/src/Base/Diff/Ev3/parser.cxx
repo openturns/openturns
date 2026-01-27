@@ -70,6 +70,10 @@ std::string ExpressionParser::GetVariableName(const int vid)
 
 bool ExpressionParser::IsVariableName(const std::string & vname)
 {
+  // First check if vname is a known constant
+  if (table_.count(vname) > 0)
+    return false;
+  // Second, check if vname is a known function
   return  !((vname == "sin")      ||
             (vname == "cos")      ||
             (vname == "tan")      ||

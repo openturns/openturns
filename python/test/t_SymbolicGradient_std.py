@@ -10,3 +10,6 @@ gradient = ot.SymbolicGradient(evaluation)
 point = [-1.0, 4.0, -4.0]
 print("gradient=", gradient)
 print("value at point", point, "=", gradient.gradient(point))
+# Check for symbolic differentiation with constants
+f = ot.SymbolicEvaluation(["x"], ["y"], ["e_*x^2+x*_e+cos(pi_*x)+sin(x*pi_)"])
+print("symbolic derivative=", ot.SymbolicGradient(f).getFormula(0, 0))
