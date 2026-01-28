@@ -38,8 +38,6 @@ static const Factory<SymbolicHessian> Factory_SymbolicHessian;
 /* Default constructor */
 SymbolicHessian::SymbolicHessian()
   : HessianImplementation()
-  , isInitialized_(false)
-  , isAnalytical_(true)
   , p_evaluation_(new SymbolicEvaluation)
 {
   // Nothing to do
@@ -48,8 +46,6 @@ SymbolicHessian::SymbolicHessian()
 /* Default constructor */
 SymbolicHessian::SymbolicHessian(const SymbolicEvaluation & evaluation)
   : HessianImplementation()
-  , isInitialized_(false)
-  , isAnalytical_(true)
   , p_evaluation_(evaluation.clone())
 {
   // Nothing to do
@@ -59,8 +55,6 @@ SymbolicHessian::SymbolicHessian(const SymbolicEvaluation & evaluation)
 /* Constructor for implementation pointer */
 SymbolicHessian::SymbolicHessian(const Pointer<SymbolicEvaluation> & p_evaluation)
   : HessianImplementation()
-  , isInitialized_(false)
-  , isAnalytical_(true)
   , p_evaluation_(p_evaluation)
 {
   // Nothing to do
@@ -161,7 +155,8 @@ void SymbolicHessian::initialize() const
     int nerr(0);
     Ev3::ExpressionParser ev3Parser;
     // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(p_evaluation_->inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++ inputVariableIndex)
+      ev3Parser.SetVariableID(p_evaluation_->inputVariablesNames_[inputVariableIndex], inputVariableIndex);
     Ev3::Expression ev3Expression;
     try
     {
@@ -171,35 +166,32 @@ void SymbolicHessian::initialize() const
     {
       throw InternalException(HERE) << exc.description_;
     }
-    if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << p_evaluation_->formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
-    //                Ev3::Simplify(&ev3Expression);
+    if (nerr != 0) throw InvalidArgumentException(HERE) << "Cannot parse " << p_evaluation_->formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
     for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
     {
       Ev3::Expression firstDerivative;
       try
       {
         firstDerivative = Ev3::Diff(ev3Expression, rowIndex);
-        //                    Ev3::Simplify(&firstDerivative);
         LOGDEBUG(OSS() << "First variable=" << p_evaluation_->inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
       }
       catch(...)
       {
-        throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
+        throw InternalException(HERE) << "Cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
       }
-      for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
+      for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++ columnIndex)
       {
         try
         {
           Ev3::Expression secondDerivative(Ev3::Diff(firstDerivative, columnIndex));
-          //                        Ev3::Simplify(&secondDerivative);
           LOGDEBUG(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")d(" << p_evaluation_->inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
           hessianFormulas[hessianIndex] = secondDerivative->ToString();
-          ++ hessianIndex;
         }
-        catch(...)
+        catch (...)
         {
-          throw InternalException(HERE) << "Error: cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[columnIndex];
+          throw InternalException(HERE) << "Cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[columnIndex];
         }
+        ++ hessianIndex;
       } // columnIndex
     } // rowIndex
   } // sheetIndex
@@ -215,7 +207,7 @@ void SymbolicHessian::initialize() const
 SymmetricTensor SymbolicHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Expected an argument of dimension " << inputDimension;
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The hessian does not have an analytical expression.";
   const UnsignedInteger outputDimension = getOutputDimension();
@@ -243,7 +235,7 @@ String SymbolicHessian::getFormula(const UnsignedInteger i,
                                    const UnsignedInteger k) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (!(i < inputDimension && j < inputDimension && k < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";
+  if (!(i < inputDimension && j < inputDimension && k < getOutputDimension())) throw InvalidArgumentException(HERE) << "Cannot access to a formula outside of the hessian dimensions.";
   if (!isInitialized_) initialize();
   // Convert the 3D index into a linear index
   UnsignedInteger rowIndex = i;
@@ -279,7 +271,7 @@ UnsignedInteger SymbolicHessian::getOutputDimension() const
 /* Get the i-th marginal function */
 Hessian SymbolicHessian::getMarginal(const UnsignedInteger i) const
 {
-  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal hessian must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "The index of a marginal hessian must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
