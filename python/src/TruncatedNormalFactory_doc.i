@@ -13,8 +13,8 @@ scaling.
 The starting point of the optimization algorithm is based on the moment based 
 estimator. 
 
-Let :math:`n` be the sample sample size. 
-Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
+Let :math:`\sampleSize` be the sample sample size. 
+Let :math:`x_{\min}` be the sample minimum and :math:`x_{\max}` be the sample maximum. 
 
 We compute the scaling parameters :math:`\alpha` and :math:`\beta` 
 from the equations: 
@@ -23,12 +23,12 @@ from the equations:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle \alpha = \frac{2}{x_{min} - x_{max}}, \\
-      \displaystyle \beta = \frac{1}{2} (x_{min} + x_{max}).
+      \displaystyle \alpha = \frac{2}{x_{\min} - x_{\max}}, \\
+      \displaystyle \beta = \frac{1}{2} (x_{\min} + x_{\max}).
     \end{eqnarray*}
 
-Then the sample :math:`\{x_i\}_{i=1,...,n}` is scaled into 
-:math:`\{u_i\}_{i=1,...,n}` from the equation:
+Then the sample :math:`\{x_i\}_{i=1, \ldots, \sampleSize}` is scaled into 
+:math:`\{u_i\}_{i=1, \ldots, \sampleSize}` from the equation:
 
 .. math::
     :nowrap:
@@ -37,9 +37,9 @@ Then the sample :math:`\{x_i\}_{i=1,...,n}` is scaled into
       \displaystyle u_i = \alpha (x_i - \beta)
     \end{eqnarray*}
 
-for :math:`i=1,...,n`. 
+for :math:`i=1, \ldots, \sampleSize`. 
 Hence, the scaled sample is so that :math:`u_i\in[-1,1]` 
-for :math:`i=1,...,n`. 
+for :math:`i=1, \ldots, \sampleSize`. 
 
 The starting point of the likelihood maximization algorithm is based on the 
 scaled sample. 
@@ -50,11 +50,11 @@ Let
 
     \begin{eqnarray*}
       \displaystyle \mu_0^u = \bar{u}, \\
-      \displaystyle \sigma_0^u = \sigma_{u, n}
+      \displaystyle \sigma_0^u = \widehat{\sigma}_{u, \sampleSize}
     \end{eqnarray*}
 
 where :math:`\bar{u}` is the sample mean of the scaled sample and 
-:math:`\sigma_{u, n}` is the sample standard deviation of the scaled sample. 
+:math:`\widehat{\sigma}_{u, \sampleSize}` is the sample standard deviation of the scaled sample. 
 
 Then the likelihood maximization optimization algorithm is used to fit the 
 scaled truncated normal distribution. 
@@ -67,7 +67,7 @@ Let :math:`\epsilon` be computed from the sample size:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle \epsilon = 1 + \frac{1}{n}.
+      \displaystyle \epsilon = 1 + \frac{1}{\sampleSize}.
     \end{eqnarray*}
 
 The lower and upper bounds of the scaled truncated normal distribution are set to 
@@ -93,8 +93,8 @@ leads to:
 
 **Moment based estimator:**
 
-Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
-Let :math:`\delta = x_{max} - x_{min}` be the sample range. 
+Let :math:`x_{\min}` be the sample minimum and :math:`x_{\max}` be the sample maximum. 
+Let :math:`\delta = x_{\max} - x_{\min}` be the sample range. 
 
 The distribution bounds are computed from the equations:
 
@@ -102,8 +102,8 @@ The distribution bounds are computed from the equations:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{a}_n = x_{min} - \frac{\delta}{n + 2}\\
-      \displaystyle\Hat{b}_n = x_{max} + \frac{\delta}{n + 2}
+      \displaystyle\Hat{a}_n = x_{\min} - \frac{\delta}{\sampleSize + 2}\\
+      \displaystyle\Hat{b}_n = x_{\max} + \frac{\delta}{\sampleSize + 2}
     \end{eqnarray*}
 
 Then the :math:`\mu` and :math:`\sigma` parameters are estimated from the 
