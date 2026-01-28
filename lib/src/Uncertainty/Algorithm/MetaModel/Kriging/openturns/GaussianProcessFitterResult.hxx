@@ -110,8 +110,11 @@ protected:
   // GaussianProcessRegressionResult could use Cholesky setters
   friend class GaussianProcessRegressionResult;
 
-  // GaussianProcessRegressionResult could use Cholesky setters
+  // GaussianProcessRegression could use Cholesky setters
   friend class GaussianProcessRegression;
+
+  // GaussianProcessRegressionCrossValidation could use getRho()
+  friend class GaussianProcessRegressionCrossValidation;
 
   /** Accessor to the Cholesky factor*/
   void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
