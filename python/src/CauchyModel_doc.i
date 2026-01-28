@@ -21,7 +21,7 @@ sigma : sequence of float
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Spatial correlation matrix :math:`\mat{R}` of size :math:`d \times d`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Spatial covariance matrix :math:`\mat{C}^{spatial} = \Diag(\vect{\sigma} \mat{R}\Diag(\vect{\sigma})`.
+    Spatial covariance matrix :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \mat{R}\diag(\vect{\sigma})`.
 
 Notes
 -----
