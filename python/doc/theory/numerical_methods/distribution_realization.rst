@@ -59,7 +59,7 @@ Several classical techniques exist:
       cheap function :math:`m` such that :math:`m(u) \geq \rho(u)`: one
       checks if :math:`u\geq m(u)` and directly reject :math:`y` if the
       test is positive (quick rejection test). The combination of quick
-      acceptation and quick rejection is called a *squeeze*.
+      acceptance and quick rejection is called a *squeeze*.
 
    -  The test :math:`u\leq \rho(u)` can be replaced by an equivalent
       one but much more computationally efficient.
