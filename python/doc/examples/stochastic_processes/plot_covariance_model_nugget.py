@@ -1,10 +1,11 @@
 """
-Create a covariance model with and without nugget effect
-========================================================
+Create a covariance model with and without a nugget effect
+==========================================================
 """
 
 # %%
 # This example shows the impact of a nugget effect on the covariance function of a process:
+#
 # - we create two covariance functions: the second one adds a nugget effect to the first one,
 # - we draw the covariance functions.
 #
@@ -17,19 +18,20 @@ Create a covariance model with and without nugget effect
 # the introduction of a nugget factor, and in particular see equation :eq:`Css`.
 
 # %%
+# sphinx_gallery_thumbnail_number = 1
 import openturns as ot
 import openturns.viewer as otv
 
 # %%
-# First we create a covariance function for a process defined on :math:`\cD \in \Rset` and with scalar outputs. We use the
-# :class:`~openturns.SquaredExponential` with unit scale, unit amplitude. By default, the nugget factor is equal to
-# :math:`10^{-12}` which allows the regularization of the ocnvariance matrix. We set it to zero.
-# sphinx_gallery_thumbnail_number = 1
+# First we create the covariance function of a process defined on :math:`\cD \in \Rset` and with scalar
+# outputs. We use the :class:`~openturns.SquaredExponential` with unit scale, unit amplitude. By default, the
+# nugget factor is equal to :math:`10^{-12}` which allows the regularization of the covariance matrix. We set
+# it to zero.
 cov_model = ot.SquaredExponential()
 cov_model.setNuggetFactor(0.0)
 
 # %%
-# Then, we create a second covariance function which is the first one with a nugget factor.
+# Then, we create a second covariance function which adds a nugget factor to the first one with.
 # We take :math:`\varepsilon_{nugget} = 1`.
 cov_model_with_nugget = ot.SquaredExponential()
 epsilon_nugget = 1

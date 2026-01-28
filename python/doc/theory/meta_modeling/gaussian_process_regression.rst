@@ -17,7 +17,7 @@ set. To build this metamodel, we follow the steps:
 - **Step 1: Gaussian process fitting**: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
   where :math:`\vect{\mu}` is the trend function and :math:`\vect{W}` is a Gaussian process of
-  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`;
+  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`. We show how to take into account a noise observed on the output values of the function :math:`\model`;
 - **Step 2:  Gaussian Process Regression**: we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
@@ -28,14 +28,11 @@ set. To build this metamodel, we follow the steps:
   the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
 
-Note that the implementation of a
-Gaussian process regression deals with vector-valued functions
-(:math:`\metaModel: \vect{x} \mapsto \vect{y}`), without simply looping over
-each output.
+Note that the Gaussian process regression of a function with multivariate putput (:math:`\Rset^\outputDim > 1`
+is done without simply looping over each output.
 
-
-Step 1: Gaussian process fitting
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Step 1: Gaussian process fitting with and without noise
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The first step creates the Gaussian process  :math:`\vect{Y}(\omega, \vect{x})` such that the sample
 :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}` is considered as its restriction  on
@@ -107,6 +104,7 @@ We note:
 and:
 
 .. math::
+    :label: CovaMatDef
 
     \mat{C}_{\vect{p}} = \left(
       \begin{array}{lcl}
@@ -122,6 +120,7 @@ where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\output
 The likelihood of the Gaussian process on the data set is defined by:
 
 .. math::
+    :label: logLikelihoodGPgen
 
     \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}) = \dfrac{1}
     {(2\pi)^{\outputDim \times \sampleSize/2} |\det \left(\mat{C}_{\vect{p}}\right)|^{1/2}} \exp\left( -\dfrac{1}{2}
@@ -174,6 +173,42 @@ which leads to a further reduction of the log-likelihood function where both :ma
 :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
 
 This step is performed by the class :class:`~openturns.GaussianProcessFitter`.
+
+**Add a noise to the output values**: We show how to take into account the fact that the output values
+of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a
+covariance matrix :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
+specific to the output :math:`\vect{y}_i`. It means that each output :math:`\vect{y}_i` is considered as the
+realization of the random vector :math:`\vect{Y}_i` defined by:
+
+.. math::
+
+    \vect{Y}_i = \vect{y}_i^{true} + \varepsilon, \quad
+    \varepsilon \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+
+where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
+
+If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroskedastic. On the contrary, the noise is homoskedastic.
+
+The noise is introduced during the step of the parameters estimation: in the likelihood expression defined in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is modified in the covariance matrix :math:`\mat{C}^{noise}` defined by:
+
+.. math::
+
+    \mat{C}^{noise}_{\vect{p}} = \left(
+      \begin{array}{lccl}
+        \mat{C}_{11} + \mat{\Sigma}_1^{noise} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
+        \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{noise} & \dots &  \vdots \\
+        \vdots & & &  \vdots \\
+        \mat{C}_{\sampleSize \times 1}  & \dots & \dots &  \mat{C}_{\sampleSize \times \sampleSize} + \mat{\Sigma}_n^{noise} 
+       \end{array}
+     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
+
+Thus the covariance matrix of the noise has been added on the bloc-diagonal of the initial covariance matrix.
+
+Note that the  noise is taken into account to estimate the parameters only. The final covariance model of the
+process is still defined by the initial covariance function :math:`\vect{C}` once the parameters have been
+estimated.
+
+Use the method :meth:`~openturns.GaussianProcessFitter.setNoise` to model the noise.
 
 Step 2:  Gaussian Process Regression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -244,7 +279,7 @@ The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defin
 
 with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
 
-When computed on the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
+When computed on any sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
 defined by:
 
 .. math::
@@ -277,7 +312,6 @@ The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
 
 We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
 :class:`~openturns.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
-
 
 .. topic:: API:
 

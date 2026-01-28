@@ -52,7 +52,7 @@ transformation :math:`T_i = (F_2^i)^{-1} \circ F_1^i`. Then :math:`T` is defined
 .. math::
    T = T_2^{-1}\circ T_1
 
-Case 4: both distributions have different standard spaces. Then, we denote by :math:`T_i` the
+**Case 4**: Both distributions have different standard spaces. Then, we denote by :math:`T_i` the
 transformation that transforms :math:`d_i` into the normal distribution with zero mean, unit variance
 and identity correlation matrix. The final transformation :math:`T` is defined by:
 
