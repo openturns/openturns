@@ -17,8 +17,10 @@ set. To build this metamodel, we follow the steps:
 - **Step 1: Gaussian process fitting**: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
   where :math:`\vect{\mu}` is the trend function and :math:`\vect{W}` is a Gaussian process of
-  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`. We show how to take into account a noise observed on the output values of the function :math:`\model`;
-- **Step 2:  Gaussian Process Regression**: we condition the Gaussian process :math:`\vect{Y}` to the data set by considering the
+  dimension :math:`\outputDim` with zero mean and covariance function :math:`\mat{C}`. We show how to take
+  into account a noise observed on the output values of the function :math:`\model`;
+- **Step 2:  Gaussian Process Regression**: we condition the Gaussian process :math:`\vect{Y}` to the data set
+  by considering the
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
@@ -59,12 +61,13 @@ with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})
 :math:`1 \leq \ell \leq \outputDim`.
 
 Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputDim` with zero mean and
-covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`, where (see
-:ref:`covariance_model` for more details on the notations):
+covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`,
+where (see :ref:`covariance_model` for more details on the notations):
 
 - :math:`\vect{\theta} \in \Rset^\inputDim` is the scale vector,
 - :math:`\vect{\sigma} \in \Rset^\outputDim` is the standard deviation vector,
-- :math:`\mat{R} \in \cS_{\outputDim}^+(\Rset)` is the spatial correlation matrix between the components of :math:`\vect{W}`,
+- :math:`\mat{R} \in \cS_{\outputDim}^+(\Rset)` is the spatial correlation matrix between the components
+  of :math:`\vect{W}`,
 - :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
 
 Then, we have to estimate the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}`
@@ -151,9 +154,9 @@ This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is
 between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to
 a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
-In the particular case where :math:`\outputDim=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`,
-then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which
-:math:`\sigma` has been substituted by 1, then:
+In the particular case where :math:`\outputDim=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of
+:math:`\vect{p}`, then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector
+:math:`\vect{p}` in which :math:`\sigma` has been substituted by 1, then:
 
 .. math::
 
@@ -187,9 +190,12 @@ realization of the random vector :math:`\vect{Y}_i` defined by:
 
 where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
 
-If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroskedastic. On the contrary, the noise is homoskedastic.
+If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroskedastic.
+On the contrary, the noise is homoskedastic.
 
-The noise is introduced during the step of the parameters estimation: in the likelihood expression defined in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is modified in the covariance matrix :math:`\mat{C}^{noise}` defined by:
+The noise is introduced during the step of the parameters estimation: in the likelihood expression defined
+in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is modified in
+the covariance matrix :math:`\mat{C}^{noise}` defined by:
 
 .. math::
 
@@ -198,7 +204,8 @@ The noise is introduced during the step of the parameters estimation: in the lik
         \mat{C}_{11} + \mat{\Sigma}_1^{noise} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
         \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{noise} & \dots &  \vdots \\
         \vdots & & &  \vdots \\
-        \mat{C}_{\sampleSize \times 1}  & \dots & \dots &  \mat{C}_{\sampleSize \times \sampleSize} + \mat{\Sigma}_n^{noise} 
+        \mat{C}_{\sampleSize \times 1}  & \dots & \dots &  \mat{C}_{\sampleSize \times \sampleSize} +
+        \mat{\Sigma}_n^{noise}
        \end{array}
      \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
@@ -208,7 +215,7 @@ Note that the  noise is taken into account to estimate the parameters only. The 
 process is still defined by the initial covariance function :math:`\vect{C}` once the parameters have been
 estimated.
 
-Use the method :meth:`~openturns.GaussianProcessFitter.setNoise` to model the noise.
+Use the method *setNoise* of the class :class:`~openturns.GaussianProcessFitter`.
 
 Step 2:  Gaussian Process Regression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
