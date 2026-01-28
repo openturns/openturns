@@ -53,11 +53,11 @@ FunctionImplementation::FunctionImplementation()
 /* Single function implementation constructor */
 FunctionImplementation::FunctionImplementation(const Evaluation & evaluation)
   : PersistentObject()
-  , evaluation_(evaluation)
-  , gradient_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_))
-  , hessian_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_))
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
+  , evaluation_(evaluation)
+  , gradient_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon"), evaluation_))
+  , hessian_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon"), evaluation_))
 {
   // Nothing to do
 }
@@ -268,53 +268,62 @@ Field FunctionImplementation::operator() (const Field & inField) const
   return evaluation_.operator()(inField);
 }
 
+
+
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
 Matrix FunctionImplementation::gradient(const Point & inP) const
 {
-  // Here we must catch the exceptions raised by functions with no gradient
+  // Here we must catch the exceptions raised by functions with undefined gradient
   try
   {
     return gradient_.gradient(inP);
   }
-  catch (...)
+  catch (const NotDefinedException &)
   {
-    // Fallback on non-centered finite difference gradient
-    try
-    {
-      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP.__str__());
-      const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
-      return gradientFD.gradient(inP);
-    }
-    catch (const Exception & exc)
-    {
-      throw InternalException(HERE) << "Function cannot compute gradient at point=" << inP << " msg: " << exc.what();
-    }
-  } // Usual gradient failed
+    // the gradient may not exist (NoGradient class)
+    // the symbolic derivative parser might fail to parse or differentiate expression
+    // also the symbolic evaluation parser might fail to evaluation expression
+  }
+
+  // Fallback on non-centered finite difference gradient
+  try
+  {
+    LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP.__str__());
+    const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon"), evaluation_);
+    return gradientFD.gradient(inP);
+  }
+  catch (const Exception & exc)
+  {
+    throw InternalException(HERE) << "Cannot compute FD gradient at point=" << inP << " msg: " << exc.what();
+  }
 }
 
 /* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
-  if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
-  // Here we must catch the exceptions raised by functions with no gradient
+  // Here we must catch the exceptions raised by functions with undefined gradient
   try
   {
     return hessian_.hessian(inP);
   }
-  catch (...)
+  catch (const NotDefinedException &)
   {
-    // Fallback on non-centered finite difference gradient
-    try
-    {
-      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP.__str__());
-      const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
-      return hessianFD.hessian(inP);
-    }
-    catch (...)
-    {
-      throw InternalException(HERE) << "Error: cannot compute hessian at point=" << inP;
-    }
-  } // Usual gradient failed
+    // the gradient may not exist (NoHessian class)
+    // the symbolic derivative parser might fail to parse or differentiate expression
+    // also the symbolic evaluation parser might fail to evaluation expression
+  }
+
+  // Fallback on non-centered finite difference gradient
+  try
+  {
+    LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP.__str__());
+    const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon"), evaluation_);
+    return hessianFD.hessian(inP);
+  }
+  catch (const Exception & exc)
+  {
+    throw InternalException(HERE) << "Cannot compute FD hessian at point=" << inP << " msg: " << exc.what();
+  }
 }
 
 /* Accessor for parameter dimension */

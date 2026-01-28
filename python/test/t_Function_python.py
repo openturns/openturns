@@ -113,7 +113,7 @@ ott.assert_almost_equal(outSample, [[200], [202], [204]])
 
 
 def a_grad(X):
-    # wrong but allows one to verify
+    # wrong values but allows one to verify
     dY = [[1.0], [-1.0]]
     return dY
 
@@ -124,8 +124,20 @@ grad = myFunc.gradient([100.0, 100.0])
 print(grad)
 
 
+def wrong_dim_grad(X):
+    # wrong dim: 3 rows, 1 column
+    dY = [[1.0, -1.0, 42.0]]
+    return dY
+
+
+print("gradient with wrong dim")
+myFunc = ot.PythonFunction(2, 1, a_exec, gradient=wrong_dim_grad)
+with ott.assert_raises(RuntimeError):
+    grad = myFunc.gradient([100.0, 100.0])
+
+
 def a_hess(X):
-    # wrong but allows one to verify
+    # wrong values but allows one to verify
     d2Y = [[[0.1], [0.3]], [[0.3], [0.1]]]
     return d2Y
 

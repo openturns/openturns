@@ -153,7 +153,7 @@ void SymbolicGradient::initialize() const
     {
       throw InternalException(HERE) << exc.description_;
     }
-    if (nerr != 0) throw InvalidArgumentException(HERE) << "Cannot parse " << p_evaluation_->formulas_[columnIndex] << " with Ev3. No analytical gradient.";
+    if (nerr != 0) throw NotDefinedException(HERE) << "Cannot parse " << p_evaluation_->formulas_[columnIndex] << " with Ev3. No analytical gradient.";
     for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++ rowIndex)
     {
       try
@@ -162,9 +162,9 @@ void SymbolicGradient::initialize() const
         LOGDEBUG(OSS() << "d(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")=" << derivative->ToString());
         gradientFormulas[gradientIndex] = derivative->ToString();
       }
-      catch (...)
+      catch (const Ev3::ErrBase & exc)
       {
-        throw InternalException(HERE) << "Cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
+        throw NotDefinedException(HERE) << "Cannot compute the derivative of " << ev3Expression->ToString() << " wrt " << p_evaluation_->inputVariablesNames_[rowIndex] << " :" << exc.description_;
       }
       ++ gradientIndex;
     } // rowIndex
