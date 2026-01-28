@@ -50,6 +50,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(JointDistribution)
 
 static const Factory<JointDistribution> Factory_JointDistribution;
+static const Factory<JointDistribution> Factory_ComposedDistribution("ComposedDistribution");
 
 /* Default constructor */
 JointDistribution::JointDistribution()
@@ -1520,9 +1521,5 @@ void JointDistribution::load(Advocate & adv)
     adv.loadAttribute( "core_", core_ );
   computeRange();
 }
-
-CLASSNAMEINIT(ComposedDistribution)
-
-static const Factory<ComposedDistribution> Factory_ComposedDistribution;
 
 END_NAMESPACE_OPENTURNS

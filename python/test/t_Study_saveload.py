@@ -335,9 +335,6 @@ try:
     wms_parameters = ot.WeibullMinMuSigma()
     myStudy.fillObject("wms_parameters", wms_parameters)
 
-    # cleanup
-    os.remove(fileName)
-
     # test nan/inf
     myStudy = ot.Study(fileName)
     point = ot.Point([float(x) for x in ["nan", "inf", "-inf"]])
@@ -358,9 +355,27 @@ try:
             "isinf=",
             m.isinf(point2[j]),
         )
+
+    # test ComposedDistribution catalog alias
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(fileName))
+    distribution = ot.JointDistribution([ot.Uniform()] * 3)
+    study.add("distribution", distribution)
+    study.save()
+    # rewrite xml with the old name
+    with open(fileName) as f:
+        lines = f.readlines()
+    with open(fileName, "w") as f:
+        for line in lines:
+            f.write(line.replace(r'class="JointDistribution"', r'class="ComposedDistribution"'))
+    study2 = ot.Study(fileName)
+    study2.load()
+    distribution2 = ot.Distribution()
+    study2.fillObject("distribution", distribution2)
+    assert distribution2.getDimension() == 3
+
     # cleanup
     os.remove(fileName)
-
 except Exception:
     import os
     import traceback

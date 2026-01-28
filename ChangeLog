@@ -14,6 +14,8 @@
  * GaussianProcessRegression, GaussianProcessRegressionResult left the experimental module
  * GaussianProcessConditionalCovariance left the experimental module
  * PosteriorDistribution left the experimental module
+ * Removed deprecated ComposedDistribution, ComposedCopula classes aliases
+ * Removed deprecated NegativeBinomial, NegativeBinomialFactory classes aliases
 
 === Documentation ===
 

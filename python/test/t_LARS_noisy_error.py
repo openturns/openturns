@@ -32,7 +32,7 @@ F.setParameter(ot.LogNormalMuSigmaOverMu()([.1, .20, 0.]))
 S = ot.CorrelationMatrix(5)
 S[1, 2] = 0.8
 R = ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(S)
-distribution = ot.ComposedDistribution([L, b, h, E, F])
+distribution = ot.JointDistribution([L, b, h, E, F])
 
 ot.RandomGenerator.SetSeed(seed)
 experiment = ot.LHSExperiment(distribution, int(size_doe))

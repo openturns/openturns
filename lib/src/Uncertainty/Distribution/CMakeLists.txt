@@ -360,7 +360,3 @@ ot_install_header_file (WeibullMin.hxx)
 ot_install_header_file (WeibullMinMuSigma.hxx)
 ot_install_header_file (Wishart.hxx)
 ot_install_header_file (ZipfMandelbrot.hxx)
-
-# deprecated
-ot_install_header_file (ComposedDistribution.hxx)
-ot_install_header_file (ComposedCopula.hxx)
