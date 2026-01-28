@@ -59,7 +59,7 @@ grid.setGraph(0, 1, g_2)
 view = otv.View(grid)
 
 # %%
-# We can also use the ouput values to deform the initial mesh and draw the deformed mesh.
+# We can also use the output values to deform the initial mesh and draw the deformed mesh.
 # First, we recover the default values of the ResourceMap keys.
 ot.ResourceMap.SetAsScalar('Field-ArrowRatio', 0.01)
 ot.ResourceMap.SetAsScalar('Field-ArrowScaling', 1)
@@ -83,8 +83,8 @@ view = otv.View(grid)
 # We consider a normal process defined on :math:`\cD = [0,1]^2`, with scalar output values, defined by a
 # covariance function which is a :class:`~openturns.MaternModel`.
 # The domain :math:`\cD` is discretized by a regular grid, using the class :class:`~openturns.IntervalMesher`.
-cov_model = ot.MaternModel([0.1] * 2, [0.01], 2.5)
-mesh = ot.IntervalMesher([50] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
+cov_model = ot.MaternModel([0.15] * 2, [0.01], 2.5)
+mesh = ot.IntervalMesher([35] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
 field = normal_proc.getRealization()
 
@@ -140,8 +140,8 @@ view.show()
 # covariance function which is a :class:`~openturns.MaternModel`.
 # The domain :math:`\cD` is discretized by a regular grid, using  :class:`~openturns.IntervalMesher`.
 # This process is stationary.
-cov_model = ot.MaternModel([0.1], [0.01], 2.5)
-mesh = ot.IntervalMesher([50]).build(ot.Interval(0.0, 1.0))
+cov_model = ot.MaternModel([0.05], [0.01], 2.5)
+mesh = ot.IntervalMesher([1000]).build(ot.Interval(0.0, 1.0))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
 field = normal_proc.getRealization()
 
@@ -187,15 +187,10 @@ g_3.setYTitle(r'$x_1$')
 # %%
 # We can compare both processes.
 grid = ot.GridLayout(1, 2)
-grid.setGraph(0, 0, g_1)
+g_2.setTitle('A field on 1-d mesh and scalar values - Stationary process')
+grid.setGraph(0, 0, g_2)
 grid.setGraph(0, 1, g_3)
 view = otv.View(grid)
-
-# %%
-# Export to the VTK format
-field.exportToVTKFile("field.vtk")
-with open("field.vtk") as f:
-    print(f.read()[:100])
 
 # %%
 # Display all figures
