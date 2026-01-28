@@ -79,13 +79,17 @@ for factory in factories:
     distName = factoryName.replace("Factory", "")
     if distName in [
         "Rice",
+        "Skellam",
         "Student",
         "Trapezoidal",
         "TruncatedNormal",
         "VonMises",
         "Histogram",
         "MeixnerDistribution",
+        "Multinomial",
         "Pareto",
+        "Polya",
+        "Binomial",
         "Dirichlet",
         "InverseNormal",
     ]:

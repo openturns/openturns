@@ -66,19 +66,12 @@ Bool NoGradient::isActualImplementation() const
 
 
 
-
-
-
-
 /* Here is the interface that all derived class must implement */
 
 /* Gradient method */
-Matrix NoGradient::gradient(const Point & inP) const
+Matrix NoGradient::gradient(const Point &) const
 {
-  const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  callsNumber_.increment();
-  return Matrix();
+  throw NotDefinedException(HERE) << "In NoGradient::gradient(Point)";
 }
 
 /* Accessor for input point dimension */

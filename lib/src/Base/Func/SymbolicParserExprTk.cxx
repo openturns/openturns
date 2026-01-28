@@ -77,7 +77,7 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
       const Scalar value = expressions_[outputIndex]->value();
       // ExprTk does not throw on domain/division errors
       if (checkOutput_ && !std::isfinite(value))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+        throw NotDefinedException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       result[outputIndex] = value;
     } // outputIndex
   } // outputVariablesNames_.getSize() == 0
@@ -92,7 +92,7 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
         if (!std::isfinite(result[outputIndex]))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+          throw NotDefinedException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       }
     } // checkResult
   } // !outputVariablesNames_.getSize() == 0
@@ -134,7 +134,7 @@ struct SymbolicParserExprTkPolicy
           const Scalar value = evaluation_.threadExpressions_[threadIndex][outputIndex]->value();
           // ExprTk does not throw on domain/division errors
           if (evaluation_.checkOutput_ && !std::isfinite(value))
-            throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
+            throw NotDefinedException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
           output_(i, outputIndex) = value;
         }
       }
@@ -154,7 +154,7 @@ struct SymbolicParserExprTkPolicy
           for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
           {
             if (!std::isfinite(output_(i, outputIndex)))
-              throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[0] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
+              throw NotDefinedException(HERE) << "Cannot evaluate " << evaluation_.formulas_[0] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
           }
       } // i
     }

@@ -122,7 +122,7 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
   if (inP.getDimension() != inputDimension)
-    throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
+    throw InvalidArgumentException(HERE) << "Invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Point();
   initialize();
   std::copy(inP.begin(), inP.end(), stack_.begin());
@@ -134,13 +134,13 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
       const Scalar value = expressions_[outputIndex]->Eval();
       // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
       if (checkOutput_ && !std::isfinite(value))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+        throw NotDefinedException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       result[outputIndex] = value;
     } // outputIndex
   }
   catch (const mu::Parser::exception_type & ex)
   {
-    throw InternalException(HERE) << ex.GetMsg();
+    throw NotDefinedException(HERE) << ex.GetMsg();
   }
   return result;
 }

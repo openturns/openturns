@@ -231,18 +231,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-private:
-  /** A pointer on the actual function implementation */
-  Evaluation evaluation_;
-
-  /** A pointer on the actual gradient implementation */
-  Gradient gradient_;
-
-  /** A pointer on the actual hessian implementation */
-  Hessian hessian_;
-
 protected:
-
   /** Flag to tell if the current gradient is a default implementation */
   mutable Bool useDefaultGradientImplementation_ = false;
 
@@ -252,6 +241,15 @@ protected:
   /** Counter for the number of calls */
   mutable AtomicInt callsNumber_;
 
+private:
+  /** A pointer on the actual function implementation */
+  Evaluation evaluation_;
+
+  /** A pointer on the actual gradient implementation */
+  Gradient gradient_;
+
+  /** A pointer on the actual hessian implementation */
+  Hessian hessian_;
 }; /* class FunctionImplementation */
 
 

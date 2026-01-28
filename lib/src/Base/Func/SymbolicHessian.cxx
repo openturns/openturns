@@ -166,7 +166,7 @@ void SymbolicHessian::initialize() const
     {
       throw InternalException(HERE) << exc.description_;
     }
-    if (nerr != 0) throw InvalidArgumentException(HERE) << "Cannot parse " << p_evaluation_->formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
+    if (nerr != 0) throw NotDefinedException(HERE) << "Cannot parse " << p_evaluation_->formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
     for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
     {
       Ev3::Expression firstDerivative;
@@ -175,9 +175,9 @@ void SymbolicHessian::initialize() const
         firstDerivative = Ev3::Diff(ev3Expression, rowIndex);
         LOGDEBUG(OSS() << "First variable=" << p_evaluation_->inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
       }
-      catch(...)
+      catch (const Ev3::ErrBase & exc)
       {
-        throw InternalException(HERE) << "Cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
+        throw NotDefinedException(HERE) << "Cannot compute the derivative of " << ev3Expression->ToString() << " wrt " << p_evaluation_->inputVariablesNames_[rowIndex] << " :" << exc.description_;
       }
       for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++ columnIndex)
       {
@@ -187,9 +187,9 @@ void SymbolicHessian::initialize() const
           LOGDEBUG(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")d(" << p_evaluation_->inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
           hessianFormulas[hessianIndex] = secondDerivative->ToString();
         }
-        catch (...)
+        catch (const Ev3::ErrBase & exc)
         {
-          throw InternalException(HERE) << "Cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[columnIndex];
+          throw NotDefinedException(HERE) << "Cannot compute the derivative of " << firstDerivative->ToString() << " wrt " << p_evaluation_->inputVariablesNames_[columnIndex] << " :" << exc.description_;
         }
         ++ hessianIndex;
       } // columnIndex
