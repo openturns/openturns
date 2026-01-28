@@ -185,8 +185,8 @@ realization of the random vector :math:`\vect{Y}_i` defined by:
 
 .. math::
 
-    \vect{Y}_i = \vect{y}_i^{true} + \varepsilon, \quad
-    \varepsilon \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
 
 where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
 
@@ -194,8 +194,8 @@ If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noi
 On the contrary, the noise is homoskedastic.
 
 The noise is introduced during the step of the parameters estimation: in the likelihood expression defined
-in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is modified in
-the covariance matrix :math:`\mat{C}^{noise}` defined by:
+in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is transformed
+into the covariance matrix :math:`\mat{C}^{noise}` defined by:
 
 .. math::
 
