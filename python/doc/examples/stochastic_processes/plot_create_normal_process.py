@@ -71,11 +71,12 @@ view = otv.View(graph)
 # ..math::
 #
 #   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
-#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \varepsilon_{nugget} \mat{C}^{spatial})
+#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \sigma_{nugget}^2 =
+#   \varepsilon_{nugget} \mat{C}^{spatial})
 #
 # We fix :math:`\varepsilon_{nugget} = 0.05`.
-sigma_nugget = 0.05
-myModel.setNuggetFactor(sigma_nugget)
+epsilon_nugget = 0.05
+myModel.setNuggetFactor(epsilon_nugget)
 process_nugget = ot.GaussianProcess(myModel, myTimeGrid)
 print(process_nugget)
 

@@ -114,4 +114,5 @@ which shows how the nugget factor :math:`\varepsilon_{nugget}` acts on the covar
     - See :doc:`/auto_stochastic_processes/plot_create_stationary_covmodel`
     - See :doc:`/auto_stochastic_processes/plot_userdefined_covariance_model`
     - See :doc:`/auto_stochastic_processes/plot_covariance_model_nugget`
+    - See :doc:`/auto_stochastic_processes/plot_create_normal_process`
 
