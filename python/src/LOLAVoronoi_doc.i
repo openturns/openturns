@@ -104,7 +104,7 @@ Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
   to the bounding box `B` of the Voronoi cell being sampled.
   If the flag is set to False, the sampling is done by a rejection method with respect to :math:`\inputMeasure(\vect{x})` and `B`.
   The advantage is to avoid the expensive computation of the normalization factor of the truncation of :math:`\inputMeasure(\vect{x})`.
-  The drawback is that the acceptation rate might be low.
+  The drawback is that the acceptance rate might be low.
   If the flag is set to True, the truncated distribution of :math:`\inputMeasure(\vect{x})` to `B` is explicitly built and sampled.
   The advantage is to possibly use the CDF inversion method to sample this truncated distribution: all the points are accepted.
   But the CDF inversion method is only available if the copula of :math:`\inputMeasure(\vect{x})` is the independent one:
