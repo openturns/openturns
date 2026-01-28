@@ -25,8 +25,9 @@ import openturns.viewer as otv
 # ------------------------------------------------------
 # We consider a normal process defined on :math:`\cD = [0,1]^2`, with 2-d output values, defined by a
 # covariance function which is a :class:`~openturns.TensorizedCovarianceModel` built as the tensorization of
-# two  :class:`~openturns.MaterModel` covariance functions.
-# The domain :math:`\cD` is discretized by a regular grid, using  :class:`~openturns.IntervalMesher`.
+# two  :class:`~openturns.MaternModel` covariance functions.
+# The domain :math:`\cD` is discretized by a regular grid, using the class
+# :class:`~openturns.IntervalMesher`.
 cov_model = ot.TensorizedCovarianceModel([ot.MaternModel([0.1] * 2, [0.01], 2.5)] * 2)
 mesh = ot.IntervalMesher([50] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
@@ -58,7 +59,7 @@ grid.setGraph(0, 1, g_2)
 view = otv.View(grid)
 
 # %%
-# We can also use the ouput values to deform the intial mesh and draw the deformed mesh.
+# We can also use the ouput values to deform the initial mesh and draw the deformed mesh.
 # First, we recover the default values of the ResourceMap keys.
 ot.ResourceMap.SetAsScalar('Field-ArrowRatio', 0.01)
 ot.ResourceMap.SetAsScalar('Field-ArrowScaling', 1)
@@ -81,7 +82,7 @@ view = otv.View(grid)
 # ---------------------------------------------------------
 # We consider a normal process defined on :math:`\cD = [0,1]^2`, with scalar output values, defined by a
 # covariance function which is a :class:`~openturns.MaternModel`.
-# The domain :math:`\cD` is discretized by a regular grid, using  :class:`~openturns.IntervalMesher`.
+# The domain :math:`\cD` is discretized by a regular grid, using the class :class:`~openturns.IntervalMesher`.
 cov_model = ot.MaternModel([0.1] * 2, [0.01], 2.5)
 mesh = ot.IntervalMesher([50] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
@@ -96,7 +97,7 @@ g_1.setYTitle(r'$x_1$')
 
 
 # %%
-# We can also draw iso-value lines of the output values using interpolation. 
+# We can also draw iso-value lines of the output values using interpolation.
 g_2 = field.drawMarginal(0, True)
 g_2.setTitle('A field on 2-d mesh and scalar values')
 g_2.setXTitle(r'$x_0$')
@@ -116,7 +117,7 @@ view = otv.View(grid)
 # We consider a :class:`~openturns.RandomWalk` process which distribution is the normal
 # distribution of dimension 2 with zero mean and identity covariance matrix.
 # The process is defined on :math:`\cD = [0,1]^2` which is discretized by a regular grid, using
-# :class:`~openturns.IntervalMesher`.
+# the clas :class:`~openturns.IntervalMesher`.
 dist_rw = ot.Normal(2)
 origin = dist_rw.getMean()
 mesh = ot.RegularGrid(0, 1, 10000)
@@ -124,14 +125,13 @@ rw_process = ot.RandomWalk(origin, dist_rw, mesh)
 field = rw_process.getRealization()
 
 # %%
-# We draw the field by interpolating the points :math:`(x_0(\omega, t), x_1(\omega, t))_t`. 
+# We draw the field by interpolating the output vectors.
 g = field.draw()
 g.setTitle('A 2-d random walk field')
 g.setXTitle(r'$x_0$')
 g.setYTitle(r'$x_1$')
 view = otv.View(g)
 view.show()
-
 
 # %%
 # Case 4: A field defined on a  1-d mesh with  scalar values

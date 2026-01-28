@@ -3,23 +3,37 @@
 Meta modeling
 =============
 
-The current section is dedicated to the building of an analytical approximation of the response of a given model.
+The current section is dedicated to the building of an analytical approximation of the model of a given model.
 Such an approximation is commonly referred to as a response surface in the literature.
 This methodology is relevant if each model evaluation is time consuming.
-Indeed, once a response surface has been built up, the various propagation steps may be applied at a negligible cost.
-A special focus will be given to polynomial response surfaces.
+Indeed, once a surrogate model has been built up, the various propagation steps may be applied at a negligible cost.
 
-General purpose surrogate models
---------------------------------
+Local approximation
+-------------------
 
 .. toctree::
     :maxdepth: 1
 
     taylor_expansion
+
+
+Least square surrogate models
+-----------------------------
+
+.. toctree::
+    :maxdepth: 1
+
     polynomial_least_squares
     polynomial_sparse_least_squares
+
+
+Gaussian Process Regression
+---------------------------
+
+.. toctree::
+    :maxdepth: 1
+
     gaussian_process_regression
-    cross_validation
 
 
 Functional chaos
@@ -33,3 +47,12 @@ Functional chaos
     enumeration_strategy
     functional_chaos
     pce_cross_validation
+
+
+Surrogate validation
+--------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    cross_validation

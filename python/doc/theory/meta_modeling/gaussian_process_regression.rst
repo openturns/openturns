@@ -30,7 +30,7 @@ set. To build this metamodel, we follow the steps:
   the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
 
-Note that the Gaussian process regression of a function with multivariate putput (:math:`\Rset^\outputDim > 1`
+Note that the Gaussian process regression of a function with multivariate putput (:math:`\outputDim > 1`)
 is done without simply looping over each output.
 
 Step 1: Gaussian process fitting with and without noise
