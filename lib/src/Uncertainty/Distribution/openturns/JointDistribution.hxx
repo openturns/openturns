@@ -235,25 +235,6 @@ private:
 }; /* class JointDistribution */
 
 
-// @deprecated
-class OT_API ComposedDistribution
-  : public JointDistribution
-{
-  CLASSNAME
-public:
-  ComposedDistribution()
-    : JointDistribution() {}
-
-  explicit ComposedDistribution(const DistributionCollection & coll)
-    : JointDistribution(coll) {}
-
-  /** Default constructor */
-  ComposedDistribution(const DistributionCollection & coll,
-                       const Distribution & copula)
-    : JointDistribution(coll, copula) {}
-
-};
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_JOINTDISTRIBUTION_HXX */

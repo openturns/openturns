@@ -39,6 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(BlockIndependentCopula)
 
 static const Factory<BlockIndependentCopula> Factory_BlockIndependentCopula;
+static const Factory<BlockIndependentCopula> Factory_ComposedCopula("ComposedCopula");
 
 /* Default constructor */
 BlockIndependentCopula::BlockIndependentCopula()
@@ -822,9 +823,5 @@ void BlockIndependentCopula::load(Advocate & adv)
   adv.loadAttribute( "isIndependent_", isIndependent_ );
   computeRange();
 }
-
-CLASSNAMEINIT(ComposedCopula)
-
-static const Factory<ComposedCopula> Factory_ComposedCopula;
 
 END_NAMESPACE_OPENTURNS
