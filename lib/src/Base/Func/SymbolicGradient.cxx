@@ -36,8 +36,6 @@ static const Factory<SymbolicGradient> Factory_SymbolicGradient;
 /* Default constructor */
 SymbolicGradient::SymbolicGradient()
   : GradientImplementation()
-  , isInitialized_(false)
-  , isAnalytical_(true)
   , p_evaluation_(new SymbolicEvaluation)
 {
   // Nothing to do
@@ -46,8 +44,6 @@ SymbolicGradient::SymbolicGradient()
 /* Default constructor */
 SymbolicGradient::SymbolicGradient(const SymbolicEvaluation & evaluation)
   : GradientImplementation()
-  , isInitialized_(false)
-  , isAnalytical_(true)
   , p_evaluation_(evaluation.clone())
 {
   // Nothing to do
@@ -57,8 +53,6 @@ SymbolicGradient::SymbolicGradient(const SymbolicEvaluation & evaluation)
 /* Parameters constructor */
 SymbolicGradient::SymbolicGradient(Pointer<SymbolicEvaluation> & p_evaluation)
   : GradientImplementation()
-  , isInitialized_(false)
-  , isAnalytical_(true)
   , p_evaluation_(p_evaluation)
 {
   // Nothing to do
@@ -148,7 +142,8 @@ void SymbolicGradient::initialize() const
     int nerr(0);
     Ev3::ExpressionParser ev3Parser;
     // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(p_evaluation_->inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++ inputVariableIndex)
+      ev3Parser.SetVariableID(p_evaluation_->inputVariablesNames_[inputVariableIndex], inputVariableIndex);
     Ev3::Expression ev3Expression;
     try
     {
@@ -158,24 +153,22 @@ void SymbolicGradient::initialize() const
     {
       throw InternalException(HERE) << exc.description_;
     }
-    if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << p_evaluation_->formulas_[columnIndex] << " with Ev3. No analytical gradient.";
-    //                Ev3::Simplify(&ev3Expression);
-    for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
+    if (nerr != 0) throw InvalidArgumentException(HERE) << "Cannot parse " << p_evaluation_->formulas_[columnIndex] << " with Ev3. No analytical gradient.";
+    for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++ rowIndex)
     {
       try
       {
         Ev3::Expression derivative(Ev3::Diff(ev3Expression, rowIndex));
-        //                    Ev3::Simplify(&derivative);
         LOGDEBUG(OSS() << "d(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")=" << derivative->ToString());
         gradientFormulas[gradientIndex] = derivative->ToString();
-        ++ gradientIndex;
       }
-      catch(...)
+      catch (...)
       {
-        throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
+        throw InternalException(HERE) << "Cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
       }
-    }
-  }
+      ++ gradientIndex;
+    } // rowIndex
+  } // columnIndex
   parser_.setVariables(p_evaluation_->inputVariablesNames_);
   parser_.setFormulas(gradientFormulas);
   // Everything is ok (no exception)
@@ -187,7 +180,7 @@ void SymbolicGradient::initialize() const
 Matrix SymbolicGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Expected an argument of dimension " << inputDimension;
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The gradient does not have an analytical expression.";
   const UnsignedInteger outputDimension = getOutputDimension();
@@ -223,7 +216,7 @@ String SymbolicGradient::getFormula(const UnsignedInteger i,
                                     const UnsignedInteger j) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (!(i < inputDimension && j < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
+  if (!(i < inputDimension && j < getOutputDimension())) throw InvalidArgumentException(HERE) << "Cannot access to a formula outside of the gradient dimensions.";
   if (!isInitialized_) initialize();
   return parser_.getFormulas()[i + j * inputDimension];
 }
@@ -231,7 +224,7 @@ String SymbolicGradient::getFormula(const UnsignedInteger i,
 /* Get the i-th marginal function */
 Gradient SymbolicGradient::getMarginal(const UnsignedInteger i) const
 {
-  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "The index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
