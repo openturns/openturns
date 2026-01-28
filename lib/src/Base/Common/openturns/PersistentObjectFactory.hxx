@@ -101,6 +101,11 @@ public:
     registerMe(PERSISTENT::GetClassName());
   }
 
+  explicit Factory(const String & alias)
+  {
+    registerMe(alias);
+  }
+
   /** Virtual constructor */
   Factory * clone() const override
   {
