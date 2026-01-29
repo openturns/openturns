@@ -109,7 +109,9 @@ bool ExpressionParser::IsVariableName(const std::string & vname)
             (vname == "ceil")     ||
             (vname == "trunc")    ||
             (vname == "round")    ||
-            (vname == "abs"));
+            (vname == "abs")      ||
+            (vname == "cot")      ||
+            (vname == "coth"));
 }
 
 // driver evaluating routine (public method)
@@ -221,12 +223,14 @@ Expression ExpressionParser::prim(const bool get)
           if (s == "sin") ret = SinLink(ret);
           else if (s == "cos") ret = CosLink(ret);
           else if (s == "tan") ret = TanLink(ret);
+          else if (s == "cot") ret = CotLink(ret);
           else if (s == "acos") ret = AcosLink(ret);
           else if (s == "asin") ret = AsinLink(ret);
           else if (s == "atan") ret = AtanLink(ret);
           else if (s == "sinh") ret = SinhLink(ret);
           else if (s == "cosh") ret = CoshLink(ret);
           else if (s == "tanh") ret = TanhLink(ret);
+          else if (s == "coth") ret = CothLink(ret);
           else if (s == "asinh") ret = AsinhLink(ret);
           else if (s == "acosh") ret = AcoshLink(ret);
           else if (s == "atanh") ret = AtanhLink(ret);

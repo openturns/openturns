@@ -46,6 +46,7 @@ elementaryFunctions.append("floor")
 elementaryFunctions.append("ceil")
 elementaryFunctions.append("trunc")
 elementaryFunctions.append("round")
+elementaryFunctions.append("cot")
 
 
 # Check the creation of the elementary functions
