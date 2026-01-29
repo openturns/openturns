@@ -5253,6 +5253,18 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
           ret = ret + c;         // tan(f)^2 + 1
           ret = ret * Diff(a->GetNode(0), vi);    // f' * (tan(f)^2 + 1)
           break;
+        case COT:
+          if (sz != 1)
+          {
+            // check that there is exactly one operand
+            throw ErrNotPermitted(19, "Expression", "Diff", "GetSize() != 1",
+                                  "cot must have exactly 1 operand",
+                                  HELPURL);
+          }
+          ret = Sin(a->GetCopyOfNode(0)); // sin(f)
+          ret = ret ^ two;      // sin(f)^2
+          ret = -Diff(a->GetNode(0), vi) / ret; // -f' / sin(f)^2
+          break;
         case ASIN:
           if (sz != 1)
           {
@@ -5329,6 +5341,18 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
           c->One();
           ret = c - ret;
           ret = ret * Diff(a->GetNode(0), vi);    // f' * (1 - tan(f)^2)
+          break;
+        case COTH:
+          if (sz != 1)
+          {
+            // check that there is exactly one operand
+            throw ErrNotPermitted(19, "Expression", "Diff", "GetSize() != 1",
+                                  "coth must have exactly 1 operand",
+                                  HELPURL);
+          }
+          ret = Sinh(a->GetCopyOfNode(0)); // sinh(f)
+          ret = ret ^ two;      // sinh(f)^2
+          ret = -Diff(a->GetNode(0), vi) / ret; // -f' / sinh(f)^2
           break;
         case ASINH:
           if (sz != 1)
