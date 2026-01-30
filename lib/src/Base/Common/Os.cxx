@@ -49,7 +49,11 @@ const char * Os::GetDirectoryListSeparator()
 void Os::Remove(const String& fileName)
 {
   if (!ResourceMap::GetAsBool("Os-RemoveFiles")) return;
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  if (!std::filesystem::remove(fileName))
+#else
   if (!std::filesystem::remove(std::filesystem::u8path(fileName)))
+#endif
   {
     LOGWARN(OSS() << "Os: cannot remove file " << fileName);
   }
@@ -57,12 +61,20 @@ void Os::Remove(const String& fileName)
 
 Bool Os::IsDirectory(const String & fileName)
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  return std::filesystem::is_directory(fileName);
+#else
   return std::filesystem::is_directory(std::filesystem::u8path(fileName));
+#endif
 }
 
 Bool Os::IsFile(const String & fileName)
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  return std::filesystem::is_regular_file(fileName);
+#else
   return std::filesystem::is_regular_file(std::filesystem::u8path(fileName));
+#endif
 }
 
 END_NAMESPACE_OPENTURNS

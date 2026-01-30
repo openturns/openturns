@@ -102,7 +102,11 @@ FileName Path::GetInstallationDirectory()
 
 FileName Path::GetParentDirectory(const FileName & fileName)
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  return std::filesystem::path{fileName}.parent_path().string();
+#else
   return std::filesystem::u8path(fileName).parent_path().string();
+#endif
 }
 
 

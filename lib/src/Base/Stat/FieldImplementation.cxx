@@ -713,7 +713,11 @@ void FieldImplementation::load(Advocate & adv)
 /* Export to VTK file */
 void FieldImplementation::exportToVTKFile(const String & fileName) const
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  std::ofstream file(std::filesystem::path{fileName});
+#else
   std::ofstream file(std::filesystem::u8path(fileName));
+#endif
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
   const String content(mesh_.streamToVTKFormat());
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();

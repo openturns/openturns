@@ -92,7 +92,11 @@ void CSVParser::setNumericalSeparator(const char decimalSeparator)
 
 Sample CSVParser::load() const
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  if (!std::ifstream(std::filesystem::path{fileName_}).good())
+#else
   if (!std::ifstream(std::filesystem::u8path(fileName_)).good())
+#endif
     throw FileNotFoundException(HERE) << "Cannot open file '" << fileName_ << "'. Reason: " << std::strerror(errno);
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
@@ -111,7 +115,11 @@ Sample CSVParser::load() const
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
   std::ifstream stream;
   stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  stream.open(std::filesystem::path{fileName_}, std::ios::binary);
+#else
   stream.open(std::filesystem::u8path(fileName_), std::ios::binary);
+#endif
   rapidcsv::Document doc(stream, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;
