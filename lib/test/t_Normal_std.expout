@@ -72,7 +72,7 @@ margin quantile=class=Point name=Unnamed dimension=1 values=[1.64485]
 margin realization=class=Point name=Unnamed dimension=1 values=[-0.147003]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-Comparison with a Student distribution false
+Comparison with an Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
 Comparison with a clone true
@@ -165,7 +165,7 @@ margins CDF(quantile)=0.95
 margins realization=class=Point name=Unnamed dimension=2 values=[-0.422897,0.902554]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,1.73205]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
-Comparison with a Student distribution false
+Comparison with an Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
 Comparison with a clone true
@@ -253,7 +253,7 @@ margins CDF(quantile)=0.95
 margins realization=class=Point name=Unnamed dimension=2 values=[0.979474,1.35901]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,0,1.73205,1.73205,0,0,2.44949]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
-Comparison with a Student distribution false
+Comparison with an Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
 Comparison with a clone true
@@ -344,7 +344,7 @@ margins CDF(quantile)=0.95
 margins realization=class=Point name=Unnamed dimension=2 values=[-3.30128,-0.645538]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,0,1.73205,1.73205,0,0,0,2.44949,2.44949,0,0,0,3.16228]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,1,4,3,0,0,3,9,6,0,0,6,16]
-Comparison with a Student distribution false
+Comparison with an Student distribution false
 Comparison with an Exponential distribution false
 Comparison with itself true
 Comparison with a clone true
