@@ -24,9 +24,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 #ifndef _WIN32
-static volatile Bool Colored = true; // default is colored output
+static Bool Colored = true; // default is colored output
 #else
-static volatile Bool Colored = false; // default is standard output
+static Bool Colored = false; // default is standard output
 #endif
 
 static const char * ColorMap[] =
