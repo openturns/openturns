@@ -3,22 +3,33 @@ R"RAW(Cauchy spectral model.
 
 Refer to :ref:`parametric_spectral_model`.
 
+Available constructors:
+    CauchyModel(*theta, sigma*)
+
+    CauchyModel(*theta, sigma, spatialCorrelation*)
+
+    CauchyModel(*theta, spatialCovariance*)
+
 Parameters
 ----------
 theta : sequence of float
-    Scale coefficients :math:`\theta` of the spectral density function.
+    Vector :math:`\theta`
     Vector of size n
 sigma : sequence of float
-    Amplitude coefficients :math:`\sigma` of the spectral density function.
-    Vector of size p
+    Amplitude vector :math:`\vect{\sigma}`
+    Vector of size d
+spatialCorrelation : :class:`~openturns.CorrelationMatrix`
+    Spatial correlation matrix :math:`\mat{R}` of size :math:`d \times d`.
+spatialCovariance : :class:`~openturns.CovarianceMatrix`
+    Spatial covariance matrix :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \mat{R}\diag(\vect{\sigma})`.
 
 Notes
 -----
-The spectral density function of input dimension **n** and output dimension **p** writes:
+The spectral density function of input dimension **n** and output dimension **d** writes:
 
 .. math::
 
-   \forall (i,j) \in [0,p-1]^2, S(f)_{i,j} =  2 \Sigma_{i,j} \prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}
+    \forall f \geq 0, \forall (i,j) \in [0,d-1]^2, S_{i,j}(f) =  2 \mat{C}^{spatial}_{i,j} \prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}
 
 
 Examples

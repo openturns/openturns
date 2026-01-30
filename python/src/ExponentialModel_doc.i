@@ -23,7 +23,7 @@ spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
     By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`C^{stat} \in \cS_d^+(\Rset)`.
+    Covariance matrix :math:`C^{spatial} \in \cS_d^+(\Rset)`.
 
 Notes
 -----
@@ -33,17 +33,17 @@ The *exponential* function is a stationary covariance function with dimension :m
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)\, C^{stat}(\vect{s}, \vect{t}), \quad \forall (\vect{s}, \vect{t}) \in \cD
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)\, C^{spatial}(\vect{s}, \vect{t}), \quad \forall (\vect{s}, \vect{t}) \in \cD
 
 where the correlation function :math:`\rho` is given by:
 
 .. math::
     \rho(\vect{s}, \vect{t} ) = e^{-\left\| \vect{s}- \vect{t} \right\|_2} \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-and the spatial covariance matrix :math:`C^{stat}(\vect{s}, \vect{t})` by:
+and the spatial covariance matrix :math:`C^{spatial}(\vect{s}, \vect{t})` by:
 
 .. math::
-    C^{stat}(\vect{s}, \vect{t})= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
+    C^{spatial}(\vect{s}, \vect{t})= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
 
 
 Examples

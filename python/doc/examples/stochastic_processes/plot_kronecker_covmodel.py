@@ -1,6 +1,6 @@
 """
-Sample trajectories from a Gaussian Process with correlated outputs
-===================================================================
+Create a Gaussian Process with the Kronecker covariance model
+=============================================================
 
 A :class:`~openturns.KroneckerCovarianceModel` takes a covariance function
 with 1-d output and makes its output multidimensional.
