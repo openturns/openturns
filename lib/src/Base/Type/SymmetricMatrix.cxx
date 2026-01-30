@@ -27,7 +27,6 @@ CLASSNAMEINIT(SymmetricMatrix)
 /* Default constructor */
 SymmetricMatrix::SymmetricMatrix()
   : SquareMatrix(0)
-  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -36,7 +35,6 @@ SymmetricMatrix::SymmetricMatrix()
 /* Constructor with implementation */
 SymmetricMatrix::SymmetricMatrix(const Implementation & i)
   : SquareMatrix(i)
-  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -45,7 +43,6 @@ SymmetricMatrix::SymmetricMatrix(const Implementation & i)
 /* Constructor with implementation */
 SymmetricMatrix::SymmetricMatrix(const MatrixImplementation & i)
   : SquareMatrix(i)
-  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -53,7 +50,6 @@ SymmetricMatrix::SymmetricMatrix(const MatrixImplementation & i)
 /* Copy constructor, added to solve glitches with inheritance */
 SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix & other)
   : SquareMatrix(static_cast<const SquareMatrix &>(other))
-  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -333,7 +329,21 @@ Bool SymmetricMatrix::operator == (const Matrix & rhs) const
   if (this == &rhs) return true;
   // Compare the dimensions
   const UnsignedInteger dimension = getDimension();
-  if (!(dimension == rhs.getNbRows() && dimension == rhs.getNbColumns())) return false;
+  if (dimension != rhs.getNbRows() || dimension != rhs.getNbColumns()) return false;
+  // Compare the content
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      if ((*this)(i, j) != rhs(i, j)) return false;
+  return true;
+}
+
+Bool SymmetricMatrix::operator == (const SymmetricMatrix & rhs) const
+{
+  // Compare the references
+  if (this == &rhs) return true;
+  // Compare the dimensions
+  const UnsignedInteger dimension = getDimension();
+  if (dimension != rhs.getDimension()) return false;
   // Compare the content
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
