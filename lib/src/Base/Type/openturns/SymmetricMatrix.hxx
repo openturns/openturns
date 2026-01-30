@@ -165,6 +165,7 @@ public:
   /** Comparison operators */
   using SquareMatrix::operator ==;
   Bool operator == (const Matrix & rhs) const;
+  Bool operator == (const SymmetricMatrix & rhs) const;
 
   /** Sum all coefficients */
   Scalar computeSumElements() const override;
@@ -177,7 +178,7 @@ protected:
 
 private:
   /** Check if one needs to symmetrized the internal representation of the matrix */
-  mutable Bool hasBeenSymmetrized_;
+  mutable Bool hasBeenSymmetrized_ = false;
 
 }; /* class SymmetricMatrix */
 
