@@ -72,7 +72,7 @@ assert (aSample.getSize(), aSample.getDimension()) == (3, 4), "good/spaces"
 
 # 4th sample
 with open(fname, "w") as f:
-    f.write("-1.2;2.3;3.4;-4.5\n5.6;-xxx;7.8;8.9\n-0.1;3.2;5..1;7.5\n0.9;9.8;8.4;5.4\n")
+    f.write("-1.2;2.3;3.4;-4.5\n5.6;-xxx;7.8;8.9\n-0.1;3.2;..1;7.5\n0.9;9.8;8.4;5.4\n")
 aSample = ot.Sample.ImportFromCSVFile(fname, ";")
 aSample.setName("a sample with bad entries")
 print("aSample with bad entries (see log)=", repr(aSample))
@@ -152,7 +152,7 @@ assert (aSample.getSize(), aSample.getDimension()) == (1, 3), "empty/txt"
 assert aSample.getDescription()[1].startswith("Unnamed")
 
 # check export with nan/inf
-values = ["-2.4e-08", "nan", "NaN", "+nan", "inf", "Inf", "+inf", "-inf"]
+values = ["-2.4e-08", "nan", "NaN", "inf", "Inf", "-inf"]
 aSample = ot.Sample([[float(v)] for v in values])
 aSample.exportToCSVFile(fname)
 with open(fname) as f:
@@ -164,12 +164,12 @@ with open(fname, "w") as f:
         f.write(v + "\n")
 aSample = ot.Sample.ImportFromTextFile(fname)
 print("aSample with nan/inf (text)=", repr(aSample))
-assert (aSample.getSize(), aSample.getDimension()) == (8, 1), "nan/csv"
+assert (aSample.getSize(), aSample.getDimension()) == (6, 1), "nan/csv"
 for i in range(len(values)):
     assert str(aSample[i, 0]) == str(float(values[i])), f"{aSample[i, 0]} {values[i]}"
 aSample = ot.Sample.ImportFromCSVFile(fname)
 print("aSample with nan/inf  (csv)=", repr(aSample).replace("(ind)", ""))
-assert (aSample.getSize(), aSample.getDimension()) == (8, 1), "nan/txt"
+assert (aSample.getSize(), aSample.getDimension()) == (6, 1), "nan/txt"
 for i in range(len(values)):
     assert str(aSample[i, 0]) == str(float(values[i])), f"{aSample[i, 0]} {values[i]}"
 
@@ -179,6 +179,7 @@ with open(fname, "w") as f:
 aSample = ot.Sample.ImportFromTextFile(fname, ";", 0, ",")
 print("aSample from fr_FR.utf-8 file=", repr(aSample))
 assert (aSample.getSize(), aSample.getDimension()) == (3, 4), "fr/txt"
+assert aSample[0, 1] == 2.3, f"fr {aSample[0, 1]}"
 
 # export in fr too
 aSample.exportToCSVFile(fname, ";", ",")

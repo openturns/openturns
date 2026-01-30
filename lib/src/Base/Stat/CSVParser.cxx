@@ -25,7 +25,8 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 
-#include <filesystem>
+#include <filesystem> // for u8path
+#include <charconv> // for from_chars
 #include "rapidcsv.h"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -114,31 +115,26 @@ Sample CSVParser::load() const
   rapidcsv::Document doc(stream, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;
-  const std::map<String, Scalar> specMap = {{"inf", SpecFunc::Infinity}, {"+inf", SpecFunc::Infinity}, {"-inf", -SpecFunc::Infinity},
-    {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
-    {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity},
-    {"nan", std::numeric_limits<Scalar>::quiet_NaN()}, {"NaN", std::numeric_limits<Scalar>::quiet_NaN()},
-    {"NAN", std::numeric_limits<Scalar>::quiet_NaN()},
-  };
-  std::istringstream iss;
-  iss.imbue(std::locale(std::locale::classic(), new CSVParserFormat(decimalSeparator_)));
 
-  auto convLambda = [&iss, specMap, &oneOk](const std::string & pStr, Scalar & pVal)
+  auto convLambda = [this, &oneOk](const std::string & pStr, double & pVal)
   {
-    iss.clear();
-    iss.str(pStr);
-    iss >> pVal;
-    if (iss.fail() || iss.bad() || !iss.eof())
+    std::string pStr2(pStr);
+    if (this->decimalSeparator_ != '.')
+      std::replace(pStr2.begin(), pStr2.end(), this->decimalSeparator_, '.');
+
+    // from_chars double conversion is only available from c++20
+#if (defined(__cplusplus) && (__cplusplus >= 202002L) && !defined(_LIBCPP_VERSION)) || defined(_MSC_VER)
+    std::string_view sv(reinterpret_cast<const char*>(pStr2.data()), pStr2.size());
+    auto status = std::from_chars(sv.data(), sv.data() + sv.size(), pVal);
+    if (status.ec != std::errc{})
+#else
+    char * str_end = pStr2.data();
+    pVal = std::strtod(pStr2.data(), &str_end);
+    if (str_end == pStr2.data())
+#endif
     {
-      // handle special values
-      if (specMap.count(pStr))
-      {
-        pVal = specMap.at(pStr);
-        oneOk = true;
-      }
-      else
-        // invalid values are set to nan
-        pVal = std::numeric_limits<Scalar>::quiet_NaN();
+      // invalid values are set to nan
+      pVal = std::numeric_limits<Scalar>::quiet_NaN();
     }
     else
       oneOk = true;
@@ -163,8 +159,9 @@ Sample CSVParser::load() const
 
   // headers if there exist any non-empty non-special unparsable value on the first row
   Bool haveHeaders = false;
+  const Description specList = {"inf", "-inf", "INF", "-INF", "Inf", "-Inf", "nan", "NAN", "NaN"};
   for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specMap.count(doc.GetCell<std::string>(j, 0)))
+    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specList.contains(doc.GetCell<std::string>(j, 0)))
     {
       haveHeaders = true;
       break;
