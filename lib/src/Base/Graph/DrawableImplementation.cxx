@@ -1621,7 +1621,7 @@ Description DrawableImplementation::BuildRainbowPalette(const UnsignedInteger si
   UnsignedInteger paletteIndex = 0;
   for (UnsignedInteger iCycle = 0; iCycle < cycles; ++iCycle)
   {
-    const volatile Scalar p = iCycle / static_cast< Scalar >(cycles);
+    const Scalar p = iCycle / static_cast< Scalar >(cycles);
     const Scalar value = 1.0 - p;
     const UnsignedInteger iHueMax = std::min(size - paletteIndex, phase);
     for (UnsignedInteger iHue = 0; iHue < iHueMax; ++iHue)
