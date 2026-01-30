@@ -22,6 +22,8 @@ jobs:
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
+        make t_Normal_std
+        make t_Distribution_std
         make install
         make tests
         ctest -E GeneralizedParetoFactory_std ${MAKEFLAGS} --output-on-failure --timeout 100 --schedule-random
