@@ -44,6 +44,10 @@ of a satisfactory regression model.
   :meth:`getNormalityTestCramerVonMises`, :meth:`getNormalityTestResultAndersonDarling`,
   :meth:`getNormalityTestResultChiSquared()` and :meth:`getNormalityTestResultKolmogorovSmirnov`.
 
+The class provides several methods that compute asymptotic distributions: :meth:`getCoefficientsDistribution`, :meth:`getVarianceDistribution`,
+:meth:`getPredictionDistribution` and :meth:`getOutputObservationDistribution`. They assume that the sample size is at least equal to 20 (that number
+can be changed by modifying the :class:`~openturns.ResourceMap` key ``LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions``).
+
 The basics on regression theory are presented in :ref:`regression_analysis`.
 The goodness of fit tests for normality are presented in :ref:`graphical_fitting_test`, 
 :ref:`chi2_fitting_test`, :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`  and
@@ -153,6 +157,94 @@ where:
 The interval returned is multivariate and contains the intervals of all the coefficients.
 
 If the residuals are not Gaussian, this test is not appropriate and should not be used.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCoefficientsDistribution
+R"RAW(Accessor to the asymptotic distribution of the coefficients.
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The asymptotic distribution of the coefficients.
+
+Notes
+-----
+The distribution is given by :eq:`linRegCoefDist` where:
+
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
+- the variance :math:`\sigma^2` of the residuals is approximated by
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getVarianceDistribution
+R"RAW(Accessor to the asymptotic distribution of the variance of the residuals.
+
+Parameters
+----------
+gaussian : bool
+    Whether the residuals are Gaussian or not.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The asymptotic distribution of the variance. It can be either :class:`~openturns.Gamma` or :class:`~openturns.Normal`.
+
+Notes
+-----
+Depending on the value of `gaussian`, the distribution is given by either :eq:`linRegVarDist1` or :eq:`linRegVarDist2`,
+where :math:`\sigma^2` is approximated by its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getPredictionDistribution
+R"RAW(Accessor to the asymptotic distribution of a prediction.
+
+Parameters
+----------
+x0 : :class:`~openturns.Point`
+    Input vector on which the prediction is made.
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The asymptotic distribution of the prediction.
+
+Notes
+-----
+The distribution is given by :eq:`linRegPredictDist` where:
+
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
+- the variance :math:`\sigma^2` of the residuals is approximated by
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getOutputObservationDistribution
+R"RAW(Accessor to the asymptotic distribution of an observation.
+
+Parameters
+----------
+x0 : :class:`~openturns.Point`
+    Input vector for which the observation is made.
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The asymptotic distribution of the observation.
+
+Notes
+-----
+The distribution is based on :eq:`linRegPredictDist` and :eq:`linRegOutputDist` where:
+
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
+- the variance :math:`\sigma^2` of the residuals is approximated by
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------

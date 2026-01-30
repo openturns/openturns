@@ -27,6 +27,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Text.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/Gamma.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/VisualTest.hxx"
@@ -255,6 +256,94 @@ Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar lev
   return bounds;
 }
 
+/* Check that the sample size is large enough to compute asymptotic distributions */
+void LinearModelAnalysis::checkSampleSize() const
+{
+  const UnsignedInteger size = linearModelResult_.getInputSample().getSize();
+  const UnsignedInteger minSize = ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions");
+  if (!(size >= minSize))
+    throw InvalidArgumentException(HERE) << "The sample size is too small (must be at least " << minSize << ")";
+}
+
+SymmetricMatrix LinearModelAnalysis::getGramInverse() const
+{
+  return linearModelResult_.getDesign().computeGram().inverse();
+}
+
+/* Asymptotic distribution of the coefficients */
+Normal LinearModelAnalysis::getCoefficientsDistribution() const
+{
+  checkSampleSize();
+
+  const Point beta(linearModelResult_.getCoefficients());
+  const SymmetricMatrix gramInverse(getGramInverse());
+  const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
+  const CovarianceMatrix covariance(residualsVariance * gramInverse);
+  return Normal(beta, covariance);
+}
+
+/* Asymptotic distribution of the variance of the residuals */
+Distribution LinearModelAnalysis::getVarianceDistribution(const Bool gaussian) const
+{
+  checkSampleSize();
+
+  const UnsignedInteger sampleSize = linearModelResult_.getInputSample().getSize();
+  const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
+  const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
+  if (gaussian)
+  {
+    const Scalar k = (sampleSize - p) / 2.0;
+    const Scalar lambda = k / residualsVariance;
+    return Gamma(k, lambda);
+  }
+  else
+  {
+    const Scalar mu = residualsVariance;
+    const Scalar sd = residualsVariance * std::sqrt(2.0 * sampleSize) / (sampleSize - p);
+    return Normal(mu, sd);
+  }
+}
+
+Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const Point & x0, const Bool observation) const
+{
+  checkSampleSize();
+
+  const Basis basis(linearModelResult_.getBasis());
+  if (x0.getDimension() != basis.getInputDimension())
+    throw InvalidArgumentException(HERE) << "The point has an invalid dimension (expected: " << basis.getInputDimension() << ")";
+
+  // Apply the basis functions on the input vector
+  const UnsignedInteger size = basis.getSize();
+  Matrix x(size, 1);
+  for(UnsignedInteger i = 0; i < size; i++)
+  {
+    const Function f(basis[i]);
+    x(i, 0) = f(x0)[0];
+  }
+
+  const Point prediction(x.transpose() * linearModelResult_.getCoefficients());
+  // M = X^T.G^{-1}.X
+  const Matrix m = x.getImplementation()->genProd(*getGramInverse().getImplementation(), true, false).symProd(*x.getImplementation(), 'L');
+  const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
+  Scalar sigma2 = m(0, 0) * residualsVariance;
+  if (observation)
+    sigma2 += residualsVariance;
+  Scalar sigma = std::sqrt(sigma2);
+  sigma = std::max(sigma, ResourceMap::GetAsScalar("LinearModelAnalysis-MinimumSigma"));
+  return Normal(prediction[0], sigma);
+}
+
+/* Asymptotic distribution of the prediction on an input */
+Normal LinearModelAnalysis::getPredictionDistribution(const Point & x0) const
+{
+  return computeDistributionForPredictionOrObservation(x0, false);
+}
+
+/* Asymptotic distribution of the observed output for an input */
+Normal LinearModelAnalysis::getOutputObservationDistribution(const Point & x0) const
+{
+  return computeDistributionForPredictionOrObservation(x0, true);
+}
 
 /* Fisher test */
 Scalar LinearModelAnalysis::getFisherScore() const
