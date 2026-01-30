@@ -42,6 +42,7 @@ GaussianProcessFitterResult::GaussianProcessFitterResult()
 /* Constructor with parameters & Cholesky factor */
 GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSample,
     const Sample & outputSample,
+    const CovarianceMatrixCollection & noise,
     const Function & metaModel,
     const Matrix & regressionMatrix,
     const Basis & basis,
@@ -49,20 +50,18 @@ GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSam
     const CovarianceModel & covarianceModel,
     const Scalar optimalLogLikelihood,
     const LinearAlgebra linearAlgebraMethod)
-  : MetaModelResult(inputSample, outputSample, metaModel),
-    regressionMatrix_(regressionMatrix),
-    basis_(basis),
-    beta_(trendCoefficients),
-    covarianceModel_(covarianceModel),
-    optimalLogLikelihood_(optimalLogLikelihood),
-    linearAlgebraMethod_(linearAlgebraMethod),
-    hasCholeskyFactor_(false),
-    covarianceCholeskyFactor_(),
-    covarianceHMatrix_()
+  : MetaModelResult(inputSample, outputSample, metaModel)
+  , regressionMatrix_(regressionMatrix)
+  , basis_(basis)
+  , beta_(trendCoefficients)
+  , covarianceModel_(covarianceModel)
+  , optimalLogLikelihood_(optimalLogLikelihood)
+  , linearAlgebraMethod_(linearAlgebraMethod)
+  , noise_(noise)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In GaussianProcessFitterResult::GaussianProcessFitterResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
+    throw InvalidArgumentException(HERE) << "In GaussianProcessFitterResult, mismatched input sample size=" << size << " and output sample size=" << outputSample.getSize();
 }
 
 
@@ -127,22 +126,10 @@ GaussianProcessFitterResult::LinearAlgebra GaussianProcessFitterResult::getLinea
 }
 
 /* process accessor */
-Process GaussianProcessFitterResult::getNoise() const
+GaussianProcess GaussianProcessFitterResult::getCenteredProcess() const
 {
-  // Define noise process
-  if (getCovarianceModel().getClassName() == "DiracCovarianceModel")
-  {
-    // Here it is assumed that the covariance model parameters are the
-    // marginal amplitude.
-    const Point sigma(getCovarianceModel().getParameter());
-    const CorrelationMatrix R(getCovarianceModel().getOutputCorrelation());
-    const Normal dist(Point(sigma.getSize(), 0.0), sigma, R);
-    const WhiteNoise noise(dist);
-    return noise;
-  }
-  // Other covariance models
-  const GaussianProcess noise(getCovarianceModel(), Mesh(getInputSample()));
-  return noise;
+  const GaussianProcess process(getCovarianceModel(), Mesh(getInputSample()));
+  return process;
 }
 
 /* Method that returns the covariance factor - Lapack */
@@ -187,6 +174,11 @@ HMatrix GaussianProcessFitterResult::getHMatCholeskyFactor() const
   return covarianceHMatrix_;
 }
 
+/* Output sample noise accessor */
+GaussianProcessFitterResult::CovarianceMatrixCollection GaussianProcessFitterResult::getNoise() const
+{
+  return noise_;
+}
 
 /* Method save() stores the object through the StorageManager */
 void GaussianProcessFitterResult::save(Advocate & adv) const
@@ -196,14 +188,14 @@ void GaussianProcessFitterResult::save(Advocate & adv) const
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("beta_", beta_ );
   adv.saveAttribute("covarianceModel_", covarianceModel_ );
-  adv.saveAttribute("rho_", covarianceModel_);
+  adv.saveAttribute("rho_", rho_);
   adv.saveAttribute("optimalLogLikelihood_", optimalLogLikelihood_);
   UnsignedInteger linearAlgebraMethod  = static_cast<LinearAlgebra>(linearAlgebraMethod_);
   adv.saveAttribute("linearAlgebraMethod_", linearAlgebraMethod);
   adv.saveAttribute("hasCholeskyFactor_", hasCholeskyFactor_);
   adv.saveAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
+  adv.saveAttribute("noise_", noise_ );
 }
-
 
 /* Method load() reloads the object from the StorageManager */
 void GaussianProcessFitterResult::load(Advocate & adv)
@@ -213,15 +205,15 @@ void GaussianProcessFitterResult::load(Advocate & adv)
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("beta_", beta_ );
   adv.loadAttribute("covarianceModel_", covarianceModel_ );
-  adv.loadAttribute("rho_", covarianceModel_);
+  adv.loadAttribute("rho_", rho_);
   adv.loadAttribute("optimalLogLikelihood_", optimalLogLikelihood_);
   UnsignedInteger linearAlgebraMethod = 0;
   adv.loadAttribute( "linearAlgebraMethod_", linearAlgebraMethod );
   linearAlgebraMethod_ = static_cast<LinearAlgebra>(linearAlgebraMethod);
   adv.loadAttribute("hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
+  adv.loadAttribute("noise_", noise_ );
 }
-
 
 
 END_NAMESPACE_OPENTURNS

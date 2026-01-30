@@ -77,28 +77,6 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Dlib::getSearchStrategyName
-"Accessor to searchStrategyName parameter.
-
-Returns
--------
-searchStrategyName : str
-    The name of the optimization algorithm used."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Dlib::setSearchStrategy
-"Accessor to searchStrategyName parameter. Sets the optimization algorithm to
-use, other attributes are set to the default value associated with the selected
-method.
-
-Parameters
-----------
-searchStrategyName : str
-    The name of the optimization algorithm to use."
-    
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Dlib::getWolfeRho
 "Accessor to wolfeRho parameter. Relevant for algorithms CG, BFGS/LBFGS and
 Newton only.
@@ -223,17 +201,6 @@ maxSize : int
 %feature("docstring") OT::Dlib::run
 "Performs the actual optimization process. Results are stored in the :class:`~openturns.OptimizationResult`
 parameter of the :class:`~openturns.Dlib` object."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Dlib::checkProblem
-"Check if the given :class:`~openturns.OptimizationProblem` is compatible
-with the algorithm used in dlib.
-
-Parameters
-----------
-problem : :class:`~openturns.OptimizationProblem`
-    The problem to check."
 
 // ---------------------------------------------------------------------
 

@@ -71,26 +71,6 @@ Calibrate a nonlinear model using non-linear least-squares:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::getModelObservations
-"Accessor to the model evaluation at the `startingPoint`.
-
-Returns
--------
-modelObservation : :class:`~openturns.Sample`
-    Evaluation of the model at the `startingPoint`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::getGradientObservations
-"Accessor to the model gradient at the `startingPoint`.
-
-Returns
--------
-gradientObservation : :class:`~openturns.Matrix`
-    Gradient of the model at the `startingPoint`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getStartingPoint
 "Accessor to the parameter `startingPoint`.
 

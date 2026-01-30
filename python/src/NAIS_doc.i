@@ -175,16 +175,6 @@ quantileLevel : float  :math:`0<quantileLevel<1`
     
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::NAIS::getWeights
-"Auxiliary distribution input sample associated weights accessor of the final NAIS step.
-
-Returns
--------
-weights : :class:`~openturns.Point`
-    Auxiliary distribution input sample associated weights."    
-    
-// ---------------------------------------------------------------------------
-
 %feature("docstring") OT::NAIS::setKeepSample
 "Sample storage accessor.
 

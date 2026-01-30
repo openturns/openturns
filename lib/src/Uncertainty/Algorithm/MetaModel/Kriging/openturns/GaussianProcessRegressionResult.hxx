@@ -26,7 +26,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -78,10 +77,13 @@ public:
   Matrix getRegressionMatrix() const;
 
   /** process accessor */
-  Process getNoise() const;
+  GaussianProcess getCenteredProcess() const;
 
   /** Process coefficients accessor */
   Sample getCovarianceCoefficients() const;
+
+  /** Fitter result accessor */
+  GaussianProcessFitterResult getGaussianProcessFitterResult() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

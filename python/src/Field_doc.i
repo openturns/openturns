@@ -22,8 +22,6 @@ OT_Field_getSize_doc
 OT_Field_getInputDimension_doc
 %feature("docstring") OT::Field::getInputMean
 OT_Field_getInputMean_doc
-%feature("docstring") OT::Field::getOutputMean
-OT_Field_getOutputMean_doc
 %feature("docstring") OT::Field::norm
 OT_Field_norm_doc
 %feature("docstring") OT::Field::getTimeGrid

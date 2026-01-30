@@ -1940,7 +1940,11 @@ void SampleImplementation::exportToCSVFile(const FileName & fileName,
     throw InvalidArgumentException(HERE) << "Decimal separator must be a string of size 1, got " << decimalSeparator.size();
   if (separator == decimalSeparator)
     throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  std::ofstream csvFile(std::filesystem::path{fileName});
+#else
   std::ofstream csvFile(std::filesystem::u8path(fileName));
+#endif
   if (csvFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << fileName;
 

@@ -10,23 +10,6 @@ The temperature profile is used in simulated annealing context.
 OT_TemperatureProfile_doc
 
 // ---------------------------------------------------------------------
-%define OT_TemperatureProfile_call_doc
-"Compute the temperature :math:`T(i)`.
-
-Parameters
-----------
-i : int
-    The index at which the temperature is computed.
-
-Returns
--------
-temperature:  float
-    The temperature :math:`T(i)`."
-%enddef
-%feature("docstring") OT::TemperatureProfileImplementation::operator()
-OT_TemperatureProfile_call_doc
-
-// ---------------------------------------------------------------------
 
 %define OT_TemperatureProfile_getIMax
 "Maximum index value accessor.

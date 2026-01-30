@@ -65,7 +65,11 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 
 XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  std::ifstream inputFile(std::filesystem::path{fileName}, std::ios_base::binary);
+#else
   std::ifstream inputFile(std::filesystem::u8path(fileName), std::ios_base::binary);
+#endif
   if (!inputFile.good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
   const int bufferSize = 4096;
@@ -129,7 +133,11 @@ XMLDoc::operator xmlDocPtr() const
 
 void XMLDoc::save(const FileName & fileName) const
 {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+  if (!std::ofstream(std::filesystem::path{fileName}).good())
+#else
   if (!std::ofstream(std::filesystem::u8path(fileName)).good())
+#endif
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
   int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
   if (rc < 0)

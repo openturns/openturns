@@ -96,8 +96,8 @@ private:
      reference associated with the variables may have change after the construction */
   void initialize() const;
 
-  mutable Bool isInitialized_;
-  mutable Bool isAnalytical_;
+  mutable Bool isInitialized_ = false;
+  mutable Bool isAnalytical_ = false;
   Pointer<SymbolicEvaluation> p_evaluation_;
 
   /** A mathematical expression parser from the muParser library */

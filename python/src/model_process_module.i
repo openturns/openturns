@@ -24,9 +24,6 @@
 %import model_copula_module.i
 %import randomvector_module.i
 %import weightedexperiment_module.i
-/* imports for ConditionedGaussianProcess */
-%import MetaModelResult.i
-%import KrigingResult.i
 
 /* Uncertainty/Process */
 %include WhiteNoise.i

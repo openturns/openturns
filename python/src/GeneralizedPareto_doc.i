@@ -153,16 +153,6 @@ u : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedPareto::getLocation
-"Accessor to the distribution's location parameter :math:`u`.
-
-Returns
--------
-u : float
-    Location parameter :math:`u`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::GeneralizedPareto::asPareto
 R"RAW(Pareto distribution conversion.
 

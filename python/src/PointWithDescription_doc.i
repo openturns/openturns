@@ -46,3 +46,23 @@ Use some functionalities:
 >>> vector.add(6.2)
 >>> print(vector)
 [C1 : 2, C2 : 7.1, C3 : 4.5,  : 6.2])RAW"
+
+// ---------------------------------------------------------------------
+ 
+%feature("docstring") OT::PointWithDescription::setDescription
+"Accessor to the componentwise description.
+
+Parameters
+----------
+description : sequence of str
+    Description of the components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointWithDescription::getDescription
+"Accessor to the componentwise description.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the components."

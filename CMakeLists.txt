@@ -38,6 +38,11 @@ option (USE_NANOFLANN                "Use nanoflann for Nearest Neighbor search"
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
+if (POLICY CMP0177)
+  # install() DESTINATION paths are normalized (cmake 3.31)
+  cmake_policy (SET CMP0177 NEW)
+endif ()
+
 # Defines our own module path
 list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
@@ -49,7 +54,7 @@ set (OPENTURNS_LIBRARY_PATH ${CMAKE_INSTALL_LIBDIR} CACHE STRING "The directory 
 set (OPENTURNS_BIN_PATH ${CMAKE_INSTALL_BINDIR} CACHE STRING "Binary install path")
 set (OPENTURNS_INCLUDE_PATH ${CMAKE_INSTALL_INCLUDEDIR} CACHE STRING "The directory where the header files are installed")
 set (OPENTURNS_CONFIG_CMAKE_PATH ${CMAKE_INSTALL_LIBDIR}/cmake/openturns CACHE STRING "The directory where the CMake files are installed")
-set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR} CACHE STRING "The directory where the configuration file is installed")
+set (OPENTURNS_SYSCONFIG_PATH ${CMAKE_INSTALL_SYSCONFDIR}/openturns CACHE STRING "The directory where the configuration file is installed")
 set (OPENTURNS_DATA_PATH ${CMAKE_INSTALL_DATAROOTDIR} CACHE STRING "The directory where the common files are installed")
 set (OPENTURNS_DOC_PATH ${CMAKE_INSTALL_DOCDIR} CACHE STRING "The directory where the license files are installed")
 
@@ -350,6 +355,10 @@ if (USE_NANOFLANN)
     list (APPEND OPENTURNS_ENABLED_FEATURES "nanoflann")
   endif ()
 endif ()
+
+# for std::call_once
+find_package (Threads QUIET REQUIRED)
+list (APPEND OPENTURNS_PRIVATE_LIBRARIES Threads::Threads)
 
 if (MSVC)
   # Disable some warnings

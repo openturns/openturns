@@ -5,5 +5,4 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/openturns.conf.in
                  @ONLY)
 
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/openturns.conf
-          DESTINATION ${OPENTURNS_SYSCONFIG_PATH}/openturns
-       )
+         DESTINATION ${OPENTURNS_SYSCONFIG_PATH})

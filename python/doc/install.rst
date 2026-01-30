@@ -60,21 +60,21 @@ Debian/Ubuntu
 First create an entry in the apt configuration matching your distribution family and codename
 if available in one of the following commands::
 
-    echo deb https://openturns.github.io/apt/ubuntu plucky main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb https://openturns.github.io/apt/ubuntu noble main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb https://openturns.github.io/apt/debian trixie main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu plucky main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu noble main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian trixie main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
     Use the bash command `lsb_release -a` in order to determine the codename of your distribution.
 
-Then add the mirror signature, enable apt https support and update the package database::
+Then add the mirror signature and update the package database::
 
-    curl -s https://openturns.github.io/apt/public.key | sudo apt-key add -
-    sudo apt install apt-transport-https
+    sudo apt install -y curl gnupg
+    curl -fsSL https://openturns.github.io/apt/public.key | sudo gpg --dearmor --yes --output /usr/share/keyrings/openturns-keyring.gpg
     sudo apt update
 
 At this point the following new packages should be available via the package manager:
@@ -143,7 +143,7 @@ Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
 
 Vcpkg
 -----
-Install the C++ library from `vcpkg.link <https://vcpkg.link/ports/openturns>`_::
+Install the C++ library from `vcpkg.io <https://vcpkg.io/en/package/openturns>`_::
 
     vcpkg install openturns
 

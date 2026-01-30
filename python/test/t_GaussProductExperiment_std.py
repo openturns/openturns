@@ -81,7 +81,7 @@ def checkPolynomialExactness(
     # Create Gauss tensor product quadrature
     lowerBoundPoint = bounds.getLowerBound()
     upperBoundPoint = bounds.getUpperBound()
-    distribution = ot.ComposedDistribution(
+    distribution = ot.JointDistribution(
         [ot.Uniform(lowerBoundPoint[i], upperBoundPoint[i]) for i in range(dimension)]
     )
     experiment = ot.GaussProductExperiment(distribution, marginalSizes)

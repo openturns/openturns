@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
 """
- This validation purpose is to check that the operator() yields a kronecker product
- between a fixed covariance and embedded kernel (rho) evaluation
- We make comparison point by point.
- For discretize operator, we check hin unit tests that everything is ok 
+This validation purpose is to check that the operator() yields a kronecker product
+between a fixed covariance and embedded kernel (rho) evaluation
+We make comparison point by point.
+For discretize operator, we check hin unit tests that everything is ok
 """
 
 import openturns as ot
@@ -20,15 +20,16 @@ def convert_hmat_to_matrix(hmat):
         x = ot.Point(hmat.getNbColumns())
         x[i] = 1.0
         y = ot.Point(hmat.getNbRows())
-        hmat.gemv('N', 1.0, x, 0.0, y)
+        hmat.gemv("N", 1.0, x, 0.0, y)
         for j in range(hmat.getNbColumns()):
             res[i, j] = y[j]
     return res
 
+
 if __name__ == "__main__":
 
     models = []
-    refModels =[]
+    refModels = []
     # rho correlation
     scale = [4, 5]
     rho = ot.GeneralizedExponential(scale, 1)
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     upperBound = [2.0, 4.0]
     interval = ot.Interval(lowerbound, upperBound)
     mesh = mesher.build(interval)
-    vertices =  mesh.getVertices()
+    vertices = mesh.getVertices()
 
     for k, myModel in enumerate(models):
         sigma = myModel.getAmplitude()

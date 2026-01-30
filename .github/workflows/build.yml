@@ -10,7 +10,7 @@ jobs:
       OPENTURNS_NUM_THREADS: 2
       OMP_NUM_THREADS: 1
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - run: |
         brew install openblas swig boost tbb nlopt cminpack ceres-solver dlib hdf5 highs ipopt primesieve spectra pagmo libxml2 nanoflann cuba
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
@@ -22,6 +22,8 @@ jobs:
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DCMAKE_SWIG_FLAGS="-Werror" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
+        make t_Normal_std
+        make t_Distribution_std
         make install
         make tests
         ctest -E GeneralizedParetoFactory_std ${MAKEFLAGS} --output-on-failure --timeout 100 --schedule-random
@@ -29,7 +31,7 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -58,7 +60,7 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build
         run: ./utils/build_locally.sh aarch64
 
@@ -67,7 +69,7 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build
         run: ./utils/build_locally.sh coverage
       - name: Upload coverage to Codecov
@@ -82,7 +84,7 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build
         run: ./utils/build_locally.sh mindeps
 
@@ -93,7 +95,7 @@ jobs:
       OPENTURNS_NUM_THREADS: 2
       OMP_NUM_THREADS: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: vmactions/freebsd-vm@v1
         with:
           envs: 'MAKEFLAGS OPENTURNS_NUM_THREADS OMP_NUM_THREADS'

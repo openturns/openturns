@@ -87,6 +87,7 @@ imgmath_embed = True
 
 extensions.append("matplotlib.sphinxext.plot_directive")
 plot_formats = ["svg"]
+plot_rcparams = {"svg.hashsalt": "nacl"}
 plot_pre_code = "import openturns as ot; ot.ResourceMap.Reset(); ot.RandomGenerator.Reset()"
 
 extensions.append("sphinx_copybutton")

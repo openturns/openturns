@@ -91,7 +91,7 @@ private:
   PythonGradient();
 
   /** The underlying Python callable object */
-  PyObject * pyObj_;
+  PyObject * pyObj_ = NULL;
 
 }; /* class PythonGradient */
 

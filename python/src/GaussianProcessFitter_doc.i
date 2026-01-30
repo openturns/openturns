@@ -65,6 +65,15 @@ It is also possible to proceed as follows:
 * set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 * tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
+A known centered Gaussian observation noise :math:`\epsilon_k` can be taken into account
+with :func:`setNoise()`:
+
+.. math::
+    \widehat{\vect{y}}_k = \vect{y}_k + \epsilon_k,
+    \quad \epsilon_k \sim \mathcal{N}\left(0, \mat{\Sigma_{\epsilon_k}}\right), 0 \leq k \leq \sampleSize -1
+
+see algo :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise`.
+
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
 - The boolean entry *GaussianProcessFitter-UseAnalyticalAmplitudeEstimate* to use the reduction associated to
@@ -76,7 +85,10 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
 - Like other machine learning techniques, heteregeneous data (i.e., data defined with different orders of magnitude)
   can have an impact on the training process of Gaussian Process Fitter.
   The boolean entry *GaussianProcessFitter-OptimizationNormalization* decides whether
-  to scale input data during the hyperparameters optimization, see :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
+  to internally scale the hyperparameters during the optimization using a min-max transformation:
+  :math:`\theta\prime = \frac{\theta - \theta_{min}}{\theta_{max} - \theta_{min}}`
+  The input data itself is not directly normalized to avoid introducing an additional transformation to the metamodel.
+  see also :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
@@ -323,3 +335,25 @@ linAlgMethod : int
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
     - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::setNoise
+R"RAW(Output sample noise variance accessor.
+
+Parameters
+----------
+noise : sequence of :class:`~openturns.CovarianceMatrix` or sequence of float
+    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::getNoise
+R"RAW(Output sample noise variance accessor.
+
+Returns
+-------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`.
+)RAW"

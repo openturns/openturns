@@ -80,7 +80,7 @@ Python textual interface to OpenTURNS uncertainty library
        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
        -DSWIG_COMPILE_FLAGS="-O1" \
        -DOPENTURNS_DOC_PATH=share/doc/openturns \
-       -DOPENTURNS_SYSCONFIG_PATH=/etc .
+       -DOPENTURNS_SYSCONFIG_PATH=/etc/openturns .
 %cmake_build
 
 %install

@@ -42,8 +42,11 @@ This criterion is explicited using the Gaussian process mean and variance:
 
     \mathbb{E}\left[I(x_{new})\right] = (f_{min} - m_K(x_{new})) \Phi\left( \frac{f_{min} - m_K(x_{new})}{s_K(x_{new})} \right) + s_K(x_{new}) \phi\left( \frac{f_{min} - m_K(x_{new})}{s_K(x_{new})} \right)
 
-In case the covariance model of the Gaussian process model has a non-zero nugget factor :math:`\sigma_{\epsilon}`
-(i.e. the emulated function is noisy) the AEI (Augmented Expected Improvement) formulation is used.
+An optional observation heteroskedastic noise variance can be provided through :func:`setNoiseFunction`:
+
+.. math:: Y_{obs} = Y(x) + \sigma_{\epsilon}(x) \epsilon
+
+In that case the AEI (Augmented Expected Improvement) formulation is used.
 Because we do not have access to the real minimum of the function in this case, a quantile
 of the Gaussian process conditional mean is used, with the constant :math:`c`:
 
@@ -259,51 +262,24 @@ ei : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EfficientGlobalOptimization::setMetamodelNoise
-R"RAW(Metamodel noise model accessor.
+%feature("docstring") OT::EfficientGlobalOptimization::setNoiseFunction
+R"RAW(Noise model accessor.
 
 Parameters
 ----------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    design update only.
+noiseFunction : :class:`~openturns.Function`
+    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI criterion.
     Of same input dimension as the objective and 1-d output.)RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EfficientGlobalOptimization::getMetamodelNoise
-R"RAW(Metamodel noise model accessor.
+%feature("docstring") OT::EfficientGlobalOptimization::getNoiseFunction
+R"RAW(Noise model accessor.
 
 Returns
 -------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    design update only.
-    Of same input dimension as the objective and 1-d output.)RAW"
-
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::setNoiseModel
-R"RAW(Improvement noise model accessor.
-
-Parameters
-----------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    criterion optimization only.
-    Of same input dimension as the objective and 1-d output.)RAW"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EfficientGlobalOptimization::getNoiseModel
-R"RAW(Improvement noise model accessor.
-
-Returns
--------
-noiseModel : :class:`~openturns.Function`
-    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI
-    criterion optimization only.
+noiseFunction : :class:`~openturns.Function`
+    The noise variance function :math:`\sigma^2_{\epsilon}(x)` used for the AEI criterion.
     Of same input dimension as the objective and 1-d output.)RAW"
 
 // ---------------------------------------------------------------------

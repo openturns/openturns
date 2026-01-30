@@ -109,7 +109,7 @@ private:
   SquareMatrix transitionMatrix_ ;
 
   /** The current position of the chain */
-  mutable UnsignedInteger currentState_;
+  mutable UnsignedInteger currentState_ = 0;
 
 }; /* class DiscreteMarkovChain */
 

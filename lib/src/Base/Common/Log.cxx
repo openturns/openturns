@@ -289,7 +289,11 @@ void Log::setFile(const FileName & fileName)
   TTY::ShowColors(fileName.size() == 0);
   if (fileName.size())
   {
+#if (defined(__cplusplus) && (__cplusplus >= 202002L))
+    p_file_ = new std::ofstream(std::filesystem::path{fileName});
+#else
     p_file_ = new std::ofstream(std::filesystem::u8path(fileName));
+#endif
     push(Entry(INFO, "*** Log Beginning ***"));
   }
 }

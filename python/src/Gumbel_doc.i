@@ -99,26 +99,6 @@ beta : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Gumbel::getMu
-"Accessor to the distribution's mean.
-
-Returns
--------
-mu : float
-    Mean."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gumbel::getSigma
-"Accessor to the distribution's standard deviation.
-
-Returns
--------
-sigma : float
-    Standard deviation."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Gumbel::setGamma
 R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
 
@@ -137,14 +117,3 @@ Parameters
 beta : float, :math:`\beta > 0`
     Scale parameter :math:`\beta`.)RAW"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Gumbel::setMuSigma
-R"RAW(Accessor to the distribution's mean and standard deviation.
-
-Parameters
-----------
-mu : float
-    Mean.
-sigma : float, :math:`\sigma > 0`
-    Standard deviation.)RAW"

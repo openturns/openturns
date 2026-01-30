@@ -35,42 +35,15 @@ static const Factory<ConditionedGaussianProcess> Factory_ConditionedGaussianProc
 
 ConditionedGaussianProcess::ConditionedGaussianProcess()
   : GaussianProcess()
-  , inputDimension_()
-  , krigingResult_()
-  , trendEvaluationMesh_()
-  , knownValuesIndices_()
 {
   // Nothing to do
-}
-
-ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & result,
-    const Mesh & mesh)
-  : GaussianProcess()
-  , inputDimension_(result.getMetaModel().getInputDimension())
-  , krigingResult_(result)
-  , gprResult_()
-  , trendEvaluationMesh_()
-  , knownValuesIndices_()
-{
-  // set covariance model
-  covarianceModel_ = result.getCovarianceModel();
-  // Set the mesh & dimension
-  setOutputDimension(covarianceModel_.getOutputDimension());
-  if (covarianceModel_.getInputDimension() != mesh.getDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getOutputDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
-  setMesh(mesh);
-  // Initialize
-  initialize();
 }
 
 ConditionedGaussianProcess::ConditionedGaussianProcess(const GaussianProcessRegressionResult & result,
     const Mesh & mesh)
   : GaussianProcess()
   , inputDimension_(result.getMetaModel().getInputDimension())
-  , krigingResult_()
   , gprResult_(result)
-  , trendEvaluationMesh_()
-  , knownValuesIndices_()
 {
   // set covariance model
   covarianceModel_ = result.getCovarianceModel();
@@ -120,13 +93,9 @@ void ConditionedGaussianProcess::initialize()
   const Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
   CovarianceMatrix covarianceMatrix;
-  if (krigingResult_.getCovarianceCoefficients().getSize())
-    covarianceMatrix = krigingResult_.getConditionalCovariance(vertices);
-  else
-  {
-    GaussianProcessConditionalCovariance gpcc(gprResult_);
-    covarianceMatrix = gpcc.getConditionalCovariance(vertices);
-  }
+  GaussianProcessConditionalCovariance gpcc(gprResult_);
+  covarianceMatrix = gpcc.getConditionalCovariance(vertices);
+ 
   // Now check if there is any point both in the input sample and in the mesh vertices.
   // They are characterized by
   // a zero cross: a null row and a null column which cross at a zero diagonal element.
@@ -155,15 +124,11 @@ void ConditionedGaussianProcess::initialize()
   covarianceCholeskyFactor_ = covarianceMatrix.computeRegularizedCholesky();
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
-  Function krigingEvaluation;
-  if (krigingResult_.getCovarianceCoefficients().getSize())
-    krigingEvaluation = krigingResult_.getMetaModel();
-  else
-    krigingEvaluation = gprResult_.getMetaModel();
+  const Function gprEvaluation(gprResult_.getMetaModel());
   // Evaluation of the trend over the mesh
-  trendEvaluationMesh_ = krigingEvaluation(vertices);
+  trendEvaluationMesh_ = gprEvaluation(vertices);
   // Set the trend function
-  trend_ = TrendTransform(krigingEvaluation, mesh_);
+  trend_ = TrendTransform(gprEvaluation, mesh_);
   // Set descriptions
   trend_.setInputDescription( Description::BuildDefault(getInputDimension(), "x"));
   trend_.setOutputDescription( Description::BuildDefault(getOutputDimension(), "y"));
@@ -237,7 +202,6 @@ void ConditionedGaussianProcess::save(Advocate & adv) const
 {
   GaussianProcess::save(adv);
   adv.saveAttribute("inputDimension_", inputDimension_);
-  adv.saveAttribute("krigingResult_", krigingResult_);
   adv.saveAttribute("gprResult_", gprResult_);
   adv.saveAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
   adv.saveAttribute("knownValuesIndices_", knownValuesIndices_);
@@ -247,15 +211,8 @@ void ConditionedGaussianProcess::save(Advocate & adv) const
 void ConditionedGaussianProcess::load(Advocate & adv)
 {
   GaussianProcess::load(adv);
-  if (adv.hasAttribute("inputDimension_"))
-  {
-    adv.loadAttribute("inputDimension_", inputDimension_);
-  }
-  adv.loadAttribute("krigingResult_", krigingResult_);
-  if (adv.hasAttribute("gprResult_"))
-  {
-    adv.loadAttribute("gprResult_", gprResult_);
-  }
+  adv.loadAttribute("inputDimension_", inputDimension_);
+  adv.loadAttribute("gprResult_", gprResult_);
   adv.loadAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
   adv.loadAttribute("knownValuesIndices_", knownValuesIndices_);
 }

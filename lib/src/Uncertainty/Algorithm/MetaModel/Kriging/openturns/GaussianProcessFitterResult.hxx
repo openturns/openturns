@@ -24,14 +24,11 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Process.hxx"
+#include "openturns/GaussianProcess.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/Basis.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +49,7 @@ public:
 
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   GaussianProcessFitterResult();
@@ -59,6 +57,7 @@ public:
   /** Parameter constructor after a gaussian process fitting  */
   GaussianProcessFitterResult(const Sample & inputData,
                               const Sample & outputData,
+                              const CovarianceMatrixCollection & noise,
                               const Function & metaModel,
                               const Matrix & regressionMatrix,
                               const Basis & basis,
@@ -93,7 +92,10 @@ public:
   Matrix getRegressionMatrix() const;
 
   /** process accessor */
-  Process getNoise() const;
+  GaussianProcess getCenteredProcess() const;
+
+  /** Output sample noise accessor */
+  CovarianceMatrixCollection getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -146,13 +148,13 @@ private:
   Point rho_;
 
   /** optimal log-likelihood value */
-  Scalar optimalLogLikelihood_;
+  Scalar optimalLogLikelihood_ = 0.0;
 
   /** Linear algebra method */
   LinearAlgebra linearAlgebraMethod_;
 
   /** Boolean for Cholesky. */
-  Bool hasCholeskyFactor_;
+  Bool hasCholeskyFactor_ = false;
 
   /** Cholesky factor  */
   TriangularMatrix covarianceCholeskyFactor_;
@@ -160,7 +162,10 @@ private:
   /** Cholesky factor when using hmat-oss/hmat */
   HMatrix covarianceHMatrix_;
 
-} ; /* class GaussianProcessFitterResult */
+  /** Noise on the output sample */
+  PersistentCollection<CovarianceMatrix> noise_;
+
+}; /* class GaussianProcessFitterResult */
 
 
 END_NAMESPACE_OPENTURNS
