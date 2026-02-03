@@ -65,7 +65,13 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 
 XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  std::ifstream inputFile(std::filesystem::path{u8FileName}, std::ios_base::binary);
+#else
   std::ifstream inputFile(std::filesystem::u8path(fileName), std::ios_base::binary);
+#endif
   if (!inputFile.good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
   const int bufferSize = 4096;
@@ -129,7 +135,13 @@ XMLDoc::operator xmlDocPtr() const
 
 void XMLDoc::save(const FileName & fileName) const
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  if (!std::ofstream(std::filesystem::path{u8FileName}).good())
+#else
   if (!std::ofstream(std::filesystem::u8path(fileName)).good())
+#endif
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
   int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
   if (rc < 0)

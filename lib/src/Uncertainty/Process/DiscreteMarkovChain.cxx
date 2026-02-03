@@ -41,7 +41,6 @@ DiscreteMarkovChain::DiscreteMarkovChain()
   : ProcessImplementation()
   , origin_(Dirac(0))
   , transitionMatrix_(IdentityMatrix(1))
-  , currentState_(0)
 {
   // Set the dimension of the process
   setOutputDimension(1);
@@ -53,7 +52,6 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
   : ProcessImplementation()
   , origin_(origin)
   , transitionMatrix_(transitionMatrix.transpose())
-  , currentState_(0)
 {
   // Set the dimension of the process
   setOutputDimension(1);
@@ -74,7 +72,6 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
   : ProcessImplementation()
   , origin_(origin)
   , transitionMatrix_(transitionMatrix.transpose())
-  , currentState_(0)
 {
   // Set the dimension of the process
   setOutputDimension(1);
@@ -320,7 +317,13 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
 /* DOT export */
 void DiscreteMarkovChain::exportToDOTFile(const FileName & fileName) const
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  std::ofstream dotFile(std::filesystem::path{u8FileName});
+#else
   std::ofstream dotFile(std::filesystem::u8path(fileName));
+#endif
   if (dotFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << fileName;
   dotFile.imbue(std::locale::classic());

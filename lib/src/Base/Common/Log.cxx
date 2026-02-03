@@ -289,7 +289,13 @@ void Log::setFile(const FileName & fileName)
   TTY::ShowColors(fileName.size() == 0);
   if (fileName.size())
   {
-    p_file_ = new std::ofstream(std::filesystem::u8path(fileName));
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  p_file_ = new std::ofstream(std::filesystem::path{u8FileName});
+#else
+  p_file_ = new std::ofstream(std::filesystem::u8path(fileName));
+#endif
     push(Entry(INFO, "*** Log Beginning ***"));
   }
 }

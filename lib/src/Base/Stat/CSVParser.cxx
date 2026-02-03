@@ -111,7 +111,13 @@ Sample CSVParser::load() const
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
   std::ifstream stream;
   stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName_.data()),
+                                 reinterpret_cast<const char8_t*>(fileName_.data() + fileName_.size()));
+  stream.open(std::filesystem::path(u8FileName), std::ios::binary);
+#else
   stream.open(std::filesystem::u8path(fileName_), std::ios::binary);
+#endif
   rapidcsv::Document doc(stream, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;

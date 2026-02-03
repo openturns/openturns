@@ -49,7 +49,13 @@ const char * Os::GetDirectoryListSeparator()
 void Os::Remove(const String& fileName)
 {
   if (!ResourceMap::GetAsBool("Os-RemoveFiles")) return;
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  if (!std::filesystem::remove(std::filesystem::path{u8FileName}))
+#else
   if (!std::filesystem::remove(std::filesystem::u8path(fileName)))
+#endif
   {
     LOGWARN(OSS() << "Os: cannot remove file " << fileName);
   }
@@ -57,12 +63,24 @@ void Os::Remove(const String& fileName)
 
 Bool Os::IsDirectory(const String & fileName)
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  return std::filesystem::is_directory(std::filesystem::path{u8FileName});
+#else
   return std::filesystem::is_directory(std::filesystem::u8path(fileName));
+#endif
 }
 
 Bool Os::IsFile(const String & fileName)
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  return std::filesystem::is_regular_file(std::filesystem::path{u8FileName});
+#else
   return std::filesystem::is_regular_file(std::filesystem::u8path(fileName));
+#endif
 }
 
 END_NAMESPACE_OPENTURNS
