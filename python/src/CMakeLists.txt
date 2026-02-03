@@ -15,13 +15,31 @@ add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      ARGS -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      COMMENT "Swig runtime header")
 add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h)
-add_custom_target (pylib)
 
+# Build Python wrapping classes
+add_library (OTPythonWrapping OBJECT
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
+                      PythonExperiment.cxx
+                      PythonRandomVector.cxx
+                      PythonDistribution.cxx
+                      PythonFieldFunction.cxx
+                      PythonFieldToPointFunction.cxx
+                      PythonPointToFieldFunction.cxx)
+add_dependencies (OTPythonWrapping generate_swig_runtime)
+target_include_directories (OTPythonWrapping PRIVATE ${Python_INCLUDE_DIRS})
+target_include_directories (OTPythonWrapping PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
+set_target_properties (OTPythonWrapping PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS} ${SWIG_CXX_COMPILE_FLAGS}"
+                                                   POSITION_INDEPENDENT_CODE ON)
+
+add_custom_target (pylib)
 set (OPENTURNS_PYTHON_MODULES)
+
 macro (ot_add_python_module MODULENAME SOURCEFILE)
-  set_source_files_properties (${SOURCEFILE} PROPERTIES CPLUSPLUS ON)
-  set_source_files_properties (${SOURCEFILE} PROPERTIES SWIG_MODULE_NAME ${MODULENAME})
-  set_source_files_properties (${SOURCEFILE} PROPERTIES INCLUDE_DIRECTORIES "${INTERNAL_INCLUDE_DIRS};${CMAKE_CURRENT_SOURCE_DIR}")
+  set_source_files_properties (${SOURCEFILE} PROPERTIES CPLUSPLUS ON
+                                                        SWIG_MODULE_NAME ${MODULENAME}
+                                                        INCLUDE_DIRECTORIES "${INTERNAL_INCLUDE_DIRS};${CMAKE_CURRENT_SOURCE_DIR}")
 
   ot_install_swig_file (${SOURCEFILE})
   if (${ARGC} GREATER 2)
@@ -41,7 +59,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   # swig_add_module is deprecated
   swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
 
-  add_dependencies (${MODULENAME} generate_swig_runtime)
   target_include_directories (${MODULENAME} PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
 
   target_link_libraries (${MODULENAME} OT)
@@ -50,8 +67,8 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   # https://github.com/swig/swig/issues/2638
   target_compile_definitions(${MODULENAME} PRIVATE SWIG_PYTHON_SILENT_MEMLEAK)
 
-  set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS} ${SWIG_CXX_COMPILE_FLAGS}")
-  set_target_properties (${MODULENAME} PROPERTIES UNITY_BUILD OFF)
+  set_target_properties (${MODULENAME} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS} ${SWIG_CXX_COMPILE_FLAGS}"
+                                                  UNITY_BUILD OFF)
 
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
@@ -342,12 +359,6 @@ ot_add_python_module(func func_module.i
                       BoxCoxEvaluation.i
                       BoxCoxTransform.i BoxCoxTransform_doc.i
                       InverseBoxCoxEvaluation.i
-                      PythonEvaluation.cxx
-                      PythonGradient.cxx
-                      PythonHessian.cxx
-                      PythonFieldFunction.cxx
-                      PythonFieldToPointFunction.cxx
-                      PythonPointToFieldFunction.cxx
                       InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i
                       TrendEvaluation.i
                       TrendTransform.i TrendTransform_doc.i
@@ -455,9 +466,6 @@ ot_add_python_module(algo algo_module.i
                       KFold.i KFold_doc.i
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i
-                      PythonEvaluation.cxx
-                      PythonGradient.cxx
-                      PythonHessian.cxx
                       KissFFT.i KissFFT_doc.i
                       IntegrationAlgorithmImplementation.i IntegrationAlgorithmImplementation_doc.i
                       IntegrationAlgorithm.i IntegrationAlgorithm_doc.i
@@ -492,7 +500,6 @@ ot_add_python_module(experiment experiment_module.i
                       Combinations.i Combinations_doc.i
                       KPermutations.i KPermutations_doc.i
                       Tuples.i Tuples_doc.i
-                      PythonExperiment.cxx
                       BaseExperimentTemplateDefs.i
                    )
 
@@ -534,7 +541,6 @@ ot_add_python_module(model_copula model_copula_module.i
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
                       PlackettCopula.i PlackettCopula_doc.i
                       PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
-                      PythonDistribution.cxx
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
                    )
@@ -567,9 +573,6 @@ ot_add_python_module(model_process model_process_module.i
                       ARMAFactory.i ARMAFactory_doc.i
                       KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i
                       KarhunenLoeveSVDAlgorithm.i KarhunenLoeveSVDAlgorithm_doc.i
-                      PythonEvaluation.cxx
-                      PythonGradient.cxx
-                      PythonHessian.cxx
                       UncertaintyProcessTemplateDefs.i
                    )
 
@@ -854,10 +857,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i
                       LinearModelValidation.i LinearModelValidation_doc.i
                       RandomVector.i RandomVector_doc.i
-                      PythonEvaluation.cxx
-                      PythonGradient.cxx
-                      PythonHessian.cxx
-                      PythonRandomVector.cxx
                       CompositeRandomVector.i CompositeRandomVector_doc.i
                       ThresholdEvent.i ThresholdEvent_doc.i
                       DomainEvent.i DomainEvent_doc.i
@@ -1028,18 +1027,19 @@ ot_add_python_module(experimental experimental_module.i
                      LineSampling.i LineSampling_doc.i
                      GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
-                     PythonEvaluation.cxx
-                     PythonGradient.cxx
-                     PythonHessian.cxx
                     )
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
+# only a subset of the modules actually need wrapping classes
+foreach (module algo experimental experiment func metamodel model_copula model_process)
+  target_link_libraries (${module} OTPythonWrapping)
+endforeach ()
 
 # Build and install openturns.memoryview
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
 target_include_directories (memoryview PRIVATE ${Python_INCLUDE_DIRS})
 target_link_libraries (memoryview Python::Module)
-set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "" SKIP_UNITY_BUILD_INCLUSION ON)
+set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "" UNITY_BUILD OFF)
 if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
 else ()
@@ -1047,7 +1047,6 @@ else ()
 endif ()
 set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
-
 
 set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 
