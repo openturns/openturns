@@ -168,10 +168,6 @@ int main(int, char *[])
       fullprint << "mean=" << mean << std::endl;
       Point standardDeviation = distribution.getStandardDeviation();
       fullprint << "standard deviation=" << standardDeviation << std::endl;
-      Point skewness = distribution.getSkewness();
-      fullprint << "skewness=" << skewness << std::endl;
-      Point kurtosis = distribution.getKurtosis();
-      fullprint << "kurtosis=" << kurtosis << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance=" << covariance << std::endl;
       CovarianceMatrix correlation = distribution.getCorrelation();
