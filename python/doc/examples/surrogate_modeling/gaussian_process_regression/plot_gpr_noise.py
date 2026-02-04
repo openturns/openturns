@@ -22,7 +22,7 @@ Gaussian Process Regression: heteroscedastic noise
 #
 # Modeling a noise on the output values as a nugget effect rather than with the :meth:`setNoise` method is
 # interesting to
-# simulate some sensors which have a finite precision and generates some output values perturbated by 
+# simulate some sensors which have a finite precision and generates some output values perturbated by
 # a White Noise process.
 # On the contrary, taking noise into account with the :meth:`setNoise` method impacts the estimation of the
 # but not the regularity of the process.
@@ -123,7 +123,7 @@ covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result_noNoise = fitter_algo.getResult()
-gpr_algo_noNoise= ot.GaussianProcessRegression(fitter_result_noNoise)
+gpr_algo_noNoise = ot.GaussianProcessRegression(fitter_result_noNoise)
 gpr_algo_noNoise.run()
 gpr_result_homosk = gpr_algo_noNoise.getResult()
 gprMM_noNoise = gpr_result_homosk.getMetaModel()
@@ -147,7 +147,7 @@ view = otv.View(graph)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We want to model a noise on each output value of the model. This noise is the same
 # for output :math:`y_i` value and is modeled as a :class:`~openturns.Normal` distribution
-# which is centered with a variance denoted by :math:`\sigma^2 = 0.5`. 
+# which is centered with a variance denoted by :math:`\sigma^2 = 0.5`.
 variance_point_homosc = [0.5] * n_train
 
 # %%
@@ -230,7 +230,7 @@ view = otv.View(graph)
 # ~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~~~~~~~~~~~
 # We want to model a noise on each output value of the model. This noise depends on the
 # output value :math:`y_i`  and is modeled as a :class:`~openturns.Normal` distribution
-# which is centered with a variance denoted by :math:`\sigma_i^2`. 
+# which is centered with a variance denoted by :math:`\sigma_i^2`.
 # We generate a list of :math:`\sampleSize` variances.
 variance_point_heterosc = ot.Uniform(0.0, 1.5).getSample(n_train).asPoint()
 
@@ -241,7 +241,7 @@ noise_heterosk = ot.Sample(0, 1)
 for i in range(n_train):
     noise_i = ot.Normal(0, m.sqrt(variance_point_heterosc[i])).getRealization()
     noise_heterosk.add(noise_i)
-y_train_heterosc  = y_train + noise_heterosk
+y_train_heterosc = y_train + noise_heterosk
 
 # %%
 # We plot the model and the noisy train data
@@ -320,7 +320,7 @@ view = otv.View(graph)
 # using the :meth:`setNuggetFactor` method of the :class:`~openturns.CovarianceModel`.
 #
 # We consider the Matern covariance model defined previously and we add a nugget factor.
-covarianceModel.setNuggetFactor(2*variance_point_homosc[0])
+covarianceModel.setNuggetFactor(2 * variance_point_homosc[0])
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
