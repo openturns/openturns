@@ -7,10 +7,11 @@ Gaussian Process Regression: Normalization for optimization
 # This example aims to illustrate Gaussian Process Fitter metamodel with normalization of data.
 # Like other machine learning techniques, heteregeneous data (i.e., data defined with different orders of magnitude)
 # can impact the training process of Gaussian Process Regression (GPR).
-# Automatic scaling process of the input data for the optimization of GPR hyperparameters can be defined using
+# Automatic scaling process of the input data for the optimization of Gaussian Process Regression hyperparameters can be defined using
 # the :class:`~openturns.ResourceMap` key `GaussianProcessFitter-OptimizationNormalization`.
 # In this example, we show the behavior of Gaussian Process Fitter with and without activating
 # the normalization of hyperparameters for the optimization.
+# Refer to :ref:`gaussian_process_regression`.
 
 
 # %%
