@@ -61,12 +61,6 @@ public:
   using FunctionImplementation::operator ==;
   Bool operator ==(const MemoizeFunction & other) const;
 
-  /** Operator () */
-  Point operator() (const Point & inPoint) const override;
-
-  /** Operator () */
-  Sample operator() (const Sample & inSample) const override;
-
   /** @brief Enable the internal cache
    *
    * The cache stores previously computed output values, so calling the cache before processing the %Function

@@ -81,20 +81,6 @@ String MemoizeFunction::__repr__() const
   return FunctionImplementation::__repr__();
 }
 
-/** Operator () */
-Point MemoizeFunction::operator() (const Point & inPoint) const
-{
-  ++ callsNumber_;
-  return getEvaluation().operator()(inPoint);
-}
-
-/** Operator () */
-Sample MemoizeFunction::operator() (const Sample & inSample) const
-{
-  callsNumber_ += inSample.getSize();
-  return getEvaluation().operator()(inSample);
-}
-
 /* Function implementation accessors */
 void MemoizeFunction::setEvaluation(const Evaluation & evaluation)
 {
