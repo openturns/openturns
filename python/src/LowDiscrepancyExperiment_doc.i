@@ -11,13 +11,13 @@ Available constructors:
 Parameters
 ----------
 size : positive int
-    Number :math:`n` of points of the sequence.
+    Number :math:`\sampleSize` of points of the sequence.
 sequence : :class:`~openturns.LowDiscrepancySequence`
     Low discrepancy sequence type.
 
     If not specified, the sequence is a :class:`~openturns.SobolSequence`.
 distribution : :class:`~openturns.Distribution`
-    Distribution :math:`\mu` of dimension :math:`n`.
+    Distribution :math:`\mu` of dimension :math:`\sampleSize`.
 restart : bool
     Flag to tell if the low discrepancy sequence must be restarted from
     its initial state at each change of distribution or not.
@@ -27,16 +27,16 @@ restart : bool
 
 Notes
 -----
-The :meth:`generate` method generates a low discrepancy sequence :math:`(u_1, \cdots, u_n)`
-over :math:`[0,1]^n` using the Sobol sequence if no particular other sequence has been fixed
+The :meth:`generate` method generates a low discrepancy sequence :math:`(u_1, \cdots, u_\sampleSize)`
+over :math:`[0,1]^\sampleSize` using the Sobol sequence if no particular other sequence has been fixed
 through the parameter *sequence*.
 
 Then we use an :ref:`Isoprobabilistic transformations <isoprobabilistic_transformation>` that
-maps the independent copula of dimension :math:`n`
-into the distribution given through the parameter *distribution*: the sample :math:`(u_1, \cdots, u_n)`
-is transformed into the sample :math:`(x_1, \cdots, x_n)` that is finally returned.
+maps the independent copula of dimension :math:`\sampleSize`
+into the distribution given through the parameter *distribution*: the sample :math:`(u_1, \cdots, u_\sampleSize)`
+is transformed into the sample :math:`(x_1, \cdots, x_\sampleSize)` that is finally returned.
 
-The weights are all equal to :math:`1/n`.
+The weights are all equal to :math:`\frac{1}{\sampleSize}`.
 
 When the :meth:`generate` method is called again, the generated sample changes. But as soon as the
 parameter *distribution* is modified, the sequence is restarted at its initial state.

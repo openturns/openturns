@@ -17,8 +17,8 @@ Local approximation
     taylor_expansion
 
 
-Least square surrogate models
------------------------------
+Least squares surrogate models
+----_-------------------------
 
 .. toctree::
     :maxdepth: 1

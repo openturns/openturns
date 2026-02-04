@@ -117,7 +117,7 @@ view = otv.View(grid)
 # We consider a :class:`~openturns.RandomWalk` process which distribution is the normal
 # distribution of dimension 2 with zero mean and identity covariance matrix.
 # The process is defined on :math:`\cD = [0,1]^2` which is discretized by a regular grid, using
-# the clas :class:`~openturns.IntervalMesher`.
+# the class :class:`~openturns.IntervalMesher`.
 dist_rw = ot.Normal(2)
 origin = dist_rw.getMean()
 mesh = ot.RegularGrid(0, 1, 10000)
