@@ -35,18 +35,11 @@ int main(int, char *[])
     SymbolicFunction g(Description({"x"}), Description({"sin(x)"}));
     
     // Create training sample
-    Sample x_train(7, 1);
-    x_train[0] = Point({1.0});
-    x_train[1] = Point({3.0});
-    x_train[2] = Point({4.0});
-    x_train[3] = Point({6.0});
-    x_train[4] = Point({7.9});
-    x_train[5] = Point({11.0});
-    x_train[6] = Point({11.5});
-    Sample y_train = g(x_train);
+    const Sample x_train(Sample::BuildFromPoint({1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5}));
+    const Sample y_train = g(x_train);
     
     // Setup basis and covariance model
-    Basis basis = ConstantBasisFactory(1).build();
+    const Basis basis = ConstantBasisFactory(1).build();
     MaternModel covarianceModel(Point(1, 1.0), 1.5);
     
     // Fit the model

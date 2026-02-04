@@ -54,10 +54,8 @@ GaussianProcessRegressionCrossValidation::GaussianProcessRegressionCrossValidati
   , gaussianProcessRegressionResult_(gaussianProcessRegressionResult)
   , splitter_ (splitter)
 {
-  const UnsignedInteger sampleDimension = gaussianProcessRegressionResult.getOutputSample().getDimension();
-  if (sampleDimension != 1)
-    throw InvalidArgumentException(HERE) << "Gaussian Process Regression cross-validation is only implemented for scalar output (current output dimension is "
-                                         << sampleDimension << ").";
+  if (gaussianProcessRegressionResult.getLinearAlgebraMethod() != 0)
+    throw NotYetImplementedException(HERE) << "Error: HMAT is not supported yet.";
   const UnsignedInteger sampleSize = gaussianProcessRegressionResult.getOutputSample().getSize();
   if ((splitter_.getN() != sampleSize))
     throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN()
@@ -109,33 +107,53 @@ Sample GaussianProcessRegressionCrossValidation::ComputeMetamodelLeaveOneOutPred
   //const LeaveOneOutSplitter & splitter)
 {
   const Sample outputSample(gaussianProcessRegressionResult.getOutputSample());
+  const UnsignedInteger sampleDimension = outputSample.getDimension();
+  if (sampleDimension != 1)
+    throw InvalidArgumentException(HERE) << "Gaussian Process Regression cross-validation is only implemented for scalar output (current output dimension is "
+                                         << sampleDimension << ").";
+
 
   // Implement second formula from Equation (32) in (Ginsbourger, 2023 preprint) which is equivalent to Dubrule (1983)
+  // Let y be the vector of the output samples, yi its i-th element and ŷi the cross-validation prediction,
+  // i.e. the GPR regression based on the sample of the yj (j != i)
+  // yi - ŷi = (Sigmatilde y)[i] / Sigmatilde[i,i]
+  // where Sigmatilde = Sigma^-1 - Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1.
+  // Note that equivalently
+  // Sigmatilde = L^-T (L^-1 - L^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)
 
-  // Compute unscaled residuals
+  // Compute unscaled residuals using the already computed rho : Sigmatilde y = L^-T rho
   const GaussianProcessFitterResult gpfResult(gaussianProcessRegressionResult.getGaussianProcessFitterResult());
   const Point rho(gpfResult.getRho());
   const TriangularMatrix covarianceCholeskyFactor(gpfResult.getCholeskyFactor()); // L
   const TriangularMatrix covarianceCholeskyFactorTranspose(covarianceCholeskyFactor.transpose()); // L^T
   Point residuals(covarianceCholeskyFactorTranspose.solveLinearSystem(rho)); // L^-T rho = (Sigma^-1  - Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 ) y
 
-  // Compute scales of residuals
+  // Compute scales of residuals : Sigmatilde[i,i] for all i
+
+  // Start by computing Sigma^-1[i,i] = ||L^-1[:,i]||^2 for all i
+  // ||L^-1[:,i]||^2 can be computed as 1^T S[:,i],
+  // where 1 is the column vector filled with ones,
+  // and S is the matrix whose elements are the squares of the elements of L^-1.
+  // Therefore the vector of the Sigma^-1[i,i] is 1^T S.
   const TriangularMatrix covarianceCholeskyFactorInverse(covarianceCholeskyFactor.inverse().getImplementation()); //L^-1
   TriangularMatrix covarianceCholeskyFactorInverseSquared(covarianceCholeskyFactorInverse);
   covarianceCholeskyFactorInverseSquared.squareElements();
   Point scales(covarianceCholeskyFactorInverseSquared.getImplementation()->genVectProd(Point(outputSample.getSize(), 1.0), true)); // diagonal elements of L^-T L^-1
 
-  // If the trend is estimated, the scales (which are homogeneous to precisions) must be diminished
+  // Then, if the trend is estimated, the scales (which are homogeneous to precisions) must be diminished:
+  // we subtract (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i]
   const UnsignedInteger  basisSize = gaussianProcessRegressionResult.getBasis().getSize();
   if (basisSize > 0)
   {
     const Matrix regressionMatrix(gaussianProcessRegressionResult.getRegressionMatrix()); // F
-    const Matrix Phi(covarianceCholeskyFactor.solveLinearSystem(regressionMatrix)); // Phi = L^-1 F
+    const Matrix Phi(covarianceCholeskyFactor.solveLinearSystem(regressionMatrix)); // Phi := L^-1 F
+    // Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi (Phi^T Phi)^-1 Phi^T L^-1
     const Matrix Phitranspose(Phi.transpose());
-    CovarianceMatrix PhitransposePhi((Phitranspose * Phi).getImplementation()); // Phi^T Phi (not to be used, later modified in-place)
-    TriangularMatrix phi(PhitransposePhi.computeCholesky()); // Phi^T Phi =: phi phi^T (phi not to be used, later modified in-place)
+    CovarianceMatrix PhiGram(Phi.computeGram()); // Phi^T Phi (not to be used, later modified in-place)
+    TriangularMatrix phi(PhiGram.computeCholesky()); // Phi^T Phi =: phi phi^T (phi not to be used, later modified in-place)
+    // Thus Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi phi^-T phi^-1 Phi^T L^-1 = (phi^-1 Phi^T L^-1)^T (phi^-1 Phi^T L^-1)
     Matrix auxiliary(phi.solveLinearSystemInPlace(Phitranspose * covarianceCholeskyFactorInverse)); // auxiliary := phi^-1 Phi^T L^-1 has basisSize rows
-    // Subtract the diagonal elements of auxiliary^T auxiliary from the scales
+    // (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i] = ||auxiliary[:,i]||^2
     auxiliary.squareElements();
     scales -= auxiliary.getImplementation()->genVectProd(Point(basisSize, 1.0), true);
   }
@@ -158,14 +176,14 @@ Sample GaussianProcessRegressionCrossValidation::ComputeMetamodelKFoldPrediction
 /* Method save() stores the object through the StorageManager */
 void GaussianProcessRegressionCrossValidation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  MetaModelValidation::save(adv);
   adv.saveAttribute( "gaussianProcessRegressionResult_", gaussianProcessRegressionResult_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void GaussianProcessRegressionCrossValidation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  MetaModelValidation::load(adv);
   adv.loadAttribute( "gaussianProcessRegressionResult_", gaussianProcessRegressionResult_ );
 }
 

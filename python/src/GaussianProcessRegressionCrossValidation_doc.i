@@ -50,7 +50,8 @@ Create a Gaussian Process Regression surroagate for the Ishigami function.
 >>> gpr.run()
 >>> gpr_result = gpr.getResult()
 
-Validate the polynomial chaos expansion using leave-one-out cross-validation.
+Validate the Gaussian Process Regression surrogate model
+using leave-one-out cross-validation.
 
 >>> validation = GaussianProcessRegressionCrossValidation(gpr_result)
 >>> r2Score = validation.computeR2Score()

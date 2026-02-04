@@ -139,7 +139,7 @@ SplitterImplementation LinearModelValidation::getSplitter() const
 /* Method save() stores the object through the StorageManager */
 void LinearModelValidation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  MetaModelValidation::save(adv);
   adv.saveAttribute( "linearModelResult_", linearModelResult_ );
   adv.saveAttribute( "splitter_", splitter_ );
 }
@@ -148,7 +148,7 @@ void LinearModelValidation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearModelValidation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  MetaModelValidation::load(adv);
   adv.loadAttribute( "linearModelResult_", linearModelResult_ );
   adv.loadAttribute( "splitter_", splitter_ );
 }
