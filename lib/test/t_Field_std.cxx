@@ -92,6 +92,7 @@ int main(int, char *[])
 
     String fname("field.vtk");
     field.exportToVTKFile(fname);
+    Os::Remove(fname);
 
     Field scalarField(mesh3D, Sample(vertices.getSize(), Point(1, 1.0)));
     Indices x(1, 1);
