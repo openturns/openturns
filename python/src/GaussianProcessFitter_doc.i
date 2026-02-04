@@ -69,10 +69,12 @@ A centered Gaussian noise :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \tim
 can be taken into account for each output value with :func:`setNoise()`:
 
 .. math::
+    :eq: noise
     \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
     \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
 
-see algo :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise`.
+where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`. Refer to
+:doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise` to get an example.
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
@@ -345,6 +347,14 @@ Parameters
 ----------
 noise : sequence of :class:`~openturns.CovarianceMatrix` or sequence of float
     The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+Notes
+-----
+The noise takes into account the fact that the output values of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in :eq:`noise`.
+
+If the output dimension :math:`\outputDim = 1`, each matrix :math:`\mat{\Sigma}_i^{noise}` is reduced to a scalar and the noise can be specified with a sequence of float.
+
+Refer to :ref:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -356,4 +366,10 @@ Returns
 -------
 noise : sequence of :class:`~openturns.CovarianceMatrix`
     The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+Notes
+-----
+The noise takes into account the fact that the output values of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in :eq:`noise`.
+
+Refer to :ref:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"
