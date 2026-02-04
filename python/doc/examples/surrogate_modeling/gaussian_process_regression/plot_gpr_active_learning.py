@@ -5,7 +5,8 @@ Gaussian Process-based active learning for reliability
 
 # sphinx_gallery_thumbnail_number = 13
 # %%
-# In this example, we show how to sequentially add new points to a Gaussian Progress Regression model (GPR).
+# In this example, we show how to sequentially add new points to a Gaussian Progress Regression model (GPR)
+# (refer to :ref:`gaussian_process_regression`).
 # The goal is to improve the predictivity of the surrogate model for reliability estimation.
 # This kind of strategy is called "active learning".
 # In order to create simple graphs, we consider a 1-d function.

@@ -5,7 +5,8 @@ Advanced Gaussian process regression
 
 # %%
 #
-# In this example we will build a metamodel using Gaussian process regression of the :math:`x\sin(x)` function.
+# In this example we will build a metamodel using Gaussian process regression (refer to
+# :ref:`gaussian_process_regression`) of the :math:`x\sin(x)` function.
 #
 # We will choose the number of learning points, the basis and the covariance model.
 #

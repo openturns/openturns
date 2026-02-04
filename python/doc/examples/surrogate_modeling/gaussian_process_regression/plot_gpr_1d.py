@@ -7,7 +7,7 @@ Gaussian Process Regression : quick-start
 # Abstract
 # --------
 #
-# In this example, we create a Gaussian Process Regression for a function which has
+# In this example, we create a Gaussian Process Regression (refer to :ref:`gaussian_process_regression`) for a function which has
 # scalar real inputs and outputs.
 # We show how to create the learning and the validation samples.
 # We show how to create the surrogate model by choosing a trend and a covariance model.

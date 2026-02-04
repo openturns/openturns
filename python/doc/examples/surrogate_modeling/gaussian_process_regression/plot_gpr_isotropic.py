@@ -3,7 +3,7 @@ Gaussian Process Regression: use an isotropic covariance kernel
 ===============================================================
 
 In typical machine learning applications, Gaussian process regression
-surrogate models take several inputs,
+surrogate models (refer to :ref:`gaussian_process_regression`) take several inputs,
 and those inputs are usually heterogeneous
 (e.g. in the :doc:`cantilever beam
 </auto_surrogate_modeling/gaussian_process_regression/plot_gpr_cantilever_beam>` use case,

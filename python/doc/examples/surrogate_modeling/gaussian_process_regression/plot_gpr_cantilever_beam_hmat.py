@@ -4,7 +4,8 @@ Gaussian Process Regression: Cantilever beam model using HMAT
 """
 
 # %%
-# In this example, we create a GP metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`.
+# In this example, we create a Gaussian Process Regression metamodel (refer to :ref:`gaussian_process_regression`)
+# of the :ref:`cantilever beam <use-case-cantilever-beam>`.
 # We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size is 20.
 
 

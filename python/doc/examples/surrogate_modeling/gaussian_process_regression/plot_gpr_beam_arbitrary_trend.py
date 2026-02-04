@@ -4,7 +4,8 @@ Gaussian Process Regression: choose an arbitrary trend
 """
 
 # %%
-# The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel.
+# The goal of this example is to show how to configure an arbitrary trend in a Gaussian Process Regression metamodel
+# (refer to :ref:`gaussian_process_regression`).
 # In the :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_choose_trend`
 # and :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_beam_trend` examples,
 # we show how to configure a polynomial trend.
