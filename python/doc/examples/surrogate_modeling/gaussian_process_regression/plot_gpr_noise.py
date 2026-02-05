@@ -14,17 +14,17 @@ Gaussian Process Regression: heteroscedastic noise
 #
 # Both Case 2 and Case 4 model a homoscedastic noise on the output values of the model. But the two models
 # are quite different:
-# - the :meth:`setNoise` method of the :class:`~openturns.GaussianProcessFitter` takes noise into account only in
+# - the :meth:`~openturns.GaussianProcessFitter.setNoise` method of the :class:`~openturns.GaussianProcessFitter` takes noise into account only in
 #   the expression of the model likelihood, in the evaluation of the covariance parameters,
-# - the :meth:`setNuggetFactor` method of the :class:`~openturns.CovarianceModel` modifies the covariance model of
+# - the :meth:`~openturns.CovarianceModel.setNuggetFactor` method of the :class:`~openturns.CovarianceModel` modifies the covariance model of
 #   the Gaussian process and keeps it modified once the parameters have been estimated. As a result, the
 #   trajectories of the Gaussian process become less smooth than with the first model.
 #
-# Modeling a noise on the output values as a nugget effect rather than with the :meth:`setNoise` method is
-# interesting to
+# Modeling a noise on the output values as a nugget effect is interesting to
 # simulate some sensors which have a finite precision and generates some output values perturbated by
 # a White Noise process.
-# On the contrary, taking noise into account with the :meth:`setNoise` method impacts the estimation of the
+# On the contrary, taking noise into account with the :meth:`~openturns.GaussianProcessFitter.setNoise` method
+# impacts the estimation of the
 # but not the regularity of the process.
 
 # %%
@@ -34,15 +34,17 @@ Gaussian Process Regression: heteroscedastic noise
 # We consider the model :math:`\model: \[0,12] \rightarrow \Rset` defined by:
 #
 # .. math::
-#    y = \model (x) = x \sin(x)
+#
+#      y = \model (x) = x \sin(x)
+#
 #
 # We want to create a surrogate of this model using Gaussian Process Regression, from the data set defined by:
 #
 # .. math::
-#    y_k = x_k \sin(x_k), \quad 1 \leq k \leq \sampleSize
 #
-
-# %%
+#      y_k = x_k \sin(x_k), \quad 1 \leq k \leq \sampleSize
+#
+#
 import openturns as ot
 import openturns.viewer as otv
 import math as m
@@ -317,7 +319,7 @@ view = otv.View(graph)
 # Case 4: Introduce a nugget effect
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We can introduce the homoscedastic noise on the output values of the model as a nugget effect,
-# using the :meth:`setNuggetFactor` method of the :class:`~openturns.CovarianceModel`.
+# using the :meth:`~openturns.CovarianceModel.setNuggetFactor` method of the :class:`~openturns.CovarianceModel`.
 #
 # We consider the Matern covariance model defined previously and we add a nugget factor.
 covarianceModel.setNuggetFactor(2 * variance_point_homosc[0])

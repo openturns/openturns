@@ -69,7 +69,7 @@ A centered Gaussian noise :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \tim
 can be taken into account for each output value with :func:`setNoise()`:
 
 .. math::
-    :eq: noise
+    :label: noise
     \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
     \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
 
