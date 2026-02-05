@@ -87,16 +87,19 @@ not depend on :math:`(\vect{s}, \vect{t})`:
 
       \rho_{nugget}(\vect{s}, \vect{t}) =
       \begin{cases}
-          \rho(\vect{s}, \vect{t}) & \text{ if }   \vect{s} \neq \vect{t},
+          \rho(\vect{s}, \vect{t}) & \text{ if }   \vect{s} \neq \vect{t}, \\
             1 + \varepsilon_{nugget} & \text{otherwise.}
        \end{cases}
 
-Then, the nugget effect transforms the covariance function :math:`\mat{C}` into the covariance function :math:`\mat{C}_{nugget}` as follows:
+
+Then, the nugget effect transforms the covariance function :math:`\mat{C}` into the covariance function
+:math:`\mat{C}_{nugget}` as follows:
 
 .. math::
       :label: cov_with_noise
 
-      \mat{C}_{nugget}(\vect{s}, \vect{t}) = \mat{C}(\vect{s}, \vect{t}) + \varepsilon_{nugget}  \mat{C}^{spatial} 1_{\vect{s} = \vect{t}}
+      \mat{C}_{nugget}(\vect{s}, \vect{t}) = \mat{C}(\vect{s}, \vect{t}) + \varepsilon_{nugget}  \mat{C}^{spatial}
+      1_{\vect{s} = \vect{t}}
 
 Then, we have:
 
