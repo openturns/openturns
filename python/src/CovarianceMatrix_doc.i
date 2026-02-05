@@ -87,7 +87,15 @@ to the largest eigenvalue and keys `Matrix-StartingScaling` and `Matrix-MaximalS
 Returns
 -------
 cholesky_factor : :class:`~openturns.TriangularMatrix`
-    The left (lower) Cholesky factor."
+    The left (lower) Cholesky factor.
+
+Notes
+-----
+The matrix :math:`\mat{C}\in \cM_{d_\inputDim \times d_\inputDim}` is replaced by the matrix
+:math:`\mat{C}_{reg} = \mat{C} + \lambda_{max}\varepsilon I_{d_\inputDim}` where :math:`\lambda_{max}` is the
+largest eigenvalue and :math:`\varepsilon = \min \{2^{k_{opt}} \varepsilon_0, Matrix-MaximalScaling \}`,
+with :math:`\varepsilon_0 = Matrix-StartingScaling` and
+:math:`k_{opt} = \argmin_k \{ 2^k \varepsilon_0, k \geq 1 \,  | \,  \mat{C}_{reg} \in \cS_{\inputDim}^+(\Rset)\}`."
 
 // ---------------------------------------------------------------------
 

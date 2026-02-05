@@ -72,11 +72,10 @@ where:
 - :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \, \mat{R} \, \diag(\vect{\sigma})`
   is the *spatial* covariance matrix which does not depend on :math:`(\vect{s}, \vect{t})`.
 
-The library allows one to model a **nugget effect**. The nugget effect is used for two purposes:
-
-- it can represent a noise observed in the output values of a process. This noise may be, for example, a measurement
-  noise coming from a sensor with finite precision;
-- it can be used to add a supplementary regularization of the covariance matrix to the automatic regularization.
+The library allows one to model a **nugget effect**. The nugget effect is used for to model a noise observed in
+the output values of a process. This noise may be, for example, a measurement   noise coming from a sensor with
+finite precision. It also has a side effect: it improves the condition number of the  covariance  matrix (see
+:meth:`~openturns.CovarianceMatrix.computeRegularizedCholesky`).
 
 The nugget effect is taken into account by modifying the scalar correlation function :math:`\rho` at
 any point :math:`(\vect{s}, \vect{s})` by adding a term denoted :math:`\varepsilon_{nugget}` which does
