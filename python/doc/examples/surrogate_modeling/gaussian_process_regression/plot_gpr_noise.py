@@ -130,7 +130,7 @@ gpr_algo_noNoise.run()
 gpr_result_homosk = gpr_algo_noNoise.getResult()
 gprMM_noNoise = gpr_result_homosk.getMetaModel()
 
-graph = ot.Graph("GPR with exact data", "", "", True, "")
+graph = ot.Graph("Model with exact data", "", "", True, "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -210,7 +210,7 @@ gprMM_homosc = gpr_result_homosc.getMetaModel()
 # We plot now the resulting surrogate model. We can see that the GPR metamodel
 # does not interpolate the train set any more due to the introduction of the
 # noise.
-graph = ot.Graph("GPR with homoscedasctic noise", "", "", True, "")
+graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedastic noisy data", "", "", True, "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -298,7 +298,7 @@ gprMM_heterosc = gpr_result_heterosc.getMetaModel()
 # noise.
 # We could compute the mean square error betwwen the model and the metamodels and show that the distribution of
 # the errors is more tight when we take into account the noise modeling.
-graph = ot.Graph("GPR with heteroscedasctic noise", "", "", True, "")
+graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and heteroscedastic noisy data", "", "", True, "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -341,7 +341,7 @@ gprMM_nuggetF = gpr_result_nuggetF.getMetaModel()
 # %%
 # We define the Gaussian Process Fitter on the noisy data.
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
-graph = ot.Graph("GPR with nugget effect or homoscedastic noise", "", "", True, "")
+graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedastic noisy data", "", "", True, "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
