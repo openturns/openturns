@@ -14,17 +14,20 @@ Gaussian Process Regression: heteroscedastic noise
 #
 # Both Case 2 and Case 4 model a homoscedastic noise on the output values of the model. But the two models
 # are quite different:
-# - the :meth:`~openturns.GaussianProcessFitter.setNoise` method of the :class:`~openturns.GaussianProcessFitter` takes noise into account only in
+# - the :meth:`~openturns.GaussianProcessFitter.setNoise` method of the :class:`~openturns.GaussianProcessFitter`
+#   takes noise into account only in
 #   the expression of the model likelihood, in the evaluation of the covariance parameters,
-# - the :meth:`~openturns.CovarianceModel.setNuggetFactor` method of the :class:`~openturns.CovarianceModel` modifies the covariance model of
+# - the :meth:`~openturns.CovarianceModel.setNuggetFactor` method of the :class:`~openturns.CovarianceModel`
+#   modifies the covariance model of
 #   the Gaussian process and keeps it modified once the parameters have been estimated. As a result, the
 #   trajectories of the Gaussian process become less smooth than with the first model.
 #
 # Modeling a noise on the output values as a nugget effect is interesting to
 # simulate some sensors which have a finite precision and generates some output values perturbated by
 # a White Noise process.
+#
 # On the contrary, taking noise into account with the :meth:`~openturns.GaussianProcessFitter.setNoise` method
-# impacts the estimation of the
+# impacts the estimation of the covariance parameters
 # but not the regularity of the process.
 
 # %%
@@ -86,8 +89,10 @@ y_train = g(x_train)
 n_train = x_train.getSize()
 
 # %%
-# In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made of a regular grid of 100 points from 0 to 12.
-# Then we convert this grid into a :class:`~openturns.Sample` and we compute the outputs of the function on this sample.
+# In order to compare the function and its metamodel, we use a test (i.e. validation) design of experiments made
+# of a regular grid of 100 points from 0 to 12.
+# Then we convert this grid into a :class:`~openturns.Sample` and we compute the outputs of the function on this
+# sample.
 
 # %%
 n_test = 500
@@ -105,7 +110,7 @@ graph.add(
 graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
-graph.setLegendPosition("upper right")
+graph.setLegendPosition("lower left")
 view = otv.View(graph)
 
 # %%
@@ -131,11 +136,11 @@ gpr_algo_noNoise.run()
 gpr_result_noNoise = gpr_algo_noNoise.getResult()
 gprMM_noNoise = gpr_result_noNoise.getMetaModel()
 
-graph = ot.Graph("Model with exact data", "x", "y", True, "upper right")
+graph = ot.Graph("Model with exact data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
+graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Exact Data", color="red"))
 graph.add(
     plot_1d_data(x_test, gprMM_noNoise(x_test), legend="GPR", color="green")
 )
@@ -147,10 +152,10 @@ view = otv.View(graph)
 # We create the conditioned Gaussian process. Then we generate some trajectories.
 process_noNoise = otexp.ConditionedGaussianProcess(gpr_result_noNoise, myRegularGrid)
 traj_noNoise = process_noNoise.getSample(10)
-graph_traj_noNoise = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and exact data", "x", "y", True, "lower left")
+graph_traj_noNoise = ot.Graph(r"Model with exact data", "x", "y", True, "lower left")
 graph_traj_noNoise.add(traj_noNoise.drawMarginal())
-graph_traj_noNoise.setLegends(['conditioned trajectories'] + ['']*9)
-graph_traj_noNoise.setColors(['grey']*10)
+graph_traj_noNoise.setLegends(['conditioned trajectories'] + [''] * 9)
+graph_traj_noNoise.setColors(['grey'] * 10)
 graph_traj_noNoise.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -177,7 +182,7 @@ y_train_homosc = y_train + noise_homosk
 # %%
 # We plot the model and the noisy train data
 # which is not on the graph of the model.
-graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedasctic noisy data", "x", "y", True, "upper right")
+graph = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -222,13 +227,13 @@ gprMM_homosc = gpr_result_homosc.getMetaModel()
 # We plot now the resulting surrogate model. We can see that the GPR metamodel
 # does not interpolate the train set any more due to the introduction of the
 # noise.
-graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedastic noisy data", "x", "y", True, "lower left")
+graph = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR + noise", color="green")
+    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="green")
 )
 graph.add(
     plot_1d_data(x_test, gprMM_1(x_test), legend="GPR ignoring noise", color="blue")
@@ -236,20 +241,19 @@ graph.add(
 view = otv.View(graph)
 
 # %%
-# We can draw some trajectories of the resulting conditioned Gaussian process using the class
-# :class:`~openturns.ConditionedGaussianProcess` built from a :class:`~openturns.GaussianProcessRegressionResult`.
-# We create the conditioned Gaussian process. Then we generate some trajectories.
+# We can draw some trajectories of the resulting conditioned Gaussian process still using the class
+# :class:`~openturns.ConditionedGaussianProcess` as previoulsy.
 process_homosc = otexp.ConditionedGaussianProcess(gpr_result_homosc, myRegularGrid)
 traj_homosc = process_homosc.getSample(10)
-graph_traj_homosc = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedastic noisy data", "x", "y", True, "lower left")
+graph_traj_homosc = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
 graph_traj_homosc.add(traj_homosc.drawMarginal())
-graph_traj_homosc.setLegends(['conditioned trajectories'] + ['']*9)
-graph_traj_homosc.setColors(['grey']*10)
+graph_traj_homosc.setLegends(['conditioned trajectories'] + [''] * 9)
+graph_traj_homosc.setColors(['grey'] * 10)
 graph_traj_homosc.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_homosc.add(
-    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR + noise", color="green")
+    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="green")
 )
 graph_traj_homosc.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
 view = otv.View(graph_traj_homosc)
@@ -275,7 +279,7 @@ y_train_heterosc = y_train + noise_heterosk
 # %%
 # We plot the model and the noisy train data
 # which is not on the graph of the model.
-graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and heteroscedastic noisy data", "x", "y", True, "upper right")
+graph = ot.Graph(r"Model with heteroscedastic noisy data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -321,13 +325,13 @@ gprMM_heterosc = gpr_result_heterosc.getMetaModel()
 # noise.
 # We could compute the mean square error betwwen the model and the metamodels and show that the distribution of
 # the errors is more tight when we take into account the noise modeling.
-graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and heteroscedastic noisy data", "x", "y", True, "lower left")
+graph = ot.Graph(r"Model with heteroscedastic noisy data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph.add(plot_1d_data(x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_heterosc(x_test), legend="GPR + noise", color="green")
+    plot_1d_data(x_test, gprMM_heterosc(x_test), legend="GPR modeling noise", color="green")
 )
 graph.add(
     plot_1d_data(x_test, gprMM_2(x_test), legend="GPR ignoring noise", color="blue")
@@ -337,17 +341,18 @@ view = otv.View(graph)
 
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process as previoulsy.
+# We can see that the trajectories have kept the regularity of the initial Matern model.
 process_heterosc = otexp.ConditionedGaussianProcess(gpr_result_heterosc, myRegularGrid)
 traj_heterosc = process_heterosc.getSample(10)
-graph_traj_heterosc = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and heteroscedastic noisy data", "x", "y", True, "upper right")
+graph_traj_heterosc = ot.Graph(r"Model with heteroscedastic noisy data", "x", "y", True, "lower left")
 graph_traj_heterosc.add(traj_heterosc.drawMarginal())
-graph_traj_heterosc.setLegends(['conditioned trajectories'] + ['']*9)
-graph_traj_heterosc.setColors(['grey']*10)
+graph_traj_heterosc.setLegends(['conditioned trajectories'] + [''] * 9)
+graph_traj_heterosc.setColors(['grey'] * 10)
 graph_traj_heterosc.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_heterosc.add(
-    plot_1d_data(x_test, gprMM_heterosc(x_test), legend="GPR + noise", color="green")
+    plot_1d_data(x_test, gprMM_heterosc(x_test), legend="GPR modeling noise", color="green")
 )
 graph_traj_heterosc.add(plot_1d_data(x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"))
 view = otv.View(graph_traj_heterosc)
@@ -376,46 +381,46 @@ gpr_result_nuggetF = gpr_algo_nuggetF.getResult()
 gprMM_nuggetF = gpr_result_nuggetF.getMetaModel()
 
 # %%
-# We define the Gaussian Process Fitter on the noisy data.
+# We define the Gaussian Process Fitter on the homoscedastic noisy data.
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
-graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedastic noisy data", "x", "y", True, "lower left")
+graph = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_nuggetF(x_test), legend="GPR + nugget factor", color="green")
+    plot_1d_data(x_test, gprMM_nuggetF(x_test), legend="GPR modeling nugget factor", color="green")
 )
 graph.add(
-    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR + homosc. noise", color="blue")
+    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="blue")
 )
 view = otv.View(graph)
 
 
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process as previoulsy.
+# We can see that the trajectories are not as smooth as the initial Matern model any more.
 process_nuggetF = otexp.ConditionedGaussianProcess(gpr_result_nuggetF, myRegularGrid)
 traj_nuggetF = process_nuggetF.getSample(10)
-graph_traj_nuggetF = ot.Graph(r"Model $x \rightarrow x\sin(x)$ and homoscedastic noisy data", "x", "y", True, "lower left")
+graph_traj_nuggetF = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
 graph_traj_nuggetF.add(traj_nuggetF.drawMarginal())
-graph_traj_nuggetF.setLegends(['conditioned trajectories'] + ['']*9)
-graph_traj_nuggetF.setColors(['grey']*10)
+graph_traj_nuggetF.setLegends(['conditioned trajectories'] + [''] * 9)
+graph_traj_nuggetF.setColors(['grey'] * 10)
 graph_traj_nuggetF.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_nuggetF.add(
-    plot_1d_data(x_test, gprMM_nuggetF(x_test), legend="GPR + nugget", color="green")
+    plot_1d_data(x_test, gprMM_nuggetF(x_test), legend="GPR modeling nugget factor", color="green")
 )
 graph_traj_nuggetF.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
 view = otv.View(graph_traj_nuggetF)
 
-
 # %%
-# To facilitate comparison, we draw the trajectories generated by the Gaussian process built with a nugget factor or
-# with the noise.
-grid = ot.GridLayout(1,2)
-grid.setGraph(0,0, graph_traj_nuggetF)
-grid.setGraph(0,1, graph_traj_homosc)
+# To facilitate comparison, we draw the trajectories generated by the Gaussian process built with a nugget factor
+# or with a noise.
+grid = ot.GridLayout(1, 2)
+grid.setGraph(0, 0, graph_traj_nuggetF)
+grid.setGraph(0, 1, graph_traj_homosc)
 view = otv.View(grid)
 
 # %%
