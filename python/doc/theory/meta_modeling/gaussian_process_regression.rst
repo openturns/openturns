@@ -81,7 +81,7 @@ The estimation is done by maximizing the *reduced* log-likelihood of the model (
 
 **Estimation of the parameters:** We want to estimate all the parameters :math:`\left(\beta_j^\ell \right)` for
 :math:`1 \leq j \leq b`
-and :math:`1 \leq \ell \leq \outputDim`, and :math:`\vect{p}`.
+and :math:`1 \leq \ell \leq \outputDim`, and the vector of parameters :math:`\vect{p}`.
 
 We note:
 
@@ -130,7 +130,8 @@ The likelihood of the Gaussian process on the data set is defined by:
     \Tr{\left( \vect{y}-\vect{m}_{\vect{\beta}} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m}
     _{\vect{\beta}} \right)  \right)
 
-Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`, i.e. the lower triangular
+Let :math:`\mat{L}_{\vect{p}}` be the Cholesky factor of :math:`\mat{C}_{\vect{p}}`: it means that
+:math:`\mat{L}_{\vect{p}}` is the lower triangular
 matrix with positive diagonal such that
 :math:`\mat{L}_{\vect{p}} \,\Tr{\mat{L}_{\vect{p}}} = \mat{C}_{\vect{p}}`.
 Therefore:

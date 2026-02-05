@@ -32,7 +32,7 @@ cov_model.setNuggetFactor(0.0)
 
 # %%
 # Then, we create a second covariance function which adds a nugget factor to the first one with.
-# We take :math:`\varepsilon_{nugget} = 1`.
+# We take the nugget factor :math:`\varepsilon_{nugget} = 1`.
 cov_model_with_nugget = ot.SquaredExponential()
 epsilon_nugget = 1
 cov_model_with_nugget.setNuggetFactor(epsilon_nugget)
@@ -52,5 +52,5 @@ otv.View.ShowAll()
 
 
 # %%
-# Display all figures
+# Display all figures.
 otv.View.ShowAll()

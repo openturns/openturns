@@ -31,12 +31,12 @@ Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^d)^N
 
 When the field is defined on :math:`\cD \in \Rset^2` and when its values are vectors of dimension 2, the following keys of the :class:`~openturns.ResourceMap` can be used to parameterize its drawing:
 
-- *Field-ArrowRatio* defines the proportion of the arrow head with respect to the arrow length: to get a
-   greater arrowhead, increase the default value equal to 0.01;
+- *Field-ArrowRatio* defines the proportion of the arrow head with respect to the arrow length: to get a greater
+  arrowhead, increase the default value equal to 0.01;
 - *Field-ArrowScaling*    defines the length of the arrow: to get a
-   longer arrow, increase the default value equal to 1;
+  longer arrow, increase the default value equal to 1;
 - *Field-AutomaticScaling* is a bool that indicates whether the arrow is automatically scaled
-   from to the range of the mesh and the range of the output values. The default value is True;
+  from to the range of the mesh and the range of the output values. The default value is True;
 - *Field-LevelNumber* defines the number of levels used to draw the iso-lines of the marginal output values.
 
 Examples
