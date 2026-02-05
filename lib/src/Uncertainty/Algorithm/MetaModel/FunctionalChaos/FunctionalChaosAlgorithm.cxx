@@ -338,17 +338,15 @@ void FunctionalChaosAlgorithm::run()
   result_.setInvolvesModelSelection(adaptiveStrategy_.getImplementation()->involvesModelSelection() ||
                                     projectionStrategy_.getImplementation()->involvesModelSelection());
 
-  // set selection history
-  Collection<Point> coefficientsHistory;
-  Collection<Indices> indicesHistory(projectionStrategy_.getImplementation()->getSelectionHistory(coefficientsHistory));
-  result_.setSelectionHistory(indicesHistory, coefficientsHistory);
-  result_.setErrorHistory(projectionStrategy_.getImplementation()->getErrorHistory());
 }
 
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
-    Point & coefficients)
+					   Point & coefficients,
+					   Collection<Point> & coefficientsHistory,
+					   Collection<Indices> & indicesHistory,
+					   Point & errorHistory)
 {
   // Initialize the projection basis Phi_k_p_ and I_p_
   LOGINFO("Compute the initial basis");
@@ -376,6 +374,9 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   LOGINFO("No more basis adaptation");
   indices = adaptiveStrategy_.getImplementation()->I_p_;
   coefficients = projectionStrategy_.getCoefficients();
+  // set selection history
+  indicesHistory = projectionStrategy_.getImplementation()->getSelectionHistory(coefficientsHistory);
+  errorHistory = projectionStrategy_.getImplementation()->getErrorHistory();
 }
 
 

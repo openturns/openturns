@@ -459,19 +459,19 @@ void FunctionalChaosResult::load(Advocate & adv)
   }
 }
 
-IndicesCollection FunctionalChaosResult::getIndicesHistory(const UnsignedInteger outputIndex) const
+Collection<Indices> FunctionalChaosResult::getIndicesHistory(const UnsignedInteger outputIndex) const
 {
   if (outputIndex > metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
   Collection<Indices> selectedIndices;
-  std::copy(indicesHistory_.begin() + historyCutPoints_[outputIndex], indicesHistory_.begin() + historyCutPoints_[outputIndex + 1], std::back_inserter(selectedIndices));
-  return IndicesCollection(selectedIndices);
+  selectedIndices.assign(indicesHistory_.begin() + historyCutPoints_[outputIndex], indicesHistory_.begin() + historyCutPoints_[outputIndex + 1]);
+  return selectedIndices;
 }
 
-Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
+Collection<Point> FunctionalChaosResult::getCoefficientsHistory(const UnsignedInteger outputIndex) const
 {
   if (outputIndex > metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
   Collection<Point> selectedCoefficients;
-  std::copy(coefficientsHistory_.begin() + historyCutPoints_[outputIndex], coefficientsHistory_.begin() + historyCutPoints_[outputIndex + 1], std::back_inserter(selectedCoefficients));
+  selectedCoefficients.assign(coefficientsHistory_.begin() + historyCutPoints_[outputIndex], coefficientsHistory_.begin() + historyCutPoints_[outputIndex + 1]);
   return coefficientsHistory_;
 }
 
@@ -491,7 +491,7 @@ Graph FunctionalChaosResult::drawSelectionHistory(const UnsignedInteger outputIn
   if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
 
   // extract the relevant part of the histories
-  const IndicesCollection outputIndicesHistory(getIndicesHistory(outputIndex));
+  const Collection<Indices> outputIndicesHistory(getIndicesHistory(outputIndex));
   const Collection<Point> outputCoefficientsHistory(getCoefficientsHistory(outputIndex));
   
   const UnsignedInteger size = outputIndicesHistory.getSize();
@@ -529,22 +529,26 @@ Graph FunctionalChaosResult::drawSelectionHistory(const UnsignedInteger outputIn
 }
 
 /* Error history accessor */
-void FunctionalChaosResult::setErrorHistory(const Point & errorHistory)
+void FunctionalChaosResult::setErrorHistory(const Point & errorHistory, const Indices & historyCutPoints)
 {
+  if (!historyCutPoints.isStrictlyIncreasing()) throw InvalidArgumentException(HERE) << "Error: the given history cut points must be in strictly increasing order";
   errorHistory_ = errorHistory;
+  historyCutPoints_ = historyCutPoints;
 }
 
-Point FunctionalChaosResult::getErrorHistory() const
+Point FunctionalChaosResult::getErrorHistory(const UnsignedInteger outputIndex) const
 {
-  return errorHistory_;
+  if (outputIndex >= metaModel_.getOutputDimension())
+    throw InvalidArgumentException(HERE) << "Expected outputIndex=" << outputIndex << " to be less than output dimension=" << metaModel_.getOutputDimension();
+  Point selectedErrorHistory;
+  selectedErrorHistory.assign(errorHistory_.begin() + historyCutPoints_[outputIndex], errorHistory_.begin() + historyCutPoints_[outputIndex + 1]);
+  return selectedErrorHistory;
 }
 
-Graph FunctionalChaosResult::drawErrorHistory() const
+Graph FunctionalChaosResult::drawErrorHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "drawErrorHistory is only available for 1-d output dimension"
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  const UnsignedInteger size = errorHistory_.getSize();
+  const Point errorHistory(getErrorHistory(outputIndex));
+  const UnsignedInteger size = errorHistory.getSize();
   if (!size)
     throw InvalidArgumentException(HERE) << "No error history available";
 
@@ -552,7 +556,7 @@ Graph FunctionalChaosResult::drawErrorHistory() const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     values(i, 0) = i;
-    values(i, 1) = errorHistory_[i];
+    values(i, 1) = errorHistory[i];
   }
   Graph result("Error history", "iteration", "error", true, "upper right");
   Curve curve(values);
