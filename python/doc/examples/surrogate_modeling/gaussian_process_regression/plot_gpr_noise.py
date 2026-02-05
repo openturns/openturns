@@ -148,7 +148,7 @@ view = otv.View(graph)
 
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process using the class
-# :class:`~openturns.ConditionedGaussianProcess` built from a :class:`~openturns.GaussianProcessRegressionResult`.
+# :class:`~openturns.experimental.ConditionedGaussianProcess` built from a :class:`~openturns.GaussianProcessRegressionResult`.
 # We create the conditioned Gaussian process. Then we generate some trajectories.
 process_noNoise = otexp.ConditionedGaussianProcess(gpr_result_noNoise, myRegularGrid)
 traj_noNoise = process_noNoise.getSample(10)
@@ -242,7 +242,7 @@ view = otv.View(graph)
 
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process still using the class
-# :class:`~openturns.ConditionedGaussianProcess` as previoulsy.
+# :class:`~openturns.experimental.ConditionedGaussianProcess` as previoulsy.
 process_homosc = otexp.ConditionedGaussianProcess(gpr_result_homosc, myRegularGrid)
 traj_homosc = process_homosc.getSample(10)
 graph_traj_homosc = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
