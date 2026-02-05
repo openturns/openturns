@@ -23,7 +23,7 @@ spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS^+_d([-1, 1])`.
     By default, Identity matrix.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`\mat{C}^{stat} \in \cS_d^+(\Rset)`.
+    Covariance matrix :math:`\mat{C}^{spatial} \in \cS_d^+(\Rset)`.
     By default, Identity matrix.
 
 Notes
@@ -38,11 +38,11 @@ The  *Dirac* covariance function is defined by:
     
     C(\vect{s}, \vect{t}) =  1_{\{\vect{s}=\vect{t}\}} \, \mbox{Diag}(\vect{\sigma}) \, \mat{R}\,  \mbox{Diag}(\vect{\sigma}), \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-where :math:`\mat{R} \in \cS_d^+([-1,1])` is the spatial correlation matrix. We can define the spatial covariance matrix :math:`\mat{C}^{stat}` as:
+where :math:`\mat{R} \in \cS_d^+([-1,1])` is the spatial correlation matrix. We can define the spatial covariance matrix :math:`\mat{C}^{spatial}` as:
 
 .. math::
     
-    \mat{C}^{stat} = \mbox{Diag}(\vect{\sigma}) \, mat{R}\,  \mbox{Diag}(\vect{\sigma})
+    \mat{C}^{spatial} = \mbox{Diag}(\vect{\sigma}) \, \mat{R}\,  \mbox{Diag}(\vect{\sigma})
 
 The correlation function :math:`\rho` writes:
 

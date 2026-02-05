@@ -61,7 +61,7 @@ or:
 
     \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
                                       \dfrac{\vect{t}}{\theta}
-                                \right)\, \mat{C}^{spatial}(\vect{s}, \vect{t}) \quad
+                                \right)\, \mat{C}^{spatial} \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
 
 where:
@@ -69,14 +69,18 @@ where:
 - :math:`\vect{\theta} \in \Rset^{\sampleSize}` is the *scale* parameter,
 - :math:`\vect{\sigma} \in \Rset^{\inputDim}` is the *amplitude* parameter,
 - :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` is the *spatial* correlation matrix,
-- :math:`\mat{C}^{spatial}(\vect{s}, \vect{t}) = \diag(\vect{\sigma}) \, \mat{R} \, \diag(\vect{\sigma})`
-  is the *spatial* covariance matrix.
+- :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \, \mat{R} \, \diag(\vect{\sigma})`
+  is the *spatial* covariance matrix which does not depend on :math:`(\vect{s}, \vect{t})`.
 
-The library allows one to model a **nugget effect**. The nugget effect represents a noise observed in the output
-values of a process. This noise may be, for example, a measurement noise coming from a sensor with finite precision.
+The library allows one to model a **nugget effect**. The nugget effect is used for two purposes:
+
+- it can represent a noise observed in the output values of a process. This noise may be, for example, a measurement
+  noise coming from a sensor with finite precision;
+- it can be used to add a supplementary regularization of the covariance matrix to the automatic regularization.
 
 The nugget effect is taken into account by modifying the scalar correlation function :math:`\rho` at
-any point :math:`(\vect{s}, \vect{s})` by adding a term denoted :math:`\varepsilon_{nugget}`:
+any point :math:`(\vect{s}, \vect{s})` by adding a term denoted :math:`\varepsilon_{nugget}` which does
+not depend on :math:`(\vect{s}, \vect{t})`:
 
 .. math::
     :label: cor_with_noise

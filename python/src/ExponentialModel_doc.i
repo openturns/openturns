@@ -33,17 +33,18 @@ The *exponential* function is a stationary covariance function with dimension :m
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)\, C^{spatial}(\vect{s}, \vect{t}), \quad \forall (\vect{s}, \vect{t}) \in \cD
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)\, C^{spatial},
+    \quad \forall (\vect{s}, \vect{t}) \in \cD
 
 where the correlation function :math:`\rho` is given by:
 
 .. math::
-    \rho(\vect{s}, \vect{t} ) = e^{-\left\| \vect{s}- \vect{t} \right\|_2} \quad \forall (\vect{s}, \vect{t}) \in \cD
+    \rho(\vect{s}, \vect{t} ) = e^{-\left\| \vect{s}- \vect{t} \right\|_1} \quad \forall (\vect{s}, \vect{t}) \in \cD
 
 and the spatial covariance matrix :math:`C^{spatial}(\vect{s}, \vect{t})` by:
 
 .. math::
-    C^{spatial}(\vect{s}, \vect{t})= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
+    C^{spatial} = \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
 
 
 Examples

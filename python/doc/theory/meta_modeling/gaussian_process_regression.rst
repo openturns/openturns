@@ -191,8 +191,8 @@ realization of the random vector :math:`\vect{Y}_i` defined by:
 
 where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
 
-If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroskedastic.
-On the contrary, the noise is homoskedastic.
+If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroscedastic.
+On the contrary, the noise is homoscedastic.
 
 The noise is introduced during the step of the parameters estimation: in the likelihood expression defined
 in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is transformed
