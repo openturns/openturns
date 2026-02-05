@@ -31,7 +31,7 @@ Gaussian Process Regression: heteroscedastic noise
 # Introduction
 # ------------
 #
-# We consider the model :math:`\model: \[0,12] \rightarrow \Rset` defined by:
+# We consider the model :math:`\model: [0,12] \rightarrow \Rset` defined by:
 #
 # .. math::
 #
