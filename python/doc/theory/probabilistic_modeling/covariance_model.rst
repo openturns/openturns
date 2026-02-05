@@ -85,13 +85,11 @@ not depend on :math:`(\vect{s}, \vect{t})`:
 .. math::
     :label: cor_with_noise
 
-      \rho_{nugget}(\vect{s}, \vect{t}) &  =
-          \left |
-          \begin{array}{l}
-            \rho(\vect{s}, \vect{t}) \quad \mbox{if}  \quad \vect{s} \neq \vect{t}  \\
-            1 + \varepsilon_{nugget} \quad \mbox{else}
-          \end{array}
-          \right.
+      \rho_{nugget}(\vect{s}, \vect{t}) =
+      \begin{cases}
+          \rho(\vect{s}, \vect{t}) & \text{ if }   \vect{s} \neq \vect{t},
+            1 + \varepsilon_{nugget} & \text{otherwise.}
+       \end{cases}
 
 Then, the nugget effect transforms the covariance function :math:`\mat{C}` into the covariance function :math:`\mat{C}_{nugget}` as follows:
 
