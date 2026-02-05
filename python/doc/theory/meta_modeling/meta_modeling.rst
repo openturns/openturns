@@ -18,7 +18,7 @@ Local approximation
 
 
 Least squares surrogate models
-----_-------------------------
+------------------------------
 
 .. toctree::
     :maxdepth: 1
