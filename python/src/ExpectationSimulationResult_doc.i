@@ -51,7 +51,7 @@ expectationEstimate : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ExpectationSimulationResult::getVarianceEstimate
-"Accessor to the variance estimate of the estimator of the expectation.
+"Accessor to the variance of the estimator of the expectation.
 
 Returns
 -------
