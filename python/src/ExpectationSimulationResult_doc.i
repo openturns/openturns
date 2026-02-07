@@ -15,8 +15,8 @@ ExpectationSimulationAlgorithm"
 
 Parameters
 ----------
-event : :class:`~openturns.RandomVector`
-    Random variable we want to study."
+randomVector : :class:`~openturns.RandomVector`
+    Random vector we want to study."
 
 // ---------------------------------------------------------------------
 
@@ -25,8 +25,8 @@ event : :class:`~openturns.RandomVector`
 
 Returns
 -------
-event : :class:`~openturns.RandomVector`
-    Random variable we want to study."
+randomVector : :class:`~openturns.RandomVector`
+    Random vector we want to study."
 
 // ---------------------------------------------------------------------
 
@@ -51,49 +51,49 @@ expectationEstimate : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ExpectationSimulationResult::getVarianceEstimate
-"Accessor to the variance estimate.
+"Accessor to the variance estimate of the estimator of the expectation.
 
 Returns
 -------
-expectationEstimate : :class:`~openturns.Point`
-    Estimate of the variance."
+varianceEstimate : :class:`~openturns.Point`
+    Estimate of the variance of the estimator of the expectation."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ExpectationSimulationResult::setVarianceEstimate
-"Accessor to the variance estimate.
+"Accessor to the variance of the estimator of the expectation.
 
 Parameters
 ----------
-expectationEstimate : :class:`~openturns.Point`
+varianceEstimate : :class:`~openturns.Point`
     Estimate of the variance."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ExpectationSimulationResult::getExpectationDistribution
-"Accessor to the expectation distribution.
+"Accessor to the distribution of the estimator of the expectation.
 
 Returns
 -------
-expectationEstimate : :class:`~openturns.Distribution`
-    Distribution of the expectation."
+expectationDistribution : :class:`~openturns.Distribution`
+    Distribution of the estimator of the expectation."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ExpectationSimulationResult::getStandardDeviation
-"Accessor to the expectation distribution.
+"Accessor to the standard deviation of the estimator of the expectation.
 
 Returns
 -------
 standardDeviation : :class:`~openturns.Point`
-    Standard deviation."
+    Standard deviation of the estimator of the expectation."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ExpectationSimulationResult::getCoefficientOfVariation
-"Accessor to the expectation distribution.
+"Accessor to the coefficient of variation of the estimator of the expectation.
 
 Returns
 -------
 coefficientOfVariation : :class:`~openturns.Point`
-    Coefficient of variation."
+    Coefficient of variation of the estimator of the expectation."
