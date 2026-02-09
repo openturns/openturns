@@ -112,6 +112,11 @@ Indices NearestNeighbourAlgorithmImplementation::queryK(const Point &,
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const";
 }
 
+Indices NearestNeighbourAlgorithmImplementation::queryRadius(const Point &, const Scalar, Point &, const Bool) const
+{
+  throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryRadius(Point, Scalar, Point &, Bool) const";
+}
+
 /* String converter */
 String NearestNeighbourAlgorithmImplementation::__repr__() const
 {
