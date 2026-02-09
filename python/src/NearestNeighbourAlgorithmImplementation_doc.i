@@ -125,10 +125,36 @@ sorted : bool, optional
 
 Returns
 -------
-indices : sequence of int
+indices : :class:`~openturns.Indices`
     Indices of the `k` nearest neighbours of the given point."
 %enddef
 
 %feature("docstring") OT::NearestNeighbourAlgorithmImplementation::queryK
 OT_NearestNeighbourAlgorithm_queryK_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_NearestNeighbourAlgorithm_queryRadius_doc
+"Get the indices of nearest neighbours in a given radius.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+radius : float
+    Search radius.
+sorted : bool, optional
+    Boolean to tell whether returned indices are sorted according to
+    the distance to the given point.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of the nearest neighbours in the given radius.
+distance : :class:`~openturns.Point`
+    Distance from the reference point x to each neighbour.
+"
+%enddef
+
+%feature("docstring") OT::NearestNeighbourAlgorithmImplementation::queryRadius
+OT_NearestNeighbourAlgorithm_queryRadius_doc
