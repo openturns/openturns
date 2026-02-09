@@ -70,6 +70,8 @@ public:
   /** Get the indices of the k nearest neighbours of the given point */
   Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const override;
 
+  Indices queryRadius(const Point & x, const Scalar radius, Point & distanceOut, const Bool sorted  = false) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
