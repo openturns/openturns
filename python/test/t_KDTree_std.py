@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import numpy as np
 
 ot.TESTPREAMBLE()
@@ -35,3 +36,13 @@ for x in test:
     assert np.any(
         nearest_debug_indices(x)[:10] == tree.queryK(x, 10, True)
     ), "Errors found in queryK"
+
+if ot.PlatformInfo.HasFeature("nanoflann"):
+    radius = 0.3
+    indices, distance = tree.queryRadius([0.0] * 3, radius, True)
+    print(indices, distance)
+    assert len(indices) == len(distance)
+    for i, x in enumerate(sample):
+        assert (i in indices) == (x.norm() < radius), f"{x.norm()}"
+        if i in indices:
+            ott.assert_almost_equal(x.norm(), distance[indices.find(i)])
