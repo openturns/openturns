@@ -78,6 +78,48 @@ result : float)RAW"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::BesselInu
+R"RAW(Modified first kind Bessel function of order nu.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    \mathrm{I}_nu(x) = \left(\frac{x}{2}\right)^\nu\sum_{m=0}^\infty\frac{1}{m!\Gamma(m+1+\nu)!}\left(\frac{x}{2}\right)^{2m}
+
+Parameters
+----------
+x : float
+nu : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogBesselInu
+R"RAW(Logarithm of the modified first kind Bessel function of order nu.
+
+.. math::
+
+    \forall x \in \Rset, \quad
+    LogBesselInu(x, nu) = \log (\mathrm{I}_\nu(x))
+
+See also
+--------
+openturns.SpecFunc.BesselInu
+
+Parameters
+----------
+x : float
+nu : float :math:`\in \Rset^*_+`
+
+Returns
+-------
+result : float)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::BesselK
 R"RAW(Modified second kind Bessel function of order :math:`\nu`.
 
@@ -1238,3 +1280,28 @@ Examples
 --------
 >>> import openturns as ot
 >>> p = ot.SpecFunc.Clip01(1.01)"
+
+%feature("docstring") OT::SpecFunc::Clip
+"Clip a value on a given interval.
+
+This function can be useful when we want to ensure that a
+given number is in a given interval.
+
+Parameters
+----------
+x : float
+    Value to clip
+a : float
+    Lower bound of the interval
+b : float
+    Upper bound of the interval
+
+Returns
+-------
+clip : float
+    Clipped value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.SpecFunc.Clip(0.7, 1.5, 2.5)"
