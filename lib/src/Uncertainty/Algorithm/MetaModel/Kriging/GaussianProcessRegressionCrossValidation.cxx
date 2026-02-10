@@ -104,7 +104,6 @@ SplitterImplementation GaussianProcessRegressionCrossValidation::getSplitter() c
 /* Compute cross-validation Leave-One-Out metamodel predictions */
 Sample GaussianProcessRegressionCrossValidation::ComputeMetamodelLeaveOneOutPredictions(
   const GaussianProcessRegressionResult & gaussianProcessRegressionResult)
-  //const LeaveOneOutSplitter & splitter)
 {
   const Sample outputSample(gaussianProcessRegressionResult.getOutputSample());
   const UnsignedInteger sampleDimension = outputSample.getDimension();
@@ -177,14 +176,16 @@ Sample GaussianProcessRegressionCrossValidation::ComputeMetamodelKFoldPrediction
 void GaussianProcessRegressionCrossValidation::save(Advocate & adv) const
 {
   MetaModelValidation::save(adv);
-  adv.saveAttribute( "gaussianProcessRegressionResult_", gaussianProcessRegressionResult_ );
+  adv.saveAttribute("gaussianProcessRegressionResult_", gaussianProcessRegressionResult_);
+  adv.saveAttribute("splitter_", splitter_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void GaussianProcessRegressionCrossValidation::load(Advocate & adv)
 {
   MetaModelValidation::load(adv);
-  adv.loadAttribute( "gaussianProcessRegressionResult_", gaussianProcessRegressionResult_ );
+  adv.loadAttribute("gaussianProcessRegressionResult_", gaussianProcessRegressionResult_);
+  adv.loadAttribute("splitter_", splitter_ );
 }
 
 END_NAMESPACE_OPENTURNS

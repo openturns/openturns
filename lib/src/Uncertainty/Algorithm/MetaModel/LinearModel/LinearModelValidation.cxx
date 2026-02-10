@@ -140,8 +140,8 @@ SplitterImplementation LinearModelValidation::getSplitter() const
 void LinearModelValidation::save(Advocate & adv) const
 {
   MetaModelValidation::save(adv);
-  adv.saveAttribute( "linearModelResult_", linearModelResult_ );
-  adv.saveAttribute( "splitter_", splitter_ );
+  adv.saveAttribute("linearModelResult_", linearModelResult_);
+  adv.saveAttribute("splitter_", splitter_ );
 }
 
 
@@ -149,8 +149,8 @@ void LinearModelValidation::save(Advocate & adv) const
 void LinearModelValidation::load(Advocate & adv)
 {
   MetaModelValidation::load(adv);
-  adv.loadAttribute( "linearModelResult_", linearModelResult_ );
-  adv.loadAttribute( "splitter_", splitter_ );
+  adv.loadAttribute("linearModelResult_", linearModelResult_);
+  adv.loadAttribute("splitter_", splitter_);
 }
 
 END_NAMESPACE_OPENTURNS

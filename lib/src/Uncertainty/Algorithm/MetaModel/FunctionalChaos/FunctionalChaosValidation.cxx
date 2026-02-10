@@ -172,14 +172,16 @@ Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
 void FunctionalChaosValidation::save(Advocate & adv) const
 {
   MetaModelValidation::save(adv);
-  adv.saveAttribute( "functionalChaosResult_", functionalChaosResult_ );
+  adv.saveAttribute("functionalChaosResult_", functionalChaosResult_);
+  adv.saveAttribute("splitter_", splitter_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void FunctionalChaosValidation::load(Advocate & adv)
 {
   MetaModelValidation::load(adv);
-  adv.loadAttribute( "functionalChaosResult_", functionalChaosResult_ );
+  adv.loadAttribute("functionalChaosResult_", functionalChaosResult_);
+  adv.loadAttribute("splitter_", splitter_ );
 }
 
 END_NAMESPACE_OPENTURNS
