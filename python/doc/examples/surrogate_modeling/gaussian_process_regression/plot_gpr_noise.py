@@ -1,6 +1,6 @@
 """
-Gaussian Process Regression: heteroscedastic noise
-==================================================
+Gaussian Process Regression: nugget effect and  noise
+=====================================================
 """
 
 # %%
@@ -59,6 +59,8 @@ import math as m
 # %%
 # First let us introduce some useful function.
 # In order to observe the function and the location of the points in the input design of experiments, we define `plot_1d_data`.
+
+# sphinx_gallery_thumbnail_number = 10
 
 
 # %%
