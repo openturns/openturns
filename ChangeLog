@@ -18,6 +18,7 @@
  * Removed deprecated ComposedDistribution, ComposedCopula classes aliases
  * Removed deprecated NegativeBinomial, NegativeBinomialFactory classes aliases
  * Deprecated KrigingAlgorithm, KrigingRandomVector, GeneralLinearModelAlgorithm classes
+ * Deprecated SoizeGhanemFactory class
 
 === Documentation ===
 

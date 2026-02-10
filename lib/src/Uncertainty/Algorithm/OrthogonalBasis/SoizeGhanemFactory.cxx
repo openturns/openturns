@@ -257,6 +257,7 @@ SoizeGhanemFactory::SoizeGhanemFactory(const Distribution & measure,
   , hasIndependentCopula_(measure.hasIndependentCopula())
 {
   buildProductPolynomialAndAdaptation(useCopula);
+  LOGWARN("SoizeGhanemFactory is deprecated");
 }
 
 
@@ -271,6 +272,7 @@ SoizeGhanemFactory::SoizeGhanemFactory(const Distribution & measure,
 {
   if (measure.getDimension() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the dimension of the measure";
   buildProductPolynomialAndAdaptation(useCopula);
+  LOGWARN("SoizeGhanemFactory is deprecated");
 }
 
 
