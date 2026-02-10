@@ -47,7 +47,8 @@ Gaussian Process Regression: heteroscedastic noise
 #
 #      y_k = x_k \sin(x_k), \quad 1 \leq k \leq \sampleSize
 #
-#
+
+# %%
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
