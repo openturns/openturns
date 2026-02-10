@@ -7,3 +7,4 @@ Remove DeconditionedRandomVector alias in some future version
 Remove deprecated SpecFunc::IsNormal method in some future version
 Remove deprecated ResourceMap::Reload method in some future version
 Remove deprecated KrigingAlgorithm, KrigingRandomVector, GeneralLinearModelAlgorithm classes (+results) in some future version
+Remove deprecated SoizeGhanemFactory in some future version

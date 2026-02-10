@@ -510,9 +510,9 @@ equivalent to:
     - See :class:`~openturns.FunctionalChaosAlgorithm`
     - See :class:`~openturns.HaarWaveletFactory`
     - See :class:`~openturns.FourierSeriesFactory`
-    - See :class:`~openturns.SoizeGhanemFactory`
     - See :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
     - See :class:`~openturns.OrthogonalUniVariatePolynomialFactory`
+    - See :class:`~openturns.experimental.FiniteOrthogonalFunctionFactory`
 
 
 .. topic:: Examples:

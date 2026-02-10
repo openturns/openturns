@@ -100,7 +100,6 @@ Orthogonal multivariate functions
     :toctree: _generated/
     :template: class.rst_t
 
-    SoizeGhanemFactory
     experimental.FiniteOrthogonalFunctionFactory
 
 Making orthogonal multivariate functions from orthogonal univariate functions
