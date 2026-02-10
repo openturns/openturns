@@ -70,6 +70,9 @@ public:
   /** Get the splitter */
   SplitterImplementation getSplitter() const;
 
+  /** Get the Leave-One-Out prediction standard deviations */
+  Point getLeaveOneOutStandardDeviations() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -86,8 +89,11 @@ private:
   /** Splitter parameter */
   SplitterImplementation splitter_;
 
+  /** LOO prediction standard deviations  */
+  Point leaveOneOutStandardDeviations_;
+
   /* Compute cross-validation metamodel predictions */
-  static Sample ComputeMetamodelLeaveOneOutPredictions(
+  Sample computeGPRLeaveOneOutPredictions(
     const GaussianProcessRegressionResult & gaussianProcessRegressionResult);
 
   /* Compute cross-validation metamodel predictions */

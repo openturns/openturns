@@ -74,6 +74,22 @@ splitter : :class:`~openturns.SplitterImplementation`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::GaussianProcessRegressionCrossValidation::getLeaveOneOutStandardDeviations
+"Get the Leave-One-Out prediction standard deviations
+
+Returns
+-------
+leaveOneOutStandardDeviations : :class:`~openturns.Point`
+    The Leave-One-Out prediction standard deviation for every point left out of the output sample.
+
+Notes
+-----
+For every point in the training output sample, the Leave-One-Out prediction for Gaussian Process Regression
+is assumed to follow a normal distribution with zero mean by the underlying Gaussian Process model.
+This method returns the standard deviation of this normal distribution."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::GaussianProcessRegressionCrossValidation::computeR2Score
 "Compute the R2 score.
 
