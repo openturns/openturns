@@ -7,6 +7,7 @@ Gaussian Process Regression: heteroscedastic noise
 # In this example, we show how to estimate a Gaussian Process Regression surrogate model
 # (refer to :ref:`gaussian_process_regression`)
 # from a noisy data set of the model. We consider the following cases:
+#
 # - Case 1: No noise is considered, assuming that the output values are exact,
 # - Case 2: We consider a homoscedastic noise on the output values,
 # - Case 3: We consider a heteroscedastic noise on the output values,
@@ -14,6 +15,7 @@ Gaussian Process Regression: heteroscedastic noise
 #
 # Both Case 2 and Case 4 model a homoscedastic noise on the output values of the model. But the two models
 # are quite different:
+#
 # - the :meth:`~openturns.GaussianProcessFitter.setNoise` method of the :class:`~openturns.GaussianProcessFitter`
 #   takes noise into account only in
 #   the expression of the model likelihood, in the evaluation of the covariance parameters,
