@@ -19,6 +19,7 @@
  * Removed deprecated NegativeBinomial, NegativeBinomialFactory classes aliases
  * Deprecated KrigingAlgorithm, KrigingRandomVector, GeneralLinearModelAlgorithm classes
  * Deprecated SoizeGhanemFactory class
+ * Deprecated Collection/Sample.find for index method
 
 === Documentation ===
 
