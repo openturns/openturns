@@ -36,10 +36,10 @@ sampleY = model(sampleX)
 # %%
 # Get minimum and maximum values of both inputs and output variables.
 minY = sampleY.getMin()
-minX = sampleX[sampleY.find(minY)]
+minX = sampleX[sampleY.index(minY)]
 print("min: y=", minY, " with x=", minX)
 maxY = sampleY.getMax()
-maxX = sampleX[sampleY.find(maxY)]
+maxX = sampleX[sampleY.index(maxY)]
 print("max: y=", maxY, " with x=", maxX)
 
 # %%

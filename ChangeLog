@@ -18,6 +18,7 @@
  * Removed deprecated ComposedDistribution, ComposedCopula classes aliases
  * Removed deprecated NegativeBinomial, NegativeBinomialFactory classes aliases
  * Deprecated SoizeGhanemFactory class
+ * Deprecated Collection/Sample.find for index method
 
 === Documentation ===
 

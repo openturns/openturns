@@ -546,7 +546,7 @@ parameters indices.
 >>> activeDesc = covModel.getFullParameterDescription()
 >>> print(activeDesc)
 [scale_0,nuggetFactor,amplitude_0,nu]
->>> index = activeDesc.find('nu')
+>>> index = activeDesc.index('nu')
 >>> print(index)
 3
 
