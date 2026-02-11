@@ -175,7 +175,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Collection::find
+%feature("docstring") OT::Collection::index
 "Find the index of a given value.
 
 Parameters
@@ -186,9 +186,8 @@ val : collection value type
 Returns
 -------
 index : int
-    The index of the first occurrence of the value,
-    or the size of the container if not found.
-    When several values match, only the first index is returned."
+    The index of the first occurrence of the value.
+    Throws when the value is not found."
 
 // ---------------------------------------------------------------------
 

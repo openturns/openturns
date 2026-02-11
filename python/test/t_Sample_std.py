@@ -73,7 +73,7 @@ sample3.add(samePoint)
 print("sample3=", repr(sample3))
 
 # We find the new point into the sample
-pos = sample3.find(anotherNewPoint)
+pos = sample3.index(anotherNewPoint)
 if pos != 5:
     print("Error in finding point into sample. Expected 5. Got ", pos)
 
