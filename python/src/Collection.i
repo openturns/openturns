@@ -209,6 +209,15 @@ template <class T> Collection(const Collection<T> & other)
   return new OT::Collection<T>(other);
 }
 
+// mimic built-in list.index operator
+UnsignedInteger index(const T & value)
+{
+  const OT::UnsignedInteger result = self->find(value);
+  if (result >= self->getSize())
+    throw OT::InvalidArgumentException(HERE) << value << " is not in Collection";
+  return result;
+}
+
 } // %extend
 
 }

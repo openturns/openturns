@@ -45,4 +45,4 @@ if ot.PlatformInfo.HasFeature("nanoflann"):
     for i, x in enumerate(sample):
         assert (i in indices) == (x.norm() < radius), f"{x.norm()}"
         if i in indices:
-            ott.assert_almost_equal(x.norm(), distance[indices.find(i)])
+            ott.assert_almost_equal(x.norm(), distance[indices.index(i)])

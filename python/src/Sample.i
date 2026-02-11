@@ -865,6 +865,15 @@ Sample(PyObject * pyObj)
   return new OT::Sample( OT::convert< OT::_PySequence_, OT::Sample>(pyObj) );  
 }
 
+// mimic built-in list.index operator
+UnsignedInteger index(const Point & value)
+{
+  const OT::UnsignedInteger result = self->find(value);
+  if (result >= self->getSize())
+    throw OT::InvalidArgumentException(HERE) << value << " is not in Sample";
+  return result;
+}
+
 Bool __eq__(const Sample & other) { return (*self) == other; }
 
 Sample __iadd__(const Scalar value)
