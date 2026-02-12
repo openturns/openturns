@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+* GaussianProcessRegressionCrossValidation (openturns.experimental)
 
 ==== API changes ====
  * PointConditionalDistribution left the experimental module
