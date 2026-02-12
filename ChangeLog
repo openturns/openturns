@@ -23,6 +23,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * New GaussianProcessFitterResult accessors: getCholeskyFactor and getStandardizedOutput
 
 
 

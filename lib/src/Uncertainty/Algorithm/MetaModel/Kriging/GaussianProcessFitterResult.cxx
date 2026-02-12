@@ -152,13 +152,13 @@ TriangularMatrix GaussianProcessFitterResult::getCholeskyFactor() const
 }
 
 /** rho accessor */
-Point GaussianProcessFitterResult::getRho() const
+Point GaussianProcessFitterResult::getStandardizedOutput() const
 {
   return rho_;
 }
 
 /** rho accessor */
-void GaussianProcessFitterResult::setRho(const Point & rho)
+void GaussianProcessFitterResult::setStandardizedOutput(const Point & rho)
 {
   rho_ = rho;
 }

@@ -112,7 +112,7 @@ Point GaussianProcessRegression::computeGamma() const
   // Get cholesky factor & rho from gaussian fitter result
   LOGDEBUG("Solve L^t.gamma = rho");
 
-  const Point rho(gaussianProcessFitterResult_.getRho());
+  const Point rho(gaussianProcessFitterResult_.getStandardizedOutput());
 
   const GaussianProcessFitterResult::LinearAlgebra algebraMethod = gaussianProcessFitterResult_.getLinearAlgebraMethod();
   if (algebraMethod == GaussianProcessFitterResult::HMAT)

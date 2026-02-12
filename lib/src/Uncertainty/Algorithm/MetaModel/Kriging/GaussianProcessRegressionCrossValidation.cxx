@@ -131,7 +131,7 @@ Sample GaussianProcessRegressionCrossValidation::computeGPRLeaveOneOutPrediction
 
   // Compute unscaled residuals using the already computed rho : Sigmatilde y = L^-T rho
   const GaussianProcessFitterResult gpfResult(gaussianProcessRegressionResult.getGaussianProcessFitterResult());
-  const Point rho(gpfResult.getRho());
+  const Point rho(gpfResult.getStandardizedOutput());
   const TriangularMatrix covarianceCholeskyFactor(gpfResult.getCholeskyFactor()); // L
   const TriangularMatrix covarianceCholeskyFactorTranspose(covarianceCholeskyFactor.transpose()); // L^T
   Point residuals(covarianceCholeskyFactorTranspose.solveLinearSystem(rho)); // L^-T rho = (Sigma^-1  - Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 ) y

@@ -95,6 +95,12 @@ public:
   /** process accessor */
   Process getNoise() const;
 
+  /** Method that returns the covariance factor - lapack */
+  TriangularMatrix getCholeskyFactor() const;
+
+  /** rho accessor */
+  Point getStandardizedOutput() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -113,22 +119,15 @@ protected:
   // GaussianProcessRegression could use Cholesky setters
   friend class GaussianProcessRegression;
 
-  // GaussianProcessRegressionCrossValidation could use getRho()
-  friend class GaussianProcessRegressionCrossValidation;
-
   /** Accessor to the Cholesky factor*/
   void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
                          const HMatrix & covarianceHMatrix);
-
-  /** Method that returns the covariance factor - lapack */
-  TriangularMatrix getCholeskyFactor() const;
 
   /** Method that returns the covariance factor - hmat */
   HMatrix getHMatCholeskyFactor() const;
 
   /** rho accessor */
-  Point getRho() const;
-  void setRho(const Point & rho);
+  void setStandardizedOutput(const Point & rho);
 
 
 private:
