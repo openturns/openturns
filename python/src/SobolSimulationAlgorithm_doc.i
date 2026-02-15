@@ -15,10 +15,11 @@ The distribution of the indices (first and total order) is then computed on this
 current sample.
 Finally, the global distribution of the indices is updated.
 
-Using a block size larger than 1 is interesting if the model can evaluate several
-points simultaneously, i.e. in parallel.
-This can be achieved, for example, if the model is a :class:`~openturns.PythonFunction`
-defined using the `func_sample` option.
+Using a block size larger than 1 allows the model to evaluate multiple input points
+in parallel rather than sequentially.
+This can substantially reduce computation time when the model supports vectorized
+evaluation, such as when using a :class:`~openturns.PythonFunction` with the
+`func_sample` option.
 
 Parameters
 ----------
