@@ -462,16 +462,14 @@ int main(int, char *[])
       assert_almost_equal(myModel.getFullParameter().getSize(), 6, 0, 0, "in kronecker param size check");
       assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker full param check");
       assert_almost_equal(myModel.getFullParameterDescription().getSize(), 6, 0, 0, "in kronecker param description size check");
-      Indices active(1);
-      active.add(2);
-      active.add(3);
-      assert_almost_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
+      Indices active = {0, 2, 3};
+      assert_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
       fullParameter = {2, 1e-12, 1, 2, .5, 2.5};
       myModel.setFullParameter(fullParameter);
       assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker param check");
       active.add(5);
       myModel.setActiveParameter(active);
-      assert_almost_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
+      assert_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
       // Now we should get all values except correlation
       Point parameter = {2, 1, 2, 2.5};
       assert_almost_equal(myModel.getParameter(), parameter, 0, 0, "in kronecker param check");
