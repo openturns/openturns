@@ -97,10 +97,14 @@ public:
   void setNoise(const CovarianceMatrixCollection & noise);
   CovarianceMatrixCollection getNoise() const;
 
-  /** Method that returns the covariance factor - lapack */
-  TriangularMatrix getCholeskyFactor() const;
+  /** Accessor to the Cholesky factor */
+  TriangularMatrix getCholeskyFactor() const; // lapack
+  HMatrix getHMatCholeskyFactor() const; // hmat
+  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                         const HMatrix & covarianceHMatrix);
 
   /** rho accessor */
+  void setStandardizedOutput(const Point & rho);
   Point getStandardizedOutput() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -108,29 +112,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-
-protected:
-
-  // GaussianProcessFitter::run could set the Cholesky factor
-  friend class GaussianProcessFitter;
-
-  // GaussianProcessRegressionResult could use Cholesky setters
-  friend class GaussianProcessRegressionResult;
-
-  // GaussianProcessRegression could use Cholesky setters
-  friend class GaussianProcessRegression;
-
-  /** Accessor to the Cholesky factor*/
-  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
-                         const HMatrix & covarianceHMatrix);
-
-  /** Method that returns the covariance factor - hmat */
-  HMatrix getHMatCholeskyFactor() const;
-
-  /** rho accessor */
-  void setStandardizedOutput(const Point & rho);
-
 
 private:
 
