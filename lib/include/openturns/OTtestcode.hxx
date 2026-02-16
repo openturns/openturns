@@ -301,8 +301,10 @@ inline void assert_almost_equal(const Complex & a, const Complex & b, const Scal
   }
 }
 
+// @deprecated
 inline void assert_almost_equal(const Indices &a, const Indices &b, const String errMsg = "")
 {
+  LOGWARN("openturns.testing.assert_almost_equal(Indices) is deprecated");
   if (a.getSize() != b.getSize())
     throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
   const UnsignedInteger size = a.getSize();
