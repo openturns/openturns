@@ -1,3 +1,16 @@
 build*/
 *~
 *kate-swp
+
+# Editor/backup files
+*~
+#*#
+*.swp
+*.swo
+*.old
+*_old
+*_oldold
+*_old*
+*123
+__pycache__/
+.vscode/
