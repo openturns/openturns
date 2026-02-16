@@ -57,7 +57,6 @@ public:
   /** Parameter constructor after a gaussian process fitting  */
   GaussianProcessFitterResult(const Sample & inputData,
                               const Sample & outputData,
-                              const CovarianceMatrixCollection & noise,
                               const Function & metaModel,
                               const Matrix & regressionMatrix,
                               const Basis & basis,
@@ -95,6 +94,7 @@ public:
   GaussianProcess getCenteredProcess() const;
 
   /** Output sample noise accessor */
+  void setNoise(const CovarianceMatrixCollection & noise);
   CovarianceMatrixCollection getNoise() const;
 
   /** Method that returns the covariance factor - lapack */
