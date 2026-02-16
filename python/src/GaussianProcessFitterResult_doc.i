@@ -153,6 +153,17 @@ process : :class:`~openturns.GaussianProcess`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::GaussianProcessFitterResult::setNoise
+R"RAW(Output sample noise variance accessor.
+
+Parameters
+----------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::GaussianProcessFitterResult::getNoise
 R"RAW(Output sample noise variance accessor.
 

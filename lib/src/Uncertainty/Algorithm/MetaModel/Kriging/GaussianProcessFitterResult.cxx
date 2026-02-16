@@ -42,7 +42,6 @@ GaussianProcessFitterResult::GaussianProcessFitterResult()
 /* Constructor with parameters & Cholesky factor */
 GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSample,
     const Sample & outputSample,
-    const CovarianceMatrixCollection & noise,
     const Function & metaModel,
     const Matrix & regressionMatrix,
     const Basis & basis,
@@ -57,7 +56,6 @@ GaussianProcessFitterResult::GaussianProcessFitterResult(const Sample & inputSam
   , covarianceModel_(covarianceModel)
   , optimalLogLikelihood_(optimalLogLikelihood)
   , linearAlgebraMethod_(linearAlgebraMethod)
-  , noise_(noise)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
@@ -175,6 +173,13 @@ HMatrix GaussianProcessFitterResult::getHMatCholeskyFactor() const
 }
 
 /* Output sample noise accessor */
+void GaussianProcessFitterResult::setNoise(const CovarianceMatrixCollection & noise)
+{
+  if (noise.getSize() && (noise.getSize() != getInputSample().getSize()))
+    throw InvalidArgumentException(HERE) << "Expected a noise of size " << getInputSample().getSize() << " got " << noise.getSize();
+  noise_ = noise;
+}
+
 GaussianProcessFitterResult::CovarianceMatrixCollection GaussianProcessFitterResult::getNoise() const
 {
   return noise_;
