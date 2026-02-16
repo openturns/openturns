@@ -1,11 +1,11 @@
 %feature("docstring") OT::Test::assert_almost_equal
 "Raises an exception if two objects are not equal up to desired tolerance.
 
-Similar to numpy.testing.assert_allclose.
+Similar to numpy.testing.assert_allclose (and different than numpy.testing.assert_almost_equal).
 
 Parameters
 ----------
-a, b : float, Point, Matrix, Distribution, Mesh, Field or ProcessSample
+a, b : float, Point, Sample, Matrix, Distribution, Mesh, Field or ProcessSample
     Elements to compare
 rtol : float
     Relative tolerance, default is 1e-5
