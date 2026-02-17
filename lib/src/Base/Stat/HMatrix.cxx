@@ -106,6 +106,12 @@ void HMatrix::gemm(char transA, char transB, Scalar alpha, const HMatrix& a, con
   getImplementation()->gemm(transA, transB, alpha, *a.getImplementation(), *b.getImplementation(), beta);
 }
 
+/** compute y<- alpha op(this) * x + beta * op(y) */
+Matrix HMatrix::gemm_dense(char transHMat, char transDense, char side, Scalar alpha, const Matrix & lhs) const
+{
+  return getImplementation()->gemm_dense(transHMat, transDense, side, alpha, lhs);
+}
+
 /** Transpose matrix */
 void HMatrix::transpose()
 {
