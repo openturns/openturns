@@ -69,3 +69,5 @@ OT_HMatrix_scale_doc
 OT_HMatrix_gemv_doc
 %feature("docstring") OT::HMatrix::gemm
 OT_HMatrix_gemm_doc
+%feature("docstring") OT::HMatrix::gemm_dense
+OT_HMatrix_gemm_dense_doc

@@ -411,3 +411,32 @@ beta : float
 %enddef
 %feature("docstring") OT::HMatrixImplementation::gemm
 OT_HMatrix_gemm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_gemm_dense_doc
+"Multiply matrix y=alpha*op(B)*op(M).
+
+Parameters
+----------
+transHMat : str
+    Whether to use B or B^t: either N or T.
+    B being the hmat.
+transDense : str
+    Whether to use A or A^t: either N or T.
+    A being a matrix.
+side : str
+    Whether we consider op(HMatrix)*op(Dense) or op(Dense)*op(HMatrix)
+    Either L or R.
+alpha : float
+    Coefficient
+lhs : :class:`~openturns.Matrix`
+    Dense Matrix to be multiplied
+
+Returns
+-------
+rhs : :class:`~openturns.Matrix`
+    Result matrix."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::gemm_dense
+OT_HMatrix_gemm_dense_doc
