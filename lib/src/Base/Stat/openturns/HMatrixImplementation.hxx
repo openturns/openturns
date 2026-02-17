@@ -148,6 +148,9 @@ public:
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
+  /** compute y<- alpha op(this) * x + beta * op(y) */
+  Matrix gemm_dense(char transB, char transA, char side, Scalar alpha, const Matrix & lhs);
+
 private:
   /** Compute an approximation of the maximum eigenvalue */
   Scalar computeApproximateLargestEigenValue(const Scalar epsilon = ResourceMap::GetAsScalar("HMatrix-LargestEigenValueRelativeError"));

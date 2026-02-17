@@ -249,6 +249,7 @@ ot_check_test (HMatrix_LU)
 ot_check_test (HMatrix_block_LLt)
 ot_check_test (HMatrix_block_LU)
 ot_check_test (DiracCovarianceModel_hmat)
+ot_check_test (HMatrix_gemm_dense IGNOREOUT)
 endif ()
 
 # Diff
