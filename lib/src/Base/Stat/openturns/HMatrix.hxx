@@ -73,6 +73,9 @@ class OT_API HMatrix :
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, Scalar alpha, const HMatrix& a, const HMatrix& b, Scalar beta);
 
+  /** compute y<- alpha op(this) * x + beta * op(y) */
+  Matrix gemm_dense(char transHMat, char transDense, char side, Scalar alpha, const Matrix & lhs) const;
+
   /** Transpose matrix */
   void transpose();
 
