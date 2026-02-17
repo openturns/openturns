@@ -135,7 +135,7 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
                           outputSample,
                           distribution,
                           basis,
-                          ComputeBasisSizeFromActive(activeFunctions),
+                          activeFunctions.normInf() + 1,
                           methodName)
 {
   setActiveFunctions(activeFunctions);
@@ -154,7 +154,7 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
                           outputSample,
                           distribution,
                           basis,
-                          ComputeBasisSizeFromActive(activeFunctions),
+                          activeFunctions.normInf() + 1,
                           methodName)
 {
   setActiveFunctions(activeFunctions);

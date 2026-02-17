@@ -38,7 +38,7 @@ This class maintains two different naming layers:
 
 These two layers may differ. In particular, changing the output description does not
 necessarily change the internal parser variable names, because formulas must remain
-consistent with the symbols expected by ExprTk.
+consistent with the symbols expected by the parser.
 
 The overridden :meth:`setInputDescription` and :meth:`setOutputDescription` implement
 a non-regressive synchronization rule: internal parser names are updated from the new
