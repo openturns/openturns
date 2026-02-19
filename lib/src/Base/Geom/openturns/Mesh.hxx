@@ -179,6 +179,10 @@ public:
   /** Sub-mesh */
   Mesh getSubMesh(const Indices & simplicesIndices) const;
 
+  /** Convex flag */
+  void setIsConvex(const Bool isConvex);
+  Bool isConvex() const;
+
 protected:
   // Build the affine matrix associated with a given simplex
   void buildSimplexMatrix(const UnsignedInteger index,
@@ -199,6 +203,9 @@ protected:
 
   // The simplices
   IndicesCollection simplices_;
+
+  // convex flag
+  Bool isConvex_ = false;
 
 }; /* class Mesh */
 

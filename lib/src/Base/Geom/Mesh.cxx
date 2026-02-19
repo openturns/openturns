@@ -137,6 +137,7 @@ void Mesh::setVertices(const Sample & vertices)
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
   hasBeenChecked_ = false;
+  isConvex_ = false;
 }
 
 /* Vertex accessor */
@@ -164,8 +165,9 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
   if (!(simplices == simplices_))
   {
     simplices_ = simplices;
+    hasBeenChecked_ = false;
+    isConvex_ = false;
   }
-  hasBeenChecked_ = false;
 }
 
 /* Simplex accessor */
@@ -1213,6 +1215,17 @@ Mesh Mesh::getSubMesh(const Indices & simplicesIndices) const
   return result;
 }
 
+/* Convex flag */
+void Mesh::setIsConvex(const Bool isConvex)
+{
+  isConvex_ = isConvex;
+}
+
+Bool Mesh::isConvex() const
+{
+  return isConvex_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Mesh::save(Advocate & adv) const
 {
@@ -1221,6 +1234,7 @@ void Mesh::save(Advocate & adv) const
   adv.saveAttribute("hasBeenChecked_", hasBeenChecked_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
+  adv.saveAttribute("isConvex_", isConvex_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -1231,6 +1245,8 @@ void Mesh::load(Advocate & adv)
   adv.loadAttribute("hasBeenChecked_", hasBeenChecked_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
+  if (adv.hasAttribute("isConvex_"))
+    adv.loadAttribute("isConvex_", isConvex_);
 }
 
 END_NAMESPACE_OPENTURNS
