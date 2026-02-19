@@ -5,15 +5,10 @@ Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
     Underlying mesh.
-enclosingSimplex : :class:`~openturns.EnclosingSimplexAlgorithm`, optional
-    Algorithm to use for point location.
 
 Examples
 --------
 >>> import openturns as ot
->>> # First domain
->>> interval2d = ot.Interval([-1.0, -1.0], [0.5, 0.5])
->>> # Second domain
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
