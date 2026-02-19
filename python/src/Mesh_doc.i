@@ -718,3 +718,23 @@ Returns
 -------
 subMesh : :class:`~openturns.Mesh`
     The sub-mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setIsConvex
+"Convex flag accessor.
+
+Parameters
+----------
+convex : bool
+    Whether the mesh is known to be convex by construction."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isConvex
+"Convex flag accessor.
+
+Returns
+-------
+convex : bool
+    Whether the mesh is known to be convex by construction."
