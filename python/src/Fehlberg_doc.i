@@ -11,7 +11,7 @@ localPrecision : float
     The default value corresponds to the key `Fehlberg-LocalPrecision`
     in :class:`~openturns.ResourceMap`.
 
-order : int, :math:`order\in\{0,1,2,3,4\}`
+order : int, :math:`\text{order} \in \{0, 1, 2, 3, 4\}`
     The order of the method, ie the exponent :math:`p` in the estimate of the
     local error for a step of size :math:`h` written as :math:`\cO(h^p)`.
     The default value corresponds to the key `Fehlberg-DefaultOrder`
