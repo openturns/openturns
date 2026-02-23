@@ -121,23 +121,6 @@ ODESolver
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
->>> phi = ot.ParametricFunction(f, [0], [0.0])
->>> solver = ot.Fehlberg(phi)
->>> Y0 = [1.0, -1.0]
->>> nt = 100
->>> timeGrid = [(i**2.0) / (nt - 1.0)**2.0 for i in range(nt)]
->>> import openturns as ot
->>> # Define the function with time 't' as the first variable
->>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
->>> # 't' becomes an internal parameter (index 0) initialized to 0.0
->>> # 'y0' and 'y1' form the state vector and remain the only input variables
->>> phi = ot.ParametricFunction(f, [0], [0.0])
->>> solver = ot.Fehlberg(phi)
->>> Y0 = [1.0, -1.0]
->>> nt = 100
->>> timeGrid = [(i**2.0) / (nt - 1.0)**2.0 for i in range(nt)]
->>> import openturns as ot
 >>> # Define the function with time 't' as the first variable
 >>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
 >>> # 't' becomes an internal parameter (index 0) initialized to 0.0
