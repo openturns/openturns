@@ -66,7 +66,7 @@ pal = ["red", "cyan", "blue", "yellow", "green"]
 dist = ot.UserDefined([[-1.0, -2.0], [1.0, 3.0]], [0.5, 0.5])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
-graph = ot.Graph("2D Random Walk with discrete steps", "X1", "X2", True)
+graph = ot.Graph("2D Random Walk with discrete steps", "X1", "X2")
 for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
 view = otv.View(graph)
@@ -76,7 +76,7 @@ view = otv.View(graph)
 dist = ot.Normal(2)
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
-graph = ot.Graph("2D Random Walk with continuous steps", "X1", "X2", True)
+graph = ot.Graph("2D Random Walk with continuous steps", "X1", "X2")
 for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], "solid"))
 view = otv.View(graph)

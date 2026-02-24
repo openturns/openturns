@@ -3846,7 +3846,8 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
-  Graph graph(title, xName, "PDF", true, "topright");
+  Graph graph(title, xName, "PDF");
+  graph.setLegendPosition("topright");
   graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Point point(2);
   point[0] = xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
@@ -4027,7 +4028,8 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     const Sample z(computePDFGrid2D(x, y));
     Contour isoValues(x, y, z);
     isoValues.setDrawLabels(false);
-    Graph graph(getDescription()[0] + " iso-PDF", description_[0], description_[1], true, "upper left");
+    Graph graph(getDescription()[0] + " iso-PDF", description_[0], description_[1]);
+    graph.setLegendPosition("upper left");
     graph.setLogScale(scale);
     graph.add(isoValues);
     return graph;
@@ -4047,7 +4049,8 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     const String xName(description_[0]);
     const String yName(description_[1]);
     const String title(OSS() << getDescription() << " PDF");
-    Graph graph(title, xName, yName, true, "topright");
+    Graph graph(title, xName, yName);
+    graph.setLegendPosition("topright");
     graph.setLogScale(scale);
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
@@ -4179,7 +4182,8 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
-  Graph graph(title, xName, "PDF", true, "topright");
+  Graph graph(title, xName, "PDF");
+  graph.setLegendPosition("topright");
   graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Point point(2);
   point[0] = xMin - ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
@@ -4298,7 +4302,8 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     const Sample z(computeLogPDFGrid2D(x, y));
     Contour isoValues(x, y, z);
     isoValues.setDrawLabels(false);
-    Graph graph(getDescription()[0] + " iso-LogPDF", description_[0], description_[1], true, "upper left");
+    Graph graph(getDescription()[0] + " iso-LogPDF", description_[0], description_[1]);
+    graph.setLegendPosition("upper left");
     graph.setLogScale(scale);
     graph.add(isoValues);
     return graph;
@@ -4318,7 +4323,8 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     const String xName(description_[0]);
     const String yName(description_[1]);
     const String title(OSS() << getDescription() << " PDF");
-    Graph graph(title, xName, yName, true, "topright");
+    Graph graph(title, xName, yName);
+    graph.setLegendPosition("topright");
     graph.setLogScale(scale);
     if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
     {
@@ -4467,7 +4473,8 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
   const UnsignedInteger size = support.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "empty range (" << xMin << ", " << xMax << ")" << ", support is (" << getSupport().getMin()[0] << ", " << getSupport().getMax()[0] << ")";
   const String xName(getDescription()[0]);
-  Graph graph(title, xName, "CDF", true, "topleft");
+  Graph graph(title, xName, "CDF");
+  graph.setLegendPosition("topleft");
   graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Sample data(size + 2, 2);
   data(0, 0) = xMin;
@@ -4582,7 +4589,8 @@ Graph DistributionImplementation::drawCDF(const Point & xMin,
   const Sample z(computeCDFGrid2D(x, y));
   Contour isoValues(x, y, z);
   isoValues.setDrawLabels(false);
-  Graph graph(getDescription()[0] + " iso-CDF", description_[0], description_[1], true, "upper left");
+  Graph graph(getDescription()[0] + " iso-CDF", description_[0], description_[1]);
+  graph.setLegendPosition("upper left");
   graph.setLogScale(scale);
   graph.add(isoValues);
   return graph;
@@ -4659,7 +4667,8 @@ Graph DistributionImplementation::drawDiscreteSurvivalFunction(const Scalar xMin
   const UnsignedInteger size = support.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "empty range (" << xMin << ", " << xMax << ")" << ", support is (" << getSupport().getMin()[0] << ", " << getSupport().getMax()[0] << ")";
   const String xName(getDescription()[0]);
-  Graph graph(title, xName, "SurvivalFunction", true, "topleft");
+  Graph graph(title, xName, "SurvivalFunction");
+  graph.setLegendPosition("topleft");
   graph.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
   Sample data(size + 2, 2);
   data(0, 0) = xMin;
@@ -4884,7 +4893,8 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   const String xName(getDescription()[0]);
   const String yName(getDescription()[1]);
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>((logScaleX ? 1 : 0) + (logScaleY ? 2 : 0));
-  Graph graph(title, xName, yName, true, "topleft");
+  Graph graph(title, xName, yName);
+  graph.setLegendPosition("topleft");
   graph.setLogScale(scale);
   graph.add(drawSurvivalFunction(data.getMin(), data.getMax(), logScaleX, logScaleY).getDrawable(0));
   graph.add(curveQuantile);

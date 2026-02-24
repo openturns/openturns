@@ -21,7 +21,7 @@ for i in range(size):
     data2[i] = cursor
 
 # Create an empty graph
-graph = ot.Graph("Polygons example", "x1", "x2", True)
+graph = ot.Graph("Polygons example", "x1", "x2")
 
 # Create the first polygon
 myPolygon1 = ot.Polygon(data1)

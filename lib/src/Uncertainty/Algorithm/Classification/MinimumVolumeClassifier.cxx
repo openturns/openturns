@@ -230,7 +230,8 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
   if (dimension == 1)
   {
     grid = GridLayout(1, 1);
-    Graph graph("", description[0], "", true, "topright");
+    Graph graph("", description[0], "");
+    graph.setLegendPosition("topright");
     for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
     {
       Sample sampleXC(separatedSamples[k]);
@@ -247,7 +248,8 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
       for (UnsignedInteger j = 0; j < i; ++ j)
       {
         const Indices indices = {j, i};
-        Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+        Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "");
+        graph.setLegendPosition("topright");
         for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
         {
           const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], ResourceMap::GetAsString("Drawable-DefaultPointStyle"), "");

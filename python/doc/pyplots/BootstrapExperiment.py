@@ -17,7 +17,7 @@ experiment = ot.BootstrapExperiment(refSample)
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Bootstrap experiment", "x1", "x2", True, "")
+graph = ot.Graph("Bootstrap experiment", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

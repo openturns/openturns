@@ -460,7 +460,7 @@ Graph FieldImplementation::draw() const
   if ((getInputDimension() == 1) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
-    Graph graph(title, description_[0], description_[1], true, "");
+    Graph graph(title, description_[0], description_[1]);
     const Curve curveSerie(getValues());
     graph.add(curveSerie);
     return graph;
@@ -469,7 +469,7 @@ Graph FieldImplementation::draw() const
   if ((getInputDimension() == 2) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
-    Graph graph(title, description_[0], description_[1], true, "");
+    Graph graph(title, description_[0], description_[1]);
     // Get the bounding box of the mesh to set the head size of the arrow
     // It must be independent from the values as we want the same size for
     // all the arrows
@@ -548,7 +548,8 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   if (!(meshDimension <= 2)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, description_[0], description_[index + 1], true, "topright");
+  Graph graph(title, description_[0], description_[index + 1]);
+  graph.setLegendPosition("topright");
   if (meshDimension == 1)
   {
     // Discretization of the x axis

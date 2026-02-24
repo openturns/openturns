@@ -233,7 +233,7 @@ for maximumDegree in degrees:
     r2Score[maximumDegree - degrees[0]] = r2ScoreLocal
 
 # %%
-graph = ot.Graph("Predictivity", "Total degree", "R2", True)
+graph = ot.Graph("Predictivity", "Total degree", "R2")
 cloud = ot.Cloud([[d] for d in degrees], r2Score[:, 0])
 cloud.setLegend("Output #0")
 cloud.setPointStyle("bullet")

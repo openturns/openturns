@@ -493,7 +493,7 @@ for i in range(inputDimension):
     graph.setColors(palette)
     grid.setGraph(0, i, graph)
 
-grid.setLegendPosition("topright")
+grid.setLegendPosition("upper right")
 view = otv.View(
     grid,
     figure_kw={"figsize": (8.0, 3.0)},
@@ -590,7 +590,7 @@ for i in range(inputDimension):
     # Set the graph into the grid
     grid.setGraph(0, i, graph)
 
-grid.setLegendPosition("topright")
+grid.setLegendPosition("upper right")
 view = otv.View(
     grid,
     figure_kw={"figsize": (8.0, 3.0)},

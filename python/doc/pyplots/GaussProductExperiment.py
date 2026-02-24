@@ -11,7 +11,7 @@ experiment = ot.GaussProductExperiment(ot.Distribution(distribution), marginalSi
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Gauss product experiment", "x1", "x2", True, "")
+graph = ot.Graph("Gauss product experiment", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

@@ -60,7 +60,7 @@ def drawSmolyakIndices(level):
     experiment = ot.SmolyakExperiment(collection, level)
     indices = experiment.computeCombination()
     sample = indices
-    graph = ot.Graph("L = %d" % (level), "k1", "k2", True)
+    graph = ot.Graph("L = %d" % (level), "k1", "k2")
     cloud = ot.Cloud(sample)
     cloud.setPointStyle("bullet")
     graph.add(cloud)

@@ -9,7 +9,7 @@ data = [
 ]
 
 # Create an empty graph
-graph = ot.Graph("Curve example", "x", "sin(x)", True, "")
+graph = ot.Graph("Curve example", "x", "sin(x)")
 
 # Create the curve
 curve = ot.Curve(data, "blue", "solid", 2, "")
