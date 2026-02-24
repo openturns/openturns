@@ -82,7 +82,7 @@ y_test = g(x_test)
 
 # %%
 # We plot the true function (continuous dashed curve) and train data (cloud points) on the same figure.
-graph = ot.Graph("Function of interest", "", "", True, "")
+graph = ot.Graph("Function of interest", "", "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
 )
@@ -119,7 +119,7 @@ gprMM_hsn = gpr_result_hsn.getMetaModel()
 # Plot the result
 
 # %%
-graph = ot.Graph("GPR with known noise", "", "", True, "")
+graph = ot.Graph("GPR with known noise", "", "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
 )

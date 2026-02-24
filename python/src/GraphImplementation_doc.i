@@ -14,12 +14,6 @@ xTitle : str
     Legend of the X axe.
 yTitle : str
     Legend of the Y axe.
-showAxes : bool
-    *True* to draw the axes. *False* to hide them.
-legendPosition : str, optional
-    Indication of the legend's position. If *legendPosition* is not specified,
-    the Graph has no legend. The valid strings are given by the
-    :meth:`GetValidLegendPositions` method.
 "
 %enddef
 %feature("docstring") OT::GraphImplementation

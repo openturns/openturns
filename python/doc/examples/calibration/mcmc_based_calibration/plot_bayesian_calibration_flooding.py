@@ -145,7 +145,7 @@ Qobs = Q_H_obs.getMarginal(0)
 Hobs = Q_H_obs.getMarginal(1)
 
 # %%
-graph = ot.Graph("Observations", "Q (m3/s)", "h (m)", True)
+graph = ot.Graph("Observations", "Q (m3/s)", "h (m)")
 cloud = ot.Cloud(Q_H_obs)
 # cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
@@ -276,7 +276,7 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
     grid = ot.GridLayout(1, paramDim)
     parameterNames = prior.getDescription()
     for parameter_index in range(paramDim):
-        graph = ot.Graph("", parameterNames[parameter_index], "PDF", True)
+        graph = ot.Graph("", parameterNames[parameter_index], "PDF")
         # Prior
         curve = prior.getMarginal(parameter_index).drawPDF().getDrawable(0)
         curve.setLineStyle(

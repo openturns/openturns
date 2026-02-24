@@ -90,7 +90,8 @@ centre[1] = 10.0
 myPie = ot.Pie(data, labels, centre, 4, palette)
 
 # Create an empty graph
-myGraph = ot.Graph("Cloud/line/pie", "x1", "x2", True, "topright")
+myGraph = ot.Graph("Cloud/line/pie", "x1", "x2")
+myGraph.setLegendPosition("upper right")
 
 # Then, draw it
 myGraph.add(myCloud)
@@ -98,7 +99,8 @@ myGraph.add(myLine)
 myGraph.add(myPie)
 
 # Add drawables with default colors
-secondGraph = ot.Graph("temporary graph", "x", "y", True, "topright")
+secondGraph = ot.Graph("temporary graph", "x", "y")
+secondGraph.setLegendPosition("upper right")
 myCurve = ot.Curve([0.0, 1.0, 2.0], [1.0, 3.0, 2.0])
 secondGraph.add(myCurve)
 secondGraph.add([myCurve, myCloud])

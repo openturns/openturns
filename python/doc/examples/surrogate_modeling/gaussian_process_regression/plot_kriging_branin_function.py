@@ -38,7 +38,7 @@ levels = graphBasic.getDrawables()[0].getLevels()
 # ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 # palette = ot.Drawable.BuildDefaultPalette(len(levels))
 
-graphFineTune = ot.Graph("The exact Branin model", r"$x_1$", r"$x_2$", True, "")
+graphFineTune = ot.Graph("The exact Branin model", r"$x_1$", r"$x_2$")
 graphFineTune.setDrawables([graphBasic.getDrawable(0)])
 # graphFineTune.setLegendPosition("")  # Remove the legend
 
@@ -120,7 +120,7 @@ levels = contours.getLevels()
 ot.ResourceMap.SetAsUnsignedInteger("Drawable-DefaultPalettePhase", len(levels))
 palette = ot.Drawable.BuildDefaultPalette(len(levels))
 
-graphFineTune = ot.Graph("Branin metamodel (mean)", r"$x_1$", r"$x_2$", True, "")
+graphFineTune = ot.Graph("Branin metamodel (mean)", r"$x_1$", r"$x_2$")
 graphFineTune.setDrawables([contours])
 graphFineTune.setLegendPosition("")
 
@@ -163,7 +163,7 @@ condCovSd = sqrt(condCov)
 levels = [0.01, 0.025, 0.050, 0.075, 0.1, 0.125, 0.150, 0.175]
 contour = ot.Contour(N + 2, N + 2, condCovSd)
 contour.setLevels(levels)
-graphFineTune = ot.Graph("Standard deviation", r"$x_1$", r"$x_2$", True, "")
+graphFineTune = ot.Graph("Standard deviation", r"$x_1$", r"$x_2$")
 graphFineTune.setDrawables([contour])
 graphFineTune.setLegendPosition("")
 

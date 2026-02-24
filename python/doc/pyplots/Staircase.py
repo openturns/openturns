@@ -18,7 +18,8 @@ for i in range(20):
     data[i] = cursor
 
 # Create an empty graph
-graph = ot.Graph("Staircase example", "x1", "x2", True, "upper left")
+graph = ot.Graph("Staircase example", "x1", "x2")
+graph.setLegendPosition("upper left")
 
 # Create the staircase
 staircase = ot.Staircase(data, "blue", "solid", "s", "Normal CDF")

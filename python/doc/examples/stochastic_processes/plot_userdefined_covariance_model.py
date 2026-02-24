@@ -71,7 +71,7 @@ for k in range(N):
     x[k, 1] = value[0, 0]
 
 curve = ot.Curve(x, "User Model")
-myGraph = ot.Graph("User covariance model", "Time", "Covariance function", True)
+myGraph = ot.Graph("User covariance model", "Time", "Covariance function")
 myGraph.add(curve)
 myGraph.setLegendPosition("upper right")
 view = otv.View(myGraph)

@@ -404,7 +404,8 @@ Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
   Scalar shift = 0.0;
 
   // Create an empty graph
-  Graph sensitivityGraph("Sensitivity", "parameters", "sensitivities", true, "topright");
+  Graph sensitivityGraph("Sensitivity", "parameters", "sensitivities");
+  sensitivityGraph.setLegendPosition("topright");
 
   // Create the barplots
   const UnsignedInteger sensitivitySize = sensitivity.getSize();

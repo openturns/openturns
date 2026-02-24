@@ -27,7 +27,7 @@ dimension = 2
 size = 1024
 sequence = ot.SobolSequence(dimension)
 sample = sequence.generate(size)
-graph = ot.Graph("", "", "", True, "")
+graph = ot.Graph("", "", "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)
@@ -37,7 +37,7 @@ view = otv.View(graph)
 dimension = 2
 sequence = ot.HaltonSequence(dimension)
 sample = sequence.generate(size)
-graph = ot.Graph("Halton", "", "", True, "")
+graph = ot.Graph("Halton", "", "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)
@@ -84,7 +84,7 @@ print(
     "discrepancy=",
     ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample),
 )
-graph = ot.Graph("Reverse Halton", "", "", True, "")
+graph = ot.Graph("Reverse Halton", "", "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)
@@ -94,7 +94,7 @@ view = otv.View(graph)
 dimension = 2
 sequence = ot.HaselgroveSequence(dimension)
 sample = sequence.generate(size)
-graph = ot.Graph("Haselgrove", "", "", True, "")
+graph = ot.Graph("Haselgrove", "", "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)
@@ -107,7 +107,7 @@ print(
     "discrepancy=",
     ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample),
 )
-graph = ot.Graph("Mersenne Twister", "", "", True, "")
+graph = ot.Graph("Mersenne Twister", "", "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)

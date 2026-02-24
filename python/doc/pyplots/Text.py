@@ -5,7 +5,7 @@ import openturns.viewer as otv
 sample = ot.Normal(2).getSample(30)
 
 # Create an empty graph
-graph = ot.Graph("Text example", "x1", "x2", True, "")
+graph = ot.Graph("Text example", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

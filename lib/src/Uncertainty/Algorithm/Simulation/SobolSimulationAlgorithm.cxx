@@ -401,7 +401,8 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
   estimateCurve.setLineWidth(2);
   OSS oss;
   oss << label << " order index convergence graph at level " << level;
-  Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
+  Graph convergenceGraph(oss, "outer iteration", "estimate");
+  convergenceGraph.setLegendPosition("topright");
   convergenceGraph.add(estimateCurve);
   const Curve lowerBoundCurve(dataLowerBound, "bounds");
   Curve upperBoundCurve(dataUpperBound);

@@ -123,7 +123,8 @@ Yobs_sim = np.round(Y_sim / delta) * delta
 
 # %%
 # Plot the simulated dataset.
-graph = ot.Graph("Simulated data", "$X_1$", "$Y$", True, "upper left")
+graph = ot.Graph("Simulated data", "$X_1$", "$Y$")
+graph.setLegendPosition("upper left")
 cloud_obs = ot.Cloud(X[:, 1].asPoint(), Yobs_sim)
 cloud_obs.setPointStyle("bullet")
 cloud_sim = ot.Cloud(X[:, 1].asPoint(), Y_sim)

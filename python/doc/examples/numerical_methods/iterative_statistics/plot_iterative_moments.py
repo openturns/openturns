@@ -49,7 +49,7 @@ for i in range(size):
 # We display the evolution of the mean.
 iterationSample = ot.Sample.BuildFromPoint(range(1, size + 1))
 curve = ot.Curve(iterationSample, meanEvolution)
-graph = ot.Graph("Evolution of the mean", "iteration nb", "mean", True)
+graph = ot.Graph("Evolution of the mean", "iteration nb", "mean")
 graph.add(curve)
 graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
