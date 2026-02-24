@@ -24,7 +24,7 @@ full = pd.read_csv(coles.Coles().wooster, index_col=0, parse_dates=True)
 full["Temperature"] = full["Temperature"].apply(lambda x: x * -1.0)
 print(full[:10])
 title = "Negated Wooster daily minimum temperatures"
-graph = ot.Graph(title, "Day index", "Temperature (°F)", True, "")
+graph = ot.Graph(title, "Day index", "Temperature (°F)")
 days = ot.Sample([[i] for i in range(len(full))])
 sample = ot.Sample.BuildFromDataFrame(full)
 cloud = ot.Cloud(days, sample)

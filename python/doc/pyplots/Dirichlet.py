@@ -4,13 +4,13 @@ import openturns.viewer as otv
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 10)
 
 grid = ot.GridLayout(2, 2)
-pdf_graph = ot.Graph("PDFs of 1D Dirichlet distributions", "x", "", True)
-cdf_graph = ot.Graph("CDFs of 1D Dirichlet distributions", "x", "", True)
+pdf_graph = ot.Graph("PDFs of 1D Dirichlet distributions", "x", "")
+cdf_graph = ot.Graph("CDFs of 1D Dirichlet distributions", "x", "")
 title_2d = "PDF of the Dirichlet dist. with theta = {}"
 theta_1 = (2.0, 2.0, 2.0)
 theta_2 = (0.5, 0.7, 0.9)
-pdf_2d_1 = ot.Graph(title_2d.format(theta_1), "x1", "x2", True)
-pdf_2d_2 = ot.Graph(title_2d.format(theta_2), "x1", "x2", True)
+pdf_2d_1 = ot.Graph(title_2d.format(theta_1), "x1", "x2")
+pdf_2d_2 = ot.Graph(title_2d.format(theta_2), "x1", "x2")
 list_theta = [(2, 2), (7, 5), (2, 6), (3, 4)]
 for theta in list_theta:
     distribution = ot.Dirichlet(theta)

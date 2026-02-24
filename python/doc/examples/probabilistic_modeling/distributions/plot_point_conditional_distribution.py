@@ -141,7 +141,7 @@ for index, cond_value in enumerate(cond_value_list):
     )
 
 g_cond.setTitle(r"PDF of $X_0|X_1 = x_1$")
-g_cond.setLegendPosition("topleft")
+g_cond.setLegendPosition("upper left")
 g_cond.setColors(ot.Drawable.BuildDefaultPalette(len(q_list) + 1))
 
 # %%

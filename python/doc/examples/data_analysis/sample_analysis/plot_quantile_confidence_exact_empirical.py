@@ -192,7 +192,7 @@ g.add(boundsPoly_lower)
 
 # %%
 g.setLegends([r'$X_{emp}$', r'$X_{up} (\beta = $' + str(beta) + ')', r'$X_{low} (\beta = $' + str(beta) + ')', 'exact quantile'])
-g.setLegendPosition('topright')
+g.setLegendPosition('upper right')
 
 # %%
 g.setTitle('Quantile estimation and confidence intervals')

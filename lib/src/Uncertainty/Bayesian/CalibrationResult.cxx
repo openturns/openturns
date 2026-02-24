@@ -250,7 +250,8 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const Bool upperRightGraph = (j == dimension - 1);
-    Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
+    Graph graph("", getParameterPrior().getDescription()[j], "");
+    graph.setLegendPosition("topright");
 
     // The graph must show:
     // + the full posterior PDF
@@ -319,7 +320,8 @@ GridLayout CalibrationResult::drawResiduals() const
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     const Bool upperRightGraph = (j == outputDimension - 1);
-    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
+    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF");
+    graph.setLegendPosition("topright");
 
     // Get the distributions
     const Distribution errorJ(getObservationsError().getMarginal(j));
@@ -414,7 +416,8 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
       String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
       // Only the first column
       String yTitle = (j == 0) ? yDescription[i] : "";
-      Graph graph("", xTitle, yTitle, true, "topright");
+      Graph graph("", xTitle, yTitle);
+      graph.setLegendPosition("topright");
       const Sample inputObservations_j(inputObservations_.getMarginal(j));
 
       // observation
@@ -462,7 +465,8 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
   const Description yDescription(outputObservations_.getDescription());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
+    Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions");
+    graph.setLegendPosition("topleft");
     const Sample outputObservations_j(outputObservations_.getMarginal(j));
 
     const Bool upperRightGraph = (j == outputDimension - 1);

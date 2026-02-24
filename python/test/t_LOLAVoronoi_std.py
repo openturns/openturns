@@ -54,7 +54,7 @@ for i in range(5):
         cloud2 = ot.Cloud(newX)
         cloud2.setPointStyle("fcircle")
         cloud2.setColor("red")
-        graph = ot.Graph("LOLA-Voronoi", "x1", "x2", True)
+        graph = ot.Graph("LOLA-Voronoi", "x1", "x2")
         graph.add(cloud1)
         graph.add(cloud2)
         otv.View(graph)

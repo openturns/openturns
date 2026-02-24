@@ -2,8 +2,10 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-pdf_graph = ot.Graph("PDF graph", "x", "PDF", True, "upper right")
-cdf_graph = ot.Graph("CDF graph", "x", "CDF", True, "lower right")
+pdf_graph = ot.Graph("PDF graph", "x", "PDF")
+pdf_graph.setLegendPosition("upper left")
+cdf_graph = ot.Graph("CDF graph", "x", "CDF")
+cdf_graph.setLegendPosition("upper left")
 palette = ot.Drawable.BuildDefaultPalette(10)
 for i, p in enumerate([(1, 2), (2, 1), (5, 2), (10, 1), (100, 100)]):
     d1, d2 = p
