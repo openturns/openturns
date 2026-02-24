@@ -161,20 +161,28 @@ else:
 def a_exec2(X):
     Y = [0]
     if X[0] == 0.0:
-        raise RuntimeError("Oups")
+        Y[0] = bla  # noqa: F821
     elif X[0] == 1.0:
-        "2" + 2
+        Y[0] = "2" + 2
+    elif X[0] == 2.0:
+        Y[0] = 1 / 0
     return Y
 
 
-for n in range(2):
-    myFunc = ot.PythonFunction(1, 1, a_exec2)
+myFunc = ot.PythonFunction(1, 1, a_exec2)
+for x in [0.0, 1.0, 2.0]:
     try:
-        X = ot.Point(1, n)
+        X = [x]
         myFunc(X)
-    except Exception:
+    except Exception as exc:
         # print exc
         print("exception handling: ok")
+        if x == 0.0:
+            assert "NameError" in str(exc)
+        elif x == 1.0:
+            assert "TypeError" in str(exc)
+        elif x == 2.0:
+            assert "ZeroDivisionError" in str(exc)
 
 
 def a_exec3(X):
