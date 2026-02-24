@@ -56,10 +56,11 @@ public:
   Graph(const GraphImplementation & implementation);
 
   /** Constructor with parameters */
+  /** showAxes, legendPosition, legendFontSize, logScale arguments are @deprecated */
   Graph(const String & title,
         const String & xTitle,
         const String & yTitle,
-        const Bool showAxes,
+        const Bool showAxes = true,
         const String & legendPosition = "",
         const Scalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"),
         const LogScale logScale = GraphImplementation::NONE);

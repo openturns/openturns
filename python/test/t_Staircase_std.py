@@ -45,7 +45,8 @@ for i in range(nPoints):
     data2[i] = cursor2
 
 # Create an empty graph
-myGraph = ot.Graph("Some curves", "x1", "x2", True, "bottomright")
+myGraph = ot.Graph("Some curves", "x1", "x2")
+myGraph.setLegendPosition("lower right")
 
 # Create the first staircase
 myStaircase1 = ot.Staircase(data1, "blue", "solid", "s", "")

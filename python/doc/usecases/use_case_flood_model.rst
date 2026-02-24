@@ -205,7 +205,7 @@ It makes use of a Quasi Monte Carlo sample of size :math:`n = 10000`.
     inputSample = experiment.generate()
     outputSample = fm.model(inputSample)
 
-    graph = ot.Graph("Scenario: dyke is low", "S", "C", True)
+    graph = ot.Graph("Scenario: dyke is low", "S", "C")
     cloud = ot.Cloud(outputSample[:, 1], outputSample[:, 2])
     graph.add(cloud)
     otv.View(graph)

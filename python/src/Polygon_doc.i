@@ -27,7 +27,7 @@ Examples
 >>> # Generate the data for the polygons to be drawn
 >>> data =[[9.0*i/51, (9.0*i/51)*(9.0*i/51)] for i in range(50)]
 >>> # Create an empty graph
->>> graph = ot.Graph('Polygon example', 'x1', 'x2', True)
+>>> graph = ot.Graph('Polygon example', 'x1', 'x2')
 >>> polygon = ot.Polygon(data)
 >>> polygon.setColor('red')
 >>> graph.add(polygon)"
@@ -74,7 +74,7 @@ Examples
 >>> y = [xy[1] for xy in data]
 >>> polygon = ot.Polygon.FillBetween(x, y, [0.] * len(data))
 >>> # Create an empty graph
->>> graph = ot.Graph('A filled curve', 'x', 'sin(x)', True, '')
+>>> graph = ot.Graph('A filled curve', 'x', 'sin(x)')
 >>> # Add drawables into the graph
 >>> graph.add(curve)
 >>> graph.add(polygon)"

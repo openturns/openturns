@@ -504,7 +504,8 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   for (UnsignedInteger i = 0; i < size; ++ i)
     for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
       valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
-  Graph result("Selection history", "iteration", "coefficient", true, "upper right");
+  Graph result("Selection history", "iteration", "coefficient");
+  result.setLegendPosition("upper right");
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
     Curve curve(valuesX, valuesY.getMarginal(i));
@@ -541,7 +542,8 @@ Graph FunctionalChaosResult::drawErrorHistory() const
     values(i, 0) = i;
     values(i, 1) = errorHistory_[i];
   }
-  Graph result("Error history", "iteration", "error", true, "upper right");
+  Graph result("Error history", "iteration", "error");
+  result.setLegendPosition("upper right");
   Curve curve(values);
   curve.setColor("blue");
   result.add(curve);

@@ -184,7 +184,7 @@ mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
 
 # %%
 # Plot the Y observations versus the X observations.
-graph = ot.Graph("Observations", "Q ($m^3/s$)", "H (m)", True)
+graph = ot.Graph("Observations", "Q ($m^3/s$)", "H (m)")
 # Plot the model before calibration
 curve = mycf.draw(100.0, 4000.0).getDrawable(0)
 curve.setLegend("Model, before calibration")

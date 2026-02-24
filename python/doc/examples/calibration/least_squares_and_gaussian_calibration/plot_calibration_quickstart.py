@@ -176,7 +176,7 @@ mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
 
 # %%
 title = "Before calibration : a = %.4f, b = %.4f" % (aInitial, bInitial)
-graph = ot.Graph(title, "Q", "H", True)
+graph = ot.Graph(title, "Q", "H")
 # Plot the model before calibration
 curve = mycf.draw(100.0, 4000.0).getDrawable(0)
 curve.setLegend("Model, before calibration")

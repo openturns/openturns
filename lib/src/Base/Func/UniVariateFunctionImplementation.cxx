@@ -104,7 +104,8 @@ Graph UniVariateFunctionImplementation::draw(const Scalar xMin,
   Curve curve(data);
   curve.setLineWidth(2.0);
   curve.setLegend(getName());
-  Graph graph(getName(), "x", "y", true, "topright");
+  Graph graph(getName(), "x", "y");
+  graph.setLegendPosition("topright");
   graph.add(curve);
   return graph;
 }

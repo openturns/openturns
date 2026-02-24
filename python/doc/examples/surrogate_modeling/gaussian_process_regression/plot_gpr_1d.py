@@ -95,7 +95,7 @@ def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyl
 
 # %%
 # Here, we draw the model and the train sample.
-graph = ot.Graph("Model and Train sample", "X", "Y", True, "")
+graph = ot.Graph("Model and Train sample", "X", "Y")
 graph.add(
     plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
 )
@@ -193,7 +193,7 @@ y_test_MM = gprMetamodel(x_test)
 
 # %%
 # Now we plot Gaussian process regression surrogate model, in addition to the previous plots.
-graph = ot.Graph("Gaussian process regression surrogate model", "X", "Y", True, "")
+graph = ot.Graph("Gaussian process regression surrogate model", "X", "Y")
 graph.add(
     plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
 )
