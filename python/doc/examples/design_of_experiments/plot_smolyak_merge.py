@@ -95,7 +95,7 @@ print("epsilon = %.2e, level = %d, size = %d" % (epsilon, level, size))
 # down to :math:`10^{-20}`, we increase the `level` and see how this changes
 # the number of nodes.
 
-graph = ot.Graph("Sensitivity to tolerance", "Level", "Size", True)
+graph = ot.Graph("Sensitivity to tolerance", "Level", "Size")
 point_styles = ["circle", "fdiamond", "fsquare", "ftriangleup", "triangledown"]
 number_of_epsilons = 5
 epsilon_array = np.logspace(-1, -20, number_of_epsilons)
@@ -131,7 +131,7 @@ view = otv.View(graph, figure_kw={"figsize": (6.0, 3.0)})
 # we decrease the tolerance from :math:`10^{-1}`
 # down to :math:`10^{-5}` and see how this changes the number of nodes.
 
-graph = ot.Graph("Sensitivity to tolerance", "Epsilon", "Size", True)
+graph = ot.Graph("Sensitivity to tolerance", "Epsilon", "Size")
 point_styles = ["circle", "fdiamond", "fsquare", "ftriangleup", "triangledown"]
 number_of_epsilons = 12
 level_list = list(range(1, 10, 2))
@@ -178,7 +178,7 @@ for level in level_list:
     sizeDecrease = sizeNoMerge - sizeWithMerge
     size_decrease_list.append(sizeDecrease)
 
-graph = ot.Graph("Sensitivity to merge", "Level", "Size decrease", True)
+graph = ot.Graph("Sensitivity to merge", "Level", "Size decrease")
 cloud = ot.Cloud(level_list, size_decrease_list)
 graph.add(cloud)
 graph.setLegendCorner([1.0, 1.0])

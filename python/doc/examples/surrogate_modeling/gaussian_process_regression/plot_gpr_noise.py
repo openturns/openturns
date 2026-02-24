@@ -108,7 +108,7 @@ y_test = g(x_test)
 
 # %%
 # We plot the model.
-graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$", "", "", True, "")
+graph = ot.Graph(r"Model $x \rightarrow x\sin(x)$", "", "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
@@ -150,7 +150,8 @@ gpr_algo_noNoise.run()
 gpr_result_noNoise = gpr_algo_noNoise.getResult()
 gprMM_noNoise = gpr_result_noNoise.getMetaModel()
 
-graph = ot.Graph("Model with exact data", "x", "y", True, "lower left")
+graph = ot.Graph("Model with exact data", "x", "y")
+graph.setLegendPosition("lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )

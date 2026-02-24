@@ -175,7 +175,7 @@ data
 # Then we plot the model and compare it to the observations.
 
 # %%
-graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)", True)
+graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)")
 # Plot the model
 curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(0)
 curve.setLegend("True model")

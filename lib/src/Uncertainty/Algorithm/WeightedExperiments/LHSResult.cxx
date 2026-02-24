@@ -196,7 +196,7 @@ Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
   curve.setLegend(title);
   curve.setLineStyle("solid");
   curve.setLineWidth(2);
-  Graph graph(title, "Iterations", data.getDescription()[0], true, "");
+  Graph graph(title, "Iterations", data.getDescription()[0]);
   graph.add(curve);
   return graph;
 }
@@ -293,7 +293,7 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   cloud.setLegend(drawTitle);
   cloud.setLineStyle("solid");
   cloud.setLineWidth(2);
-  Graph graph(drawTitle, description[0], description[1], true, "");
+  Graph graph(drawTitle, description[0], description[1]);
   graph.add(cloud);
   return graph;
 }

@@ -557,7 +557,8 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
 
   // Discretization of the x axis
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, "Time", "Values", true, "topright");
+  Graph graph(title, "Time", "Values");
+  graph.setLegendPosition("topright");
   const UnsignedInteger size = data_.getSize();
   const Description colors(Drawable::BuildDefaultPalette(size));
   for (UnsignedInteger i = 0; i < size; ++i)

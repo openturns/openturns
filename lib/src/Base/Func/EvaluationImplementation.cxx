@@ -373,7 +373,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   const String yName(outputDescription[outputMarginal]);
   String title(OSS() << yName << " as a function of " << xName);
   if (centralPoint.getDimension() > 1) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true);
+  Graph graph(title, xName, yName);
   graph.setLogScale(scale);
   if (xMin < xMax)
     graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
@@ -442,7 +442,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "upper left");
+  Graph graph(title, xName, yName);
+  graph.setLegendPosition("upper left");
   graph.setLogScale(scale);
 
   if (Interval(xMin, xMax).getVolume() > 0.0)
@@ -627,7 +628,7 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point & centralPoint,
       isoValues.setIsFilled(isFilled);
       isoValues.setDrawLabels(!isFilled);
       isoValues.setColorBarPosition("");
-      Graph graph("", iY + 1 == inputDimension ? getInputDescription()[iX] : "", iX == 0 ? getInputDescription()[iY] : "", true);
+      Graph graph("", iY + 1 == inputDimension ? getInputDescription()[iX] : "", iX == 0 ? getInputDescription()[iY] : "");
       graph.add(isoValues);
       grid.setGraph(withMonoDimensionalCuts ? iY : iY - 1, iX, graph);
     }
@@ -642,7 +643,7 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point & centralPoint,
       Sample inputSample(nX, centralPoint);
       for (UnsignedInteger i = 0; i < nX; ++i)
         inputSample(i, iX) = x(i, 0);
-      Graph graph("", iX + 1 == inputDimension ? getInputDescription()[iX] : "", getOutputDescription()[0], true);
+      Graph graph("", iX + 1 == inputDimension ? getInputDescription()[iX] : "", getOutputDescription()[0]);
       graph.add(Curve(x, (*this)(inputSample)));
       grid.setGraph(iX, iX, graph);
     }

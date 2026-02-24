@@ -159,7 +159,7 @@ for i in range(n_samples):
 curve = ot.Curve(vertices, process_sample_mean, "process sample mean")
 curve.setColor("red")
 graph.add(curve)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 view = otv.View(graph)
 
 # %%

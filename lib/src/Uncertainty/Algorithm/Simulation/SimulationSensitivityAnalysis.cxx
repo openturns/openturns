@@ -314,7 +314,8 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     xLabel = "probability";
     internalX = static_cast<Scalar>(good) / size;
   }
-  Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
+  Graph graph("Importance factors range", xLabel, "Importance (%)");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
     Curve curve(dataCollection[j]);

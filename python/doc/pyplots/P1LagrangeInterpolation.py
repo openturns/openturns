@@ -5,13 +5,13 @@ lowerBound = [0.0, 0.0]
 upperBound = [1.0, 1.0]
 interv = ot.Interval(lowerBound, upperBound)
 mesher = ot.IntervalMesher([4] * 2)
-inputMesh = mesher.build(interv, True)
+inputMesh = mesher.build(interv)
 
 lowerBound = [0.0, 0.0]
 upperBound = [1.0, 1.0]
 interv = ot.Interval(lowerBound, upperBound)
 mesher = ot.IntervalMesher([8] * 2)
-tempMesh = mesher.build(interv, True)
+tempMesh = mesher.build(interv)
 transform = ot.SymbolicFunction(["x", "y"], ["x^2", "y^2"])
 outputMesh = ot.Mesh(transform(tempMesh.getVertices()), tempMesh.getSimplices())
 

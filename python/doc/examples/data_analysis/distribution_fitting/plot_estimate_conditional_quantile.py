@@ -42,7 +42,7 @@ sample = distX.getSample(1000)
 # Let's see the data
 
 # %%
-graph = ot.Graph("2D-Normal sample", "x1", "x2", True, "")
+graph = ot.Graph("2D-Normal sample", "x1", "x2")
 cloud = ot.Cloud(sample, "blue", "fsquare", "My Cloud")
 graph.add(cloud)
 graph.setXTitle("$X_1$")
@@ -96,7 +96,7 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True, "")
+graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$")
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
@@ -128,7 +128,7 @@ sample = distX.getSample(1000)
 # Let's see the data
 
 # %%
-graph = ot.Graph("2D-Normal sample", "x1", "x2", True, "")
+graph = ot.Graph("2D-Normal sample", "x1", "x2")
 cloud = ot.Cloud(sample, "blue", "fsquare", "My Cloud")
 graph.add(cloud)
 graph.setXTitle("$X_1$")
@@ -181,7 +181,7 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True, "")
+graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$")
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])

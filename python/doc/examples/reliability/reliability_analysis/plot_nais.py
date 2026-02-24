@@ -75,7 +75,8 @@ g = ot.PythonFunction(2, 1, fourBranch)
 # Draw the function :math:`g` to help to understand the shape of the limit state function:
 
 # %%
-graph = ot.Graph("Four Branch function", "x1", "x2", True, "upper right")
+graph = ot.Graph("Four Branch function", "x1", "x2")
+graph.setLegendPosition("upper right")
 drawfunction = g.draw([-8] * 2, [8] * 2, [100] * 2)
 graph.add(drawfunction)
 view = otv.View(graph)
