@@ -5,10 +5,12 @@ Parameters
 ----------
 transitionFunction : :class:`~openturns.Function`
     The function defining the flow of the ordinary differential equation.
-    It must have exactly one input variable representing the state
-    vector :math:`\vect{y}`.
-    If required, use :class:`~openturns.ParametricFunction` in order to set the time
-    variable `t` as a parameter of this function (see below for an example).
+    The calling sequence is dydy = phi(y) where
+    y = (S, I, R) is the state vector,
+    dydt represents the derivative of y with respect to t,
+    and t is the first parameter of the function phi.
+    To create this function, use :class:`~openturns.ParametricFunction` in order to set the time
+    variable `t` as a parameter (see below for an example).
 localPrecision : float
     The expected absolute error on one step.
     The default value corresponds to the key `Fehlberg-LocalPrecision`
