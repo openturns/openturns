@@ -126,13 +126,13 @@ view = otv.View(graph)
 ot.ResourceMap.SetAsScalar('CovarianceModel-DefaultNuggetFactor', 0.0)
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 
 # %%
 # Case 1:   Introduce no noise
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We introduce no noise here: it means that we assume that the output values are exact.
 # We plot the surrogate model: we see that it interpolates the data set, as expected.
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result_noNoise = fitter_algo.getResult()
@@ -172,7 +172,7 @@ view = otv.View(graph_traj_noNoise)
 
 # %%
 # Case 2: Introduce a homoscedastic noise
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We want to model a noise on each output value of the model. This noise is the same
 # for output :math:`y_i` value and is modeled as a :class:`~openturns.Normal` distribution
 # which is centered with a variance denoted by :math:`\sigma^2 = 0.5`.
@@ -198,6 +198,7 @@ view = otv.View(graph)
 
 # %%
 # We define the Gaussian Process Fitter on the noisy data.
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
 
 # %%
@@ -219,7 +220,9 @@ gprMM_1 = gpr_result_1.getMetaModel()
 
 
 # %%
-# We add the noise to the algorithm.
+# Now we do not ignore the noise on the output values any more and we add it to the algorithm.
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
+fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
 fitter_algo.setNoise(variance_point_homosc)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
@@ -295,6 +298,7 @@ view = otv.View(graph)
 
 # %%
 # We define the Gaussian Process Fitter on the noisy data.
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train_heterosc, covarianceModel, basis)
 
 # %%
@@ -315,7 +319,8 @@ gpr_result_2 = gpr_algo_2.getResult()
 gprMM_2 = gpr_result_2.getMetaModel()
 
 # %%
-# We add the noise to the algorithm.
+# Now we do not ignore the noise on output values and we add it to the algorithm.
+fitter_algo = ot.GaussianProcessFitter(x_train, y_train_heterosc, covarianceModel, basis)
 fitter_algo.setNoise(variance_point_heterosc)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
@@ -366,28 +371,33 @@ view = otv.View(graph_traj_heterosc)
 # Case 4: Introduce a nugget effect
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We can introduce the homoscedastic noise on the output values of the model as a nugget effect,
-# using the :meth:`~openturns.CovarianceModel.setNuggetFactor` method of the :class:`~openturns.CovarianceModel`.
+# using the :meth:`~openturns.CovarianceModel.setNuggetFactor` method of the
+# :class:`~openturns.CovarianceModel`.
 #
-# We consider the Matern covariance model defined previously and we add a nugget factor.
-covarianceModel.setNuggetFactor(0.05)
-fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
-fitter_algo.run()
-fitter_result = fitter_algo.getResult()
+# We consider the Matern covariance model defined previously and we activate the estimation
+# of the nugget factor.
+covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
+covarianceModel.activateNuggetFactor(True)
+fitter_algo_nugget = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
+fitter_algo_nugget.run()
+fitter_result_nugget = fitter_algo_nugget.getResult()
 
 # %%
-# We get the estimated parameters of the covariance model.
-estimated_cov = fitter_result.getCovarianceModel()
-print('Estimated covariance model with the nugget factor = ', estimated_cov)
+# We get the estimated parameters of the covariance model and the nugget factor
+# :math:`\varepsilon_{nugget}`.
+estimated_cov_nugget = fitter_result_nugget.getCovarianceModel()
+print('Case 4')
+print('Estimated covariance model with the nugget factor = ', estimated_cov_nugget)
+print('Estimated nugget factor = ', estimated_cov_nugget.getNuggetFactor())
 
 # %%
-gpr_algo_nuggetF = ot.GaussianProcessRegression(fitter_result)
+gpr_algo_nuggetF = ot.GaussianProcessRegression(fitter_result_nugget)
 gpr_algo_nuggetF.run()
 gpr_result_nuggetF = gpr_algo_nuggetF.getResult()
 gprMM_nuggetF = gpr_result_nuggetF.getMetaModel()
 
 # %%
-# We define the Gaussian Process Fitter on the homoscedastic noisy data.
-fitter_algo = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
+# We draw the graph to compare the nugget effect and the noise modeling.
 graph = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
@@ -430,4 +440,4 @@ view = otv.View(grid)
 
 # %%
 # Display all figures
-otv.View.ShowAll()
+#otv.View.ShowAll()
