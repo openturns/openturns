@@ -8,7 +8,7 @@ transitionFunction : :class:`~openturns.Function`
     The calling sequence is dydy = phi(y) where
     y is the state vector,
     dydt represents the derivative of y with respect to t,
-    and t is the first parameter of the function phi.
+    and t is the first parameter of the function.
     To create this function, use :class:`~openturns.ParametricFunction` in order to set the time
     variable `t` as a parameter (see below for an example).
 localPrecision : float
