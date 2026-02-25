@@ -6,7 +6,7 @@ Parameters
 transitionFunction : :class:`~openturns.Function`
     The function defining the flow of the ordinary differential equation.
     The calling sequence is dydy = phi(y) where
-    y = (S, I, R) is the state vector,
+    y is the state vector,
     dydt represents the derivative of y with respect to t,
     and t is the first parameter of the function phi.
     To create this function, use :class:`~openturns.ParametricFunction` in order to set the time
