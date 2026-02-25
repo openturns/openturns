@@ -128,14 +128,23 @@ dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 
 # %%
-# Case 1:   Introduce no noise
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Case 1:   Ignore any noise
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We introduce no noise here: it means that we assume that the output values are exact.
 # We plot the surrogate model: we see that it interpolates the data set, as expected.
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 fitter_algo = ot.GaussianProcessFitter(x_train, y_train, covarianceModel, basis)
 fitter_algo.run()
 fitter_result_noNoise = fitter_algo.getResult()
+
+# %%
+# We get the estimated parameters of the covariance model.
+estimated_cov_noNoise = fitter_result_noNoise.getCovarianceModel()
+print('Case 1: ignore any noise')
+print('Estimated covariance model with the homoscedastic noise = ', estimated_cov_noNoise)
+
+# %%
+# We create the GPR metamodel.
 gpr_algo_noNoise = ot.GaussianProcessRegression(fitter_result_noNoise)
 gpr_algo_noNoise.run()
 gpr_result_noNoise = gpr_algo_noNoise.getResult()
@@ -209,6 +218,7 @@ fitter_result = fitter_algo.getResult()
 # %%
 # We get the estimated parameters of the covariance model.
 estimated_cov = fitter_result.getCovarianceModel()
+print('Case 2: homoscedastic noise')
 print('Estimated covariance model with the homoscedastic noise = ', estimated_cov)
 
 # %%
@@ -268,7 +278,7 @@ view = otv.View(graph_traj_homosc)
 
 # %%
 # Case 3: Introduce a heteroscedastic noise
-# ~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We want to model a noise on each output value of the model. This noise depends on the
 # output value :math:`y_i`  and is modeled as a :class:`~openturns.Normal` distribution
 # which is centered with a variance denoted by :math:`\sigma_i^2`.
@@ -309,6 +319,7 @@ fitter_result = fitter_algo.getResult()
 # %%
 # We get the estimated parameters of the covariance model.
 estimated_cov = fitter_result.getCovarianceModel()
+print('Case 3: heteroscedastic noise')
 print('Estimated covariance model with the heteroscedastic noise = ', estimated_cov)
 
 # %%
@@ -386,7 +397,7 @@ fitter_result_nugget = fitter_algo_nugget.getResult()
 # We get the estimated parameters of the covariance model and the nugget factor
 # :math:`\varepsilon_{nugget}`.
 estimated_cov_nugget = fitter_result_nugget.getCovarianceModel()
-print('Case 4')
+print('Case 4: nugget effect')
 print('Estimated covariance model with the nugget factor = ', estimated_cov_nugget)
 print('Estimated nugget factor = ', estimated_cov_nugget.getNuggetFactor())
 
@@ -440,4 +451,4 @@ view = otv.View(grid)
 
 # %%
 # Display all figures
-#otv.View.ShowAll()
+otv.View.ShowAll()
