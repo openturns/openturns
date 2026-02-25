@@ -78,6 +78,12 @@ private:
 #define PyTuple_GET_SIZE PyTuple_Size
 #define PyList_GET_ITEM PyList_GetItem
 #define PyTuple_GET_ITEM PyTuple_GetItem
+
+// PySequence_Fast should not be used in limited API
+// it was removed from limited API in 3.14
+#define PySequence_Fast_GET_ITEM PySequence_GetItem
+#define PySequence_Fast_GET_SIZE PySequence_Length
+
 #endif
 
 void handleException();
