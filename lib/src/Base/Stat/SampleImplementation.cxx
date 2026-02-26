@@ -1918,12 +1918,30 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Descriptio
 Pointer<SampleImplementation> SampleImplementation::select(const UnsignedIntegerCollection & indices) const
 {
   const UnsignedInteger size = indices.getSize();
-  Pointer<SampleImplementation> result = new SampleImplementation(size, dimension_);
-  for (UnsignedInteger i = 0; i < size; ++i)
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const UnsignedInteger index = indices[i];
-    if (!(index < size_)) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
-    std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result->data_.begin() + i * dimension_);
+    if (!(index < size_)) throw InvalidArgumentException(HERE) << "selection expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
+  }
+
+  Pointer<SampleImplementation> result = new SampleImplementation(size, dimension_);
+  UnsignedInteger offset = 0;
+  UnsignedInteger i1 = 0;
+  while (i1 < size)
+  {
+    // count consecutive indices
+    UnsignedInteger i2 = 0;
+    for (i2 = i1 + 1; i2 < size; ++ i2)
+    {
+      if (indices[i2] != indices[i2 - 1] + 1)
+        break;
+    }
+    const UnsignedInteger count = i2 - i1;
+    const UnsignedInteger start = indices[i1];
+    std::copy(data_.begin() + start * dimension_, data_.begin() + (start + count) * dimension_, result->data_.begin() + offset * dimension_);
+    offset += count;
+    i1 = i2;
   }
   result->setDescription(getDescription());
   return result;
