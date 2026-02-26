@@ -109,6 +109,19 @@ among others.
 One of the goals of OpenTURNS is to provide a consistent interface to 
 these tasks in the UQ context.
 
+Developing OpenTURNS as a standalone framework was necessary because
+integrating its specialized, tightly coupled C++ architecture for advanced
+reliability analysis and stochastic modeling into general-purpose libraries
+like SciPy or scikit-learn would have been architecturally incompatible and
+misaligned with their primary scopes.
+OpenTURNS was created in 2005 at a time where SciPy was
+a relatively new library (the development of SciPy was started in 2001)
+and scikit-learn did not exist (the first public release was in 2010).
+Today, this choice is still relevant as OpenTURNS is integrated in other
+C++ libraries like Persalys, Salome (see [@salome_platform]) 
+or pSeven (see [@pseven]) for example, where the C++ implementation of
+OpenTURNS is mandatory.
+
 # Software design
 
 OpenTURNS relies on a dual-language architecture to balance computational 
