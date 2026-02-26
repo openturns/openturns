@@ -27,6 +27,7 @@ add_library (OTPythonWrapping OBJECT
                       PythonFieldFunction.cxx
                       PythonFieldToPointFunction.cxx
                       PythonPointToFieldFunction.cxx)
+target_compile_features (OTPythonWrapping PRIVATE cxx_std_17)
 add_dependencies (OTPythonWrapping generate_swig_runtime)
 target_include_directories (OTPythonWrapping PRIVATE ${Python_INCLUDE_DIRS})
 target_include_directories (OTPythonWrapping PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
