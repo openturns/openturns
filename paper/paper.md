@@ -63,12 +63,10 @@ bibliography: paper.bib
 
 # Summary
 
-OpenTURNS (www.openturns.org) is an open-source Python package built on a 
-C++ core library for probabilistic modeling, uncertainty quantification
-(UQ), and machine learning.
-It provides a unified interface, granting
-users access to a comprehensive set of state-of-the-art algorithms and
-modeling tools.
+OpenTURNS (www.openturns.org) is an open-source Python package for 
+probabilistic modeling, uncertainty quantification (UQ), and machine learning.
+It provides a unified interface, granting users access to a comprehensive 
+set of state-of-the-art algorithms and modeling tools.
 The library is supported by extensive, regularly updated
 documentation, including introductory examples, various use cases, 
 tutorials, and user guides, enhancing its accessibility.
@@ -92,12 +90,15 @@ It encompasses probabilistic modeling (multivariate distributions,
 stochastic processes), sampling, functional algebra, uncertainty
 propagation, sensitivity analysis, reliability, optimization, inverse
 problems, and surrogate modeling.
-Validated and well-documented methods are essential for teaching, academic research, and industrial applications.
+Validated and well-documented methods are essential for teaching, academic 
+research, and industrial applications.
 However, many probabilistic modeling libraries are
 domain-specific—focusing on fields such as mechanical engineering, computational
 fluid dynamics, or hydrology—which limits the sharing of best practices.
 This underscores the need for a general-purpose, cross-disciplinary
 framework for probabilistic modeling.
+
+# State of the field
 
 Other Python packages exist for Monte Carlo
 sampling and other numerical methods [@virtanen2020scipy],
@@ -107,6 +108,30 @@ functions [@Wicaksono2023], and quasi-Monte Carlo methods [@roy2023quasi],
 among others.
 One of the goals of OpenTURNS is to provide a consistent interface to 
 these tasks in the UQ context.
+
+# Software design
+
+OpenTURNS relies on a dual-language architecture to balance computational 
+efficiency with user accessibility.
+The core library is implemented in C++, which handles the memory management and
+heavy computational workloads required by Monte Carlo simulations, 
+high-dimensional integration, and optimization algorithms.
+This C++ core is then exposed through a Python interface using SWIG. 
+
+The primary trade-off in this design is the increased complexity of 
+maintaining a mixed-language codebase and managing bindings. 
+However, this cost is outweighed by the performance gains in intensive 
+numerical tasks. 
+
+From an architectural perspective, OpenTURNS is strictly object-oriented, 
+mirroring mathematical concepts directly in the code.
+Users manipulate objects such as `Distribution`, `Process`, and `Function`. 
+The `Function` class, for instance, provides an abstract representation of 
+mathematical models, allowing for caching, composition, and automatic or 
+finite-difference differentiation. 
+This abstraction ensures that reliability and sensitivity algorithms can operate 
+on complex industrial black-box models exactly as they would on simple 
+analytical equations.
 
 # Features
 
@@ -181,7 +206,7 @@ or quadrature: multivariate Gaussian quadrature (e.g.,
 Gauss–Legendre quadrature), Gauss–Kronrod, Smolyak, simplicial cubature,
 and other algorithms, including those from the Cuba library.
 
-# Usages
+# Research impact statement
 
 OpenTURNS is widely used in research, industrial engineering, and
 academic education.
@@ -200,5 +225,13 @@ programming.
 
 An annual Users’ Day has been held since 2008, fostering collaboration
 and knowledge exchange among researchers, engineers, and educators.
+
+# AI usage disclosure
+
+Generative AI was used to verify the grammar and spelling of this paper,
+check the choices of the words and check that the paper comply to the
+requirements.
+No generative AI was used in the creation of the software, the technical 
+documentation, or the algorithm design.
 
 # References
