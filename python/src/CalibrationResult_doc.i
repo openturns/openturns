@@ -241,6 +241,9 @@ outputAtPosterior : :class:`~openturns.Sample`
 
 Plots the prior and posterior distribution of the calibrated parameter theta.
 
+The graph Y log-scale may be automatically switched on when the pdf ratio is greater than
+the ResourceMap entry `CalibrationResult-LogScalePDFRatioThreshold`.
+
 Returns
 -------
 grid : :class:`~openturns.GridLayout`
