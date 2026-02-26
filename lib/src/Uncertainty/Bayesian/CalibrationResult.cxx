@@ -255,29 +255,31 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
     // The graph must show:
     // + the full posterior PDF
-    // + the full prior PDF if it does not shrink too much the posterior graph
+    // + the full prior PDF
     // + the initial point
 
     const Distribution priorJ(getParameterPrior().getMarginal(j));
     const Distribution posteriorJ(getParameterPosterior().getMarginal(j));
+
     Bool useLogScale = false;
     if (bayesian_)
     {
       const Scalar priorPDFMax = priorJ.drawPDF().getDrawable(0).getData().getMax()[1];
       const Scalar postPDFMax = posteriorJ.drawPDF().getDrawable(0).getData().getMax()[1];
-      // use log pdf if scales are very different
-      useLogScale = std::abs(std::log(postPDFMax) - std::log(priorPDFMax)) > std::log(10.0);
+      // use log scale if pdfs are very different
+      const Scalar maxPDFRatio = ResourceMap::GetAsScalar("CalibrationResult-LogScalePDFRatioThreshold");
+      useLogScale = std::abs(std::log(postPDFMax) - std::log(priorPDFMax)) > std::log(maxPDFRatio);
     }
 
     if (j == 0)
     {
       // Show the Y title only for the first graph
-      graph.setYTitle(useLogScale ? "Log PDF" : "PDF");
+      graph.setYTitle("PDF");
     }
 
     if (bayesian_)
     {
-      Drawable priorPDF(useLogScale ? priorJ.drawLogPDF().getDrawable(0) : priorJ.drawPDF().getDrawable(0));
+      Drawable priorPDF(priorJ.drawPDF().getDrawable(0));
       priorPDF.setLegend(upperRightGraph ? "Prior" : "");
       priorPDF.setColor(priorColor_);
       priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
@@ -295,7 +297,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
       graph.add(cloudStartingPoint);
     }
 
-    Drawable postPDF = useLogScale ? posteriorJ.drawLogPDF().getDrawable(0) : posteriorJ.drawPDF().getDrawable(0);
+    Drawable postPDF(posteriorJ.drawPDF().getDrawable(0));
     if (upperRightGraph)
       postPDF.setLegend(bayesian_ ? "Posterior" : "Calibrated");
     else
@@ -303,6 +305,8 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
+    if (useLogScale)
+      graph.setLogScale(GraphImplementation::LOGY);
 
     grid.setGraph(0, j, graph);
   }
