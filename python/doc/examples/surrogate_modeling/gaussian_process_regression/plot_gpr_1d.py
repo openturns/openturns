@@ -48,6 +48,7 @@ Gaussian Process Regression : quick-start
 #
 import openturns as ot
 import openturns.viewer as otv
+import numpy as np
 
 
 # %%
@@ -57,7 +58,7 @@ g = ot.SymbolicFunction(["x"], ["sin(x)"])
 # %%
 # Then we define the `x_train` variable which contains the inputs of the design of experiments of the training step.
 # Then we compute the `y_train` corresponding outputs. The variable `n_train` is the size of the training design of experiments.
-x_train = ot.Sample([[x] for x in [1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5]])
+x_train = ot.Sample.BuildFromPoint([1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5])
 y_train = g(x_train)
 n_train = x_train.getSize()
 n_train
@@ -78,30 +79,60 @@ y_test = g(x_test)
 # In order to observe the function and the location of the points in the input design of experiments, we define the following function which plots the data.
 
 
-def plot_1d_data(x_data, y_data, type="Curve", legend=None, color=None, linestyle=None):
-    """Plot the data (x_data,y_data) as a Cloud/Curve"""
+def plot_1d_data(
+    x_data,
+    y_data,
+    type="Curve",
+    legend=None,
+    color=None,
+    linestyle=None,
+    pointstyle=None,
+):
+    """Plot the data (x_data, y_data) as a Cloud/Curve"""
     if type == "Curve":
-        graphF = ot.Curve(x_data, y_data)
+        graph = ot.Curve(x_data, y_data)
     else:
-        graphF = ot.Cloud(x_data, y_data)
+        graph = ot.Cloud(x_data, y_data)
     if legend is not None:
-        graphF.setLegend(legend)
+        graph.setLegend(legend)
     if color is not None:
-        graphF.setColor(color)
+        graph.setColor(color)
     if linestyle is not None:
-        graphF.setLineStyle(linestyle)
-    return graphF
+        graph.setLineStyle(linestyle)
+    if pointstyle is not None:
+        graph.setPointStyle(pointstyle)
+    return graph
+
+
+def plot_test_data(x_test, y_test):
+    """Plot the test data using a dashed gray line"""
+    return plot_1d_data(
+        x_test, y_test, legend="model", color="gray50", linestyle="dashed"
+    )
+
+
+def plot_train_data(x_train, y_train):
+    """Plot the train data using red dots"""
+    return plot_1d_data(
+        x_train,
+        y_train,
+        type="Cloud",
+        legend="train sample",
+        color="firebrick3",
+        pointstyle="o",
+    )
+
+
+def plot_gpr_data(x_test, yTestMM):
+    """Plot the GPR data using a blue curve"""
+    return plot_1d_data(x_test, yTestMM, legend="GPR", color="dodgerblue3")
 
 
 # %%
 # Here, we draw the model and the train sample.
 graph = ot.Graph("Model and Train sample", "X", "Y", True, "")
-graph.add(
-    plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
-)
-graph.add(
-    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
-)
+graph.add(plot_test_data(x_test, y_test))
+graph.add(plot_train_data(x_train, y_train))
 graph.setLegendPosition("upper right")
 view = otv.View(graph)
 
@@ -188,19 +219,15 @@ print(gpr_result)
 
 # %%
 gprMetamodel = gpr_result.getMetaModel()
-y_test_MM = gprMetamodel(x_test)
+yTestMM = gprMetamodel(x_test)
 
 
 # %%
 # Now we plot Gaussian process regression surrogate model, in addition to the previous plots.
 graph = ot.Graph("Gaussian process regression surrogate model", "X", "Y", True, "")
-graph.add(
-    plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
-)
-graph.add(
-    plot_1d_data(x_train, y_train, type="Cloud", legend="train sample", color="red")
-)
-graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
+graph.add(plot_test_data(x_test, y_test))
+graph.add(plot_train_data(x_train, y_train))
+graph.add(plot_gpr_data(x_test, yTestMM))
 graph.setLegendPosition("upper right")
 view = otv.View(graph)
 
@@ -245,10 +272,9 @@ print("Quantile alpha=%f" % (quantileAlpha))
 # returns a point which is the sequence of the variances of each :math:`\vect{Z}_i(\omega)`.
 # Since this is a variance, we use the square root in order to compute the
 # standard deviation.
-sqrt = ot.SymbolicFunction(["x"], ["sqrt(x)"])
 gccc = ot.GaussianProcessConditionalCovariance(gpr_result)
 conditionalVariance = gccc.getConditionalMarginalVariance(x_test)
-conditionalSigma = sqrt(conditionalVariance)
+conditionalSigma = np.sqrt(conditionalVariance)
 
 # %%
 # The following figure presents the conditional standard deviation depending on :math:`x`.
@@ -259,32 +285,11 @@ curve = ot.Curve(x_test, conditionalSigma)
 graph.add(curve)
 view = otv.View(graph)
 
-
-# %%
-# We now compute the bounds of the confidence interval. For this purpose we define a small function
-# `computeBoundsConfidenceInterval` :
-
-
-# %%
-def computeBoundsConfidenceInterval(quantileAlpha):
-    dataLower = [
-        [y_test_MM[i, 0] - quantileAlpha * conditionalSigma[i, 0]]
-        for i in range(n_test)
-    ]
-    dataUpper = [
-        [y_test_MM[i, 0] + quantileAlpha * conditionalSigma[i, 0]]
-        for i in range(n_test)
-    ]
-    dataLower = ot.Sample(dataLower)
-    dataUpper = ot.Sample(dataUpper)
-    return dataLower, dataUpper
-
-
 # %%
 # We define two small lists to draw three different confidence intervals (defined by the alpha value) :
 alphas = [0.05, 0.1, 0.2]
-# three different green colors defined by HSV values
-mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
+# three different alpha transparencies
+transparencyList = [0.1, 0.2, 0.4]
 
 # %%
 # We are ready to display all the previous information and the three confidence intervals we want.
@@ -302,21 +307,21 @@ graph = ot.Graph(
 # Now we loop over the different values :
 for idx, v in enumerate(alphas):
     quantileAlpha = computeQuantileAlpha(v)
-    vLow, vUp = computeBoundsConfidenceInterval(quantileAlpha)
+    # Compute the bounds of the interval.
+    vLow = yTestMM - quantileAlpha * conditionalSigma
+    vUp = yTestMM + quantileAlpha * conditionalSigma
     boundsPoly = ot.Polygon.FillBetween(x_test, vLow, vUp)
-    boundsPoly.setColor(
-        ot.Drawable.ConvertFromHSV(mycolors[idx][0], mycolors[idx][1], mycolors[idx][2])
-    )
+    boundsPoly.setColor("forestgreen")
+    boundsPoly.setAlpha(transparencyList[idx])
     boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 
-graph.add(
-    plot_1d_data(x_test, y_test, legend="model", color="black", linestyle="dashed")
-)
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
-graph.add(plot_1d_data(x_test, y_test_MM, legend="GPR", color="blue"))
-graph.setLegendPosition("upper right")
-view = otv.View(graph)
+graph.add(plot_test_data(x_test, y_test))
+graph.add(plot_train_data(x_train, y_train))
+graph.add(plot_gpr_data(x_test, yTestMM))
+graph.setLegendPosition("upper left")
+graph.setLegendCorner((1.0, 1.0))
+view = otv.View(graph, figure_kw={"figsize": (5.0, 3.0)})
 
 # %%
 # We see that the confidence intervals are small in the regions where two
