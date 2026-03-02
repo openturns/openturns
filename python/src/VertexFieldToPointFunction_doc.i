@@ -14,21 +14,21 @@ A VertexFieldToPointFunction :math:`f` is defined by:
 .. math::
 
     f: \left| \begin{array}{rcl}
-               \cF(\cM_N \times \Rset^d ) & \rightarrow & (\Rset^d)^{N'} \\
-                F & \mapsto & F'
+               \cF(\cM_N, \Rset^d ) & \rightarrow & (\Rset^d)^{N'} \\
+                g & \mapsto & \vect{F}
               \end{array} \right.
 
-where :math:`F'` is a vector such that for all :math:`k \in \llbracket 0, N'-1 \rrbracket`, we have:
+where :math:`\vect{F}` is a vector such that for all :math:`k \in \llbracket 0, N'-1 \rrbracket`, we have:
 
 .. math::
 
-    F'[dk:(k+1)d] = F(v_{i_k}) \in \Rset^d
+    \vect{F}[dk:(k+1)d] = g(v_{i_k}) \in \Rset^d
 
 where :math:`v_{i_k}` is the node of index :math:`i_k` of the mesh :math:`\cM_N`. In other words, we have:
 
 .. math::
 
-    F' = (F(v_{i_0}), \dots, F(v_{i_{N'-1}}))
+    \vect{F} = (g(v_{i_0}), \dots, g(v_{i_{N'-1}}))
 
 
 Parameters

@@ -80,7 +80,8 @@ for i in range(degreeMax):
 # %%
 # We build a set of polynomials with increasing degrees.
 #
-# We explore polynomial degrees up to 20.
+# We explore polynomial degrees up to 20. In the following figure, only polynomials of degrees 5, 10 and
+# 20 are plotted.
 deg_list = [5, 10, 20]
 g = ot.Graph(
     "Polynomials orthonormal with respect to the LogNormal distribution", "x", "y", True
@@ -129,7 +130,7 @@ for deg in range(6):
 g = ot.SymbolicFunction("x", "1/(x)")
 
 # %%
-# We create a training sample. We check that the points are all in the interval :math:`[0,25]`
+# We create a training sample. We check that the points are all in the interval :math:`[0,10]`
 # which is the interval plotted previously.
 sample_size = 1000
 input_train = dist_X.getSample(sample_size)
@@ -248,12 +249,19 @@ view = otv.View(graph_LN)
 # w.r.t. the family of polynomials orthonormal with respect to the
 # :class:`~openturns.Normal` distribution. The Normal distribution is
 # characterized by its infinite sequence of moments. We use the isoprobabilistic transformation
-# :math:`T` which maps the LogNormal distribution into the Normal distribution. It is defined by:
+# :math:`T: \Rset \rightarrow \Rset` defined by:
 #
 # .. math::
-#    T(z) = e^z
+#    T: x \rightarrow T(x) = \log x
 #
-# Thus, the polynomial chaos expansion is constructed for :math:`h(z) = g \circ T(z) = e^{-z}`.
+# Then if we denote by :math:`Z` the random variable defined by:
+#
+# .. math::
+#    Z = T(X)
+#
+# then :math:`Z` follows a Normal distribution since :math:`X` follows a LogNormal distribution.
+#
+# Thus, the polynomial chaos expansion is constructed for :math:`h(z) = g \circ T^{-1}(z) = e^{-z}`.
 # This function is analytical with an infinite radius of convergence, so its polynomial
 # approximation converges very quickly and does not require many polynomials to get spectral convergence.
 #
@@ -287,7 +295,7 @@ view = otv.View(graph_valid_N)
 # %%
 # Here, we plot the model and the surrogate model.
 # No differences are observed between the model and the surrogate model
-# across the entire interval :math:`[0, 25]`.
+# across the entire interval :math:`[0, 10]`.
 graph_N = g.draw(lower_bound, upper_bound, [251])
 graph_N.add(meta_model_N.draw(lower_bound, upper_bound, [251]))
 graph_N.setLegends(["model", "surrogate model"])

@@ -1,6 +1,6 @@
 """
-Create a Gaussian process including a nugget effect
-===================================================
+Create a Gaussian process with or without nugget effect
+=======================================================
 """
 
 # %%
@@ -11,9 +11,9 @@ Create a Gaussian process including a nugget effect
 # - from its spectral density in the stationary case.
 
 # %%
-# sphinx_gallery_thumbnail_number = 2
 import openturns as ot
 import openturns.viewer as otv
+# sphinx_gallery_thumbnail_number = 2
 
 # %%
 # Create a Gaussian process from its covariance model
@@ -25,7 +25,8 @@ import openturns.viewer as otv
 # See :ref:`Covariance models <covariance_model>` to get more details on covariance models.
 #
 # We first define a covariance model. We use a :class:`~openturns.MaternModel` model. By default, the nugget factor
-# is equal to :math:`10^{-12}`. That is why we set it to zero.
+# is equal to :math:`10^{-12}` and is defined through the `CovarianceModel-DefaultNuggetFactor` key in the class
+# :class:`~openturns.ResourceMap`. That is why we set it to zero.
 amplitude = [1.0]
 scale = [1.0]
 myModel = ot.MaternModel(scale, amplitude, 2.5)
@@ -57,8 +58,8 @@ view = otv.View(graph)
 # Add a nugget effect to the Gaussian process
 # -------------------------------------------
 #
-# Here, we add a nugget effect to the Gaussian process. We use the previous Gaussian process. We add a nugget
-# factor
+# Here, we add a nugget effect to the Gaussian process. We use the previous Gaussian process. The nugget
+# factor is
 # :math:`\varepsilon_{nugget}`.
 #
 # Refer to :ref:`Covariance models <covariance_model>` to get more details on covariance models and the
@@ -75,7 +76,7 @@ view = otv.View(graph)
 # .. math::
 #
 #   \vect{X}_{nugget}(\omega, \vect{t}) = \vect{X}(\omega, \vect{t}) +
-#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0}, \sigma_{nugget}^2 =
+#   \vect{\varepsilon}(\omega), \quad \vect{\varepsilon} \sim \cN(\vect{0},
 #   \varepsilon_{nugget} \mat{C}^{spatial})
 #
 # We fix :math:`\varepsilon_{nugget} = 0.05`.

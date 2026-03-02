@@ -26,12 +26,13 @@ set. To build this metamodel, we follow the steps:
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
 - **Step 3:  Gaussian Process Regression metamodel and its exploitation**:  we define the metamodel as
   :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
-  that this metamodel is interpolating the data set. We can use the conditional covariance in order to quantify
+  that this metamodel is interpolating the data set when the noise parameter is set to zero. We can use the
+  conditional covariance in order to quantify
   the error of the metamodel, that is the variation of the Gaussian vector at a given point.
 
 
-Note that the Gaussian process regression of a function with multivariate putput (:math:`\outputDim > 1`)
-is done without simply looping over each output.
+Note that the Gaussian process regression of a function with multivariate output (:math:`\outputDim > 1`)
+is done without simply looping over each output component.
 
 Step 1: Gaussian process fitting with and without noise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,11 +65,11 @@ Furthermore, :math:`\vect{W}` is a Gaussian process of dimension :math:`\outputD
 covariance function :math:`\mat{C} = \mat{C}(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})`,
 where (see :ref:`covariance_model` for more details on the notations):
 
-- :math:`\vect{\theta} \in \Rset^\inputDim` is the scale vector,
-- :math:`\vect{\sigma} \in \Rset^\outputDim` is the standard deviation vector,
+- :math:`\vect{\theta} \in \Rset^\inputDim` is the scale parameter vector,
+- :math:`\vect{\sigma} \in \Rset^\outputDim` is the standard deviation parameter vector,
 - :math:`\mat{R} \in \cS_{\outputDim}^+(\Rset)` is the spatial correlation matrix between the components
   of :math:`\vect{W}`,
-- :math:`\vect{\lambda}` gather some additional parameters specific to each covariance model.
+- :math:`\vect{\lambda}` gathers some additional parameters specific to each covariance model.
 
 Then, we have to estimate the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}`
 where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of
@@ -218,6 +219,12 @@ estimated.
 
 Use the method *setNoise* of the class :class:`~openturns.GaussianProcessFitter`.
 
+Note that the noise is different from the nugget effect: refer to :ref:`Covariance models <covariance_model>` to get
+more details on covariance models and the introduction of a nugget factor, and in particular see equation :eq:`Css`.
+To be short, the nugget effect modifies the diagonal of the covariance matrix and this modification remains even
+once the parameters of the covariance model have been estimated. The resulting process is less smooth than the
+initial one without nugget effect.
+
 Step 2:  Gaussian Process Regression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -318,8 +325,9 @@ The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
     \metaModel(\vect{x}) = \Expect{\vect{Z}(\omega, \vect{x})} =  \vect{\mu}(\vect{x}) + \sum_{i=1}
     ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i).
 
-We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the error of the metamodel. The
-:class:`~openturns.GaussianProcessConditionalCovariance` provides all the services to get the error at any point.
+We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the predictive
+uncertainty of the metamodel. The :class:`~openturns.GaussianProcessConditionalCovariance` provides all the
+services to get the predictive error at any point.
 
 .. topic:: API:
 

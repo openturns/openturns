@@ -18,15 +18,16 @@ Create a covariance model with and without a nugget effect
 # the introduction of a nugget factor, and in particular see equation :eq:`Css`.
 
 # %%
-# sphinx_gallery_thumbnail_number = 1
 import openturns as ot
 import openturns.viewer as otv
+# sphinx_gallery_thumbnail_number = 1
 
 # %%
 # First we create the covariance function of a process defined on :math:`\cD \in \Rset` and with scalar
 # outputs. We use the :class:`~openturns.SquaredExponential` with unit scale, unit amplitude. By default, the
-# nugget factor is equal to :math:`10^{-12}` which allows the regularization of the covariance matrix. We set
-# it to zero.
+# nugget factor is equal to :math:`10^{-12}` (defined through the `CovarianceModel-DefaultNuggetFactor`
+# key in the class :class:`~openturns.ResourceMap`) which allows the regularization of the covariance
+# matrix. We set it to zero.
 cov_model = ot.SquaredExponential()
 cov_model.setNuggetFactor(0.0)
 

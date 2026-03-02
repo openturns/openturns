@@ -8,11 +8,11 @@ left, right : :class:`~openturns.Distribution`
 
 Notes
 -----
-The DistributionTransformation maps the distribution *left* into the distribution *right*
+The DistributionTransformation maps the distribution *left-hand side* into the distribution *right-hand side*
 with the transformation :math:`T`.
 
-Let :math:`d_1` be the *left* distribution and :math:`d_2` be the *right* distribution, each
-of dimension :math:`d`. The transformation is defined by:
+Let :math:`d_1` be the *left-hand side* distribution and :math:`d_2` be the *right-hand side*
+distribution, each of dimension :math:`d`. The transformation is defined by:
 
 .. math::
    T(d_1) = d_2
@@ -30,7 +30,7 @@ distribution. It is defined as follows:
 - If the copula is not elliptical, it is the normal distribution with zero mean, unit variance and
   identity correlation matrix. It is obtained with the Rosenblatt transformation.
 
-The library treats several cases.
+The library handles several cases.
 
 **Case 1**: Both distributions :math:`d_1` and :math:`d_2` are identical, then :math:`T` is the
 Identity transformation:
@@ -38,14 +38,14 @@ Identity transformation:
 .. math::
    T = Id
 
-**Case 2**: Both distributions share the same copula. Then, the transformation is a marginal transformation:
-each component :math:`d_1^i` is transformed into the associated component :math:`d_2^i` by the
-transformation :math:`T_i = (F_2^i)^{-1} \circ F_1^i`. Then :math:`T` is defined by:
+**Case 2**: Both distributions have the same copula. Then, the transformation is a marginal transformation:
+Let :math:`d_1` be the *left-hand side* distribution and :math:`d_2` be the *right-hand side* distribution,
+each by the transformation :math:`T_i = (F_2^i)^{-1} \circ F_1^i`. Then :math:`T` is defined by:
 
 .. math::
    T = (T_1, \dots, T_d)
 
-**Case 3**: Both distributions share the same standard space. Then we can define the transformation
+**Case 3**: Both distributions have the same standard space. Then we can define the transformation
 :math:`T_i` that maps :math:`d_i` into the distribution of its standard space. As we have
 :math:`T_1(d_1) = T_2(d_2)`, we get: 
 

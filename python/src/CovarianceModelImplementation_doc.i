@@ -466,7 +466,7 @@ Notes
 The nugget effect represents a noise observed in the output values of the process.
 
 Refer to :ref:`Covariance models <covariance_model>` to get more details on covariance models and the
-introduction of a nugget factor, and in particular see equation :eq:`Css`.)RAW"
+introduction of a nugget factor, and in particular see equation :eq:`Css`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setNuggetFactor
 OT_CovarianceModel_set_nugget_factor_doc

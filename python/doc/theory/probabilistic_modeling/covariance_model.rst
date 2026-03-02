@@ -29,11 +29,11 @@ If the process is a second order process, we denote by:
   :math:`(\rho_{ij}(\vect{s}, \vect{t}) = C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
 
 
-The library assumes that:
+In OpenTURNS, it is assumed that:
 
 - the *spatial* correlation :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` between the components of :math:`X_{\vect{t}}`
   and the vector of marginal standard deviations :math:`\vect{\sigma} \in \Rset^{\inputDim}`
-  do not depend on :math:`\vect{t} \in \cD`,
+  does not depend on :math:`\vect{t} \in \cD`,
 - the correlation between :math:`X_{\vect{s}}` and  :math:`X_{\vect{t}}`
   which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})` is such that :math:`X^i_{\vect{t}}`
   depends only on :math:`X^i_{\vect{s}}` and that this link does not depend on the component
@@ -48,8 +48,8 @@ Then, the covariance model is written as:
 .. math::
     :label: def_cov
 
-    \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
-                                      \dfrac{\vect{t}}{\theta}\right)\,
+    \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\vect{\theta}},
+                                      \dfrac{\vect{t}}{\vect{\theta}}\right)\,
                             \diag(\vect{\sigma}) \, \mat{R} \,
                             \diag(\vect{\sigma}), \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
@@ -59,8 +59,8 @@ or:
 .. math::
     :label: def_cov_2
 
-    \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta},
-                                      \dfrac{\vect{t}}{\theta}
+    \mat{C}(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\vect{\theta}},
+                                      \dfrac{\vect{t}}{\vect{\theta}}
                                 \right)\, \mat{C}^{spatial} \quad
                             \forall (\vect{s}, \vect{t}) \in \cD
 
@@ -72,7 +72,7 @@ where:
 - :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \, \mat{R} \, \diag(\vect{\sigma})`
   is the *spatial* covariance matrix which does not depend on :math:`(\vect{s}, \vect{t})`.
 
-The library allows one to model a **nugget effect**. The nugget effect is used for to model a noise observed in
+It is possible to model a **nugget effect**. The nugget effect is used to model a noise observed in
 the output values of a process. This noise may be, for example, a measurement   noise coming from a sensor with
 finite precision. It also has a side effect: it improves the condition number of the  covariance  matrix (see
 :meth:`~openturns.CovarianceMatrix.computeRegularizedCholesky`).
