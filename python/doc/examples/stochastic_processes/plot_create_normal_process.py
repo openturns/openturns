@@ -90,7 +90,7 @@ print(process_nugget)
 # realizations of the process with the nugget factor are more chaotic than the other ones.
 sample_nugget = process_nugget.getSample(n_real)
 graph_nugget = sample_nugget.drawMarginal(0)
-graph_nugget.setTitle("Processs realizations with nugget effect")
+graph_nugget.setTitle("Process realizations with nugget effect")
 view = otv.View(graph_nugget)
 
 # %%

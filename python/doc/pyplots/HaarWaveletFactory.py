@@ -11,14 +11,14 @@ for i in range(8):
     g.setTitle(r'$x \rightarrow \varphi_' + str(i) + '(x)$')
     g.setLegendPosition('')
     g.setBoundingBox(ot.Interval([0.0, -2.0], [1.0, 2.0]))
-    if i == 0 : 
+    if i == 0:
         g.setTickLocation(ot.GraphImplementation.TICKY)
-    if i == 4 : 
+    if i == 4:
         g.setTickLocation(ot.GraphImplementation.TICKXY)
     g.setXTitle('x')
-    if i >= 1 and i < 4:        
+    if i >= 1 and i < 4:
         g.setTickLocation(ot.GraphImplementation.TICKNONE)
-    if i >= 5:        
+    if i >= 5:
         g.setTickLocation(ot.GraphImplementation.TICKX)
     g.setXTitle('x')
     g.setYTitle('')
@@ -27,4 +27,3 @@ for i in range(8):
 v = otv.View(grid, figure_kw={"figsize": (12.0, 4.5)})
 plt.subplots_adjust(wspace=0.3, hspace=0.7, right=0.8)
 fig = v.getFigure()
-#fig.axes[1].legend(loc="best")
