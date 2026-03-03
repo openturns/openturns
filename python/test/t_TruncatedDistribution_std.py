@@ -54,7 +54,7 @@ distribution.append(truncatedKS)
 referenceDistribution.append(ks)  # N/A
 # Add a non-truncated example
 weibull = ot.WeibullMin(2.0, 3.0)
-distribution.append(ot.TruncatedDistribution(weibull))
+distribution.append(ot.TruncatedDistribution(weibull, weibull.getRange()))
 referenceDistribution.append(weibull)
 ot.RandomGenerator.SetSeed(0)
 
