@@ -1,5 +1,5 @@
 %feature("docstring") OT::CovarianceMatrix
-"Covariance (real symmetric positive definite) matrix.
+R"RAW(Covariance (real symmetric positive definite) matrix.
 
 Parameters
 ----------
@@ -45,7 +45,8 @@ Create an openturns matrix from a **symmetric** numpy 2d-array (or matrix, or
 
 and back
 
->>> np_matrix = np.matrix(ot_matrix)"
+>>> np_matrix = np.matrix(ot_matrix)
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -71,15 +72,15 @@ cholesky_factor : :class:`~openturns.TriangularMatrix`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CovarianceMatrix::computeCholeskyInPlace
-"Compute the Cholesky factor in place.
+R"RAW(Compute the Cholesky factor in place.
 
 Similar to :meth:`computeCholesky` but modifies the matrix in place to avoid a copy.
-"
+)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CovarianceMatrix::computeRegularizedCholesky
-"Compute the regularized Cholesky factor.
+R"RAW(Compute the regularized Cholesky factor.
 
 Similar to :meth:`computeCholesky` but with a regularization loop according
 to the largest eigenvalue and keys `Matrix-StartingScaling` and `Matrix-MaximalScaling`.
@@ -87,7 +88,15 @@ to the largest eigenvalue and keys `Matrix-StartingScaling` and `Matrix-MaximalS
 Returns
 -------
 cholesky_factor : :class:`~openturns.TriangularMatrix`
-    The left (lower) Cholesky factor."
+    The left (lower) Cholesky factor.
+
+Notes
+-----
+The matrix :math:`\mat{C}\in \cM_{d_\inputDim \times d_\inputDim}` is replaced by the matrix
+:math:`\mat{C}_{reg} = \mat{C} + \lambda_{max}\varepsilon I_{d_\inputDim}` where :math:`\lambda_{max}` is the
+largest eigenvalue and :math:`\varepsilon = \min \{2^{k_{opt}} \varepsilon_0, Matrix-MaximalScaling \}`,
+with :math:`\varepsilon_0 = Matrix-StartingScaling` and
+:math:`k_{opt} = \argmin{k} \left\{ 2^k \varepsilon_0, k \geq 1 \,  | \,  \mat{C}_{reg} \in \cS_{\inputDim}^+(\Rset)\right\}`.)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -3,8 +3,7 @@
 
 Notes
 -----
-This class builds an :class:`~openturns.EmpiricalBernsteinCopula` which is a non parametric fitting of
-the copula of a multivariate distribution.
+This class builds an :class:`~openturns.EmpiricalBernsteinCopula` which is a non parametric fitted core of a multivariate distribution.
 
 Using the class :class:`~openturns.BernsteinCopulaFactory` garantees to get a
 :class:`~openturns.EmpiricalBernsteinCopula` which is a copula and not only a core,
@@ -54,7 +53,7 @@ f : :class:`~openturns.Function`
     the  *PenalizedCsiszarDivergence* method.
     
     Default is Function().
-m : int,:math:`1 \leq m \leq \sampleSize`,
+m : int, :math:`1 \leq m \leq \sampleSize`,
     The bin number, i.e. the number of sub-intervals in which all the edges of the unit cube
     :math:`[0, 1]^d` are regularly partitioned.
     
