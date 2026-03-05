@@ -150,24 +150,6 @@ OT_SimulationResult_getCoefficientOfVariation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SimulationResult_getConfidenceLength_doc
-R"RAW(Accessor to the confidence length.
-
-Parameters
-----------
-level : float, :math:`level \in ]0, 1[`
-    Confidence level. By default, it is :math:`0.95`.
-
-Returns
--------
-confidenceLength : float
-    Length of the confidence interval at the confidence level *level*.)RAW"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getConfidenceLength
-OT_SimulationResult_getConfidenceLength_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_SimulationResult_getOuterSampling_doc
 "Accessor to the outer sampling.
 
