@@ -419,9 +419,12 @@ inline
 String
 convert< _PyUnicode_, String >(PyObject * pyObj)
 {
+#ifdef Py_LIMITED_API
   ScopedPyObjectPointer encodedBytes(PyUnicode_AsUTF8String(pyObj));
-  assert(encodedBytes.get());
   return convert<_PyBytes_, String>(encodedBytes.get());
+#else
+  return PyUnicode_AsUTF8(pyObj);
+#endif
 }
 
 template <>
