@@ -114,7 +114,6 @@ Hasofer reliability index = 3.00000
 Pf estimation = 2.36144e-03
 Pf Variance estimation = 5.56324e-08
 CoV = 0.09988
-90% Confidence Interval = 7.75928e-04
-CI at 90% =[ 1.97348e-03 ; 2.74941e-03 ]
+90% Confidence Interval = [0.00197348, 0.00274941]
 ************************************************************************************************
 
