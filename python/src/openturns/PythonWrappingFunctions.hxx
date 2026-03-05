@@ -769,53 +769,55 @@ void handleException()
     return;
 
   // retrieve error and clear indicator
+  PyObject *type = NULL, *value = NULL, *traceback = NULL;
 #if (PY_VERSION_HEX >= 0x030c0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030c0000)
   ScopedPyObjectPointer exception(PyErr_GetRaisedException());
   if (exception.isNull())
-    throw InternalException(HERE) << "handleException: cannot get exception";
+    throw InternalException(HERE) << "handleException: cannot access exception";
+  ScopedPyObjectPointer typeRef(PyObject_Type(exception.get()));
+  type = typeRef.get();
+  value = exception.get();
+  ScopedPyObjectPointer tracebackRef(PyException_GetTraceback(exception.get()));
+  traceback = tracebackRef.get();
 #else
-  PyObject *type = NULL, *value = NULL, *traceback = NULL;
   PyErr_Fetch(&type, &value, &traceback);
   PyErr_NormalizeException(&type, &value, &traceback);
 #endif
 
-  // show exception type first
-#if (PY_VERSION_HEX >= 0x030c0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030c0000)
-  ScopedPyObjectPointer typeString(PyObject_Str(exception.get()));
-#else
-  ScopedPyObjectPointer typeString(PyObject_Str(exceptionType));
-#endif
-  if (typeString.isNull())
-    throw InternalException(HERE) << "handleException: cannot get exception type";
-  String exceptionMessage = convert< _PyString_, String >(typeString.get());
+  // show exception value first
+  ScopedPyObjectPointer valueString(PyObject_Str(value ? value : Py_None));
+  if (valueString.isNull())
+    throw InternalException(HERE) << "handleException: cannot format exception value";
+  String exceptionMessage = convert< _PyString_, String >(valueString.get());
 
   // format traceback
   ScopedPyObjectPointer tracebackModule(PyImport_ImportModule("traceback"));
   if (tracebackModule.isNull())
     throw InternalException(HERE) << "handleException: cannot import traceback";
-  ScopedPyObjectPointer formatExceptionMethod(PyObject_GetAttrString(tracebackModule.get(), "format_exception"));
-  if (formatExceptionMethod.isNull())
-    throw InternalException(HERE) << "handleException: cannot get format_exception";
-
-#if (PY_VERSION_HEX >= 0x030c0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030c0000)
-  ScopedPyObjectPointer formattedList(PyObject_CallFunctionObjArgs(formatExceptionMethod.get(), exception.get(), NULL));
-#else
-  ScopedPyObjectPointer formattedList(PyObject_CallFunctionObjArgs(formatExceptionMethod.get(), type,
-                                                                    value ? value : Py_None,
+  ScopedPyObjectPointer tbexcClass(PyObject_GetAttrString(tracebackModule.get(), "TracebackException"));
+  if (tbexcClass.isNull())
+    throw InternalException(HERE) << "handleException: cannot access TracebackException";
+  ScopedPyObjectPointer tbexcInstance(PyObject_CallFunctionObjArgs(tbexcClass.get(),
+                                                                    type ? type : Py_None,
+                                                                    value  ? value  : Py_None,
                                                                     traceback ? traceback : Py_None,
                                                                     NULL));
-#endif
+  if (tbexcInstance.isNull())
+    throw InternalException(HERE) << "handleException: cannot create TracebackException";
+  ScopedPyObjectPointer formatMethod(PyObject_GetAttrString(tbexcInstance.get(), "format"));
+  if (formatMethod.isNull())
+    throw InternalException(HERE) << "handleException: cannot access format()";
+  ScopedPyObjectPointer formatIterator(PyObject_CallObject(formatMethod.get(), NULL));
+  if (formatIterator.isNull())
+    throw InternalException(HERE) << "handleException: cannot format traceback";
 
-  if (formattedList.isNull())
-    throw InternalException(HERE) << "handleException: cannot format exception";
-  // join list of traceback lines
-  ScopedPyObjectPointer emptyString(convert<String, _PyString_>(""));
-  ScopedPyObjectPointer tracebackString(PyUnicode_Join(emptyString.get(), formattedList.get()));
-  if (tracebackString.isNull())
-    throw InternalException(HERE) << "handleException: cannot join list";
-  // append traceback to message
-  exceptionMessage += "\n" + convert< _PyString_, String >(tracebackString.get());
-
+  PyObject *line = NULL;
+  exceptionMessage += "\n";
+  while ((line = PyIter_Next(formatIterator.get())))
+  {
+    exceptionMessage += convert< _PyString_, String >(line);
+    Py_DECREF(line);
+  }
   throw InternalException(HERE) << exceptionMessage;
 }
 
