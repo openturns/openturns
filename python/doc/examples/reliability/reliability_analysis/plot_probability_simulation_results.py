@@ -143,16 +143,8 @@ view = otv.View(graph)
 # with level 0.95, where :math:`\tilde{p}` is the estimated probability and :math:`\ell` is the confidence interval length.
 
 # %%
-probability = result.getProbabilityEstimate()
-length95 = result.getConfidenceLength(0.95)
-print("0.95 Confidence Interval length = ", length95)
-print(
-    "IC at 0.95 = [",
-    probability - 0.5 * length95,
-    "; ",
-    probability + 0.5 * length95,
-    "]",
-)
+ci95 = result.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)
+print("Confidence interval (0.95) = ", ci95)
 
 # %%
 # Draw the convergence graph and the confidence interval of level alpha. By default, alpha = 0.95.
