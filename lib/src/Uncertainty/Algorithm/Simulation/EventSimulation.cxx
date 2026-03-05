@@ -222,12 +222,9 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
     {
-      const Scalar confidenceLength = ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getConfidenceLength(level);
-      Point pt = {outerIndex + 1, 0.0};
-      pt[1] = probabilityEstimate - 0.5 * confidenceLength;
-      dataLowerBound.add(pt);
-      pt[1] = probabilityEstimate + 0.5 * confidenceLength;
-      dataUpperBound.add(pt);
+      const Interval confidenceInterval(ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getProbabilityDistribution().computeBilateralConfidenceInterval(level));
+      dataLowerBound.add(Point({outerIndex + 1, confidenceInterval.getLowerBound()[0]}));
+      dataUpperBound.add(Point({outerIndex + 1, confidenceInterval.getUpperBound()[0]}));
     }
   }
   Curve estimateCurve(dataEstimate, "probability estimate");

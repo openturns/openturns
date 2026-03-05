@@ -84,23 +84,9 @@ print(
 )
 
 # %%
-# The length of the confidence interval of level :math:`95\%` is:
-
-# %%
-length95 = standardSpaceISResult.getConfidenceLength()
-print("Confidence length (0.95) = ", standardSpaceISResult.getConfidenceLength())
-
-# %%
-# which enables to build the confidence interval.
-
-# %%
-print(
-    "Confidence interval (0.95) = [",
-    proba - length95 / 2,
-    ", ",
-    proba + length95 / 2,
-    "]",
-)
+# The confidence interval of level :math:`95\%` is:
+ci95 = standardSpaceISResult.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)
+print("Confidence interval (0.95) = ", ci95)
 
 # %%
 # We can analyze the simulation budget.

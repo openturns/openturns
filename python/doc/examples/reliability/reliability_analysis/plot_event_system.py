@@ -199,12 +199,12 @@ algo.setMaximumCoefficientOfVariation(-1.0)
 algo.run()
 
 # %%
-# We retrieve the results and display the approximate probability and a confidence interval :
+# We retrieve the results and display the approximate probability and a confidence interval:
 result = algo.getResult()
 prb = result.getProbabilityEstimate()
 print("Probability of e6 through MC : %.4f" % prb)
-cl = result.getConfidenceLength()
-print("Confidence interval MC : [%.4f, %.4f]" % (prb - 0.5 * cl, prb + 0.5 * cl))
+ci95 = result.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)
+print("Confidence interval (0.95) = ", ci95)
 
 
 # %%

@@ -213,7 +213,7 @@ ResultMC = myMC.getResult()
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
-length90MC = ResultMC.getConfidenceLength(0.90)
+length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
 
 #
 # LHS
@@ -221,7 +221,7 @@ ResultLHS = myLHS.getResult()
 PFLHS = ResultLHS.getProbabilityEstimate()
 CVLHS = ResultLHS.getCoefficientOfVariation()
 Variance_PF_LHS = ResultLHS.getVarianceEstimate()
-length90LHS = ResultLHS.getConfidenceLength(0.90)
+length90LHS = ResultLHS.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
 
 #
 # Directional Sampling
@@ -229,19 +229,19 @@ ResultDS1 = myDS1.getResult()
 PFDS1 = ResultDS1.getProbabilityEstimate()
 CVDS1 = ResultDS1.getCoefficientOfVariation()
 Variance_PF_DS1 = ResultDS1.getVarianceEstimate()
-length90DS1 = ResultDS1.getConfidenceLength(0.90)
+length90DS1 = ResultDS1.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
 
 ResultDS2 = myDS2.getResult()
 PFDS2 = ResultDS2.getProbabilityEstimate()
 CVDS2 = ResultDS2.getCoefficientOfVariation()
 Variance_PF_DS2 = ResultDS2.getVarianceEstimate()
-length90DS2 = ResultDS2.getConfidenceLength(0.90)
+length90DS2 = ResultDS2.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
 
 ResultDS3 = myDS3.getResult()
 PFDS3 = ResultDS3.getProbabilityEstimate()
 CVDS3 = ResultDS3.getCoefficientOfVariation()
 Variance_PF_DS3 = ResultDS3.getVarianceEstimate()
-length90DS3 = ResultDS3.getConfidenceLength(0.90)
+length90DS3 = ResultDS3.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
 
 #
 # Outputs
@@ -448,13 +448,7 @@ print(
 print("Pf estimation = %.5e" % PFMC)
 print("Pf Variance estimation = %.5e" % Variance_PF_MC)
 print("CoV = %.5f" % CVMC)
-print("90% Confidence Interval =", "%.5e" % length90MC)
-print(
-    "CI at 90% =[",
-    "%.5e" % (PFMC - 0.5 * length90MC),
-    "; %.5e" % (PFMC + 0.5 * length90MC),
-    "]",
-)
+print("90% Confidence Interval =", length90MC)
 print(
     "************************************************************************************************"
 )
@@ -471,13 +465,7 @@ print(
 print("Pf estimation = %.5e" % PFLHS)
 print("Pf Variance estimation = %.5e" % Variance_PF_LHS)
 print("CoV = %.5f" % CVLHS)
-print("90% Confidence Interval =", "%.5e" % length90LHS)
-print(
-    "CI at 90% =[",
-    "%.5e" % (PFLHS - 0.5 * length90LHS),
-    "; %.5e" % (PFLHS + 0.5 * length90LHS),
-    "]",
-)
+print("90% Confidence Interval =", length90LHS)
 print(
     "************************************************************************************************"
 )
