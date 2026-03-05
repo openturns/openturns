@@ -674,7 +674,7 @@ convert< _PySequence_, Point >(PyObject * pyObj)
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Point point(size);
-        std::copy(data, data + size, (size > 0) ? &point[0] : 0);
+        std::copy(data, data + size, const_cast<Scalar*>(point.data()));
         PyBuffer_Release(&view);
         return point;
       }
@@ -744,7 +744,7 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
         const Complex* data = static_cast<const Complex*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<Complex> result(size);
-        std::copy(data, data + size, (size > 0) ? &result[0] : 0);
+        std::copy(data, data + size, const_cast<Complex*>(result.data()));
         PyBuffer_Release(&view);
         return result;
       }
@@ -850,7 +850,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, (Scalar *)sample.data());
+          std::copy(data, data + size * dimension, const_cast<Scalar*>(sample.data()));
         }
         else
         {
@@ -976,7 +976,7 @@ convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
         const UnsignedInteger* data = static_cast<const UnsignedInteger*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<UnsignedInteger> result(size);
-        std::copy(data, data + size, &result[0]);
+        std::copy(data, data + size, const_cast<UnsignedInteger*>(result.data()));
         PyBuffer_Release(&view);
         return result;
       }
@@ -1050,7 +1050,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, &indices(0, 0));
+          std::copy(data, data + size * dimension, indices.begin_at(0));
         }
         else
         {
@@ -1169,7 +1169,7 @@ convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<Scalar> result(size);
-        std::copy(data, data + size, &result[0]);
+        std::copy(data, data + size, const_cast<Scalar*>(result.data()));
         PyBuffer_Release(&view);
         return result;
       }
@@ -1218,7 +1218,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0, 0));
+          std::copy(data, data + nbRows * nbColumns, const_cast<Scalar*>(p_implementation->data()));
         }
         else
         {
@@ -1424,7 +1424,7 @@ convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0, 0, 0));
+          std::copy(data, data + nbRows * nbColumns * nbSheets, const_cast<Scalar *>(p_implementation->data()));
         }
         else
         {
@@ -1512,7 +1512,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0, 0));
+          std::copy(data, data + nbRows * nbColumns, const_cast<Complex*>(p_implementation->data()));
         }
         else
         {
@@ -1693,7 +1693,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0, 0, 0));
+          std::copy(data, data + nbRows * nbColumns * nbSheets, const_cast<Complex*>(p_implementation->data()));
         }
         else
         {
