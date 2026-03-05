@@ -767,7 +767,7 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 inline
 void handleException()
 {
-  PyObject * exceptionType = PyErr_Occurred(); // borrowed ref
+  PyObject * exceptionType = PyErr_Occurred();
   if (!exceptionType)
     return;
 
@@ -1815,49 +1815,45 @@ convert< _PySequence_, WhittleFactoryState >(PyObject *)
 inline
 void pickleSave(Advocate & adv, PyObject * pyObj, const String attributName = "pyInstance_")
 {
+  if (!pyObj)
+    throw InternalException(HERE) << "pickleSave: pyObj is NULL";
+
   // try to use dill
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
-  if (pickleModule.get() == NULL)
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill"));
+  if (pickleModule.isNull())
   {
     // fallback to pickle
     PyErr_Clear();
-    pickleModule = PyImport_ImportModule("pickle"); // new reference
+    pickleModule = PyImport_ImportModule("pickle");
   }
-  assert(pickleModule.get());
+  if (pickleModule.isNull())
+    handleException();
 
-  PyObject * pickleDict = PyModule_GetDict(pickleModule.get());
-  assert(pickleDict);
+  ScopedPyObjectPointer dumpsMethod(PyObject_GetAttrString(pickleModule.get(), "dumps"));
+  if (dumpsMethod.isNull())
+    throw InternalException(HERE) << "pickleSave: cannot access dumps()";
 
-  PyObject * dumpsMethod = PyDict_GetItemString(pickleDict, "dumps");
-  assert(dumpsMethod);
-  if (! PyCallable_Check(dumpsMethod))
-    throw InternalException(HERE) << "Python 'pickle' module has no 'dumps' method";
+  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(dumpsMethod.get(), pyObj, NULL));
+  if (rawDump.isNull())
+    handleException();
 
-  assert(pyObj);
-  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(dumpsMethod, pyObj, NULL)); // new reference
+  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64"));
+  if (base64Module.isNull())
+    handleException();
 
-  handleException();
-  assert(rawDump.get());
+  ScopedPyObjectPointer b64encodeMethod(PyObject_GetAttrString(base64Module.get(), "standard_b64encode"));
+  if (b64encodeMethod.isNull())
+    throw InternalException(HERE) << "pickleSave: cannot access standard_b64encode()";
 
-  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64")); // new reference
-  assert(base64Module.get());
-
-  PyObject * base64Dict = PyModule_GetDict(base64Module.get());
-  assert(base64Dict);
-
-  PyObject * b64encodeMethod = PyDict_GetItemString(base64Dict, "standard_b64encode");
-  assert(b64encodeMethod);
-  if (! PyCallable_Check(b64encodeMethod))
-    throw InternalException(HERE) << "Python 'base64' module has no 'standard_b64encode' method";
-
-  ScopedPyObjectPointer base64Dump(PyObject_CallFunctionObjArgs(b64encodeMethod, rawDump.get(), NULL)); // new reference
-  handleException();
-  assert(base64Dump.get());
+  ScopedPyObjectPointer base64Dump(PyObject_CallFunctionObjArgs(b64encodeMethod.get(), rawDump.get(), NULL));
+  if (base64Dump.isNull())
+    handleException();
 
   // convert string into Indices to benefit from h5
   UnsignedInteger size = PyBytes_Size(base64Dump.get());
   char * content = PyBytes_AsString(base64Dump.get());
-  assert(content);
+  if (!content)
+    handleException();
   Indices pyInstanceIndices(size);
   for (UnsignedInteger j = 0; j < size; ++j)
     pyInstanceIndices[j] = content[j];
@@ -1877,46 +1873,42 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = 
   std::vector<char> content(size);
   for (UnsignedInteger j = 0; j < size; ++j)
     content[j] = pyInstanceIndices[j];
+
   ScopedPyObjectPointer base64Dump(PyBytes_FromStringAndSize(content.data(), size));
-  assert(base64Dump.get());
+  if (base64Dump.isNull())
+    throw InternalException(HERE) << "pickleLoad: cannot convert to bytes";
 
-  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64")); // new reference
-  assert(base64Module.get());
+  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64"));
+  if (base64Module.isNull())
+    handleException();
 
-  PyObject * base64Dict = PyModule_GetDict(base64Module.get());
-  assert(base64Dict);
+  ScopedPyObjectPointer b64decodeMethod(PyObject_GetAttrString(base64Module.get(), "standard_b64decode"));
+  if (b64decodeMethod.isNull())
+    throw InternalException(HERE) << "pickleLoad: cannot access standard_b64encode()";
 
-  PyObject * b64decodeMethod = PyDict_GetItemString(base64Dict, "standard_b64decode");
-  assert(b64decodeMethod);
-  if (! PyCallable_Check(b64decodeMethod))
-    throw InternalException(HERE) << "Python 'base64' module has no 'standard_b64decode' method";
-
-  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(b64decodeMethod, base64Dump.get(), NULL)); // new reference
-  handleException();
-  assert(rawDump.get());
+  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(b64decodeMethod.get(), base64Dump.get(), NULL));
+  if (rawDump.isNull())
+    handleException();
 
   // try to use dill
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill"));
   if (pickleModule.get() == NULL)
   {
     // fallback to pickle
     PyErr_Clear();
-    pickleModule = PyImport_ImportModule("pickle"); // new reference
+    pickleModule = PyImport_ImportModule("pickle");
   }
-  assert(pickleModule.get());
+  if (pickleModule.isNull())
+    handleException();
 
-  PyObject * pickleDict = PyModule_GetDict(pickleModule.get());
-  assert(pickleDict);
-
-  PyObject * loadsMethod = PyDict_GetItemString(pickleDict, "loads");
-  assert(loadsMethod);
-  if (! PyCallable_Check(loadsMethod))
-    throw InternalException(HERE) << "Python 'pickle' module has no 'loads' method";
+  ScopedPyObjectPointer loadsMethod(PyObject_GetAttrString(pickleModule.get(), "loads"));
+  if (loadsMethod.isNull())
+    throw InternalException(HERE) << "pickleLoad: cannot access loads()";
 
   Py_XDECREF(pyObj);
-  pyObj = PyObject_CallFunctionObjArgs(loadsMethod, rawDump.get(), NULL); // new reference
-  handleException();
-  assert(pyObj);
+  pyObj = PyObject_CallFunctionObjArgs(loadsMethod.get(), rawDump.get(), NULL);
+  if (!pyObj)
+    handleException();
 }
 
 
@@ -1925,19 +1917,16 @@ inline
 ScopedPyObjectPointer deepCopy(PyObject * pyObj)
 {
   ScopedPyObjectPointer copyModule(PyImport_ImportModule("copy"));
-  assert(copyModule.get());
+  if (copyModule.isNull())
+    handleException();
 
-  PyObject * copyDict = PyModule_GetDict(copyModule.get());
-  assert(copyDict);
+  ScopedPyObjectPointer deepCopyMethod(PyObject_GetAttrString(copyModule.get(), "deepcopy"));
+  if (deepCopyMethod.isNull())
+    throw InternalException(HERE) << "cannot access deepcopy()";
 
-  PyObject * deepCopyMethod = PyDict_GetItemString(copyDict, "deepcopy");
-  assert(deepCopyMethod );
-
-  if (!PyCallable_Check(deepCopyMethod))
-    throw InternalException(HERE) << "Python 'copy' module has no 'deepcopy' method";
-
-  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod, pyObj, NULL));
-  handleException();
+  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod.get(), pyObj, NULL));
+  if (pyObjDeepCopy.isNull())
+    handleException();
   return pyObjDeepCopy;
 }
 
