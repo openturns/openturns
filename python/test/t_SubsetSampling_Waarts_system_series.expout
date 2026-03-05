@@ -5,8 +5,7 @@
 Pf estimation = 2.21600e-03
 Pf Variance estimation = 2.21109e-09
 CoV = 0.02122
-90% Confidence Interval = 1.54689e-04
-CI at 90% =[ 2.13866e-03 ; 2.29334e-03 ]
+90% Confidence Interval = [0.00213866, 0.00229334]
 Limit state calls = 1000000
 ************************************************************************************************
 
@@ -16,8 +15,7 @@ Limit state calls = 1000000
 Pf estimation = 2.10600e-03
 Pf Variance estimation = 1.78738e-08
 CoV = 0.06348
-90% Confidence Interval = 4.39810e-04
-CI at 90% =[ 1.88609e-03 ; 2.32591e-03 ]
+90% Confidence Interval = [0.00188609, 0.00232591]
 Limit state calls = 30000
 ************************************************************************************************
 

@@ -176,20 +176,9 @@ graph.setLogScale(ot.GraphImplementation.LOGX)
 view = otv.View(graph)
 
 # %%
-# We see that the 95% confidence interval becomes smaller and smaller and stabilizes at the end of the simulation.
-#
-# In order to compute the confidence interval, we use the `getConfidenceLength` method, which returns the length of the interval.
-# In order to compute the bounds of the interval, we divide this length by 2.
-
-# %%
-alpha = 0.05
-
-# %%
-pflen = result.getConfidenceLength(1 - alpha)
-print(
-    "%.2f%% confidence interval = [%f,%f]"
-    % ((1 - alpha) * 100, probability - pflen / 2, probability + pflen / 2)
-)
+# The confidence interval of level :math:`95\%` is:
+ci95 = result.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)
+print("Confidence interval (0.95) = ", ci95)
 
 # %%
 # This interval is consistent with the exact probability :math:`P_f=0.02920`.
