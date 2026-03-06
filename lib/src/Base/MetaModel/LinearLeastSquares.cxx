@@ -79,6 +79,8 @@ void LinearLeastSquares::run()
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
   const UnsignedInteger coefficientsDimension = 1 + inputDimension;
+  /* Center the data using the empirical mean */
+  const Point center(dataIn_.computeMean());
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -87,8 +89,8 @@ void LinearLeastSquares::run()
   for(UnsignedInteger sampleIndex = 0; sampleIndex < dataInSize; ++sampleIndex)
   {
     /* build the componentMatrix */
-    /* get the current sample x */
-    const Point currentSample(dataIn_[sampleIndex]);
+    /* get the current centered sample x */
+    const Point currentSample(dataIn_[sampleIndex] - center);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -121,7 +123,6 @@ void LinearLeastSquares::run()
       ++coefficientsIndex;
     } // linear term
   } // output components
-  const Point center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
   Function responseSurface;
   responseSurface.setEvaluation(new LinearEvaluation(center, constant_, linear_));
