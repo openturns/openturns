@@ -106,8 +106,12 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sca
   }
   LinearLeastSquares lls(y, z);
   lls.run();
-  const Scalar a0 = lls.getConstant()[0];
+  // lls gives a relation of the form z = a * (y - c) + b
+  // and we need to rewrite it as z = a1 * y + a0
+  // so a1 = a and a0 = b - a1 * c
+  const Scalar c = lls.getCenter()[0];
   const Scalar a1 = lls.getLinear()(0, 0);
+  const Scalar a0 = lls.getConstant()[0] - a1 * c;
   const Scalar beta = std::exp(-a0 / a1);
   const Scalar alpha = -a1;
   return Pareto(beta, alpha, gamma);

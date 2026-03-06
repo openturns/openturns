@@ -308,8 +308,12 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
   }
   LinearLeastSquares leastSquares(dataIn, dataOut);
   leastSquares.run();
-  const Scalar a0 = leastSquares.getConstant()[0];
+  // leastSquares gives a relation of the form z = a * (y - c) + b
+  // and we need to rewrite it as z = a1 * y + a0
+  // so a1 = a and a0 = b - a1 * c
+  const Scalar c = leastSquares.getCenter()[0];
   const Scalar a1 = leastSquares.getLinear()(0, 0);
+  const Scalar a0 = leastSquares.getConstant()[0] - a1 * c;
   const Scalar sigmaLog = 1.0 / a1;
   const Scalar muLog = -a0 * sigmaLog;
   return LogNormal(muLog, sigmaLog, gamma);
