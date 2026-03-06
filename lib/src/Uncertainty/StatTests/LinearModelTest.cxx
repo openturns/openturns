@@ -28,7 +28,6 @@
 #include "openturns/Normal.hxx"
 #include "openturns/ChiSquare.hxx"
 #include "openturns/FisherSnedecor.hxx"
-#include "openturns/LinearLeastSquares.hxx"
 #include "openturns/LinearBasisFactory.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/Log.hxx"

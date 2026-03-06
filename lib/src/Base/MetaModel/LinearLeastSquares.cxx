@@ -79,6 +79,8 @@ void LinearLeastSquares::run()
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
   const UnsignedInteger coefficientsDimension = 1 + inputDimension;
+  /* Center the data using the empirical mean */
+  center_ = dataIn_.computeMean();
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -87,8 +89,8 @@ void LinearLeastSquares::run()
   for(UnsignedInteger sampleIndex = 0; sampleIndex < dataInSize; ++sampleIndex)
   {
     /* build the componentMatrix */
-    /* get the current sample x */
-    const Point currentSample(dataIn_[sampleIndex]);
+    /* get the current centered sample x */
+    const Point currentSample(dataIn_[sampleIndex] - center_);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -121,12 +123,11 @@ void LinearLeastSquares::run()
       ++coefficientsIndex;
     } // linear term
   } // output components
-  const Point center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
   Function responseSurface;
-  responseSurface.setEvaluation(new LinearEvaluation(center, constant_, linear_));
+  responseSurface.setEvaluation(new LinearEvaluation(center_, constant_, linear_));
   responseSurface.setGradient(new ConstantGradient(linear_));
-  responseSurface.setHessian(new ConstantHessian(SymmetricTensor(center.getDimension(), constant_.getDimension())));
+  responseSurface.setHessian(new ConstantHessian(SymmetricTensor(center_.getDimension(), constant_.getDimension())));
   result_ = MetaModelResult(dataIn_, dataOut_, responseSurface);
 }
 
@@ -158,6 +159,12 @@ void LinearLeastSquares::setDataOut(const Sample & dataOut)
   dataOut_ = dataOut;
 }
 
+/* Center accessor */
+Point LinearLeastSquares::getCenter() const
+{
+  return center_;
+}
+
 /* Constant accessor */
 Point LinearLeastSquares::getConstant() const
 {
@@ -185,6 +192,7 @@ void LinearLeastSquares::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("result_", result_);
+  adv.saveAttribute("center_", center_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
 }
@@ -196,6 +204,10 @@ void LinearLeastSquares::load(Advocate & adv)
   adv.loadAttribute("result_", result_);
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);
+  if (adv.hasAttribute("center_"))
+    adv.loadAttribute("center_", center_);
+  else
+    center_ = Point(linear_.getNbRows());
 }
 
 END_NAMESPACE_OPENTURNS
