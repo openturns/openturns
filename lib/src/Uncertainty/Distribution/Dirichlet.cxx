@@ -160,7 +160,7 @@ void Dirichlet::initializeIntegration() const
       for (UnsignedInteger i = 0; i < dimension; ++i)
       {
         Point marginalWeights;
-        Point marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
+        Point marginalNodes(JacobiFactory(1.0, theta_[i]).getNodesAndWeights(N, marginalWeights));
         integrationNodes_.add(marginalNodes);
         integrationWeights_.add(marginalWeights);
       }

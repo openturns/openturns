@@ -94,5 +94,15 @@ Point OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(const UnsignedInt
   return getImplementation()->getNodesAndWeights(n, weights);
 }
 
+/* Affine coefficients accessors */
+Scalar OrthogonalUniVariatePolynomialFamily::getA() const
+{
+  return getImplementation()->getA();
+}
+
+Scalar OrthogonalUniVariatePolynomialFamily::getB() const
+{
+  return getImplementation()->getB();
+}
 
 END_NAMESPACE_OPENTURNS

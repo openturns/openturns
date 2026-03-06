@@ -548,6 +548,7 @@ class View:
 
                 # https://github.com/matplotlib/matplotlib/issues/11460
                 if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
+                    scatter_kw["marker"] = "s"
                     scatter_kw["s"] = 1
                     scatter_kw["linewidths"] = 0.0
                 lines = self._ax[0].scatter(x, y, **scatter_kw)

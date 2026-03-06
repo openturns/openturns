@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/GaussProductExperiment.hxx"
-#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -94,9 +94,9 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
   const UnsignedInteger dimension = distribution.getDimension();
   if (dimension != marginalSizes_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal sizes =" << marginalSizes_.getSize() << ".";
   collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
-  // Here we use the StandardDistributionPolynomialFactory class directly in order to benefit from the possible mapping to dedicated factories
+  // Here we use the UniVariateDistributionPolynomialFactory class directly in order to benefit from the possible mapping to dedicated factories
   // The affine transform between the marginals and their standard representatives will be applied in computeNodesAndWeights()
-  for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(StandardDistributionPolynomialFactory(distribution.getMarginal(i)));
+  for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(UniVariateDistributionPolynomialFactory(distribution.getMarginal(i)));
   WeightedExperimentImplementation::setDistribution(distribution);
   isAlreadyComputedNodesAndWeights_ = false;
 }
@@ -177,24 +177,7 @@ void GaussProductExperiment::computeNodesAndWeights() const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger dI = marginalSizes_[i];
-    const Distribution marginalI(distribution_.getMarginal(i));
-    const Distribution standardMarginalI(marginalI.getStandardRepresentative());
-    // Here we compute the affine transform mapping the standard marginal into the marginal
-    // alpha -> a
-    // beta  -> b
-    // x     -> y
-    // (y - a) / (b - a) = (x - alpha) / (beta - alpha)
-    // y = a + (x - alpha) * (b - a) / (beta - alpha)
-    const Scalar alpha = standardMarginalI.getRange().getLowerBound()[0];
-    const Scalar beta  = standardMarginalI.getRange().getUpperBound()[0];
-    const Scalar a     = marginalI.getRange().getLowerBound()[0];
-    const Scalar b     = marginalI.getRange().getUpperBound()[0];
-    const Scalar m = (b - a) / (beta - alpha);
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
-    // Transform the nodes if needed
-    if (!(a == 0.0 && m == 1.0))
-      for (UnsignedInteger j = 0; j < marginalNodes[i].getSize(); ++j)
-        marginalNodes[i][j] = a + m * (marginalNodes[i][j] - alpha);
   }
   // Second, multiplex everything
   nodes_ = Sample(size_, dimension);

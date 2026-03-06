@@ -43,10 +43,15 @@ public:
   /** Default constructor: (1, 1) order Jacobi polynomial associated with the default Beta() = Beta(2, 4, -1, 1) distribution which is equal to the Epanechnikov distribution */
   JacobiFactory();
 
-  /** Parameter constructor: (alpha, beta) is the order of the Jacobi polynomial, associated with the Beta(beta + 1, alpha + beta + 2, -1, 1) distribution in the ANALYSIS parameter set or to the Beta(alpha, beta, -1, 1) distribution in the PROBABILITY parameter set */
+  /** Parameter constructor: (alpha, beta) are the standard Beta shape parameters, associated with the Beta(alpha, beta, -1, 1) distribution */
+  JacobiFactory(const Scalar alpha,
+                const Scalar beta);
+
+  /** Constructor with arbitrary Beta shape parameters and bounds */
   JacobiFactory(const Scalar alpha,
                 const Scalar beta,
-                const ParameterSet parameterization = ANALYSIS);
+                const Scalar a,
+                const Scalar b);
 
   /** Virtual constructor */
   JacobiFactory * clone() const override;

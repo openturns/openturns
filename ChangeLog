@@ -27,6 +27,8 @@
  * LeastSquaresEquationsSolver moved out of experimental
  * RatioOfUniforms moved out of experimental
  * LOLAVoronoi moved out of experimental
+ * Deprecated StandardDistributionPolynomialFactory class
+ * UniVariateDistributionPolynomialFactory moved to experimental
 
 === Documentation ===
 

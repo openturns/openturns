@@ -35,20 +35,34 @@ static const Factory<LaguerreFactory> Factory_LaguerreFactory;
 
 /* Default constructor, associated with the default Gamma distribution which is equal to the Exponential distribution */
 LaguerreFactory::LaguerreFactory()
-  : OrthogonalUniVariatePolynomialFactory(Gamma()), k_(0.0)
+  : OrthogonalUniVariatePolynomialFactory(Gamma())
+  , k_(1.0)
 {
   initializeCache();
 }
 
 
-/* Parameter constructor: k is the order of the generalized Laguerre polynomial, associated with the Gamma(k+1, 1, 0) distribution */
+/* Parameter constructor: k is the shape parameter of the Gamma distribution */
+LaguerreFactory::LaguerreFactory(const Scalar k)
+  : OrthogonalUniVariatePolynomialFactory(Gamma(k, 1.0, 0.0))
+  , k_(k)
+{
+  initializeCache();
+}
+
+
+/* Constructor with arbitrary Gamma parameters */
 LaguerreFactory::LaguerreFactory(const Scalar k,
-                                 const ParameterSet parameterization)
-  : OrthogonalUniVariatePolynomialFactory( (parameterization == ANALYSIS ? Gamma(k + 1.0, 1.0, 0.0) : Gamma(k, 1.0, 0.0) ) ),
-    k_(k)
+                                 const Scalar lambda,
+                                 const Scalar gamma)
+  : OrthogonalUniVariatePolynomialFactory(Gamma(k, lambda, gamma))
+  , k_(k)
 {
+  setA(1.0 / lambda);
+  setB(gamma);
   initializeCache();
 }
+
 
 /* Virtual constructor */
 LaguerreFactory * LaguerreFactory::clone() const
@@ -64,16 +78,16 @@ LaguerreFactory::Coefficients LaguerreFactory::getRecurrenceCoefficients(const U
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const Scalar factor = sqrt(k_ + 1.0);
+    const Scalar factor = sqrt(k_);
     recurrenceCoefficients[0] = 1.0 / factor;
     recurrenceCoefficients[1] = -factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const Scalar factor = 1.0 / sqrt((n + 1.0) * (n + 1.0 + k_));
+  const Scalar factor = 1.0 / sqrt((n + 1.0) * (n + k_));
   recurrenceCoefficients[0] = factor;
-  recurrenceCoefficients[1] = -(2.0 * n + 1.0 + k_) * factor;
-  recurrenceCoefficients[2] = -sqrt((n + k_) * n) * factor;
+  recurrenceCoefficients[1] = -(2.0 * n + k_) * factor;
+  recurrenceCoefficients[2] = -sqrt((n + k_ - 1.0) * n) * factor;
   return recurrenceCoefficients;
 }
 
@@ -105,6 +119,13 @@ void LaguerreFactory::load(Advocate & adv)
 {
   OrthogonalUniVariatePolynomialFactory::load(adv);
   adv.loadAttribute( "k_", k_ );
+  // Starting from version 1.28 the stored value is the Gamma distribution
+  // shape parameter instead of the Laguerre polynomial order.
+  // Conversion: k = alphaOrder + 1
+  if (adv.getStudyVersion() < 102800)
+  {
+    k_ += 1.0;
+  }
 }
 
 END_NAMESPACE_OPENTURNS

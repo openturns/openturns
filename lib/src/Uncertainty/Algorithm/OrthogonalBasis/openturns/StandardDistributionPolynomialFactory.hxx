@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OrthogonalUniVariatePolynomialStandardDistribution polynomial factory
+ *  @brief OrthogonalUniVariatePolynomialStandardDistribution polynomial factory (deprecated)
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -21,28 +21,19 @@
 #ifndef OPENTURNS_STANDARDDISTRIBUTIONPOLYNOMIALFACTORY_HXX
 #define OPENTURNS_STANDARDDISTRIBUTIONPOLYNOMIALFACTORY_HXX
 
-#include <map>
-
-#include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
-#include "openturns/OrthonormalizationAlgorithm.hxx"
-#include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
  * @class StandardDistributionPolynomialFactory
- *
- * OrthogonalUniVariatePolynomialStandardDistribution polynomial factory
+ * @deprecated Use UniVariateDistributionPolynomialFactory instead.
  */
-
 class OT_API StandardDistributionPolynomialFactory
-  : public OrthogonalUniVariatePolynomialFactory
+  : public UniVariateDistributionPolynomialFactory
 {
   CLASSNAME
 public:
-
 
   /** Default constructor */
   StandardDistributionPolynomialFactory();
@@ -56,44 +47,7 @@ public:
   /** Virtual constructor */
   StandardDistributionPolynomialFactory * clone() const override;
 
-  /** Calculate the coefficients of recurrence a0, a1, a2 such that
-      Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
-
-  /** hasSpecificFamily_ accessor */
-  Bool getHasSpecificFamily() const;
-
-  /** orthonormalizationAlgorithm_ accessor */
-  OrthonormalizationAlgorithm getOrthonormalizationAlgorithm() const;
-
-  /** specificFamily_ accessor */
-  OrthogonalUniVariatePolynomialFamily getSpecificFamily() const;
-
-  /** String converter */
-  String __repr__() const override;
-
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-
-private:
-
-  /** Check the existence of a specific family more efficient for the given measure */
-  void checkSpecificFamily();
-
-  /** Algorithm used to perform the orthonormalization */
-  OrthonormalizationAlgorithm orthonormalizationAlgorithm_;
-
-  /** Specific factory if a special case is recognized */
-  OrthogonalUniVariatePolynomialFamily specificFamily_;
-
-  /** Flag to tell if a specific family is available */
-  Bool hasSpecificFamily_;
-
 } ; /* class StandardDistributionPolynomialFactory */
-
 
 END_NAMESPACE_OPENTURNS
 

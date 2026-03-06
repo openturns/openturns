@@ -29,36 +29,39 @@ CLASSNAMEINIT(JacobiFactory)
 
 static const Factory<JacobiFactory> Factory_JacobiFactory;
 
-/* Default constructor: (1, 1) order Jacobi polynomial associated with the default Beta() = Beta(2, 4, -1, 1) distribution which is equal to the Epanechnikov distribution */
+/* Default constructor: (1, 1) order Jacobi polynomial associated with the default Beta() = Beta(2, 2, -1, 1) distribution which is equal to the Epanechnikov distribution */
 JacobiFactory::JacobiFactory()
   : OrthogonalUniVariatePolynomialFactory(Beta())
-  , alpha_(1.0)
-  , beta_(1.0)
+  , alpha_(2.0)
+  , beta_(2.0)
 {
   initializeCache();
 }
 
 
-/* Parameter constructor: (alpha, beta) is the order of the Jacobi polynomial, associated with the Beta(beta + 1, alpha + beta + 2, -1, 1) distribution in the ANALYSIS parameter set or to the Beta(alpha, beta, -1, 1) distribution in the PROBABILITY parameter set */
+/* Parameter constructor: (alpha, beta) are the standard Beta shape parameters */
+JacobiFactory::JacobiFactory(const Scalar alpha,
+                             const Scalar beta)
+  : OrthogonalUniVariatePolynomialFactory(Beta(alpha, beta, -1.0, 1.0))
+  , alpha_(alpha)
+  , beta_(beta)
+{
+  initializeCache();
+}
+
+
+/* Constructor with arbitrary Beta shape parameters and bounds */
 JacobiFactory::JacobiFactory(const Scalar alpha,
                              const Scalar beta,
-                             const ParameterSet parameterization)
-  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + 1.0, -1.0, 1.0) : Beta(alpha, beta - alpha, -1.0, 1.0)))
-  , alpha_(0.0)
-  , beta_(0.0)
+                             const Scalar a,
+                             const Scalar b)
+  : OrthogonalUniVariatePolynomialFactory(Beta(alpha, beta, a, b))
+  , alpha_(alpha)
+  , beta_(beta)
 {
-  if (parameterization == ANALYSIS)
-  {
-    alpha_ = alpha;
-    beta_ = beta;
-  }
-  else
-  {
-    alpha_ = beta - alpha - 1.0;
-    beta_ = alpha - 1.0;
-  }
   initializeCache();
 }
+
 
 /* Virtual constructor */
 JacobiFactory * JacobiFactory::clone() const
@@ -74,24 +77,24 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const Scalar factor = 0.5 * sqrt((alpha_ + beta_ + 3.0) / ((alpha_ + 1.0) * (beta_ + 1.0)));
-    recurrenceCoefficients[0] = (alpha_ + beta_ + 2.0) * factor;
+    const Scalar factor = 0.5 * sqrt((alpha_ + beta_ + 1.0) / (alpha_ * beta_));
+    recurrenceCoefficients[0] = (alpha_ + beta_) * factor;
     // To avoid spurious -0.0
-    if (alpha_ != beta_) recurrenceCoefficients[1] = (alpha_ - beta_) * factor;
+    if (alpha_ != beta_) recurrenceCoefficients[1] = (beta_ - alpha_) * factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const Scalar nAlphaP1 = n + alpha_ + 1;
-  const Scalar nBetaP1 = n + beta_ + 1;
+  const Scalar nAlphaP1 = n + beta_;
+  const Scalar nBetaP1 = n + alpha_;
   const Scalar twoNAlphaBetaP2 = nAlphaP1 + nBetaP1;
-  const Scalar factor1 = (twoNAlphaBetaP2 + 1) / ((n + 1) * nAlphaP1 * nBetaP1 * (nAlphaP1 + beta_));
-  const Scalar factor2 = 0.5 * sqrt((twoNAlphaBetaP2 - 1) * factor1);
+  const Scalar factor1 = (twoNAlphaBetaP2 + 1.0) / ((n + 1.0) * nAlphaP1 * nBetaP1 * (nAlphaP1 + alpha_ - 1.0));
+  const Scalar factor2 = 0.5 * sqrt((twoNAlphaBetaP2 - 1.0) * factor1);
   recurrenceCoefficients[0] = factor2 * twoNAlphaBetaP2;
   // To avoid spurious -0.0
-  if (alpha_ != beta_) recurrenceCoefficients[1] = factor2 * (alpha_ - beta_) * (alpha_ + beta_) / (twoNAlphaBetaP2 - 2);
+  if (alpha_ != beta_) recurrenceCoefficients[1] = factor2 * (beta_ - alpha_) * (alpha_ + beta_ - 2.0) / (twoNAlphaBetaP2 - 2.0);
   if (n == 1)
   {
-    const Scalar epsilon = alpha_ + beta_ + 1.0;
+    const Scalar epsilon = alpha_ + beta_ - 1.0;
     // The case where |epsilon| << 1 leads to an indeterminate form 0/0
     // when n==1, which is the only case where such a problem can occur.
     // We use a series expansion, the threshold 1.0e-8 insures that the
@@ -99,11 +102,11 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
     // Here we know that alpha>-1, beta>-1 so alpha+beta+1=0 imposes beta<0
     if (std::abs(epsilon) < 1.0e-8)
     {
-      recurrenceCoefficients[2] = (1.5 * epsilon / (-1.0 + beta_) + beta_ * (3.0 - 3.125 * epsilon)) * sqrt(2.0 * (1.0 + beta_) / (beta_ * (-1.0 + beta_) * (2.0 + beta_)));
+      recurrenceCoefficients[2] = (1.5 * epsilon / (alpha_ - 2.0) + (alpha_ - 1.0) * (3.0 - 3.125 * epsilon)) * sqrt(2.0 * alpha_ / ((alpha_ - 1.0) * (alpha_ - 2.0) * (alpha_ + 1.0)));
       return recurrenceCoefficients;
     }
   }
-  recurrenceCoefficients[2] = -twoNAlphaBetaP2 / (twoNAlphaBetaP2 - 2) * sqrt((nAlphaP1 - 1) * (nBetaP1 - 1) * (nAlphaP1 + beta_ - 1) * n * factor1 / (twoNAlphaBetaP2 - 3));
+  recurrenceCoefficients[2] = -twoNAlphaBetaP2 / (twoNAlphaBetaP2 - 2.0) * sqrt((nAlphaP1 - 1.0) * (nBetaP1 - 1.0) * (nAlphaP1 + alpha_ - 2.0) * n * factor1 / (twoNAlphaBetaP2 - 3.0));
   return recurrenceCoefficients;
 }
 
@@ -144,6 +147,15 @@ void JacobiFactory::load(Advocate & adv)
   OrthogonalUniVariatePolynomialFactory::load(adv);
   adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "beta_", beta_ );
+  // Starting from version 1.28 the stored values are the Beta distribution
+  // shape parameters instead of the Jacobi polynomial orders.
+  // Conversion: r = beta + 1, t = alpha + 1
+  if (adv.getStudyVersion() < 102800)
+  {
+    const Scalar alphaOld = alpha_;
+    alpha_ = beta_ + 1.0;
+    beta_ = alphaOld + 1.0;
+  }
 }
 
 END_NAMESPACE_OPENTURNS

@@ -42,6 +42,15 @@ LegendreFactory::LegendreFactory()
 }
 
 
+/* Constructor with arbitrary uniform bounds */
+LegendreFactory::LegendreFactory(const Scalar a,
+                                 const Scalar b)
+  : OrthogonalUniVariatePolynomialFactory(Uniform(a, b))
+{
+  initializeCache();
+}
+
+
 /* Virtual constructor */
 LegendreFactory * LegendreFactory::clone() const
 {
@@ -92,7 +101,10 @@ Point LegendreFactory::getNodesAndWeights(const UnsignedInteger n,
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
   const GaussLegendre algo(Indices(1, n));
   weights = algo.getWeights();
-  return (2.0 * algo.getNodes().asPoint() - Point(n, 1.0));
+  const Point nodesOnZeroOne(algo.getNodes().asPoint());
+  const Scalar a = measure_.getRange().getLowerBound()[0];
+  const Scalar b = measure_.getRange().getUpperBound()[0];
+  return Point(n, a) + (b - a) * nodesOnZeroOne;
 }
 
 /* Method save() stores the object through the StorageManager */

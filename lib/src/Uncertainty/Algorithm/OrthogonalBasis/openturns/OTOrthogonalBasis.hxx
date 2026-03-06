@@ -40,6 +40,7 @@
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthonormalizationAlgorithm.hxx"
 #include "openturns/OrthonormalizationAlgorithmImplementation.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/OrthogonalUniVariateFunctionFactory.hxx"

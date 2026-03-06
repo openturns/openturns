@@ -3,8 +3,6 @@ R"RAW(Hermite specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Normal` distribution.
 
-Notes
------
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
 
@@ -25,7 +23,7 @@ read:
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -35,4 +33,8 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 X
--0.707107 + 0.707107 * X^2)RAW"
+-0.707107 + 0.707107 * X^2
+
+>>> polynomial_factory = ot.HermiteFactory(1.0, 2.0)
+>>> print(polynomial_factory)
+class=HermiteFactory measure=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1])RAW"

@@ -31,14 +31,6 @@ int main(int, char *[])
 
   try
   {
-    {
-      JacobiFactory jacobi(2.5, 3.5, JacobiFactory::PROBABILITY);
-      fullprint << "jacobi=" << jacobi << std::endl;
-    }
-    {
-      JacobiFactory jacobi(2.5, 3.5, JacobiFactory::ANALYSIS);
-      fullprint << "jacobi=" << jacobi << std::endl;
-    }
     JacobiFactory jacobi(2.5, 3.5);
     fullprint << "jacobi=" << jacobi << std::endl;
     for (UnsignedInteger i = 0; i < 10; ++i)
