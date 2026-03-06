@@ -1939,6 +1939,24 @@ inline void SignalHandler(int /*signum*/)
 }
 
 
+class ScopedSignalHandler
+{
+public:
+  ScopedSignalHandler()
+  {
+    previousHandler_ = std::signal(SIGINT, SignalHandler);
+  }
+
+  ~ScopedSignalHandler()
+  {
+    std::signal(SIGINT, previousHandler_); // restore previous handler
+  }
+
+private:
+  void (*previousHandler_)(int) = nullptr;
+};
+
+
 // substitute for SWIG_Python_AppendOutput as API broke with SWIG 4.3
 // and it seems we cannot use SWIG_AppendOutput instead
 inline PyObject* AppendOutput(PyObject* result, PyObject* obj)
