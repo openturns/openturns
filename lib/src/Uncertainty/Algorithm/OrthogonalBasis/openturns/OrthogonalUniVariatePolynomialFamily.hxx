@@ -73,6 +73,10 @@ public:
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
+  /** Affine coefficients accessors */
+  Scalar getA() const;
+  Scalar getB() const;
+
 protected:
 
 private:

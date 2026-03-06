@@ -36,6 +36,16 @@ ChebychevFactory::ChebychevFactory()
   initializeCache();
 }
 
+
+/* Constructor with arbitrary Arcsine bounds */
+ChebychevFactory::ChebychevFactory(const Scalar a,
+                                   const Scalar b)
+  : OrthogonalUniVariatePolynomialFactory(Arcsine(a, b))
+{
+  initializeCache();
+}
+
+
 /* Virtual constructor */
 ChebychevFactory * ChebychevFactory::clone() const
 {
@@ -66,9 +76,11 @@ ChebychevFactory::Coefficients ChebychevFactory::getRecurrenceCoefficients(const
 /* Roots of the polynomial of degree n */
 Point ChebychevFactory::getRoots(const UnsignedInteger n) const
 {
+  const Scalar a = measure_.getRange().getLowerBound()[0];
+  const Scalar b = measure_.getRange().getUpperBound()[0];
   Point roots(n);
   for (UnsignedInteger i = 0; i < n; ++i)
-    roots[i] = std::cos((i + 0.5) * M_PI / n);
+    roots[i] = 0.5 * (a + b) + 0.5 * (b - a) * std::cos((i + 0.5) * M_PI / n);
   return roots;
 }
 

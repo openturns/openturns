@@ -46,7 +46,7 @@ where :math:`n` and :math:`p` are the parameters of the
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------

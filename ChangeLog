@@ -33,6 +33,8 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
+ * Deprecated StandardDistributionPolynomialFactory class
+ * UniVariateDistributionPolynomialFactory moved to experimental
 
 === Documentation ===
 

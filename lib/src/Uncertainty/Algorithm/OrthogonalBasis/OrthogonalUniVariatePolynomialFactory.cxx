@@ -38,7 +38,6 @@ static const Factory<OrthogonalUniVariatePolynomialFactory> Factory_OrthogonalUn
 OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory()
   : PersistentObject()
   , measure_()
-  , coefficientsCache_(0)
   , recurrenceCoefficientsCache_(0, 3)
   , polynomialsCache_(0)
 {
@@ -50,12 +49,19 @@ OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory()
 OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory(const Distribution & measure)
   : PersistentObject()
   , measure_(measure)
-  , coefficientsCache_(0)
   , recurrenceCoefficientsCache_(0, 3)
   , polynomialsCache_(0)
 {
   // The derived class will have to call initializeCaches().
   if (measure.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error, expected a distribution of dimension 1, got dimension=" << measure.getDimension();
+  const Interval initialRange(measure.getRange());
+  const Scalar ai = initialRange.getLowerBound()[0];
+  const Scalar bi = initialRange.getUpperBound()[0];
+  const Interval standardRange(measure.getStandardRepresentative().getRange());
+  const Scalar as = standardRange.getLowerBound()[0];
+  const Scalar bs = standardRange.getUpperBound()[0];
+  a_ = (bs - as) / (bi - ai);
+  b_ = (as * bi - bs * ai) / (bi - ai);
 }
 
 
@@ -80,48 +86,11 @@ OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(cons
   const UnsignedInteger cacheSize = polynomialsCache_.getSize();
   if (degree < cacheSize) return polynomialsCache_[degree];
   for (UnsignedInteger i = cacheSize; i <= degree; ++i)
-    polynomialsCache_.add(OrthogonalUniVariatePolynomial(buildRecurrenceCoefficientsCollection(i), buildCoefficients(i)));
+    polynomialsCache_.add(OrthogonalUniVariatePolynomial(buildRecurrenceCoefficientsCollection(i), a_, b_));
   return polynomialsCache_[degree];
 }
 
 
-/* Build the coefficients of the polynomial based on the recurrence coefficients */
-OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomialFactory::buildCoefficients(const UnsignedInteger n) const
-{
-  const UnsignedInteger size = coefficientsCache_.getSize();
-  // If we have already computed the coefficients
-  if (n < size) return coefficientsCache_[n];
-  // Else we have to compute all the coefficients from the last computed coefficients to the needed ones. The cache will be filled in the correct order thanks to the recursive call
-  // Here, n >= 1 as the case n = 0 is already in the cache
-  // Other cases
-  Coefficients coefficientsN(n + 1);
-  Coefficients coefficientsNMinus1(buildCoefficients(n - 1));
-  // Leading term
-  const Coefficients aN(getRecurrenceCoefficients(n - 1));
-  coefficientsN[n] = aN[0] * coefficientsNMinus1[n - 1];
-  // Case n == 1 is special as there is no call to the coefficients of degree n-2
-  // Constant term, case n = 1
-  coefficientsN[0] = aN[1] * coefficientsNMinus1[0];
-  if (n == 1)
-  {
-    coefficientsCache_.add(coefficientsN);
-    return coefficientsN;
-  }
-  // Constant term, case n >= 2
-  Coefficients coefficientsNMinus2(buildCoefficients(n - 2));
-  coefficientsN[0] += aN[2] * coefficientsNMinus2[0];
-  // Leading term
-  coefficientsN[n] = aN[0] * coefficientsNMinus1[n - 1];
-  // Second leading term
-  coefficientsN[n - 1] = aN[0] * coefficientsNMinus1[n - 2] + aN[1] * coefficientsNMinus1[n - 1];
-  // Constant term
-  coefficientsN[0] = aN[1] * coefficientsNMinus1[0] + aN[2] * coefficientsNMinus2[0];
-  // Remaining terms
-  for (UnsignedInteger i = 1; i < n - 1; ++i)
-    coefficientsN[i] = aN[0] * coefficientsNMinus1[i - 1] + aN[1] * coefficientsNMinus1[i] + aN[2] * coefficientsNMinus2[i];
-  coefficientsCache_.add(coefficientsN);
-  return coefficientsN;
-}
 
 /* Build the 3 terms recurrence coefficients up to the needed degree */
 Sample OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const
@@ -149,7 +118,6 @@ OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomi
 /* Cache initialization */
 void OrthogonalUniVariatePolynomialFactory::initializeCache()
 {
-  coefficientsCache_.add(Coefficients(1, 1.0));
   recurrenceCoefficientsCache_.add(getRecurrenceCoefficients(0));
 }
 
@@ -198,18 +166,45 @@ Point OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedIn
   dstev_(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
   weights = Point(n);
-  for (UnsignedInteger i = 0; i < n; ++i) weights[i] = z(0, i) * z(0, i);
+  for (UnsignedInteger i = 0; i < n; ++i)
+  {
+    weights[i] = z(0, i) * z(0, i);
+    d[i] = (d[i] - b_) / a_;
+  }
   return d;
 }
+
+/* Affine coefficients accessors */
+Scalar OrthogonalUniVariatePolynomialFactory::getA() const
+{
+  return a_;
+}
+
+void OrthogonalUniVariatePolynomialFactory::setA(const Scalar a)
+{
+  a_ = a;
+}
+
+Scalar OrthogonalUniVariatePolynomialFactory::getB() const
+{
+  return b_;
+}
+
+void OrthogonalUniVariatePolynomialFactory::setB(const Scalar b)
+{
+  b_ = b;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void OrthogonalUniVariatePolynomialFactory::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "measure_", measure_ );
-  adv.saveAttribute( "coefficientsCache_", coefficientsCache_ );
 
   adv.saveAttribute("recurrenceCoefficientsCache_", recurrenceCoefficientsCache_);
+  adv.saveAttribute( "a_", a_ );
+  adv.saveAttribute( "b_", b_ );  
 }
 
 
@@ -218,7 +213,6 @@ void OrthogonalUniVariatePolynomialFactory::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "measure_", measure_ );
-  adv.loadAttribute( "coefficientsCache_", coefficientsCache_ );
   // recurrenceCoefficientsCache_ changed type from PersistentCollection<Coefficients> to Sample in 1.19
   // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
   if (adv.getStudyVersion() >= 102000)
@@ -233,6 +227,10 @@ void OrthogonalUniVariatePolynomialFactory::load(Advocate & adv)
       for (UnsignedInteger j = 0; j < 3; ++j)
         recurrenceCoefficientsCache_(i, j) = coefficientsColl[i][j];
   }
+  if (adv.hasAttribute("a_"))
+    adv.loadAttribute( "a_", a_ );
+  if (adv.hasAttribute("b_"))
+    adv.loadAttribute( "b_", b_ );
 }
 
 END_NAMESPACE_OPENTURNS

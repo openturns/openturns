@@ -44,6 +44,24 @@ Point computePolynomialValue(const UnsignedInteger & index, const Point & point)
   return value;
 }
 
+// Compute reference function value from index, point and marginal distributions
+Point computePolynomialValue(const UnsignedInteger & index, const Point & point, const Collection<Distribution> & marginals)
+{
+  const UnsignedInteger dimension = marginals.getSize();
+  const LinearEnumerateFunction enumerate(dimension);
+  // Compute the multi-indices using the EnumerateFunction
+  Indices indices(enumerate(index));
+  // Then build the collection of polynomials using the collection of factories
+  ProductPolynomialEvaluation::PolynomialCollection polynomials(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    polynomials[i] = UniVariateDistributionPolynomialFactory(marginals[i]).build(indices[i]);
+  }
+  const ProductPolynomialEvaluation product(polynomials);
+  const Point value(product(point));
+  return value;
+}
+
 // Compute reference function value from multi-index and point
 Point computePolynomialValue(const Indices & indices, const Point & point)
 {
@@ -128,11 +146,12 @@ int main(int, char *[])
     fullprint << productBasis6.__str__() << std::endl;
     // Test the build() method on a collection of functions
     const Point center2({0.5, 0.5, 0.5});
+    const Collection<Distribution> refMarginals({Uniform(0.0, 1.0), Uniform(0.0, 1.0), Uniform(0.0, 1.0)});
     for (UnsignedInteger i = 0; i < 10; ++ i)
     {
       // Test build from index
       const Function polynomial(productBasis6.build(i));
-      assert_almost_equal(polynomial(center2), computePolynomialValue(i, center2));
+      assert_almost_equal(polynomial(center2), computePolynomialValue(i, center2, refMarginals));
     }
   }
   catch (TestFailed & ex)

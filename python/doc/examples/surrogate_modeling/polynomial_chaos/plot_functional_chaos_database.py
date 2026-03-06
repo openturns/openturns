@@ -61,22 +61,11 @@ outputSample = myModel(inputSample)
 # In the next cell, we create the univariate orthogonal polynomial basis
 # for each marginal.
 inputDimension = inputSample.getDimension()
-coll = [
-    ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
-    for i in range(inputDimension)
-]
 enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
-productBasis = ot.OrthogonalProductPolynomialFactory(coll, enumerateFunction)
-
-# %%
-# We can achieve the same result using :class:`~openturns.OrthogonalProductPolynomialFactory`.
-marginalDistributionCollection = [
-    distribution.getMarginal(i) for i in range(inputDimension)
-]
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(
-    marginalDistributionCollection
+productBasis = ot.OrthogonalProductPolynomialFactory(
+    [distribution.getMarginal(i) for i in range(inputDimension)],
+    enumerateFunction
 )
-multivariateBasis
 
 # %%
 # Create a full PCE

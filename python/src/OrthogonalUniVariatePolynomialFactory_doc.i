@@ -3,7 +3,7 @@
 
 See also
 --------
-StandardDistributionPolynomialFactory"
+experimental.UniVariateDistributionPolynomialFactory"
 %enddef
 %feature("docstring") OT::OrthogonalUniVariatePolynomialFactory
 OT_OrthogonalUniVariatePolynomialFactory_doc

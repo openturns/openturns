@@ -31,14 +31,6 @@ int main(int, char *[])
 
   try
   {
-    {
-      LaguerreFactory laguerre(2.5, LaguerreFactory::PROBABILITY);
-      fullprint << "laguerre=" << laguerre << std::endl;
-    }
-    {
-      LaguerreFactory laguerre(2.5, LaguerreFactory::ANALYSIS);
-      fullprint << "laguerre=" << laguerre << std::endl;
-    }
     LaguerreFactory laguerre(2.5);
     fullprint << "laguerre=" << laguerre << std::endl;
     for (UnsignedInteger i = 0; i < 10; ++i)

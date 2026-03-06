@@ -3,8 +3,6 @@ R"RAW(Legendre specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Uniform` distribution.
 
-Notes
------
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
 
@@ -27,7 +25,7 @@ read:
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -37,4 +35,11 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 1.73205 * X
--1.11803 + 3.3541 * X^2)RAW"
+-1.11803 + 3.3541 * X^2
+
+>>> polynomial_factory = ot.LegendreFactory(0.0, 2.0)
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+-1.73205 + 1.73205 * X
+2.23607 - 6.7082 * X + 3.3541 * X^2)RAW"
