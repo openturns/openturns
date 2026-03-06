@@ -19,7 +19,7 @@ namespace std {
 %include exception.i
 
 %exception {
-  std::signal(SIGINT, OT::SignalHandler);
+  OT::ScopedSignalHandler sigGuard;
   try
   {
     $action
