@@ -23,7 +23,6 @@
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/KrigingResult.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,10 +43,6 @@ public:
 
   /** Default constructor */
   EfficientGlobalOptimization();
-
-  /** Constructor with parameters */
-  EfficientGlobalOptimization(const OptimizationProblem & problem,
-                              const KrigingResult & krigingResult);
 
   /** Constructor with parameters */
   EfficientGlobalOptimization(const OptimizationProblem & problem,
@@ -85,12 +80,15 @@ public:
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
+  /** Improvement noise function accessor */
+  void setNoiseFunction(const Function & noiseFunction);
+  Function getNoiseFunction() const;
+
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
   /** GPR result accessor (especially useful after run() has been called) */
   GaussianProcessRegressionResult getGaussianProcessRegressionResult() const;
-  KrigingResult getKrigingResult() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -104,9 +102,7 @@ protected:
   void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
-  KrigingResult krigingResult_;
   GaussianProcessRegressionResult gprResult_;
-  Bool isGPR_ = false;
   OptimizationAlgorithm solver_;
 
   // whether the solver was set
@@ -127,6 +123,9 @@ private:
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_ = 0.0;
 
+  // noise function
+  Function noiseFunction_;
+  
   Sample expectedImprovement_;
 
 } ; /* class EfficientGlobalOptimization */

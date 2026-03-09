@@ -138,7 +138,7 @@ far less plausible because of the behavior for small values of
 Kendall plot
 ~~~~~~~~~~~~
 
-In the bivariate case, the Kendall Plot test allows one to validate whether a sample is drawn from
+In the bivariate case, the Kendall Plot test (see [genest2003]_) allows one to validate whether a sample is drawn from
 a given copula or to check whether two samples share
 the same copula.
 

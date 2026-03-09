@@ -23,7 +23,7 @@ outputCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
     By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
 outputCovariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`C^{stat} \in \cS_d^+(\Rset)`.
+    Covariance matrix :math:`C^{spatial} \in \cS_d^+(\Rset)`.
 
 Notes
 -----
@@ -35,12 +35,12 @@ This covariance function is defined by
 
 .. math::
 
-    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right) C^{stat},
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right) C^{spatial},
 
-where the output covariance matrix :math:`C^{stat}(\vect{s}, \vect{t})` is given by
+where the spatial covariance matrix :math:`C^{spatial}(\vect{s}, \vect{t})` is given by
 
 .. math::
-    C^{stat}= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
+    C^{spatial}= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
 
 
 Examples

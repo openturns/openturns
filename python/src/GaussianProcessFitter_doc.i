@@ -65,18 +65,30 @@ It is also possible to proceed as follows:
 * set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 * tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
+A centered Gaussian noise :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`
+can be taken into account for each output value with :func:`setNoise()`:
+
+.. math::
+    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+
+see algo :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise`.
+
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
 - The boolean entry *GaussianProcessFitter-UseAnalyticalAmplitudeEstimate* to use the reduction associated to
   :math:`\sigma`.
-  It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
+  It has no effect if :math:`\outputDim > 1` or if :math:`\outputDim=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
 - The boolean entry *GaussianProcessFitter-UnbiasedVariance* allows one to use the *unbiased* estimate of
   :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}`
   in the optimality condition for :math:`\sigma`.
 - Like other machine learning techniques, heteregeneous data (i.e., data defined with different orders of magnitude)
   can have an impact on the training process of Gaussian Process Fitter.
   The boolean entry *GaussianProcessFitter-OptimizationNormalization* decides whether
-  to scale input data during the hyperparameters optimization, see :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
+  to internally scale the hyperparameters during the optimization using a min-max transformation:
+  :math:`\theta\prime = \frac{\theta - \theta_{min}}{\theta_{max} - \theta_{min}}`
+  The input data itself is not directly normalized to avoid introducing an additional transformation to the metamodel.
+  see also :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
@@ -323,3 +335,25 @@ linAlgMethod : int
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
     - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::setNoise
+R"RAW(Output sample noise variance accessor.
+
+Parameters
+----------
+noise : sequence of :class:`~openturns.CovarianceMatrix` or sequence of float
+    The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitter::getNoise
+R"RAW(Output sample noise variance accessor.
+
+Returns
+-------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+)RAW"

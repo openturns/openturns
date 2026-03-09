@@ -38,6 +38,7 @@
 
 /* Uncertainty/Model */
 %import randomvector_module.i
+%import model_process_module.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include MetaModelResult.i

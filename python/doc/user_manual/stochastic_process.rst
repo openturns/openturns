@@ -1,3 +1,5 @@
+.. _stochastic_process:
+
 ===========================
 Stochastic process modeling
 ===========================

@@ -92,8 +92,8 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
 }
 
 /* Computation of the covariance function, stationary interface
- * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
- * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
+ * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * (exp(-|tau / scale|) + nuggetFactor_ * delta(tau = 0))
+ * C_{i,i}(tau) = amplitude_i^2  * (exp(-|tau / scale|) + nuggetFactor_ * delta(tau = 0))
  */
 Scalar ExponentialModel::computeAsScalar(const Point &tau) const
 {

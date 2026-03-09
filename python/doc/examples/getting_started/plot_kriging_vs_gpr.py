@@ -518,45 +518,6 @@ view = otv.View(graph)
 # The given GPR matches with the data as expected !
 
 # %%
-# Gaussian Process Regression with heteroscedastic noise
-# ------------------------------------------------------
-
-# %%
-# The objective is to estimate a Gaussian process regression accounting for a noise (known noise).
-# Unfortunately the feature is unavailable with the new API. The objective is to have it in the next releases
-# using different ways.
-# The only workaround until now is to rely on the old API. Here an example of how using such a feature.
-
-# %%
-noise = ot.Uniform(0, 0.5).getSample(y_train.getSize())
-kriging_algo_hsn = ot.KrigingAlgorithm(x_train, y_train, covarianceModel, basis)
-kriging_algo_hsn.setNoise(noise.asPoint())
-kriging_algo_hsn.run()
-kriging_result_hsn = kriging_algo_hsn.getResult()
-krigingMM_hsn = kriging_result_hsn.getMetaModel()
-
-# %%
-# Plot the result
-
-# %%
-graph = ot.Graph("Kriging with known noise", "", "", True, "")
-graph.add(
-    plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
-)
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
-graph.add(
-    plot_1d_data(x_test, krigingMM_hsn(x_test), legend="Kriging+noise", color="green")
-)
-graph.setAxes(True)
-graph.setXTitle("X")
-graph.setYTitle("Y")
-graph.setLegendPosition("upper right")
-view = otv.View(graph)
-
-# %%
-# The result is slightly different from the previous ones. We take into account that each output `y_train` is potentially "random".
-
-# %%
 # -------------------
 # Summary of features
 # -------------------
@@ -569,7 +530,6 @@ view = otv.View(graph)
 # * Conditional covariance : `KrigingResult.getConditionalCovariance`/ :meth:`~openturns.GaussianProcessConditionalCovariance.getConditionalCovariance`
 # * Known trend : no / yes (see : :class:`~openturns.GaussianProcessRegression` )
 # * Nugget factor : yes / yes
-# * Heteroscedastic noise : `KrigingAlgorithm.setNoise` / no
 # * Fit the model : `KrigingAlgorithm.run` / :meth:`~openturns.GaussianProcessFitter.run` + :meth:`~openturns.GaussianProcessRegression.run`
 
 # %%

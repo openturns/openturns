@@ -20,7 +20,7 @@ import math as m
 # Case 1: stationary covariance model
 # -----------------------------------
 #
-# In this example, we show how to build our own stationary covariance modelusing the class
+# In this example, we show how to build our own stationary covariance model using the class
 # :class:`~openturns.UserDefinedStationaryCovarianceModel`.
 #
 # We define the covariance model from:

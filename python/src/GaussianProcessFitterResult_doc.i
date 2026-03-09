@@ -142,13 +142,35 @@ function in :eq:`metaModelGPF`.)RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianProcessFitterResult::getNoise
+%feature("docstring") OT::GaussianProcessFitterResult::getCenteredProcess
 R"RAW(Accessor to the Gaussian process.
 
 Returns
 -------
-process : :class:`~openturns.Process`
-    The Gaussian process :math:`\vect{W}` its the optimized parameters.
+process : :class:`~openturns.GaussianProcess`
+    The Gaussian process :math:`\vect{W}` with its the optimized parameters.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::setNoise
+R"RAW(Output sample noise variance accessor.
+
+Parameters
+----------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getNoise
+R"RAW(Output sample noise variance accessor.
+
+Returns
+-------
+noise : sequence of :class:`~openturns.CovarianceMatrix`
+    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -207,7 +229,21 @@ R"RAW(Accessor to the Cholesky factor of the covariance matrix.
 Returns
 -------
 L : :class:`~openturns.TriangularMatrix`
-    Cholesky factor :math:`\mat{L}_{\vect{p}^*}` of the covariance matrix, which can thus be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.)RAW"
+    Cholesky factor :math:`\mat{L}_{\vect{p}^*}` of the covariance matrix,
+    which can be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getHMatCholeskyFactor
+R"RAW(Accessor to the Cholesky factor of the covariance matrix.
+
+Only available with HMat algebra.
+
+Returns
+-------
+L : :class:`~openturns.HMatrix`
+    Cholesky factor :math:`\mat{L}_{\vect{p}^*}` of the covariance matrix,
+    which can be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -217,6 +253,20 @@ R"RAW(Accessor to the standardized output.
 Returns
 -------
 rho : :class:`~openturns.Point`
+    Standardized output vector.
+
+Notes
+-----
+The standardized output vector is defined as :math:`\mat{L}_{\vect{p}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{p}^*)})`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::setStandardizedOutput
+R"RAW(Accessor to the standardized output.
+
+Parameters
+----------
+rho : sequence of float
     Standardized output vector.
 
 Notes

@@ -24,14 +24,11 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Process.hxx"
+#include "openturns/GaussianProcess.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/Basis.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +49,7 @@ public:
 
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   GaussianProcessFitterResult();
@@ -93,12 +91,20 @@ public:
   Matrix getRegressionMatrix() const;
 
   /** process accessor */
-  Process getNoise() const;
+  GaussianProcess getCenteredProcess() const;
 
-  /** Method that returns the covariance factor - lapack */
-  TriangularMatrix getCholeskyFactor() const;
+  /** Output sample noise accessor */
+  void setNoise(const CovarianceMatrixCollection & noise);
+  CovarianceMatrixCollection getNoise() const;
+
+  /** Accessor to the Cholesky factor */
+  TriangularMatrix getCholeskyFactor() const; // lapack
+  HMatrix getHMatCholeskyFactor() const; // hmat
+  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                         const HMatrix & covarianceHMatrix);
 
   /** rho accessor */
+  void setStandardizedOutput(const Point & rho);
   Point getStandardizedOutput() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -106,29 +112,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-
-protected:
-
-  // GaussianProcessFitter::run could set the Cholesky factor
-  friend class GaussianProcessFitter;
-
-  // GaussianProcessRegressionResult could use Cholesky setters
-  friend class GaussianProcessRegressionResult;
-
-  // GaussianProcessRegression could use Cholesky setters
-  friend class GaussianProcessRegression;
-
-  /** Accessor to the Cholesky factor*/
-  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
-                         const HMatrix & covarianceHMatrix);
-
-  /** Method that returns the covariance factor - hmat */
-  HMatrix getHMatCholeskyFactor() const;
-
-  /** rho accessor */
-  void setStandardizedOutput(const Point & rho);
-
 
 private:
 
@@ -148,13 +131,13 @@ private:
   Point rho_;
 
   /** optimal log-likelihood value */
-  Scalar optimalLogLikelihood_;
+  Scalar optimalLogLikelihood_ = 0.0;
 
   /** Linear algebra method */
   LinearAlgebra linearAlgebraMethod_;
 
   /** Boolean for Cholesky. */
-  Bool hasCholeskyFactor_;
+  Bool hasCholeskyFactor_ = false;
 
   /** Cholesky factor  */
   TriangularMatrix covarianceCholeskyFactor_;
@@ -162,7 +145,10 @@ private:
   /** Cholesky factor when using hmat-oss/hmat */
   HMatrix covarianceHMatrix_;
 
-} ; /* class GaussianProcessFitterResult */
+  /** Noise on the output sample */
+  PersistentCollection<CovarianceMatrix> noise_;
+
+}; /* class GaussianProcessFitterResult */
 
 
 END_NAMESPACE_OPENTURNS
