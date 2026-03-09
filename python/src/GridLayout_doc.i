@@ -101,6 +101,25 @@ position : str
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::GridLayout::setLogScale
+"Accessor to the indication of axes' scale of the Graph.
+
+Parameters
+----------
+scale : int
+    Indicates the type of the axes's scale:
+
+    - ot.GraphImplementation.NONE or 0: no log scale is used,
+
+    - ot.GraphImplementation.LOGX or 1: log scale is used only for horizontal data,
+
+    - ot.GraphImplementation.LOGY or 2: log scale is used only for vertical data,
+
+    - ot.GraphImplementation.LOGXY or 3: log scale is used for both data.
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::GridLayout::setLegendCorner
 "Accessor to the corner of the legend of each subgraph.
 
