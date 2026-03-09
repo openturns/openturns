@@ -235,6 +235,8 @@ multiple science and engineering domains
 The Persalys graphical user interface [@persalys], built on top of OpenTURNS,
 enables users to perform UQ analyses with no (or minimal) Python
 programming.
+OpenTURNS is a requirement for several other tools including [@gemseo] 
+and [@Roy2018] for example.
 
 An annual Users’ Day has been held since 2008, fostering collaboration
 and knowledge exchange among researchers, engineers, and educators.
