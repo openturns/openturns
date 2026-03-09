@@ -70,6 +70,12 @@ void GridLayout::setLegendCorner(const Point & corner)
     graphCollection_[i].setLegendCorner(corner);
 }
 
+void GridLayout::setLogScale(const GraphImplementation::LogScale logScale)
+{
+  for (UnsignedInteger i = 0; i < graphCollection_.getSize(); ++ i)
+    graphCollection_[i].setLogScale(logScale);
+}
+
 /* String converter */
 String GridLayout::__repr__() const
 {
