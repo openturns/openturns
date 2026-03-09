@@ -877,7 +877,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
                                       const String & name,
                                       InterfaceObject & value)
 {
-  Id shadowedId;
+  Id shadowedId = 0;
   if (NamedObjectReader( XML_STMGR::object_tag(), p_obj, name, shadowedId ))
   {
     if (! getStudy()->hasObject(shadowedId))
@@ -911,7 +911,7 @@ void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
     InterfaceObject & value)
 {
-  Id shadowedId;
+  Id shadowedId = 0;
   IndexedValueReader( XML_STMGR::object_tag(), p_obj, index, shadowedId );
   if (! getStudy()->hasObject(shadowedId))
     throw StudyFileParsingException(HERE) << "Element of id = " << shadowedId
@@ -959,7 +959,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
                                       const String & name,
                                       PersistentObject & value)
 {
-  Id shadowedId;
+  Id shadowedId = 0;
   if (NamedObjectReader( XML_STMGR::object_tag(), p_obj, name, shadowedId ))
   {
     if (! getStudy()->hasObject(shadowedId))
@@ -995,7 +995,7 @@ void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
     PersistentObject & value)
 {
-  Id shadowedId;
+  Id shadowedId = 0;
   IndexedValueReader( XML_STMGR::object_tag(), p_obj, index, shadowedId );
   if (! getStudy()->hasObject(shadowedId))
     throw StudyFileParsingException(HERE) << "Element of id = " << shadowedId
