@@ -14,24 +14,24 @@ Parameters
 ----------
 inputSample : 2-d sequence of float of size :math:`n>0`
     Input sample.
-weight : sequence of float of size :math:`n>0`, optional
-    Input weights. By default, a uniform weight equals to :math:`1/n` is used.
+weights : sequence of float of size :math:`n>0`, optional
+    Input weights. By default, uniform weights equal to :math:`1/n` are used.
 outputSample : 2-d sequence of floats of size :math:`n>0`
     Output sample.
 distribution : :class:`~openturns.Distribution`
-    The distribution associated to the weighted sample *(inputSample, weights)*
+    The distribution associated with the weighted sample *(inputSample, weights)*.
 basis : :class:`~openturns.OrthogonalBasis`, optional
     The orthonormal basis of the vector space on which the approximation is built.
-    By default, a basis is built using an hyperbolic enumerate function
-    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` associated to the
+    By default, a basis is built using a hyperbolic enumerate function
+    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` associated with the
     :math:`q-` norm specified by the `FunctionalChaosAlgorithm-QNorm` key in
     :class:`~openturns.ResourceMap`.
     The basis is obtained through a tensorization of the univariate orthonormal
-    polynomial bases associated to each marginal distributions of *distribution*.
+    polynomial bases associated to each marginal distribution of *distribution*.
 basisSize : int, optional
     The size of the basis on which the approximation is built. If not given, it is
     given by the `FunctionalChaosAlgorithm-BasisSize` key in
-    :class:`~openturns.ResourceMap` if this value is positive, or as the cardinal
+    :class:`~openturns.ResourceMap` if this value is positive, or as the cardinality
     of the set of basis functions up to a degree given by the
     `FunctionalChaosAlgorithm-MaximumTotalDegree` key in
     :class:`~openturns.ResourceMap`.

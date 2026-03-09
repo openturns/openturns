@@ -1,4 +1,4 @@
-//                                               -*- C++ -*-
+//                                              -*- C++ -*-
 /**
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.
@@ -29,6 +29,7 @@
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,6 +38,21 @@ typedef Collection<Function> FunctionCollection;
 CLASSNAMEINIT(LeastSquaresExpansion)
 
 static const Factory<LeastSquaresExpansion> Factory_LeastSquaresExpansion;
+
+/* Removed the anonymous namespace, keep internal linkage with static */
+static UnsignedInteger ComputeBasisSizeFromActive(const Indices & activeFunctions)
+{
+  if (activeFunctions.getSize() == 0)
+    throw InvalidArgumentException(HERE) << "Error: activeFunctions is empty";
+
+  // Compute max(activeFunctions) using normInf
+  Point tmp(activeFunctions.getSize());
+  for (UnsignedInteger i = 0; i < activeFunctions.getSize(); ++i)
+    tmp[i] = activeFunctions[i];
+
+  const UnsignedInteger maxIndex = static_cast<UnsignedInteger>(tmp.normInf());
+  return maxIndex + 1;
+}
 
 
 /* Default constructor */
@@ -105,6 +121,43 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
   // The active functions. By default all the functions are active
   activeFunctions_ = Indices(basisSize_);
   activeFunctions_.fill();
+}
+
+/* Nouveau constructeur : sélection explicite d'indices (sans poids) */
+LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const OrthogonalBasis & basis,
+    const Indices & activeFunctions,
+    const String & methodName)
+  : LeastSquaresExpansion(inputSample,
+                          Point(inputSample.getSize(), 1.0 / inputSample.getSize()),
+                          outputSample,
+                          distribution,
+                          basis,
+                          activeFunctions.normInf() + 1,
+                          methodName)
+{
+  setActiveFunctions(activeFunctions);
+}
+
+/* Nouveau constructeur : sélection explicite d'indices (avec poids) */
+LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const OrthogonalBasis & basis,
+    const Indices & activeFunctions,
+    const String & methodName)
+  : LeastSquaresExpansion(inputSample,
+                          weights,
+                          outputSample,
+                          distribution,
+                          basis,
+                          activeFunctions.normInf() + 1,
+                          methodName)
+{
+  setActiveFunctions(activeFunctions);
 }
 
 
