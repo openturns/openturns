@@ -913,6 +913,7 @@ ot_pyinstallcheck_test (docstring_missing IGNOREOUT)
 ot_pyinstallcheck_test (sphinx_missing IGNOREOUT)
 ot_pyinstallcheck_test (ResourceMap_missing IGNOREOUT)
 ot_pyinstallcheck_test (testcode IGNOREOUT)
+ot_pyinstallcheck_test (gil IGNOREOUT)
 
 
 
