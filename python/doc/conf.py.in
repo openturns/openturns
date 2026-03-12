@@ -53,6 +53,8 @@ autodoc_default_options = {
     "inherited-members": None,
     "exclude-members": "thisown",
 }
+# https://github.com/numpy/numpydoc/issues/671
+autodoc_use_legacy_class_based = True
 
 extensions.append("sphinx.ext.autosummary")
 autosummary_generate = True
