@@ -19,7 +19,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-#include <cstdlib>
 #include <cstring>
 
 #include "openturns/HMatrixImplementation.hxx"
