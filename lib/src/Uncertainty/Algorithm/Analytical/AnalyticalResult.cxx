@@ -19,7 +19,6 @@
  *
  */
 #include <iomanip>
-#include <cstdlib>
 
 #include "openturns/Analytical.hxx"
 #include "openturns/Distribution.hxx"

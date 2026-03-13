@@ -20,7 +20,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

@@ -19,7 +19,6 @@
  *
  */
 #include <iostream>
-#include <cstdlib>
 #include "openturns/OSS.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/Exception.hxx"

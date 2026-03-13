@@ -19,7 +19,6 @@
  *
  */
 #include <cmath>
-#include <cstdlib>
 
 #include "openturns/StrongMaximumTest.hxx"
 #include "openturns/Normal.hxx"
