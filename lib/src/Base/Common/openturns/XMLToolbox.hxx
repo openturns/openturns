@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_XMLTOOLBOX_HXX
 #define OPENTURNS_XMLTOOLBOX_HXX
 
-#include <cstdarg>
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
 

@@ -23,7 +23,6 @@
 #define OPENTURNS_MUTEXLOCK_HXX
 
 #include <mutex>
-#include <cstdlib> // for exit(3)
 #include <iostream>
 #include "openturns/OTprivate.hxx"
 
