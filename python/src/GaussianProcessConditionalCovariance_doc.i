@@ -8,7 +8,7 @@ gprResult :  :class:`~openturns.GaussianProcessRegressionResult`
 
 Notes
 -----
-Refer to :ref:`gaussian_process_regression` (step 3) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+Refer to :any:`gaussian_process_regression` (step 3) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)` for all *k*, with :math:`\model:\Rset^{\inputDim} \mapsto \Rset^{\outputDim}` the model. The  Gaussian process approximation :math:`\vect{Y}` is defined by:
 

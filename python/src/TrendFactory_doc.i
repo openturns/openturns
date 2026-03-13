@@ -1,7 +1,7 @@
 %feature("docstring") OT::TrendFactory
 R"RAW(Trend estimator.
 
-Refer to :ref:`trend_transform`.
+Refer to :any:`trend_transform`.
 
 Parameters
 ----------

@@ -1,7 +1,7 @@
 %feature("docstring") OT::NormalityTest::AndersonDarlingNormal
 "Evaluate whether a sample follows a normal distribution.
 
-Refer to :ref:`anderson_darling_test`.
+Refer to :any:`anderson_darling_test`.
 
 Parameters
 ----------
@@ -41,7 +41,7 @@ class=TestResult name=Unnamed type=AndersonDarlingNormal binaryQualityMeasure=tr
 %feature("docstring") OT::NormalityTest::CramerVonMisesNormal
 "Evaluate whether a sample follows a normal distribution.
 
-Refer to :ref:`cramer_vonmises_test`.
+Refer to :any:`cramer_vonmises_test`.
 
 Parameters
 ----------

@@ -1,7 +1,7 @@
 %feature("docstring") OT::RandomWalkMetropolisHastings
 R"RAW(Random Walk Metropolis-Hastings method.
 
-Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+Refer to :any:`bayesian_calibration`, :any:`metropolis_hastings`.
 
 Available constructor:
     RandomWalkMetropolisHastings(*targetDistribution, initialState, proposal, marginalIndices*)

@@ -1,7 +1,7 @@
 %feature("docstring") OT::KrigingAlgorithm
 R"RAW(Kriging algorithm.
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 
 Parameters
