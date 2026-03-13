@@ -20,8 +20,6 @@
  */
 #include <iostream>
 #include <cstdlib>
-#include <assert.h>
-#include <errno.h>
 #include "openturns/OSS.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/Exception.hxx"
@@ -33,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 static std::mutex Catalog_InstanceMutex_;
-static Catalog * Catalog_P_instance_ = 0;
+static Catalog * Catalog_P_instance_ = nullptr;
 static const Catalog_init static_initializer_Catalog;
 
 Catalog_init::Catalog_init()
@@ -43,7 +41,6 @@ Catalog_init::Catalog_init()
   {
     Catalog_P_instance_ = new Catalog;
   });
-  assert(Catalog_P_instance_);
 }
 
 Catalog_init::~Catalog_init()
@@ -52,7 +49,7 @@ Catalog_init::~Catalog_init()
   std::call_once(flag, [&]()
   {
     delete Catalog_P_instance_;
-    Catalog_P_instance_ = 0;
+    Catalog_P_instance_ = nullptr;
   });
 }
 
