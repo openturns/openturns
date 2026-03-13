@@ -1,7 +1,7 @@
 %feature("docstring") OT::KernelSmoothing
 R"RAW(Non parametric continuous distribution estimation by kernel smoothing.
 
-Refer to :ref:`kernel_smoothing`.
+Refer to :any:`kernel_smoothing`.
 
 Parameters
 ----------
@@ -448,7 +448,7 @@ This treatment is available in dimension 1 only. See [charpentier2015]_ to get m
 We denote by :math:`(X_i)_{1 \leq i  \leq \sampleSize}`
 some independent random variates, identically distributed according to :math:`X`.
 
-Refer to :ref:`kernel_smoothing` for the details. The shift
+Refer to :any:`kernel_smoothing` for the details. The shift
 scale is fixed in the `KernelSmoothing-DefaultShiftScale` key of the class :class:`~openturns.ResourceMap`.
 
 Once a kernel smoothed distribution has been fitted on the transformed data, the fitted distribution of :math:`X`
@@ -482,7 +482,7 @@ Notes
 Each component of the bandwidth which components is evaluated according to the Silverman rule
 assuming a normal distribution. The bandwidth uses a robust estimate of the
 sample standard deviation, based on the interquartile range introduced
-in :ref:`kernel_smoothing` (rather than the sample standard deviation).
+in :any:`kernel_smoothing` (rather than the sample standard deviation).
 This method can manage a multivariate sample and produces a
 multivariate bandwidth.
 "
@@ -515,7 +515,7 @@ Several keys of the :class:`~openturns.ResourceMap` are used by the [sheather199
 - The `KernelSmoothing-ResidualPrecision` key defines the absolute
   tolerance on the residual.
 - The `KernelSmoothing-CutOffPlugin` key is the cut-off value
-  introduced in :ref:`kernel_smoothing`.
+  introduced in :any:`kernel_smoothing`.
 
 More precisely, the `KernelSmoothing-CutOffPlugin` key of the :class:`~openturns.ResourceMap` controls
 the accuracy of the approximation used to estimate the rugosity of the
@@ -539,7 +539,7 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 -----
-This method uses the *mixed* rule introduced in :ref:`kernel_smoothing`.
+This method uses the *mixed* rule introduced in :any:`kernel_smoothing`.
 Its goal is to provide an accurate estimator of the bandwidth 
 when the sample size is large.
 

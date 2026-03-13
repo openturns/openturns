@@ -1,7 +1,7 @@
 %feature("docstring") OT::NonStationaryCovarianceModelFactory
 R"RAW(Estimation of a non stationary covariance model.
 
-Refer to :ref:`estimate_non_stationary_covariance_model`.
+Refer to :any:`estimate_non_stationary_covariance_model`.
 
 Notes
 -----

@@ -31,7 +31,7 @@ The post analytical controlled importance sampling algorithm estimates the proba
 The post analytical controlled importance sampling algorithm is  a variance reduction sampling
 method, which is
 performed in the standard space, where the random vector follows a spherical distribution (see
-:ref:`isoprobabilistic_transformation` to get more details).
+:any:`isoprobabilistic_transformation` to get more details).
 It is an additive correction of the :class:`~openturns.FORM` approximation of the probability
 :math:`P_f`. See
 :class:`~openturns.Analytical` for the description of the first steps of the FORM analysis.

@@ -1,7 +1,7 @@
 %feature("docstring") OT::GaussianProcessFitter
 R"RAW(Fit gaussian process models
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 Parameters
 ----------
@@ -21,7 +21,7 @@ basis : :class:`~openturns.Basis`
 Notes
 -----
 
-Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
+Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
 We only detail here the notions related to the class.
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}`

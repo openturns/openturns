@@ -133,14 +133,14 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
 Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  const UnsignedInteger inDim = inSample.getDimension();
   const UnsignedInteger outDim = getOutputDimension();
 
   Sample outSample;
   if (p_cache_->isEnabled())
   {
     outSample = Sample(size, outDim);
-    std::map<Point, UnsignedInteger> uniqueValues;
+    std::set<Point> uniqueValues;
+    Indices toDoIndices;
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       CacheKeyType inKey(inSample[i].getCollection());
@@ -148,20 +148,14 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
       {
         outSample[i] = Point::ImplementationType(p_cache_->find(inKey));
       }
-      else
+      else if (!uniqueValues.count(inSample[i]))
       {
-        uniqueValues[inSample[i]] = i;
+        toDoIndices.add(i);
+        uniqueValues.insert(inSample[i]);
       }
     }
-    Sample toDo(0, inDim);
-    Indices toDoIndices;
-    for (auto const & entry : uniqueValues)
-    {
-      // store unique values
-      toDo.add(entry.first);
-      toDoIndices.add(entry.second);
-    }
-    UnsignedInteger toDoSize = toDo.getSize();
+    Sample toDo(inSample.select(toDoIndices));
+    const UnsignedInteger toDoSize = toDo.getSize();
     CacheType tempCache(toDoSize);
     tempCache.enable();
 

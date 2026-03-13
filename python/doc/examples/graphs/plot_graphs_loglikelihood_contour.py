@@ -190,7 +190,7 @@ contour.setColorBarPosition("")
 # %%
 # Then we create a new graph. Finally, we use `setDrawables` to define this `Contour` object as the single Drawable.
 
-graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, "")
+graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$")
 graphFineTune.setDrawables([contour])
 view = otv.View(graphFineTune)
 

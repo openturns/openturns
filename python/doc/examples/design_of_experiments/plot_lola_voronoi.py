@@ -69,7 +69,7 @@ y0 = f1(x0)
 
 # %%
 # Plot the initial input sample
-graph = ot.Graph(f"Initial points N={N}", "x1", "x2", True)
+graph = ot.Graph(f"Initial points N={N}", "x1", "x2")
 initial = ot.Cloud(x0)
 initial.setPointStyle("fcircle")
 initial.setColor("blue")
@@ -92,7 +92,7 @@ inc = 5
 contour = contour.getImplementation()
 contour.setColorBarPosition("")  # hide color bar
 for i in range(10):
-    graph = ot.Graph("", "x1", "x2", True)
+    graph = ot.Graph("", "x1", "x2")
     graph.setLegendPosition("upper left")
     graph.setLegendFontSize(8)
     graph.add(contour)

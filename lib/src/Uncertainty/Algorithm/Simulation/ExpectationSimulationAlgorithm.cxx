@@ -338,7 +338,8 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
   estimateCurve.setLineWidth(2);
   OSS oss;
   oss << "Expectation convergence graph at level " << level;
-  Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
+  Graph convergenceGraph(oss, "outer iteration", "estimate");
+  convergenceGraph.setLegendPosition("topright");
   convergenceGraph.add(estimateCurve);
   const Curve lowerBoundCurve(dataLowerBound, "bounds");
   Curve upperBoundCurve(dataUpperBound);

@@ -41,7 +41,7 @@ If least squares optimization algorithms are enabled, then the algorithm used is
 first found by `Build` of :class:`~openturns.OptimizationAlgorithm`.
 Otherwise, the algorithm :class:`~openturns.TNC` is used.
 
-Please read :ref:`code_calibration` for more details.
+Please read :any:`code_calibration` for more details.
 
 See also
 --------

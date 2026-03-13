@@ -72,7 +72,8 @@ populationObservations = observedSample[:, 1]
 populationObservations[0:5]
 
 # %%
-graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "upper left")
+graph = ot.Graph("", "Time (years)", "Population (Millions)")
+graph.setLegendPosition("upper left")
 cloud = ot.Cloud(timeObservations, populationObservations)
 cloud.setLegend("Observations")
 cloud.setPointStyle(

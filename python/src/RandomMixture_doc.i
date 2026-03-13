@@ -1,7 +1,7 @@
 %feature("docstring") OT::RandomMixture
 R"RAW(RandomMixture distribution.
 
-Refer to :ref:`random_mixture`.
+Refer to :any:`random_mixture`.
 
 Create an affine combination of input random variables of the form :math:`\vect{Y} = \vect{y}_0 + \mat{M} \vect{X}` where:
 

@@ -1,7 +1,7 @@
 %feature("docstring") OT::ARMA
 R"RAW(ARMA process.
 
-Refer to :ref:`arma_process`.
+Refer to :any:`arma_process`.
 
 Parameters
 ----------

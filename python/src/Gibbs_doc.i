@@ -1,7 +1,7 @@
 %feature("docstring") OT::Gibbs
 "Gibbs sampling method.
 
-Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+Refer to :any:`bayesian_calibration`, :any:`metropolis_hastings`.
 
 Parameters
 ----------

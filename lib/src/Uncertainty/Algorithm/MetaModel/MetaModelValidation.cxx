@@ -153,7 +153,7 @@ GridLayout MetaModelValidation::drawValidation() const
   GridLayout grid(1, outputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", OSS() << "model " << j, j == 0 ? "metamodel" : "", true);
+    Graph graph("", OSS() << "model " << j, j == 0 ? "metamodel" : "");
 
     // diagonal
     Sample diagonalPoints(2, 2);

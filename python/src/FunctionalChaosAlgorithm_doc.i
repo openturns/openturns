@@ -1,7 +1,7 @@
 %feature("docstring") OT::FunctionalChaosAlgorithm
 R"RAW(Functional chaos algorithm.
 
-Refer to :ref:`functional_chaos`, :ref:`polynomial_least_squares`.
+Refer to :any:`functional_chaos`, :any:`polynomial_least_squares`.
 
 Available constructors:
     FunctionalChaosAlgorithm(*inputSample, outputSample*)
@@ -45,7 +45,7 @@ Notes
 This class creates a functional chaos expansion or polynomial
 chaos expansion (PCE) based on an input and output
 sample of the physical model.
-More details on this type of surrogate models are presented in :ref:`functional_chaos`.
+More details on this type of surrogate models are presented in :any:`functional_chaos`.
 Once the expansion is computed, the :class:`~openturns.FunctionalChaosRandomVector`
 class provides methods to get the mean and variance of the PCE.
 Moreover, the :class:`~openturns.FunctionalChaosSobolIndices` provides Sobol' indices

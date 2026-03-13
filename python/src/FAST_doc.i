@@ -1,7 +1,7 @@
 %feature("docstring") OT::FAST
 R"RAW(Fourier Amplitude Sensitivity Testing (FAST).
 
-Refer to :ref:`sensitivity_fast`.
+Refer to :any:`sensitivity_fast`.
 
 Parameters
 ----------

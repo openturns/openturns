@@ -238,7 +238,7 @@ class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value th
 %feature("docstring") OT::HypothesisTest::Pearson
 R"RAW(Test whether two discrete samples are independent.
 
-Refer to :ref:`pearson_test`.
+Refer to :any:`pearson_test`.
 
 Parameters
 ----------
@@ -283,7 +283,7 @@ class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value thr
 %feature("docstring") OT::HypothesisTest::Spearman
 R"RAW(Test whether two samples have no rank correlation.
 
-Refer to :ref:`spearman_test`.
+Refer to :any:`spearman_test`.
 
 Parameters
 ----------

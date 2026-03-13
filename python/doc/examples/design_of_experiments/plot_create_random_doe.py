@@ -28,7 +28,7 @@ sample = experiment.generate()
 
 # %%
 # We draw the design of experiments as a :class:`~openturns.Cloud`
-graph = ot.Graph("Monte Carlo design", r"$x_1$", r"$x_2$", True, "")
+graph = ot.Graph("Monte Carlo design", r"$x_1$", r"$x_2$")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)
@@ -43,7 +43,7 @@ sample = experiment.generate()
 
 # %%
 # We draw the LHS design of experiments as a cloud :
-graph = ot.Graph("LHS design", r"$x_1$", r"$x_2$", True, "")
+graph = ot.Graph("LHS design", r"$x_1$", r"$x_2$")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)

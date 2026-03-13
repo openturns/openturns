@@ -10,7 +10,7 @@ function : :class:`~openturns.Function`
 
 Notes
 -----
-The response surface is the second-order Taylor expansion of the function :math:`h` at the point :math:`\ux_0`. Refer to :ref:`Taylor Expansion <taylor_expansion>` for details.
+The response surface is the second-order Taylor expansion of the function :math:`h` at the point :math:`\ux_0`. Refer to :any:`Taylor Expansion <taylor_expansion>` for details.
 
 See also
 --------

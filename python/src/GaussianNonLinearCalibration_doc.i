@@ -56,7 +56,7 @@ The resulting error distribution is :class:`~openturns.Normal`
 with a mean estimated from the sample mean of the residuals and with a
 covariance matrix equal to the `errorCovariance` input argument.
 
-Please read read :ref:`gaussian_calibration` for more details
+Please read read :any:`gaussian_calibration` for more details
 on Gaussian calibration.
 
 See also

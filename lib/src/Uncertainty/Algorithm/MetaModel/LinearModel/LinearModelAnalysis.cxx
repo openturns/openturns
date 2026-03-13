@@ -370,7 +370,8 @@ Graph LinearModelAnalysis::drawModelVsFitted() const
   dataFull.stack(fitted);
 
   // The graph object
-  Graph graph("Model vs Fitted", "Model", "Fitted values", true, "topright");
+  Graph graph("Model vs Fitted", "Model", "Fitted values");
+  graph.setLegendPosition("topright");
 
   // Validation graph
   Sample bissectriceCurve(2, 2);
@@ -426,7 +427,8 @@ Graph LinearModelAnalysis::drawResidualsVsFitted() const
   const UnsignedInteger size(fitted.getSize());
   Sample dataFull(fitted);
   dataFull.stack(residuals);
-  Graph graph("Residuals vs Fitted", "Fitted values", "Residuals", true, "topright");
+  Graph graph("Residuals vs Fitted", "Fitted values", "Residuals");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst residuals
@@ -472,7 +474,8 @@ Graph LinearModelAnalysis::drawScaleLocation() const
     sqrtStdResiduals(i, 0) = std::sqrt(std::abs(stdResiduals(i, 0)));
   }
   dataFull.stack(sqrtStdResiduals);
-  Graph graph("Scale-Location", "Fitted values", "|Std. residuals|^0.5", true, "topright");
+  Graph graph("Scale-Location", "Fitted values", "|Std. residuals|^0.5");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst standardized residuals
@@ -576,7 +579,8 @@ Graph LinearModelAnalysis::drawCookDistance() const
       annotations[index] = (OSS() << index + 1);
     }
   }
-  Graph graph("Cook's distance", "Obs. number", "Cook's distance", true, "topright");
+  Graph graph("Cook's distance", "Obs. number", "Cook's distance");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Sample dataFull(2, 2);
@@ -612,7 +616,8 @@ Graph LinearModelAnalysis::drawResidualsVsLeverages() const
   }
   Sample dataFull(leveragesS);
   dataFull.stack(stdResiduals);
-  Graph graph("Residuals vs Leverage", "Leverage", "Std. residuals", true, "topright");
+  Graph graph("Residuals vs Leverage", "Leverage", "Std. residuals");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst Cook's distance
@@ -702,7 +707,8 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
     dataFull(i, 0) = leverages[i] / (1.0 - leverages[i]);
     dataFull(i, 1) = cookdistances[i];
   }
-  Graph graph("Cook's dist vs Leverage h[ii]/(1-h[ii])", "Leverage h[ii]/(1-h[ii])", "Cook's distance", true, "topright");
+  Graph graph("Cook's dist vs Leverage h[ii]/(1-h[ii])", "Leverage h[ii]/(1-h[ii])", "Cook's distance");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst Cook's distance

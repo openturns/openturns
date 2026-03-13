@@ -14,8 +14,8 @@ xMin = [-5.0] * 2
 xMax = [5.0] * 2
 box = ot.Interval(xMin, xMax)
 mesh = ot.LevelSetMesher([51] * 2).build(levelSet, box, False)
-pdf_2d = ot.Graph("Uniform distribution over a mesh, PDF", "x1", "x2", True)
-cdf_2d = ot.Graph("Uniform distribution over a mesh, CDF", "x1", "x2", True)
+pdf_2d = ot.Graph("Uniform distribution over a mesh, PDF", "x1", "x2")
+cdf_2d = ot.Graph("Uniform distribution over a mesh, CDF", "x1", "x2")
 distribution_2d = ot.UniformOverMesh(mesh)
 mesh_g = mesh.draw()
 mesh_g.setLegends([""])

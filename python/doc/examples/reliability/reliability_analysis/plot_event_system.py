@@ -69,7 +69,7 @@ e3 = ot.ThresholdEvent(Y3, ot.Greater(), 0.0)
 
 # %%
 # The restriction of the domain :math:`E_1` to :math:`[-4,4] \times [-4, 4]` is the grey area.
-myGraph = ot.Graph(r"Representation of the event $E_1$", r"$x_1$", r"$x_2$", True, "")
+myGraph = ot.Graph(r"Representation of the event $E_1$", r"$x_1$", r"$x_2$")
 data = [[-4, -4], [0, -4], [0, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
 myPolygon.setColor("grey")
@@ -83,7 +83,7 @@ _ = axes[0].set_ylim(-4.0, 4.0)
 
 # %%
 # The restriction of the domain :math:`E_2` to :math:`[-4,4] \times [-4, 4]` is the grey area.
-myGraph = ot.Graph(r"Representation of the event $E_2$", r"$x_1$", r"$x_2$", True, "")
+myGraph = ot.Graph(r"Representation of the event $E_2$", r"$x_1$", r"$x_2$")
 data = [[-4, 0], [4, 0], [4, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
 myPolygon.setColor("grey")
@@ -96,7 +96,7 @@ _ = axes[0].set_ylim(-4.0, 4.0)
 
 # %%
 # The restriction of the domain :math:`E_3` to :math:`[-4,4] \times [-4, 4]` is the grey area.
-myGraph = ot.Graph(r"Representation of the event $E_3$", r"$x_1$", r"$x_2$", True, "")
+myGraph = ot.Graph(r"Representation of the event $E_3$", r"$x_1$", r"$x_2$")
 data = [[-4, 4], [4, -4], [4, 4]]
 myPolygon = ot.Polygon(data)
 myPolygon.setColor("grey")
@@ -117,8 +117,6 @@ myGraph = ot.Graph(
     r"Representation of the event $E_4  = E_1 \bigcap E_2$",
     r"$x_1$",
     r"$x_2$",
-    True,
-    "",
 )
 data = [[-4, 0], [0, 0], [0, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
@@ -144,8 +142,6 @@ myGraph = ot.Graph(
     r"Representation of the event $E_5  = E_1 \bigcup E_2$",
     r"$x_1$",
     r"$x_2$",
-    True,
-    "",
 )
 data = [[-4, -4], [0, -4], [0, 0], [4, 0], [4, 4], [-4, 4]]
 myPolygon = ot.Polygon(data)
@@ -169,7 +165,7 @@ e6 = ot.UnionEvent([e1, ot.IntersectionEvent([e2, e3])])
 # %%
 # First we draw the domain :math:`E_6 = E_1 \bigcup (E_2 \bigcap E_3)` :
 myGraph = ot.Graph(
-    r"Representation of the event $E_2 \bigcap E_3 $", r"$x_1$", r"$x_2$", True, ""
+    r"Representation of the event $E_2 \bigcap E_3 $", r"$x_1$", r"$x_2$"
 )
 data = [[-4, 4], [0, 0], [4, 0], [4, 4]]
 myPolygon = ot.Polygon(data)
@@ -203,12 +199,12 @@ algo.setMaximumCoefficientOfVariation(-1.0)
 algo.run()
 
 # %%
-# We retrieve the results and display the approximate probability and a confidence interval :
+# We retrieve the results and display the approximate probability and a confidence interval:
 result = algo.getResult()
 prb = result.getProbabilityEstimate()
 print("Probability of e6 through MC : %.4f" % prb)
-cl = result.getConfidenceLength()
-print("Confidence interval MC : [%.4f, %.4f]" % (prb - 0.5 * cl, prb + 0.5 * cl))
+ci95 = result.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)
+print("Confidence interval (0.95) = ", ci95)
 
 
 # %%

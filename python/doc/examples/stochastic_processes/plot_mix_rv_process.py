@@ -175,7 +175,6 @@ proba = result.getProbabilityEstimate()
 print("Probability = ", proba)
 variance = result.getVarianceEstimate()
 print("Variance Estimate = ", variance)
-IC90_low = proba - result.getConfidenceLength(0.90) / 2
-IC90_upp = proba + result.getConfidenceLength(0.90) / 2
-print("IC (90%) = [", IC90_low, ", ", IC90_upp, "]")
+IC90 = result.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+print("IC (90%) = ", IC90)
 view.ShowAll()

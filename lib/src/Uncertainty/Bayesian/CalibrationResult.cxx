@@ -250,33 +250,36 @@ GridLayout CalibrationResult::drawParameterDistributions() const
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const Bool upperRightGraph = (j == dimension - 1);
-    Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
+    Graph graph("", getParameterPrior().getDescription()[j], "");
+    graph.setLegendPosition("topright");
 
     // The graph must show:
     // + the full posterior PDF
-    // + the full prior PDF if it does not shrink too much the posterior graph
+    // + the full prior PDF
     // + the initial point
 
     const Distribution priorJ(getParameterPrior().getMarginal(j));
     const Distribution posteriorJ(getParameterPosterior().getMarginal(j));
+
     Bool useLogScale = false;
     if (bayesian_)
     {
       const Scalar priorPDFMax = priorJ.drawPDF().getDrawable(0).getData().getMax()[1];
       const Scalar postPDFMax = posteriorJ.drawPDF().getDrawable(0).getData().getMax()[1];
-      // use log pdf if scales are very different
-      useLogScale = std::abs(std::log(postPDFMax) - std::log(priorPDFMax)) > std::log(10.0);
+      // use log scale if pdfs are very different
+      const Scalar maxPDFRatio = ResourceMap::GetAsScalar("CalibrationResult-LogScalePDFRatioThreshold");
+      useLogScale = std::abs(std::log(postPDFMax) - std::log(priorPDFMax)) > std::log(maxPDFRatio);
     }
 
     if (j == 0)
     {
       // Show the Y title only for the first graph
-      graph.setYTitle(useLogScale ? "Log PDF" : "PDF");
+      graph.setYTitle("PDF");
     }
 
     if (bayesian_)
     {
-      Drawable priorPDF(useLogScale ? priorJ.drawLogPDF().getDrawable(0) : priorJ.drawPDF().getDrawable(0));
+      Drawable priorPDF(priorJ.drawPDF().getDrawable(0));
       priorPDF.setLegend(upperRightGraph ? "Prior" : "");
       priorPDF.setColor(priorColor_);
       priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
@@ -294,7 +297,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
       graph.add(cloudStartingPoint);
     }
 
-    Drawable postPDF = useLogScale ? posteriorJ.drawLogPDF().getDrawable(0) : posteriorJ.drawPDF().getDrawable(0);
+    Drawable postPDF(posteriorJ.drawPDF().getDrawable(0));
     if (upperRightGraph)
       postPDF.setLegend(bayesian_ ? "Posterior" : "Calibrated");
     else
@@ -302,6 +305,8 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
+    if (useLogScale)
+      graph.setLogScale(GraphImplementation::LOGY);
 
     grid.setGraph(0, j, graph);
   }
@@ -319,7 +324,8 @@ GridLayout CalibrationResult::drawResiduals() const
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     const Bool upperRightGraph = (j == outputDimension - 1);
-    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
+    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF");
+    graph.setLegendPosition("topright");
 
     // Get the distributions
     const Distribution errorJ(getObservationsError().getMarginal(j));
@@ -414,7 +420,8 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
       String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
       // Only the first column
       String yTitle = (j == 0) ? yDescription[i] : "";
-      Graph graph("", xTitle, yTitle, true, "topright");
+      Graph graph("", xTitle, yTitle);
+      graph.setLegendPosition("topright");
       const Sample inputObservations_j(inputObservations_.getMarginal(j));
 
       // observation
@@ -462,7 +469,8 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
   const Description yDescription(outputObservations_.getDescription());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
+    Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions");
+    graph.setLegendPosition("topleft");
     const Sample outputObservations_j(outputObservations_.getMarginal(j));
 
     const Bool upperRightGraph = (j == outputDimension - 1);

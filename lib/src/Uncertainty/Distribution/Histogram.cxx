@@ -524,7 +524,8 @@ Graph Histogram::drawPDF(const Scalar xMin,
   if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);
-  Graph graphPDF(title, xName, "PDF", true, "topright");
+  Graph graphPDF(title, xName, "PDF");
+  graphPDF.setLegendPosition("topright");
   const UnsignedInteger size = width_.getSize();
   // Check for the border cases
   // If the histogram is completely at the right or at the left of the plot range,

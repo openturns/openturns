@@ -855,7 +855,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Sample::find
+%feature("docstring") OT::Sample::index
 "Get the position of a point in the sample.
 
 Parameters
@@ -865,18 +865,18 @@ point : sequence of float
 
 Returns
 -------
-index : int,
-    Returns :math:`m` if the point does not belong to the sample.
+index : int
+    The index of the first occurrence of the value.
+    Throws when the value is not found.
 
 Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
->>> print(sample.find(sample[10]))
+>>> print(sample.index(sample[10]))
 10
->>> print(sample.find([0.0, 0.0]))
-30"
+"
 
 // ---------------------------------------------------------------------
 

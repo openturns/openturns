@@ -80,11 +80,11 @@
 # for details on how to write such a method.
 def __Sample_getattribute(self, name):
     """Implement attribute accesses."""
-    if name == '__array_interface__':
-        self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
-                                                'typestr': "|f" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__() or 1), True),
-                                                'version': 3, 
+    if name == "__array_interface__":
+        self.__dict__["__array_interface__"] = {"shape": (self.getSize(), self.getDimension()),
+                                                "typestr": f"|f{self.__elementsize__()}",
+                                                "data": (int(self.__baseaddress__() or 1), True),
+                                                "version": 3,
                                                 }
     return super(Sample, self).__getattribute__(name)
 Sample.__getattribute__ = __Sample_getattribute
@@ -126,22 +126,24 @@ Sample.BuildFromDataFrame = __Sample_BuildFromDataFrame
 
 def __Sample_repr_html(self):
     """Get HTML representation."""
-    html = '<table>\n'
     desc = self.getDescription()
     ell_threshold = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisThreshold")
     ell_size = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisSize")
+    fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
     size = self.getSize()
     dim = self.getDimension()
     ellipsis = size * dim > ell_threshold
+    html = "<table><thead>\n"
     if not desc.isBlank():
         if ellipsis and dim > 2 * ell_size:
-            html += '  <tr><th></th><th>'
-            html += '</th><th>'.join(desc[0:ell_size])
+            html += "  <tr><th></th><th>"
+            html += "</th><th>".join(desc[0:ell_size])
             html += f'</th><th colspan="{dim - 2 * ell_size}">...</th><th>'
-            html += '</th><th>'.join(desc[-ell_size:])
-            html += '</th></tr>\n'
+            html += "</th><th>".join(desc[-ell_size:])
+            html += "</th></tr>\n"
         else:
-            html += '  <tr><td></td><th>' + '</th><th>'.join(desc) + '</th></tr>\n'
+            html += "  <tr><td></td><th>" + "</th><th>".join(desc) + "</th></tr>\n"
+    html += "</thead><tbody>\n"
     for i in range(size):
         if ellipsis and size > 2 * ell_size:
             if i == ell_size:
@@ -150,22 +152,20 @@ def __Sample_repr_html(self):
             else:
                 if i > ell_size and i < size - ell_size:
                     continue
-        # Write row
-        fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
         if ellipsis and dim > 2 * ell_size:
-            html += '  <tr><th>' + str(i)
+            html += f"  <tr><th>{i}"
             if dim > 0:
-                html += '</th><td>'
-            html += '</td><td>'.join([fmt.format(x) for x in self[i, 0:ell_size]])
+                html += "</th><td>"
+            html += "</td><td>".join([fmt.format(x) for x in self[i, 0:ell_size]])
             html += f'<td colspan="{dim - 2 * ell_size}">...</td><td>'
-            html += '</td><td>'.join([fmt.format(x) for x in self[i, -ell_size:]])
-            html += '</td></tr>\n'
+            html += "</td><td>".join([fmt.format(x) for x in self[i, -ell_size:]])
+            html += "</td></tr>\n"
         else:
-            html += '  <tr><th>' + str(i)
+            html += f"  <tr><th>{i}"
             if dim > 0:
-                html += '</th><td>' + '</td><td>'.join([fmt.format(x) for x in self[i]])
-            html += '</td></tr>\n'
-    html += '</table>'
+                html += "</th><td>" + "</td><td>".join([fmt.format(x) for x in self[i]])
+            html += "</td></tr>\n"
+    html += "</tbody></table>"
     return html
 
 Sample._repr_html_ = __Sample_repr_html
@@ -863,6 +863,15 @@ Sample(const Sample & other)
 Sample(PyObject * pyObj)
 {
   return new OT::Sample( OT::convert< OT::_PySequence_, OT::Sample>(pyObj) );  
+}
+
+// mimic built-in list.index operator
+UnsignedInteger index(const Point & value)
+{
+  const OT::UnsignedInteger result = self->find(value);
+  if (result >= self->getSize())
+    throw OT::InvalidArgumentException(HERE) << value << " is not in Sample";
+  return result;
 }
 
 Bool __eq__(const Sample & other) { return (*self) == other; }

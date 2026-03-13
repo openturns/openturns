@@ -19,7 +19,6 @@
  *
  */
 #include <string>                 // for std::string
-#include <cstdlib>                // for getenv
 
 #ifdef _WIN32
 #include "openturns/OTwindows.h"  // for GetModuleFileName

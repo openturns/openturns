@@ -78,6 +78,12 @@ private:
 #define PyTuple_GET_SIZE PyTuple_Size
 #define PyList_GET_ITEM PyList_GetItem
 #define PyTuple_GET_ITEM PyTuple_GetItem
+
+// PySequence_Fast should not be used in limited API
+// it was removed from limited API in 3.14
+#define PySequence_Fast_GET_ITEM PySequence_GetItem
+#define PySequence_Fast_GET_SIZE PySequence_Length
+
 #endif
 
 void handleException();
@@ -413,9 +419,12 @@ inline
 String
 convert< _PyUnicode_, String >(PyObject * pyObj)
 {
+#ifdef Py_LIMITED_API
   ScopedPyObjectPointer encodedBytes(PyUnicode_AsUTF8String(pyObj));
-  assert(encodedBytes.get());
   return convert<_PyBytes_, String>(encodedBytes.get());
+#else
+  return PyUnicode_AsUTF8(pyObj);
+#endif
 }
 
 template <>
@@ -665,7 +674,7 @@ convert< _PySequence_, Point >(PyObject * pyObj)
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Point point(size);
-        std::copy(data, data + size, (size > 0) ? &point[0] : 0);
+        std::copy(data, data + size, const_cast<Scalar*>(point.data()));
         PyBuffer_Release(&view);
         return point;
       }
@@ -735,7 +744,7 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
         const Complex* data = static_cast<const Complex*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<Complex> result(size);
-        std::copy(data, data + size, (size > 0) ? &result[0] : 0);
+        std::copy(data, data + size, const_cast<Complex*>(result.data()));
         PyBuffer_Release(&view);
         return result;
       }
@@ -753,52 +762,60 @@ inline
 void handleException()
 {
   PyObject * exceptionType = PyErr_Occurred();
+  if (!exceptionType)
+    return;
 
-  if (exceptionType)
-  {
-    String exceptionMessage("Python exception");
-    ScopedPyObjectPointer typeObj(PyObject_Str(exceptionType));
-    const String typeNameObj = checkAndConvert< _PyString_, String >(typeObj.get());
-    exceptionMessage += ": " + typeNameObj;
-
+  // retrieve error and clear indicator
+  PyObject *type = NULL, *value = NULL, *traceback = NULL;
 #if (PY_VERSION_HEX >= 0x030c0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030c0000)
-    PyObject * exception = PyErr_GetRaisedException();
-    ScopedPyObjectPointer nameObj(PyObject_Str(exception));
-    const String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
-    exceptionMessage += ": " + typeString;
-    PyErr_SetRaisedException(exception);
+  ScopedPyObjectPointer exception(PyErr_GetRaisedException());
+  if (exception.isNull())
+    throw InternalException(HERE) << "handleException: cannot access exception";
+  ScopedPyObjectPointer typeRef(PyObject_Type(exception.get()));
+  type = typeRef.get();
+  value = exception.get();
+  ScopedPyObjectPointer tracebackRef(PyException_GetTraceback(exception.get()));
+  traceback = tracebackRef.get();
 #else
-    PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    PyErr_Fetch(&type, &value, &traceback);
-    PyErr_NormalizeException(&type, &value, &traceback);
-
-    // get the name of the exception
-    if (type)
-    {
-      ScopedPyObjectPointer nameObj(PyObject_Str(type));
-      if (nameObj.get())
-      {
-        const String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
-        exceptionMessage += ": " + typeString;
-      }
-    }
-
-    // try to get error msg, value and traceback can be NULL
-    if (value)
-    {
-      ScopedPyObjectPointer valueObj(PyObject_Str(value));
-      if (valueObj.get())
-      {
-        const String valueString = checkAndConvert< _PyString_, String >(valueObj.get());
-        exceptionMessage += ": " + valueString;
-      }
-    }
-
-    PyErr_Restore(type, value, traceback);
+  PyErr_Fetch(&type, &value, &traceback);
+  PyErr_NormalizeException(&type, &value, &traceback);
 #endif
-    PyErr_Print();
-    throw InternalException(HERE) << exceptionMessage;
+
+  // show exception value first
+  ScopedPyObjectPointer valueString(PyObject_Str(value ? value : Py_None));
+  if (valueString.isNull())
+    throw InternalException(HERE) << "handleException: cannot format exception value";
+  String exceptionMessage = convert< _PyString_, String >(valueString.get());
+
+  // format traceback
+  ScopedPyObjectPointer tracebackModule(PyImport_ImportModule("traceback"));
+  if (tracebackModule.isNull())
+    throw InternalException(HERE) << "handleException: cannot import traceback";
+  ScopedPyObjectPointer tbexcClass(PyObject_GetAttrString(tracebackModule.get(), "TracebackException"));
+  if (tbexcClass.isNull())
+    throw InternalException(HERE) << "handleException: cannot access TracebackException";
+  ScopedPyObjectPointer tbexcInstance(PyObject_CallFunctionObjArgs(tbexcClass.get(),
+                                                                    type ? type : Py_None,
+                                                                    value  ? value  : Py_None,
+                                                                    traceback ? traceback : Py_None,
+                                                                    NULL));
+  if (tbexcInstance.isNull())
+    throw InternalException(HERE) << "handleException: cannot create TracebackException";
+  ScopedPyObjectPointer formatMethod(PyObject_GetAttrString(tbexcInstance.get(), "format"));
+  if (formatMethod.isNull())
+    throw InternalException(HERE) << "handleException: cannot access format()";
+  ScopedPyObjectPointer formatIterator(PyObject_CallObject(formatMethod.get(), NULL));
+  if (formatIterator.isNull())
+    throw InternalException(HERE) << "handleException: cannot format traceback";
+
+  PyObject *line = NULL;
+  exceptionMessage += "\n";
+  while ((line = PyIter_Next(formatIterator.get())))
+  {
+    exceptionMessage += convert< _PyString_, String >(line);
+    Py_DECREF(line);
   }
+  throw InternalException(HERE) << exceptionMessage;
 }
 
 
@@ -833,7 +850,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, (Scalar *)sample.data());
+          std::copy(data, data + size * dimension, const_cast<Scalar*>(sample.data()));
         }
         else
         {
@@ -959,7 +976,7 @@ convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
         const UnsignedInteger* data = static_cast<const UnsignedInteger*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<UnsignedInteger> result(size);
-        std::copy(data, data + size, &result[0]);
+        std::copy(data, data + size, const_cast<UnsignedInteger*>(result.data()));
         PyBuffer_Release(&view);
         return result;
       }
@@ -1033,7 +1050,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, &indices(0, 0));
+          std::copy(data, data + size * dimension, indices.begin_at(0));
         }
         else
         {
@@ -1152,7 +1169,7 @@ convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<Scalar> result(size);
-        std::copy(data, data + size, &result[0]);
+        std::copy(data, data + size, const_cast<Scalar*>(result.data()));
         PyBuffer_Release(&view);
         return result;
       }
@@ -1201,7 +1218,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0, 0));
+          std::copy(data, data + nbRows * nbColumns, const_cast<Scalar*>(p_implementation->data()));
         }
         else
         {
@@ -1407,7 +1424,7 @@ convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0, 0, 0));
+          std::copy(data, data + nbRows * nbColumns * nbSheets, const_cast<Scalar *>(p_implementation->data()));
         }
         else
         {
@@ -1495,7 +1512,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0, 0));
+          std::copy(data, data + nbRows * nbColumns, const_cast<Complex*>(p_implementation->data()));
         }
         else
         {
@@ -1676,7 +1693,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0, 0, 0));
+          std::copy(data, data + nbRows * nbColumns * nbSheets, const_cast<Complex*>(p_implementation->data()));
         }
         else
         {
@@ -1792,49 +1809,45 @@ convert< _PySequence_, WhittleFactoryState >(PyObject *)
 inline
 void pickleSave(Advocate & adv, PyObject * pyObj, const String attributName = "pyInstance_")
 {
+  if (!pyObj)
+    throw InternalException(HERE) << "pickleSave: pyObj is NULL";
+
   // try to use dill
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
-  if (pickleModule.get() == NULL)
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill"));
+  if (pickleModule.isNull())
   {
     // fallback to pickle
     PyErr_Clear();
-    pickleModule = PyImport_ImportModule("pickle"); // new reference
+    pickleModule = PyImport_ImportModule("pickle");
   }
-  assert(pickleModule.get());
+  if (pickleModule.isNull())
+    handleException();
 
-  PyObject * pickleDict = PyModule_GetDict(pickleModule.get());
-  assert(pickleDict);
+  ScopedPyObjectPointer dumpsMethod(PyObject_GetAttrString(pickleModule.get(), "dumps"));
+  if (dumpsMethod.isNull())
+    throw InternalException(HERE) << "pickleSave: cannot access dumps()";
 
-  PyObject * dumpsMethod = PyDict_GetItemString(pickleDict, "dumps");
-  assert(dumpsMethod);
-  if (! PyCallable_Check(dumpsMethod))
-    throw InternalException(HERE) << "Python 'pickle' module has no 'dumps' method";
+  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(dumpsMethod.get(), pyObj, NULL));
+  if (rawDump.isNull())
+    handleException();
 
-  assert(pyObj);
-  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(dumpsMethod, pyObj, NULL)); // new reference
+  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64"));
+  if (base64Module.isNull())
+    handleException();
 
-  handleException();
-  assert(rawDump.get());
+  ScopedPyObjectPointer b64encodeMethod(PyObject_GetAttrString(base64Module.get(), "standard_b64encode"));
+  if (b64encodeMethod.isNull())
+    throw InternalException(HERE) << "pickleSave: cannot access standard_b64encode()";
 
-  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64")); // new reference
-  assert(base64Module.get());
-
-  PyObject * base64Dict = PyModule_GetDict(base64Module.get());
-  assert(base64Dict);
-
-  PyObject * b64encodeMethod = PyDict_GetItemString(base64Dict, "standard_b64encode");
-  assert(b64encodeMethod);
-  if (! PyCallable_Check(b64encodeMethod))
-    throw InternalException(HERE) << "Python 'base64' module has no 'standard_b64encode' method";
-
-  ScopedPyObjectPointer base64Dump(PyObject_CallFunctionObjArgs(b64encodeMethod, rawDump.get(), NULL)); // new reference
-  handleException();
-  assert(base64Dump.get());
+  ScopedPyObjectPointer base64Dump(PyObject_CallFunctionObjArgs(b64encodeMethod.get(), rawDump.get(), NULL));
+  if (base64Dump.isNull())
+    handleException();
 
   // convert string into Indices to benefit from h5
   UnsignedInteger size = PyBytes_Size(base64Dump.get());
   char * content = PyBytes_AsString(base64Dump.get());
-  assert(content);
+  if (!content)
+    handleException();
   Indices pyInstanceIndices(size);
   for (UnsignedInteger j = 0; j < size; ++j)
     pyInstanceIndices[j] = content[j];
@@ -1854,46 +1867,42 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = 
   std::vector<char> content(size);
   for (UnsignedInteger j = 0; j < size; ++j)
     content[j] = pyInstanceIndices[j];
+
   ScopedPyObjectPointer base64Dump(PyBytes_FromStringAndSize(content.data(), size));
-  assert(base64Dump.get());
+  if (base64Dump.isNull())
+    throw InternalException(HERE) << "pickleLoad: cannot convert to bytes";
 
-  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64")); // new reference
-  assert(base64Module.get());
+  ScopedPyObjectPointer base64Module(PyImport_ImportModule("base64"));
+  if (base64Module.isNull())
+    handleException();
 
-  PyObject * base64Dict = PyModule_GetDict(base64Module.get());
-  assert(base64Dict);
+  ScopedPyObjectPointer b64decodeMethod(PyObject_GetAttrString(base64Module.get(), "standard_b64decode"));
+  if (b64decodeMethod.isNull())
+    throw InternalException(HERE) << "pickleLoad: cannot access standard_b64encode()";
 
-  PyObject * b64decodeMethod = PyDict_GetItemString(base64Dict, "standard_b64decode");
-  assert(b64decodeMethod);
-  if (! PyCallable_Check(b64decodeMethod))
-    throw InternalException(HERE) << "Python 'base64' module has no 'standard_b64decode' method";
-
-  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(b64decodeMethod, base64Dump.get(), NULL)); // new reference
-  handleException();
-  assert(rawDump.get());
+  ScopedPyObjectPointer rawDump(PyObject_CallFunctionObjArgs(b64decodeMethod.get(), base64Dump.get(), NULL));
+  if (rawDump.isNull())
+    handleException();
 
   // try to use dill
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill"));
   if (pickleModule.get() == NULL)
   {
     // fallback to pickle
     PyErr_Clear();
-    pickleModule = PyImport_ImportModule("pickle"); // new reference
+    pickleModule = PyImport_ImportModule("pickle");
   }
-  assert(pickleModule.get());
+  if (pickleModule.isNull())
+    handleException();
 
-  PyObject * pickleDict = PyModule_GetDict(pickleModule.get());
-  assert(pickleDict);
-
-  PyObject * loadsMethod = PyDict_GetItemString(pickleDict, "loads");
-  assert(loadsMethod);
-  if (! PyCallable_Check(loadsMethod))
-    throw InternalException(HERE) << "Python 'pickle' module has no 'loads' method";
+  ScopedPyObjectPointer loadsMethod(PyObject_GetAttrString(pickleModule.get(), "loads"));
+  if (loadsMethod.isNull())
+    throw InternalException(HERE) << "pickleLoad: cannot access loads()";
 
   Py_XDECREF(pyObj);
-  pyObj = PyObject_CallFunctionObjArgs(loadsMethod, rawDump.get(), NULL); // new reference
-  handleException();
-  assert(pyObj);
+  pyObj = PyObject_CallFunctionObjArgs(loadsMethod.get(), rawDump.get(), NULL);
+  if (!pyObj)
+    handleException();
 }
 
 
@@ -1902,19 +1911,16 @@ inline
 ScopedPyObjectPointer deepCopy(PyObject * pyObj)
 {
   ScopedPyObjectPointer copyModule(PyImport_ImportModule("copy"));
-  assert(copyModule.get());
+  if (copyModule.isNull())
+    handleException();
 
-  PyObject * copyDict = PyModule_GetDict(copyModule.get());
-  assert(copyDict);
+  ScopedPyObjectPointer deepCopyMethod(PyObject_GetAttrString(copyModule.get(), "deepcopy"));
+  if (deepCopyMethod.isNull())
+    throw InternalException(HERE) << "cannot access deepcopy()";
 
-  PyObject * deepCopyMethod = PyDict_GetItemString(copyDict, "deepcopy");
-  assert(deepCopyMethod );
-
-  if (!PyCallable_Check(deepCopyMethod))
-    throw InternalException(HERE) << "Python 'copy' module has no 'deepcopy' method";
-
-  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod, pyObj, NULL));
-  handleException();
+  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod.get(), pyObj, NULL));
+  if (pyObjDeepCopy.isNull())
+    handleException();
   return pyObjDeepCopy;
 }
 
@@ -1925,6 +1931,24 @@ inline void SignalHandler(int /*signum*/)
   // will exit but likely crash the interpreter
   throw InterruptionException(HERE) << "Exiting on SIGINT";
 }
+
+
+class ScopedSignalHandler
+{
+public:
+  ScopedSignalHandler()
+  {
+    previousHandler_ = std::signal(SIGINT, SignalHandler);
+  }
+
+  ~ScopedSignalHandler()
+  {
+    std::signal(SIGINT, previousHandler_); // restore previous handler
+  }
+
+private:
+  void (*previousHandler_)(int) = nullptr;
+};
 
 
 // substitute for SWIG_Python_AppendOutput as API broke with SWIG 4.3

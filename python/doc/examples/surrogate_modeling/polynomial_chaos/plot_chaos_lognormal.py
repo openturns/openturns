@@ -94,7 +94,7 @@ for deg in deg_list:
     leg.add(r"$d = $" + str(deg))
 
 g.setLegends(leg)
-g.setLegendPosition("topleft")
+g.setLegendPosition("upper left")
 view = otv.View(g)
 
 # %%
@@ -195,7 +195,7 @@ view = otv.View(grid)
 graph_LN = g.draw(lower_bound, upper_bound, [251])
 graph_LN.add(meta_model_LN_5.draw(lower_bound, upper_bound, [251]))
 graph_LN.setLegends(["model", "surrogate model"])
-graph_LN.setLegendPosition("topright")
+graph_LN.setLegendPosition("upper right")
 graph_LN.setTitle(
     r"Polynomial surrogate model of degree $d = $"
     + str(basis_size_LN - 1)
@@ -299,7 +299,7 @@ view = otv.View(graph_valid_N)
 graph_N = g.draw(lower_bound, upper_bound, [251])
 graph_N.add(meta_model_N.draw(lower_bound, upper_bound, [251]))
 graph_N.setLegends(["model", "surrogate model"])
-graph_N.setLegendPosition("topright")
+graph_N.setLegendPosition("upper right")
 graph_N.setTitle(
     r"Chaos expansion with $T$, $d =$"
     + str(basis_size_N - 1)
@@ -348,7 +348,7 @@ graph_comp.setLegends(
         r"$d = 5$, without $T$",
     ]
 )
-graph_comp.setLegendPosition("topright")
+graph_comp.setLegendPosition("upper right")
 graph_comp.setTitle(
     r"Chaos expansion of $f: x \rightarrow 1/x$,  $X \sim LogNormal$"
 )

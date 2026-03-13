@@ -186,7 +186,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
     ScopedPyObjectPointer execName(convert< String, _PyString_ >("_exec"));
     result = PyObject_CallMethodObjArgs(pyObj_, execName.get(), point.get(), NULL);
     if (! result.get())
-      PyErr_SetString(PyExc_RuntimeError, "_exec did not return any value");
+      handleException();
     else if (! PySequence_Check(result.get()))
       PyErr_SetString(PyExc_TypeError, "_exec return value is not a sequence");
   }
@@ -232,10 +232,10 @@ Point PythonEvaluation::operator() (const Point & inP) const
             PyErr_SetString(PyExc_TypeError, "_exec_sample return value is not a sequence");
         }
         else
-          PyErr_SetString(PyExc_RuntimeError, "_exec_sample did not return any value");
+          handleException();
       }
       else
-        PyErr_SetString(PyExc_RuntimeError, "openturns.memoryview.Buffer.augment did not return any value");
+        handleException();
     }
   }
 #endif

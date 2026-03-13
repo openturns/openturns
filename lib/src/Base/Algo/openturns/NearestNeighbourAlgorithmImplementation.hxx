@@ -63,6 +63,9 @@ public:
   /* Get the indices of the k nearest neighbours of the given point */
   virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted = false) const;
 
+  /* Get the indices of the neighbours inside radius of the given point */
+  virtual Indices queryRadius(const Point & x, const Scalar radius, Point & distanceOut, const Bool sorted = false) const;
+
   /** String converter */
   String __repr__() const override;
 

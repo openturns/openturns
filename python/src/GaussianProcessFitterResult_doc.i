@@ -1,7 +1,7 @@
 %feature("docstring") OT::GaussianProcessFitterResult
 R"RAW(Gaussian process fitter result.
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 Parameters
 ----------
@@ -34,7 +34,7 @@ The structure is usually created by the method :py:meth:`~openturns.GaussianProc
 :class:`~openturns.GaussianProcessFitter` and obtained with its method
 :py:meth:`~openturns.GaussianProcessFitter.getResult()`.
 
-Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
 
 This class creates the metamodel
 :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend

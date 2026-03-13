@@ -44,10 +44,10 @@ of a satisfactory regression model.
   :meth:`getNormalityTestCramerVonMises`, :meth:`getNormalityTestResultAndersonDarling`,
   :meth:`getNormalityTestResultChiSquared()` and :meth:`getNormalityTestResultKolmogorovSmirnov`.
 
-The basics on regression theory are presented in :ref:`regression_analysis`.
-The goodness of fit tests for normality are presented in :ref:`graphical_fitting_test`, 
-:ref:`chi2_fitting_test`, :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`  and
-:ref:`anderson_darling_test`.
+The basics on regression theory are presented in :any:`regression_analysis`.
+The goodness of fit tests for normality are presented in :any:`graphical_fitting_test`, 
+:any:`chi2_fitting_test`, :any:`kolmogorov_smirnov_test`, :any:`cramer_vonmises_test`  and
+:any:`anderson_darling_test`.
 
 Examples
 --------

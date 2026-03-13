@@ -11,7 +11,7 @@ experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Low Discrepancy experiment", "x1", "x2", True, "")
+graph = ot.Graph("Low Discrepancy experiment", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "plus", "")

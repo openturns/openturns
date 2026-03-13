@@ -1,7 +1,7 @@
 %feature("docstring") OT::UserDefinedMetropolisHastings
 R"RAW(User-defined Metropolis-Hastings method.
 
-Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+Refer to :any:`bayesian_calibration`, :any:`metropolis_hastings`.
 
 Available constructor:
     UserDefinedMetropolisHastings(*targetDistribution, initialState, proposal, linkFunction, marginalIndices*)
@@ -30,7 +30,7 @@ marginalIndices : sequence of int, optional
 Notes
 -----
 
-Using the notations from :ref:`metropolis_hastings` page,
+Using the notations from :any:`metropolis_hastings` page,
 this class allows one to completely specify the transition kernel :math:`Q`.
 This is done by specifying:
 

@@ -179,8 +179,6 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstOrderIndices(const Descriptio
     const Point & firstOrderIndices,
     const Interval & firstOrderConfidenceInterval)
 {
-  Graph graph("Sobol' indices", "inputs", "index value", true, "");
-
   const UnsignedInteger dimension = firstOrderIndices.getDimension();
 
   // Define cloud for FO
@@ -193,7 +191,7 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstOrderIndices(const Descriptio
   }
 
   const Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
-
+  Graph graph("Sobol' indices", "inputs", "index value");
   graph.add(firstOrderIndicesGraph);
 
   // Description
