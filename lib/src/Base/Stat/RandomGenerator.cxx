@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include "dsfmt.h"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/RandomGeneratorState.hxx"

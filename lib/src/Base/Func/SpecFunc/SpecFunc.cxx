@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include <limits>
-#include <cstdlib>
 #include <iostream>
 
 #include "openturns/SpecFunc.hxx"

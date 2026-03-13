@@ -19,7 +19,6 @@
  *
  */
 #include <cmath>
-#include <cstdlib>
 #include <algorithm>
 
 #include "openturns/PersistentObjectFactory.hxx"
