@@ -93,7 +93,7 @@ void CSVParser::setNumericalSeparator(const char decimalSeparator)
 Sample CSVParser::load() const
 {
   if (!std::ifstream(std::filesystem::u8path(fileName_)).good())
-    throw FileNotFoundException(HERE) << "Cannot open file '" << fileName_ << "'. Reason: " << std::strerror(errno);
+    throw FileNotFoundException(HERE) << "CSVParser cannot open file '" << fileName_ << "'";
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
   const int pColumnNameIdx = skippedLinesNumber_ != 0 ? skippedLinesNumber_ - 1 : -1;

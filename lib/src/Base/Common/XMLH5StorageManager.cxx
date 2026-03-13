@@ -103,10 +103,8 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
     CPP_Type value)
 {
   // Get XML node associated to the Collection
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   const hsize_t dsetSize = std::stol(XML::GetAttributeByName(node, "size"));
 
   // append value in buffer
@@ -126,7 +124,6 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
     const size_t idx = h5FileName_.find_last_of(Os::GetDirectorySeparator());
     const FileName h5FileNameRel = h5FileName_.substr(idx + 1);
     XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileNameRel + ":/" + dataSetName);
-    assert(child);
     XML::AddChild( node, child );
   }
 }
@@ -212,7 +209,6 @@ void XMLH5StorageManagerImplementation::readIndexedValue(Pointer<StorageManager:
     UnsignedInteger index,
     CPP_Type & value)
 {
-  assert(p_obj);
   //Read values only once
   XMLH5StorageManagerState & state = dynamic_cast<XMLH5StorageManagerState &>(*p_obj);
 
