@@ -198,24 +198,23 @@ Scalar UniformOverMesh::computeProbabilityContinuous(const Interval & interval) 
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "UniformOverMesh interval must have dimension " << getDimension() << ", got " << interval.getDimension();
   Scalar probability = 0.0;
-  const Interval intersection(interval.intersect(getRange()));
-  if (intersection.isEmpty())
+  const Interval interval2(interval.intersect(getRange()));
+  if (interval2.isEmpty())
     probability = 0.0;
-  else if (intersection == getRange())
+  else if (interval2 == getRange())
     probability = 1.0;
   else
   {
     try
     {
-      const Mesh intersectionMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(intersection)));
-      const Point intersectionVolumes(intersectionMesh.computeSimplicesVolume());
-      const Scalar intersectionVolume = std::accumulate(intersectionVolumes.begin(), intersectionVolumes.end(), 0.0);
-      probability = intersectionVolume / meshVolume_;
+      const Mesh intervalMesh(IntervalMesher(Indices(getDimension(), 1)).build(interval2));
+      const Mesh intersectionMesh(mesh_.intersect(intervalMesh));
+      probability = intersectionMesh.getVolume() / meshVolume_;
     }
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      probability = integrationAlgorithm_.integrate(getPDF(), intersection)[0];
+      probability = integrationAlgorithm_.integrate(getPDF(), interval2)[0];
     }
   }
   return probability;
