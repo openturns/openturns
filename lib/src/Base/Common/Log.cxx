@@ -20,7 +20,6 @@
  */
 #include <filesystem>
 #include <iostream>
-#include <cassert>
 
 #include "openturns/Log.hxx"
 #include "openturns/OTconfig.hxx"
@@ -52,7 +51,6 @@ Log_init::Log_init()
     Log_P_instance_ = new Log;
     Log_P_instance_->push(Log::Entry(Log::INFO, "*** Log Beginning ***"));
   });
-  assert(Log_P_instance_.get());
 }
 
 Log_init::~Log_init()
