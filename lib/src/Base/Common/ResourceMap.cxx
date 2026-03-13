@@ -44,7 +44,7 @@ static const char * XMLTag_value_bool             = "value_bool";
 #endif
 
 static std::mutex ResourceMap_InstanceMutex_;
-static ResourceMap * ResourceMap_P_instance_ = 0;
+static ResourceMap * ResourceMap_P_instance_ = nullptr;
 static const ResourceMap_init static_initializer_ResourceMap;
 
 ResourceMap_init::ResourceMap_init()
@@ -54,7 +54,6 @@ ResourceMap_init::ResourceMap_init()
   {
     ResourceMap_P_instance_ = new ResourceMap;
   });
-  assert(ResourceMap_P_instance_);
 }
 
 ResourceMap_init::~ResourceMap_init()
@@ -63,7 +62,7 @@ ResourceMap_init::~ResourceMap_init()
   std::call_once(flag, [&]()
   {
     delete ResourceMap_P_instance_;
-    ResourceMap_P_instance_ = 0;
+    ResourceMap_P_instance_ = nullptr;
   });
 }
 

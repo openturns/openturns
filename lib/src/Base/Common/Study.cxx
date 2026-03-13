@@ -130,7 +130,6 @@ String Study::__str__(const String & ) const
 /* This method saves the study through the storage manager */
 void Study::save()
 {
-  assert(p_storageManager_);
   StorageManager & mgr = *p_storageManager_;
 
   mgr.initialize( SaveAction() );
@@ -154,7 +153,6 @@ void Study::save()
 /* This method reloads the study from the storage manager */
 void Study::load()
 {
-  assert(p_storageManager_);
   StorageManager & mgr = *p_storageManager_;
 
   mgr.initialize( LoadAction() );

@@ -93,7 +93,6 @@ void XMLStorageManager::setFileName(const String & fileName)
 /* Return the current state of the storage manager (for those having one) */
 const StorageManager::InternalObject & XMLStorageManager::getState() const
 {
-  assert(p_state_);
   return *p_state_;
 }
 
@@ -114,9 +113,7 @@ void XMLStorageManager::initialize(const SaveAction )
   OSS oss;
   oss << getStudyVersion();
   p_document_.reset(new XMLDoc);
-  assert(p_document_);
   p_document_->setCompressionLevel(compressionLevel_);
-  assert(p_state_);
   p_state_->root_ = XML::NewNode( XML_STMGR::root_tag::Get() );
   XML::SetAttribute(p_state_->root_, XML_STMGR::version_attribute::Get(), oss);
   XML::SetRootNode(*p_document_, p_state_->root_);
@@ -163,8 +160,6 @@ void XMLStorageManager::finalize(const LoadAction )
 /* Read and create the internal representation */
 void XMLStorageManager::read()
 {
-  assert(p_document_);
-  assert(p_state_);
   p_state_->root_ = XML::GetRootNode( *p_document_ );
   if (! p_state_->root_) throw StudyFileParsingException(HERE) << "Study file has no root element (" << fileName_ << ")";
   if (! XML::IsElement( p_state_->root_, XML_STMGR::root_tag::Get() ))
@@ -182,7 +177,6 @@ void XMLStorageManager::read()
 /* Write the internal representation */
 void XMLStorageManager::write()
 {
-  assert(p_document_);
   p_document_->save( fileName_ );
 }
 
@@ -216,7 +210,6 @@ void XMLStorageManager::save(const PersistentObject & obj, const String & label,
 void XMLStorageManager::load(Study & study)
 {
   setStudy( &study );
-  assert(p_state_);
   XML::Node node = XML::GetFirstChild( p_state_->root_ );
   while( node )
   {
@@ -243,7 +236,6 @@ void XMLStorageManager::load(Study & study)
 /* Methods to read DOM elements */
 XMLStorageManager::XMLReadObject XMLStorageManager::readDOMElement()
 {
-  assert(p_state_);
   XMLReadObject ro;
   if ( p_state_->current_ )
   {
@@ -282,11 +274,8 @@ Pointer<StorageManager::InternalObject> XMLStorageManager::createObject(const St
 /* Append an internal object to the collection of saved ones */
 void XMLStorageManager::appendObject(Pointer<InternalObject> & p_obj)
 {
-  assert(p_state_);
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   XML::AddChild( p_state_->root_, node );
 }
 
@@ -439,10 +428,8 @@ void AttributeWriter(Pointer<StorageManager::InternalObject> & p_obj,
                      const String & name,
                      _Tp value)
 {
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   String attrValue;
   toStringConverter( value, attrValue );
   XML::SetAttribute( node, name, attrValue );
@@ -455,23 +442,18 @@ void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
                               const String & name,
                               Complex value)
 {
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   XML::Node child = XML::NewNode( XML_STMGR::numericalcomplex_tag::Get() );
-  assert(child);
   XML::SetAttribute( child, XML_STMGR::name_attribute::Get(), name );
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
   XML::Node real = XML::NewNode(XML_STMGR::real_tag::Get(), OSS() << value.real());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
-  assert(real);
   XML::AddChild( child, real );
   PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
   XML::Node imag = XML::NewNode(XML_STMGR::imag_tag::Get(), OSS() << value.imag());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
-  assert(imag);
   XML::AddChild( child, imag );
   XML::AddChild( node, child );
 }
@@ -488,7 +470,6 @@ void AttributeReader(TAG,
                      const String & name,
                      _Tp & value)
 {
-  assert(p_state);
   String st = XML::GetAttributeByName( p_state->current_, name );
   fromStringConverter( st, value );
 }
@@ -505,14 +486,11 @@ void IndexedValueWriter(TAG tag,
                         UnsignedInteger index,
                         _Tp value)
 {
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   String attrValue;
   toStringConverter( value, attrValue );
   XML::Node child = XML::NewNode( tag.Get(), attrValue );
-  assert(child);
   XML::SetAttribute( child, XML_STMGR::index_attribute::Get(), OSS() << index );
   XML::AddChild( node, child );
 }
@@ -525,23 +503,18 @@ void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::num
     UnsignedInteger index,
     Complex value)
 {
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   XML::Node child = XML::NewNode( XML_STMGR::numericalcomplex_tag::Get() );
-  assert(child);
   XML::SetAttribute( child, XML_STMGR::index_attribute::Get(), OSS() << index );
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
   XML::Node real = XML::NewNode(XML_STMGR::real_tag::Get(), OSS() << value.real());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
-  assert(real);
   XML::AddChild( child, real );
   PlatformInfo::SetNumericalPrecision(XMLStorageManager::GetNumericalPrecision());
   XML::Node imag = XML::NewNode(XML_STMGR::imag_tag::Get(), OSS() << value.imag());
   PlatformInfo::SetNumericalPrecision(oldPrecision);
-  assert(imag);
   XML::AddChild( child, imag );
   XML::AddChild( node, child );
 }
@@ -559,7 +532,6 @@ void IndexedValueReader(TAG tag,
                         UnsignedInteger index,
                         _Tp & value)
 {
-  assert(p_obj);
   XMLStorageManagerState & state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
 
   XML::Node node;
@@ -591,12 +563,9 @@ void NamedObjectWriter(TAG tag,
                        const String & name,
                        _Tp & value)
 {
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   XML::Node child = XML::NewNode( tag.Get() );
-  assert(child);
   XML::SetAttribute( child, XML_STMGR::member_attribute::Get(), name);
   XML::SetAttribute( child, XML_STMGR::id_attribute::Get(), OSS() << value.getId() );
   XML::AddChild( node, child );
@@ -613,7 +582,6 @@ int NamedObjectReader(TAG tag,
                       const String & name,
                       _Tp & value)
 {
-  assert(p_obj);
   XMLStorageManagerState state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
 
   XML::Node node = XML::FindElementByName( state.current_, tag.Get() );
@@ -895,12 +863,9 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 {
   value.save( *this );
 
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   XML::Node child = XML::NewNode( XML_STMGR::object_tag::Get() );
-  assert(child);
   XML::SetAttribute( child, XML_STMGR::index_attribute::Get(), OSS() << index );
   XML::SetAttribute( child, XML_STMGR::id_attribute::Get(), OSS() << value.getId());
   XML::AddChild( node, child );
@@ -925,10 +890,8 @@ void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
  */
 Bool XMLStorageManager::hasAttribute(Pointer<InternalObject> & p_obj, const String & name)
 {
-  assert(p_obj);
   XMLStorageManagerState & state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
   XML::Node node = state.current_;
-  assert(node);
   // check simple attributes
   if (XML::ElementHasAttribute(node, name)) return true;
   // check object attributes
@@ -979,12 +942,9 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 {
   value.save( *this );
 
-  assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
   XML::Node node = obj.node_;
-  assert(node);
   XML::Node child = XML::NewNode( XML_STMGR::object_tag::Get() );
-  assert(child);
   XML::SetAttribute( child, XML_STMGR::index_attribute::Get(), OSS() << index );
   XML::SetAttribute( child, XML_STMGR::id_attribute::Get(), OSS() << value.getId());
   XML::AddChild( node, child );
