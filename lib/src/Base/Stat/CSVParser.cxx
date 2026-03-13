@@ -19,8 +19,6 @@
  *
  */
 
-#include <cstring>       // std::strerror
-
 #include "openturns/CSVParser.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
