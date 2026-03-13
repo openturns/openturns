@@ -4,7 +4,7 @@ Gaussian Process Regression : generate trajectories from the metamodel
 """
 
 # %%
-# The main goal of this example is to show how to simulate new trajectories from a Gaussian Process Regression metamodel.
+# The main goal of this example is to show how to simulate new trajectories from a Gaussian Process Regression metamodel(refer to :ref:`gaussian_process_regression`).
 
 # %%
 # Introduction

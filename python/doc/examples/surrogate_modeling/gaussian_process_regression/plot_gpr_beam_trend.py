@@ -5,7 +5,7 @@ Gaussian Process Regression: choose a polynomial trend on the beam model
 
 # %%
 # In this example, we consider the :ref:`cantilever beam <use-case-cantilever-beam>` and we build a metamodel using a
-# Gaussian process regression whose trend is estimated on the
+# Gaussian process regression (refer to :ref:`gaussian_process_regression`) whose trend is estimated on the
 # given data set. We illustrate the impact of the choice of the trend function basis on the metamodel.
 # This example focuses on three polynomial trends:
 #
