@@ -76,6 +76,9 @@ OT_API Scalar LogBesselI0(const Scalar x);
 // Modified first kind Bessel function of order 1: BesselI1(x) = \sum_{m=0}\infty\frac{1}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
 OT_API Scalar BesselI1(const Scalar x);
 OT_API Scalar LogBesselI1(const Scalar x);
+// Modified first kind Bessel function of order nu: BesselInu(x) = \sum_{m=0}\infty(x/2)^{\nu+2m}/(m!Gamma(\nu+m+1))
+OT_API Scalar BesselInu(const Scalar x, const Scalar nu);
+OT_API Scalar LogBesselInu(const Scalar x, const Scalar nu);
 // Difference between the logarithms of BesselI1 and BesselI0:
 OT_API Scalar DeltaLogBesselI10(const Scalar x);
 // Modified second kind Bessel function of order nu: BesselK(nu, x)=\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}}
@@ -244,6 +247,9 @@ OT_API Scalar AccurateSum(const Point & v);
 
 // clip value on [0, 1]
 OT_API Scalar Clip01(const Scalar prob, const Bool tail = false);
+
+// clip value on [a, b]
+OT_API Scalar Clip(const Scalar x, const Scalar a, const Scalar b);
 
 } /* SpecFunc */
 
