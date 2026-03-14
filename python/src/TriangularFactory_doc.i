@@ -9,9 +9,9 @@ The parameters are estimated by method of moments:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{a}_n=(1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
-      \displaystyle\Hat{b}_n=(1+\mathrm{sign}(x_{(n,n)})/(2+n))x_{(n,n)}\\
-      \displaystyle\Hat{m}_n=3\bar{x}_n-\Hat{a}_n-\Hat{b}_n
+      \Hat{a}_n & = \frac{1 - \mathrm{sign}(x_{(1,n)})}{2 + n} x_{(1,n)} \\
+      \Hat{b}_n & = \frac{1 + \mathrm{sign}(x_{(n,n)})}{2 + n} x_{(n,n)} \\
+      \Hat{m}_n & = 3\bar{x}_n - \Hat{a}_n - \Hat{b}_n
     \end{eqnarray*}
 
 See also
