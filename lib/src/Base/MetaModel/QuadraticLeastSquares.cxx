@@ -77,6 +77,8 @@ void QuadraticLeastSquares::run()
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
   const UnsignedInteger coefficientsDimension = 1 + inputDimension + (inputDimension * (inputDimension + 1)) / 2;
+  /* Center the data using the empirical mean */
+  const Point center(dataIn_.computeMean());
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -86,7 +88,7 @@ void QuadraticLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const Point currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex] - center);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -106,7 +108,7 @@ void QuadraticLeastSquares::run()
       /* Then, the off-diagonal terms */
       for(UnsignedInteger componentIndexTranspose = componentIndex + 1; componentIndexTranspose < inputDimension; ++componentIndexTranspose)
       {
-        componentMatrix(sampleIndex, rowIndex) = 0.5 * currentSample[componentIndex] * currentSample[componentIndexTranspose];
+        componentMatrix(sampleIndex, rowIndex) = currentSample[componentIndex] * currentSample[componentIndexTranspose];
         ++rowIndex;
       } // off-diagonal terms
     } // quadratic term
@@ -143,7 +145,6 @@ void QuadraticLeastSquares::run()
       } // Off-diagonal terms
     } // quadratic term
   } // output components
-  const Point center(inputDimension, 0.0);
   result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center, constant_, linear_, quadratic_));
 }
 
