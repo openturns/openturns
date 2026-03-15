@@ -1,6 +1,6 @@
 """
-Gaussian Process Regression: nugget effect and  noise
-=====================================================
+Gaussian Process Regression: nugget effect and noise
+====================================================
 """
 
 # %%
