@@ -229,27 +229,27 @@ Scalar TruncatedOverMesh::computeProbabilityContinuous(const Interval & interval
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "TruncatedOverMesh point must have dimension" << getDimension() << ", got " << interval.getDimension();
   Scalar probability = 0.0;
-  const Interval intersection(interval.intersect(getRange()));
-  if (intersection.isEmpty())
+  const Interval interval2(interval.intersect(getRange()));
+  if (interval2.isEmpty())
     probability = 0.0;
-  else if (intersection == getRange())
+  else if (interval2 == getRange())
     probability = 1.0;
   else
   {
     try
     {
-      const Mesh intersectionMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(intersection)));
+      const Mesh intervalMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(interval2)));
 
       // integrate pdf over simplices of the quadrant/mesh intersection
       SimplicialCubature integrationAlgorithm;
       const UnsignedInteger setMaximumCallsNumber = ResourceMap::GetAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber");
       integrationAlgorithm.setMaximumCallsNumber(setMaximumCallsNumber);
-      probability = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), intersectionMesh)[0];
+      probability = integrationAlgorithm.integrate(PDFWrapper(distribution_.getImplementation()->clone()), intervalMesh)[0];
     }
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      probability = integrationAlgorithm_.integrate(PDFWrapper(this), intersection)[0];
+      probability = integrationAlgorithm_.integrate(PDFWrapper(this), interval2)[0];
     }
   }
   return probability;
