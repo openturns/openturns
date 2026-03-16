@@ -74,8 +74,6 @@ public:
     if (size_ != 0)
     {
       // Clear heap
-      indices_.clear();
-      values_.clear();
       size_ = 0;
       values_[0] = SpecFunc::Infinity;
     }
@@ -171,7 +169,7 @@ private:
       // Heap is full, and current value is smaller than heap largest value.
       // Replace the largest value by current value and move it down to a
       // valid location.
-      if (localSquaredDistance < values_[0])
+      if (localSquaredDistance <= values_[0])
       {
         indices_[0] = localIndex;
         values_[0] = localSquaredDistance;
@@ -192,7 +190,7 @@ private:
         const Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
         squaredDistanceBoundingBox += difference * difference;
       }
-      if (squaredDistanceBoundingBox < values_[0])
+      if (squaredDistanceBoundingBox <= values_[0])
         collectNearestNeighbours(oppositeSide, x, lowerBoundingBox, upperBoundingBox, nextActiveDimension);
       // Restore bounding box
       if (delta < 0.0)
