@@ -1086,12 +1086,12 @@ Pointer<SampleImplementation> SampleImplementation::sort(const UnsignedInteger i
 struct Sortable
 {
   Point values_;
-  UnsignedInteger index_;
+  UnsignedInteger index_ = 0;
   Sortable() : values_(1, 0.0), index_(0) {}
   Sortable(const Point & values, const UnsignedInteger index) : values_(values), index_(index) {}
   Bool operator < (const Sortable & other) const
   {
-    return values_[index_] < other.values_[other.index_];
+    return values_[index_] < other.values_[index_];
   }
 };
 
@@ -1405,8 +1405,6 @@ Point SampleImplementation::computeCentralMoment(const UnsignedInteger k) const
  */
 Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 {
-  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
-
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute centered moments on an empty sample";
 
   // Special case: order 0, return (size,...,size)
