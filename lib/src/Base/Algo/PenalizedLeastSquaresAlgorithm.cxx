@@ -52,6 +52,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
   , penalizationMatrix_(0)
   , useNormal_(useNormal)
 {
+  if (!(penalizationFactor >= 0.0)) throw InvalidArgumentException(HERE) << "The penalization factor should be non-negative";
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
   {
@@ -74,6 +75,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
   , penalizationMatrix_(0)
   , useNormal_(useNormal)
 {
+  if (!(penalizationFactor >= 0.0)) throw InvalidArgumentException(HERE) << "The penalization factor should be non-negative";
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
   {
@@ -97,6 +99,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
   , useNormal_(useNormal)
 {
   const UnsignedInteger basisSize = indices.getSize();
+  if (!(penalizationFactor >= 0.0)) throw InvalidArgumentException(HERE) << "The penalization factor should be non-negative";
   // Check if the penalization matrix has the proper dimension
   if (penalizationMatrix_.getDimension() != basisSize) throw InvalidArgumentException(HERE) << "Error: the given penalization matrix has an improper dimension: " << penalizationMatrix_.getDimension();
   if (!penalizationMatrix_.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the given penalization matrix is not positive definite.";
