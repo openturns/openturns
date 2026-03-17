@@ -154,7 +154,6 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   Indices simplicesToCheck(0);
   UnsignedInteger goodSimplicesNumber = 0;
   const Bool solveEquation = ResourceMap::GetAsBool("LevelSetMesher-SolveEquation");
-  Bool minimizeDistance = !solveEquation;
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     UnsignedInteger numGood = 0;
@@ -215,6 +214,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
             if (!project) movedVertices.add(currentVertex + delta);
             else
             {
+              Bool minimizeDistance = !solveEquation;
               if (solveEquation)
               {
                 const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
@@ -265,8 +265,6 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                     movedVertices.add(currentVertex + delta);
                   }
                 } // User-defined solver failed ?
-                // Restore the use of solve-the-equation if we used minimization due to a difficult vertex
-                minimizeDistance = !solveEquation;
               } // minimizeDistance
             } // project
             ++flagGoodVertices[globalVertexIndex];
