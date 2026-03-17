@@ -90,7 +90,13 @@ void CSVParser::setNumericalSeparator(const char decimalSeparator)
 
 Sample CSVParser::load() const
 {
-  if (!std::ifstream(std::filesystem::u8path(fileName_)).good())
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName_.data()),
+                                 reinterpret_cast<const char8_t*>(fileName_.data() + fileName_.size()));
+  if (!std::ifstream(std::filesystem::path{u8FileName}))
+#else
+  if (!std::ifstream(std::filesystem::u8path(fileName_)))
+#endif
     throw FileNotFoundException(HERE) << "CSVParser cannot open file '" << fileName_ << "'";
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
@@ -110,9 +116,7 @@ Sample CSVParser::load() const
   std::ifstream stream;
   stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 #if defined(__cplusplus) && (__cplusplus >= 202002L)
-  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName_.data()),
-                                 reinterpret_cast<const char8_t*>(fileName_.data() + fileName_.size()));
-  stream.open(std::filesystem::path(u8FileName), std::ios::binary);
+  stream.open(std::filesystem::path{u8FileName}, std::ios::binary);
 #else
   stream.open(std::filesystem::u8path(fileName_), std::ios::binary);
 #endif
