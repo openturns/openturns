@@ -291,6 +291,16 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   SquareMatrix matrix(dimension + 1);
   for (UnsignedInteger i = 0; i < simplicesToCheck.getSize(); ++i)
     result.fixOrientation(simplicesToCheck[i], matrix);
+
+  // vertices can be non-trivially coplanar (non axis-aligned)
+  const Point simplicesVolume(result.computeSimplicesVolume());
+  Indices nonNullVolumeIndices;
+  for (UnsignedInteger i = 0; i < simplicesVolume.getSize(); ++ i)
+  {
+    if (simplicesVolume[i] > 0.0)
+      nonNullVolumeIndices.add(i);
+  }
+  result = result.getSubMesh(nonNullVolumeIndices);
   return result;
 }
 

@@ -102,3 +102,10 @@ gGreater = mesh.draw()
 ott.assert_almost_equal(
     gLess.getDrawable(0).getData(), gGreater.getDrawable(0).getData(), 1e-4, 1e-4
 )
+
+# check for degenerate simplices
+mesher = ot.LevelSetMesher([5] * 3)
+function = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2+x1^2+x2^2"])
+domain = ot.LevelSet(function, ot.LessOrEqual(), 4.0)
+mesh = mesher.build(domain, ot.Interval([-2] * 3, [2] * 3), False)
+assert min(mesh.computeSimplicesVolume()) > 0.0
