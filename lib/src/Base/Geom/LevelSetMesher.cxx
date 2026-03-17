@@ -226,7 +226,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                   LOGDEBUG(OSS() << "Projection of " << currentVertex << " gives t=" << t);
                   movedVertices.add(tToPoint(Point(1, t)));
                 }
-                catch(...)
+                catch (const Exception &)
                 {
                   LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << brent << ", using minimization for the projection");
                   minimizeDistance = true;
@@ -248,7 +248,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                   solver.run();
                   movedVertices.add(currentVertex + solver.getResult().getOptimalPoint());
                 }
-                catch(...)
+                catch (const Exception &)
                 {
                   // There is a problem with this vertex. Try a gradient-free solver
                   Cobyla cobyla(solver.getProblem());
@@ -259,7 +259,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                     cobyla.run();
                     movedVertices.add(currentVertex + cobyla.getResult().getOptimalPoint());
                   }
-                  catch(...)
+                  catch (const Exception &)
                   {
                     LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
                     movedVertices.add(currentVertex + delta);
