@@ -355,7 +355,7 @@ Scalar SpecFunc::LogBesselInu(const Scalar x, const Scalar nu)
   // Third case, use U4
   if (((x > 274.2377) && (nu > 0.3)) || (nu > 163.6993))
     {
-      auto [t, tOverNu, value] = uPreamble(x, nu);
+      auto [t, tOverNu, value] = uPreamble(nu);
       const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * U4(t))));
       return value + log1p(sum);
     }
