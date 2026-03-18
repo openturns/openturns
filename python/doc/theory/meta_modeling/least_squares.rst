@@ -44,15 +44,14 @@ as well as the corresponding ouput vectors:
 
     \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \right\}.
 
-where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
-
+where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`.
 
 We define the objective function :math:`\cJ` by:
 
 .. math::
     :label: objFunc
-    \cJ(\mat{A}) = \sum_{i=1}^\sampleSize \left \| \vect{y}^{(i)} - \Tr{\mat{A}} \vect{\Psi(\vect{x}^{(i))}\right \|_{L^2}^2
-
+    \cJ(\mat{A}) = \sum_{i=1}^\sampleSize \left \| \vect{y}^{(i)} - \Tr{\mat{A}} \vect{\Psi(\vect{x}^{(i))}
+    \right \|_{L^2}^2
 
 Then we search :math:`\widehat{\mat{A}}` that minimizes the objective function :eq:`objFunc`:
 
@@ -86,7 +85,7 @@ such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
 Particular case 1: The functional basis is composed of linear functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In this particular case, the functional basis is defined by :math:`N = \inputDim +1` linear functions:
+In this particular case, the functional basis is defined by :math:`N = 1+\inputDim` linear functions:
 
   .. math::
     \psi_0 & : \vect{x} \rightarrow 1\\
@@ -137,7 +136,7 @@ The resulting meta model can be written as:
   .. math::
     :label: QuadraticLeastSquaresMMOpenTURNS
      \metaModel(\vect{x})  = \vect{c} + \vect{X} \mapsto \Tr{\mat{L}} ( \vect{X} - \vect{b} )
-     + \frac{1}{2} \Tr{( \vect{X} - \vect{b} )}.\underline{\underline{\underline{M}}}. ( \vect{X} - \vect{b} )where:
+     + \frac{1}{2} \Tr{( \vect{X} - \vect{b} )}.\underline{\underline{\underline{M}}}. ( \vect{X} - \vect{b} )
 
 where:
 
