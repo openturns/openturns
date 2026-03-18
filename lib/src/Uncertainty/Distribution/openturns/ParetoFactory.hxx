@@ -58,6 +58,9 @@ public:
   Pareto buildMethodOfLeastSquares(const Sample & sample) const;
   Pareto buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const;
 
+private:
+  Pareto buildMethodOfLeastSquares(const Sample & sample, const Sample & rank, const UnsignedInteger iMax, const Scalar gamma) const;
+
 }; /* class ParetoFactory */
 
 

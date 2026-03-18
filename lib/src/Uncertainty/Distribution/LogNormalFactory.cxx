@@ -313,9 +313,9 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
   // so a1 = a and a0 = b - a1 * c
   const Scalar c = leastSquares.getCenter()[0];
   const Scalar a1 = leastSquares.getLinear()(0, 0);
-  const Scalar a0 = leastSquares.getConstant()[0] - a1 * c;
+  const Scalar a0 = leastSquares.getConstant()[0];
   const Scalar sigmaLog = 1.0 / a1;
-  const Scalar muLog = -a0 * sigmaLog;
+  const Scalar muLog = -(a0 - a1 * c) * sigmaLog;
   return LogNormal(muLog, sigmaLog, gamma);
 }
 
@@ -378,13 +378,7 @@ public:
     }
     LinearLeastSquares leastSquares(dataIn, dataOut_);
     leastSquares.run();
-    const Scalar a0 = leastSquares.getConstant()[0];
-    const Scalar a1 = leastSquares.getLinear()(0, 0);
-    Point result(size);
-    for (UnsignedInteger i = 0; i < size; ++ i)
-    {
-      result[i] = dataOut_(i, 0) - (a1 * dataIn(i, 0) + a0);
-    }
+    const Point result((dataOut_ - leastSquares.getResult().getMetaModel()(dataIn)).asPoint());
     return result;
   }
 
