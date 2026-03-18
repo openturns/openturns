@@ -1,4 +1,4 @@
-.. _least_squares:
+.. _least_squares_resolution:
 
 Least squares problems numerical methods
 ----------------------------------------
@@ -9,15 +9,15 @@ Least squares problems numerical methods
   interest, or when one wishes to perform a statistical regression.
 
 | Given a matrix :math:`\matr{\Psi}~\in~\Rset^{N\times P}`, :math:`N>P`,
-  and a vector :math:`\underline{y}~\in~\Rset^{N}`, we want to find a
-  vector :math:`\underline{a}~\in \Rset^{P}` such that
-  :math:`\matr{\Psi}\: \underline{a}` is the best approximation to
-  :math:`\underline{y}` in the least squares sense. Mathematically
+  and a vector :math:`\vect{y}~\in~\Rset^{N}`, we want to find a
+  vector :math:`\vect{a}~\in \Rset^{P}` such that
+  :math:`\matr{\Psi}\: \vect{a}` is the best approximation to
+  :math:`\vect{y}` in the least squares sense. Mathematically
   speaking, we want to solve the following minimization problem:
 
   .. math::
 
-    \min_{\underline{a}} \, \, = \, \, \left\| \; \matr{\Psi} \, \underline{a} \, - \, \underline{y} \; \right\|_2
+    \min_{\vect{a}} \, \, = \, \, \left\| \; \matr{\Psi} \, \vect{a} \, - \, \vect{y} \; \right\|_2
 
   In the following, it is assumed that the rank of matrix
   :math:`\matr{\Psi}` is equal to :math:`P`.
@@ -32,7 +32,7 @@ Least squares problems numerical methods
 
   .. math::
 
-      \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \matr{\Psi} \; \underline{a} \, \, = \, \, \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \underline{y}
+      \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \matr{\Psi} \; \vect{a} \, \, = \, \, \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \vect{y}
 
 | The matrix
   :math:`\matr{C} \equiv \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \matr{\Psi}`
@@ -51,13 +51,13 @@ Least squares problems numerical methods
   .. math::
 
      \begin{aligned}
-         \matr{R}^{\mbox{\scriptsize \textsf{T}}} \; \underline{z} \, \, = \, \, \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \underline{y}
-         \qquad , \qquad \matr{R} \; \underline{a} \, \, = \, \, \underline{z}
+         \matr{R}^{\mbox{\scriptsize \textsf{T}}} \; \vect{z} \, \, = \, \, \matr{\Psi}^{\mbox{\scriptsize \textsf{T}}} \; \vect{y}
+         \qquad , \qquad \matr{R} \; \vect{a} \, \, = \, \, \vect{z}
        \end{aligned}
 
 | It has to be noted that this theoretical approach is seldom used in
   practice though. Indeed the resulting least squares solution is quite
-  sensitive to a small change in the data (i.e. in :math:`\underline{y}`
+  sensitive to a small change in the data (i.e. in :math:`\vect{y}`
   and :math:`\matr{\Psi}`). More precisely, the normal equations are
   always more badly conditioned than the original overdetermined system,
   as their condition number is squared compared to the original problem:
@@ -88,7 +88,7 @@ Least squares problems numerical methods
 
   .. math::
 
-      \matr{R} \; \underline{a} \, \, = \, \, \matr{Q}^{\mbox{\scriptsize \textsf{T}}} \; \underline{y}
+      \matr{R} \; \vect{a} \, \, = \, \, \matr{Q}^{\mbox{\scriptsize \textsf{T}}} \; \vect{y}
 
 | This upper triangular system can be solved using backwards
   substitution.
@@ -98,13 +98,13 @@ Least squares problems numerical methods
 
   .. math::
 
-    \kappa(\matr{\Psi}) + \|\underline{r}\|_2 \kappa(\matr{\Psi})^2
+    \kappa(\matr{\Psi}) + \|\vect{r}\|_2 \kappa(\matr{\Psi})^2
 
 | where
-  :math:`\underline{r} = \matr{\Psi} \, \underline{a} \, - \, \underline{y}`.
+  :math:`\vect{r} = \matr{\Psi} \, \vect{a} \, - \, \vect{y}`.
   Thus this error is expected to be much smaller than the one associated
   with the normal equations provided that the residual
-  :math:`\underline{r}` is “small”.
+  :math:`\vect{r}` is “small”.
 
 | **Method based on singular value decomposition**
 
@@ -140,11 +140,11 @@ Least squares problems numerical methods
   .. math::
 
      \begin{aligned}
-         \widehat{\underline{a}} \quad = \quad \matr{V} \; \left( \begin{array}{c}
+         \widehat{\vect{a}} \quad = \quad \matr{V} \; \left( \begin{array}{c}
            \matr{S}_1^{-1} \\
            \matr{0}  \\
          \end{array}\right)
-         \; \matr{U}^{\mbox{\scriptsize \textsf{T}}} \; \underline{y}
+         \; \matr{U}^{\mbox{\scriptsize \textsf{T}}} \; \vect{y}
        \end{aligned}
 
 | In practice it is not common to compute a “full” SVD as shown above.
@@ -160,7 +160,7 @@ Least squares problems numerical methods
 
 | Note that it is also possible to perform SVD in case of a
   rank-deficient matrix :math:`\matr{\Psi}`. In this case the resulting
-  vector :math:`\widehat{\underline{a}}` corresponds to the *minimum
+  vector :math:`\widehat{\vect{a}}` corresponds to the *minimum
   norm* least squares solution.
 
 | The computational cost of the method is proportional to

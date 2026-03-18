@@ -1,7 +1,7 @@
 %feature("docstring") OT::FunctionalChaosAlgorithm
 R"RAW(Functional chaos algorithm.
 
-Refer to :ref:`functional_chaos`, :ref:`polynomial_least_squares`.
+Refer to :ref:`functional_chaos`, :ref:`least_squares`.
 
 Available constructors:
     FunctionalChaosAlgorithm(*inputSample, outputSample*)

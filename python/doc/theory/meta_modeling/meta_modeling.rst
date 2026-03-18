@@ -23,7 +23,7 @@ Least squares surrogate models
 .. toctree::
     :maxdepth: 1
 
-    polynomial_least_squares
+    least_squares
     polynomial_sparse_least_squares
 
 
