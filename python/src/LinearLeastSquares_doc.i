@@ -16,7 +16,7 @@ This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarr
 
   .. math::
     :label: LeastSquaresMMOpenTURNSAPI
-    \metaModel(\vect{x})  =  \vect{b} + \Tr{\mat{M}}(\vect{x} - \vect{c}}
+    \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{M}}(\vect{x} - \vect{b}}
 
 from an experimental design :math:`\cX` of size :math:`\sampleSize`, that is, a set of observations of
 the input vector defined by:
@@ -25,7 +25,7 @@ the input vector defined by:
     :label: inputData
     \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \right\},
 
-and the corresponding ouput vectors:
+and the corresponding output vectors:
 
 .. math::
     :label: outputData
@@ -79,11 +79,11 @@ The input experimental design is defined in :eq:`inputData`."
 Returns
 -------
 centerVector : :class:`~openturns.Point`
-    Center vector :math:`\vect{c}`.
+    Center vector :math:`\vect{b}`.
     
 Notes
 -----
-The constant vector :math:`\vect{c}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`.
+The constant vector :math:`\vect{b}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`.
 "
 
 // ---------------------------------------------------------------------
@@ -94,11 +94,11 @@ The constant vector :math:`\vect{c}` is defined in :eq:`LeastSquaresMMOpenTURNSA
 Returns
 -------
 constantVector : :class:`~openturns.Point`
-    Constant vector :math:`\vect{b}`.
+    Constant vector :math:`\vect{c}`.
     
 Notes
 -----
-The constant vector :math:`\vect{b}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`.
+The constant vector :math:`\vect{c}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`.
 "
 
 // ---------------------------------------------------------------------
