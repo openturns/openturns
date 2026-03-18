@@ -106,14 +106,18 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sca
   }
   LinearLeastSquares lls(y, z);
   lls.run();
+  y.stack(z);
+  y.exportToCSVFile("ParetoFactoryYZ.csv");
   // lls gives a relation of the form z = a * (y - c) + b
   // and we need to rewrite it as z = a1 * y + a0
   // so a1 = a and a0 = b - a1 * c
+  std::cerr << "lls meta=" << lls.getResult().getMetaModel() << std::endl;
   const Scalar c = lls.getCenter()[0];
   const Scalar a1 = lls.getLinear()(0, 0);
   const Scalar a0 = lls.getConstant()[0] - a1 * c;
   const Scalar beta = std::exp(-a0 / a1);
   const Scalar alpha = -a1;
+  std::cerr << "c=" << c << ", a0=" << a0 << ", a1=" << a1 << ", beta=" << beta << ", alpha=" << alpha << std::endl;
   return Pareto(beta, alpha, gamma);
 }
 
@@ -202,13 +206,16 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
   if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
   Scalar gamma = xMin - std::abs(xMin) / (2 + size);
+  std::cerr << "gamma=" << gamma << std::endl;
   ParetoFactoryResidualEvaluation residualEvaluation(sample);
   const Function residualFunction(residualEvaluation.clone());
   LeastSquaresProblem problem(residualFunction);
   OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
+  std::cerr << "solver=" << solver << std::endl;
   solver.setStartingPoint(Point(1, gamma));
   solver.run();
   gamma = solver.getResult().getOptimalPoint()[0];
+  std::cerr << "gamma=" << gamma << std::endl;
   return buildMethodOfLeastSquares(sample, gamma);
 }
 

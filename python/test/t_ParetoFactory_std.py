@@ -8,6 +8,7 @@ ot.PlatformInfo.SetNumericalPrecision(3)
 distribution = ot.Pareto(2.0, 3.5, -1.0)
 size = 10000
 sample = distribution.getSample(size)
+sample.exportToCSVFile("Pareto.csv")
 factory = ot.ParetoFactory()
 print("distribution=", repr(distribution))
 print("Estimated distribution (Moments)=", factory.buildMethodOfMoments(sample))
