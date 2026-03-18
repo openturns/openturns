@@ -86,37 +86,70 @@ such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
 Particular case 1: The functional basis is composed of linear functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In this particular case, functional basis is defined by :math:`N = \inputDim +1` linear functions:
+In this particular case, the functional basis is defined by :math:`N = \inputDim +1` linear functions:
 
   .. math::
     \psi_0 & : \vect{x} \rightarrow 1\\
     \psi_j & : \vect{x} \rightarrow x_j - b_j, \quad 1 \leq j \leq \inputDim
 
-with :math:`\vect{c} \in \Rset^\inputDim` is the empirical mean vector of the experimental design, defined
+with :math:`\vect{b} \in \Rset^\inputDim` is the empirical mean vector of the experimental design, defined
 by:
 
   .. math::
+  :label defCenter
      \vect{b} = \dfrac{1}{\sampleSize} \sum_{i=1}^\sampleSize \vect{x}^{(i)}
 
 The resulting meta model can be written as:
 
   .. math::
-    :label: LeastSquaresMMOpenTURNS
-     \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{M}}(\vect{x} - \vect{b}}
+    :label: LinearLeastSquaresMMOpenTURNS
+     \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b}}
 
-where the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}` is
+where the matrix :math:`\mat{L} \in \cM_{\inputDim, \outputDim}` is
 equal to the matrix :math:`\mat{A}` defined in :eq:`defAPsi` except its first line.
 More precisely, we have:
 
   .. math::
     :label: LinearMatrixOpenTURNS
-     \mat{M} =  \Tr{(\vect{a}_1 | \dots | \vect{a}_\inputDim)}
+     \mat{L} =  \Tr{(\vect{a}_1 | \dots | \vect{a}_\inputDim)}
 
 The vector :math:`\vect{c} = \vect{a}_0 \in \Rset^\outputDim` is the first line of  :math:`\mat{A}` defined in
 :eq:`defAPsi`.
 
 Particular case 2: The functional basis is composed of quadratic functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In this particular case, the functional basis is defined by :math:`N = 1+2\inputDim +\dfrac{d(d-1)}{2}` polynomials functions of maximal degree 2:
+
+  .. math::
+    \psi_0 & : \vect{x} \rightarrow 1\\
+    \psi_k & : \vect{x} \rightarrow (x_k - b_k)\quad for 1 \leq k \leq \inputDim\\
+    \psi_{ij} & : \vect{x} \rightarrow (x_i - b_i)(x_j - b_j), \quad 1 \leq i < j \leq \inputDim
+
+where :math:`\vect{b}` is still defined by :eq:`defCenter`. The coefficients are denoted as follows:
+
+  .. math::
+      :label: QuadLSMetaModel
+      \metaModel(\vect{x})  = \sum_{j=0}^\inputDim \vect{a}_j \Psi_j(\vect{x}) + \sum_{1 \leq i < j \leq \inputDim
+      }^\inputDim \vect{a}_{ij}\Psi_{ij}(\vect{x})
+
+The resulting meta model can be written as:
+
+  .. math::
+    :label: QuadraticLeastSquaresMMOpenTURNS
+     \metaModel(\vect{x})  = \vect{c} + \vect{X} \mapsto \Tr{\mat{L}} ( \vect{X} - \vect{b} )
+     + \frac{1}{2} \Tr{( \vect{X} - \vect{b} )}.\underline{\underline{\underline{M}}}. ( \vect{X} - \vect{b} )where:
+
+where:
+
+- :math:`\mat{L} \in \cM_{\inputDim, \outputDim}` is equal to the matrix :math:`\mat{A}` defined in :eq:`defAPsi`
+  except its first line,
+- :math:`\vect{c}= \vect{a}_0 \in \Rset^\outputDim`,
+- :math:`\underline{\underline{\underline{M}}}` is a
+  :math:`\Rset^\outputDim \times \Rset^\inputDim \times \Rset^\inputDim` symmetric tensor: the shhet :math:`k` is
+  the matrix :math:`(2a_{ij}^k)_{1, i,j,\inputDim}`, for :math:`1 \leq k \leq \outputDim` and :math:`a_{ij}^k`
+  is the component :math:`k` of the vector :math:`\vect{a}_{ij}`.
+
+
 
 .. topic:: API:
 

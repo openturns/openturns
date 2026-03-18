@@ -15,8 +15,8 @@ A least squares meta model provides an approximation of the model which is valid
 This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by: 
 
   .. math::
-    :label: LeastSquaresMMOpenTURNSAPI
-    \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{M}}(\vect{x} - \vect{b}}
+    :label: LinearLeastSquaresMMOpenTURNSAPI
+    \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b}}
 
 from an experimental design :math:`\cX` of size :math:`\sampleSize`, that is, a set of observations of
 the input vector defined by:
@@ -34,8 +34,8 @@ and the corresponding output vectors:
 where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
 
 Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
-estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the constant vector
-:math:`\vect{b}\in \Rset^\outputDim` and the center vector :math:`\vect{c} \in \Rset^\inputDim`.
+estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the center vector
+:math:`\vect{b}\in \Rset^\inputDim` and the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
 
 
 See also
@@ -83,7 +83,7 @@ centerVector : :class:`~openturns.Point`
     
 Notes
 -----
-The constant vector :math:`\vect{b}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`.
+The constant vector :math:`\vect{b}` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`.
 "
 
 // ---------------------------------------------------------------------
@@ -98,7 +98,7 @@ constantVector : :class:`~openturns.Point`
     
 Notes
 -----
-The constant vector :math:`\vect{c}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`.
+The constant vector :math:`\vect{c}` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`.
 "
 
 // ---------------------------------------------------------------------
@@ -133,11 +133,11 @@ dataOut : 2-d sequence of float
 Returns
 -------
 linearMatrix : :class:`~openturns.Matrix`
-    Linear matrix  :math:`\mat{M}`.
+    Linear matrix  :math:`\mat{L}`.
     
 Notes
 -----
-The linear matrix :math:`\mat{M}` is defined in :eq:`LeastSquaresMMOpenTURNSAPI`."
+The linear matrix :math:`\mat{L}` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`."
 
 // ---------------------------------------------------------------------
 
@@ -151,7 +151,7 @@ result : :class:`~openturns.MetaModelResult`
     
 Notes
 -----
-To get the meta model :math:`\metaModel` defined in :eq:`LeastSquaresMMOpenTURNSAPI` as a :class:`~openturns.Function`, use the :meth:``~openturns.MetaModelResult.getMetaModel` method."
+To get the meta model :math:`\metaModel` defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI` as a :class:`~openturns.Function`, use the :meth:``~openturns.MetaModelResult.getMetaModel` method."
 
 // ---------------------------------------------------------------------
 
