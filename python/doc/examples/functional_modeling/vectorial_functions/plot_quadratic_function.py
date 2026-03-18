@@ -7,8 +7,8 @@ Create a quadratic function
 # In this example we are going to create a quadratic function of the form
 #
 # .. math::
-#    f : \underline{X} \mapsto \underline{\underline{A}} ( \underline{X} - \underline{b} ) + \underline{c}
-#    + \frac{1}{2} \underline{X}^T \times \underline{\underline{\underline{M}}} \times \underline{X}
+#    f : \vect{x} \mapsto \mat{A} ( \vect{x} - \vect{b} ) + \vect{c}
+#    + \frac{1}{2} \vect{x}^T\tens{M}\vect{x}
 #
 
 # %%

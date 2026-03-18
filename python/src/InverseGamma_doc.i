@@ -1,7 +1,7 @@
 %feature("docstring") OT::InverseGamma
 R"RAW(InverseGamma distribution.
 
-:math:`X` follows an Inverse Gamma distribution of parameters :math:`(\lambda, k)` means that :math:`\dfrac{1}{X}` follows the :math:`\Gamma(k, \dfrac{1}{\lambda})` distribution, with :math:`k>0` and :math:`\lambda>0`.
+:math:`X` follows an Inverse Gamma distribution of parameters :math:`(k, \lambda)` means that :math:`\dfrac{1}{X}` follows the :math:`\Gamma(k, \dfrac{1}{\lambda})` distribution, with :math:`k>0` and :math:`\lambda>0`.
 
 Its probability density function is defined as:
 
