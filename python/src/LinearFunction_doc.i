@@ -17,14 +17,14 @@ defined as :
 
 .. math::
 
-    f : & \Rset^d \rightarrow \Rset^p  \\
+    f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
         & \vect{X} \mapsto \mat{A} ( \vect{X} - \vect{b} ) + \vect{c}
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`p` lines and :math:`d` columns,
-- :math:`\vect{b}` is a vector in :math:`\Rset^d`,
-- :math:`\vect{c}` is a vector in :math:`\Rset^p`.
+- :math:`\mat{A}` is a matrix with :math:`\outputDim` lines and :math:`\inputDim` columns,
+- :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`,
+- :math:`\vect{c}` is a vector in :math:`\Rset^\outputDim`.
 
 See also
 --------

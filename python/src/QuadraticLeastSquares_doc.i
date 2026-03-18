@@ -6,66 +6,38 @@ Parameters
 dataIn : 2-d sequence of float
     Input data.
 dataOut : 2-d sequence of float
-    Output data. If not specified, this sample is computed such as:
-    :math:`dataOut = h(dataIn)`.
+    Output data.
 
 Notes
 -----
-Instead of replacing the model response :math:`h(\vect{x})` for a *local*
-approximation around a given set :math:`\vect{x}_0` of input parameters as in
-Taylor approximations, one may seek a *global* approximation of
-:math:`h(\vect{x})` over its whole domain of definition. A common choice to
-this end is global polynomial approximation.
+A least squares meta model provides an approximation of the model which is valid over its whole domain of definition.
 
-We consider here a global approximation of the model response using  a
-quadratic function:
+This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by: 
 
-.. math::
+ .. math::
+    :label: QuadraticLeastSquaresMMOpenTURNSAPI
+     \metaModel(\vect{x})  = \vect{c} + \vect{X} \mapsto \Tr{\mat{L}} ( \vect{X} - \vect{b} )
+     + \frac{1}{2} \Tr{( \vect{X} - \vect{b} )}.\underline{\underline{\underline{M}}}. ( \vect{X} - \vect{b} )
 
-    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
-                      = \, \sum_{j=0}^{P-1} \; a_j \; \psi_j(\vect{x})
-
-where :math:`P = 1+2n_X +n_X (n_X -1)/2` denotes the number of terms,
-:math:`(a_j  \, , \, j=0, \cdots,P-1)` is a set of unknown coefficients and the
-family :math:`(\psi_j,j=0,\cdots, P-1)` gathers the constant monomial :math:`1`, the monomials of degree one :math:`(x_i`-c_i), the cross-terms :math:`(x_i - c_i)(x_j-c_j)` as	well as the monomials of degree two :math:`(x_i-c_i)^2`, where $\vec{c}$ is the mean of the input sample. Using the vector notation :math:`\vect{a} \, = \, (a_{0} , \cdots , a_{P-1} )^{\textsf{T}}` and :math:`\vect{\psi}(\vect{x}) \, = \, (\psi_0(\vect{x}), \cdots, \psi_{P-1}(\vect{x}) )^{\textsf{T}}`, this rewrites:
+from an experimental design :math:`\cX` of size :math:`\sampleSize`, that is, a set of observations of
+the input vector defined by:
 
 .. math::
+    :label: inputData
+    \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \right\},
 
-    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
-                      = \, \vect{a}^{\textsf{T}} \; \vect{\psi}(\vect{x})
-
-A *global* approximation of the model response over its whole definition domain
-is sought. To this end, the coefficients :math:`a_j` may be computed using a
-least squares regression approach. In this context, an experimental design
-:math:`\vect{\cX} =(x^{(1)},\cdots,x^{(N)})`, i.e. a set of realizations of
-input parameters is required, as well as the corresponding model evaluations
-:math:`\vect{\cY} =(y^{(1)},\cdots,y^{(N)})`.
-
-The following minimization problem has to be solved:
+and the corresponding output vectors:
 
 .. math::
+    :label: outputData
+    \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \right\}.
 
-    \mbox{Find} \quad \widehat{\vect{a}} \quad \mbox{that minimizes}
-      \quad \cJ(\vect{a}) \, = \, \sum_{i=1}^N \;
-                                \left(
-                                y^{(i)} \; - \;
-                                \Tr{\vect{a}} \vect{\psi}(\vect{x}^{(i)})
-                                \right)^2
+where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
 
-The solution is given by:
-
-.. math::
-
-    \widehat{\vect{a}} \, = \, \left(
-                               \Tr{\mat{\Psi}} \mat{\Psi}
-                               \right)^{-1} \;
-                               \Tr{\mat{\Psi}}  \; \vect{\cY}
-
-where:
-
-.. math::
-
-    \mat{\Psi} \, = \, (\psi_{j}(\vect{x}^{(i)}) \; , \; i=1,\cdots,N \; , \; j = 0,\cdots,n_X)
+Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
+estimation of the symmetric tensor :math:`\underline{\underline{\underline{M}}} \in \Rset^\outputDim \times
+\Rset^\inputDim \times \Rset^\inputDim`,  the matrix :math:`\mat{L} \in \cM_{\inputDim, \outputDim}`, the center
+vector :math:`\vect{b}\in \Rset^\inputDim` and the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
 
 See also
 --------
@@ -94,7 +66,11 @@ Examples
 Returns
 -------
 dataIn : :class:`~openturns.Sample`
-    Input data."
+    Input data.
+    
+Notes
+-----
+The input experimental design is defined in :eq:`inputData`."
 
 // ---------------------------------------------------------------------
 
@@ -104,7 +80,12 @@ dataIn : :class:`~openturns.Sample`
 Returns
 -------
 centerVector : :class:`~openturns.Point`
-    Centering vector of the approximation, equal to :math:`c`."
+    Center vector :math:`\vect{b}`.
+    
+Notes
+-----
+The constant vector :math:`\vect{b}` is defined in :eq:`QuadraticLeastSquaresMMOpenTURNSAPI`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -124,7 +105,12 @@ centerVector : :class:`~openturns.Point`
 Returns
 -------
 constantVector : :class:`~openturns.Point`
-    Constant vector of the approximation, equal to :math:`a_0`."
+    Constant  vector :math:`\vect{c}`.
+    
+Notes
+-----
+The constant vector :math:`\vect{c}` is defined in :eq:`QuadraticLeastSquaresMMOpenTURNSAPI`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -134,8 +120,11 @@ constantVector : :class:`~openturns.Point`
 Returns
 -------
 dataOut : :class:`~openturns.Sample`
-    Output data. If not specified in the constructor, the sample is computed
-    such as: :math:`dataOut = h(dataIn)`."
+    Output data.
+    
+Notes
+-----
+The output experimental design is defined in :eq:`outputData`."
 
 // ---------------------------------------------------------------------
 
@@ -155,7 +144,11 @@ dataOut : 2-d sequence of float
 Returns
 -------
 linearMatrix : :class:`~openturns.Matrix`
-    Linear matrix of the approximation of the function :math:`h`."
+    Linear matrix  :math:`\mat{L}`.
+    
+Notes
+-----
+The linear matrix :math:`\mat{L}` is defined in :eq:`QuadraticLeastSquaresMMOpenTURNSAPI`."
 
 // ---------------------------------------------------------------------
 
@@ -165,17 +158,25 @@ linearMatrix : :class:`~openturns.Matrix`
 Returns
 -------
 tensor : :class:`~openturns.SymmetricTensor`
-    Quadratic term of the approximation of the function :math:`h`."
+    Symmetric tensor :math:`\underline{\underline{\underline{M}}}`.
+    
+Notes
+-----
+The symmetric tensor :math:`\underline{\underline{\underline{M}}}` is defined in :eq:`QuadraticLeastSquaresMMOpenTURNSAPI`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuadraticLeastSquares::getResult
-"Get an approximation of the function.
+"Get the meta model result class.
 
 Returns
 -------
 result : :class:`~openturns.MetaModelResult`
-    An approximation of the function :math:`h` by Quadratic Least Squares."
+    The class that contains all the results on the meta model. 
+    
+Notes
+-----
+To get the meta model :math:`\metaModel` defined in :eq:`QuadraticLeastSquaresMMOpenTURNSAPI` as a :class:`~openturns.Function`, use the :meth:``~openturns.MetaModelResult.getMetaModel` method."
 
 // ---------------------------------------------------------------------
 

@@ -6,69 +6,37 @@ Parameters
 dataIn : 2-d sequence of float
     Input data.
 dataOut : 2-d sequence of float
-    Output data. If not specified, this sample is computed such as:
-    :math:`dataOut = h(dataIn)`.
+    Output data.`.
 
 Notes
 -----
-Instead of replacing the model response :math:`h(\vect{x})` for a *local*
-approximation around a given set :math:`\vect{x}_0` of input parameters as in
-Taylor approximations, one may seek a *global* approximation of
-:math:`h(\vect{x})` over its whole domain of definition. A common choice to
-this end is global polynomial approximation.
+A least squares meta model provides an approximation of the model which is valid over its whole domain of definition.
 
-We consider here a global approximation of the model response using  a linear
-function:
+This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by: 
 
-.. math::
+  .. math::
+    :label: LinearLeastSquaresMMOpenTURNSAPI
+    \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b}}
 
-    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
-                      = \, \sum_{j=0}^{n_X} \; a_j \; \psi_j(\vect{x})
-
-where :math:`(a_j  \, , \, j=0, \cdots,n_X)` is a set of unknown coefficients
-and the family :math:`(\psi_j,j=0,\cdots, n_X)` gathers the constant monomial
-:math:`1` and the centered monomials of degree one :math:`(x_i - c_i)`, where $\vec{c}$ is the mean of the input sample. Using the vector
-notation :math:`\vect{a} \, = \, (a_{0} , \cdots , a_{n_X} )^{\textsf{T}}` and
-:math:`\vect{\psi}(\vect{x}) \, = \, (\psi_0(\vect{x}), \cdots, \psi_{n_X}(\vect{x}) )^{\textsf{T}}`,
-this rewrites:
+from an experimental design :math:`\cX` of size :math:`\sampleSize`, that is, a set of observations of
+the input vector defined by:
 
 .. math::
+    :label: inputData
+    \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \right\},
 
-    \vect{y} \, \approx \, \widehat{h}(\vect{x}) \,
-                      = \, \vect{a}^{\textsf{T}} \; \vect{\psi}(\vect{x})
-
-A *global* approximation of the model response over its whole definition domain
-is sought. To this end, the coefficients :math:`a_j` may be computed using a
-least squares regression approach. In this context, an experimental design
-:math:`\vect{\cX} =(x^{(1)},\cdots,x^{(N)})`, i.e. a set of realizations of
-input parameters is required, as well as the corresponding model evaluations
-:math:`\vect{\cY} =(y^{(1)},\cdots,y^{(N)})`.
-
-The following minimization problem has to be solved:
+and the corresponding output vectors:
 
 .. math::
+    :label: outputData
+    \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \right\}.
 
-    \mbox{Find} \quad \widehat{\vect{a}} \quad \mbox{that minimizes}
-      \quad \cJ(\vect{a}) \, = \, \sum_{i=1}^N \;
-                                \left(
-                                y^{(i)} \; - \;
-                                \vect{a}^{\textsf{T}} \vect{\psi}(\vect{x}^{(i)})
-                                \right)^2
+where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
 
-The solution is given by:
+Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
+estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the center vector
+:math:`\vect{b}\in \Rset^\inputDim` and the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
 
-.. math::
-
-    \widehat{\vect{a}} \, = \, \left(
-                               \vect{\vect{\Psi}}^{\textsf{T}} \vect{\vect{\Psi}}
-                               \right)^{-1} \;
-                               \vect{\vect{\Psi}}^{\textsf{T}}  \; \vect{\cY}
-
-where:
-
-.. math::
-
-    \vect{\vect{\Psi}} \, = \, (\psi_{j}(\vect{x}^{(i)}) \; , \; i=1,\cdots,N \; , \; j = 0,\cdots,n_X)
 
 See also
 --------
@@ -97,7 +65,11 @@ Examples
 Returns
 -------
 dataIn : :class:`~openturns.Sample`
-    Input data."
+    Input data.
+    
+Notes
+-----
+The input experimental design is defined in :eq:`inputData`."
 
 // ---------------------------------------------------------------------
 
@@ -107,7 +79,12 @@ dataIn : :class:`~openturns.Sample`
 Returns
 -------
 centerVector : :class:`~openturns.Point`
-    Centering vector of the approximation, equal to :math:`c`."
+    Center vector :math:`\vect{b}`.
+    
+Notes
+-----
+The constant vector :math:`\vect{b}` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -127,7 +104,12 @@ centerVector : :class:`~openturns.Point`
 Returns
 -------
 constantVector : :class:`~openturns.Point`
-    Constant vector of the approximation, equal to :math:`a_0`."
+    Constant vector :math:`\vect{c}`.
+    
+Notes
+-----
+The constant vector :math:`\vect{c}` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -137,8 +119,11 @@ constantVector : :class:`~openturns.Point`
 Returns
 -------
 dataOut : :class:`~openturns.Sample`
-    Output data. If not specified in the constructor, the sample is computed
-    such as: :math:`dataOut = h(dataIn)`."
+    Output data.
+    
+Notes
+-----
+The output experimental design is defined in :eq:`outputData`."
 
 // ---------------------------------------------------------------------
 
@@ -158,17 +143,25 @@ dataOut : 2-d sequence of float
 Returns
 -------
 linearMatrix : :class:`~openturns.Matrix`
-    Linear matrix of the approximation of the function :math:`h`."
+    Linear matrix  :math:`\mat{L}`.
+    
+Notes
+-----
+The linear matrix :math:`\mat{L}` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearLeastSquares::getResult
-"Get an approximation of the function.
+"Get the meta model result class.
 
 Returns
 -------
 result : :class:`~openturns.MetaModelResult`
-    An approximation of the function :math:`h` by Linear Least Squares."
+    The class that contains all the results on the meta model. 
+    
+Notes
+-----
+To get the meta model :math:`\metaModel` defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI` as a :class:`~openturns.Function`, use the :meth:``~openturns.MetaModelResult.getMetaModel` method."
 
 // ---------------------------------------------------------------------
 
