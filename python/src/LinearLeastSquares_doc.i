@@ -27,7 +27,7 @@ function:
 
 where :math:`(a_j  \, , \, j=0, \cdots,n_X)` is a set of unknown coefficients
 and the family :math:`(\psi_j,j=0,\cdots, n_X)` gathers the constant monomial
-:math:`1` and the monomials of degree one :math:`x_i`. Using the vector
+:math:`1` and the centered monomials of degree one :math:`(x_i - c_i)`, where $\vec{c}$ is the mean of the input sample. Using the vector
 notation :math:`\vect{a} \, = \, (a_{0} , \cdots , a_{n_X} )^{\textsf{T}}` and
 :math:`\vect{\psi}(\vect{x}) \, = \, (\psi_0(\vect{x}), \cdots, \psi_{n_X}(\vect{x}) )^{\textsf{T}}`,
 this rewrites:
@@ -98,6 +98,16 @@ Returns
 -------
 dataIn : :class:`~openturns.Sample`
     Input data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getCenter
+"Get the centering vector of the approximation.
+
+Returns
+-------
+centerVector : :class:`~openturns.Point`
+    Centering vector of the approximation, equal to :math:`c`."
 
 // ---------------------------------------------------------------------
 

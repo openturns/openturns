@@ -27,12 +27,7 @@ quadratic function:
 
 where :math:`P = 1+2n_X +n_X (n_X -1)/2` denotes the number of terms,
 :math:`(a_j  \, , \, j=0, \cdots,P-1)` is a set of unknown coefficients and the
-family :math:`(\psi_j,j=0,\cdots, P-1)` gathers the constant monomial :math:`1`,
-the monomials of degree one :math:`x_i`, the cross-terms :math:`x_i x_j` as
-well as the monomials of degree two :math:`x_i^2`. Using the vector notation
-:math:`\vect{a} \, = \, (a_{0} , \cdots , a_{P-1} )^{\textsf{T}}` and
-:math:`\vect{\psi}(\vect{x}) \, = \, (\psi_0(\vect{x}), \cdots, \psi_{P-1}(\vect{x}) )^{\textsf{T}}`,
-this rewrites:
+family :math:`(\psi_j,j=0,\cdots, P-1)` gathers the constant monomial :math:`1`, the monomials of degree one :math:`(x_i`-c_i), the cross-terms :math:`(x_i - c_i)(x_j-c_j)` as	well as the monomials of degree two :math:`(x_i-c_i)^2`, where $\vec{c}$ is the mean of the input sample. Using the vector notation :math:`\vect{a} \, = \, (a_{0} , \cdots , a_{P-1} )^{\textsf{T}}` and :math:`\vect{\psi}(\vect{x}) \, = \, (\psi_0(\vect{x}), \cdots, \psi_{P-1}(\vect{x}) )^{\textsf{T}}`, this rewrites:
 
 .. math::
 
@@ -100,6 +95,16 @@ Returns
 -------
 dataIn : :class:`~openturns.Sample`
     Input data."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticLeastSquares::getCenter
+"Get the centering vector of the approximation.
+
+Returns
+-------
+centerVector : :class:`~openturns.Point`
+    Centering vector of the approximation, equal to :math:`c`."
 
 // ---------------------------------------------------------------------
 

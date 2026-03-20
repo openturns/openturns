@@ -55,6 +55,9 @@ public:
   /** Response surface computation */
   void run();
 
+  /** Center accessor */
+  Point getCenter() const;
+
   /** Constant accessor */
   Point getConstant() const;
 
@@ -87,6 +90,7 @@ private:
   Sample dataIn_;
   Sample dataOut_;
   MetaModelResult result_;
+  Point center_;
   Point constant_;
   Matrix linear_;
 

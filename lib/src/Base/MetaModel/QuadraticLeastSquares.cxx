@@ -77,6 +77,8 @@ void QuadraticLeastSquares::run()
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
   const UnsignedInteger coefficientsDimension = 1 + inputDimension + (inputDimension * (inputDimension + 1)) / 2;
+  /* Center the data using the empirical mean */
+  center_ = dataIn_.computeMean();
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -86,7 +88,7 @@ void QuadraticLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const Point currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex] - center_);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -106,7 +108,7 @@ void QuadraticLeastSquares::run()
       /* Then, the off-diagonal terms */
       for(UnsignedInteger componentIndexTranspose = componentIndex + 1; componentIndexTranspose < inputDimension; ++componentIndexTranspose)
       {
-        componentMatrix(sampleIndex, rowIndex) = 0.5 * currentSample[componentIndex] * currentSample[componentIndexTranspose];
+        componentMatrix(sampleIndex, rowIndex) = currentSample[componentIndex] * currentSample[componentIndexTranspose];
         ++rowIndex;
       } // off-diagonal terms
     } // quadratic term
@@ -143,8 +145,7 @@ void QuadraticLeastSquares::run()
       } // Off-diagonal terms
     } // quadratic term
   } // output components
-  const Point center(inputDimension, 0.0);
-  result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center, constant_, linear_, quadratic_));
+  result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center_, constant_, linear_, quadratic_));
 }
 
 /* DataIn accessor */
@@ -173,6 +174,12 @@ void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
   dataOut_ = dataOut;
+}
+
+/* Center accessor */
+Point QuadraticLeastSquares::getCenter() const
+{
+  return center_;
 }
 
 /* Constant accessor */
@@ -211,6 +218,7 @@ void QuadraticLeastSquares::save(Advocate & adv) const
   adv.saveAttribute("dataIn_", dataIn_);
   adv.saveAttribute("dataOut_", dataOut_);
   adv.saveAttribute("result_", result_);
+  adv.saveAttribute("center_", center_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
   adv.saveAttribute("quadratic_", quadratic_);
@@ -226,6 +234,10 @@ void QuadraticLeastSquares::load(Advocate & adv)
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);
   adv.loadAttribute("quadratic_", quadratic_);
+  if (adv.hasAttribute("center_"))
+    adv.loadAttribute("center_", center_);
+  else
+    center_ = Point(linear_.getNbRows());
 }
 
 END_NAMESPACE_OPENTURNS
