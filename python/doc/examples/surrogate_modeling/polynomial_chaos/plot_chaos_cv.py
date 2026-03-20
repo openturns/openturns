@@ -358,7 +358,7 @@ for i in range(n_degrees):
     print(f"Degree = {totalDegree}, score = {scoreSampleKFold[i, 0]:.4f}")
 
 # %%
-graph = ot.Graph(f"{kParameter}-Fold cross-validation", "Degree", "$R^2$", True)
+graph = ot.Graph(f"{kParameter}-Fold cross-validation", "Degree", "$R^2$")
 cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleKFold)
 cloud.setPointStyle("square")
 graph.add(cloud)
@@ -370,7 +370,7 @@ view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 
 # %%
 # Compare the two cross-validation methods.
-graph = ot.Graph("CV : split vs K-Fold", "Degree", "$R^2$", True)
+graph = ot.Graph("CV : split vs K-Fold", "Degree", "$R^2$")
 cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleSplit)
 cloud.setPointStyle("circle")
 cloud.setLegend("Split")
@@ -379,7 +379,7 @@ cloud = ot.Cloud(ot.Sample.BuildFromPoint(degree_list), scoreSampleKFold)
 cloud.setPointStyle("square")
 cloud.setLegend("K-Fold")
 graph.add(cloud)
-graph.setLegendPosition("topleft")
+graph.setLegendPosition("upper left")
 graph.setBoundingBox(boundingBox)
 view = otv.View(graph, figure_kw={"figsize": (5.0, 4.0)})
 # sphinx_gallery_thumbnail_number = 4

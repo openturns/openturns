@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -25,12 +26,11 @@ print("indices2[:] = ", indices2[:])
 indices2[1:3] = (88, 99)
 print("indices2 = ", indices2)
 
-index = indices2.find(88)
-assert index < indices2.getSize(), "wrong index"
+index = indices2.index(88)
 assert indices2[index] == 88, "wrong index"
 
-index = indices2.find(77777)
-assert index == indices2.getSize(), "wrong index"
+with ott.assert_raises(TypeError):
+    index = indices2.index(77777)
 
 # Check contains
 indices = ot.Indices()

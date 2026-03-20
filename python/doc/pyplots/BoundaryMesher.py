@@ -15,7 +15,8 @@ mesh2DBoundaryOutside = ot.BoundaryMesher().build(mesh2D, 0.05)
 # Build a thick inside Mesh boundary
 mesh2DBoundaryInside = ot.BoundaryMesher().build(mesh2D, -0.05)
 # Create a Graph
-graph = ot.Graph("", "", "", True, "lower right")
+graph = ot.Graph("", "", "")
+graph.setLegendPosition("lower right")
 graph.add(mesh2D.draw())
 # Then, draw it
 fig = plt.figure(figsize=(16, 4))
@@ -24,7 +25,8 @@ otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
-graph = ot.Graph("", "", "", True, "lower right")
+graph = ot.Graph("", "", "")
+graph.setLegendPosition("lower right")
 graph.add(mesh2DBoundary.draw())
 # Then, draw it
 axis = fig.add_subplot(142)
@@ -32,7 +34,8 @@ otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)
 
 # Create a Graph
-graph = ot.Graph("", "", "", True, "lower right")
+graph = ot.Graph("", "", "")
+graph.setLegendPosition("lower right")
 graph.add(mesh2DBoundaryInside.draw())
 # Then, draw it
 axis = fig.add_subplot(143)

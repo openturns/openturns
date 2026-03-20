@@ -324,7 +324,7 @@ Bibliography
     Hubert W. Lilliefors
     Journal of the American Statistical Association,
     Vol. 62, No. 318. (Jun., 1967), pp. 399-402.
-    `pdf <http://www.bios.unc.edu/~mhudgens/bios/662/2008fall/Backup/lilliefors1967.pdf>`__
+    `pdf <https://web.physics.utah.edu/~belz/phys4730/lab18/1967_lilliefors_jasa.pdf>`__
 .. [Limbourg2010] Limbourg, P., & De Rocquigny, E. (2010).
     *Uncertainty analysis using evidence theory–confronting level-1 and
     level-2 approaches with data availability and computational constraints.*
@@ -418,7 +418,7 @@ Bibliography
     High-Performance Simulation-Based Optimization, 189-224.
 .. [peng2014] L. Peng, R. Wang, *Interval Estimation for Bivariate t-Copulas via Kendall's Tau*
     Casualty Actuarial Society, Volume 8/Issue 1, 2014.
-    `pdf <https://sas.uwaterloo.ca/~wang/papers/2014PW(Variance).pdf>`__
+    `pdf <https://sas.uwaterloo.ca/~wang/papers/2014Peng-Wang-Variance.pdf>`__
 .. [peter2019] Jacques Peter, Eric Savin, Itham Salah el Din.
     Generalized polynomial chaos and stochastic collocation methods
     for uncertainty quantification in aerodynamics.

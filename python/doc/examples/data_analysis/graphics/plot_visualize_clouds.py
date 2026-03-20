@@ -25,7 +25,8 @@ cloud1 = ot.Cloud(sample1, "blue", "fsquare", "First Cloud")
 cloud2 = ot.Cloud(sample2, "red", "fsquare", "Second Cloud")
 
 # Then, assemble it into a graph
-myGraph2d = ot.Graph("2d clouds", "x1", "x2", True, "upper right")
+myGraph2d = ot.Graph("2d clouds", "x1", "x2")
+myGraph2d.setLegendPosition("upper right")
 myGraph2d.add(cloud1)
 myGraph2d.add(cloud2)
 view = otv.View(myGraph2d)

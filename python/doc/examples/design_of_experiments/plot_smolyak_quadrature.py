@@ -318,7 +318,7 @@ def drawTensorizedGaussQuadrature(n_max):
 # We can finally create the graph.
 
 level_max = 14
-graph = ot.Graph("Exponential problem", "$n$", "$e_{abs}$", True)
+graph = ot.Graph("Exponential problem", "$n$", "$e_{abs}$")
 curve = drawSmolyakQuadrature(level_max)
 graph.add(curve)
 n_max = 11

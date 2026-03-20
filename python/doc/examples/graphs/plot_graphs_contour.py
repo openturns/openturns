@@ -61,7 +61,7 @@ contour = ot.Contour(x, y, data)
 # By creating an empty graph and adding the contour we can display the whole.
 
 # %%
-graph = ot.Graph("Complex iso lines", "u1", "u2", True)
+graph = ot.Graph("Complex iso lines", "u1", "u2")
 graph.add(contour)
 view = otv.View(graph)
 

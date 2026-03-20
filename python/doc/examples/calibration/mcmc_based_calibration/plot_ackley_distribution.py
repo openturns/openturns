@@ -169,7 +169,7 @@ print(par)
 # along the :math:`X_1 = 1.5` line.
 
 title = "Ackley PDF (up to a constant factor) and $X_1 = 1.5$ cross-section"
-graph = ot.Graph(title, "$X_0$", "$X_1$", True)
+graph = ot.Graph(title, "$X_0$", "$X_1$")
 line = ot.Curve([[-3, 1.5], [3, 1.5]], "black", "dashed", 2)
 graph.add(line)
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2).getDrawable(0).getImplementation()
@@ -201,7 +201,7 @@ proposal.setParameter(par)
 print(par)
 
 title = "Ackley PDF (up to a constant factor) and $X_0 = 0.5$ cross-section"
-graph = ot.Graph(title, "$X_0$", "$X_1$", True)
+graph = ot.Graph(title, "$X_0$", "$X_1$")
 line = ot.Curve([[0.5, -3], [0.5, 3]], "black", "dashed", 2)
 graph.add(line)
 graph.setLegendPosition("upper right")
@@ -256,7 +256,7 @@ print("Acceptance rates: {} and {}".format(rate_gmh_0, rate_gmh_1))
 # and the MCMC sample: we can see the sample is accurate.
 
 title = "Ackley PDF (up to a constant factor) and Metropolis-Hastings sample"
-graph = ot.Graph(title, "$X_0$", "$X_1$", True)
+graph = ot.Graph(title, "$X_0$", "$X_1$")
 contour = ackley_pdf.draw([lb] * 2, [ub] * 2).getDrawable(0).getImplementation()
 contour.setLabels(
     [format_float_scientific(float(v), precision=1) for v in contour.getLabels()]

@@ -140,7 +140,7 @@ graph_g.add(text_graph)
 graph_g.setTitle("Failure domain in the physical space")
 graph_g.setXTitle(r"$x_1$")
 graph_g.setYTitle(r"$x_2$")
-graph_g.setLegendPosition("topright")
+graph_g.setLegendPosition("upper right")
 
 view = otv.View(graph_g, square_axes=True)
 
@@ -302,7 +302,7 @@ text_graph.setTextSize(1)
 text_graph.setColor("black")
 graph_standard_space.add(text_graph)
 
-graph_standard_space.setLegendPosition("topright")
+graph_standard_space.setLegendPosition("upper right")
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
@@ -367,7 +367,7 @@ cc = ot.Curve(
 cc.setLineStyle("dashed")
 cc.setColor("black")
 graph_standard_space.add(cc)
-graph_standard_space.setLegendPosition("topright")
+graph_standard_space.setLegendPosition("upper right")
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
@@ -409,7 +409,7 @@ draw_tangent.setLegend(r"$\mathcal{\Pi}_{z^*}$ (FORM)")
 draw_tangent.setColor("green")
 draw_tangent.setLineStyle("dashed")
 graph_standard_space.add(draw_tangent)
-graph_standard_space.setLegendPosition("topright")
+graph_standard_space.setLegendPosition("upper right")
 view = otv.View(graph_standard_space, square_axes=True)
 
 # %%
@@ -513,7 +513,7 @@ curve_parabola = ot.Curve(z, parabola, r"$\mathcal{P}_{z^*}$ (SORM)")
 curve_parabola.setLineStyle("dashed")
 curve_parabola.setColor("orange")
 graph_standard_space.add(curve_parabola)
-graph_standard_space.setLegendPosition("topright")
+graph_standard_space.setLegendPosition("upper right")
 view = otv.View(graph_standard_space)
 
 

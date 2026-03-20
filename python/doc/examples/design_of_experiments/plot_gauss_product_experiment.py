@@ -22,7 +22,7 @@ sample = experiment.generate()
 
 # %%
 # Plot the design
-graph = ot.Graph("GP design", "x1", "x2", True, "")
+graph = ot.Graph("GP design", "x1", "x2")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)

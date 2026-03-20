@@ -92,7 +92,7 @@ x_test = ot.RegularGrid(xmin, step, nTest).getVertices()
 
 
 def plot_model(color):
-    graph = ot.Graph("", "x", "", True, "")
+    graph = ot.Graph("", "x", "")
     y_test = model(x_test)
     curveModel = ot.Curve(x_test, y_test)
     curveModel.setLineStyle("solid")
@@ -360,7 +360,7 @@ view = otv.View(graph)
 # %%
 # We plot some confidence bounds of the metamodel.
 # sphinx_gallery_thumbnail_number = 6
-graph = ot.Graph("Gaussian Process Regression metamodel: linear trend", "x", "y", True)
+graph = ot.Graph("Gaussian Process Regression metamodel: linear trend", "x", "y")
 graph.add(
     plot_GPRConfidenceBounds(
         gpr_result, x_test, myTransform, bounds_colors[0], alphas[0]

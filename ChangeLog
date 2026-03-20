@@ -17,6 +17,10 @@
  * PosteriorDistribution left the experimental module
  * Removed deprecated ComposedDistribution, ComposedCopula classes aliases
  * Removed deprecated NegativeBinomial, NegativeBinomialFactory classes aliases
+ * Deprecated SoizeGhanemFactory class
+ * Deprecated Collection/Sample.find for index method
+ * Deprecated openturns.testing.assert_almost_equal(Indices)
+ * Deprecated ProbabilitySimulationResult.getConfidenceLength
 
 === Documentation ===
 

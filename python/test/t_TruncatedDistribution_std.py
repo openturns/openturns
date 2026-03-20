@@ -54,7 +54,7 @@ distribution.append(truncatedKS)
 referenceDistribution.append(ks)  # N/A
 # Add a non-truncated example
 weibull = ot.WeibullMin(2.0, 3.0)
-distribution.append(ot.TruncatedDistribution(weibull))
+distribution.append(ot.TruncatedDistribution(weibull, weibull.getRange()))
 referenceDistribution.append(weibull)
 ot.RandomGenerator.SetSeed(0)
 
@@ -214,6 +214,7 @@ candidates = [
     ot.BlockIndependentDistribution([ot.Normal(2), ot.Normal(2)]),
     ot.BlockIndependentCopula([ot.NormalCopula(2), ot.NormalCopula(2)]),
     ot.Dirichlet([0.7, 0.3]),
+    ot.TruncatedDistribution(ot.Normal(0.0, 1.0), ot.Interval(-1.0, 1.0)),
 ]
 intervals = [
     ot.Interval(-1.0, 4.0),
@@ -225,6 +226,7 @@ intervals = [
     ot.Interval(4),
     ot.Interval(4),
     ot.Interval(0.2, 2.4),
+    ot.Interval(-1.0, 1.0),
 ]
 for i in range(len(candidates)):
     d = ot.TruncatedDistribution(candidates[i], intervals[i])

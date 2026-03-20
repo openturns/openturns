@@ -18,10 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <functional>
 #include <numeric>
-#include <cstring> // std::memset
 
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
@@ -189,7 +187,7 @@ void MatrixImplementation::resize(const UnsignedInteger newRowDim,
   {
     for (UnsignedInteger j = 1; j < nbColumns_; ++ j)
       std::copy(data() + j * nbRows_, data() + j * nbRows_ + newRowDim, const_cast<Scalar*>(data()) + j * newRowDim);
-    std::memset(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, 0, (nbRows_ - newRowDim + 1) * sizeof(Scalar));
+    std::fill(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, const_cast<Scalar*>(data()) + nbColumns_ * newRowDim + (nbRows_ - newRowDim + 1), 0.0);
   }
   resize(newRowDim * newColDim);
   if (newRowDim > nbRows_)
@@ -198,7 +196,7 @@ void MatrixImplementation::resize(const UnsignedInteger newRowDim,
     for (SignedInteger j = (minCol - 1); (j >= 0); -- j)
     {
       std::copy(data() + j * nbRows_, data() + (j + 1) * nbRows_, const_cast<Scalar*>(data()) + j * newRowDim);
-      std::memset(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, 0, (newRowDim - nbRows_) * sizeof(Scalar));
+      std::fill(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, const_cast<Scalar*>(data()) + (j + 1) * newRowDim, 0.0);
     }
   }
   nbRows_ = newRowDim;

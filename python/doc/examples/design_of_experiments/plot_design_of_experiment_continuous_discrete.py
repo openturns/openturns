@@ -46,7 +46,7 @@ sample = experiment.generate()
 # Plot the design.
 
 # %%
-graph = ot.Graph("MonteCarloExperiment", "x0", "x1", True, "")
+graph = ot.Graph("MonteCarloExperiment", "x0", "x1")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)
@@ -62,7 +62,7 @@ experiment = ot.LHSExperiment(distribution, size, alwaysShuffle, randomShift)
 sample = experiment.generate()
 
 # %%
-graph = ot.Graph("LHSExperiment", "x0", "x1", True, "")
+graph = ot.Graph("LHSExperiment", "x0", "x1")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = otv.View(graph)

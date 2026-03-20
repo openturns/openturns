@@ -330,7 +330,8 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
   Curve curveCIUp(u, ciUp, "CI up");
   curveCIUp.setColor("blue");
   curveCIUp.setLineStyle("dashed");
-  Graph result("Mean residual life plot", "Threshold", "Mean excess", true, "topleft");
+  Graph result("Mean residual life plot", "Threshold", "Mean excess");
+  result.setLegendPosition("topleft");
   result.add(curveMrl);
   result.add(curveCILow);
   result.add(curveCIUp);
@@ -720,7 +721,8 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Curve curveScaleCIUp(uS, scaleCIUp, "CI up");
   curveScaleCIUp.setColor("blue");
   curveScaleCIUp.setLineStyle("dashed");
-  Graph scaleGraph("Modified scale threshold stability", "", "Modified scale parameter", true, "topleft");
+  Graph scaleGraph("Modified scale threshold stability", "", "Modified scale parameter");
+  scaleGraph.setLegendPosition("topleft");
   scaleGraph.add(curveScale);
   scaleGraph.add(curveScaleCILow);
   scaleGraph.add(curveScaleCIUp);
@@ -734,7 +736,8 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Curve curveXiCIUp(uS, xiCIUp, "CI up");
   curveXiCIUp.setColor("blue");
   curveXiCIUp.setLineStyle("dashed");
-  Graph shapeGraph("Shape threshold stability", "Threshold", "Shape parameter", true, "topleft");
+  Graph shapeGraph("Shape threshold stability", "Threshold", "Shape parameter");
+  shapeGraph.setLegendPosition("topleft");
   shapeGraph.add(curveXi);
   shapeGraph.add(curveXiCILow);
   shapeGraph.add(curveXiCIUp);

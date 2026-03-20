@@ -1116,6 +1116,7 @@
   <GaussianNonLinearCalibration-BootstrapSize  value_int="100" />
 
   <!-- OT::CalibrationResults parameters -->
+  <CalibrationResult-LogScalePDFRatioThreshold value_float="50.0" />
   <CalibrationResult-PriorLineStyle       value_str="dashed" />
   <CalibrationResult-PosteriorLineStyle   value_str="dotdash"/>
   <CalibrationResult-ObservationLineStyle value_str="solid"  />

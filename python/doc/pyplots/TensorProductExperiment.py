@@ -10,7 +10,7 @@ experiment = ot.TensorProductExperiment(collection)
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Tensor product Gauss experiment", "x1", "x2", True, "")
+graph = ot.Graph("Tensor product Gauss experiment", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

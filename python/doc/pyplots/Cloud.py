@@ -11,7 +11,7 @@ distribution = ot.Normal([-1.5, 0.5], [4.0, 1.0], R)
 sample = distribution.getSample(200)
 
 # Create an empty graph
-graph = ot.Graph("Cloud example", "x1", "x2", True, "")
+graph = ot.Graph("Cloud example", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

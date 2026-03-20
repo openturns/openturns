@@ -11,7 +11,8 @@ u = [ot.SymbolicFunction(["x"], ["-2-cos(x)"])]
 
 # Draw the graph of the integrand and the bounds:
 
-g = ot.Graph("IteratedQuadrature example", "x", "y", True, "upper right")
+g = ot.Graph("IteratedQuadrature example", "x", "y")
+g.setLegendPosition("upper right")
 g.add(f.draw([a, a], [b, b]))
 curve = ll[0].draw(a, b).getDrawable(0)
 curve.setLineWidth(2)

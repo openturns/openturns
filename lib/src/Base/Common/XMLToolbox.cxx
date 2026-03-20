@@ -24,9 +24,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/XMLToolbox.hxx"
 #include <algorithm>
-#include <cstdio>
-#include <cstdlib>
-#include <cassert>
 
 #include <filesystem>
 
@@ -339,7 +336,6 @@ Bool XML::IsElement(const Node & elt, const String & name)
 Bool XML::ElementHasAttribute(const Node & elt, const String & name)
 {
   XMLString aName = StringToXmlString(name);
-  assert(elt);
   return xmlHasProp(elt, aName) != NULL;
 }
 
@@ -486,19 +482,16 @@ XML::Node XML::GetRootNode( const XMLDoc & doc )
 
 void XML::SetRootNode( const XMLDoc & doc, const Node & root )
 {
-  assert(root);
   xmlDocSetRootElement( doc, root );
 }
 
 XML::Node XML::GetFirstChild( const Node & node )
 {
-  assert(node);
   return node->children;
 }
 
 XML::Node XML::GetNextNode( const Node & node )
 {
-  assert(node);
   return node->next;
 }
 
@@ -511,7 +504,6 @@ void XML::SetDTD( const XMLDoc & doc, const String & name, const String & path )
 
 std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node)
 {
-  assert(node);
   String name = XML::GetNodeName( node );
   os << "XML node='" << name << "'";
 
