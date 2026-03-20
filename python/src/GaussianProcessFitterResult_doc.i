@@ -170,7 +170,13 @@ R"RAW(Output sample noise variance accessor.
 Returns
 -------
 noise : sequence of :class:`~openturns.CovarianceMatrix`
-    The noise covariance :math:`\mat{\Sigma_{\epsilon}}`.
+    The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+Notes
+-----
+The noise takes into account the fact that the output values of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in :eq:`noise`.
+
+Refer to :ref:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"
 
 // ---------------------------------------------------------------------

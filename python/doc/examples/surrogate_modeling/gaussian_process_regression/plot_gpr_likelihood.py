@@ -8,7 +8,7 @@ Gaussian process regression: draw the likelihood
 # --------
 #
 # In this short example we draw the log-likelihood as a function of the scale
-# parameter of a covariance model.
+# parameter of a covariance model. Refer to :ref:`gaussian_process_regression`.
 import openturns as ot
 import openturns.viewer as otv
 

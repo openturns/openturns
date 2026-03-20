@@ -5,7 +5,7 @@ Gaussian Process Regression: surrogate model with continuous and categorical var
 
 # %%
 # We consider here the surrogate modeling of an analytical function characterized by
-# continuous and categorical variables
+# continuous and categorical variables. Refer to :ref:`gaussian_process_regression`.
 #
 
 # %%
