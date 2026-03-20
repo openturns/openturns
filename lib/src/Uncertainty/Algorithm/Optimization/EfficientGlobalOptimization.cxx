@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/Uniform.hxx"
