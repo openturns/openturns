@@ -88,6 +88,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
+  LOGWARN("GeneralLinearModelAlgorithm is deprecated, use GaussianProcessFitter");
 }
 
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
@@ -123,6 +124,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
+  LOGWARN("GeneralLinearModelAlgorithm is deprecated, use GaussianProcessFitter");
 }
 
 /* Covariance model accessors */
