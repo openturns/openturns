@@ -56,7 +56,7 @@ IndicesCollection Tuples::generate() const
   /* Dimension of the realizations */
   const UnsignedInteger dimension = bounds_.getSize();
   /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
-  UnsignedInteger size = 1;
+  UnsignedInteger size = std::min(1UL, dimension);
   const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
