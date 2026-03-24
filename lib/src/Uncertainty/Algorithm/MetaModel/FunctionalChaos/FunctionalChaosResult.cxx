@@ -426,6 +426,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "errorHistory_", errorHistory_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
+  adv.saveAttribute( "useDomination_", useDomination_);
 }
 
 
@@ -452,6 +453,8 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
     adv.loadAttribute( "involvesModelSelection_", involvesModelSelection_ );
   }
+  if (adv.hasAttribute("useDomination_"))
+    adv.loadAttribute("useDomination_", useDomination_);
 }
 
 IndicesCollection FunctionalChaosResult::getIndicesHistory() const
@@ -596,6 +599,17 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
       nonzeroFunctions
   );
   return marginalPCE;
+}
+
+/* Domination flag accessor */
+void FunctionalChaosResult::setUseDomination(const Bool useDomination)
+{
+  useDomination_ = useDomination;
+}
+
+Bool FunctionalChaosResult::getUseDomination() const
+{
+  return useDomination_;
 }
 
 END_NAMESPACE_OPENTURNS

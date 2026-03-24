@@ -41,7 +41,8 @@ FunctionalChaosSobolIndices::FunctionalChaosSobolIndices(const FunctionalChaosRe
   : PersistentObject()
   , functionalChaosResult_(functionalChaosResult)
 {
-  // Nothing to do
+  if (functionalChaosResult_.getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosSobolIndices is not available with domination method";
 }
 
 
