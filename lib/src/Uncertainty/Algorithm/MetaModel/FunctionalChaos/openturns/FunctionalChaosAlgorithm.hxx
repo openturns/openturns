@@ -114,6 +114,10 @@ public:
 
   AdaptiveStrategy getAdaptiveStrategy() const;
 
+  /** Domination flag accessor */
+  virtual void setUseDomination(const Bool useDomination);
+  Bool getUseDomination() const;
+
   /** Computes the functional chaos */
   void run() override;
 
@@ -131,12 +135,6 @@ private:
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex, Indices & indices, Point & coefficients);
 
-  /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  Function transformation_;
-
-  /** The inverse isoprobabilistic transformation */
-  Function inverseTransformation_;
-
   /** The composed model */
   Function composedModel_;
 
@@ -147,12 +145,22 @@ private:
   ProjectionStrategy projectionStrategy_;
 
   /** Maximum residual */
-  Scalar maximumResidual_;
+  Scalar maximumResidual_ = 0.0;
 
 protected:
+  Bool initializeTransformation(const Distribution & measure);
 
   /** Result of the projection */
   FunctionalChaosResult result_;
+
+  /** domination flag */
+  Bool useDomination_ = false;
+
+  /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
+  Function transformation_;
+
+  /** The inverse isoprobabilistic transformation */
+  Function inverseTransformation_;
 
 } ; /* class FunctionalChaosAlgorithm */
 
