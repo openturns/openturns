@@ -28,6 +28,7 @@
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -122,19 +123,12 @@ void LeastSquaresExpansion::run()
   if (designProxy_.getSampleSize() == 0)
   {
     const Distribution measure(basis_.getMeasure());
-    Sample transformedInputSample;
-    if (distribution_ == measure)
-    {
-      transformation_ = IdentityFunction(distribution_.getDimension());
-      inverseTransformation_ = IdentityFunction(distribution_.getDimension());
-      transformedInputSample = inputSample_;
-    }
-    else
-    {
-      transformation_ = DistributionTransformation(distribution_, basis_.getMeasure());
-      inverseTransformation_ = DistributionTransformation(basis_.getMeasure(), distribution_);
+    const Bool identityTransformation = initializeTransformation(measure);
+
+    Sample transformedInputSample(inputSample_);
+    if (!identityTransformation)
       transformedInputSample = transformation_(inputSample_);
-    }
+
     FunctionCollection functions(basisSize_);
     for (UnsignedInteger i = 0; i < basisSize_; ++i)
       functions[i] = basis_.build(i);
@@ -156,6 +150,17 @@ void LeastSquaresExpansion::run()
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(true);
   result_.setInvolvesModelSelection(false);
+  result_.setUseDomination(useDomination_);
+}
+
+/* Domination flag accessor */
+void LeastSquaresExpansion::setUseDomination(const Bool useDomination)
+{
+  if (useDomination != useDomination_)
+  {
+    designProxy_ = DesignProxy();
+  }
+  FunctionalChaosAlgorithm::setUseDomination(useDomination);
 }
 
 /* Method to get/set the active functions */
@@ -182,9 +187,7 @@ String LeastSquaresExpansion::__repr__() const
          << " basis=" << basis_
          << " basisSize=" << basisSize_
          << " activeFunctions=" << activeFunctions_
-         << " designProxy=" << designProxy_
-         << " transformation=" << transformation_
-         << " inverseTransformation=" << inverseTransformation_;
+         << " designProxy=" << designProxy_;
 }
 
 
@@ -207,8 +210,6 @@ void LeastSquaresExpansion::save(Advocate & adv) const
   adv.saveAttribute( "basisSize_", basisSize_ );
   adv.saveAttribute( "activeFunctions_", activeFunctions_ );
   adv.saveAttribute( "methodName_", methodName_ );
-  adv.saveAttribute( "transformation_", transformation_ );
-  adv.saveAttribute( "inverseTransformation_", inverseTransformation_ );
 }
 
 
@@ -220,8 +221,6 @@ void LeastSquaresExpansion::load(Advocate & adv)
   adv.loadAttribute( "basisSize_", basisSize_ );
   adv.loadAttribute( "activeFunctions_", activeFunctions_ );
   adv.loadAttribute( "methodName_", methodName_ );
-  adv.loadAttribute( "transformation_", transformation_ );
-  adv.loadAttribute( "inverseTransformation_", inverseTransformation_ );
 }
 
 

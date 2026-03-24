@@ -467,3 +467,25 @@ Returns
 -------
 marginalPCE : :class:`~openturns.FunctionalChaosResult`
     The marginal chaos.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setUseDomination
+"Domination method flag accessor.
+
+Parameters
+----------
+useDomination : bool
+    Whether to use the domination method to map the input distribution to the basis measure.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getUseDomination
+"Domination method flag accessor.
+
+Returns
+-------
+useDomination : bool
+    Whether to use the domination method to map the input distribution to the basis measure.
+"
