@@ -103,13 +103,11 @@ and:
 .. math::
     :label: CovaMatDef
 
-    \mat{C}_{\vect{p}} = \left(
-      \begin{array}{lcl}
-        \mat{C}_{11} & \dots &  \mat{C}_{1 \times \sampleSize}\\
-        \vdots &   & \vdots \\
-        \mat{C}_{\sampleSize \times 1} & \dots &  \mat{C}_{\sampleSize \times \sampleSize}
-       \end{array}
-     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
+    \mat{C}_{\vect{p}} = \begin{pmatrix}
+      \mat{C}_{11} & \dots & \mat{C}_{1 \times \sampleSize} \\
+      \vdots & & \vdots \\
+      \mat{C}_{\sampleSize \times 1} & \dots & \mat{C}_{\sampleSize \times \sampleSize}
+    \end{pmatrix} \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+
 (\Rset)`.
@@ -194,15 +192,14 @@ into the covariance matrix :math:`\mat{C}^{noise}` defined by:
 
 .. math::
 
-    \mat{C}^{noise}_{\vect{p}} = \left(
-      \begin{array}{lccl}
+    \mat{C}^{noise}_{\vect{p}} = 
+      \begin{pmatrix}
         \mat{C}_{11} + \mat{\Sigma}_1^{noise} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
         \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{noise} & \dots &  \vdots \\
         \vdots & & &  \vdots \\
         \mat{C}_{\sampleSize \times 1}  & \dots & \dots &  \mat{C}_{\sampleSize \times \sampleSize} +
         \mat{\Sigma}_n^{noise}
-       \end{array}
-     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
+       \end{pmatrix} \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 Thus the covariance matrix of the noise has been added on the bloc-diagonal of the initial covariance matrix.
 
@@ -294,12 +291,11 @@ defined by:
     :label: covarianceGPR_sample
 
     \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
-        \left(
-          \begin{array}{lcl}
+        \begin{pmatrix}
             \Sigma_{11} & \dots & \Sigma_{1N} \\
             \dots  \\
             \Sigma_{N1} & \dots & \Sigma_{NN}
-          \end{array}
+          \end{pmatrix}
         \right)
 
 where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
