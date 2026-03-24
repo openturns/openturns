@@ -50,7 +50,7 @@ where :math:`\vect{p}` is the vector of the parameters of the covariance model  
 :class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
 parameters.
 
-The estimation is done by maximizing the *reduced* log-likelihood of the mode, defined in :eq:`logLikelihoodGP`.
+The estimation is done by maximizing the :ref:`reduced log-likelihood of the model<logLikelihoodGP>`.
 
 The default optimizer is :class:`~openturns.Cobyla` and can be changed thanks to the
 :meth:`setOptimizationAlgorithm` method.
@@ -68,17 +68,17 @@ It is also possible to proceed as follows:
 * set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 * tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
-A centered Gaussian noise :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`
+A centered Gaussian noise :math:`\mat{\Sigma}_i^{\text{noise}} \in \cM_{\outputDim \times \outputDim}(\Rset)`
 can be taken into account for each output value with :func:`setNoise()`:
 
 .. math::
     :label: noise
 
-    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
-    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+    \vect{Y}_i = \vect{y}_i^{\text{true}} + \vect{\varepsilon}, \quad
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{\text{noise}}\right)
 
 
-where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`. Refer to
+where :math:`\vect{y}_i^{\text{true}}` is the true (and unknown) value of the model at :math:`\vect{x}_i`. Refer to
 :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise` to get an example.
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
