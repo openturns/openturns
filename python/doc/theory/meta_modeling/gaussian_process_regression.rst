@@ -88,22 +88,17 @@ We note:
 
 .. math::
 
-    \vect{y} = \left(
-      \begin{array}{l}
+    \vect{y} = \begin{pmatrix}
         \vect{y}_1 \\
-        \vdots  \\
+        \vdots \\
         \vect{y}_{\sampleSize}
-       \end{array}
-     \right) \in \Rset^{\outputDim \times \sampleSize},
-     \quad
-     \vect{m}_{\vect{\beta}} = \left(
-      \begin{array}{l}
+    \end{pmatrix} \in \Rset^{\outputDim \times \sampleSize},
+    \quad
+    \vect{m}_{\vect{\beta}} = \begin{pmatrix}
         \vect{\mu}(\vect{x}_1) \\
-        \vdots  \\
+        \vdots \\
         \vect{\mu}(\vect{x}_{\sampleSize})
-       \end{array}
-     \right) \in \Rset^{\outputDim \times \sampleSize}
-
+    \end{pmatrix} \in \Rset^{\outputDim \times \sampleSize}
 
 and:
 
