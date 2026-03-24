@@ -49,13 +49,11 @@ where:
 
 .. math::
 
-    \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
+   \vect{\mu}(\vect{x}) = \begin{pmatrix}
+      \mu_1(\vect{x}) \\
+      \vdots \\
+      \mu_\outputDim(\vect{x})
+    \end{pmatrix}
 
 with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and
 :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions basis for :math:`1 \leq j \leq b` and
@@ -88,35 +86,28 @@ We note:
 
 .. math::
 
-    \vect{y} = \left(
-      \begin{array}{l}
+    \vect{y} = \begin{pmatrix}
         \vect{y}_1 \\
-        \vdots  \\
+        \vdots \\
         \vect{y}_{\sampleSize}
-       \end{array}
-     \right) \in \Rset^{\outputDim \times \sampleSize},
-     \quad
-     \vect{m}_{\vect{\beta}} = \left(
-      \begin{array}{l}
+    \end{pmatrix} \in \Rset^{\outputDim \times \sampleSize},
+    \quad
+    \vect{m}_{\vect{\beta}} = \begin{pmatrix}
         \vect{\mu}(\vect{x}_1) \\
-        \vdots  \\
+        \vdots \\
         \vect{\mu}(\vect{x}_{\sampleSize})
-       \end{array}
-     \right) \in \Rset^{\outputDim \times \sampleSize}
-
+    \end{pmatrix} \in \Rset^{\outputDim \times \sampleSize}
 
 and:
 
 .. math::
     :label: CovaMatDef
 
-    \mat{C}_{\vect{p}} = \left(
-      \begin{array}{lcl}
-        \mat{C}_{11} & \dots &  \mat{C}_{1 \times \sampleSize}\\
-        \vdots &   & \vdots \\
-        \mat{C}_{\sampleSize \times 1} & \dots &  \mat{C}_{\sampleSize \times \sampleSize}
-       \end{array}
-     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
+    \mat{C}_{\vect{p}} = \begin{pmatrix}
+      \mat{C}_{11} & \dots & \mat{C}_{1 \times \sampleSize} \\
+      \vdots & & \vdots \\
+      \mat{C}_{\sampleSize \times 1} & \dots & \mat{C}_{\sampleSize \times \sampleSize}
+    \end{pmatrix} \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\outputDim \times \outputDim}^+
 (\Rset)`.
@@ -183,35 +174,29 @@ This step is performed by the class :class:`~openturns.GaussianProcessFitter`.
 
 **Add a noise to the output values**: We show how to take into account the fact that the output values
 of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a
-covariance matrix :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
+covariance matrix :math:`\mat{\Sigma}_i^{\text{noise}} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
 specific to the output :math:`\vect{y}_i`. It means that each output :math:`\vect{y}_i` is considered as the
 realization of the random vector :math:`\vect{Y}_i` defined by:
 
 .. math::
 
-    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
-    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+    \vect{Y}_i = \vect{y}_i^{\text{true}} + \vect{\varepsilon}, \quad
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{\text{noise}}\right)
 
-where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
+where :math:`\vect{y}_i^{\text{true}}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
 
-If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroscedastic.
+If the covariance matrices :math:`\mat{\Sigma}_i^{\text{noise}}` are different, the noise is heteroscedastic.
 On the contrary, the noise is homoscedastic.
 
 The noise is introduced during the step of the parameters estimation: in the likelihood expression defined
 in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is transformed
-into the covariance matrix :math:`\mat{C}^{noise}` defined by:
+into the covariance matrix :math:`\mat{C}^{\text{noise}}` defined by:
 
 .. math::
 
-    \mat{C}^{noise}_{\vect{p}} = \left(
-      \begin{array}{lccl}
-        \mat{C}_{11} + \mat{\Sigma}_1^{noise} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
-        \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{noise} & \dots &  \vdots \\
-        \vdots & & &  \vdots \\
-        \mat{C}_{\sampleSize \times 1}  & \dots & \dots &  \mat{C}_{\sampleSize \times \sampleSize} +
-        \mat{\Sigma}_n^{noise}
-       \end{array}
-     \right) \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
+    \mat{C}^{\text{noise}}_{\vect{p}} =
+      \mat{C} + \text{diag}\left(\mat{\Sigma}_1^{\text{noise}}, \dots, \mat{\Sigma}_n^{\text{noise}}\right)
+      \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 Thus the covariance matrix of the noise has been added on the bloc-diagonal of the initial covariance matrix.
 
@@ -296,20 +281,18 @@ The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defin
 
 with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
 
-When computed on any sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
+When computed on any sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_\sampleSize)`, the covariance matrix is
 defined by:
 
 .. math::
     :label: covarianceGPR_sample
 
-    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
-        \left(
-          \begin{array}{lcl}
-            \Sigma_{11} & \dots & \Sigma_{1N} \\
-            \dots  \\
-            \Sigma_{N1} & \dots & \Sigma_{NN}
-          \end{array}
-        \right)
+    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_\sampleSize)} =
+        \begin{pmatrix}
+            \Sigma_{11} & \dots & \Sigma_{1 \sampleSize} \\
+            \vdots & & \vdots \\
+            \Sigma_{\sampleSize 1} & \dots & \Sigma_{\sampleSize \sampleSize}
+          \end{pmatrix}
 
 where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
 
