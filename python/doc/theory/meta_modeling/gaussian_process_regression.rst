@@ -49,13 +49,11 @@ where:
 
 .. math::
 
-    \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
+   \vect{\mu}(\vect{x}) = \begin{pmatrix}
+      \mu_1(\vect{x}) \\
+      \vdots \\
+      \mu_\outputDim(\vect{x})
+    \end{pmatrix}
 
 with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and
 :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions basis for :math:`1 \leq j \leq b` and
