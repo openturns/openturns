@@ -6,10 +6,10 @@ vector :math:`\inputRV` through the model :math:`\model`
 to iteratively estimate the Sobol indices.
 
 The algorithm works as follows. 
-At each iteration, a new design of experiment with size :math:\sampleSize is 
+At each iteration, a new design of experiment with size :math:`\sampleSize` is 
 generated.
 This sample is divided into sub-samples, or "blocks".
-Each block is evaluated using a single call to the function :math:\model, which 
+Each block is evaluated using a single call to the function :math:`\model`, which 
 allows for parallel evaluation.
 The distribution of the indices (first and total order) is then computed on this 
 current sample.
