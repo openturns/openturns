@@ -143,6 +143,10 @@ void HiGHS::run()
   highs.setOptionValue("output_flag", Log::HasDebug());
   if (getMaximumTimeDuration() > 0.0)
     highs.setOptionValue("time_limit", getMaximumTimeDuration());
+  highs.setOptionValue("simplex_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
+  highs.setOptionValue("ipm_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
+  highs.setOptionValue("pdlp_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
+  highs.setOptionValue("qp_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
 
   // pass options from ResourceMap
   std::vector<String> keys(ResourceMap::GetKeys());
