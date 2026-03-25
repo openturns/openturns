@@ -192,7 +192,7 @@ into the covariance matrix :math:`\mat{C}^{noise}` defined by:
 
 .. math::
 
-    \mat{C}^{noise}_{\vect{p}} = 
+    \mat{C}^{noise}_{\vect{p}} =
       \begin{pmatrix}
         \mat{C}_{11} + \mat{\Sigma}_1^{noise} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
         \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{noise} & \dots &  \vdots \\
