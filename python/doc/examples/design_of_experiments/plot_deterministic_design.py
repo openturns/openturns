@@ -27,7 +27,7 @@ import openturns.viewer as otv
 
 def drawBidimensionalSample(sample, title):
     n = sample.getSize()
-    graph = ot.Graph("%s, size=%d" % (title, n), "X1", "X2", True, "")
+    graph = ot.Graph("%s, size=%d" % (title, n), "X1", "X2")
     cloud = ot.Cloud(sample)
     graph.add(cloud)
     return graph

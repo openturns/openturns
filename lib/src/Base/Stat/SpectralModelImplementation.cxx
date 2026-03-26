@@ -241,7 +241,8 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
     if (module) data(i, 1) = std::abs(value);
     else data(i, 1) = std::arg(value);
   }
-  Graph graph(getName(), "f", String("spectral density") + (module ? String("module") : String("phase")), true, "topright");
+  Graph graph(getName(), "f", String("spectral density") + (module ? String("module") : String("phase")));
+  graph.setLegendPosition("topright");
   Curve curve(data);
   curve.setLineWidth(2);
   if (module) curve.setColor("red");

@@ -152,7 +152,7 @@ Sample SamplePartition::getPeakOverThreshold(const Scalar threshold, const Unsig
 
 Graph SamplePartition::draw(const Scalar threshold) const
 {
-  Graph graph(sample_.getDescription()[0] + " clusters", "Index", sample_.getDescription()[0], true, "");
+  Graph graph(sample_.getDescription()[0] + " clusters", "Index", sample_.getDescription()[0]);
   const UnsignedInteger size = sample_.getSize();
   Sample indexSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i)

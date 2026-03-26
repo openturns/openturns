@@ -121,21 +121,6 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   setThresholdRealization(thresholdRealization);
 }
 
-
-/* Parameters constructor to use when one of the bounds is not finite */
-TruncatedDistribution::TruncatedDistribution(const Distribution & distribution)
-  : DistributionImplementation()
-  , bounds_(distribution.getRange())
-{
-  setName("TruncatedDistribution");
-  // This call also set the range and compute the normalization factor
-  // Don't use the bounds accessor to avoid computing the range and
-  // the normalization factor twice
-  setDistribution(distribution);
-  setThresholdRealization(ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
-}
-
-
 /* Comparison operator */
 Bool TruncatedDistribution::operator ==(const TruncatedDistribution & other) const
 {
@@ -238,7 +223,7 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
   }
   // If no truncation
   const Interval range(getRange());
-  if (distribution_.getRange() == range)
+  if (localDistribution.getRange() == range)
   {
     simplified = localDistribution;
     return true;

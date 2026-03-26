@@ -199,7 +199,7 @@ weibullSample = sample[:, 0]
 uniformSample = sample[:, 1]
 
 # %%
-graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" % (alpha, beta, n), "x", "U", True)
+graph = ot.Graph(f"Weibull {alpha=}, {beta=}, {n=}", "x", "U")
 # Add the CDF plot
 curve = W.drawCDF()
 graph.add(curve)

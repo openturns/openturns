@@ -55,7 +55,7 @@ def draw_stratas(enum_func):
         Plot of the multi-indices colored by stratas
     """
     maximum_strata_index = 7
-    graph = ot.Graph("", "$\\alpha_1$", "$\\alpha_2$", True)
+    graph = ot.Graph("", "$\\alpha_1$", "$\\alpha_2$")
     if enum_func.__class__.__name__ == "LinearEnumerateFunction":
         graph.setTitle("Linear enumeration rule")
     elif enum_func.__class__.__name__ == "HyperbolicAnisotropicEnumerateFunction":
@@ -86,7 +86,7 @@ view = otv.View(graph, axes_kw={"aspect": "equal"})
 # for several dimension values.
 # We observe the exponential increase of the number of terms with the dimension
 # :math:`d` (curse of dimensionality).
-graph = ot.Graph("Linear enumeration", "Total degree", "Number of coefficients", True)
+graph = ot.Graph("Linear enumeration", "Total degree", "Number of coefficients")
 degree_maximum = 10
 list_of_dimensions = [1, 5, 10, 15, 20]
 point_styles = ["bullet", "circle", "fdiamond", "fsquare", "triangleup"]

@@ -122,7 +122,7 @@ graph.setLegendPosition("upper left")
 otv.View(graph, axes=[ax1])
 
 # On the right, the conditional Gaussian process regression variance
-graph = ot.Graph("", "x", "Conditional Gaussian process regression variance", True, "")
+graph = ot.Graph("", "x", "Conditional Gaussian process regression variance")
 # Sample for the data
 sample = ot.Sample(n_pt, 2)
 sample[:, 0] = x

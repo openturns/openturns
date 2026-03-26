@@ -3,7 +3,7 @@ import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # Graph
-g = ot.Graph("Fejer quadratures", "nodes", "", True)
+g = ot.Graph("Fejer quadratures", "nodes", "")
 g.setIntegerYTick(True)
 discretization = [15]
 

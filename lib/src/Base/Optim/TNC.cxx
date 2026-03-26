@@ -19,7 +19,6 @@
  *
  */
 #include <cmath> // For HUGE_VAL
-#include <cstring> // std::memset
 
 #include "openturns/TNC.hxx"
 #include "algotnc.h"
@@ -413,7 +412,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
     // penalize it
     *f = problem.isMinimization() ? SpecFunc::Infinity : -SpecFunc::Infinity;
-    std::memset(g, 0, dimension);
+    std::fill(g, g + dimension, 0.0);
 
     // exit gracefully
     return 1;

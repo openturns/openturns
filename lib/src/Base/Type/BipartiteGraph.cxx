@@ -52,7 +52,8 @@ Indices BipartiteGraph::getBlackNodes() const
 /* Draw the bipartite graph */
 Graph BipartiteGraph::draw() const
 {
-  Graph graph("Bipartite graph", "", "", true, "topright");
+  Graph graph("Bipartite graph", "", "");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger i = 0; i < getSize(); ++i)
   {
     Point redPoint(2);

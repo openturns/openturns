@@ -118,7 +118,6 @@ public:
     Advocate adv ( mgr.readObject() );
 
     PERSISTENT * p_rebuildObject = new PERSISTENT();
-    assert(p_rebuildObject && "PersistentObject not allocated");
     //try {
 
     p_rebuildObject->load(adv);

@@ -550,8 +550,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
     const Interval & firstOrderConfidenceInterval,
     const Interval & totalOrderConfidenceInterval)
 {
-  Graph graph("Sobol' indices", "inputs", "index value", true, "");
-
   const UnsignedInteger dimension = firstOrderIndices.getDimension();
 
   // Define cloud for FO
@@ -562,6 +560,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
     data(k, 1) = firstOrderIndices[k];
   }
   Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
+  Graph graph("Sobol' indices", "inputs", "index value");
   graph.add(firstOrderIndicesGraph);
 
   // Define cloud for TO
@@ -780,9 +779,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on empty data.";
   if ((names.getSize() != 0) && (names.getSize() != dimension)) throw InvalidArgumentException(HERE) << "Error: the names size must match the value dimension.";
 
-
-  Graph graph(title, "inputs", "correlation coefficient", true, "");
-
   // Define cloud
   Sample data(dimension, 2);
   for (UnsignedInteger k = 0; k < dimension; ++k)
@@ -791,6 +787,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
     data(k, 1) = values[k];
   }
   Cloud cloud(data, "red", "circle", "");
+
+  Graph graph(title, "inputs", "correlation coefficient");
   graph.add(cloud);
 
   // Min & max rhos

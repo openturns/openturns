@@ -85,7 +85,7 @@ public:
   /** Draw the importance factors */
   Graph drawImportanceFactors() const;
 
-  /** Confidence length */
+  /** Confidence length @deprecated */
   virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
@@ -101,8 +101,8 @@ protected:
 
   /* The event we are interested in */
   RandomVector event_;
-  Scalar probabilityEstimate_;
-  Scalar varianceEstimate_;
+  Scalar probabilityEstimate_ = 0.0;
+  Scalar varianceEstimate_ = 0.0;
 
 }; // class ProbabilitySimulationResult
 

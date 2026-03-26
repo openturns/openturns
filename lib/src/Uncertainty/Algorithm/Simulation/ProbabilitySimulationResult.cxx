@@ -34,9 +34,6 @@ static const Factory<ProbabilitySimulationResult> Factory_ProbabilitySimulationR
 /* Default constructor */
 ProbabilitySimulationResult::ProbabilitySimulationResult()
   : SimulationResult()
-  , event_()
-  , probabilityEstimate_(0.0)
-  , varianceEstimate_(0.0)
 {
   // Nothing to do
 }
@@ -142,7 +139,7 @@ String ProbabilitySimulationResult::__repr__() const
       << " standard deviation=" << getStandardDeviation()
       << " coefficient of variation=" << getCoefficientOfVariation()
       << std::fixed
-      << " confidenceLength(" << defaultConfidenceLevel << ")=" << std::scientific << getConfidenceLength(defaultConfidenceLevel) << std::fixed
+      << " confidenceLength(" << defaultConfidenceLevel << ")=" << std::scientific << getProbabilityDistribution().computeBilateralConfidenceInterval(defaultConfidenceLevel).getVolume() << std::fixed
       << " outerSampling=" << outerSampling_
       << " blockSize=" << blockSize_;
 
@@ -152,6 +149,7 @@ String ProbabilitySimulationResult::__repr__() const
 /* Confidence length */
 Scalar ProbabilitySimulationResult::getConfidenceLength(const Scalar level) const
 {
+  LOGWARN("ProbabilitySimulationResult.getConfidenceLength is deprecated");
   // Check if the given level is in ]0, 1[
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Confidence level must be in ]0, 1[";
   // The probability estimate is asymptotically normal

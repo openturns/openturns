@@ -93,6 +93,7 @@ Mesh IntervalMesher::build(const Interval & interval,
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   const Point lowerBound(interval.getLowerBound());
   const Point upperBound(interval.getUpperBound());
+  Mesh result;
 
   // Waiting for a generic implementation in higher dimension
   if (dimension == 1)
@@ -113,9 +114,9 @@ Mesh IntervalMesher::build(const Interval & interval,
       simplices(i, 0) = i;
       simplices(i, 1) = i + 1;
     } // i
-    return Mesh(vertices, simplices);
+    result = Mesh(vertices, simplices);
   } // dimension == 1
-  if (dimension == 2)
+  else if (dimension == 2)
   {
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
@@ -190,9 +191,9 @@ Mesh IntervalMesher::build(const Interval & interval,
       } // i
       ++cellIndex;
     } // j
-    return Mesh(vertices, simplices);
+    result = Mesh(vertices, simplices);
   } // dimension == 2
-  if (dimension == 3)
+  else if (dimension == 3)
   {
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
@@ -538,83 +539,88 @@ Mesh IntervalMesher::build(const Interval & interval,
       } // j
       cellIndex += mp1;
     } // k
-    return Mesh(vertices, simplices);
+    result = Mesh(vertices, simplices);
   } // dimension == 3
-  // Dimension > 3
-  if (diamond)
-    throw NotYetImplementedException(HERE) << "In IntervalMesher::build with n-d/diamond=true";
-  Indices verticesDiscretization(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    verticesDiscretization[i] = discretization_[i] + 1;
-  // Generate vertices
-  const IndicesCollection allVerticesTuples(Tuples(verticesDiscretization).generate());
-  const UnsignedInteger numVertices = allVerticesTuples.getSize();
-  Sample vertices(numVertices, dimension);
-  for (UnsignedInteger i = 0; i < numVertices; ++i)
+  else
   {
-    for (UnsignedInteger j = 0; j < dimension; ++j)
+    // Dimension > 3
+    if (diamond)
+      throw NotYetImplementedException(HERE) << "In IntervalMesher::build with n-d/diamond=true";
+    Indices verticesDiscretization(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      verticesDiscretization[i] = discretization_[i] + 1;
+    // Generate vertices
+    const IndicesCollection allVerticesTuples(Tuples(verticesDiscretization).generate());
+    const UnsignedInteger numVertices = allVerticesTuples.getSize();
+    Sample vertices(numVertices, dimension);
+    for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
-      const Scalar s = (1.0 * allVerticesTuples(i, j)) / discretization_[j];
-      vertices(i, j) = lowerBound[j] * (1.0 - s) + upperBound[j] * s;
-    } // j
-  } // i
-  // Generate simplices:
-  const IndicesCollection allHypercubesTuples(Tuples(discretization_).generate());
-  const UnsignedInteger numHypercubes = allHypercubesTuples.getSize();
-  const IndicesCollection allSimplicesPermutations(KPermutations(dimension, dimension).generate());
-  const UnsignedInteger numSimplicesPermutations = allSimplicesPermutations.getSize();
-  const UnsignedInteger numSimplices = numHypercubes * numSimplicesPermutations;
-  IndicesCollection simplices(numSimplices, dimension + 1);
-  // Reference simplex
-  IndicesCollection referenceSimplices(numSimplicesPermutations, dimension + 1);
-  Indices base(dimension);
-  UnsignedInteger product = 1;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    base[i] = product;
-    product *= verticesDiscretization[i];
-  }
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+      {
+        const Scalar s = (1.0 * allVerticesTuples(i, j)) / discretization_[j];
+        vertices(i, j) = lowerBound[j] * (1.0 - s) + upperBound[j] * s;
+      } // j
+    } // i
+    // Generate simplices:
+    const IndicesCollection allHypercubesTuples(Tuples(discretization_).generate());
+    const UnsignedInteger numHypercubes = allHypercubesTuples.getSize();
+    const IndicesCollection allSimplicesPermutations(KPermutations(dimension, dimension).generate());
+    const UnsignedInteger numSimplicesPermutations = allSimplicesPermutations.getSize();
+    const UnsignedInteger numSimplices = numHypercubes * numSimplicesPermutations;
+    IndicesCollection simplices(numSimplices, dimension + 1);
+    // Reference simplex
+    IndicesCollection referenceSimplices(numSimplicesPermutations, dimension + 1);
+    Indices base(dimension);
+    UnsignedInteger product = 1;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      base[i] = product;
+      product *= verticesDiscretization[i];
+    }
 
-  // Generate all the increasing sequences of 0 and 1 of size (dimension+1) encoded in base 2
-  Indices standardSimplex(dimension + 1, 0);
-  for (UnsignedInteger j = 0; j <= dimension; ++j)
-  {
-    // Interpret these sequences as a binary representation of an integer
-    for (UnsignedInteger k = 0; k < j; ++k)
-      standardSimplex[j] += 1 << k;
-  }
-  for (UnsignedInteger i = 0; i < numSimplicesPermutations; ++i)
-  {
+    // Generate all the increasing sequences of 0 and 1 of size (dimension+1) encoded in base 2
+    Indices standardSimplex(dimension + 1, 0);
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
-      // Translate these sequences into integers using the mixed base verticesDiscretization
-      UnsignedInteger component = standardSimplex[j];
-      for (UnsignedInteger k = 0; k < dimension; ++k)
-      {
-        referenceSimplices(i, j) += (component % 2) * base[allSimplicesPermutations(i, k)];
-        component /= 2;
-      } // k
-    } // j
-  } // i
-  // For each hypercube add the reference simplex and all its permutations with
-  // the proper translation
-  UnsignedInteger simplexIndex = 0;
-  for (UnsignedInteger i = 0; i < numHypercubes; ++i)
-  {
-    // Compute the translation associated to this hypercube
-    UnsignedInteger translation = 0;
-    for (UnsignedInteger k = 0; k < dimension; ++k)
-      translation += allHypercubesTuples(i, k) * base[k];
-    for (UnsignedInteger j = 0; j < numSimplicesPermutations; ++j)
+      // Interpret these sequences as a binary representation of an integer
+      for (UnsignedInteger k = 0; k < j; ++k)
+        standardSimplex[j] += 1 << k;
+    }
+    for (UnsignedInteger i = 0; i < numSimplicesPermutations; ++i)
     {
-      for (UnsignedInteger k = 0; k <= dimension; ++k)
+      for (UnsignedInteger j = 0; j <= dimension; ++j)
       {
-        simplices(simplexIndex, k) = referenceSimplices(j, k) + translation;
-      } // k
-      ++simplexIndex;
-    } // j
-  } // i
-  return Mesh(vertices, simplices);
+        // Translate these sequences into integers using the mixed base verticesDiscretization
+        UnsignedInteger component = standardSimplex[j];
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+        {
+          referenceSimplices(i, j) += (component % 2) * base[allSimplicesPermutations(i, k)];
+          component /= 2;
+        } // k
+      } // j
+    } // i
+    // For each hypercube add the reference simplex and all its permutations with
+    // the proper translation
+    UnsignedInteger simplexIndex = 0;
+    for (UnsignedInteger i = 0; i < numHypercubes; ++i)
+    {
+      // Compute the translation associated to this hypercube
+      UnsignedInteger translation = 0;
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+        translation += allHypercubesTuples(i, k) * base[k];
+      for (UnsignedInteger j = 0; j < numSimplicesPermutations; ++j)
+      {
+        for (UnsignedInteger k = 0; k <= dimension; ++k)
+        {
+          simplices(simplexIndex, k) = referenceSimplices(j, k) + translation;
+        } // k
+        ++simplexIndex;
+      } // j
+    } // i
+    result = Mesh(vertices, simplices);
+  } // Dimension > 3
+  result.setIsConvex(true);
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS
