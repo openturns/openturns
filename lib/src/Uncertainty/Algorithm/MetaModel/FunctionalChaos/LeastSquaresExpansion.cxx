@@ -1,4 +1,4 @@
-/*                                               -*- C++ -*- */
+//                                               -*- C++ -*- */
 /**
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.
@@ -29,7 +29,7 @@
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
-#include "openturns/Point.hxx"
+//#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,21 +38,6 @@ typedef Collection<Function> FunctionCollection;
 CLASSNAMEINIT(LeastSquaresExpansion)
 
 static const Factory<LeastSquaresExpansion> Factory_LeastSquaresExpansion;
-
-/* Removed the anonymous namespace, keep internal linkage with static */
-static UnsignedInteger ComputeBasisSizeFromActive(const Indices & activeFunctions)
-{
-  if (activeFunctions.getSize() == 0)
-    throw InvalidArgumentException(HERE) << "Error: activeFunctions is empty";
-
-  // Compute max(activeFunctions) using normInf
-  Point tmp(activeFunctions.getSize());
-  for (UnsignedInteger i = 0; i < activeFunctions.getSize(); ++i)
-    tmp[i] = activeFunctions[i];
-
-  const UnsignedInteger maxIndex = static_cast<UnsignedInteger>(tmp.normInf());
-  return maxIndex + 1;
-}
 
 
 /* Default constructor */
