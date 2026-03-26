@@ -34,7 +34,7 @@ The standard deviation is estimated based on the empirical inter-quartile:
 where :math:`a_{0.75}` and :math:`a_{0.25}` are the 75% and 25% quantiles
 of the standard normal distribution and :math:`q_{\sampleSize, 0.75}`
 and :math:`q_{\sampleSize, 0.25}` are the sample quantiles of levels 75% and 25%.
-The correlation matrix :math:`R_\sampleSiz` is
+The correlation matrix :math:`R_{\sampleSize}` is
 estimated as the shape matrix of the underlying
 :class:`~openturns.NormalCopula` using :class:`~openturns.NormalCopulaFactory`.
 
