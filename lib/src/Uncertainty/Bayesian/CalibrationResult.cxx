@@ -261,16 +261,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     const Distribution priorJ(getParameterPrior().getMarginal(j));
     const Distribution posteriorJ(getParameterPosterior().getMarginal(j));
 
-    Bool useLogScale = false;
-    if (bayesian_)
-    {
-      const Scalar priorPDFMax = priorJ.drawPDF().getDrawable(0).getData().getMax()[1];
-      const Scalar postPDFMax = posteriorJ.drawPDF().getDrawable(0).getData().getMax()[1];
-      // use log scale if pdfs are very different
-      const Scalar maxPDFRatio = ResourceMap::GetAsScalar("CalibrationResult-LogScalePDFRatioThreshold");
-      useLogScale = std::abs(std::log(postPDFMax) - std::log(priorPDFMax)) > std::log(maxPDFRatio);
-    }
-
     if (j == 0)
     {
       // Show the Y title only for the first graph
@@ -305,9 +295,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
-    if (useLogScale)
-      graph.setLogScale(GraphImplementation::LOGY);
-
     grid.setGraph(0, j, graph);
   }
   return grid;

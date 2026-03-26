@@ -1766,7 +1766,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 100);
 
   // CalibrationResult parameters //
-  addAsScalar("CalibrationResult-LogScalePDFRatioThreshold", 50.0);
   addAsString("CalibrationResult-PriorLineStyle", "dashed");
   addAsString("CalibrationResult-PosteriorLineStyle", "dotdash");
   addAsString("CalibrationResult-ObservationLineStyle", "solid");
