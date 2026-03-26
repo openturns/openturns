@@ -10,17 +10,35 @@ robust : bool, optional
 
 Notes
 -----    
-The parameters are estimated by likelihood maximization if *robust=False*:
+The parameters are estimated by likelihood maximization if `robust=False`:
 
 .. math::
     :nowrap:
-
     \begin{align*}
-      \displaystyle\Hat{\vect{\mu}}_n^{\strut} = \bar{\vect{x}}_n\\
-      \displaystyle\Hat{\mathrm{Cov}}_n = \frac{1}{n-1}\sum_{i=1}^n\left(\vect{X}_i-\Hat{\vect{\mu}}_n\right)\left(\vect{X}_i-\Hat{\vect{\mu}}_n\right)^t
+    \widehat{\vect{\mu}} & = \overline{\vect{x}}_{\sampleSize}\\
+    \widehat{C} & = \frac{1}{\sampleSize - 1} \sum_{i=1}^{\sampleSize} \left(\vect{x}_i - \widehat{\vect{\mu}} \right)
+      \left(\vect{x}_i - \widehat{\vect{\mu}}\right)^\top
     \end{align*}
 
-If *robust=True*, the estimation is done using the empirical median :math:`q_{n, 0.5}` as an estimate of :math:`\mu`, the empirical inter-quartile :math:`frac{q_{n, 0.75}-q_{n, 0.25}}{a_{0.75}-a_{0.25}}` as an estimate of the standard deviation, where :math:`a_{0.75}` and :math:`a_{0.25}` are the 75% and 25% quantiles of the standard normal distribution, and the correlation matrix :math:`R_n` is estimated as the shape matrix of the underlying :class:`~openturns.NormalCopula` using :class:`~openturns.NormalCopulaFactory`.
+where :math:`\overline{\vect{x}}_{\sampleSize}` is the sample mean:
+
+.. math::
+    \overline{\vect{x}}_{\sampleSize} = \frac{1}{\sampleSize} \sum_{i=1}^{\sampleSize} \vect{x}_i.
+
+If `robust=True`, the estimation is performed using a robust estimator.
+The estimate of :math:`\mu` is the empirical median :math:`q_{n, 0.5}`.
+The standard deviation is estimated based on the empirical inter-quartile:
+
+.. math::
+    :nowrap:
+    \widehat{\sigma} = \frac{q_{\sampleSize, 0.75} - q_{\sampleSize, 0.25}}{a_{0.75} - a_{0.25}}
+
+where :math:`a_{0.75}` and :math:`a_{0.25}` are the 75% and 25% quantiles
+of the standard normal distribution and :math:`q_{\sampleSize, 0.75}`
+and :math:`q_{\sampleSize, 0.25}` are the sample quantiles of levels 75% and 25%.
+The correlation matrix :math:`R_n` is
+estimated as the shape matrix of the underlying
+:class:`~openturns.NormalCopula` using :class:`~openturns.NormalCopulaFactory`.
 
 See also
 --------
@@ -44,8 +62,7 @@ are estimated from a sample.
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::NormalFactory::buildAsNormal
-"Estimate the distribution as native distribution.
-
+"Estimate the parameters of the distribution as a native distribution.
 
 **Available usages**:
 
@@ -60,7 +77,7 @@ Parameters
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
 param : sequence of float
-   The parameters of the :class:`~openturns.Normal`.
+    The parameters of the :class:`~openturns.Normal`.
 
 Returns
 -------
