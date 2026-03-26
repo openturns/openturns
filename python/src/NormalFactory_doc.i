@@ -13,12 +13,11 @@ Notes
 The parameters are estimated by likelihood maximization if `robust=False`:
 
 .. math::
-    :nowrap:
-    \begin{align*}
+    \begin{aligned}
     \widehat{\vect{\mu}} & = \overline{\vect{x}}_{\sampleSize}\\
     \widehat{C} & = \frac{1}{\sampleSize - 1} \sum_{i=1}^{\sampleSize} \left(\vect{x}_i - \widehat{\vect{\mu}} \right)
       \left(\vect{x}_i - \widehat{\vect{\mu}}\right)^\top
-    \end{align*}
+    \end{aligned}
 
 where :math:`\overline{\vect{x}}_{\sampleSize}` is the sample mean:
 
