@@ -172,33 +172,33 @@ This step is performed by the class :class:`~openturns.GaussianProcessFitter`.
 
 **Add a noise to the output values**: We show how to take into account the fact that the output values
 of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a
-covariance matrix :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
+covariance matrix :math:`\mat{\Sigma}_i^{\text} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
 specific to the output :math:`\vect{y}_i`. It means that each output :math:`\vect{y}_i` is considered as the
 realization of the random vector :math:`\vect{Y}_i` defined by:
 
 .. math::
 
     \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
-    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{\text{noise}}\right)
 
 where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
 
-If the covariance matrices :math:`\mat{\Sigma}_i^{noise}` are different, the noise is heteroscedastic.
+If the covariance matrices :math:`\mat{\Sigma}_i^{\text{noise}}` are different, the noise is heteroscedastic.
 On the contrary, the noise is homoscedastic.
 
 The noise is introduced during the step of the parameters estimation: in the likelihood expression defined
 in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is transformed
-into the covariance matrix :math:`\mat{C}^{noise}` defined by:
+into the covariance matrix :math:`\mat{C}^{\text{noise}}` defined by:
 
 .. math::
 
-    \mat{C}^{noise}_{\vect{p}} =
+    \mat{C}^{\text{noise}}_{\vect{p}} =
       \begin{pmatrix}
-        \mat{C}_{11} + \mat{\Sigma}_1^{noise} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
-        \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{noise} & \dots &  \vdots \\
-        \vdots & & &  \vdots \\
-        \mat{C}_{\sampleSize \times 1}  & \dots & \dots &  \mat{C}_{\sampleSize \times \sampleSize} +
-        \mat{\Sigma}_n^{noise}
+        \mat{C}_{11} + \mat{\Sigma}_1^{\text{noise}} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
+        \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{\text{noise}} & \dots &  \vdots \\
+        \vdots & & &   \\
+        \mat{C}_{\sampleSize \times 1}  & \dots & &  \mat{C}_{\sampleSize \times \sampleSize} +
+        \mat{\Sigma}_n^{\text{noise}}
        \end{pmatrix} \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 Thus the covariance matrix of the noise has been added on the bloc-diagonal of the initial covariance matrix.
