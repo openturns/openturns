@@ -226,6 +226,7 @@ as Python functions.
     SpecFunc.AccurateSum
     SpecFunc.BesselI0
     SpecFunc.BesselI1
+    SpecFunc.BesselInu
     SpecFunc.BesselK
     SpecFunc.BesselKDerivative
     SpecFunc.Beta
@@ -265,6 +266,7 @@ as Python functions.
     SpecFunc.Log2
     SpecFunc.LogBesselI0
     SpecFunc.LogBesselI1
+    SpecFunc.LogBesselInu
     SpecFunc.LogBesselK
     SpecFunc.LogBeta
     SpecFunc.LogBinomialCoefficient
