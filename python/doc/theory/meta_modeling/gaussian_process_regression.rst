@@ -284,19 +284,18 @@ The covariance matrix of :math:`\vect{Z}` at the point :math:`\vect{x}` is defin
 
 with :math:`\Cov{\vect{Z}(\omega, \vect{x})} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
 
-When computed on any sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_N)`, the covariance matrix is
+When computed on any sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_\sampleSize)`, the covariance matrix is
 defined by:
 
 .. math::
     :label: covarianceGPR_sample
 
-    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_N)} =
+    \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_\sampleSize)} =
         \begin{pmatrix}
-            \Sigma_{11} & \dots & \Sigma_{1N} \\
+            \Sigma_{11} & \dots & \Sigma_{1 \sampleSize} \\
             \dots  \\
-            \Sigma_{N1} & \dots & \Sigma_{NN}
+            \Sigma_{\sampleSize 1} & \dots & \Sigma_{\sampleSize \sampleSize}
           \end{pmatrix}
-        \right)
 
 where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega, \vect{\xi}_j)}`.
 
