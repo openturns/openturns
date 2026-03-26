@@ -293,7 +293,7 @@ defined by:
     \Cov{(\vect{Z}(\omega, \vect{\xi}_1), \dots, \vect{Z}(\omega, \vect{\xi}_\sampleSize)} =
         \begin{pmatrix}
             \Sigma_{11} & \dots & \Sigma_{1 \sampleSize} \\
-            \dots  \\
+            \vdots & & \vdots \\
             \Sigma_{\sampleSize 1} & \dots & \Sigma_{\sampleSize \sampleSize}
           \end{pmatrix}
 
