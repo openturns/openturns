@@ -26,17 +26,16 @@ where :math:`\overline{\vect{x}}_{\sampleSize}` is the sample mean:
     \overline{\vect{x}}_{\sampleSize} = \frac{1}{\sampleSize} \sum_{i=1}^{\sampleSize} \vect{x}_i.
 
 If `robust=True`, the estimation is performed using a robust estimator.
-The estimate of :math:`\mu` is the empirical median :math:`q_{n, 0.5}`.
+The estimate of :math:`\mu` is the empirical median :math:`q_{\sampleSize, 0.5}`.
 The standard deviation is estimated based on the empirical inter-quartile:
 
 .. math::
-    :nowrap:
     \widehat{\sigma} = \frac{q_{\sampleSize, 0.75} - q_{\sampleSize, 0.25}}{a_{0.75} - a_{0.25}}
 
 where :math:`a_{0.75}` and :math:`a_{0.25}` are the 75% and 25% quantiles
 of the standard normal distribution and :math:`q_{\sampleSize, 0.75}`
 and :math:`q_{\sampleSize, 0.25}` are the sample quantiles of levels 75% and 25%.
-The correlation matrix :math:`R_n` is
+The correlation matrix :math:`R_\sampleSiz` is
 estimated as the shape matrix of the underlying
 :class:`~openturns.NormalCopula` using :class:`~openturns.NormalCopulaFactory`.
 
