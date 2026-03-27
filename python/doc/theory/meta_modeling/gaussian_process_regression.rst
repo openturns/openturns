@@ -193,13 +193,8 @@ into the covariance matrix :math:`\mat{C}^{\text{noise}}` defined by:
 .. math::
 
     \mat{C}^{\text{noise}}_{\vect{p}} =
-      \begin{pmatrix}
-        \mat{C}_{11} + \mat{\Sigma}_1^{\text{noise}} & \mat{C}_{12} & \dots & \mat{C}_{1 \times \sampleSize}\\
-        \mat{C}_{21} & \mat{C}_{22} + \mat{\Sigma}_2^{\text{noise}} & \dots &  \vdots \\
-        \vdots & & &   \\
-        \mat{C}_{\sampleSize \times 1}  & \dots & &  \mat{C}_{\sampleSize \times \sampleSize} +
-        \mat{\Sigma}_n^{\text{noise}}
-       \end{pmatrix} \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
+      \mat{C} + \text{diag}\left(\mat{\Sigma}_1^{\text{noise}}, \dots, \mat{\Sigma}_n^{\text{noise}}\right)
+      \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 Thus the covariance matrix of the noise has been added on the bloc-diagonal of the initial covariance matrix.
 
