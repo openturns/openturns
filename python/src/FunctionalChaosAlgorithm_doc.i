@@ -272,3 +272,23 @@ projectionStrategy : :class:`~openturns.ProjectionStrategy`
     Strategy to estimate the coefficients :math:`a_k`."
 
 // ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::setUseDomination
+"Domination method flag accessor.
+
+Parameters
+----------
+useDomination : bool
+    Whether to use the domination method to map the input distribution to the basis measure.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosAlgorithm::getUseDomination
+"Domination method flag accessor.
+
+Returns
+-------
+useDomination : bool
+    Whether to use the domination method to map the input distribution to the basis measure.
+"

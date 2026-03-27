@@ -79,6 +79,8 @@ CovarianceMatrix FunctionalChaosRandomVector::getCovariance() const
 /* Compute the covariance */
 void FunctionalChaosRandomVector::computeCovariance() const
 {
+  if (functionalChaosResult_.getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosRandomVector.computeCovariance is not available with domination method.";
   const UnsignedInteger dimension = getDimension();
   const Indices indices(functionalChaosResult_.getIndices());
   const Sample coefficients(functionalChaosResult_.getCoefficients());

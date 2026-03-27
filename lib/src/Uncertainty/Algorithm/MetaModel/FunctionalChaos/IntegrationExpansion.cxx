@@ -115,20 +115,16 @@ void IntegrationExpansion::run()
   // to the basis
   if (designProxy_.getSampleSize() == 0)
   {
+    if (useDomination_)
+      throw InvalidArgumentException(HERE) << "IntegrationExpansion cannot use domination method";
+
     const Distribution measure(basis_.getMeasure());
-    Sample transformedInputSample;
-    if (distribution_ == measure)
-    {
-      transformation_ = IdentityFunction(distribution_.getDimension());
-      inverseTransformation_ = IdentityFunction(distribution_.getDimension());
-      transformedInputSample = inputSample_;
-    }
-    else
-    {
-      transformation_ = DistributionTransformation(distribution_, basis_.getMeasure());
-      inverseTransformation_ = DistributionTransformation(basis_.getMeasure(), distribution_);
+    const Bool identityTransformation = initializeTransformation(measure);
+
+    Sample transformedInputSample(inputSample_);
+    if (!identityTransformation)
       transformedInputSample = transformation_(inputSample_);
-    }
+
     FunctionCollection functions(basisSize_);
     for (UnsignedInteger i = 0; i < basisSize_; ++i)
       functions[i] = basis_.build(i);
@@ -185,9 +181,7 @@ String IntegrationExpansion::__repr__() const
          << " basis=" << basis_
          << " basisSize=" << basisSize_
          << " activeFunctions=" << activeFunctions_
-         << " designProxy=" << designProxy_
-         << " transformation=" << transformation_
-         << " inverseTransformation=" << inverseTransformation_;
+         << " designProxy=" << designProxy_;
 }
 
 
@@ -208,8 +202,6 @@ void IntegrationExpansion::save(Advocate & adv) const
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "basisSize_", basisSize_ );
   adv.saveAttribute( "activeFunctions_", activeFunctions_ );
-  adv.saveAttribute( "transformation_", transformation_ );
-  adv.saveAttribute( "inverseTransformation_", inverseTransformation_ );
 }
 
 
@@ -220,8 +212,6 @@ void IntegrationExpansion::load(Advocate & adv)
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "basisSize_", basisSize_ );
   adv.loadAttribute( "activeFunctions_", activeFunctions_ );
-  adv.loadAttribute( "transformation_", transformation_ );
-  adv.loadAttribute( "inverseTransformation_", inverseTransformation_ );
 }
 
 
