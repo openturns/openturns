@@ -178,10 +178,10 @@ realization of the random vector :math:`\vect{Y}_i` defined by:
 
 .. math::
 
-    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
+    \vect{Y}_i = \vect{y}_i^{\text{true}} + \vect{\varepsilon}, \quad
     \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{\text{noise}}\right)
 
-where :math:`\vect{y}_i^{true}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
+where :math:`\vect{y}_i^{\text{true}}` is the true (and unknown) value of the model at :math:`\vect{x}_i`.
 
 If the covariance matrices :math:`\mat{\Sigma}_i^{\text{noise}}` are different, the noise is heteroscedastic.
 On the contrary, the noise is homoscedastic.
