@@ -172,7 +172,7 @@ This step is performed by the class :class:`~openturns.GaussianProcessFitter`.
 
 **Add a noise to the output values**: We show how to take into account the fact that the output values
 of the function are not known precisely. This noise is modeled by normal distribution with zero mean and a
-covariance matrix :math:`\mat{\Sigma}_i^{\text} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
+covariance matrix :math:`\mat{\Sigma}_i^{\text{noise}} \in \cM_{\outputDim \times \outputDim}(\Rset)` that can be
 specific to the output :math:`\vect{y}_i`. It means that each output :math:`\vect{y}_i` is considered as the
 realization of the random vector :math:`\vect{Y}_i` defined by:
 
