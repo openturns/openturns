@@ -1574,6 +1574,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
   addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
   addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");
+  addAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions", 20);
+  addAsScalar("LinearModelAnalysis-MinimumSigma", 1.0e-5);
 
   // LinearModelValidation parameters //
   addAsBool("LinearModelValidation-ModelSelection", false);
