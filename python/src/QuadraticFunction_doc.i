@@ -18,16 +18,15 @@ This class implements a quadratic function :math:`f` defined as:
 
 .. math::
 
-    f : & \Rset^d \rightarrow \Rset^p  \\
-        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c} + \frac{1}{2} \vect{X}^T.
-        \underline{\underline{\underline{M}}}. \vect{X}
-
+    f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
+        & \vect{c} + \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{X} - \vect{b} )}.
+        \underline{\underline{\underline{M}}}.( \vect{X} - \vect{b} )
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`d` lines and :math:`d` columns,
-- :math:`\vect{b}` is a vector in :math:`\Rset^d`,
-- :math:`\vect{c}` is a  vector in :math:`\Rset^p`,
-- :math:`\underline{\underline{\underline{M}}}` is a :math:`\Rset^p \times \Rset^d \times \Rset^d` symmetric
+- :math:`\mat{A}` is a matrix with :math:`\inputDim` lines and :math:`\outputDim` columns,
+- :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`,
+- :math:`\vect{c}` is a  vector in :math:`\Rset^\outputDim`,
+- :math:`\underline{\underline{\underline{M}}}` is a :math:`\Rset^\outputDim \times \Rset^\inputDim \times \Rset^\inputDim` symmetric
   tensor.
 
 Examples

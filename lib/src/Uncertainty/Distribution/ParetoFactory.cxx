@@ -72,7 +72,7 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
   if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
   const Scalar skewness = sample.computeSkewness()[0];
-  const SymbolicFunction constraint("alpha", OSS() << "2*(1+alpha)/(alpha-3)*sqrt((alpha-2)/alpha)");
+  const SymbolicFunction constraint("alpha", "2*(1+alpha)/(alpha-3)*sqrt((alpha-2)/alpha)");
   if (skewness < constraint(Point(1, ResourceMap::GetAsScalar("ParetoFactory-AlphaUpperBound")))[0])
     throw InvalidArgumentException(HERE) << "alpha is not defined";
   const Brent solver;
@@ -81,34 +81,48 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
   const Scalar beta = (alpha - 1.0) * std::sqrt((alpha - 2.0) / alpha) * sample.computeStandardDeviation()[0];
   const Scalar gamma = sample.computeMean()[0] - alpha * beta / (alpha - 1.0);
 
-  Pareto result(beta, alpha, gamma);
-  return result;
+  Pareto result(beta, alpha, gamma);  return result;
 }
 
 Pareto ParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
+  // Initialize the MML factory by a crude method of moments resul
   const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
-  Pareto result(buildAsPareto(factory.build(sample).getParameter()));
-  return buildAsPareto(result.getParameter());
+  return buildAsPareto(factory.build(sample).getParameter());
 }
 
 Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const
 {
+  return buildMethodOfLeastSquares(sample, sample.sortUnique(), gamma);
+}
+
+Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sample & sortedSample, const Scalar gamma) const
+{
   const UnsignedInteger size = sample.getSize();
   Sample y(size, 1);
   Sample z(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    y(i, 0) = std::log(sample(i, 0) - gamma);
-    const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
-    if (survival > 0.0)
-      z(i, 0) = std::log(survival);
-  }
+  if (sortedSample.getSize() == size)
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      // The value of 0 is very strange here, but it provides the best estimate!
+      const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
+      z(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
+      y(i, 0) = std::log(sample(i, 0) - gamma);
+    }
+  else
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      // The value of 0 is very strange here, but it provides the best estimate!
+      const Scalar survival = (size - i - 1.0) / size; // 1.0 and not 1 to avoid integral division
+      z(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
+      y(i, 0) = std::log(sortedSample(i, 0) - gamma);
+    }
   LinearLeastSquares lls(y, z);
   lls.run();
+  const Scalar c = lls.getCenter()[0];
   const Scalar a0 = lls.getConstant()[0];
   const Scalar a1 = lls.getLinear()(0, 0);
-  const Scalar beta = std::exp(-a0 / a1);
+  const Scalar beta = std::exp(c - a0 / a1);
   const Scalar alpha = -a1;
   return Pareto(beta, alpha, gamma);
 }
@@ -117,18 +131,32 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sca
 class ParetoFactoryResidualEvaluation : public EvaluationImplementation
 {
 public:
-  ParetoFactoryResidualEvaluation(const Sample & sample)
+  ParetoFactoryResidualEvaluation(const Sample & sample, const Sample & sortedSample)
     : EvaluationImplementation()
-    , sample_(sample)
+    , xMin_(sortedSample(0, 0))
   {
     const UnsignedInteger size = sample.getSize();
     dataOut_ = Sample(size, 1);
-    for (UnsignedInteger i = 0; i < size; ++ i)
+    if (sortedSample.getSize() != size)
     {
-      const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
-      if (survival > 0.0)
-        dataOut_(i, 0) = std::log(survival);
-    }
+      sample_ = sample;
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+	// The value of 0 is very strange here, but it provides the best estimate!
+	const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
+	dataOut_(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
+      }
+    } // if (sorted.sample.getSize() != size)
+    else
+    {
+      sample_ = sortedSample;
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+	// The value of 0 is very strange here, but it provides the best estimate!
+	const Scalar survival = (size - i - 1.0) / size; // 1.0 and not 1 to avoid integral division
+	dataOut_(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
+      }
+    } // if (sorted.sample.getSize() == size)
   }
 
   ParetoFactoryResidualEvaluation * clone() const override
@@ -153,7 +181,7 @@ public:
 
   Description getOutputDescription() const override
   {
-    return Description(sample_.getSize(), "r");
+    return Description(getOutputDimension(), "r");
   }
 
   Description getDescription() const override
@@ -167,23 +195,25 @@ public:
   {
     const Scalar gamma = parameter[0];
     const UnsignedInteger size = sample_.getSize();
-    if (gamma >= sample_.getMin()[0])
+    // Early exit for incompatible values of gamma
+    if (gamma >= xMin_)
       return Point(size, std::sqrt(SpecFunc::MaxScalar / (10.0 * size)));
     Sample dataIn(size, 1);
+    UnsignedInteger index = 0;
     for (UnsignedInteger i = 0; i < size; ++ i)
-      dataIn(i, 0) = std::log(sample_(i, 0) - gamma);
+    {
+      dataIn(index, 0) = std::log(sample_(i, 0) - gamma);
+      ++index;
+    }
     LinearLeastSquares leastSquares(dataIn, dataOut_);
     leastSquares.run();
-    const Scalar a0 = leastSquares.getConstant()[0];
-    const Scalar a1 = leastSquares.getLinear()(0, 0);
-    Point result(size);
-    for (UnsignedInteger i = 0; i < size; ++ i)
-      result[i] = dataOut_(i, 0) - (a1 * dataIn(i, 0) + a0);
+    const Point result((dataOut_ - leastSquares.getResult().getMetaModel()(dataIn)).asPoint());
     return result;
   }
-
+  
 private:
   Sample sample_;
+  Scalar xMin_;
   Sample dataOut_;
 };
 
@@ -193,19 +223,20 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can only build a LogNormal distribution from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
-  const Scalar xMin = sample.getMin()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
   if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
+  const Sample sortedSample(sample.sortUnique());
+  const Scalar xMin = sortedSample(0, 0);
   Scalar gamma = xMin - std::abs(xMin) / (2 + size);
-  ParetoFactoryResidualEvaluation residualEvaluation(sample);
+  ParetoFactoryResidualEvaluation residualEvaluation(sample, sortedSample);
   const Function residualFunction(residualEvaluation.clone());
   LeastSquaresProblem problem(residualFunction);
   OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
   solver.setStartingPoint(Point(1, gamma));
   solver.run();
   gamma = solver.getResult().getOptimalPoint()[0];
-  return buildMethodOfLeastSquares(sample, gamma);
+  return buildMethodOfLeastSquares(sample, sortedSample, gamma);
 }
 
 
