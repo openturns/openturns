@@ -60,7 +60,7 @@ constrained optimization problem :
 
 .. math::
 
-    \vect{u}^* = argmin \{||\vect{u}|| \, | \, G(\vect{u}) = 0 \}
+    \vect{u}^* = \argmin \{||\vect{u}|| \, | \, G(\vect{u}) = 0 \}
 
 Then the limit state surface is approximated in the standard space by a linear
 surface (:class:`~openturns.FORM`) or by a quadratic surface
