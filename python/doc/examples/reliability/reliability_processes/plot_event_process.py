@@ -13,7 +13,7 @@ Create an event based on a process
 #
 # .. math::
 #    \begin{aligned}
-#      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}} \in \mathcal{A} \right\}
+#      \displaystyle \mathcal{E}(X) = \bigcup_{\vect{t}\in \mathcal{M}}\left\{X_{\vect{t}} \in \mathcal{A} \right\}
 #    \end{aligned}
 #
 # where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
@@ -25,15 +25,15 @@ Create an event based on a process
 #      \mathcal{A} = \prod_{i=1}^d [a_i,b_i]
 #    \end{aligned}
 #
-# In that case, the library defines :math:`\mathcal{A}` by its both extreme points : :math:`\underline{a}` and :math:`\underline{b}`.
+# In that case, the library defines :math:`\mathcal{A}` by its both extreme points : :math:`\vect{a}` and :math:`\vect{b}`.
 #
 # In the general case, :math:`\mathcal{A}` is a *Domain* object that is able to
 # check if it contains a given point in :math:`\mathbb{R}^d`.
 #
 # The library creates an *Event* object from the process :math:`X` and the
 # domain :math:`\mathcal{A}`. Then, it is possible to get a realization of the event
-# :math:`\mathcal{E}`, which is scalar :math:`1_{\mathcal{E}(X)}(\underline{x}_0, \dots, \underline{x}_{N-1})`
-# if :math:`(\underline{x}_0, \dots,\underline{x}_{N-1})` is a realization of :math:`X` on
+# :math:`\mathcal{E}`, which is scalar :math:`1_{\mathcal{E}(X)}(\vect{x}_0, \dots, \vect{x}_{N-1})`
+# if :math:`(\vect{x}_0, \dots,\vect{x}_{N-1})` is a realization of :math:`X` on
 # :math:`\mathcal{M}`.
 
 # %%

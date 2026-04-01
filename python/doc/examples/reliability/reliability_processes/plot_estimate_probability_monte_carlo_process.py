@@ -15,7 +15,7 @@ Estimate a process-based event probability
 #
 # .. math::
 #    \begin{aligned}
-#      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}}  \in \mathcal{A}  \right\}
+#      \displaystyle \mathcal{E}(X) = \bigcup_{\vect{t}\in \mathcal{M}}\left\{X_{\vect{t}}  \in \mathcal{A}  \right\}
 #    \end{aligned}
 #
 # where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
@@ -36,7 +36,7 @@ Estimate a process-based event probability
 #
 # .. math::
 #    \begin{aligned}
-#      \displaystyle \mathcal{E}(\varepsilon) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{\varepsilon_{t}  \in \mathcal{A}  \right\}
+#      \displaystyle \mathcal{E}(\varepsilon) = \bigcup_{\vect{t}\in \mathcal{M}}\left\{\varepsilon_{t}  \in \mathcal{A}  \right\}
 #    \end{aligned}
 #
 # For all time stamps :math:`t \in \mathcal{M}`, the probability :math:`p_1` that the process

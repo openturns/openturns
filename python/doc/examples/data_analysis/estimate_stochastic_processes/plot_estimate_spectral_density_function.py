@@ -11,8 +11,8 @@ Estimate a spectral density function
 # The following example illustrates the case where the available data is a
 # sample of :math:`10^3` realizations of the process, defined on the time grid
 # :math:`[0, 102.3]`, discretized every :math:`\Delta t = 0.1`. The spectral model of
-# the process is the Cauchy model parameterized by :math:`\underline{\lambda}=(5)`
-# and :math:`\underline{a}=(3)`.
+# the process is the Cauchy model parameterized by :math:`\vect{\lambda}=(5)`
+# and :math:`\vect{a}=(3)`.
 #
 # The figure draws the graph of the real spectral
 # model and its estimation from the sample of time series.
