@@ -20,28 +20,28 @@ Parameters
 ----------
 weightedExp : :class:`~openturns.WeightedExperiment`
     Experimental design used for the transformed input data.
-    By default the class :class:`~openturns.MonteCarloExperiment` is used.
-approxAlgoImpFact : ApproximationAlgorithmImplementationFactory
+    
+    By default, the class :class:`~openturns.MonteCarloExperiment` is used.
+approxAlgoImpFact : :class:`~openturns.ApproximationAlgorithmImplementationFactory`
     The factory that builds the desired :class:`~openturns.ApproximationAlgorithm`.
-    By default the class :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` is used.
+    
+    By default, the class :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` is used.
 measure : :class:`~openturns.Distribution`
-    Distribution :math:`\mu` with respect to which the basis is orthonormal.
+    The input distribution :math:`\mu_{\inputRV}`.
+    
     By default, the limit measure defined within the class
     :class:`~openturns.WeightedExperiment` is used.
 inputSample : 2-d sequence of float
-    The input random observations :math:`\left\{\vect{X}^{(1)}, ..., \vect{X}^{(n)}\right\}` 
-    where :math:`\vect{X}=(X_1, \dots, X_{n_X})^T` is the input of the physical
-    model, :math:`n_X` is the input dimension and :math:`n` is the sample size.
+    The input sample of size :math:`\sampleSize`.
 outputSample : 2-d sequence of float
-    The output random observations :math:`\left\{\vect{Y}^{(1)}, ..., \vect{Y}^{(n)}\right\}` 
-    where :math:`\vect{Y}=(Y_1, \dots, Y_{n_Y})^T` is the output of the physical
-    model, :math:`n_Y` is the output dimension and :math:`n` is the sample size.
+    The output sample of size :math:`\sampleSize`.
 weights : sequence of float
     Numerical point that are the weights associated to the input sample points
     such that the corresponding weighted experiment is a good approximation of
-    :math:`\mu`. If not precised, all weights are equals to 
-    :math:`\omega_i = \frac{1}{n}`, where :math:`n` is the size of the
-    sample.
+    :math:`\mu_{\inputRV}`.
+
+    By default, all weights are equal to
+    :math:`\omega_i = \frac{1}{\sampleSize}`.
 
 See also
 --------
@@ -49,31 +49,11 @@ FunctionalChaosAlgorithm, ProjectionStrategy, IntegrationStrategy
 
 Notes
 -----
-This class is not usable because it has sense only within the
-:class:`~openturns.FunctionalChaosAlgorithm` : the least squares strategy
-evaluates the coefficients :math:`(a_k)_{k \in K}` of the polynomials
-decomposition as follows:
+This class is used in the :ref:`functional chaos expansion context <functional_chaos>` implemented
+in the class :class:`~openturns.FunctionalChaosAlgorithm`. It is not usable outside this context.
 
-.. math::
-    
-    \vect{a} = \argmin_{\vect{b} \in \Rset^P} E_{\mu} \left[ \left( g \circ T^{-1}
-            (\vect{U}) - \vect{b}^{\intercal} \vect{\Psi}(\vect{U}) \right)^2 \right]
+The model is approximated by the meta model defined in :ref:`functional_chaos` by equation :eq:`metaModelPn`
+and the coefficients :math:`(a_k)_{k \in I_n}` are computed by solving the least squares problem defined in :ref:`functional_chaos` by equation :eq:`metaModeleF`.
 
-where :math:`\vect{U} = T(\vect{X})`.
-
-The mean expectation :math:`E_{\mu}` is approximated by a relation of type:
-
-.. math::
-    
-    E_{\mu} \left[ f(\vect{U}) \right] \approx \sum_{i \in I} \omega_i f(\Xi_i)
-
-where is a function :math:`L_1(\mu)` defined as:
-
-.. math::
-
-    f(\vect{U} = \left( g \circ T^{-1} (\vect{U}) - \vect{b}^{\intercal}
-                                 \vect{\Psi}(\vect{U}) \right)^2 
-
-In the approximation of the mean expectation, the set *I*, the points 
-:math:`(\Xi_i)_{i \in I}` and the weights :math:`(\omega_i)_{i \in I}` are
-evaluated from methods implemented in the :class:`~openturns.WeightedExperiment`.)RAW"
+Refer to :ref:`least_squares` for more details on the resolution of least-squares problem.
+)RAW"

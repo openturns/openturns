@@ -49,7 +49,7 @@ Orthonormalization algorithms
 Orthogonal univariate polynomial families
 -----------------------------------------
 
-Refer to :ref:`orthogonal_polynomials`.
+Refer to :ref:`orthonormal_polynomials`.
 
 .. autosummary::
     :toctree: _generated/

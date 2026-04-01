@@ -13,13 +13,11 @@ EnumerateFunction, LinearEnumerateFunction
 
 Notes
 -----
-One defines the infinity norm of a multi-index :math:`a` by:
+Enumeration functions are bijections from :math:`\Nset` to :math:`\Nset^{\inputDim}` (refer to :ref:`enumeration_strategy`).
 
-.. math::
-
-    \| \vect{\alpha} \|_{\infty} = \max_{i=1} \; \alpha_i
-
-This would lead to first select the basis polynomials depending on a specific subset of input variables.
+They can be used to enumerate a multivariate basis
+built as the tensorization of univariate basis, using the indexation of each marginal basis
+(refer to and :ref:`enumeration_multivariate_basis`).
 
 Examples
 --------

@@ -1,7 +1,7 @@
 %feature("docstring") OT::FunctionalChaosAlgorithm
 R"RAW(Functional chaos algorithm.
 
-Refer to :ref:`functional_chaos`, :ref:`least_squares`.
+Refer to :ref:`functional_chaos` to get more details on functional chaos expansion.
 
 Available constructors:
     FunctionalChaosAlgorithm(*inputSample, outputSample*)
@@ -42,22 +42,40 @@ FunctionalChaosResult
 
 Notes
 -----
-This class creates a functional chaos expansion or polynomial
-chaos expansion (PCE) based on an input and output
-sample of the physical model.
-More details on this type of surrogate models are presented in :ref:`functional_chaos`.
+This class creates a functional chaos expansion  based on an input and output
+sample of the model.
+
+Refer to :ref:`functional_chaos` to get more details on functional chaos expansion.
+
 Once the expansion is computed, the :class:`~openturns.FunctionalChaosRandomVector`
 class provides methods to get the mean and variance of the PCE.
-Moreover, the :class:`~openturns.FunctionalChaosSobolIndices` provides Sobol' indices
-of the PCE.
+Moreover, if the input distribution has independent marginals and if the domination method is not used,
+the :class:`~openturns.FunctionalChaosSobolIndices` provides Sobol' indices
+of the input components.
+
+In order to use the domination method, use the :meth:`setUseDomination` method. 
+
 
 **Default settings for the adaptive strategy**
 
-When the *adaptiveStrategy* is unspecified, the `FunctionalChaosAlgorithm-QNorm` parameter
-of the :class:`~openturns.ResourceMap` is used.
-If this parameter is equal to 1, then the :class:`~openturns.LinearEnumerateFunction` class
-is used.
-Otherwise, the :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` class is used.
+When the *adaptiveStrategy* is unspecified, the following :class:`~openturns.FixedStrategy` is selected as an
+:class:`~openturns.AdaptiveStrategy`.
+The associated basis is built as the tensorization of the univariate polynomials family
+orthonormal to the standard representative of the input marginals distribution (if not specified, the input 
+distribution is fitted on the input sample).
+The basis which is associated to the enumerate function is chosen according to
+the `FunctionalChaosAlgorithm-QNorm` parameter of the :class:`~openturns.ResourceMap`:
+
+- If this parameter is equal to 1, then the :class:`~openturns.LinearEnumerateFunction` class is used.
+- Otherwise, the :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` class is used.
+
+The first elements of the basis are used to build the approximation space. By default, the number of elements is
+defined by the keys `FunctionalChaosAlgorithm-BasisSize` and  `FunctionalChaosAlgorithm-TotalDegree`:
+
+- is the BasisSize is 0, then the number is computed from the total degree (using the enumerate function of the basis);
+- is the BasisSize is less than the input sample size, this value is used;
+- is the BasisSize is greater than the input sample size, the number is the input sample size.
+
 If the `FunctionalChaosAlgorithm-BasisSize` key of the :class:`~openturns.ResourceMap` is nonzero,
 then this parameter sets the basis size.
 Otherwise, the `FunctionalChaosAlgorithm-MaximumTotalDegree` key of the
@@ -279,8 +297,16 @@ projectionStrategy : :class:`~openturns.ProjectionStrategy`
 Parameters
 ----------
 useDomination : bool
-    Whether to use the domination method to map the input distribution to the basis measure.
-    Refer to :ref:`functional_chaos` for the approximation space basis choice.
+    Whether to use the domination method.
+
+Notes
+-----
+The domination method consists in using the basis defined in the argument *adaptiveStrategy* (or its default
+implementation if not specified). No
+isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
+the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
+(select class:`~openturns.LeastSquaresStrategy` for the *projectionStrategy*) and the Sobol' indices will not
+be computed.
 "
 
 // ---------------------------------------------------------------------
@@ -291,6 +317,14 @@ useDomination : bool
 Returns
 -------
 useDomination : bool
-    Whether to use the domination method to map the input distribution to the basis measure.
-    Refer to :ref:`functional_chaos` for the approximation space basis choice.
+    Whether the domination method is used.
+
+Notes
+-----
+The domination method consists in using the basis defined in the argument *adaptiveStrategy* (or its default
+implementation if not specified). No
+isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
+the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
+(select class:`~openturns.LeastSquaresStrategy` for the *projectionStrategy*) and the Sobol' indices will not
+be computed.
 "
