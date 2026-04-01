@@ -1,6 +1,6 @@
 """
-Advanced polynomial chaos construction
-======================================
+Use advanced features for PCE
+=============================
 """
 
 # %%

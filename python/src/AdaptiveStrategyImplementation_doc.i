@@ -26,7 +26,7 @@ There are two different strategies available:
 
 These strategies are conceived in such a way to be adapted for other orthogonal
 expansions (other than polynomial). For the moment, their implementation are
-only useful for the polynomial chaos expansion.)RAW"
+only useful for the functional chaos expansion.)RAW"
 %enddef
 %feature("docstring") OT::AdaptiveStrategyImplementation
 OT_AdaptiveStrategy_doc

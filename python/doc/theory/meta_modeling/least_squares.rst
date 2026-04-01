@@ -64,12 +64,12 @@ Then we search :math:`\widehat{\mat{A}}` that minimizes the objective function :
 
     \widehat{\mat{A}} = \argmin \cJ(\mat{A})
 
-Let the matrices :math:`\mat{Psi} \in \cM_{\sampleSize, N+1}` and :math:`\mat{Y}\in \cM_{\sampleSize, \outputDim}`
+Let the matrices :math:`\mat{\Psi} \in \cM_{\sampleSize, N+1}` and :math:`\mat{Y}\in \cM_{\sampleSize, \outputDim}`
 be defined by:
 
 .. math::
 
-    \mat{Psi} & = (\psi_j(\vect{x}^{(i)}))_{i,j}\\
+    \mat{\Psi} & = (\psi_j(\vect{x}^{(i)}))_{i,j}\\
     \mat{Y}    & = \Tr{(\vect{y}^{(1)} | \dots | \vect{y}^{(\sampleSize)})}
 
 Then :math:`\widehat{\mat{A}}` is solution of the linear system:
@@ -77,27 +77,27 @@ Then :math:`\widehat{\mat{A}}` is solution of the linear system:
 .. math::
     :label: pbLeastSquares
 
-    \Tr{\mat{Psi}}\mat{Psi}\widehat{\mat{A}} = \Tr{\mat{Psi}}\mat{Y}
+    \Tr{\mat{\Psi}}\mat{\Psi}\widehat{\mat{A}} = \Tr{\mat{\Psi}}\mat{Y}
 
 The library relies on the method *dgelsy* of LAPACK: refer to its documentation to get
 information on the resolution of :eq:`pbLeastSquares`, in particular when the problem is
 underdetermined (which means when :math:`\sampleSize < N`) or overdetermined
 (which means when :math:`\sampleSize > N`).
 
-The Gram matrix :math:` \Tr{\mat{Psi}}\mat{Psi}` can be
+The Gram matrix :math:`\Tr{\mat{\Psi}}\mat{\Psi}` can be
 ill-conditionned. Hence, the best method is not necessarily to invert the Gram matrix,
 because the solution may be particularly sensitive to rounding errors.
 The least-squares problem is rather solved using more robust numerical methods
 such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
-Particular case 1: The functional basis is composed of linear functions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Particular case 1: The functional basis is composed of polynomials with degree less or equal to 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In this particular case, the functional basis is defined by :math:`N = 1+\inputDim` linear functions:
 
 .. math::
 
-    \psi_0 & : \vect{x} \rightarrow 1\\
-    \psi_j & : \vect{x} \rightarrow x_j - b_j, \quad 1 \leq j \leq \inputDim
+    \psi_0 & : \vect{x} \mapsto 1\\
+    \psi_j & : \vect{x} \mapsto x_j - b_j, \quad 1 \leq j \leq \inputDim
 
 with :math:`\vect{b} \in \Rset^\inputDim` is the empirical mean vector of the experimental design, defined
 by:
@@ -126,15 +126,15 @@ More precisely, we have:
 The vector :math:`\vect{c} = \vect{a}_0 \in \Rset^\outputDim` is the first line of  :math:`\mat{A}` defined in
 :eq:`defAPsi`.
 
-Particular case 2: The functional basis is composed of quadratic functions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Particular case 2: The functional basis is composed of of polynomials with degree less or equal to 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In this particular case, the functional basis is defined by :math:`N = 1+2\inputDim +\dfrac{d(d-1)}{2}` polynomials functions of maximal degree 2:
 
 .. math::
 
-    \psi_0 & : \vect{x} \rightarrow 1\\
-    \psi_k & : \vect{x} \rightarrow (x_k - b_k)\quad for 1 \leq k \leq \inputDim\\
-    \psi_{ij} & : \vect{x} \rightarrow (x_i - b_i)(x_j - b_j), \quad 1 \leq i < j \leq \inputDim
+    \psi_0 & : \vect{x} \mapsto 1\\
+    \psi_k & : \vect{x} \mapsto (x_k - b_k)\quad for 1 \leq k \leq \inputDim\\
+    \psi_{ij} & : \vect{x} \mapsto (x_i - b_i)(x_j - b_j), \quad 1 \leq i < j \leq \inputDim
 
 where :math:`\vect{b}` is still defined by :eq:`defCenter`. The coefficients are denoted as follows:
 
@@ -148,7 +148,7 @@ The resulting meta model can be written as:
 .. math::
     :label: QuadraticLeastSquaresMMOpenTURNS
 
-    \metaModel(\vect{x})  = \vect{c} + \vect{x} \mapsto \Tr{\mat{L}} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}\tens{M} ( \vect{x} - \vect{b} )
+    \metaModel(\vect{x})  = \vect{c} + \vect{x} \Tr{\mat{L}} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}\tens{M} ( \vect{x} - \vect{b} )
 
 where:
 
