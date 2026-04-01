@@ -143,10 +143,10 @@ public:
   Graph draw1D() const;
   Graph draw2D() const;
   Graph draw3D(const Bool drawEdge = true,
-               const Scalar thetaX = 0.0,
-               const Scalar thetaY = 0.0,
-               const Scalar thetaZ = 0.0,
-               const Bool shading = false,
+               const Scalar thetaX = ResourceMap::GetAsScalar("Mesh-DefaultThetaX"),
+               const Scalar thetaY = ResourceMap::GetAsScalar("Mesh-DefaultThetaY"),
+               const Scalar thetaZ = ResourceMap::GetAsScalar("Mesh-DefaultThetaZ"),
+               const Bool shading = true,
                const Scalar rho = 1.0) const;
   Graph draw3D(const Bool drawEdge,
                const SquareMatrix & rotation,

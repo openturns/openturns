@@ -751,10 +751,27 @@ Graph Mesh::draw3D(const Bool drawEdge,
   checkValidity();
   // First, check if the matrix is a rotation matrix of R^3
   if (rotation.getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: the matrix is not a 3d square matrix.";
-  if (!(Point((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() <= 1e-5)) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
+  if (!(Point((rotation.computeGram() - IdentityMatrix(3)).getImplementation()).norm() <= std::sqrt(SpecFunc::Precision))) throw InvalidArgumentException(HERE) << "Error: the matrix is not an orthogonal matrix.";
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
+  // Get the colors, to see if one alpha channel has been activated
+  String faceColor(ResourceMap::GetAsString("Mesh-FaceColor"));
+  const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(faceColor)));
+  const Scalar redFace = faceRGBA[0] / 255.0;
+  const Scalar greenFace = faceRGBA[1] / 255.0;
+  const Scalar blueFace = faceRGBA[2] / 255.0;
+  const Scalar alphaFace = faceRGBA[3] / 255.0;
+
+  String edgeColor(ResourceMap::GetAsString("Mesh-EdgeColor"));
+  const Indices edgeRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(edgeColor)));
+  const Scalar redEdge = edgeRGBA[0] / 255.0;
+  const Scalar greenEdge = edgeRGBA[1] / 255.0;
+  const Scalar blueEdge = edgeRGBA[2] / 255.0;
+  const Scalar alphaEdge = edgeRGBA[3] / 255.0;
+
+  const Bool hasTransparency = (faceRGBA[3] < 255) || (drawEdge && (edgeRGBA[3] < 255));
+
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
   const Bool noRotation = rotation.isDiagonal();
@@ -776,7 +793,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
   } // Loop over simplices
   IndicesCollection verticesToSimplices(mapVerticesToSimplices);
-  const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling");
+  const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling") && (!hasTransparency);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const UnsignedInteger i0 = simplices_(i, 0);
@@ -856,30 +873,22 @@ Graph Mesh::draw3D(const Bool drawEdge,
   const Scalar kAmbient = ResourceMap::GetAsScalar("Mesh-AmbientFactor");
   const Scalar shininess = ResourceMap::GetAsScalar("Mesh-Shininess");
 
-  const Scalar redAmbient = 1.0;
-  const Scalar greenAmbient = 1.0;
-  const Scalar blueAmbient = 0.0;
+  const Indices ambientRGB(Drawable::ConvertToRGB(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-AmbientColor"))));
+  const Scalar redAmbient = ambientRGB[0] / 255.0;
+  const Scalar greenAmbient = ambientRGB[1] / 255.0;
+  const Scalar blueAmbient = ambientRGB[2] / 255.0;
+
   Point Iambient(3);
   Iambient[0] = kAmbient * redAmbient;
   Iambient[1] = kAmbient * greenAmbient;
   Iambient[2] = kAmbient * blueAmbient;
 
-  const Scalar redFace = 0.0;
-  const Scalar greenFace = 0.0;
-  const Scalar blueFace = 1.0;
+  const Indices lightRGB(Drawable::ConvertToRGB(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-LightColor"))));
+  const Scalar redLight = lightRGB[0] / 255.0;
+  const Scalar greenLight = lightRGB[1] / 255.0;
+  const Scalar blueLight = lightRGB[2] / 255.0;
 
-  const Scalar redEdge = 1.0;
-  const Scalar greenEdge = 0.0;
-  const Scalar blueEdge = 0.0;
-
-  const Scalar redLight = 1.0;
-  const Scalar greenLight = 1.0;
-  const Scalar blueLight = 1.0;
   Point Ilight(3);
-
-  // Will be modified if shading == true
-  String faceColor = Drawable::ConvertFromRGB(redFace, greenFace, blueFace);
-  String edgeColor = Drawable::ConvertFromRGB(redEdge, greenEdge, blueEdge);
 
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
   {
@@ -939,8 +948,17 @@ Graph Mesh::draw3D(const Bool drawEdge,
       Ilight[1] = Ispecular * greenLight;
       Ilight[2] = Ispecular * blueLight;
       // Face color using Phong model
-      faceColor = Drawable::ConvertFromRGB(Iambient[0] + Idiffuse * redFace + Ilight[0], Iambient[1] + Idiffuse * greenFace + Ilight[1], Iambient[2] + Idiffuse * blueFace + Ilight[2]);
-      edgeColor = Drawable::ConvertFromRGB(Iambient[0] + Idiffuse * redEdge + Ilight[0], Iambient[1] + Idiffuse * greenEdge + Ilight[1], Iambient[2] + Idiffuse * blueEdge + Ilight[2]);
+      const Scalar finalFaceRed   = Iambient[0] + Idiffuse * redFace + Ilight[0];
+      const Scalar finalFaceGreen = Iambient[1] + Idiffuse * greenFace + Ilight[1];
+      const Scalar finalFaceBlue  = Iambient[2] + Idiffuse * blueFace + Ilight[2];
+      if (drawEdge)
+	{
+	  const Scalar finalEdgeRed   = Iambient[0] + Idiffuse * redEdge + Ilight[0];
+	  const Scalar finalEdgeGreen = Iambient[1] + Idiffuse * greenEdge + Ilight[1];
+	  const Scalar finalEdgeBlue  = Iambient[2] + Idiffuse * blueEdge + Ilight[2];
+	  edgeColor = Drawable::ConvertFromRGBA(finalEdgeRed, finalEdgeGreen, finalEdgeBlue, alphaEdge);
+	}
+      faceColor = Drawable::ConvertFromRGBA(finalFaceRed, finalFaceGreen, finalFaceBlue, alphaFace);
     } // shading
     if (drawEdge)
     {

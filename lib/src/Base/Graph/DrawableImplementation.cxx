@@ -875,7 +875,7 @@ Description DrawableImplementation::GetValidNorms()
 }
 
 
-/* Convert a color name to  a valid hexadecimal code */
+/* Convert a color name to a valid hexadecimal code */
 String DrawableImplementation::ConvertFromName(const String & name)
 {
   if (IsValidColorName(name)) return ColorCodes[name];

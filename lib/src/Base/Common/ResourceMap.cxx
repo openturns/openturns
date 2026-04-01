@@ -1111,13 +1111,20 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);
+  addAsBool("Mesh-CheckValidity", false);
   addAsScalar("Mesh-AmbientFactor", 0.1);
   addAsScalar("Mesh-DiffuseFactor", 0.7);
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-DefaultThetaX", 0.3);
+  addAsScalar("Mesh-DefaultThetaY", 0.3);
+  addAsScalar("Mesh-DefaultThetaZ", 0.3);
+  addAsString("Mesh-AmbientColor", "white");
+  addAsString("Mesh-EdgeColor", "#FF7F0E88");
+  addAsString("Mesh-FaceColor", "#1F77B488");
+  addAsString("Mesh-LightColor", "white");
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
-  addAsBool("Mesh-CheckValidity", false);
 
   // BoundingVolumeHierarchy parameters
   addAsString("BoundingVolumeHierarchy-Strategy", "Mean");
