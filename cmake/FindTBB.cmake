@@ -32,6 +32,7 @@ find_path (TBB_INCLUDE_DIR NAMES tbb/tbb.h DOC "TBB include directory")
 set (TBB_INCLUDE_DIRS ${TBB_INCLUDE_DIR})
 
 # version
+unset (_VERSION_FILE)
 if (EXISTS ${TBB_INCLUDE_DIR}/oneapi/tbb/version.h)
   set (_VERSION_FILE ${TBB_INCLUDE_DIR}/oneapi/tbb/version.h)
 elseif (EXISTS ${TBB_INCLUDE_DIR}/tbb/tbb_stddef.h)
