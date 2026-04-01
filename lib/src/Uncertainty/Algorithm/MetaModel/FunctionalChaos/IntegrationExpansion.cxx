@@ -27,6 +27,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/FixedStrategy.hxx"
+#include "openturns/IntegrationStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -88,7 +90,7 @@ IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
     const Distribution & distribution,
     const OrthogonalBasis & basis,
     const UnsignedInteger basisSize)
-  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
+  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution, FixedStrategy(basis, basisSize), IntegrationStrategy())
   , basis_(basis)
   , basisSize_(basisSize)
 {
@@ -117,6 +119,7 @@ void IntegrationExpansion::run()
   {
     const Distribution measure(basis_.getMeasure());
     Sample transformedInputSample;
+    LOGINFO("Build transformation");
     if (distribution_ == measure)
     {
       transformation_ = IdentityFunction(distribution_.getDimension());
@@ -130,6 +133,7 @@ void IntegrationExpansion::run()
       transformedInputSample = transformation_(inputSample_);
     }
     FunctionCollection functions(basisSize_);
+    LOGINFO("Build basis");
     for (UnsignedInteger i = 0; i < basisSize_; ++i)
       functions[i] = basis_.build(i);
     designProxy_ = DesignProxy(transformedInputSample, functions);
@@ -157,6 +161,7 @@ void IntegrationExpansion::run()
   // As they will be used as a Sample of size activeFunctions_.getSize() and
   // dimension outputDimension, it is better to compute them in a transposed
   // form and copy the internal representation
+  LOGINFO(OSS() << "Compute all the coefficients");
   Matrix coefficientsAsMatrix(weightedOutput * designMatrix);
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
   coefficients.setData(*coefficientsAsMatrix.getImplementation());

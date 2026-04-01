@@ -29,6 +29,8 @@
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/FixedStrategy.hxx"
+#include "openturns/LeastSquaresStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -94,7 +96,7 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
     const OrthogonalBasis & basis,
     const UnsignedInteger basisSize,
     const String & methodName)
-  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
+  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution, FixedStrategy(basis, basisSize), LeastSquaresStrategy())
   , basis_(basis)
   , basisSize_(basisSize)
   , methodName_(methodName)
@@ -124,6 +126,7 @@ void LeastSquaresExpansion::run()
   {
     const Distribution measure(basis_.getMeasure());
     Sample transformedInputSample;
+    LOGINFO("Build transformation");
     if (distribution_ == measure)
     {
       transformation_ = IdentityFunction(distribution_.getDimension());
@@ -137,6 +140,7 @@ void LeastSquaresExpansion::run()
       transformedInputSample = transformation_(inputSample_);
     }
     FunctionCollection functions(basisSize_);
+    LOGINFO("Build basis");
     for (UnsignedInteger i = 0; i < basisSize_; ++i)
       functions[i] = basis_.build(i);
     designProxy_ = DesignProxy(transformedInputSample, functions);
@@ -147,8 +151,10 @@ void LeastSquaresExpansion::run()
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++j)
   {
+    LOGINFO(OSS() << "Work on output marginal j=" << j);
     const Sample marginalOutputSample(outputSample_.getMarginal(j));
     const Point rhs(marginalOutputSample.asPoint());
+    LOGINFO(OSS() << "Solve problem using method=" << leastSquaresMethod);
     const Point coeffsJ(leastSquaresMethod.solve(rhs));
     for (UnsignedInteger i = 0; i < activeFunctions_.getSize(); ++i)
       coefficients(i, j) = coeffsJ[i];
