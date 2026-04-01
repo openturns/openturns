@@ -63,8 +63,8 @@ Latin Hypercube Simulation
   .. math::
 
      \begin{aligned}
-         \mu_\sampleSize &=& \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \mathbf{1}_{\{\model(\underline{x}_i)) \leq 0 \}}\\
-         \sigma_\sampleSize^2 &=& \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize (\mathbf{1}_{\{\model(\underline{x}^i)) \leq 0 \}} - \mu_\sampleSize)^2
+         \mu_\sampleSize &=& \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \mathbf{1}_{\{\model(\vect{x}_i)) \leq 0 \}}\\
+         \sigma_\sampleSize^2 &=& \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize (\mathbf{1}_{\{\model(\vect{x}^i)) \leq 0 \}} - \mu_\sampleSize)^2
        \end{aligned}
 
 the asymptotic confidence interval of order :math:`1-\alpha` associated
