@@ -138,20 +138,30 @@ public:
                       SquareMatrix & simplexMatrix);
 #endif
 
+  /** Create a rotation matrix from three Euler angles */
+  static SquareMatrix BuildRotationFromAngles(const Scalar thetaX = ResourceMap::GetAsScalar("Mesh-DefaultThetaX"),
+					      const Scalar thetaY = ResourceMap::GetAsScalar("Mesh-DefaultThetaY"),
+					      const Scalar thetaZ = ResourceMap::GetAsScalar("Mesh-DefaultThetaZ"));
+
   /** Drawing method */
   Graph draw() const;
   Graph draw1D() const;
   Graph draw2D() const;
   Graph draw3D(const Bool drawEdge = true,
-               const Scalar thetaX = 0.0,
-               const Scalar thetaY = 0.0,
-               const Scalar thetaZ = 0.0,
-               const Bool shading = false,
+               const Scalar thetaX = ResourceMap::GetAsScalar("Mesh-DefaultThetaX"),
+               const Scalar thetaY = ResourceMap::GetAsScalar("Mesh-DefaultThetaY"),
+               const Scalar thetaZ = ResourceMap::GetAsScalar("Mesh-DefaultThetaZ"),
+               const Bool shading = true,
                const Scalar rho = 1.0) const;
   Graph draw3D(const Bool drawEdge,
                const SquareMatrix & rotation,
                const Bool shading,
                const Scalar rho) const;
+  Graph draw3D(const Bool drawEdge,
+               const SquareMatrix & rotation,
+               const Bool shading,
+               const Scalar rho,
+	       const Description & colors) const;
 
   /** String converter */
   String __repr__() const override;
