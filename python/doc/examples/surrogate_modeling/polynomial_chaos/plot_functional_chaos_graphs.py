@@ -1,6 +1,6 @@
 """
-Polynomial chaos graphs
-=======================
+Visualize orthonormal polynomials basis
+=======================================
 """
 
 # %%

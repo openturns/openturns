@@ -1,12 +1,12 @@
-.. _polynomial_sparse_least_squares:
+.. _sparse_least_squares:
 
-Sparse least squares metamodel
-------------------------------
+Sparse least squares meta model
+-------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-The response of a model may be globally
+A model may be globally
 approximated by its projection onto a truncated functional basis.
 A special case of this framework is the basis of multivariate
 polynomials, but the method presented below is not limited
@@ -36,8 +36,8 @@ Context
 ~~~~~~~
 
 Consider the mathematical model :math:`h` of a physical system depending
-on :math:`n_X` input parameters
-:math:`\vect{x} = (x_{1},\dots,x_{n_X})^{\textsf{T}}`. Note that
+on :math:`\inputDim` input parameters
+:math:`\vect{x} = (x_{1},\dots,x_{\inputDim})^{\textsf{T}}`. Note that
 these input variables are assumed to be deterministic in this section.
 The model response may be approximated by a finite number of coefficients as follows:
 
@@ -46,7 +46,7 @@ The model response may be approximated by a finite number of coefficients as fol
 
     h(\vect{x}) \, \, \approx \, \, \widetilde{h}(\vect{x}) \, \, = \, \, \sum_{j=0}^{P-1} \; a_{j} \; \psi_{j}(\vect{x})
 
-where :math:`\{\psi_{j} : \Rset^{n_X} \rightarrow \Rset\}_{j = 0, ..., P - 1}` is a multivariate
+where :math:`\{\psi_{j} : \Rset^{\inputDim} \rightarrow \Rset\}_{j = 0, ..., P - 1}` is a multivariate
 functional basis.
 Let us consider a set of values taken by the input vector (i.e. an
 experimental design)

@@ -1,6 +1,6 @@
 """
-Pitfalls in  polynomial chaos expansion due to the input distribution
-=====================================================================
+See pitfalls due to the input distribution
+==========================================
 """
 
 # %%

@@ -1,6 +1,6 @@
 """
-Create a polynomial chaos for the Ishigami function: a quick start guide to polynomial chaos
-============================================================================================
+Quick start:  the Ishigami function
+===================================
 """
 
 # %%

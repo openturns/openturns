@@ -11,6 +11,7 @@ Numerical methods
     sphere_sampling
     optimization_algorithm
     least_squares_resolution
+    enumeration_strategy
 
 Isoprobabilistic transformation
 -------------------------------
