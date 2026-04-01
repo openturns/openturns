@@ -123,6 +123,8 @@ where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)\in \cS_{\output
 
 The likelihood of the Gaussian process on the data set is defined by:
 
+.. _logLikelihoodGP:
+
 .. math::
     :label: logLikelihoodGPgen
 
