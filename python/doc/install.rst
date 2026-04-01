@@ -147,6 +147,12 @@ Install the C++ library from `vcpkg.io <https://vcpkg.io/en/package/openturns>`_
 
     vcpkg install openturns
 
+Spack
+-----
+Install the library with `Spack package manager <https://spack.io/>`_::
+
+    spack install openturns
+
 Development version
 ===================
 
