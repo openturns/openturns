@@ -319,7 +319,10 @@ Mesh BoundaryMesher::build(const Mesh & mesh,
     TBBImplementation::ParallelFor(0, boundaryFaces.getSize(), policy);
   } // offset != 0
   // Return the boundary mesh
-  return Mesh(boundaryVertices, boundarySimplices, false);
+  Mesh boundary(boundaryVertices, boundarySimplices, false);
+  boundary.setName(mesh.getName() + " boundary");
+  boundary.setDescription(mesh.getDescription());
+  return boundary;
 }
 
 END_NAMESPACE_OPENTURNS
