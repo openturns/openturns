@@ -27,7 +27,7 @@ checkMeshValidity : bool, optional
     The validity check consists in looking for non-overlapping
     simplices, no unused vertex, no simplices with duplicate vertices and
     no coincident vertices.
-    Default value is set to false in resource map key `Mesh-CheckValidity`
+    Default value is given by 'Mesh-CheckValidity' in :class:`~openturns.ResourceMap`.
 
 
 See also
@@ -249,7 +249,7 @@ Examples
 R"RAW(Draw the bidimensional projection of the mesh.
 
 Available usages:
-    draw3D(*drawEdge=True, thetaX=0.0, thetaY=0.0, thetaZ=0.0, shading=False, rho=1.0*)
+    draw3D(*drawEdge=True, thetaX, thetaY, thetaZ, shading=False, rho=1.0*)
 
     draw3D(*drawEdge, rotation, shading, rho*)
 
@@ -259,10 +259,13 @@ drawEdge : bool
     Tells if the edge of each simplex has to be drawn.
 thetaX : float
     Gives the value of the rotation along the X axis in radian.
+    Default value is given by 'Mesh-DefaultThetaX' in :class:`~openturns.ResourceMap`.
 thetaY : float
     Gives the value of the rotation along the Y axis in radian.
+    Default value is given by 'Mesh-DefaultThetaY' in :class:`~openturns.ResourceMap`.
 thetaZ : float
     Gives the value of the rotation along the Z axis in radian.
+    Default value is given by 'Mesh-DefaultThetaZ' in :class:`~openturns.ResourceMap`.
 rotation : :class:`~openturns.SquareMatrix`
     Operates a rotation on the mesh before its projection of the plane of the
     two first components.
@@ -279,6 +282,20 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
     Draws the bidimensional projection of the mesh on the :math:`(x,y)` plane.
+
+Notes
+-----
+The shading is done using Phong reflection model, controlled by the following keys in :class:`~openturns.ResourceMap`:
+
+    - 'Mesh-AmbientFactor' to control the amount of ambient light color to add to the faces/edges
+    - 'Mesh-DiffuseFactor' to control the amount of diffuse light color to add to the faces/edges
+    - 'Mesh-Shininess' to control the size of the specular spot of the light
+    - 'Mesh-SpecularFactor' to control the amount of specular light color to add to the faces/edges
+    - 'Mesh-AmbientColor' to define the ambient color as a name or an RGB hexadecimal code
+    - 'Mesh-EdgeColor' to define the edge color as a name or an RGBA hexadecimal code
+    - 'Mesh-FaceColor' to define the face color as a name or an RGBA hexadecimal code
+    - 'Mesh-LightColor' to define the ambient color as a name or an RGB hexadecimal code
+
 
 Examples
 --------

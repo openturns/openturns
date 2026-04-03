@@ -391,7 +391,7 @@ Indices Drawable::ConvertToRGBA(const String & key)
   return DrawableImplementation::ConvertToRGBA(key);
 }
 
-/* Convert an RGB triplet to a valid hexadecimal code */
+/* Convert a color name to a valid hexadecimal code */
 String Drawable::ConvertFromName(const String & name)
 {
   return DrawableImplementation::ConvertFromName(name);
