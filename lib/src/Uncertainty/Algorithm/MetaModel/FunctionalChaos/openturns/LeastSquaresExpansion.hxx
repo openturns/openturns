@@ -1,4 +1,4 @@
-//                                               -*- C++ -*-
+/*                                               -*- C++ -*-
 /**
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.
@@ -69,6 +69,23 @@ public:
                         const Distribution & distribution,
                         const OrthogonalBasis & basis,
                         const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"),
+                        const String & methodName = ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
+
+  /** New constructor: explicit index selection (without weights) */
+  LeastSquaresExpansion(const Sample & inputSample,
+                        const Sample & outputSample,
+                        const Distribution & distribution,
+                        const OrthogonalBasis & basis,
+                        const Indices & activeFunctions,
+                        const String & methodName = ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
+
+  /** New constructor: explicit index selection (without weights) */
+  LeastSquaresExpansion(const Sample & inputSample,
+                        const Point & weights,
+                        const Sample & outputSample,
+                        const Distribution & distribution,
+                        const OrthogonalBasis & basis,
+                        const Indices & activeFunctions,
                         const String & methodName = ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
 
   /** Virtual constructor */
