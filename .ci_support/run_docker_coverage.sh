@@ -13,7 +13,6 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_LINKER_TYPE=MOLD \
       -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage" \
       -DSWIG_COMPILE_FLAGS="-O1" \
-      -DBLA_VENDOR=Generic \
       -DUSE_HMAT=ON \
       -B build /io
 cd build
