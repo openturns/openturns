@@ -34,3 +34,30 @@ for useDomination in [False, True]:
     print(f"{useDomination=} {r2Score=:.6f}")
     r2[useDomination] = r2Score
 assert r2[True] > r2[False]
+
+# hot start test
+f = ot.SymbolicFunction(["x", "y"], ["sin(x+y)"])
+d = ot.ClaytonCopula(1.5)
+size = 1000
+inL = d.getSample(size)
+outL = f(inL)
+inT = d.getSample(size)
+outT = f(inT)
+#
+algo = ot.LeastSquaresExpansion(inL, outL, d)
+algo.setUseDomination(False)
+algo.run()
+validation = ot.MetaModelValidation(algo.getResult().getMetaModel()(inT), outT)
+print(f"No domination, R2={validation.computeR2Score()[0]}")
+algo.setUseDomination(True)
+algo.run()
+validation = ot.MetaModelValidation(algo.getResult().getMetaModel()(inT), outT)
+r2_hot = validation.computeR2Score()[0]
+print(f"Domination after first run, R2={r2_hot}")
+algo = ot.LeastSquaresExpansion(inL, outL, d)
+algo.setUseDomination(True)
+algo.run()
+validation = ot.MetaModelValidation(algo.getResult().getMetaModel()(inT), outT)
+r2_cold = validation.computeR2Score()[0]
+print(f"Domination from scratch, R2={r2_cold}")
+assert r2_hot == r2_cold

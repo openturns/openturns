@@ -362,6 +362,10 @@ void FunctionalChaosAlgorithm::run()
       }
     } // Loop over the marginal indices
   } // Loop over the output dimension
+
+  // reset sample between runs because of the domination flag
+  projectionStrategy_.setInputSample(initialInputSample);
+
   // At this point, the map contains all the associations (index, vector coefficient). It remains to present these data into the proper form and to build the associated partial basis
   std::map<UnsignedInteger, Point>::iterator iter;
   // Full set of indices
@@ -430,7 +434,11 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
 /* Domination flag accessor */
 void FunctionalChaosAlgorithm::setUseDomination(const Bool useDomination)
 {
-  useDomination_ = useDomination;
+  if (useDomination != useDomination_)
+  {
+    useDomination_ = useDomination;
+    projectionStrategy_.getImplementation()->proxy_ = DesignProxy();
+  }
 }
 
 Bool FunctionalChaosAlgorithm::getUseDomination() const

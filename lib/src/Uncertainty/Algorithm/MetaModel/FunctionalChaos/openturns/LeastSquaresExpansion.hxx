@@ -93,6 +93,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Domination flag accessor */
+  void setUseDomination(const Bool useDomination) override;
 private:
 
   /** The orthogonal basis used for the projection */

@@ -115,7 +115,7 @@ public:
   AdaptiveStrategy getAdaptiveStrategy() const;
 
   /** Domination flag accessor */
-  void setUseDomination(const Bool useDomination);
+  virtual void setUseDomination(const Bool useDomination);
   Bool getUseDomination() const;
 
   /** Computes the functional chaos */

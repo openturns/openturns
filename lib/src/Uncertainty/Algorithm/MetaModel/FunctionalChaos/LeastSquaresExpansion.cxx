@@ -158,6 +158,16 @@ void LeastSquaresExpansion::run()
   result_.setUseDomination(useDomination_);
 }
 
+/* Domination flag accessor */
+void LeastSquaresExpansion::setUseDomination(const Bool useDomination)
+{
+  if (useDomination != useDomination_)
+  {
+    designProxy_ = DesignProxy();
+  }
+  FunctionalChaosAlgorithm::setUseDomination(useDomination);
+}
+
 /* Method to get/set the active functions */
 Indices LeastSquaresExpansion::getActiveFunctions() const
 {
