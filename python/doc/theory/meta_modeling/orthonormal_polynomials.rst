@@ -1,7 +1,7 @@
-.. _orthogonal_polynomials:
+.. _orthonormal_polynomials:
 
-Orthogonal polynomials
-----------------------
+Orthonormal polynomials
+-----------------------
 
 This page provides mathematical details on sequences of
 orthogonal polynomials. Some of these sequences will be used to
@@ -57,8 +57,8 @@ relating any three consecutive polynomials as follows:
 
     P_{n+1}\ =\ (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}
 
-Orthogonormal polynomials with respect to usual probability distributions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Orthonormal polynomials with respect to usual probability distributions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Below is a table showing an example of particular (normalized)
 orthogonal polynomials associated with *continuous* weight functions.
@@ -117,18 +117,19 @@ polynomials.
 | Negative Binomial :math:`\cN \cB(m,p)` | :math:`\Nset`           | Meixner                          | :class:`~openturns.MeixnerFactory`    |
 +----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
 
-Orthogonal polynomials with respect to arbitrary probability distributions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Orthonormal polynomials with respect to arbitrary probability distributions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is also possible to generate a family of orthonormal polynomials
 with respect to an arbitrary probability distribution :math:`w(x)`.
 The *Gram-Schmidt* algorithm can be used to this end. Note
 that this algorithm gives a constructive proof of the existence of
 orthonormal bases.
-However it is known to be numerically unstable, so alternative
-procedures are often used in practice. The available orthonormalization
-algorithm is the *Stieltjes* algorithm.
 
+However it is known to be numerically unstable, so alternative
+procedures are often used in practice.
+For all arbitrary distributions, the three-term recurrence is computed (see :class:`~openturns.AdaptiveStieltjesAlgorithm`)
+and used to build its orthonormal polynomial family (see :class:`~openturns.StandardDistributionPolynomialFactory`).
 
 .. topic:: API:
 

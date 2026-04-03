@@ -62,6 +62,8 @@ String FieldFunctionalChaosSobolIndices::__repr__() const
 
 void FieldFunctionalChaosSobolIndices::setResult(const FieldFunctionalChaosResult & result)
 {
+  if (result.getFCEResult().getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosSobolIndices is not available with domination method";
   result_ = result;
 
   cumulatedInputSizes_.clear();
