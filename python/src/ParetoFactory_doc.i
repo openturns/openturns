@@ -6,116 +6,218 @@ Notes
 -----
 Several estimators to build a Pareto distribution from a scalar sample
 are proposed. The default strategy is to use the least squares estimator.
+We make the assumption that :math:`(x_1, \dots, x_{\sampleSize})` is an i.i.d. sample
+from the Pareto random variable where :math:`\sampleSize` is the sample size.
 
 **Moments based estimator:**
 
-Lets denote:
-
-- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical mean of the sample, 
-- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2` its empirical variance,
-- :math:`\displaystyle skew_n` the empirical skewness of the sample
-
-The estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of
-:math:`(\beta, \alpha, \gamma)` is defined as follows :
-
-The parameter :math:`\hat{\alpha}_n` is solution of the equation: 
-
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-        skew_n & =  & \dfrac{ 2(1+\hat{\alpha}_n) }{ \hat{\alpha}_n-3 } \sqrt{ \dfrac{ \hat{\alpha}_n-2 }{ \hat{\alpha}_n } } 
-    \end{eqnarray*}
-
-There exists a symbolic solution. If :math:`\hat{\alpha}_n >3`, then we get :math:`(\hat{\beta}_n, \hat{\gamma}_n)` as follows: 
-
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-       \hat{\beta}_n & = & (\hat{\alpha}_n-1) \sqrt{\dfrac{\hat{\alpha}_n-2}{\hat{\alpha}_n}}s_n \\
-       \hat{\gamma}_n & = & \overline{x}_n - \dfrac{\hat{\alpha}_n}{\hat{\alpha}_n+1} \hat{\beta}_n
-    \end{eqnarray*}
-
-
-**Maximum likelihood based estimator:**
-
-The likelihood of the sample is defined by:
+Let us define the sample statistics required for the estimation.
+The empirical mean :math:`\overline{x}` is calculated as:
 
 .. math::
 
-    \ell(\alpha, \beta, \gamma|  x_1, \dots, x_n) = n\log \alpha + n\alpha \log \beta - (\alpha+1) \sum_{i=1}^n \log(x_i-\gamma)
+    \overline{x} = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize x_i
 
-
-The maximum likelihood based estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of :math:`(\beta, \alpha, \gamma)` maximizes the likelihood:
-
-.. math::
-
-    (\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n) = \argmax_{\alpha, \beta, \gamma} \ell(\alpha, \beta, \gamma|  x_1, \dots, x_n)
-
-The following strategy is to be implemented soon: 
-For a given :math:`\gamma`, the likelihood of the sample is defined by:
+The associated empirical standard deviation :math:`s` is:
 
 .. math::
 
-    \ell(\alpha(\gamma), \beta(\gamma)|  x_1, \dots, x_n, \gamma) = n\log \alpha(\gamma) + n\alpha(\gamma) \log \beta(\gamma) - (\alpha(\gamma)+1) \sum_{i=1}^n \log(x_i-\gamma)
+    s = \sqrt{\frac{1}{\sampleSize - 1} \sum_{i=1}^\sampleSize (x_i - \overline{x})^2}.
 
-We get :math:`(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma))` which maximizes :math:`\ell(\alpha, \beta|  x_1, \dots, x_n, \gamma)` :
+Finally, the distribution of the sample is characterized by its empirical
+skewness, denoted as :math:`\widehat{\text{skew}}`.
 
-.. math::
-
-    (\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma)) = \argmax_{\alpha, \beta}   \ell(\alpha(\gamma), \beta(\gamma)|  x_1, \dots, x_n, \gamma) \text{ under the constraint } \gamma + \hat{\beta}_n(\gamma) \leq x_{(1,n)}
-
-We get:
-
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-        \hat{\beta}_n( \gamma) & = & x_{(1,n)} - \gamma \\
-         \hat{\alpha}_n( \gamma) & = & \dfrac{n}{\sum_{i=1}^n \log\left( \dfrac{x_i - \gamma}{\hat{\beta}_n( \gamma)}\right)}
-    \end{eqnarray*}
-
-
-Then the parameter :math:`\gamma` is obtained by maximizing the likelihood :math:`\ell(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma), \gamma)`:
+The estimator :math:`\left(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma}\right)` of
+:math:`(\beta, \alpha, \gamma)` is defined as follows.
+The parameter :math:`\widehat{\alpha}` is solution of the equation:
 
 .. math::
 
-    \hat{\gamma}_n = \argmax_{\gamma}  \ell(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma), \gamma)
+    \widehat{\text{skew}} 
+    =  \dfrac{ 2(1 + \widehat{\alpha}) }{ \widehat{\alpha} - 3 } \sqrt{ \dfrac{ \widehat{\alpha} - 2 }{ \widehat{\alpha} } }.
 
-The initial point of the optimisation problem is :math:`\gamma_0 = x_{(1,n)} - |x_{(1,n)}|/(2+n)`.
+The previous nonlinear equation is solved using a numerical method.
+If :math:`\widehat{\alpha} \leq 3`, then an exception is raised.
+If :math:`\widehat{\alpha} > 3`, then we compute
+:math:`(\widehat{\beta}, \widehat{\gamma})` as follows:
 
+.. math::
+
+    \widehat{\beta}
+    & = s (\widehat{\alpha} - 1) \sqrt{\dfrac{\widehat{\alpha} - 2}{\widehat{\alpha}}}, \\
+    \widehat{\gamma}
+    & = \overline{x} - \dfrac{\widehat{\alpha} \widehat{\beta}}{\widehat{\alpha}+1}.
 
 **Least squares estimator:**
 
-The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:
+Before introducing the equations, let us present the overall
+methodology.
+When :math:`\gamma` is known, then we solve a linear least squares problem
+to estimate :math:`\beta` and :math:`\alpha`.
 
-.. math::
+When :math:`\gamma` is unknown, then two problems are involved:
 
-    \min{\gamma} \norm{\hat{S}_n(x_i) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
+- in the outer loop, a non-linear least squares problem is solved
+  to estimate :math:`\gamma`;
+- in the inner loop, for a given value of :math:`\gamma`,
+  a linear least squares problem is solved
+  to estimate :math:`\alpha` and :math:`\beta`.
 
-
-where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
-
-When :math:`\gamma` is known and the :math:`x_i` follow a Pareto distribution then
-we use linear least-squares to solve the relation:
+Let us now introduce the methods in more details.
+Let :math:`\widehat{S}` be the empirical survival function.
+If :math:`\gamma` is known, then we solve the following linear least-squares problem:
 
 .. math::
   :label: least_squares_estimator_pareto
 
-   \hat{S}_n(x_i) = a_1 \log(x_i - \gamma) + a_0
+    \left(\widehat{a}_0, \widehat{a}_1\right)
+    = \argmin_{(a_0, a_1)^\top \in \Rset^2} \sum_{i = 1}^\sampleSize
+        \left(\widehat{S}(x_i) - (a_1 \log(x_i - \gamma) + a_0)\right)^2.
 
-And the remaining parameters are estimated with:
+To do this, let :math:`\vect{y} \in \Rset^{\sampleSize}` be the vector
+equal to the value of the empirical survival function at each observation:
 
 .. math::
 
-    \hat{\beta} &= \exp{\frac{-a_0}{a_1}}\\
-    \hat{\alpha} &= -a_1
+    y_i = \widehat{S}(x_i)
 
+for :math:`1 \leq i \leq \sampleSize`.
+Moreover, let :math:`\vect{z} \in \Rset^{\sampleSize}` be the 
+vector of logarithm of the shifted observations:
+
+.. math::
+
+    z_i = \log(x_i - \gamma)
+
+for :math:`1 \leq i \leq \sampleSize`.
+Then the linear least squares problem is:
+
+.. math::
+
+    \left(\widehat{a}_0, \widehat{a}_1\right)
+    = \argmin_{(a_0, a_1)^\top \in \Rset^2} \sum_{i = 1}^\sampleSize
+        \left(y_i - (a_1 z_i + a_0)\right)^2.
+
+See :class:`~openturns.LinearLeastSquares` for more details.
+
+Once the vector :math:`\left(\widehat{a}_0, \widehat{a}_1\right)` is computed,
+we compute :math:`\alpha` and :math:`\beta` from the equations:
+
+.. math::
+
+    \widehat{\beta} &= \exp \left( \frac{-\widehat{a}_0}{\widehat{a}_1} \right), \\
+    \widehat{\alpha} &= -\widehat{a}_1.
+
+When :math:`\gamma` is unknown, it is estimated using non-linear
+least squares.
+More precisely, the parameter :math:`\gamma` is the solution of:
+
+.. math::
+
+    \widehat{\gamma} 
+    = \argmin_{\gamma} \sum_{i = 1}^\sampleSize
+      \left(\widehat{S}(x_i) - (a_1(\gamma) \log(x_i - \gamma) + a_0(\gamma))\right)^2.
+
+
+where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
+
+**Maximum likelihood based estimator:**
+
+The log-likelihood of the sample is:
+
+.. math::
+
+    & \ell(\beta, \alpha, \gamma \mid  x_1, \dots, x_{\sampleSize}) \\
+    & = \sampleSize \log(\alpha) + \sampleSize \alpha \log(\beta)
+      - (\alpha + 1) \sum_{i = 1}^\sampleSize \log(x_i - \gamma)
+
+
+The maximum likelihood based estimator
+:math:`\left(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma}\right)`
+of :math:`\left(\beta, \alpha, \gamma\right)` maximizes the log-likelihood:
+
+.. math::
+
+    \left(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma}\right)
+    = \argmax_{\beta, \alpha, \gamma} \ell(\beta, \alpha, \gamma \mid  x_1, \dots, x_{\sampleSize})
+
+In the current implementation, all parameters are estimated simultaneously.
+
+However, another method could be used, which can be described as follows.
+For a given value of :math:`\gamma`, the log-likelihood of the sample is
+defined by:
+
+.. math::
+
+    & \ell(\alpha(\gamma), \beta(\gamma) \mid  x_1, \dots, x_{\sampleSize}, \gamma) \\
+    & = \sampleSize \log(\alpha(\gamma)) + \sampleSize \alpha(\gamma) \log(\beta(\gamma))
+      - (\alpha(\gamma) + 1) \sum_{i=1}^\sampleSize \log(x_i - \gamma)
+
+We compute :math:`\left(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma)\right)` which
+maximizes :math:`\ell(\beta, \alpha, \mid  x_1, \dots, x_{\sampleSize}, \gamma)`:
+
+.. math::
+
+    \begin{aligned}
+    \left(\widehat{\beta}(\gamma), \widehat{\alpha}(\gamma)\right)
+    & = \argmax_{(\beta, \alpha)^\top \in \Rset^2} & & \ell(\alpha(\gamma), \beta(\gamma) \mid x_1, \dots, x_{\sampleSize}, \gamma) \\
+	& \quad \text{s.t.} & & \gamma + \widehat{\beta}(\gamma) \leq x_{(1,\sampleSize)}
+    \end{aligned}
+
+where :math:`x_{(1,\sampleSize)}` is the smallest observation in the sample:
+
+.. math::
+
+    x_{(1,\sampleSize)} = \min_{1 \leq i \leq \sampleSize} x_i.
+
+We get:
+
+.. math::
+
+    \widehat{\beta}( \gamma) & = x_{(1,\sampleSize)} - \gamma, \\
+    \widehat{\alpha}( \gamma) & = \dfrac{\sampleSize}{\sum_{i=1}^\sampleSize
+        \log\left( \dfrac{x_i - \gamma}{\widehat{\beta}( \gamma)}\right)}.
+
+Then the parameter :math:`\gamma` is computed by maximizing the log-likelihood
+of the sample :math:`\ell\left(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma\right)`:
+
+.. math::
+
+    \widehat{\gamma}
+    = \argmax_{\gamma \in \Rset} \ell\left(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma\right)
+
+The starting point of the optimization algorithm is:
+
+.. math::
+
+    \gamma_0 = x_{(1,\sampleSize)} - \frac{|x_{(1,\sampleSize)}|}{2 + \sampleSize}.
 
 See also
 --------
-DistributionFactory, Normal)RAW"
+Pareto, DistributionFactory
+
+Examples
+--------
+
+In the first example, we estimate all the parameters, that is,
+:math:`\beta`, :math:`\alpha` and :math:`\gamma`.
+
+>>> import openturns as ot
+>>> real_distribution = ot.Pareto(2.5, 1.0, 0.0)
+>>> sample = real_distribution.getSample(1000)
+>>> factory = ot.ParetoFactory()
+>>> estimated_distribution_full = factory.build(sample)
+
+In the second example, we assume that the :math:`\gamma` parameter is known
+and estimate :math:`\beta` and :math:`\alpha`.
+The user sets the value of :math:`\gamma` (index 2 in the order :math:`\beta`, 
+:math:`\alpha` and :math:`\gamma`).
+
+>>> known_gamma = 0.0
+>>> factory.setKnownParameter([known_gamma], [2])
+>>> estimated_distribution_fixed = factory.build(sample)
+
+)RAW"
 
 // ----------------------------------------------------------------------------
 
@@ -132,7 +234,13 @@ sample : 2-d sequence of float
 Returns
 -------
 distribution : :class:`~openturns.Pareto`
-    The estimated distribution"
+    The estimated distribution
+
+Note
+----
+When this method is used, all parameters are estimated
+simultaneously.
+"
 
 // ----------------------------------------------------------------------------
 
@@ -153,23 +261,55 @@ distribution : :class:`~openturns.Pareto`
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::ParetoFactory::buildMethodOfLeastSquares
-"Method of least-squares.
-
-Notes
------
-Refer to :class:`~openturns.LeastSquaresDistributionFactory`.
+R"RAW(Method of least-squares.
 
 Parameters
 ----------
 sample : 2-d sequence of float
     Data.
 gamma : float, optional
-    Gamma parameter.
+    Location parameter.
+    If provided, the estimation of :math:`\beta` and :math:`\alpha` is performed
+    via linear least squares with :math:`\gamma` fixed.
+    If not specified, :math:`\gamma` is first estimated using a
+    non-linear least squares routine, followed by a linear least
+    squares estimation for the remaining parameters.
 
 Returns
 -------
 distribution : :class:`~openturns.Pareto`
-    The estimated distribution."
+    The estimated distribution.
+
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.Pareto` 
+are estimated from a sample. 
+We create a simulated sample from a Pareto distribution with
+parameters `beta=2.5`, `alpha=1.0` and `gamma=0.0`.
+
+>>> import openturns as ot
+>>> real_distribution = ot.Pareto(2.5, 1.0, 0.0)
+>>> sample = real_distribution.getSample(1000)
+>>> factory = ot.ParetoFactory()
+
+**Example 1:** When gamma is known.
+In this case, we estimate the parameters beta and alpha using 
+linear least squares.
+
+>>> known_gamma = 0.0
+>>> estimated_distribution_fixed = factory.buildMethodOfLeastSquares(sample, known_gamma)
+>>> print(estimated_distribution_fixed.getParameter())
+[2.53...,1.03...,0]
+
+**Example 2:** When gamma is unknown.
+In this case, we perform a full estimation by non-linear least squares (for gamma)
+combined with linear least squares (for beta and alpha).
+
+>>> estimated_distribution_full = factory.buildMethodOfLeastSquares(sample)
+>>> print(estimated_distribution_full.getParameter())
+[2.61...,1.05...,-0.10...]
+)RAW"
 
 // ----------------------------------------------------------------------------
 
