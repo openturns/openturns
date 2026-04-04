@@ -131,3 +131,6 @@ validation.skipMinimumVolumeInterval()  # wrong proba
 validation.skipMinimumVolumeLevelSet()  # slow
 validation.skipPDFAtLowerBound()  # Testing that the PDF is null at its lower bound if finite is a complex task
 validation.run()
+
+# Check that the PDF is zero where it is given by a fraction with null denominator
+ott.assert_almost_equal(ot.Uniform(-5.0, 5.0).sqr().computePDF(0.0), 0.0)

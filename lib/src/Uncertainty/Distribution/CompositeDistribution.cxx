@@ -367,7 +367,7 @@ Scalar CompositeDistribution::computePDF(const Point & point) const
         const Matrix gradient(function_.gradient(fInvX));
         if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
         const Scalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
-        if (std::isfinite(denominator)) pdf += numerator / denominator;
+        if (std::isfinite(denominator) && (denominator != 0.0)) pdf += numerator / denominator;
         LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator << ", pdf=" << pdf);
       }
     }
