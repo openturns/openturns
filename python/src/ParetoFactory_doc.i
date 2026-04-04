@@ -11,30 +11,30 @@ are proposed. The default strategy is to use the least squares estimator.
 
 Lets denote:
 
-- :math:`\displaystyle \overline{x}_{\sampleSize} = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize x_i` the empirical mean of the sample, 
-- :math:`\displaystyle s_\sampleSize^2 = \frac{1}{\sampleSize - 1} \sum_{i=1}^\sampleSize (x_i - \overline{x}_\sampleSize)^2` its empirical variance,
+- :math:`\displaystyle \overline{x} = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize x_i` the empirical mean of the sample, 
+- :math:`\displaystyle s^2 = \frac{1}{\sampleSize - 1} \sum_{i=1}^\sampleSize (x_i - \overline{x})^2` its empirical variance,
 - :math:`\displaystyle \widehat{\text{skew}}_{\sampleSize}` the empirical skewness of the sample
 
-The estimator :math:`(\hat{\beta}_{\sampleSize}, \hat{\alpha}_{\sampleSize}, \hat{\gamma}_{\sampleSize})` of
+The estimator :math:`(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma})` of
 :math:`(\beta, \alpha, \gamma)` is defined as follows :
 
-The parameter :math:`\hat{\alpha}_{\sampleSize}` is solution of the equation: 
+The parameter :math:`\widehat{\alpha}` is solution of the equation: 
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-        \widehat{\text{skew}}_n & =  & \dfrac{ 2(1+\hat{\alpha}_{\sampleSize}) }{ \hat{\alpha}_n - 3 } \sqrt{ \dfrac{ \hat{\alpha}_n - 2 }{ \hat{\alpha}_n } } 
+        \widehat{\text{skew}} & =  & \dfrac{ 2(1 + \widehat{\alpha}) }{ \widehat{\alpha} - 3 } \sqrt{ \dfrac{ \widehat{\alpha} - 2 }{ \widehat{\alpha} } } 
     \end{eqnarray*}
 
-There exists a symbolic solution. If :math:`\hat{\alpha}_n > 3`, then we get :math:`(\hat{\beta}_n, \hat{\gamma}_n)` as follows: 
+If :math:`\widehat{\alpha} > 3`, then we get :math:`(\widehat{\beta}, \widehat{\gamma})` as follows: 
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-       \hat{\beta}_n & = & (\hat{\alpha}_n-1) \sqrt{\dfrac{\hat{\alpha}_n-2}{\hat{\alpha}_n}}s_n \\
-       \hat{\gamma}_n & = & \overline{x}_n - \dfrac{\hat{\alpha}_n}{\hat{\alpha}_n+1} \hat{\beta}_n
+       \widehat{\beta} & = & (\widehat{\alpha}-1) \sqrt{\dfrac{\widehat{\alpha} - 2}{\widehat{\alpha}}}s \\
+       \widehat{\gamma} & = & \overline{x} - \dfrac{\widehat{\alpha}}{\widehat{\alpha}+1} \widehat{\beta}
     \end{eqnarray*}
 
 
@@ -44,27 +44,30 @@ The likelihood of the sample is defined by:
 
 .. math::
 
-    \ell(\alpha, \beta, \gamma|  x_1, \dots, x_n) = n\log \alpha + n\alpha \log \beta - (\alpha+1) \sum_{i=1}^n \log(x_i-\gamma)
+    \ell(\alpha, \beta, \gamma \mid  x_1, \dots, x_{\sampleSize}) = \sampleSize \log \alpha + \sampleSize \alpha \log \beta - (\alpha+1) \sum_{i=1}^\sampleSize \log(x_i-\gamma)
 
 
-The maximum likelihood based estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of :math:`(\beta, \alpha, \gamma)` maximizes the likelihood:
+The maximum likelihood based estimator :math:`\left(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma}\right)` of :math:`\left(\beta, \alpha, \gamma\right)` maximizes the likelihood:
 
 .. math::
 
-    (\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n) = \argmax_{\alpha, \beta, \gamma} \ell(\alpha, \beta, \gamma|  x_1, \dots, x_n)
+    \left(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma}\right) = \argmax_{\alpha, \beta, \gamma} \ell(\alpha, \beta, \gamma \mid  x_1, \dots, x_{\sampleSize})
 
 The following strategy is to be implemented soon: 
 For a given :math:`\gamma`, the likelihood of the sample is defined by:
 
 .. math::
 
-    \ell(\alpha(\gamma), \beta(\gamma)|  x_1, \dots, x_n, \gamma) = n\log \alpha(\gamma) + n\alpha(\gamma) \log \beta(\gamma) - (\alpha(\gamma)+1) \sum_{i=1}^n \log(x_i-\gamma)
+    \ell(\alpha(\gamma), \beta(\gamma) \mid  x_1, \dots, x_{\sampleSize}, \gamma) = \sampleSize \log(\alpha(\gamma)) + \sampleSize \alpha(\gamma) \log(\beta(\gamma)) - (\alpha(\gamma) + 1) \sum_{i=1}^n \log(x_i - \gamma)
 
-We get :math:`(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma))` which maximizes :math:`\ell(\alpha, \beta|  x_1, \dots, x_n, \gamma)` :
+We get :math:`(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma))` which maximizes :math:`\ell(\alpha, \beta \mid  x_1, \dots, x_{\sampleSize}, \gamma)` :
 
 .. math::
 
-    (\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma)) = \argmax_{\alpha, \beta}   \ell(\alpha(\gamma), \beta(\gamma)|  x_1, \dots, x_n, \gamma) \text{ under the constraint } \gamma + \hat{\beta}_n(\gamma) \leq x_{(1,n)}
+    \begin{aligned}
+    \left(\widehat{\beta}(\gamma), \widehat{\alpha}(\gamma)\right) = & \operatorname*{argmax}_{\alpha, \beta} & & \ell(\alpha(\gamma), \beta(\gamma) \mid x_1, \dots, x_{n}, \gamma) \\
+	& \text{s.t.} & & \gamma + \widehat{\beta}(\gamma) \leq x_{(1,\sampleSize)} 
+    \end{aligned}
 
 We get:
 
@@ -72,27 +75,27 @@ We get:
     :nowrap:
 
     \begin{eqnarray*}
-        \hat{\beta}_n( \gamma) & = & x_{(1,n)} - \gamma \\
-         \hat{\alpha}_n( \gamma) & = & \dfrac{n}{\sum_{i=1}^n \log\left( \dfrac{x_i - \gamma}{\hat{\beta}_n( \gamma)}\right)}
+        \widehat{\beta}( \gamma) & = & x_{(1,\sampleSize)} - \gamma \\
+        \widehat{\alpha}( \gamma) & = & \dfrac{\sampleSize}{\sum_{i=1}^\sampleSize \log\left( \dfrac{x_i - \gamma}{\widehat{\beta}( \gamma)}\right)}
     \end{eqnarray*}
 
 
-Then the parameter :math:`\gamma` is obtained by maximizing the likelihood :math:`\ell(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma), \gamma)`:
+Then the parameter :math:`\gamma` is obtained by maximizing the likelihood :math:`\ell(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma)`:
 
 .. math::
 
-    \hat{\gamma}_n = \argmax_{\gamma}  \ell(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma), \gamma)
+    \widehat{\gamma} = \argmax_{\gamma}  \ell(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma)
 
-The initial point of the optimisation problem is :math:`\gamma_0 = x_{(1,n)} - |x_{(1,n)}|/(2+n)`.
+The initial point of the optimisation problem is :math:`\gamma_0 = x_{(1,\sampleSize)} - |x_{(1,\sampleSize)}|/(2 + \sampleSize)`.
 
 
 **Least squares estimator:**
 
-The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:
+The parameter :math:`\gamma` is optimized by non-linear least-squares:
 
 .. math::
 
-    \min{\gamma} \norm{\hat{S}_n(x_i) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
+    \min{\gamma} \norm{\widehat{S}(x_i) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
 
 
 where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
@@ -103,14 +106,14 @@ we use linear least-squares to solve the relation:
 .. math::
   :label: least_squares_estimator_pareto
 
-   \hat{S}_n(x_i) = a_1 \log(x_i - \gamma) + a_0
+   \widehat{S}(x_i) = a_1 \log(x_i - \gamma) + a_0
 
 And the remaining parameters are estimated with:
 
 .. math::
 
-    \hat{\beta} &= \exp{\frac{-a_0}{a_1}}\\
-    \hat{\alpha} &= -a_1
+    \widehat{\beta} &= \exp{\frac{-a_0}{a_1}}\\
+    \widehat{\alpha} &= -a_1
 
 
 See also
