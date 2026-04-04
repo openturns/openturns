@@ -11,23 +11,23 @@ are proposed. The default strategy is to use the least squares estimator.
 
 Lets denote:
 
-- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical mean of the sample, 
-- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2` its empirical variance,
-- :math:`\displaystyle skew_n` the empirical skewness of the sample
+- :math:`\displaystyle \overline{x}_{\sampleSize} = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize x_i` the empirical mean of the sample, 
+- :math:`\displaystyle s_\sampleSize^2 = \frac{1}{\sampleSize - 1} \sum_{i=1}^\sampleSize (x_i - \overline{x}_\sampleSize)^2` its empirical variance,
+- :math:`\displaystyle \widehat{\text{skew}}_{\sampleSize}` the empirical skewness of the sample
 
-The estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of
+The estimator :math:`(\hat{\beta}_{\sampleSize}, \hat{\alpha}_{\sampleSize}, \hat{\gamma}_{\sampleSize})` of
 :math:`(\beta, \alpha, \gamma)` is defined as follows :
 
-The parameter :math:`\hat{\alpha}_n` is solution of the equation: 
+The parameter :math:`\hat{\alpha}_{\sampleSize}` is solution of the equation: 
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-        skew_n & =  & \dfrac{ 2(1+\hat{\alpha}_n) }{ \hat{\alpha}_n-3 } \sqrt{ \dfrac{ \hat{\alpha}_n-2 }{ \hat{\alpha}_n } } 
+        \widehat{\text{skew}}_n & =  & \dfrac{ 2(1+\hat{\alpha}_{\sampleSize}) }{ \hat{\alpha}_n - 3 } \sqrt{ \dfrac{ \hat{\alpha}_n - 2 }{ \hat{\alpha}_n } } 
     \end{eqnarray*}
 
-There exists a symbolic solution. If :math:`\hat{\alpha}_n >3`, then we get :math:`(\hat{\beta}_n, \hat{\gamma}_n)` as follows: 
+There exists a symbolic solution. If :math:`\hat{\alpha}_n > 3`, then we get :math:`(\hat{\beta}_n, \hat{\gamma}_n)` as follows: 
 
 .. math::
     :nowrap:
@@ -115,7 +115,28 @@ And the remaining parameters are estimated with:
 
 See also
 --------
-DistributionFactory, Normal)RAW"
+DistributionFactory, Normal
+
+Examples
+--------
+
+In the first example, we estimate all the parameters.
+
+>>> import openturns as ot
+>>> real_distribution = ot.Pareto(2.5, 1.0, 0.0)
+>>> sample = real_distribution.getSample(1000)
+>>> factory = ot.ParetoFactory()
+>>> estimated_distribution_full = factory.build(sample)
+
+In this example, we assume that the gamma parameter is known
+and estimate alpha and beta.
+The user sets the value of gamma (index 2 in the order alpha, beta, gamma).
+
+>>> known_gamma = 0.0
+>>> factory.setKnownParameter([known_gamma], [2])
+>>> estimated_distribution_fixed = factory.build(sample)
+
+)RAW"
 
 // ----------------------------------------------------------------------------
 
@@ -169,7 +190,37 @@ gamma : float, optional
 Returns
 -------
 distribution : :class:`~openturns.Pareto`
-    The estimated distribution."
+    The estimated distribution.
+
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.Pareto` 
+are estimated from a sample. 
+We create a simulated sample from a Pareto distribution with
+arameters alpha=2.5, beta=1.0 and gamma=0.0.
+
+>>> import openturns as ot
+>>> real_distribution = ot.Pareto(2.5, 1.0, 0.0)
+>>> sample = real_distribution.getSample(1000)
+>>> factory = ot.ParetoFactory()
+
+Example 1: When gamma is known.
+In this case, we estimate of parameters alpha and beta using 
+linear least squares.
+
+>>> estimated_distribution_fixed = factory.buildMethodOfLeastSquares(sample, known_gamma)
+>>> print(estimated_distribution_fixed.getParameter())
+[2.46372,0.979926,0]
+
+Example 2: When gamma is unknown.
+In this case, we perform a full estimation by non-linear least squares (for gamma)
+combined with linear least squares (for alpha and beta).
+
+>>> estimated_distribution_full = factory.buildMethodOfLeastSquares(sample)
+>>> print(estimated_distribution_full.getParameter())
+[2.26187,0.951929,0.268134]
+"
 
 // ----------------------------------------------------------------------------
 
