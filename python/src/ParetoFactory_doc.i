@@ -6,6 +6,8 @@ Notes
 -----
 Several estimators to build a Pareto distribution from a scalar sample
 are proposed. The default strategy is to use the least squares estimator.
+We make the assumption that :math:`x_1, \dots, x_{\sampleSize}` is an i.i.d. sample
+from the Pareto random variable where :math:`\sampleSize` is the sample size.
 
 **Moments based estimator:**
 
@@ -40,7 +42,7 @@ If :math:`\widehat{\alpha} > 3`, then we get :math:`(\widehat{\beta}, \widehat{\
 
 **Maximum likelihood based estimator:**
 
-The likelihood of the sample is defined by:
+The log-likelihood of the sample is defined by:
 
 .. math::
 
@@ -54,7 +56,7 @@ The maximum likelihood based estimator :math:`\left(\widehat{\beta}, \widehat{\a
     \left(\widehat{\beta}, \widehat{\alpha}, \widehat{\gamma}\right) = \argmax_{\alpha, \beta, \gamma} \ell(\alpha, \beta, \gamma \mid  x_1, \dots, x_{\sampleSize})
 
 The following strategy is to be implemented soon: 
-For a given :math:`\gamma`, the likelihood of the sample is defined by:
+For a given :math:`\gamma`, the log-likelihood of the sample is defined by:
 
 .. math::
 
@@ -69,6 +71,7 @@ We get :math:`(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma))` which maxim
 	& \text{s.t.} & & \gamma + \widehat{\beta}(\gamma) \leq x_{(1,\sampleSize)} 
     \end{aligned}
 
+where :math:`x_{(1,\sampleSize)}` is the smallest observation in the sample.
 We get:
 
 .. math::
@@ -80,41 +83,50 @@ We get:
     \end{eqnarray*}
 
 
-Then the parameter :math:`\gamma` is obtained by maximizing the likelihood :math:`\ell(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma)`:
+Then the parameter :math:`\gamma` is obtained by maximizing the log-likelihood :math:`\ell(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma)`:
 
 .. math::
 
     \widehat{\gamma} = \argmax_{\gamma}  \ell(\widehat{\beta}( \gamma), \widehat{\alpha}( \gamma), \gamma)
 
-The initial point of the optimisation problem is :math:`\gamma_0 = x_{(1,\sampleSize)} - |x_{(1,\sampleSize)}|/(2 + \sampleSize)`.
-
+The starting point of the optimization algorithm is :math:`\gamma_0 = x_{(1,\sampleSize)} - |x_{(1,\sampleSize)}|/(2 + \sampleSize)`.
 
 **Least squares estimator:**
 
-The parameter :math:`\gamma` is optimized by non-linear least-squares:
-
-.. math::
-
-    \min{\gamma} \norm{\widehat{S}(x_i) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
-
-
-where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
-
-When :math:`\gamma` is known and the :math:`x_i` follow a Pareto distribution then
-we use linear least-squares to solve the relation:
+If :math:`\gamma` is known, then we solve the linear least-squares problem:
 
 .. math::
   :label: least_squares_estimator_pareto
 
-   \widehat{S}(x_i) = a_1 \log(x_i - \gamma) + a_0
+    \left(\widehat{a}_0, \widehat{a}_1\right)
+    = \argmin_{a_0, a_1} \norm{\widehat{S}(x_i) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
 
-And the remaining parameters are estimated with:
+Then we compute :math:`\alpha` and :math:`\beta` from the equations:
 
 .. math::
 
-    \widehat{\beta} &= \exp{\frac{-a_0}{a_1}}\\
+    \widehat{\beta} &= \exp \left( \frac{-a_0}{a_1} \right)\\
     \widehat{\alpha} &= -a_1
 
+When :math:`\gamma` is unkown, it is estimated using non linear
+least squares.
+More precisely, the parameter :math:`\gamma` is the solution of:
+
+.. math::
+
+    \widehat{\gamma} 
+    = \argmin_{\gamma} \norm{\widehat{S}(x_i) - (a_1(\gamma} \log(x_i - \gamma) + a_0(\gamma})}_2^2
+
+where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
+
+In other words, when :math:`\gamma` is unkonwn, then two problems
+are involved:
+
+- in the outer loop, an non linear least squares problem is solved
+  to estimate :math:`\gamma`;
+- in the inner loop, for a given given value of :math:`\gamma`,
+  a linear least squares problem is solved
+  to estimate :math:`\alpha` and :math:`\beta`;
 
 See also
 --------
