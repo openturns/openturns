@@ -224,6 +224,7 @@ Example 1: When gamma is known.
 In this case, we estimate of parameters alpha and beta using 
 linear least squares.
 
+>>> known_gamma = 0.0
 >>> estimated_distribution_fixed = factory.buildMethodOfLeastSquares(sample, known_gamma)
 >>> print(estimated_distribution_fixed.getParameter())
 [2.46372,0.979926,0]
