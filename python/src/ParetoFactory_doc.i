@@ -108,7 +108,7 @@ Then we compute :math:`\alpha` and :math:`\beta` from the equations:
     \widehat{\beta} &= \exp \left( \frac{-a_0}{a_1} \right)\\
     \widehat{\alpha} &= -a_1
 
-When :math:`\gamma` is unkown, it is estimated using non linear
+When :math:`\gamma` is unknown, it is estimated using non linear
 least squares.
 More precisely, the parameter :math:`\gamma` is the solution of:
 
