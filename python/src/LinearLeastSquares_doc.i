@@ -6,35 +6,41 @@ Parameters
 dataIn : 2-d sequence of float
     Input data.
 dataOut : 2-d sequence of float
-    Output data.`.
+    Output data.
 
 Notes
 -----
 A least squares meta model provides an approximation of the model which is valid over its whole domain of definition.
+
+Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model.
+Consider the experimental design :math:`\cX` of size :math:`\sampleSize`:
+
+.. math::
+    :label: inputDataLLS
+
+    \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \in \Rset^\inputDim \right\}.
+
+Consider the corresponding output experimental design:
+
+.. math::
+    :label: outputDataLLS
+
+    \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \in \Rset^\outputDim \right\}
+
+where:
+
+..  math::
+
+    \vect{y}^{(k)} = \model\left(\vect{x}^{(k)}\right)
+
+for :math:`1 \leq k \leq \sampleSize`.
 
 This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by: 
 
 .. math::
     :label: LinearLeastSquaresMMOpenTURNSAPI
 
-    \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b})
-
-from an experimental design :math:`\cX` of size :math:`\sampleSize`, that is, a set of observations of
-the input vector defined by:
-
-.. math::
-    :label: inputDataLLS
-
-    \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \right\},
-
-and the corresponding output vectors:
-
-.. math::
-    :label: outputDataLLS
-
-    \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \right\}.
-
-where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
+    \metaModel(\vect{x}) = \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b}).
 
 Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
 estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the center vector
@@ -174,3 +180,47 @@ as a :class:`~openturns.Function`, use the :meth:`~openturns.MetaModelResult.get
 
 %feature("docstring") OT::LinearLeastSquares::run
 "Perform the least squares approximation."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getDataIn
+"Get the input data.
+
+Returns
+-------
+dataIn : :class:`~openturns.Sample`
+    Input data.
+
+Notes
+-----
+The input experimental design is defined in :eq:`inputDataLLS`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getDataOut
+"Get the output data.
+
+Returns
+-------
+dataOut : :class:`~openturns.Sample`
+    Output data.
+
+Notes
+-----
+The output experimental design is defined in :eq:`outputDataLLS`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquares::getMetaModel
+R"RAW(Get the meta model.
+
+Returns
+-------
+metaModel : :class:`~openturns.Function`
+    The meta model :math:`\metaModel`.
+
+Notes
+-----
+The meta model :math:`\metaModel` is defined in :eq:`LinearLeastSquaresMMOpenTURNSAPI`.
+)RAW"
