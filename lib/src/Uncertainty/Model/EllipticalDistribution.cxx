@@ -87,7 +87,10 @@ Bool EllipticalDistribution::equals(const DistributionImplementation & other) co
   if (dimension_ != other.getDimension()) return false;
   // Can I cast other into an elliptical distribution?
   const EllipticalDistribution * p_other = dynamic_cast<const EllipticalDistribution*>(&other);
-  if (p_other) return (mean_ == p_other->mean_) && (sigma_ == p_other->sigma_) && (R_ == p_other->R_);
+  if (p_other)
+    return (mean_ == p_other->mean_) &&
+           (sigma_ == p_other->sigma_) &&
+           (static_cast<const Matrix &>(R_) == static_cast<const Matrix &>(p_other->R_));
   // Here, if dimension == 1 no more test can be done
   if (dimension_ == 1) return false;
   // Otherwise, check equality using properties
