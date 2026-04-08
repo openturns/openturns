@@ -35,16 +35,21 @@ where:
 
 for :math:`1 \leq k \leq \sampleSize`.
 
-This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by: 
+This class estimates the parameters of the meta model
+:math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by:
 
 .. math::
     :label: LinearLeastSquaresMMOpenTURNSAPI
 
-    \metaModel(\vect{x}) = \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b}).
+    \metaModel(\vect{x}) = \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b})
 
-Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
-estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the center vector
-:math:`\vect{b}\in \Rset^\inputDim` and the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
+for any :math:\vect{x} \in \Rset^\inputDim`.
+
+Refer to :ref:`least_squares` to get details on general least squares meta
+models and to get information on the estimation of the matrix
+:math:`\mat{L} \in \cM_{\inputDim, \outputDim}`, the center vector
+:math:`\vect{b}\in \Rset^\inputDim` and the constant vector
+:math:`\vect{c} \in \Rset^\outputDim`.
 
 
 See also
@@ -180,7 +185,6 @@ as a :class:`~openturns.Function`, use the :meth:`~openturns.MetaModelResult.get
 
 %feature("docstring") OT::LinearLeastSquares::run
 "Perform the least squares approximation."
-
 
 // ---------------------------------------------------------------------
 
