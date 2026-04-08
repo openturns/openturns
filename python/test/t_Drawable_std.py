@@ -61,3 +61,8 @@ assert palette == ["#ff0000", "#ccff00", "#00ff66", "#0066ff"]
 ot.ResourceMap.SetAsString("Drawable-DefaultPaletteName", "Tableau")
 palette = ot.Drawable.BuildDefaultPalette(4)
 assert palette == ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]
+#
+colors = ot.Drawable.ConvertValuesToColors([1, 2.7, 4.5, 3.1, 5.2, 2.6], ["red", "blue", "green"], 1.0)
+assert colors == ["#ff0000ff", "#0000ffff", "#00ff00ff", "#0000ffff", "#00ff00ff", "#0000ffff"]
+colors = ot.Drawable.ConvertValuesToColors([1, 2.7, 4.5, 3.1, 5.2, 2.6], ["red", "blue", "green"], 0.4)
+assert colors == ["#ff000066", "#0000ff66", "#00ff0066", "#0000ff66", "#00ff0066", "#0000ff66"]

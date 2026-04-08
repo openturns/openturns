@@ -841,7 +841,7 @@ OT_Drawable_getTextAnnotations_doc
 
 Parameters
 ----------
-annotations : :class:`~openturns.Description`
+annotations : list of str
     Accessor to text annotations."
 %enddef
 %feature("docstring") OT::DrawableImplementation::setTextAnnotations
@@ -911,6 +911,28 @@ The default value is `0.75`."
 %enddef
 %feature("docstring") OT::DrawableImplementation::setTextSize
 OT_Drawable_setTextSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_ConvertValuesToColors_doc
+"Convert a list of scalar values into a list of colors.
+
+Parameters
+----------
+values : list of float
+    The values to be converted.
+palette : list of str
+    The palette used to map values into colors.
+alpha : float
+    The alpha value to be added to the generated colors.
+
+Returns
+-------
+ colors : :class:`~openturns.Description`
+    The generated colors."
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertValuesToColors
+OT_Drawable_ConvertValuesToColors_doc
 
 // ---------------------------------------------------------------------
 
