@@ -23,6 +23,7 @@
 
 #include "openturns/DrawableImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -926,9 +927,9 @@ String DrawableImplementation::ConvertFromRGB(const Scalar red,
     const Scalar green,
     const Scalar blue)
 {
-  return ConvertFromRGB(static_cast<UnsignedInteger>(round(255 * red)),
-                        static_cast<UnsignedInteger>(round(255 * green)),
-                        static_cast<UnsignedInteger>(round(255 * blue)));
+  return ConvertFromRGB(static_cast<UnsignedInteger>(std::round(255 * red)),
+                        static_cast<UnsignedInteger>(std::round(255 * green)),
+                        static_cast<UnsignedInteger>(std::round(255 * blue)));
 }
 
 /* Convert an RGBA quadruplet to a valid hexadecimal code */
@@ -937,10 +938,10 @@ String DrawableImplementation::ConvertFromRGBA(const Scalar red,
     const Scalar blue,
     const Scalar alpha)
 {
-  return ConvertFromRGBA(static_cast<UnsignedInteger>(round(255 * red)),
-                         static_cast<UnsignedInteger>(round(255 * green)),
-                         static_cast<UnsignedInteger>(round(255 * blue)),
-                         static_cast<UnsignedInteger>(round(255 * alpha)));
+  return ConvertFromRGBA(static_cast<UnsignedInteger>(std::round(255 * red)),
+                         static_cast<UnsignedInteger>(std::round(255 * green)),
+                         static_cast<UnsignedInteger>(std::round(255 * blue)),
+                         static_cast<UnsignedInteger>(std::round(255 * alpha)));
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
@@ -1004,9 +1005,9 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const Scalar red,
   if (!(red >= 0.0 && red <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
   if (!(green >= 0.0 && green <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
   if (!(blue >= 0.0 && blue <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
-  return ConvertFromRGBIntoHSV(static_cast<UnsignedInteger>(round(255 * red)),
-                               static_cast<UnsignedInteger>(round(255 * green)),
-                               static_cast<UnsignedInteger>(round(255 * blue)));
+  return ConvertFromRGBIntoHSV(static_cast<UnsignedInteger>(std::round(255 * red)),
+                               static_cast<UnsignedInteger>(std::round(255 * green)),
+                               static_cast<UnsignedInteger>(std::round(255 * blue)));
 }
 /* Convert a RGB triplet to HSV */
 Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
@@ -1080,6 +1081,42 @@ String DrawableImplementation::ConvertFromHSVA(const Scalar hue,
 {
   const Point redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
   return ConvertFromRGBA(redGreenBlue[0], redGreenBlue[1], redGreenBlue[2], alpha);
+}
+
+/* Convert a collection of scalar into a collection of colors, aka a Description */
+Description DrawableImplementation::ConvertValuesToColors(const Point & values,
+							  const Description & palette,
+							  const Scalar alpha)
+{
+  const UnsignedInteger valueSize = values.getSize();
+  if (valueSize == 0) return Description();
+  const UnsignedInteger paletteSize = palette.getSize();
+  // If no palette, return the default color with the given alpha
+  if (paletteSize == 0)
+    {
+      Indices RGBA(ConvertToRGBA(ResourceMap::GetAsString("Drawable-DefaultColor")));
+      RGBA[3] = std::round(255.0 * SpecFunc::Clip01(alpha));
+      return {ConvertFromRGBA(RGBA[0], RGBA[1], RGBA[2], RGBA[3])};
+    }
+  // Find the min/max of the values
+  const Scalar minValue = *std::min_element(values.begin(), values.end());
+  const Scalar maxValue = *std::max_element(values.begin(), values.end());
+  // If minValue == maxValue, use the only first color
+  if (minValue == maxValue)
+    {
+      return Description(1, ConvertFromName(palette[0]));
+    }
+  Description colors(valueSize);
+  const Scalar coefficient = (paletteSize - 1.0) / (maxValue - minValue);
+  const UnsignedInteger alphaValue = std::round(255 * alpha);
+  for (UnsignedInteger i = 0; i < valueSize; ++i)
+    {
+      const UnsignedInteger paletteIndex = std::round(coefficient * (values[i] - minValue));
+      Indices colorRGBA(ConvertToRGBA(ConvertFromName(palette[paletteIndex])));
+      colorRGBA[3] = alphaValue;
+      colors[i] = ConvertFromRGBA(colorRGBA[0], colorRGBA[1], colorRGBA[2], colorRGBA[3]);
+    }
+  return colors;
 }
 
 /* Default constructor */
@@ -1363,7 +1400,7 @@ Scalar DrawableImplementation::getAlpha() const
 {
   const Indices alphaColor(ConvertToRGBA(ConvertFromName(getColor())));
   const UnsignedInteger alphaInteger = alphaColor[3];
-  const Scalar alpha = alphaInteger / 256.0;
+  const Scalar alpha = alphaInteger / 255.0;
   return alpha;
 }
 
@@ -1374,7 +1411,7 @@ void DrawableImplementation::setAlpha(const Scalar & alpha)
   const UnsignedInteger red = colorIndices[0];
   const UnsignedInteger green = colorIndices[1];
   const UnsignedInteger blue = colorIndices[2];
-  const UnsignedInteger alphaInteger = alpha * 256;
+  const UnsignedInteger alphaInteger = std::round(255 * alpha);
   setColor(ConvertFromRGBA(red, green, blue, alphaInteger), isColorExplicitlySet());
 }
 
@@ -1665,9 +1702,9 @@ Description DrawableImplementation::BuildTableauPalette(const UnsignedInteger si
     hsv[2] = std::max(0.0, hsv[2] * (1.0 - delta));
     // Convert back to RGB, then to hexa
     const Point rgbUpdated(ConvertFromHSVIntoRGB(hsv[0], hsv[1], hsv[2]));
-    const UnsignedInteger red = static_cast<UnsignedInteger>(round(255 * rgbUpdated[0]));
-    const UnsignedInteger green = static_cast<UnsignedInteger>(round(255 * rgbUpdated[1]));
-    const UnsignedInteger blue = static_cast<UnsignedInteger>(round(255 * rgbUpdated[2]));
+    const UnsignedInteger red = static_cast<UnsignedInteger>(std::round(255 * rgbUpdated[0]));
+    const UnsignedInteger green = static_cast<UnsignedInteger>(std::round(255 * rgbUpdated[1]));
+    const UnsignedInteger blue = static_cast<UnsignedInteger>(std::round(255 * rgbUpdated[2]));
     const String hexa(ConvertFromRGB(red, green, blue));
     // Store result
     palette[paletteIndex] = hexa;
