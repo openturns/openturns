@@ -137,6 +137,13 @@ public:
 
   Graph draw() const;
 
+  Graph draw3D(const UnsignedInteger index,
+	       const Bool drawEdge,
+	       const SquareMatrix & rotation,
+	       const Bool shading,
+	       const Scalar rho,
+	       const Description & palette) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
