@@ -8,6 +8,8 @@ OT_Field_asDeformedMesh_doc
 OT_Field_draw_doc
 %feature("docstring") OT::Field::drawMarginal
 OT_Field_drawMarginal_doc
+%feature("docstring") OT::Field::draw3D
+OT_Field_draw3D_doc
 %feature("docstring") OT::Field::exportToVTKFile
 OT_Field_exportToVTKFile_doc
 %feature("docstring") OT::Field::getDescription

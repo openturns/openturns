@@ -132,6 +132,13 @@ public:
 
   Graph draw() const;
 
+  Graph draw3D(const UnsignedInteger index,
+	       const Bool drawEdge,
+	       const SquareMatrix & rotation,
+	       const Bool shading,
+	       const Scalar rho,
+	       const Description & palette) const;
+
   /** VTK export */
   void exportToVTKFile(const String & fileName) const;
 
