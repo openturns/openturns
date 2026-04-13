@@ -403,12 +403,14 @@ Point ClaytonCopula::computeQuantile(const Scalar prob,
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar ClaytonCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
+  std::cerr << "In computeConditionalCDF" << std::endl;
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
+  // Special case for no conditioning
+  if (conditioningDimension == 0) return SpecFunc::Clip01(x);
   const Scalar u = y[0];
-  const Scalar v = x;
+  if ((u <= 0.0) || (u > 1.0)) return 0.0;
+  const Scalar v = SpecFunc::Clip01(x);
   // If we are in the support
   const Scalar factor = std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0;
   if (factor <= 0.0) return 0.0;
@@ -418,6 +420,7 @@ Scalar ClaytonCopula::computeConditionalCDF(const Scalar x, const Point & y) con
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar ClaytonCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
+  std::cerr << "In computeConditionalQuantile" << std::endl;
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
