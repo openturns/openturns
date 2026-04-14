@@ -45,13 +45,13 @@ class RankNormalize(cls.Normalize):
                 1 if level > self.vmax else 0 for level in self._levels
             )
             active = len(self._levels) - below_threshold - above_threshold
-            if active <= 0:
-                raise ValueError("No active level; check vmin and vmax")
-            self._ranks = np.linspace(
-                -below_threshold / active,
-                1.0 + above_threshold / active,
-                len(self._levels),
-            )
+            self._ranks = None
+            if active > 0:
+                self._ranks = np.linspace(
+                    -below_threshold / active,
+                    1.0 + above_threshold / active,
+                    len(self._levels),
+                )
         if hasattr(cls.Normalize, "_changed"):
             cls.Normalize._changed(self)
 
@@ -75,7 +75,7 @@ class RankNormalize(cls.Normalize):
             Required by the parent class, but unused.
         """
         super().__init__(vmin, vmax, clip)
-        self._levels = None if levels is None else np.array(levels)
+        self._levels = None if levels is None or isinstance(levels, int) else np.array(levels)
         self._ranks = None
         self._changed()
 

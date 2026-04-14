@@ -1090,8 +1090,8 @@ if (SPHINX_FOUND)
   endif ()
   if (NOT NLopt_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_nlopt)|(optimization_rosenbrock)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(advanced_mle_estimator)|(kriging_advanced)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_hyperparameters_optimization)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(advanced_mle_estimator)|(gpr_advanced)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(gpr_hyperparameters_optimization)|(kriging_vs_gpr)")
   endif ()
 
   # create a build site-package from which sphinx can import

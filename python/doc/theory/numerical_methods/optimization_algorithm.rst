@@ -77,10 +77,7 @@ where :math:`\alpha_k` is the parameter *stepmx*.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_rastrigin`
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_rosenbrock`
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_constraints`
-    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_nlopt`
+    - See :ref:`optimization_examples`
 
 .. topic:: References:
 
