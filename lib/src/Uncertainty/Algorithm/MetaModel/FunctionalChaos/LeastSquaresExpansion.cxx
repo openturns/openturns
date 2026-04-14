@@ -107,7 +107,7 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
   activeFunctions_.fill();
 }
 
-/* Nouveau constructeur : sélection explicite d'indices (sans poids) */
+/* Constructor */
 LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
@@ -125,7 +125,7 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
   setActiveFunctions(activeFunctions);
 }
 
-/* Nouveau constructeur : sélection explicite d'indices (avec poids) */
+/* Constructor */
 LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
     const Point & weights,
     const Sample & outputSample,
