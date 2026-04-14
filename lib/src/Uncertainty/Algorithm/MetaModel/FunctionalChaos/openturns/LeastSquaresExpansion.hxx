@@ -1,4 +1,4 @@
-/*                                               -*- C++ -*-
+//                                               -*- C++ -*-
 /**
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.

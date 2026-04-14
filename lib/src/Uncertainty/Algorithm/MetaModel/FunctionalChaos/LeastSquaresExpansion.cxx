@@ -1,4 +1,4 @@
-//                                               -*- C++ -*- */
+//                                               -*- C++ -*-
 /**
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.
@@ -29,7 +29,6 @@
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
-//#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
