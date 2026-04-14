@@ -220,6 +220,10 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Plotting library (optional)           | `Matplotlib <https://matplotlib.org/>`_                                         | 3.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | 0.3.5             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | C++/Python wrapper                    | `SWIG <https://www.swig.org/>`_                                                 | 4.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Version control                       | `Git <https://git-scm.com/>`_                                                   | 2.5               |
@@ -228,19 +232,20 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_                                | 0.9.0             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.7               |
+| Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.17              |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_      | 0.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `sphinxcontrib.jquery <https://github.com/sphinx-contrib/jquery/>`_             | 4.1               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | 0.3.5             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
+| LaTeX (optional for doc)              | `texlive <https://tug.org/texlive/>`_                                           | 2018              |
+|                                       |                                                                                 |                   |
+|                                       | - texlive-latex-recommended                                                     |                   |
+|                                       | - texlive-latex-extra                                                           |                   |
+|                                       | - texlive-science                                                               |                   |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 
-The versions given here are only meant as indications of minimum version and newer ones
-may be used.
+The versions given here are only meant as indications of minimum version and newer ones may be used.
 
 
 Internal dependencies

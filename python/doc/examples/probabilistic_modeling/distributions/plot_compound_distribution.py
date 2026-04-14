@@ -60,7 +60,7 @@ ot.ResourceMap.SetAsString('CompoundDistribution-ContinuousDiscretizationMethod'
 # %%
 # Create the compound distribution of :math:`X`.
 XDist = ot.CompoundDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
+XDist.setDescription([r"$X|\mathbf{\Theta} = f(Y)$"])
 XDist
 
 # %%
