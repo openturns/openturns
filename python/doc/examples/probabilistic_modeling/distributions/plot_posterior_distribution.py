@@ -156,7 +156,7 @@ print("Kullback-Leibler distance Bay =", dist_Bay[0])
 # The frequentist approach estimates a normal distribution from the sample. We fix the known parameters :math:`(\mu_0, \mu_1, \rho)`
 # to their true values.
 lh_factory = ot.NormalFactory()
-lh_factory.setKnownParameter([0.0, 0.0, 0.0], [0, 2, 4])
+lh_factory.setKnownParameter([0, 2, 4], [0.0] * 3)
 lh_est = lh_factory.buildEstimator(observations)
 
 # %%
