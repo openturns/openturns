@@ -441,7 +441,7 @@ Scalar BlockIndependentDistribution::computeConditionalQuantile(const Scalar q, 
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return getRange().getLowerBound()[y.getDimension()];
   if (q == 1.0) return getRange().getUpperBound()[y.getDimension()];
   if (conditioningDimension == 0) return getMarginal(0).computeQuantile(q)[0];

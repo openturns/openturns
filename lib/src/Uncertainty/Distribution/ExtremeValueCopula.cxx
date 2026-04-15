@@ -120,7 +120,7 @@ Scalar ExtremeValueCopula::computePDF(const Point & point) const
   const Scalar u = point[0];
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+  if (!((u > 0.0) && (u < 1.0) && (v > 0.0) && (v < 1.0)))
   {
     return 0.0;
   }
@@ -143,7 +143,7 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   const Scalar u = point[0];
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+  if (!((u > 0.0) && (u < 1.0) && (v > 0.0) && (v < 1.0)))
   {
     return SpecFunc::LowestScalar;
   }
@@ -169,22 +169,22 @@ Scalar ExtremeValueCopula::computeCDF(const Point & point) const
   const Scalar u = point[0];
   const Scalar v = point[1];
   // If we are outside of the support, in the lower parts
-  if ((u <= 0.0) || (v <= 0.0))
+  if (!((u > 0.0) && (v > 0.0)))
   {
     return 0.0;
   }
   // If we are outside of the support, in the upper part
-  if ((u >= 1.0) && (v >= 1.0))
+  if (!((u < 1.0) || (v < 1.0)))
   {
     return 1.0;
   }
   // If we are outside of the support for u, in the upper part
-  if (u >= 1.0)
+  if (!(u < 1.0))
   {
     return v;
   }
   // If we are outside of the support for v, in the upper part
-  if (v >= 1.0)
+  if (!(v < 1.0))
   {
     return u;
   }
@@ -216,13 +216,16 @@ public:
 
   Point operator() (const Point & point) const override
   {
+    if (!((u_ >= 0.0) && (u_ < 1.0))) return Point(1, 0.0);
     const Scalar v = point[0];
+    if (!(v > 0.0)) return Point(1, 0.0);
+    if (!(v < 1.0)) return Point(1, 1.0);
     const Scalar logV = std::log(v);
     const Scalar logUV = std::log(u_ * v);
     const Point ratio(1, logV / logUV);
     const Scalar A = pickandFunction_(ratio)[0];
     const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-    const Scalar conditionalCDF = (A - dA * ratio[0]) * std::exp(logUV * A) / u_;
+    const Scalar conditionalCDF = SpecFunc::Clip01((A - dA * ratio[0]) * std::exp(logUV * A) / u_);
     return Point(1, conditionalCDF);
   }
 

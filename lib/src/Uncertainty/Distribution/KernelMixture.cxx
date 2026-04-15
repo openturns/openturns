@@ -505,7 +505,7 @@ Scalar KernelMixture::computeConditionalPDF(const Scalar x,
     marginalPDF += marginalAtomPDF;
     jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
   }
-  if (marginalPDF <= 0.0) return 0.0;
+  if (!(marginalPDF > 0.0)) return 0.0;
   return bandwidthInverse_[conditioningDimension] * jointPDF / marginalPDF;
 }
 
@@ -526,7 +526,7 @@ Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
   {
     // Return the result as soon as a conditional pdf is zero
-    if (pdfConditioning == 0) return result;
+    if (!(pdfConditioning > 0.0)) return result;
     currentX = x[conditioningDimension];
     Scalar pdfConditioned = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
@@ -561,7 +561,7 @@ Scalar KernelMixture::computeConditionalCDF(const Scalar x,
     marginalPDF += marginalAtomPDF;
     jointCDF += marginalAtomPDF * p_kernel_->computeCDF((x - sample_(i, conditioningDimension)) / h);
   }
-  if (marginalPDF <= 0.0) return 0.0;
+  if (!(marginalPDF > 0.0)) return 0.0;
   // No need to normalize by 1/h as it simplifies
   return SpecFunc::Clip01(jointCDF / marginalPDF);
 }
@@ -594,7 +594,7 @@ Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
   {
     // Return the result as soon as a conditional pdf is zero
-    if (pdfConditioning == 0) return result;
+    if (!(pdfConditioning > 0.0)) return result;
     currentX = x[conditioningDimension];
     currentH = bandwidth_[conditioningDimension];
     pdfConditioned = 0.0;
@@ -605,7 +605,7 @@ Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const
       atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) / currentH) / currentH;
       pdfConditioned += atomsValues[i];
     }
-    result[conditioningDimension] = cdfConditioned / pdfConditioning;
+    result[conditioningDimension] = SpecFunc::Clip01(cdfConditioned / pdfConditioning);
     pdfConditioning = pdfConditioned;
   } // conditioningDimension
   return result;
