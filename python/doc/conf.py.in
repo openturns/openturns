@@ -175,9 +175,6 @@ if Version(sphinx_gallery.__version__) >= Version("0.18.0"):
     # omit computation times from all gallery outputs
     sphinx_gallery_conf["write_computation_times"] = False
 
-# TODO: drop jquery in custom search.html
-extensions.append("sphinxcontrib.jquery")
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
