@@ -236,8 +236,6 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_      | 0.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `sphinxcontrib.jquery <https://github.com/sphinx-contrib/jquery/>`_             | 4.1               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | LaTeX (optional for doc)              | `texlive <https://tug.org/texlive/>`_                                           | 2018              |
 |                                       |                                                                                 |                   |
 |                                       | - texlive-latex-recommended                                                     |                   |
