@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 
@@ -35,14 +36,14 @@ static const Factory<ExperimentIntegration> Factory_ExperimentIntegration;
 
 /* Default constructor */
 ExperimentIntegration::ExperimentIntegration()
-  : PersistentObject()
+  : IntegrationAlgorithmImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 ExperimentIntegration::ExperimentIntegration(const WeightedExperiment & weightedExperiment)
-  : PersistentObject()
+  : IntegrationAlgorithmImplementation()
   , weightedExperiment_(weightedExperiment)
 {
   // Nothing to do
@@ -64,18 +65,55 @@ String ExperimentIntegration::__repr__() const
   return oss;
 }
 
-Point ExperimentIntegration::integrate(const Function & g) const
+/* Compute the weighted integral of the function */
+Point ExperimentIntegration::integrate(const Function & function,
+				       const Interval & interval) const
 {
-  const UnsignedInteger outputDimension = g.getOutputDimension();
+  const UnsignedInteger intervalDimension = interval.getDimension();
+  if (function.getInputDimension() != intervalDimension)
+    throw InvalidArgumentException(HERE) << "The input dimension of the function is : "
+					 << function.getInputDimension()
+					 << " which is inconsistent with the interval dimension : "
+					 << intervalDimension;
+  // Build the affine transformation which maps the given interval I into the
+  // range I0 of the weighted experiment distribution
+  // x = T(u)
+  // \int_I f(x)p(x)dx = \int_I0 f(T(u))p(T(u))|det(T)|du
+  // with |det(T)|p(T(u))=p0(u) the PDF of the weighted experiment distribution
+  const Interval distributionRange(weightedExperiment_.getDistribution().getRange());
+  // If no transformation
+  if (interval == distributionRange)
+    return integrate(function);
+  // If transformation
+  const Point lb(distributionRange.getLowerBound());
+  const Point ub(distributionRange.getUpperBound());
+  const Point lbTilde(interval.getLowerBound());
+  const Point ubTilde(interval.getUpperBound());
+  Point center(intervalDimension);
+  Point constant(intervalDimension);
+  SquareMatrix linear(intervalDimension);
+  for (UnsignedInteger i = 0; i < intervalDimension; ++ i)
+  {
+    center[i] = 0.5 * (lb[i] + ub[i]);
+    constant[i] = 0.5 * (lbTilde[i] + ubTilde[i]);
+    linear(i, i) = (ubTilde[i] - lbTilde[i]) / (ub[i] - lb[i]);
+  }
+  return integrate(ComposedFunction(function, LinearFunction(center, constant, linear)));
+}
+
+Point ExperimentIntegration::integrate(const Function & function) const
+{
+  const UnsignedInteger experimentDimension = weightedExperiment_.getDistribution().getDimension();
+  if (function.getInputDimension() != experimentDimension)
+    throw InvalidArgumentException(HERE) << "The input dimension of the function is : "
+					 << function.getInputDimension()
+					 << " which is inconsistent with the experiment dimension : "
+					 << experimentDimension;
+  const UnsignedInteger outputDimension = function.getOutputDimension();
   Point weights(0);
   const Sample inputSample(weightedExperiment_.generateWithWeights(weights));
-  if (g.getInputDimension() != inputSample.getDimension())
-    throw NotYetImplementedException(HERE) << "The input dimension of g is : "
-                                           << g.getInputDimension()
-                                           << " which is inconsistent with the experiment dimension : "
-                                           << inputSample.getDimension();
   Point approximateIntegral(outputDimension);
-  const Sample outputSample(g(inputSample));
+  const Sample outputSample(function(inputSample));
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
     const Point functionSampleMarginal(outputSample.getMarginal(i).asPoint());
@@ -84,9 +122,9 @@ Point ExperimentIntegration::integrate(const Function & g) const
   return approximateIntegral;
 }
 
-Point ExperimentIntegration::computeL2Norm(const Function & g) const
+Point ExperimentIntegration::computeL2Norm(const Function & function) const
 {
-  const UnsignedInteger outputDimension = g.getOutputDimension();
+  const UnsignedInteger outputDimension = function.getOutputDimension();
   // Create the squared integrand
   Description inputVariables(outputDimension);
   Description formula(outputDimension);
@@ -97,7 +135,7 @@ Point ExperimentIntegration::computeL2Norm(const Function & g) const
     formula[i] = (OSS() << variableName << "^2");
   }
   const SymbolicFunction squareFunction(inputVariables, formula);
-  const Function integrand(ComposedFunction(squareFunction, g));
+  const Function integrand(ComposedFunction(squareFunction, function));
   const Point functionSquaredNorm(integrate(integrand));
   Point functionNorm(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
@@ -108,14 +146,14 @@ Point ExperimentIntegration::computeL2Norm(const Function & g) const
 /* Method save() stores the object through the StorageManager */
 void ExperimentIntegration::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  IntegrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("weightedExperiment_", weightedExperiment_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExperimentIntegration::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  IntegrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("weightedExperiment_", weightedExperiment_);
 }
 
