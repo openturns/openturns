@@ -233,7 +233,7 @@ Point UniformOrderStatistics::computeSequentialConditionalPDF(const Point & x) c
     // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
     // will be zero
     const Scalar xKm1 = x[k - 1];
-    if ((x[k] < xKm1) || (x[k] >= 1.0)) return result;
+    if (!((x[k] >= xKm1) && (x[k] < 1.0))) return result;
     result[k] = (dimension_ - k) * std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k - 1.0) / (1.0 - xKm1);
   }
   return result;
@@ -245,14 +245,14 @@ Scalar UniformOrderStatistics::computeConditionalCDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (x < 0.0) return 0.0;
-  if (conditioningDimension == 0) return (x >= 1.0 ? 1.0 : 1.0 - std::pow(1.0 - x, dimension_));
+  if (!(x > 0.0)) return 0.0;
+  if (conditioningDimension == 0) return (!(x < 1.0) ? 1.0 : 1.0 - std::pow(1.0 - x, dimension_));
   // The conditioning values must be in nondecreasing order
   if (!y.isNonDecreasing()) return 0.0;
   const UnsignedInteger k = y.getDimension();
   const Scalar xKm1 = y[k - 1];
-  if (x < xKm1) return 0.0;
-  if (x >= 1.0) return 1.0;
+  if (!(x > xKm1)) return 0.0;
+  if (!(x < 1.0)) return 1.0;
   return 1.0 - std::pow((1.0 - x) / (1.0 - xKm1), dimension_ - k);
 }
 
@@ -260,15 +260,15 @@ Point UniformOrderStatistics::computeSequentialConditionalCDF(const Point & x) c
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a sequential conditional CDF at a point of dimension=" << x.getDimension() << " not equal to the distribution dimension=" << dimension_;
   Point result(dimension_);
-  if (x[0] <= 0) return result;
+  if (!(x[0] > 0)) return result;
   result[0] = 1.0 - std::pow(1.0 - x[0], dimension_);
   for (UnsignedInteger k = 1; k < dimension_; ++k)
   {
     // If at one step the components of x are not in nondecreasing order, all the subsequent conditional PDF
     // will be zero
     const Scalar xKm1 = x[k - 1];
-    if (x[k] < xKm1) return result;
-    if (x[k] >= 1.0) result[k] = 1.0;
+    if (!(x[k] > xKm1)) return result;
+    if (!(x[k] < 1.0)) result[k] = 1.0;
     result[k] = 1.0 - std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k);
   }
   return result;
@@ -280,25 +280,26 @@ Scalar UniformOrderStatistics::computeConditionalQuantile(const Scalar q,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
   if (conditioningDimension == 0) return 1.0 - std::pow(1.0 - q, 1.0 / dimension_);
   // The conditioning values must be in nondecreasing order
   if (!y.isNonDecreasing()) return 0.0;
   const UnsignedInteger k = y.getDimension();
-  const Scalar xKm1 = y[k - 1];
-  return 1.0 - (1.0 - xKm1) * std::pow(1.0 - q, 1.0 / (dimension_ - k));
+  const Scalar yKm1 = y[k - 1];
+  if (!((yKm1 >= 0.0) && (yKm1 <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
+  return SpecFunc::Clip01(1.0 - (1.0 - yKm1) * std::pow(1.0 - q, 1.0 / (dimension_ - k)));
 }
 
 Point UniformOrderStatistics::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a sequential conditional PDF at a quantile level vector of dimension=" << q.getDimension() << " not equal to the distribution dimension=" << dimension_;
-  if ((q[0] < 0.0) || (q[0] > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q[0] >= 0.0) && (q[0] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[0]=" << q[0] << " outside of [0, 1]";
   Point result(dimension_);
-  result[0] = 1.0 - std::pow(1.0 - q[0], 1.0 / dimension_);
+  result[0] = SpecFunc::Clip01(1.0 - std::pow(1.0 - q[0], 1.0 / dimension_));
   for (UnsignedInteger k = 1; k < dimension_; ++k)
   {
-    if ((q[k] < 0.0) || (q[k] > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-    result[k] = 1.0 - (1.0 - result[k - 1]) * std::pow(1.0 - q[k], 1.0 / (dimension_ - k));
+    if (!((q[k] >= 0.0) && (q[k] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << k << "]=" << q[k] << " outside of [0, 1]";
+    result[k] = SpecFunc::Clip01(1.0 - (1.0 - result[k - 1]) * std::pow(1.0 - q[k], 1.0 / (dimension_ - k)));
   }
   return result;
 }

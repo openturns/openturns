@@ -133,7 +133,7 @@ Point SklarCopula::computeDDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar ui = point[i];
-    if ((ui <= 0.0) || ui >= 1.0) return Point(dimension, 0.0);
+    if (!((ui > 0.0) && (ui < 1.0))) return Point(dimension, 0.0);
     const Point xi(marginalCollection_[i].computeQuantile(ui));
     x[i] = xi[0];
     pdfX[i] = marginalCollection_[i].computePDF(xi);

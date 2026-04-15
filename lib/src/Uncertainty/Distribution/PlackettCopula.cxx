@@ -246,7 +246,7 @@ Scalar PlackettCopula::computeConditionalCDF(const Scalar x, const Point & y) co
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   const Scalar u = y[0];
   const Scalar v = x;
-  return 0.5 * (1.0 + (2.0 * v + thetaMinus1_ * (v - u) - 1.0) / std::sqrt(1.0 + std::pow(thetaMinus1_ * (u - v), 2.0) + thetaMinus1_ * (2.0 * v + u * (2.0 - 4.0 * v))));
+  return SpecFunc::Clip01(0.5 * (1.0 + (2.0 * v + thetaMinus1_ * (v - u) - 1.0) / std::sqrt(1.0 + std::pow(thetaMinus1_ * (u - v), 2.0) + thetaMinus1_ * (2.0 * v + u * (2.0 - 4.0 * v)))));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -254,12 +254,13 @@ Scalar PlackettCopula::computeConditionalQuantile(const Scalar q, const Point & 
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const Scalar u = y[0];
+  if (!((u >= 0.0) && (u < 1.0))) return 0.0;
   const Scalar a = thetaMinus1_;
   const Scalar t1 = a * a;
   const Scalar t2 = q * q;
@@ -285,9 +286,8 @@ Scalar PlackettCopula::computeConditionalQuantile(const Scalar q, const Point & 
   const Scalar B = (4.0 * t12 * u - 4.0 * t16 * u - a - 2.0 * t10 - 2.0 * t12 + 2.0 * t16 + 2.0 * t8 - 1.0);
   const Scalar C = std::sqrt(t56 + t70);
   if (q <= 0.5)
-    return A * (B + C);
-  else
-    return A * (B - C);
+    return SpecFunc::Clip01(A * (B + C));
+  return SpecFunc::Clip01(A * (B - C));
 }
 
 /* Parameters value accessor */
