@@ -166,7 +166,11 @@ Indices LeastSquaresExpansion::getActiveFunctions() const
 
 void LeastSquaresExpansion::setActiveFunctions(const Indices & activeFunctions)
 {
-  if (!activeFunctions.check(basisSize_)) throw InvalidArgumentException(HERE) << "Error: the active functions must have indices less than " << basisSize_;
+  if (!activeFunctions.check(basisSize_))
+  {
+    basisSize_ = activeFunctions.normInf() + 1;
+    designProxy_ = DesignProxy();
+  }
   activeFunctions_ = activeFunctions;
 }
 
