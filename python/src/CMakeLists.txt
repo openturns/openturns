@@ -336,7 +336,7 @@ ot_add_python_module(func func_module.i
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i
                       AggregatedEvaluation.i AggregatedEvaluation_doc.i
-                      SymbolicEvaluation.i
+                      SymbolicEvaluation.i SymbolicEvaluation_doc.i
                       SymbolicGradient.i
                       SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i
