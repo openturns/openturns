@@ -8,7 +8,7 @@ ot.TESTPREAMBLE()
 # Instantiate one distribution object
 x = [[1.0], [2.0], [3.0], [3.0]]
 p = [0.3, 0.1, 0.6, 0.6]
-distribution = ot.UserDefined(x, p)
+distribution = ot.FiniteDiscreteDistribution(x, p)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 
@@ -52,14 +52,14 @@ distribution.setParameter(parameter)
 print("parameter=", distribution.getParameter())
 
 # To prevent automatic compaction
-ot.ResourceMap.SetAsUnsignedInteger("UserDefined-SmallSize", 5)
+ot.ResourceMap.SetAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 5)
 sample = ot.Sample(40, 3)
 for i in range(4):
     for j in range(3):
         sample[i, j] = 10 * (i // 3 + 1) + 0.1 * (j + 1)
 
-multivariateUserDefined = ot.UserDefined(sample)
-print("Multivariate UserDefined=", multivariateUserDefined)
+multivariateUserDefined = ot.FiniteDiscreteDistribution(sample)
+print("Multivariate FiniteDiscreteDistribution=", multivariateUserDefined)
 
 # Has this distribution an independent copula ?
 print("Has independent copula = ", multivariateUserDefined.hasIndependentCopula())
@@ -68,7 +68,7 @@ print("Marginal 0=", multivariateUserDefined.getMarginal(0))
 print("Marginal (2, 0)=", multivariateUserDefined.getMarginal([2, 0]))
 
 # cdf bug
-loi_UD = ot.UserDefined([[350], [358], [360], [353], [364], [355], [349], [351]])
+loi_UD = ot.FiniteDiscreteDistribution([[350], [358], [360], [353], [364], [355], [349], [351]])
 assert loi_UD.computeCDF([349]) == 0.125, "wrong cdf at min"
 assert loi_UD.computeCDF([364]) == 1.0, "wrong cdf at max"
 
@@ -76,3 +76,6 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipParameters()  # probabilities are renormalized so not independent
 validation.run()
+
+# alias
+distribution = ot.UserDefined(x, p)

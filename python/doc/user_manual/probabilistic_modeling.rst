@@ -118,6 +118,7 @@ Discrete parametric distributions
 
     :template: Distribution.rst_t
     Dirac
+    FiniteDiscreteDistribution
     Geometric
     Hypergeometric
     Multinomial
@@ -129,7 +130,6 @@ Discrete parametric distributions
     :template: Distribution.rst_t
     Poisson
     Skellam
-    UserDefined
     ZipfMandelbrot
 
 Parametrized distributions

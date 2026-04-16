@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for UserDefined distribution
+ *  @brief Factory for FiniteDiscreteDistribution distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,9 +49,9 @@ public:
   Distribution build(const Sample & sample,
                      const Scalar epsilon) const;
   Distribution build() const override;
-  UserDefined buildAsUserDefined(const Sample & sample,
+  FiniteDiscreteDistribution buildAsUserDefined(const Sample & sample,
                                  const Scalar epsilon = 0.0) const;
-  UserDefined buildAsUserDefined() const;
+  FiniteDiscreteDistribution buildAsUserDefined() const;
 
 }; /* class UserDefinedFactory */
 

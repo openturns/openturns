@@ -53,7 +53,7 @@
 %include UniformMuSigma.i
 %include UniformOverMesh.i
 %include UniformOrderStatistics.i
-%include UserDefined.i
+%include FiniteDiscreteDistribution.i
 %include UserDefinedFactory.i
 %include VonMises.i
 %include VonMisesFactory.i

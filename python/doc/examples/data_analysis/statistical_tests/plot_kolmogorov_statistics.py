@@ -84,7 +84,7 @@ def drawKSDistance(sample, distribution, observation, D, distFactory):
     curve.setLineWidth(4.0 * curve.getLineWidth())
     graph.add(curve)
     # Empirical CDF
-    empiricalCDF = ot.UserDefined(sample).drawCDF()
+    empiricalCDF = ot.FiniteDiscreteDistribution(sample).drawCDF()
     empiricalCDF.setLegends(["Empirical DF"])
     graph.add(empiricalCDF)
     #

@@ -1,5 +1,5 @@
 %feature("docstring") OT::UserDefinedFactory
-"UserDefined factory.
+"FiniteDiscreteDistribution factory.
 
 Notes
 -----
@@ -7,7 +7,7 @@ The distribution is estimated by an Uniform distribution over the sample.
 
 See also
 --------
-DistributionFactory, UserDefined"
+DistributionFactory, FiniteDiscreteDistribution"
 
 // ---------------------------------------------------------------------
 
@@ -27,11 +27,11 @@ Parameters
 sample : 2-d sequence of float
     Data.
 param : sequence of float
-    The parameters of the :class:`~openturns.UserDefined`.
+    The parameters of the :class:`~openturns.FiniteDiscreteDistribution`.
 
 Returns
 -------
-dist : :class:`~openturns.UserDefined`
-    The estimated distribution as a UserDefined.
+dist : :class:`~openturns.FiniteDiscreteDistribution`
+    The estimated distribution as a FiniteDiscreteDistribution.
     
-    In the first usage, the default :class:`openturns.UserDefined` distribution is built."
+    In the first usage, the default :class:`openturns.FiniteDiscreteDistribution` distribution is built."

@@ -209,7 +209,7 @@ emp_quant = sample.computeQuantile(new_alpha)[0]
 # We illustrate here the confidence intervals we obtained. To do that, we
 # draw the empirical cumulative distribution function and the bounds of the bilateral confidence intervals.
 # We first draw the empirical cumulative distribution function.
-user_defined_dist = ot.UserDefined(sample)
+user_defined_dist = ot.FiniteDiscreteDistribution(sample)
 g = user_defined_dist.drawCDF(sample.getMin(), sample.getMax() * 1.5)
 g = user_defined_dist.drawCDF(0.0, 60.0)
 

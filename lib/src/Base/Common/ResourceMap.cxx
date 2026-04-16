@@ -1410,8 +1410,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
 
-  // UserDefined parameters //
-  addAsUnsignedInteger("UserDefined-SmallSize", 10000);
+  // FiniteDiscreteDistribution parameters //
+  addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
   // UniformOverMesh parameters //
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);

@@ -1,5 +1,5 @@
-%feature("docstring") OT::UserDefined
-R"RAW(UserDefined distribution.
+%feature("docstring") OT::FiniteDiscreteDistribution
+R"RAW(FiniteDiscreteDistribution distribution.
 
 Parameters
 ----------
@@ -35,9 +35,9 @@ Create a 1d-distribution:
 >>> import openturns as ot
 >>> points = ot.Sample([[1.0], [2.0], [3.0]])
 >>> weights = [0.4, 0.5, 1.0]
->>> my_distribution = ot.UserDefined(points, weights)
+>>> my_distribution = ot.FiniteDiscreteDistribution(points, weights)
 >>> print(my_distribution)
-UserDefined({x = [1], p = 0.210526}, {x = [2], p = 0.263158}, {x = [3], p = 0.526316})
+FiniteDiscreteDistribution({x = [1], p = 0.210526}, {x = [2], p = 0.263158}, {x = [3], p = 0.526316})
 
 Create a 3d-distribution:
 
@@ -45,20 +45,20 @@ Create a 3d-distribution:
 >>> for i in range(4):
 ...     for j in range(3):
 ...         points[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
->>> distribution = ot.UserDefined(points, [0.3,0.2,0.25,0.25])
+>>> distribution = ot.FiniteDiscreteDistribution(points, [0.3,0.2,0.25,0.25])
 >>> print(distribution)
-UserDefined({x = [10.1,10.2,10.3], p = 0.3}, {x = [20.1,20.2,20.3], p = 0.2}, {x = [30.1,30.2,30.3], p = 0.25}, {x = [40.1,40.2,40.3], p = 0.25})
+FiniteDiscreteDistribution({x = [10.1,10.2,10.3], p = 0.3}, {x = [20.1,20.2,20.3], p = 0.2}, {x = [30.1,30.2,30.3], p = 0.25}, {x = [40.1,40.2,40.3], p = 0.25})
 
 Create :math:`\mathcal{U}[\![9,19]\!]`, the discrete uniform distribution on the set {9, 10, ..., 19}
 with equal weights:
 
 >>> points = [[i] for i in range(9, 20)]
->>> distribution = ot.UserDefined(points)
+>>> distribution = ot.FiniteDiscreteDistribution(points)
 )RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::getX
+%feature("docstring") OT::FiniteDiscreteDistribution::getX
 "Accessor to the distribution's :math:`x` parameter.
 
 Returns
@@ -68,7 +68,7 @@ coll : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::getP
+%feature("docstring") OT::FiniteDiscreteDistribution::getP
 "Accessor to the distribution's :math:`p` parameter.
 
 Returns
@@ -78,7 +78,7 @@ coll : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::setData
+%feature("docstring") OT::FiniteDiscreteDistribution::setData
 "Accessor to the distribution's :math:`x` and :math:`p` parameters.
 
 Parameters
@@ -90,7 +90,7 @@ weights : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::compactSupport()
+%feature("docstring") OT::FiniteDiscreteDistribution::compactSupport()
 R"RAW(Compact the support of the distribution.
 
 Compact by concatenating points of distance less than :math:`\varepsilon`
@@ -104,5 +104,5 @@ The :math:`\varepsilon` has a default value associated to the
 The method is always used for any univariate distributions and for upper
 dimensions, it is only used when the number of points defining the support is
 less than a limit specified by the :class:`~openturns.ResourceMap` key
-*UserDefined-SmallSize*. By default, the size limit is equal to :math:`1e4`.
+*FiniteDiscreteDistribution-SmallSize*. By default, the size limit is equal to :math:`1e4`.
 )RAW"

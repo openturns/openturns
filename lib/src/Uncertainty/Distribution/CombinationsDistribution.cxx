@@ -21,7 +21,7 @@
 #include <cmath>
 #include "openturns/Collection.hxx"
 #include "openturns/CombinationsDistribution.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/Combinations.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -266,7 +266,7 @@ Distribution CombinationsDistribution::getMarginal(const UnsignedInteger index) 
   // Then, go back to the [0, 1] interval
   for (UnsignedInteger j = 0; j <= n_ - k_; ++j)
     probabilities[j] = SpecFunc::Clip01(std::exp(probabilities[j]));
-  UserDefined marginal(support, probabilities);
+  FiniteDiscreteDistribution marginal(support, probabilities);
   marginal.setDescription(Description(1, getDescription()[index]));
   return marginal;
 }
@@ -295,7 +295,7 @@ Distribution CombinationsDistribution::getMarginal(const Indices & indices) cons
       probabilities[j] += SpecFunc::LogBinomialCoefficient(xe, je);
     probabilities[j] = SpecFunc::Clip01(std::exp(probabilities[j]));
   }
-  UserDefined marginal(support, probabilities);
+  FiniteDiscreteDistribution marginal(support, probabilities);
   marginal.setDescription(getDescription().select(indices));
   return marginal;
 }

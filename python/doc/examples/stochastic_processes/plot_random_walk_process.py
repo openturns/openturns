@@ -37,7 +37,7 @@ tgrid = ot.RegularGrid(0.0, 1.0, 500)
 
 # %%
 # 1-d random walk and discrete distribution
-dist = ot.UserDefined([[-1], [10]], [0.9, 0.1])
+dist = ot.FiniteDiscreteDistribution([[-1], [10]], [0.9, 0.1])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
@@ -63,7 +63,7 @@ pal = ["red", "cyan", "blue", "yellow", "green"]
 
 # %%
 # 2-d random walk and discrete distribution
-dist = ot.UserDefined([[-1.0, -2.0], [1.0, 3.0]], [0.5, 0.5])
+dist = ot.FiniteDiscreteDistribution([[-1.0, -2.0], [1.0, 3.0]], [0.5, 0.5])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = ot.Graph("2D Random Walk with discrete steps", "X1", "X2")

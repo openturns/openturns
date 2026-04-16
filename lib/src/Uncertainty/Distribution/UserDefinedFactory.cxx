@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for UserDefined distribution
+ *  @brief Factory for FiniteDiscreteDistribution distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -59,23 +59,23 @@ Distribution UserDefinedFactory::build() const
   return buildAsUserDefined().clone();
 }
 
-UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
+FiniteDiscreteDistribution UserDefinedFactory::buildAsUserDefined(const Sample & sample,
     const Scalar epsilon) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FiniteDiscreteDistribution distribution from an empty sample";
   const Scalar mean = sample.computeMean()[0];
-  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an UserDefined distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an FiniteDiscreteDistribution distribution if data contains NaN or Inf";
   const Scalar p = 1.0 / size;
-  UserDefined result(sample, Point(size, p));
+  FiniteDiscreteDistribution result(sample, Point(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-UserDefined UserDefinedFactory::buildAsUserDefined() const
+FiniteDiscreteDistribution UserDefinedFactory::buildAsUserDefined() const
 {
-  return UserDefined();
+  return FiniteDiscreteDistribution();
 }
 
 

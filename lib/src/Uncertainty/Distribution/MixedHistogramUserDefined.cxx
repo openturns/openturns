@@ -374,7 +374,7 @@ Distribution MixedHistogramUserDefined::getMarginal(const UnsignedInteger index)
   {
     SampleImplementation support(size, 1);
     support.setData(ticks);
-    marginal = UserDefined(support, marginalProbabilityTable);
+    marginal = FiniteDiscreteDistribution(support, marginalProbabilityTable);
   }
   else
   {
@@ -642,7 +642,7 @@ Mixture MixedHistogramUserDefined::asMixture() const
       const UnsignedInteger size = ticks.getSize();
       SampleImplementation support(size, 1);
       support.setData(ticks);
-      mixture = Mixture(Mixture::DistributionCollection(1, UserDefined(support, probabilityTable_)));
+      mixture = Mixture(Mixture::DistributionCollection(1, FiniteDiscreteDistribution(support, probabilityTable_)));
     }
     // Continuous
     else
@@ -660,7 +660,7 @@ Mixture MixedHistogramUserDefined::asMixture() const
         for (UnsignedInteger j = 0; j < dimension; ++j)
           support(i, j) = ticksCollection_[j][allIndices_(i, j)];
       }
-      mixture = Mixture(Mixture::DistributionCollection(1, UserDefined(support, probabilityTable_)));
+      mixture = Mixture(Mixture::DistributionCollection(1, FiniteDiscreteDistribution(support, probabilityTable_)));
     } // allDiscrete
     else
     {

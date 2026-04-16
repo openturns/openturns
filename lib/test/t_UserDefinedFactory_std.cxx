@@ -44,11 +44,11 @@ int main(int, char *[])
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    UserDefined estimatedUserDefined(factory.buildAsUserDefined(sample));
+    FiniteDiscreteDistribution estimatedUserDefined(factory.buildAsUserDefined(sample));
     fullprint << "Sample                =" << sample << std::endl;
-    fullprint << "Estimated UserDefined=" << estimatedUserDefined << std::endl;
+    fullprint << "Estimated FiniteDiscreteDistribution=" << estimatedUserDefined << std::endl;
     estimatedUserDefined = factory.buildAsUserDefined();
-    fullprint << "Default UserDefined=" << estimatedUserDefined << std::endl;
+    fullprint << "Default FiniteDiscreteDistribution=" << estimatedUserDefined << std::endl;
     // For ticket 784
     estimatedDistribution = factory.build(Sample(2000, Point(1, 0.0)));
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
