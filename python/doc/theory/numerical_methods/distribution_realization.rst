@@ -177,7 +177,7 @@ The techniques implemented in each distribution are:
    - Sequential search for :math:`\mu < 6`
    - Ratio of uniforms for :math:`\mu\geq 6`
 
-- RandomMixture: Transformation
+- LinearCombinationDistribution: Transformation
 - Rayleigh: CDF inversion
 - Rice: Transformation
 - Skellam: Transformation

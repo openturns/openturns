@@ -1,11 +1,11 @@
-distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=3 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
-range =  [0, (38.9173) +inf[
-mean =  [3]
-cov =  [[ 3 ]]
-sigma =  [1.73205]
-xMin =  [-3.755]
-xMax =  [9.755]
-x;PDF;reference
+distribution = class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Gamma name=Gamma dimension=1 k=3 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
+distribution = LinearCombinationDistribution(Gamma(k = 3, lambda = 1, gamma = 0))
+range = class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[38.9173] finite lower bound=[1] finite upper bound=[0]
+mean = class=Point name=Unnamed dimension=1 values=[3]
+cov = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
+sigma = class=Point name=Unnamed dimension=1 values=[1.73205]
+xMin = class=Point name=Unnamed dimension=1 values=[-3.755]
+xMax = class=Point name=Unnamed dimension=1 values=[9.755]
 -3.755;0;0
 -3.70202;0;0
 -3.64904;0;0

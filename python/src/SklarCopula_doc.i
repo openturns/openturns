@@ -15,7 +15,7 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     Distribution, whatever its type : UsualDistribution, JointDistribution,
-    KernelMixture, Mixture, RandomMixture, ...).
+    KernelMixture, Mixture, LinearCombinationDistribution, ...).
 
 Examples
 --------
@@ -51,5 +51,5 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     A distribution, whatever its type : UsualDistribution,
-    JointDistribution, KernelMixture, Mixture, RandomMixture, ...)
+    JointDistribution, KernelMixture, Mixture, LinearCombinationDistribution, ...)
     from which the copula is built."

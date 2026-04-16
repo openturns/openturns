@@ -4,7 +4,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(6)
-ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
+ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000)
 
 
 # 1) Analytical test ==> No FFT
@@ -13,7 +13,7 @@ coll[0] = ot.Normal(0.0, 1.0)
 coll[1] = ot.Uniform(2.0, 5.0)
 coll[2] = ot.Uniform(2.0, 5.0)
 weights = ot.Matrix([[1.0, 2.0, 4.0], [3.0, 4.0, 5.0], [6.0, 0.0, 1.0]])
-distribution = ot.RandomMixture(coll, weights)
+distribution = ot.LinearCombinationDistribution(coll, weights)
 print("distribution=", repr(distribution))
 print("range = ", distribution.getRange())
 print("mean = ", distribution.getMean())
@@ -43,8 +43,8 @@ collection3D.add(ot.Uniform(0, 1))
 weights = ot.Matrix(
     [[1.0, -0.05, 1.0, -0.5], [0.5, 1.0, -0.05, 0.3], [-0.5, -0.1, 1.2, -0.8]]
 )
-# Defining RandomMixture
-dist_3D = ot.RandomMixture(collection3D, weights)
+# Defining LinearCombinationDistribution
+dist_3D = ot.LinearCombinationDistribution(collection3D, weights)
 mean = dist_3D.getMean()
 sigma = dist_3D.getStandardDeviation()
 print("distribution = ", repr(dist_3D))

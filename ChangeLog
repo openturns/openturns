@@ -23,6 +23,7 @@
  * Deprecated openturns.testing.assert_almost_equal(Indices)
  * Deprecated ProbabilitySimulationResult.getConfidenceLength
  * Deprecated UserDefined in favor of FiniteDiscreteDistribution
+ * Deprecated RandomMixture in favor of LinearCombinationDistribution
 
 === Documentation ===
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class RandomMixture for standard methods
+ *  @brief The test file of class LinearCombinationDistribution for standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -47,7 +47,7 @@ int main(int, char *[])
     weights(2, 0) = 6.0;
     weights(2, 1) = 0.0;
     weights(2, 2) = 1.0;
-    RandomMixture distribution(coll, weights);
+    LinearCombinationDistribution distribution(coll, weights);
     fullprint << "distribution=" << distribution << std::endl;
     fullprint << "distribution=" << distribution.__str__() << std::endl;
     fullprint << "range = " << distribution.getRange() << std::endl;
@@ -88,8 +88,8 @@ int main(int, char *[])
     weights(2, 1) = -0.1;
     weights(2, 2) = 1.2;
     weights(2, 3) = -0.8;
-    // Defining RandomMixture
-    RandomMixture dist_3D(collection3D, weights);
+    // Defining LinearCombinationDistribution
+    LinearCombinationDistribution dist_3D(collection3D, weights);
     mean = dist_3D.getMean();
     sigma = dist_3D.getStandardDeviation();
     fullprint << "distribution = " << dist_3D << std::endl;

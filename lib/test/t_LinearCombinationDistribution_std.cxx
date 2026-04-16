@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class RandomMixture for standard methods
+ *  @brief The test file of class LinearCombinationDistribution for standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -29,7 +29,7 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  ResourceMap::SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000);
+  ResourceMap::SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000);
 
   try
   {
@@ -56,7 +56,7 @@ int main(int, char *[])
     for (UnsignedInteger testIndex = 0; testIndex < testCases.getSize(); ++testIndex)
     {
       // Instantiate one distribution object
-      RandomMixture distribution(testCases[testIndex]);
+      LinearCombinationDistribution distribution(testCases[testIndex]);
       distribution.setBlockMin(5);
       distribution.setBlockMax(20);
       Distribution distributionReference(references[testIndex]);
@@ -135,7 +135,7 @@ int main(int, char *[])
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance      =" << covariance << std::endl;
       fullprint << "covariance (ref)=" << distributionReference.getCovariance() << std::endl;
-      RandomMixture::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
+      LinearCombinationDistribution::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
       fullprint << "blockMin=" << distribution.getBlockMin() << std::endl;
@@ -157,12 +157,12 @@ int main(int, char *[])
     weights.add(1.0);
     coll.add(Exponential(2.0, 0.0));
     weights.add(1.0);
-    //      RandomMixture rm(coll, weights);
+    //      LinearCombinationDistribution rm(coll, weights);
     //      coll.add(rm);
     //      weights.add(-2.5);
     coll.add(Gamma(3.0, 4.0, 0.0));
     weights.add(1.0);
-    RandomMixture distribution(coll, weights);
+    LinearCombinationDistribution distribution(coll, weights);
     fullprint << "distribution=" << distribution << std::endl;
     fullprint << "distribution=" << distribution.__str__() << std::endl;
     for (UnsignedInteger i = 0; i < 30; ++i)
@@ -190,7 +190,7 @@ int main(int, char *[])
     fullprint << "projections=" << result << std::endl;
     fullprint << "norms=" << norms << std::endl;
     //------------------------------ Multivariate tests ------------------------------//
-    // 2D RandomMixture
+    // 2D LinearCombinationDistribution
     Collection< Distribution > collection(0);
     collection.add(Normal(0.0, 1.0));
     collection.add(Normal(0.0, 1.0));
@@ -204,8 +204,8 @@ int main(int, char *[])
     weightMatrix(1, 1) = 1.0;
     weightMatrix(1, 2) = -3.0;
 
-    // Build the RandomMixture
-    RandomMixture distribution2D(collection, weightMatrix);
+    // Build the LinearCombinationDistribution
+    LinearCombinationDistribution distribution2D(collection, weightMatrix);
     fullprint << "distribution = " << distribution2D << std::endl;
     fullprint << "range = " << distribution2D.getRange() << std::endl;
     fullprint << "mean = " <<  distribution2D.getMean() << std::endl;
@@ -258,8 +258,8 @@ int main(int, char *[])
     collUniforme.add(Uniform(0, 1));
     collUniforme.add(Uniform(0, 1));
     collUniforme.add(Uniform(0, 1));
-    // Build the RandomMixture
-    RandomMixture dist_2D(collUniforme, weightMatrix);
+    // Build the LinearCombinationDistribution
+    LinearCombinationDistribution dist_2D(collUniforme, weightMatrix);
     dist_2D.setBlockMin(3);
     dist_2D.setBlockMax(8);
 
@@ -283,7 +283,7 @@ int main(int, char *[])
       fullprint << "pdf      =" << PDF << std::endl;
     }
     // 3D test
-    ResourceMap::SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 8290688);
+    ResourceMap::SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 8290688);
     Collection<Distribution> collectionMixture(0);
     collectionMixture.add(Normal(2.0, 1.0));
     collectionMixture.add(Normal(-2.0, 1.0));
@@ -310,7 +310,7 @@ int main(int, char *[])
     weightMatrix(2, 2) = 1.2;
     weightMatrix(2, 3) = -0.8;
 
-    RandomMixture dist_3D(collection3D, weightMatrix);
+    LinearCombinationDistribution dist_3D(collection3D, weightMatrix);
     dist_3D.setBlockMin(3);
     dist_3D.setBlockMax(6);
 
@@ -341,17 +341,17 @@ int main(int, char *[])
     }
     // Test for ticket 882 (only one Dirac)
     // The segfault was triggered during the construction...
-    RandomMixture mixture2(Collection<Distribution>(1, Dirac()));
+    LinearCombinationDistribution mixture2(Collection<Distribution>(1, Dirac()));
     // After what it was impossible to draw the PDF or the CDF due to a lack of support computation
     mixture2.drawPDF();
     mixture2.drawCDF();
     // Test computeQuantile for the specific case of an analytical 1D mixture
-    RandomMixture case1(Collection<Distribution>(1, ChiSquare()), Point(1, 0.1));
+    LinearCombinationDistribution case1(Collection<Distribution>(1, ChiSquare()), Point(1, 0.1));
     Scalar q = case1.computeQuantile(0.95)[0];
     fullprint << "case 1, q=" << q << std::endl;
     q = case1.computeQuantile(0.95, true)[0];
     fullprint << "case 1, q comp=" << q << std::endl;
-    RandomMixture case2(Collection<Distribution>(1, ChiSquare()), Point(1, -0.1));
+    LinearCombinationDistribution case2(Collection<Distribution>(1, ChiSquare()), Point(1, -0.1));
     q = case2.computeQuantile(0.95)[0];
     fullprint << "case 2, q=" << q << std::endl;
     q = case2.computeQuantile(0.95, true)[0];
@@ -379,7 +379,7 @@ int main(int, char *[])
     }
     // For ticket 1129
     {
-      distribution = RandomMixture(Collection<Distribution>(200, Uniform()));
+      distribution = LinearCombinationDistribution(Collection<Distribution>(200, Uniform()));
       fullprint << "CDF(0)=" << distribution.computeCDF(0.0) << std::endl;
     }
   }

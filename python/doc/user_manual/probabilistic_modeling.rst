@@ -168,26 +168,27 @@ Combining and transforming distributions
 
 .. autosummary::
     :toctree: _generated/
-    :template: classWithPlot.rst_t
-
-    JointByConditioningDistribution
 
     :template: DistributionHighDimension.rst_t
     BlockIndependentDistribution
-    JointDistribution
 
     :template: classWithPlot.rst_t
     CompositeDistribution
 
     :template: Distribution.rst_t
     CompoundDistribution
-
-    :template: classWithPlot.rst_t
-    PointConditionalDistribution
-
-    :template: Distribution.rst_t
     CumulativeDistributionNetwork
     DiscreteCompoundDistribution
+
+    :template: classWithPlot.rst_t
+    JointByConditioningDistribution
+
+    :template: DistributionHighDimension.rst_t
+    JointDistribution
+
+    :template: Distribution.rst_t
+    KernelMixture
+    LinearCombinationDistribution
 
     :template: class.rst_t
     MarginalDistribution
@@ -198,30 +199,24 @@ Combining and transforming distributions
     :template: classWithPlot.rst_t
     MaximumEntropyOrderStatisticsDistribution
 
-.. autosummary::
-    :toctree: _generated/
     :template: class.rst_t
-
     MixedHistogramUserDefined
-    OrderStatisticsMarginalChecker
-    PosteriorDistribution
-
-.. autosummary::
-    :toctree: _generated/
-    :template: Distribution.rst_t
-
-    ProductDistribution
-    RandomMixture
-
-.. autosummary::
-    :toctree: _generated/
-    :template: Distribution.rst_t
-
-    TruncatedDistribution
-    KernelMixture
 
     :template: classWithPlot.rst_t
     Mixture
+
+    :template: class.rst_t
+    OrderStatisticsMarginalChecker
+
+    :template: classWithPlot.rst_t
+    PointConditionalDistribution
+
+    :template: class.rst_t
+    PosteriorDistribution
+
+    :template: Distribution.rst_t
+    ProductDistribution
+    TruncatedDistribution
 
 .. _copulas:
 

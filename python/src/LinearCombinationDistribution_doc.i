@@ -1,5 +1,5 @@
-%feature("docstring") OT::RandomMixture
-R"RAW(RandomMixture distribution.
+%feature("docstring") OT::LinearCombinationDistribution
+R"RAW(LinearCombinationDistribution distribution.
 
 Refer to :ref:`random_mixture`.
 
@@ -67,13 +67,13 @@ Its first moments are:
     \end{eqnarray*}
 
 Available constructors:
-    RandomMixture(*coll, cst*)
+    LinearCombinationDistribution(*coll, cst*)
 
-    RandomMixture(*coll, weights, cst*)
+    LinearCombinationDistribution(*coll, weights, cst*)
 
-    RandomMixture(*coll, weightsMatrix*)
+    LinearCombinationDistribution(*coll, weightsMatrix*)
 
-    RandomMixture(*coll, weightsMatrix, constant*)
+    LinearCombinationDistribution(*coll, weightsMatrix, constant*)
 
 
 Parameters
@@ -101,7 +101,7 @@ Create a distribution:
 >>> coll = [ot.Triangular(0.0, 1.0, 5.0), ot.Uniform(-2.0, 2.0)]
 >>> weights = [3.0, 2.0]
 >>> cst = 3.0
->>> distribution = ot.RandomMixture(coll, weights, cst)
+>>> distribution = ot.LinearCombinationDistribution(coll, weights, cst)
 
 Draw a sample:
 
@@ -109,7 +109,7 @@ Draw a sample:
 )RAW"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getDistributionCollection
+%feature("docstring") OT::LinearCombinationDistribution::getDistributionCollection
 "Return the list of distributions used.
 
 In dimension 1, some analytical aggregations may be performed on
@@ -124,14 +124,14 @@ coll : DistributionCollection
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # Sum of two Uniform here is a Triangular
 >>> coll = distribution.getDistributionCollection()
 >>> print(coll)
 [Triangular(a = -2, m = 0, b = 2)]"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getConstant
+%feature("docstring") OT::LinearCombinationDistribution::getConstant
 "Return the vector of the affine combination.
 
 Returns
@@ -142,14 +142,14 @@ out : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # Constant term is 0
 >>> cst = distribution.getConstant()
 >>> print(cst)
 [0]"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setConstant
+%feature("docstring") OT::LinearCombinationDistribution::setConstant
 "Set the constant term of the affine combination.
 
 Parameters
@@ -160,12 +160,12 @@ vect : sequence of float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # Set the new constant term is 0
 >>> distribution.setConstant([1.0])"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getWeights
+%feature("docstring") OT::LinearCombinationDistribution::getWeights
 "Return the weights of the combination as a Matrix.
 
 Returns
@@ -176,14 +176,14 @@ out : :class:`~openturns.Matrix`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # weights
 >>> w = distribution.getWeights()
 >>> print(w)
 [[ 1 ]]"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getBlockMin
+%feature("docstring") OT::LinearCombinationDistribution::getBlockMin
 "Return the blockMin parameter.
 
 Returns
@@ -194,14 +194,14 @@ blockMin : int
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # blockMin
 >>> blockMin = distribution.getBlockMin()
 >>> print(blockMin)
 3"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setBlockMin
+%feature("docstring") OT::LinearCombinationDistribution::setBlockMin
 "Set the blockMin parameter.
 
 Parameters
@@ -212,11 +212,11 @@ blockMin : int
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> distribution.setBlockMin(4)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getBlockMax
+%feature("docstring") OT::LinearCombinationDistribution::getBlockMax
 "Return the blockMax parameter.
 
 Returns
@@ -227,14 +227,14 @@ blockMax : int
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # blockMax
 >>> blockMax = distribution.getBlockMax()
 >>> print(blockMax)
 16"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setBlockMax
+%feature("docstring") OT::LinearCombinationDistribution::setBlockMax
 "Set the blockMax parameter.
 
 Returns
@@ -246,11 +246,11 @@ blockMax : int
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> distribution.setBlockMax(14)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getAlpha
+%feature("docstring") OT::LinearCombinationDistribution::getAlpha
 "Return the priori range of PDF and CDF argument.
 
 It is expressed in dispersionIndicator units.
@@ -263,14 +263,14 @@ alpha : float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # alpha
 >>> alpha = distribution.getAlpha()
 >>> print(alpha)
 5.0"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setAlpha
+%feature("docstring") OT::LinearCombinationDistribution::setAlpha
 "Set the a priori range of PDF and CDF arguments in terms of standard deviation.
 
 Parameters
@@ -281,12 +281,12 @@ alpha : float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> alpha = 8.0
 >>> distribution.setAlpha(alpha)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getBeta
+%feature("docstring") OT::LinearCombinationDistribution::getBeta
 "Return the distance of the a priori range at which the PDF is negligible.
 
 Returns
@@ -297,14 +297,14 @@ beta : float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # beta
 >>> beta = distribution.getBeta()
 >>> print(beta)
 8.5"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setBeta
+%feature("docstring") OT::LinearCombinationDistribution::setBeta
 "Set the distance of the a priori range at which the PDF is negligible.
 
 Parameters
@@ -315,12 +315,12 @@ beta : float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> beta = 8.0
 >>> distribution.setBeta(beta)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getMaxSize
+%feature("docstring") OT::LinearCombinationDistribution::getMaxSize
 "Return the maximum size of cache for characteristic function evaluations.
 
 Returns
@@ -331,14 +331,14 @@ size : int
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> # default cache size
 >>> size = distribution.getMaxSize()
 >>> print(size)
 65536"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setMaxSize
+%feature("docstring") OT::LinearCombinationDistribution::setMaxSize
 "Set the maximum size of cache for characteristic function evaluations.
 
 Parameters
@@ -349,12 +349,12 @@ size : int
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> size = pow(2,15)
 >>> distribution.setMaxSize(size)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setPDFPrecision
+%feature("docstring") OT::LinearCombinationDistribution::setPDFPrecision
 "Set the requested precision for PDF computation.
 
 Parameters
@@ -365,12 +365,12 @@ eps : float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> eps = 1.e-12
 >>> distribution.setPDFPrecision(eps)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setCDFPrecision
+%feature("docstring") OT::LinearCombinationDistribution::setCDFPrecision
 "Set the requested precision for CDF computation.
 
 Parameters
@@ -381,12 +381,12 @@ eps : float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> eps = 1.e-12
 >>> distribution.setCDFPrecision(eps)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::getReferenceBandwidth
+%feature("docstring") OT::LinearCombinationDistribution::getReferenceBandwidth
 R"RAW(Return the reference bandwidth.
 
 It is the maximum bandwidth that allows an accurate computation
@@ -400,14 +400,14 @@ out : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Triangular(-1.0, 0.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Triangular(-1.0, 0.0, 1.0)])
 >>> # bw
 >>> bw = distribution.getReferenceBandwidth()
 >>> print(bw)
 [0.785398])RAW"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::setReferenceBandwidth
+%feature("docstring") OT::LinearCombinationDistribution::setReferenceBandwidth
 "Set the reference bandwidth.
 
 Parameters
@@ -418,13 +418,13 @@ bw : sequence of float
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> bw = [0.75]
 >>> distribution.setReferenceBandwidth(bw)"
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::RandomMixture::project
-"Project a RandomMixture distribution over a collection of DistributionFactory.
+%feature("docstring") OT::LinearCombinationDistribution::project
+"Project a LinearCombinationDistribution distribution over a collection of DistributionFactory.
 
 Uses sampling and Kolmogorov distance.
 
@@ -447,14 +447,14 @@ out : tuple of size 2:
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Normal(0.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.LinearCombinationDistribution([ot.Normal(0.0, 1.0), ot.Uniform(-1.0, 1.0)])
 >>> coll = [ot.NormalFactory(), ot.UniformFactory()]
 >>> dist, kolmogorovNorm = distribution.project(coll)
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomMixture::setFFTAlgorithm
+%feature("docstring") OT::LinearCombinationDistribution::setFFTAlgorithm
 "Accessor to the FFT algorithm implementation.
 
 Parameters
@@ -464,7 +464,7 @@ fft : a :class:`~openturns.FFT`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomMixture::getFFTAlgorithm
+%feature("docstring") OT::LinearCombinationDistribution::getFFTAlgorithm
 "Accessor to the FFT algorithm implementation.
 
 Returns
