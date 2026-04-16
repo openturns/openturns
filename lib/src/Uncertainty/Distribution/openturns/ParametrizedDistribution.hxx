@@ -75,6 +75,9 @@ public:
   using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 
@@ -93,6 +96,9 @@ public:
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
   Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the quantile of the distribution */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const override;
