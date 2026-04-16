@@ -844,7 +844,8 @@ Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     u[i] = distributionCollection_[i].computeCDF(x[i]);
   if (core_.isCopula() && hasIndependentCopula()) return u;
-  return core_.computeSequentialConditionalCDF(u);
+  const Point result(core_.computeSequentialConditionalCDF(u));
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -860,7 +861,11 @@ Scalar JointDistribution::computeConditionalQuantile(const Scalar q,
   if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeScalarQuantile(q);
   // General case
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      if (!((y[i] >= range_.getLowerBound()[i]) && (y[i] <= range_.getUpperBound()[i]))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
+      u[i] = distributionCollection_[i].computeCDF(y[i]);
+    }
   return distributionCollection_[conditioningDimension].computeScalarQuantile(core_.computeConditionalQuantile(q, u));
 }
 

@@ -591,7 +591,7 @@ Scalar JointByConditioningDistribution::computeConditionalQuantile(const Scalar 
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for a conditioning only in the conditioning part
   const UnsignedInteger conditioningDistributionDimension = conditioningDistribution_.getDimension();
   if ((conditioningDimension < conditioningDistributionDimension))

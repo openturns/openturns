@@ -330,7 +330,7 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   if (sumY <= 0.0 || sumY >= 1.0) return 0.0;
   s -= sumThetaConditioning;
   const Scalar z = x / (1.0 - sumY);
-  if (z <= 0.0 || z >= 1.0) return 0.0;
+  if (!((z > 0.0) && (z < 1.0))) return 0.0;
   return std::exp(-SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
 }
 
@@ -351,7 +351,7 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
     s -= r;
     r = theta_[conditioningDimension];
     z = x[conditioningDimension] / (1.0 - sumY);
-    if (z <= 0.0 || z >= 1.0) break;
+    if (!((z > 0.0) & (z < 1.0))) break;
     result[conditioningDimension] = std::exp(- SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
   }
   return result;
@@ -373,8 +373,8 @@ Scalar Dirichlet::computeConditionalCDF(const Scalar x,
     sumThetaConditioning += theta_[i];
     sumY += y[i];
   }
-  if (sumY <= 0.0) return 0.0;
-  if (sumY >= 1.0) return 1.0;
+  if (!(sumY > 0.0)) return 0.0;
+  if (!(sumY < 1.0)) return 1.0;
   s -= sumThetaConditioning;
   return DistFunc::pBeta(r, s, x / (1.0 - sumY));
 }
@@ -392,7 +392,7 @@ Point Dirichlet::computeSequentialConditionalCDF(const Point & x) const
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
   {
     sumY += x[conditioningDimension - 1];
-    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    if (!((sumY > 0.0) && (sumY < 1.0))) return result;
     s -= r;
     r = theta_[conditioningDimension];
     z = x[conditioningDimension] / (1.0 - sumY);
@@ -407,11 +407,12 @@ Scalar Dirichlet::computeConditionalQuantile(const Scalar q,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
+    if (!((y[i] >= 0.0) && (y[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
     sumThetaConditioning += theta_[i];
     sumY += y[i];
   }
@@ -432,7 +433,7 @@ Point Dirichlet::computeSequentialConditionalQuantile(const Point & q) const
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
   {
     sumY += result[conditioningDimension - 1];
-    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    if (!((sumY > 0.0) & (sumY < 1.0))) return result;
     s -= r;
     r = theta_[conditioningDimension];
     result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);

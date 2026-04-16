@@ -267,13 +267,15 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) cons
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   const Scalar u = y[0];
+  if ((u <= 0.0) || (u > 1.0)) return 0.0;
   const Scalar v = x;
+  if (v <= 0.0) return 0.0;
   // If we are in the support
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
   const Scalar minusLogVPowTheta = std::pow(-std::log(v), theta_);
   const Scalar sum = minusLogUPowTheta + minusLogVPowTheta;
-  return std::pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * std::exp(-std::pow(sum, 1.0 / theta_)) / (u * minusLogU);
+  return SpecFunc::Clip01(std::pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * std::exp(-std::pow(sum, 1.0 / theta_)) / (u * minusLogU));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -281,18 +283,19 @@ Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y)
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q <= 0.0) || (q >= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q > 0.0) && (q < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const Scalar u = y[0];
+  if (!((u >= 0.0) && (u <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
   const Scalar inverseThetaMinusOne = 1.0 / (theta_ - 1.0);
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
   const Scalar factor = minusLogUPowTheta / (u * q * minusLogU);
-  return std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
+  return SpecFunc::Clip01(std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_)));
 }
 
 /* Get the Kendall concordance of the distribution */

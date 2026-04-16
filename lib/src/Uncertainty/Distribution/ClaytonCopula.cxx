@@ -405,14 +405,17 @@ Scalar ClaytonCopula::computeConditionalCDF(const Scalar x, const Point & y) con
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
+  // Special case for no conditioning
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
   const Scalar u = y[0];
+  if (!((u >= 0.0) && (u < 1.0))) return 0.0;
   const Scalar v = x;
+  if (!(v > 0.0)) return 0.0;
+  if (!(v < 1.0)) return 1.0;
   // If we are in the support
   const Scalar factor = std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0;
-  if (factor <= 0.0) return 0.0;
-  return std::pow(factor, -1.0 - 1.0 / theta_) * std::pow(u, -1.0 - theta_);
+  if (!(factor > 0.0)) return 0.0;
+  return SpecFunc::Clip01(std::pow(factor, -1.0 - 1.0 / theta_) * std::pow(u, -1.0 - theta_));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -420,14 +423,15 @@ Scalar ClaytonCopula::computeConditionalQuantile(const Scalar q, const Point & y
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for no conditioning or independent copula
   if ((q == 0.0) || (q == 1.0)) return q;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const Scalar z = y[0];
-  return z * std::pow(std::pow(q, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(z, theta_), -1.0 / theta_);
+  if (!((z >= 0.0) && (z <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
+  return SpecFunc::Clip01(z * std::pow(std::pow(q, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(z, theta_), -1.0 / theta_));
 }
 
 /* Tell if the distribution has independent copula */

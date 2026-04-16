@@ -2241,6 +2241,16 @@ Point DistributionImplementation::computeSequentialConditionalPDF(const Point & 
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << x.getDimension();
   Point result(dimension_);
+  // Special case for bidimensional copulas (most copulas)
+  if (isCopula() && (dimension_ == 2))
+  {
+    if ((x[0] >= 0.0) && (x[1] < 1.0))
+      {
+	result[0] = 1.0;
+	result[1] = computePDF(x);
+      }
+    return result;
+  } // (isCopula() && (dimension_ == 2)
   Indices conditioning(1, 0);
   Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
   Point currentX(1, x[0]);
@@ -2324,6 +2334,13 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << x.getDimension();
   Point result(dimension_);
+  // Special case for bidimensional copulas (most copulas)
+  if (isCopula() && (dimension_ == 2))
+  {
+    result[0] = SpecFunc::Clip01(x[0]);
+    result[1] = computeConditionalCDF(x[1], {x[0]});
+    return result;
+  } // (isCopula() && (dimension_ == 2)
   Indices conditioning(1, 0);
   Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
   Point currentX(1, x[0]);
@@ -2351,10 +2368,12 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
       Pointer<ConditionalPDFWrapper> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditioningDistribution);
       p_conditionalPDFWrapper->setParameter(currentX);
       const Scalar cdfConditioned = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, std::min(x[conditioningDimension], xMax));
-      result[conditioningDimension] = cdfConditioned / pdfConditioning;
+      result[conditioningDimension] = SpecFunc::Clip01(cdfConditioned / pdfConditioning);
     }
     currentX.add(x[conditioningDimension]);
-    pdfConditioning = conditioningDistribution->computePDF(currentX);
+    // If we are not at the last component, compute the conditioning PDF
+    if (conditioningDimension < dimension_ - 1)
+      pdfConditioning = conditioningDistribution->computePDF(currentX);
   } // conditioningDimension
   return result;
 }
@@ -2390,8 +2409,8 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
   for (UnsignedInteger i = 0; i < size; ++i)
     if (pdfConditioning(i, 0) > 0.0)
     {
-      if (x[i] >= xMax) result[i] = 1.0;
-      else if (x[i] > xMin)
+      if (!(x[i] < xMax)) result[i] = 1.0;
+      else if (!(x[i] <= xMin))
       {
         // Numerical integration with respect to x
         p_conditionalPDFWrapper->setParameter(y[i]);
@@ -2414,7 +2433,16 @@ Scalar DistributionImplementation::computeConditionalQuantile(const Scalar q,
 Point DistributionImplementation::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Cannot compute sequential conditional quantile from an argument of dimension=" << q.getDimension() << ", expected " << dimension_;
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+  // Special case for bidimensional copulas (most copulas)
   Point result(0);
+  if (isCopula() && (dimension_ == 2))
+  {
+    result.add(q[0]);
+    result.add(computeConditionalQuantile(q[1], {result[0]}));
+    return result;
+  } // (isCopula() && (dimension_ == 2)
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     result.add(computeConditionalQuantile(q[i], result));
   return result;
@@ -2426,17 +2454,13 @@ Point DistributionImplementation::computeConditionalQuantile(const Point & q,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  const UnsignedInteger size = q.getDimension();
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    if ((q[i] < 0.0) || (q[i] > 1.0)) throw InvalidArgumentException(HERE) << "Error: point=" << i << ", cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
-  }
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
     return getMarginal(conditioningDimension).computeQuantile(q).getImplementation()->getData();
   // General case
   const Scalar xMin = range_.getLowerBound()[conditioningDimension];
   const Scalar xMax = range_.getUpperBound()[conditioningDimension];
+  const UnsignedInteger size = y.getSize();
   Point result(size);
   // Here we recreate a ConditionalCDFWrapper only if none has been created or if the parameter dimension has changed
   Pointer<ConditionalCDFWrapper> p_conditionalCDFWrapper = new ConditionalCDFWrapper(this);
