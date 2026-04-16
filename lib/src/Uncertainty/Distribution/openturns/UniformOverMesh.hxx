@@ -25,7 +25,7 @@
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/Dirichlet.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

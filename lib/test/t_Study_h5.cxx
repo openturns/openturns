@@ -336,8 +336,8 @@ int main(int, char *[])
     TruncatedNormal truncatedNormal(0.5, 3.0, -2.0, 2.0);
     study.add("truncatedNormal", truncatedNormal);
 
-    // Create an UserDefined
-    UserDefined userDefined;
+    // Create an FiniteDiscreteDistribution
+    FiniteDiscreteDistribution finiteDiscreteDistribution;
     {
       Sample x(3, 1);
       x[0][0] = 1.0;
@@ -347,8 +347,8 @@ int main(int, char *[])
       p[0] = 0.3;
       p[1] = 0.1;
       p[2] = 0.6;
-      userDefined = UserDefined(x, p);
-      study.add("userDefined", userDefined);
+      finiteDiscreteDistribution = FiniteDiscreteDistribution(x, p);
+      study.add("finiteDiscreteDistribution", finiteDiscreteDistribution);
     }
 
     // Create a WeibullMin distribution
@@ -1091,7 +1091,7 @@ int main(int, char *[])
     compare<TruncatedDistribution>(truncatedDistribution, study2 );
     compare<TruncatedNormal>(truncatedNormal, study2 );
     compare<Uniform >( uniform, study2 );
-    compare<UserDefined>(userDefined, study2 );
+    compare<FiniteDiscreteDistribution>(finiteDiscreteDistribution, study2 );
     compare<WeibullMin>(weibull, study2 );
 
     // Simulation

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class UserDefined for standard methods
+ *  @brief The test file of class FiniteDiscreteDistribution for standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -42,7 +42,7 @@ int main(int, char *[])
     p[1] = 0.1;
     p[2] = 0.6;
     p[3] = 0.6;
-    UserDefined distribution(x, p);
+    FiniteDiscreteDistribution distribution(x, p);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     // Is this distribution elliptical ?
@@ -82,7 +82,7 @@ int main(int, char *[])
 
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     // To prevent automatic compaction
-    ResourceMap::SetAsUnsignedInteger("UserDefined-SmallSize", 5);
+    ResourceMap::SetAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 5);
     Sample sample(40, 3);
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
@@ -91,11 +91,11 @@ int main(int, char *[])
         sample[i][j] = 10 * (i / 3 + 1) + 0.1 * (j + 1);
       }
     }
-    UserDefined multivariateUserDefined(sample);
+    FiniteDiscreteDistribution multivariateUserDefined(sample);
     multivariateUserDefined.setName("Unnamed");
-    fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    fullprint << "Multivariate FiniteDiscreteDistribution=" << multivariateUserDefined << std::endl;
     multivariateUserDefined.compactSupport();
-    fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    fullprint << "Multivariate FiniteDiscreteDistribution=" << multivariateUserDefined << std::endl;
     // Has the distribution an independent copula ?
     fullprint << "Independent copula = " << (multivariateUserDefined.hasIndependentCopula() ? "true" : "false") << std::endl;
 

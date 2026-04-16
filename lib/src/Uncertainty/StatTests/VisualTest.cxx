@@ -23,7 +23,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
@@ -183,7 +183,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
                               const Sample & sample2)
 {
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample2.getDimension();
-  Graph graphCDFplot(DrawCDFplot(sample1, UserDefined(sample2)));
+  Graph graphCDFplot(DrawCDFplot(sample1, FiniteDiscreteDistribution(sample2)));
   graphCDFplot.setTitle("Two sample CDF-plot");
   graphCDFplot.setYTitle(sample2.getDescription()[0]);
   return graphCDFplot;

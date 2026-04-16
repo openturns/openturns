@@ -34,7 +34,7 @@ fun = ot.PythonFunction(dim, 1, illustrativeFunc)
 numberOfZLevels = 2  # Number of categorical levels for z
 # Input distribution
 dist = ot.JointDistribution(
-    [ot.Uniform(0, 1), ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels)))]
+    [ot.Uniform(0, 1), ot.FiniteDiscreteDistribution(ot.Sample.BuildFromPoint(range(numberOfZLevels)))]
 )
 
 # %%
@@ -252,8 +252,8 @@ dist = ot.JointDistribution(
     [
         ot.Uniform(0, 1),
         ot.Uniform(0, 1),
-        ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels1))),
-        ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels2))),
+        ot.FiniteDiscreteDistribution(ot.Sample.BuildFromPoint(range(numberOfZLevels1))),
+        ot.FiniteDiscreteDistribution(ot.Sample.BuildFromPoint(range(numberOfZLevels2))),
     ]
 )
 

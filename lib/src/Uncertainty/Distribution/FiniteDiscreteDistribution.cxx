@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The UserDefined distribution
+ *  @brief The FiniteDiscreteDistribution distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
@@ -27,12 +27,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(UserDefined)
-static const Factory<UserDefined> Factory_UserDefined;
+CLASSNAMEINIT(FiniteDiscreteDistribution)
+static const Factory<FiniteDiscreteDistribution> Factory_FiniteDiscreteDistribution;
+static const Factory<FiniteDiscreteDistribution> Factory_UserDefined("UserDefined");
 
 
 /* Default constructor */
-UserDefined::UserDefined()
+FiniteDiscreteDistribution::FiniteDiscreteDistribution()
   : DistributionImplementation()
   , points_(1, 1)
   , probabilities_(1, 1.0)
@@ -41,12 +42,12 @@ UserDefined::UserDefined()
   , base_(0)
   , alias_(0)
 {
-  setName("UserDefined");
+  setName("FiniteDiscreteDistribution");
   setData(Sample(1, 1), Point(1, 1.0));
 }
 
 /* Constructor from a sample */
-UserDefined::UserDefined(const Sample & sample)
+FiniteDiscreteDistribution::FiniteDiscreteDistribution(const Sample & sample)
   : DistributionImplementation()
   , points_(0, 0)
   , probabilities_(0)
@@ -55,17 +56,17 @@ UserDefined::UserDefined(const Sample & sample)
   , base_(0)
   , alias_(0)
 {
-  setName("UserDefined");
+  setName("FiniteDiscreteDistribution");
   const UnsignedInteger size = sample.getSize();
-  // We set the dimension of the UserDefined distribution
+  // We set the dimension of the FiniteDiscreteDistribution distribution
   // This call set also the range
   setData(sample, Point(size, 1.0 / size));
-  if ((getDimension() == 1) || (sample.getSize() <= ResourceMap::GetAsUnsignedInteger("UserDefined-SmallSize"))) compactSupport();
+  if ((getDimension() == 1) || (sample.getSize() <= ResourceMap::GetAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize"))) compactSupport();
   if(!sample.getDescription().isBlank()) setDescription(sample.getDescription());
 }
 
 /* Constructor from a sample and the associated weights */
-UserDefined::UserDefined(const Sample & sample,
+FiniteDiscreteDistribution::FiniteDiscreteDistribution(const Sample & sample,
                          const Point & weights)
   : DistributionImplementation()
   , points_(0, 0)
@@ -75,28 +76,28 @@ UserDefined::UserDefined(const Sample & sample,
   , base_(0)
   , alias_(0)
 {
-  setName("UserDefined");
-  // We set the dimension of the UserDefined distribution
+  setName("FiniteDiscreteDistribution");
+  // We set the dimension of the FiniteDiscreteDistribution distribution
   // This call set also the range
   setData(sample, weights);
-  if ((getDimension() == 1) || (sample.getSize() <= ResourceMap::GetAsUnsignedInteger("UserDefined-SmallSize"))) compactSupport();
+  if ((getDimension() == 1) || (sample.getSize() <= ResourceMap::GetAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize"))) compactSupport();
   if(!sample.getDescription().isBlank()) setDescription(sample.getDescription());
 }
 
 /* Tell if the distribution is continuous */
-Bool UserDefined::isContinuous() const
+Bool FiniteDiscreteDistribution::isContinuous() const
 {
   return false;
 }
 
 /* Tell if the distribution is discrete */
-Bool UserDefined::isDiscrete() const
+Bool FiniteDiscreteDistribution::isDiscrete() const
 {
   return true;
 }
 
 /* Tell if the distribution is integer valued */
-Bool UserDefined::isIntegral() const
+Bool FiniteDiscreteDistribution::isIntegral() const
 {
   if (getDimension() != 1) return false;
   const UnsignedInteger size = points_.getSize();
@@ -109,23 +110,23 @@ Bool UserDefined::isIntegral() const
 }
 
 /* Comparison operator */
-Bool UserDefined::operator ==(const UserDefined & other) const
+Bool FiniteDiscreteDistribution::operator ==(const FiniteDiscreteDistribution & other) const
 {
   if (this == &other) return true;
   return (points_ == other.points_) && (probabilities_ == other.probabilities_);
 }
 
-Bool UserDefined::equals(const DistributionImplementation & other) const
+Bool FiniteDiscreteDistribution::equals(const DistributionImplementation & other) const
 {
-  const UserDefined* p_other = dynamic_cast<const UserDefined*>(&other);
+  const FiniteDiscreteDistribution* p_other = dynamic_cast<const FiniteDiscreteDistribution*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String UserDefined::__repr__() const
+String FiniteDiscreteDistribution::__repr__() const
 {
   OSS oss;
-  oss << "class=" << UserDefined::GetClassName()
+  oss << "class=" << FiniteDiscreteDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " points=" << points_
@@ -133,7 +134,7 @@ String UserDefined::__repr__() const
   return oss;
 }
 
-String UserDefined::__str__(const String & ) const
+String FiniteDiscreteDistribution::__str__(const String & ) const
 {
   OSS oss;
   oss << getClassName() << "(";
@@ -148,13 +149,13 @@ String UserDefined::__str__(const String & ) const
 }
 
 /* Virtual constructor */
-UserDefined * UserDefined::clone() const
+FiniteDiscreteDistribution * FiniteDiscreteDistribution::clone() const
 {
-  return new UserDefined(*this);
+  return new FiniteDiscreteDistribution(*this);
 }
 
 /* Get one realization of the distribution */
-Point UserDefined::getRealization() const
+Point FiniteDiscreteDistribution::getRealization() const
 {
   const UnsignedInteger size = points_.getSize();
   UnsignedInteger index = 0;
@@ -166,7 +167,7 @@ Point UserDefined::getRealization() const
 }
 
 /* Get a sample of the distribution */
-Sample UserDefined::getSample(const UnsignedInteger size) const
+Sample FiniteDiscreteDistribution::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger supportSize = points_.getSize();
   Indices indices;
@@ -183,7 +184,7 @@ Sample UserDefined::getSample(const UnsignedInteger size) const
 }
 
 /* Get the PDF of the distribution */
-Scalar UserDefined::computePDF(const Point & point) const
+Scalar FiniteDiscreteDistribution::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -233,7 +234,7 @@ Scalar UserDefined::computePDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-Scalar UserDefined::computeCDF(const Point & point) const
+Scalar FiniteDiscreteDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -285,7 +286,7 @@ Scalar UserDefined::computeCDF(const Point & point) const
 }
 
 /* Get the PDF gradient of the distribution */
-Point UserDefined::computePDFGradient(const Point & point) const
+Point FiniteDiscreteDistribution::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -305,7 +306,7 @@ Point UserDefined::computePDFGradient(const Point & point) const
 
 
 /* Get the CDF gradient of the distribution */
-Point UserDefined::computeCDFGradient(const Point & point) const
+Point FiniteDiscreteDistribution::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -322,7 +323,7 @@ Point UserDefined::computeCDFGradient(const Point & point) const
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void UserDefined::computeRange()
+void FiniteDiscreteDistribution::computeRange()
 {
   const UnsignedInteger size = points_.getSize();
   const UnsignedInteger dimension = getDimension();
@@ -351,7 +352,7 @@ void UserDefined::computeRange()
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-Sample UserDefined::getSupport(const Interval & interval) const
+Sample FiniteDiscreteDistribution::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   Sample result(0, getDimension());
@@ -365,19 +366,19 @@ Sample UserDefined::getSupport(const Interval & interval) const
 }
 
 /* Get the support on the whole range */
-Sample UserDefined::getSupport() const
+Sample FiniteDiscreteDistribution::getSupport() const
 {
   return points_;
 }
 
 /* Get the discrete probability levels */
-Point UserDefined::getProbabilities() const
+Point FiniteDiscreteDistribution::getProbabilities() const
 {
   return probabilities_;
 }
 
 /* Compute the mean of the distribution */
-void UserDefined::computeMean() const
+void FiniteDiscreteDistribution::computeMean() const
 {
   const UnsignedInteger size = points_.getSize();
   Point mean(getDimension());
@@ -387,7 +388,7 @@ void UserDefined::computeMean() const
 }
 
 /* Compute the covariance of the distribution */
-void UserDefined::computeCovariance() const
+void FiniteDiscreteDistribution::computeCovariance() const
 {
   const UnsignedInteger size = points_.getSize();
   const UnsignedInteger dimension = getDimension();
@@ -406,7 +407,7 @@ void UserDefined::computeCovariance() const
 }
 
 /* Compute the Spearman correlation of the distribution */
-CorrelationMatrix UserDefined::getSpearmanCorrelation() const
+CorrelationMatrix FiniteDiscreteDistribution::getSpearmanCorrelation() const
 {
   const UnsignedInteger size = points_.getSize();
   const UnsignedInteger dimension = getDimension();
@@ -445,13 +446,13 @@ CorrelationMatrix UserDefined::getSpearmanCorrelation() const
 }
 
 /* Compute the Kendall concordance of the distribution */
-CorrelationMatrix UserDefined::getKendallTau() const
+CorrelationMatrix FiniteDiscreteDistribution::getKendallTau() const
 {
   return DistributionImplementation::getKendallTau();
 }
 
 /* Parameters value and description accessor */
-UserDefined::PointWithDescriptionCollection UserDefined::getParametersCollection() const
+FiniteDiscreteDistribution::PointWithDescriptionCollection FiniteDiscreteDistribution::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
   PointWithDescriptionCollection parameters(dimension + 1);
@@ -488,7 +489,7 @@ UserDefined::PointWithDescriptionCollection UserDefined::getParametersCollection
 }
 
 /* Parameters value accessor */
-Point UserDefined::getParameter() const
+Point FiniteDiscreteDistribution::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = points_.getSize();
@@ -508,7 +509,7 @@ Point UserDefined::getParameter() const
 }
 
 /* Parameters description accessor */
-Description UserDefined::getParameterDescription() const
+Description FiniteDiscreteDistribution::getParameterDescription() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = points_.getSize();
@@ -527,7 +528,7 @@ Description UserDefined::getParameterDescription() const
   return description;
 }
 
-void UserDefined::setParameter(const Point & parameter)
+void FiniteDiscreteDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = points_.getSize();
@@ -548,39 +549,39 @@ void UserDefined::setParameter(const Point & parameter)
 }
 
 /* Get the i-th marginal distribution */
-Distribution UserDefined::getMarginal(const UnsignedInteger i) const
+Distribution FiniteDiscreteDistribution::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  UserDefined::Implementation marginal(new UserDefined(points_.getMarginal(i), probabilities_));
+  FiniteDiscreteDistribution::Implementation marginal(new FiniteDiscreteDistribution(points_.getMarginal(i), probabilities_));
   marginal->setDescription(Description(1, getDescription()[i]));
   return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Distribution UserDefined::getMarginal(const Indices & indices) const
+Distribution FiniteDiscreteDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  UserDefined::Implementation marginal(new UserDefined(points_.getMarginal(indices), probabilities_));
+  FiniteDiscreteDistribution::Implementation marginal(new FiniteDiscreteDistribution(points_.getMarginal(indices), probabilities_));
   marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 
-/* Interface specific to UserDefined */
+/* Interface specific to FiniteDiscreteDistribution */
 
-void UserDefined::setData(const Sample & sample,
+void FiniteDiscreteDistribution::setData(const Sample & sample,
                           const Point & weights)
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the collection is empty";
-  if (weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution if the weights don't have the same dimension as the sample size.";
+  if (weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a FiniteDiscreteDistribution distribution if the weights don't have the same dimension as the sample size.";
   hasUniformWeights_ = true;
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: the points in the collection must have a dimension > 0";
@@ -603,7 +604,7 @@ void UserDefined::setData(const Sample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar p = weightedData(i, dimension);
-    if (!(p >= 0.0)) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities";
+    if (!(p >= 0.0)) throw InvalidArgumentException(HERE) << "FiniteDiscreteDistribution distribution must have positive probabilities";
     sum += p;
     cumulativeProbabilities_[i] = sum;
     hasUniformWeights_ = hasUniformWeights_ && (std::abs(p - firstProbability) < pdfEpsilon_);
@@ -635,20 +636,20 @@ void UserDefined::setData(const Sample & sample,
 }
 
 
-Sample UserDefined::getX() const
+Sample FiniteDiscreteDistribution::getX() const
 {
   return points_;
 }
 
 
-Point UserDefined::getP() const
+Point FiniteDiscreteDistribution::getP() const
 {
   return probabilities_;
 }
 
 
 /* Quantile computation for dimension=1 */
-Scalar UserDefined::computeScalarQuantile(const Scalar prob,
+Scalar FiniteDiscreteDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
@@ -664,7 +665,7 @@ Scalar UserDefined::computeScalarQuantile(const Scalar prob,
 }
 
 /* Merge the identical points of the support */
-void UserDefined::compactSupport(const Scalar epsilon)
+void FiniteDiscreteDistribution::compactSupport(const Scalar epsilon)
 {
   // No compaction if epsilon is negative
   if (epsilon < 0.0) return;
@@ -780,21 +781,21 @@ void UserDefined::compactSupport(const Scalar epsilon)
 }
 
 /* Tell if the distribution has an elliptical copula */
-Bool UserDefined::hasEllipticalCopula() const
+Bool FiniteDiscreteDistribution::hasEllipticalCopula() const
 {
   return points_.getSize() == 1;
 }
 
 
 /* Tell if the distribution has independent copula */
-Bool UserDefined::hasIndependentCopula() const
+Bool FiniteDiscreteDistribution::hasIndependentCopula() const
 {
   return (dimension_ == 1) || (points_.getSize() == 1);
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void UserDefined::save(Advocate & adv) const
+void FiniteDiscreteDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "points_", points_ );
@@ -804,7 +805,7 @@ void UserDefined::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void UserDefined::load(Advocate & adv)
+void FiniteDiscreteDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "points_", points_ );

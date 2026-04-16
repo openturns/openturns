@@ -181,13 +181,13 @@ p1 + p2
 # -----------------------------
 
 # %%
-# In order to draw the empirical functions of a `Sample`, we use the :class:`~openturns.UserDefined` class.
+# In order to draw the empirical functions of a `Sample`, we use the :class:`~openturns.FiniteDiscreteDistribution` class.
 #
 # * The `drawCDF` method plots the CDF.
 # * The `drawSurvivalFunction` method plots the survival function.
 
 # %%
-userdefined = ot.UserDefined(sample)
+userdefined = ot.FiniteDiscreteDistribution(sample)
 graph = userdefined.drawCDF()
 graph.setTitle("CDF of a sample")
 view = otv.View(graph)

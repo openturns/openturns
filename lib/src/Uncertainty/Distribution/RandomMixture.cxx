@@ -588,11 +588,11 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     //
     // In the case of a nD RandomMixture with n>1:
     //
-    // + The discrete atoms can be merged into a unique discrete nD UserDefined with a support of reasonable size
+    // + The discrete atoms can be merged into a unique discrete nD FiniteDiscreteDistribution with a support of reasonable size
     // + There is no continuous atom, or a unique continuous atom, or all the continuous atoms are Normal
     // + There is no 'other' atom.
     // Depending on the continuous atoms, one get:
-    // + A multivariate UserDefined if no continuous atom
+    // + A multivariate FiniteDiscreteDistribution if no continuous atom
     // + A multivariate Mixture if a unique continuous atom or only continuous Normal atoms (merged into a unique multivariate Normal)
     // -> all these special cases lead to an analytical expression of the RandomMixture
     // -> these simplifications will be implemented in a second time
@@ -856,7 +856,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             // atom at the place occuped by the first discrete atom
             if (secondDiscreteIndex > firstDiscreteIndex + 1)
             {
-              distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
+              distributionCollection_[indexAggregated] = FiniteDiscreteDistribution(aggregatedSupport, aggregatedProbabilities);
               reducedWeights[indexAggregated] = Point(1, 1.0);
             }
             else
@@ -917,7 +917,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
           distributionCollection_[indexAggregated] = firstDiscrete;
         else
         {
-          distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
+          distributionCollection_[indexAggregated] = FiniteDiscreteDistribution(aggregatedSupport, aggregatedProbabilities);
           reducedWeights[indexAggregated] = Point(1, 1.0);
         }
         // To identify the first discrete atom to remove

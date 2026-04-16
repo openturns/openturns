@@ -26,7 +26,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/LinearModelTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /* Independence test between 2 scalar scalar samples for discrete distributions
  * The samples here are issued from discrete distributions. Thus there is a transformation
  * from sample to a contingency table in order to apply the Chi square independence test
- * We rely on UserDefined distribution to get unique value samples and their proporprtions
+ * We rely on FiniteDiscreteDistribution distribution to get unique value samples and their proporprtions
 */
 TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
                                       const Sample & secondSample,
@@ -53,7 +53,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
 
   // Derive unique values and frequencies for each 1D sample
   // first sample --> table
-  const UserDefined discreteXDistribution(firstSample);
+  const FiniteDiscreteDistribution discreteXDistribution(firstSample);
   const Sample tableX(discreteXDistribution.getSupport());
   const Point frequenciesX(discreteXDistribution.computePDF(tableX).asPoint());
 
@@ -91,7 +91,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
 
 
   // second sample table
-  const UserDefined discreteYDistribution(secondSample);
+  const FiniteDiscreteDistribution discreteYDistribution(secondSample);
   const Sample tableY(discreteYDistribution.getSupport());
   const Point frequenciesY(discreteYDistribution.computePDF(tableY).asPoint());
 
@@ -129,7 +129,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   // Bivariate sample
   Sample data(firstSample);
   data.stack(secondSample);
-  const UserDefined bivariateDiscreteDistribution(data);
+  const FiniteDiscreteDistribution bivariateDiscreteDistribution(data);
   const Sample table(bivariateDiscreteDistribution.getSupport());
   const Point frequencies(bivariateDiscreteDistribution.getProbabilities());
 

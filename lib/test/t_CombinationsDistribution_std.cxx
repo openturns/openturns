@@ -45,7 +45,7 @@ int main(int, char *[])
     CombinationsDistribution distribution(5, 12);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
-    UserDefined ref(distribution.getSupport());
+    FiniteDiscreteDistribution ref(distribution.getSupport());
     // Is this distribution elliptical ?
     fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
 

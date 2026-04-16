@@ -1,13 +1,13 @@
 %feature("docstring") OT::MixedHistogramUserDefined
-"Mixed Histogram/UserDefined distribution.
+"Mixed Histogram/FiniteDiscreteDistribution distribution.
 
-Defines a distribution with Histogram (continuous) or UserDefined (discrete) marginals,
+Defines a distribution with Histogram (continuous) or FiniteDiscreteDistribution (discrete) marginals,
 it is meant to be used as a specialization of the Mixture for efficient sampling.
 
 Each marginal is defined from a list of float that either define the intervals on which
 the marginal is uniform (equivalent to a :class:`~openturns.Histogram` distribution),
 or the set of points that define the support of the discrete marginal
-(equivalent to an :class:`~openturns.UserDefined` distribution).
+(equivalent to an :class:`~openturns.FiniteDiscreteDistribution` distribution).
 
 Weights are required for each combination of intervals or discrete points,
 ie for a dimension 2, with an Histogram component with 3 intervals (defined from 4 ticks) and
@@ -24,7 +24,7 @@ probabilityTable : sequence of float
 
 See also
 --------
-Mixture, Histogram, UserDefined
+Mixture, Histogram, FiniteDiscreteDistribution
 
 Examples
 --------

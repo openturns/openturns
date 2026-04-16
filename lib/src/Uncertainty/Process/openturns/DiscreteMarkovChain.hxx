@@ -24,7 +24,7 @@
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Process.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -88,7 +88,7 @@ public:
   void setMesh(const Mesh & mesh) override;
 
   /** Stationary distribution computation */
-  UserDefined computeStationaryDistribution() const;
+  FiniteDiscreteDistribution computeStationaryDistribution() const;
 
   /** DOT export */
   void exportToDOTFile(const FileName & filename) const;

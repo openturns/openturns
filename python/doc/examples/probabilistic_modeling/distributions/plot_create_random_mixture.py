@@ -88,7 +88,7 @@ view = otv.View(graph)
 
 # %%
 # We create the distribution associated to the dice roll :
-X = ot.UserDefined([[i] for i in range(1, 7)])
+X = ot.FiniteDiscreteDistribution([[i] for i in range(1, 7)])
 
 # %%
 # Let's roll the dice a few times !
