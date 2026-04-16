@@ -7,6 +7,7 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 # allows one to pass compile flags like -O1 to reduce memory usage
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C/C++ compiler flags used for wrapper code")
 set (SWIG_CXX_COMPILE_FLAGS "" CACHE STRING "C++ specific compiler flags used for wrapper code")
+mark_as_advanced (SWIG_COMPILE_FLAGS SWIG_CXX_COMPILE_FLAGS)
 
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)

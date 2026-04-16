@@ -10,6 +10,7 @@ set (CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
 project (openturns)
 
 option (USE_EXTERNAL_LIBS            "Use external libs"                                                     ON)
+mark_as_advanced (USE_EXTERNAL_LIBS)
 option (USE_CUBA                     "Use Cuba library"                                                      ${USE_EXTERNAL_LIBS})
 option (USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ${USE_EXTERNAL_LIBS})
 option (USE_HMAT                     "Use HMat library (enforces GPL license)"                               OFF)
@@ -387,6 +388,7 @@ try_compile(OPENTURNS_HAVE_STD_FROM_CHARS_DOUBLE
 
 # for consistent floating-point operations across architectures
 option (DISABLE_FP_CONTRACT "Disable floating-point contractions" ON)
+mark_as_advanced (DISABLE_FP_CONTRACT)
 if (DISABLE_FP_CONTRACT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffp-contract=off")
 endif ()
@@ -494,6 +496,7 @@ if (BUILD_PYTHON)
   endif ()
 
   option (USE_PYTHON_SABI "Use Python stable ABI" OFF)
+  mark_as_advanced (USE_PYTHON_SABI)
   if (USE_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
     find_package (Python 3.8 COMPONENTS Interpreter Development.SABIModule)
     add_library (Python::Module ALIAS Python::SABIModule)
