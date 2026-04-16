@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class RandomMixture for grid computatioons - 2D cases
+ *  @brief The test file of class LinearCombinationDistribution for grid computatioons - 2D cases
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -46,9 +46,9 @@ int main(int, char *[])
     weights(1, 0) = 1.0;
     weights(1, 1) = 1.0;
     weights(1, 2) = -3.0;
-    // Build the RandomMixture
-    RandomMixture dist_2D(coll, weights);
-    // Defining RandomMixture
+    // Build the LinearCombinationDistribution
+    LinearCombinationDistribution dist_2D(coll, weights);
+    // Defining LinearCombinationDistribution
     const UnsignedInteger N = 16;
     Indices points(2, N);
     Point mean(dist_2D.getMean());
@@ -76,8 +76,8 @@ int main(int, char *[])
     weights(0, 1) = 1.0;
     weights(1, 0) = 2.0;
     weights(1, 1) = 1.4;
-    // Build the RandomMixture
-    RandomMixture distribution2D(collection, weights);
+    // Build the LinearCombinationDistribution
+    LinearCombinationDistribution distribution2D(collection, weights);
     fullprint << "distribution = " << distribution2D << std::endl;
     fullprint << "range = " << distribution2D.getRange() << std::endl;
     fullprint << "mean = " <<  distribution2D.getMean() << std::endl;

@@ -4,9 +4,9 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(6)
-ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
+ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000)
 
-# Defining RandomMixture
+# Defining LinearCombinationDistribution
 weights = ot.Point(0)
 coll = ot.DistributionCollection(0)
 coll.add(ot.Gamma(0.5, 1.0))
@@ -19,7 +19,7 @@ coll.add(ot.Gamma(0.5, 1.0))
 weights.add(1.0)
 coll.add(ot.Gamma(1.0, 1.0))
 weights.add(1.0)
-distribution = ot.RandomMixture(coll, weights)
+distribution = ot.LinearCombinationDistribution(coll, weights)
 referenceDistribution = ot.Gamma(3.0, 1.0)
 # Compute PDF on regular grid
 N = 256

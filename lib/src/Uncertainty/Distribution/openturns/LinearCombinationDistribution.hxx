@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_RANDOMMIXTURE_HXX
-#define OPENTURNS_RANDOMMIXTURE_HXX
+#ifndef OPENTURNS_LINEARCOMBINATIONDISTRIBUTION_HXX
+#define OPENTURNS_LINEARCOMBINATIONDISTRIBUTION_HXX
 
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactory.hxx"
@@ -36,11 +36,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class RandomMixture
+ * @class LinearCombinationDistribution
  *
- * The class describes the probabilistic concept of RandomMixture.
+ * The class describes the probabilistic concept of LinearCombinationDistribution.
  */
-class OT_API RandomMixture
+class OT_API LinearCombinationDistribution
   : public DistributionImplementation
 {
   CLASSNAME
@@ -52,38 +52,38 @@ public:
   typedef Collection<DistributionFactory>        DistributionFactoryCollection;
 
   /** Default constructor */
-  RandomMixture();
+  LinearCombinationDistribution();
 
   /** Parameter constructor - 1D */
-  explicit RandomMixture(const DistributionCollection & coll,
+  explicit LinearCombinationDistribution(const DistributionCollection & coll,
                          const Scalar constant = 0.0);
 
   /** Parameter constructor - 1D */
-  RandomMixture(const DistributionCollection & coll,
+  LinearCombinationDistribution(const DistributionCollection & coll,
                 const Point & weights,
                 const Scalar constant = 0.0);
 
   /** Parameter constructor - nD */
-  RandomMixture(const DistributionCollection & coll,
+  LinearCombinationDistribution(const DistributionCollection & coll,
                 const Matrix & weights,
                 const Point & constant);
 
   /** Parameter constructor - nD */
-  RandomMixture(const DistributionCollection & coll,
+  LinearCombinationDistribution(const DistributionCollection & coll,
                 const Matrix & weights);
 
   /** Parameter constructor - nD */
-  RandomMixture(const DistributionCollection & coll,
+  LinearCombinationDistribution(const DistributionCollection & coll,
                 const Sample & weights,
                 const Point & constant);
 
   /** Parameter constructor - nD */
-  RandomMixture(const DistributionCollection & coll,
+  LinearCombinationDistribution(const DistributionCollection & coll,
                 const Sample & weights);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
-  Bool operator ==(const RandomMixture & other) const;
+  Bool operator ==(const LinearCombinationDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -109,19 +109,19 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  RandomMixture * clone() const override;
+  LinearCombinationDistribution * clone() const override;
 
-  /** Get one realization of the RandomMixture */
+  /** Get one realization of the LinearCombinationDistribution */
   Point getRealization() const override;
 
-  /** Get a sample of the RandomMixture */
+  /** Get a sample of the LinearCombinationDistribution */
   Sample getSample(const UnsignedInteger size) const override;
 
-  /** Get the DDF of the RandomMixture */
+  /** Get the DDF of the LinearCombinationDistribution */
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
-  /** Get the PDF of the RandomMixture */
+  /** Get the PDF of the LinearCombinationDistribution */
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
@@ -174,7 +174,7 @@ private:
   void addPDFOn3DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const;
 
 public:
-  /** Get the CDF of the RandomMixture */
+  /** Get the CDF of the LinearCombinationDistribution */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
   using DistributionImplementation::computeComplementaryCDF;
@@ -272,10 +272,10 @@ public:
   /** CDF epsilon accessor. For other distributions, it is a read-only attribute. */
   void setCDFPrecision(const Scalar cdfPrecision);
 
-  /** Project a RandomMixture distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
+  /** Project a LinearCombinationDistribution distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
   DistributionCollection project(const DistributionFactoryCollection & factoryCollection,
                                  Point & kolmogorovNormOut,
-                                 const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize" )) const;
+                                 const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-ProjectionDefaultSize" )) const;
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
@@ -367,7 +367,7 @@ private:
   /** FFT algorithm */
   FFT fftAlgorithm_;
 
-  /** The RandomMixture is analytic if size of collection = dimension */
+  /** The LinearCombinationDistribution is analytic if size of collection = dimension */
   Bool isAnalytical_;
 
   /** Position indicator */
@@ -411,7 +411,7 @@ private:
   /** Requested precision for CDF computation */
   Scalar cdfPrecision_;
 
-  /** Normal distribution with the same mean and standard deviation than the RandomMixture */
+  /** Normal distribution with the same mean and standard deviation than the LinearCombinationDistribution */
   Normal equivalentNormal_;
 
   /** Helper object to retrieve points on a regular grid */
@@ -420,9 +420,9 @@ private:
   /** Integration algorithm */
   GaussKronrod algo_;
 
-}; /* class RandomMixture */
+}; /* class LinearCombinationDistribution */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_RANDOMMIXTURE_HXX */
+#endif /* OPENTURNS_LINEARCOMBINATIONDISTRIBUTION_HXX */

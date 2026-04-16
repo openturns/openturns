@@ -1,6 +1,6 @@
 """
-Create a random mixture
-=======================
+Create a linear combination of distributions
+============================================
 """
 
 # %%
@@ -9,9 +9,6 @@ import openturns.viewer as otv
 
 
 # %%
-# Create a mixture of distributions
-# ---------------------------------
-#
 # We define an affine combination of input random variables.
 #
 # .. math::
@@ -40,7 +37,7 @@ weight = [5.0, 1.0]
 
 # %%
 # We create the affine combination :math:`Y` :
-distribution = ot.RandomMixture([X1, X2], weight, a0)
+distribution = ot.LinearCombinationDistribution([X1, X2], weight, a0)
 print(distribution)
 
 # %%
@@ -105,7 +102,7 @@ coll = [X] * N
 # %%
 # We create the weights and an affine combination
 weight = [1.0] * N
-distribution = ot.RandomMixture(coll, weight)
+distribution = ot.LinearCombinationDistribution(coll, weight)
 
 # %%
 # We compute the probability to exceed a sum of 100 after 20 dice rolls

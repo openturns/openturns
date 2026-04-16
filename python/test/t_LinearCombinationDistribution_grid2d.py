@@ -4,7 +4,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(6)
-ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
+ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000)
 
 
 # 2D test using FFT
@@ -15,9 +15,9 @@ coll.add(ot.Uniform(0, 1))
 coll.add(ot.Uniform(0, 1))
 # Set weights
 weights = ot.Matrix([[1.0, -2.0, 1.0], [1.0, 1.0, -3.0]])
-# Build the RandomMixture
-dist_2D = ot.RandomMixture(coll, weights)
-# Defining RandomMixture
+# Build the LinearCombinationDistribution
+dist_2D = ot.LinearCombinationDistribution(coll, weights)
+# Defining LinearCombinationDistribution
 N = 16
 points = ot.Indices(2, N)
 mean = dist_2D.getMean()
@@ -40,8 +40,8 @@ collection = ot.DistributionCollection(0)
 collection.add(ot.Normal(2.0, 3.0))
 collection.add(ot.Normal(1.0, 4.0))
 weights = ot.Matrix([[4.0, 1.0], [2.0, 1.4]])
-# Build the RandomMixture
-distribution2D = ot.RandomMixture(collection, weights)
+# Build the LinearCombinationDistribution
+distribution2D = ot.LinearCombinationDistribution(collection, weights)
 print("distribution = ", repr(distribution2D))
 print("range = ", distribution2D.getRange())
 print("mean = ", distribution2D.getMean())
