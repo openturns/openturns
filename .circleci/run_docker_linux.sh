@@ -21,8 +21,6 @@ else
   source_dir=`pwd`  # circleci
 fi
 
-mkdir build && cd build
-
 cmake -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
       -DCMAKE_C_FLAGS="-Wall -Wextra -Wpedantic -Werror" \
@@ -30,7 +28,8 @@ cmake -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
       -DCMAKE_LINKER_TYPE=MOLD \
       -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" -DSWIG_CXX_COMPILE_FLAGS="-Wno-suggest-override" \
       -DUSE_SPHINX=ON -DSPHINX_FLAGS="-W -T -j4" \
-      ${source_dir}
+      -B build ${source_dir}
+cd build
 make install
 find ~/.local/share/doc/openturns/html -name "*.zip" | xargs rm
 if test -n "${UID_GID}"
