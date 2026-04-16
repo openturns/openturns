@@ -223,7 +223,8 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
   }
   // If no truncation
   const Interval range(getRange());
-  if (localDistribution.getRange() == range)
+  if (localDistribution.getRange().getLowerBound() == range.getLowerBound()
+   && localDistribution.getRange().getUpperBound() == range.getUpperBound())
   {
     simplified = localDistribution;
     return true;
