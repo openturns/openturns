@@ -214,7 +214,7 @@ The user sets the value of :math:`\gamma` (index 2 in the order :math:`\beta`,
 :math:`\alpha` and :math:`\gamma`).
 
 >>> known_gamma = 0.0
->>> factory.setKnownParameter([known_gamma], [2])
+>>> factory.setKnownParameter([2], [known_gamma])
 >>> estimated_distribution_fixed = factory.build(sample)
 
 )RAW"
