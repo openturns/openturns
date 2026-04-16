@@ -174,7 +174,7 @@ view = otv.View(graph)
 #
 #  - the :class:`~openturns.Normal` distribution,
 #  - the :class:`~openturns.Student` distribution,
-#  - the :class:`~openturns.UserDefined` distribution.
+#  - the :class:`~openturns.FiniteDiscreteDistribution` distribution.
 #
 # The Normal distribution
 # ^^^^^^^^^^^^^^^^^^^^^^^
@@ -203,13 +203,13 @@ graph.setTitle("Bivariate Student PDF")
 view = otv.View(graph)
 
 # %%
-# The UserDefined distribution
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# The FiniteDiscreteDistribution distribution
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# We can also define our own distribution with the :class:`~openturns.UserDefined` distribution.
+# We can also define our own distribution with the :class:`~openturns.FiniteDiscreteDistribution` distribution.
 # For instance consider the square :math:`[-1,1] \times [-1, 1]` with some
 # random points uniformly drawn. For each point the weight chosen is the square
-# of the distance to the origin. The :class:`~openturns.UserDefined` class normalizes the weights.
+# of the distance to the origin. The :class:`~openturns.FiniteDiscreteDistribution` class normalizes the weights.
 
 # %%
 # We first generate random points in the square.
@@ -218,7 +218,7 @@ N = 100
 sample = distUniform2.getSample(N)
 
 # %%
-# We then build the points and weights for the `UserDefined` distribution.
+# We then build the points and weights for the `FiniteDiscreteDistribution` distribution.
 points = []
 weights = []
 for i in range(N):
@@ -227,14 +227,14 @@ for i in range(N):
 
 # %%
 # We build the distribution :
-distribution = ot.UserDefined(points, weights)
+distribution = ot.FiniteDiscreteDistribution(points, weights)
 graph = distribution.drawPDF()
 graph.setTitle("User defined PDF")
 
 # %%
 # We can generate and display a sample from this distribution.
 omega = distribution.getSample(100)
-cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from UserDefined distribution")
+cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from FiniteDiscreteDistribution distribution")
 graph.add(cloud)
 view = otv.View(graph)
 

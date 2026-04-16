@@ -25,7 +25,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/TruncatedNormal.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/JointDistribution.hxx"
@@ -229,8 +229,8 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
     simplified = localDistribution;
     return true;
   }
-  // If UserDefined
-  if (kind == "UserDefined")
+  // If FiniteDiscreteDistribution
+  if (kind == "FiniteDiscreteDistribution")
   {
     const Sample support(localDistribution.getSupport());
     const Point probabilities(localDistribution.getProbabilities());
@@ -245,7 +245,7 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
         reducedProbabilities.add(probabilities[i]);
       }
     }
-    simplified = UserDefined(reducedSupport, reducedProbabilities);
+    simplified = FiniteDiscreteDistribution(reducedSupport, reducedProbabilities);
     return true;
   }
   // At this point, no more simplification in the multivariate case
@@ -359,7 +359,7 @@ void TruncatedDistribution::computeRange()
 /* Get one realization of the distribution */
 Point TruncatedDistribution::getRealization() const
 {
-  // simplified path (JointDistribution, UserDefined, ...)
+  // simplified path (JointDistribution, FiniteDiscreteDistribution, ...)
   if (useSimplifiedVersion_)
     return simplifiedVersion_.getRealization();
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The UserDefined distribution
+ *  @brief The FiniteDiscreteDistribution distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_USERDEFINED_HXX
-#define OPENTURNS_USERDEFINED_HXX
+#ifndef OPENTURNS_FINITEDISCRETEDISTRIBUTION_HXX
+#define OPENTURNS_FINITEDISCRETEDISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
@@ -29,24 +29,24 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class UserDefined
+ * @class FiniteDiscreteDistribution
  *
- * The UserDefined distribution.
+ * The FiniteDiscreteDistribution distribution.
  */
-class OT_API UserDefined
+class OT_API FiniteDiscreteDistribution
   : public DistributionImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  UserDefined();
+  FiniteDiscreteDistribution();
 
   /** Constructor from a sample */
-  explicit UserDefined(const Sample & points);
+  explicit FiniteDiscreteDistribution(const Sample & points);
 
   /** Constructor from a sample and associated weights */
-  UserDefined(const Sample & points,
+  FiniteDiscreteDistribution(const Sample & points,
               const Point & weights);
 
   /** Tell if the distribution is continuous */
@@ -60,7 +60,7 @@ public:
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
-  Bool operator ==(const UserDefined & other) const;
+  Bool operator ==(const FiniteDiscreteDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -74,7 +74,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  UserDefined * clone() const override;
+  FiniteDiscreteDistribution * clone() const override;
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
@@ -117,7 +117,7 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const override;
 
-  /* Interface specific to UserDefined */
+  /* Interface specific to FiniteDiscreteDistribution */
 
   /** Data accessors */
   void setData(const Sample & points,
@@ -180,8 +180,8 @@ private:
   /** Structures for the alias sampling method */
   Point base_;
   Indices alias_;
-}; /* class UserDefined */
+}; /* class FiniteDiscreteDistribution */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_USERDEFINED_HXX */
+#endif /* OPENTURNS_FINITEDISCRETEDISTRIBUTION_HXX */

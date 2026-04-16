@@ -99,7 +99,7 @@ origin : :class:`~openturns.Distribution` or :math:`int`
 
 Returns
 -------
-distribution : :class:`~openturns.UserDefined`
+distribution : :class:`~openturns.FiniteDiscreteDistribution`
     The stationary probability distribution of the Markov chain:
     its probability table is the left eigenvector of the
     transition matrix associated to the eigenvalue :math:`1`.
@@ -115,7 +115,7 @@ Compute the stationary distribution of a Markov chain:
 >>> myMarkovChain = ot.DiscreteMarkovChain(origin, transitionMatrix, timeGrid)
 >>> distribution = myMarkovChain.computeStationaryDistribution()
 >>> print(distribution)
-UserDefined({x = [0], p = 0.883978}, {x = [1], p = 0.0441989}, {x = [2], p = 0.0718232})"
+FiniteDiscreteDistribution({x = [0], p = 0.883978}, {x = [1], p = 0.0441989}, {x = [2], p = 0.0718232})"
 
 // ---------------------------------------------------------------------
 

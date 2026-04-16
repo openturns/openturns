@@ -754,8 +754,8 @@
   <StudentCopulaFactory-DefaultOptimizationAlgorithm value_str="Cobyla" />
   <StudentCopulaFactory-MaximumCallsNumber value_int="1000" />
   
-  <!-- OT::UserDefined parameters -->
-  <UserDefined-SmallSize value_int="10000" />
+  <!-- OT::FiniteDiscreteDistribution parameters -->
+  <FiniteDiscreteDistribution-SmallSize value_int="10000" />
   
   <!-- OT::UniformOverMesh parameters -->
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />

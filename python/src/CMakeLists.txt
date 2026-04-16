@@ -723,7 +723,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       UniformFactory.i UniformFactory_doc.i
                       UniformMuSigma.i UniformMuSigma_doc.i
                       UniformOverMesh.i UniformOverMesh_doc.i
-                      UserDefined.i UserDefined_doc.i
+                      FiniteDiscreteDistribution.i FiniteDiscreteDistribution_doc.i
                       UserDefinedFactory.i UserDefinedFactory_doc.i
                       UniformOrderStatistics.i UniformOrderStatistics_doc.i
                       VonMises.i VonMises_doc.i

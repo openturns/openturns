@@ -24,7 +24,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

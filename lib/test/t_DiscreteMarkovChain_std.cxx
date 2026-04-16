@@ -63,7 +63,7 @@ int main(int, char *[])
     transition(2, 2) = 0.20;
     fullprint << "### Transition matrix:" << std::endl << transition << std::endl << std::endl;
 
-    /* Origin choice (UserDefined distribution)*/
+    /* Origin choice (FiniteDiscreteDistribution distribution)*/
     Sample states(3, 1);
     states(0, 0) = 0;
     states(1, 0) = 1;
@@ -74,7 +74,7 @@ int main(int, char *[])
     weights[1] = 0.15;
     weights[2] = 0.35;
 
-    UserDefined origin(states, weights);
+    FiniteDiscreteDistribution origin(states, weights);
 
     /* Transition matrix accessor */
     processDefault.setTransitionMatrix(transition);

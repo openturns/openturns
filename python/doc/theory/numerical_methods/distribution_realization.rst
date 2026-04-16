@@ -196,7 +196,7 @@ The techniques implemented in each distribution are:
    - small truncation interval: CDF inversion
    - large truncation interval: rejection
 - Uniform: Transformation.
-- UserDefined: Sequential search.
+- FiniteDiscreteDistribution: Sequential search.
 - WeibullMin: CDF inversion.
 - Zipf-Mandelbrot: Bisection search.
 

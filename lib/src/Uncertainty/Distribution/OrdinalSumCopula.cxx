@@ -46,7 +46,7 @@ OrdinalSumCopula::OrdinalSumCopula()
   Sample support(2, 1);
   support(0, 0) = 0.0;
   support(1, 0) = 1.0;
-  blockDistribution_ = UserDefined(support);
+  blockDistribution_ = FiniteDiscreteDistribution(support);
   computeRange();
 }
 
@@ -186,7 +186,7 @@ void OrdinalSumCopula::setBounds(const Point & bounds)
     coll.add(copulaCollection_[size]);
   }
   else LOGWARN(OSS(false) << "The length of block " << size << " is zero, the corresponding copula " << copulaCollection_[size] << " is removed from the collection");
-  blockDistribution_ = UserDefined(support, blockLengths_);
+  blockDistribution_ = FiniteDiscreteDistribution(support, blockLengths_);
   if (coll.getSize() < copulaCollection_.getSize())
     copulaCollection_ = coll;
 }

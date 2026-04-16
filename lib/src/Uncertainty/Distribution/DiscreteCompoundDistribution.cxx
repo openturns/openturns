@@ -170,7 +170,7 @@ void DiscreteCompoundDistribution::setBaseAndCompoundDistributions(const Distrib
   {
     points(i, 0) = i;
   }
-  distribution_ = UserDefined(points, weights);
+  distribution_ = FiniteDiscreteDistribution(points, weights);
   computeRange();
 }
 
