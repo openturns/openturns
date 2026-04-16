@@ -31,6 +31,8 @@
 #include "openturns/JointDistribution.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 #include "openturns/BlockIndependentCopula.hxx"
+#include "openturns/KernelMixture.hxx"
+#include "openturns/Mixture.hxx"
 #include "openturns/Dirichlet.hxx"
 #include "openturns/Beta.hxx"
 
@@ -180,7 +182,27 @@ Distribution TruncatedDistribution::dispatchTruncation(const Collection<Distribu
 /* Get the simplified version (or clone the distribution) */
 Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) const
 {
+  // Delve into the antecedents until we get something which is not a truncated distribution
+  Distribution localDistribution(distribution_);
+  String kind(localDistribution.getImplementation()->getClassName());
+  UnsignedInteger level = 1;
+  while (kind == "TruncatedDistribution")
+  {
+    const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
+    localDistribution = truncatedDistribution->getDistribution();
+    kind = localDistribution.getImplementation()->getClassName();
+    ++ level;
+    // nested truncation intervals have already been intersected during the nested range computations
+  }
   // n-D case
+  // If no truncation
+  const Interval range(getRange());
+  if ((localDistribution.getRange().getLowerBound() == range.getLowerBound()) &&
+      (localDistribution.getRange().getUpperBound() == range.getUpperBound()))
+  {
+    simplified = localDistribution;
+    return true;
+  }
   JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
   if (p_joint && p_joint->hasIndependentCopula())
   {
@@ -208,26 +230,61 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
     return true;
   }
 
-  // Simplification of the 1D case
-  Distribution localDistribution(distribution_);
-  String kind(localDistribution.getImplementation()->getClassName());
-  // Delve into the antecedents until we get something which is not a truncated distribution
-  UnsignedInteger level = 1;
-  while (kind == "TruncatedDistribution")
+  // If KernelMixture
+  KernelMixture *p_kernelMixture = dynamic_cast<KernelMixture *>(distribution_.getImplementation().get());
+  if (p_kernelMixture)
   {
-    const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
-    localDistribution = truncatedDistribution->getDistribution();
-    kind = localDistribution.getImplementation()->getClassName();
-    ++ level;
-    // nested truncation intervals have already been intersected during the nested range computations
-  }
-  // If no truncation
-  const Interval range(getRange());
-  if (localDistribution.getRange() == range)
-  {
-    simplified = localDistribution;
+    const Sample sample(p_kernelMixture->getInternalSample());
+    // No need to simplify in dimension < 3
+    if (sample.getDimension() < 3)
+      return false;
+    const Distribution kernel(p_kernelMixture->getKernel());
+    const Point bandwidth(p_kernelMixture->getBandwidth());
+    const UnsignedInteger size = sample.getSize();
+    Collection<Distribution> atoms(0);
+    Point weights(0);
+    const Point lb(bounds_.getLowerBound());
+    const Point ub(bounds_.getUpperBound());
+    Collection<Distribution> components(dimension_);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      // Try to build the truncated atom associated with the current point
+      // It fails if the intersection between the bounds and the atom range is empty
+      try
+      {
+	// Many ways to define the atoms
+	// A JointDistribution with truncated RandomMixture marginals
+	// with simplification of the RandomMixture:
+	// dim=3, size=10000, creation=0.57s mean=1.36s cov=1.5s
+	// without simplification of the RandomMixture:
+	// dim=3, size=10000, creation=0.44s mean=1.35s cov=1.47s
+	// A JointDistribution with truncated KernelMixture marginals
+	// dim=3, size=10000, creation=0.37s mean=1.24s cov=1.37s
+	// A BlockIndependentDistribution with truncated RandomMixture blocks
+	// dim=3, size=10000, creation=0.44s mean=1.39s cov=3.16s
+	// A BlockIndependentDistribution with truncated KernelMixture blocks
+	// dim=3, size=10000, creation=0.38s mean=1.31s cov=2.68s
+	Scalar wI = normalizationFactor_;
+	for (UnsignedInteger j = 0; j < dimension_; ++j)
+	  {
+	    const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), lb[j], ub[j]);
+	    wI /= componentJ.normalizationFactor_;
+	    components[j] = componentJ.getSimplifiedVersion();
+	  }
+	atoms.add(JointDistribution(components));
+	weights.add(wI);
+      }
+      catch (InvalidArgumentException & )
+      {
+	// Nothing to do
+      }
+    } // for i
+    const UnsignedInteger atomsNumber = atoms.getSize();
+    if (atomsNumber == 0) throw InternalException(HERE) << "Error: all the truncated atoms have been rejected";
+    simplified = Mixture(atoms, weights);
     return true;
   }
+  
   // If UserDefined
   if (kind == "UserDefined")
   {
@@ -248,6 +305,7 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
     return true;
   }
   // At this point, no more simplification in the multivariate case
+  // Simplification of the 1D case
   if (getDimension() == 1)
   {
     // Now, the 1D simplifications
@@ -319,6 +377,7 @@ void TruncatedDistribution::computeRange()
   else
   {
     const Interval range(distributionRange.intersect(bounds_));
+    if (range.isEmpty()) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
     setRange(range);
     const Scalar probability = distribution_.computeProbability(range);
     if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
