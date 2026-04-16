@@ -1435,18 +1435,18 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("FrankCopulaFactory-ResidualPrecision", 1.0e-14);
   addAsUnsignedInteger("FrankCopulaFactory-MaximumIteration", 100);
 
-  // RandomMixture parameters //
-  addAsBool("RandomMixture-SimplifyAtoms", true);
-  addAsScalar("RandomMixture-DefaultAlpha", 5.0);
-  addAsScalar("RandomMixture-DefaultBeta", 8.5);
-  addAsScalar("RandomMixture-DefaultCDFEpsilon", 1.0e-10);
-  addAsScalar("RandomMixture-DefaultPDFEpsilon", 1.0e-10);
-  addAsUnsignedInteger("RandomMixture-DefaultBlockMax", 16);
-  addAsUnsignedInteger("RandomMixture-DefaultBlockMin", 3);
-  addAsUnsignedInteger("RandomMixture-DefaultMaxSize", 65536);
-  addAsUnsignedInteger("RandomMixture-MaximumSupportSize", 2048);
-  addAsUnsignedInteger("RandomMixture-ProjectionDefaultSize", 25);
-  addAsUnsignedInteger("RandomMixture-SmallSize", 100);
+  // LinearCombinationDistribution parameters //
+  addAsBool("LinearCombinationDistribution-SimplifyAtoms", true);
+  addAsScalar("LinearCombinationDistribution-DefaultAlpha", 5.0);
+  addAsScalar("LinearCombinationDistribution-DefaultBeta", 8.5);
+  addAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon", 1.0e-10);
+  addAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon", 1.0e-10);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMax", 16);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMin", 3);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 65536);
+  addAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 2048);
+  addAsUnsignedInteger("LinearCombinationDistribution-ProjectionDefaultSize", 25);
+  addAsUnsignedInteger("LinearCombinationDistribution-SmallSize", 100);
 
   // Evaluation parameters //
   addAsScalar("Evaluation-ParameterEpsilon", 1.0e-7);

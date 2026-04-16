@@ -779,18 +779,18 @@
   <FrankCopulaFactory-ResidualPrecision value_float="1.0e-14"       />
   <FrankCopulaFactory-MaximumIteration  value_int="100" />
 
-  <!-- OT::RandomMixture parameters -->
-  <RandomMixture-SimplifyAtoms                  value_bool="true"              />
-  <RandomMixture-DefaultAlpha                   value_float="5.0"             />
-  <RandomMixture-DefaultBeta                    value_float="8.5"             />
-  <RandomMixture-DefaultCDFEpsilon              value_float="1.0e-10"         />
-  <RandomMixture-DefaultPDFEpsilon              value_float="1.0e-10"         />
-  <RandomMixture-DefaultBlockMax                value_int="16"    />
-  <RandomMixture-DefaultBlockMin                value_int="3"     />
-  <RandomMixture-DefaultMaxSize                 value_int="65536" />
-  <RandomMixture-MaximumSupportSize             value_int="2048"  />
-  <RandomMixture-ProjectionDefaultSize          value_int="25"    />
-  <RandomMixture-SmallSize                      value_int="100"   />
+  <!-- OT::LinearCombinationDistribution parameters -->
+  <LinearCombinationDistribution-SimplifyAtoms                  value_bool="true"              />
+  <LinearCombinationDistribution-DefaultAlpha                   value_float="5.0"             />
+  <LinearCombinationDistribution-DefaultBeta                    value_float="8.5"             />
+  <LinearCombinationDistribution-DefaultCDFEpsilon              value_float="1.0e-10"         />
+  <LinearCombinationDistribution-DefaultPDFEpsilon              value_float="1.0e-10"         />
+  <LinearCombinationDistribution-DefaultBlockMax                value_int="16"    />
+  <LinearCombinationDistribution-DefaultBlockMin                value_int="3"     />
+  <LinearCombinationDistribution-DefaultMaxSize                 value_int="65536" />
+  <LinearCombinationDistribution-MaximumSupportSize             value_int="2048"  />
+  <LinearCombinationDistribution-ProjectionDefaultSize          value_int="25"    />
+  <LinearCombinationDistribution-SmallSize                      value_int="100"   />
 
   <!-- OT::Evaluation parameters -->
   <Evaluation-ParameterEpsilon   value_float="1.0e-7"        />

@@ -697,7 +697,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       PoissonFactory.i PoissonFactory_doc.i
                       ProductDistribution.i ProductDistribution_doc.i
                       QuantileMatchingFactory.i QuantileMatchingFactory_doc.i
-                      RandomMixture.i RandomMixture_doc.i
+                      LinearCombinationDistribution.i LinearCombinationDistribution_doc.i
                       Rayleigh.i Rayleigh_doc.i
                       RayleighFactory.i RayleighFactory_doc.i
                       Rice.i Rice_doc.i

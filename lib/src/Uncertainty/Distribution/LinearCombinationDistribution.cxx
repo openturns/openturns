@@ -22,7 +22,7 @@
 #include <iomanip>
 #include <algorithm>
 
-#include "openturns/RandomMixture.hxx"
+#include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Interval.hxx"
@@ -58,12 +58,13 @@ typedef Collection<Point> PointCollection;
 typedef Collection<Complex> ComplexCollection;
 
 
-CLASSNAMEINIT(RandomMixture)
+CLASSNAMEINIT(LinearCombinationDistribution)
 
-static const Factory<RandomMixture> Factory_RandomMixture;
+static const Factory<LinearCombinationDistribution> Factory_LinearCombinationDistribution;
+static const Factory<LinearCombinationDistribution> Factory_RandomMixture("RandomMixture");
 
 /* Default constructor */
-RandomMixture::RandomMixture()
+LinearCombinationDistribution::LinearCombinationDistribution()
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(Point(1))
@@ -76,29 +77,29 @@ RandomMixture::RandomMixture()
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
+  setName("LinearCombinationDistribution");
   setDimension(1);
   DistributionCollection coll(1);
-  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0)), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0)), ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 
 /* Default constructor */
-RandomMixture::RandomMixture(const DistributionCollection & coll,
+LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
                              const Scalar constant)
   : DistributionImplementation()
   , distributionCollection_()
@@ -112,32 +113,32 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
+  setName("LinearCombinationDistribution");
   setDimension(1);
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
-  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0)), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0)), ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 /* Default constructor */
-RandomMixture::RandomMixture(const DistributionCollection & coll,
+LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
                              const Point & weights,
                              const Scalar constant)
   : DistributionImplementation()
@@ -152,19 +153,19 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
+  setName("LinearCombinationDistribution");
   setDimension(1);
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
@@ -172,13 +173,13 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // the setDistributionCollection() method that do it for us.
   if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights collection must have the same size as the distribution collection";
   // This call set also the range.
-  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), weights), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), weights), ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
-RandomMixture::RandomMixture(const DistributionCollection & coll,
+LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
                              const Matrix & weights,
                              const Point & constant)
   : DistributionImplementation()
@@ -193,20 +194,20 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
-  if (constant.getSize() > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
+  setName("LinearCombinationDistribution");
+  if (constant.getSize() > 3) throw InvalidDimensionException(HERE) << "LinearCombinationDistribution only possible for dimension 1,2 or 3";
   setDimension(constant.getSize());
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
@@ -215,13 +216,13 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (weights.getNbColumns() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
   if (weights.getNbRows() != constant.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same row numbers as the distribution dimension";
   // This call set also the range.
-  setDistributionCollectionAndWeights(coll, weights, ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, weights, ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
-RandomMixture::RandomMixture(const DistributionCollection & coll,
+LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
                              const Matrix & weights)
   : DistributionImplementation()
   , distributionCollection_()
@@ -235,31 +236,31 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
+  setName("LinearCombinationDistribution");
   const UnsignedInteger dimension = weights.getNbRows();
-  if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
+  if (dimension > 3) throw InvalidDimensionException(HERE) << "LinearCombinationDistribution only possible for dimension 1,2 or 3";
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
   if (weights.getNbColumns() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  setDistributionCollectionAndWeights(coll, weights, ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, weights, ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
-RandomMixture::RandomMixture(const DistributionCollection & coll,
+LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
                              const Sample & weights,
                              const Point & constant)
   : DistributionImplementation()
@@ -274,31 +275,31 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
+  setName("LinearCombinationDistribution");
   const UnsignedInteger dimension = constant.getSize();
-  if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
+  if (dimension > 3) throw InvalidDimensionException(HERE) << "LinearCombinationDistribution only possible for dimension 1,2 or 3";
   setDimension(dimension);
   if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
   if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same dimension as the distribution dimension";
-  setDistributionCollectionAndWeights(coll, Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()), ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
-RandomMixture::RandomMixture(const DistributionCollection & coll,
+LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
                              const Sample & weights)
   : DistributionImplementation()
   , distributionCollection_()
@@ -311,31 +312,31 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , isAlreadyComputedPositionIndicator_(false)
   , dispersionIndicator_(0.0)
   , isAlreadyComputedDispersionIndicator_(false)
-  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
-  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
-  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
   , algo_()
 {
-  setName("RandomMixture");
+  setName("LinearCombinationDistribution");
   const UnsignedInteger dimension = weights.getDimension();
-  if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
+  if (dimension > 3) throw InvalidDimensionException(HERE) << "LinearCombinationDistribution only possible for dimension 1,2 or 3";
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
   if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
-  setDistributionCollectionAndWeights(coll, Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
-  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
-  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+  setDistributionCollectionAndWeights(coll, Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()), ResourceMap::GetAsBool("LinearCombinationDistribution-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon");
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void RandomMixture::computeRange()
+void LinearCombinationDistribution::computeRange()
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   // First, compute the *exact* range. It will be used to clip the asymptotic range if Poisson's formula is used (ie the collection has a size greater than the dimension)
@@ -405,23 +406,23 @@ void RandomMixture::computeRange()
 }
 
 /* Comparison operator */
-Bool RandomMixture::operator ==(const RandomMixture & other) const
+Bool LinearCombinationDistribution::operator ==(const LinearCombinationDistribution & other) const
 {
   if (this == &other) return true;
   return (distributionCollection_ == other.distributionCollection_) && (constant_ == other.constant_);
 }
 
-Bool RandomMixture::equals(const DistributionImplementation & other) const
+Bool LinearCombinationDistribution::equals(const DistributionImplementation & other) const
 {
-  const RandomMixture* p_other = dynamic_cast<const RandomMixture*>(&other);
+  const LinearCombinationDistribution* p_other = dynamic_cast<const LinearCombinationDistribution*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String RandomMixture::__repr__() const
+String LinearCombinationDistribution::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << RandomMixture::GetClassName()
+  oss << "class=" << LinearCombinationDistribution::GetClassName()
       << " name=" << getName()
       << " distribution collection=" << distributionCollection_
       << " weights =" << weights_
@@ -430,7 +431,7 @@ String RandomMixture::__repr__() const
 }
 
 /* String converter */
-String RandomMixture::__str__(const String & offset) const
+String LinearCombinationDistribution::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << getClassName() << "(";
@@ -462,21 +463,21 @@ String RandomMixture::__str__(const String & offset) const
 }
 
 /* Weights distribution accessor */
-Matrix RandomMixture::getWeights() const
+Matrix LinearCombinationDistribution::getWeights() const
 {
   return weights_;
 }
 
 
 /* Distribution collection accessor */
-void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollection & coll,
+void LinearCombinationDistribution::setDistributionCollectionAndWeights(const DistributionCollection & coll,
     const Matrix & weights,
     const Bool simplifyAtoms)
 {
   weights_ = weights;
   // Size will be updated during the several treatments of the collection
   UnsignedInteger size = coll.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LinearCombinationDistribution based on an empty distribution collection.";
   // No simplification in the analytical case
   const UnsignedInteger dimension = getDimension();
   if (size == dimension && !simplifyAtoms)
@@ -506,11 +507,11 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
   }
   // In 1D case, collection's size might change
   // When reducing collection to 1, computations become faster
-  // First, flatten all the RandomMixture atoms
+  // First, flatten all the LinearCombinationDistribution atoms
   DistributionCollection atomCandidates(0);
   // The weights are stored as a collection of scalars, to be read by blocks of size dimension.
   Sample weightCandidates(0, dimension);
-  LOGDEBUG("Flatten RandomMixture atoms in the current RandomMixture");
+  LOGDEBUG("Flatten LinearCombinationDistribution atoms in the current LinearCombinationDistribution");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution atom(coll[i]);
@@ -518,13 +519,13 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     // Skip atoms with null coefficient
     if (w.computeGram()(0, 0) == 0.0) continue;
     const String atomKind(atom.getImplementation()->getClassName());
-    if (atom.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a RandomMixture cannot be built from a collection of distributions of dimension not equal to 1, here distribution " << i << " has a dimension=" << atom.getDimension();
-    if (atomKind == "RandomMixture" || atomKind == "SmoothedUniform")
+    if (atom.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a LinearCombinationDistribution cannot be built from a collection of distributions of dimension not equal to 1, here distribution " << i << " has a dimension=" << atom.getDimension();
+    if (atomKind == "LinearCombinationDistribution" || atomKind == "SmoothedUniform")
     {
-      // Here we know that the atom is 1D, so we merge a 1D RandomMixture
+      // Here we know that the atom is 1D, so we merge a 1D LinearCombinationDistribution
       // Get the weight of the atom
-      // Cast the atom into a RandomMixture
-      const RandomMixture * mixture(dynamic_cast< const RandomMixture * >(atom.getImplementation().get()));
+      // Cast the atom into a LinearCombinationDistribution
+      const LinearCombinationDistribution * mixture(dynamic_cast< const LinearCombinationDistribution * >(atom.getImplementation().get()));
       // Aggregate the constant
       constant_ += w * mixture->constant_;
       // Aggregate the weights
@@ -534,7 +535,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       weightCandidates.add(localWeightsAsSample);
       // Aggregate the atoms
       atomCandidates.add(mixture->getDistributionCollection());
-    } // atom is a RandomMixture
+    } // atom is a LinearCombinationDistribution
     else if (atomKind == "TruncatedDistribution")
     {
       const TruncatedDistribution * truncatedDistribution(dynamic_cast< const TruncatedDistribution * >(atom.getImplementation().get()));
@@ -545,8 +546,8 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     {
       weightCandidates.add(*w.getImplementation());
       atomCandidates.add(atom);
-    } // atom is not a RandomMixture
-  } // Flatten the atoms of RandomMixture type
+    } // atom is not a LinearCombinationDistribution
+  } // Flatten the atoms of LinearCombinationDistribution type
   // Update the size
   size = atomCandidates.getSize();
   if (simplifyAtoms)
@@ -584,9 +585,9 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       }
     } // Split atoms and optimize Dirac
     LOGDEBUG(OSS() << "Continuous atoms=" << continuousAtoms.__str__() << ", discrete atoms=" << discreteAtoms.__str__() << ", other atoms=" << otherAtoms.__str__());
-    // Third, merge the atoms as much as possible. Most of the optimizations assume a 1D RandomMixture.
+    // Third, merge the atoms as much as possible. Most of the optimizations assume a 1D LinearCombinationDistribution.
     //
-    // In the case of a nD RandomMixture with n>1:
+    // In the case of a nD LinearCombinationDistribution with n>1:
     //
     // + The discrete atoms can be merged into a unique discrete nD FiniteDiscreteDistribution with a support of reasonable size
     // + There is no continuous atom, or a unique continuous atom, or all the continuous atoms are Normal
@@ -594,7 +595,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     // Depending on the continuous atoms, one get:
     // + A multivariate FiniteDiscreteDistribution if no continuous atom
     // + A multivariate Mixture if a unique continuous atom or only continuous Normal atoms (merged into a unique multivariate Normal)
-    // -> all these special cases lead to an analytical expression of the RandomMixture
+    // -> all these special cases lead to an analytical expression of the LinearCombinationDistribution
     // -> these simplifications will be implemented in a second time
     //
     // In the case of a 1D mixture:
@@ -830,7 +831,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       LOGDEBUG(OSS() << "After simplification of discrete atoms, distributionCollection_=" << distributionCollection_.__str__());
       // Now merge the discrete atoms by groups of reasonably sized support
       // if there is at least 2 discrete atoms
-      const UnsignedInteger maxSupportSize(ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumSupportSize"));
+      const UnsignedInteger maxSupportSize(ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize"));
       UnsignedInteger firstOtherAtom = distributionCollection_.getSize();
       // No aggregation if maxSupportSize==0 or if only one discrete atom
       if (firstOtherAtom > firstNonContinuousAtom + 1 && maxSupportSize > 0)
@@ -945,7 +946,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
           const Sample support(discreteAtom.getSupport());
           DistributionCollection mixtureAtoms;
           for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-            mixtureAtoms.add(RandomMixture(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support(i, 0) * discreteWeight));
+            mixtureAtoms.add(LinearCombinationDistribution(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support(i, 0) * discreteWeight));
           const Point probabilities(discreteAtom.getProbabilities());
           // Replace the current continuous atom by the Mixture
           distributionCollection_[currentContinuous] = Mixture(mixtureAtoms, probabilities);
@@ -1016,7 +1017,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
 }
 
 /* Constant accessor */
-void RandomMixture::setConstant(const Point & constant)
+void LinearCombinationDistribution::setConstant(const Point & constant)
 {
   if (constant != constant_)
   {
@@ -1028,38 +1029,38 @@ void RandomMixture::setConstant(const Point & constant)
   }
 }
 
-Point RandomMixture::getConstant() const
+Point LinearCombinationDistribution::getConstant() const
 {
   return constant_;
 }
 
 /* Distribution collection accessor */
-DistributionCollection RandomMixture::getDistributionCollection() const
+DistributionCollection LinearCombinationDistribution::getDistributionCollection() const
 {
   return distributionCollection_;
 }
 
 /* FFT algorithm accessor */
-FFT RandomMixture::getFFTAlgorithm() const
+FFT LinearCombinationDistribution::getFFTAlgorithm() const
 {
   return fftAlgorithm_;
 }
 
 /* FFT algorithm accessor */
-void RandomMixture::setFFTAlgorithm(const FFT & fft)
+void LinearCombinationDistribution::setFFTAlgorithm(const FFT & fft)
 {
   fftAlgorithm_ = fft;
 }
 
 
 /* Virtual constructor */
-RandomMixture * RandomMixture::clone() const
+LinearCombinationDistribution * LinearCombinationDistribution::clone() const
 {
-  return new RandomMixture(*this);
+  return new LinearCombinationDistribution(*this);
 }
 
-/* Get one realization of the RandomMixture */
-Point RandomMixture::getRealization() const
+/* Get one realization of the LinearCombinationDistribution */
+Point LinearCombinationDistribution::getRealization() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   Point realization(size);
@@ -1067,8 +1068,8 @@ Point RandomMixture::getRealization() const
   return weights_ * realization + constant_;
 }
 
-/* Get a Sample of the RandomMixture */
-Sample RandomMixture::getSample(const UnsignedInteger size) const
+/* Get a Sample of the LinearCombinationDistribution */
+Sample LinearCombinationDistribution::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
   Sample sample(atomSize, size);
@@ -1079,8 +1080,8 @@ Sample RandomMixture::getSample(const UnsignedInteger size) const
   return weights_.getImplementation()->genSampleProd(sample, true, true, 'R') + constant_;
 }
 
-/* Get the DDF of the RandomMixture */
-Point RandomMixture::computeDDF(const Point & point) const
+/* Get the DDF of the LinearCombinationDistribution */
+Point LinearCombinationDistribution::computeDDF(const Point & point) const
 {
   return DistributionImplementation::computeDDF(point);
 }
@@ -1212,7 +1213,7 @@ private:
 }; // class ComplementaryCDFKernelRandomMixture
 } // namespace
 
-/* Get the PDF of the RandomMixture. It uses the Poisson inversion formula as described in the reference:
+/* Get the PDF of the LinearCombinationDistribution. It uses the Poisson inversion formula as described in the reference:
    "Abate, J. and Whitt, W. (1992). The Fourier-series method for inverting
    transforms of probability distributions. Queueing Systems 10, 5--88., 1992",
    formula 5.5.
@@ -1232,7 +1233,7 @@ private:
    p(x) \simeq h/2\pi\sum_{j\neq 0}\delta(jh)\exp(-Ihjx) + Q(x, h) as \delta(0) = 0
    \simeq h/\pi\sum_{j>0} Re(\delta(jh)) * cos(jhx) + Im(\delta(jh)) * sin(jhx) + Q(x, h)
 */
-Scalar RandomMixture::computePDF(const Point & point) const
+Scalar LinearCombinationDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension_ << ", here dimension=" << point.getDimension();
@@ -1380,7 +1381,7 @@ Scalar RandomMixture::computePDF(const Point & point) const
 }
 
 /*  Compute the PDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
-Sample RandomMixture::computePDF(const Scalar xMin,
+Sample LinearCombinationDistribution::computePDF(const Scalar xMin,
                                  const Scalar xMax,
                                  const UnsignedInteger pointNumber,
                                  Sample & grid) const
@@ -1391,13 +1392,13 @@ Sample RandomMixture::computePDF(const Scalar xMin,
 
 struct EquivalentNormalPDFSumPolicy
 {
-  const RandomMixture & mixture_;
+  const LinearCombinationDistribution & mixture_;
   const Sample & grid_;
   const Point & two_b_sigma_;
   const UnsignedInteger levelMax_;
   Collection<Scalar> & output_;
 
-  EquivalentNormalPDFSumPolicy(const RandomMixture & mixture,
+  EquivalentNormalPDFSumPolicy(const LinearCombinationDistribution & mixture,
                                const Sample & grid,
                                const Point & two_b_sigma,
                                const UnsignedInteger levelMax,
@@ -1420,7 +1421,7 @@ struct EquivalentNormalPDFSumPolicy
 }; /* end struct EquivalentNormalPDFSumPolicy */
 
 /* Compute the PDF of nD distributions over a regular grid */
-Sample RandomMixture::computePDF(const Point & xMin,
+Sample LinearCombinationDistribution::computePDF(const Point & xMin,
                                  const Point & xMax,
                                  const Indices & pointNumber,
                                  Sample & grid) const
@@ -1518,11 +1519,11 @@ Sample RandomMixture::computePDF(const Point & xMin,
 
 struct AddPDFOn1DGridPolicy
 {
-  const RandomMixture & mixture_;
+  const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
   Collection<Complex> & output_;
 
-  AddPDFOn1DGridPolicy(const RandomMixture & mixture,
+  AddPDFOn1DGridPolicy(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        Collection<Complex> & output)
     : mixture_(mixture)
@@ -1541,7 +1542,7 @@ struct AddPDFOn1DGridPolicy
   }
 }; /* end struct AddPDFOn1DGridPolicy */
 
-void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
+void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=1, here dimension=" << pointNumber.getSize();
 
@@ -1587,14 +1588,14 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
 
 struct AddPDFOn2DGridPolicy
 {
-  const RandomMixture & mixture_;
+  const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
   const Point & yPoints_;
   const UnsignedInteger nx_;
   const UnsignedInteger ny_;
   Collection<Complex> & output_;
 
-  AddPDFOn2DGridPolicy(const RandomMixture & mixture,
+  AddPDFOn2DGridPolicy(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
                        Collection<Complex> & output)
@@ -1620,7 +1621,7 @@ struct AddPDFOn2DGridPolicy
   }
 }; /* end struct AddPDFOn2DGridPolicy */
 
-void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
+void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=2, here dimension=" << pointNumber.getSize();
 
@@ -1755,7 +1756,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
 
 struct AddPDFOn3DGridPolicy
 {
-  const RandomMixture & mixture_;
+  const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
   const Point & yPoints_;
   const Point & zPoints_;
@@ -1764,7 +1765,7 @@ struct AddPDFOn3DGridPolicy
   const UnsignedInteger nz_;
   Collection<Complex> & output_;
 
-  AddPDFOn3DGridPolicy(const RandomMixture & mixture,
+  AddPDFOn3DGridPolicy(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
                        const Point & zPoints,
@@ -1795,7 +1796,7 @@ struct AddPDFOn3DGridPolicy
   }
 }; /* end struct AddPDFOn3DGridPolicy */
 
-void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
+void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=3, here dimension=" << pointNumber.getSize();
 
@@ -2205,8 +2206,8 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   }
 }
 
-/* Get the CDF of the RandomMixture */
-Scalar RandomMixture::computeCDF(const Point & point) const
+/* Get the CDF of the LinearCombinationDistribution */
+Scalar LinearCombinationDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension())
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -2355,7 +2356,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   return cdf;
 }
 
-Scalar RandomMixture::computeComplementaryCDF(const Point & point) const
+Scalar LinearCombinationDistribution::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension())
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -2389,7 +2390,7 @@ Scalar RandomMixture::computeComplementaryCDF(const Point & point) const
 }
 
 /*  Compute the CDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
-Sample RandomMixture::computeCDF(const Scalar xMin,
+Sample LinearCombinationDistribution::computeCDF(const Scalar xMin,
                                  const Scalar xMax,
                                  const UnsignedInteger pointNumber,
                                  Sample & grid) const
@@ -2404,7 +2405,7 @@ Sample RandomMixture::computeCDF(const Scalar xMin,
    We use an incremental update of the trigonometric functions and reduce the complex arithmetic to a real
    arithmetic for performance purpose.
 */
-Scalar RandomMixture::computeProbability(const Interval & interval) const
+Scalar LinearCombinationDistribution::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -2419,7 +2420,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
     const Scalar cdfUpper = computeCDF(upper);
     return SpecFunc::Clip01(cdfUpper - cdfLower);
   }
-  if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
+  if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-SmallSize" )))
   {
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     Scalar probability;
@@ -2481,7 +2482,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
 }
 
 /*  Compute the quantile over a regular grid */
-Sample RandomMixture::computeQuantile(const Scalar qMin,
+Sample LinearCombinationDistribution::computeQuantile(const Scalar qMin,
                                       const Scalar qMax,
                                       const UnsignedInteger pointNumber,
                                       const Bool tail) const
@@ -2500,7 +2501,7 @@ Sample RandomMixture::computeQuantile(const Scalar qMin,
 }
 
 /* Quantile computation for dimension=1 */
-Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
+Scalar LinearCombinationDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
@@ -2558,7 +2559,7 @@ Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob,
+LevelSet LinearCombinationDistribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob,
     Scalar & threshold) const
 {
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
@@ -2574,13 +2575,13 @@ LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-Complex RandomMixture::computeCharacteristicFunction(const Scalar x) const
+Complex LinearCombinationDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-Complex RandomMixture::computeCharacteristicFunction(const Point & x) const
+Complex LinearCombinationDistribution::computeCharacteristicFunction(const Point & x) const
 {
   // The characteristic function is given by the following formula:
   // \phi(y) = \prod_{j=1}^{d} (exp(i * y_j * constant_j) * \prod_{k=1}^{n} \phi_{X_k}((M^t y)_k))
@@ -2588,7 +2589,7 @@ Complex RandomMixture::computeCharacteristicFunction(const Point & x) const
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-Complex RandomMixture::computeLogCharacteristicFunction(const Scalar x) const
+Complex LinearCombinationDistribution::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 0.0;
   Complex logCfValue(0.0, constant_[0] * x);
@@ -2609,7 +2610,7 @@ Complex RandomMixture::computeLogCharacteristicFunction(const Scalar x) const
   return logCfValue;
 }
 
-Complex RandomMixture::computeLogCharacteristicFunction(const Point & x) const
+Complex LinearCombinationDistribution::computeLogCharacteristicFunction(const Point & x) const
 {
   // The log-characteristic function is given by:
   // log(\phi(x)) = \sum_{j=1}^{d} ((i * y_j * constant_j) + \sum_{k=1}^{n} log(\phi_{X_k})((M^t x)_k))
@@ -2633,7 +2634,7 @@ Complex RandomMixture::computeLogCharacteristicFunction(const Point & x) const
 }
 
 /* Compute a value of the characteristic function on a prescribed discretization. As the value associated with index == 0 is known, it is not stored so for index > 0, the corresponding value is at position index-1 */
-Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger index) const
+Complex LinearCombinationDistribution::computeDeltaCharacteristicFunction(const UnsignedInteger index) const
 {
   if (index == 0) return 0.0;
   // The cached values are computed and stored in an ascending order without hole: this function is always called on a sequence starting from 0 to n-1
@@ -2642,7 +2643,7 @@ Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger 
   // If the index is higher than the maximum allowed storage
   if (index > maxSize_)
   {
-    LOGINFO(OSS() << "Cache exceeded in RandomMixture::computeDeltaCharacteristicFunction, consider increasing maxSize_ to " << index);
+    LOGINFO(OSS() << "Cache exceeded in LinearCombinationDistribution::computeDeltaCharacteristicFunction, consider increasing maxSize_ to " << index);
     const Scalar x = index * referenceBandwidth_[0];
     const Complex logCF(computeLogCharacteristicFunction(x));
     const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
@@ -2674,7 +2675,7 @@ Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger 
 }
 
 /* Compute the characteristic function of nD distributions by difference to a reference Normal distribution with the same mean and the same covariance */
-Complex RandomMixture::computeDeltaCharacteristicFunction(const Point & x) const
+Complex LinearCombinationDistribution::computeDeltaCharacteristicFunction(const Point & x) const
 {
   // Direct application on a point ==> useful for computation on grid
   const Complex logCF(computeLogCharacteristicFunction(x));
@@ -2685,7 +2686,7 @@ Complex RandomMixture::computeDeltaCharacteristicFunction(const Point & x) const
 }
 
 /* Update cache */
-void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points) const
+void LinearCombinationDistribution::updateCacheDeltaCharacteristicFunction(const Sample & points) const
 {
   for(UnsignedInteger i = 0; i < points.getSize(); ++i)
   {
@@ -2707,7 +2708,7 @@ void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points
 }
 
 /* Get the PDF gradient of the distribution */
-Point RandomMixture::computePDFGradient(const Point & point) const
+Point LinearCombinationDistribution::computePDFGradient(const Point & point) const
 {
   if (isAnalytical_ && (dimension_ == 1))
   {
@@ -2719,7 +2720,7 @@ Point RandomMixture::computePDFGradient(const Point & point) const
 }
 
 /* Get the CDF gradient of the distribution */
-Point RandomMixture::computeCDFGradient(const Point & point) const
+Point LinearCombinationDistribution::computeCDFGradient(const Point & point) const
 {
   if (isAnalytical_ && (dimension_ == 1))
   {
@@ -2731,8 +2732,8 @@ Point RandomMixture::computeCDFGradient(const Point & point) const
   return DistributionImplementation::computeCDFGradient(point);
 }
 
-/* Compute the mean of the RandomMixture */
-void RandomMixture::computeMean() const
+/* Compute the mean of the LinearCombinationDistribution */
+void LinearCombinationDistribution::computeMean() const
 {
   mean_ = constant_;
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2743,8 +2744,8 @@ void RandomMixture::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
-/* Compute the covariance of the RandomMixture */
-void RandomMixture::computeCovariance() const
+/* Compute the covariance of the LinearCombinationDistribution */
+void LinearCombinationDistribution::computeCovariance() const
 {
   // Compute the covariance of the mixture.
   // This method is private. Use the getCovariance to get the covariance value.
@@ -2770,8 +2771,8 @@ void RandomMixture::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Get the standard deviation of the RandomMixture */
-Point RandomMixture::getStandardDeviation() const
+/* Get the standard deviation of the LinearCombinationDistribution */
+Point LinearCombinationDistribution::getStandardDeviation() const
 {
   // It looks like the default implementation but
   // it is not in the multivariate case. Even if
@@ -2788,8 +2789,8 @@ Point RandomMixture::getStandardDeviation() const
   return sigma;
 }
 
-/* Get the skewness of the RandomMixture */
-Point RandomMixture::getSkewness() const
+/* Get the skewness of the LinearCombinationDistribution */
+Point LinearCombinationDistribution::getSkewness() const
 {
   Point skewness(getDimension(), 0.0);
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2809,8 +2810,8 @@ Point RandomMixture::getSkewness() const
   return skewness;
 }
 
-/* Get the kurtosis of the RandomMixture */
-Point RandomMixture::getKurtosis() const
+/* Get the kurtosis of the LinearCombinationDistribution */
+Point LinearCombinationDistribution::getKurtosis() const
 {
   Point kurtosis(getDimension(), 0.0);
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2836,7 +2837,7 @@ Point RandomMixture::getKurtosis() const
 }
 
 /* Parameters value and description accessor */
-RandomMixture::PointWithDescriptionCollection RandomMixture::getParametersCollection() const
+LinearCombinationDistribution::PointWithDescriptionCollection LinearCombinationDistribution::getParametersCollection() const
 {
   // Assume that the weights are not part of the parameters
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2862,7 +2863,7 @@ RandomMixture::PointWithDescriptionCollection RandomMixture::getParametersCollec
 } // getParametersCollection
 
 /* Parameters value and description accessor */
-Point RandomMixture::getParameter() const
+Point LinearCombinationDistribution::getParameter() const
 {
   // Assume that the weights are not part of the parameters
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2873,7 +2874,7 @@ Point RandomMixture::getParameter() const
   return parameter;
 } // getParameter
 
-void RandomMixture::setParameter(const Point & parameter)
+void LinearCombinationDistribution::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2889,7 +2890,7 @@ void RandomMixture::setParameter(const Point & parameter)
 } // setParameter
 
 /* Parameters value and description accessor */
-Description RandomMixture::getParameterDescription() const
+Description LinearCombinationDistribution::getParameterDescription() const
 {
   // Assume that the weights are not part of the parameters
   const UnsignedInteger size = distributionCollection_.getSize();
@@ -2908,14 +2909,14 @@ Description RandomMixture::getParameterDescription() const
 } // getParameterDescription
 
 /* Get a position indicator for a 1D distribution */
-Scalar RandomMixture::getPositionIndicator() const
+Scalar LinearCombinationDistribution::getPositionIndicator() const
 {
   if (!isAlreadyComputedPositionIndicator_) computePositionIndicator();
   return positionIndicator_;
 }
 
 /* Compute a position indicator for a 1D distribution */
-void RandomMixture::computePositionIndicator() const
+void LinearCombinationDistribution::computePositionIndicator() const
 {
   if (getDimension() == 1)
   {
@@ -2934,14 +2935,14 @@ void RandomMixture::computePositionIndicator() const
 
 
 /* Get a dispersion indicator for a 1D distribution */
-Scalar RandomMixture::getDispersionIndicator() const
+Scalar LinearCombinationDistribution::getDispersionIndicator() const
 {
   if (!isAlreadyComputedDispersionIndicator_) computeDispersionIndicator();
   return dispersionIndicator_;
 }
 
 /* Compute a dispersion indicator for a 1D distribution */
-void RandomMixture::computeDispersionIndicator() const
+void LinearCombinationDistribution::computeDispersionIndicator() const
 {
   if (getDimension() == 1)
   {
@@ -2960,29 +2961,29 @@ void RandomMixture::computeDispersionIndicator() const
 }
 
 /* BlockMin accessor */
-void RandomMixture::setBlockMin(const UnsignedInteger blockMin)
+void LinearCombinationDistribution::setBlockMin(const UnsignedInteger blockMin)
 {
   blockMin_ = blockMin;
 }
 
-UnsignedInteger RandomMixture::getBlockMin() const
+UnsignedInteger LinearCombinationDistribution::getBlockMin() const
 {
   return blockMin_;
 }
 
 /* BlockMax accessor */
-void RandomMixture::setBlockMax(const UnsignedInteger blockMax)
+void LinearCombinationDistribution::setBlockMax(const UnsignedInteger blockMax)
 {
   blockMax_ = blockMax;
 }
 
-UnsignedInteger RandomMixture::getBlockMax() const
+UnsignedInteger LinearCombinationDistribution::getBlockMax() const
 {
   return blockMax_;
 }
 
 /* MaxSize accessor */
-void RandomMixture::setMaxSize(const UnsignedInteger maxSize)
+void LinearCombinationDistribution::setMaxSize(const UnsignedInteger maxSize)
 {
   maxSize_ = maxSize;
   // The cache must grow progresively, so;
@@ -2995,13 +2996,13 @@ void RandomMixture::setMaxSize(const UnsignedInteger maxSize)
   }
 }
 
-UnsignedInteger RandomMixture::getMaxSize() const
+UnsignedInteger LinearCombinationDistribution::getMaxSize() const
 {
   return maxSize_;
 }
 
 /* Alpha accessor */
-void RandomMixture::setAlpha(const Scalar alpha)
+void LinearCombinationDistribution::setAlpha(const Scalar alpha)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: the alpha parameter must be strictly positive";
   alpha_ = alpha;
@@ -3009,25 +3010,25 @@ void RandomMixture::setAlpha(const Scalar alpha)
   computeReferenceBandwidth();
 }
 
-Scalar RandomMixture::getAlpha() const
+Scalar LinearCombinationDistribution::getAlpha() const
 {
   return alpha_;
 }
 
-void RandomMixture::setBeta(const Scalar beta)
+void LinearCombinationDistribution::setBeta(const Scalar beta)
 {
   beta_ = beta;
   computeRange();
   computeReferenceBandwidth();
 }
 
-Scalar RandomMixture::getBeta() const
+Scalar LinearCombinationDistribution::getBeta() const
 {
   return beta_;
 }
 
 /* Reference bandwidth accessor */
-void RandomMixture::setReferenceBandwidth(const Point & bandwidth)
+void LinearCombinationDistribution::setReferenceBandwidth(const Point & bandwidth)
 {
   referenceBandwidth_ = bandwidth;
   // Reset the cached values
@@ -3035,19 +3036,19 @@ void RandomMixture::setReferenceBandwidth(const Point & bandwidth)
   characteristicValuesCache_ = ComplexPersistentCollection(0);
 }
 
-Point RandomMixture::getReferenceBandwidth() const
+Point LinearCombinationDistribution::getReferenceBandwidth() const
 {
   return referenceBandwidth_;
 }
 
 /* PDF precision accessor. For other distributions, it is a read-only attribute. */
-void RandomMixture::setPDFPrecision(const Scalar pdfPrecision)
+void LinearCombinationDistribution::setPDFPrecision(const Scalar pdfPrecision)
 {
   pdfPrecision_ = pdfPrecision;
 }
 
 /* CDF precision accessor. For other distributions, it is a read-only attribute. */
-void RandomMixture::setCDFPrecision(const Scalar cdfPrecision)
+void LinearCombinationDistribution::setCDFPrecision(const Scalar cdfPrecision)
 {
   cdfPrecision_ = cdfPrecision;
 }
@@ -3055,7 +3056,7 @@ void RandomMixture::setCDFPrecision(const Scalar cdfPrecision)
 /* Compute the reference bandwidth. It is defined as the largest bandwidth
    that allow a precise computation of the PDF over the range
    [positionIndicator_ +/- beta * dispersionIndicator_] */
-void RandomMixture::computeReferenceBandwidth()
+void LinearCombinationDistribution::computeReferenceBandwidth()
 {
   referenceBandwidth_ = Point(getDimension(), 0.0);
   Bool isFinite = true;
@@ -3083,7 +3084,7 @@ void RandomMixture::computeReferenceBandwidth()
 
 /* Compute the equivalent normal distribution, i.e. with the same mean and
    the same standard deviation */
-void RandomMixture::computeEquivalentNormal()
+void LinearCombinationDistribution::computeEquivalentNormal()
 {
   if (distributionCollection_.getSize() > 0)
   {
@@ -3096,9 +3097,9 @@ void RandomMixture::computeEquivalentNormal()
 }
 
 /* Compute the left-hand sum in Poisson's summation formula for the equivalent normal */
-Scalar RandomMixture::computeEquivalentNormalPDFSum(const Scalar x) const
+Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Scalar x) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "RandomMixture::computeEquivalentNormalPDFSum(Scalar) is only possible for dimension 1";
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "LinearCombinationDistribution::computeEquivalentNormalPDFSum(Scalar) is only possible for dimension 1";
 
   Scalar value = equivalentNormal_.computePDF(x);
   UnsignedInteger i = 0;
@@ -3114,7 +3115,7 @@ Scalar RandomMixture::computeEquivalentNormalPDFSum(const Scalar x) const
   return value;
 }
 
-Scalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
+Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
     UnsignedInteger imax, UnsignedInteger & levelMax) const
 {
   /*
@@ -3188,10 +3189,10 @@ Scalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, const Point
 }
 
 /* Compute the left-hand sum in Poisson's summation formula for the equivalent normal */
-Scalar RandomMixture::computeEquivalentNormalCDFSum(const Scalar s,
+Scalar LinearCombinationDistribution::computeEquivalentNormalCDFSum(const Scalar s,
     const Scalar t) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "RandomMixture::computeEquivalentNormalCDFSum(Scalar) is only possible for dimension 1";
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "LinearCombinationDistribution::computeEquivalentNormalCDFSum(Scalar) is only possible for dimension 1";
 
   Scalar value = equivalentNormal_.computeProbability(Interval(s, t));
   UnsignedInteger i = 0;
@@ -3222,8 +3223,8 @@ struct RandomMixturePair
 
 typedef Collection<RandomMixturePair> RandomMixturePairCollection;
 
-/** Project a RandomMixture over a Collection of DistributionFactory by using a regular sampling and Kolmogorov distance. */
-DistributionCollection RandomMixture::project(const DistributionFactoryCollection & factoryCollection,
+/** Project a LinearCombinationDistribution over a Collection of DistributionFactory by using a regular sampling and Kolmogorov distance. */
+DistributionCollection LinearCombinationDistribution::project(const DistributionFactoryCollection & factoryCollection,
     Point & kolmogorovNorm,
     const UnsignedInteger size) const
 {
@@ -3270,18 +3271,18 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
 }
 
 /* Get the i-th marginal distribution */
-Distribution RandomMixture::getMarginal(const UnsignedInteger i) const
+Distribution LinearCombinationDistribution::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   if (dimension == 1) return clone();
-  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, weights_.getRow(i), Point(1, constant_[i])));
+  LinearCombinationDistribution::Implementation marginal(new LinearCombinationDistribution(distributionCollection_, weights_.getRow(i), Point(1, constant_[i])));
   marginal->setDescription(Description(1, getDescription()[i]));
   return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Distribution RandomMixture::getMarginal(const Indices & indices) const
+Distribution LinearCombinationDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -3295,25 +3296,25 @@ Distribution RandomMixture::getMarginal(const Indices & indices) const
     const Matrix row(weights_.getRow(index_i));
     for (UnsignedInteger j = 0; j < outputDimension; ++j) marginalWeights(i, j) = row(0, j);
   }
-  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, marginalWeights, constant_.select(indices)));
+  LinearCombinationDistribution::Implementation marginal(new LinearCombinationDistribution(distributionCollection_, marginalWeights, constant_.select(indices)));
   marginal->setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 
 /* Tell if the distribution has independent copula */
-Bool RandomMixture::hasIndependentCopula() const
+Bool LinearCombinationDistribution::hasIndependentCopula() const
 {
   return (getDimension() == 1);
 }
 
 /* Tell if the distribution has elliptical copula */
-Bool RandomMixture::hasEllipticalCopula() const
+Bool LinearCombinationDistribution::hasEllipticalCopula() const
 {
   return (getDimension() == 1);
 }
 
 /* Check if the distribution is elliptical */
-Bool RandomMixture::isElliptical() const
+Bool LinearCombinationDistribution::isElliptical() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   // Case of a Dirac distribution
@@ -3324,7 +3325,7 @@ Bool RandomMixture::isElliptical() const
 }
 
 /* Check if the distribution is continuous */
-Bool RandomMixture::isContinuous() const
+Bool LinearCombinationDistribution::isContinuous() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -3333,7 +3334,7 @@ Bool RandomMixture::isContinuous() const
 }
 
 /* Check if the distribution is discrete */
-Bool RandomMixture::isDiscrete() const
+Bool LinearCombinationDistribution::isDiscrete() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -3342,7 +3343,7 @@ Bool RandomMixture::isDiscrete() const
 }
 
 /* Tell if the distribution is integer valued */
-Bool RandomMixture::isIntegral() const
+Bool LinearCombinationDistribution::isIntegral() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   const UnsignedInteger dimension = getDimension();
@@ -3358,7 +3359,7 @@ Bool RandomMixture::isIntegral() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-Sample RandomMixture::getSupport(const Interval & interval) const
+Sample LinearCombinationDistribution::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
@@ -3417,7 +3418,7 @@ Sample RandomMixture::getSupport(const Interval & interval) const
 }
 
 /* Method save() stores the object through the StorageManager */
-void RandomMixture::save(Advocate & adv) const
+void LinearCombinationDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distributionCollection_", distributionCollection_  );
@@ -3445,7 +3446,7 @@ void RandomMixture::save(Advocate & adv) const
 } // save
 
 /* Method load() reloads the object from the StorageManager */
-void RandomMixture::load(Advocate & adv)
+void LinearCombinationDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "distributionCollection_", distributionCollection_  );

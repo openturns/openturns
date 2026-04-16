@@ -38,7 +38,7 @@
 #include "openturns/LogUniform.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/RandomMixture.hxx"
+#include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/ProductDistribution.hxx"
 #include "openturns/SquaredNormal.hxx"
@@ -166,7 +166,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
     Collection< Distribution > coll(2);
     coll[0] = *this;
     coll[1] = other.clone();
-    RandomMixture res(coll);
+    LinearCombinationDistribution res(coll);
     // Check if a simplification has occurred
     if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
       return res.getDistributionCollection()[0];
@@ -193,7 +193,7 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
     Collection< Distribution > coll(2);
     coll[0] = *this;
     coll[1] = Dirac(Point(1, value));
-    RandomMixture res(coll);
+    LinearCombinationDistribution res(coll);
     // Check if a simplification has occurred
     if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
       return res.getDistributionCollection()[0];
@@ -228,7 +228,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
     Collection< Distribution > coll(2);
     coll[0] = *this;
     coll[1] = other.clone();
-    RandomMixture res(coll, weights);
+    LinearCombinationDistribution res(coll, weights);
     // Check if a simplification has occurred
     if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
       return res.getDistributionCollection()[0];
@@ -303,7 +303,7 @@ Distribution DistributionImplementation::operator * (const Scalar value) const
   if (getClassName() == "Dirac") return new Dirac(getRealization()[0] * value);
   const Collection< Distribution > coll(1, *this);
   const Point weight(1, value);
-  RandomMixture res(coll, weight);
+  LinearCombinationDistribution res(coll, weight);
   // If the weight has been integrated into the unique atom and there is no constant
   if ((res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
     return res.getDistributionCollection()[0];

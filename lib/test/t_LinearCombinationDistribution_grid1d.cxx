@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class RandomMixture for grid computatioons - 1D cases
+ *  @brief The test file of class LinearCombinationDistribution for grid computatioons - 1D cases
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    // Defining RandomMixture
+    // Defining LinearCombinationDistribution
     Point weights(0);
     Collection< Distribution > coll(0);
     coll.add(Gamma(0.5, 1.0));
@@ -45,7 +45,7 @@ int main(int, char *[])
     weights.add(1.0);
     coll.add(Gamma(1.0, 1.0));
     weights.add(1.0);
-    RandomMixture distribution(coll, weights);
+    LinearCombinationDistribution distribution(coll, weights);
     Gamma referenceDistribution(3.0, 1.0);
     // Compute PDF on regular grid
     const UnsignedInteger N = 256;

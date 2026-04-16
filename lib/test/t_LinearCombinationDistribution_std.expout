@@ -1,7 +1,7 @@
 testCases=[[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=Uniform dimension=1 a=-1 b=3],[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]],[class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0]]
 references=[Triangular(a = -2, m = 2, b = 6),Normal(mu = -1, sigma = 3),Gamma(k = 3, lambda = 1, gamma = 0)]
-Distribution class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
-Distribution RandomMixture(Triangular(a = -2, m = 2, b = 6))
+Distribution class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
+Distribution LinearCombinationDistribution(Triangular(a = -2, m = 2, b = 6))
 Elliptical = true
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[2.5585]
@@ -39,14 +39,14 @@ kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[2.4]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.66667]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.66667]
 parameters=[[Triangular_a : -2, Triangular_m : 2, Triangular_b : 6]]
-Standard representative=RandomMixture(Triangular(a = -2, m = 2, b = 6))
+Standard representative=LinearCombinationDistribution(Triangular(a = -2, m = 2, b = 6))
 blockMin=5
 blockMax=20
 maxSize=4000000
 alpha=5
 beta=8.5
-Distribution class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-1] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
-Distribution RandomMixture(Normal(mu = -1, sigma = 3))
+Distribution class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-1] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
+Distribution LinearCombinationDistribution(Normal(mu = -1, sigma = 3))
 Elliptical = true
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[-2.89793]
@@ -84,14 +84,14 @@ kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[3]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9]
 parameters=[[Normal_mu_0 : -1, Normal_sigma_0 : 3]]
-Standard representative=RandomMixture(Normal(mu = -1, sigma = 3))
+Standard representative=LinearCombinationDistribution(Normal(mu = -1, sigma = 3))
 blockMin=5
 blockMax=20
 maxSize=4000000
 alpha=5
 beta=8.5
-Distribution class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=3 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
-Distribution RandomMixture(Gamma(k = 3, lambda = 1, gamma = 0))
+Distribution class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Gamma name=Gamma dimension=1 k=3 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
+Distribution LinearCombinationDistribution(Gamma(k = 3, lambda = 1, gamma = 0))
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[2.41048]
@@ -129,14 +129,14 @@ kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[5]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
 parameters=[[Gamma_k : 3, Gamma_lambda : 1, Gamma_gamma : 0]]
-Standard representative=RandomMixture(Gamma(k = 3, lambda = 1, gamma = 0))
+Standard representative=LinearCombinationDistribution(Gamma(k = 3, lambda = 1, gamma = 0))
 blockMin=5
 blockMax=20
 maxSize=4000000
 alpha=5
 beta=8.5
-distribution=class=RandomMixture name=RandomMixture distribution collection=[class=SmoothedUniform name=SmoothedUniform dimension=1 a=1 b=5 sigma=2.23607,class=Exponential name=Exponential dimension=1 lambda=2 gamma=0,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=3 values=[1,1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
-distribution=RandomMixture(SmoothedUniform(a = 1, b = 5, sigma = 2.23607) + Exponential(lambda = 2, gamma = 0) + Gamma(k = 3, lambda = 4, gamma = 0))
+distribution=class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=SmoothedUniform name=SmoothedUniform dimension=1 a=1 b=5 sigma=2.23607,class=Exponential name=Exponential dimension=1 lambda=2 gamma=0,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=3 values=[1,1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
+distribution=LinearCombinationDistribution(SmoothedUniform(a = 1, b = 5, sigma = 2.23607) + Exponential(lambda = 2, gamma = 0) + Gamma(k = 3, lambda = 4, gamma = 0))
 pdf(-12)=6.67892e-11
 pdf(-11)=9.97295e-10
 pdf(-10)=1.2309e-08
@@ -169,7 +169,7 @@ pdf(16)=6.16681e-06
 pdf(17)=1.09834e-06
 projections=[Normal(mu = 4.24818, sigma = 4.37758),Gamma(k = 9.27664, lambda = 0.695762, gamma = -9.08487),Triangular(a = -9.72415, m = 4.24455, b = 18.2241),Uniform(a = -9.72415, b = 18.2241),Exponential(lambda = 0.0750016, gamma = -9.08487)]
 norms=class=Point name=Unnamed dimension=5 values=[0.122372,0.13956,0.192465,0.297767,0.44332]
-distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
+distribution = class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
 range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-20.8207,-28.1913] upper bound=class=Point name=Unnamed dimension=2 values=[20.8207,28.1913] finite lower bound=[0,0] finite upper bound=[0,0]
 mean = class=Point name=Unnamed dimension=2 values=[0,0]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[6,-4,-4,11]
@@ -241,7 +241,7 @@ pdf      =2.02915e-10
 pdf (ref)=2.02915e-10
 pdf      =1.78727e-12
 pdf (ref)=1.78727e-12
-new distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
+new distribution = class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
 range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-2,-3] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]
 mean = class=Point name=Unnamed dimension=2 values=[0,-0.5]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,-0.333333,-0.333333,0.916667]
@@ -282,7 +282,7 @@ pdf      =0.120154
 pdf      =0.110695
 pdf      =0.0922665
 pdf      =0.0710676
-3D distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Mixture name=Mixture dimension=1 distributionCollection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] base=class=Point name=Unnamed dimension=0 values=[] alias=[],class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=4 values=[1,0.5,-0.5,-0.05,1,-0.1,1,-0.05,1.2,-0.5,0.3,-0.8] constant=class=Point name=Unnamed dimension=3 values=[0,0,0]
+3D distribution = class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Mixture name=Mixture dimension=1 distributionCollection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] base=class=Point name=Unnamed dimension=0 values=[] alias=[],class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=4 values=[1,0.5,-0.5,-0.05,1,-0.1,1,-0.05,1.2,-0.5,0.3,-0.8] constant=class=Point name=Unnamed dimension=3 values=[0,0,0]
 range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[-8.63316,-13.5259,-5.59038] upper bound=class=Point name=Unnamed dimension=3 values=[9.13316,13.7759,5.99038] finite lower bound=[0,0,0] finite upper bound=[0,0,0]
 mean = class=Point name=Unnamed dimension=3 values=[0.25,0.125,0.2]
 cov = class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.11667,0.233333,-0.341667,0.233333,5.25771,-0.775,-0.341667,-0.775,0.473333]
@@ -311,7 +311,7 @@ case 2, q comp=-0.384146
 sum=class=Trapezoidal name=Trapezoidal dimension=1 a=0 b=1 c=2 d=3 h=0.5
 CDF=0.75
 quantile=class=Point name=Unnamed dimension=1 values=[0.894427]
-sum=class=RandomMixture name=RandomMixture distribution collection=[class=TruncatedDistribution name=TruncatedDistribution distribution=class=LogNormal name=LogNormal dimension=1 muLog=0.346574 sigmaLog=0.652004 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.2] upper bound=class=Point name=Unnamed dimension=1 values=[10] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5,class=Uniform name=Uniform dimension=1 a=0 b=2] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=2 values=[1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
+sum=class=LinearCombinationDistribution name=LinearCombinationDistribution distribution collection=[class=TruncatedDistribution name=TruncatedDistribution distribution=class=LogNormal name=LogNormal dimension=1 muLog=0.346574 sigmaLog=0.652004 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.2] upper bound=class=Point name=Unnamed dimension=1 values=[10] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5,class=Uniform name=Uniform dimension=1 a=0 b=2] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=2 values=[1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
 CDF=0.306712
 quantile=class=Point name=Unnamed dimension=1 values=[1.67422]
 CDF(0)=0.5

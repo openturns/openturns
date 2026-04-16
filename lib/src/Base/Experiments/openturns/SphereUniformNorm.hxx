@@ -61,7 +61,7 @@ public:
   /** Get all points at a certain distance */
   virtual Sample getPoints(const UnsignedInteger distance) const;
 
-  /** Get index offset, needed by RandomMixture cache */
+  /** Get index offset, needed by LinearCombinationDistribution cache */
   virtual UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const;
 
   /** Constructor from grid steps */

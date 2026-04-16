@@ -6,10 +6,10 @@ from math import sqrt, pi, exp, log
 
 ot.TESTPREAMBLE()
 
-ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
+ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000)
 # Deactivate the simplification mechanism as we want to test the Poisson formula
 # based algorithm here
-ot.ResourceMap.SetAsBool("RandomMixture-SimplifyAtoms", False)
+ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", False)
 
 # Create a collection of test-cases and the associated references
 numberOfTests = 3
@@ -25,7 +25,7 @@ print("testCases=", testCases)
 print("references=", references)
 for testIndex in range(len(testCases)):
     # Instantiate one distribution object
-    distribution = ot.RandomMixture(testCases[testIndex])
+    distribution = ot.LinearCombinationDistribution(testCases[testIndex])
     distribution.setBlockMin(5)
     distribution.setBlockMax(20)
     distributionReference = references[testIndex]
@@ -169,12 +169,12 @@ coll.add(ot.Uniform(2.0, 4.0))
 weights.add(2.0)
 coll.add(ot.Exponential(2.0, -3.0))
 weights.add(1.5)
-rm = ot.RandomMixture(coll, weights)
+rm = ot.LinearCombinationDistribution(coll, weights)
 coll.add(rm)
 weights.add(-2.5)
 coll.add(ot.Gamma(3.0, 4.0, -2.0))
 weights.add(2.5)
-distribution = ot.RandomMixture(coll, weights)
+distribution = ot.LinearCombinationDistribution(coll, weights)
 print("distribution=", repr(distribution))
 print("distribution=", distribution)
 mu = distribution.getMean()[0]
@@ -196,7 +196,7 @@ result, norms = distribution.project(collFactories)
 print("projections=", result)
 print("norms=", norms)
 # ------------------------------ Multivariate tests ------------------------------#
-# 2D RandomMixture
+# 2D LinearCombinationDistribution
 collection = [ot.Normal(0.0, 1.0)] * 3
 
 weightMatrix = ot.Matrix(2, 3)
@@ -207,8 +207,8 @@ weightMatrix[1, 0] = 1.0
 weightMatrix[1, 1] = 1.0
 weightMatrix[1, 2] = -3.0
 
-# Build the RandomMixture
-distribution2D = ot.RandomMixture(collection, weightMatrix)
+# Build the LinearCombinationDistribution
+distribution2D = ot.LinearCombinationDistribution(collection, weightMatrix)
 print("distribution = ", distribution2D)
 print("range = ", distribution2D.getRange())
 print("mean = ", distribution2D.getMean())
@@ -250,8 +250,8 @@ for index in range(grid.getSize()):
 
 # 2D test, but too much CPU consuming
 collUniforme = [ot.Uniform(0, 1)] * 3
-# Build the RandomMixture
-dist_2D = ot.RandomMixture(collUniforme, weightMatrix)
+# Build the LinearCombinationDistribution
+dist_2D = ot.LinearCombinationDistribution(collUniforme, weightMatrix)
 dist_2D.setBlockMin(3)
 dist_2D.setBlockMax(8)
 
@@ -274,11 +274,11 @@ for index in range(newGrid.getSize()):
     print("pdf      = %.6g" % PDF)
 
 # 3D test
-ot.ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 8290688)
+ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 8290688)
 mixture = ot.Mixture([ot.Normal(2, 1), ot.Normal(-2, 1)])
 collection = [ot.Normal(0.0, 1.0), mixture, ot.Uniform(0, 1), ot.Uniform(0, 1)]
 matrix = ot.Matrix([[1, -0.05, 1, -0.5], [0.5, 1, -0.05, 0.3], [-0.5, -0.1, 1.2, -0.8]])
-dist_3D = ot.RandomMixture(collection, matrix)
+dist_3D = ot.LinearCombinationDistribution(collection, matrix)
 dist_3D.setBlockMin(3)
 dist_3D.setBlockMax(6)
 
@@ -300,7 +300,7 @@ for i in range(grid3D.getSize() // 4):
     print("pdf      = %.6g" % PDF)
 
 # For ticket 882
-mixture = ot.RandomMixture([ot.Dirac()])
+mixture = ot.LinearCombinationDistribution([ot.Dirac()])
 graph = mixture.drawPDF()
 graph = mixture.drawCDF()
 
@@ -333,7 +333,7 @@ print("sum=", sum)
 print("CDF=%.6g" % sum.computeCDF(2.0))
 print("quantile=", sum.computeQuantile(0.2))
 # For ticket 1129
-dist = ot.RandomMixture([ot.Uniform()] * 200)
+dist = ot.LinearCombinationDistribution([ot.Uniform()] * 200)
 print("CDF(0)=%.5g" % dist.computeCDF([0]))
 
 # check parameter accessors
@@ -343,3 +343,6 @@ p = [1849.41, -133.6, -133.6, 359.172]
 dist.setParameter(p)
 assert p == dist.getParameter(), "wrong parameters"
 print("after ", dist)
+
+# alias
+dist = ot.RandomMixture([ot.Uniform()] * 3)
