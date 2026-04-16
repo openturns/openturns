@@ -95,6 +95,12 @@ public:
   using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const override;
+  
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const override;
+
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
@@ -103,15 +109,27 @@ public:
   using DistributionImplementation::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
+  /** Get the quantile of the distribution */
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
+
+  /** Get the product minimum volume interval containing a given probability of the distribution */
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const override;
+
+  /** Get the product bilateral confidence interval containing a given probability of the distribution */
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const override;
+
+  /** Get the product unilateral confidence interval containing a given probability of the distribution */
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProbOut) const override;
+
+  /** Get the minimum volume level set containing a given probability of the distribution */
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
+
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
 
   /** Parameters description accessor */
   Description getParameterDescription() const override;
-
-  /** Check if the distribution is elliptical */
-  Bool isElliptical() const override;
 
   /* Interface specific to TruncatedDistribution */
 
@@ -126,6 +144,9 @@ public:
   /** Truncation bounds accessor */
   void setBounds(const Interval & bounds);
   Interval getBounds() const;
+
+  /** Check if the distribution is elliptical */
+  Bool isElliptical() const override;
 
   /** Tell if the distribution is continuous */
   Bool isContinuous() const override;
@@ -179,10 +200,9 @@ public:
 
 protected:
 
+  void computeMean() const override;
+  void computeCovariance() const override;
 private:
-
-  /** Get the quantile of the distribution */
-  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;

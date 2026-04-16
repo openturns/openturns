@@ -364,6 +364,27 @@ Distribution TruncatedDistribution::getSimplifiedVersion() const
   return useSimplifiedVersion_ ? simplifiedVersion_ : *this;
 }
 
+void TruncatedDistribution::computeMean() const
+{
+  if (useSimplifiedVersion_)
+  {
+    mean_ = simplifiedVersion_.getMean();
+    isAlreadyComputedMean_ = true;
+  }
+  else
+    DistributionImplementation::computeMean();
+}
+
+void TruncatedDistribution::computeCovariance() const
+{
+  if (useSimplifiedVersion_)
+  {
+    covariance_ = simplifiedVersion_.getCovariance();
+    isAlreadyComputedCovariance_ = true;
+  }
+  else
+    DistributionImplementation::computeCovariance();
+}
 
 /* Compute the numerical range of the distribution given the parameters values */
 void TruncatedDistribution::computeRange()
@@ -489,6 +510,24 @@ Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
   return normalizationFactor_ * distribution_.computeProbability(Interval(point, range_.getUpperBound(), BoolCollection(dimension, true), range_.getFiniteUpperBound()));
 }
 
+/* Get the probability content of an interval */
+Scalar TruncatedDistribution::computeProbability(const Interval & interval) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeProbability(interval);
+  else
+    return DistributionImplementation::computeProbability(interval);
+}
+
+/* Compute the entropy of the distribution */
+Scalar TruncatedDistribution::computeEntropy() const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeEntropy();
+  else
+    return DistributionImplementation::computeEntropy();
+}
+
 /* Get the PDFGradient of the distribution */
 Point TruncatedDistribution::computePDFGradient(const Point & point) const
 {
@@ -548,6 +587,42 @@ Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
 
   if (tail) return distribution_.computeScalarQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_));
   return distribution_.computeScalarQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_));
+}
+
+/* Get the product minimum volume interval containing a given probability of the distribution */
+Interval TruncatedDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
+  else
+    return DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/* Get the product bilateral confidence interval containing a given probability of the distribution */
+Interval TruncatedDistribution::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
+  else
+    return DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
+}
+
+/* Get the product unilateral confidence interval containing a given probability of the distribution */
+Interval TruncatedDistribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
+  else
+    return DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
+}
+
+/* Get the minimum volume level set containing a given probability of the distribution */
+LevelSet TruncatedDistribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
+  else
+    return DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
 /* Parameters value accessor */
