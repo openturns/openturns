@@ -7,6 +7,7 @@
 #include "openturns/OTCommon.hxx"
 #include "openturns/OTType.hxx"
 #include "openturns/OTStat.hxx"
+#include "openturns/OTGeom.hxx"
 #include "openturns/OTGraph.hxx"
 #include "openturns/OTFunc.hxx"
 #include "openturns/OTDiff.hxx"

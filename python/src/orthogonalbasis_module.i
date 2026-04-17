@@ -5,9 +5,12 @@
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTDistribution.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTOrthogonalBasis.hxx"
+#include "openturns/OTWeightedExperiments.hxx"
 %}
 
 %include typemaps.i
