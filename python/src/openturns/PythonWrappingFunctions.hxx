@@ -25,7 +25,12 @@
 #include <Python.h>
 #include <csignal>
 #include <cstring>
-#include "openturns/OT.hxx"
+#include "openturns/ComplexTensor.hxx"
+#include "openturns/TriangularMatrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
+#include "openturns/TriangularComplexMatrix.hxx"
+#include "openturns/WhittleFactoryState.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
