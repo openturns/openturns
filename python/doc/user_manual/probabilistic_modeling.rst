@@ -200,7 +200,7 @@ Combining and transforming distributions
     MaximumEntropyOrderStatisticsDistribution
 
     :template: class.rst_t
-    MixedHistogramUserDefined
+    MixedHistogramFiniteDiscreteDistribution
 
     :template: classWithPlot.rst_t
     Mixture

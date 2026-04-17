@@ -5,9 +5,9 @@ import openturns.testing as ott
 
 ticksCollection = [[0.0, 1.0, 3.0, 6.0], [1.0, 2.0, 3.0]]
 
-kind = [ot.MixedHistogramUserDefined.CONTINUOUS, ot.MixedHistogramUserDefined.DISCRETE]
+kind = [ot.MixedHistogramFiniteDiscreteDistribution.CONTINUOUS, ot.MixedHistogramFiniteDiscreteDistribution.DISCRETE]
 probabilityTable = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45]
-distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
+distribution = ot.MixedHistogramFiniteDiscreteDistribution(ticksCollection, kind, probabilityTable)
 distribution.setDescription(["A", "B"])
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
@@ -73,16 +73,16 @@ validation.run()
 # higher dimension
 dim = 8
 ticksCollection = [[0.0, 1.0, 3.0, 6.0]] * dim
-kind = [ot.MixedHistogramUserDefined.DISCRETE] * dim
-kind[dim - 2] = ot.MixedHistogramUserDefined.CONTINUOUS
+kind = [ot.MixedHistogramFiniteDiscreteDistribution.DISCRETE] * dim
+kind[dim - 2] = ot.MixedHistogramFiniteDiscreteDistribution.CONTINUOUS
 probabilityTable = ot.RandomGenerator.Generate(4 ** (dim - 1) * 3)
 print("probabilityTable=", probabilityTable)
 x = [3.0] * dim
 x[dim - 2] = 5.0
 bench = 0
-distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
+distribution = ot.MixedHistogramFiniteDiscreteDistribution(ticksCollection, kind, probabilityTable)
 print("pdf=%.6g" % distribution.computePDF(x))
 print("cdf=%.6g" % distribution.computeCDF(x))
 
 # test default ctor
-ot.MixedHistogramUserDefined().getSample(5)
+ot.MixedHistogramFiniteDiscreteDistribution().getSample(5)

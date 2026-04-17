@@ -51,7 +51,7 @@
 %include MeixnerDistributionFactory.i
 %include MethodOfMomentsFactory.i
 %include Mixture.i
-%include MixedHistogramUserDefined.i
+%include MixedHistogramFiniteDiscreteDistribution.i
 %include TruncatedDistribution.i
 /* Must be after TruncatedDistribution */
 %include KernelSmoothing.i

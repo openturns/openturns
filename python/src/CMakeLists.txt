@@ -674,7 +674,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MeixnerDistribution.i MeixnerDistribution_doc.i
                       MeixnerDistributionFactory.i MeixnerDistributionFactory_doc.i
                       MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i
-                      MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i
+                      MixedHistogramFiniteDiscreteDistribution.i MixedHistogramFiniteDiscreteDistribution_doc.i
                       Mixture.i  Mixture_doc.i
                       CompoundDistribution.i CompoundDistribution_doc.i
                       Multinomial.i Multinomial_doc.i
