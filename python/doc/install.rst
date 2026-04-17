@@ -42,15 +42,6 @@ so when a full upgrade is needed our advice is to create a new environment from 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
 
-Windows
--------
-Download the installer matching your python version and architecture from `GitHub <https://github.com/openturns/build/releases>`_
-Then just run installer and follow the instructions.
-
-A non-interactive installation is also possible with the command line::
-
-    openturns-1.26-py312-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
-
 macOS
 -----
 Installation options include pip and conda.
@@ -152,6 +143,19 @@ Spack
 Install the library with `Spack package manager <https://spack.io/>`_::
 
     spack install openturns
+
+NixOS
+-----
+One of the possibility is to install it directly with::
+
+    nix-shell -p openturns
+
+MSYS2
+-----
+The library is available with different C runtime flavors::
+
+    pacman -S mingw-w64-x86_64-openturns
+    pacman -S mingw-w64-ucrt-x86_64-openturns
 
 Development version
 ===================
