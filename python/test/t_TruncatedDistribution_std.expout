@@ -336,11 +336,9 @@ d= TruncatedDistribution(BlockIndependentCopula(NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]])), bounds = [0, 1]
 [0, 1]
 [0, 1]
-[0, 1]) simplified= BlockIndependentDistribution(TruncatedDistribution(NormalCopula(R = [[ 1 0 ]
- [ 0 1 ]]), bounds = [0, 1]
-[0, 1]), TruncatedDistribution(NormalCopula(R = [[ 1 0 ]
- [ 0 1 ]]), bounds = [0, 1]
-[0, 1]))
+[0, 1]) simplified= BlockIndependentCopula(NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]), NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]))
 d= TruncatedDistribution(Dirichlet(theta = [0.7,0.3]), bounds = [0.2, 2.4]) simplified= Beta(alpha = 0.7, beta = 0.3, a = 0.2, b = 1)
 d= TruncatedDistribution(TruncatedDistribution(Normal(mu = 0, sigma = 1), bounds = [-1, 1]), bounds = [-1, 1]) simplified= TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1)
 after setbounds q@0.9= [29.628]

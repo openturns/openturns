@@ -264,3 +264,32 @@ normal = ot.Normal([0.0] * 2, [1.0] * 2, R)
 trunc = ot.TruncatedDistribution(normal, ot.Interval([-0.5] * 2, [1.0] * 2))
 marginal0 = trunc.getMarginal(0)
 ott.assert_almost_equal(marginal0.getMean(), [0.220527])
+
+# simplification for KernelMixture in dimension >= 3
+dim = 3
+kernelMixture = ot.KernelMixture(
+    ot.Normal(), [0.2] * dim, ot.Normal(dim).getSample(1000)
+)
+bounds = ot.Interval([-1.0] * dim, [0.5] * dim)
+trunc = ot.TruncatedDistribution(kernelMixture, bounds)
+assert trunc.getSimplifiedVersion().getImplementation().getClassName() == "Mixture"
+mean = trunc.getMean()
+ott.assert_almost_equal(mean, [-0.207172, -0.193878, -0.186422])
+cov = trunc.getCovariance()
+ott.assert_almost_equal(
+    cov,
+    ot.CovarianceMatrix(
+        3,
+        [
+            0.173185,
+            -0.0152049,
+            0.000857313,
+            -0.0152049,
+            0.164721,
+            -9.17347e-05,
+            0.000857313,
+            -9.17347e-05,
+            0.170059,
+        ],
+    ),
+)
