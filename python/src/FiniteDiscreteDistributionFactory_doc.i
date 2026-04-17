@@ -1,4 +1,4 @@
-%feature("docstring") OT::UserDefinedFactory
+%feature("docstring") OT::FiniteDiscreteDistributionFactory
 "FiniteDiscreteDistribution factory.
 
 Notes
@@ -11,16 +11,16 @@ DistributionFactory, FiniteDiscreteDistribution"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefinedFactory::buildAsUserDefined
+%feature("docstring") OT::FiniteDiscreteDistributionFactory::buildAsFiniteDiscreteDistribution
 "Estimate the distribution as native distribution.
 
 **Available usages**:
 
-    buildAsUserDefined()
+    buildAsFiniteDiscreteDistribution()
 
-    buildAsUserDefined(*sample*)
+    buildAsFiniteDiscreteDistribution(*sample*)
 
-    buildAsUserDefined(*param*)
+    buildAsFiniteDiscreteDistribution(*param*)
 
 Parameters
 ----------

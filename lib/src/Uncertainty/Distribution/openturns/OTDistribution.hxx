@@ -181,7 +181,7 @@
 #include "openturns/UniformOrderStatistics.hxx"
 #include "openturns/UniformOverMesh.hxx"
 #include "openturns/FiniteDiscreteDistribution.hxx"
-#include "openturns/UserDefinedFactory.hxx"
+#include "openturns/FiniteDiscreteDistributionFactory.hxx"
 #include "openturns/VonMises.hxx"
 #include "openturns/VonMisesFactory.hxx"
 #include "openturns/WeibullMax.hxx"
