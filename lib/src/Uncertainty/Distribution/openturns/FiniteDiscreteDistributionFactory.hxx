@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_USERDEFINEDFACTORY_HXX
-#define OPENTURNS_USERDEFINEDFACTORY_HXX
+#ifndef OPENTURNS_FINITEDISCRETEDISTRIBUTIONFACTORY_HXX
+#define OPENTURNS_FINITEDISCRETEDISTRIBUTIONFACTORY_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
@@ -28,19 +28,19 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class UserDefinedFactory
+ * @class FiniteDiscreteDistributionFactory
  */
-class OT_API UserDefinedFactory
+class OT_API FiniteDiscreteDistributionFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  UserDefinedFactory();
+  FiniteDiscreteDistributionFactory();
 
   /** Virtual constructor */
-  UserDefinedFactory * clone() const override;
+  FiniteDiscreteDistributionFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
@@ -49,13 +49,13 @@ public:
   Distribution build(const Sample & sample,
                      const Scalar epsilon) const;
   Distribution build() const override;
-  FiniteDiscreteDistribution buildAsUserDefined(const Sample & sample,
+  FiniteDiscreteDistribution buildAsFiniteDiscreteDistribution(const Sample & sample,
                                  const Scalar epsilon = 0.0) const;
-  FiniteDiscreteDistribution buildAsUserDefined() const;
+  FiniteDiscreteDistribution buildAsFiniteDiscreteDistribution() const;
 
-}; /* class UserDefinedFactory */
+}; /* class FiniteDiscreteDistributionFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_USERDEFINEDFACTORY_HXX */
+#endif /* OPENTURNS_FINITEDISCRETEDISTRIBUTIONFACTORY_HXX */

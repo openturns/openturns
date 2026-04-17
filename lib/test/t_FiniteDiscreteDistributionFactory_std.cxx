@@ -38,16 +38,16 @@ int main(int, char *[])
     sample[1][1] = 2.5;
     sample[2][0] = 3.0;
     sample[2][1] = 3.5;
-    UserDefinedFactory factory;
+    FiniteDiscreteDistributionFactory factory;
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Sample                =" << sample << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    FiniteDiscreteDistribution estimatedUserDefined(factory.buildAsUserDefined(sample));
+    FiniteDiscreteDistribution estimatedUserDefined(factory.buildAsFiniteDiscreteDistribution(sample));
     fullprint << "Sample                =" << sample << std::endl;
     fullprint << "Estimated FiniteDiscreteDistribution=" << estimatedUserDefined << std::endl;
-    estimatedUserDefined = factory.buildAsUserDefined();
+    estimatedUserDefined = factory.buildAsFiniteDiscreteDistribution();
     fullprint << "Default FiniteDiscreteDistribution=" << estimatedUserDefined << std::endl;
     // For ticket 784
     estimatedDistribution = factory.build(Sample(2000, Point(1, 0.0)));
