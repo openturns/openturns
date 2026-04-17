@@ -24,6 +24,7 @@
  * Deprecated ProbabilitySimulationResult.getConfidenceLength
  * Deprecated UserDefined in favor of FiniteDiscreteDistribution
  * Deprecated UserDefinedFactory in favor of FiniteDiscreteDistributionFactory
+ * Deprecated MixedHistogramUserDefined in favor of MixedHistogramFiniteDiscreteDistribution
  * Deprecated RandomMixture in favor of LinearCombinationDistribution
 
 === Documentation ===

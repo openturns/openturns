@@ -1,4 +1,4 @@
-%feature("docstring") OT::MixedHistogramUserDefined
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution
 "Mixed Histogram/FiniteDiscreteDistribution distribution.
 
 Defines a distribution with Histogram (continuous) or FiniteDiscreteDistribution (discrete) marginals,
@@ -18,7 +18,7 @@ Parameters
 ticksCollection : sequence of sequence of float
     List of ticks for each component
 kind : sequence of int
-    Either MixedHistogramUserDefined.DISCRETE or MixedHistogramUserDefined.CONTINUOUS
+    Either MixedHistogramFiniteDiscreteDistribution.DISCRETE or MixedHistogramFiniteDiscreteDistribution.CONTINUOUS
 probabilityTable : sequence of float
     List of probabilities
 
@@ -30,15 +30,15 @@ Examples
 --------
 >>> import openturns as ot
 >>> ticksCollection = [[0.0, 1.0, 3.0, 6.0], [1.0, 2.0, 3.0]]
->>> kind = [ot.MixedHistogramUserDefined.CONTINUOUS, ot.MixedHistogramUserDefined.DISCRETE]
+>>> kind = [ot.MixedHistogramFiniteDiscreteDistribution.CONTINUOUS, ot.MixedHistogramFiniteDiscreteDistribution.DISCRETE]
 >>> probabilityTable = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
->>> distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
+>>> distribution = ot.MixedHistogramFiniteDiscreteDistribution(ticksCollection, kind, probabilityTable)
 >>> distribution.setDescription(['A', 'B'])
 >>> sample = distribution.getSample(5)"
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::asMixture
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::asMixture
 "Conversion as a Mixture.
 
 Returns
@@ -48,7 +48,7 @@ mixture : :class:`~openturns.Mixture`
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::setKind
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::setKind
 "Kind accessor.
 
 Parameters
@@ -58,7 +58,7 @@ kind : sequence of int
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::getKind
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::getKind
 "Kind accessor.
 
 Returns
@@ -68,7 +68,7 @@ kind : sequence of int
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::setProbabilityTable
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::setProbabilityTable
 "Probability table accessor.
 
 Parameters
@@ -78,7 +78,7 @@ probabilityTable : sequence of float
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::getProbabilityTable
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::getProbabilityTable
 "Probability table accessor.
 
 Returns
@@ -88,7 +88,7 @@ probabilityTable : sequence of float
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::setTicksCollection
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::setTicksCollection
 "Ticks accessor.
 
 Parameters
@@ -98,7 +98,7 @@ ticksCollection : sequence of sequence of float
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::MixedHistogramUserDefined::getTicksCollection
+%feature("docstring") OT::MixedHistogramFiniteDiscreteDistribution::getTicksCollection
 "Ticks accessor.
 
 Returns

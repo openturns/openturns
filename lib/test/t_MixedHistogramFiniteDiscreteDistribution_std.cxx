@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class MixedHistogramUserDefined for standard methods
+ *  @brief The test file of class MixedHistogramFiniteDiscreteDistribution for standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -42,8 +42,8 @@ int main(int, char *[])
     ticksCollection.add(point);
   }
   Indices kind(0);
-  kind.add(MixedHistogramUserDefined::CONTINUOUS);
-  kind.add(MixedHistogramUserDefined::DISCRETE);
+  kind.add(MixedHistogramFiniteDiscreteDistribution::CONTINUOUS);
+  kind.add(MixedHistogramFiniteDiscreteDistribution::DISCRETE);
   Point probabilityTable(0);
   probabilityTable.add(0.05);
   probabilityTable.add(0.1);
@@ -55,7 +55,7 @@ int main(int, char *[])
   probabilityTable.add(0.4);
   probabilityTable.add(0.45);
   // Instantiate one distribution object
-  MixedHistogramUserDefined distribution(ticksCollection, kind, probabilityTable);
+  MixedHistogramFiniteDiscreteDistribution distribution(ticksCollection, kind, probabilityTable);
   std::cout << "Distribution " << distribution.__repr__() << std::endl;
   std::cout << "Distribution " << distribution << std::endl;
 
