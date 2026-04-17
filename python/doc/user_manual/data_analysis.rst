@@ -42,6 +42,7 @@ Building distributions from samples
     DiracFactory
     DirichletFactory
     ExponentialFactory
+    FiniteDiscreteDistributionFactory
     FisherSnedecorFactory
     FrechetFactory
     GammaFactory
@@ -111,7 +112,6 @@ Building distributions from samples
     TriangularFactory
     TruncatedNormalFactory
     UniformFactory
-    UserDefinedFactory
     VonMisesFactory
     WeibullMinFactory
     WeibullMaxFactory

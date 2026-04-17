@@ -54,7 +54,7 @@
 %include UniformOverMesh.i
 %include UniformOrderStatistics.i
 %include FiniteDiscreteDistribution.i
-%include UserDefinedFactory.i
+%include FiniteDiscreteDistributionFactory.i
 %include VonMises.i
 %include VonMisesFactory.i
 %include WeibullMin.i
