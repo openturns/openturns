@@ -16,67 +16,20 @@ FunctionalChaosAlgorithm, LeastSquaresStrategy, IntegrationStrategy
 
 Notes
 -----
-Consider :math:`\vect{Y} = g(\vect{X})` with :math:`g: \Rset^d \rightarrow \Rset^p`,
-:math:`\vect{X} \sim \cL_{\vect{X}}` and :math:`\vect{Y}` with finite variance:
-:math:`g\in L_{\cL_{\vect{X}}}^2(\Rset^d, \Rset^p)`.
+This class is used in the :ref:`functional chaos expansion context <functional_chaos>` implemented
+in the class :class:`~openturns.FunctionalChaosAlgorithm`. It is not usable outside this context. 
 
-The functional chaos  expansion approximates :math:`\vect{Y}` using an isoprobabilistic 
-transformation *T* and an orthonormal multivariate basis :math:`(\Psi_k)_{k \in \Nset}` 
-of :math:`L^2_{\mu}(\Rset^d,\Rset)`. See :class:`~openturns.FunctionalChaosAlgorithm` 
-to get more details. 
+The model is approximated by the meta model defined in :ref:`functional_chaos` by equation :eq:`metaModelPn` and the coefficients :math:`(a_k)_{k \in I_n}` are computed by:
 
-The meta model of :math:`g`, based on the functional chaos decomposition of 
-:math:`f = g \circ T^{-1}` writes:
+- solving the least squares problem defined in :ref:`functional_chaos` by equation
+  :eq:`metaModeleF` : use the class
+  :class:`~openturns.LeastSquaresStrategy`,
+- computing the inner product defined in :ref:`functional_chaos` by equation
+  :eq:`scalProd`: use the class
+  :class:`~openturns.IntegrationStrategy`. In that case, the basis of the approximation space
+  must be orthonormal to the input distribution.
 
-.. math::
-
-    \tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k  \circ T
-
-where *K* is a non empty finite set of indices, whose cardinality is denoted by *P*.
-
-We detail the case where :math:`p=1`.
-
-The vector  :math:`\vect{\alpha} = (\alpha_k)_{k \in K}`  is  equivalently defined by:
-
-.. math::
-    :label: defArgMin
-
-    \vect{\alpha} = \argmin_{\vect{\alpha} \in \Rset^K} \Expect{ \left( g \circ T^{-1}(\vect{Z}) -  \sum_{k \in K} \alpha_k \Psi_k (\vect{Z})\right)^2 }
-
-and:
-
-.. math::
-    :label: defEsp
-
-    \alpha_k =  <g \circ T^{-1}(\vect{Z}), \Psi_k (\vect{Z})>_{\mu} = \Expect{  g \circ T^{-1}(\vect{Z}) \Psi_k (\vect{Z}) }
-
-where :math:`\vect{Z} = T(\vect{X})` and the mean :math:`\Expect{.}` is evaluated with respect to the measure :math:`\mu`.
-
-It corresponds to two points of view: 
-   
-    - relation :eq:`defArgMin`  means that the coefficients 
-      :math:`(\alpha_k)_{k \in K}` minimize the quadratic error between  the model and 
-      the polynomial approximation. Use :class:`~openturns.LeastSquaresStrategy`.
-
-    - relation :eq:`defEsp` means that :math:`\alpha_k` is the scalar product of the 
-      model with the *k-th* element of the orthonormal basis :math:`(\Psi_k)_{k \in \Nset}`.
-      Use :class:`~openturns.IntegrationStrategy`.
-
-In both cases, the mean :math:`\Expect{.}` is approximated by a linear quadrature formula:
-
-.. math::
-    :label: approxEsp
-
-    \Expect{ f(\vect{Z})} \simeq \sum_{i \in I} \omega_i f(\Xi_i)
-
-where *f* is a function in :math:`L^1(\mu)`. 
-
-In the approximation :eq:`approxEsp`, the set *I*, the points :math:`(\Xi_i)_{i \in I}` 
-and the weights :math:`(\omega_i)_{i \in I}` are evaluated from different methods 
-implemented in the :class:`~openturns.WeightedExperiment`.
-
-The convergence criterion used to evaluate the coefficients is based on the residual value 
-defined in the :class:`~openturns.FunctionalChaosAlgorithm`.)RAW"
+)RAW"
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation
 OT_ProjectionStrategy_doc
@@ -89,7 +42,7 @@ R"RAW(Accessor to the coefficients.
 Returns
 -------
 coef : :class:`~openturns.Point`
-    Coefficients :math:`(\alpha_k)_{k \in K}`.)RAW"
+    Coefficients :math:`(\alpha_k)_{k \in I_n}`.)RAW"
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getCoefficients
 OT_ProjectionStrategy_getCoefficients_doc
@@ -141,7 +94,7 @@ R"RAW(Accessor to the measure.
 Returns
 -------
 mu : Distribution
-    Measure :math:`\mu` defining the scalar product.)RAW"
+    Measure :math:`\mu_{\inputRV}` defining the inner product.)RAW"
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getMeasure
 OT_ProjectionStrategy_getMeasure_doc
@@ -245,7 +198,7 @@ R"RAW(Accessor to the measure.
 Parameters
 ----------
 m : Distribution
-    Measure :math:`\mu` defining the scalar product.)RAW"
+    Measure :math:`\mu_{\inputRV}` defining the scalar product.)RAW"
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::setMeasure
 OT_ProjectionStrategy_setMeasure_doc

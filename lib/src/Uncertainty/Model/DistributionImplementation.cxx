@@ -2351,7 +2351,7 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
       Pointer<ConditionalPDFWrapper> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditioningDistribution);
       p_conditionalPDFWrapper->setParameter(currentX);
       const Scalar cdfConditioned = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, std::min(x[conditioningDimension], xMax));
-      result[conditioningDimension] = cdfConditioned / pdfConditioning;
+      result[conditioningDimension] = SpecFunc::Clip01(cdfConditioned / pdfConditioning);
     }
     currentX.add(x[conditioningDimension]);
     pdfConditioning = conditioningDistribution->computePDF(currentX);

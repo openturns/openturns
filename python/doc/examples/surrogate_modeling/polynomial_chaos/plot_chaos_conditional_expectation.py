@@ -1,6 +1,6 @@
 """
-Conditional expectation of a polynomial chaos expansion
-=======================================================
+Create the Conditional expectation of a PCE
+===========================================
 """
 
 # %%

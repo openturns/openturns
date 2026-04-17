@@ -107,9 +107,6 @@ private:
   /** Attributes to speed-up recomputations on different active functions */
   DesignProxy designProxy_;
 
-  Function transformation_;
-
-  Function inverseTransformation_;
 } ; /* class IntegrationExpansion */
 
 

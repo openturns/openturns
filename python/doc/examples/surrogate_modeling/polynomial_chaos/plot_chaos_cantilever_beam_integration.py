@@ -1,6 +1,6 @@
 """
-Create a polynomial chaos metamodel by integration on the cantilever beam
-=========================================================================
+Create a PCE by integration on the cantilever beam
+==================================================
 """
 
 # %%

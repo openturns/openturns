@@ -24,7 +24,7 @@ Least squares surrogate models
     :maxdepth: 1
 
     least_squares
-    polynomial_sparse_least_squares
+    sparse_least_squares
 
 
 Gaussian Process Regression
@@ -42,11 +42,10 @@ Functional chaos
 .. toctree::
     :maxdepth: 1
 
-    orthogonal_polynomials
-    chaos_basis
-    enumeration_strategy
     functional_chaos
-    pce_cross_validation
+    chaos_basis
+    orthonormal_polynomials
+    enumeration_multivariate_basis
 
 
 Surrogate validation
