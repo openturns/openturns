@@ -127,7 +127,7 @@
 #include "openturns/MeixnerDistributionFactory.hxx"
 #include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/MinCopula.hxx"
-#include "openturns/MixedHistogramUserDefined.hxx"
+#include "openturns/MixedHistogramFiniteDiscreteDistribution.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/MultinomialFactory.hxx"

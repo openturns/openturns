@@ -1,10 +1,10 @@
-// SWIG file MixedHistogramUserDefined.i
+// SWIG file MixedHistogramFiniteDiscreteDistribution.i
 
 %{
-#include "openturns/MixedHistogramUserDefined.hxx"
+#include "openturns/MixedHistogramFiniteDiscreteDistribution.hxx"
 %}
 
-%include MixedHistogramUserDefined_doc.i
+%include MixedHistogramFiniteDiscreteDistribution_doc.i
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::DistributionImplementation::PointCollection & {
   $1 = (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
@@ -20,6 +20,13 @@
   }
 }
 
-%copyctor OT::MixedHistogramUserDefined;
+%copyctor OT::MixedHistogramFiniteDiscreteDistribution;
 
-%include openturns/MixedHistogramUserDefined.hxx
+%include openturns/MixedHistogramFiniteDiscreteDistribution.hxx
+
+%pythoncode %{
+def MixedHistogramUserDefined(*args):
+    """Deprecated"""
+    openturns.common.Log.Warn('class MixedHistogramUserDefined is deprecated in favor of MixedHistogramFiniteDiscreteDistribution')
+    return openturns.dist_bundle2.MixedHistogramFiniteDiscreteDistribution(*args)
+%}

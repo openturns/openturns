@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The MixedHistogramUserDefined distribution
+ *  @brief The MixedHistogramFiniteDiscreteDistribution distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,7 +20,7 @@
  */
 
 #include <cmath>
-#include "openturns/MixedHistogramUserDefined.hxx"
+#include "openturns/MixedHistogramFiniteDiscreteDistribution.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Histogram.hxx"
@@ -35,12 +35,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MixedHistogramUserDefined)
+CLASSNAMEINIT(MixedHistogramFiniteDiscreteDistribution)
 
-static const Factory<MixedHistogramUserDefined> Factory_MixedHistogramUserDefined;
+static const Factory<MixedHistogramFiniteDiscreteDistribution> Factory_MixedHistogramFiniteDiscreteDistribution;
+static const Factory<MixedHistogramFiniteDiscreteDistribution> Factory_MixedHistogramUserDefined("MixedHistogramUserDefined");
 
 /* Default constructor */
-MixedHistogramUserDefined::MixedHistogramUserDefined()
+MixedHistogramFiniteDiscreteDistribution::MixedHistogramFiniteDiscreteDistribution()
   : DistributionImplementation()
   , ticksCollection_(1, Point(1))
   , kind_(1, DISCRETE)
@@ -49,14 +50,14 @@ MixedHistogramUserDefined::MixedHistogramUserDefined()
   , allIndices_(1, 1, Indices(1, 0))
   , normalizedProbabilityTable_(1, 1.0)
 {
-  setName("MixedHistogramUserDefined");
+  setName("MixedHistogramFiniteDiscreteDistribution");
   setDimension(1);
   DistFunc::rDiscreteSetup(normalizedProbabilityTable_, base_, alias_);
   computeRange();
 }
 
 /* Parameters constructor */
-MixedHistogramUserDefined::MixedHistogramUserDefined(const PointCollection & ticksCollection,
+MixedHistogramFiniteDiscreteDistribution::MixedHistogramFiniteDiscreteDistribution(const PointCollection & ticksCollection,
     const Indices & kind,
     const Point & probabilityTable)
   : DistributionImplementation()
@@ -64,7 +65,7 @@ MixedHistogramUserDefined::MixedHistogramUserDefined(const PointCollection & tic
   , kind_(kind)
   , probabilityTable_(probabilityTable)
 {
-  setName("MixedHistogramUserDefined");
+  setName("MixedHistogramFiniteDiscreteDistribution");
   const UnsignedInteger dimension = kind.getSize();
   // Check the ticks
   if (ticksCollection.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a collection of ticks of size=" << dimension << ", got size=" << ticksCollection.getSize();
@@ -106,23 +107,23 @@ MixedHistogramUserDefined::MixedHistogramUserDefined(const PointCollection & tic
 }
 
 /* Comparison operator */
-Bool MixedHistogramUserDefined::operator ==(const MixedHistogramUserDefined & other) const
+Bool MixedHistogramFiniteDiscreteDistribution::operator ==(const MixedHistogramFiniteDiscreteDistribution & other) const
 {
   if (this == &other) return true;
   return (ticksCollection_ == other.ticksCollection_) && (kind_ == other.kind_) && (probabilityTable_ == other.probabilityTable_);
 }
 
-Bool MixedHistogramUserDefined::equals(const DistributionImplementation & other) const
+Bool MixedHistogramFiniteDiscreteDistribution::equals(const DistributionImplementation & other) const
 {
-  const MixedHistogramUserDefined* p_other = dynamic_cast<const MixedHistogramUserDefined*>(&other);
+  const MixedHistogramFiniteDiscreteDistribution* p_other = dynamic_cast<const MixedHistogramFiniteDiscreteDistribution*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String MixedHistogramUserDefined::__repr__() const
+String MixedHistogramFiniteDiscreteDistribution::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << MixedHistogramUserDefined::GetClassName()
+  oss << "class=" << MixedHistogramFiniteDiscreteDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " ticksCollection=" << ticksCollection_
@@ -131,7 +132,7 @@ String MixedHistogramUserDefined::__repr__() const
   return oss;
 }
 
-String MixedHistogramUserDefined::__str__(const String & offset) const
+String MixedHistogramFiniteDiscreteDistribution::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset << getClassName() << "(ticksCollection = " << ticksCollection_ << ", kind = " << kind_ << ", probabilityTable = " << probabilityTable_ << ")";
@@ -139,13 +140,13 @@ String MixedHistogramUserDefined::__str__(const String & offset) const
 }
 
 /* Virtual constructor */
-MixedHistogramUserDefined * MixedHistogramUserDefined::clone() const
+MixedHistogramFiniteDiscreteDistribution * MixedHistogramFiniteDiscreteDistribution::clone() const
 {
-  return new MixedHistogramUserDefined(*this);
+  return new MixedHistogramFiniteDiscreteDistribution(*this);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void MixedHistogramUserDefined::computeRange()
+void MixedHistogramFiniteDiscreteDistribution::computeRange()
 {
   const UnsignedInteger dimension = getDimension();
   Point lowerBound(dimension);
@@ -168,7 +169,7 @@ void MixedHistogramUserDefined::computeRange()
 
 
 /* Get one realization of the distribution */
-Point MixedHistogramUserDefined::getRealization() const
+Point MixedHistogramFiniteDiscreteDistribution::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger index = DistFunc::rDiscrete(base_, alias_);
@@ -191,13 +192,13 @@ Point MixedHistogramUserDefined::getRealization() const
 }
 
 /* Get a sample of the distribution */
-Sample MixedHistogramUserDefined::getSample(const UnsignedInteger size) const
+Sample MixedHistogramFiniteDiscreteDistribution::getSample(const UnsignedInteger size) const
 {
   return DistributionImplementation::getSample(size);
 }
 
 /* Get the PDF of the distribution */
-Scalar MixedHistogramUserDefined::computePDF(const Point & point) const
+Scalar MixedHistogramFiniteDiscreteDistribution::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension)
@@ -263,7 +264,7 @@ Scalar MixedHistogramUserDefined::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-Scalar MixedHistogramUserDefined::computeCDF(const Point & point) const
+Scalar MixedHistogramFiniteDiscreteDistribution::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension)
@@ -333,26 +334,26 @@ Scalar MixedHistogramUserDefined::computeCDF(const Point & point) const
   return cdfValue;
 }
 
-Scalar MixedHistogramUserDefined::computeComplementaryCDF(const Point & point) const
+Scalar MixedHistogramFiniteDiscreteDistribution::computeComplementaryCDF(const Point & point) const
 {
   return DistributionImplementation::computeComplementaryCDF(point);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-Complex MixedHistogramUserDefined::computeCharacteristicFunction(const Scalar x) const
+Complex MixedHistogramFiniteDiscreteDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
 /* Get the quantile of the distribution */
-Point MixedHistogramUserDefined::computeQuantile(const Scalar prob,
+Point MixedHistogramFiniteDiscreteDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   return DistributionImplementation::computeQuantile(prob, tail);
 }
 
 /* Get the i-th marginal distribution */
-Distribution MixedHistogramUserDefined::getMarginal(const UnsignedInteger index) const
+Distribution MixedHistogramFiniteDiscreteDistribution::getMarginal(const UnsignedInteger index) const
 {
   const UnsignedInteger dimension = getDimension();
   if (index >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -385,7 +386,7 @@ Distribution MixedHistogramUserDefined::getMarginal(const UnsignedInteger index)
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Distribution MixedHistogramUserDefined::getMarginal(const Indices & indices) const
+Distribution MixedHistogramFiniteDiscreteDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -433,13 +434,13 @@ Distribution MixedHistogramUserDefined::getMarginal(const Indices & indices) con
     }
   }
 
-  MixedHistogramUserDefined marginal(marginalTicksCollection, marginalKind, marginalProbabilityTable);
+  MixedHistogramFiniteDiscreteDistribution marginal(marginalTicksCollection, marginalKind, marginalProbabilityTable);
   marginal.setDescription(getDescription().select(indices));
   return marginal;
 } // getMarginal(Indices)
 
 /* Check if the distribution is continuous */
-Bool MixedHistogramUserDefined::isContinuous() const
+Bool MixedHistogramFiniteDiscreteDistribution::isContinuous() const
 {
   const UnsignedInteger size = kind_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -448,7 +449,7 @@ Bool MixedHistogramUserDefined::isContinuous() const
 }
 
 /* Check if the distribution is discrete */
-Bool MixedHistogramUserDefined::isDiscrete() const
+Bool MixedHistogramFiniteDiscreteDistribution::isDiscrete() const
 {
   const UnsignedInteger size = kind_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -457,7 +458,7 @@ Bool MixedHistogramUserDefined::isDiscrete() const
 }
 
 /* Check if the distribution is integral */
-Bool MixedHistogramUserDefined::isIntegral() const
+Bool MixedHistogramFiniteDiscreteDistribution::isIntegral() const
 {
   const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-SupportEpsilon");
   const UnsignedInteger size = kind_.getSize();
@@ -476,7 +477,7 @@ Bool MixedHistogramUserDefined::isIntegral() const
 
 
 /* Compute the mean of the distribution */
-void MixedHistogramUserDefined::computeMean() const
+void MixedHistogramFiniteDiscreteDistribution::computeMean() const
 {
   const UnsignedInteger dimension = getDimension();
   mean_ = Point(dimension);
@@ -499,7 +500,7 @@ void MixedHistogramUserDefined::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-Point MixedHistogramUserDefined::getStandardDeviation() const
+Point MixedHistogramFiniteDiscreteDistribution::getStandardDeviation() const
 {
   const UnsignedInteger dimension = getDimension();
   Point standardDeviation(dimension);
@@ -509,7 +510,7 @@ Point MixedHistogramUserDefined::getStandardDeviation() const
 }
 
 /* Get the skewness of the distribution */
-Point MixedHistogramUserDefined::getSkewness() const
+Point MixedHistogramFiniteDiscreteDistribution::getSkewness() const
 {
   const UnsignedInteger dimension = getDimension();
   Point skewness(dimension);
@@ -519,7 +520,7 @@ Point MixedHistogramUserDefined::getSkewness() const
 }
 
 /* Get the kurtosis of the distribution */
-Point MixedHistogramUserDefined::getKurtosis() const
+Point MixedHistogramFiniteDiscreteDistribution::getKurtosis() const
 {
   const UnsignedInteger dimension = getDimension();
   Point kurtosis(dimension);
@@ -529,7 +530,7 @@ Point MixedHistogramUserDefined::getKurtosis() const
 }
 
 /* Compute the covariance of the distribution */
-void MixedHistogramUserDefined::computeCovariance() const
+void MixedHistogramFiniteDiscreteDistribution::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   covariance_ = CovarianceMatrix(dimension);
@@ -567,58 +568,58 @@ void MixedHistogramUserDefined::computeCovariance() const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Distribution MixedHistogramUserDefined::getStandardRepresentative() const
+Distribution MixedHistogramFiniteDiscreteDistribution::getStandardRepresentative() const
 {
   return clone();
 }
 
 /* Ticks collection accessor */
-void MixedHistogramUserDefined::setTicksCollection(const Collection<Point> & ticksCollection)
+void MixedHistogramFiniteDiscreteDistribution::setTicksCollection(const Collection<Point> & ticksCollection)
 {
-  *this = MixedHistogramUserDefined(ticksCollection, kind_, probabilityTable_);
+  *this = MixedHistogramFiniteDiscreteDistribution(ticksCollection, kind_, probabilityTable_);
   computeRange();
 }
 
-Collection<Point> MixedHistogramUserDefined::getTicksCollection() const
+Collection<Point> MixedHistogramFiniteDiscreteDistribution::getTicksCollection() const
 {
   return ticksCollection_;
 }
 
 /* Kind accessor */
-void MixedHistogramUserDefined::setKind(const Indices & kind)
+void MixedHistogramFiniteDiscreteDistribution::setKind(const Indices & kind)
 {
-  *this = MixedHistogramUserDefined(ticksCollection_, kind, probabilityTable_);
+  *this = MixedHistogramFiniteDiscreteDistribution(ticksCollection_, kind, probabilityTable_);
   computeRange();
 }
 
-Indices MixedHistogramUserDefined::getKind() const
+Indices MixedHistogramFiniteDiscreteDistribution::getKind() const
 {
   return kind_;
 }
 
 /* Probability table accessor */
-void MixedHistogramUserDefined::setProbabilityTable(const Point & probabilityTable)
+void MixedHistogramFiniteDiscreteDistribution::setProbabilityTable(const Point & probabilityTable)
 {
-  *this = MixedHistogramUserDefined(ticksCollection_, kind_, probabilityTable);
+  *this = MixedHistogramFiniteDiscreteDistribution(ticksCollection_, kind_, probabilityTable);
   computeRange();
 }
 
-Point MixedHistogramUserDefined::getProbabilityTable() const
+Point MixedHistogramFiniteDiscreteDistribution::getProbabilityTable() const
 {
   return probabilityTable_;
 }
 
-Point MixedHistogramUserDefined::getParameter() const
+Point MixedHistogramFiniteDiscreteDistribution::getParameter() const
 {
   return getProbabilityTable();
 }
 
-void MixedHistogramUserDefined::setParameter(const Point & parameter)
+void MixedHistogramFiniteDiscreteDistribution::setParameter(const Point & parameter)
 {
   setProbabilityTable(parameter);
 }
 
-Description MixedHistogramUserDefined::getParameterDescription() const
+Description MixedHistogramFiniteDiscreteDistribution::getParameterDescription() const
 {
   const UnsignedInteger totalSize = probabilityTable_.getSize();
   Description description(totalSize);
@@ -628,7 +629,7 @@ Description MixedHistogramUserDefined::getParameterDescription() const
 }
 
 /* Conversion as a Mixture */
-Mixture MixedHistogramUserDefined::asMixture() const
+Mixture MixedHistogramFiniteDiscreteDistribution::asMixture() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger totalSize = probabilityTable_.getSize();
@@ -687,7 +688,7 @@ Mixture MixedHistogramUserDefined::asMixture() const
   return mixture;
 }
 
-void MixedHistogramUserDefined::save(Advocate & adv) const
+void MixedHistogramFiniteDiscreteDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "ticksCollection_", ticksCollection_ );
@@ -696,7 +697,7 @@ void MixedHistogramUserDefined::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void MixedHistogramUserDefined::load(Advocate & adv)
+void MixedHistogramFiniteDiscreteDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "ticksCollection_", ticksCollection_ );
@@ -706,7 +707,7 @@ void MixedHistogramUserDefined::load(Advocate & adv)
 }
 
 /* Description accessor */
-void MixedHistogramUserDefined::setDescription(const Description & description)
+void MixedHistogramFiniteDiscreteDistribution::setDescription(const Description & description)
 {
   DistributionImplementation::setDescription(description);
 }

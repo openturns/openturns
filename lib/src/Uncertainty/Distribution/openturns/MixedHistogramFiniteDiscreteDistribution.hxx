@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The MixedHistogramUserDefined distribution
+ *  @brief The MixedHistogramFiniteDiscreteDistribution distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef OPENTURNS_MIXEDHISTOGRAMUSERDEFINED_HXX
-#define OPENTURNS_MIXEDHISTOGRAMUSERDEFINED_HXX
+#ifndef OPENTURNS_MIXEDHISTOGRAMFINITEDISCRETEDISTRIBUTION_HXX
+#define OPENTURNS_MIXEDHISTOGRAMFINITEDISCRETEDISTRIBUTION_HXX
 
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Mixture.hxx"
@@ -28,11 +28,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MixedHistogramUserDefined
+ * @class MixedHistogramFiniteDiscreteDistribution
  *
- * The MixedHistogramUserDefined distribution.
+ * The MixedHistogramFiniteDiscreteDistribution distribution.
  */
-class OT_API MixedHistogramUserDefined
+class OT_API MixedHistogramFiniteDiscreteDistribution
   : public DistributionImplementation
 {
   CLASSNAME
@@ -43,16 +43,16 @@ public:
   enum Kind { DISCRETE, CONTINUOUS };
 
   /** Default constructor */
-  MixedHistogramUserDefined();
+  MixedHistogramFiniteDiscreteDistribution();
 
   /** Parameters constructor */
-  MixedHistogramUserDefined(const PointCollection & ticksCollection,
+  MixedHistogramFiniteDiscreteDistribution(const PointCollection & ticksCollection,
                             const Indices & kind,
                             const Point & probabilityTable);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
-  Bool operator ==(const MixedHistogramUserDefined & other) const;
+  Bool operator ==(const MixedHistogramFiniteDiscreteDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const override;
 public:
@@ -66,7 +66,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  MixedHistogramUserDefined * clone() const override;
+  MixedHistogramFiniteDiscreteDistribution * clone() const override;
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
@@ -121,7 +121,7 @@ public:
   Point getParameter() const override;
   Description getParameterDescription() const override;
 
-  /* Interface specific to MixedHistogramUserDefined */
+  /* Interface specific to MixedHistogramFiniteDiscreteDistribution */
 
   /** Ticks collection accessor */
   void setTicksCollection(const PointCollection & ticksCollection);
@@ -180,8 +180,8 @@ private:
   Point base_;
   Indices alias_;
 
-}; /* class MixedHistogramUserDefined */
+}; /* class MixedHistogramFiniteDiscreteDistribution */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_MIXEDHISTOGRAMUSERDEFINED_HXX */
+#endif /* OPENTURNS_MIXEDHISTOGRAMFINITEDISCRETEDISTRIBUTION_HXX */
