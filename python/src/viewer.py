@@ -17,7 +17,7 @@ import openturns as ot
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.colors as cls
+import matplotlib.colors as colors
 import warnings
 import io
 
@@ -29,7 +29,7 @@ except ImportError:
 __all__ = ["View", "PlotDesign"]
 
 
-class RankNormalize(cls.Normalize):
+class RankNormalize(colors.Normalize):
     """
     Color distribution normalization class based on rank and not value.
 
@@ -52,8 +52,8 @@ class RankNormalize(cls.Normalize):
                     1.0 + above_threshold / active,
                     len(self._levels),
                 )
-        if hasattr(cls.Normalize, "_changed"):
-            cls.Normalize._changed(self)
+        if hasattr(colors.Normalize, "_changed"):
+            colors.Normalize._changed(self)
 
     def __init__(self, levels, vmin=None, vmax=None, clip=False):
         """
@@ -86,7 +86,7 @@ class RankNormalize(cls.Normalize):
         if self._levels is not None and self._ranks is None:
             self._ranks = np.linspace(0.0, 1.0, len(self._levels))
         return (
-            1.0
+            np.ones_like(value)
             if self._levels is None
             else np.ma.masked_array(np.interp(value, self._levels, self._ranks))
         )
@@ -417,16 +417,16 @@ class View:
             text_kw = dict(text_kw_default)
 
             # use drawable order over default patch/line/text order
-            plot_kw["zorder"] = zorder
-            bar_kw["zorder"] = zorder
-            polygon_kw["zorder"] = zorder
-            polygoncollection_kw["zorder"] = zorder
-            contour_kw["zorder"] = zorder
-            step_kw["zorder"] = zorder
+            plot_kw.setdefault("zorder", zorder)
+            bar_kw.setdefault("zorder", zorder)
+            polygon_kw.setdefault("zorder", zorder)
+            polygoncollection_kw.setdefault("zorder", zorder)
+            contour_kw.setdefault("zorder", zorder)
+            step_kw.setdefault("zorder", zorder)
             if matplotlib_version >= Version("3.3"):
-                clabel_kw["zorder"] = zorder
-            scatter_kw["zorder"] = zorder
-            text_kw["zorder"] = zorder
+                clabel_kw.setdefault("zorder", zorder)
+            scatter_kw.setdefault("zorder", zorder)
+            text_kw.setdefault("zorder", zorder)
             zorder += 1 / (len(drawables) + 1)
 
             # set color
@@ -512,9 +512,9 @@ class View:
                     bar_kw["edgecolor"] = bar_kw["color"]
 
                 xi = drawable.getOrigin()
-                for i in range(x.getSize()):
+                for i in range(len(x)):
                     # label only the first bar to avoid getting several items
-                    if (i == 1) and ("label" in bar_kw):
+                    if i > 0 and "label" in bar_kw:
                         bar_kw.pop("label")
                     self._ax[0].bar(xi, height=y[i], width=x[i], align="edge", **bar_kw)
                     xi += x[i]
@@ -573,12 +573,13 @@ class View:
                     )
                 poly = matplotlib.patches.Polygon(data, **polygon_kw)
                 self._ax[0].add_patch(poly)
-                legend_handles.append(poly)
-                legend_labels.append(drawable.getLegend())
+                if len(drawable.getLegend()) > 0:
+                    legend_handles.append(poly)
+                    legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "PolygonArray":
-                polygonsNumber = drawable.getPalette().getSize()
-                verticesNumber = drawable.getData().getSize() // polygonsNumber
+                polygonsNumber = len(drawable.getPalette())
+                verticesNumber = len(drawable.getData()) // polygonsNumber
                 if (
                     "facecolors" not in polygoncollection_kw_default
                     and "fc" not in polygoncollection_kw_default
@@ -587,6 +588,7 @@ class View:
                         drawable.getPaletteAsNormalizedRGBA()
                     )
 
+                assert len(data) == polygonsNumber * verticesNumber, "incompatible data for PolygonArray"
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
@@ -610,7 +612,7 @@ class View:
                 # Z shape is therefore (getY().getSize(), getX().getSize())
                 Z = np.reshape(
                     drawable.getData(),
-                    (drawable.getY().getSize(), drawable.getX().getSize()),
+                    (len(drawable.getY()), len(drawable.getX())),
                 )
                 if len(drawable.getLevels()) > 0:
                     contour_kw.setdefault("levels", drawable.getLevels())
@@ -659,17 +661,17 @@ class View:
                     if "norm" in contour_kw_default
                     else contour.getColorMapNorm()
                 )
-                if type(norm) is str and matplotlib_version < Version("3.6.0"):
+                if isinstance(norm, str) and matplotlib_version < Version("3.6.0"):
                     # matplotlib before 3.6 does not support norms as strings
                     try:
                         normDict = {
                             "rank": "rank",
-                            "linear": cls.Normalize(),
-                            "log": cls.LogNorm(),
+                            "linear": colors.Normalize(),
+                            "log": colors.LogNorm(),
                             "symlog": (
-                                cls.SymLogNorm(linthresh=0.03)
+                                colors.SymLogNorm(linthresh=0.03)
                                 if matplotlib_version < Version("3.2.0")
-                                else cls.SymLogNorm(linthresh=0.03, base=10)
+                                else colors.SymLogNorm(linthresh=0.03, base=10)
                             ),
                         }
                         contour_kw["norm"] = normDict[norm]
@@ -1052,16 +1054,16 @@ def _ToImageString(graph):
     plt.ioff()
 
     view = View(graph)
-    output = io.BytesIO()
     fmt = ot.ResourceMap.Get("View-ImageFormat")
-    view.save(output, format=fmt, dpi=100)
-    view.close()
+    with io.BytesIO() as output:
+        view.save(output, format=fmt, dpi=100)
+        view.close()
 
-    # restore interactive mode state
-    if ision:
-        plt.ion()
+        # restore interactive mode state
+        if ision:
+            plt.ion()
 
-    image_bytes = output.getvalue()
+        image_bytes = output.getvalue()
     if fmt == "svg":
         image_string = image_bytes.decode("utf-8")
     else:
@@ -1158,12 +1160,12 @@ def PlotDesign(
         bounds = ot.Interval(lowerBound, upperBound)
     if bounds.getDimension() != dim:
         raise ValueError(
-            f"Dimension of bounds ({bounds.getDimension}) do not match the dimension of the sample ({dim})"
+            f"Dimension of bounds ({bounds.getDimension()}) do not match the dimension of the sample ({dim})"
         )
 
     # Check the subdivisions
     if subdivisions is None:
-        size = data.getSize()
+        size = len(data)
         subdivisions = [size] * dim
     if len(subdivisions) != dim:
         raise ValueError(
