@@ -5,6 +5,7 @@
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"

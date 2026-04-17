@@ -20,7 +20,7 @@ def TESTPREAMBLE():
 
 %{
 #include "openturns/OTconfig.hxx"
-#include "openturns/OT.hxx"
+#include "openturns/OTBase.hxx"
 %}
 
 %include typemaps.i
