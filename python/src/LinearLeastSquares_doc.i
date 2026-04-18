@@ -6,39 +6,50 @@ Parameters
 dataIn : 2-d sequence of float
     Input data.
 dataOut : 2-d sequence of float
-    Output data.`.
+    Output data.
 
 Notes
 -----
 A least squares meta model provides an approximation of the model which is valid over its whole domain of definition.
 
-This class estimates the meta model :math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by: 
-
-.. math::
-    :label: LinearLeastSquaresMMOpenTURNSAPI
-
-    \metaModel(\vect{x})  =  \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b})
-
-from an experimental design :math:`\cX` of size :math:`\sampleSize`, that is, a set of observations of
-the input vector defined by:
+Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model.
+Consider the experimental design :math:`\cX` of size :math:`\sampleSize`:
 
 .. math::
     :label: inputDataLLS
 
-    \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \right\},
+    \cX = \left\{ \vect{x}^{(1)}, \dots, \vect{x}^{(\sampleSize)} \in \Rset^\inputDim \right\}.
 
-and the corresponding output vectors:
+Consider the corresponding output experimental design:
 
 .. math::
     :label: outputDataLLS
 
-    \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \right\}.
+    \cY = \left\{ \vect{y}^{(1)}, \dots, \vect{y}^{(\sampleSize)} \in \Rset^\outputDim \right\}
 
-where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
+where:
 
-Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
-estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the center vector
-:math:`\vect{b}\in \Rset^\inputDim` and the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
+..  math::
+
+    \vect{y}^{(k)} = \model\left(\vect{x}^{(k)}\right)
+
+for :math:`1 \leq k \leq \sampleSize`.
+
+This class estimates the parameters of the meta model
+:math:`\metaModel: \Rset^\inputDim \rightarrow \Rset^\outputDim` defined by:
+
+.. math::
+    :label: LinearLeastSquaresMMOpenTURNSAPI
+
+    \metaModel(\vect{x}) = \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b})
+
+for any :math:\vect{x} \in \Rset^\inputDim`.
+
+Refer to :ref:`least_squares` to get details on general least squares meta
+models and to get information on the estimation of the matrix
+:math:`\mat{L} \in \cM_{\inputDim, \outputDim}`, the center vector
+:math:`\vect{b}\in \Rset^\inputDim` and the constant vector
+:math:`\vect{c} \in \Rset^\outputDim`.
 
 
 See also
