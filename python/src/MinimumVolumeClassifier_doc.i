@@ -97,7 +97,7 @@ graph : :class:`~openturns.Graph`
 Parameters
 ----------
 sample : :class:`~openturns.Sample`
-    A sample to classifiy.
+    A sample to classify.
 classes : sequence of int
     Classes to select
 
@@ -116,7 +116,7 @@ Parameters
 alpha : sequence of float
     Confidence levels
 sample : :class:`~openturns.Sample`
-    A sample to classifiy.
+    A sample to classify.
 classes : sequence of int
     Classes to select
 

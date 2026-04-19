@@ -383,7 +383,7 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
     const Scalar outerIndex = convergenceSample(i, convergenceSample.getDimension() - 1);
     dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = expectationEstimate;
-    // The bounds are drawn only if there is a useable variance estimate
+    // The bounds are drawn only if there is a usable variance estimate
     if (varianceEstimate >= 0.0)
     {
       // The probability estimate is asymptotically normal

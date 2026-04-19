@@ -1038,7 +1038,7 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
 {
   std::ifstream file(fileName.c_str(), std::ios::in);
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
-  // Bording case: empty file
+  // Boarding case: empty file
   if (file.eof())
   {
     LOGINFO(OSS() << "File " << fileName << " is empty.");

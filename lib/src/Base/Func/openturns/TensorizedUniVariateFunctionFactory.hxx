@@ -67,7 +67,7 @@ public:
   /** set the enumerate function that translate unidimensional indices into multidimensional indices */
   void setEnumerateFunction(const EnumerateFunction & phi);
 
-  /** set the function familly collection */
+  /** set the function family collection */
   FunctionFamilyCollection getFunctionFamilyCollection() const;
   void setFunctionFamilyCollection(const FunctionFamilyCollection & coll);
 

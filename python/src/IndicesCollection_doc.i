@@ -50,7 +50,7 @@ Get an Indices.  Note that a copy is returned, modifying it does not alter origi
 >>> print(listIndices)
 [[1,2],[3,4],[5,6]]
 
-To mdify values, one has to change the whole element.
+To modify values, one has to change the whole element.
 
 >>> listIndices[0] = [7, 8]
 >>> print(listIndices)

@@ -37,7 +37,7 @@ class StorageManager;
  * @brief Keeps all PersistentObjects in a file
  *
  * The study allows the user to save all its data to a structure looking like a map.
- * Tha data are copied verbatim to the study. This is not a link so future modification
+ * That data are copied verbatim to the study. This is not a link so future modification
  * of the original won't affect the data saved in the study. To update the data saved
  * in the study, the user has to explicitly save it again.
  * Study allows the user to retrieve previously saved objects either by their name if

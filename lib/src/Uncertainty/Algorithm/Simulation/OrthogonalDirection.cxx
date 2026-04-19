@@ -66,7 +66,7 @@ void OrthogonalDirection::nextCombination(Indices & indices) const
 }
 
 /* Generate a random realization of an orientation matrix in SO(dimension) uniformly
-   distributed relatively to the Haar mesure of SO(dimension).
+   distributed relatively to the Haar measure of SO(dimension).
    The algorithm generate an element of SO(n) with the desired properties from an
    element of SO(n-1) by the application of a Householder reflexion associated to a
    uniform random vector on the hypersphere Sn. The starting transformation on

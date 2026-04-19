@@ -109,7 +109,7 @@ the idea being to avoid a large output dimension for the chaos decomposition ste
 As done in :class:`~openturns.KarhunenLoeveSVDAlgorithm`, the :func:`setThreshold`
 and :func:`setNbModes` methods allow one to control the spectrum ratio and maximum count.
 
-In the case of homogenous data (if variables have the same unit or scale),
+In the case of homogeneous data (if variables have the same unit or scale),
 it is also possible to recompress the modes at the global level with :func:`setRecompress`.
 When enabled, the eigenvalues are gathered and sorted so as to find a global
 spectrum cut-off value by which the spectrum of each output is truncated.

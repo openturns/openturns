@@ -126,7 +126,7 @@ private:
  * @param obj The object read by \p os
  * @return A reference to \p os
  *
- * This method allows any Object-derived class to be streamed whitout
+ * This method allows any Object-derived class to be streamed without
  * redefining this method. Each derived-class should have a public
  * method str() that returns a String.
  *

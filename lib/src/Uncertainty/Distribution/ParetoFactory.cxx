@@ -86,7 +86,7 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
 
 Pareto ParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
-  // Initialize the MML factory by a crude method of moments resul
+  // Initialize the MML factory by a crude method of moments result
   const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
   return buildAsPareto(factory.build(sample).getParameter());
 }

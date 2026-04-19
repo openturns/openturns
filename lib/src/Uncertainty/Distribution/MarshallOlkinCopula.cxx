@@ -210,7 +210,7 @@ CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
 Uses the algorithm from Devroye (1987) and
 presented in
 “An Introduction to Copulas”, 2nd Edition, Nelsen, Springer.
-Section Exercice 3.4, page 58.
+Section Exercise 3.4, page 58.
  */
 Point MarshallOlkinCopula::getRealization() const
 {

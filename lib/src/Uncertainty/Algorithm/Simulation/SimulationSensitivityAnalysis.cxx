@@ -100,7 +100,7 @@ Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar 
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
     if (getComparisonOperator()(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
-  if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannont compute the mean point if no point is in the event domain.";
+  if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannot compute the mean point if no point is in the event domain.";
   return filteredSample.computeMean();
 }
 

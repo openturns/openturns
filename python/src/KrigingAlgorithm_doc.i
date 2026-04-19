@@ -210,7 +210,7 @@ We use the same notations as in :class:`~openturns.CovarianceModel` and :class:`
   - Output dimension is **1** and the `GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate` key of :class:`~openturns.ResourceMap` is set to *False*.
     In that case, we get the **full** log-likelihood :math:`\mathcal{L}(\vect{\theta}, \vect{\sigma})`.
 
-The reduced log-likelihood function may be useful for some pre/postprocessing: vizualisation of the maximizer, use of an external optimizers to maximize the reduced log-likelihood etc.
+The reduced log-likelihood function may be useful for some pre/postprocessing: visualisation of the maximizer, use of an external optimizers to maximize the reduced log-likelihood etc.
 
 
 Examples

@@ -49,7 +49,7 @@ For the same reason some first order indices estimates can be greater than the c
 
 The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
-delta method, as expained in the technical report [pmfre01116]_.
+delta method, as explained in the technical report [pmfre01116]_.
 )RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation

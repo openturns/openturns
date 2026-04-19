@@ -967,7 +967,7 @@ The estimator :math:`\hat{z}_m` of :math:`z_m` is defined using a nested numeric
     \ell_p (z_m) = \max_{\xi} \ell (z_m, \xi, u)
 
 where :math:`\ell (z_m, \xi, u)` is the log-likelihood detailed in :eq:`llgpdR1` and :eq:`llgpdR2`
-where we substitued
+where we substituted
 :math:`\sigma` for :math:`z_m` using equations :eq:`xm1gpd` or :eq:`xm2gpd`.
 
 Then :math:`\hat{z}_m` is defined by:

@@ -495,7 +495,7 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x
   return value;
 }
 
-// Multiplication and sum of two Samples, contained in the sampe sample
+// Multiplication and sum of two Samples, contained in the sample sample
 Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & sample,
     const UnsignedInteger size,
     const UnsignedInteger indexX,

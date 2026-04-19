@@ -33,7 +33,7 @@ If the function supports batch evaluations this parameter can be set to the numb
 of available CPUs to benefit from parallel execution (multithreading, multiprocessing, ...);
 except for the Directional Sampling, where we recommend to set it to 1.
 It also decides the frequency of the stopping criteria and progress callbacks update
-as they are called once the whole block of fonction evaluations is completed.
+as they are called once the whole block of function evaluations is completed.
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -78,7 +78,7 @@ String SORM::__repr__() const
   return oss;
 }
 
-/* Function that computes the design point by re-using the Analytical::run() and creates a SORMResult */
+/* Function that computes the design point by reusing the Analytical::run() and creates a SORMResult */
 void SORM::run()
 {
   Analytical::run();

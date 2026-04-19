@@ -298,7 +298,7 @@ Examples
 
 Similar to :meth:`solveLinearSystem` except the matrix is modified in-place
 during the resolution avoiding the need to allocate an extra copy if the
-original copy is not re-used.
+original copy is not reused.
 "
 
 // ---------------------------------------------------------------------

@@ -161,7 +161,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   Scalar maximumWeight = weights[0];
   Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
-  // First loop, check the atoms dimensions and the weigths values
+  // First loop, check the atoms dimensions and the weights values
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (dimension != coll[i].getDimension())

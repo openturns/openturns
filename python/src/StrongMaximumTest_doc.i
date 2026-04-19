@@ -48,7 +48,7 @@ and :math:`\beta_{HL}` the Hasofer-Lind reliability index.
 The number :math:`N` of the simulations sampling the sphere of radius :math:`R`
 is determined to ensure that the test detects with a probability greater than
 :math:`(1-q)` any point of :math:`\cD_f` outside the design point vicinity
-which contribution to :math:`P_f` is not negligeable (i.e. which density value
+which contribution to :math:`P_f` is not negligible (i.e. which density value
 in the U-space is greater than :math:`\varepsilon` times the density value at
 the design point).
 

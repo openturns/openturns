@@ -121,7 +121,7 @@ void ProcessSampleImplementation::add(const Field & field)
     mesh_ = field.getMesh();
   }
   else if ((data_[0].getDimension() == field.getOutputDimension()) && (mesh_ == field.getMesh())) data_.add(field.getValues());
-  else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimenson or its mesh are incompatible.";
+  else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimension or its mesh are incompatible.";
 }
 
 void ProcessSampleImplementation::add(const Sample & values)

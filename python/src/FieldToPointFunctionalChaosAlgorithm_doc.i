@@ -105,7 +105,7 @@ By default the input process data is assumed to not be centered, and the method
 :func:`setCenteredSample` allows one to skip centering of the data for both the
 computation of modes coefficients and inside the metamodel.
 
-In the case of homogenous data (if variables have the same unit or scale),
+In the case of homogeneous data (if variables have the same unit or scale),
 it is also possible to recompress the modes at the global level with :func:`setRecompress`.
 When enabled, the eigenvalues are gathered and sorted so as to find a global
 spectrum cut-off value by which the spectrum of each input is truncated.
@@ -198,7 +198,7 @@ centered : bool
 "Build the distribution of Karhunen-Loeve coefficients.
 
 This method aims at building a possibly parametric representation of
-Karhunen-Loeve coefficients based on their Gaussian or independent theorical
+Karhunen-Loeve coefficients based on their Gaussian or independent theoretical
 properties in order to build efficient metamodels.
 When this is not possible it falls back to non-parametric representations for
 the marginals and the dependence structure.

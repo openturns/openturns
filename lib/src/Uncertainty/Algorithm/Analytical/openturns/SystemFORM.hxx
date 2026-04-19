@@ -53,7 +53,7 @@ public:
   /** Event accessor */
   void setEvent(const RandomVector & systemEvent) override;
 
-  /** Function that computes the design point by re-using the Analytical::run() and creates a SystemFORM::Result */
+  /** Function that computes the design point by reusing the Analytical::run() and creates a SystemFORM::Result */
   void run() override;
 
   /** Result accessor */

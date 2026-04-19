@@ -95,7 +95,7 @@ public:
 
   /**
    * Copy constructor adds one more reference
-   * on the underying object so its reference counter is
+   * on the underlying object so its reference counter is
    * incremented by one
    */
   template <class Derived>
@@ -106,7 +106,7 @@ public:
 #ifndef SWIG
   /**
    * Equality operator adds one more reference
-   * on the underying object so its reference counter is
+   * on the underlying object so its reference counter is
    * incremented by one
    */
   template <class Derived>

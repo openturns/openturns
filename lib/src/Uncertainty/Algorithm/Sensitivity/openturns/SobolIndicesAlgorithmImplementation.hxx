@@ -150,7 +150,7 @@ protected:
   virtual Sample computeIndices(const Sample & design,
                                 Sample & VTi) const;
 
-  /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
+  /** Internal method that returns a bootstrap NS collection of size inputDimension + 2 */
   Sample getBootstrapDesign(const Indices & indices) const;
 
   /** Function that computes aggregated indices using Vi/VTi + variance  */

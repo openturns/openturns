@@ -22,7 +22,7 @@ The probability density function is defined as:
 
   f_{\vect{X}}(\vect{x}) = \varphi \left( \Tr{(\vect{x} - \vect{\mu})} \mat{\Sigma}^{-1} (\vect{x} - \vect{\mu})\right)
 
-The fonction :math:`\varphi` is called the *density generator*.
+The function :math:`\varphi` is called the *density generator*.
 
 We can define the matrix :math:`\mat{R}` as: 
 

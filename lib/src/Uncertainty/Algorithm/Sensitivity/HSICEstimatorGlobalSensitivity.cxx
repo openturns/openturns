@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief HSICEstimatorGlobalSensitivity implements the global sensivity HSIC indices
+ * @brief HSICEstimatorGlobalSensitivity implements the global sensitivity HSIC indices
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

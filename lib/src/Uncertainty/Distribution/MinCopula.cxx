@@ -191,7 +191,7 @@ Bool MinCopula::isElliptical() const
   return false;
 }
 
-/* Check if the distribution is continuos */
+/* Check if the distribution is continuous */
 Bool MinCopula::isContinuous() const
 {
   return false;
