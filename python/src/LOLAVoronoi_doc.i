@@ -7,7 +7,7 @@ R"RAW(LOLA-Voronoi sequential design algorithm.
 
 This class implements the design of experiments algorithm described in [crombecq2011]_ which allows one
 to sequentially generate new input samples according to the input measure and model output.
-It combines an exploration criterion based on Voronoi tesselation to identify
+It combines an exploration criterion based on Voronoi tessellation to identify
 undersampled input design regions and an exploitation criterion based on a measure
 of the nonlinearity of the model.
 

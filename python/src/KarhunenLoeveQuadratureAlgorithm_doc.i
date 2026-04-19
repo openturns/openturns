@@ -21,7 +21,7 @@ basis : sequence of :class:`~openturns.Function`
 marginalDegree : int
     The maximum degree to take into account in the tensorized Legendre basis.
 mustScale : bool
-    Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
+    Flag to tell if the bounding box of the weighted experiment and the domain have to be mapped or not.
 s : float, :math:`\geq0`
     The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
 
@@ -122,7 +122,7 @@ R"RAW(Accessor to the domain.
 Returns
 -------
 domain : :class:`~openturns.Domain`
-The domain  :math:`\cD_N` that discretizes the domin :math:`\cD`.)RAW"
+The domain  :math:`\cD_N` that discretizes the domain :math:`\cD`.)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasis
@@ -149,5 +149,5 @@ experiment : :class:`~openturns.WeightedExperiment`
 Returns
 -------
 mustScale : bool
-    Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not."
+    Flag to tell if the bounding box of the weighted experiment and the domain have to be mapped or not."
 

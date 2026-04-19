@@ -171,7 +171,7 @@ int main(int, char *[])
       Point weights(2);
       weights[0] = -1.0;
       weights[1] =  1.0;
-      result = RandomMixture(coll, weights);
+      result = LinearCombinationDistribution(coll, weights);
       fullprint << "result=" << result << std::endl;
       fullprint << "cdf(1.0)=" << result.computeCDF(1.0) << std::endl;
     }
@@ -192,7 +192,7 @@ int main(int, char *[])
       Point weights(2);
       weights[0] = -1.0;
       weights[1] = -1.0;
-      result = RandomMixture(coll, weights);
+      result = LinearCombinationDistribution(coll, weights);
       fullprint << "result=" << result << std::endl;
       fullprint << "cdf(-1.0)=" << result.computeCDF(-1.0) << std::endl;
     }

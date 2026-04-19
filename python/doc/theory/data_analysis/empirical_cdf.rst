@@ -68,7 +68,7 @@ The diagram below provides an illustration of an ordered sample
     sample = [[5.0], [6.0], [10.0], [22.0], [27.0]]
     xmin = 0.0
     xmax = 30.0
-    graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
+    graph = ot.FiniteDiscreteDistribution(sample).drawCDF(xmin, xmax)
     graph.setTitle('Empirical CDF')
     otv.View(graph)
 
@@ -106,7 +106,7 @@ distribution function.
 
 .. topic:: API:
 
-    - See :class:`~openturns.UserDefined` for the empirical distribution
+    - See :class:`~openturns.FiniteDiscreteDistribution` for the empirical distribution
 
 .. topic:: Examples:
 

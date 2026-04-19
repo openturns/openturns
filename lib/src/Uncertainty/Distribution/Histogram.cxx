@@ -565,7 +565,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
   while ((indexRight < size) && (first_ + cumulatedWidth_[indexRight] < xMax)) ++indexRight;
   // The graph is made of full bars for the class indices between indexLeft and indexRight
   // The graph can include completely the first class or not. It is checked using first_.
-  // The graph can include completely the last class or not. It is checked usind indexRight == size.
+  // The graph can include completely the last class or not. It is checked using indexRight == size.
   // !!! Only the first part of the graph has a label !!!
   // The first class is completely included
   if (xMin <= first_)

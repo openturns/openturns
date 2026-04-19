@@ -68,7 +68,7 @@ indices : sequence of integer
 Returns
 -------
 gradientImplementation : :class:`~openturns.GradientImplementation`
-    A gradient implementation restricted to its compenents functions which
+    A gradient implementation restricted to its components functions which
     indices are *i* or *indices*."
 %enddef
 %feature("docstring") OT::GradientImplementation::getMarginal

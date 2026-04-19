@@ -38,7 +38,7 @@ XgivenThetaDist = ot.Normal()
 # %%
 # At last, we create the distribution of :math:`(Y,X)`:
 XDist = ot.JointByConditioningDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription(["Y", r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
+XDist.setDescription(["Y", r"$X|\mathbf{\Theta} = f(Y)$"])
 XDist
 
 # %%

@@ -5,7 +5,11 @@
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTAlgo.hxx"
+#include "openturns/OTCommon.hxx"
+#include "openturns/OTGeom.hxx"
+#include "openturns/OTGraph.hxx"
 #include "openturns/OTStat.hxx"
+#include "openturns/OTType.hxx"
 #include "openturns/OTFunc.hxx"
 %}
 

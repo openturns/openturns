@@ -112,7 +112,7 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   return auxiliaryDistribution;
 }
 
-// Function computing weigths of sample
+// Function computing weights of sample
 Point NAIS::computeWeights(const Sample & sample,
                            const Sample & outputSample,
                            const Scalar eventThresholdLocal,

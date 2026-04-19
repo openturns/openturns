@@ -474,7 +474,7 @@ void StrongMaximumTest::run()
   /* get nearestPointChecker result */
   NearestPointCheckerResult nearestPointCheckerResult(nearestPointChecker.getResult());
   /* split the two samples according to the vicinity of the design point
-   * everything is done in place, using the attributs of the class in order
+   * everything is done in place, using the attributes of the class in order
    * to limit the memory usage */
 
   nearDesignPointVerifyingEventPoints_ = nearestPointCheckerResult.getVerifyingConstraintPoints();

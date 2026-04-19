@@ -21,7 +21,7 @@ import openturns.viewer as otv
 # Create a sample from a continuous distribution
 distribution = ot.Beta(2.0, 2.0, 0.0, 1.0)
 sample = distribution.getSample(1000)
-graph = ot.UserDefined(sample).drawCDF()
+graph = ot.FiniteDiscreteDistribution(sample).drawCDF()
 view = otv.View(graph)
 
 # %%
@@ -83,7 +83,7 @@ ot.FittingTest.BestModelAICC(sample, distributions)
 # Create a sample from a discrete distribution
 distribution = ot.Poisson(2.0)
 sample = distribution.getSample(1000)
-graph = ot.UserDefined(sample).drawCDF()
+graph = ot.FiniteDiscreteDistribution(sample).drawCDF()
 view = otv.View(graph)
 
 # %%

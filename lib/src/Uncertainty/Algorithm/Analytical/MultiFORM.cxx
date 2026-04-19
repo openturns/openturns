@@ -75,7 +75,7 @@ String MultiFORM::__repr__() const
   return oss;
 }
 
-/* Function that computes the design point by re-using the Analytical::run() and creates a MultiFORMResult */
+/* Function that computes the design point by reusing the Analytical::run() and creates a MultiFORMResult */
 void MultiFORM::run()
 {
   const Scalar gamma = ResourceMap::GetAsScalar("MultiFORM-DefaultGamma");

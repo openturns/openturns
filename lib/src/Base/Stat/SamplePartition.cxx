@@ -55,7 +55,7 @@ SamplePartition::SamplePartition(const Sample & sample,
     if (indicesCollection[i].getSize() != 2)
       throw InvalidArgumentException(HERE) << "Expected list of 2-tuples got " << indicesCollection[i];
     if (indicesCollection[i][1] > sample.getSize())
-      throw InvalidArgumentException(HERE) << "Indices cannot exceeed sample size (" << sample.getSize() << ") got " << indicesCollection[i];
+      throw InvalidArgumentException(HERE) << "Indices cannot exceed sample size (" << sample.getSize() << ") got " << indicesCollection[i];
     if (indicesCollection[i][0] >= indicesCollection[i][1])
       throw InvalidArgumentException(HERE) << "Start index cannot exceed end index got " << indicesCollection[i];
   }

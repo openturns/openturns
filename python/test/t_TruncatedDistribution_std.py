@@ -232,6 +232,12 @@ for i in range(len(candidates)):
     d = ot.TruncatedDistribution(candidates[i], intervals[i])
     print("d=", d, "simplified=", d.getSimplifiedVersion())
 
+# check simplification logic only checks numerical range
+dist = ot.Gumbel(1.0, 0.0)
+numericalRange = ot.Interval(dist.getRange().getLowerBound(), dist.getRange().getUpperBound())
+truncated = ot.TruncatedDistribution(dist, numericalRange)
+assert truncated.getSimplifiedVersion() == dist
+
 # Check that we can set the bounds independently
 truncated = ot.TruncatedDistribution()
 truncated.setDistribution(ot.Normal(20.0, 7.5))

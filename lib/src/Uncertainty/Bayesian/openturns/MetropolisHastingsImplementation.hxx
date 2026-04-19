@@ -96,7 +96,7 @@ public:
   /** Link function accessor */
   Function getLinkFunction() const;
 
-  /** Obervations accessor */
+  /** Observations accessor */
   Sample getObservations() const;
 
   /** Covariates accessor */

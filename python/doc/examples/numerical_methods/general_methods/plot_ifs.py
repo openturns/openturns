@@ -37,7 +37,7 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     probabilities = [r**s + 1e-2 for r in all_r]
     # Build the sampling distribution
     support = [[i] for i in range(dim)]
-    choice = ot.UserDefined(support, probabilities)
+    choice = ot.FiniteDiscreteDistribution(support, probabilities)
     currentPoints = initialPoints
     points = ot.Sample(0, 2)
     # Convert the f_i into LinearEvaluation to benefit from the evaluation over

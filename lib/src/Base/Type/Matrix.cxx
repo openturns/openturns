@@ -155,7 +155,7 @@ const Matrix Matrix::getRow(const UnsignedInteger rowIndex) const
   return Implementation(getImplementation()->getRow(rowIndex).clone());
 }
 
-/* Column extration */
+/* Column extraction */
 const Matrix Matrix::getColumn(const UnsignedInteger columnIndex) const
 {
   return Implementation(getImplementation()->getColumn(columnIndex).clone());

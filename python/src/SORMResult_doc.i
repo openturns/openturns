@@ -126,6 +126,6 @@ R"RAW(Accessor to the sorted curvatures.
 Returns
 -------
 curvatures : :class:`~openturns.Point`
-    Curvatures of the standard limite state function at the standard design
+    Curvatures of the standard limit state function at the standard design
     point :math:`(\kappa_i)_{1 \leq i \leq n-1}` with :math:`n` the dimension
     of the random vector :math:`\vect{X}`.)RAW"

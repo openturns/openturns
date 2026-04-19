@@ -232,10 +232,10 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  /** Flag to tell if the current gradient is a default implementation */
+  /** Flag to tell if the currentt gradient is a default implementation */
   mutable Bool useDefaultGradientImplementation_ = false;
 
-  /** Flag to tell if the curren hessian is a default implementation */
+  /** Flag to tell if the current hessian is a default implementation */
   mutable Bool useDefaultHessianImplementation_ = false;
 
   /** Counter for the number of calls */

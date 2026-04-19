@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/BootstrapExperiment.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -38,7 +38,7 @@ BootstrapExperiment::BootstrapExperiment():
 
 /* Constructor with parameters */
 BootstrapExperiment::BootstrapExperiment(const Sample & sample):
-  WeightedExperimentImplementation(UserDefined(), sample.getSize())
+  WeightedExperimentImplementation(FiniteDiscreteDistribution(), sample.getSize())
   , sample_(sample)
 {
   // Nothing to do
@@ -91,7 +91,7 @@ void BootstrapExperiment::setDistribution(const Distribution & distribution)
 
 Distribution BootstrapExperiment::getDistribution() const
 {
-  return UserDefined(sample_);
+  return FiniteDiscreteDistribution(sample_);
 }
 
 

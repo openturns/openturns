@@ -37,7 +37,7 @@ samplesize
 # Plot the empirical distribution function.
 
 # %%
-graph = ot.UserDefined(sample).drawCDF()
+graph = ot.FiniteDiscreteDistribution(sample).drawCDF()
 graph.setLegends(["Sample"])
 curve = ot.Curve([0, 1], [0, 1])
 curve.setLegend("Uniform")

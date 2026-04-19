@@ -847,7 +847,7 @@ Bool KernelMixture::isElliptical() const
   return (sample_.getSize() == 1) && (p_kernel_->getClassName() == "Normal");
 }
 
-/* Check if the distribution is continuos */
+/* Check if the distribution is continuous */
 Bool KernelMixture::isContinuous() const
 {
   return p_kernel_->isContinuous();

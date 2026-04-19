@@ -81,5 +81,5 @@ copColl : list of :class:`~openturns.Distribution` with the same dimension
 Parameters
 ----------
 bounds : sequence of float
-    Bounds defining the intervals on whch the copulas of the collection are
+    Bounds defining the intervals on which the copulas of the collection are
     squeezed."

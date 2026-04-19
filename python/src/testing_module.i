@@ -2,7 +2,7 @@
 
 %{
 #include "openturns/OTconfig.hxx"
-#include "openturns/OT.hxx"
+#include "openturns/OTtestcode.hxx"
 %}
 
 %include typemaps.i
@@ -20,10 +20,6 @@
 
 /* Uncertainty/Model */
 %import model_copula_module.i
-
-%{
-#include "openturns/OTtestcode.hxx"
-%}
 
 %include OTtestcode_doc.i
 

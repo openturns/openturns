@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Cache
  *
  * Cache holds the already computed points to speed up calculations
- * Like any cache system, this objet saves time by keeping some costly data
+ * Like any cache system, this object saves time by keeping some costly data
  * and provides access to them through a key.
  * Here the key is the input Point of a Function and the
  * value is the output Point that was computed.

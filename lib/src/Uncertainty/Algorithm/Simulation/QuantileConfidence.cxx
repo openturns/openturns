@@ -270,7 +270,7 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   //   \beta  = beta_
   //   r      = rank
   // It rewrites F_{N,alpha}(N-r-1)>=beta where F_{N,alpha} is the CDF of the
-  // Binomial(N, alpha) ditribution.
+  // Binomial(N, alpha) distribution.
   // Easy case: rank=0, the quantile bound is given by the largest upper statistics. The equation to solve is N=\min{n|1-\alpha^n>=\beta}
   Scalar nApprox = 0.0;
   const Function wilksConstraint(QuantileConfidenceEvaluation(alpha_, rank, tail).clone());

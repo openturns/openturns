@@ -1,7 +1,7 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICStatImplementation implements the HSIC sensivity index for
+ * @brief HSICStatImplementation implements the HSIC sensitivity index for
  *        one marginal.
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca

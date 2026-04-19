@@ -63,7 +63,7 @@ public:
   /** Virtual constructor */
   UserDefinedMetropolisHastings * clone() const override;
 
-  /** Intrumental accessor */
+  /** Instrumental accessor */
   Distribution getProposal() const;
   Function getProposalLinkFunction() const;
 

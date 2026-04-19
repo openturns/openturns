@@ -4,7 +4,7 @@ R"RAW(Bootstrap experiment.
 Parameters
 ----------
 sample : 2-d sequence of float
-    Points to defined a :class:`~openturns.UserDefined` distribution
+    Points to defined a :class:`~openturns.FiniteDiscreteDistribution` distribution
     :math:`\mu`.
 
 Notes
@@ -13,7 +13,7 @@ BootstrapExperiment is a random weighted design of experiments.
 Calling the :class:`BootstrapExperiment` constructor is equivalent to calling the
 :class:`~openturns.WeightedExperiment` constructor as follows:
 
-``WeightedExperiment(UserDefined(sample), sample.getSize())``
+``WeightedExperiment(FiniteDiscreteDistribution(sample), sample.getSize())``
 
 See also
 --------
@@ -33,7 +33,7 @@ Examples
 3 : [ 1  2  ]
 4 : [ 2  3  ]
 >>> print(experiment.getDistribution())
-UserDefined({x = [0,1], p = 0.2}, {x = [1,2], p = 0.2}, {x = [2,3], p = 0.2}, {x = [3,4], p = 0.2}, {x = [4,5], p = 0.2})
+FiniteDiscreteDistribution({x = [0,1], p = 0.2}, {x = [1,2], p = 0.2}, {x = [2,3], p = 0.2}, {x = [3,4], p = 0.2}, {x = [4,5], p = 0.2})
 )RAW"
 
 // ---------------------------------------------------------------------

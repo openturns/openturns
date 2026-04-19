@@ -5,6 +5,7 @@
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
@@ -27,7 +28,7 @@
 %include PoissonFactory.i
 %include ProductDistribution.i
 %include QuantileMatchingFactory.i
-%include RandomMixture.i
+%include LinearCombinationDistribution.i
 %include Rayleigh.i
 %include RayleighFactory.i
 %include Rice.i
@@ -53,8 +54,8 @@
 %include UniformMuSigma.i
 %include UniformOverMesh.i
 %include UniformOrderStatistics.i
-%include UserDefined.i
-%include UserDefinedFactory.i
+%include FiniteDiscreteDistribution.i
+%include FiniteDiscreteDistributionFactory.i
 %include VonMises.i
 %include VonMisesFactory.i
 %include WeibullMin.i

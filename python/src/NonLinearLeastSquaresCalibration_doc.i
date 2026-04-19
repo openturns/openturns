@@ -32,7 +32,7 @@ and is named *Laplace approximation* in the Bayesian context.
 However, if the key `NonLinearLeastSquaresCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
 is set to a nonzero positive integer, then a bootstrap resampling of the observations 
 is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing` 
-of the sample of boostrap optimum parameters. 
+of the sample of bootstrap optimum parameters. 
 
 The resulting distribution of the output error is a :class:`~openturns.Normal` and is 
 computed from the residuals. 

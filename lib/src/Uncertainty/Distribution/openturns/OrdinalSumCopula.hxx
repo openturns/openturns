@@ -24,7 +24,7 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -165,7 +165,7 @@ private:
   Point blockLengths_;
 
   /** Discrete distribution to select the component of the sum for sampling */
-  UserDefined blockDistribution_;
+  FiniteDiscreteDistribution blockDistribution_;
 }; /* class OrdinalSumCopula */
 
 

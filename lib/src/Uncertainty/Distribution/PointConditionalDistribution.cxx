@@ -588,7 +588,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     return true;
   }
 
-  // Joint. Has we don't have an efficient PointConditionalCopula we restrict ourselve to the Bernstein copula
+  // Joint. Has we don't have an efficient PointConditionalCopula we restrict ourselves to the Bernstein copula
   JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
   if (p_joint)
   {

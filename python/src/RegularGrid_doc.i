@@ -74,7 +74,7 @@ n : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RegularGrid::getValue
-R"RAW(Accessor to the time stamps at a gien index.
+R"RAW(Accessor to the time stamps at a given index.
 
 Parameters
 ----------

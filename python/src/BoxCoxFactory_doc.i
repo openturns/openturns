@@ -166,11 +166,16 @@ transform : :class:`~openturns.BoxCoxTransform`
 Notes
 -----
 
-We describe the estimation in the univariate case, in the case of no surrogate model estimate. Only the parameter :math:`\lambda` is estimated. To clarify the notations, we omit the mention of :math:`\alpha` in :math:`h_\lambda`.
+We describe the estimation in the univariate case, in the case of no surrogate model estimate.
+Only the parameter :math:`\lambda` is estimated.
+To clarify the notations, we omit the mention of :math:`\alpha` in :math:`h_\lambda`.
 
-We note :math:`(x_0, \dots, x_{N-1})` a sample of :math:`X`. We suppose that :math:`h_\lambda(X) \sim \cN(\beta , \sigma^2 )`.
+We note :math:`(x_0, \dots, x_{N-1})` a sample of :math:`X`.
+We suppose that :math:`h_\lambda(X) \sim \cN(\beta , \sigma^2 )`.
 
-The parameters :math:`(\beta,\sigma,\lambda)` are  estimated by the maximum likelihood estimators. We note :math:`\Phi_{\beta, \sigma}` and :math:`\phi_{\beta, \sigma}` respectively the cumulative distribution function and the density probability function of the :math:`\cN(\beta , \sigma^2)` distribution.
+The parameters :math:`(\beta,\sigma,\lambda)` are estimated by the maximum likelihood estimators.
+We note :math:`\Phi_{\beta, \sigma}` and :math:`\phi_{\beta, \sigma}` respectively the cumulative distribution function
+and the density probability function of the :math:`\cN(\beta , \sigma^2)` distribution.
 
 We have :
 
@@ -181,7 +186,7 @@ We have :
       & = & \Phi_{\beta, \sigma} \left(h_\lambda(v)\right)
     \end{array}
 
-from which we derive the  density probability function *p* of :math:`X`:
+from which we derive the density probability function *p* of :math:`X`:
 
 .. math::
 
@@ -214,7 +219,7 @@ which enables to write the likelihood of the values :math:`(x_0, \dots, x_{N-1})
 
 
 
-We notice that for each fixed :math:`\lambda`, the likelihood equation is proportional to the likelihood equation which estimates  :math:`(\beta, \sigma^2)`.
+We notice that for each fixed :math:`\lambda`, the likelihood equation is proportional to the likelihood equation which estimates :math:`(\beta, \sigma^2)`.
 
 Thus, the maximum likelihood estimators for :math:`(\beta(\lambda), \sigma^2(\lambda))` for a given :math:`\lambda`  are :
 

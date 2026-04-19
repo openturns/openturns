@@ -92,7 +92,7 @@ private:
   /** Gaussian process result */
   GaussianProcessRegressionResult gprResult_;
 
-  /** Trend part - conditionned by the mesh points */
+  /** Trend part - conditioned by the mesh points */
   Sample trendEvaluationMesh_;
 
   /** Known values indices */

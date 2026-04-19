@@ -81,7 +81,7 @@ public:
   Sample getDerivatives() const;
   void setDerivatives(const Sample & derivatives);
 
-  /** Simultaneous locations and values acessor */
+  /** Simultaneous locations and values accessor */
   void setLocationsValuesAndDerivatives(const Point & locations,
                                         const Sample & values,
                                         const Sample & derivatives);

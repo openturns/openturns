@@ -1,7 +1,7 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICEstimator is a base class that  implements the HSIC sensivity indices.
+ * @brief HSICEstimator is a base class that  implements the HSIC sensitivity indices.
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

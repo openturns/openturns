@@ -1,7 +1,7 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICEstimatorGlobalSensitivity implements the sensivity analysis method based on HSIC indices
+ * @brief HSICEstimatorGlobalSensitivity implements the sensitivity analysis method based on HSIC indices
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

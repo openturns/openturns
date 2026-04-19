@@ -11,3 +11,7 @@ Remove deprecated SoizeGhanemFactory in some future version
 Remove deprecated Collection/Sample find method (%ignore)
 Remove deprecated assert_almost_equal(Indices)
 Remove deprecated ProbabilitySimulationResult::getConfidenceLength in some future version
+Remove UserDefined alias in some future version
+Remove UserDefinedFactory alias in some future version
+Remove MixedHistogramUserDefined alias in some future version
+Remove RandomMixture alias in some future version

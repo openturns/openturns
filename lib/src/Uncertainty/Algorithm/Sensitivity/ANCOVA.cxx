@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief ANCOVA implements the sensivity analysis method for correlated data
+ * @brief ANCOVA implements the sensitivity analysis method for correlated data
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

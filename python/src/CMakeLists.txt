@@ -7,6 +7,7 @@ set (CMAKE_SWIG_FLAGS "" CACHE STRING "SWIG flags for generating wrapper code")
 # allows one to pass compile flags like -O1 to reduce memory usage
 set (SWIG_COMPILE_FLAGS "" CACHE STRING "C/C++ compiler flags used for wrapper code")
 set (SWIG_CXX_COMPILE_FLAGS "" CACHE STRING "C++ specific compiler flags used for wrapper code")
+mark_as_advanced (SWIG_COMPILE_FLAGS SWIG_CXX_COMPILE_FLAGS)
 
 # generate SWIG runtime header
 execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/openturns)
@@ -335,7 +336,7 @@ ot_add_python_module(func func_module.i
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i
                       AggregatedEvaluation.i AggregatedEvaluation_doc.i
-                      SymbolicEvaluation.i
+                      SymbolicEvaluation.i SymbolicEvaluation_doc.i
                       SymbolicGradient.i
                       SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i
@@ -673,7 +674,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MeixnerDistribution.i MeixnerDistribution_doc.i
                       MeixnerDistributionFactory.i MeixnerDistributionFactory_doc.i
                       MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i
-                      MixedHistogramUserDefined.i MixedHistogramUserDefined_doc.i
+                      MixedHistogramFiniteDiscreteDistribution.i MixedHistogramFiniteDiscreteDistribution_doc.i
                       Mixture.i  Mixture_doc.i
                       CompoundDistribution.i CompoundDistribution_doc.i
                       Multinomial.i Multinomial_doc.i
@@ -696,7 +697,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       PoissonFactory.i PoissonFactory_doc.i
                       ProductDistribution.i ProductDistribution_doc.i
                       QuantileMatchingFactory.i QuantileMatchingFactory_doc.i
-                      RandomMixture.i RandomMixture_doc.i
+                      LinearCombinationDistribution.i LinearCombinationDistribution_doc.i
                       Rayleigh.i Rayleigh_doc.i
                       RayleighFactory.i RayleighFactory_doc.i
                       Rice.i Rice_doc.i
@@ -722,8 +723,8 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       UniformFactory.i UniformFactory_doc.i
                       UniformMuSigma.i UniformMuSigma_doc.i
                       UniformOverMesh.i UniformOverMesh_doc.i
-                      UserDefined.i UserDefined_doc.i
-                      UserDefinedFactory.i UserDefinedFactory_doc.i
+                      FiniteDiscreteDistribution.i FiniteDiscreteDistribution_doc.i
+                      FiniteDiscreteDistributionFactory.i FiniteDiscreteDistributionFactory_doc.i
                       UniformOrderStatistics.i UniformOrderStatistics_doc.i
                       VonMises.i VonMises_doc.i
                       VonMisesFactory.i VonMisesFactory_doc.i
@@ -1090,8 +1091,8 @@ if (SPHINX_FOUND)
   endif ()
   if (NOT NLopt_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_nlopt)|(optimization_rosenbrock)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(advanced_mle_estimator)|(kriging_advanced)")
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(kriging_hyperparameters_optimization)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(advanced_mle_estimator)|(gpr_advanced)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(gpr_hyperparameters_optimization)|(kriging_vs_gpr)")
   endif ()
 
   # create a build site-package from which sphinx can import

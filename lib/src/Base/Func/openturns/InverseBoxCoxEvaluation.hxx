@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class InverseBoxCoxEvaluation
  *
  * This class offers an easy evaluation of the Box Cox function defined by :
- *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) oherwise
+ *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) otherwise
  *  Care that x should be positive
  */
 
@@ -47,9 +47,9 @@ public:
   InverseBoxCoxEvaluation();
 
   /** Parameter constructor */
-  explicit InverseBoxCoxEvaluation(const Point & lamda);
+  explicit InverseBoxCoxEvaluation(const Point & lambda);
 
-  InverseBoxCoxEvaluation(const Point & lamda,
+  InverseBoxCoxEvaluation(const Point & lambda,
                           const Point & shift);
 
   /** Virtual constructor */
