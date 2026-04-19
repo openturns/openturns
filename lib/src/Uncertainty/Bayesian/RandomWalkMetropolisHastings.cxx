@@ -44,7 +44,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Distribution & 
     const Distribution & proposal,
     const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetDistribution, initialState, marginalIndices)
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-Defaultburn-in"))
   , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
   , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
@@ -60,7 +60,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Function & targ
     const Distribution & proposal,
     const Indices & marginalIndices)
   : MetropolisHastingsImplementation(targetLogPDF, support, initialState, marginalIndices)
-  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultBurnIn"))
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-Defaultburn-in"))
   , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
   , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
   , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
@@ -148,7 +148,7 @@ Distribution RandomWalkMetropolisHastings::getProposal() const
   return proposal_;
 }
 
-/* BurnIn accessor */
+/* burn-in accessor */
 void RandomWalkMetropolisHastings::setBurnIn(const UnsignedInteger burnIn)
 {
   burnIn_ = burnIn;

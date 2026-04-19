@@ -83,7 +83,7 @@ HistogramPolynomialFactory * HistogramPolynomialFactory::clone() const
    Rn = <Qn,Qn> for n >= 0
    \alpha_n = <xQn,Qn> / Rn
    \beta_n  = Rn / Rn-1 for n >= 1, \beta_0 = 0
-   Remark: here we considere probability measures D, so R0=1, \alpha_0=E[D]=\mu, Q1(x)=x-\mu, \beta_1=R1=Var[D]
+   Remark: here we considered probability measures D, so R0=1, \alpha_0=E[D]=\mu, Q1(x)=x-\mu, \beta_1=R1=Var[D]
    Due to the convention of coefficients for orthonormal polynomials, the coefficients of the monic
    polynomials are stored as [1, -\alpha_n, -\beta_n]
  */

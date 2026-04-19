@@ -239,7 +239,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
   if (ResourceMap::GetAsBool("DiracCovarianceModel-CheckUnique") && (vertices.sortUnique().getSize() != vertices.getSize()))
     return CovarianceModelImplementation::discretize(vertices);
 
-  // Here is the opimized discretization method, correct if no repeated points
+  // Here is the optimized discretization method, correct if no repeated points
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
@@ -293,7 +293,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
   if (ResourceMap::GetAsBool("DiracCovarianceModel-CheckUnique") && (vertices.sortUnique().getSize() != vertices.getSize()))
     return CovarianceModelImplementation::discretizeAndFactorize(vertices);
 
-  // Here is the opimized discretization method, correct if no repeated points
+  // Here is the optimized discretization method, correct if no repeated points
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
@@ -428,7 +428,7 @@ void DiracCovarianceModel::setAmplitude(const Point & amplitude)
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
     if (!(amplitude[i] > 0))
-      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive but the #" << i << " component equals " << amplitude[i];
+      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be strictly positive but the #" << i << " component equals " << amplitude[i];
   }
   amplitude_ = amplitude;
   computeCovariance();

@@ -243,7 +243,7 @@ void SymbolicFunction::InitializeDocumentation()
   IsDocumentationInitialized_ = true;
 }
 
-/* Static methods for documentation of analytical fonctions */
+/* Static methods for documentation of analytical functions */
 Description SymbolicFunction::GetValidParsers()
 {
   if (!IsDocumentationInitialized_) InitializeDocumentation();

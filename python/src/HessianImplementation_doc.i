@@ -68,7 +68,7 @@ indices : sequence of integer
 Returns
 -------
 hessianImplementation : :class:`~openturns.HessianImplementation`
-    A hessian implementation restricted to its compenents functions which
+    A hessian implementation restricted to its components functions which
     indices are *i* or *indices*."
 %enddef
 %feature("docstring") OT::HessianImplementation::getMarginal

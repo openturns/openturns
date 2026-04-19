@@ -22,7 +22,7 @@ Its probability distribution function is defined as:
                    \quad \forall k \in \{0, \ldots, n\}
 
 with :math:`n \in \Nset` and :math:`0 \leq p \leq 1`.
-It is evaluated using  Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_,
+It is evaluated using Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_,
 with the further improvements mentioned in [dimitriadis2016]_, see :meth:`~openturns.DistFunc.dBinomial`.
 
 Its first moments are:

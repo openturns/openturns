@@ -1,5 +1,5 @@
 %feature("docstring") OT::PlatformInfo
-"Informations about platform.
+"Information about platform.
 
 No constructor, only static methods are available."
 

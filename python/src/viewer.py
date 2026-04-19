@@ -781,7 +781,7 @@ class View:
                 if ("fontsize" not in text_kw_default) and (
                     "size" not in text_kw_default
                 ):
-                    # R API requiert a character exansion (cex)
+                    # R API requiert a character expansion (cex)
                     # considering default scale to be 1
                     # Default fontsize in matplotlib is 10.0
                     # thus we make corresponding the R & matplotlib values

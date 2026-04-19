@@ -8,7 +8,7 @@ For each design point we add a `bulge` function that penalizes the limit-state G
 
     G_m(u) = G(u) + \sum_{i=1}^m B_i(u)
 
-The bulge function can be chosed as:
+The bulge function can be chosen as:
 
 .. math::
 

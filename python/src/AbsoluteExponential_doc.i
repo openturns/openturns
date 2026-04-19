@@ -29,7 +29,7 @@ The *absolute exponential* function is a stationary covariance function with dim
 
 We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
 
-The  *absolute exponential* function is defined by:
+The *absolute exponential* function is defined by:
 
 .. math::
 

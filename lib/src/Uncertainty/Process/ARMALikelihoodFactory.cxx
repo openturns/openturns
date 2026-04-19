@@ -886,7 +886,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
       for (UnsignedInteger i = 0; i <= j; ++i)
       {
         autoCovariance_(i, j) = W0(i, j);
-        // Using the symetry
+        // Using the symmetry
         autoCovariance_(j, i) = W0(i, j);
       }
     }

@@ -111,7 +111,7 @@ Parameters
 listColors : sequence of str
     List of the colors used for each Drawable of the Graph.
     If the *listColors*'s size is lower than the number of Drawables, the
-    first colors of *listColors* are re-used. If it is greated than
+    first colors of *listColors* are reused. If it is greater than
     the number of Drawables, the last colors of the list are ignored.
 
     The *listColors* argument can be the result of the static method

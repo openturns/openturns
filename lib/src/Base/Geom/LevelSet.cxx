@@ -340,7 +340,7 @@ Bool LevelSet::operator == (const LevelSet & other) const
   return (function_ == other.function_) && (operator_ == other.operator_) && (level_ == other.level_);
 }
 
-/* Functio accessor */
+/* Function accessor */
 Function LevelSet::getFunction() const
 {
   return function_;

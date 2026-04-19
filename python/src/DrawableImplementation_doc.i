@@ -198,7 +198,7 @@ Notes
 -----
 The colors are generated in the HSV space. 
 When the number of colors is greater than 10, the value V decreases 
-linearily depending on the 'Drawable-DefaultPalettePhase' key of the 
+linearly depending on the 'Drawable-DefaultPalettePhase' key of the
 :class:`~openturns.ResourceMap` for each block of 10 colors.
 
 Examples

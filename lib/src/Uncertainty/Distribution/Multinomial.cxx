@@ -367,7 +367,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     if (point[0] > n_ + supportEpsilon_) return 1.0;
     return DistFunc::pBeta(n_ - kPoint[0], kPoint[0] + 1, 1.0 - p_[0]);
   }
-  // First, check the bording cases
+  // First, check the boarding cases
   Indices indices(0);
   Bool allZero = true;
   UnsignedInteger sumX = 0;

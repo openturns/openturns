@@ -237,7 +237,7 @@ const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger
   return row;
 }
 
-/* Column extration */
+/* Column extraction */
 const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger columnIndex) const
 {
   if (!(columnIndex < nbColumns_)) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
@@ -1310,7 +1310,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSquare(Scalar & maximum
     nextEigenValue = nextEigenVector.norm();
     precision = std::abs(nextEigenValue - maximumModule);
     found = precision <= epsilon * nextEigenValue;
-    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    LOGDEBUG(OSS() << "(" << iteration << ") precision=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
     maximumModule = nextEigenValue;
   }
   return found;
@@ -1338,7 +1338,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
     nextEigenValue = nextEigenVector.norm();
     precision = std::abs(nextEigenValue - maximumModule);
     found = precision <= epsilon * nextEigenValue;
-    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    LOGDEBUG(OSS() << "(" << iteration << ") precision=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
     maximumModule = nextEigenValue;
   }
   return found;

@@ -129,7 +129,7 @@ Bool JointDistribution::equals(const DistributionImplementation & other) const
   const JointDistribution* p_other = dynamic_cast<const JointDistribution*>(&other);
   if (p_other != 0) return (*this == *p_other);
   // Third, check by properties
-  // We coud go there eg. when comparing a JointDistribution([Normal()]*2) with a Normal(2)
+  // We could go there eg. when comparing a JointDistribution([Normal()]*2) with a Normal(2)
   // The copula...
   // Store the result of hasIndependentCopula() as it may be costly.
   const Bool hasIndependent = hasIndependentCopula();

@@ -913,7 +913,7 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
 Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar prob,
     Scalar & marginalProb) const
 {
-  // Special case for bording values
+  // Special case for boarding values
   marginalProb = prob;
   if (prob < 0.0) return range_.getUpperBound();
   if (prob >= 1.0) return range_.getLowerBound();
@@ -2557,7 +2557,7 @@ Point DistributionImplementation::computeQuantileCopula(const Scalar prob,
     const Bool tail) const
 {
   const UnsignedInteger dimension = getDimension();
-  // Special case for bording values
+  // Special case for boarding values
   const Scalar q = tail ? 1.0 - prob : prob;
   if (q <= 0.0) return Point(dimension, 0.0);
   if (q >= 1.0) return Point(dimension, 1.0);
@@ -2929,7 +2929,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
     throw InvalidArgumentException(HERE) << "The probability must be in [0, 1] here prob=" << prob;
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  // If dimension_ == 1 the threshold can be computed analyticaly
+  // If dimension_ == 1 the threshold can be computed analytically
   Scalar minusLogPDFThreshold;
   if (dimension_ == 1)
   {

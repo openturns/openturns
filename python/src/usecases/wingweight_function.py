@@ -77,7 +77,7 @@ class WingWeightModel:
 
     Wdg : :class:`~openturns.Uniform`
         Flight design gross weight (lb) distribution
-        Nineth marginal, ot.Uniform(1700, 2500)
+        Ninth marginal, ot.Uniform(1700, 2500)
 
     Wp : :class:`~openturns.Uniform`
         Paint weight (lb/ft^2) distribution
@@ -132,7 +132,7 @@ class WingWeightModel:
         self.Nz = ot.Uniform(2.5, 6.0)
         self.Nz.setDescription(["Nz"])
 
-        # Nineth marginal : Wdg
+        # Ninth marginal : Wdg
         self.Wdg = ot.Uniform(1700.0, 2500.0)
         self.Wdg.setDescription(["Wdg"])
 

@@ -61,11 +61,11 @@ public:
   /** Virtual constructor */
   RandomWalkMetropolisHastings * clone() const override;
 
-  /** Intrumental accessor */
+  /** Instrumental accessor */
   void setProposal(const Distribution & proposal);
   Distribution getProposal() const;
 
-  /** Burnin accessor */
+  /** burn-in accessor */
   void setBurnIn(const UnsignedInteger burnIn);
   UnsignedInteger getBurnIn() const;
 

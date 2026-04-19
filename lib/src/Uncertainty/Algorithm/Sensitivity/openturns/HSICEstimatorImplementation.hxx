@@ -1,7 +1,7 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICEstimatorImplementation implements the HSIC sensivity index
+ * @brief HSICEstimatorImplementation implements the HSIC sensitivity index
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

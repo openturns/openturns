@@ -111,7 +111,7 @@ void MultiStart::run()
     const UnsignedInteger remainingCallsNumber = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
     solver.setMaximumCallsNumber(std::min(remainingCallsNumber, solver_.getMaximumCallsNumber()));
 
-    // ensure we do not exceeed the global time budget
+    // ensure we do not exceed the global time budget
     const Scalar remainingTimeDuration = (getMaximumTimeDuration() > 0.0) ? std::max(getMaximumTimeDuration() - timeDuration, 1e-10) : SpecFunc::MaxScalar;
     solver.setMaximumTimeDuration((solver_.getMaximumTimeDuration() > 0.0) ? std::min(remainingTimeDuration, solver_.getMaximumTimeDuration()) : remainingTimeDuration);
 

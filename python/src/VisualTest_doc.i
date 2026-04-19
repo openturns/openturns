@@ -91,7 +91,7 @@ Parameters
 ----------
 sample1, sample2 : 2-d sequences of float
     Tested samples.
-ditribution : :class:`~openturns.Distribution`
+distribution : :class:`~openturns.Distribution`
     Tested model.
 n_points : int, optional
     The number of points that is used for interpolating the empirical CDF of
@@ -170,7 +170,7 @@ Parameters
 ----------
 sample1, sample2 : 2-d sequences of float
     Tested samples.
-ditribution : :class:`~openturns.Distribution`
+distribution : :class:`~openturns.Distribution`
     Tested model.
 n_points : int, optional
     The number of points that is used for interpolating the empirical CDF of
@@ -250,7 +250,7 @@ Parameters
 ----------
 sample1, sample2 : 2-d sequences of float
     Tested samples.
-ditribution : :class:`~openturns.Distribution`
+distribution : :class:`~openturns.Distribution`
     Tested model.
 
 Returns

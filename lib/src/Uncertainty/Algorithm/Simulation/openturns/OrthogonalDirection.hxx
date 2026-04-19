@@ -60,7 +60,7 @@ public:
   String __repr__() const override;
 
 private:
-  /** Generate a random realization of an orientation matrix in SO(dimension) uniformly distributed relatively to the Haar mesure of SO(dimension) */
+  /** Generate a random realization of an orientation matrix in SO(dimension) uniformly distributed relatively to the Haar measure of SO(dimension) */
   Matrix getUniformOrientationRealization() const;
 
   /** Generate the next permutation of indices in-place in the size_ first elements */

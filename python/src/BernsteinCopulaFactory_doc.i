@@ -5,7 +5,7 @@ Notes
 -----
 This class builds an :class:`~openturns.EmpiricalBernsteinCopula` which is a non parametric fitted core of a multivariate distribution.
 
-Using the class :class:`~openturns.BernsteinCopulaFactory` garantees to get a
+Using the class :class:`~openturns.BernsteinCopulaFactory` guarantees to get a
 :class:`~openturns.EmpiricalBernsteinCopula` which is a copula and not only a core,
 i.e a multivariate distribution whose range is included in :math:`[0,1]^d` (see the documentation of the class to get more details).
 
@@ -14,7 +14,7 @@ The keys of :class:`~openturns.ResourceMap` related to the class are:
 - the keys `BernsteinCopulaFactory-MinM` and `BernsteinCopulaFactory-MaxM` that define the range of :math:`m`
   in the optimization
   problems computing the optimal bin number according to a specified criterion,
-- the key `BernsteinCopulaFactory-BinNumberSelection` that defines the  criterion to compute the optimal bin number
+- the key `BernsteinCopulaFactory-BinNumberSelection` that defines the criterion to compute the optimal bin number
   when it is not specified. The possible choices are 'AMISE', 'LogLikelihood', 'PenalizedCsiszarDivergence';
 - the key `BernsteinCopulaFactory-KFraction` that defines the fraction of the sample used for the validation in the
   method :meth:`ComputeLogLikelihoodBinNumber`,

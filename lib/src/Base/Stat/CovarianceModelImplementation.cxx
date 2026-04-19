@@ -310,7 +310,7 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
     return gradient;
   }
   // Finite difference estimate
-  // Care operator() yields SquareMatrix, which are not necessarly symmetric
+  // Care operator() yields SquareMatrix, which are not necessarily symmetric
   // Thus we should account for all elements of operator()(s,t)
   Matrix gradient(size, outputDimension_ * outputDimension_);
   const SquareMatrix covRef(operator()(s, t));

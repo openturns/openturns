@@ -65,7 +65,7 @@ Parameters
 f : :class:`~openturns.Function`, :math:`f: \Rset \mapsto \Rset^p`
     The integrand function.
 omega : float
-    The pulsation in the weight function. This value superseeds the value given
+    The pulsation in the weight function. This value supersedes the value given
     in the constructor.
 interval : :class:`~openturns.Interval`, :math:`interval \in \Rset` 
     The integration domain. 
