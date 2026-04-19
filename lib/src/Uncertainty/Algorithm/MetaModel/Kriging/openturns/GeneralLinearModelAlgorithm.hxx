@@ -206,7 +206,7 @@ private:
   /** check that sample is centered to precision eps */
   void checkYCentered(const Sample & Y);
 
-  // The covariance model parametric familly
+  // The covariance model parametric family
   CovarianceModel covarianceModel_;
   mutable CovarianceModel reducedCovarianceModel_;
 

@@ -607,7 +607,7 @@ Parameters
 index : int
     Index of the vertex to set.
 vertex : sequence of float
-    Cordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
+    Coordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
     where :math:`dim` is the dimension of the vertices of the mesh.
 
 Examples
@@ -631,7 +631,7 @@ R"RAW(Set the vertices of the mesh.
 Parameters
 ----------
 vertices : 2-d sequence of float
-    Cordinates in :math:`\Rset^{dim}` of the vertices,
+    Coordinates in :math:`\Rset^{dim}` of the vertices,
     where :math:`dim` is the dimension of the vertices of the mesh.
 
 Examples

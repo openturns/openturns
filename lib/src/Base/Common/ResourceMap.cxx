@@ -457,7 +457,7 @@ void ResourceMap::set(const String & key, const String & value)
       // First, try to recover the bool value from the "true" or "false" strings
       if (value == "true") boolValue = true;
       else if (value == "false") boolValue = false;
-      // Second, try to recover the bool from the litteral value
+      // Second, try to recover the bool from the literal value
       else
       {
         std::istringstream iss(value);
@@ -611,7 +611,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             // First, try to recover the bool value from the "true" or "false" strings
             if (value == "true") boolValue = true;
             else if (value == "false") boolValue = false;
-            // Second, try to recover the bool from the litteral value
+            // Second, try to recover the bool from the literal value
             else
             {
               std::istringstream iss(value);

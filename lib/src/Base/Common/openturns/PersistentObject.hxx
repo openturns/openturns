@@ -225,7 +225,7 @@ public:
   /**
    * %Object name query
    *
-   * This methos returns true if a name was given to the object
+   * This methods returns true if a name was given to the object
    * @return True if object has a name
    */
   inline

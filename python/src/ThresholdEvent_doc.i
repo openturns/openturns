@@ -34,7 +34,7 @@ The probability content of the event :math:`\cD_f` is :math:`P_f`:
 
     P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})\di{\vect{x}}
 
-Here, the event considered is explicited directly from the limit state function
+Here, the event considered is made explicit directly from the limit state function
 :math:`g(\vect{X}\,,\,\vect{d})` : this is the classical structural reliability
 formulation. However, if the event is a threshold exceedance, it is useful to
 explicit the variable of interest :math:`Z=\tilde{g}(\vect{X}\,,\,\vect{d})`,

@@ -62,7 +62,7 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Function that computes the design point by re-using the Analytical::run() and creates a FORM::Result */
+  /** Function that computes the design point by reusing the Analytical::run() and creates a FORM::Result */
   void run() override;
 
   /** Method save() stores the object through the StorageManager */

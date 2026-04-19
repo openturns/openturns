@@ -33,7 +33,7 @@ b : float
 
 Notes
 -----
-It is possible to create an Arcsine distribution from the alternative parametrization :math:`(\mu, \sigma)`: see  :class:`~openturns.ArcsineMuSigma`. In that case, all the results are presented in that new parametrization.
+It is possible to create an Arcsine distribution from the alternative parametrization :math:`(\mu, \sigma)`: see :class:`~openturns.ArcsineMuSigma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative parametrization :math:`(\mu, \sigma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(a, b)`
 

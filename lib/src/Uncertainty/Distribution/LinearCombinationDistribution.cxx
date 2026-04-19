@@ -626,7 +626,7 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
       Bool hasPendingUniform = false;
       Uniform pendingUniform;
       // This map will store all the Exponential, ChiSquare and Gamma atoms
-      // For each value of lambda*weight it stores the cummulated k parameter
+      // For each value of lambda*weight it stores the cumulated k parameter
       std::map<Scalar, Scalar> gammaMap;
       for (UnsignedInteger i = 0; i < continuousAtoms.getSize(); ++i)
       {
@@ -758,10 +758,10 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
       LOGDEBUG(OSS() << "After simplification of continuous atoms, distributionCollection_=" << distributionCollection_.__str__());
       // Optimization of discrete atoms
       // This map will store all the Poisson atoms
-      // For each value of weight it stores the cummulated theta parameter
+      // For each value of weight it stores the cumulated theta parameter
       std::map<Scalar, Scalar> poissonMap;
       // This map will store all the Bernoulli and Binomial atoms
-      // For each value of (p, weight) it stores the cummulated n parameter
+      // For each value of (p, weight) it stores the cumulated n parameter
       std::map<Point, UnsignedInteger> binomialMap;
       for (UnsignedInteger i = 0; i < discreteAtoms.getSize(); ++i)
       {
@@ -854,7 +854,7 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
           if (newAggregatedSupportSize > maxSupportSize)
           {
             // If several discrete atoms have been merged store the aggregated
-            // atom at the place occuped by the first discrete atom
+            // atom at the place occupied by the first discrete atom
             if (secondDiscreteIndex > firstDiscreteIndex + 1)
             {
               distributionCollection_[indexAggregated] = FiniteDiscreteDistribution(aggregatedSupport, aggregatedProbabilities);
@@ -2986,7 +2986,7 @@ UnsignedInteger LinearCombinationDistribution::getBlockMax() const
 void LinearCombinationDistribution::setMaxSize(const UnsignedInteger maxSize)
 {
   maxSize_ = maxSize;
-  // The cache must grow progresively, so;
+  // The cache must grow progressively, so;
   // + if maxSize >= storedSize, we keep the current cache as it is
   // + if maxSize < storedSize, we reduce the cache and update the storedSize
   if (maxSize_ < storedSize_)

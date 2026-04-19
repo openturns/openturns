@@ -172,7 +172,7 @@ Different types of design of experiments can be determined:
 
 
 | **Combinatorial generators**
-| In some situations, one want to explore all the possibilities related
+| In some situations, one wants to explore all the possibilities related
   to constrained discrete uncertainties. In this case, we need to obtain
   all the sets of indices fulfilling the constraints. Examples of
   constraints are:

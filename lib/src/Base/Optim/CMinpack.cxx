@@ -311,7 +311,7 @@ void CMinpack::run()
       variables.
     MODE is an integer input variable.  If MODE = 1, the variables
       will be scaled internally.  If MODE = 2, the scaling is speci-
-      fied by the input DIAG.  Other values of MODE are equivalent
+      field by the input DIAG.  Other values of MODE are equivalent
       to MODE = 1.
     FACTOR is a positive input variable used in determining the ini-
       tial step bound.  This bound is set to the product of FACTOR

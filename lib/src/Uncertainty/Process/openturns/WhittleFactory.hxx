@@ -116,7 +116,7 @@ private :
   /** Time grid associated with the given data */
   mutable RegularGrid timeGrid_;
 
-  /** Number of frequecies - Used to pass data to be used in computeLogLikeliHood */
+  /** Number of frequencies - Used to pass data to be used in computeLogLikeliHood */
   mutable UnsignedInteger m_;
 
   /** only used to pass data to be used in computeLogLikeliHood */

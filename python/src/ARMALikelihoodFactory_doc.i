@@ -30,11 +30,11 @@ indQ : :class:`~openturns.Indices`
 
 Notes
 -----
-We suppose here that the white noise is normal with zero mean and  covariance matrix :math:`\mat{\Sigma}_{\varepsilon} = \sigma^2\mat{Q}` where :math:`|\mat{Q}| = 1`. It implies that the ARMA process estimated is normal.
+We suppose here that the white noise is normal with zero mean and covariance matrix :math:`\mat{\Sigma}_{\varepsilon} = \sigma^2\mat{Q}` where :math:`|\mat{Q}| = 1`. It implies that the ARMA process estimated is normal.
 
 Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`d` from an :math:`ARMA(p,q)` process. 
 
-If we note :math:`\vect{W} = (\vect{X}_0, \hdots, \vect{X}_{n-1})`, then :math:`\vect{W}` is normal with zero mean. Its  covariance matrix writes :math:`\mathbb{E}(\vect{W}\Tr{\vect{W}})= \sigma^2 \Sigma_{\vect{W}}` which depends on the coefficients :math:`(\mat{A}_k, \mat{B}_l)` for :math:`k = 1,\ldots,p` and :math:`l = 1,\ldots, q` and on the matrix :math:`\mat{Q}`.
+If we note :math:`\vect{W} = (\vect{X}_0, \hdots, \vect{X}_{n-1})`, then :math:`\vect{W}` is normal with zero mean. Its covariance matrix writes :math:`\mathbb{E}(\vect{W}\Tr{\vect{W}})= \sigma^2 \Sigma_{\vect{W}}` which depends on the coefficients :math:`(\mat{A}_k, \mat{B}_l)` for :math:`k = 1,\ldots,p` and :math:`l = 1,\ldots, q` and on the matrix :math:`\mat{Q}`.
 
 The likelihood of :math:`\vect{W}` writes :
 
@@ -42,7 +42,7 @@ The likelihood of :math:`\vect{W}` writes :
 
     L(\vect{\beta}, \sigma^2 | \vect{W}) = (2 \pi \sigma^2) ^{-\frac{d n}{2}} |\Sigma_{w}|^{-\frac{1}{2}} \exp\left(- (2\sigma^2)^{-1}  \Tr{\vect{W}} \Sigma_{\vect{W}}^{-1}  \vect{W} \right)
 
-where  :math:`\vect{\beta} = (\mat{A}_{k}, \mat{B}_{l}, \mat{Q}),\ k = 1,\ldots,p`, :math:`l = 1,\ldots, q` and where  :math:`|.|` denotes the determinant.
+where :math:`\vect{\beta} = (\mat{A}_{k}, \mat{B}_{l}, \mat{Q}),\ k = 1,\ldots,p`, :math:`l = 1,\ldots, q` and where :math:`|.|` denotes the determinant.
 
 No evaluation of selection criteria such as AIC or BIC is done.
 

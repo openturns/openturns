@@ -61,7 +61,7 @@ public:
   /** Virtual constructor */
   IndependentMetropolisHastings * clone() const override;
 
-  /** Intrumental accessor */
+  /** Instrumental accessor */
   void setProposal(const Distribution & proposal);
   Distribution getProposal() const;
 

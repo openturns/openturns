@@ -196,7 +196,7 @@ Notes
 -----
 This method is used in the context of the FORM approximation of the probability of an event. Let :math:`\cD` denote the standard event domain.
 
-In the standard space, the transformed random vector :math:`\vect{U}` follows a spherical distribution. All the univariate marginals are identical. Let  :math:`E` denote the CDF of any univariate marginal and :math:`e` its PDF.
+In the standard space, the transformed random vector :math:`\vect{U}` follows a spherical distribution. All the univariate marginals are identical. Let :math:`E` denote the CDF of any univariate marginal and :math:`e` its PDF.
 
 Let :math:`\vect{u}^*` denote the design point in the standard space and :math:`\beta_{HL}` the associated Hasofer-Lind reliability index.
 

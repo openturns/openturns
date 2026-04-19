@@ -94,7 +94,7 @@ void TensorizedUniVariateFunctionFactory::setEnumerateFunction(const EnumerateFu
   phi_ = phi;
 }
 
-/* set the function familly collection */
+/* set the function family collection */
 void TensorizedUniVariateFunctionFactory::setFunctionFamilyCollection(const FunctionFamilyCollection & coll)
 {
   coll_ = coll;

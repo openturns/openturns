@@ -711,7 +711,7 @@ The estimator is defined using a nested numerical optimization of the log-likeli
 
     \ell_p (z_m) = \max_{(\mu, \sigma)} \ell (z_m, \sigma, \xi)
 
-where :math:`\ell (z_m, \sigma, \xi)` is the log-likelihood detailed in :eq:`llR1` and :eq:`llR2` with :math:`r=1` and where we substitued
+where :math:`\ell (z_m, \sigma, \xi)` is the log-likelihood detailed in :eq:`llR1` and :eq:`llR2` with :math:`r=1` and where we substituted
 :math:`\mu` for :math:`z_m` using equations :eq:`zm1` or :eq:`zm2`.
 
 The estimator :math:`\hat{z}_m` of :math:`z_m` is defined by:

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TrendEvaluation
  *
  * This class offers an easy evaluation of the Box Cox function defined by :
- *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) oherwise
+ *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) otherwise
  *  Care that x should be positive
  */
 

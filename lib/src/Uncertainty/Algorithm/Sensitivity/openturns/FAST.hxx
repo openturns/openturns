@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief FAST implements the sensivity analysis method based on fourier decomposition
+ * @brief FAST implements the sensitivity analysis method based on fourier decomposition
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

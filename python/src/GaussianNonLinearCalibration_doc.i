@@ -39,7 +39,7 @@ in the :class:`~openturns.ResourceMap`, the parameters are estimated differently
 - If `GaussianNonLinearCalibration-BootstrapSize`
   is set to a nonzero positive integer, then a bootstrap resampling of the observations
   is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing`
-  of the sample of boostrap optimum parameters.
+  of the sample of bootstrap optimum parameters.
 - If `GaussianNonLinearCalibration-BootstrapSize`
   is set to zero, then the posterior distribution is
   evaluated based on a linear approximation of the model at the optimum. 

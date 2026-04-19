@@ -108,7 +108,7 @@ where each weight is equal to the product of the marginal elementary weights:
 
     w_{\vect{k}} = \prod_{j = 1}^{n_e} w_{s_j, k_j} \in \mathbb{R}
 
-and each node is equal to the agregation of the marginal elementary nodes:
+and each node is equal to the aggregation of the marginal elementary nodes:
 
 .. math::
 

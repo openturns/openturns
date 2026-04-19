@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief HSICEstimatorConditionalSensitivity implements the conditional sensivity HSIC indices
+ * @brief HSICEstimatorConditionalSensitivity implements the conditional sensitivity HSIC indices
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

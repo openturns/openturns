@@ -189,7 +189,7 @@ Point ClaytonCopula::computeDDF(const Point & point) const
     }
     return ddf;
   }
-  // General case, we factor out u^(-theta) in order to prevent under/owerflow
+  // General case, we factor out u^(-theta) in order to prevent under/overflow
   // for theta>>1
   // dc(u,v)/du = (u^(-theta)+v^(-theta)-1)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*(u^(-theta)*theta-theta*v^(-theta)-v^(-theta)+theta+1)/(u^2*v*(u^(-theta)+v^(-theta)-1)^3
   // = u*(1+(u/v)^theta-u^theta)^(-1/theta)*u^(-theta)*v^(-theta)*(theta+1)*theta*u^(-theta)*(1-(1+1/theta)*((u/v)^theta-u^theta))/(u^2*v*u^(-3*theta)*(1+(u/v)^theta-u^theta)^3
@@ -300,7 +300,7 @@ Scalar ClaytonCopula::computeCDF(const Point & point) const
     if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return 0.0;
     return u * v * (1.0 + theta_ * logU * logV * (1.0 + 0.5 * theta_ * (logU * logV + logU + logV)));
   }
-  // General case, we factor out u^(-theta) in order to prevent under/owerflow
+  // General case, we factor out u^(-theta) in order to prevent under/overflow
   // for theta>>1
   // C(u,v)=u(1+(u/v)^theta-u^theta)^(-1/theta)
   // For moderate theta, this form is cancellation-free

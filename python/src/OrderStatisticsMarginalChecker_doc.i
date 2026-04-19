@@ -56,7 +56,7 @@ resCompatibility : bool
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::OrderStatisticsMarginalChecker::check
-"Give the reasons of uncompatibility of the margins if any.
+"Give the reasons of incompatibility of the margins if any.
 
 Notes
 -----

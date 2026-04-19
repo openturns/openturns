@@ -219,7 +219,7 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
     const Scalar outerIndex = convergenceSample(i, 2);
     dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = probabilityEstimate;
-    // The bounds are drawn only if there is a useable variance estimate
+    // The bounds are drawn only if there is a usable variance estimate
     if (varianceEstimate >= 0.0)
     {
       const Interval confidenceInterval(ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getProbabilityDistribution().computeBilateralConfidenceInterval(level));

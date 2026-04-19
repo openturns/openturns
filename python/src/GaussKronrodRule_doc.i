@@ -32,7 +32,7 @@ and:
 
 We have :math:`\xi_k>0`,  :math:`\zeta_k>0`, :math:`\zeta_{2j}=\xi_j`, :math:`\omega_k>0` and :math:`\alpha_k>0`.
 
-The rule :math:`G_mK_{2m+1}` combines a :math:`m`-point Gauss rule and a :math:`(2m+1)`-point Kronrod rule (re-using the :math:`m` nodes of the Gauss method). The nodes are defined on :math:`[-1, 1]` and always contain the node 0 as :math:`m`  is odd. 
+The rule :math:`G_mK_{2m+1}` combines a :math:`m`-point Gauss rule and a :math:`(2m+1)`-point Kronrod rule (reusing the :math:`m` nodes of the Gauss method). The nodes are defined on :math:`[-1, 1]` and always contain the node 0 as :math:`m`  is odd. 
 
 Examples
 --------
