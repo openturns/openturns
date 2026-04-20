@@ -339,7 +339,6 @@ ot_add_python_module(func func_module.i
                       SymbolicGradient.i
                       SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i
-                      DatabaseEvaluation.i DatabaseEvaluation_doc.i
                       IndicatorEvaluation.i
                       DistanceToDomainEvaluation.i
                       PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i
@@ -348,8 +347,6 @@ ot_add_python_module(func func_module.i
                       ParametricEvaluation.i
                       ParametricGradient.i
                       ParametricHessian.i
-                      P1LagrangeEvaluation.i P1LagrangeEvaluation_doc.i
-                      P1LagrangeInterpolation.i P1LagrangeInterpolation_doc.i
                       BasisImplementation.i BasisImplementation_doc.i
                       Basis.i Basis_doc.i
                       BasisSequenceImplementation.i
@@ -486,6 +483,9 @@ ot_add_python_module(algo algo_module.i
                       SimplicialCubature.i SimplicialCubature_doc.i
                       CubaIntegration.i CubaIntegration_doc.i
                       MeshDomain.i MeshDomain_doc.i
+                      P1LagrangeEvaluation.i P1LagrangeEvaluation_doc.i
+                      P1LagrangeInterpolation.i P1LagrangeInterpolation_doc.i
+                      DatabaseEvaluation.i DatabaseEvaluation_doc.i
                       BaseAlgoTemplateDefs.i
                    )
 
