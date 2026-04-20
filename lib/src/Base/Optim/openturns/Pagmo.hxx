@@ -22,7 +22,6 @@
 #define OPENTURNS_PAGMO_HXX
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
-#include "openturns/Experiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
