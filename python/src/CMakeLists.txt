@@ -232,7 +232,6 @@ ot_add_python_module(geom geom_module.i
                       RegularGrid.i RegularGrid_doc.i
                       IntervalMesher.i IntervalMesher_doc.i
                       BoundaryMesher.i BoundaryMesher_doc.i
-                      MeshDomain.i MeshDomain_doc.i
                       DomainComplement.i DomainComplement_doc.i
                       DomainIntersection.i DomainIntersection_doc.i
                       DomainUnion.i DomainUnion_doc.i
@@ -415,7 +414,7 @@ ot_add_python_module(optim optim_module.i
                       TNC.i TNC_doc.i
                       SQP.i SQP_doc.i
                       MultiStart.i MultiStart_doc.i
-		      Pagmo.i Pagmo_doc.i
+                      Pagmo.i Pagmo_doc.i
                       NLopt.i NLopt_doc.i
                       LevelSet.i LevelSet_doc.i
                       LevelSetMesher.i LevelSetMesher_doc.i
@@ -486,6 +485,7 @@ ot_add_python_module(algo algo_module.i
                       KarhunenLoeveValidation.i KarhunenLoeveValidation_doc.i
                       SimplicialCubature.i SimplicialCubature_doc.i
                       CubaIntegration.i CubaIntegration_doc.i
+                      MeshDomain.i MeshDomain_doc.i
                       BaseAlgoTemplateDefs.i
                    )
 

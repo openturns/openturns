@@ -25,12 +25,6 @@
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
-/* Base/Algo */
-%include NearestNeighbourAlgorithmImplementation.i
-%include NearestNeighbourAlgorithm.i
-%include EnclosingSimplexAlgorithmImplementation.i
-%include EnclosingSimplexAlgorithm.i
-
 /* Base/Graph */
 %import graph_module.i
 %import BaseGraphTemplateDefs.i
@@ -42,7 +36,6 @@
 %include RegularGrid.i
 %include IntervalMesher.i
 %include BoundaryMesher.i
-%include MeshDomain.i
 %include DomainComplement.i
 %include DomainIntersection.i
 %include DomainUnion.i
