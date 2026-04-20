@@ -89,6 +89,7 @@
 %include KarhunenLoeveValidation.i
 %include SimplicialCubature.i
 %include CubaIntegration.i
+%include MeshDomain.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i
