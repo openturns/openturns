@@ -521,15 +521,20 @@ ot_add_python_module(model_copula model_copula_module.i
                       EllipticalDistribution.i EllipticalDistribution_doc.i
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i
                       SklarCopula.i SklarCopula_doc.i
-                      IndependentCopula.i IndependentCopula_doc.i
-                      IndependentCopulaFactory.i IndependentCopulaFactory_doc.i
-                      MinCopula.i MinCopula_doc.i
-                      NormalCopula.i NormalCopula_doc.i
-                      NormalCopulaFactory.i NormalCopulaFactory_doc.i
                       OrdinalSumCopula.i OrdinalSumCopula_doc.i
+                      BlockIndependentDistribution.i BlockIndependentDistribution_doc.i
+                      JointDistribution.i JointDistribution_doc.i
+                      BlockIndependentCopula.i BlockIndependentCopula_doc.i
+                      UncertaintyModelCopulaCollection.i
+                      UncertaintyModelCopulaTemplateDefs.i
+                   )
+ot_add_python_module(model_copula2 model_copula2_module.i
+                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
+                      PlackettCopula.i PlackettCopula_doc.i
+                      PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
+                      MarshallOlkinCopula.i MarshallOlkinCopula_doc.i
                       FarlieGumbelMorgensternCopula.i FarlieGumbelMorgensternCopula_doc.i
                       FarlieGumbelMorgensternCopulaFactory.i FarlieGumbelMorgensternCopulaFactory_doc.i
-                      MarshallOlkinCopula.i MarshallOlkinCopula_doc.i
                       AliMikhailHaqCopula.i AliMikhailHaqCopula_doc.i
                       AliMikhailHaqCopulaFactory.i AliMikhailHaqCopulaFactory_doc.i
                       FrankCopula.i FrankCopula_doc.i
@@ -538,16 +543,12 @@ ot_add_python_module(model_copula model_copula_module.i
                       ClaytonCopulaFactory.i ClaytonCopulaFactory_doc.i
                       GumbelCopula.i GumbelCopula_doc.i
                       GumbelCopulaFactory.i GumbelCopulaFactory_doc.i
-                      BlockIndependentDistribution.i BlockIndependentDistribution_doc.i
-                      JointDistribution.i JointDistribution_doc.i
-                      BlockIndependentCopula.i BlockIndependentCopula_doc.i
-                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
-                      PlackettCopula.i PlackettCopula_doc.i
-                      PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
-                      UncertaintyModelCopulaCollection.i
-                      UncertaintyModelCopulaTemplateDefs.i
-                   )
-
+                      IndependentCopula.i IndependentCopula_doc.i
+                      IndependentCopulaFactory.i IndependentCopulaFactory_doc.i
+                      MinCopula.i MinCopula_doc.i
+                      NormalCopula.i NormalCopula_doc.i
+                      NormalCopulaFactory.i NormalCopulaFactory_doc.i
+)
 ot_add_python_module(randomvector randomvector_module.i
                       RandomVectorImplementation.i RandomVectorImplementation_doc.i
                       ConstantRandomVector.i ConstantRandomVector_doc.i

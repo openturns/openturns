@@ -63,6 +63,7 @@ from .base import *
 from .iterative_statistics import *
 
 from .model_copula import *
+from .model_copula2 import *
 from .randomvector import *
 from . import DistFunc
 from .dist import *
