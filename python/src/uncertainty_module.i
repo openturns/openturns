@@ -41,6 +41,7 @@
 
 /* Uncertainty/Algorithm */
 %include TaylorExpansionMoments.i
+%include FejerAlgorithm.i
 
  /* Uncertainty/Algorithm/Transformation */
 %import transformation_module.i
