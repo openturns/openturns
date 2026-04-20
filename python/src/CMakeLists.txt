@@ -270,30 +270,10 @@ ot_add_python_module(func func_module.i
                       Gradient.i Gradient_doc.i
                       HessianImplementation.i HessianImplementation_doc.i
                       Hessian.i Hessian_doc.i
-                      NoEvaluation.i
-                      NoGradient.i
-                      NoHessian.i
-                      NullHessian.i
-                      TranslationEvaluation.i TranslationEvaluation_doc.i
-                      LinearEvaluation.i LinearEvaluation_doc.i
-                      LinearGradient.i LinearGradient_doc.i
-                      QuadraticEvaluation.i QuadraticEvaluation_doc.i
-                      ConstantGradient.i ConstantGradient_doc.i
-                      ConstantHessian.i ConstantHessian_doc.i
-                      ComposedEvaluation.i
-                      ComposedGradient.i
-                      ComposedHessian.i
                       DualLinearCombinationEvaluation.i DualLinearCombinationEvaluation_doc.i
-                      DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i
-                      DualLinearCombinationHessian.i DualLinearCombinationHessian_doc.i
                       LinearCombinationFunction.i LinearCombinationFunction_doc.i
                       LinearCombinationEvaluation.i
-                      LinearCombinationGradient.i
-                      LinearCombinationHessian.i
                       ParametricFunction.i ParametricFunction_doc.i
-                      ProductEvaluation.i
-                      ProductGradient.i
-                      ProductHessian.i
                       FunctionImplementation.i FunctionImplementation_doc.i
                       ProductFunction.i ProductFunction_doc.i
                       Function.i Function_doc.i
@@ -325,8 +305,6 @@ ot_add_python_module(func func_module.i
                       FieldToFieldConnection.i FieldToFieldConnection_doc.i
                       KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i
                       KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i
-                      IndicatorFunction.i IndicatorFunction_doc.i
-                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i
                       ValueFunction.i ValueFunction_doc.i
                       VertexValueFunction.i VertexValueFunction_doc.i
                       TranslationFunction.i TranslationFunction_doc.i
@@ -336,17 +314,11 @@ ot_add_python_module(func func_module.i
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i
                       AggregatedEvaluation.i AggregatedEvaluation_doc.i
                       SymbolicEvaluation.i SymbolicEvaluation_doc.i
-                      SymbolicGradient.i
-                      SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i
                       IndicatorEvaluation.i
                       DistanceToDomainEvaluation.i
-                      PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i
-                      PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i
                       ParametricEvaluation.i
-                      ParametricGradient.i
-                      ParametricHessian.i
                       BasisImplementation.i BasisImplementation_doc.i
                       Basis.i Basis_doc.i
                       BasisSequenceImplementation.i
@@ -354,29 +326,58 @@ ot_add_python_module(func func_module.i
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i
                       LARS.i LARS_doc.i
-                      BoxCoxEvaluation.i
-                      BoxCoxTransform.i BoxCoxTransform_doc.i
-                      InverseBoxCoxEvaluation.i
-                      InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i
-                      TrendEvaluation.i
-                      TrendTransform.i TrendTransform_doc.i
-                      InverseTrendEvaluation.i
-                      InverseTrendTransform.i InverseTrendTransform_doc.i
-                      BasisFactory.i BasisFactory_doc.i
-                      ConstantBasisFactory.i ConstantBasisFactory_doc.i
-                      LinearBasisFactory.i LinearBasisFactory_doc.i
-                      QuadraticBasisFactory.i QuadraticBasisFactory_doc.i
                       FieldImplementation.i FieldImplementation_doc.i
                       Field.i Field_doc.i
                       TimeSeries.i TimeSeries_doc.i
                       ProcessSample.i ProcessSample_doc.i
                       ProcessSampleImplementation.i ProcessSampleImplementation_doc.i
-                      MarginalEvaluation.i
-                      MarginalGradient.i
-                      MarginalHessian.i
+                      BoxCoxTransform.i BoxCoxTransform_doc.i
+                      InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i
+                      TrendTransform.i TrendTransform_doc.i
+                      InverseTrendTransform.i InverseTrendTransform_doc.i
                       BaseFuncTemplateDefs.i
                    )
-
+ot_add_python_module(func2 func2_module.i
+                      ComposedHessian.i
+                      ConstantHessian.i ConstantHessian_doc.i
+                      DualLinearCombinationHessian.i DualLinearCombinationHessian_doc.i
+                      LinearCombinationHessian.i
+                      LinearGradient.i LinearGradient_doc.i
+                      MarginalHessian.i
+                      NoHessian.i
+                      NullHessian.i
+                      ParametricHessian.i
+                      ProductHessian.i
+                      SymbolicHessian.i
+                      ComposedGradient.i
+                      ConstantGradient.i ConstantGradient_doc.i
+                      DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i
+                      LinearCombinationGradient.i
+                      MarginalGradient.i
+                      ParametricGradient.i
+                      ProductGradient.i
+                      SymbolicGradient.i
+                      NoGradient.i
+                      NoEvaluation.i
+                      TranslationEvaluation.i TranslationEvaluation_doc.i
+                      LinearEvaluation.i LinearEvaluation_doc.i
+                      QuadraticEvaluation.i QuadraticEvaluation_doc.i
+                      ComposedEvaluation.i
+                      ProductEvaluation.i
+                      PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i
+                      PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i
+                      IndicatorFunction.i IndicatorFunction_doc.i
+                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i
+                      MarginalEvaluation.i
+                      BasisFactory.i BasisFactory_doc.i
+                      ConstantBasisFactory.i ConstantBasisFactory_doc.i
+                      LinearBasisFactory.i LinearBasisFactory_doc.i
+                      QuadraticBasisFactory.i QuadraticBasisFactory_doc.i
+                      TrendEvaluation.i
+                      InverseTrendEvaluation.i
+                      BoxCoxEvaluation.i
+                      InverseBoxCoxEvaluation.i
+)
 ot_add_python_module(SpecFunc specfunc_module.i
                       SpecFunc.i SpecFunc_doc.i
                     )

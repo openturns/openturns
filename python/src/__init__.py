@@ -51,6 +51,7 @@ from .typ import *
 from .graph import *
 from .geom import *
 from .func import *
+from .func2 import *
 from . import SpecFunc
 from .statistics import *
 from .diff import *
