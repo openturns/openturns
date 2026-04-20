@@ -90,6 +90,9 @@
 %include SimplicialCubature.i
 %include CubaIntegration.i
 %include MeshDomain.i
+%include P1LagrangeEvaluation.i
+%include P1LagrangeInterpolation.i
+%include DatabaseEvaluation.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

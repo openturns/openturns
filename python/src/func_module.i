@@ -28,10 +28,6 @@
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
-/* Base/Algo */
-%include NearestNeighbourAlgorithmImplementation.i
-%include NearestNeighbourAlgorithm.i
-
 /* Base/Geom */
 %import geom_module.i
 %import BaseGeomTemplateDefs.i
@@ -119,15 +115,12 @@
 %include SymbolicGradient.i
 %include SymbolicHessian.i
 %include DatabaseFunction.i
-%include DatabaseEvaluation.i
 %include IndicatorEvaluation.i
 %include DistanceToDomainEvaluation.i
 %include ProductPolynomialEvaluation.i
 %include ParametricEvaluation.i
 %include ParametricGradient.i
 %include ParametricHessian.i
-%include P1LagrangeEvaluation.i
-%include P1LagrangeInterpolation.i
 %include BasisImplementation.i
 %include Basis.i
 %include BasisSequenceImplementation.i
