@@ -1,7 +1,6 @@
 // SWIG file base_module.i
 
 %module(package="openturns", docstring="Deterministic meta-package.") base
-//#pragma SWIG nowarn=314
 
 %pythoncode %{
 from openturns.typ import PlatformInfo
@@ -53,6 +52,7 @@ def TESTPREAMBLE():
 
 /* Base/Func */
 %import func_module.i
+%import func2_module.i
 %import BaseFuncTemplateDefs.i
 
 /* Base/Diff */
