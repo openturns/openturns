@@ -1,7 +1,7 @@
 // SWIG file randomvector_module.i
 
 %module(package="openturns", docstring="Random vectors.") randomvector
-#pragma SWIG nowarn=302
+
 
 %{
 #include "openturns/OTconfig.hxx"

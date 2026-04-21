@@ -1,7 +1,7 @@
 // SWIG file weightedexperiment_module.i
 
 %module(package="openturns", docstring="Weighted designs of experiments.") weightedexperiment
-#pragma SWIG nowarn=302
+
 
 %{
 #include "openturns/OTconfig.hxx"

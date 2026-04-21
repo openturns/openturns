@@ -36,16 +36,6 @@ namespace OT {
 %include openturns/ARMACoefficients.hxx
 
 
-%extend OT::Collection<OT::SquareMatrix>
-{
-
-OT::Collection<OT::SquareMatrix> (PyObject * pyObj)
-{
-  return OT::buildCollectionFromPySequence<OT::SquareMatrix>( pyObj );
-}
-
-}
-
 namespace OT {  
 %extend ARMACoefficients {
 

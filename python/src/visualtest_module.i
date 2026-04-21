@@ -1,7 +1,7 @@
 // SWIG file visualtest_module.i
 
 %module(package="openturns", docstring="Visual tests.") VisualTest
-#pragma SWIG nowarn=302
+
 
 %include typemaps.i
 %include OTtypes.i

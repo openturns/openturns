@@ -1,7 +1,7 @@
 // SWIG file func2_module.i
 
 %module(package="openturns", docstring="Function primitives.") func2
-#pragma SWIG nowarn=302
+
 
 %{
 #include "openturns/OTconfig.hxx"
