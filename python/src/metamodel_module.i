@@ -1,7 +1,7 @@
 // SWIG file metamodel_module.i
 
 %module(package="openturns", docstring="Meta-modelling.") metamodel
-#pragma SWIG nowarn=302
+
 
 %{
 #include "openturns/OTconfig.hxx"
