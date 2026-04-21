@@ -365,9 +365,6 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Dirichlet.i Dirichlet_doc.i
                       DirichletFactory.i DirichletFactory_doc.i
                       DiscreteCompoundDistribution.i DiscreteCompoundDistribution_doc.i
-                      Epanechnikov.i Epanechnikov_doc.i
-                      Exponential.i Exponential_doc.i
-                      ExponentialFactory.i ExponentialFactory_doc.i
                       ExtremeValueCopula.i ExtremeValueCopula_doc.i
                       JoeCopula.i JoeCopula_doc.i
                       FisherSnedecor.i FisherSnedecor_doc.i
@@ -448,6 +445,9 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                    )
 
 ot_add_python_module(dist_bundle3 dist_bundle3_module.i
+                      Epanechnikov.i Epanechnikov_doc.i
+                      Exponential.i Exponential_doc.i
+                      ExponentialFactory.i ExponentialFactory_doc.i
                       OrderStatisticsMarginalChecker.i OrderStatisticsMarginalChecker_doc.i
                       ParametrizedDistribution.i ParametrizedDistribution_doc.i
                       PointConditionalDistribution.i PointConditionalDistribution_doc.i

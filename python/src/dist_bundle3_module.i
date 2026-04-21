@@ -21,6 +21,9 @@
 %import model_copula_module.i
 
 /* Uncertainty/Distribution (except copulas) */
+%include Epanechnikov.i
+%include Exponential.i
+%include ExponentialFactory.i
 %include OrderStatisticsMarginalChecker.i
 %include ParametrizedDistribution.i
 %include PointConditionalDistribution.i
