@@ -46,9 +46,6 @@
 %include Dirichlet.i
 %include DirichletFactory.i
 %include DiscreteCompoundDistribution.i
-%include Epanechnikov.i
-%include Exponential.i
-%include ExponentialFactory.i
 %include ExtremeValueCopula.i
 %include JoeCopula.i
 %include FisherSnedecor.i
