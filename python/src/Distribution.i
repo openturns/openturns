@@ -32,19 +32,9 @@ Distribution(PyObject * pyObj)
   return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
 }
 
-Distribution __add__ (Scalar s)
-{
- return *self + s;
-}
-
 Distribution __radd__ (Scalar s)
 {
  return *self + s;
-}
-
-Distribution __sub__(Scalar s)
-{
- return *self - s;
 }
 
 Distribution __rsub__(Scalar s)
@@ -55,11 +45,6 @@ Distribution __rsub__(Scalar s)
 Distribution __neg__()
 {
   return *self * (-1.0);
-}
-
-Distribution __mul__(Scalar s)
-{
- return (*self) * s;
 }
 
 Distribution __rmul__(Scalar s)

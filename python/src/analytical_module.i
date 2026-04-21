@@ -1,7 +1,7 @@
 // SWIG file analytical_module.i
 
 %module(package="openturns", docstring="Analytical uncertainty propagation algorithms.") analytical
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTconfig.hxx"

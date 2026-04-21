@@ -1,7 +1,7 @@
 // SWIG file fittingtest_module.i
 
 %module(package="openturns", docstring="FittingTest tests.") FittingTest
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTStatTests.hxx"
