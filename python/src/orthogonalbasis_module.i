@@ -1,7 +1,7 @@
 // SWIG file orthogonalbasis_module.i
 
 %module(package="openturns", docstring="Polynomial primitives.") orthogonalbasis
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTconfig.hxx"

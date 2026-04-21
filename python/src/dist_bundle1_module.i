@@ -1,7 +1,7 @@
 // SWIG file dist_module.i
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle1
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTconfig.hxx"

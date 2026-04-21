@@ -1,7 +1,7 @@
 // SWIG file linearmodeltest_module.i
 
 %module(package="openturns", docstring="Linear model tests.") LinearModelTest
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTStatTests.hxx"

@@ -1,7 +1,7 @@
 // SWIG file stattests_module.i
 
 %module(package="openturns", docstring="Statistical tests.") stattests
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTconfig.hxx"

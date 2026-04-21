@@ -1,7 +1,7 @@
 // SWIG file transformation_module.i
 
 %module(package="openturns", docstring="Transformations.") transformation
-#pragma SWIG nowarn=302,509
+#pragma SWIG nowarn=302
 
 %{
 #include "openturns/OTconfig.hxx"
