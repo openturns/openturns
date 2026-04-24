@@ -86,6 +86,9 @@ Docstrings & inheritance
 
 Good news! Docstrings are inherited so that we only need to document the
 methods of the parent objects (until we want to make them more specific).
+Also because ot this inherited documentation can land in a third-party sphinx
+documentation so `:ref:` must be replaced by `:any:` in docstrings
+to avoid undefined links (fine in rst documents).
 
 Bridge pattern
 ~~~~~~~~~~~~~~
