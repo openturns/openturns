@@ -20,6 +20,7 @@ Create a covariance model with and without a nugget effect
 # %%
 import openturns as ot
 import openturns.viewer as otv
+
 # sphinx_gallery_thumbnail_number = 1
 
 # %%
@@ -42,10 +43,10 @@ cov_model_with_nugget.setNuggetFactor(epsilon_nugget)
 # We draw the covariance function with and without the nugget effect.
 g = cov_model.draw()
 g.setBoundingBox(ot.Interval([-5, 0.0], [5.0, 2.0]))
-g.setTitle('Without nugget effect')
+g.setTitle("Without nugget effect")
 g_nugget = cov_model_with_nugget.draw()
 g_nugget.setBoundingBox(ot.Interval([-5, 0.0], [5.0, 2.0]))
-g_nugget.setTitle('With nugget effect')
+g_nugget.setTitle("With nugget effect")
 
 grid = ot.GridLayout(1, 2)
 grid.setGraph(0, 0, g)

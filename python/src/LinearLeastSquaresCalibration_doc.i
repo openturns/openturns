@@ -50,7 +50,7 @@ where the Jacobian matrix is evaluated at the `startingPoint`.
 The diagonal of the covariance matrix of the output error
 is constant and is estimated with the unbiased variance estimator.
 
-Please read :ref:`code_calibration` for more details.
+Please read :any:`code_calibration` for more details.
 
 See also
 --------

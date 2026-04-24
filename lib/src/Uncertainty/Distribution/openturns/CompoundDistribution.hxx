@@ -49,11 +49,11 @@ public:
 
   /** Parameters constructor */
   CompoundDistribution(const Distribution & conditionedDistribution,
-                            const Distribution & conditioningDistribution);
+                       const Distribution & conditioningDistribution);
 
   CompoundDistribution(const Distribution & conditionedDistribution,
-                            const Distribution & conditioningDistribution,
-                            const Function & linkFunction);
+                       const Distribution & conditioningDistribution,
+                       const Function & linkFunction);
 
   /** Comparison operator */
   using Mixture::operator ==;

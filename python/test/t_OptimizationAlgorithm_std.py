@@ -159,7 +159,7 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     assert status == ot.OptimizationResult.FAILURE, "should return FAILURE"
 
 # stop immediately
-rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+rosenbrock = ot.SymbolicFunction(["x1", "x2"], ["(1-x1)^2+100*(x2-x1^2)^2"])
 problem = ot.OptimizationProblem(rosenbrock)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     algo = ot.OptimizationAlgorithm.GetByName(name)

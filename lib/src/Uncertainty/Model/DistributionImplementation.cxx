@@ -624,8 +624,8 @@ struct DistributionSequentialConditionalQuantilePolicy
   Sample & output_;
 
   DistributionSequentialConditionalQuantilePolicy(const DistributionImplementation & distribution,
-                                                  const Sample & input,
-                                                  Sample & output)
+      const Sample & input,
+      Sample & output)
     : distribution_(distribution)
     , input_(input)
     , output_(output)
@@ -2245,10 +2245,10 @@ Point DistributionImplementation::computeSequentialConditionalPDF(const Point & 
   if (isCopula() && (dimension_ == 2))
   {
     if ((x[0] >= 0.0) && (x[1] < 1.0))
-      {
-	result[0] = 1.0;
-	result[1] = computePDF(x);
-      }
+    {
+      result[0] = 1.0;
+      result[1] = computePDF(x);
+    }
     return result;
   } // (isCopula() && (dimension_ == 2)
   Indices conditioning(1, 0);

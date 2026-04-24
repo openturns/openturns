@@ -18,7 +18,7 @@ Notes
 -----
 A `FunctionalChaosValidation` object is used for the validation of a functional chaos expansion.
 It is based on the fast (analytical) leave-one-out and fast K-Fold
-cross-validation methods presented in :ref:`cross_validation`.
+cross-validation methods presented in :any:`cross_validation`.
 
 Analytical cross-validation can only be performed accurately if some
 conditions are met.

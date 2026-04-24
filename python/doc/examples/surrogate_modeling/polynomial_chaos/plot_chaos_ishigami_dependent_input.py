@@ -42,7 +42,9 @@ input_names = im.distribution.getDescription()
 # :class:`~openturns.BlockIndependentCopula` copula.
 # We keep the initial marginal distributions.
 copula = ot.BlockIndependentCopula([ot.ClaytonCopula(1.5), ot.IndependentCopula(1)])
-input_dist = ot.JointDistribution([im.distribution.getMarginal(i) for i in range(im.dim)], copula)
+input_dist = ot.JointDistribution(
+    [im.distribution.getMarginal(i) for i in range(im.dim)], copula
+)
 
 # %%
 # We generate an input sample from the input distribution and

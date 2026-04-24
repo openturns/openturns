@@ -1,13 +1,13 @@
 = New Features =
 
-== 1.27 release (in progress) == #release-1.27
+== 1.27 release (2026-04-28) == #release-1.27
 
 === Library ===
 
 ==== Major changes ====
 
 ==== New classes ====
-* GaussianProcessRegressionCrossValidation (openturns.experimental)
+ * GaussianProcessRegressionCrossValidation (openturns.experimental)
 
 ==== API changes ====
  * PointConditionalDistribution left the experimental module
@@ -28,12 +28,42 @@
  * Deprecated RandomMixture in favor of LinearCombinationDistribution
 
 === Documentation ===
+ * Reworked GPR & chaos expansion documentation
 
 === Python module ===
+ * Improved exception handling
 
 === Miscellaneous ===
  * New GaussianProcessFitterResult accessors: getCholeskyFactor and getStandardizedOutput
 
+=== Bug fixes (total 55) ===
+ * #2254 (The search engine wrongly computes the number of found pages)
+ * #2480 (sphinx 6+ compatibility)
+ * #2519 (UserDefined => DiscreteNonParametric)
+ * #2617 (KDTree queryK returns incorrect results)
+ * #2709 (ExperimentIntegration should inherit from IntegrationAlgorithmImplementation)
+ * #2716 (SymbolicEvaluation::setIn/OutputDescription does not update in/outputVariablesNames_)
+ * #2992 (SpecFunc::Clip01 does not manage for a tolerance)
+ * #3034 (The notations in LowDiscrepancyExperiment are inconsistent)
+ * #3046 (The Haar basis has a graphic difficult to read)
+ * #3053 (complete GPR transition)
+ * #3064 (Sample.ImportFromCSVFile cannot read a CSV file containing NaN numbers only)
+ * #3067 (Improve CSV reader speed)
+ * #3068 (QuadraticLeastSquares.run() is not stable)
+ * #3070 (The API help page of Coles datasets does not mention the DowJones dataset)
+ * #3072 (RandomMixture has a wrong name > LinearCombinationDistribution)
+ * #3074 (PythonFunction does not check the shape of the output of the gradient function)
+ * #3078 (GaussianProcess should check if the covariance Model is a Dirac)
+ * #3095 (Deprecate ProbabilitySimulationResult.getConfidenceLength())
+ * #3108 (Improve error message transparency in PythonFunction callbacks)
+ * #3114 (PythonDistribution does not behave correctly)
+ * #3115 (The CalibrationResult::drawParameterDistributions method unexpectedly switches to log-PDF)
+ * #3120 (Fitting a Pareto distribution is very long)
+ * #3128 (Missing <thead> and <tbody> tags in HTML representation of Sample)
+ * #3135 (SIGINT signal handler is never restored after wrapped function calls, crashing task queues)
+ * #3160 (Doc of the Anisotropic hyperbolic enumeration function)
+ * #3162 (Regression in TruncatedDistribution moments on multivariate KernelSmoothing between 1.23 and 1.24 or later)
+ * #3170 (Unexpected disabling of Ceres due to GPL components)
 
 
 == 1.26 release (2025-11-25) == #release-1.26

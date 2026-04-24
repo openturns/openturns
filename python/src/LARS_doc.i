@@ -1,7 +1,7 @@
 %feature("docstring") OT::LARS
 R"RAW(Least Angle Regression.
 
-Refer to :ref:`sparse_least_squares`.
+Refer to :any:`sparse_least_squares`.
 
 See also
 --------

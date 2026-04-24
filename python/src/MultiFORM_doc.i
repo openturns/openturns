@@ -14,7 +14,7 @@ The bulge function can be chosen as:
 
     B_i(u) = s_i (r_i^2 - \|u - u_i^{\ast}\|^2)^2
 
-Once these points are found a :ref:`form_approximation` is computed with each
+Once these points are found a :any:`form_approximation` is computed with each
 point and the probability of interest is computed as a series system
 probability: the union of the approximated events:
 

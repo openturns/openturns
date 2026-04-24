@@ -1,7 +1,7 @@
 %feature("docstring") OT::VisualTest::DrawHenryLine
 R"RAW(Draw an Henry plot.
 
-Refer to :ref:`graphical_fitting_test`.
+Refer to :any:`graphical_fitting_test`.
 
 Parameters
 ----------
@@ -80,7 +80,7 @@ Draw an Henry plot against an inferred Normal distribution:
 %feature("docstring") OT::VisualTest::DrawQQplot
 R"RAW(Draw a QQ-plot.
 
-Refer to :ref:`qqplot_graph`.
+Refer to :any:`qqplot_graph`.
 
 Available usages:
     VisualTest.DrawQQplot(*sample1, sample2, n_points*)
@@ -239,7 +239,7 @@ Draw a two-sample PP-plot:
 %feature("docstring") OT::VisualTest::DrawCDFplot
 R"RAW(Draw a CDF-plot.
 
-Refer to :ref:`qqplot_graph`.
+Refer to :any:`qqplot_graph`.
 
 Available usages:
     VisualTest.DrawCDFplot(*sample1, sample2*)
@@ -386,7 +386,7 @@ Draw a parallel plot:
 %feature("docstring") OT::VisualTest::DrawKendallPlot
 "Draw kendall plot.
 
-Refer to :ref:`graphical_fitting_test`.
+Refer to :any:`graphical_fitting_test`.
 
 Available usages:
     VisualTest.DrawKendallPlot(*sample, distribution*)
@@ -630,7 +630,7 @@ Examples
 %feature("docstring") OT::VisualTest::DrawUpperTailDependenceFunction
 R"RAW(Draw the upper tail dependence function.
 
-The function is defined in :ref:`tail_dependence`. It is estimated from data.
+The function is defined in :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
@@ -654,7 +654,7 @@ Examples
 %feature("docstring") OT::VisualTest::DrawUpperExtremalDependenceFunction
 R"RAW(Draw the upper extremal dependence function.
 
-The function is defined in :ref:`tail_dependence`. It is estimated from data.
+The function is defined in :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
@@ -678,7 +678,7 @@ Examples
 %feature("docstring") OT::VisualTest::DrawLowerTailDependenceFunction
 R"RAW(Draw the lower tail dependence function.
 
-The function is defined in :ref:`tail_dependence`. It is estimated from data.
+The function is defined in :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
@@ -702,7 +702,7 @@ Examples
 %feature("docstring") OT::VisualTest::DrawLowerExtremalDependenceFunction
 R"RAW(Draw the lower extremal dependence function.
 
-The function is defined in  :ref:`tail_dependence`. It is estimated from data.
+The function is defined in  :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------

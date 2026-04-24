@@ -82,7 +82,9 @@ print(
 print(
     f"-- undocumented methods: {count_methods_undoc} ({100.0 * count_methods_undoc / count_methods:.2f}%) --"
 )
-print(f"-- undocumented functions: {count_functions_undoc} ({100.0 * count_functions_undoc / count_functions:.2f}%) --")
+print(
+    f"-- undocumented functions: {count_functions_undoc} ({100.0 * count_functions_undoc / count_functions:.2f}%) --"
+)
 if count_class_undoc + count_methods_undoc + count_functions_undoc > 110:
     raise ValueError(
         f"too many undocumented class/methods ({count_class_undoc + count_methods_undoc + count_functions_undoc})"

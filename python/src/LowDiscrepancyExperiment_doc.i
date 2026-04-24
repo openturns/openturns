@@ -31,7 +31,7 @@ The :meth:`generate` method generates a low discrepancy sequence :math:`(u_1, \c
 over :math:`[0,1]^\sampleSize` using the Sobol sequence if no particular other sequence has been fixed
 through the parameter *sequence*.
 
-Then we use an :ref:`Isoprobabilistic transformation <isoprobabilistic_transformation>` that
+Then we use an :any:`Isoprobabilistic transformation <isoprobabilistic_transformation>` that
 maps the independent copula of dimension :math:`\sampleSize`
 into the distribution given through the parameter *distribution*: the sample :math:`(u_1, \cdots, u_\sampleSize)`
 is transformed into the sample :math:`(x_1, \cdots, x_\sampleSize)` that is finally returned.

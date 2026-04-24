@@ -234,8 +234,8 @@ public:
 
   /** Convert a collection of scalar into a collection of colors, aka a Description */
   static Description ConvertValuesToColors(const Point & values,
-					   const Description & palette,
-					   const Scalar alpha);
+      const Description & palette,
+      const Scalar alpha);
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);

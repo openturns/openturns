@@ -213,7 +213,9 @@ ResultMC = myMC.getResult()
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
-length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 #
 # LHS
@@ -221,7 +223,9 @@ ResultLHS = myLHS.getResult()
 PFLHS = ResultLHS.getProbabilityEstimate()
 CVLHS = ResultLHS.getCoefficientOfVariation()
 Variance_PF_LHS = ResultLHS.getVarianceEstimate()
-length90LHS = ResultLHS.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90LHS = ResultLHS.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 #
 # Directional Sampling
@@ -229,19 +233,25 @@ ResultDS1 = myDS1.getResult()
 PFDS1 = ResultDS1.getProbabilityEstimate()
 CVDS1 = ResultDS1.getCoefficientOfVariation()
 Variance_PF_DS1 = ResultDS1.getVarianceEstimate()
-length90DS1 = ResultDS1.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90DS1 = ResultDS1.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 ResultDS2 = myDS2.getResult()
 PFDS2 = ResultDS2.getProbabilityEstimate()
 CVDS2 = ResultDS2.getCoefficientOfVariation()
 Variance_PF_DS2 = ResultDS2.getVarianceEstimate()
-length90DS2 = ResultDS2.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90DS2 = ResultDS2.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 ResultDS3 = myDS3.getResult()
 PFDS3 = ResultDS3.getProbabilityEstimate()
 CVDS3 = ResultDS3.getCoefficientOfVariation()
 Variance_PF_DS3 = ResultDS3.getVarianceEstimate()
-length90DS3 = ResultDS3.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90DS3 = ResultDS3.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 #
 # Outputs

@@ -4,7 +4,7 @@
 Notes
 -----
 This class generally describes the factory mechanism of each OpenTURNS
-distribution. Refer to :ref:`parametric_estimation` for information on the specific
+distribution. Refer to :any:`parametric_estimation` for information on the specific
 estimators used for each distribution.
 "
 %enddef

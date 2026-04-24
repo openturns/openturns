@@ -50,7 +50,7 @@ Distribution FiniteDiscreteDistributionFactory::build(const Sample & sample) con
 }
 
 Distribution FiniteDiscreteDistributionFactory::build(const Sample & sample,
-                                       const Scalar epsilon) const
+    const Scalar epsilon) const
 {
   return buildAsFiniteDiscreteDistribution(sample, epsilon).clone();
 }

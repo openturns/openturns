@@ -28,8 +28,7 @@ assert_almost_equal(
 
 # Testing that we still get the same results when using setDesign
 normal = ot.Normal()
-mySobol2 = ot.RankSobolSensitivityAlgorithm(normal.getSample(10),
-                                            normal.getSample(10))
+mySobol2 = ot.RankSobolSensitivityAlgorithm(normal.getSample(10), normal.getSample(10))
 ot.RandomGenerator.SetSeed(42)
 mySobol2.setDesign(sampleX, sampleY, sampleX.getSize())
 
@@ -38,8 +37,8 @@ interval2 = mySobol2.getFirstOrderIndicesInterval()
 
 assert_almost_equal(indices2, indices, 0, ot.SpecFunc.ScalarEpsilon)
 assert_almost_equal(
-    interval2.getLowerBound(), interval.getLowerBound(), 0,
-    ot.SpecFunc.ScalarEpsilon)
+    interval2.getLowerBound(), interval.getLowerBound(), 0, ot.SpecFunc.ScalarEpsilon
+)
 assert_almost_equal(
-    interval2.getUpperBound(), interval.getUpperBound(), 0,
-    ot.SpecFunc.ScalarEpsilon)
+    interval2.getUpperBound(), interval.getUpperBound(), 0, ot.SpecFunc.ScalarEpsilon
+)

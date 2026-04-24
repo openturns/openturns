@@ -16,15 +16,15 @@ FunctionalChaosAlgorithm, LeastSquaresStrategy, IntegrationStrategy
 
 Notes
 -----
-This class is used in the :ref:`functional chaos expansion context <functional_chaos>` implemented
+This class is used in the :any:`functional chaos expansion context <functional_chaos>` implemented
 in the class :class:`~openturns.FunctionalChaosAlgorithm`. It is not usable outside this context. 
 
-The model is approximated by the meta model defined in :ref:`functional_chaos` by equation :eq:`metaModelPn` and the coefficients :math:`(a_k)_{k \in I_n}` are computed by:
+The model is approximated by the meta model defined in :any:`functional_chaos` by equation :eq:`metaModelPn` and the coefficients :math:`(a_k)_{k \in I_n}` are computed by:
 
-- solving the least squares problem defined in :ref:`functional_chaos` by equation
+- solving the least squares problem defined in :any:`functional_chaos` by equation
   :eq:`metaModeleF` : use the class
   :class:`~openturns.LeastSquaresStrategy`,
-- computing the inner product defined in :ref:`functional_chaos` by equation
+- computing the inner product defined in :any:`functional_chaos` by equation
   :eq:`scalProd`: use the class
   :class:`~openturns.IntegrationStrategy`. In that case, the basis of the approximation space
   must be orthonormal to the input distribution.

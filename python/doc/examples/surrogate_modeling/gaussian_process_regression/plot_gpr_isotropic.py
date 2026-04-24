@@ -77,9 +77,7 @@ def fitGPR(coordinates, observations, covarianceModel, basis):
     covarianceModel.setScale([upper] * scale_dimension)
 
     # Prepare to fit Gaussian process hyperparameters.
-    fitter = ot.GaussianProcessFitter(
-        coordinates, observations, covarianceModel, basis
-    )
+    fitter = ot.GaussianProcessFitter(coordinates, observations, covarianceModel, basis)
 
     # Fit the GP hyperparameters.
     fitter.run()

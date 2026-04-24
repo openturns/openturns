@@ -22,7 +22,7 @@ Notes
 -----
 A `LinearModelValidation` object is used for the validation of a linear model.
 It is based on the fast (analytical) leave-one-out and fast K-Fold
-cross-validation methods presented in :ref:`cross_validation`.
+cross-validation methods presented in :any:`cross_validation`.
 
 Analytical cross-validation can only be performed if all coefficients are estimated without model selection:
 if the coefficients are computed with model selection, then an exception is

@@ -47,8 +47,8 @@ public:
 
   /** Parameters constructor */
   MixedHistogramFiniteDiscreteDistribution(const PointCollection & ticksCollection,
-                            const Indices & kind,
-                            const Point & probabilityTable);
+      const Indices & kind,
+      const Point & probabilityTable);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;

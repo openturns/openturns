@@ -9,7 +9,7 @@ distribution : :class:`~openturns.Distribution`
 Notes
 -----
 This class implements the generic maximum likelihood estimation
-which is detailed in :ref:`maximum_likelihood`.
+which is detailed in :any:`maximum_likelihood`.
 
 Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`p_{\vect{\theta}}`
 the density of the parametric distribution we want to fit to the sample, with the

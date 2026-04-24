@@ -67,7 +67,7 @@ FiniteDiscreteDistribution::FiniteDiscreteDistribution(const Sample & sample)
 
 /* Constructor from a sample and the associated weights */
 FiniteDiscreteDistribution::FiniteDiscreteDistribution(const Sample & sample,
-                         const Point & weights)
+    const Point & weights)
   : DistributionImplementation()
   , points_(0, 0)
   , probabilities_(0)
@@ -577,7 +577,7 @@ Distribution FiniteDiscreteDistribution::getMarginal(const Indices & indices) co
 /* Interface specific to FiniteDiscreteDistribution */
 
 void FiniteDiscreteDistribution::setData(const Sample & sample,
-                          const Point & weights)
+    const Point & weights)
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the collection is empty";

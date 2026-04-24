@@ -20,7 +20,7 @@ Its main functionalities are :
 - draw a validation graph presenting the metamodel predictions against
   the model observations.
 
-More details on this topic are presented in :ref:`cross_validation`.
+More details on this topic are presented in :any:`cross_validation`.
 
 Examples
 --------

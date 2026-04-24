@@ -1665,7 +1665,7 @@ q : float
 Notes
 -----
 
-Refer to :ref:`dickey_fuller`.
+Refer to :any:`dickey_fuller`.
 
 Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
 :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
@@ -1730,7 +1730,7 @@ q : float
 Notes
 -----
 
-Refer to :ref:`dickey_fuller`.
+Refer to :any:`dickey_fuller`.
 
 Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
 :math:`W^{a}(r) = W(r) - \int_{0}^{1} W(r)\di{r}` and
@@ -1797,7 +1797,7 @@ q : float
 Notes
 -----
 
-Refer to :ref:`dickey_fuller`.
+Refer to :any:`dickey_fuller`.
 
 
 Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
@@ -1863,7 +1863,7 @@ p : float
 Notes
 -----
 
-Refer to :ref:`dickey_fuller`.
+Refer to :any:`dickey_fuller`.
 
 
 Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
@@ -1930,7 +1930,7 @@ p : float
 Notes
 -----
 
-Refer to :ref:`dickey_fuller`.
+Refer to :any:`dickey_fuller`.
 
 
 Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define
@@ -1997,7 +1997,7 @@ p : float
 Notes
 -----
 
-Refer to :ref:`dickey_fuller`.
+Refer to :any:`dickey_fuller`.
 
 
 Let :math:`(X_1, \hdots, X_n)` denote the data and :math:`W(r)` the Wiener process. Let us define

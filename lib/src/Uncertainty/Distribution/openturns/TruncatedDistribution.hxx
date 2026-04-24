@@ -97,7 +97,7 @@ public:
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;
-  
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 

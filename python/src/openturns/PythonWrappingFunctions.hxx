@@ -806,10 +806,10 @@ void handleException()
   if (tbexcClass.isNull())
     throw InternalException(HERE) << "handleException: cannot access TracebackException";
   ScopedPyObjectPointer tbexcInstance(PyObject_CallFunctionObjArgs(tbexcClass.get(),
-                                                                    type ? type : Py_None,
-                                                                    value  ? value  : Py_None,
-                                                                    traceback ? traceback : Py_None,
-                                                                    NULL));
+                                      type ? type : Py_None,
+                                      value  ? value  : Py_None,
+                                      traceback ? traceback : Py_None,
+                                      NULL));
   if (tbexcInstance.isNull())
     throw InternalException(HERE) << "handleException: cannot create TracebackException";
   ScopedPyObjectPointer formatMethod(PyObject_GetAttrString(tbexcInstance.get(), "format"));

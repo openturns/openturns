@@ -452,7 +452,13 @@ ott.assert_almost_equal(
     "in kronecker param check",
 )
 myModel.setActiveParameter([0, 1, 2, 3, 5])
-assert myModel.getActiveParameter() == [0, 1, 2, 3, 5], "in kronecker active param check"
+assert myModel.getActiveParameter() == [
+    0,
+    1,
+    2,
+    3,
+    5,
+], "in kronecker active param check"
 # Now we should get all values except correlation
 ott.assert_almost_equal(
     myModel.getParameter(), [2, 0.01, 1, 2, 2.5], 0, 0, "in kronecker param check"

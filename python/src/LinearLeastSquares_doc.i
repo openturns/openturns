@@ -36,7 +36,7 @@ and the corresponding output vectors:
 
 where :math:`\vect{y}^{(k)} = \model{ \vect{x}^{(k)}}`. 
 
-Refer to :ref:`least_squares` to get details on general least squares meta models and to get information on the 
+Refer to :any:`least_squares` to get details on general least squares meta models and to get information on the
 estimation of the matrix :math:`\mat{M} \in \cM_{\inputDim, \outputDim}`, the center vector
 :math:`\vect{b}\in \Rset^\inputDim` and the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
 

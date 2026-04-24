@@ -22,10 +22,14 @@ cb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
 problem = otexp.LinearProblem(cost, bounds, A, cb)
 print(problem)
 
-sol = {ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
-       ot.OptimizationProblemImplementation.INTEGER: [0.0, 3.0]}
-for vtype in [ot.OptimizationProblemImplementation.CONTINUOUS,
-              ot.OptimizationProblemImplementation.INTEGER]:
+sol = {
+    ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
+    ot.OptimizationProblemImplementation.INTEGER: [0.0, 3.0],
+}
+for vtype in [
+    ot.OptimizationProblemImplementation.CONTINUOUS,
+    ot.OptimizationProblemImplementation.INTEGER,
+]:
     problem.setVariablesType([vtype] * 2)
     algo = otexp.HiGHS(problem)
     print(algo)
