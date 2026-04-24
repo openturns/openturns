@@ -101,7 +101,9 @@ def test_two_inputs_one_output():
     basis = ot.ConstantBasisFactory(inputDimension).build()
 
     # 4) GPF algorithm
-    fit_algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(
+        inputSample, outputSample, covarianceModel, basis
+    )
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(
         ot.Interval(inputSample.getMin(), inputSample.getMax())
@@ -168,10 +170,13 @@ def test_two_outputs():
 
     # Check the conditional covariance
     reference_covariance = ot.Matrix(
-        [[2.7237, 0, 3.40675, 0],
-         [0, 7082.96, 0, 8859.22],
-         [3.40675, 0, 4.54477, 0],
-         [0, 8859.22, 0, 11818.623]])
+        [
+            [2.7237, 0, 3.40675, 0],
+            [0, 7082.96, 0, 8859.22],
+            [3.40675, 0, 4.54477, 0],
+            [0, 8859.22, 0, 11818.623],
+        ]
+    )
     covariance = gccc([[9.5], [10.0]]).getCovariance()
     print(covariance)
     ott.assert_almost_equal(covariance, reference_covariance, 0.0, 2e-2)

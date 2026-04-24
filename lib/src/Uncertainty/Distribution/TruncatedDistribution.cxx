@@ -252,31 +252,31 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
       // It fails if the intersection between the bounds and the atom range is empty
       try
       {
-	// Many ways to define the atoms
-	// A JointDistribution with truncated RandomMixture marginals
-	// with simplification of the RandomMixture:
-	// dim=3, size=10000, creation=0.57s mean=1.36s cov=1.5s
-	// without simplification of the RandomMixture:
-	// dim=3, size=10000, creation=0.44s mean=1.35s cov=1.47s
-	// A JointDistribution with truncated KernelMixture marginals
-	// dim=3, size=10000, creation=0.37s mean=1.24s cov=1.37s
-	// A BlockIndependentDistribution with truncated RandomMixture blocks
-	// dim=3, size=10000, creation=0.44s mean=1.39s cov=3.16s
-	// A BlockIndependentDistribution with truncated KernelMixture blocks
-	// dim=3, size=10000, creation=0.38s mean=1.31s cov=2.68s
-	Scalar wI = normalizationFactor_;
-	for (UnsignedInteger j = 0; j < dimension_; ++j)
-	  {
-	    const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), lb[j], ub[j]);
-	    wI /= componentJ.normalizationFactor_;
-	    components[j] = componentJ.getSimplifiedVersion();
-	  }
-	atoms.add(JointDistribution(components));
-	weights.add(wI);
+        // Many ways to define the atoms
+        // A JointDistribution with truncated RandomMixture marginals
+        // with simplification of the RandomMixture:
+        // dim=3, size=10000, creation=0.57s mean=1.36s cov=1.5s
+        // without simplification of the RandomMixture:
+        // dim=3, size=10000, creation=0.44s mean=1.35s cov=1.47s
+        // A JointDistribution with truncated KernelMixture marginals
+        // dim=3, size=10000, creation=0.37s mean=1.24s cov=1.37s
+        // A BlockIndependentDistribution with truncated RandomMixture blocks
+        // dim=3, size=10000, creation=0.44s mean=1.39s cov=3.16s
+        // A BlockIndependentDistribution with truncated KernelMixture blocks
+        // dim=3, size=10000, creation=0.38s mean=1.31s cov=2.68s
+        Scalar wI = normalizationFactor_;
+        for (UnsignedInteger j = 0; j < dimension_; ++j)
+        {
+          const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), lb[j], ub[j]);
+          wI /= componentJ.normalizationFactor_;
+          components[j] = componentJ.getSimplifiedVersion();
+        }
+        atoms.add(JointDistribution(components));
+        weights.add(wI);
       }
       catch (InvalidArgumentException & )
       {
-	// Nothing to do
+        // Nothing to do
       }
     } // for i
     const UnsignedInteger atomsNumber = atoms.getSize();
@@ -284,7 +284,7 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
     simplified = Mixture(atoms, weights);
     return true;
   }
-  
+
   // If FiniteDiscreteDistribution
   if (kind == "FiniteDiscreteDistribution")
   {

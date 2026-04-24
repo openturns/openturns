@@ -106,7 +106,7 @@ String FieldFunctionalChaosAlgorithm::__repr__() const
 }
 
 void FieldFunctionalChaosAlgorithm::decompose(const ProcessSample & processSample,
-                                                Collection<KarhunenLoeveResult> & klResultCollection)
+    Collection<KarhunenLoeveResult> & klResultCollection)
 {
   klResultCollection.resize(blockIndices_.getSize());
   Point eigenValues;

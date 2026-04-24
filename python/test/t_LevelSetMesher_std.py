@@ -11,15 +11,9 @@ ot.ResourceMap.SetAsUnsignedInteger(
 ot.ResourceMap.SetAsUnsignedInteger(
     "OptimizationAlgorithm-DefaultMaximumCallsNumber", 100000
 )
-ot.ResourceMap.SetAsScalar(
-    "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7
-)
-ot.ResourceMap.SetAsScalar(
-    "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7
-)
-ot.ResourceMap.SetAsScalar(
-    "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7
-)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7)
+ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7)
 ot.ResourceMap.SetAsScalar(
     "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7
 )
@@ -89,15 +83,11 @@ print("mesh4D=", mesh4D)
 # Issue #1668
 f = ot.SymbolicFunction(["x", "y"], ["x^2+y^2"])
 levelset = ot.LevelSet(f, ot.Less(), 1.0)
-mesh = ot.LevelSetMesher([16] * 2).build(
-    levelset, ot.Interval([-1.5] * 2, [1.5] * 2)
-)
+mesh = ot.LevelSetMesher([16] * 2).build(levelset, ot.Interval([-1.5] * 2, [1.5] * 2))
 gLess = mesh.draw()
 f = ot.SymbolicFunction(["x", "y"], ["-(x^2+y^2)"])
 levelset = ot.LevelSet(f, ot.Greater(), -1.0)
-mesh = ot.LevelSetMesher([16] * 2).build(
-    levelset, ot.Interval([-1.5] * 2, [1.5] * 2)
-)
+mesh = ot.LevelSetMesher([16] * 2).build(levelset, ot.Interval([-1.5] * 2, [1.5] * 2))
 gGreater = mesh.draw()
 ott.assert_almost_equal(
     gLess.getDrawable(0).getData(), gGreater.getDrawable(0).getData(), 1e-4, 1e-4

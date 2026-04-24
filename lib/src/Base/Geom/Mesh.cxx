@@ -703,8 +703,8 @@ Graph Mesh::draw2D() const
 
 /* Create a rotation matrix from three Euler angles */
 SquareMatrix Mesh::BuildRotationFromAngles(const Scalar thetaX,
-					   const Scalar thetaY,
-					   const Scalar thetaZ)
+    const Scalar thetaY,
+    const Scalar thetaZ)
 {
   SquareMatrix R(3);
   const Scalar sinThetaX = sin(thetaX);
@@ -769,7 +769,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
                    const SquareMatrix & rotation,
                    const Bool shading,
                    const Scalar rho,
-		   const Description & colors) const
+                   const Description & colors) const
 {
   checkValidity();
   // First, check if the matrix is a rotation matrix of R^3
@@ -784,23 +784,23 @@ Graph Mesh::draw3D(const Bool drawEdge,
   IndicesCollection colorsAsRGBA(colorNumber, 4);
   // If no color given, take it from ResourceMap
   if (colorNumber == 0)
-    {
-      const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-FaceColor"))));
-      // Update the colors to contain the default color
-      colorsAsRGBA = IndicesCollection(1, 4);
-      std::copy(faceRGBA.begin(), faceRGBA.end(), colorsAsRGBA.begin_at(0));
-      hasTransparency = (faceRGBA[3] < 255);
-      ++ colorNumber;
-    }
+  {
+    const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-FaceColor"))));
+    // Update the colors to contain the default color
+    colorsAsRGBA = IndicesCollection(1, 4);
+    std::copy(faceRGBA.begin(), faceRGBA.end(), colorsAsRGBA.begin_at(0));
+    hasTransparency = (faceRGBA[3] < 255);
+    ++ colorNumber;
+  }
   // Convert the colors to RGBA quadruplets
   else
+  {
+    for (UnsignedInteger i = 0; i < colorNumber; ++i)
     {
-      for (UnsignedInteger i = 0; i < colorNumber; ++i)
-	{
-	  const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(colors[i])));
-	  std::copy(faceRGBA.begin(), faceRGBA.end(), colorsAsRGBA.begin_at(i));
-	}
-    } // colorNumber > 0
+      const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(colors[i])));
+      std::copy(faceRGBA.begin(), faceRGBA.end(), colorsAsRGBA.begin_at(i));
+    }
+  } // colorNumber > 0
 
   String edgeColor(ResourceMap::GetAsString("Mesh-EdgeColor"));
   const Indices edgeRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(edgeColor)));
@@ -999,12 +999,12 @@ Graph Mesh::draw3D(const Bool drawEdge,
       const Scalar finalFaceGreen = Iambient[1] + Idiffuse * greenFace + Ilight[1];
       const Scalar finalFaceBlue  = Iambient[2] + Idiffuse * blueFace + Ilight[2];
       if (drawEdge)
-	{
-	  const Scalar finalEdgeRed   = Iambient[0] + Idiffuse * redEdge + Ilight[0];
-	  const Scalar finalEdgeGreen = Iambient[1] + Idiffuse * greenEdge + Ilight[1];
-	  const Scalar finalEdgeBlue  = Iambient[2] + Idiffuse * blueEdge + Ilight[2];
-	  edgeColor = Drawable::ConvertFromRGBA(finalEdgeRed, finalEdgeGreen, finalEdgeBlue, alphaEdge);
-	}
+      {
+        const Scalar finalEdgeRed   = Iambient[0] + Idiffuse * redEdge + Ilight[0];
+        const Scalar finalEdgeGreen = Iambient[1] + Idiffuse * greenEdge + Ilight[1];
+        const Scalar finalEdgeBlue  = Iambient[2] + Idiffuse * blueEdge + Ilight[2];
+        edgeColor = Drawable::ConvertFromRGBA(finalEdgeRed, finalEdgeGreen, finalEdgeBlue, alphaEdge);
+      }
       faceColor = Drawable::ConvertFromRGBA(finalFaceRed, finalFaceGreen, finalFaceBlue, alphaFace);
     } // shading
     else

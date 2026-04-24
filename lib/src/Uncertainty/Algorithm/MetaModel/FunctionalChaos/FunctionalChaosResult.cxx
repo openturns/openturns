@@ -591,15 +591,15 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
   }
 
   const FunctionalChaosResult marginalPCE(
-      inputSample_,
-      marginalOutputSample,
-      distribution_,
-      transformation_,
-      inverseTransformation_,
-      orthogonalBasis_,
-      nonzeroIndices,
-      nonzeroCoefficients,
-      nonzeroFunctions
+    inputSample_,
+    marginalOutputSample,
+    distribution_,
+    transformation_,
+    inverseTransformation_,
+    orthogonalBasis_,
+    nonzeroIndices,
+    nonzeroCoefficients,
+    nonzeroFunctions
   );
   return marginalPCE;
 }

@@ -16,7 +16,9 @@ enumerateFunction = ot.LinearEnumerateFunction(uc.dim)
 indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
 polyColl = [0.0] * uc.dim
 for i in range(uc.distribution.getDimension()):
-    polyColl[i] = ot.StandardDistributionPolynomialFactory(uc.distribution.getMarginal(i))
+    polyColl[i] = ot.StandardDistributionPolynomialFactory(
+        uc.distribution.getMarginal(i)
+    )
 productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)
 projectionStrategy = ot.LeastSquaresStrategy()

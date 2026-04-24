@@ -69,7 +69,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
-  
+
   LOGWARN("KrigingAlgorithm is deprecated, use GaussianProcessRegression");
 }
 

@@ -474,8 +474,8 @@ String Drawable::ConvertFromHSVA(const Scalar hue,
 
 /* Convert a collection of scalar into a collection of colors, aka a Description */
 Description Drawable::ConvertValuesToColors(const Point & values,
-					    const Description & palette,
-					    const Scalar alpha)
+    const Description & palette,
+    const Scalar alpha)
 {
   return DrawableImplementation::ConvertValuesToColors(values, palette, alpha);
 }

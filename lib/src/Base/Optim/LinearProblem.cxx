@@ -39,7 +39,7 @@ LinearProblem::LinearProblem()
 
 /* Parameter constructor */
 LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
-                const Matrix & constraintCoefficients, const Interval & constraintBounds)
+                             const Matrix & constraintCoefficients, const Interval & constraintBounds)
   : OptimizationProblemImplementation()
 {
   if (bounds.getDimension() && bounds.getDimension() != cost.getDimension())

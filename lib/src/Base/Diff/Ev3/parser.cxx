@@ -54,10 +54,10 @@ int ExpressionParser::GetVariableID(const std::string & vname)
 {
   if (variable_.find(vname) != variable_.end()) return variable_[vname];
   if (IsVariableName(vname))
-    {
-      error(vname);
-      return PEV3UNKNOWNVAR;
-    }
+  {
+    error(vname);
+    return PEV3UNKNOWNVAR;
+  }
   return PEV3NOVARIABLE;
 }
 

@@ -58,7 +58,7 @@ public:
 
   /** Result accessor */
   MetaModelResult getResult() const;
-  
+
   /** Center accessor */
   Point getCenter() const;
 

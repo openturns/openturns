@@ -167,7 +167,9 @@ ResultMC = myMC.getResult()
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
-length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 #
 # LHS
@@ -175,7 +177,9 @@ ResultLHS = myLHS.getResult()
 PFLHS = ResultLHS.getProbabilityEstimate()
 CVLHS = ResultLHS.getCoefficientOfVariation()
 Variance_PF_LHS = ResultLHS.getVarianceEstimate()
-length90LHS = ResultLHS.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90LHS = ResultLHS.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 #
 

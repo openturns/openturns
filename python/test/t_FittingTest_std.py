@@ -256,5 +256,7 @@ for i in range(discreteDistributionNumber):
 print("resultChiSquared=", repr(resultChiSquared))
 # Example taken from the R documentation of chisq.test
 s = [[0.0]] * 89 + [[1.0]] * 37 + [[2.0]] * 30 + [[3.0]] * 28 + [[4.0]] * 2
-d = ot.FiniteDiscreteDistribution([[0.0], [1.0], [2.0], [3.0], [4.0]], [0.4, 0.2, 0.2, 0.15, 0.05])
+d = ot.FiniteDiscreteDistribution(
+    [[0.0], [1.0], [2.0], [3.0], [4.0]], [0.4, 0.2, 0.2, 0.15, 0.05]
+)
 print("R example p-value=%.5g" % ot.FittingTest.ChiSquared(s, d).getPValue())

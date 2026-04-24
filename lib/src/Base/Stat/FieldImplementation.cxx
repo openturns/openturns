@@ -685,20 +685,20 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     } // !interpolate
   } // meshDimension == 2
   else if (meshDimension == 3)
-    {
-      const Description palette(Drawable::BuildDefaultPalette(marginalValues.getSize()));
-      const SquareMatrix rotation(Mesh::BuildRotationFromAngles());
-      graph = draw3D(index, false, rotation, true, 1.0, palette);
-    }
+  {
+    const Description palette(Drawable::BuildDefaultPalette(marginalValues.getSize()));
+    const SquareMatrix rotation(Mesh::BuildRotationFromAngles());
+    graph = draw3D(index, false, rotation, true, 1.0, palette);
+  }
   return graph;
 }
 
 Graph FieldImplementation::draw3D(const UnsignedInteger index,
-				  const Bool drawEdge,
-				  const SquareMatrix & rotation,
-				  const Bool shading,
-				  const Scalar rho,
-				  const Description & palette) const
+                                  const Bool drawEdge,
+                                  const SquareMatrix & rotation,
+                                  const Bool shading,
+                                  const Scalar rho,
+                                  const Description & palette) const
 {
   if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
   if (getInputDimension() != 3) throw InvalidArgumentException(HERE) << "Error: draw3D is for 3D fields only";

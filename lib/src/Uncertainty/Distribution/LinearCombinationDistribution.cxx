@@ -100,7 +100,7 @@ LinearCombinationDistribution::LinearCombinationDistribution()
 
 /* Default constructor */
 LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
-                             const Scalar constant)
+    const Scalar constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(Point(1, constant))
@@ -139,8 +139,8 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
 
 /* Default constructor */
 LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
-                             const Point & weights,
-                             const Scalar constant)
+    const Point & weights,
+    const Scalar constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(Point(1, constant))
@@ -180,8 +180,8 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
 
 /* Parameter constructor - nD */
 LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
-                             const Matrix & weights,
-                             const Point & constant)
+    const Matrix & weights,
+    const Point & constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(constant)
@@ -223,7 +223,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
 
 /* Parameter constructor - nD */
 LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
-                             const Matrix & weights)
+    const Matrix & weights)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_()
@@ -261,8 +261,8 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
 
 /* Parameter constructor - nD */
 LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
-                             const Sample & weights,
-                             const Point & constant)
+    const Sample & weights,
+    const Point & constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(constant)
@@ -300,7 +300,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
 
 /* Parameter constructor - nD */
 LinearCombinationDistribution::LinearCombinationDistribution(const DistributionCollection & coll,
-                             const Sample & weights)
+    const Sample & weights)
   : DistributionImplementation()
   , distributionCollection_()
   , weights_()
@@ -1382,9 +1382,9 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
 
 /*  Compute the PDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
 Sample LinearCombinationDistribution::computePDF(const Scalar xMin,
-                                 const Scalar xMax,
-                                 const UnsignedInteger pointNumber,
-                                 Sample & grid) const
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    Sample & grid) const
 {
   if (getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: this method is available only for 1D distribution";
   return computePDF(Point(1, xMin), Point(1, xMax), Indices(1, pointNumber), grid);
@@ -1422,9 +1422,9 @@ struct EquivalentNormalPDFSumPolicy
 
 /* Compute the PDF of nD distributions over a regular grid */
 Sample LinearCombinationDistribution::computePDF(const Point & xMin,
-                                 const Point & xMax,
-                                 const Indices & pointNumber,
-                                 Sample & grid) const
+    const Point & xMax,
+    const Indices & pointNumber,
+    Sample & grid) const
 {
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
@@ -2391,9 +2391,9 @@ Scalar LinearCombinationDistribution::computeComplementaryCDF(const Point & poin
 
 /*  Compute the CDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
 Sample LinearCombinationDistribution::computeCDF(const Scalar xMin,
-                                 const Scalar xMax,
-                                 const UnsignedInteger pointNumber,
-                                 Sample & grid) const
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    Sample & grid) const
 {
   return DistributionImplementation::computeCDF(xMin, xMax, pointNumber, grid);
 }
@@ -2483,9 +2483,9 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
 
 /*  Compute the quantile over a regular grid */
 Sample LinearCombinationDistribution::computeQuantile(const Scalar qMin,
-                                      const Scalar qMax,
-                                      const UnsignedInteger pointNumber,
-                                      const Bool tail) const
+    const Scalar qMax,
+    const UnsignedInteger pointNumber,
+    const Bool tail) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the quantile over a regular 1D grid if the dimension is > 1";
   Sample result(pointNumber, 2);

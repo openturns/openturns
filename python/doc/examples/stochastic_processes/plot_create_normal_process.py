@@ -13,6 +13,7 @@ Create a Gaussian process with or without nugget effect
 # %%
 import openturns as ot
 import openturns.viewer as otv
+
 # sphinx_gallery_thumbnail_number = 2
 
 # %%

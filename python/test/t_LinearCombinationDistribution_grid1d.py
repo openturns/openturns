@@ -4,7 +4,9 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(6)
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-DefaultMaxSize", 4000000
+)
 
 # Defining LinearCombinationDistribution
 weights = ot.Point(0)

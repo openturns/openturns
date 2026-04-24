@@ -62,7 +62,7 @@ public:
 
   /** String converter */
   String __repr__() const override;
-  
+
   /** Result accessor */
   FieldFunctionalChaosResult getResult() const;
 
@@ -75,7 +75,7 @@ public:
 protected:
   void decompose(const ProcessSample & processSample,
                  Collection<KarhunenLoeveResult> & klResultCollection);
-  
+
   // independent component blocks
   PersistentCollection<Indices> blockIndices_;
 

@@ -150,7 +150,11 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
 class OTCalledProcessError(subprocess.CalledProcessError):
     def __str__(self):
-        err_msg = (":\n" + self.stderr.decode(errors="ignore")[:512]) if self.stderr is not None else ""
+        err_msg = (
+            (":\n" + self.stderr.decode(errors="ignore")[:512])
+            if self.stderr is not None
+            else ""
+        )
         return super().__str__() + err_msg
 
 

@@ -61,7 +61,9 @@ resultMC = myMC.getResult()
 PFMC = resultMC.getProbabilityEstimate()
 CVMC = resultMC.getCoefficientOfVariation()
 variance_PF_MC = resultMC.getVarianceEstimate()
-length90MC = resultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90MC = resultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 N_MC = resultMC.getOuterSampling() * resultMC.getBlockSize()
 
 #
@@ -70,7 +72,9 @@ resultSS = mySS.getResult()
 PFSS = resultSS.getProbabilityEstimate()
 CVSS = resultSS.getCoefficientOfVariation()
 variance_PF_SS = resultSS.getVarianceEstimate()
-length90SS = resultSS.getProbabilityDistribution().computeBilateralConfidenceInterval(0.9)
+length90SS = resultSS.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 N_SS = resultSS.getOuterSampling() * resultSS.getBlockSize()
 
 #

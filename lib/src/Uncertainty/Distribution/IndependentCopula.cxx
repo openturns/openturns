@@ -271,7 +271,7 @@ Scalar IndependentCopula::computeConditionalCDF(const Scalar x, const Point & y)
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (!((y[i] >= 0.0) && (y[i] < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << y << " is not in [0, 1]";    
+    if (!((y[i] >= 0.0) && (y[i] < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << y << " is not in [0, 1]";
   return SpecFunc::Clip01(x);
 }
 
@@ -282,7 +282,7 @@ Scalar IndependentCopula::computeConditionalQuantile(const Scalar q, const Point
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (!((y[i] >= 0.0) && (y[i] < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << y << " is not in [0, 1]";    
+    if (!((y[i] >= 0.0) && (y[i] < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << y << " is not in [0, 1]";
   return SpecFunc::Clip01(q);
 }
 

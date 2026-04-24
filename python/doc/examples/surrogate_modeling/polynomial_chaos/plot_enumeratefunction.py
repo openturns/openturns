@@ -156,10 +156,18 @@ view = otv.View(grid, axes_kw={"aspect": "equal"})
 # We plot the multi-indices of the hyperbolic isotropic enumeration rule by stratas.
 # The lower the value of :math:`q` the lower the number of interactions terms in stratas.
 grid = ot.GridLayout(2, 2)
-grid.setGraph(0, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 1.0), 7))
-grid.setGraph(0, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.75), 7))
-grid.setGraph(1, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.5), 7))
-grid.setGraph(1, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.25), 7))
+grid.setGraph(
+    0, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 1.0), 7)
+)
+grid.setGraph(
+    0, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.75), 7)
+)
+grid.setGraph(
+    1, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.5), 7)
+)
+grid.setGraph(
+    1, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(dim, 0.25), 7)
+)
 grid.setTitle("Hyperbolic rule")
 view = otv.View(grid, axes_kw={"aspect": "equal"})
 
@@ -210,10 +218,34 @@ view = otv.View(graph, figure_kw={"figsize": (5, 4)})
 grid = ot.GridLayout(2, 2)
 weights = [0.4, 0.6]
 maximum_strata_index = 14
-grid.setGraph(0, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(weights, 1.0), maximum_strata_index))
-grid.setGraph(0, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(weights, 0.7), maximum_strata_index))
-grid.setGraph(1, 0, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(weights, 0.5), maximum_strata_index))
-grid.setGraph(1, 1, draw_stratas(ot.HyperbolicAnisotropicEnumerateFunction(weights, 0.25), maximum_strata_index))
+grid.setGraph(
+    0,
+    0,
+    draw_stratas(
+        ot.HyperbolicAnisotropicEnumerateFunction(weights, 1.0), maximum_strata_index
+    ),
+)
+grid.setGraph(
+    0,
+    1,
+    draw_stratas(
+        ot.HyperbolicAnisotropicEnumerateFunction(weights, 0.7), maximum_strata_index
+    ),
+)
+grid.setGraph(
+    1,
+    0,
+    draw_stratas(
+        ot.HyperbolicAnisotropicEnumerateFunction(weights, 0.5), maximum_strata_index
+    ),
+)
+grid.setGraph(
+    1,
+    1,
+    draw_stratas(
+        ot.HyperbolicAnisotropicEnumerateFunction(weights, 0.25), maximum_strata_index
+    ),
+)
 grid.setTitle("Hyperbolic anisotropic rule, weights = [0.4, 0.6]")
 view = otv.View(grid, axes_kw={"aspect": "equal"})
 

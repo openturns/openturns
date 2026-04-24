@@ -92,8 +92,8 @@ sample1 = sample_Biv.getMarginal(0)
 sample2 = sample_Biv.getMarginal(1)
 resultPearson = ot.HypothesisTest.Pearson(sample1, sample2, 0.10)
 resultSpearman = ot.HypothesisTest.Spearman(sample1, sample2, 0.10)
-print('Pearson test : ', resultPearson)
-print('Spearman test : ', resultSpearman)
+print("Pearson test : ", resultPearson)
+print("Spearman test : ", resultSpearman)
 
 # %%
 # We consider now a discrete distribution. Let us create two independent samples.

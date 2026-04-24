@@ -234,7 +234,9 @@ graph.setTitle("User defined PDF")
 # %%
 # We can generate and display a sample from this distribution.
 omega = distribution.getSample(100)
-cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from FiniteDiscreteDistribution distribution")
+cloud = ot.Cloud(
+    omega, "black", "fdiamond", "Sample from FiniteDiscreteDistribution distribution"
+)
 graph.add(cloud)
 view = otv.View(graph)
 

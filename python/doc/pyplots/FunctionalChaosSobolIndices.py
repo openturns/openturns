@@ -34,4 +34,6 @@ dim_input = distribution.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
-otv.View(ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order))
+otv.View(
+    ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+)

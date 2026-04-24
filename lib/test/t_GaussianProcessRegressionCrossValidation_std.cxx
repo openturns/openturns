@@ -33,52 +33,52 @@ int main(int, char *[])
   {
     // Define the symbolic function
     SymbolicFunction g(Description({"x"}), Description({"sin(x)"}));
-    
+
     // Create training sample
     const Sample x_train(Sample::BuildFromPoint({1.0, 3.0, 4.0, 6.0, 7.9, 11.0, 11.5}));
     const Sample y_train = g(x_train);
-    
+
     // Setup basis and covariance model
     const Basis basis = ConstantBasisFactory(1).build();
     MaternModel covarianceModel(Point(1, 1.0), 1.5);
-    
+
     // Fit the model
     GaussianProcessFitter fitter_algo(x_train, y_train, covarianceModel, basis);
     fitter_algo.run();
     GaussianProcessFitterResult fitter_result = fitter_algo.getResult();
-    
+
     GaussianProcessRegression gpr_algo(fitter_result);
     gpr_algo.run();
     GaussianProcessRegressionResult gpr_result = gpr_algo.getResult();
-    
+
     // Naive cross-validation
     Sample cv_naive_residuals(x_train.getSize(), 1);
     CovarianceModel fitted_covariance_model = gpr_result.getCovarianceModel();
     fitted_covariance_model.setActiveParameter(Indices()); // no parameter optimization in CV
-    
+
     for (UnsignedInteger i = 0; i < x_train.getSize(); ++i)
     {
-        Sample x_train_cv = Sample(x_train);
-        x_train_cv.erase(i);
-        Sample y_train_cv = Sample(y_train);
-        y_train_cv.erase(i);
-        
-        GaussianProcessFitter fitter_algo_cv(x_train_cv, y_train_cv, fitted_covariance_model, basis);
-        fitter_algo_cv.run();
-        GaussianProcessFitterResult fitter_result_cv = fitter_algo_cv.getResult();
-        
-        GaussianProcessRegression gpr_algo_cv(fitter_result_cv);
-        gpr_algo_cv.run();
-        GaussianProcessRegressionResult gpr_result_cv = gpr_algo_cv.getResult();
-        
-        Function gpr_predictor_cv = gpr_result_cv.getMetaModel();
-        cv_naive_residuals[i][0] = y_train[i][0] - gpr_predictor_cv(x_train[i])[0];
+      Sample x_train_cv = Sample(x_train);
+      x_train_cv.erase(i);
+      Sample y_train_cv = Sample(y_train);
+      y_train_cv.erase(i);
+
+      GaussianProcessFitter fitter_algo_cv(x_train_cv, y_train_cv, fitted_covariance_model, basis);
+      fitter_algo_cv.run();
+      GaussianProcessFitterResult fitter_result_cv = fitter_algo_cv.getResult();
+
+      GaussianProcessRegression gpr_algo_cv(fitter_result_cv);
+      gpr_algo_cv.run();
+      GaussianProcessRegressionResult gpr_result_cv = gpr_algo_cv.getResult();
+
+      Function gpr_predictor_cv = gpr_result_cv.getMetaModel();
+      cv_naive_residuals[i][0] = y_train[i][0] - gpr_predictor_cv(x_train[i])[0];
     }
-    
+
     // OT cross-validation
     GaussianProcessRegressionCrossValidation cv(gpr_result, LeaveOneOutSplitter(x_train.getSize()));
     Sample cv_ot_residuals = cv.getResidualSample();
-    
+
     // Check that both implementations give the same result
     assert_almost_equal(cv_ot_residuals, cv_naive_residuals, 1.0e-12, 0.0);
   }

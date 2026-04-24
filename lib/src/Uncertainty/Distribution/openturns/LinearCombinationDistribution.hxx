@@ -56,30 +56,30 @@ public:
 
   /** Parameter constructor - 1D */
   explicit LinearCombinationDistribution(const DistributionCollection & coll,
-                         const Scalar constant = 0.0);
+                                         const Scalar constant = 0.0);
 
   /** Parameter constructor - 1D */
   LinearCombinationDistribution(const DistributionCollection & coll,
-                const Point & weights,
-                const Scalar constant = 0.0);
+                                const Point & weights,
+                                const Scalar constant = 0.0);
 
   /** Parameter constructor - nD */
   LinearCombinationDistribution(const DistributionCollection & coll,
-                const Matrix & weights,
-                const Point & constant);
+                                const Matrix & weights,
+                                const Point & constant);
 
   /** Parameter constructor - nD */
   LinearCombinationDistribution(const DistributionCollection & coll,
-                const Matrix & weights);
+                                const Matrix & weights);
 
   /** Parameter constructor - nD */
   LinearCombinationDistribution(const DistributionCollection & coll,
-                const Sample & weights,
-                const Point & constant);
+                                const Sample & weights,
+                                const Point & constant);
 
   /** Parameter constructor - nD */
   LinearCombinationDistribution(const DistributionCollection & coll,
-                const Sample & weights);
+                                const Sample & weights);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
