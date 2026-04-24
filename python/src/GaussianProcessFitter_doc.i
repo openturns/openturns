@@ -50,7 +50,7 @@ where :math:`\vect{p}` is the vector of the parameters of the covariance model  
 :class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
 parameters.
 
-The estimation is done by maximizing the :any:`reduced log-likelihood of the model<logLikelihoodGP>`.
+The estimation is done by maximizing the :any:`reduced log-likelihood of the model<logLikelihoodGPmodel>`.
 
 The default optimizer is :class:`~openturns.Cobyla` and can be changed thanks to the
 :meth:`setOptimizationAlgorithm` method.
