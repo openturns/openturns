@@ -1488,7 +1488,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SobolSimulationAlgorithm parameters //
   addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel", 0.05);
-  addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-2);
+  addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-1);
   addAsUnsignedInteger("SobolSimulationAlgorithm-DefaultExperimentSize", 1000);
 
   // SimulationSensitivityAnalysis parameters //

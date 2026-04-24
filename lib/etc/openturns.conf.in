@@ -832,7 +832,7 @@
 
   <!-- OT::SobolSimulationAlgorithm parameters -->
   <SobolSimulationAlgorithm-DefaultIndexQuantileLevel   value_float="0.05"           />
-  <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value_float="1.0e-2"         />
+  <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value_float="1.0e-1"         />
   <SobolSimulationAlgorithm-DefaultExperimentSize       value_int="1000" />
 
   <!-- OT::SimulationSensitivityAnalysis parameters -->
