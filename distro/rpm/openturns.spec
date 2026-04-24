@@ -2,7 +2,7 @@
 %global python_sitearch %{_libdir}/python%(python3 -c "import sysconfig; print(sysconfig.get_python_version())")/site-packages
 
 Name:           openturns
-Version:        1.26
+Version:        1.27
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -118,5 +118,5 @@ export OPENTURNS_NUM_THREADS=1
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
-* Wed Nov 19 2025 Julien Schueller <schueller at phimeca dot com> 1.26-1
+* Wed Nov 19 2025 Julien Schueller <schueller at phimeca dot com> 1.27-1
 - New upstream release
