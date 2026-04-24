@@ -25,20 +25,16 @@ Release process
 
 8. Merge release branch, create X.Y branch, and tag new version
 
-9. Build `Windows binaries <https://github.com/openturns/build/>`_
+9. Update conda packages `recipe <https://github.com/conda-forge/openturns-feedstock>`_
 
-10. Build `Windows modules binaries <https://github.com/openturns/build-modules>`_
+10. Update conda modules packages `recipes <https://github.com/conda-forge?q=ot>`_
 
-11. Update conda packages `recipe <https://github.com/conda-forge/openturns-feedstock>`_
+11. Update `otconda <https://github.com/openturns/otconda>`_ bundle
 
-12. Update conda modules packages `recipes <https://github.com/conda-forge?q=ot>`_
+12. Update `wheels <https://github.com/openturns/build-wheels>`_
 
-13. Update `otconda <https://github.com/openturns/otconda>`_ bundle
+13. Set version X.Y+1dev, new changelog in master
 
-14. Update `wheels <https://github.com/openturns/build-wheels>`_
+14. Drop deprecated methods listed in TODO file
 
-15. Set version X.Y+1dev, new changelog in master
-
-16. Drop deprecated methods listed in TODO file
-
-17. Bump soversion (lib/src/CMakeLists.txt)
+15. Bump soversion (lib/src/CMakeLists.txt)
