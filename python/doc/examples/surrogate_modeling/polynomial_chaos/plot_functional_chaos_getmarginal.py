@@ -17,7 +17,9 @@ sampleSize = 100
 inputTrain = fm.distribution.getSample(sampleSize)
 print(f"Output dimension = {fm.model.getOutputDimension()}")
 outputTrain = fm.model(inputTrain)
-marginalList = [fm.distribution.getMarginal(i) for i in range(fm.distribution.getDimension())]
+marginalList = [
+    fm.distribution.getMarginal(i) for i in range(fm.distribution.getDimension())
+]
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(marginalList)
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)

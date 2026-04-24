@@ -567,10 +567,10 @@ Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point &
   Point result(dimension_);
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      {
-	if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
-	result[i] = q[i];
-      }
+    {
+      if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+      result[i] = q[i];
+    }
   else
   {
     const UnsignedInteger size = copulaCollection_.getSize();

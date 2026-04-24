@@ -52,11 +52,11 @@ public:
 
   /** Parameter constructor */
   GaussianProcessRegressionCrossValidation(const GaussianProcessRegressionResult & gprResult,
-                            const LeaveOneOutSplitter & splitter);
+      const LeaveOneOutSplitter & splitter);
 
   /** Parameter constructor */
   GaussianProcessRegressionCrossValidation(const GaussianProcessRegressionResult & gprResult,
-                            const KFoldSplitter & splitter);
+      const KFoldSplitter & splitter);
 
   /** Virtual constructor */
   GaussianProcessRegressionCrossValidation * clone() const override;

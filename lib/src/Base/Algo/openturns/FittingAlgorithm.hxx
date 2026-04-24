@@ -74,7 +74,7 @@ public:
   Scalar run(const Sample & y,
              const Indices & indices,
              const DesignProxy & proxy) const;
-             
+
   Scalar run(LeastSquaresMethod & method,
              const Sample & y) const;
 

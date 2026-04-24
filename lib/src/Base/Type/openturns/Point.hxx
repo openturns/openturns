@@ -198,20 +198,22 @@ END_NAMESPACE_OPENTURNS
 
 #ifndef SWIG
 
-namespace std {
-  template<> struct hash<OT::Point > {
-    size_t operator()(const OT::Point & coll) const noexcept
+namespace std
+{
+template<> struct hash<OT::Point >
+{
+  size_t operator()(const OT::Point & coll) const noexcept
+  {
+    constexpr std::size_t adder = 0x9e3779b9;
+    size_t seed = 0;
+    for (OT::UnsignedInteger i = 0; i < coll.getSize(); ++ i)
     {
-      constexpr std::size_t adder = 0x9e3779b9;
-      size_t seed = 0;
-      for (OT::UnsignedInteger i = 0; i < coll.getSize(); ++ i)
-      {
-        size_t hi = hash<OT::Scalar>{}(coll[i]);
-        seed = seed ^ (hi + adder + (seed<<6) + (seed>>2));
-      }
-      return seed;
+      size_t hi = hash<OT::Scalar> {}(coll[i]);
+      seed = seed ^ (hi + adder + (seed << 6) + (seed >> 2));
     }
-  };
+    return seed;
+  }
+};
 }
 
 #endif

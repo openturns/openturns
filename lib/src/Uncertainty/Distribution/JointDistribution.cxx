@@ -862,10 +862,10 @@ Scalar JointDistribution::computeConditionalQuantile(const Scalar q,
   // General case
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      if (!((y[i] >= range_.getLowerBound()[i]) && (y[i] <= range_.getUpperBound()[i]))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
-      u[i] = distributionCollection_[i].computeCDF(y[i]);
-    }
+  {
+    if (!((y[i] >= range_.getLowerBound()[i]) && (y[i] <= range_.getUpperBound()[i]))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
+    u[i] = distributionCollection_[i].computeCDF(y[i]);
+  }
   return distributionCollection_[conditioningDimension].computeScalarQuantile(core_.computeConditionalQuantile(q, u));
 }
 

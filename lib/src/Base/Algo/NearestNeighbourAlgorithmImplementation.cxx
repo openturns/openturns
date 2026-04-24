@@ -78,8 +78,8 @@ class NearestNeighbourAlgorithmImplementationQuerySamplePolicy
 
 public:
   NearestNeighbourAlgorithmImplementationQuerySamplePolicy(const Sample & input,
-							   Indices & output,
-							   const NearestNeighbourAlgorithmImplementation & algo)
+      Indices & output,
+      const NearestNeighbourAlgorithmImplementation & algo)
     : input_(input)
     , output_(output)
     , algo_(algo)

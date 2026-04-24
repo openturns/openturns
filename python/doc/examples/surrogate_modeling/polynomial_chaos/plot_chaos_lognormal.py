@@ -135,7 +135,7 @@ g = ot.SymbolicFunction("x", "1/(x)")
 sample_size = 1000
 input_train = dist_X.getSample(sample_size)
 output_train = g(input_train)
-print('max sample = ', input_train.getMax()[0])
+print("max sample = ", input_train.getMax()[0])
 
 # %%
 # We now construct the polynomial chaos surrogate model :math:`\metaModel`
@@ -186,7 +186,7 @@ grid = ot.GridLayout(1, 2)
 grid.setGraph(0, 0, graph_valid_LN)
 boudingbox = ot.Interval([0.2, 0.2], [4.0, 4.0])
 graph_valid_LN.setBoundingBox(boudingbox)
-graph_valid_LN.setTitle(r'zoom for $x \in I$')
+graph_valid_LN.setTitle(r"zoom for $x \in I$")
 grid.setGraph(0, 1, graph_valid_LN)
 view = otv.View(grid)
 
@@ -197,8 +197,7 @@ graph_LN.add(meta_model_LN_5.draw(lower_bound, upper_bound, [251]))
 graph_LN.setLegends(["model", "surrogate model"])
 graph_LN.setLegendPosition("upper right")
 graph_LN.setTitle(
-    r"Polynomial surrogate model of degree $d = $"
-    + str(basis_size_LN - 1)
+    r"Polynomial surrogate model of degree $d = $" + str(basis_size_LN - 1)
 )
 graph_LN.setXTitle("x")
 graph_LN.setYTitle("y")
@@ -228,7 +227,12 @@ for basis_size in basis_size_list:
     leg.add(r"$d = $" + str(basis_size - 1))
     result_LN = chaos_algo_LN.getResult()
     meta_model_LN = result_LN.getMetaModel()
-    print("degree = ", basis_size - 1, "coefficients of the meta Model (LN) = ", result_LN.getCoefficients())
+    print(
+        "degree = ",
+        basis_size - 1,
+        "coefficients of the meta Model (LN) = ",
+        result_LN.getCoefficients(),
+    )
 graph_LN.setTitle("Polynomial surrogate model of degree $d$")
 graph_LN.setLegends(leg)
 view = otv.View(graph_LN)
@@ -300,10 +304,7 @@ graph_N = g.draw(lower_bound, upper_bound, [251])
 graph_N.add(meta_model_N.draw(lower_bound, upper_bound, [251]))
 graph_N.setLegends(["model", "surrogate model"])
 graph_N.setLegendPosition("upper right")
-graph_N.setTitle(
-    r"Chaos expansion with $T$, $d =$"
-    + str(basis_size_N - 1)
-)
+graph_N.setTitle(r"Chaos expansion with $T$, $d =$" + str(basis_size_N - 1))
 graph_N.setXTitle("x")
 graph_N.setYTitle("y")
 view = otv.View(graph_N)
@@ -325,8 +326,18 @@ sample_predic_N = meta_model_N(sample_in)
 sample_predic_LN = meta_model_LN_5(sample_in)
 square_L2_N_norm = (sample_predic_N - sample_model).computeRawMoment(2)[0]
 square_L2_LN_norm = (sample_predic_LN - sample_model).computeRawMoment(2)[0]
-print("surrogate model with    T and degree =", basis_size_N - 1, "L2 norm = ", sqrt(square_L2_N_norm))
-print("surrogate model without T and degree =", basis_size_N - 1, "L2 norm = ", sqrt(square_L2_LN_norm))
+print(
+    "surrogate model with    T and degree =",
+    basis_size_N - 1,
+    "L2 norm = ",
+    sqrt(square_L2_N_norm),
+)
+print(
+    "surrogate model without T and degree =",
+    basis_size_N - 1,
+    "L2 norm = ",
+    sqrt(square_L2_LN_norm),
+)
 
 # Here, we facilitate the comparison between the surrogate model constructed from the polynomial family orthonormal
 # with respect to the LogNormal distribution up to degree 20,
@@ -349,9 +360,7 @@ graph_comp.setLegends(
     ]
 )
 graph_comp.setLegendPosition("upper right")
-graph_comp.setTitle(
-    r"Chaos expansion of $f: x \rightarrow 1/x$,  $X \sim LogNormal$"
-)
+graph_comp.setTitle(r"Chaos expansion of $f: x \rightarrow 1/x$,  $X \sim LogNormal$")
 graph_comp.setXTitle("x")
 graph_comp.setYTitle("y")
 view = otv.View(graph_comp)

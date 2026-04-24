@@ -67,14 +67,14 @@ String ExperimentIntegration::__repr__() const
 
 /* Compute the weighted integral of the function */
 Point ExperimentIntegration::integrate(const Function & function,
-				       const Interval & interval) const
+                                       const Interval & interval) const
 {
   const UnsignedInteger intervalDimension = interval.getDimension();
   if (function.getInputDimension() != intervalDimension)
     throw InvalidArgumentException(HERE) << "The input dimension of the function is : "
-					 << function.getInputDimension()
-					 << " which is inconsistent with the interval dimension : "
-					 << intervalDimension;
+                                         << function.getInputDimension()
+                                         << " which is inconsistent with the interval dimension : "
+                                         << intervalDimension;
   // Build the affine transformation which maps the given interval I into the
   // range I0 of the weighted experiment distribution
   // x = T(u)
@@ -106,9 +106,9 @@ Point ExperimentIntegration::integrate(const Function & function) const
   const UnsignedInteger experimentDimension = weightedExperiment_.getDistribution().getDimension();
   if (function.getInputDimension() != experimentDimension)
     throw InvalidArgumentException(HERE) << "The input dimension of the function is : "
-					 << function.getInputDimension()
-					 << " which is inconsistent with the experiment dimension : "
-					 << experimentDimension;
+                                         << function.getInputDimension()
+                                         << " which is inconsistent with the experiment dimension : "
+                                         << experimentDimension;
   const UnsignedInteger outputDimension = function.getOutputDimension();
   Point weights(0);
   const Sample inputSample(weightedExperiment_.generateWithWeights(weights));

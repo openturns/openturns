@@ -48,12 +48,14 @@ if ot.PlatformInfo.HasFeature("nanoflann"):
             ott.assert_almost_equal(x.norm(), distance[indices.index(i)])
 
 # limit case
-sample = [[0.0, -1.0 / 3.0],
-          [-0.5, -1.0 / 3.0],
-          [0.5, -0.77777777777],
-          [-0.75, -0.111111111],
-          [0.25, 0.55555555555],
-          [-0.25, -0.55555555555]]
+sample = [
+    [0.0, -1.0 / 3.0],
+    [-0.5, -1.0 / 3.0],
+    [0.5, -0.77777777777],
+    [-0.75, -0.111111111],
+    [0.25, 0.55555555555],
+    [-0.25, -0.55555555555],
+]
 tree = ot.KDTree(sample)
 x = sample[1]
 indices = tree.queryK(x, 6, True)

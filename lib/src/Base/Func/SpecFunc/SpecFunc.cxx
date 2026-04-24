@@ -242,13 +242,13 @@ Scalar SpecFunc::BesselInu(const Scalar x, const Scalar nu)
   // Check if nu is an integer
   const UnsignedInteger inu = nu;
   if (nu == inu)
-    {
-      Scalar sign = 1.0;
-      // Check if nu is odd and x is negative
-      if ((inu % 2 == 1) && (x < 0.0))
-	sign = -1.0;
-      return sign * std::exp(LogBesselInu(std::abs(x), nu));
-    } // nu integer
+  {
+    Scalar sign = 1.0;
+    // Check if nu is odd and x is negative
+    if ((inu % 2 == 1) && (x < 0.0))
+      sign = -1.0;
+    return sign * std::exp(LogBesselInu(std::abs(x), nu));
+  } // nu integer
   if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Expected a nonnegative value for x=" << x << " when nu=" << nu << " is not an integer";
   return std::exp(LogBesselInu(x, nu));
 }
@@ -345,40 +345,40 @@ Scalar SpecFunc::LogBesselInu(const Scalar x, const Scalar nu)
     const Scalar t = 1.0 / invt;
     const Scalar tOverNu = t / nu;
     const Scalar eta = invt + std::log(xp / (1.0 + invt));
-    
+
     const Scalar value = eta * nu - 0.5 * logNu - LOGSQRT2PI - 0.25 * log1p(xp * xp);
-    
+
     return std::tuple{t, tOverNu, value};
   };
-  
+
   // Third case, use U4
   if (((x > 274.2377) && (nu > 0.3)) || (nu > 163.6993))
-    {
-      auto [t, tOverNu, value] = uPreamble();
-      const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * U4(t))));
-      return value + log1p(sum);
-    }
+  {
+    auto [t, tOverNu, value] = uPreamble();
+    const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * U4(t))));
+    return value + log1p(sum);
+  }
   // Fourth case, use U6
   if (((x > 84.4153) && (nu > 0.46)) || (nu > 56.9971))
-    {
-      auto [t, tOverNu, value] = uPreamble();
-      const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * (U4(t) + tOverNu * (U5(t) + tOverNu * U6(t))))));
-      return value + log1p(sum);
-    }
+  {
+    auto [t, tOverNu, value] = uPreamble();
+    const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * (U4(t) + tOverNu * (U5(t) + tOverNu * U6(t))))));
+    return value + log1p(sum);
+  }
   // Fifth case, use U9
   if (((x > 35.9074) && (nu > 0.6)) || (nu > 20.1534))
-    {
-      auto [t, tOverNu, value] = uPreamble();
-      const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * (U4(t) + tOverNu * (U5(t) + tOverNu * (U6(t) + tOverNu * (U7(t) + tOverNu * (U8(t) + tOverNu * U9(t)))))))));
-      return value + log1p(sum);
-    }
+  {
+    auto [t, tOverNu, value] = uPreamble();
+    const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * (U4(t) + tOverNu * (U5(t) + tOverNu * (U6(t) + tOverNu * (U7(t) + tOverNu * (U8(t) + tOverNu * U9(t)))))))));
+    return value + log1p(sum);
+  }
   // Sixth case, use U13
   if (((x > 19.6931) && (nu > 0.7)) || (nu > 12.6964))
-    {
-      auto [t, tOverNu, value] = uPreamble();
-      const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * (U4(t) + tOverNu * (U5(t) + tOverNu * (U6(t) + tOverNu * (U7(t) + tOverNu * (U8(t) + tOverNu * (U9(t) + tOverNu * (U10(t) + tOverNu * (U11(t) + tOverNu * (U12(t) + tOverNu * U13(t)))))))))))));
-      return value + log1p(sum);
-    }
+  {
+    auto [t, tOverNu, value] = uPreamble();
+    const Scalar sum = tOverNu * (U1(t) + tOverNu * (U2(t) + tOverNu * (U3(t) + tOverNu * (U4(t) + tOverNu * (U5(t) + tOverNu * (U6(t) + tOverNu * (U7(t) + tOverNu * (U8(t) + tOverNu * (U9(t) + tOverNu * (U10(t) + tOverNu * (U11(t) + tOverNu * (U12(t) + tOverNu * U13(t)))))))))))));
+    return value + log1p(sum);
+  }
 
 // Non-asymptotic case
 // Index of the maximum term in the summation
@@ -388,9 +388,9 @@ Scalar SpecFunc::LogBesselInu(const Scalar x, const Scalar nu)
   Point logA(kMax + 1);
   logA[0] = -LogGamma(nu + 1.0);
   for (UnsignedInteger k = 1; k <= kMax; ++k)
-    {
-      logA[k] = logA[k - 1] + 2.0 * (logX - M_LN2) - std::log(k) - std::log(k + nu);
-    }
+  {
+    logA[k] = logA[k - 1] + 2.0 * (logX - M_LN2) - std::log(k) - std::log(k + nu);
+  }
   const Scalar logAMax = logA[kMax];
   Scalar sum = 0.0;
   Scalar delta = 0.0;
@@ -398,29 +398,29 @@ Scalar SpecFunc::LogBesselInu(const Scalar x, const Scalar nu)
   // Sum only significant terms
   // Sum backward from the max, if needed
   if (kMax > 0)
+  {
+    k = kMax - 1;
+    delta = logA[k] - logAMax;
+    while ((k > 0) && (delta >= std::log(ScalarEpsilon)))
     {
-      k = kMax - 1;
+      sum += std::exp(delta);
+      --k;
       delta = logA[k] - logAMax;
-      while ((k > 0) && (delta >= std::log(ScalarEpsilon)))
-	{
-	  sum += std::exp(delta);
-	  --k;
-	  delta = logA[k] - logAMax;
-	}
-      // Add the last term if loop ended with k == 0
-      if (k == 0) sum += std::exp(delta);
     }
+    // Add the last term if loop ended with k == 0
+    if (k == 0) sum += std::exp(delta);
+  }
   // Sum forward from the max
   k = kMax + 1;
   Scalar logAk = logAMax + 2.0 * (logX - M_LN2) - std::log(k) - std::log(k + nu);
   delta = logAk - logAMax;
   while (delta >= std::log(ScalarEpsilon))
-    {
-      sum += std::exp(delta);
-      ++k;
-      logAk += 2.0 * (logX - M_LN2) - std::log(k) - std::log(k + nu);
-      delta = logAk - logAMax;
-    }
+  {
+    sum += std::exp(delta);
+    ++k;
+    logAk += 2.0 * (logX - M_LN2) - std::log(k) - std::log(k + nu);
+    delta = logAk - logAMax;
+  }
   const Scalar value = nu * (logX - M_LN2) + logAMax + std::log1p(sum);
   return value;
 }
@@ -1580,7 +1580,7 @@ Scalar SpecFunc::Clip01(const Scalar proba, const Bool tail)
 
 Scalar SpecFunc::Clip(const Scalar x, const Scalar a, const Scalar b)
 {
-  if (!(a<b)) throw InvalidArgumentException(HERE) << "Expected a=" << a << " to be strictly less than b=" << b;
+  if (!(a < b)) throw InvalidArgumentException(HERE) << "Expected a=" << a << " to be strictly less than b=" << b;
   return std::clamp(x, a, b);
 }
 

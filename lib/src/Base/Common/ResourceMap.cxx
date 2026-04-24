@@ -778,7 +778,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FieldFunctionalChaosAlgorithm
   addAsBool("FieldFunctionalChaosAlgorithm-DefaultRecompress", false);
-  
+
   // FieldToPointFunctionalChaosAlgorithm
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 

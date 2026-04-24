@@ -202,13 +202,17 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
         atol = 1.0e7
         ott.assert_almost_equal(marginalPredictions, rawMarginalPredictions, rtol, atol)
         # Check the coefficients of the PCE using the same marginal output sample
-        marginalAlgo = ot.FunctionalChaosAlgorithm(X, Y.getMarginal(outputIndex), distribution, adaptiveStrategy)
+        marginalAlgo = ot.FunctionalChaosAlgorithm(
+            X, Y.getMarginal(outputIndex), distribution, adaptiveStrategy
+        )
         marginalAlgo.setMaximumResidual(maximumResidual)
         marginalAlgo.run()
         marginalResult = marginalAlgo.getResult()
         rawMarginalCoefficients = marginalResult.getCoefficients()
         marginalCoefficients = marginalChaos.getCoefficients()
-        ott.assert_almost_equal(marginalCoefficients, rawMarginalCoefficients, rtol, atol)
+        ott.assert_almost_equal(
+            marginalCoefficients, rawMarginalCoefficients, rtol, atol
+        )
         rawMarginalIndices = marginalResult.getIndices()
         marginalIndices = marginalChaos.getIndices()
         assert marginalIndices == rawMarginalIndices

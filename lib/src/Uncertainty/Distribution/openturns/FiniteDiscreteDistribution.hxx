@@ -47,7 +47,7 @@ public:
 
   /** Constructor from a sample and associated weights */
   FiniteDiscreteDistribution(const Sample & points,
-              const Point & weights);
+                             const Point & weights);
 
   /** Tell if the distribution is continuous */
   Bool isContinuous() const override;

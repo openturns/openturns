@@ -521,7 +521,9 @@ for doe in doeList:
 
 # Check the setActiveFunctions method
 size = 10
-algo = ot.LeastSquaresExpansion(inputSample, outputSample, distribution, productBasis, size)
+algo = ot.LeastSquaresExpansion(
+    inputSample, outputSample, distribution, productBasis, size
+)
 # The active functions are within the current basis/basis size
 algo.setActiveFunctions(range(8))
 assert algo.getActiveFunctions() == range(8)

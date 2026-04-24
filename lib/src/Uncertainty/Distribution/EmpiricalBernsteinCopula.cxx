@@ -503,7 +503,7 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x)
     if (isCopula())
     {
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-	result[j] = SpecFunc::Clip01(x[j]);
+        result[j] = SpecFunc::Clip01(x[j]);
       return result;
     } // isCopula
     for (UnsignedInteger j = 0; j < dimension_; ++j)

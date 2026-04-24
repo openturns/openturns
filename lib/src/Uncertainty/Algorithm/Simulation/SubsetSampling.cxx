@@ -314,7 +314,8 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
     // store convergence at each block
     const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
                           varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size,
-                          1.0 * i};
+                          1.0 * i
+                         };
     convergenceStrategy_.store(convPt);
   }
   return probabilityEstimate;

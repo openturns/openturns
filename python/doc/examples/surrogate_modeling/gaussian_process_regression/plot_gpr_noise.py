@@ -123,7 +123,7 @@ view = otv.View(graph)
 # This Matérn model is based on the regularity parameter :math:`\nu=3/2`.
 
 # %%
-ot.ResourceMap.SetAsScalar('CovarianceModel-DefaultNuggetFactor', 0.0)
+ot.ResourceMap.SetAsScalar("CovarianceModel-DefaultNuggetFactor", 0.0)
 dimension = 1
 basis = ot.ConstantBasisFactory(dimension).build()
 
@@ -140,8 +140,10 @@ fitter_result_noNoise = fitter_algo.getResult()
 # %%
 # We get the estimated parameters of the covariance model.
 estimated_cov_noNoise = fitter_result_noNoise.getCovarianceModel()
-print('Case 1: ignore any noise')
-print('Estimated covariance model with the homoscedastic noise = ', estimated_cov_noNoise)
+print("Case 1: ignore any noise")
+print(
+    "Estimated covariance model with the homoscedastic noise = ", estimated_cov_noNoise
+)
 
 # %%
 # We create the GPR metamodel.
@@ -155,10 +157,10 @@ graph.setLegendPosition("lower left")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
-graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Exact Data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_noNoise(x_test), legend="GPR", color="green")
+    plot_1d_data(x_train, y_train, type="Cloud", legend="Exact Data", color="red")
 )
+graph.add(plot_1d_data(x_test, gprMM_noNoise(x_test), legend="GPR", color="green"))
 view = otv.View(graph)
 
 # %%
@@ -169,15 +171,17 @@ process_noNoise = otexp.ConditionedGaussianProcess(gpr_result_noNoise, myRegular
 traj_noNoise = process_noNoise.getSample(10)
 graph_traj_noNoise = ot.Graph(r"Model with exact data", "x", "y", True, "lower left")
 graph_traj_noNoise.add(traj_noNoise.drawMarginal())
-graph_traj_noNoise.setLegends(['conditioned trajectories'] + [''] * 9)
-graph_traj_noNoise.setColors(['grey'] * 10)
+graph_traj_noNoise.setLegends(["conditioned trajectories"] + [""] * 9)
+graph_traj_noNoise.setColors(["grey"] * 10)
 graph_traj_noNoise.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_noNoise.add(
     plot_1d_data(x_test, gprMM_noNoise(x_test), legend="GPR", color="green")
 )
-graph_traj_noNoise.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Exact data", color="red"))
+graph_traj_noNoise.add(
+    plot_1d_data(x_train, y_train, type="Cloud", legend="Exact data", color="red")
+)
 view = otv.View(graph_traj_noNoise)
 
 # %%
@@ -202,7 +206,9 @@ graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph.add(
-    plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red")
+    plot_1d_data(
+        x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"
+    )
 )
 view = otv.View(graph)
 
@@ -219,8 +225,8 @@ fitter_result = fitter_algo.getResult()
 # %%
 # We get the estimated parameters of the covariance model.
 estimated_cov = fitter_result.getCovarianceModel()
-print('Case 2: homoscedastic noise')
-print('Estimated covariance model with the homoscedastic noise = ', estimated_cov)
+print("Case 2: homoscedastic noise")
+print("Estimated covariance model with the homoscedastic noise = ", estimated_cov)
 
 # %%
 # We create the GPR metamodel.
@@ -250,9 +256,15 @@ graph = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower 
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
-graph.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="green")
+    plot_1d_data(
+        x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"
+    )
+)
+graph.add(
+    plot_1d_data(
+        x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="green"
+    )
 )
 graph.add(
     plot_1d_data(x_test, gprMM_1(x_test), legend="GPR ignoring noise", color="blue")
@@ -264,17 +276,25 @@ view = otv.View(graph)
 # :class:`~openturns.experimental.ConditionedGaussianProcess` as previoulsy.
 process_homosc = otexp.ConditionedGaussianProcess(gpr_result_homosc, myRegularGrid)
 traj_homosc = process_homosc.getSample(10)
-graph_traj_homosc = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
+graph_traj_homosc = ot.Graph(
+    r"Model with homoscedastic noisy data", "x", "y", True, "lower left"
+)
 graph_traj_homosc.add(traj_homosc.drawMarginal())
-graph_traj_homosc.setLegends(['conditioned trajectories'] + [''] * 9)
-graph_traj_homosc.setColors(['grey'] * 10)
+graph_traj_homosc.setLegends(["conditioned trajectories"] + [""] * 9)
+graph_traj_homosc.setColors(["grey"] * 10)
 graph_traj_homosc.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_homosc.add(
-    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="green")
+    plot_1d_data(
+        x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="green"
+    )
 )
-graph_traj_homosc.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
+graph_traj_homosc.add(
+    plot_1d_data(
+        x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"
+    )
+)
 view = otv.View(graph_traj_homosc)
 
 # %%
@@ -303,14 +323,18 @@ graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph.add(
-    plot_1d_data(x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red")
+    plot_1d_data(
+        x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"
+    )
 )
 view = otv.View(graph)
 
 # %%
 # We define the Gaussian Process Fitter on the noisy data.
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
-fitter_algo = ot.GaussianProcessFitter(x_train, y_train_heterosc, covarianceModel, basis)
+fitter_algo = ot.GaussianProcessFitter(
+    x_train, y_train_heterosc, covarianceModel, basis
+)
 
 # %%
 # If we ignore the noise, we get the following surrogate model.
@@ -320,8 +344,8 @@ fitter_result = fitter_algo.getResult()
 # %%
 # We get the estimated parameters of the covariance model.
 estimated_cov = fitter_result.getCovarianceModel()
-print('Case 3: heteroscedastic noise')
-print('Estimated covariance model with the heteroscedastic noise = ', estimated_cov)
+print("Case 3: heteroscedastic noise")
+print("Estimated covariance model with the heteroscedastic noise = ", estimated_cov)
 
 # %%
 # We create the GPR metamodel.
@@ -332,7 +356,9 @@ gprMM_2 = gpr_result_2.getMetaModel()
 
 # %%
 # Now we do not ignore the noise on output values and we add it to the algorithm.
-fitter_algo = ot.GaussianProcessFitter(x_train, y_train_heterosc, covarianceModel, basis)
+fitter_algo = ot.GaussianProcessFitter(
+    x_train, y_train_heterosc, covarianceModel, basis
+)
 fitter_algo.setNoise(variance_point_heterosc)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
@@ -351,9 +377,15 @@ graph = ot.Graph(r"Model with heteroscedastic noisy data", "x", "y", True, "lowe
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
-graph.add(plot_1d_data(x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_heterosc(x_test), legend="GPR modeling noise", color="green")
+    plot_1d_data(
+        x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"
+    )
+)
+graph.add(
+    plot_1d_data(
+        x_test, gprMM_heterosc(x_test), legend="GPR modeling noise", color="green"
+    )
 )
 graph.add(
     plot_1d_data(x_test, gprMM_2(x_test), legend="GPR ignoring noise", color="blue")
@@ -366,17 +398,25 @@ view = otv.View(graph)
 # We can see that the trajectories have kept the regularity of the initial Matern model.
 process_heterosc = otexp.ConditionedGaussianProcess(gpr_result_heterosc, myRegularGrid)
 traj_heterosc = process_heterosc.getSample(10)
-graph_traj_heterosc = ot.Graph(r"Model with heteroscedastic noisy data", "x", "y", True, "lower left")
+graph_traj_heterosc = ot.Graph(
+    r"Model with heteroscedastic noisy data", "x", "y", True, "lower left"
+)
 graph_traj_heterosc.add(traj_heterosc.drawMarginal())
-graph_traj_heterosc.setLegends(['conditioned trajectories'] + [''] * 9)
-graph_traj_heterosc.setColors(['grey'] * 10)
+graph_traj_heterosc.setLegends(["conditioned trajectories"] + [""] * 9)
+graph_traj_heterosc.setColors(["grey"] * 10)
 graph_traj_heterosc.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_heterosc.add(
-    plot_1d_data(x_test, gprMM_heterosc(x_test), legend="GPR modeling noise", color="green")
+    plot_1d_data(
+        x_test, gprMM_heterosc(x_test), legend="GPR modeling noise", color="green"
+    )
 )
-graph_traj_heterosc.add(plot_1d_data(x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"))
+graph_traj_heterosc.add(
+    plot_1d_data(
+        x_train, y_train_heterosc, type="Cloud", legend="Noisy data", color="red"
+    )
+)
 view = otv.View(graph_traj_heterosc)
 
 # %%
@@ -390,7 +430,9 @@ view = otv.View(graph_traj_heterosc)
 # of the nugget factor.
 covarianceModel = ot.MaternModel([1.0] * dimension, 1.5)
 covarianceModel.activateNuggetFactor(True)
-fitter_algo_nugget = ot.GaussianProcessFitter(x_train, y_train_homosc, covarianceModel, basis)
+fitter_algo_nugget = ot.GaussianProcessFitter(
+    x_train, y_train_homosc, covarianceModel, basis
+)
 fitter_algo_nugget.run()
 fitter_result_nugget = fitter_algo_nugget.getResult()
 
@@ -398,9 +440,9 @@ fitter_result_nugget = fitter_algo_nugget.getResult()
 # We get the estimated parameters of the covariance model and the nugget factor
 # :math:`\varepsilon_{nugget}`.
 estimated_cov_nugget = fitter_result_nugget.getCovarianceModel()
-print('Case 4: nugget effect')
-print('Estimated covariance model with the nugget factor = ', estimated_cov_nugget)
-print('Estimated nugget factor = ', estimated_cov_nugget.getNuggetFactor())
+print("Case 4: nugget effect")
+print("Estimated covariance model with the nugget factor = ", estimated_cov_nugget)
+print("Estimated nugget factor = ", estimated_cov_nugget.getNuggetFactor())
 
 # %%
 gpr_algo_nuggetF = ot.GaussianProcessRegression(fitter_result_nugget)
@@ -414,12 +456,23 @@ graph = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower 
 graph.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
-graph.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
 graph.add(
-    plot_1d_data(x_test, gprMM_nuggetF(x_test), legend="GPR modeling nugget factor", color="green")
+    plot_1d_data(
+        x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"
+    )
 )
 graph.add(
-    plot_1d_data(x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="blue")
+    plot_1d_data(
+        x_test,
+        gprMM_nuggetF(x_test),
+        legend="GPR modeling nugget factor",
+        color="green",
+    )
+)
+graph.add(
+    plot_1d_data(
+        x_test, gprMM_homosc(x_test), legend="GPR modeling noise", color="blue"
+    )
 )
 view = otv.View(graph)
 
@@ -429,17 +482,28 @@ view = otv.View(graph)
 # We can see that the trajectories are not as smooth as the initial Matern model any more.
 process_nuggetF = otexp.ConditionedGaussianProcess(gpr_result_nuggetF, myRegularGrid)
 traj_nuggetF = process_nuggetF.getSample(10)
-graph_traj_nuggetF = ot.Graph(r"Model with homoscedastic noisy data", "x", "y", True, "lower left")
+graph_traj_nuggetF = ot.Graph(
+    r"Model with homoscedastic noisy data", "x", "y", True, "lower left"
+)
 graph_traj_nuggetF.add(traj_nuggetF.drawMarginal())
-graph_traj_nuggetF.setLegends(['conditioned trajectories'] + [''] * 9)
-graph_traj_nuggetF.setColors(['grey'] * 10)
+graph_traj_nuggetF.setLegends(["conditioned trajectories"] + [""] * 9)
+graph_traj_nuggetF.setColors(["grey"] * 10)
 graph_traj_nuggetF.add(
     plot_1d_data(x_test, y_test, legend="Model", color="black", linestyle="dashed")
 )
 graph_traj_nuggetF.add(
-    plot_1d_data(x_test, gprMM_nuggetF(x_test), legend="GPR modeling nugget factor", color="green")
+    plot_1d_data(
+        x_test,
+        gprMM_nuggetF(x_test),
+        legend="GPR modeling nugget factor",
+        color="green",
+    )
 )
-graph_traj_nuggetF.add(plot_1d_data(x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"))
+graph_traj_nuggetF.add(
+    plot_1d_data(
+        x_train, y_train_homosc, type="Cloud", legend="Noisy data", color="red"
+    )
+)
 view = otv.View(graph_traj_nuggetF)
 
 # %%

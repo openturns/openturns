@@ -51,7 +51,7 @@ int main(int, char *[])
     assert_equal(Normal(2) == Normal(2), true);
     assert_equal(Normal(2) != Normal(3), true);
 #if !(defined(__clang__) && (__cplusplus >= 202002L)) // error: use of overloaded operator '==' is ambiguous (AppleClang 17)
-    assert_equal(Triangular{} != Gumbel{}, true);
+    assert_equal(Triangular {} != Gumbel {}, true);
     assert_equal(Gumbel{} != Triangular{}, true);
     assert_equal(Normal(2) == JointDistribution(Collection<Distribution>(2, Normal{})), true);
     assert_equal(Normal(2) != JointDistribution(Collection<Distribution>(2, Normal{})), false);
