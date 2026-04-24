@@ -1,7 +1,7 @@
 %feature("docstring") OT::QuantileConfidence
 R"RAW(Estimate confidence intervals of a quantile.
 
-Refer to :ref:`quantile_confidence_estimation`.
+Refer to :any:`quantile_confidence_estimation`.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
@@ -34,7 +34,7 @@ We have:
     X_{(0)} \leq X_{(1)} \leq \dots \leq X_{(\sampleSize -1)}
 
 Care: Python enumeration begins at 0 so that the mathematical :math:`X_{(k)}` order statistics of the theoretical file
-:ref:`quantile_confidence_estimation` where :math:`1 \leq k \leq n` corresponds to the order statistics :math:`X_{(k-1)}` given by the library
+:any:`quantile_confidence_estimation` where :math:`1 \leq k \leq n` corresponds to the order statistics :math:`X_{(k-1)}` given by the library
 with this class `QuantileConfidence`.
 
 
@@ -72,7 +72,7 @@ The upper rank :math:`k_{up}` is the smallest rank :math:`k` with :math:`0 \leq 
 In other words, the interval :math:`\left]-\infty, X_{(k_{up})}\right]` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution for each case.
 
 Parameters
@@ -120,7 +120,7 @@ The ranks :math:`k_1, k_2` with :math:`0 \leq k_1, k_2 \leq \sampleSize -1` are 
 In other words, the interval :math:`\left[ X_{(k_1)}, X_{(k_2)} \right[` is a bilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution.
  
 
@@ -352,7 +352,7 @@ in the case of an upper bound.
 In other words, the interval :math:`\left] -\infty, X_{(k)} \right]` or :math:`\left[ X_{(k)}, +\infty \right[` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`. The statistics values are evaluated from the sample.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution.
 
 Parameters
@@ -403,7 +403,7 @@ and :math:`X_{(n-1)} = \max(X_1, \dots, X_{n-1})`.
 
 The statistics values are evaluated from the sample.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution.
 
 Returns

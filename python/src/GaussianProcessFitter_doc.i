@@ -1,7 +1,7 @@
 %feature("docstring") OT::GaussianProcessFitter
 R"RAW(Fit gaussian process models
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 Parameters
 ----------
@@ -22,7 +22,7 @@ basis : :class:`~openturns.Basis`
 Notes
 -----
 
-Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
+Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
 We only detail here the notions related to the class.
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}`
@@ -50,7 +50,7 @@ where :math:`\vect{p}` is the vector of the parameters of the covariance model  
 :class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
 parameters.
 
-The estimation is done by maximizing the :ref:`reduced log-likelihood of the model<logLikelihoodGP>`.
+The estimation is done by maximizing the :any:`reduced log-likelihood of the model<logLikelihoodGP>`.
 
 The default optimizer is :class:`~openturns.Cobyla` and can be changed thanks to the
 :meth:`setOptimizationAlgorithm` method.
@@ -358,12 +358,12 @@ Notes
 -----
 The noise takes into account the fact that the output values of the function are not known precisely. This noise is
 modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in
-:ref:`gaussian_process_regression`.
+:any:`gaussian_process_regression`.
 
 If the output dimension :math:`\outputDim = 1`, each matrix :math:`\mat{\Sigma}_i^{noise}` is reduced to a scalar 
 and the noise can be specified with a sequence of float.
 
-Refer to :ref:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
+Refer to :any:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -380,7 +380,7 @@ Notes
 -----
 The noise takes into account the fact that the output values of the function are not known precisely. This noise is
 modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in
-:ref:`gaussian_process_regression`.
+:any:`gaussian_process_regression`.
 
-Refer to :ref:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
+Refer to :any:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"

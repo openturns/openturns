@@ -2107,7 +2107,7 @@ OT_Distribution_getInverseIsoProbabilisticTransformation_doc
 %define OT_Distribution_getIsoProbabilisticTransformation_doc
 R"RAW(Accessor to the iso-probabilistic transformation.
 
-Refer to :ref:`isoprobabilistic_transformation`.
+Refer to :any:`isoprobabilistic_transformation`.
 
 Returns
 -------
@@ -2452,7 +2452,7 @@ OT_Distribution_getRange_doc
 %define OT_Distribution_getRealization_doc
 "Accessor to a pseudo-random realization from the distribution.
 
-Refer to :ref:`distribution_realization`.
+Refer to :any:`distribution_realization`.
 
 Returns
 -------
@@ -3406,7 +3406,7 @@ where  :math:`u \mapsto \chi^{ij}(u)` is the upper tail dependence function of t
 
     \chi(u) = 2 - \frac{\log C(u,u)}{\log u}, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3445,7 +3445,7 @@ distribution :math:`(X_i, X_j)` defined by:
 
     \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3484,7 +3484,7 @@ distribution :math:`(X_i, X_j)` defined by:
 
     \chi_L(u) = \frac{\log (1 - C(u,u))}{\log (1-u)}, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3523,7 +3523,7 @@ of the bivariate distribution :math:`(X_i, X_j)` defined by:
     
     \bar{\chi}_L(u) = \frac{2 \log u}{\log C(u,u)} - 1, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3551,7 +3551,7 @@ The upper tail dependence function :math:`u \mapsto \chi(u)` is defined by:
 
     \chi(u) = 2 - \frac{\log C(u,u)}{\log u}, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3580,7 +3580,7 @@ The upper extremal dependence function :math:`u \mapsto \bar{\chi}(u)` is define
 
     \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3609,7 +3609,7 @@ The lower tail dependence  function :math:`u \mapsto \chi_L(u)` is defined by:
 
     \chi_L(u) = \frac{\log (1 - C(u,u))}{\log (1-u)}, \forall u \in [0,1]
 
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------
@@ -3638,7 +3638,7 @@ The lower extremal dependence function :math:`u \mapsto \bar{\chi}(u)` is define
     
     \bar{\chi}_L(u) = \frac{2 \log u}{\log C(u,u)} - 1, \forall u \in [0,1]
     
-Refer to :ref:`tail_dependence` to get more details.
+Refer to :any:`tail_dependence` to get more details.
 
 Returns
 -------

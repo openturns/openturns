@@ -1,7 +1,7 @@
 %feature("docstring") OT::WelchFactory
 R"RAW(Welch estimator of the spectral model of a stationary process.
 
-Refer to :ref:`estimate_spectral_density_function`.
+Refer to :any:`estimate_spectral_density_function`.
 
 Parameters
 ----------

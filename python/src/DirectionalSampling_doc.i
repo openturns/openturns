@@ -1,7 +1,7 @@
 %feature("docstring") OT::DirectionalSampling
 R"RAW(Directional sampling algorithm.
 
-Refer to :ref:`directional_simulation`.
+Refer to :any:`directional_simulation`.
 
 Parameters
 ----------
@@ -36,7 +36,7 @@ The directional sampling algorithm estimates the probability of the event :math:
 
 The directional sampling algorithm is a variance reduction sampling method.
 As it is performed in the standard space, it uses the iso-probabilistic transformation associated to :math:`\inputMeasure`
-(see :ref:`isoprobabilistic_transformation` for details).
+(see :any:`isoprobabilistic_transformation` for details).
 
 Let :math:`T` be the iso-probabilistic transformation: :math:`T(\vect{X}) = \vect{Z}`. The
 random vector :math:`\vect{Z}` follows a spherical distribution, which means that it is written
