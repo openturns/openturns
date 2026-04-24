@@ -48,7 +48,7 @@ The resulting error distribution is :class:`~openturns.Normal`
 with a zero mean and with a covariance matrix equal to the
 `errorCovariance` input argument.
 
-Please read :ref:`gaussian_calibration` for more details.
+Please read :any:`gaussian_calibration` for more details.
 
 See also
 --------

@@ -32,7 +32,7 @@ Examples
 %feature("docstring") OT::CorrelationAnalysis::computePCC
 "Correlation evaluation based on the Partial Correlation Coefficient.
 
-Refer to :ref:`ranking_pcc`.
+Refer to :any:`ranking_pcc`.
 
 Returns
 -------
@@ -45,7 +45,7 @@ coef : :class:`~openturns.Point`
 %feature("docstring") OT::CorrelationAnalysis::computePRCC
 "Correlation evaluation based on the Partial Rank Correlation Coefficient.
 
-Refer to :ref:`ranking_pcc`.
+Refer to :any:`ranking_pcc`.
 
 Returns
 -------
@@ -58,7 +58,7 @@ coef : :class:`~openturns.Point`
 %feature("docstring") OT::CorrelationAnalysis::computeLinearCorrelation
 "Correlation evaluation based on the linear (Pearson) correlation coefficient.
 
-Refer to :ref:`pearson_coefficient`.
+Refer to :any:`pearson_coefficient`.
 
 Returns
 -------
@@ -71,7 +71,7 @@ coef : :class:`~openturns.Point`
 %feature("docstring") OT::CorrelationAnalysis::computeSpearmanCorrelation
 "Correlation evaluation based on the Spearman correlation coefficient.
 
-Refer to :ref:`spearman_coefficient`.
+Refer to :any:`spearman_coefficient`.
 
 Returns
 -------
@@ -97,7 +97,7 @@ coef : :class:`~openturns.Point`
 %feature("docstring") OT::CorrelationAnalysis::computeSRC
 "Correlation evaluation based on the Standard Regression Coefficient.
 
-Refer to :ref:`ranking_src`.
+Refer to :any:`ranking_src`.
 
 Returns
 -------
@@ -109,7 +109,7 @@ coef : :class:`~openturns.Point`
 %feature("docstring") OT::CorrelationAnalysis::computeSRRC
 "Correlation evaluation based on the Standard Rank Regression Coefficient.
 
-Refer to :ref:`ranking_src`.
+Refer to :any:`ranking_src`.
 
 Returns
 -------
@@ -122,7 +122,7 @@ coef : :class:`~openturns.Point`
 %feature("docstring") OT::CorrelationAnalysis::computeSquaredSRC
 "Correlation evaluation based on the square of the Standard Regression Coefficient.
 
-Refer to :ref:`ranking_src`.
+Refer to :any:`ranking_src`.
 
 Parameters
 ----------

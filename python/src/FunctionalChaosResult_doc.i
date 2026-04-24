@@ -3,7 +3,7 @@ R"RAW(Functional chaos result.
 
 Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosAlgorithm`.
 
-Refer to :ref:`functional_chaos` to get more details on functional chaos expansion.
+Refer to :any:`functional_chaos` to get more details on functional chaos expansion.
 
 Parameters
 ----------
@@ -233,7 +233,7 @@ This is possible only if the marginals of the input distribution are independent
 Otherwise, an exception is generated.
 An example is provided in :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_conditional_expectation`.
 
-We consider the notations introduced in :ref:`functional_chaos`.
+We consider the notations introduced in :any:`functional_chaos`.
 Let :math:`\inputRV \in \Rset^{\inputDim}` be the input and let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
 be a set of marginal indices. 
 Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 

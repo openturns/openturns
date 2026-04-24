@@ -1,7 +1,7 @@
 %feature("docstring") OT::SORM
 R"RAW(Second Order Reliability Method (SORM).
 
-Refer to :ref:`sorm_approximation`.
+Refer to :any:`sorm_approximation`.
 
 Parameters
 ----------

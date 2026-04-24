@@ -31,7 +31,7 @@ Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Breitung}` according to the
-    :ref:`Breitung <Breitung_formula>` approximation."
+    :any:`Breitung <Breitung_formula>` approximation."
 
 // ---------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Hohenbichler}` according to the
-    :ref:`Hohenbichler <Hohenbichler_formula>` approximation."
+    :any:`Hohenbichler <Hohenbichler_formula>` approximation."
 
 // ---------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Tvedt}` according to the
-    :ref:`Tvedt <Tvedt_formula>` approximation."
+    :any:`Tvedt <Tvedt_formula>` approximation."
 
 // ---------------------------------------------------------------------
 

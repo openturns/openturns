@@ -18,9 +18,9 @@ The :meth:`~openturns.SobolIndicesAlgorithm.DrawSobolIndices` static method can 
 draw the indices.
 
 This class provides methods to estimate the Sobol' indices which
-are presented in :ref:`sensitivity_sobol`.
+are presented in :any:`sensitivity_sobol`.
 These indices can be easily computed from the polynomial chaos expansion
-using the methods presented in :ref:`sensitivity_sobol_from_pce`.
+using the methods presented in :any:`sensitivity_sobol_from_pce`.
 
 The next table presents the map from the Sobol' index to the
 corresponding method.
@@ -153,7 +153,7 @@ Let :math:`i \in \{0, ..., d - 1\}` the index of an input
 variable. 
 Therefore, the method computes the first order Sobol' index :math:`S_i`
 of the variable :math:`X_i`.
-See :ref:`sensitivity_sobol_from_pce_first_order_variable` 
+See :any:`sensitivity_sobol_from_pce_first_order_variable`
 for the computation of this sensitivity index based on a PCE.
 
 *Case 2: group of variables.*
@@ -161,7 +161,7 @@ Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the interaction (high order) Sobol'
 index :math:`S_\bdu` of the group :math:`\bdu`.
-See :ref:`sensitivity_sobol_from_pce_interaction_group` 
+See :any:`sensitivity_sobol_from_pce_interaction_group`
 for the computation of this sensitivity index based on a PCE.
 
 Parameters
@@ -191,7 +191,7 @@ Let :math:`i \in \{0, ..., d - 1\}` the index of an input
 variable. 
 Therefore, the method computes the total index :math:`S^T_i`
 of the variable :math:`X_i`.
-See :ref:`sensitivity_sobol_from_pce_total_variable` 
+See :any:`sensitivity_sobol_from_pce_total_variable`
 for the computation of this sensitivity index based on a PCE.
 
 *Case 2: group of variables.*
@@ -199,7 +199,7 @@ Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the total interaction (high order)
 Sobol' index :math:`S_\bdu^{T, i}` of the group :math:`\bdu`.
-See :ref:`sensitivity_sobol_from_pce_total_interaction_group` 
+See :any:`sensitivity_sobol_from_pce_total_interaction_group`
 for the computation of this sensitivity index based on a PCE.
 
 Parameters
@@ -225,7 +225,7 @@ Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the first order closed Sobol' index 
 :math:`S^{\operatorname{cl}}_\bdu` of the group :math:`\bdu`.
-See :ref:`sensitivity_sobol_from_pce_first_order_closed_group` 
+See :any:`sensitivity_sobol_from_pce_first_order_closed_group`
 for the computation of this sensitivity index based on a PCE.
 
 Parameters
@@ -250,7 +250,7 @@ Let :math:`\bdu \subseteq \{0, ..., d - 1\}` the list of variable indices
 in the group. 
 Therefore, the method computes the total Sobol' index :math:`S^T_\bdu` of
 the group :math:`\bdu`.
-See :ref:`sensitivity_sobol_from_pce_total_group` 
+See :any:`sensitivity_sobol_from_pce_total_group`
 for the computation of this sensitivity index based on a PCE.
 
 Parameters

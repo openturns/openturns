@@ -1,7 +1,7 @@
 %feature("docstring") OT::CauchyModel
 R"RAW(Cauchy spectral model.
 
-Refer to :ref:`parametric_spectral_model`.
+Refer to :any:`parametric_spectral_model`.
 
 Available constructors:
     CauchyModel(*theta, sigma*)

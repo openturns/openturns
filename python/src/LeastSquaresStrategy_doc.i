@@ -49,11 +49,11 @@ FunctionalChaosAlgorithm, ProjectionStrategy, IntegrationStrategy
 
 Notes
 -----
-This class is used in the :ref:`functional chaos expansion context <functional_chaos>` implemented
+This class is used in the :any:`functional chaos expansion context <functional_chaos>` implemented
 in the class :class:`~openturns.FunctionalChaosAlgorithm`. It is not usable outside this context.
 
-The model is approximated by the meta model defined in :ref:`functional_chaos` by equation :eq:`metaModelPn`
-and the coefficients :math:`(a_k)_{k \in I_n}` are computed by solving the least squares problem defined in :ref:`functional_chaos` by equation :eq:`metaModeleF`.
+The model is approximated by the meta model defined in :any:`functional_chaos` by equation :eq:`metaModelPn`
+and the coefficients :math:`(a_k)_{k \in I_n}` are computed by solving the least squares problem defined in :any:`functional_chaos` by equation :eq:`metaModeleF`.
 
-Refer to :ref:`least_squares` for more details on the resolution of least-squares problem.
+Refer to :any:`least_squares` for more details on the resolution of least-squares problem.
 )RAW"

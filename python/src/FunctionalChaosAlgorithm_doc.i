@@ -1,7 +1,7 @@
 %feature("docstring") OT::FunctionalChaosAlgorithm
 R"RAW(Functional chaos algorithm.
 
-Refer to :ref:`functional_chaos` to get more details on functional chaos expansion.
+Refer to :any:`functional_chaos` to get more details on functional chaos expansion.
 
 Available constructors:
     FunctionalChaosAlgorithm(*inputSample, outputSample*)
@@ -45,7 +45,7 @@ Notes
 This class creates a functional chaos expansion  based on an input and output
 sample of the model.
 
-Refer to :ref:`functional_chaos` to get more details on functional chaos expansion.
+Refer to :any:`functional_chaos` to get more details on functional chaos expansion.
 
 Once the expansion is computed, the :class:`~openturns.FunctionalChaosRandomVector`
 class provides methods to get the mean and variance of the PCE.

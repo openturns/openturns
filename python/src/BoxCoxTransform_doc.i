@@ -1,7 +1,7 @@
 %feature("docstring") OT::BoxCoxTransform
 R"RAW(BoxCox transformation.
 
-Refer to :ref:`boxcox_transformation`.
+Refer to :any:`boxcox_transformation`.
 
 Available constructors:
     BoxCoxTransform(*lambdaVect, shiftVect*)
