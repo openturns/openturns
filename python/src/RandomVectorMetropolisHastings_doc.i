@@ -1,7 +1,7 @@
 %feature("docstring") OT::RandomVectorMetropolisHastings
 "Simple Metropolis-Hastings sampler defined from a random variable.
 
-Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+Refer to :any:`bayesian_calibration`, :any:`metropolis_hastings`.
 
 Parameters
 ----------

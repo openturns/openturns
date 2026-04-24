@@ -1,7 +1,7 @@
 %feature("docstring") OT::ProbabilitySimulationAlgorithm
 R"RAW(Iterative sampling methods.
 
-Refer to :ref:`monte_carlo_simulation`, :ref:`importance_simulation`, :ref:`lhs_simulation`, :ref:`qmc_simulation`.
+Refer to :any:`monte_carlo_simulation`, :any:`importance_simulation`, :any:`lhs_simulation`, :any:`qmc_simulation`.
 
 Available constructor:
     ProbabilitySimulationAlgorithm(*event, experiment, convergenceStrategy=ot.Compact()*)

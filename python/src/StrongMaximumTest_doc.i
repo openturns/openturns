@@ -1,7 +1,7 @@
 %feature("docstring") OT::StrongMaximumTest
 R"RAW(Strong Maximum Test.
 
-Refer to :ref:`strong_maximum_test`.
+Refer to :any:`strong_maximum_test`.
 
 Available constructors:
     StrongMaximumTest(*event, designPoint, importanceLevel, accuracyLevel, confidenceLevel*)

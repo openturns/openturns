@@ -1,7 +1,7 @@
 %feature("docstring") OT::StationaryCovarianceModelFactory
 R"RAW(Estimation of the covariance model of a stationary process.
 
-Refer to :ref:`estimate_stationary_covariance_model`.
+Refer to :any:`estimate_stationary_covariance_model`.
 
 Parameters
 ----------

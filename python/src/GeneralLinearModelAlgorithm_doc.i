@@ -1,7 +1,7 @@
 %feature("docstring") OT::GeneralLinearModelAlgorithm
 R"RAW(Algorithm for the evaluation of general linear models.
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 Available constructors:
     GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, keepCovariance=True*)
@@ -56,7 +56,7 @@ for any :math:`\ell \in \{1, ..., \outputDim\}`,
 where :math:`n_\ell \in \Nset` is the number trend functions of the :math:`\ell`-th output component, and
 :math:`\varphi_j^\ell: \Rset^\inputDim \rightarrow \Rset` the trend functions.
 The Gaussian process :math:`\vect{W}` is of dimension :math:`\outputDim` with zero mean and covariance function
-:math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :ref:`process_definitions`
+:math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :any:`process_definitions`
 for the notations).
 
 We note:

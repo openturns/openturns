@@ -1,7 +1,7 @@
 %feature("docstring") OT::PenalizedLeastSquaresAlgorithm
 R"RAW(Penalized least squares algorithm.
 
-Refer to :ref:`least_squares`.
+Refer to :any:`least_squares`.
 
 Available constructors:
     PenalizedLeastSquaresAlgorithm(*x, y, psi, indices, penalizationFactor=0, useNormal=False*)
