@@ -236,8 +236,8 @@ Returns
 distribution : :class:`~openturns.Pareto`
     The estimated distribution
 
-Note
-----
+Notes
+-----
 When this method is used, all parameters are estimated
 simultaneously.
 "
