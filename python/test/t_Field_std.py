@@ -57,5 +57,12 @@ print(graph)
 graph = field.drawMarginal(1)
 print(graph)
 # Draw in 3D with tuning
-graph = field.draw3D(2, True, ot.Mesh.BuildRotationFromAngles(0.2, 0.3, 0.4), True, 0.9, ["red", "green", "blue"])
+graph = field.draw3D(
+    2,
+    True,
+    ot.Mesh.BuildRotationFromAngles(0.2, 0.3, 0.4),
+    True,
+    0.9,
+    ["red", "green", "blue"],
+)
 print(graph)

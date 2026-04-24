@@ -460,7 +460,7 @@ Point NormalCopula::computeSequentialConditionalPDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       if (!((x[i] < 0.0) || (x[i] >= 1.0)))
-	result[i] = 1.0;
+        result[i] = 1.0;
     }
   else
   {
@@ -481,7 +481,7 @@ Scalar NormalCopula::computeConditionalCDF(const Scalar x,
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
-    return (!(x > 0.0) ? 0.0: !(x < 1.0) ? 1.0 : x);
+    return (!(x > 0.0) ? 0.0 : !(x < 1.0) ? 1.0 : x);
   // General case
   const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
   Scalar meanRos = 0.0;

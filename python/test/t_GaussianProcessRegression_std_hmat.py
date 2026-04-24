@@ -83,7 +83,9 @@ def test_two_inputs_one_output():
     basis = ot.ConstantBasisFactory(inputDimension).build()
 
     # 4) GPF algorithm
-    fit_algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(
+        inputSample, outputSample, covarianceModel, basis
+    )
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(
         ot.Interval(inputSample.getMin(), inputSample.getMax())

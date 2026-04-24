@@ -6,7 +6,9 @@ from math import sqrt, pi, exp, log
 
 ot.TESTPREAMBLE()
 
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 4000000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-DefaultMaxSize", 4000000
+)
 # Deactivate the simplification mechanism as we want to test the Poisson formula
 # based algorithm here
 ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", False)
@@ -274,7 +276,9 @@ for index in range(newGrid.getSize()):
     print("pdf      = %.6g" % PDF)
 
 # 3D test
-ot.ResourceMap.SetAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 8290688)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "LinearCombinationDistribution-DefaultMaxSize", 8290688
+)
 mixture = ot.Mixture([ot.Normal(2, 1), ot.Normal(-2, 1)])
 collection = [ot.Normal(0.0, 1.0), mixture, ot.Uniform(0, 1), ot.Uniform(0, 1)]
 matrix = ot.Matrix([[1, -0.05, 1, -0.5], [0.5, 1, -0.05, 0.3], [-0.5, -0.1, 1.2, -0.8]])

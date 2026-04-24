@@ -55,7 +55,7 @@ public:
   using IntegrationAlgorithmImplementation::integrate;
 
   Point integrate(const Function & function,
-		  const Interval & interval) const override;
+                  const Interval & interval) const override;
 
   Point integrate(const Function & function) const;
 

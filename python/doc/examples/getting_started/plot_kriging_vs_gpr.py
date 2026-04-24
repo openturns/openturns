@@ -333,7 +333,9 @@ conditional_sigma_gpr_wnf = sqrt(conditional_variance_gpr_wnf)
 # The following figure presents the conditional standard deviation depending on :math:`x`.
 
 # %%
-graph = ot.Graph("Conditional standard deviation", "x", "Conditional standard deviation")
+graph = ot.Graph(
+    "Conditional standard deviation", "x", "Conditional standard deviation"
+)
 curve = ot.Curve(x_test, conditional_sigma_kriging)
 graph.add(curve)
 curve = ot.Curve(x_test, conditional_sigma_gpr)

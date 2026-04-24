@@ -50,7 +50,7 @@ public:
                      const Scalar epsilon) const;
   Distribution build() const override;
   FiniteDiscreteDistribution buildAsFiniteDiscreteDistribution(const Sample & sample,
-                                 const Scalar epsilon = 0.0) const;
+      const Scalar epsilon = 0.0) const;
   FiniteDiscreteDistribution buildAsFiniteDiscreteDistribution() const;
 
 }; /* class FiniteDiscreteDistributionFactory */

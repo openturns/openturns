@@ -40,7 +40,7 @@ public:
 
   /** Default constructor */
   explicit CrossEntropyImportanceSampling(const RandomVector & event,
-    const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
+                                          const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   CrossEntropyImportanceSampling * clone() const override;

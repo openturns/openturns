@@ -323,11 +323,11 @@ Graph Field::draw() const
 }
 
 Graph Field::draw3D(const UnsignedInteger index,
-		    const Bool drawEdge,
-		    const SquareMatrix & rotation,
-		    const Bool shading,
-		    const Scalar rho,
-		    const Description & palette) const
+                    const Bool drawEdge,
+                    const SquareMatrix & rotation,
+                    const Bool shading,
+                    const Scalar rho,
+                    const Description & palette) const
 {
   return getImplementation()->draw3D(index, drawEdge, rotation, shading, rho, palette);
 }

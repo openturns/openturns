@@ -170,7 +170,8 @@ f = ot.PythonFunction(6, 1, minlp_obj)
 bounds = ot.Interval([-5.0] * 6, [5.0] * 6)
 ineq = ot.PythonFunction(6, 6, minlp_cstr)
 pop0 = ot.JointDistribution(
-    [ot.Uniform(-5.0, 5.0)] * 4 + [ot.FiniteDiscreteDistribution([[i - 5] for i in range(11)])] * 2
+    [ot.Uniform(-5.0, 5.0)] * 4
+    + [ot.FiniteDiscreteDistribution([[i - 5] for i in range(11)])] * 2
 ).getSample(100)
 problem = ot.OptimizationProblem(f)
 problem.setBounds(bounds)

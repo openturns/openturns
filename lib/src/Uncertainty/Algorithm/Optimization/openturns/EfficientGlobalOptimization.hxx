@@ -125,7 +125,7 @@ private:
 
   // noise function
   Function noiseFunction_;
-  
+
   Sample expectedImprovement_;
 
 } ; /* class EfficientGlobalOptimization */

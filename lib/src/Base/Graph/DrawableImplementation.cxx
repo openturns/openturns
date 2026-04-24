@@ -1085,37 +1085,37 @@ String DrawableImplementation::ConvertFromHSVA(const Scalar hue,
 
 /* Convert a collection of scalar into a collection of colors, aka a Description */
 Description DrawableImplementation::ConvertValuesToColors(const Point & values,
-							  const Description & palette,
-							  const Scalar alpha)
+    const Description & palette,
+    const Scalar alpha)
 {
   const UnsignedInteger valueSize = values.getSize();
   if (valueSize == 0) return Description();
   const UnsignedInteger paletteSize = palette.getSize();
   // If no palette, return the default color with the given alpha
   if (paletteSize == 0)
-    {
-      Indices RGBA(ConvertToRGBA(ResourceMap::GetAsString("Drawable-DefaultColor")));
-      RGBA[3] = std::round(255.0 * SpecFunc::Clip01(alpha));
-      return {ConvertFromRGBA(RGBA[0], RGBA[1], RGBA[2], RGBA[3])};
-    }
+  {
+    Indices RGBA(ConvertToRGBA(ResourceMap::GetAsString("Drawable-DefaultColor")));
+    RGBA[3] = std::round(255.0 * SpecFunc::Clip01(alpha));
+    return {ConvertFromRGBA(RGBA[0], RGBA[1], RGBA[2], RGBA[3])};
+  }
   // Find the min/max of the values
   const Scalar minValue = *std::min_element(values.begin(), values.end());
   const Scalar maxValue = *std::max_element(values.begin(), values.end());
   // If minValue == maxValue, use the only first color
   if (minValue == maxValue)
-    {
-      return Description(1, ConvertFromName(palette[0]));
-    }
+  {
+    return Description(1, ConvertFromName(palette[0]));
+  }
   Description colors(valueSize);
   const Scalar coefficient = (paletteSize - 1.0) / (maxValue - minValue);
   const UnsignedInteger alphaValue = std::round(255 * alpha);
   for (UnsignedInteger i = 0; i < valueSize; ++i)
-    {
-      const UnsignedInteger paletteIndex = std::round(coefficient * (values[i] - minValue));
-      Indices colorRGBA(ConvertToRGBA(ConvertFromName(palette[paletteIndex])));
-      colorRGBA[3] = alphaValue;
-      colors[i] = ConvertFromRGBA(colorRGBA[0], colorRGBA[1], colorRGBA[2], colorRGBA[3]);
-    }
+  {
+    const UnsignedInteger paletteIndex = std::round(coefficient * (values[i] - minValue));
+    Indices colorRGBA(ConvertToRGBA(ConvertFromName(palette[paletteIndex])));
+    colorRGBA[3] = alphaValue;
+    colors[i] = ConvertFromRGBA(colorRGBA[0], colorRGBA[1], colorRGBA[2], colorRGBA[3]);
+  }
   return colors;
 }
 

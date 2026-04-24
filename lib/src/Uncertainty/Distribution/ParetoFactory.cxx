@@ -81,7 +81,8 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
   const Scalar beta = (alpha - 1.0) * std::sqrt((alpha - 2.0) / alpha) * sample.computeStandardDeviation()[0];
   const Scalar gamma = sample.computeMean()[0] - alpha * beta / (alpha - 1.0);
 
-  Pareto result(beta, alpha, gamma);  return result;
+  Pareto result(beta, alpha, gamma);
+  return result;
 }
 
 Pareto ParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
@@ -142,9 +143,9 @@ public:
       sample_ = sample;
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
-	// The value of 0 is very strange here, but it provides the best estimate!
-	const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
-	dataOut_(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
+        // The value of 0 is very strange here, but it provides the best estimate!
+        const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
+        dataOut_(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
       }
     } // if (sorted.sample.getSize() != size)
     else
@@ -152,9 +153,9 @@ public:
       sample_ = sortedSample;
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
-	// The value of 0 is very strange here, but it provides the best estimate!
-	const Scalar survival = (size - i - 1.0) / size; // 1.0 and not 1 to avoid integral division
-	dataOut_(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
+        // The value of 0 is very strange here, but it provides the best estimate!
+        const Scalar survival = (size - i - 1.0) / size; // 1.0 and not 1 to avoid integral division
+        dataOut_(i, 0) = (survival == 0.0 ? 0.0 : std::log(survival));
       }
     } // if (sorted.sample.getSize() == size)
   }
@@ -210,7 +211,7 @@ public:
     const Point result((dataOut_ - leastSquares.getResult().getMetaModel()(dataIn)).asPoint());
     return result;
   }
-  
+
 private:
   Sample sample_;
   Scalar xMin_;

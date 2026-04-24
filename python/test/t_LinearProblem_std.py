@@ -14,8 +14,12 @@ problem.setInequalityConstraint(ineq)
 problem.setEqualityConstraint(eq)
 bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
 problem.setBounds(bounds)
-problem.setVariablesType([ot.OptimizationProblemImplementation.CONTINUOUS,
-                          ot.OptimizationProblemImplementation.INTEGER])
+problem.setVariablesType(
+    [
+        ot.OptimizationProblemImplementation.CONTINUOUS,
+        ot.OptimizationProblemImplementation.INTEGER,
+    ]
+)
 location = [0.0] * 2
 linearProblem = otexp.LinearProblem.Linearize(problem, location)
 print(linearProblem)

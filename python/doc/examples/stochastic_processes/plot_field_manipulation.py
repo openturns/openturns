@@ -18,6 +18,7 @@ Draw a field
 # %%
 import openturns as ot
 import openturns.viewer as otv
+
 # sphinx_gallery_thumbnail_number = 2
 
 # %%
@@ -36,20 +37,20 @@ field = normal_proc.getRealization()
 # %%
 # We first draw the field with arrows fixed on each vertex of the mesh.
 g_1 = field.draw()
-g_1.setTitle(r'A field on 2-d mesh and 2-d values')
-g_1.setXTitle(r'$x_0$')
-g_1.setYTitle(r'$x_1$')
+g_1.setTitle(r"A field on 2-d mesh and 2-d values")
+g_1.setXTitle(r"$x_0$")
+g_1.setYTitle(r"$x_1$")
 
 # %%
 # In order to change the arrows, we can modify the :class:`~openturns.ResourceMap` keys associated to the
 # class :class:`~openturns.Field`.
-ot.ResourceMap.SetAsScalar('Field-ArrowRatio', 0.05)
-ot.ResourceMap.SetAsScalar('Field-ArrowScaling', 0.8)
+ot.ResourceMap.SetAsScalar("Field-ArrowRatio", 0.05)
+ot.ResourceMap.SetAsScalar("Field-ArrowScaling", 0.8)
 g_2 = field.draw()
 
-g_2.setTitle('The same field with other arrows parameters')
-g_2.setXTitle(r'$x_0$')
-g_2.setYTitle(r'$x_1$')
+g_2.setTitle("The same field with other arrows parameters")
+g_2.setXTitle(r"$x_0$")
+g_2.setYTitle(r"$x_1$")
 
 # %%
 # We can compare both figures.
@@ -61,14 +62,14 @@ view = otv.View(grid)
 # %%
 # We can also use the output values to deform the initial mesh and draw the deformed mesh.
 # First, we recover the default values of the ResourceMap keys.
-ot.ResourceMap.SetAsScalar('Field-ArrowRatio', 0.01)
-ot.ResourceMap.SetAsScalar('Field-ArrowScaling', 1)
+ot.ResourceMap.SetAsScalar("Field-ArrowRatio", 0.01)
+ot.ResourceMap.SetAsScalar("Field-ArrowScaling", 1)
 deformed_field = field.asDeformedMesh()
 g_def = deformed_field.draw()
-g_def.setTitle('The same field as deformed mesh')
-g_def.setXTitle(r'$x_0$')
-g_def.setYTitle(r'$x_1$')
-g_def.setLegendPosition('')
+g_def.setTitle("The same field as deformed mesh")
+g_def.setXTitle(r"$x_0$")
+g_def.setYTitle(r"$x_1$")
+g_def.setLegendPosition("")
 
 # %%
 # We can compare both figures.
@@ -91,18 +92,18 @@ field = normal_proc.getRealization()
 # %%
 # We draw the field by filling each cell of the mesh with a color.
 g_1 = field.draw()
-g_1.setTitle('A field on 2-d mesh  and scalar values')
-g_1.setXTitle(r'$x_0$')
-g_1.setYTitle(r'$x_1$')
+g_1.setTitle("A field on 2-d mesh  and scalar values")
+g_1.setXTitle(r"$x_0$")
+g_1.setYTitle(r"$x_1$")
 
 
 # %%
 # We can also draw iso-value lines of the output values using interpolation.
 g_2 = field.drawMarginal(0, True)
-g_2.setTitle('A field on 2-d mesh and scalar values')
-g_2.setXTitle(r'$x_0$')
-g_2.setYTitle(r'$x_1$')
-g_2.setLegendPosition('')
+g_2.setTitle("A field on 2-d mesh and scalar values")
+g_2.setXTitle(r"$x_0$")
+g_2.setYTitle(r"$x_1$")
+g_2.setLegendPosition("")
 
 # %%
 # We can compare both figures.
@@ -129,9 +130,9 @@ field = rw_process.getRealization()
 # %%
 # We draw the field by interpolating the output vectors.
 g = field.draw()
-g.setTitle('A 2-d random walk field')
-g.setXTitle(r'$x_0$')
-g.setYTitle(r'$x_1$')
+g.setTitle("A 2-d random walk field")
+g.setXTitle(r"$x_0$")
+g.setYTitle(r"$x_1$")
 view = otv.View(g)
 
 # %%
@@ -149,17 +150,17 @@ field = normal_proc.getRealization()
 # %%
 # We draw its trajectory without interpolating the output values.
 g_1 = field.draw()
-g_1.setTitle('A field on 1-d mesh and scalar values - Stationary process')
-g_1.setXTitle(r'$x_0$')
-g_1.setYTitle(r'$x_1$')
+g_1.setTitle("A field on 1-d mesh and scalar values - Stationary process")
+g_1.setXTitle(r"$x_0$")
+g_1.setYTitle(r"$x_1$")
 
 # %%
 # We can also interpolate the output values.
 g_2 = field.drawMarginal(0, True)
-g_2.setTitle('The same field with interpolation')
-g_2.setXTitle(r'$x_0$')
-g_2.setYTitle(r'$x_1$')
-g_2.setLegendPosition('')
+g_2.setTitle("The same field with interpolation")
+g_2.setXTitle(r"$x_0$")
+g_2.setYTitle(r"$x_1$")
+g_2.setLegendPosition("")
 
 # %%
 # We can compare both figures.
@@ -184,14 +185,14 @@ mesh = ot.IntervalMesher([1000]).build(ot.Interval(0.0, 1.0))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
 field = normal_proc.getRealization()
 g_3 = field.drawMarginal(0, True)
-g_3.setTitle('A field on 1-d mesh and scalar values - Non stationary process')
-g_3.setXTitle(r'$x_0$')
-g_3.setYTitle(r'$x_1$')
+g_3.setTitle("A field on 1-d mesh and scalar values - Non stationary process")
+g_3.setXTitle(r"$x_0$")
+g_3.setYTitle(r"$x_1$")
 
 # %%
 # We can compare both processes.
 grid = ot.GridLayout(1, 2)
-g_2.setTitle('A field on 1-d mesh and scalar values - Stationary process')
+g_2.setTitle("A field on 1-d mesh and scalar values - Stationary process")
 grid.setGraph(0, 0, g_2)
 grid.setGraph(0, 1, g_3)
 view = otv.View(grid)
@@ -205,9 +206,11 @@ for index, hurst_exponent in enumerate(hurst_exponent_list):
     normal_proc = ot.GaussianProcess(cov_model, mesh)
     field = normal_proc.getRealization()
     g = field.drawMarginal(0, True)
-    g.setTitle(r'Fractional Brownian Motion Model, Hurst exponent = ' + str(hurst_exponent))
-    g.setXTitle(r'$x_0$')
-    g.setYTitle(r'$x_1$')
+    g.setTitle(
+        r"Fractional Brownian Motion Model, Hurst exponent = " + str(hurst_exponent)
+    )
+    g.setXTitle(r"$x_0$")
+    g.setYTitle(r"$x_1$")
     grid.setGraph(0, index, g)
 view = otv.View(grid)
 

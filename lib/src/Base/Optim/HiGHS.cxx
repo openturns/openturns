@@ -194,8 +194,9 @@ void HiGHS::run()
 
   const HighsSolution& solution = highs.getSolution();
   Point optimalPoint(problemDimension);
-  for (int col = 0; col < model.lp_.num_col_; col++) {
-      optimalPoint[col] = solution.col_value[col];
+  for (int col = 0; col < model.lp_.num_col_; col++)
+  {
+    optimalPoint[col] = solution.col_value[col];
   }
   result_.setOptimalPoint(optimalPoint);
   result_.setOptimalValue(Point({info.objective_function_value}));

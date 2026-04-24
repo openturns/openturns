@@ -42,7 +42,7 @@ FiniteOrthogonalFunctionFactory::FiniteOrthogonalFunctionFactory()
 
 /* Constructor */
 FiniteOrthogonalFunctionFactory::FiniteOrthogonalFunctionFactory(const FunctionCollection & functions,
-								 const Distribution & measure)
+    const Distribution & measure)
   : OrthogonalFunctionFactory(measure)
   , functions_()
 {
@@ -70,10 +70,10 @@ void FiniteOrthogonalFunctionFactory::setFunctionsCollection(const FunctionColle
   const UnsignedInteger size = functions.getSize();
   const UnsignedInteger dimension = measure_.getDimension();
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      if (functions[i].getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the function=" << functions[i] << " at index=" << i << " has an input dimension=" << functions[i].getInputDimension() << ", expected an input dimension=" << dimension;
-      if (functions[i].getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function=" << functions[i] << " at index=" << i << " has an output dimension=" << functions[i].getOutputDimension() << ", expected an output dimension=1";
-    }
+  {
+    if (functions[i].getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the function=" << functions[i] << " at index=" << i << " has an input dimension=" << functions[i].getInputDimension() << ", expected an input dimension=" << dimension;
+    if (functions[i].getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function=" << functions[i] << " at index=" << i << " has an output dimension=" << functions[i].getOutputDimension() << ", expected an output dimension=1";
+  }
   functions_ = functions;
 }
 
@@ -82,7 +82,7 @@ FiniteOrthogonalFunctionFactory::FunctionCollection FiniteOrthogonalFunctionFact
   return functions_;
 }
 
-  
+
 /* String converter */
 String FiniteOrthogonalFunctionFactory::__repr__() const
 {

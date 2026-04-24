@@ -272,9 +272,7 @@ print("Optimal trend coefficients = {}".format(gprResult_nugget.getTrendCoeffici
 
 # %%
 gprMeta_nugget = gprResult_nugget.getMetaModel()
-gpr_conditional_covariance = ot.GaussianProcessConditionalCovariance(
-    gprResult_nugget
-)
+gpr_conditional_covariance = ot.GaussianProcessConditionalCovariance(gprResult_nugget)
 variance = gpr_conditional_covariance.getConditionalMarginalVariance(x_plot)
 
 # %%

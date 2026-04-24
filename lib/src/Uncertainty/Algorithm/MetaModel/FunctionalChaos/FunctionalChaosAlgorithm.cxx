@@ -258,7 +258,7 @@ Bool FunctionalChaosAlgorithm::initializeTransformation(const Distribution & mea
   {
     // compare the numerical range only
     identityTransformation = distribution_.getRange().getLowerBound() == measure.getRange().getLowerBound()
-                          && distribution_.getRange().getUpperBound() == measure.getRange().getUpperBound();
+                             && distribution_.getRange().getUpperBound() == measure.getRange().getUpperBound();
     if (!identityTransformation)
     {
       // map input distribution numerical range into the measure range

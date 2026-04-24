@@ -16,13 +16,13 @@ enumerateFunction = ot.LinearEnumerateFunction(uc.dim)
 indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
 polyColl = [0.0] * uc.dim
 for i in range(uc.distribution.getDimension()):
-    polyColl[i] = ot.StandardDistributionPolynomialFactory(uc.distribution.getMarginal(i))
+    polyColl[i] = ot.StandardDistributionPolynomialFactory(
+        uc.distribution.getMarginal(i)
+    )
 productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 r2 = {}
 for useDomination in [False, True]:
-    algo = ot.LeastSquaresExpansion(
-        X, Y, distribution, productBasis, indexMax
-    )
+    algo = ot.LeastSquaresExpansion(X, Y, distribution, productBasis, indexMax)
     algo.setUseDomination(useDomination)
     algo.run()
     pce_result = algo.getResult()

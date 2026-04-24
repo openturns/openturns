@@ -367,7 +367,11 @@ try:
         lines = f.readlines()
     with open(fileName, "w") as f:
         for line in lines:
-            f.write(line.replace(r'class="JointDistribution"', r'class="ComposedDistribution"'))
+            f.write(
+                line.replace(
+                    r'class="JointDistribution"', r'class="ComposedDistribution"'
+                )
+            )
     study2 = ot.Study(fileName)
     study2.load()
     distribution2 = ot.Distribution()

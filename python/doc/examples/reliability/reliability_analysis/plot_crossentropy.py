@@ -85,7 +85,9 @@ print(
 
 # %%
 # The confidence interval of level :math:`95\%` is:
-ci95 = standardSpaceISResult.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)
+ci95 = standardSpaceISResult.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.95
+)
 print("Confidence interval (0.95) = ", ci95)
 
 # %%

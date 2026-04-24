@@ -75,7 +75,9 @@ class RankNormalize(colors.Normalize):
             Required by the parent class, but unused.
         """
         super().__init__(vmin, vmax, clip)
-        self._levels = None if levels is None or isinstance(levels, int) else np.array(levels)
+        self._levels = (
+            None if levels is None or isinstance(levels, int) else np.array(levels)
+        )
         self._ranks = None
         self._changed()
 
@@ -588,7 +590,9 @@ class View:
                         drawable.getPaletteAsNormalizedRGBA()
                     )
 
-                assert len(data) == polygonsNumber * verticesNumber, "incompatible data for PolygonArray"
+                assert (
+                    len(data) == polygonsNumber * verticesNumber
+                ), "incompatible data for PolygonArray"
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
