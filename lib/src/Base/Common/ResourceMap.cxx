@@ -230,12 +230,6 @@ void ResourceMap::Reset()
   GetInstance().lock().reset();
 }
 
-void ResourceMap::Reload()
-{
-  LOGWARN("ResourceMap.Reload is deprecated in favor of Reset");
-  Reset();
-}
-
 void ResourceMap::RemoveKey(const String & key)
 {
   GetInstance().lock().removeKey(key);

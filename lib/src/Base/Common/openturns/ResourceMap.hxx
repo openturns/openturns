@@ -95,8 +95,6 @@ public:
 
   /** Reset configuration */
   static void Reset();
-  // @deprecated
-  static void Reload();
 
   /** Get the list of keys associated to a class */
   static std::vector<String> FindKeys(const String & substr);
