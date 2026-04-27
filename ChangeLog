@@ -12,6 +12,7 @@
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed deprecated SpecFunc.IsNormal
+ * Removed deprecated ResourceMap.Reload
 
 === Documentation ===
 
