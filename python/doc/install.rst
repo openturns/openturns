@@ -53,12 +53,12 @@ This also applies to other Debian/Ubuntu-based distributions like Linux Mint, Ka
 First create an entry in the apt configuration matching your distribution family and codename
 if available in one of the following commands::
 
-    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu plucky main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu resolute main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu noble main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian trixie main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
@@ -92,14 +92,14 @@ RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
-    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_42/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_44/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Fedora_43/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/16.0/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Mageia_9/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_42/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_44/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_43/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/16.0/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_9/repodata/repomd.xml.key
