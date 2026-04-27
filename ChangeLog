@@ -11,6 +11,7 @@
 ==== API changes ====
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
+ * Removed deprecated SpecFunc.IsNormal
 
 === Documentation ===
 

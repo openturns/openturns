@@ -58,14 +58,6 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
-// Some facilities for NaN and inf
-Bool SpecFunc::IsNormal(const Scalar value)
-{
-  LOGWARN("SpecFunc.IsNormal is deprecated");
-  return value - value == 0.0;
-}
-
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 static Scalar SmallCaseBesselI0(const Scalar x)
 {
