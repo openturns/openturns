@@ -88,9 +88,6 @@ public:
   Drawable getDrawable(const UnsignedInteger index) const;
   void setDrawable(const UnsignedInteger index, const Drawable & drawable);
 
-  // @deprecated
-  void setDrawable(const Drawable & drawable, const UnsignedInteger index);
-
   /** Global color accessor */
   Description getColors() const;
   void setColors(const Description & colors);

@@ -116,14 +116,6 @@ void Graph::setDrawable(const UnsignedInteger index, const Drawable & drawable)
   getImplementation()->setDrawable(index, drawable);
 }
 
-void Graph::setDrawable(const Drawable & drawable,
-                        const UnsignedInteger index)
-{
-  copyOnWrite();
-  getImplementation()->setDrawable(drawable, index);
-}
-
-
 /* Global color accessor */
 Description Graph::getColors() const
 {
