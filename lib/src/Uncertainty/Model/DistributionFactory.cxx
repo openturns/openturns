@@ -245,12 +245,6 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const Sample & sam
   return getImplementation()->buildEstimator(sample, parameters);
 }
 
-void DistributionFactory::setKnownParameter(const Point & values, const Indices & indices)
-{
-  copyOnWrite();
-  getImplementation()->setKnownParameter(values, indices);
-}
-
 void DistributionFactory::setKnownParameter(const Indices & indices, const Point & values)
 {
   copyOnWrite();
