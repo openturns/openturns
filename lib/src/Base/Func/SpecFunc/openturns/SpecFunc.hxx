@@ -67,9 +67,6 @@ const Scalar ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 const UnsignedInteger MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const Scalar Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
-// @deprecated Some facilities for NaN and inf
-OT_API Bool IsNormal(const Scalar value);
-
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 OT_API Scalar BesselI0(const Scalar x);
 OT_API Scalar LogBesselI0(const Scalar x);
