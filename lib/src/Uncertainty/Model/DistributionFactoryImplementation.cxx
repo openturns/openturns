@@ -199,13 +199,6 @@ void DistributionFactoryImplementation::setBootstrapSize(const UnsignedInteger b
   bootstrapSize_ = bootstrapSize;
 }
 
-
-void DistributionFactoryImplementation::setKnownParameter(const Point & values, const Indices & indices)
-{
-  LOGWARN("DistributionFactory.setKnownParameter(Point, Indices) is deprecated");
-  setKnownParameter(indices, values);
-}
-
 void DistributionFactoryImplementation::setKnownParameter(const Indices & indices, const Point & values)
 {
   if (values.getSize() != indices.getSize())

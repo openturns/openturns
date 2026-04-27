@@ -78,9 +78,6 @@ public:
   Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
 
-  // @deprecated
-  void setKnownParameter(const Point & values, const Indices & positions);
-
   /** Catalog of factories */
   static DistributionFactoryCollection GetContinuousUniVariateFactories();
   static DistributionFactoryCollection GetContinuousMultiVariateFactories();

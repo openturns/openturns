@@ -9,6 +9,7 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
 
 === Documentation ===
 
