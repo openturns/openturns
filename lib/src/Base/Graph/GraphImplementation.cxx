@@ -210,13 +210,6 @@ void GraphImplementation::setDrawable(const UnsignedInteger index, const Drawabl
   drawablesCollection_[index] = drawable;
 }
 
-void GraphImplementation::setDrawable(const Drawable & drawable,
-                                      const UnsignedInteger index)
-{
-  LOGWARN("Graph.setDrawable(Drawable, int) is deprecated");
-  setDrawable(index, drawable);
-}
-
 /** Global color accessor */
 Description GraphImplementation::getColors() const
 {
