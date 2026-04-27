@@ -40,6 +40,7 @@
 %include ChiFactory.i
 %include ChiSquare.i
 %include ChiSquareFactory.i
+%include CombinationsDistribution.i
 %include CompositeDistribution.i
 %include Dirac.i
 %include DiracFactory.i

@@ -114,7 +114,7 @@ Discrete parametric distributions
     Binomial
 
     :template: classWithPlot.rst_t
-    experimental.CombinationsDistribution
+    CombinationsDistribution
 
     :template: Distribution.rst_t
     Dirac

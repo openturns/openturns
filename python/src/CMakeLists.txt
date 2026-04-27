@@ -359,6 +359,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       ChiSquareFactory.i ChiSquareFactory_doc.i
                       Chi.i Chi_doc.i
                       ChiFactory.i ChiFactory_doc.i
+                      CombinationsDistribution.i CombinationsDistribution_doc.i
                       CompositeDistribution.i CompositeDistribution_doc.i
                       Dirac.i Dirac_doc.i
                       DiracFactory.i DiracFactory_doc.i
@@ -551,7 +552,6 @@ ot_add_python_module(metamodel metamodel_module.i
 
 
 ot_add_python_module(experimental experimental_module.i
-                     CombinationsDistribution.i CombinationsDistribution_doc.i
                      SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i

@@ -1,10 +1,6 @@
 %feature("docstring") OT::CombinationsDistribution
 R"RAW(Combinations distribution.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 This class is the discrete uniform distribution on the set of the :math:`C_n^k` combinations of :math:`k` elements among :math:`n` elements. 
 Let :math:`E` be a set of :math:`n` elements and  :math:`\cC_{k,n}` the set of combinations of elements of :math:`E`: 
 
@@ -35,14 +31,14 @@ n : int, :math:`n > 0`
 
 See also
 --------
-openturns.Combinations
+Combinations
 
 Examples
 --------
 Create a distribution:
 
->>> import openturns.experimental as otexp
->>> distribution = otexp.CombinationsDistribution(6, 8)
+>>> import openturns as ot
+>>> distribution = ot.CombinationsDistribution(6, 8)
 
 Get a realization: it is a vector :math:`(s_0, \ldots, s_{k-1})` associated to the increasing function :math:`f: i \rightarrow s_i` or,
 equivalenty, to the combination of the elements :math:`s_i` of the set :math:`E`.
