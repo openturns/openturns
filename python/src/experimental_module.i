@@ -74,7 +74,6 @@
 %include LineSampling.i
 
 /* Uncertainty/Distribution */
-%include CombinationsDistribution.i
 %include MarginalUniformOrderStatistics.i
 
 /* Uncertainty/Algorithm/Metamodel */
