@@ -57,11 +57,6 @@
 /* Uncertainty/Process */
 %import model_process_module.i
 
-/* Uncertainty/Algorithm */
-%include SequentialSamplingAlgorithmImplementation.i
-%include SequentialSamplingAlgorithm.i
-%include LOLAVoronoi.i
-
 /* Uncertainty/Distribution */
 %include MarginalUniformOrderStatistics.i
 

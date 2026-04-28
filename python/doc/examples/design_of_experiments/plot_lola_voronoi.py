@@ -11,7 +11,6 @@ LOLA-Voronoi sequential design of experiment
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # %%
@@ -84,7 +83,7 @@ _ = otv.View(graph, square_axes=True)
 # the API documentation. It can have a major impact on the performance
 # of the algorithm. In particular, if your distribution has independent
 # components you may set "LOLAVoronoi-UseTruncatedDistribution" to True.
-algo = otexp.LOLAVoronoi(x0, y0, distribution)
+algo = ot.LOLAVoronoi(x0, y0, distribution)
 
 # %%
 # Iteratively generate new samples: add 50 points, in 10 blocks of 5 points.

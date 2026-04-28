@@ -1,4 +1,4 @@
-%define OT_AdaptiveSamplingAlgorithm_doc
+%define OT_SequentialSamplingAlgorithm_doc
 "Approximation algorithm.
 
 Notes
@@ -7,11 +7,11 @@ This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::SequentialSamplingAlgorithmImplementation
-OT_AdaptiveSamplingAlgorithm_doc
+OT_SequentialSamplingAlgorithm_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_AdaptiveSamplingAlgorithm_getInputSample_doc
+%define OT_SequentialSamplingAlgorithm_getInputSample_doc
 "Accessor to the input sample.
 
 Returns
@@ -20,11 +20,11 @@ x : :class:`~openturns.Sample`
     Input sample"
 %enddef
 %feature("docstring") OT::SequentialSamplingAlgorithmImplementation::getInputSample
-OT_AdaptiveSamplingAlgorithm_getInputSample_doc
+OT_SequentialSamplingAlgorithm_getInputSample_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_AdaptiveSamplingAlgorithm_getOutputSample_doc
+%define OT_SequentialSamplingAlgorithm_getOutputSample_doc
 "Accessor to the output sample.
 
 Returns
@@ -33,11 +33,11 @@ y : :class:`~openturns.Sample`
     Input sample"
 %enddef
 %feature("docstring") OT::SequentialSamplingAlgorithmImplementation::getOutputSample
-OT_AdaptiveSamplingAlgorithm_getOutputSample_doc
+OT_SequentialSamplingAlgorithm_getOutputSample_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_AdaptiveSamplingAlgorithm_getGenerationIndices_doc
+%define OT_SequentialSamplingAlgorithm_getGenerationIndices_doc
 "Accessor to the generation indices.
 
 Returns
@@ -47,11 +47,11 @@ generationIndices : :class:`~openturns.Indices`
     This is updated each time the `update()` method is evaluated."
 %enddef
 %feature("docstring") OT::SequentialSamplingAlgorithmImplementation::getGenerationIndices
-OT_AdaptiveSamplingAlgorithm_getGenerationIndices_doc
+OT_SequentialSamplingAlgorithm_getGenerationIndices_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_AdaptiveSamplingAlgorithm_generate_doc
+%define OT_SequentialSamplingAlgorithm_generate_doc
 "Generate a new sample.
 
 Parameters
@@ -66,11 +66,11 @@ x : :class:`~openturns.Sample`
 "
 %enddef
 %feature("docstring") OT::SequentialSamplingAlgorithmImplementation::generate
-OT_AdaptiveSamplingAlgorithm_generate_doc
+OT_SequentialSamplingAlgorithm_generate_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_AdaptiveSamplingAlgorithm_update_doc
+%define OT_SequentialSamplingAlgorithm_update_doc
 "Update the current sample.
 
 Adds a new incremental sample (input and output) to the existing sample.
@@ -82,4 +82,4 @@ x, y : :class:`~openturns.Sample`
 "
 %enddef
 %feature("docstring") OT::SequentialSamplingAlgorithmImplementation::update
-OT_AdaptiveSamplingAlgorithm_update_doc
+OT_SequentialSamplingAlgorithm_update_doc

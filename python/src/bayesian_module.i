@@ -45,5 +45,10 @@
 %include UserDefinedMetropolisHastings.i
 %include Gibbs.i
 
+/* Uncertainty/Algorithm/Optimization */
+%include SequentialSamplingAlgorithmImplementation.i
+%include SequentialSamplingAlgorithm.i
+%include LOLAVoronoi.i
+
 /* At last we include template definitions */
 %include UncertaintyBayesianTemplateDefs.i
