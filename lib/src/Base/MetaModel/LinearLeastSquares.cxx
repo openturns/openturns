@@ -177,12 +177,6 @@ Matrix LinearLeastSquares::getLinear() const
   return linear_;
 }
 
-/* Metamodel accessor */
-Function LinearLeastSquares::getMetaModel() const
-{
-  return result_.getMetaModel();
-}
-
 MetaModelResult LinearLeastSquares::getResult() const
 {
   return result_;

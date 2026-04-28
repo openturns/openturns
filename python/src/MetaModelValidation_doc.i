@@ -45,7 +45,7 @@ Then we validate this metamodel using a test sample.
 >>> designMatrix = basis(x_train)
 >>> myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
 >>> myLeastSquares.run()
->>> leastSquaresModel = myLeastSquares.getMetaModel()
+>>> leastSquaresModel = myLeastSquares.getResult().getMetaModel()
 >>> metaModel = ot.ComposedFunction(leastSquaresModel, basis)
 >>> # Validate the metamodel using a test sample
 >>> x_test = dist.getSample(100)

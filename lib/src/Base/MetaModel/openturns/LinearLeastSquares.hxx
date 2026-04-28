@@ -67,9 +67,6 @@ public:
   /** Result accessor */
   MetaModelResult getResult() const;
 
-  /** @deprecated Metamodel accessor */
-  Function getMetaModel() const;
-
   /** Data in accessor */
   Sample getInputSample() const;
   Sample getDataIn() const;

@@ -71,9 +71,6 @@ public:
   /** Quadratic accessor */
   SymmetricTensor getQuadratic() const;
 
-  /** @deprecated Metamodel accessor */
-  Function getMetaModel() const;
-
   /** DataIn accessor */
   Sample getInputSample() const;
   Sample getDataIn() const;

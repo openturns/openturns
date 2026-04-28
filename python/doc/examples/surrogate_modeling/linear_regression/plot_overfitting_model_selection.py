@@ -154,7 +154,7 @@ myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
 myLeastSquares.run()
 
 # %%
-responseSurface = myLeastSquares.getMetaModel()
+responseSurface = myLeastSquares.getResult().getMetaModel()
 
 # %%
 # The test set
@@ -242,7 +242,7 @@ def myPolynomialDataFitting(total_degree, x_train, y_train):
     designMatrix = basis(x_train)
     myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
     myLeastSquares.run()
-    responseSurface = myLeastSquares.getMetaModel()
+    responseSurface = myLeastSquares.getResult().getMetaModel()
     return responseSurface, basis
 
 
