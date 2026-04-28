@@ -524,6 +524,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       GaussianProcessRegression.i GaussianProcessRegression_doc.i
                       GaussianProcessRegressionCrossValidation.i GaussianProcessRegressionCrossValidation_doc.i
                       GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i
+                      GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i
@@ -567,7 +568,6 @@ ot_add_python_module(experimental experimental_module.i
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i
                      RatioOfUniforms.i RatioOfUniforms_doc.i
                      QuantileConfidence.i QuantileConfidence_doc.i
-                     GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i

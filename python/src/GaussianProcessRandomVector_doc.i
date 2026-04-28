@@ -1,10 +1,6 @@
 %feature("docstring") OT::GaussianProcessRandomVector
 R"RAW(GaussianProcessRandom vector, a conditioned Gaussian process.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 gprResult : :class:`~openturns.GaussianProcessRegressionResult`
@@ -41,7 +37,6 @@ Examples
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> f = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
 >>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
 >>> sampleY = f(sampleX)
@@ -59,7 +54,7 @@ Create the algorithm:
 Get the results:
 
 >>> gpr_result = gpr_algo.getResult()
->>> rvector = otexp.GaussianProcessRandomVector(gpr_result, [[0.0]])
+>>> rvector = ot.GaussianProcessRandomVector(gpr_result, [[0.0]])
 
 Get a sample of the random vector:
 
