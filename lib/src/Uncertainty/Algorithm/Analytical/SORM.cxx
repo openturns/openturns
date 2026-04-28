@@ -32,8 +32,7 @@ static const Factory<SORM> Factory_SORM;
 
 /* Default constructor for the save/load mechanism */
 SORM::SORM()
-  : Analytical(),
-    sormResult_()
+  : Analytical()
 {
   // Nothing to do
 }
@@ -42,10 +41,8 @@ SORM::SORM()
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-           const RandomVector & event,
-           const Point & physicalStartingPoint):
-  Analytical(nearestPointAlgorithm, event, physicalStartingPoint),
-  sormResult_()
+           const RandomVector & event)
+  : Analytical(nearestPointAlgorithm, event)
 {
   // Nothing to do
 }

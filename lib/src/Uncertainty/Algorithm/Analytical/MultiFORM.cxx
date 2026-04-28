@@ -45,9 +45,8 @@ MultiFORM::MultiFORM()
   * @brief Standard constructor: the class is defined by an optimization algorithm, a failure event and a physical starting point
   */
 MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
-                     const RandomVector & event,
-                     const Point & physicalStartingPoint)
-  : FORM(solver, event, physicalStartingPoint)
+                     const RandomVector & event)
+  : FORM(solver, event)
   , maximumDesignPointsNumber_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber"))
 {
   // Nothing to do

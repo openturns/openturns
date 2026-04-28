@@ -47,8 +47,7 @@ public:
 
   /** Constructor with parameters */
   FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-       const RandomVector & event,
-       const Point & physicalStartingPoint = Point()); // deprecated argument
+       const RandomVector & event);
 
   /** Virtual constructor */
   FORM * clone() const override;
@@ -72,9 +71,9 @@ public:
   void load(Advocate & adv) override;
 
 private:
-
   FORMResult formResult_;
-} ; /* class FORM */
+
+}; /* class FORM */
 
 END_NAMESPACE_OPENTURNS
 
