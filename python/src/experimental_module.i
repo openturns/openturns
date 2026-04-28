@@ -82,7 +82,6 @@
 
 /* Uncertainty/Model */
 %include RatioOfUniforms.i
-%include GaussianProcessRandomVector.i
 
 /* Uncertainty/Process */
 %include ConditionedGaussianProcess.i

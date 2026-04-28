@@ -15,6 +15,7 @@
  * Removed deprecated ResourceMap.Reload
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
+ * GaussianProcessRandomVector moved out of experimental
 
 === Documentation ===
 

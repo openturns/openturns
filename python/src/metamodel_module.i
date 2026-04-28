@@ -90,6 +90,7 @@
 %include GaussianProcessRegressionResult.i
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
+%include GaussianProcessRandomVector.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i
