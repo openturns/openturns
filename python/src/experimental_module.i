@@ -71,7 +71,6 @@
 %include SequentialSamplingAlgorithm.i
 %include LOLAVoronoi.i
 %include QuantileConfidence.i
-%include LineSampling.i
 
 /* Uncertainty/Distribution */
 %include MarginalUniformOrderStatistics.i

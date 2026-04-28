@@ -1,11 +1,6 @@
 %feature("docstring") OT::LineSampling
 R"RAW(Line sampling algorithm.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
-
 This class implements the line sampling algorithm from [koutsourelakis2004]_ with adaptation
 of the important direction from [angelis2015]_, which is also known as adaptive line sampling.
 
@@ -121,7 +116,7 @@ Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
 
 See also
 --------
-openturns.DirectionalSampling)RAW"
+DirectionalSampling)RAW"
 
 // ---------------------------------------------------------------------------
 

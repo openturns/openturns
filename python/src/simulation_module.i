@@ -54,7 +54,7 @@
 %include MauntzKucherenkoSensitivityAlgorithm.i
 %include SobolIndicesExperiment.i
 
-/* Uncertainty/Algorithm/EventSimulation */
+/* Uncertainty/Algorithm/Simulation */
 %include SimulationResult.i
 %include ProbabilitySimulationResult.i
 %include SimulationAlgorithm.i
@@ -89,7 +89,7 @@
 %include CrossEntropyImportanceSampling.i
 %include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
-
+%include LineSampling.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i

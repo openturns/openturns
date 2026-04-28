@@ -567,7 +567,6 @@ ot_add_python_module(experimental experimental_module.i
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i
                      RatioOfUniforms.i RatioOfUniforms_doc.i
                      QuantileConfidence.i QuantileConfidence_doc.i
-                     LineSampling.i LineSampling_doc.i
                      GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                     )
@@ -698,6 +697,7 @@ ot_add_python_module(simulation simulation_module.i
                       CrossEntropyImportanceSampling.i CrossEntropyImportanceSampling_doc.i
                       StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i
                       PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i
+                      LineSampling.i LineSampling_doc.i
                     )
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i
