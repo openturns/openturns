@@ -10,11 +10,3 @@
 
 %include openturns/CompoundRandomVector.hxx
 
-%pythoncode %{
-def DeconditionedRandomVector(conditionedDist, parametersRandomVector):
-    """
-    Retro-compatibility alias for CompoundRandomVector.
-    """
-    openturns.common.Log.Warn('class DeconditionedRandomVector is deprecated in favor of CompoundRandomVector')
-    return openturns.metamodel.CompoundRandomVector(conditionedDist, parametersRandomVector)
-%}

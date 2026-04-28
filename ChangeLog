@@ -14,6 +14,7 @@
  * Removed deprecated SpecFunc.IsNormal
  * Removed deprecated ResourceMap.Reload
  * Removed deprecated Wilks class
+ * Removed deprecated DeconditionedDistribution, DeconditionedRandomVector
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
