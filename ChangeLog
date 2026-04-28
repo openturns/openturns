@@ -16,6 +16,7 @@
  * Removed deprecated Wilks class
  * Removed deprecated DeconditionedDistribution, DeconditionedRandomVector
  * Removed deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors
+ * Removed deprecated assert_almost_equal(Indices, Indices)
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
