@@ -1,10 +1,6 @@
 %feature("docstring") OT::VertexFieldToPointFunction
 R"RAW(Restriction of a field function at some specific nodes.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Let :math:`\cM_N` be a mesh of size :math:`N`, :math:`I = \{ i_0, \dots, i_{N'-1} \} \in \llbracket 0, N-1 \rrbracket`
 be a set of indices of
 cardinal :math:`N' \leq N` and let :math:`d \geq 1` be an integer.
@@ -43,8 +39,7 @@ indices : sequence of int
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> N = 10
 >>> mesh = ot.RegularGrid(0, 1, N)
->>> f = otexp.VertexFieldToPointFunction(mesh, 1, [-1 % N])
+>>> f = ot.VertexFieldToPointFunction(mesh, 1, [-1 % N])
 )RAW"

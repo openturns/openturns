@@ -163,6 +163,7 @@ ot_add_python_module(func func_module.i
                       FieldToPointConnection.i FieldToPointConnection_doc.i
                       PointToFieldConnection.i PointToFieldConnection_doc.i
                       FieldToFieldConnection.i FieldToFieldConnection_doc.i
+		      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i
                       KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i
                       KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i
                       ValueFunction.i ValueFunction_doc.i
@@ -559,7 +560,6 @@ ot_add_python_module(experimental experimental_module.i
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
-                     VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
