@@ -206,12 +206,6 @@ MetaModelResult QuadraticLeastSquares::getResult() const
   return result_;
 }
 
-Function QuadraticLeastSquares::getMetaModel() const
-{
-  LOGWARN("QuadraticLeastSquares.getMetaModel is deprecated");
-  return result_.getMetaModel();
-}
-
 void QuadraticLeastSquares::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
