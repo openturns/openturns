@@ -1176,5 +1176,7 @@
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
 
+  <QuantileConfidence-ProbabilityEpsilon value_float="1.0e-15" />
+
   <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>

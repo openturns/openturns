@@ -1819,6 +1819,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");
+
+  // QuantileConfidence parameters //
+  addAsScalar("QuantileConfidence-ProbabilityEpsilon", 1.0e-15);
 }
 
 void ResourceMap::reset()
