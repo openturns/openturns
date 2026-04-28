@@ -354,7 +354,7 @@ where :math:`\gamma = \max(\alpha, 1-\alpha)`.
 
 .. topic:: API:
 
-    - See :class:`~openturns.experimental.QuantileConfidence`
+    - See :class:`~openturns.QuantileConfidence`
     - See :class:`~openturns.Sample`
 
 .. topic:: Examples:

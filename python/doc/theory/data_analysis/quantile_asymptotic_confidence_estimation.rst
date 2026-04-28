@@ -77,7 +77,7 @@ Then, we have:
 
 .. topic:: API:
 
-    - See :class:`~openturns.experimental.QuantileConfidence`
+    - See :class:`~openturns.QuantileConfidence`
     - See :class:`~openturns.Sample`
 
 .. topic:: Examples:
