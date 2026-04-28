@@ -61,7 +61,6 @@
 %include EventSimulation.i
 %include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i
-%include Wilks.i
 %include PostAnalyticalControlledImportanceSampling.i
 %include PostAnalyticalImportanceSampling.i
 %include QuantileConfidence.i
