@@ -13,7 +13,6 @@ Advanced Gaussian process regression
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -180,7 +179,7 @@ grid = ot.IntervalMesher([500]).build(ot.Interval(0, 10))
 # %%
 # Conditional Gaussian process
 
-krv = otexp.ConditionedGaussianProcess(gprResult, grid)
+krv = ot.ConditionedGaussianProcess(gprResult, grid)
 krv_sample = krv.getSample(5)
 values = grid.getVertices()
 

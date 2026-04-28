@@ -91,6 +91,7 @@
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
 %include GaussianProcessRandomVector.i
+%include ConditionedGaussianProcess.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i

@@ -503,6 +503,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       GaussianProcessRegressionCrossValidation.i GaussianProcessRegressionCrossValidation_doc.i
                       GaussianProcessConditionalCovariance.i GaussianProcessConditionalCovariance_doc.i
                       GaussianProcessRandomVector.i GaussianProcessRandomVector_doc.i
+                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i
@@ -553,7 +554,6 @@ ot_add_python_module(model_copula2 model_copula2_module.i
 ot_add_python_module(experimental experimental_module.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
-                     ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i

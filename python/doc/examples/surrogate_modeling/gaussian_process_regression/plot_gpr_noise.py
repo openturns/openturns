@@ -52,7 +52,6 @@ Gaussian Process Regression: nugget effect and noise
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import math as m
 
@@ -165,9 +164,9 @@ view = otv.View(graph)
 
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process using the class
-# :class:`~openturns.experimental.ConditionedGaussianProcess` built from a :class:`~openturns.GaussianProcessRegressionResult`.
+# :class:`~openturns.ConditionedGaussianProcess` built from a :class:`~openturns.GaussianProcessRegressionResult`.
 # We create the conditioned Gaussian process. Then we generate some trajectories.
-process_noNoise = otexp.ConditionedGaussianProcess(gpr_result_noNoise, myRegularGrid)
+process_noNoise = ot.ConditionedGaussianProcess(gpr_result_noNoise, myRegularGrid)
 traj_noNoise = process_noNoise.getSample(10)
 graph_traj_noNoise = ot.Graph(r"Model with exact data", "x", "y", True, "lower left")
 graph_traj_noNoise.add(traj_noNoise.drawMarginal())
@@ -273,8 +272,8 @@ view = otv.View(graph)
 
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process still using the class
-# :class:`~openturns.experimental.ConditionedGaussianProcess` as previoulsy.
-process_homosc = otexp.ConditionedGaussianProcess(gpr_result_homosc, myRegularGrid)
+# :class:`~openturns.ConditionedGaussianProcess` as previoulsy.
+process_homosc = ot.ConditionedGaussianProcess(gpr_result_homosc, myRegularGrid)
 traj_homosc = process_homosc.getSample(10)
 graph_traj_homosc = ot.Graph(
     r"Model with homoscedastic noisy data", "x", "y", True, "lower left"
@@ -396,7 +395,7 @@ view = otv.View(graph)
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process as previoulsy.
 # We can see that the trajectories have kept the regularity of the initial Matern model.
-process_heterosc = otexp.ConditionedGaussianProcess(gpr_result_heterosc, myRegularGrid)
+process_heterosc = ot.ConditionedGaussianProcess(gpr_result_heterosc, myRegularGrid)
 traj_heterosc = process_heterosc.getSample(10)
 graph_traj_heterosc = ot.Graph(
     r"Model with heteroscedastic noisy data", "x", "y", True, "lower left"
@@ -480,7 +479,7 @@ view = otv.View(graph)
 # %%
 # We can draw some trajectories of the resulting conditioned Gaussian process as previoulsy.
 # We can see that the trajectories are not as smooth as the initial Matern model any more.
-process_nuggetF = otexp.ConditionedGaussianProcess(gpr_result_nuggetF, myRegularGrid)
+process_nuggetF = ot.ConditionedGaussianProcess(gpr_result_nuggetF, myRegularGrid)
 traj_nuggetF = process_nuggetF.getSample(10)
 graph_traj_nuggetF = ot.Graph(
     r"Model with homoscedastic noisy data", "x", "y", True, "lower left"

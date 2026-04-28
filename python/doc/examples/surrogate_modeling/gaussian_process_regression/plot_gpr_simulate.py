@@ -44,7 +44,6 @@ Gaussian Process Regression : generate trajectories from the metamodel
 #
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 
 # %%
@@ -165,9 +164,9 @@ view = otv.View(graph)
 # -------------------------
 #
 # In order to generate new trajectories of the conditioned Gaussian process, we use the class
-# :class:`~openturns.experimental.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
+# :class:`~openturns.ConditionedGaussianProcess`, which provides a :class:`~openturns.Process`.
 # It is created from the result of the Gaussian Process Regression algorithm.
-process = otexp.ConditionedGaussianProcess(gpr_result, myRegularGrid)
+process = ot.ConditionedGaussianProcess(gpr_result, myRegularGrid)
 
 # %%
 # The method :meth:`~openturns.Process.getSample` method returns a :class:`~openturns.ProcessSample`.

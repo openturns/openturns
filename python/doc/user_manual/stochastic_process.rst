@@ -106,7 +106,7 @@ Gaussian process
     GaussianProcess
 
     :template: class.rst_t
-    experimental.ConditionedGaussianProcess
+    ConditionedGaussianProcess
 
 Functional basis process
 ========================
