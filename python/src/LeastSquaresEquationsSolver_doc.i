@@ -1,10 +1,6 @@
 %feature("docstring") OT::LeastSquaresEquationsSolver
 "Solve systems of non-linear equations using a least squares method.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 absError : positive float
@@ -40,11 +36,10 @@ Examples
 --------
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> inputs = ['x', 'y']
 >>> formulas = ['y*x-sin(2*x)', '1 + cos(y) + x']
 >>> analytical = ot.SymbolicFunction(inputs, formulas)
->>> algo = otexp.LeastSquaresEquationsSolver()
+>>> algo = ot.LeastSquaresEquationsSolver()
 >>> algo.setResidualError(1e-8)
 >>> starting_point = [2.0, 1.0]
 >>> solution = algo.solve(analytical, starting_point)

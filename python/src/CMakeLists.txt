@@ -565,7 +565,6 @@ ot_add_python_module(experimental experimental_module.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
-                     LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i
                      RatioOfUniforms.i RatioOfUniforms_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                     )
@@ -929,6 +928,7 @@ ot_add_python_module(solver solver_module.i
                       ODESolver.i ODESolver_doc.i
                       RungeKutta.i RungeKutta_doc.i
                       Fehlberg.i Fehlberg_doc.i
+                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i
                       BaseSolverTemplateDefs.i
                    )
 ot_add_python_module(common common_module.i

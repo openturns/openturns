@@ -35,9 +35,6 @@
 %include LinearProblem.i
 %include HiGHS.i
 
-/* Base/Solver */
-%include LeastSquaresEquationsSolver.i
-
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import dist_bundle2_module.i

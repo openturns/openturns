@@ -54,6 +54,7 @@
 %include ODESolver.i
 %include RungeKutta.i
 %include Fehlberg.i
+%include LeastSquaresEquationsSolver.i
 
 /* At last we include template definitions */
 %include BaseSolverTemplateDefs.i
