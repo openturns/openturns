@@ -565,12 +565,9 @@ ot_add_python_module(experimental experimental_module.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
-                     RatioOfUniforms.i RatioOfUniforms_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
-                      ProcessImplementation.i ProcessImplementation_doc.i
-                      Process.i Process_doc.i
                       WhiteNoise.i WhiteNoise_doc.i
                       RandomWalk.i RandomWalk_doc.i
                       DiscreteMarkovChain.i DiscreteMarkovChain_doc.i
@@ -893,9 +890,12 @@ ot_add_python_module(geom geom_module.i
                       BaseGeomTemplateDefs.i
                     )
 ot_add_python_module(randomvector randomvector_module.i
+                      ProcessImplementation.i ProcessImplementation_doc.i
+                      Process.i Process_doc.i
                       RandomVectorImplementation.i RandomVectorImplementation_doc.i
                       ConstantRandomVector.i ConstantRandomVector_doc.i
                       UsualRandomVector.i UsualRandomVector_doc.i
+                      RatioOfUniforms.i RatioOfUniforms_doc.i
                       UncertaintyRandomVectorTemplateDefs.i
                    )
 ot_add_python_module(classification classification_module.i

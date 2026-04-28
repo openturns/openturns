@@ -293,7 +293,7 @@ Random vectors
 
     :template: classWithPlot.rst_t
     UsualRandomVector
-    experimental.RatioOfUniforms
+    RatioOfUniforms
 
 Markov Chain Monte Carlo (MCMC)
 ===============================

@@ -21,6 +21,7 @@
  * ConstantFunction, ConstantEvaluation moved out of experimental 
  * VertexFieldToPointFunction moved out of experimental
  * LeastSquaresEquationsSolver moved out of experimental
+ * RatioOfUniforms moved out of experimental
 
 === Documentation ===
 
