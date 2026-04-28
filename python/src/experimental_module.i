@@ -38,8 +38,6 @@
 /* Base/Solver */
 %include LeastSquaresEquationsSolver.i
 
-%include ConstantEvaluation.i
-%include ConstantFunction.i
 %include VertexFieldToPointFunction.i
 
 /* Uncertainty/Model */
