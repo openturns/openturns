@@ -84,40 +84,6 @@ endmacro ()
 install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
 
-ot_add_python_module(typ typ_module.i
-                      Collection.i Collection_doc.i
-                      PersistentCollection.i
-                      Description.i Description_doc.i
-                      PlatformInfo.i PlatformInfo_doc.i
-                      Point.i Point_doc.i
-                      PointWithDescription.i PointWithDescription_doc.i
-                      DomainImplementation.i DomainImplementation_doc.i
-                      Interval.i Interval_doc.i
-                      Indices.i Indices_doc.i
-                      IndicesCollection.i IndicesCollection_doc.i
-                      IndicesCollectionImplementation.i
-                      MatrixImplementation.i
-                      Matrix.i Matrix_doc.i
-                      SquareMatrix.i SquareMatrix_doc.i
-                      SymmetricMatrix.i SymmetricMatrix_doc.i
-                      Tensor.i Tensor_doc.i
-                      SymmetricTensor.i SymmetricTensor_doc.i
-                      ComplexTensor.i ComplexTensor_doc.i
-                      ComplexMatrix.i ComplexMatrix_doc.i
-                      HermitianMatrix.i HermitianMatrix_doc.i
-                      SquareComplexMatrix.i SquareComplexMatrix_doc.i
-                      TriangularMatrix.i TriangularMatrix_doc.i
-                      TriangularComplexMatrix.i TriangularComplexMatrix_doc.i
-                      CovarianceMatrix.i CovarianceMatrix_doc.i
-                      CorrelationMatrix.i CorrelationMatrix_doc.i
-                      IdentityMatrix.i IdentityMatrix_doc.i
-                      Sample.i Sample_doc.i
-                      HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i
-                      HistoryStrategy.i HistoryStrategy_doc.i
-                      BaseTypCollection.i
-                      BaseTypTemplateDefs.i
-                   )
-
 ot_add_python_module(func func_module.i
                       EnumerateFunction.i EnumerateFunction_doc.i
                       EnumerateFunctionImplementation.i EnumerateFunctionImplementation_doc.i
@@ -163,7 +129,7 @@ ot_add_python_module(func func_module.i
                       FieldToPointConnection.i FieldToPointConnection_doc.i
                       PointToFieldConnection.i PointToFieldConnection_doc.i
                       FieldToFieldConnection.i FieldToFieldConnection_doc.i
-		      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i
+                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i
                       KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i
                       KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i
                       ValueFunction.i ValueFunction_doc.i
@@ -199,48 +165,6 @@ ot_add_python_module(func func_module.i
                       InverseTrendTransform.i InverseTrendTransform_doc.i
                       BaseFuncTemplateDefs.i
                    )
-ot_add_python_module(func2 func2_module.i
-                      ComposedHessian.i
-                      ConstantHessian.i ConstantHessian_doc.i
-                      DualLinearCombinationHessian.i DualLinearCombinationHessian_doc.i
-                      LinearCombinationHessian.i
-                      LinearGradient.i LinearGradient_doc.i
-                      MarginalHessian.i
-                      NoHessian.i
-                      NullHessian.i
-                      ParametricHessian.i
-                      ProductHessian.i
-                      SymbolicHessian.i
-                      ComposedGradient.i
-                      ConstantGradient.i ConstantGradient_doc.i
-                      DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i
-                      LinearCombinationGradient.i
-                      MarginalGradient.i
-                      ParametricGradient.i
-                      ProductGradient.i
-                      SymbolicGradient.i
-                      NoGradient.i
-                      NoEvaluation.i
-                      TranslationEvaluation.i TranslationEvaluation_doc.i
-                      LinearEvaluation.i LinearEvaluation_doc.i
-                      QuadraticEvaluation.i QuadraticEvaluation_doc.i
-                      ComposedEvaluation.i
-                      ConstantEvaluation.i ConstantEvaluation_doc.i
-                      ProductEvaluation.i
-                      PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i
-                      PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i
-                      IndicatorFunction.i IndicatorFunction_doc.i
-                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i
-                      MarginalEvaluation.i
-                      BasisFactory.i BasisFactory_doc.i
-                      ConstantBasisFactory.i ConstantBasisFactory_doc.i
-                      LinearBasisFactory.i LinearBasisFactory_doc.i
-                      QuadraticBasisFactory.i QuadraticBasisFactory_doc.i
-                      TrendEvaluation.i
-                      InverseTrendEvaluation.i
-                      BoxCoxEvaluation.i
-                      InverseBoxCoxEvaluation.i
-)
 
 ot_add_python_module(algo algo_module.i
                       ApproximationAlgorithmImplementation.i ApproximationAlgorithmImplementation_doc.i
@@ -299,7 +223,39 @@ ot_add_python_module(algo algo_module.i
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i
                       BaseAlgoTemplateDefs.i
                    )
-
+ot_add_python_module(typ typ_module.i
+                      Collection.i Collection_doc.i
+                      PersistentCollection.i
+                      Description.i Description_doc.i
+                      PlatformInfo.i PlatformInfo_doc.i
+                      Point.i Point_doc.i
+                      PointWithDescription.i PointWithDescription_doc.i
+                      DomainImplementation.i DomainImplementation_doc.i
+                      Interval.i Interval_doc.i
+                      Indices.i Indices_doc.i
+                      IndicesCollection.i IndicesCollection_doc.i
+                      IndicesCollectionImplementation.i
+                      MatrixImplementation.i
+                      Matrix.i Matrix_doc.i
+                      SquareMatrix.i SquareMatrix_doc.i
+                      SymmetricMatrix.i SymmetricMatrix_doc.i
+                      Tensor.i Tensor_doc.i
+                      SymmetricTensor.i SymmetricTensor_doc.i
+                      ComplexTensor.i ComplexTensor_doc.i
+                      ComplexMatrix.i ComplexMatrix_doc.i
+                      HermitianMatrix.i HermitianMatrix_doc.i
+                      SquareComplexMatrix.i SquareComplexMatrix_doc.i
+                      TriangularMatrix.i TriangularMatrix_doc.i
+                      TriangularComplexMatrix.i TriangularComplexMatrix_doc.i
+                      CovarianceMatrix.i CovarianceMatrix_doc.i
+                      CorrelationMatrix.i CorrelationMatrix_doc.i
+                      IdentityMatrix.i IdentityMatrix_doc.i
+                      Sample.i Sample_doc.i
+                      HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i
+                      HistoryStrategy.i HistoryStrategy_doc.i
+                      BaseTypCollection.i
+                      BaseTypTemplateDefs.i
+                   )
 
 ot_add_python_module(model_copula model_copula_module.i
                       DistributionImplementation.i DistributionImplementation_doc.i
@@ -319,28 +275,6 @@ ot_add_python_module(model_copula model_copula_module.i
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
                    )
-ot_add_python_module(model_copula2 model_copula2_module.i
-                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
-                      PlackettCopula.i PlackettCopula_doc.i
-                      PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
-                      MarshallOlkinCopula.i MarshallOlkinCopula_doc.i
-                      FarlieGumbelMorgensternCopula.i FarlieGumbelMorgensternCopula_doc.i
-                      FarlieGumbelMorgensternCopulaFactory.i FarlieGumbelMorgensternCopulaFactory_doc.i
-                      AliMikhailHaqCopula.i AliMikhailHaqCopula_doc.i
-                      AliMikhailHaqCopulaFactory.i AliMikhailHaqCopulaFactory_doc.i
-                      FrankCopula.i FrankCopula_doc.i
-                      FrankCopulaFactory.i FrankCopulaFactory_doc.i
-                      ClaytonCopula.i ClaytonCopula_doc.i
-                      ClaytonCopulaFactory.i ClaytonCopulaFactory_doc.i
-                      GumbelCopula.i GumbelCopula_doc.i
-                      GumbelCopulaFactory.i GumbelCopulaFactory_doc.i
-                      IndependentCopula.i IndependentCopula_doc.i
-                      IndependentCopulaFactory.i IndependentCopulaFactory_doc.i
-                      MinCopula.i MinCopula_doc.i
-                      NormalCopula.i NormalCopula_doc.i
-                      NormalCopulaFactory.i NormalCopulaFactory_doc.i
-)
-
 
 ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i
@@ -497,7 +431,48 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i
                       UncertaintyDistTemplateDefs.i
                    )
-
+ot_add_python_module(func2 func2_module.i
+                      ComposedHessian.i
+                      ConstantHessian.i ConstantHessian_doc.i
+                      DualLinearCombinationHessian.i DualLinearCombinationHessian_doc.i
+                      LinearCombinationHessian.i
+                      LinearGradient.i LinearGradient_doc.i
+                      MarginalHessian.i
+                      NoHessian.i
+                      NullHessian.i
+                      ParametricHessian.i
+                      ProductHessian.i
+                      SymbolicHessian.i
+                      ComposedGradient.i
+                      ConstantGradient.i ConstantGradient_doc.i
+                      DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i
+                      LinearCombinationGradient.i
+                      MarginalGradient.i
+                      ParametricGradient.i
+                      ProductGradient.i
+                      SymbolicGradient.i
+                      NoGradient.i
+                      NoEvaluation.i
+                      TranslationEvaluation.i TranslationEvaluation_doc.i
+                      LinearEvaluation.i LinearEvaluation_doc.i
+                      QuadraticEvaluation.i QuadraticEvaluation_doc.i
+                      ComposedEvaluation.i
+                      ConstantEvaluation.i ConstantEvaluation_doc.i
+                      ProductEvaluation.i
+                      PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i
+                      PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i
+                      IndicatorFunction.i IndicatorFunction_doc.i
+                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i
+                      MarginalEvaluation.i
+                      BasisFactory.i BasisFactory_doc.i
+                      ConstantBasisFactory.i ConstantBasisFactory_doc.i
+                      LinearBasisFactory.i LinearBasisFactory_doc.i
+                      QuadraticBasisFactory.i QuadraticBasisFactory_doc.i
+                      TrendEvaluation.i
+                      InverseTrendEvaluation.i
+                      BoxCoxEvaluation.i
+                      InverseBoxCoxEvaluation.i
+)
 ot_add_python_module(metamodel metamodel_module.i
                       MetaModelResult.i MetaModelResult_doc.i
                       MetaModelAlgorithm.i MetaModelAlgorithm_doc.i
@@ -553,12 +528,29 @@ ot_add_python_module(metamodel metamodel_module.i
                       FieldFunctionalChaosSobolIndices.i FieldFunctionalChaosSobolIndices_doc.i
                       UncertaintyMetaModelTemplateDefs.i
                    )
-
+ot_add_python_module(model_copula2 model_copula2_module.i
+                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
+                      PlackettCopula.i PlackettCopula_doc.i
+                      PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
+                      MarshallOlkinCopula.i MarshallOlkinCopula_doc.i
+                      FarlieGumbelMorgensternCopula.i FarlieGumbelMorgensternCopula_doc.i
+                      FarlieGumbelMorgensternCopulaFactory.i FarlieGumbelMorgensternCopulaFactory_doc.i
+                      AliMikhailHaqCopula.i AliMikhailHaqCopula_doc.i
+                      AliMikhailHaqCopulaFactory.i AliMikhailHaqCopulaFactory_doc.i
+                      FrankCopula.i FrankCopula_doc.i
+                      FrankCopulaFactory.i FrankCopulaFactory_doc.i
+                      ClaytonCopula.i ClaytonCopula_doc.i
+                      ClaytonCopulaFactory.i ClaytonCopulaFactory_doc.i
+                      GumbelCopula.i GumbelCopula_doc.i
+                      GumbelCopulaFactory.i GumbelCopulaFactory_doc.i
+                      IndependentCopula.i IndependentCopula_doc.i
+                      IndependentCopulaFactory.i IndependentCopulaFactory_doc.i
+                      MinCopula.i MinCopula_doc.i
+                      NormalCopula.i NormalCopula_doc.i
+                      NormalCopulaFactory.i NormalCopulaFactory_doc.i
+)
 
 ot_add_python_module(experimental experimental_module.i
-                     SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i
-                     SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
-                     LOLAVoronoi.i LOLAVoronoi_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i
@@ -751,6 +743,9 @@ ot_add_python_module(bayesian bayesian_module.i
                       UserDefinedMetropolisHastings.i UserDefinedMetropolisHastings_doc.i
                       Gibbs.i Gibbs_doc.i
                       CompoundRandomVector.i CompoundRandomVector_doc.i
+                      SequentialSamplingAlgorithm.i SequentialSamplingAlgorithm_doc.i
+                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
+                      LOLAVoronoi.i LOLAVoronoi_doc.i
                       UncertaintyBayesianTemplateDefs.i
                     )
 ot_add_python_module(uncertainty uncertainty_module.i
