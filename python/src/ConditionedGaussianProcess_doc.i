@@ -1,10 +1,6 @@
 %feature("docstring") OT::ConditionedGaussianProcess
 R"RAW(Conditioned Gaussian process.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Parameters
 ----------
 gprResult : :class:`~openturns.GaussianProcessRegressionResult`
@@ -25,7 +21,6 @@ Examples
 We consider the model :math:`g: \Rset^2 \rightarrow \Rset` defined by :math:`g(x,y) = cos(x/2) + sin(y)`.
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 
@@ -62,7 +57,7 @@ Now, we define the mesh on which the gconditionned gaussian process  is generate
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0], [1.0, 1.0], [1.5, 0.5]]
 >>> simplices = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
 >>> mesh2D = ot.Mesh(vertices, simplices)
->>> process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
+>>> process = ot.ConditionedGaussianProcess(gpr_result, mesh2D)
 
 We get a realization of the conditioned Gaussian process:
 

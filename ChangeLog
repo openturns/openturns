@@ -19,6 +19,7 @@
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
+ * ConditionedGaussianProcess moved out of experimental
  * QuantileConfidence moved out of experimental
  * ConstantFunction, ConstantEvaluation moved out of experimental 
  * VertexFieldToPointFunction moved out of experimental
