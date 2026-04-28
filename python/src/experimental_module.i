@@ -70,8 +70,5 @@
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 
-/* Uncertainty/Model */
-%include RatioOfUniforms.i
-
 /* Uncertainty/Process */
 %include ConditionedGaussianProcess.i

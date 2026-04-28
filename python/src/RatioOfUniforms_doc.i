@@ -1,11 +1,6 @@
 %feature("docstring") OT::RatioOfUniforms
 R"RAW(Ratio of Uniforms simulation algorithm.
 
-
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 Available constructors:
     RatioOfUniforms(*dist*)
 
@@ -172,16 +167,15 @@ Create a ratio of uniforms algorithm and get the multistart optimization problem
 compute the bounds of :math:`\tilde{A}_{f,r}`:
 
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> from math import pi
 >>> f = ot.SymbolicFunction('x', '(1.5+sin(x))*exp(x)')
 >>> log_UnscaledPDF = ot.ComposedFunction(ot.SymbolicFunction('x', 'log(x)'), f)
 >>> range_PDF = ot.Interval(0.0, 2.0 * pi)
->>> ratioOfU = otexp.RatioOfUniforms(log_UnscaledPDF, range_PDF, False)
+>>> ratioOfU = ot.RatioOfUniforms(log_UnscaledPDF, range_PDF, False)
 >>> collMultiStart = ratioOfU.initialize()
 >>> x = ratioOfU.getRealization()
 >>> sample = ratioOfU.getSample(10)
->>> ratioOfU = otexp.RatioOfUniforms(ot.Student(8.5, 3))
+>>> ratioOfU = ot.RatioOfUniforms(ot.Student(8.5, 3))
 )RAW"
 
 // ---------------------------------------------------------------------

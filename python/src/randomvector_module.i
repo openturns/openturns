@@ -25,6 +25,7 @@
 %include RandomVectorImplementation.i
 %include ConstantRandomVector.i
 %include UsualRandomVector.i
+%include RatioOfUniforms.i
 
 /* At last we include template definitions */
 %include UncertaintyRandomVectorTemplateDefs.i
