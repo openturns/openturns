@@ -18,7 +18,7 @@ General mathematical functions
     SymbolicFunction
 
     :template: class.rst_t
-    experimental.ConstantFunction
+    ConstantFunction
     TranslationFunction
 
     :template: classWithPlot.rst_t
@@ -127,7 +127,7 @@ Evaluation functions
     EvaluationImplementation
     AggregatedEvaluation
     ComposedEvaluation
-    experimental.ConstantEvaluation
+    ConstantEvaluation
     DatabaseEvaluation
     DistanceToDomainEvaluation
     DualLinearCombinationEvaluation

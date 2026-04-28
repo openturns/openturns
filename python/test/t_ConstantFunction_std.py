@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -9,7 +8,7 @@ ot.TESTPREAMBLE()
 inputDimension = 2
 constant = [1, 2, 3]
 
-f = otexp.ConstantFunction(inputDimension, constant)
+f = ot.ConstantFunction(inputDimension, constant)
 
 print(f)
 print(repr(f))

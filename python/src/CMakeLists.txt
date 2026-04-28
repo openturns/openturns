@@ -174,6 +174,7 @@ ot_add_python_module(func func_module.i
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i
                       AggregatedEvaluation.i AggregatedEvaluation_doc.i
                       SymbolicEvaluation.i SymbolicEvaluation_doc.i
+                      ConstantFunction.i ConstantFunction_doc.i
                       DatabaseFunction.i DatabaseFunction_doc.i
                       IndicatorEvaluation.i
                       DistanceToDomainEvaluation.i
@@ -223,6 +224,7 @@ ot_add_python_module(func2 func2_module.i
                       LinearEvaluation.i LinearEvaluation_doc.i
                       QuadraticEvaluation.i QuadraticEvaluation_doc.i
                       ComposedEvaluation.i
+                      ConstantEvaluation.i ConstantEvaluation_doc.i
                       ProductEvaluation.i
                       PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i
                       PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i
@@ -557,8 +559,6 @@ ot_add_python_module(experimental experimental_module.i
                      SequentialSamplingAlgorithmImplementation.i SequentialSamplingAlgorithmImplementation_doc.i
                      LOLAVoronoi.i LOLAVoronoi_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
-                     ConstantEvaluation.i ConstantEvaluation_doc.i
-                     ConstantFunction.i ConstantFunction_doc.i
                      VertexFieldToPointFunction.i VertexFieldToPointFunction_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i

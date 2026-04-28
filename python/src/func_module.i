@@ -91,6 +91,7 @@
 %include UniVariatePolynomial.i
 %include AggregatedEvaluation.i
 %include SymbolicEvaluation.i
+%include ConstantFunction.i
 %include DatabaseFunction.i
 %include ProductPolynomialEvaluation.i
 %include ParametricEvaluation.i

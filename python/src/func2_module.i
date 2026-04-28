@@ -77,3 +77,4 @@
 %include InverseTrendEvaluation.i
 %include BoxCoxEvaluation.i
 %include InverseBoxCoxEvaluation.i
+%include ConstantEvaluation.i

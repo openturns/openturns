@@ -18,6 +18,7 @@
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
  * QuantileConfidence moved out of experimental
+ * ConstantFunction, ConstantEvaluation moved out of experimental 
 
 === Documentation ===
 
