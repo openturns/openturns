@@ -262,4 +262,4 @@ Quantile confidence
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.QuantileConfidence
+    QuantileConfidence

@@ -10,7 +10,6 @@ Estimate quantile confidence intervals from chemical process data
 #
 # See  :ref:`quantile_confidence_estimation`  and :ref:`quantile_asymptotic_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # %%
@@ -125,7 +124,7 @@ sample = ot.Sample.BuildFromPoint(data)
 # with a confidence level of :math:`\beta = 95\%` (see example 5.7 p. 85).
 alpha = 0.1
 beta = 0.95
-algo = otexp.QuantileConfidence(alpha, beta)
+algo = ot.QuantileConfidence(alpha, beta)
 
 # %%
 # Estimate bilateral rank: math:`(\ell,u)` such that :math:`0 \leq \ell \leq u \leq \sampleSize -1`

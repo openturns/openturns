@@ -567,7 +567,6 @@ ot_add_python_module(experimental experimental_module.i
                      LinearProblem.i LinearProblem_doc.i
                      LeastSquaresEquationsSolver.i LeastSquaresEquationsSolver_doc.i
                      RatioOfUniforms.i RatioOfUniforms_doc.i
-                     QuantileConfidence.i QuantileConfidence_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
@@ -673,6 +672,7 @@ ot_add_python_module(simulation simulation_module.i
                       Wilks.i Wilks_doc.i
                       PostAnalyticalControlledImportanceSampling.i PostAnalyticalControlledImportanceSampling_doc.i
                       PostAnalyticalImportanceSampling.i PostAnalyticalImportanceSampling_doc.i
+                      QuantileConfidence.i QuantileConfidence_doc.i
                       RootStrategyImplementation.i RootStrategyImplementation_doc.i
                       RootStrategy.i RootStrategy_doc.i
                       SamplingStrategyImplementation.i SamplingStrategyImplementation_doc.i

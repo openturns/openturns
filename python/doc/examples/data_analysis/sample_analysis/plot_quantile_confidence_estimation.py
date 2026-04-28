@@ -17,7 +17,6 @@ Estimate quantile confidence intervals
 #
 # See  :ref:`quantile_confidence_estimation`  and :ref:`quantile_asymptotic_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
-import openturns.experimental as otexp
 import math as m
 
 
@@ -87,9 +86,9 @@ supQuantile = sortedSample[j_n - 1]
 print(infQuantile, empiricalQuantile, supQuantile)
 
 # %%
-# This can be done using :class:`~openturns.experimental.QuantileConfidence`
+# This can be done using :class:`~openturns.QuantileConfidence`
 # when the ranks :math:`i_n` and :math:`j_n` are directly given in :math:`\llbracket 0, \sampleSize-1 \rrbracket`.
-algo = otexp.QuantileConfidence(alpha, beta)
+algo = ot.QuantileConfidence(alpha, beta)
 i_n, j_n = algo.computeAsymptoticBilateralRank(n)
 ci = algo.computeAsymptoticBilateralConfidenceInterval(sample)
 print(f"asymptotic ranks={[i_n, j_n]} CI={ci}")

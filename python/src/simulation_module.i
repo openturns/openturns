@@ -64,6 +64,7 @@
 %include Wilks.i
 %include PostAnalyticalControlledImportanceSampling.i
 %include PostAnalyticalImportanceSampling.i
+%include QuantileConfidence.i
 %include RootStrategyImplementation.i
 %include RootStrategy.i
 %include SamplingStrategyImplementation.i

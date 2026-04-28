@@ -16,6 +16,7 @@
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
+ * QuantileConfidence moved out of experimental
 
 === Documentation ===
 
