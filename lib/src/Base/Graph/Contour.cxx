@@ -417,10 +417,10 @@ void Contour::load(Advocate & adv)
     adv.loadAttribute("colorMap_", colorMap_);
   else
     colorMap_.clear();
-  // TODO: remove loading of deprecated alpha_ attribute
   if (adv.hasAttribute("alpha_"))
   {
-    Scalar alpha;
+    // OT < 1.25
+    Scalar alpha = 0.0;
     adv.loadAttribute("alpha_", alpha);
     setAlpha(alpha);
   }
