@@ -60,7 +60,7 @@ Directional Sampling
 
     DirectionalSampling
     AdaptiveDirectionalStratification
-    experimental.LineSampling
+    LineSampling
 
 Root Strategy
 -------------
