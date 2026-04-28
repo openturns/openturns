@@ -44,10 +44,6 @@ myAlgo = ot.FORM(myCobyla, myEvent)
 
 print("FORM=", myAlgo)
 
-# Check the starting point
-point = myAlgo.getPhysicalStartingPoint()
-myAlgo.setPhysicalStartingPoint(point)
-
 # Perform the simulation
 myAlgo.run()
 

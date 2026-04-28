@@ -15,6 +15,7 @@
  * Removed deprecated ResourceMap.Reload
  * Removed deprecated Wilks class
  * Removed deprecated DeconditionedDistribution, DeconditionedRandomVector
+ * Removed deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental

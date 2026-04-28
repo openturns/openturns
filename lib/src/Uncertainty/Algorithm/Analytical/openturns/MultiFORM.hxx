@@ -42,8 +42,7 @@ public:
 
   /** Constructor with parameters */
   MultiFORM(const OptimizationAlgorithm & solver,
-            const RandomVector & event,
-            const Point & physicalStartingPoint = Point()); // deprecated argument
+            const RandomVector & event);
 
   /** Virtual constructor */
   MultiFORM * clone() const override;
@@ -72,7 +71,7 @@ private:
   UnsignedInteger maximumDesignPointsNumber_;
   MultiFORMResult multiFORMResult_;
 
-} ; /* class MultiFORM */
+}; /* class MultiFORM */
 
 END_NAMESPACE_OPENTURNS
 

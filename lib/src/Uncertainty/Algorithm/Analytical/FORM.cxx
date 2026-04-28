@@ -31,8 +31,7 @@ static const Factory<FORM> Factory_FORM;
 
 /* Default constructor for the save/load mechanism */
 FORM::FORM()
-  : Analytical(),
-    formResult_()
+  : Analytical()
 {
   // Nothing to do
 }
@@ -41,9 +40,8 @@ FORM::FORM()
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-           const RandomVector & event,
-           const Point & physicalStartingPoint):
-  Analytical(nearestPointAlgorithm, event, physicalStartingPoint)
+           const RandomVector & event)
+  : Analytical(nearestPointAlgorithm, event)
 {
   // Nothing to do
 }

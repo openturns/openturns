@@ -47,8 +47,7 @@ public:
 
   /** Constructor with parameters */
   SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-       const RandomVector & event,
-       const Point & physicalStartingPoint = Point()); // deprecated argument
+       const RandomVector & event);
 
   /** Virtual constructor */
   SORM * clone() const override;
@@ -75,7 +74,7 @@ private:
 
   SORMResult sormResult_;
 
-} ; /* class SORM */
+}; /* class SORM */
 
 
 END_NAMESPACE_OPENTURNS
