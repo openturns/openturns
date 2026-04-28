@@ -13,6 +13,7 @@
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed deprecated SpecFunc.IsNormal
  * Removed deprecated ResourceMap.Reload
+ * Removed deprecated Wilks class
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental

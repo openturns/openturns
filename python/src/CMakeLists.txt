@@ -669,7 +669,6 @@ ot_add_python_module(simulation simulation_module.i
                       EventSimulation.i EventSimulation_doc.i
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i
-                      Wilks.i Wilks_doc.i
                       PostAnalyticalControlledImportanceSampling.i PostAnalyticalControlledImportanceSampling_doc.i
                       PostAnalyticalImportanceSampling.i PostAnalyticalImportanceSampling_doc.i
                       QuantileConfidence.i QuantileConfidence_doc.i
