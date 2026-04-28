@@ -22,6 +22,7 @@
  * VertexFieldToPointFunction moved out of experimental
  * LeastSquaresEquationsSolver moved out of experimental
  * RatioOfUniforms moved out of experimental
+ * LOLAVoronoi moved out of experimental
 
 === Documentation ===
 
