@@ -38,10 +38,6 @@
 /* Base/Solver */
 %include LeastSquaresEquationsSolver.i
 
-%include VertexFieldToPointFunction.i
-
-/* Uncertainty/Model */
-
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import dist_bundle2_module.i

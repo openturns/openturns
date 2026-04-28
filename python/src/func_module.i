@@ -75,6 +75,7 @@
 %include PointToFieldConnection.i
 %include PointToPointEvaluation.i
 %include PointToPointConnection.i
+%include VertexFieldToPointFunction.i
 %include IndicatorFunction.i
 %include DistanceToDomainFunction.i
 %include ValueFunction.i
