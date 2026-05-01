@@ -79,24 +79,23 @@ String QuantileConfidence::__str__(const String & /*offset*/) const
 }
 
 // compute rank k given by the beta-level quantile of B(n, alpha)
-UnsignedInteger QuantileConfidence::computeUnilateralRank(const UnsignedInteger size, const Bool tail) const
+UnsignedInteger QuantileConfidence::computeUnilateralRank(const UnsignedInteger size, const Bool lower_bounded) const
 {
-  const UnsignedInteger minimumSize = computeUnilateralMinimumSampleSize(0, tail);
+  const UnsignedInteger minimumSize = computeUnilateralMinimumSampleSize(0, lower_bounded);
   if (size < minimumSize)
     throw InvalidArgumentException(HERE) << "Cannot compute unilateral rank as size (" << size << ") is lower than minimum size (" << minimumSize << ")";
 
   const Binomial binomial(size, alpha_);
-  const Scalar p = tail ? 1.0 - std::pow(alpha_, 1.0 * size) : 1.0 - std::pow(1.0 - alpha_, 1.0 * size);
+  const Scalar p = lower_bounded ? 1.0 - std::pow(1.0 - alpha_, 1.0 * size) : 1.0 - std::pow(alpha_, 1.0 * size);
 
   if (p < beta_)
   {
-    if (tail)
+    if (lower_bounded)
       throw InvalidArgumentException(HERE) << "Cannot compute rank as parameters do not satisfy 1 - alpha^n >= beta";
     else
       throw InvalidArgumentException(HERE) << "Cannot compute rank as parameters do not satisfy 1 - (1 - alpha)^n >= beta";
   }
-
-  const UnsignedInteger rank = binomial.computeQuantile(beta_, tail)[0];
+  const UnsignedInteger rank = binomial.computeQuantile(beta_, lower_bounded)[0];
   return rank;
 }
 
@@ -152,7 +151,6 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
 
     // we compute P(k1<X<=k2)=P(k1+1<=X<=k2), CDF(k2)-CDF(k1) also works
     const Scalar p = binomial.computeProbability(Interval(k1 + 1, k2));
-    LOGDEBUG(OSS() << "k1=" << k1 << " k2=" << k2 << " p=" << p);
     if ((p >= beta_) && (p < pBest))
     {
       pBest = p;
@@ -164,14 +162,14 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
 }
 
 // compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k
-Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & sample, const Bool tail) const
+Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & sample, const Bool lower_bounded) const
 {
   Scalar coverageOut = -1.0;
-  return computeUnilateralConfidenceIntervalWithCoverage(sample, coverageOut, tail);
+  return computeUnilateralConfidenceIntervalWithCoverage(sample, coverageOut, lower_bounded);
 }
 
 // compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k and the actual coverage
-Interval QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool tail) const
+Interval QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool lower_bounded) const
 {
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Expected a sample of dimension 1";
@@ -180,20 +178,18 @@ Interval QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage(con
   Interval::BoolCollection finiteLowerBound(1, false);
   Interval::BoolCollection finiteUpperBound(1, false);
   const Sample sortedSample(sample.sort());
-  const UnsignedInteger k = computeUnilateralRank(sample.getSize(), tail);
-  const Binomial binomial(sample.getSize(), getAlpha());
-  if (tail)
+  const UnsignedInteger k = computeUnilateralRank(sample.getSize(), lower_bounded);
+  if (lower_bounded)
   {
     lowerBound[0] = sortedSample(k, 0);
     finiteLowerBound[0] = true;
-    coverageOut = binomial.computeComplementaryCDF(k);
   }
   else
   {
     upperBound[0] = sortedSample(k, 0);
     finiteUpperBound[0] = true;
-    coverageOut = binomial.computeCDF(k);
   }
+  coverageOut = computeUnilateralCoverage(sample.getSize(), k, lower_bounded);
   return Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
 }
 
@@ -210,12 +206,48 @@ Interval QuantileConfidence::computeBilateralConfidenceIntervalWithCoverage(cons
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Expected a sample of dimension 1";
   const Indices rank(computeBilateralRank(sample.getSize()));
-  const Binomial binomial(sample.getSize(), getAlpha());
-  coverageOut = binomial.computeCDF(rank[1]) - binomial.computeCDF(rank[0]);
+  coverageOut = computeBilateralCoverage(sample.getSize(), rank[0], rank[1]);
   const Sample sortedSample(sample.sort());
   return Interval(Point({sortedSample(rank[0], 0)}), Point({sortedSample(rank[1], 0)}));
 }
 
+Scalar QuantileConfidence::computeUnilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank, const Bool lower_bounded) const
+{
+  if (rank >= size)
+    throw InvalidArgumentException(HERE) << "The rank must be strictly less than the sample size.";
+
+  // Y ~ Binomial(size, alpha)
+  Binomial binomial(size, alpha_);  
+  Scalar cdf;
+
+  if (lower_bounded)
+    // Lower bound coverage: 1 - P(Y <= rank)
+    cdf = binomial.computeComplementaryCDF(rank);
+  else
+    // Upper bound coverage: P(Y <= rank)
+    cdf = binomial.computeCDF(rank);
+  
+  return cdf;
+}
+
+Scalar QuantileConfidence::computeBilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank1, const UnsignedInteger rank2) const
+{
+  if (rank1 >= rank2)
+    throw InvalidArgumentException(HERE) << "The lower rank (" << rank1 
+                                         << ") must be strictly less than the upper rank (" << rank2 << ").";
+  if (rank2 >= size)
+    throw InvalidArgumentException(HERE) << "The upper rank (" << rank2 
+                                         << ") must be strictly less than the sample size (" << size << ").";
+
+  // Y ~ Binomial(size, alpha)
+  Binomial binomial(size, alpha_);
+  
+  // P(k1 + 1 <= Y <= k2) = P(Y <= k2) - P(Y <= k1)
+  Scalar cdf_upper = binomial.computeCDF(rank2);
+  Scalar cdf_lower = binomial.computeCDF(rank1);
+  
+  return cdf_upper - cdf_lower;
+}
 
 namespace
 {
@@ -224,11 +256,11 @@ class QuantileConfidenceEvaluation: public EvaluationImplementation
 public:
   QuantileConfidenceEvaluation(const Scalar alpha,
                                const UnsignedInteger rank,
-                               const Bool tail)
+                               const Bool lower_bounded)
     : EvaluationImplementation()
     , alpha_(alpha)
     , rank_(rank)
-    , tail_(tail)
+    , tail_(lower_bounded)
   {
     // Nothing to do
   }
@@ -240,7 +272,7 @@ public:
 
   Point operator() (const Point & point) const override
   {
-    return {DistFunc::pBeta(rank_ + 1, point[0] - rank_, tail_ ? 1.0 - alpha_ : alpha_)};
+    return {DistFunc::pBeta(rank_ + 1, point[0] - rank_, tail_ ? alpha_ : 1.0 - alpha_)};
   }
 
   UnsignedInteger getInputDimension() const override
@@ -261,7 +293,7 @@ private:
 } // Anonymous namespace
 
 
-UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const UnsignedInteger rank, const Bool tail) const
+UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const UnsignedInteger tail_rank, const Bool lower_bounded) const
 {
   // Here we have to find the minimal value of N such that
   // 1-\sum_{i=N-r}^N Binomial(i, N)\alpha^i(1-\alpha)^{N-i}>=\beta
@@ -273,13 +305,13 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   // Binomial(N, alpha) distribution.
   // Easy case: rank=0, the quantile bound is given by the largest upper statistics. The equation to solve is N=\min{n|1-\alpha^n>=\beta}
   Scalar nApprox = 0.0;
-  const Function wilksConstraint(QuantileConfidenceEvaluation(alpha_, rank, tail).clone());
-  if (rank == 0)
+  const Function wilksConstraint(QuantileConfidenceEvaluation(alpha_, tail_rank, lower_bounded).clone());
+  if (tail_rank == 0)
   {
-    if (tail)
-      nApprox = std::log1p(-beta_) / std::log(alpha_);
-    else
+    if (lower_bounded)
       nApprox = std::log1p(-beta_) / std::log1p(-alpha_);
+    else
+      nApprox = std::log1p(-beta_) / std::log(alpha_);
   }
   else
   {
@@ -290,15 +322,15 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
     // We compute a reasonable guess for n using a Normal approximation:
     // n*alpha+q_beta*sqrt(n*alpha*(1-alpha))=n-r:
     const Scalar aBeta = DistFunc::qNormal(beta_);
-    UnsignedInteger nMax = static_cast<UnsignedInteger>((rank + 0.5 * (alpha_ * aBeta * aBeta + std::abs(aBeta) * std::sqrt(alpha_ * (4.0 * rank + alpha_ * aBeta * aBeta)))) / (1.0 - alpha_));
+    UnsignedInteger nMax = static_cast<UnsignedInteger>((tail_rank + 0.5 * (alpha_ * aBeta * aBeta + std::abs(aBeta) * std::sqrt(alpha_ * (4.0 * tail_rank + alpha_ * aBeta * aBeta)))) / (1.0 - alpha_));
     // This loop must end as wilksConstraint->1 when n->inf
     while (wilksConstraint(Point({0.0 + nMax}))[0] < beta_)
       // At the beginning of the loop nMax is >= 1 so it increases strictly
       nMax += nMax;
-    nApprox = Brent().solve(wilksConstraint, beta_, rank, nMax);
+    nApprox = Brent().solve(wilksConstraint, beta_, tail_rank, nMax);
   } // rank > 0
   // Here, nApprox can be very close to an integer (in the sense of: the value of the constraint evaluated at the nearest integer is very close to beta_), in which case the correct answer is round(nApprox), or the answer is the next integer value
-  const UnsignedInteger nInf = std::round(std::max(1.0 * rank, nApprox));
+  const UnsignedInteger nInf = std::round(std::max(1.0 * tail_rank, nApprox));
   const Scalar constraintInf = wilksConstraint(Point({0.0 + nInf}))[0];
   if (std::abs(constraintInf - beta_) < std::sqrt(SpecFunc::Precision)) return nInf;
   return std::ceil(nApprox);

@@ -47,17 +47,22 @@ public:
   QuantileConfidence * clone() const override;
 
   /** Compute ranks */
-  UnsignedInteger computeUnilateralRank(const UnsignedInteger size, const Bool tail = false) const;
+  UnsignedInteger computeUnilateralRank(const UnsignedInteger size, const Bool lower_bounded = false) const;
   Indices computeBilateralRank(const UnsignedInteger size) const;
 
   /** Compute confidence intervals */
-  Interval computeUnilateralConfidenceInterval(const Sample & sample, const Bool tail = false) const;
-  Interval computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceInterval(const Sample & sample, const Bool lower_bounded = false) const;
+  Interval computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool lower_bounded = false) const;
   Interval computeBilateralConfidenceInterval(const Sample & sample) const;
   Interval computeBilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut) const;
 
+  /** Compute probability of coverage for a given size and rank */
+  Scalar computeUnilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank, const Bool lower_bounded = false) const;
+  /** Compute probability of coverage for a bilateral interval given size and ranks */
+  Scalar computeBilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank1, const UnsignedInteger rank2) const;
+  
   /** Compute minimum sample size */
-  UnsignedInteger computeUnilateralMinimumSampleSize(const UnsignedInteger rank = 0, const Bool tail = false) const;
+  UnsignedInteger computeUnilateralMinimumSampleSize(const UnsignedInteger rank = 0, const Bool lower_bounded = false) const;
   UnsignedInteger computeBilateralMinimumSampleSize() const;
 
   /** Asymptotic confidence */

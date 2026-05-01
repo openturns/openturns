@@ -247,8 +247,9 @@ for alpha in [0.01, 0.05, 0.10, 0.25, 0.75, 0.90, 0.95, 0.99]:
     for beta in [0.90, 0.95, 0.99]:
         algo = ot.QuantileConfidence(alpha, beta)
         # lower
+        lower_bound = True
         for r in range(5):
-            n = algo.computeUnilateralMinimumSampleSize(r)
+            n = algo.computeUnilateralMinimumSampleSize(r, lower_bound)
             p = ot.Binomial(n, alpha).computeComplementaryCDF(r)
             pPrev = ot.Binomial(n - 1, alpha).computeComplementaryCDF(r)
             print(
@@ -260,8 +261,9 @@ for alpha in [0.01, 0.05, 0.10, 0.25, 0.75, 0.90, 0.95, 0.99]:
                 assert n == ref_a[(alpha, beta)]
 
         # upper
+        # lower_bound = False is the default value
         for r in range(5):
-            n = algo.computeUnilateralMinimumSampleSize(r, True)
+            n = algo.computeUnilateralMinimumSampleSize(r)
             p = ot.Binomial(n, alpha).computeCDF(n - 1 - r)
             pPrev = ot.Binomial(n - 1, alpha).computeCDF((n - 1) - 1 - r)
             print(
@@ -312,6 +314,7 @@ for alpha in [
         print(f"{n: >6}", end=" ")
     print("")
 
+# In Meeker2017, beta is the quantile level, 1 - alpha is the confidence level
 n_ref = {}
 n_ref[(0.5, 0.5)] = 1
 n_ref[(0.5, 0.75)] = 2
@@ -441,12 +444,17 @@ n_ref[(0.999, 0.98)] = 3911
 n_ref[(0.999, 0.99)] = 4603
 n_ref[(0.999, 0.999)] = 6905
 
-for alpha, beta in n_ref.keys():
-    algo = ot.QuantileConfidence(alpha, beta)
-    n = algo.computeUnilateralMinimumSampleSize(0, True)
-    ref = n_ref[(alpha, beta)]
-    print(f"alpha={alpha} beta={beta} n={n} ref={ref}")
-    assert n == ref
+for lower_bound in [True, False]:
+    for alpha, beta in n_ref.keys():
+        if lower_bound:
+            algo = ot.QuantileConfidence(1.0 - alpha, beta)
+        else:
+            algo = ot.QuantileConfidence(alpha, beta)
+        n = algo.computeUnilateralMinimumSampleSize(0, lower_bound)
+        ref = n_ref[(alpha, beta)]
+        print(f"lower_bound={lower_bound} "
+              f"alpha={alpha} beta={beta} n={n} ref={ref}")
+        assert n == ref
 
 
 # asymptotic confidence
@@ -468,3 +476,39 @@ for i in range(3, 7):
         sample = dist.getSample(n)
         ci = algo.computeAsymptoticBilateralConfidenceInterval(sample)
         assert ci.contains(qalpha)
+
+# Probability of coverage
+
+
+def test_quantile_confidence_coverage(rtol=1.0e-14):
+    # 1. Lower bound test
+    alpha = 0.05
+    beta = 0.95
+    algo = ot.QuantileConfidence(alpha, beta)
+    size_lower = 300
+    lower_bounded = True
+    rank_lower = algo.computeUnilateralRank(size_lower, lower_bounded)
+    coverage1 = algo.computeUnilateralCoverage(size_lower, rank_lower, lower_bounded)
+    ott.assert_almost_equal(coverage1, 0.9659341864785022, rtol, 0.0)
+
+    # 2. Upper bound test
+    alpha = 0.95
+    beta = 0.95
+    algo = ot.QuantileConfidence(alpha, beta)
+    size_upper = 300
+    lower_bounded = False
+    rank_upper = algo.computeUnilateralRank(size_upper, lower_bounded)
+    coverage2 = algo.computeUnilateralCoverage(size_upper, rank_upper, lower_bounded)
+    ott.assert_almost_equal(coverage2, 0.9659341864785024, rtol, 0.0)
+
+    # 3. Bilateral test
+    alpha = 0.95
+    beta = 0.95
+    algo = ot.QuantileConfidence(alpha, beta)
+    size_bilateral = 100
+    k1, k2 = algo.computeBilateralRank(size_bilateral)
+    coverage3 = algo.computeBilateralCoverage(size_bilateral, k1, k2)
+    ott.assert_almost_equal(coverage3, 0.9514463806051577, rtol, 0.0)
+
+
+test_quantile_confidence_coverage()
