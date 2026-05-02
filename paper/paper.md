@@ -243,7 +243,7 @@ and knowledge exchange among researchers, engineers, and educators.
 
 # AI usage disclosure
 
-Generative AI was used to verify the grammar and spelling of this paper,
+Generative AI (Gemini 3.1 Pro) was used to verify the grammar and spelling of this paper,
 check the choices of the words and check that the paper comply with the
 requirements.
 No generative AI was used in the creation of the software, the technical 
