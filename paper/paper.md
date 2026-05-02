@@ -243,10 +243,16 @@ and knowledge exchange among researchers, engineers, and educators.
 
 # AI usage disclosure
 
-Generative AI was used to verify the grammar and spelling of this paper,
-check the choices of the words and check that the paper comply to the
+Generative AI (Gemini 3.1 Pro) was used to verify the grammar and spelling of this paper,
+check the choices of the words and check that the paper comply with the
 requirements.
 No generative AI was used in the creation of the software, the technical 
 documentation, or the algorithm design.
+
+# Acknowledgements
+
+We acknowledge support from the OpenTURNS consortium.
+Additional funding was provided by EDF and Airbus through development
+contracts with Phimeca, IMACS, INRIA, Aristé and NTH.
 
 # References
