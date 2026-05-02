@@ -28,7 +28,7 @@ Use this functionality with caution:
      these polynomials (see :class:`~openturns.FunctionalChaosAlgorithm`) may
      converge to a function that differs significantly from the function being
      projected (see [ernst2012]_).
-     See :ref:`functional_chaos` for more details on this topic.
+     See :any:`functional_chaos` for more details on this topic.
 
 OpenTURNS implements the following **specific orthonormal** [#orthonormal]_
 univariate polynomial families together with their associated **standard
@@ -80,7 +80,7 @@ OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorith
 
 See also
 --------
-:ref:`orthogonal_polynomials`, AdaptiveStieltjesAlgorithm
+:any:`orthonormal_polynomials`, AdaptiveStieltjesAlgorithm
 
 Examples
 --------

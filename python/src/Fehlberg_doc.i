@@ -5,12 +5,20 @@ Parameters
 ----------
 transitionFunction : :class:`~openturns.Function`
     The function defining the flow of the ordinary differential equation.
-    Must have one parameter.
+    The calling sequence is `dydt = phi(y)` where `y` is the state vector,
+    `dydt` represents the derivative of `y` with respect to `t`,
+    and `t` is the first parameter of the function.
+    To create this function, use :class:`~openturns.ParametricFunction` in order to set the time
+    variable `t` as a parameter (see below for an example).
 localPrecision : float
     The expected absolute error on one step.
-order : int, :math:`order\in\{0,1,2,3,4\}`
+    The default value corresponds to the key `Fehlberg-LocalPrecision`
+    in :class:`~openturns.ResourceMap`.
+order : int, :math:`\text{order} \in \{0, 1, 2, 3, 4\}`
     The order of the method, ie the exponent :math:`p` in the estimate of the
     local error for a step of size :math:`h` written as :math:`\cO(h^p)`.
+    The default value corresponds to the key `Fehlberg-DefaultOrder`
+    in :class:`~openturns.ResourceMap`.
 
 Notes
 -----
@@ -113,7 +121,10 @@ ODESolver
 Examples
 --------
 >>> import openturns as ot
+>>> # Define the function with time 't' as the first variable
 >>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
+>>> # 't' becomes an internal parameter (index 0) initialized to 0.0
+>>> # 'y0' and 'y1' form the state vector and remain the only input variables
 >>> phi = ot.ParametricFunction(f, [0], [0.0])
 >>> solver = ot.Fehlberg(phi)
 >>> Y0 = [1.0, -1.0]

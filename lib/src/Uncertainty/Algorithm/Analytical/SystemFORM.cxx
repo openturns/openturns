@@ -40,13 +40,10 @@ SystemFORM::SystemFORM()
 }
 
 SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-                       const RandomVector & event,
-                       const Point & physicalStartingPoint)
+                       const RandomVector & event)
   : Analytical()
 {
   setNearestPointAlgorithm(nearestPointAlgorithm);
-  if (physicalStartingPoint.getSize())
-    nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
   setEvent(event);
 }
 

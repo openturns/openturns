@@ -75,7 +75,7 @@ Sample SphereUniformNorm::getPoints(const UnsignedInteger distance) const
   return getImplementation()->getPoints(distance);
 }
 
-/** Get index offset, needed by RandomMixture cache */
+/** Get index offset, needed by LinearCombinationDistribution cache */
 UnsignedInteger SphereUniformNorm::getOffsetLevel(const UnsignedInteger distance) const
 {
   return getImplementation()->getOffsetLevel(distance);

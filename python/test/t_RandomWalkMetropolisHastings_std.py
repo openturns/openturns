@@ -86,7 +86,7 @@ upperBound = [34.0, 0.03]
 box = ot.Interval(lowerBound, upperBound)
 vertices = mesher.build(box).getVertices()
 densities = posterior_density(vertices).asPoint()
-approximate_posterior = ot.UserDefined(vertices, densities)
+approximate_posterior = ot.FiniteDiscreteDistribution(vertices, densities)
 approximate_mean = approximate_posterior.getMean()
 approximate_std = approximate_posterior.getStandardDeviation()
 

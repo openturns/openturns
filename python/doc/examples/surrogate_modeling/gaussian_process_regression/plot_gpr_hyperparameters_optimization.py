@@ -4,7 +4,8 @@ Gaussian process fitter: configure the optimization solver
 """
 
 # %%
-# The goal of this example is to show how to fine-tune the optimization solver used to estimate the hyperparameters of the covariance model of the Gaussian process regression.
+# The goal of this example is to show how to fine-tune the optimization solver used to estimate the hyperparameters
+# of the covariance model of the Gaussian process regression (refer to :ref:`gaussian_process_regression`).
 #
 # Introduction
 # ------------

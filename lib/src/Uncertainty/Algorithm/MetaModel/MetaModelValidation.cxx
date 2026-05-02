@@ -153,7 +153,7 @@ GridLayout MetaModelValidation::drawValidation() const
   GridLayout grid(1, outputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", OSS() << "model " << j, j == 0 ? "metamodel" : "", true);
+    Graph graph("", OSS() << "model " << j, j == 0 ? "metamodel" : "");
 
     // diagonal
     Sample diagonalPoints(2, 2);
@@ -201,7 +201,7 @@ Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
         " but the output sample size is " << sampleSize;
   if (hMatrixDiag.getDimension() != sampleSize)
     throw InvalidArgumentException(HERE)
-        << "Error: the H matrix diagional dimension is: " << hMatrixDiag.getDimension() <<
+        << "Error: the H matrix diagonal dimension is: " << hMatrixDiag.getDimension() <<
         " but the output sample size is " << sampleSize;
   Sample cvPredictions(sampleSize, outputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++j)
@@ -245,7 +245,7 @@ Sample MetaModelValidation::ComputeMetamodelKFoldPredictions(
         " but the output sample size is " << sampleSize;
   if (projectionMatrix.getDimension() != sampleSize)
     throw InvalidArgumentException(HERE)
-        << "Error: the H matrix diagional dimension is: " << projectionMatrix.getDimension() <<
+        << "Error: the H matrix diagonal dimension is: " << projectionMatrix.getDimension() <<
         " but the output sample size is " << sampleSize;
   Sample cvPredictions(sampleSize, outputDimension);
   UnsignedInteger kParameter = splitter.getSize();

@@ -1,7 +1,7 @@
 %feature("docstring") OT::ANCOVA
 R"RAW(ANalysis of COVAriance method (ANCOVA).
 
-Refer to :ref:`sensitivity_ancova`.
+Refer to :any:`sensitivity_ancova`.
 
 Parameters
 ----------

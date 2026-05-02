@@ -56,10 +56,11 @@ public:
   Graph(const GraphImplementation & implementation);
 
   /** Constructor with parameters */
+  /** showAxes, legendPosition, legendFontSize, logScale arguments are @deprecated */
   Graph(const String & title,
         const String & xTitle,
         const String & yTitle,
-        const Bool showAxes,
+        const Bool showAxes = true,
         const String & legendPosition = "",
         const Scalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"),
         const LogScale logScale = GraphImplementation::NONE);
@@ -90,9 +91,6 @@ public:
   /** Individual drawable accessor */
   Drawable getDrawable(const UnsignedInteger index) const;
   void setDrawable(const UnsignedInteger index, const Drawable & drawable);
-
-  // @deprecated
-  void setDrawable(const Drawable & drawable, const UnsignedInteger index);
 
   /** Global color accessor */
   Description getColors() const;

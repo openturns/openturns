@@ -19,7 +19,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-#include <cstdlib>
 #include <cstring>
 
 #include "openturns/HMatrixImplementation.hxx"
@@ -464,7 +463,7 @@ Scalar HMatrixImplementation::computeApproximateLargestEigenValue(const Scalar e
     nextEigenValue = nextEigenVector.norm();
     precision = std::abs(nextEigenValue - currentEigenValue);
     found = precision <= epsilon * nextEigenValue;
-    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    LOGDEBUG(OSS() << "(" << iteration << ") precision=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
     if (found) break;
     currentEigenValue = nextEigenValue;
   }

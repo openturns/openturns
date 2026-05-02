@@ -216,7 +216,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
     else if(marginal.isDiscrete())
     {
       const Sample support(marginal.getSupport());
-      // Special case for Dirac distributions. It can be either a Dirac distribution or a UserDefined distribution, so we check the support directly.
+      // Special case for Dirac distributions. It can be either a Dirac distribution or a FiniteDiscreteDistribution distribution, so we check the support directly.
       if (support.getSize() == 1)
       {
         diracMarginalsIndices_.add(i);

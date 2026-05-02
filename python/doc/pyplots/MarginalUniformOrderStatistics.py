@@ -3,8 +3,8 @@ import openturns.experimental as otexp
 import openturns.viewer as otv
 
 grid = ot.GridLayout(1, 2)
-pdf_2d = ot.Graph("Marginal uniform order statistics, PDF", "x1", "x2", True)
-cdf_2d = ot.Graph("Marginal uniform order statistics, CDF", "x1", "x2", True)
+pdf_2d = ot.Graph("Marginal uniform order statistics, PDF", "x1", "x2")
+cdf_2d = ot.Graph("Marginal uniform order statistics, CDF", "x1", "x2")
 
 distribution_2d = otexp.MarginalUniformOrderStatistics(4, [1, 3])
 

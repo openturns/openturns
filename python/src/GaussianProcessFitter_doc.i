@@ -1,12 +1,13 @@
 %feature("docstring") OT::GaussianProcessFitter
 R"RAW(Fit gaussian process models
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
-    The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^\inputDim` and :math:`(\vect{y}_k)_{1 \leq k \leq \sampleSize}\in \Rset^{\outputDim}`.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^\inputDim` and :math:`(\vect{y}_k)_{1 \leq
+    k \leq \sampleSize}\in \Rset^{\outputDim}`.
 
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model of the Gaussian process. See notes for the details.
@@ -21,7 +22,7 @@ basis : :class:`~openturns.Basis`
 Notes
 -----
 
-Refer to :ref:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
+Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects.
 We only detail here the notions related to the class.
 
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}`
@@ -49,36 +50,42 @@ where :math:`\vect{p}` is the vector of the parameters of the covariance model  
 :class:`openturns.CovarianceModel` to get details on the activation of the estimation of the other
 parameters.
 
-The estimation is done by maximizing the *reduced* log-likelihood of the mode, defined in :eq:`logLikelihoodGP`.
+The estimation is done by maximizing the :any:`reduced log-likelihood of the model<logLikelihoodGPmodel>`.
 
 The default optimizer is :class:`~openturns.Cobyla` and can be changed thanks to the
 :meth:`setOptimizationAlgorithm` method.
 User could also change the default optimization solver by setting the entry 
-`GaussianProcessFitter-DefaultOptimizationAlgorithm` of :class:`~openturns.ResourceMap` to one of the :class:`~openturns.NLopt`
+`GaussianProcessFitter-DefaultOptimizationAlgorithm` of :class:`~openturns.ResourceMap` to one of the
+:class:`~openturns.NLopt`
 solver names.
 
 It is also possible to proceed as follows:
 
 * ask for the reduced log-likelihood function thanks to the :meth:`getReducedLogLikelihoodFunction` method,
-* optimize it with respect to the parameters :math:`\vect{\theta}` and :math:`\vect{\sigma}` using any optimization algorithms
+* optimize it with respect to the parameters :math:`\vect{\theta}` and :math:`\vect{\sigma}` using any optimization
+  algorithms
   (that can take into account some additional constraints if needed),
 * set the optimal parameter value into the covariance model used in the *GaussianProcessFitter*,
 * tell the algorithm not to optimize the parameter using the :meth:`setOptimizeParameters` method.
 
-A centered Gaussian noise :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`
+A centered Gaussian noise :math:`\mat{\Sigma}_i^{\text{noise}} \in \cM_{\outputDim \times \outputDim}(\Rset)`
 can be taken into account for each output value with :func:`setNoise()`:
 
 .. math::
-    \vect{Y}_i = \vect{y}_i^{true} + \vect{\varepsilon}, \quad
-    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{noise}\right)
+    :label: noise
 
-see algo :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise`.
+    \vect{Y}_i = \vect{y}_i^{\text{true}} + \vect{\varepsilon}, \quad
+    \vect{\varepsilon} \sim \cN \left(\vect{0}, \mat{\Sigma}_i^{\text{noise}}\right)
+
+
+where :math:`\vect{y}_i^{\text{true}}` is the true (and unknown) value of the model at :math:`\vect{x}_i`. Refer to
+:doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_noise` to get an example.
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
 - The boolean entry *GaussianProcessFitter-UseAnalyticalAmplitudeEstimate* to use the reduction associated to
   :math:`\sigma`.
-  It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
+  It has no effect if :math:`\outputDim > 1` or if :math:`\outputDim=1` and :math:`\sigma` is not part of :math:`\vect{p}`,
 - The boolean entry *GaussianProcessFitter-UnbiasedVariance* allows one to use the *unbiased* estimate of
   :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize-\outputDim}`
   in the optimality condition for :math:`\sigma`.
@@ -95,7 +102,8 @@ implementation could be used if `hmat-oss` support has been enabled.
 
 This implementation, which is based on a compressed representation of an approximated covariance matrix
 (and its Cholesky factor), has a better complexity both in terms of memory requirements
-and floating point operations. To use it, the entry `GaussianProcessFitter-LinearAlgebra` of the :class:`openturns.ResourceMap` class should be
+and floating point operations. To use it, the entry `GaussianProcessFitter-LinearAlgebra` of the
+:class:`openturns.ResourceMap` class should be
 instancied to `HMAT`. Default value of the key is `LAPACK`.
 
 Examples
@@ -345,6 +353,17 @@ Parameters
 ----------
 noise : sequence of :class:`~openturns.CovarianceMatrix` or sequence of float
     The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+Notes
+-----
+The noise takes into account the fact that the output values of the function are not known precisely. This noise is
+modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in
+:any:`gaussian_process_regression`.
+
+If the output dimension :math:`\outputDim = 1`, each matrix :math:`\mat{\Sigma}_i^{noise}` is reduced to a scalar 
+and the noise can be specified with a sequence of float.
+
+Refer to :any:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -356,4 +375,12 @@ Returns
 -------
 noise : sequence of :class:`~openturns.CovarianceMatrix`
     The noise covariance for each output: :math:`\mat{\Sigma}_i^{noise} \in \cM_{\outputDim \times \outputDim}(\Rset)`.
+
+Notes
+-----
+The noise takes into account the fact that the output values of the function are not known precisely. This noise is
+modeled by normal distribution with zero mean and a covariance matrix :math:`\mat{\Sigma}_i^{noise}` as defined in
+:any:`gaussian_process_regression`.
+
+Refer to :any:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 )RAW"

@@ -334,6 +334,9 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   if (!distribution_.hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for an independent copula.";
 
+  if (getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosResult conditional expectation is not available with domination method";
+
   // Create the conditioned orthogonal basis
   if (!orthogonalBasis_.getImplementation()->isTensorProduct())
     throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for a tensor-product basis.";
@@ -426,6 +429,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "errorHistory_", errorHistory_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
+  adv.saveAttribute( "useDomination_", useDomination_);
 }
 
 
@@ -452,6 +456,8 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
     adv.loadAttribute( "involvesModelSelection_", involvesModelSelection_ );
   }
+  if (adv.hasAttribute("useDomination_"))
+    adv.loadAttribute("useDomination_", useDomination_);
 }
 
 IndicesCollection FunctionalChaosResult::getIndicesHistory() const
@@ -504,7 +510,8 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   for (UnsignedInteger i = 0; i < size; ++ i)
     for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
       valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
-  Graph result("Selection history", "iteration", "coefficient", true, "upper right");
+  Graph result("Selection history", "iteration", "coefficient");
+  result.setLegendPosition("upper right");
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
     Curve curve(valuesX, valuesY.getMarginal(i));
@@ -541,7 +548,8 @@ Graph FunctionalChaosResult::drawErrorHistory() const
     values(i, 0) = i;
     values(i, 1) = errorHistory_[i];
   }
-  Graph result("Error history", "iteration", "error", true, "upper right");
+  Graph result("Error history", "iteration", "error");
+  result.setLegendPosition("upper right");
   Curve curve(values);
   curve.setColor("blue");
   result.add(curve);
@@ -583,17 +591,28 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
   }
 
   const FunctionalChaosResult marginalPCE(
-      inputSample_,
-      marginalOutputSample,
-      distribution_,
-      transformation_,
-      inverseTransformation_,
-      orthogonalBasis_,
-      nonzeroIndices,
-      nonzeroCoefficients,
-      nonzeroFunctions
+    inputSample_,
+    marginalOutputSample,
+    distribution_,
+    transformation_,
+    inverseTransformation_,
+    orthogonalBasis_,
+    nonzeroIndices,
+    nonzeroCoefficients,
+    nonzeroFunctions
   );
   return marginalPCE;
+}
+
+/* Domination flag accessor */
+void FunctionalChaosResult::setUseDomination(const Bool useDomination)
+{
+  useDomination_ = useDomination;
+}
+
+Bool FunctionalChaosResult::getUseDomination() const
+{
+  return useDomination_;
 }
 
 END_NAMESPACE_OPENTURNS

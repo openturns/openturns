@@ -87,9 +87,7 @@ posterior = ot.PosteriorDistribution(
 )
 
 # Third constructor
-posterior = ot.PosteriorDistribution(
-    conditioned, ot.IndependentCopula(2), observations
-)
+posterior = ot.PosteriorDistribution(conditioned, ot.IndependentCopula(2), observations)
 
 # Fourth constructor
 posterior = ot.PosteriorDistribution(conditioned, conditioning, link, observations)

@@ -211,7 +211,8 @@ int main(int, char *[])
       GaussianProcessConditionalCovariance gccc(result);
 
       const Point rowData = {2.724, 0, 3.407, 0, 0, 7082.9627, 0, 8859.2219, \
-                             3.407, 0, 4.545, 0, 0, 8859.2219, 0, 11818.623};
+                             3.407, 0, 4.545, 0, 0, 8859.2219, 0, 11818.623
+                            };
       const Matrix reference_covariance(4, 4, rowData);
       const SquareMatrix nullMatrix(4);
       const Point pointOfInterest = {9.5, 10.0};

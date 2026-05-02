@@ -143,6 +143,10 @@ void HiGHS::run()
   highs.setOptionValue("output_flag", Log::HasDebug());
   if (getMaximumTimeDuration() > 0.0)
     highs.setOptionValue("time_limit", getMaximumTimeDuration());
+  highs.setOptionValue("simplex_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
+  highs.setOptionValue("ipm_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
+  highs.setOptionValue("pdlp_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
+  highs.setOptionValue("qp_iteration_limit", static_cast<HighsInt>(getMaximumIterationNumber()));
 
   // pass options from ResourceMap
   std::vector<String> keys(ResourceMap::GetKeys());
@@ -190,8 +194,9 @@ void HiGHS::run()
 
   const HighsSolution& solution = highs.getSolution();
   Point optimalPoint(problemDimension);
-  for (int col = 0; col < model.lp_.num_col_; col++) {
-      optimalPoint[col] = solution.col_value[col];
+  for (int col = 0; col < model.lp_.num_col_; col++)
+  {
+    optimalPoint[col] = solution.col_value[col];
   }
   result_.setOptimalPoint(optimalPoint);
   result_.setOptimalValue(Point({info.objective_function_value}));

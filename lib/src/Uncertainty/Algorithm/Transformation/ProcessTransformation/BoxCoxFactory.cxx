@@ -421,7 +421,8 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
     lambda[d] = optpoint[0];
   }
   // Graphical inspection
-  graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood", true, "topright");
+  graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood");
+  graph.setLegendPosition("topright");
   const Scalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
   const Scalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
   const Scalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));

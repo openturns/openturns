@@ -1,15 +1,17 @@
 // SWIG file metamodel_module.i
 
 %module(package="openturns", docstring="Meta-modelling.") metamodel
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 #include "openturns/OTWeightedExperiments.hxx"
 #include "openturns/OTOrthogonalBasis.hxx"
+#include "openturns/OTProcess.hxx"
 #include "openturns/OTMetaModel.hxx"
 %}
 
@@ -88,6 +90,8 @@
 %include GaussianProcessRegressionResult.i
 %include GaussianProcessRegression.i
 %include GaussianProcessConditionalCovariance.i
+%include GaussianProcessRandomVector.i
+%include ConditionedGaussianProcess.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i

@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -24,7 +23,7 @@ ref_mean = [
     [-0.0838352, -0.0595057],
 ]
 
-algo = otexp.LOLAVoronoi(x0, y0, distribution)
+algo = ot.LOLAVoronoi(x0, y0, distribution)
 newX = ot.Sample(0, x0.getDimension())
 inc = 15
 for i in range(5):
@@ -41,7 +40,6 @@ for i in range(5):
     assert len(lolaScore) == len(x0) + i * inc
     assert len(lolaScore) == len(voronoiScore)
 
-    # FIXME: legacy KDTree is incorrect https://github.com/openturns/openturns/issues/2617
     if ot.PlatformInfo.HasFeature("nanoflann"):
         ott.assert_almost_equal(x_mean, ref_mean[i])
 
@@ -54,7 +52,7 @@ for i in range(5):
         cloud2 = ot.Cloud(newX)
         cloud2.setPointStyle("fcircle")
         cloud2.setColor("red")
-        graph = ot.Graph("LOLA-Voronoi", "x1", "x2", True)
+        graph = ot.Graph("LOLA-Voronoi", "x1", "x2")
         graph.add(cloud1)
         graph.add(cloud2)
         otv.View(graph)
@@ -64,7 +62,7 @@ for i in range(5):
 ot.ResourceMap.SetAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum")
 f2 = ot.SymbolicFunction(["x0", "x1"], ["2 * x0 + 3 * x1 + 8"])
 y0 = f2(x0)
-algo = otexp.LOLAVoronoi(x0, y0, distribution)
+algo = ot.LOLAVoronoi(x0, y0, distribution)
 for i in range(10):
     x = algo.generate(20)
     y = f2(x)
@@ -81,7 +79,7 @@ ot.ResourceMap.SetAsUnsignedInteger("LOLAVoronoi-MaximumCombinationsNumber", 387
 f3 = ot.SymbolicFunction(["x0", "x1"], ["sin(10 * x0) + cos(10 * x1)"])
 x0 = ot.Box([8, 8]).generate()
 y0 = f3(x0)
-algo = otexp.LOLAVoronoi(x0, y0, distribution)
+algo = ot.LOLAVoronoi(x0, y0, distribution)
 for i in range(10):
     x = algo.generate(20)
     y = f3(x)

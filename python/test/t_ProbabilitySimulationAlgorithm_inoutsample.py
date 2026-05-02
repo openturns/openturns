@@ -41,4 +41,6 @@ input_sample = algo.getInputSample()
 output_sample = algo.getInputSample()
 
 assert len(input_sample) == 680
-ott.assert_almost_equal(algo.getResult().getProbabilityEstimate(), 0.13970588235294112, 1e-3, 1e-3)
+ott.assert_almost_equal(
+    algo.getResult().getProbabilityEstimate(), 0.13970588235294112, 1e-3, 1e-3
+)

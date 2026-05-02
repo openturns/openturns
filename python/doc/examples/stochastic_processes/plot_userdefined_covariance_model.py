@@ -20,7 +20,7 @@ import math as m
 # Case 1: stationary covariance model
 # -----------------------------------
 #
-# In this example, we show how to build our own stationary covariance modelusing the class
+# In this example, we show how to build our own stationary covariance model using the class
 # :class:`~openturns.UserDefinedStationaryCovarianceModel`.
 #
 # We define the covariance model from:
@@ -71,7 +71,7 @@ for k in range(N):
     x[k, 1] = value[0, 0]
 
 curve = ot.Curve(x, "User Model")
-myGraph = ot.Graph("User covariance model", "Time", "Covariance function", True)
+myGraph = ot.Graph("User covariance model", "Time", "Covariance function")
 myGraph.add(curve)
 myGraph.setLegendPosition("upper right")
 view = otv.View(myGraph)

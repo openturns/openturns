@@ -39,9 +39,7 @@ outputSample = model(inputSample)
 
 # %%
 # Compute the global metamodel
-algo = ot.PointToFieldFunctionalChaosAlgorithm(
-    inputSample, outputSample, distribution
-)
+algo = ot.PointToFieldFunctionalChaosAlgorithm(inputSample, outputSample, distribution)
 algo.run()
 result = algo.getResult()
 metaModel = result.getPointToFieldMetaModel()

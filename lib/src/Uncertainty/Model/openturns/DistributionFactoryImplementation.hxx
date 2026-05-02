@@ -79,9 +79,6 @@ public:
   Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
 
-  // @deprecated
-  void setKnownParameter(const Point & values, const Indices & positions);
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

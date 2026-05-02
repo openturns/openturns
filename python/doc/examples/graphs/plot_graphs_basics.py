@@ -102,7 +102,7 @@ n = 500
 sample = mixture.getSample(n)
 
 # %%
-graph = ot.Graph("n=%d" % (n), "X1", "X2", True, "")
+graph = ot.Graph(f"{n=}", "X1", "X2")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = otv.View(graph)
@@ -126,7 +126,7 @@ ot.Drawable.GetValidColors()[0:10]
 # In the following graph, we use the "aquamarine1" color with "fcircle" circles.
 
 # %%
-graph = ot.Graph("n=%d" % (n), "X1", "X2", True, "")
+graph = ot.Graph("n=%d" % (n), "X1", "X2")
 cloud = ot.Cloud(sample)
 cloud.setColor("aquamarine1")
 cloud.setPointStyle("fcircle")
@@ -172,7 +172,7 @@ x = linearSample(-2, 2, 50)
 y = g(x)
 
 # %%
-graph = ot.Graph("Sinus", "x", "sin(x)", True)
+graph = ot.Graph("Sinus", "x", "sin(x)")
 curve = ot.Curve(x, y)
 curve.setLineStyle("dashed")
 curve.setLineWidth(4)
@@ -202,7 +202,8 @@ def createHSVColor(indexCurve, maximumNumberOfCurves):
 pofa = ot.HermiteFactory()
 
 # %%
-graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "lower right")
+graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y")
+graph.setLegendPosition("lower right")
 degreemax = 5
 for k in range(degreemax):
     pk = pofa.build(k)

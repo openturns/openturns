@@ -1,10 +1,11 @@
 // SWIG file dist_module.i
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle3
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
@@ -20,6 +21,9 @@
 %import model_copula_module.i
 
 /* Uncertainty/Distribution (except copulas) */
+%include Epanechnikov.i
+%include Exponential.i
+%include ExponentialFactory.i
 %include OrderStatisticsMarginalChecker.i
 %include ParametrizedDistribution.i
 %include PointConditionalDistribution.i
@@ -27,7 +31,7 @@
 %include PoissonFactory.i
 %include ProductDistribution.i
 %include QuantileMatchingFactory.i
-%include RandomMixture.i
+%include LinearCombinationDistribution.i
 %include Rayleigh.i
 %include RayleighFactory.i
 %include Rice.i
@@ -53,8 +57,8 @@
 %include UniformMuSigma.i
 %include UniformOverMesh.i
 %include UniformOrderStatistics.i
-%include UserDefined.i
-%include UserDefinedFactory.i
+%include FiniteDiscreteDistribution.i
+%include FiniteDiscreteDistributionFactory.i
 %include VonMises.i
 %include VonMisesFactory.i
 %include WeibullMin.i

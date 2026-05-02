@@ -23,7 +23,6 @@
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/Experiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

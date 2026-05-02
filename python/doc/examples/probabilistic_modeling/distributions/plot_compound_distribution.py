@@ -55,12 +55,12 @@ XgivenThetaDist = ot.Uniform()
 # We advice to change the discretization method that performs the integration.
 # By default, this method is the quadrature method *GaussProduct*. We prefer to use the *QMC*.
 # We use the :class:`~openturns.ResourceMap`.
-ot.ResourceMap.SetAsString('CompoundDistribution-ContinuousDiscretizationMethod', 'QMC')
+ot.ResourceMap.SetAsString("CompoundDistribution-ContinuousDiscretizationMethod", "QMC")
 
 # %%
 # Create the compound distribution of :math:`X`.
 XDist = ot.CompoundDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription([r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
+XDist.setDescription([r"$X|\mathbf{\Theta} = f(Y)$"])
 XDist
 
 # %%

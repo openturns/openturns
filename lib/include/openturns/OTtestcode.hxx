@@ -301,16 +301,6 @@ inline void assert_almost_equal(const Complex & a, const Complex & b, const Scal
   }
 }
 
-inline void assert_almost_equal(const Indices &a, const Indices &b, const String errMsg = "")
-{
-  if (a.getSize() != b.getSize())
-    throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
-  const UnsignedInteger size = a.getSize();
-  for (UnsignedInteger j = 0; j < size; ++j)
-  {
-    assert_almost_equal(a[j], b[j], 0, 0, errMsg);
-  }
-}
 
 inline void assert_almost_equal(const Point & a, const Point & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
@@ -445,7 +435,7 @@ public:
     checkGeneral();
     checkRealization();
     checkComparison();
-    
+
     if (enablePDFAtlowerBound_)
     {
       checkFiniteLowerBoundPDF();
@@ -652,7 +642,7 @@ public:
   {
     fittingSamplingSize_ = fittingSamplingSize;
   }
-  
+
 
 private:
 
@@ -1377,10 +1367,10 @@ private:
       return;
 
     LOGTRACE(OSS() << "checking PDF at lower bound, if finite...");
-    if (distribution_.getRange().getFiniteLowerBound()[0] && distribution_.computePDF(distribution_.getRange().getLowerBound())!=0.)
+    if (distribution_.getRange().getFiniteLowerBound()[0] && distribution_.computePDF(distribution_.getRange().getLowerBound()) != 0.)
       throw TestFailed(OSS() << "PDF at finite lower bound is " << distribution_.computePDF(distribution_.getRange().getLowerBound()) << " instead of 0" );
   }
-  
+
   Distribution distribution_;
   Bool enablePDF_ = true;
   Bool enablePDFAtlowerBound_ = true;

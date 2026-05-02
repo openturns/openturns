@@ -8,7 +8,6 @@ Estimate a probability using Line Sampling
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import matplotlib.pyplot as plt
 
@@ -56,7 +55,7 @@ rootStrategy = ot.MediumSafe(solver)
 
 # %%
 # Create the algorithm
-algo = otexp.LineSampling(event_twoBranch, alpha_twoBranch, rootStrategy)
+algo = ot.LineSampling(event_twoBranch, alpha_twoBranch, rootStrategy)
 algo.setMaximumOuterSampling(1000)
 algo.setMaximumCoefficientOfVariation(5e-2)
 # disable adaptive important direction to make plots easier to interpret

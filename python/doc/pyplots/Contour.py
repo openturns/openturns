@@ -14,7 +14,7 @@ inputData += [-5.0] * 2
 data = f(inputData)
 levels = [(0.5 + i) / 5 for i in range(5)]
 # Create an empty graph
-graph = ot.Graph("Complex iso lines example", "u1", "u2", True, "")
+graph = ot.Graph("Complex iso lines example", "u1", "u2")
 
 # Create the contour
 contour = ot.Contour(nX + 2, nY + 2, data)

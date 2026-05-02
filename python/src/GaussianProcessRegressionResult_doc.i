@@ -1,7 +1,7 @@
 %feature("docstring") OT::GaussianProcessRegressionResult
 R"RAW(Gaussian process regression (aka kriging) result.
 
-Refer to :ref:`gaussian_process_regression`.
+Refer to :any:`gaussian_process_regression`.
 
 Parameters
 ----------

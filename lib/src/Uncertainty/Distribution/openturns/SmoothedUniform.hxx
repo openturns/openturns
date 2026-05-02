@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SMOOTHEDUNIFORM_HXX
 #define OPENTURNS_SMOOTHEDUNIFORM_HXX
 
-#include "openturns/RandomMixture.hxx"
+#include "openturns/LinearCombinationDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The SmoothedUniform distribution.
  */
 class OT_API SmoothedUniform
-  : public RandomMixture
+  : public LinearCombinationDistribution
 {
   CLASSNAME
 public:
@@ -68,24 +68,24 @@ public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
-  using RandomMixture::computePDF;
+  using LinearCombinationDistribution::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
-  using RandomMixture::computeCDF;
+  using LinearCombinationDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
-  using RandomMixture::computeComplementaryCDF;
+  using LinearCombinationDistribution::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
-  using RandomMixture::computePDFGradient;
+  using LinearCombinationDistribution::computePDFGradient;
   Point computePDFGradient(const Point & point) const override;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
-  using RandomMixture::computeCDFGradient;
+  using LinearCombinationDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const override;
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */

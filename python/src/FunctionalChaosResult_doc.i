@@ -3,6 +3,8 @@ R"RAW(Functional chaos result.
 
 Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosAlgorithm`.
 
+Refer to :any:`functional_chaos` to get more details on functional chaos expansion.
+
 Parameters
 ----------
 sampleX : 2-d sequence of float
@@ -12,11 +14,11 @@ sampleY : 2-d sequence of float
 distribution : :class:`~openturns.Distribution`
     Distribution of the random vector :math:`\inputRV`
 transformation : :class:`~openturns.Function`
-    The function that maps the physical input :math:`\inputRV` to the 
+    The function that maps the input :math:`\inputRV` to the 
     standardized input :math:`\standardRV`.
 inverseTransformation : :class:`~openturns.Function`
     The function that maps the standardized input :math:`\standardRV` to
-    the physical input :math:`\inputRV`.
+    the input :math:`\inputRV`.
 orthogonalBasis : :class:`~openturns.OrthogonalBasis`
     The multivariate orthogonal basis.
 indices : sequence of `int`
@@ -32,16 +34,14 @@ isModelSelection : bool
 
 Notes
 -----
-Let :math:`\sampleSize \in \Nset` be the sample size. 
-Let :math:`\outputDim \in \Nset` be the dimension of the output of the 
-physical model. 
-For any :math:`j = 1, ..., \sampleSize` and any :math:`i = 1, ..., \outputDim`, 
-let :math:`y_{j, i} \in \Rset` be the output of the physical 
-model and let :math:`\hat{y}_{j, i} \in \Rset` be the output of the 
-metamodel. 
-For any :math:`i = 1, ..., \outputDim`, let :math:`\outputRV_i \in \Rset^\sampleSize` be 
-the sample output and let :math:`\widehat{\outputRV}_i \in \Rset^\sampleSize` be the 
-output predicted by the metamodel. 
+Let :math:`\sampleSize \in \Nset` be the sample size.
+Let :math:`\outputDim \in \Nset` be the dimension of the output of the model.
+For any :math:`j = 1, ..., \sampleSize` and any :math:`i = 1, ..., \outputDim`,
+let :math:`y_{j, i} \in \Rset` be the output of the
+model and let :math:`\hat{y}_{j, i} \in \Rset` be the output of the meta model.
+For any :math:`i = 1, ..., \outputDim`, let :math:`\outputRV_i \in \Rset^\sampleSize` be
+the sample output and let :math:`\widehat{\outputRV}_i \in \Rset^\sampleSize` be the
+output predicted by the metamodel.
 The marginal residual is:
 
 .. math::
@@ -233,7 +233,7 @@ This is possible only if the marginals of the input distribution are independent
 Otherwise, an exception is generated.
 An example is provided in :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_conditional_expectation`.
 
-We consider the notations introduced in :ref:`functional_chaos`.
+We consider the notations introduced in :any:`functional_chaos`.
 Let :math:`\inputRV \in \Rset^{\inputDim}` be the input and let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
 be a set of marginal indices. 
 Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 
@@ -467,3 +467,39 @@ Returns
 -------
 marginalPCE : :class:`~openturns.FunctionalChaosResult`
     The marginal chaos.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setUseDomination
+"Domination method flag accessor.
+
+Parameters
+----------
+useDomination : bool
+    Whether to use the domination method.
+
+Notes
+-----
+The domination method consists in using the basis defined in the argument *adaptiveStrategy*. No
+isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
+the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
+(:math:`isLeastSquares` must be *True*) and the Sobol' indices will not be computed.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getUseDomination
+"Domination method flag accessor.
+
+Returns
+-------
+useDomination : bool
+    Whether to use the domination method.
+
+Notes
+-----
+The domination method consists in using the basis defined in the argument *adaptiveStrategy*. No
+isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
+the *inputDistribution*. As a result, the coefficients must have been computed with a least squares method only
+(:meth:`isLeastSquares` must be *True*) and the Sobol' indices will not be computed.
+"

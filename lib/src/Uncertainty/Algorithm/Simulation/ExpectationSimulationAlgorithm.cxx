@@ -320,7 +320,7 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
     const Scalar outerIndex = convergenceSample(i, convergenceSample.getDimension() - 1);
     dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = expectationEstimate;
-    // The bounds are drawn only if there is a useable variance estimate
+    // The bounds are drawn only if there is a usable variance estimate
     if (varianceEstimate >= 0.0)
     {
       // The probability estimate is asymptotically normal
@@ -338,7 +338,8 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
   estimateCurve.setLineWidth(2);
   OSS oss;
   oss << "Expectation convergence graph at level " << level;
-  Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
+  Graph convergenceGraph(oss, "outer iteration", "estimate");
+  convergenceGraph.setLegendPosition("topright");
   convergenceGraph.add(estimateCurve);
   const Curve lowerBoundCurve(dataLowerBound, "bounds");
   Curve upperBoundCurve(dataUpperBound);

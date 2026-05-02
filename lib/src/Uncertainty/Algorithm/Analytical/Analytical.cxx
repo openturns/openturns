@@ -36,18 +36,11 @@ static const Factory<Analytical> Factory_Analytical;
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
-                       const RandomVector & event,
-                       const Point & physicalStartingPoint)
+                       const RandomVector & event)
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
     event_(event)
 {
-  if (physicalStartingPoint.getSize())
-  {
-    LOGWARN("FORM/SORM physicalStartingPoint argument is deprecated");
-    nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
-  }
-
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
 
   try
@@ -70,20 +63,6 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 Analytical * Analytical::clone() const
 {
   return new Analytical(*this);
-}
-
-/* Physical starting point accessor */
-Point Analytical::getPhysicalStartingPoint() const
-{
-  LOGWARN("Analytical.getPhysicalStartingPoint is deprecated");
-  return nearestPointAlgorithm_.getStartingPoint();
-}
-
-/* Physical starting point accessor */
-void Analytical::setPhysicalStartingPoint(const Point & physicalStartingPoint)
-{
-  LOGWARN("Analytical.setPhysicalStartingPoint is deprecated");
-  nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
 }
 
 /* Event accessor */

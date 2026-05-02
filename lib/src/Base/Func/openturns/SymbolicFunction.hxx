@@ -59,7 +59,7 @@ public:
   /** Accessor to the formulas */
   Description getFormulas() const;
 
-  /** Static methods for documentation of analytical fonctions */
+  /** Static methods for documentation of analytical functions */
   static Description GetValidParsers();
   static Description GetValidConstants();
   static Description GetValidFunctions();

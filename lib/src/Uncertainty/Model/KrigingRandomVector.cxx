@@ -43,6 +43,7 @@ KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
   , sample_(Sample(1, point))
 {
   // Nothing to do
+  LOGWARN("KrigingRandomVector is deprecated, use GaussianProcessRandomVector");
 }
 
 /* Default constructor */
@@ -53,6 +54,7 @@ KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
   , sample_(sample)
 {
   // Nothing to do
+  LOGWARN("KrigingRandomVector is deprecated, use GaussianProcessRandomVector");
 }
 
 /* Virtual constructor */

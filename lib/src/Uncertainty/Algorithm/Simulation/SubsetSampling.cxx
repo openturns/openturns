@@ -314,7 +314,8 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
     // store convergence at each block
     const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
                           varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size,
-                          1.0 * i};
+                          1.0 * i
+                         };
     convergenceStrategy_.store(convPt);
   }
   return probabilityEstimate;
@@ -561,7 +562,7 @@ Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool 
 void SubsetSampling::setInitialExperiment(const WeightedExperiment & initialExperiment)
 {
   if (!initialExperiment.hasUniformWeights())
-    throw InvalidArgumentException(HERE) << "In SubsetSampling the underlyng weighted experiment must have uniform weights";
+    throw InvalidArgumentException(HERE) << "In SubsetSampling the underlying weighted experiment must have uniform weights";
   initialExperiment_ = initialExperiment;
   initialExperiment_.setSize(getBlockSize());
   initialExperiment_.setDistribution(StandardEvent(getEvent()).getAntecedent().getDistribution());

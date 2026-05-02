@@ -1,16 +1,23 @@
 // SWIG file simulation_module.i
 
 %module(package="openturns", docstring="EventSimulation uncertainty propagation algorithms.") simulation
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 #include "openturns/OTTransformation.hxx"
+#include "openturns/OTFunctionalChaos.hxx"
 #include "openturns/OTAnalytical.hxx"
 #include "openturns/OTSimulation.hxx"
+#include "openturns/OTOrthogonalBasis.hxx"
+#include "openturns/OTWeightedExperiments.hxx"
+#include "openturns/OTProcess.hxx"
+#include "openturns/OTLinearModel.hxx"
+#include "openturns/OTKriging.hxx"
 %}
 
 %include typemaps.i
@@ -47,16 +54,16 @@
 %include MauntzKucherenkoSensitivityAlgorithm.i
 %include SobolIndicesExperiment.i
 
-/* Uncertainty/Algorithm/EventSimulation */
+/* Uncertainty/Algorithm/Simulation */
 %include SimulationResult.i
 %include ProbabilitySimulationResult.i
 %include SimulationAlgorithm.i
 %include EventSimulation.i
 %include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i
-%include Wilks.i
 %include PostAnalyticalControlledImportanceSampling.i
 %include PostAnalyticalImportanceSampling.i
+%include QuantileConfidence.i
 %include RootStrategyImplementation.i
 %include RootStrategy.i
 %include SamplingStrategyImplementation.i
@@ -82,7 +89,7 @@
 %include CrossEntropyImportanceSampling.i
 %include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
-
+%include LineSampling.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i

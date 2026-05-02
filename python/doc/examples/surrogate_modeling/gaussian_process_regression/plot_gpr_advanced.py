@@ -5,14 +5,14 @@ Advanced Gaussian process regression
 
 # %%
 #
-# In this example we will build a metamodel using Gaussian process regression of the :math:`x\sin(x)` function.
+# In this example we will build a metamodel using Gaussian process regression (refer to
+# :ref:`gaussian_process_regression`) of the :math:`x\sin(x)` function.
 #
 # We will choose the number of learning points, the basis and the covariance model.
 #
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -121,7 +121,7 @@ graph.setLegendPosition("upper left")
 otv.View(graph, axes=[ax1])
 
 # On the right, the conditional Gaussian process regression variance
-graph = ot.Graph("", "x", "Conditional Gaussian process regression variance", True, "")
+graph = ot.Graph("", "x", "Conditional Gaussian process regression variance")
 # Sample for the data
 sample = ot.Sample(n_pt, 2)
 sample[:, 0] = x
@@ -179,7 +179,7 @@ grid = ot.IntervalMesher([500]).build(ot.Interval(0, 10))
 # %%
 # Conditional Gaussian process
 
-krv = otexp.ConditionedGaussianProcess(gprResult, grid)
+krv = ot.ConditionedGaussianProcess(gprResult, grid)
 krv_sample = krv.getSample(5)
 values = grid.getVertices()
 
@@ -271,9 +271,7 @@ print("Optimal trend coefficients = {}".format(gprResult_nugget.getTrendCoeffici
 
 # %%
 gprMeta_nugget = gprResult_nugget.getMetaModel()
-gpr_conditional_covariance = ot.GaussianProcessConditionalCovariance(
-    gprResult_nugget
-)
+gpr_conditional_covariance = ot.GaussianProcessConditionalCovariance(gprResult_nugget)
 variance = gpr_conditional_covariance.getConditionalMarginalVariance(x_plot)
 
 # %%

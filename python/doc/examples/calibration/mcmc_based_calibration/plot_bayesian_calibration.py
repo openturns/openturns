@@ -285,7 +285,7 @@ def plot_bayesian_prior_vs_posterior_pdf(prior, posterior):
     grid = ot.GridLayout(1, paramDim)
     parameterNames = prior.getDescription()
     for parameter_index in range(paramDim):
-        graph = ot.Graph("", parameterNames[parameter_index], "PDF", True)
+        graph = ot.Graph("", parameterNames[parameter_index], "PDF")
         # Prior
         curve = prior.getMarginal(parameter_index).drawPDF().getDrawable(0)
         curve.setLineStyle(

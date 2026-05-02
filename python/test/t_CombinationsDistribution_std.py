@@ -1,13 +1,12 @@
 #! /usr/bin/env python
 
-import openturns.experimental as otexp
 import openturns as ot
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
-distribution = otexp.CombinationsDistribution(5, 12)
+distribution = ot.CombinationsDistribution(5, 12)
 print("Distribution ", distribution)
 
 # Is this distribution elliptical ?

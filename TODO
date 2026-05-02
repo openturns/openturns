@@ -1,8 +1,9 @@
-Remove Analytical.set/getPhysicalStartingPoint in some future version
-Remove Wilks in some future version
-Remove deprecated method DistributionFactory.setKnownParameter(Point, Indices)
-Remove deprecated method Graph.setDrawable(Drawable, int)
-Remove DeconditionedDistribution alias in some future version
-Remove DeconditionedRandomVector alias in some future version
-Remove deprecated SpecFunc::IsNormal method in some future version
-Remove deprecated ResourceMap::Reload method in some future version
+Remove deprecated Graph showAxes, legendPosition, legendFontSize, logScale arguments
+Remove deprecated KrigingAlgorithm, KrigingRandomVector, GeneralLinearModelAlgorithm classes (+results) in some future version
+Remove deprecated SoizeGhanemFactory in some future version
+Remove deprecated Collection/Sample find method (%ignore)
+Remove deprecated ProbabilitySimulationResult::getConfidenceLength in some future version
+Remove UserDefined alias in some future version
+Remove UserDefinedFactory alias in some future version
+Remove MixedHistogramUserDefined alias in some future version
+Remove RandomMixture alias in some future version

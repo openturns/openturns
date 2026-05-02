@@ -108,7 +108,7 @@ y_test = g(x_test)
 
 # %%
 # We plot the true function (continuous dashed curve) and train data (cloud points) on the same figure.
-graph = ot.Graph("Function of interest", "", "", True, "")
+graph = ot.Graph("Function of interest", "", "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
 )
@@ -163,7 +163,7 @@ gprMetamodel = gpr_result.getMetaModel()
 # Now we plot Gaussian process Regression output, in addition to the previous plots
 
 # %%
-graph = ot.Graph("Comparison data vs GP models", "", "", True, "")
+graph = ot.Graph("Comparison data vs GP models", "", "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black"))
 graph.add(plot_1d_data(x_train, y_train, type="Cloud", legend="Data", color="red"))
 graph.add(
@@ -232,7 +232,7 @@ print(
 
 # %%
 # We plot the test and train data
-graph = ot.Graph("test and train with noisy data", "", "", True, "")
+graph = ot.Graph("test and train with noisy data", "", "")
 graph.add(plot_1d_data(x_test, y_test, legend="Exact", color="black"))
 graph.add(
     plot_1d_data(
@@ -334,7 +334,7 @@ conditional_sigma_gpr_wnf = sqrt(conditional_variance_gpr_wnf)
 
 # %%
 graph = ot.Graph(
-    "Conditional standard deviation", "x", "Conditional standard deviation", True, ""
+    "Conditional standard deviation", "x", "Conditional standard deviation"
 )
 curve = ot.Curve(x_test, conditional_sigma_kriging)
 graph.add(curve)
@@ -373,7 +373,7 @@ ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise = computeBoundsConfidenceInte
 # %%
 grid_layout = ot.GridLayout(2, 2)
 grid_layout.setTitle("Confidence interval with various models")
-graph = ot.Graph("Kriging API", "x", "y", True, "")
+graph = ot.Graph("Kriging API", "x", "y")
 boundsPoly = ot.Polygon.FillBetween(x_test, ci_lower_bound_km, ci_upper_bound_km)
 boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[0], mycolors[1], mycolors[2]))
 boundsPoly.setLegend(" %d%% bounds" % ((1.0 - alpha) * 100))
@@ -394,7 +394,7 @@ grid_layout.setGraph(0, 0, graph)
 # Gaussian Process Regression
 
 # %%
-graph = ot.Graph("GPR API", "x", "y", True, "")
+graph = ot.Graph("GPR API", "x", "y")
 boundsPoly = ot.Polygon.FillBetween(x_test, ci_lower_bound_gpr, ci_upper_bound_gpr)
 boundsPoly.setColor(ot.Drawable.ConvertFromHSV(mycolors[0], mycolors[1], mycolors[2]))
 boundsPoly.setLegend(" %d%% bounds" % ((1.0 - alpha) * 100))
@@ -415,7 +415,7 @@ grid_layout.setGraph(0, 1, graph)
 # Kriging with noise (old API)
 
 # %%
-graph = ot.Graph("Kriging API", "x", "y", True, "")
+graph = ot.Graph("Kriging API", "x", "y")
 boundsPoly = ot.Polygon.FillBetween(
     x_test, ci_lower_bound_km_noise, ci_upper_bound_km_noise
 )
@@ -444,7 +444,7 @@ grid_layout.setGraph(1, 0, graph)
 # Gaussian Process Regression with noise
 
 # %%
-graph = ot.Graph("GPR API", "x", "y", True, "")
+graph = ot.Graph("GPR API", "x", "y")
 boundsPoly = ot.Polygon.FillBetween(
     x_test, ci_lower_bound_gpr_noise, ci_upper_bound_gpr_noise
 )
@@ -502,7 +502,7 @@ gpr_nopt_Metamodel = gpr_result_no_opt.getMetaModel()
 # Plot the function
 
 # %%
-graph = ot.Graph("GPR with known trend", "", "", True, "")
+graph = ot.Graph("GPR with known trend", "", "")
 graph.add(
     plot_1d_data(x_test, y_test, legend="Exact", color="black", linestyle="dashed")
 )

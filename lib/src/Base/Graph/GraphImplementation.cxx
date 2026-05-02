@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <fstream>
 
 #include "openturns/GraphImplementation.hxx"
@@ -209,13 +208,6 @@ void GraphImplementation::setDrawable(const UnsignedInteger index, const Drawabl
 {
   if (!(index < drawablesCollection_.getSize())) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
   drawablesCollection_[index] = drawable;
-}
-
-void GraphImplementation::setDrawable(const Drawable & drawable,
-                                      const UnsignedInteger index)
-{
-  LOGWARN("Graph.setDrawable(Drawable, int) is deprecated");
-  setDrawable(index, drawable);
 }
 
 /** Global color accessor */

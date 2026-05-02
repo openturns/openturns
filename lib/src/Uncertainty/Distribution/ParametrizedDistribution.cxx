@@ -106,6 +106,12 @@ Scalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) co
   return distribution_.computeComplementaryCDF(point);
 }
 
+/* Get the probability content of an interval */
+Scalar ParametrizedDistribution::computeProbability(const Interval & interval) const
+{
+  return distribution_.computeProbability(interval);
+}
+
 /* Compute the entropy of the distribution */
 Scalar ParametrizedDistribution::computeEntropy() const
 {
@@ -129,6 +135,11 @@ Point ParametrizedDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   return distribution_.computeQuantile(prob, tail);
+}
+
+Scalar ParametrizedDistribution::computeScalarQuantile(const Scalar prob, const Bool tail) const
+{
+  return distribution_.computeScalarQuantile(prob, tail);
 }
 
 /* Get the product minimum volume interval containing a given probability of the distribution */

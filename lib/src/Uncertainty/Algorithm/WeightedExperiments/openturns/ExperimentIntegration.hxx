@@ -22,6 +22,7 @@
 #define OPENTURNS_EXPERIMENTINTEGRATION_HXX
 
 #include "openturns/OTprivate.hxx"
+#include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ExperimentIntegration
-  : public PersistentObject
+  : public IntegrationAlgorithmImplementation
 {
 
   CLASSNAME
@@ -51,10 +52,15 @@ public:
   String __repr__() const override;
 
   /** Compute the weighted integral of the function */
-  Point integrate(const Function & g) const;
+  using IntegrationAlgorithmImplementation::integrate;
+
+  Point integrate(const Function & function,
+                  const Interval & interval) const override;
+
+  Point integrate(const Function & function) const;
 
   /** Compute the weighted L2 norm of the function */
-  Point computeL2Norm(const Function & g) const;
+  Point computeL2Norm(const Function & function) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

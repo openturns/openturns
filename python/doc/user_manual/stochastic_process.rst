@@ -1,3 +1,5 @@
+.. _stochastic_process:
+
 ===========================
 Stochastic process modeling
 ===========================
@@ -104,7 +106,7 @@ Gaussian process
     GaussianProcess
 
     :template: class.rst_t
-    experimental.ConditionedGaussianProcess
+    ConditionedGaussianProcess
 
 Functional basis process
 ========================

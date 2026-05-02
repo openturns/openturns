@@ -36,7 +36,7 @@ the mean improvement:
 
     EI(x_{new}) = \mathbb{E}\left[I(x_{new})\right] = \mathbb{E}\left[max(f_{min} - Y_{new}, 0)\right]
 
-This criterion is explicited using the Gaussian process mean and variance:
+This criterion is made explicit using the Gaussian process mean and variance:
 
 .. math::
 

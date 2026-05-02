@@ -625,7 +625,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalPDF (const S
   const Scalar aK = getRange().getLowerBound()[k];
   const Scalar bK = getRange().getUpperBound()[k];
   // If x is outside of the range of the kth marginal, the conditional PDF is zero
-  if ((x <= aK) || (x > bK)) return 0.0;
+  if (!((x > aK) && (x <= bK))) return 0.0;
   // The conditional PDF depends only on the last component of the conditioning vector
   const Scalar xKm1 = y[k - 1];
   // If the conditioning component is greater than the argument the conditional PDF is zero
@@ -633,7 +633,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalPDF (const S
   // If the conditioning component is outside of the (k-1)th marginal range
   const Scalar aKm1 = getRange().getLowerBound()[k - 1];
   const Scalar bKm1 = getRange().getUpperBound()[k - 1];
-  if ((xKm1 <= aKm1) || (xKm1 > bKm1)) return 0.0;
+  if (!((xKm1 > aKm1) && (xKm1 <= bKm1))) return 0.0;
   // Here we have something to do
   // If x is independent of the previous components
   if (partition_.contains(k - 1)) return distributionCollection_[k].computePDF(x);
@@ -661,26 +661,26 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF (const S
   const Scalar aK = getRange().getLowerBound()[k];
   const Scalar bK = getRange().getUpperBound()[k];
   // If x is less than the lower bound of its associated marginal, the conditional CDF is zero
-  if (x <= aK)
+  if (!(x > aK))
   {
     return 0.0;
   }
   // If x is greater than the upper bound of its associated marginal, the conditional CDF is one
-  if (x > bK)
+  if (!(x <= bK))
   {
     return 1.0;
   }
   // The conditional CDF depends only on the last component of the conditioning vector
   const Scalar xKm1 = y[k - 1];
   // If the conditioning component is greater than the argument the conditional CDF is zero
-  if (xKm1 > x)
+  if (!(xKm1 <= x))
   {
     return 1.0;
   }
   // If the conditioning component is outside of the (k-1)th marginal range
   const Scalar aKm1 = getRange().getLowerBound()[k - 1];
   const Scalar bKm1 = getRange().getUpperBound()[k - 1];
-  if ((xKm1 <= aKm1) || (xKm1 > bKm1))
+  if (!((xKm1 > aKm1) && (xKm1 <= bKm1)))
   {
     return 0.0;
   }
@@ -695,7 +695,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF (const S
   // CDF(x|xKm1) = 1 - exp(-\int_{xKm1}^x\phi(s)ds)
   const Scalar factor = computeFactor(k, xKm1, x);
   const Scalar value = -expm1(-factor);
-  return value;
+  return SpecFunc::Clip01(value);
 }
 
 
@@ -705,7 +705,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQuantile(con
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
 
   if (conditioningDimension == 0) return distributionCollection_[0].computeQuantile(q)[0];
   const UnsignedInteger k = conditioningDimension;

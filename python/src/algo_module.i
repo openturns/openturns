@@ -5,7 +5,11 @@
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTAlgo.hxx"
+#include "openturns/OTCommon.hxx"
+#include "openturns/OTGeom.hxx"
+#include "openturns/OTGraph.hxx"
 #include "openturns/OTStat.hxx"
+#include "openturns/OTType.hxx"
 #include "openturns/OTFunc.hxx"
 %}
 
@@ -72,7 +76,6 @@
 %include GaussKronrodRule.i
 %include GaussKronrod.i
 %include GaussLegendre.i
-%include FejerAlgorithm.i
 %include IteratedQuadrature.i
 %include ExpertMixture.i
 %include KarhunenLoeveResultImplementation.i
@@ -86,6 +89,10 @@
 %include KarhunenLoeveValidation.i
 %include SimplicialCubature.i
 %include CubaIntegration.i
+%include MeshDomain.i
+%include P1LagrangeEvaluation.i
+%include P1LagrangeInterpolation.i
+%include DatabaseEvaluation.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

@@ -35,7 +35,7 @@ static const Factory<SmoothedUniform> Factory_SmoothedUniform;
 
 /* Default constructor */
 SmoothedUniform::SmoothedUniform()
-  : RandomMixture()
+  : LinearCombinationDistribution()
   , a_(-1.0)
   , b_(1.0)
   , sigma_(1.0)
@@ -53,7 +53,7 @@ SmoothedUniform::SmoothedUniform()
 SmoothedUniform::SmoothedUniform(const Scalar a,
                                  const Scalar b,
                                  const Scalar sigma)
-  : RandomMixture()
+  : LinearCombinationDistribution()
   , a_(a)
   , b_(b)
   , sigma_(sigma)
@@ -435,7 +435,7 @@ Scalar SmoothedUniform::getSigma() const
 /* Method save() stores the object through the StorageManager */
 void SmoothedUniform::save(Advocate & adv) const
 {
-  RandomMixture::save(adv);
+  LinearCombinationDistribution::save(adv);
   adv.saveAttribute( "a_", a_ );
   adv.saveAttribute( "b_", b_ );
   adv.saveAttribute( "sigma_", sigma_ );
@@ -444,7 +444,7 @@ void SmoothedUniform::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SmoothedUniform::load(Advocate & adv)
 {
-  RandomMixture::load(adv);
+  LinearCombinationDistribution::load(adv);
   adv.loadAttribute( "a_", a_ );
   adv.loadAttribute( "b_", b_ );
   adv.loadAttribute( "sigma_", sigma_ );

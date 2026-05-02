@@ -1,7 +1,7 @@
 %feature("docstring") OT::FittingTest::AIC
 R"RAW(Compute the Akaike information criterion.
 
-Refer to :ref:`aic`.
+Refer to :any:`aic`.
 
 Parameters
 ----------
@@ -51,7 +51,7 @@ Examples
 %feature("docstring") OT::FittingTest::AICC
 R"RAW(Compute the Akaike information criterion (with correction for small data).
 
-Refer to :ref:`aic`.
+Refer to :any:`aic`.
 
 Parameters
 ----------
@@ -238,7 +238,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Poisson()
 >>> sample = distribution.getSample(30)
->>> tested_distributions = [ot.PoissonFactory(), ot.UserDefinedFactory()]
+>>> tested_distributions = [ot.PoissonFactory(), ot.FiniteDiscreteDistributionFactory()]
 >>> best_model, best_bic = ot.FittingTest.BestModelBIC(sample, tested_distributions)
 >>> print(best_model)
 Poisson(lambda = 1.06667)
@@ -291,7 +291,7 @@ If a :class:`~openturns.DistributionFactory` is used, its
 :meth:`~openturns.DistributionFactory.build` method 
 is used to create the distribution, and the likelihood is then evaluated.
 
-Refer to :ref:`bic`.
+Refer to :any:`bic`.
 
 Parameters
 ----------
@@ -342,7 +342,7 @@ Examples
 %feature("docstring") OT::FittingTest::ChiSquared
 R"RAW(Perform a :math:`\chi^2` goodness-of-fit test for 1-d discrete distributions.
 
-Refer to :ref:`chi2_fitting_test`.
+Refer to :any:`chi2_fitting_test`.
 
 Parameters
 ----------
@@ -389,7 +389,7 @@ class=TestResult name=Unnamed type=ChiSquared Poisson binaryQualityMeasure=true 
 %feature("docstring") OT::FittingTest::Kolmogorov
 R"RAW(Perform a Kolmogorov goodness-of-fit test for 1-d continuous distributions.
 
-Refer to :ref:`kolmogorov_smirnov_test`.
+Refer to :any:`kolmogorov_smirnov_test`.
 
 Parameters
 ----------
@@ -510,7 +510,7 @@ Normal(mu = -0.0944924, sigma = 0.989808)"
 %feature("docstring") OT::FittingTest::Lilliefors
 R"RAW(Perform a Lilliefors goodness-of-fit test for 1-d continuous distributions.
 
-Refer to :ref:`kolmogorov_smirnov_test`.
+Refer to :any:`kolmogorov_smirnov_test`.
 
 Parameters
 ----------

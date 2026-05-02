@@ -278,7 +278,7 @@ int main(int, char *[])
       {
         // Comparison with a non-elliptical distribution
 #if !(defined(__clang__) && (__cplusplus >= 202002L)) // error: use of overloaded operator '==' is ambiguous (AppleClang 17)
-        const Bool equal = distribution == Exponential{};
+        const Bool equal = distribution == Exponential {};
 #else
         const Bool equal = false;
 #endif

@@ -1,54 +1,124 @@
 .. _chaos_basis:
 
-Polynomial chaos basis
-----------------------
+Multivariate Orthonormal basis
+------------------------------
 
-This page introduces *polynomial chaos expansion*.
-We consider the notations introduced in :ref:`functional_chaos`.
+In that file, we detail the construction of an orthonormal basis with respect to a multivariate
+measure denoted by :math:`\mu`, addressing both the independent and dependent marginal settings.
 
-Let :math:`T : \Rset^{n_X} \rightarrow \Rset^{n_X}` be the isoprobabilistic
-transformation such that :math:`\vect{Z} = T(\vect{X})` has independent
-marginals.
-Therefore, the probability density function of the standard random vector
-:math:`\vect{Z}` is the product of the marginal probability density functions:
+In the functional expansion setting (refer to :ref:`functional_chaos`), the distribution
+:math:`\mu` may be the input distribution :math:`\mu_{\inputRV}`, the distribution
+:math:`\mu_{\vect{U}}` which is the push-forward distribution of :math:`\mu_{\inputRV}` through
+the isoprobabilistic transformation :math:`T`, or the instrumental distribution
+:math:`\tilde{p}` of the domination method.
+
+The set of functions :math:`(\psi_k)_{k \geq 0}` with :math:`\psi_k : \Rset^{\inputDim} \rightarrow \Rset`
+is *orthonormal* with respect to :math:`\mu` if:
+
+.. math::
+   :label: orthonorm
+
+    \scalarproduct{\psi_k}{\psi_{\ell}}_{L^2\left(\mu\right)}  =  \delta_{k,\ell}
+
+for any :math:`k, \ell \geq 0` where :math:`\delta_{k, \ell}` is the Kronecker symbol:
+
+.. math::
+  \delta_{k, \ell}
+  =
+  \begin{cases}
+  1 & \textrm{ if } k = \ell, \\
+  0 & \textrm{otherwise.}
+  \end{cases}
+
+
+Case of independent marginals: Tensorized univariate basis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We assume here that :math:`\mu` is a multivariate distribution with independent marginals
+denoted by :math:`\mu_i`:
+
+.. math::
+   \mu = \otimes_{i=0}^{\inputDim-1} \mu_i
+
+In that case, a multivariate basis orthonormal with respect to :math:`\mu` can be built as the
+tensorization of univariate basis orthonormal with respect to its marginals.
+
+For any :math:`0 \leq i \leq \inputDim-1`, let
+:math:`\left(\varphi_k^{(i)}\right)_{k \geq 0}` be the univariate
+basis orthonormal with respect to the marginal distribution :math:`\mu_i`.
+The tensorized multivariate basis is defined by:
 
   .. math::
+        \Psi_\vect{\alpha}(\vect{x}) = \prod_{i=0}^{\inputDim-1} \varphi_{\alpha_i}^{(i)}(x_i)
 
-        \mu_{\vect{Z}}(\vect{z})= \prod_{i=1}^{n_X} \mu_{Z_i}(z_i)
+where :math:`\vect{\alpha} = (\alpha_0, \dots, \alpha_{\inputDim-1}) \in \Nset^{\inputDim}` is a
+multi-index that enables to define each element of the multivariate basis from the elements of
+the univariate marginal basis (see :ref:`enumeration_multivariate_basis` and the class
+:class:`~openturns.EnumerateFunction` to get details on that
+bijection).
 
-for any :math:`\vect{z} \in \Rset^{n_X}` where :math:`\mu_{\vect{Z}}`
-is the joint PDF of the random vector :math:`\vect{Z}` and :math:`\mu_{Z_i}`
-is the marginal PDF of the random variable :math:`Z_i`.
+The univariate bases may be:
 
-For any :math:`i \in \{0, ..., n_X\}`, let
-:math:`\left(\pi_k^{(i)}\right)_{k \geq 0}` be the family of univariate
-polynomials of the :math:`i`-th marginal orthogonal with respect to the
-marginal distribution :math:`\mu_{Z_i}`, where :math:`k` represents the
-polynomial degree.
-The multivariate polynomial basis can be built using the *tensor product* of
-univariate polynomials which are orthonormal with respect to :math:`\mu_{\vect{Z}}`.
-The orthonormal polynomials are:
+- polynomials: the associated distribution :math:`\mu_i` can be continuous
+  or discrete.
+  The orthonormal polynomial basis is represented by its three-term recurrence and
+  the reverse Clenshaw algorithm enables fast, stable evaluation of the polynomials
+  at any point (see :class:`~openturns.OrthogonalUniVariatePolynomial`).
+  For some distributions, the orthonormal polynomial basis is
+  known (see :ref:`orthonormal_polynomials`).
+  For all the other arbitrary distributions, the three-term recurrence is computed (see
+  :class:`~openturns.AdaptiveStieltjesAlgorithm`) and used to build its orthonormal
+  polynomial family (see :class:`~openturns.StandardDistributionPolynomialFactory`).
 
-  .. math::
+- Haar wavelets: the Haar wavelets basis is orthonormal with respect to the  :math:`\cU(0,1)`
+  measure. This basis is used to approximate functions with discontinuities.
+  For details on this basis, see :class:`~openturns.HaarWaveletFactory`.
 
-        \Psi_\vect{\alpha}(\vect{z}) = \prod_{i=1}^{n_X} \pi_{\alpha_i}^{(i)}(z_i)
+- Fourier series: the Fourier series is orthonormal with respect to the :math:`\cU(-\pi, \pi)`
+  measure. For more details on this basis, see :class:`~openturns.FourierSeriesFactory`.
 
-where :math:`\vect{\alpha} = (\alpha_1, \dots, \alpha_{n_X}) \in \Nset^{n_X}` is the multi-index
-representing the marginal polynomial degrees and :math:`\pi_{\alpha_i}^{(i)}`
-is the :math:`i`-th marginal univariate orthonormal polynomial of degree
-:math:`\alpha_i`.
-The orthonormal polynomial basis with respect to the marginal :math:`\mu_{Z_i}` is
-known for some distributions: see :ref:`orthogonal_polynomials` for more
-details on classical orthonormal polynomial families.
 
-For classical polynomials, the :class:`~openturns.StandardDistributionPolynomialFactory`
-class implements the three-term recurrence.
-If the family is not already known, the polynomials can be represented by
-their three-term recurrence, using the adaptive Stieljes algorithm (see
-:class:`~openturns.AdaptiveStieltjesAlgorithm`).
-Once the sequence of recurrence coefficients is known, the reverse Clenshaw
-algorithm enables fast, stable evaluation of the polynomials
-at any point (see :class:`~openturns.OrthogonalUniVariatePolynomial`).
+Case of dependent marginals
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When :math:`\mu` is a multivariate distribution with dependent marginals, several methods
+enable to build a basis orthonormal with respect to :math:`\mu`.
+
+One method is to use an :ref:`isoprobabilistic transformation <isoprobabilistic_transformation>` denoted by
+:math:`T: \Rset^{\inputDim} \rightarrow \Rset^{\inputDim}`
+that maps the measure :math:`\mu` into a measure :math:`\tilde{\mu}` with independent marginals.
+Therefore, if  :math:`(\varphi_k)_k` is a basis orthonormal with respect to :math:`\tilde{\mu}`,
+then :math:`(\varphi_k \circ T)_k` is a basis orthonormal with respect to :math:`\mu`. It is
+important to note that if :math:`(\varphi_k)_k` is a polynomial basis, then
+:math:`(\varphi_k \circ T)_k` is not a polynomial basis as soon as :math:`T` is not affine.
+
+Another method consists in the following functional basis, which was first introduced by
+Soize-Ghanem in [soizeghanem2004]_ defined by:
+
+.. math::
+
+    \psi_{\vect{\alpha}}(\vect{x})
+    =  \dfrac{1}{\sqrt{c(F_0(x_0), \dots, F_{\inputDim-1}(x_{\inputDim-1}))}}
+    \prod_{i=0}^{\inputDim-1} \varphi^{(i)}_{\alpha_{i}}(x_{i})
+
+where :math:`F_i` is the cumulative distribution function of the :math:`i`-th marginal of
+:math:`\mu`, :math:`c` the probability density function of its copula and
+:math:`(\varphi^{(i)}_{\alpha_i})_{\alpha_i}` the polynomial basis orthonormal with respect to :math:`\mu_i`.
+
+It is important to note that although :math:`(\varphi_{\alpha_i})_{\alpha_i}` is a polynomial basis,
+:math:`(\psi_{\vect{\alpha}})_\vect{\alpha}` is not a polynomial basis. In addition,
+:math:`(\psi_\vect{0}) \neq 1` if the copula is not the independent copula.
+
+Furthermore, this basis generates approximation subspaces of poor quality.
+Indeed, for most copulas, the density :math:`c` tends to infinity at :math:`\vect{0}` or :math:`\vect{1}`
+(and possibly at other points).
+As a consequence, all the basis functions :math:`(\psi_{\vect{\alpha}})_\vect{\alpha}`
+vanish at these points and take small values in their neighborhoods.
+Therefore, the coefficients in the expansion of a function that takes non zero
+values at these points must necessarily be large.
+This leads to numerical instabilities, both for the computation of the expansion coefficients
+and for the evaluation of the metamodel.
+
+That is the reason why the use of such a multivariate orthonormal basis is not recommended.
 
 .. topic:: API:
 

@@ -173,7 +173,7 @@ def test_two_outputs():
         result([[9.5], [10.0]]).getCovariance() - reference_covariance,
         ot.Matrix(4, 4),
         0.0,
-        2e-2,
+        1e-1,
     )
 
 

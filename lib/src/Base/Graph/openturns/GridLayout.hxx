@@ -84,6 +84,8 @@ public:
   /** Legend bounding box accessor */
   void setLegendCorner(const Point & corner);
 
+  /** Set log scale for x, y both or none axes */
+  void setLogScale(const GraphImplementation::LogScale logScale);
 private:
 
   /** Number of row/column */

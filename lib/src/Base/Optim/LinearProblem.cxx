@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 
 #include "openturns/LinearProblem.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -40,7 +39,7 @@ LinearProblem::LinearProblem()
 
 /* Parameter constructor */
 LinearProblem::LinearProblem(const Point & cost, const Interval & bounds,
-                const Matrix & constraintCoefficients, const Interval & constraintBounds)
+                             const Matrix & constraintCoefficients, const Interval & constraintBounds)
   : OptimizationProblemImplementation()
 {
   if (bounds.getDimension() && bounds.getDimension() != cost.getDimension())

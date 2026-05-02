@@ -44,7 +44,8 @@ import openturns.viewer as otv
 g = ot.SymbolicFunction(["x"], ["sin(2*pi_*x)"])
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
+graph = ot.Graph("Polynomial curve fitting", "x", "y")
+graph.setLegendPosition("upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setLegends(['"Unknown" function'])
@@ -88,7 +89,8 @@ noiseSample = noise.getSample(n_train)
 y_train = g(x_train) + noiseSample
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
+graph = ot.Graph("Polynomial curve fitting", "x", "y")
+graph.setLegendPosition("upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setLegends(['"Unknown" function'])
@@ -152,7 +154,7 @@ myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
 myLeastSquares.run()
 
 # %%
-responseSurface = myLeastSquares.getMetaModel()
+responseSurface = myLeastSquares.getResult().getMetaModel()
 
 # %%
 # The test set
@@ -167,7 +169,8 @@ x_test = linearSample(0, 1, n_test)
 y_test = responseSurface(basis(x_test))
 
 # %%
-graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
+graph = ot.Graph("Polynomial curve fitting", "x", "y")
+graph.setLegendPosition("upper right")
 # The "unknown" function
 curve = g.draw(0, 1)
 curve.setLegends(['"Unknown" function'])
@@ -196,9 +199,8 @@ graph = ot.Graph(
     "Least squares minimizes the sum of the squares of the vertical bars",
     "x",
     "y",
-    True,
-    "upper right",
 )
+graph.setLegendPosition("upper right")
 residualsColor = ot.Drawable.BuildDefaultPalette(3)[2]
 # Predictions
 curve = ot.Curve(x_test, y_test)
@@ -240,7 +242,7 @@ def myPolynomialDataFitting(total_degree, x_train, y_train):
     designMatrix = basis(x_train)
     myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
     myLeastSquares.run()
-    responseSurface = myLeastSquares.getMetaModel()
+    responseSurface = myLeastSquares.getResult().getMetaModel()
     return responseSurface, basis
 
 
@@ -254,7 +256,8 @@ def myPolynomialCurveFittingGraph(total_degree, x_train, y_train):
     x_test = linearSample(0, 1, n_test)
     ypredicted_test = responseSurface(basis(x_test))
     # Graphics
-    graph = ot.Graph("Polynomial curve fitting", "x", "y", True, "upper right")
+    graph = ot.Graph("Polynomial curve fitting", "x", "y")
+    graph.setLegendPosition("upper right")
     # The "unknown" function
     curve = g.draw(0, 1)
     graph.add(curve)
@@ -376,7 +379,8 @@ for total_degree in range(maximum_degree):
 
 # %%
 degreeSample = ot.Sample([[i] for i in range(maximum_degree)])
-graph = ot.Graph("Root mean square error", "Degree", "RMSE", True, "upper right")
+graph = ot.Graph("Root mean square error", "Degree", "RMSE")
+graph.setLegendPosition("upper right")
 # Train
 cloud = ot.Curve(degreeSample, RMSE_train)
 cloud.setLegend("Train")

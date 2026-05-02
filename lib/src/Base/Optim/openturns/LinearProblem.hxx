@@ -51,7 +51,7 @@ public:
 
   /** Linear flag accessor */
   Bool isLinear() const override;
-  
+
   /** Objective accessor */
   void setLinearCost(const Point & cost);
   Point getLinearCost() const override;

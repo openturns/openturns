@@ -27,7 +27,7 @@ checkMeshValidity : bool, optional
     The validity check consists in looking for non-overlapping
     simplices, no unused vertex, no simplices with duplicate vertices and
     no coincident vertices.
-    Default value is set to false in resource map key `Mesh-CheckValidity`
+    Default value is given by 'Mesh-CheckValidity' in :class:`~openturns.ResourceMap`.
 
 
 See also
@@ -43,6 +43,26 @@ Examples
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> # Create the mesh of dimension 2
 >>> mesh2d = ot.Mesh(vertices, simplices)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::BuildRotationFromAngles
+R"RAW(Build a rotation matrix given three euler angles.
+
+Parameters
+----------
+thetaX : float
+    The angle of rotation around the :math:`x` axis.
+thetaY : float
+    The angle of rotation around the :math:`y` axis.
+thetaZ : float
+    The angle of rotation around the :math:`z` axis.
+
+Returns
+-------
+rotation : :class:`~openturns.Matrix`
+    The rotation matrix.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -249,9 +269,9 @@ Examples
 R"RAW(Draw the bidimensional projection of the mesh.
 
 Available usages:
-    draw3D(*drawEdge=True, thetaX=0.0, thetaY=0.0, thetaZ=0.0, shading=False, rho=1.0*)
+    draw3D(*drawEdge=True, thetaX, thetaY, thetaZ, shading=False, rho=1.0*)
 
-    draw3D(*drawEdge, rotation, shading, rho*)
+    draw3D(*drawEdge, rotation, shading, rho, colors*)
 
 Parameters
 ----------
@@ -259,10 +279,13 @@ drawEdge : bool
     Tells if the edge of each simplex has to be drawn.
 thetaX : float
     Gives the value of the rotation along the X axis in radian.
+    Default value is given by 'Mesh-DefaultThetaX' in :class:`~openturns.ResourceMap`.
 thetaY : float
     Gives the value of the rotation along the Y axis in radian.
+    Default value is given by 'Mesh-DefaultThetaY' in :class:`~openturns.ResourceMap`.
 thetaZ : float
     Gives the value of the rotation along the Z axis in radian.
+    Default value is given by 'Mesh-DefaultThetaZ' in :class:`~openturns.ResourceMap`.
 rotation : :class:`~openturns.SquareMatrix`
     Operates a rotation on the mesh before its projection of the plane of the
     two first components.
@@ -274,11 +297,28 @@ rho : float, :math:`0 \leq \rho \leq 1`
     which enables to see inside the mesh. If :math:`\rho = 1`, the simplices
     keep their initial size and appear connected. If :math:`\rho = 0`, each
     simplex is reduced to its gravity center.
+colors : list of str
+    List of colors to draw the mesh, one by simplex, as a string. It can
+    either be named colors, hexadecimal RGB codes or RGB codes.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
     Draws the bidimensional projection of the mesh on the :math:`(x,y)` plane.
+
+Notes
+-----
+The shading is done using Phong reflection model, controlled by the following keys in :class:`~openturns.ResourceMap`:
+
+    - 'Mesh-AmbientFactor' to control the amount of ambient light color to add to the faces/edges
+    - 'Mesh-DiffuseFactor' to control the amount of diffuse light color to add to the faces/edges
+    - 'Mesh-Shininess' to control the size of the specular spot of the light
+    - 'Mesh-SpecularFactor' to control the amount of specular light color to add to the faces/edges
+    - 'Mesh-AmbientColor' to define the ambient color as a name or an RGB hexadecimal code
+    - 'Mesh-EdgeColor' to define the edge color as a name or an RGBA hexadecimal code
+    - 'Mesh-FaceColor' to define the face color as a name or an RGBA hexadecimal code
+    - 'Mesh-LightColor' to define the ambient color as a name or an RGB hexadecimal code
+
 
 Examples
 --------
@@ -567,7 +607,7 @@ Parameters
 index : int
     Index of the vertex to set.
 vertex : sequence of float
-    Cordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
+    Coordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
     where :math:`dim` is the dimension of the vertices of the mesh.
 
 Examples
@@ -591,7 +631,7 @@ R"RAW(Set the vertices of the mesh.
 Parameters
 ----------
 vertices : 2-d sequence of float
-    Cordinates in :math:`\Rset^{dim}` of the vertices,
+    Coordinates in :math:`\Rset^{dim}` of the vertices,
     where :math:`dim` is the dimension of the vertices of the mesh.
 
 Examples
@@ -718,3 +758,23 @@ Returns
 -------
 subMesh : :class:`~openturns.Mesh`
     The sub-mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setIsConvex
+"Convex flag accessor.
+
+Parameters
+----------
+convex : bool
+    Whether the mesh is known to be convex by construction."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isConvex
+"Convex flag accessor.
+
+Returns
+-------
+convex : bool
+    Whether the mesh is known to be convex by construction."

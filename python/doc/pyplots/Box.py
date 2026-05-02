@@ -8,7 +8,7 @@ experiment = ot.Box(levels)
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Box plane", "x1", "x2", True, "")
+graph = ot.Graph("Box plane", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

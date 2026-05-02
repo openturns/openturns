@@ -1,7 +1,7 @@
 %feature("docstring") OT::StationaryCovarianceModelFactory
 R"RAW(Estimation of the covariance model of a stationary process.
 
-Refer to :ref:`estimate_stationary_covariance_model`.
+Refer to :any:`estimate_stationary_covariance_model`.
 
 Parameters
 ----------
@@ -54,7 +54,7 @@ Let us consider the partition of the domain as follows:
 
     - :math:`\Delta f` be the frequency step, :math:`\Delta f = \frac{2 \Omega_c}{M}`
 
-    - :math:`f_k` be the frequences on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,\hdots,M`
+    - :math:`f_k` be the frequencies on which the spectral density is computed, :math:`f_k = -\Omega_c + \left(k - \frac{1}{2} \right) \Delta f = \left( 2 k - 1 - M \right) \frac{\Delta f}{2}` with :math:`k=1,\hdots,M`
 
 The equation :eq:`eq3` can be rewritten as:
 
@@ -120,7 +120,7 @@ We denote:
       \right.
 
 
-Finally, we get the followig expression for integral in :eq:`eq4`:
+Finally, we get the following expression for integral in :eq:`eq4`:
 
 .. math::
 

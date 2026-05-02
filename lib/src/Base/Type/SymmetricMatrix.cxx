@@ -114,7 +114,7 @@ const Matrix SymmetricMatrix::getRow(const UnsignedInteger rowIndex) const
   return Implementation(getImplementation()->getRowSym(rowIndex).clone());
 }
 
-/* Column extration */
+/* Column extraction */
 const Matrix SymmetricMatrix::getColumn(const UnsignedInteger columnIndex) const
 {
   return Implementation(getImplementation()->getColumnSym(columnIndex).clone());

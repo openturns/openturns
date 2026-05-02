@@ -16,10 +16,13 @@ dim : int
     Dimension of the :class:`~openturns.EnumerateFunction`. *dim* must be equal
     to the dimension of the :class:`~openturns.OrthogonalBasis`.
 q : float
-    Correspond to the q-quasi norm parameter. If not precised, :math:`q = 0.4`.
+    Correspond to the q-quasi norm parameter.
+
+    Default value is :math:`q = 0.4`.
 weight : sequence of float
-    Weights of the indices in each dimension. If not precised, all weights are
-    equals to :math:`w_i = 1`.
+    Weights of the indices in each dimension.
+
+    Default value  is :math:`w_i = 1` for any :math:`i`.
 
 See also
 --------
@@ -27,28 +30,14 @@ EnumerateFunction, LinearEnumerateFunction
 
 Notes
 -----
-The hyperbolic truncation strategy is inspired by the so-called sparsity-of-
-effects principle, which states that most models are principally governed by
-main effects and low-order interactions. Accordingly, one wishes to define an
-enumeration strategy which first selects those multi-indices related to main
-effects, i.e. with a reasonably small number of nonzero components, prior to
-selecting those associated with higher-order interactions.
+Enumeration functions are bijections from :math:`\Nset` to :math:`\Nset^{\inputDim}` (refer to :any:`enumeration_strategy`).
 
-For any real number :math:`q \in ]0, 1]`, one defines the anisotropic hyperbolic
-norm of a multi-index :math:`\vect{\alpha}` by:
-
-.. math::
-    
-    \| \vect{\alpha} \|_{\vect{w}, q} = \left( \sum_{i=1}^{n_X} w_i \alpha_i^q \right)^{1/q}
-
-where :math:`n_X` is the number of input variables and :math:`(w_1, \dots , w_{n_X})` is a sequence of
-real positive numbers called weights.
-Functions of input variables with smaller weights are selected first
-for the functional basis.
+They can be used to enumerate a multivariate basis
+built as the tensorization of univariate basis, using the indexation of each marginal basis
+(refer to and :any:`enumeration_multivariate_basis`).
 
 Examples
 --------
-
 In the following example, we create an hyperbolic enumerate function
 in 2 dimension with a quasi-norm equal to 0.5.
 Notice, for example, that the function with multi-index [3,0]

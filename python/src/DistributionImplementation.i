@@ -72,11 +72,6 @@ Distribution __radd__(const Scalar s)
   return *self + s;
 }
 
-Distribution __mul__(Scalar s)
-{
-  return (*self) * s;
-}
-
 Distribution __rmul__(Scalar s)
 {
   return (*self) * s;

@@ -5,7 +5,7 @@ Gaussian Process Regression: surrogate model with continuous and categorical var
 
 # %%
 # We consider here the surrogate modeling of an analytical function characterized by
-# continuous and categorical variables
+# continuous and categorical variables. Refer to :ref:`gaussian_process_regression`.
 #
 
 # %%
@@ -34,7 +34,10 @@ fun = ot.PythonFunction(dim, 1, illustrativeFunc)
 numberOfZLevels = 2  # Number of categorical levels for z
 # Input distribution
 dist = ot.JointDistribution(
-    [ot.Uniform(0, 1), ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels)))]
+    [
+        ot.Uniform(0, 1),
+        ot.FiniteDiscreteDistribution(ot.Sample.BuildFromPoint(range(numberOfZLevels))),
+    ]
 )
 
 # %%
@@ -252,8 +255,12 @@ dist = ot.JointDistribution(
     [
         ot.Uniform(0, 1),
         ot.Uniform(0, 1),
-        ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels1))),
-        ot.UserDefined(ot.Sample.BuildFromPoint(range(numberOfZLevels2))),
+        ot.FiniteDiscreteDistribution(
+            ot.Sample.BuildFromPoint(range(numberOfZLevels1))
+        ),
+        ot.FiniteDiscreteDistribution(
+            ot.Sample.BuildFromPoint(range(numberOfZLevels2))
+        ),
     ]
 )
 

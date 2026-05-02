@@ -86,7 +86,7 @@ private:
   Distribution computeAuxiliaryDistribution(const Sample & sample,
       const Point & weights);
 
-  /** Function computing weigths  of sample */
+  /** Function computing weights  of sample */
   Point computeWeights(const Sample & sample,
                        const Sample & respectiveSamples,
                        const Scalar eventThresholdLocal,

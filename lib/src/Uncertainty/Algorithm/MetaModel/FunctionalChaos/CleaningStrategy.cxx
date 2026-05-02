@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 
 #include "openturns/CleaningStrategy.hxx"
 #include "openturns/Log.hxx"
@@ -105,7 +104,7 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
   if (dimension > 1)
   {
     // We keep at most maximumSize_ elements, the ones that have the largest magnitude and have a magnitude larger or equal to maximumMagnitude * significanceFactor
-    // First, find the extrem magnitudes.
+    // First, find the extremum magnitudes.
     Scalar largest = std::abs(coefficients[1]);
     Scalar smallest = largest;
     Scalar secondSmallest = smallest;
@@ -120,7 +119,7 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
         smallest = tmp;
         rankSmallest = i;
       }
-    } // Search for the extrems
+    } // Search for the extremums
     // Second, if the coefficient list is too large (it can be by only one term), remove the smallest term to free a place for the next vector.
     UnsignedInteger shift = 0;
     if ((dimension > maximumSize_) && (currentVectorIndex_ < maximumDimension_))

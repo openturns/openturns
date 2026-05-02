@@ -141,7 +141,7 @@ dist : :class:`~openturns.Distribution`
 
 Notes
 -----
-Depending on the parametric model choosed, not all moments define a valid
+Depending on the parametric model chosen, not all moments define a valid
 distribution, so it should only used with empirical moments from the same model.
 
 Examples

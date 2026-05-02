@@ -4,7 +4,8 @@ Gaussian Process Regression: multiple input dimensions
 """
 
 # %%
-# In this example we are going to create an approximation of a model response using a GP model.
+# In this example we are going to create an approximation of a model response using a Gaussian Process Regression
+# model (refer to :ref:`gaussian_process_regression`).
 # We consider a bidimensional function with Gaussian inputs.
 # Then we create a GP metamodel with a constant basis and a :class:`~openturns.SquaredExponential` covariance.
 #

@@ -1,14 +1,13 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
 N = 10
 mesh = ot.RegularGrid(0, 1, N)
-f = otexp.VertexFieldToPointFunction(mesh, 2, [-1 % N])
+f = ot.VertexFieldToPointFunction(mesh, 2, [-1 % N])
 
 print(f)
 print(repr(f))

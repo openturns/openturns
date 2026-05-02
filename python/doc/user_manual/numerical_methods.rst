@@ -44,7 +44,7 @@ Non linear solvers
     :template: class.rst_t
 
     Solver
-    experimental.LeastSquaresEquationsSolver
+    LeastSquaresEquationsSolver
 
     :template: Solver.rst_t
     Bisection

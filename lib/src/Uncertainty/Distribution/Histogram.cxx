@@ -524,7 +524,8 @@ Graph Histogram::drawPDF(const Scalar xMin,
   if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);
-  Graph graphPDF(title, xName, "PDF", true, "topright");
+  Graph graphPDF(title, xName, "PDF");
+  graphPDF.setLegendPosition("topright");
   const UnsignedInteger size = width_.getSize();
   // Check for the border cases
   // If the histogram is completely at the right or at the left of the plot range,
@@ -564,7 +565,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
   while ((indexRight < size) && (first_ + cumulatedWidth_[indexRight] < xMax)) ++indexRight;
   // The graph is made of full bars for the class indices between indexLeft and indexRight
   // The graph can include completely the first class or not. It is checked using first_.
-  // The graph can include completely the last class or not. It is checked usind indexRight == size.
+  // The graph can include completely the last class or not. It is checked using indexRight == size.
   // !!! Only the first part of the graph has a label !!!
   // The first class is completely included
   if (xMin <= first_)

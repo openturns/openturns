@@ -78,8 +78,8 @@ class NearestNeighbourAlgorithmImplementationQuerySamplePolicy
 
 public:
   NearestNeighbourAlgorithmImplementationQuerySamplePolicy(const Sample & input,
-							   Indices & output,
-							   const NearestNeighbourAlgorithmImplementation & algo)
+      Indices & output,
+      const NearestNeighbourAlgorithmImplementation & algo)
     : input_(input)
     , output_(output)
     , algo_(algo)
@@ -110,6 +110,11 @@ Indices NearestNeighbourAlgorithmImplementation::queryK(const Point &,
     const Bool ) const
 {
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const";
+}
+
+Indices NearestNeighbourAlgorithmImplementation::queryRadius(const Point &, const Scalar, Point &, const Bool) const
+{
+  throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryRadius(Point, Scalar, Point &, Bool) const";
 }
 
 /* String converter */

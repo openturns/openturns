@@ -41,8 +41,7 @@ public:
 
   /** Constructor with parameters */
   SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-             const RandomVector & event,
-             const Point & physicalStartingPoint = Point()); // deprecated argument
+             const RandomVector & event);
 
   /** Virtual constructor */
   SystemFORM * clone() const override;
@@ -53,7 +52,7 @@ public:
   /** Event accessor */
   void setEvent(const RandomVector & systemEvent) override;
 
-  /** Function that computes the design point by re-using the Analytical::run() and creates a SystemFORM::Result */
+  /** Function that computes the design point by reusing the Analytical::run() and creates a SystemFORM::Result */
   void run() override;
 
   /** Result accessor */
@@ -68,7 +67,7 @@ public:
 protected:
   MultiFORMResult multiFORMResult_;
 
-} ; /* class SystemFORM */
+}; /* class SystemFORM */
 
 
 END_NAMESPACE_OPENTURNS

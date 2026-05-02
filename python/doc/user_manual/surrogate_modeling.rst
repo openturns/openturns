@@ -102,7 +102,7 @@ Main classes
     GaussianProcessFitterResult
     experimental.GaussianProcessRegressionCrossValidation
     GaussianProcessConditionalCovariance
-    experimental.GaussianProcessRandomVector
+    GaussianProcessRandomVector
 
 Construction of the regression basis
 ------------------------------------

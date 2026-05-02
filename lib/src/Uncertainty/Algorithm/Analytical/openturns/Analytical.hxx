@@ -51,15 +51,10 @@ public:
 
   /** Constructor with parameters */
   Analytical(const OptimizationAlgorithm & solver,
-             const RandomVector & compositeEvent,
-             const Point & physicalStartingPoint = Point()); // deprecated argument
+             const RandomVector & compositeEvent);
 
   /** Virtual constructor */
   Analytical * clone() const override;
-
-  /** @deprecated Physical starting point accessor */
-  Point getPhysicalStartingPoint() const;
-  void setPhysicalStartingPoint(const Point & physicalStartingPoint);
 
   /** Event accessor */
   RandomVector getEvent() const;

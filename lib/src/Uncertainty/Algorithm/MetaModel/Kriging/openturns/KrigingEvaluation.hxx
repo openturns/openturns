@@ -84,7 +84,7 @@ public:
 
 protected:
 
-  // BasisCollection ==> Persistent for save attribut
+  // BasisCollection ==> Persistent for save attribute
   Basis basis_;
 
   /// Training (input) sample

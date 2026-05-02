@@ -76,7 +76,7 @@ public:
   void setValues(const Point & values);
   void setValues(const Sample & values);
 
-  /** Simultaneous locations and values acessor */
+  /** Simultaneous locations and values accessor */
   void setLocationsAndValues(const Point & locations,
                              const Sample & values);
 

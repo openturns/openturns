@@ -51,7 +51,7 @@ class FireSatelliteModel:
 
     Cd : :class:`~openturns.TruncatedNormal`
         Drag coefficient (-) distribution
-        Nineth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
+        Ninth marginal, ot.TruncatedNormal(1.0,0.3,1.0-0.9,1.0+0.9)
 
     distribution : :class:`~openturns.JointDistribution`
         The joint distribution of the input parameters.
@@ -232,9 +232,7 @@ class FireSatelliteModel:
         self.modelTotalTorque = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalTorque
         )
-        self.modelTotalTorque.setInputDescription(
-            self.distribution.getDescription()
-        )
+        self.modelTotalTorque.setInputDescription(self.distribution.getDescription())
         self.modelTotalTorque.setOutputDescription(["Total Torque"])
 
         # Model of Total power
@@ -244,9 +242,7 @@ class FireSatelliteModel:
         self.modelTotalPower = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisToTalPower
         )
-        self.modelTotalPower.setInputDescription(
-            self.distribution.getDescription()
-        )
+        self.modelTotalPower.setInputDescription(self.distribution.getDescription())
         self.modelTotalPower.setOutputDescription(["TotalPower"])
 
         # Model of Solar Array Area
@@ -256,9 +252,7 @@ class FireSatelliteModel:
         self.modelSolarArrayArea = ot.PythonFunction(
             9, 1, multidisciplinaryAnalysisSolarArrayArea
         )
-        self.modelSolarArrayArea.setInputDescription(
-            self.distribution.getDescription()
-        )
+        self.modelSolarArrayArea.setInputDescription(self.distribution.getDescription())
         self.modelSolarArrayArea.setOutputDescription(["SolarArrayArea"])
 
         # Optional variables (deterministic)

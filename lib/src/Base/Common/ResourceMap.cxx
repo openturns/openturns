@@ -44,7 +44,7 @@ static const char * XMLTag_value_bool             = "value_bool";
 #endif
 
 static std::mutex ResourceMap_InstanceMutex_;
-static ResourceMap * ResourceMap_P_instance_ = 0;
+static ResourceMap * ResourceMap_P_instance_ = nullptr;
 static const ResourceMap_init static_initializer_ResourceMap;
 
 ResourceMap_init::ResourceMap_init()
@@ -54,7 +54,6 @@ ResourceMap_init::ResourceMap_init()
   {
     ResourceMap_P_instance_ = new ResourceMap;
   });
-  assert(ResourceMap_P_instance_);
 }
 
 ResourceMap_init::~ResourceMap_init()
@@ -63,7 +62,7 @@ ResourceMap_init::~ResourceMap_init()
   std::call_once(flag, [&]()
   {
     delete ResourceMap_P_instance_;
-    ResourceMap_P_instance_ = 0;
+    ResourceMap_P_instance_ = nullptr;
   });
 }
 
@@ -229,12 +228,6 @@ Bool ResourceMap::HasStringEnum(const String & key)
 void ResourceMap::Reset()
 {
   GetInstance().lock().reset();
-}
-
-void ResourceMap::Reload()
-{
-  LOGWARN("ResourceMap.Reload is deprecated in favor of Reset");
-  Reset();
 }
 
 void ResourceMap::RemoveKey(const String & key)
@@ -458,7 +451,7 @@ void ResourceMap::set(const String & key, const String & value)
       // First, try to recover the bool value from the "true" or "false" strings
       if (value == "true") boolValue = true;
       else if (value == "false") boolValue = false;
-      // Second, try to recover the bool from the litteral value
+      // Second, try to recover the bool from the literal value
       else
       {
         std::istringstream iss(value);
@@ -612,7 +605,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             // First, try to recover the bool value from the "true" or "false" strings
             if (value == "true") boolValue = true;
             else if (value == "false") boolValue = false;
-            // Second, try to recover the bool from the litteral value
+            // Second, try to recover the bool from the literal value
             else
             {
               std::istringstream iss(value);
@@ -779,7 +772,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FieldFunctionalChaosAlgorithm
   addAsBool("FieldFunctionalChaosAlgorithm-DefaultRecompress", false);
-  
+
   // FieldToPointFunctionalChaosAlgorithm
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
@@ -1111,13 +1104,20 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);
+  addAsBool("Mesh-CheckValidity", false);
   addAsScalar("Mesh-AmbientFactor", 0.1);
   addAsScalar("Mesh-DiffuseFactor", 0.7);
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-DefaultThetaX", 0.3);
+  addAsScalar("Mesh-DefaultThetaY", 0.3);
+  addAsScalar("Mesh-DefaultThetaZ", 0.3);
+  addAsString("Mesh-AmbientColor", "white");
+  addAsString("Mesh-EdgeColor", "#FF7F0E88");
+  addAsString("Mesh-FaceColor", "#1F77B488");
+  addAsString("Mesh-LightColor", "white");
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
-  addAsBool("Mesh-CheckValidity", false);
 
   // BoundingVolumeHierarchy parameters
   addAsString("BoundingVolumeHierarchy-Strategy", "Mean");
@@ -1404,8 +1404,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
 
-  // UserDefined parameters //
-  addAsUnsignedInteger("UserDefined-SmallSize", 10000);
+  // FiniteDiscreteDistribution parameters //
+  addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
   // UniformOverMesh parameters //
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
@@ -1429,18 +1429,18 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("FrankCopulaFactory-ResidualPrecision", 1.0e-14);
   addAsUnsignedInteger("FrankCopulaFactory-MaximumIteration", 100);
 
-  // RandomMixture parameters //
-  addAsBool("RandomMixture-SimplifyAtoms", true);
-  addAsScalar("RandomMixture-DefaultAlpha", 5.0);
-  addAsScalar("RandomMixture-DefaultBeta", 8.5);
-  addAsScalar("RandomMixture-DefaultCDFEpsilon", 1.0e-10);
-  addAsScalar("RandomMixture-DefaultPDFEpsilon", 1.0e-10);
-  addAsUnsignedInteger("RandomMixture-DefaultBlockMax", 16);
-  addAsUnsignedInteger("RandomMixture-DefaultBlockMin", 3);
-  addAsUnsignedInteger("RandomMixture-DefaultMaxSize", 65536);
-  addAsUnsignedInteger("RandomMixture-MaximumSupportSize", 2048);
-  addAsUnsignedInteger("RandomMixture-ProjectionDefaultSize", 25);
-  addAsUnsignedInteger("RandomMixture-SmallSize", 100);
+  // LinearCombinationDistribution parameters //
+  addAsBool("LinearCombinationDistribution-SimplifyAtoms", true);
+  addAsScalar("LinearCombinationDistribution-DefaultAlpha", 5.0);
+  addAsScalar("LinearCombinationDistribution-DefaultBeta", 8.5);
+  addAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon", 1.0e-10);
+  addAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon", 1.0e-10);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMax", 16);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMin", 3);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 65536);
+  addAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 2048);
+  addAsUnsignedInteger("LinearCombinationDistribution-ProjectionDefaultSize", 25);
+  addAsUnsignedInteger("LinearCombinationDistribution-SmallSize", 100);
 
   // Evaluation parameters //
   addAsScalar("Evaluation-ParameterEpsilon", 1.0e-7);
@@ -1482,7 +1482,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SobolSimulationAlgorithm parameters //
   addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel", 0.05);
-  addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-2);
+  addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-1);
   addAsUnsignedInteger("SobolSimulationAlgorithm-DefaultExperimentSize", 1000);
 
   // SimulationSensitivityAnalysis parameters //

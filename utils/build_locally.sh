@@ -29,6 +29,10 @@ case $choice in
     docker pull debian:11
     docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -v `pwd`:/io debian:11 /io/.ci_support/run_docker_mindeps.sh
     ;;
+  "6" | "abi3")
+    docker pull openturns/archlinux-python
+    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -e OMP_NUM_THREADS=1 -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_abi3.sh
+    ;;
   *)
     echo "sorry?"
     exit 1

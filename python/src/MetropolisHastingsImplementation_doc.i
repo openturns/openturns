@@ -1,7 +1,7 @@
 %define OT_MetropolisHastings_doc
 "Base class for Metropolis-Hastings algorithms.
 
-Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+Refer to :any:`bayesian_calibration`, :any:`metropolis_hastings`.
 
 Notes
 -----

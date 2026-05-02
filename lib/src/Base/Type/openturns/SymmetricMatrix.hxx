@@ -88,7 +88,7 @@ public:
 
   /** Row extraction */
   const Matrix getRow(const UnsignedInteger rowIndex) const;
-  /** Column extration */
+  /** Column extraction */
   const Matrix getColumn(const UnsignedInteger columnIndex) const;
 
   /** String converter */

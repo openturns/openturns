@@ -12,7 +12,7 @@
  *
  *  This library is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTCULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
  *  You should have received a copy of the GNU Lesser General Public License
@@ -136,6 +136,13 @@ public:
                      const Bool interpolate = true) const;
 
   Graph draw() const;
+
+  Graph draw3D(const UnsignedInteger index,
+               const Bool drawEdge,
+               const SquareMatrix & rotation,
+               const Bool shading,
+               const Scalar rho,
+               const Description & palette) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

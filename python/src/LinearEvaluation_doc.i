@@ -16,14 +16,14 @@ This class implements the evaluation of a linear :class:`~openturns.Function` :m
 
 .. math::
 
-    f : & \Rset^d \rightarrow \Rset^p  \\
+    f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
         & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c}
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`d` lines and :math:`p` columns,
-- :math:`\vect{b}` is a vector in  :math:`\Rset^d`,
-- :math:`\vect{c}` is a vector in :math:`\Rset^p`.
+- :math:`\mat{A}` is a matrix with :math:`\inputDim` lines and :math:`\outputDim` columns,
+- :math:`\vect{b}` is a vector in  :math:`\Rset^\inputDim`,
+- :math:`\vect{c}` is a vector in :math:`\Rset^\outputDim`.
 
 See also
 --------

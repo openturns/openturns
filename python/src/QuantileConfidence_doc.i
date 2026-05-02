@@ -1,11 +1,7 @@
 %feature("docstring") OT::QuantileConfidence
 R"RAW(Estimate confidence intervals of a quantile.
 
-Refer to :ref:`quantile_confidence_estimation`.
-
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
+Refer to :any:`quantile_confidence_estimation`.
 
 Parameters
 ----------
@@ -34,18 +30,17 @@ We have:
     X_{(0)} \leq X_{(1)} \leq \dots \leq X_{(\sampleSize -1)}
 
 Care: Python enumeration begins at 0 so that the mathematical :math:`X_{(k)}` order statistics of the theoretical file
-:ref:`quantile_confidence_estimation` where :math:`1 \leq k \leq n` corresponds to the order statistics :math:`X_{(k-1)}` given by the library
+:any:`quantile_confidence_estimation` where :math:`1 \leq k \leq n` corresponds to the order statistics :math:`X_{(k-1)}` given by the library
 with this class `QuantileConfidence`.
 
 
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
 >>> sample = ot.Gumbel().getSample(100)
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> ci = algo.computeUnilateralConfidenceInterval(sample)
 )RAW"
 
@@ -72,7 +67,7 @@ The upper rank :math:`k_{up}` is the smallest rank :math:`k` with :math:`0 \leq 
 In other words, the interval :math:`\left]-\infty, X_{(k_{up})}\right]` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution for each case.
 
 Parameters
@@ -94,10 +89,9 @@ rank : int
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> rank = algo.computeUnilateralRank(100)
 >>> print(rank)
 9
@@ -120,7 +114,7 @@ The ranks :math:`k_1, k_2` with :math:`0 \leq k_1, k_2 \leq \sampleSize -1` are 
 In other words, the interval :math:`\left[ X_{(k_1)}, X_{(k_2)} \right[` is a bilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution.
  
 
@@ -137,10 +131,9 @@ ranks : :class:`~openturns.Indices` of size 2
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> k1, k2 = algo.computeBilateralRank(100)
 >>> print((k1, k2))
 (1, 10)
@@ -198,10 +191,9 @@ ci : :class:`~openturns.Interval`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> sample = ot.Gumbel().getSample(100)
 >>> ci = algo.computeUnilateralConfidenceInterval(sample)
 )RAW"
@@ -240,10 +232,9 @@ the method returns the supremum of :math:`\beta` for the confidence interval.
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> sample = ot.Gumbel().getSample(100)
 >>> ci, coverage = algo.computeUnilateralConfidenceIntervalWithCoverage(sample)
 )RAW"
@@ -285,10 +276,9 @@ ci : :class:`~openturns.Interval`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> sample = ot.Gumbel().getSample(60)
 >>> ci = algo.computeBilateralConfidenceInterval(sample)
 )RAW"
@@ -322,10 +312,9 @@ the method returns the supremum of :math:`\beta` for the confidence interval.
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> sample = ot.Gumbel().getSample(60)
 >>> ci, coverage = algo.computeBilateralConfidenceIntervalWithCoverage(sample)
 )RAW"
@@ -352,7 +341,7 @@ in the case of an upper bound.
 In other words, the interval :math:`\left] -\infty, X_{(k)} \right]` or :math:`\left[ X_{(k)}, +\infty \right[` is a unilateral confidence
 interval for the quantile :math:`x_\alpha` with confidence :math:`\beta`. The statistics values are evaluated from the sample.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution.
 
 Parameters
@@ -376,10 +365,9 @@ size : int
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> size = algo.computeUnilateralMinimumSampleSize(0)
 >>> print(size)
 59
@@ -403,7 +391,7 @@ and :math:`X_{(n-1)} = \max(X_1, \dots, X_{n-1})`.
 
 The statistics values are evaluated from the sample.
 
-See  :ref:`quantile_confidence_estimation`
+See  :any:`quantile_confidence_estimation`
 to get the conditions of the existence of a solution and the solution.
 
 Returns
@@ -414,10 +402,9 @@ size : int
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> size = algo.computeBilateralMinimumSampleSize()
 >>> print(size)
 59
@@ -457,10 +444,9 @@ ranks : :class:`~openturns.Indices` of size 2
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> k1, k2 = algo.computeAsymptoticBilateralRank(100)
 >>> print(k1, k2)
 0 8
@@ -498,10 +484,9 @@ ci : :class:`~openturns.Interval`
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> alpha = 0.05
 >>> beta = 0.95
->>> algo = otexp.QuantileConfidence(alpha, beta)
+>>> algo = ot.QuantileConfidence(alpha, beta)
 >>> sample = ot.Gumbel().getSample(60)
 >>> ci = algo.computeAsymptoticBilateralConfidenceInterval(sample)
 )RAW"

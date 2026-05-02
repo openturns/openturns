@@ -1,10 +1,11 @@
 // SWIG file experimental_module.i
 
 %module(package="openturns", docstring="Experimental features.") experimental
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
@@ -34,15 +35,6 @@
 %include LinearProblem.i
 %include HiGHS.i
 
-/* Base/Solver */
-%include LeastSquaresEquationsSolver.i
-
-%include ConstantEvaluation.i
-%include ConstantFunction.i
-%include VertexFieldToPointFunction.i
-
-/* Uncertainty/Model */
-
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import dist_bundle2_module.i
@@ -65,15 +57,7 @@
 /* Uncertainty/Process */
 %import model_process_module.i
 
-/* Uncertainty/Algorithm */
-%include SequentialSamplingAlgorithmImplementation.i
-%include SequentialSamplingAlgorithm.i
-%include LOLAVoronoi.i
-%include QuantileConfidence.i
-%include LineSampling.i
-
 /* Uncertainty/Distribution */
-%include CombinationsDistribution.i
 %include MarginalUniformOrderStatistics.i
 
 /* Uncertainty/Algorithm/Metamodel */
@@ -81,9 +65,3 @@
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 
-/* Uncertainty/Model */
-%include RatioOfUniforms.i
-%include GaussianProcessRandomVector.i
-
-/* Uncertainty/Process */
-%include ConditionedGaussianProcess.i

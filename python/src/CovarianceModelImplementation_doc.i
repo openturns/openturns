@@ -459,7 +459,14 @@ Acts on the discretized covariance matrix.
 Parameters
 ----------
 nuggetFactor : float
-    nugget factor to be used to model the variance of the observation error."
+    Variance of the nugget effect.
+
+Notes
+-----
+The nugget effect represents a noise observed in the output values of the process.
+
+Refer to :any:`Covariance models <covariance_model>` to get more details on covariance models and the
+introduction of a nugget factor, and in particular see equation :eq:`Css`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setNuggetFactor
 OT_CovarianceModel_set_nugget_factor_doc
@@ -539,7 +546,7 @@ parameters indices.
 >>> activeDesc = covModel.getFullParameterDescription()
 >>> print(activeDesc)
 [scale_0,nuggetFactor,amplitude_0,nu]
->>> index = activeDesc.find('nu')
+>>> index = activeDesc.index('nu')
 >>> print(index)
 3
 

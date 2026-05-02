@@ -409,7 +409,7 @@ print(f"mseLOO = {mseLOO:.6g}")
 # For each point in the training sample, we plot the predicted leave-one-out
 # output prediction depending on the observed output.
 
-graph = ot.Graph("Leave-one-out validation", "Observation", "LOO prediction", True)
+graph = ot.Graph("Leave-one-out validation", "Observation", "LOO prediction")
 cloud = ot.Cloud(yTrain, predictionsLOO)
 graph.add(cloud)
 curve = ot.Curve(yTrain, yTrain)

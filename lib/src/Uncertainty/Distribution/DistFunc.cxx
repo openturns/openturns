@@ -19,8 +19,6 @@
  *
  */
 #include <iostream>
-#include <cstdio>
-#include <cstdlib>
 #include <cmath>
 #include <iomanip>
 
@@ -1188,6 +1186,7 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
 Scalar DistFunc::qNormal(const Scalar p,
                          const Bool tail)
 {
+  if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "Error: expected a probability level in [0, 1] for qNormal, got p=" << p;
   if (p == 0.0) return (tail ? 8.125890664701906 : -37.5193793471445);
   if (p == 1.0) return (tail ? -37.5193793471445 :  8.125890664701906);
 
@@ -1287,6 +1286,7 @@ Point DistFunc::qNormal(const Point & p,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     prob = p[i];
+    if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: expected a probability level in [0, 1] for qNormal, got p[" << i << "]=" << prob;
     if (prob == 0.0)
     {
       result[i] = (tail ? 8.125890664701906 : -8.125890664701906);

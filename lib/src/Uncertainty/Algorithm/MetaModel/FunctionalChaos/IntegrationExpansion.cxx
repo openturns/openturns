@@ -19,7 +19,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <map>
 
 #include "openturns/IntegrationExpansion.hxx"
@@ -27,6 +26,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionTransformation.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/FixedStrategy.hxx"
+#include "openturns/IntegrationStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -88,7 +89,7 @@ IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
     const Distribution & distribution,
     const OrthogonalBasis & basis,
     const UnsignedInteger basisSize)
-  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution)
+  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution, FixedStrategy(basis, basisSize), IntegrationStrategy())
   , basis_(basis)
   , basisSize_(basisSize)
 {
@@ -115,21 +116,18 @@ void IntegrationExpansion::run()
   // to the basis
   if (designProxy_.getSampleSize() == 0)
   {
+    if (useDomination_)
+      throw InvalidArgumentException(HERE) << "IntegrationExpansion cannot use domination method";
+
     const Distribution measure(basis_.getMeasure());
-    Sample transformedInputSample;
-    if (distribution_ == measure)
-    {
-      transformation_ = IdentityFunction(distribution_.getDimension());
-      inverseTransformation_ = IdentityFunction(distribution_.getDimension());
-      transformedInputSample = inputSample_;
-    }
-    else
-    {
-      transformation_ = DistributionTransformation(distribution_, basis_.getMeasure());
-      inverseTransformation_ = DistributionTransformation(basis_.getMeasure(), distribution_);
+    const Bool identityTransformation = initializeTransformation(measure);
+
+    Sample transformedInputSample(inputSample_);
+    if (!identityTransformation)
       transformedInputSample = transformation_(inputSample_);
-    }
+
     FunctionCollection functions(basisSize_);
+    LOGINFO("Build basis");
     for (UnsignedInteger i = 0; i < basisSize_; ++i)
       functions[i] = basis_.build(i);
     designProxy_ = DesignProxy(transformedInputSample, functions);
@@ -157,6 +155,7 @@ void IntegrationExpansion::run()
   // As they will be used as a Sample of size activeFunctions_.getSize() and
   // dimension outputDimension, it is better to compute them in a transposed
   // form and copy the internal representation
+  LOGINFO(OSS() << "Compute all the coefficients");
   Matrix coefficientsAsMatrix(weightedOutput * designMatrix);
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
   coefficients.setData(*coefficientsAsMatrix.getImplementation());
@@ -185,9 +184,7 @@ String IntegrationExpansion::__repr__() const
          << " basis=" << basis_
          << " basisSize=" << basisSize_
          << " activeFunctions=" << activeFunctions_
-         << " designProxy=" << designProxy_
-         << " transformation=" << transformation_
-         << " inverseTransformation=" << inverseTransformation_;
+         << " designProxy=" << designProxy_;
 }
 
 
@@ -208,8 +205,6 @@ void IntegrationExpansion::save(Advocate & adv) const
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "basisSize_", basisSize_ );
   adv.saveAttribute( "activeFunctions_", activeFunctions_ );
-  adv.saveAttribute( "transformation_", transformation_ );
-  adv.saveAttribute( "inverseTransformation_", inverseTransformation_ );
 }
 
 
@@ -220,8 +215,6 @@ void IntegrationExpansion::load(Advocate & adv)
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "basisSize_", basisSize_ );
   adv.loadAttribute( "activeFunctions_", activeFunctions_ );
-  adv.loadAttribute( "transformation_", transformation_ );
-  adv.loadAttribute( "inverseTransformation_", inverseTransformation_ );
 }
 
 

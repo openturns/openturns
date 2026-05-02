@@ -68,7 +68,7 @@
 #include "openturns/TriangularFactory.hxx"
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/UniformFactory.hxx"
-#include "openturns/UserDefinedFactory.hxx"
+#include "openturns/FiniteDiscreteDistributionFactory.hxx"
 #include "openturns/VonMisesFactory.hxx"
 #include "openturns/WeibullMaxFactory.hxx"
 #include "openturns/WeibullMinFactory.hxx"
@@ -145,7 +145,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetDiscr
   collection.add(MultinomialFactory());
   collection.add(PolyaFactory());
   collection.add(PoissonFactory());
-  collection.add(UserDefinedFactory());
+  collection.add(FiniteDiscreteDistributionFactory());
   collection.add(SkellamFactory());
   return collection;
 }
@@ -155,7 +155,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetDiscr
   DistributionFactoryCollection collection(0);
   collection.add(DiracFactory());
   collection.add(MultinomialFactory());
-  collection.add(UserDefinedFactory());
+  collection.add(FiniteDiscreteDistributionFactory());
   return collection;
 }
 
@@ -243,12 +243,6 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const Sample & sam
 DistributionFactoryResult DistributionFactory::buildEstimator(const Sample & sample, const DistributionParameters & parameters) const
 {
   return getImplementation()->buildEstimator(sample, parameters);
-}
-
-void DistributionFactory::setKnownParameter(const Point & values, const Indices & indices)
-{
-  copyOnWrite();
-  getImplementation()->setKnownParameter(values, indices);
 }
 
 void DistributionFactory::setKnownParameter(const Indices & indices, const Point & values)

@@ -51,7 +51,7 @@ SobolIndicesExperiment::SobolIndicesExperiment(const WeightedExperiment & experi
   if (!experiment.getDistribution().hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the distribution must have an independent copula";
   if (!experiment.hasUniformWeights())
-    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the underlyng weighted experiment must have uniform weights";
+    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the underlying weighted experiment must have uniform weights";
 
   const UnsignedInteger size = experiment.getSize();
   const UnsignedInteger dimension = experiment.getDistribution().getDimension();

@@ -29,6 +29,15 @@ where the :math:`(\vect{t}_i)_{1 \leq i \leq N}` are the vertices of a mesh of t
 
 Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^d)^N` where :math:`N` is the number of vertices of the mesh :math:`\cM_N` of the domain :math:`\cD \subset \Rset^n`.
 
+When the field is defined on :math:`\cD \in \Rset^2` and when its values are vectors of dimension 2, the following keys of the :class:`~openturns.ResourceMap` can be used to parameterize its drawing:
+
+- *Field-ArrowRatio* defines the proportion of the arrow head with respect to the arrow length: to get a greater
+  arrow head, increase the default value equal to 0.01;
+- *Field-ArrowScaling*    defines the length of the arrow: to get a
+  longer arrow, increase the default value equal to 1;
+- *Field-AutomaticScaling* is a bool that indicates whether the arrow is automatically scaled
+  from to the range of the mesh and the range of the output values. The default value is True;
+- *Field-LevelNumber* defines the number of levels used to draw the iso-lines of the marginal output values.
 
 Examples
 --------
@@ -75,24 +84,61 @@ OT_Field_asDeformedMesh_doc
 // ---------------------------------------------------------------------
 
 %define OT_Field_draw_doc
-"Draw the first marginal of the field if the input dimension is less than 2.
+R"RAW(Draw the first marginal of the field if the input dimension is less than 3.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    Calls *drawMarginal(0, False)*.
+    Calls *drawMarginal(0, False)* by default, with the following exceptions:
+
+    - If the dimension of the mesh is :math:`n=1` and the dimension of the
+      values is :math:`d=2`: it draws a curve in the values plane, with the
+      mesh as a curvilinear parameter.
+    - If the dimension of the mesh is :math:`n=2` and the dimension of the
+      values is :math:`d=2`: it draws the field as a field of arrows. The
+      graph is controlled by the `Field-AutomaticScaling`, `Field-ArrowRatio`
+      and `Field-ArrowScaling` keys in :class:`~openturns.ResourceMap`.
 
 See also
 --------
-drawMarginal"
+drawMarginal)RAW"
 %enddef
 %feature("docstring") OT::FieldImplementation::draw
 OT_Field_draw_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Field_draw3D_doc
+R"RAW(Draw a specified marginal output on the underlying mesh in dimension 3.
+
+Parameters
+----------
+index : int
+    The marginal value to be drawn.
+drawEdge : bool
+    Flag to tell if the edges have to be underlined.
+rotation : :class:`~openturns.SquareMatrix`
+    The rotation matrix which defines the viewpoint.
+shading : bool
+    Flag to tell if the Phong shading is used.
+rho : float, :math:`\rho\in[0,1]`
+    Factor to shrink the simplices.
+palette : list of str
+    The palette used to map the marginal values into colors. The alpha channel
+    of the first color palette[0] is used for the whole graph.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+)RAW"
+%enddef
+%feature("docstring") OT::FieldImplementation::draw3D
+OT_Field_draw3D_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Field_drawMarginal_doc
-R"RAW(Draw one marginal field if the input dimension is less than 2.
+R"RAW(Draw one marginal field if the input dimension is less than 3.
 
 Parameters
 ----------
@@ -104,25 +150,28 @@ interpolate : bool
 Returns
 -------
 graph : :class:`~openturns.Graph`
+
     - If the dimension of the mesh is :math:`n=1` and *interpolate=True*: it
       draws the graph of the piecewise linear function based on the selected
       marginal values of the field and the vertices coordinates
       (in :math:`\Rset`).
-
     - If the dimension of the mesh is :math:`n=1` and *interpolate=False*: it
       draws the cloud of points which coordinates are (vertex, value of the
       marginal *index*).
-
     - If the dimension of the mesh is :math:`n=2` and *interpolate=True*: it
       draws several iso-values curves of the selected marginal, based on a
       piecewise linear interpolation within the simplices (triangles) of the
       mesh. You get an empty graph if the vertices are not connected through
       simplicies.
-
     - If the dimension of the mesh is :math:`n=2` and *interpolate=False*: if
       the vertices are connected through simplicies, each simplex is drawn with
       a color defined by the mean of the values of the vertices of the simplex.
-      In the other case, it draws each vertex colored by its value.)RAW"
+      In the other case, it draws each vertex colored by its value.
+    - If the dimension of the mesh is :math:`n=3`, regardless of the value of
+      *interpolate*: each simplex is drawn with a color defined by the mean of
+      the values of the vertices of the simplex.
+
+)RAW"
 %enddef
 %feature("docstring") OT::FieldImplementation::drawMarginal
 OT_Field_drawMarginal_doc
@@ -336,7 +385,7 @@ OT_Field_getValues_doc
 
 Parameters
 ----------
-myDescription : :class:`~openturns.Description`
+myDescription : list of str
     Description of the field values. Must be of size :math:`n+d` and give the
     description of the vertices and the values."
 %enddef

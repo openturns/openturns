@@ -22,7 +22,7 @@ b : float, :math:`b > a`
 
 Notes
 -----
-The native parameters  :math:`(\alpha, \beta, a, b)` are defined as follows:
+The native parameters :math:`(\alpha, \beta, a, b)` are defined as follows:
 
 .. math::
     :nowrap:
@@ -38,7 +38,7 @@ Beta
 
 Examples
 --------
-Create the parameters  :math:`(\mu, \sigma, a, b)` of the Beta distribution:
+Create the parameters :math:`(\mu, \sigma, a, b)` of the Beta distribution:
 
 >>> import openturns as ot
 >>> parameters = ot.BetaMuSigma(0.2, 0.6, -1, 2)

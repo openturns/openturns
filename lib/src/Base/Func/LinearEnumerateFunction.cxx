@@ -92,7 +92,7 @@ UnsignedInteger LinearEnumerateFunction::findBinomialCoefficient(const UnsignedI
    compute recursively the complement by looping over the degree of the remainder.
    For a given index I, we have:
    I = Binomial(n_1, d) + ... + Binomial(n_{d-1}, 1)
-   where Binomial(n_1, d_1) is
+   where Binomial(n_1, d_1) is the binomial coefficient d_1 / (n_1! * (d_1 - n_1)!)
 */
 Indices LinearEnumerateFunction::operator() (const UnsignedInteger index) const
 {

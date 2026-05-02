@@ -322,6 +322,16 @@ Graph Field::draw() const
   return getImplementation()->draw();
 }
 
+Graph Field::draw3D(const UnsignedInteger index,
+                    const Bool drawEdge,
+                    const SquareMatrix & rotation,
+                    const Bool shading,
+                    const Scalar rho,
+                    const Description & palette) const
+{
+  return getImplementation()->draw3D(index, drawEdge, rotation, shading, rho, palette);
+}
+
 /* VTK export */
 void Field::exportToVTKFile(const String & fileName) const
 {

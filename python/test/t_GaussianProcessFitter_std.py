@@ -175,7 +175,9 @@ def use_case_6(X, Y):
 def use_case_7(X, Y):
     ot.RandomGenerator.SetSeed(0)
     ot.ResourceMap.Reset()
-    ot.ResourceMap.SetAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 0.0)
+    ot.ResourceMap.SetAsScalar(
+        "GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 0.0
+    )
     covarianceModel = ot.AbsoluteExponential()
     with ott.assert_raises(TypeError):
         algo = ot.GaussianProcessFitter(X, Y, covarianceModel)
@@ -222,8 +224,20 @@ def bugfix_optim_no_feasible():
     myCov3 = ot.MaternModel([1.0] * m.dim, 2.5)
 
     # optimal we should get after the optimization process
-    optimal_cov_parameter = [7.874e+06, 1513, 1413, 43.96, 5.509, 4.625,
-                             5.159, 0.6612, 3.245, 4.945, 8.074, 5.419]
+    optimal_cov_parameter = [
+        7.874e06,
+        1513,
+        1413,
+        43.96,
+        5.509,
+        4.625,
+        5.159,
+        0.6612,
+        3.245,
+        4.945,
+        8.074,
+        5.419,
+    ]
     covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2, myCov3])
 
     scaleOptimizationBounds = ot.Interval(

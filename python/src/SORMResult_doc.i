@@ -31,7 +31,7 @@ Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Breitung}` according to the
-    :ref:`Breitung <Breitung_formula>` approximation."
+    :any:`Breitung <Breitung_formula>` approximation."
 
 // ---------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Hohenbichler}` according to the
-    :ref:`Hohenbichler <Hohenbichler_formula>` approximation."
+    :any:`Hohenbichler <Hohenbichler_formula>` approximation."
 
 // ---------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Tvedt}` according to the
-    :ref:`Tvedt <Tvedt_formula>` approximation."
+    :any:`Tvedt <Tvedt_formula>` approximation."
 
 // ---------------------------------------------------------------------
 
@@ -126,6 +126,6 @@ R"RAW(Accessor to the sorted curvatures.
 Returns
 -------
 curvatures : :class:`~openturns.Point`
-    Curvatures of the standard limite state function at the standard design
+    Curvatures of the standard limit state function at the standard design
     point :math:`(\kappa_i)_{1 \leq i \leq n-1}` with :math:`n` the dimension
     of the random vector :math:`\vect{X}`.)RAW"

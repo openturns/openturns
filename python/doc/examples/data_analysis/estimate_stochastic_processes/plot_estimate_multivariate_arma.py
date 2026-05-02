@@ -10,7 +10,7 @@ Estimate a multivariate ARMA process
 # The data can be a unique time series or several time series collected
 # in a process sample.
 #
-# We estimate :math:`(\underline{\beta}, \sigma^2)` thanks to the
+# We estimate :math:`(\vect{\beta}, \sigma^2)` thanks to the
 # class:`~openturns.ARMALikelihoodFactory` object and its method *build*, acting on a
 # time series or on a sample of time series. It produces a result of
 # type *ARMA*.

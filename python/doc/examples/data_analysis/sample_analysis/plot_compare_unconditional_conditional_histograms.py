@@ -24,7 +24,7 @@ Compare unconditional and conditional histograms
 # we perform a Monte-Carlo simulation with size 500.
 # The threshold :math:`t` is chosen as the 90% quantile of the empirical
 # distribution of :math:`S`.
-# In this example, the distribution is aproximated by its empirical histogram
+# In this example, the distribution is approximated by its empirical histogram
 # (but this could be done with another distribution approximation as well,
 # such as kernel smoothing for example).
 

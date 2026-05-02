@@ -101,7 +101,7 @@ R"RAW(Exponent accessor.
 
 Returns
 -------
-exponent : seqence of float, :math:`H_i\in(0,1)`
+exponent : sequence of float, :math:`H_i\in(0,1)`
     Define the Hurst exponents of the components.)RAW"
 
 // ---------------------------------------------------------------------

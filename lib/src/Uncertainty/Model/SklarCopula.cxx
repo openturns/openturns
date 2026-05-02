@@ -42,12 +42,10 @@ static const Factory<SklarCopula> Factory_SklarCopula;
 /* Default constructor */
 SklarCopula::SklarCopula()
   : DistributionImplementation()
-  , distribution_()
-  , marginalCollection_()
 {
   isCopula_ = true;
-  setName( "SklarCopula" );
-  setDimension( 1 );
+  setName("SklarCopula");
+  setDimension(1);
   computeRange();
 }
 
@@ -58,14 +56,15 @@ SklarCopula::SklarCopula(const Distribution & distribution)
   , marginalCollection_(distribution.getDimension())
 {
   isCopula_ = true;
-  setName( "SklarCopula" );
+  setName("SklarCopula");
   // Manage parallelism
   setParallel(distribution.getImplementation()->isParallel());
   // We set the dimension of the SklarCopula distribution
   const UnsignedInteger dimension = distribution.getDimension();
-  setDimension( dimension );
+  setDimension(dimension);
   // Extract all the 1D marginal distributions
-  for (UnsignedInteger i = 0; i < dimension; ++i) marginalCollection_[i] = distribution.getMarginal(i);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    marginalCollection_[i] = distribution.getMarginal(i);
   computeRange();
 }
 
@@ -134,7 +133,7 @@ Point SklarCopula::computeDDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar ui = point[i];
-    if ((ui <= 0.0) || ui >= 1.0) return Point(dimension, 0.0);
+    if (!((ui > 0.0) && (ui < 1.0))) return Point(dimension, 0.0);
     const Point xi(marginalCollection_[i].computeQuantile(ui));
     x[i] = xi[0];
     pdfX[i] = marginalCollection_[i].computePDF(xi);

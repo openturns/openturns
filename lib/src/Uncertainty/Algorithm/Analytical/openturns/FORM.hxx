@@ -47,8 +47,7 @@ public:
 
   /** Constructor with parameters */
   FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-       const RandomVector & event,
-       const Point & physicalStartingPoint = Point()); // deprecated argument
+       const RandomVector & event);
 
   /** Virtual constructor */
   FORM * clone() const override;
@@ -62,7 +61,7 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Function that computes the design point by re-using the Analytical::run() and creates a FORM::Result */
+  /** Function that computes the design point by reusing the Analytical::run() and creates a FORM::Result */
   void run() override;
 
   /** Method save() stores the object through the StorageManager */
@@ -72,9 +71,9 @@ public:
   void load(Advocate & adv) override;
 
 private:
-
   FORMResult formResult_;
-} ; /* class FORM */
+
+}; /* class FORM */
 
 END_NAMESPACE_OPENTURNS
 

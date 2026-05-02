@@ -20,7 +20,7 @@ Its main functionalities are :
 - draw a validation graph presenting the metamodel predictions against
   the model observations.
 
-More details on this topic are presented in :ref:`cross_validation`.
+More details on this topic are presented in :any:`cross_validation`.
 
 Examples
 --------
@@ -45,7 +45,7 @@ Then we validate this metamodel using a test sample.
 >>> designMatrix = basis(x_train)
 >>> myLeastSquares = ot.LinearLeastSquares(designMatrix, y_train)
 >>> myLeastSquares.run()
->>> leastSquaresModel = myLeastSquares.getMetaModel()
+>>> leastSquaresModel = myLeastSquares.getResult().getMetaModel()
 >>> metaModel = ot.ComposedFunction(leastSquaresModel, basis)
 >>> # Validate the metamodel using a test sample
 >>> x_test = dist.getSample(100)

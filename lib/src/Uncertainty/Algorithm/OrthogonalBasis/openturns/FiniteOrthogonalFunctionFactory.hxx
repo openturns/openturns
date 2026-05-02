@@ -52,7 +52,7 @@ public:
 
   /** Constructor */
   FiniteOrthogonalFunctionFactory(const FunctionCollection & functions,
-				  const Distribution & distribution);
+                                  const Distribution & distribution);
 
   /** Build the Function of the given index */
   using OrthogonalFunctionFactory::build;

@@ -10,7 +10,6 @@ Estimate quantile confidence intervals from chemical process data
 #
 # See  :ref:`quantile_confidence_estimation`  and :ref:`quantile_asymptotic_confidence_estimation` to get details on the signification of these confidence interval.
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # %%
@@ -125,7 +124,7 @@ sample = ot.Sample.BuildFromPoint(data)
 # with a confidence level of :math:`\beta = 95\%` (see example 5.7 p. 85).
 alpha = 0.1
 beta = 0.95
-algo = otexp.QuantileConfidence(alpha, beta)
+algo = ot.QuantileConfidence(alpha, beta)
 
 # %%
 # Estimate bilateral rank: math:`(\ell,u)` such that :math:`0 \leq \ell \leq u \leq \sampleSize -1`
@@ -209,7 +208,7 @@ emp_quant = sample.computeQuantile(new_alpha)[0]
 # We illustrate here the confidence intervals we obtained. To do that, we
 # draw the empirical cumulative distribution function and the bounds of the bilateral confidence intervals.
 # We first draw the empirical cumulative distribution function.
-user_defined_dist = ot.UserDefined(sample)
+user_defined_dist = ot.FiniteDiscreteDistribution(sample)
 g = user_defined_dist.drawCDF(sample.getMin(), sample.getMax() * 1.5)
 g = user_defined_dist.drawCDF(0.0, 60.0)
 

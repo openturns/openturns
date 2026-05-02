@@ -49,7 +49,7 @@ Orthonormalization algorithms
 Orthogonal univariate polynomial families
 -----------------------------------------
 
-Refer to :ref:`orthogonal_polynomials`.
+Refer to :ref:`orthonormal_polynomials`.
 
 .. autosummary::
     :toctree: _generated/
@@ -89,6 +89,9 @@ Orthogonal univariate function families
     :template: OrthogonalUniVariateFunctionFamily.rst_t
 
     FourierSeriesFactory
+
+    :template: classWithPlot.rst_t
+
     HaarWaveletFactory
 
 Orthogonal multivariate functions
@@ -97,7 +100,6 @@ Orthogonal multivariate functions
     :toctree: _generated/
     :template: class.rst_t
 
-    SoizeGhanemFactory
     experimental.FiniteOrthogonalFunctionFactory
 
 Making orthogonal multivariate functions from orthogonal univariate functions

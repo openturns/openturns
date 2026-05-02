@@ -95,7 +95,7 @@ void ConditionedGaussianProcess::initialize()
   CovarianceMatrix covarianceMatrix;
   GaussianProcessConditionalCovariance gpcc(gprResult_);
   covarianceMatrix = gpcc.getConditionalCovariance(vertices);
- 
+
   // Now check if there is any point both in the input sample and in the mesh vertices.
   // They are characterized by
   // a zero cross: a null row and a null column which cross at a zero diagonal element.
@@ -140,7 +140,7 @@ void ConditionedGaussianProcess::initialize()
 /* Mesh accessor */
 void ConditionedGaussianProcess::setMesh(const Mesh & mesh)
 {
-  // Checking dimension coherancy between kriging result & mesh
+  // Checking dimension coherency between kriging result & mesh
   if (mesh.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, incompatible dimension between mesh & kriging (aka gaussian process regression). Here, mesh dimension = " << mesh.getDimension()
                                          << " and kriging input dimension = " <<  inputDimension_;

@@ -67,7 +67,7 @@ public:
   Sample getX() const;
   Sample getY() const;
 
-  /** Weigths accessor */
+  /** Weights accessor */
 protected:
   void setWeight(const Point & weight);
 public:

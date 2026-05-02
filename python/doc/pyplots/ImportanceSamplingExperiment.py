@@ -11,7 +11,7 @@ experiment = ot.ImportanceSamplingExperiment(distribution, weightingDistribution
 sample = experiment.generate()
 
 # Create an empty graph
-graph = ot.Graph("Importance sampling experiment", "x1", "x2", True, "")
+graph = ot.Graph("Importance sampling experiment", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")

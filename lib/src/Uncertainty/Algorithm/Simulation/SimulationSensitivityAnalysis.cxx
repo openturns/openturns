@@ -100,7 +100,7 @@ Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar 
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
     if (getComparisonOperator()(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
-  if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannont compute the mean point if no point is in the event domain.";
+  if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannot compute the mean point if no point is in the event domain.";
   return filteredSample.computeMean();
 }
 
@@ -314,7 +314,8 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     xLabel = "probability";
     internalX = static_cast<Scalar>(good) / size;
   }
-  Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
+  Graph graph("Importance factors range", xLabel, "Importance (%)");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
     Curve curve(dataCollection[j]);

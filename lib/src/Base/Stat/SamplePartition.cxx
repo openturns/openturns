@@ -55,7 +55,7 @@ SamplePartition::SamplePartition(const Sample & sample,
     if (indicesCollection[i].getSize() != 2)
       throw InvalidArgumentException(HERE) << "Expected list of 2-tuples got " << indicesCollection[i];
     if (indicesCollection[i][1] > sample.getSize())
-      throw InvalidArgumentException(HERE) << "Indices cannot exceeed sample size (" << sample.getSize() << ") got " << indicesCollection[i];
+      throw InvalidArgumentException(HERE) << "Indices cannot exceed sample size (" << sample.getSize() << ") got " << indicesCollection[i];
     if (indicesCollection[i][0] >= indicesCollection[i][1])
       throw InvalidArgumentException(HERE) << "Start index cannot exceed end index got " << indicesCollection[i];
   }
@@ -152,7 +152,7 @@ Sample SamplePartition::getPeakOverThreshold(const Scalar threshold, const Unsig
 
 Graph SamplePartition::draw(const Scalar threshold) const
 {
-  Graph graph(sample_.getDescription()[0] + " clusters", "Index", sample_.getDescription()[0], true, "");
+  Graph graph(sample_.getDescription()[0] + " clusters", "Index", sample_.getDescription()[0]);
   const UnsignedInteger size = sample_.getSize();
   Sample indexSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i)

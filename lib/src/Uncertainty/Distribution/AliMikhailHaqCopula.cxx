@@ -290,11 +290,14 @@ Scalar AliMikhailHaqCopula::computeConditionalCDF(const Scalar x, const Point & 
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
   const Scalar u = y[0];
+  if (!((u >= 0.0) && (u < 1.0))) return 0.0;
   const Scalar v = x;
+  if (!(v > 0.0)) return 0.0;
+  if (!(v < 1.0)) return 1.0;
   // If we are in the support
-  return v * (1.0 - theta_ * (1.0 - v)) / std::pow(1.0 - theta_ * (1.0 - u) * (1.0 - v), 2);
+  return SpecFunc::Clip01(v * (1.0 - theta_ * (1.0 - v)) / std::pow(1.0 - theta_ * (1.0 - u) * (1.0 - v), 2));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -302,7 +305,7 @@ Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar q, const Poi
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
@@ -310,6 +313,7 @@ Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar q, const Poi
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   // Optimized code given by Maple 13
   const Scalar u = y[0];
+  if (!((u >= 0.0) && (u <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
   const Scalar qTheta = q * theta_;
   const Scalar theta2 = theta_ * theta_;
   const Scalar qTheta2 = q * theta2;
@@ -319,7 +323,7 @@ Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar q, const Poi
   const Scalar tmp1 = 2.0 * qThetaU;
   const Scalar tmp2 = 4.0 * qTheta2 * u;
   const Scalar tmp3 = std::sqrt(1.0 + theta2 + 4.0 * qThetaU - tmp2 + 4.0 * qTheta2U2 - 2.0 * theta_);
-  return -0.5 * (theta_ + 2.0 * qTheta - 2.0 * qTheta2 - 2.0 * qTheta2U2 - tmp1 - 1.0 + tmp2 + tmp3) / (theta_ * (-1.0 + qTheta - tmp1 + qTheta * u2));
+  return SpecFunc::Clip01(-0.5 * (theta_ + 2.0 * qTheta - 2.0 * qTheta2 - 2.0 * qTheta2U2 - tmp1 - 1.0 + tmp2 + tmp3) / (theta_ * (-1.0 + qTheta - tmp1 + qTheta * u2)));
 }
 
 /* Compute the archimedean generator of the archimedean copula, i.e.

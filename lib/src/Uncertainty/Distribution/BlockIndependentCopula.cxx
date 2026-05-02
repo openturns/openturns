@@ -513,7 +513,7 @@ Point BlockIndependentCopula::computeSequentialConditionalCDF(const Point & x) c
   Point result(dimension_);
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = (x[i] < 0.0 ? 0.0 : x[i] > 1.0 ? 1.0 : x[i]);
+      result[i] = SpecFunc::Clip01(x[i]);
   else
   {
     const UnsignedInteger size = copulaCollection_.getSize();
@@ -539,7 +539,7 @@ Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar q, const 
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension == 0) return q;
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   if (conditioningDimension == 0) return q;
@@ -567,7 +567,10 @@ Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point &
   Point result(dimension_);
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = (q[i] < 0.0 ? 0.0 : q[i] > 1.0 ? 1.0 : q[i]);
+    {
+      if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+      result[i] = q[i];
+    }
   else
   {
     const UnsignedInteger size = copulaCollection_.getSize();

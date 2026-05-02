@@ -23,7 +23,8 @@ size = 30
 sample = distribution.getSample(size)
 
 # Create an empty graph
-myGraph = ot.Graph("Normal sample", "x1", "x2", True, "topright")
+myGraph = ot.Graph("Normal sample", "x1", "x2")
+myGraph.setLegendPosition("upper right")
 
 # Display extrema indices
 x1 = [x[0] for x in sample[:, 0]]

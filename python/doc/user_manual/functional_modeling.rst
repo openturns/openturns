@@ -18,7 +18,7 @@ General mathematical functions
     SymbolicFunction
 
     :template: class.rst_t
-    experimental.ConstantFunction
+    ConstantFunction
     TranslationFunction
 
     :template: classWithPlot.rst_t
@@ -79,7 +79,7 @@ Refer to :ref:`field_function`.
     PointToFieldFunction
     ParametricPointToFieldFunction
     VertexValuePointToFieldFunction
-    experimental.VertexFieldToPointFunction
+    VertexFieldToPointFunction
     ValueFunction
     VertexValueFunction
     PythonFieldFunction
@@ -127,7 +127,7 @@ Evaluation functions
     EvaluationImplementation
     AggregatedEvaluation
     ComposedEvaluation
-    experimental.ConstantEvaluation
+    ConstantEvaluation
     DatabaseEvaluation
     DistanceToDomainEvaluation
     DualLinearCombinationEvaluation
@@ -226,6 +226,7 @@ as Python functions.
     SpecFunc.AccurateSum
     SpecFunc.BesselI0
     SpecFunc.BesselI1
+    SpecFunc.BesselInu
     SpecFunc.BesselK
     SpecFunc.BesselKDerivative
     SpecFunc.Beta
@@ -265,6 +266,7 @@ as Python functions.
     SpecFunc.Log2
     SpecFunc.LogBesselI0
     SpecFunc.LogBesselI1
+    SpecFunc.LogBesselInu
     SpecFunc.LogBesselK
     SpecFunc.LogBeta
     SpecFunc.LogBinomialCoefficient

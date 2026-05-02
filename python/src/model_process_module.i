@@ -1,14 +1,16 @@
 // SWIG file model_process_module.i
 
 %module(package="openturns", docstring="Stochastic process.") model_process
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 #include "openturns/OTProcess.hxx"
+#include "openturns/OTWeightedExperiments.hxx"
 %}
 
 %include typemaps.i

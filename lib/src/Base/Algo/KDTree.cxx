@@ -74,8 +74,6 @@ public:
     if (size_ != 0)
     {
       // Clear heap
-      indices_.clear();
-      values_.clear();
       size_ = 0;
       values_[0] = SpecFunc::Infinity;
     }
@@ -171,7 +169,7 @@ private:
       // Heap is full, and current value is smaller than heap largest value.
       // Replace the largest value by current value and move it down to a
       // valid location.
-      if (localSquaredDistance < values_[0])
+      if (localSquaredDistance <= values_[0])
       {
         indices_[0] = localIndex;
         values_[0] = localSquaredDistance;
@@ -192,7 +190,7 @@ private:
         const Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
         squaredDistanceBoundingBox += difference * difference;
       }
-      if (squaredDistanceBoundingBox < values_[0])
+      if (squaredDistanceBoundingBox <= values_[0])
         collectNearestNeighbours(oppositeSide, x, lowerBoundingBox, upperBoundingBox, nextActiveDimension);
       // Restore bounding box
       if (delta < 0.0)
@@ -362,6 +360,32 @@ public:
     nanoflann::SearchParameters searchParameters;
     searchParameters.sorted = sorted;
     indexAdaptor_->findNeighbors(resultSet, x.data(), searchParameters);
+    return result;
+  }
+
+  Indices queryRadius(const Point & x, const Scalar radius, Point & distanceOut, const Bool sorted) const
+  {
+#if NANOFLANN_VERSION >= 0x140
+    using IndexType = unsigned int;
+#else
+    using IndexType = long unsigned int;
+#endif
+#if NANOFLANN_VERSION >= 0x150
+    std::vector<nanoflann::ResultItem<IndexType, double> > indicesDists;
+#else
+    std::vector<std::pair<IndexType, double> > indicesDists;
+#endif
+    nanoflann::SearchParameters searchParameters;
+    searchParameters.sorted = sorted;
+    // when using L2 norm nanoflann uses the square
+    const UnsignedInteger nFound = indexAdaptor_->radiusSearch(x.data(), radius * radius, indicesDists, searchParameters);
+    Indices result(nFound);
+    distanceOut.resize(nFound);
+    for(UnsignedInteger k = 0; k < nFound; ++ k)
+    {
+      result[k] = indicesDists[k].first;
+      distanceOut[k] = std::sqrt(indicesDists[k].second);
+    }
     return result;
   }
 
@@ -609,6 +633,15 @@ Indices KDTree::queryK(const Point & x, const UnsignedInteger k, const Bool sort
 #endif
   }
   return result;
+}
+
+Indices KDTree::queryRadius(const Point & x, const Scalar radius, Point & distanceOut, const Bool sorted) const
+{
+#ifdef OPENTURNS_HAVE_NANOFLANN
+  return p_implementation_->queryRadius(x, radius, distanceOut, sorted);
+#else
+  return NearestNeighbourAlgorithmImplementation::queryRadius(x, radius, distanceOut, sorted);
+#endif
 }
 
 /** Method save() stores the object through the StorageManager */

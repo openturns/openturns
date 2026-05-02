@@ -32,8 +32,6 @@ static const Factory<MeshDomain> Factory_MeshDomain;
 /* Default constructor */
 MeshDomain::MeshDomain()
   : DomainImplementation()
-  , mesh_()
-  , enclosingSimplex_()
 {
   // Nothing to do
 }
@@ -43,15 +41,6 @@ MeshDomain::MeshDomain(const Mesh & mesh)
   : DomainImplementation(mesh.getDimension())
   , mesh_(mesh)
   , enclosingSimplex_(mesh.getVertices(), mesh.getSimplices())
-{
-  // Nothing to do
-}
-
-/* Default constructor */
-MeshDomain::MeshDomain(const Mesh & mesh, const EnclosingSimplexAlgorithm & enclosingSimplex)
-  : DomainImplementation(mesh.getDimension())
-  , mesh_(mesh)
-  , enclosingSimplex_(enclosingSimplex)
 {
   // Nothing to do
 }

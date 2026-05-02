@@ -1,12 +1,11 @@
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 grid = ot.GridLayout(1, 2)
-pdf_2d = ot.Graph("CombinationsDistribution, PDF", "x1", "x2", True)
-cdf_2d = ot.Graph("CombinationsDistribution, CDF", "x1", "x2", True)
+pdf_2d = ot.Graph("CombinationsDistribution, PDF", "x1", "x2")
+cdf_2d = ot.Graph("CombinationsDistribution, CDF", "x1", "x2")
 
-distribution_2d = otexp.CombinationsDistribution(2, 10)
+distribution_2d = ot.CombinationsDistribution(2, 10)
 
 xMin = [-0.1] * 2
 xMax = [10.1] * 2

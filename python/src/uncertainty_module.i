@@ -1,7 +1,7 @@
 // SWIG file uncertainty_module.i
 
 %module(package="openturns", docstring="Probabilistic meta-package.") uncertainty
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -41,6 +41,7 @@
 
 /* Uncertainty/Algorithm */
 %include TaylorExpansionMoments.i
+%include FejerAlgorithm.i
 
  /* Uncertainty/Algorithm/Transformation */
 %import transformation_module.i

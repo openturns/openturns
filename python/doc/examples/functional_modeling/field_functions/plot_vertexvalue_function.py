@@ -11,10 +11,10 @@ Vertex value function
 # and defined by a function :math:`h : \mathbb{R}^n \times \mathbb{R}^d  \rightarrow \mathbb{R}^q` such that:
 #
 # .. math::
-#    \begin{aligned} f_{vertexvalue}(\underline{t}, \underline{x})=(\underline{t}, h(\underline{t},\underline{x}))\end{aligned}
+#    \begin{aligned} f_{vertexvalue}(\vect{t}, \vect{x})=(\vect{t}, h(\vect{t},\vect{x}))\end{aligned}
 #
 # Let's note that the input dimension of :math:`f_{vertexvalue}` still design the
-# dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
+# dimension of :math:`\vect{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
 #
 # The creation of the *VertexValueFunction* object requires the
 # function :math:`h` and the integer :math:`n`: the dimension of the
@@ -25,7 +25,7 @@ Vertex value function
 #
 # .. math::
 #    \begin{aligned}
-#       h(\underline{t}, \underline{x})=(t+x_1^2+x_2^2)
+#       h(\vect{t}, \vect{x})=(t+x_1^2+x_2^2)
 #    \end{aligned}
 #
 

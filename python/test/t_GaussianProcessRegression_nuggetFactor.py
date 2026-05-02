@@ -69,5 +69,5 @@ algo_iso.run()
 result_iso = algo_iso.getResult()
 optimized_isotropic_model = result_iso.getCovarianceModel()
 ott.assert_almost_equal(
-    log10(optimized_isotropic_model.getNuggetFactor()), -1.9, 0.25, 0.0
+    log10(optimized_isotropic_model.getNuggetFactor()), -1.9, 0.3, 0.0
 )

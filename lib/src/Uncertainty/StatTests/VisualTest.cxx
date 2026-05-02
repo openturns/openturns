@@ -23,7 +23,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
@@ -61,7 +61,8 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   }
   Cloud cloudQQplot(data, "Data");
   cloudQQplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
-  Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
+  Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0]);
+  graphQQplot.setLegendPosition("topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(0, 0) = data(0, 0);
@@ -94,7 +95,8 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   }
   Cloud cloudQQplot(data);
   cloudQQplot.setPointStyle(VisualTestGetPointStyle(size));
-  Graph graphQQplot("Sample versus model QQ-plot", "Empirical Quantile", "Distribution Quantile", true, "topleft");
+  Graph graphQQplot("Sample versus model QQ-plot", "Empirical Quantile", "Distribution Quantile");
+  graphQQplot.setLegendPosition("topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(0, 0) = data(0, 0);
@@ -126,7 +128,8 @@ Graph VisualTest::DrawPPplot(const Sample & sample1,
   }
   Cloud cloud(data, "Data");
   cloud.setPointStyle(VisualTestGetPointStyle(pointNumber));
-  Graph graph("Two sample PP-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
+  Graph graph("Two sample PP-plot", sample1.getDescription()[0], sample2.getDescription()[0]);
+  graph.setLegendPosition("topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(0, 0) = data(0, 0);
@@ -159,7 +162,8 @@ Graph VisualTest::DrawPPplot(const Sample & sample,
   }
   Cloud cloud(data);
   cloud.setPointStyle(VisualTestGetPointStyle(size));
-  Graph graph("Sample versus model PP-plot", sample.getDescription()[0], "Distribution", true, "topleft");
+  Graph graph("Sample versus model PP-plot", sample.getDescription()[0], "Distribution");
+  graph.setLegendPosition("topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(0, 0) = data(0, 0);
@@ -179,7 +183,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
                               const Sample & sample2)
 {
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample2.getDimension();
-  Graph graphCDFplot(DrawCDFplot(sample1, UserDefined(sample2)));
+  Graph graphCDFplot(DrawCDFplot(sample1, FiniteDiscreteDistribution(sample2)));
   graphCDFplot.setTitle("Two sample CDF-plot");
   graphCDFplot.setYTitle(sample2.getDescription()[0]);
   return graphCDFplot;
@@ -209,7 +213,8 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   data2 = dist.computeCDF(data2);
   Cloud cloudCDFplot(data1, data2);
   cloudCDFplot.setPointStyle(VisualTestGetPointStyle(pointNumber));
-  Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], "Distribution", true, "topleft");
+  Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], "Distribution");
+  graphCDFplot.setLegendPosition("topleft");
   // First, the bisector
   Sample diagonal(2, 2);
   diagonal(1, 0) = 1.0;
@@ -236,7 +241,8 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   if (normal.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry plot only if the normal distribution dimension equals 1, here dimension=" << normal.getDimension();
   if (normal.getImplementation()->getClassName() != "Normal") throw InvalidArgumentException(HERE) << "Normal distribution expected";
 
-  Graph graphHenry("Henry plot", "Sample", "Standard normal quantiles", true, "topleft");
+  Graph graphHenry("Henry plot", "Sample", "Standard normal quantiles");
+  graphHenry.setLegendPosition("topleft");
   const UnsignedInteger size = sample.getSize();
   const Sample sortedSample(sample.sort(0));
 
@@ -281,7 +287,8 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     {
       const Indices indices = {j, i};
       Cloud cloud(sample.getMarginal(indices));
-      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "");
+      graph.setLegendPosition("topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
       if (i == dimension - 1)
@@ -314,7 +321,8 @@ GridLayout VisualTest::DrawPairsXY(const Sample & sampleX, const Sample & sample
     {
       Cloud cloud(sampleX.getMarginal(j), sampleY.getMarginal(i));
 
-      Graph graph("", i == sampleYDimension - 1 ? sampleXDescription[j] : "", j == 0 ? sampleYDescription[i] : "", true, "topright");
+      Graph graph("", i == sampleYDimension - 1 ? sampleXDescription[j] : "", j == 0 ? sampleYDescription[i] : "");
+      graph.setLegendPosition("topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
       if (i == sampleYDimension - 1)
@@ -362,7 +370,8 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
 
       const Indices indices = {j, i};
       const Cloud cloud(sample.getMarginal(indices));
-      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "");
+      graph.setLegendPosition("topright");
       const Point minRange({axesMin[j], axesMin[i]});
       const Point maxRange({axesMax[j], axesMax[i]});
       const Interval marginInterval(Interval(minRange, maxRange));
@@ -400,10 +409,11 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2
   cloudLinearModelTest.setPointStyle("fsquare");
   cloudLinearModelTest.setLegend("sample");
 
-  Graph graphLinearModelTest("Linear model visual test", sample1.getDescription()[0], sample2.getDescription()[0], true, "topright");
-  graphLinearModelTest.add(cloudLinearModelTest);
-  graphLinearModelTest.add(curveLinearModelTest);
-  return graphLinearModelTest;
+  Graph graph("Linear model visual test", sample1.getDescription()[0], sample2.getDescription()[0]);
+  graph.setLegendPosition("topright");
+  graph.add(cloudLinearModelTest);
+  graph.add(curveLinearModelTest);
+  return graph;
 }
 
 /* Draw the visual test for a 1D LinearModel using the training Samples **/
@@ -438,9 +448,10 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample &
   Cloud cloudLinearModelRTest(data, oss);
   cloudLinearModelRTest.setPointStyle("fsquare");
 
-  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)", true, "topright");
-  graphLinearModelRTest.add(cloudLinearModelRTest);
-  return graphLinearModelRTest;
+  Graph graph("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)");
+  graph.setLegendPosition("topright");
+  graph.add(cloudLinearModelRTest);
+  return graph;
 }
 
 /* Draw the visual test for a 1D LinearModel's residuals using the training Samples */
@@ -477,7 +488,9 @@ Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
   const Sample rankedInput(inputSample.rank());
   const Sample rankedOutput(outputSample.rank());
   // Create the graph
-  Graph cobWeb(String(OSS() << "Parallel coordinates - " << outputSample.getDescription() << " vs " << inputSample.getDescription()), "", "", false, "topright");
+  Graph cobWeb(String(OSS() << "Parallel coordinates - " << outputSample.getDescription() << " vs " << inputSample.getDescription()), "", "");
+  cobWeb.setAxes(false);
+  cobWeb.setLegendPosition("topright");
   // First discriminate the filaments: draw the background filaments and memorize the selected ones
   Indices selectedFilaments(0);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -610,7 +623,8 @@ Graph VisualTest::DrawKendallPlot(const Sample & data,
   if (copula.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the copula has a dimension not equal to 2.";
   const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(data));
   const Sample theoreticalStatistics(ComputeKendallPlotTheoreticalStatistics(copula, data.getSize()));
-  Graph graph("Kendall Plot", copula.getName(), data.getName(), true, "topleft");
+  Graph graph("Kendall Plot", copula.getName(), data.getName());
+  graph.setLegendPosition("topleft");
   // Draw the first diagonal
   Sample dataDiagonal(0, 2);
   dataDiagonal.add(Point(2, 0.0));
@@ -633,7 +647,8 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   if (secondSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample has a dimension not equal to 2.";
   const Sample firstEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(firstSample));
   const Sample secondEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(secondSample));
-  Graph graph("Kendall Plot", firstSample.getName(), secondSample.getName(), true, "topleft");
+  Graph graph("Kendall Plot", firstSample.getName(), secondSample.getName());
+  graph.setLegendPosition("topleft");
   // Draw the first diagonal
   Sample data(0, 2);
   data.add(Point(2, 0.0));
@@ -658,7 +673,8 @@ static Graph VisualTestDrawDependenceFunction(const Sample & data,
     throw InvalidArgumentException(HERE) << "The sample must be of dimension 2";
   const UnsignedInteger size = data.getSize();
   const Sample ranked((data.rank() + 1.0) / size);
-  Graph graph("n/a", "u", legend, true, "bottom");
+  Graph graph("n/a", "u", legend);
+  graph.setLegendPosition("bottom");
   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber");
   Sample valuesU(pointNumber, 1);
   Sample valuesXu(pointNumber, 1);
@@ -777,7 +793,7 @@ GridLayout VisualTest::DrawInsideOutside(const Domain & domain,
     for (UnsignedInteger iY = iX + 1; iY < sample.getDimension(); iY++)
     {
       Sample in2DSample(insideSample.getMarginal(Indices({ iX, iY }))), out2DSample(outsideSample.getMarginal(Indices({ iX, iY })));
-      Graph graph("", iY + 1 == sample.getDimension() ? (OSS() << "x" << iX).str() : "", iX == 0 ? (OSS() << "x" << iY).str() : "", true);
+      Graph graph("", iY + 1 == sample.getDimension() ? (OSS() << "x" << iX).str() : "", iX == 0 ? (OSS() << "x" << iY).str() : "");
       graph.add(Cloud(in2DSample, inColor, "plus", "In"));
       graph.add(Cloud(out2DSample, outColor, "plus", "Out"));
       if (iX == 0 && iY == 1)

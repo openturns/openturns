@@ -1,7 +1,7 @@
 %feature("docstring") OT::ClaytonCopula
 R"RAW(Clayton copula.
 
-The Clayton copula is a bivariate asymmmetric Archimedean copula, exhibiting
+The Clayton copula is a bivariate asymmetric Archimedean copula, exhibiting
 greater dependence in the negative tail than in the positive. It is defined by:
 
 .. math::

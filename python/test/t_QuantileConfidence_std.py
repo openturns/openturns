@@ -2,11 +2,10 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 alpha = 0.05
 beta = 0.95
-algo = otexp.QuantileConfidence(alpha, beta)
+algo = ot.QuantileConfidence(alpha, beta)
 print(algo)
 print(repr(algo))
 algo.setAlpha(alpha)
@@ -71,7 +70,7 @@ for n in k_ref.keys():
 # bilateral ranks
 print("bilateral ranks ...")
 algo.setAlpha(0.05)
-algo = otexp.QuantileConfidence(alpha, beta)
+algo = ot.QuantileConfidence(alpha, beta)
 k_ref = {
     59: (0, 9),
     60: (0, 8),
@@ -246,7 +245,7 @@ ref_c[(0.99, 0.99)] = 459
 
 for alpha in [0.01, 0.05, 0.10, 0.25, 0.75, 0.90, 0.95, 0.99]:
     for beta in [0.90, 0.95, 0.99]:
-        algo = otexp.QuantileConfidence(alpha, beta)
+        algo = ot.QuantileConfidence(alpha, beta)
         # lower
         for r in range(5):
             n = algo.computeUnilateralMinimumSampleSize(r)
@@ -306,7 +305,7 @@ for alpha in [
 ]:
     print(f"{alpha:.3f} | ", end=" ")
     for beta in [0.5, 0.75, 0.9, 0.95, 0.98, 0.99, 0.999]:
-        algo = otexp.QuantileConfidence(alpha, beta)
+        algo = ot.QuantileConfidence(alpha, beta)
         n = algo.computeUnilateralMinimumSampleSize(0, True)
         if alpha == 0.5 and beta == 0.75:
             print(f"alpha={alpha} beta={beta} n={n}")
@@ -443,7 +442,7 @@ n_ref[(0.999, 0.99)] = 4603
 n_ref[(0.999, 0.999)] = 6905
 
 for alpha, beta in n_ref.keys():
-    algo = otexp.QuantileConfidence(alpha, beta)
+    algo = ot.QuantileConfidence(alpha, beta)
     n = algo.computeUnilateralMinimumSampleSize(0, True)
     ref = n_ref[(alpha, beta)]
     print(f"alpha={alpha} beta={beta} n={n} ref={ref}")
@@ -454,7 +453,7 @@ for alpha, beta in n_ref.keys():
 print("asymptotic confidence ...")
 alpha = 0.1
 beta = 0.95
-algo = otexp.QuantileConfidence(alpha, beta)
+algo = ot.QuantileConfidence(alpha, beta)
 dist = ot.Gumbel()
 qalpha = dist.computeQuantile(alpha)
 for i in range(3, 7):

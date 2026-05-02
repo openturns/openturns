@@ -22,8 +22,8 @@ collection = [
     ot.Beta(0.5, 0.5, -2.0, 3.0),
     ot.Gamma(1.0, 3.0),
     ot.Arcsine(),
-    ot.UserDefined([[i] for i in range(10)]),
-    ot.UserDefined([[i + 0.5] for i in range(10)]),
+    ot.FiniteDiscreteDistribution([[i] for i in range(10)]),
+    ot.FiniteDiscreteDistribution([[i + 0.5] for i in range(10)]),
 ]
 for distribution in collection:
     name = distribution.getClassName()

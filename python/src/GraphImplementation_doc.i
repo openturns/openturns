@@ -14,12 +14,6 @@ xTitle : str
     Legend of the X axe.
 yTitle : str
     Legend of the Y axe.
-showAxes : bool
-    *True* to draw the axes. *False* to hide them.
-legendPosition : str, optional
-    Indication of the legend's position. If *legendPosition* is not specified,
-    the Graph has no legend. The valid strings are given by the
-    :meth:`GetValidLegendPositions` method.
 "
 %enddef
 %feature("docstring") OT::GraphImplementation
@@ -117,7 +111,7 @@ Parameters
 listColors : sequence of str
     List of the colors used for each Drawable of the Graph.
     If the *listColors*'s size is lower than the number of Drawables, the
-    first colors of *listColors* are re-used. If it is greated than
+    first colors of *listColors* are reused. If it is greater than
     the number of Drawables, the last colors of the list are ignored.
 
     The *listColors* argument can be the result of the static method

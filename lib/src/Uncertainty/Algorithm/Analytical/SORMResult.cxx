@@ -124,7 +124,7 @@ void SORMResult::computeSortedCurvatures() const
 
   /* The curvatures are proportional to the eigenvalues of W
      If the normal of the boundary of the failure domain points to the origin at the design point, then we change
-     the sign of the curvatures. It insure that a convexe failure domain will have positive curvatures */
+     the sign of the curvatures. It insure that a convex failure domain will have positive curvatures */
   sortedCurvatures_ = ((gradientLimitStateFunction_.dot(getStandardSpaceDesignPoint()) > 0.0 ? 1.0 : -1.0) * inverseGradientNorm) * realEigenValues;
   /* we sort the curvatures with increasing order */
   std::sort(sortedCurvatures_.begin(), sortedCurvatures_.end());
@@ -152,7 +152,7 @@ Scalar SORMResult::getEventProbabilityBreitung() const
   const Point minusBeta(1, -beta);
   const Scalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
 
-  /* test if all curvatures verifie 1 + beta * curvature  > 0 */
+  /* test if all curvatures verify 1 + beta * curvature  > 0 */
   /* curvatures are sorted with increasing order and stocked in the attribute SortedCurvatures */
   if (1.0 + beta * sortedCurvatures_[0] < 0)
   {
@@ -193,7 +193,7 @@ Scalar SORMResult::getEventProbabilityHohenbichler() const
 
   const Scalar rho = standardPDFBeta / standardCDFBeta;
 
-  /* test if all curvatures verifie 1 + rho * curvature  > 0 */
+  /* test if all curvatures verify 1 + rho * curvature  > 0 */
   /* curvatures are sorted with increasing order and stocked in the attribute SortedCurvatures */
   if (1.0 + rho * sortedCurvatures_[0] < 0)
   {
@@ -234,7 +234,7 @@ Scalar SORMResult::getEventProbabilityTvedt() const
   const Scalar beta = getHasoferReliabilityIndex();
   const Point minusBeta(1, -beta);
 
-  /* test if all curvatures verifie 1 + (beta+1) * curvature  > 0 */
+  /* test if all curvatures verify 1 + (beta+1) * curvature  > 0 */
   /* curvatures are sorted with increasing order and stocked in the attribute SortedCurvatures */
   if (1.0 + (1 + beta) * sortedCurvatures_[0] < 0)
   {

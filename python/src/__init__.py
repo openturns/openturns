@@ -51,6 +51,7 @@ from .typ import *
 from .graph import *
 from .geom import *
 from .func import *
+from .func2 import *
 from . import SpecFunc
 from .statistics import *
 from .diff import *
@@ -62,6 +63,7 @@ from .base import *
 from .iterative_statistics import *
 
 from .model_copula import *
+from .model_copula2 import *
 from .randomvector import *
 from . import DistFunc
 from .dist import *

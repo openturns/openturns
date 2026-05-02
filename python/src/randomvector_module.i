@@ -1,11 +1,12 @@
 // SWIG file randomvector_module.i
 
 %module(package="openturns", docstring="Random vectors.") randomvector
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 %}
@@ -24,6 +25,7 @@
 %include RandomVectorImplementation.i
 %include ConstantRandomVector.i
 %include UsualRandomVector.i
+%include RatioOfUniforms.i
 
 /* At last we include template definitions */
 %include UncertaintyRandomVectorTemplateDefs.i

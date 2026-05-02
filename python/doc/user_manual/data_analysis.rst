@@ -42,6 +42,7 @@ Building distributions from samples
     DiracFactory
     DirichletFactory
     ExponentialFactory
+    FiniteDiscreteDistributionFactory
     FisherSnedecorFactory
     FrechetFactory
     GammaFactory
@@ -111,7 +112,6 @@ Building distributions from samples
     TriangularFactory
     TruncatedNormalFactory
     UniformFactory
-    UserDefinedFactory
     VonMisesFactory
     WeibullMinFactory
     WeibullMaxFactory
@@ -262,4 +262,4 @@ Quantile confidence
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.QuantileConfidence
+    QuantileConfidence

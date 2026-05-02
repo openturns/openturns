@@ -14,8 +14,8 @@ constant : sequence of float, optional
 
 Examples
 --------
->>> import openturns.experimental as otexp
->>> f = otexp.ConstantEvaluation(2, [1.0, 2.0, 3.0])
+>>> import openturns as ot
+>>> f = ot.ConstantEvaluation(2, [1.0, 2.0, 3.0])
 >>> print(f([5.0, 6.0]))
 [1,2,3]"
 

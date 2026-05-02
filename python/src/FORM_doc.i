@@ -1,7 +1,7 @@
 %feature("docstring") OT::FORM
 R"RAW(First Order Reliability Method (FORM).
 
-Refer to :ref:`form_approximation`.
+Refer to :any:`form_approximation`.
 
 Parameters
 ----------

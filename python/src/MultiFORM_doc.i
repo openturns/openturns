@@ -8,13 +8,13 @@ For each design point we add a `bulge` function that penalizes the limit-state G
 
     G_m(u) = G(u) + \sum_{i=1}^m B_i(u)
 
-The bulge function can be chosed as:
+The bulge function can be chosen as:
 
 .. math::
 
     B_i(u) = s_i (r_i^2 - \|u - u_i^{\ast}\|^2)^2
 
-Once these points are found a :ref:`form_approximation` is computed with each
+Once these points are found a :any:`form_approximation` is computed with each
 point and the probability of interest is computed as a series system
 probability: the union of the approximated events:
 

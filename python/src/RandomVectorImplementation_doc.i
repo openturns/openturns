@@ -314,12 +314,12 @@ OT_RandomVector_getFrozenSample_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getOperator_doc
-"Accessor to the comparaison operator of the Event.
+"Accessor to the comparison operator of the Event.
 
 Returns
 -------
 operator : :class:`~openturns.ComparisonOperator`
-    Comparaison operator used to define the :class:`~openturns.RandomVector`."
+    Comparison operator used to define the :class:`~openturns.RandomVector`."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getOperator
 OT_RandomVector_getOperator_doc

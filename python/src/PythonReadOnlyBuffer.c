@@ -459,6 +459,9 @@ static int openturns_memoryview_exec(PyObject *module) {
 #endif
 static PyModuleDef_Slot openturns_memoryview_slots[] = {
     {Py_mod_exec, (void*)openturns_memoryview_exec},
+#ifdef Py_GIL_DISABLED
+    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+#endif
     {0, NULL}
 };
 #ifdef __GNUC__

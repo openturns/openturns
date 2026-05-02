@@ -310,7 +310,7 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
     return gradient;
   }
   // Finite difference estimate
-  // Care operator() yields SquareMatrix, which are not necessarly symmetric
+  // Care operator() yields SquareMatrix, which are not necessarily symmetric
   // Thus we should account for all elements of operator()(s,t)
   Matrix gradient(size, outputDimension_ * outputDimension_);
   const SquareMatrix covRef(operator()(s, t));
@@ -1213,7 +1213,8 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       data(i, 0) = tau;
       data(i, 1) = value;
     }
-    Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
+    Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"));
+    graph.setLegendPosition("topright");
     Curve curve(data);
     curve.setLineWidth(2);
     graph.add(curve);
@@ -1261,7 +1262,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       rowShift += outputDimension_;
     } // i
   } // outputDimension_ > 1
-  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true);
+  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t");
   graph.setGrid(true);
   Contour isoValues(gridT, gridT, data);
   isoValues.setDrawLabels(false);

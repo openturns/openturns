@@ -367,7 +367,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     if (point[0] > n_ + supportEpsilon_) return 1.0;
     return DistFunc::pBeta(n_ - kPoint[0], kPoint[0] + 1, 1.0 - p_[0]);
   }
-  // First, check the bording cases
+  // First, check the boarding cases
   Indices indices(0);
   Bool allZero = true;
   UnsignedInteger sumX = 0;
@@ -587,7 +587,7 @@ Scalar Multinomial::computeConditionalQuantile(const Scalar q,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no contitioning or independent copula
   if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeQuantile(q)[0];
   // General case

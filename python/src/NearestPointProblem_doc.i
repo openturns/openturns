@@ -8,7 +8,7 @@ This defines a nearest point problem:
     \min_{x} \frac{1}{2}\|x\|_2^2 \\
     g(x) = v
 
-where :math:`\| \cdot\|_2` is the euclidian norm. 
+where :math:`\| \cdot\|_2` is the euclidean norm. 
 
 In other words, this is a minimum norm problem 
 with a general nonlinear constraint. 
@@ -23,7 +23,7 @@ value : float
 Examples
 --------
 
-Define an optimization problem to find the point :math:`(x_1, x_2, x_3, x_4)` with minimum euclidian norm which satisfies :math:`x_1+2x_2-3x_3+4x_4=3`.
+Define an optimization problem to find the point :math:`(x_1, x_2, x_3, x_4)` with minimum euclidean norm which satisfies :math:`x_1+2x_2-3x_3+4x_4=3`.
 
 >>> import openturns as ot
 >>> levelFunction = ot.SymbolicFunction(

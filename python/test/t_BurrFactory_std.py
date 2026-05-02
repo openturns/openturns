@@ -33,7 +33,9 @@ except Exception:
 ot.RandomGenerator.SetSeed(0)
 try:
     estimatedBurr = factory.build(
-        ot.UserDefined(ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport()
+        ot.FiniteDiscreteDistribution(
+            ot.LogNormal(7.71, 1.0056).getSample(500)
+        ).getSupport()
     )
     # print('Estimated burr=', estimatedBurr)
 except Exception:

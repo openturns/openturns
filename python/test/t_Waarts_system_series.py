@@ -172,7 +172,9 @@ ResultMC = myMC.getResult()
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
-length90MC = ResultMC.getConfidenceLength(0.90)
+length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 
 #
 # Outputs
@@ -379,13 +381,7 @@ print(
 print("Pf estimation = %.5e" % PFMC)
 print("Pf Variance estimation = %.5e" % Variance_PF_MC)
 print("CoV = %.5f" % CVMC)
-print("90% Confidence Interval =", "%.5e" % length90MC)
-print(
-    "CI at 90% =[",
-    "%.5e" % (PFMC - 0.5 * length90MC),
-    "; %.5e" % (PFMC + 0.5 * length90MC),
-    "]",
-)
+print("90% Confidence Interval =", length90MC)
 print(
     "************************************************************************************************"
 )

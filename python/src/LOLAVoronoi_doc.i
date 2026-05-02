@@ -1,13 +1,9 @@
 %feature("docstring") OT::LOLAVoronoi
 R"RAW(LOLA-Voronoi sequential design algorithm.
 
-.. warning::
-    This class is experimental and likely to be modified in future releases.
-    To use it, import the ``openturns.experimental`` submodule.
-
 This class implements the design of experiments algorithm described in [crombecq2011]_ which allows one
 to sequentially generate new input samples according to the input measure and model output.
-It combines an exploration criterion based on Voronoi tesselation to identify
+It combines an exploration criterion based on Voronoi tessellation to identify
 undersampled input design regions and an exploitation criterion based on a measure
 of the nonlinearity of the model.
 
@@ -121,13 +117,12 @@ Various :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
 Examples
 --------
 >>> import openturns as ot
->>> import openturns.experimental as otexp
 >>> formula = '-4 * exp((-25 / 8) * (a0^2 + a1^2)) + 7 * exp((-125 / 4) * (a0^2 + a1^2))'
 >>> f1 = ot.SymbolicFunction(['a0', 'a1'], [formula])
 >>> distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 2)
 >>> x0 = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, 10).generate()
 >>> y0 = f1(x0)
->>> algo = otexp.LOLAVoronoi(x0, y0, distribution)
+>>> algo = ot.LOLAVoronoi(x0, y0, distribution)
 
 Now add 2 blocks of 3 points:
 

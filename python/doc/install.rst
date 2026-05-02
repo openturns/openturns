@@ -42,30 +42,23 @@ so when a full upgrade is needed our advice is to create a new environment from 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
 
-Windows
--------
-Download the installer matching your python version and architecture from `GitHub <https://github.com/openturns/build/releases>`_
-Then just run installer and follow the instructions.
-
-A non-interactive installation is also possible with the command line::
-
-    openturns-1.26-py312-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
-
-macOS
------
+Windows/macOS
+-------------
 Installation options include pip and conda.
 
 Debian/Ubuntu
 -------------
+Packages should be available from default repositories but our repository will always provide the latest version.
+This also applies to other Debian/Ubuntu-based distributions like Linux Mint, Kali Linux, ParrotOS, PureOS, Raspberry Pi OS, ...
 First create an entry in the apt configuration matching your distribution family and codename
 if available in one of the following commands::
 
-    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu plucky main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu resolute main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu noble main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/ubuntu jammy main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
-    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
     echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian trixie main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bullseye main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb [signed-by=/usr/share/keyrings/openturns-keyring.gpg] https://openturns.github.io/apt/debian bookworm main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
@@ -99,14 +92,14 @@ RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
-    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_42/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl https://download.opensuse.org/repositories/science:/openturns/Fedora_44/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Fedora_43/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/16.0/science:openturns.repo -o /etc/zypp/repos.d/science-openturns.repo
     curl https://download.opensuse.org/repositories/science:/openturns/Mageia_9/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
-    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_42/repodata/repomd.xml.key
+    rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_44/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Fedora_43/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/16.0/repodata/repomd.xml.key
     rpm --import https://download.opensuse.org/repositories/science:/openturns/Mageia_9/repodata/repomd.xml.key
@@ -141,11 +134,38 @@ Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
 
     pkg install openturns
 
+NixOS
+-----
+One of the possibility is to install it directly with::
+
+    nix-shell -p openturns
+
+Spack
+-----
+Install the library with `Spack package manager <https://spack.io/>`_::
+
+    spack install openturns
+
+Guix
+----
+A package is available for guix::
+
+    guix install python-openturns
+
 Vcpkg
 -----
 Install the C++ library from `vcpkg.io <https://vcpkg.io/en/package/openturns>`_::
 
     vcpkg install openturns
+
+MSYS2
+-----
+The library is available with different architectures/runtime flavors::
+
+    pacman -S mingw-w64-x86_64-openturns
+    pacman -S mingw-w64-ucrt-x86_64-openturns
+    pacman -S mingw-w64-clang-x86_64-openturns
+    pacman -S mingw-w64-clang-aarch64-openturns
 
 Development version
 ===================

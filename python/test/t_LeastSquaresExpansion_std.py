@@ -518,3 +518,15 @@ for doe in doeList:
         rtol = 1.0e-2
         atol = 1.0e-2
         assert_almost_equal(err, 0.0, rtol, atol)
+
+# Check the setActiveFunctions method
+size = 10
+algo = ot.LeastSquaresExpansion(
+    inputSample, outputSample, distribution, productBasis, size
+)
+# The active functions are within the current basis/basis size
+algo.setActiveFunctions(range(8))
+assert algo.getActiveFunctions() == range(8)
+# The active functions are not within the current basis/basis size
+algo.setActiveFunctions(range(12))
+assert algo.getActiveFunctions() == range(12)

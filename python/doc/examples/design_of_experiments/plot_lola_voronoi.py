@@ -11,7 +11,6 @@ LOLA-Voronoi sequential design of experiment
 
 # %%
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 # %%
@@ -69,7 +68,7 @@ y0 = f1(x0)
 
 # %%
 # Plot the initial input sample
-graph = ot.Graph(f"Initial points N={N}", "x1", "x2", True)
+graph = ot.Graph(f"Initial points N={N}", "x1", "x2")
 initial = ot.Cloud(x0)
 initial.setPointStyle("fcircle")
 initial.setColor("blue")
@@ -84,7 +83,7 @@ _ = otv.View(graph, square_axes=True)
 # the API documentation. It can have a major impact on the performance
 # of the algorithm. In particular, if your distribution has independent
 # components you may set "LOLAVoronoi-UseTruncatedDistribution" to True.
-algo = otexp.LOLAVoronoi(x0, y0, distribution)
+algo = ot.LOLAVoronoi(x0, y0, distribution)
 
 # %%
 # Iteratively generate new samples: add 50 points, in 10 blocks of 5 points.
@@ -92,7 +91,7 @@ inc = 5
 contour = contour.getImplementation()
 contour.setColorBarPosition("")  # hide color bar
 for i in range(10):
-    graph = ot.Graph("", "x1", "x2", True)
+    graph = ot.Graph("", "x1", "x2")
     graph.setLegendPosition("upper left")
     graph.setLegendFontSize(8)
     graph.add(contour)

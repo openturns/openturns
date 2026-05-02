@@ -43,7 +43,7 @@ b : float, :math:`b > a`
 
 Notes
 -----
-It is possible to create a Beta distribution from the alternative parametrization :math:`(\mu, \sigma, a, b)`: see  :class:`~openturns.BetaMuSigma`. In that case, all the results are presented in that new parametrization.
+It is possible to create a Beta distribution from the alternative parametrization :math:`(\mu, \sigma, a, b)`: see :class:`~openturns.BetaMuSigma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative parametrization :math:`(\mu, \sigma, a, b)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta, a, b)`.
 

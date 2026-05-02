@@ -44,9 +44,6 @@ public:
   /** Default constructor */
   explicit MeshDomain(const Mesh & mesh);
 
-  /** Parameters constructor */
-  MeshDomain(const Mesh & mesh, const EnclosingSimplexAlgorithm & enclosingSimplex);
-
   /** Mesh accessor */
   virtual Mesh getMesh() const;
 
@@ -80,7 +77,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-private:
+protected:
 
   /** The underlying mesh */
   Mesh mesh_;

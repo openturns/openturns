@@ -22,7 +22,6 @@ Compare the distribution of quantile estimators
 #
 # See  :ref:`quantile_confidence_estimation` and :ref:`quantile_asymptotic_confidence_estimation` to get theoretical details.
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -40,7 +39,7 @@ beta = 0.90
 # The exact value of :math:`x_{\alpha}` is known. We compute it in order to compare the
 # estimators to the exact value.
 x_alpha_exact = X_dist.computeQuantile(alpha)[0]
-print('Exact quantile = ', x_alpha_exact)
+print("Exact quantile = ", x_alpha_exact)
 
 # %%
 # We generate a sample of the variable.
@@ -59,35 +58,35 @@ X_sample = X_dist.getSample(n)
 # The value of this order statistics is computed on the sample.
 k_emp = int(n * alpha)
 empiricalQuantile = X_sample.computeQuantile(alpha)
-print('Empirical quantile = ', empiricalQuantile)
-print('Empirical order statistics = ', k_emp)
+print("Empirical quantile = ", empiricalQuantile)
+print("Empirical order statistics = ", k_emp)
 
 # %%
 # Now, we want to get the exact unilateral confidence interval that provides an upper bound of :math:`x_{\alpha}` with the confidence
 # :math:`\beta`, which means that :math:`\Prob{X_{(k_{up})} \geq x_{\alpha}} \geq \beta`.
-# This can be done using :class:`~openturns.experimental.QuantileConfidence`.
+# This can be done using :class:`~openturns.QuantileConfidence`.
 # We can get the order :math:`k_{up}` of the useful statistics. Care that the enumeration begins at 0.
-quantConf = otexp.QuantileConfidence(alpha, beta)
+quantConf = ot.QuantileConfidence(alpha, beta)
 k_up = quantConf.computeUnilateralRank(n)
 
 # %%
 # We can directly get the order statistics :math:`X_{(k_{up})}` evaluated on the sample.
 upper_bound = quantConf.computeUnilateralConfidenceInterval(X_sample)
-print('Upper bound of the quantile = ', upper_bound)
-print('Upper bound order statistics = ', k_up)
+print("Upper bound of the quantile = ", upper_bound)
+print("Upper bound order statistics = ", k_up)
 
 # %%
 # To get the exact unilateral confidence interval that provides a lower bound of :math:`x_{\alpha}` with the confidence
 # :math:`\beta`, which means that :math:`\Prob{X_{(k_{low})} \leq x_{\alpha}} \geq \beta`.
-# This can also be done using :class:`~openturns.experimental.QuantileConfidence`.
+# This can also be done using :class:`~openturns.QuantileConfidence`.
 # We can get the order :math:`k_{low}` of the useful statistics. Care: the enumeration begins at 0 here!
 k_low = quantConf.computeUnilateralRank(n, True)
 
 # %%
 # We can directly get the order statistics :math:`X_{(k_{low})}` evaluated on the sample.
 lower_bound = quantConf.computeUnilateralConfidenceInterval(X_sample, True)
-print('Lower bound of the quantile = ', lower_bound)
-print('Lower bound order statistics = ', k_low)
+print("Lower bound of the quantile = ", lower_bound)
+print("Lower bound order statistics = ", k_low)
 
 # %%
 # In order to draw the distribution of any order statistics of :math:`X`, we first create the distribution
@@ -138,10 +137,12 @@ g.add(X_low.drawPDF(xMin, xMax, nPoints))
 
 # %%
 # We add the exact quantile.
-line_exactQuant = ot.Curve([[x_alpha_exact, 0.0], [x_alpha_exact, X_emp.computePDF([x_alpha_exact])]])
-line_exactQuant.setLineStyle('dashed')
+line_exactQuant = ot.Curve(
+    [[x_alpha_exact, 0.0], [x_alpha_exact, X_emp.computePDF([x_alpha_exact])]]
+)
+line_exactQuant.setLineStyle("dashed")
 line_exactQuant.setLineWidth(2)
-line_exactQuant.setColor('red')
+line_exactQuant.setColor("red")
 g.add(line_exactQuant)
 
 # %%
@@ -191,12 +192,19 @@ boundsPoly_lower.setColor(g.getColors()[2])
 g.add(boundsPoly_lower)
 
 # %%
-g.setLegends([r'$X_{emp}$', r'$X_{up} (\beta = $' + str(beta) + ')', r'$X_{low} (\beta = $' + str(beta) + ')', 'exact quantile'])
-g.setLegendPosition('topright')
+g.setLegends(
+    [
+        r"$X_{emp}$",
+        r"$X_{up} (\beta = $" + str(beta) + ")",
+        r"$X_{low} (\beta = $" + str(beta) + ")",
+        "exact quantile",
+    ]
+)
+g.setLegendPosition("upper right")
 
 # %%
-g.setTitle('Quantile estimation and confidence intervals')
-g.setXTitle('x')
+g.setTitle("Quantile estimation and confidence intervals")
+g.setXTitle("x")
 view = otv.View(g)
 
 # %%

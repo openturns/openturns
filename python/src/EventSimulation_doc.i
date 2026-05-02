@@ -16,7 +16,7 @@ vector :math:`\vect{X}` to evaluate the failure probability:
 
 .. math::
 
-    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\underline{d}) \leq 0 \}}f_{\uX}(\ux)\di{\ux}
+    P_f = \int_{\Rset^{n_X}} \mathbf{1}_{\{g(\ux,\vect{d}) \leq 0 \}}f_{\uX}(\ux)\di{\ux}
         = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
 
 Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic

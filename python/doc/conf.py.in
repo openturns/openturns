@@ -10,28 +10,19 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
-import os
-import subprocess
+import importlib
+from packaging.version import Version
+from pathlib import Path
 from sphinx_gallery.sorting import ExplicitOrder
 import sphinx_gallery
+import subprocess
+import sys
 
-try:
-    from packaging.version import Version
-except ImportError:
-    from pkg_resources import parse_version as Version
-
-try:
-    import joblib
-
-    have_joblib = True
-except ImportError:
-    have_joblib = False
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath("sphinxext"))
+sys.path.insert(0, Path("sphinxext").resolve().as_posix())
 sys.path.insert(0, "@OPENTURNS_PYTHON_BUILD_MODULE_PATH@")
 
 # -- General configuration ------------------------------------------------
@@ -53,6 +44,8 @@ autodoc_default_options = {
     "inherited-members": None,
     "exclude-members": "thisown",
 }
+# https://github.com/numpy/numpydoc/issues/671
+autodoc_use_legacy_class_based = True
 
 extensions.append("sphinx.ext.autosummary")
 autosummary_generate = True
@@ -76,9 +69,8 @@ intersphinx_mapping = {
 }
 
 extensions.append("sphinx.ext.imgmath")
-imgmath_latex_preamble = r"\usepackage{{{0}math_notations}}".format(
-    os.path.dirname(__file__) + os.sep
-)
+mnpkg = Path(__file__).resolve().parent / "math_notations"
+imgmath_latex_preamble = rf"\usepackage{{{mnpkg.as_posix()}}}"
 imgmath_use_preview = True
 if subprocess.run(["dvisvgm", "-V"], shell=True, capture_output=True).returncode == 0:
     imgmath_image_format = "svg"
@@ -171,21 +163,17 @@ sphinx_gallery_conf = {
     # The duration of scripts that ran faster than that amount will not be
     # logged nor embedded in the html output
     "min_reported_time": 1e6,
-    # omit computation times from all gallery outputs
-    "write_computation_times": False,
+    # Reset module before each example
+    "reset_modules": ("reset_ot.reset_ot",),
     # Use SVG format
     "image_scrapers": ("matplotlib_svg_scraper.matplotlib_svg_scraper",),
+    # parallel build
+    "parallel": importlib.util.find_spec("joblib") is not None,
 }
 
-if Version(sphinx_gallery.__version__) >= Version("0.17.0"):
-    sphinx_gallery_conf["parallel"] = have_joblib
-
-# Reset module before each example
-if Version(sphinx_gallery.__version__) >= Version("0.16.0"):
-    sphinx_gallery_conf["reset_modules"] = ("reset_ot.reset_ot",)
-
-# TODO: drop jquery in custom search.html
-extensions.append("sphinxcontrib.jquery")
+if Version(sphinx_gallery.__version__) >= Version("0.18.0"):
+    # omit computation times from all gallery outputs
+    sphinx_gallery_conf["write_computation_times"] = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

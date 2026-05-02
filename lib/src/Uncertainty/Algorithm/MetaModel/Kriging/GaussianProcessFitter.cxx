@@ -363,7 +363,7 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   {
     // Define starting point for the optimization as the center of the bounds
     // We should ensure somehow that the upper/lower bounds scale are nearly the same
-    initialParameters = (optimizationBounds_.getUpperBound() + optimizationBounds_.getLowerBound())/2;
+    initialParameters = (optimizationBounds_.getUpperBound() + optimizationBounds_.getLowerBound()) / 2;
   }
 
   // internal normalization into (0,1)^n

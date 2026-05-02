@@ -460,7 +460,7 @@ Graph FieldImplementation::draw() const
   if ((getInputDimension() == 1) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
-    Graph graph(title, description_[0], description_[1], true, "");
+    Graph graph(title, description_[0], description_[1]);
     const Curve curveSerie(getValues());
     graph.add(curveSerie);
     return graph;
@@ -469,7 +469,7 @@ Graph FieldImplementation::draw() const
   if ((getInputDimension() == 2) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
-    Graph graph(title, description_[0], description_[1], true, "");
+    Graph graph(title, description_[0], description_[1]);
     // Get the bounding box of the mesh to set the head size of the arrow
     // It must be independent from the values as we want the same size for
     // all the arrows
@@ -545,10 +545,11 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
 {
   if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
   const UnsignedInteger meshDimension = getInputDimension();
-  if (!(meshDimension <= 2)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
+  if (!(meshDimension <= 3)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 3.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, description_[0], description_[index + 1], true, "topright");
+  Graph graph(title, description_[0], description_[index + 1]);
+  graph.setLegendPosition("topright");
   if (meshDimension == 1)
   {
     // Discretization of the x axis
@@ -683,9 +684,38 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       // FIXME: restore legend: previously legend was attached to invisible objects
     } // !interpolate
   } // meshDimension == 2
+  else if (meshDimension == 3)
+  {
+    const Description palette(Drawable::BuildDefaultPalette(marginalValues.getSize()));
+    const SquareMatrix rotation(Mesh::BuildRotationFromAngles());
+    graph = draw3D(index, false, rotation, true, 1.0, palette);
+  }
   return graph;
 }
 
+Graph FieldImplementation::draw3D(const UnsignedInteger index,
+                                  const Bool drawEdge,
+                                  const SquareMatrix & rotation,
+                                  const Bool shading,
+                                  const Scalar rho,
+                                  const Description & palette) const
+{
+  if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
+  if (getInputDimension() != 3) throw InvalidArgumentException(HERE) << "Error: draw3D is for 3D fields only";
+  if (palette.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: palette should contain at least one color";
+  // Compute the mean marginal value for each simplex
+  const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
+  const IndicesCollection simplices(mesh_.getSimplices());
+  Point meanValues(simplicesNumber);
+  for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
+    meanValues[i] = 0.25 * (values_(simplices(i, 0), index) + values_(simplices(i, 1), index) + values_(simplices(i, 2), index) + values_(simplices(i, 3), index));
+  // Create the colors associated to these values and the given palette
+  const Scalar alpha = Drawable::ConvertToRGBA(Drawable::ConvertFromName(palette[0]))[3] / 255.0;
+  const Description colors(Drawable::ConvertValuesToColors(meanValues, palette, alpha));
+  Graph graph(mesh_.draw3D(drawEdge, rotation, shading, rho, colors));
+  graph.setTitle(OSS() << getName() << " " << description_[getInputDimension() + index]);
+  return graph;
+}
 
 /* Method save() stores the object through the StorageManager */
 void FieldImplementation::save(Advocate & adv) const

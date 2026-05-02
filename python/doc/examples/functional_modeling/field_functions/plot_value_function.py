@@ -10,10 +10,10 @@ Value function
 # and defined by a function :math:`g : \mathbb{R}^d  \rightarrow \mathbb{R}^q` such that:
 #
 # .. math::
-#    \begin{aligned} f_{value}(\underline{t}, \underline{x})=(\underline{t}, g(\underline{x}))\end{aligned}
+#    \begin{aligned} f_{value}(\vect{t}, \vect{x})=(\vect{t}, g(\vect{x}))\end{aligned}
 #
 # Let's note that the input dimension of :math:`f_{value}` still designs the
-# dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
+# dimension of :math:`\vect{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
 #
 # The creation of the *ValueFunction* object requires the
 # function :math:`g` and the integer :math:`n`: the dimension of the
@@ -27,7 +27,7 @@ Value function
 #
 # .. math::
 #    \begin{aligned}
-#      g(\underline{x})=(x_1^2, x_1+x_2)
+#      g(\vect{x})=(x_1^2, x_1+x_2)
 #    \end{aligned}
 #
 

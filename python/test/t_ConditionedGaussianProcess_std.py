@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 
 def build_gpr_result(inputSample, outputSample, covarianceModel, basis):
@@ -63,7 +62,7 @@ vertices = ot.Sample(inputSample)
 vertices.add(ot.JointDistribution([ot.Uniform(0.0, 10.0)] * 2).getSample(100))
 
 ot.RandomGenerator.SetSeed(0)
-process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
+process = ot.ConditionedGaussianProcess(gpr_result, mesh2D)
 
 # Get a realization of the process
 realization = process.getRealization()
@@ -76,7 +75,7 @@ print("Mean over 5000 realizations = ", repr(mean))
 
 # Check if one can sample the process over a mesh containing conditioning points
 # and 100 new points
-process = otexp.ConditionedGaussianProcess(gpr_result, ot.Mesh(vertices))
+process = ot.ConditionedGaussianProcess(gpr_result, ot.Mesh(vertices))
 realization = process.getRealization()
 num = 0.0
 den = 0.0
@@ -100,7 +99,7 @@ fitter_result = fitter_algo.getResult()
 gpr_algo = ot.GaussianProcessRegression(fitter_result)
 gpr_algo.run()
 gpr_result = gpr_algo.getResult()
-process = otexp.ConditionedGaussianProcess(gpr_result, mesh2D)
+process = ot.ConditionedGaussianProcess(gpr_result, mesh2D)
 sample = process.getSample(3)
 ott.assert_almost_equal(sample.getSize(), 3, 0, 0)
 ott.assert_almost_equal(sample.getDimension(), 2, 0, 0)

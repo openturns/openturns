@@ -391,7 +391,7 @@ Indices Drawable::ConvertToRGBA(const String & key)
   return DrawableImplementation::ConvertToRGBA(key);
 }
 
-/* Convert an RGB triplet to a valid hexadecimal code */
+/* Convert a color name to a valid hexadecimal code */
 String Drawable::ConvertFromName(const String & name)
 {
   return DrawableImplementation::ConvertFromName(name);
@@ -470,6 +470,14 @@ String Drawable::ConvertFromHSVA(const Scalar hue,
                                  const Scalar alpha)
 {
   return DrawableImplementation::ConvertFromHSVA(hue, saturation, value, alpha);
+}
+
+/* Convert a collection of scalar into a collection of colors, aka a Description */
+Description Drawable::ConvertValuesToColors(const Point & values,
+    const Description & palette,
+    const Scalar alpha)
+{
+  return DrawableImplementation::ConvertValuesToColors(values, palette, alpha);
 }
 
 /* Build default palette */

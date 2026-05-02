@@ -17,14 +17,14 @@ defined as :
 
 .. math::
 
-    f : & \Rset^d \rightarrow \Rset^p  \\
-        & \vect{X} \mapsto \mat{A} ( \vect{X} - \vect{b} ) + \vect{c}
+    f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
+        & \vect{x} \mapsto \mat{A} ( \vect{x} - \vect{b} ) + \vect{c}
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`p` lines and :math:`d` columns,
-- :math:`\vect{b}` is a vector in :math:`\Rset^d`,
-- :math:`\vect{c}` is a vector in :math:`\Rset^p`.
+- :math:`\mat{A}` is a matrix with :math:`\outputDim` lines and :math:`\inputDim` columns,
+- :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`,
+- :math:`\vect{c}` is a vector in :math:`\Rset^\outputDim`.
 
 See also
 --------
@@ -33,7 +33,7 @@ Function
 Examples
 --------
 In this example, we create the linear function :math:`f: \Rset^2 \rightarrow \Rset` such that
-:math:`f(x,y) = 2x + 3y-1`. Then we have:
+:math:`f(x,y) = 2x + 3y - 1`. Then we have:
 
 .. math::
 

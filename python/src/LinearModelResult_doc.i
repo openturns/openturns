@@ -326,7 +326,7 @@ The Cook distance of experience :math:`i` is defined by:
     (\varepsilon_i^{st})^2
 
 where :math:`\varepsilon_i^{st}` is the standardized residual defined in :eq:`stdRes` and :math:`dof` is the 
-degress of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.)RAW"
+degrees of freedom defined in :eq:`dofNoBase` or :eq:`dofWithBase`.)RAW"
 
 // ---------------------------------------------------------------------
 

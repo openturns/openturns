@@ -1,11 +1,12 @@
 // SWIG file dist_module.i
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle1
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 %}
@@ -39,15 +40,13 @@
 %include ChiFactory.i
 %include ChiSquare.i
 %include ChiSquareFactory.i
+%include CombinationsDistribution.i
 %include CompositeDistribution.i
 %include Dirac.i
 %include DiracFactory.i
 %include Dirichlet.i
 %include DirichletFactory.i
 %include DiscreteCompoundDistribution.i
-%include Epanechnikov.i
-%include Exponential.i
-%include ExponentialFactory.i
 %include ExtremeValueCopula.i
 %include JoeCopula.i
 %include FisherSnedecor.i

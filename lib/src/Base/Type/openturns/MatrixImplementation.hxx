@@ -122,7 +122,7 @@ public:
   /** Row extraction */
   const MatrixImplementation getRow(const UnsignedInteger rowIndex) const;
   const MatrixImplementation getRowSym(const UnsignedInteger rowIndex) const;
-  /** Column extration */
+  /** Column extraction */
   const MatrixImplementation getColumn(const UnsignedInteger columnIndex) const;
   const MatrixImplementation getColumnSym(const UnsignedInteger columnIndex) const;
 

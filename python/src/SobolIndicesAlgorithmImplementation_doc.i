@@ -9,7 +9,7 @@ This method measures the influence of each component of an input random vector
 :math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
 It computes, for every output random variable :math:`Y_k` (:math:`1 \leqslant k \leqslant n_Y`),
 the part of its variance due to each input component :math:`X_i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
-Sobol' indices are introduced in :ref:`sensitivity_sobol`. 
+Sobol' indices are introduced in :any:`sensitivity_sobol`.
 
 Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
 
@@ -49,7 +49,7 @@ For the same reason some first order indices estimates can be greater than the c
 
 The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
-delta method, as expained in the technical report [pmfre01116]_.
+delta method, as explained in the technical report [pmfre01116]_.
 )RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation

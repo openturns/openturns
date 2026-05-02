@@ -161,7 +161,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   Scalar maximumWeight = weights[0];
   Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
-  // First loop, check the atoms dimensions and the weigths values
+  // First loop, check the atoms dimensions and the weights values
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (dimension != coll[i].getDimension())
@@ -471,7 +471,7 @@ Scalar Mixture::computeConditionalCDF(const Scalar x,
     if (weightedMarginalAtomPDF > 0.0)
       conditionedCDF += distributionCollection_[i].computeConditionalCDF(x, y) * weightedMarginalAtomPDF;
   }
-  if (conditioningPDF <= 0.0) return 0.0;
+  if (!(conditioningPDF > 0.0)) return 0.0;
   // No need to normalize by 1/h as it simplifies
   return SpecFunc::Clip01(conditionedCDF / conditioningPDF);
 }
@@ -514,14 +514,14 @@ Point Mixture::computeSequentialConditionalCDF(const Point & x) const
       const Scalar wI = weights[i];
       const Distribution marginalAtom(distributionCollection_[i].getMarginal(conditioning));
       const Scalar weightedMarginalAtomPDF = wI * marginalAtom.computePDF(currentX);
-      if (weightedMarginalAtomPDF > 0.0)
+      if (!(weightedMarginalAtomPDF <= 0.0))
       {
         pdfConditioned += weightedMarginalAtomPDF;
         cdfConditioned += marginalAtom.computeConditionalCDF(xConditioned, y) * weightedAtomsPDF[i];
         weightedAtomsPDF[i] = weightedMarginalAtomPDF;
       } // atomMarginalPDF > 0.0
     } // i
-    result[conditioningDimension] = cdfConditioned / pdfConditioning;
+    result[conditioningDimension] = SpecFunc::Clip01(cdfConditioned / pdfConditioning);
     pdfConditioning = pdfConditioned;
   } // conditioningDimension
   return result;

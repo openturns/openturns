@@ -4,7 +4,8 @@ Gaussian Process Regression : cantilever beam model
 """
 
 # %%
-# In this example, we create a Gaussian Process Regression (GPR) metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`.
+# In this example, we create a Gaussian Process Regression (GPR) metamodel (refer to
+# :ref:`gaussian_process_regression`) of the :ref:`cantilever beam <use-case-cantilever-beam>`.
 # We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size 20.
 from openturns.usecases import cantilever_beam
 import openturns as ot

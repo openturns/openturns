@@ -1,12 +1,12 @@
 %feature("docstring") OT::Gibbs
 "Gibbs sampling method.
 
-Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+Refer to :any:`bayesian_calibration`, :any:`metropolis_hastings`.
 
 Parameters
 ----------
 samplers : sequence of :class:`~openturns.MetropolisHastings`
-    List of samplers for each bloc of the chain
+    List of samplers for each block of the chain
 
 Notes
 -----
@@ -81,7 +81,7 @@ Examples
 Returns
 -------
 samplers : list of :class:`~openturns.MetropolisHastings`
-    List of samplers for each bloc of components"
+    List of samplers for each block of components"
 
 // ---------------------------------------------------------------------
 

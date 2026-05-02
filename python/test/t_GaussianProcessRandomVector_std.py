@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -35,9 +34,7 @@ covarianceModel = ot.SquaredExponential([7.63, 2.11], [7.38])
 basis = ot.ConstantBasisFactory(inputDimension).build()
 
 # Gaussian Process Regression algorithm
-fit_algo = ot.GaussianProcessFitter(
-    inputSample, outputSample, covarianceModel, basis
-)
+fit_algo = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
 fit_algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
 fit_algo.run()
 gpr_algo = ot.GaussianProcessRegression(fit_algo.getResult())
@@ -65,7 +62,7 @@ trueVariance = ot.Point(covariancePoint.getSize(), 0.0)
 ott.assert_almost_equal(covariancePoint, trueVariance, 1e-6, 1e-6)
 
 # Random vector evaluation
-rvector = otexp.GaussianProcessRandomVector(gpr_result, inputValidSample[0])
+rvector = ot.GaussianProcessRandomVector(gpr_result, inputValidSample[0])
 
 # Realization of the random vector
 realization = rvector.getRealization()
