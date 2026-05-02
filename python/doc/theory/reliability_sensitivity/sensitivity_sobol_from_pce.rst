@@ -40,7 +40,7 @@ and, if necessary, the selection method (e.g. the LARS selection method).
 Let :math:`\metaModel(\standardRV)` be the polynomial chaos expansion:
 
 .. math::
-    \metaModel(\standardRV)
+    \tilde{h}(\standardRV)
     &= \sum_{\idx \in \mathcal{J}_P} a_\idx \psi_\idx(\standardRV)
 
 where :math:`\standardRV` is the standardized input random vector,
