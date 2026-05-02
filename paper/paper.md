@@ -68,7 +68,7 @@ probabilistic modeling, uncertainty quantification (UQ), and machine learning.
 It provides a unified interface, granting users access to a comprehensive 
 set of state-of-the-art algorithms and modeling tools.
 The library is supported by extensive, regularly updated
-documentation, including introductory examples, various use cases, 
+easy to read documentation, including introductory examples, various use cases, 
 tutorials, and user guides, enhancing its accessibility.
 OpenTURNS integrates seamlessly with NumPy, Pandas, and other
 scientific Python packages, allowing users to develop UQ
@@ -100,27 +100,64 @@ framework for probabilistic modeling.
 
 # State of the field
 
+There are many software packages and libraries for Uncertainty Quantification.
+Although the landscape is highly fragmented with significant specialization,
+these tools fall into two broad categories.
+First, there are general-purpose libraries, which aim to provide
+most of the features used in research and engineering to perform UQ studies.
+In this class of tools, we find Dakota[@adams2025dakota], Raven[@RAVENuserMan],
+Sparse Grid++[@pflueger10spatially], PSUADE[@tong2024psuade],
+URANIE[@blanchard2019uranie], UQLab[@marelli2014uqlab],
+UQTk[@Debusschere2017UQTk], OpenCOSSAN[@Patelli2016Cossan],
+UQPy[@olivier2020uqpy], EasyVVUQ[@SULEIMENOVA2021101402],
+SmartUQ[@absil2016smart], and NESSUS[@McFarland2017], among others.
+These tools and libraries are provided in a variety of languages including
+Matlab (e.g., UQLab), Python (e.g., UQPy), and ROOT/C++ (e.g., URANIE).
+Some of these tools are open-source (e.g., EasyVVUQ), while others are
+commercial products (e.g., NESSUS).
+Other libraries have become open-source over time (e.g., UQLab became
+open-source in 2022).
+Many of these libraries are massive software
+projects (e.g., Dakota has more than 300,000 lines of code).
+Some of these tools have a graphical user interface (e.g., SmartUQ), but not all.
+The second category comprises a large number of specialized libraries.
+In this class of tools, we find, for example, GPy[@gpy2014] for Gaussian
+Processes, QUESO[@McDougall2017] for Bayesian inference, SALib[@Herman2017]
+and sensitivity[@iooss2026sensitivity] for sensitivity analysis and
+ChaosPy[@feinberg2015chaospy] for polynomial chaos expansion, among
+many others.
+Most of these tools are relatively small software projects (e.g.,
+ChaosPy has approximately 30,000 lines of code).
+These specialized libraries are sometimes maintained by a small number of
+core developers, although some are based on many contributions (e.g.,
+SALib has more than 40 contributors on GitHub).
+Furthermore, they are often easier to adapt for research purposes.
+This is the case, for example, for Python projects, which are easier for many
+users to extend compared to a C++ library.
+On the other hand, maintaining these libraries over time can be
+challenging.
+
 Other Python packages exist for Monte Carlo
 sampling and other numerical methods [@virtanen2020scipy],
 statistical modeling [@seabold2010statsmodels], 
 machine learning [@pedregosa2011scikit], UQ test 
 functions [@Wicaksono2023], and quasi-Monte Carlo methods [@roy2023quasi], 
 among others.
-One of the goals of OpenTURNS is to provide a consistent interface to 
-these tasks in the UQ context.
+One of the goals of OpenTURNS is to provide a consistent interface for all
+these tasks, serving as a general-purpose tool for UQ.
 
 Developing OpenTURNS as a standalone framework was necessary because
 integrating its specialized, tightly coupled C++ architecture for advanced
 reliability analysis and stochastic modeling into general-purpose libraries
 like SciPy or scikit-learn would have been architecturally incompatible and
 misaligned with their primary scopes.
-OpenTURNS was created in 2005 at a time where SciPy was
+OpenTURNS was created in 2005 at a time when SciPy was
 a relatively new library (the development of SciPy was started in 2001)
 and scikit-learn did not exist (the first public release was in 2010).
-Today, this choice is still relevant as OpenTURNS is integrated in other
-C++ libraries like Persalys, Salome (see [@salome_platform]) 
-or pSeven (see [@pseven]) for example, where the C++ implementation of
-OpenTURNS is mandatory.
+Today, this choice remains relevant as OpenTURNS is integrated into other C++
+libraries such as Persalys, SALOME (see [@salome_platform]) and pSeven
+(see [@pseven]), where the C++ implementation of OpenTURNS is
+mandatory.
 
 # Software design
 
@@ -148,8 +185,8 @@ analytical equations.
 
 # Features
 
-OpenTURNS provides a wide range of multivariate probabilistic modeling
-features: more than 60 continuous and discrete distributions,
+OpenTURNS provides a wide range of easy to build multivariate probabilistic models:
+more than 60 continuous and discrete distributions,
 including extreme-value distributions, copula-based models (more than
 15 copulas), and distribution transformations (such as truncation,
 conditioning, mixture, push-forward, and distribution algebra).
@@ -243,10 +280,21 @@ and knowledge exchange among researchers, engineers, and educators.
 
 # AI usage disclosure
 
-Generative AI was used to verify the grammar and spelling of this paper,
-check the choices of the words and check that the paper comply to the
+Generative AI (Gemini 3.1 Pro) was used to verify the grammar and spelling of this paper,
+check the choices of the words and check that the paper comply with the
 requirements.
 No generative AI was used in the creation of the software, the technical 
 documentation, or the algorithm design.
+
+# Acknowledgements
+
+We acknowledge support from the OpenTURNS consortium.
+Additional funding was provided by EDF and Airbus through external development
+contracts.
+The project has received funding from the European Commission within the
+LOCOMACHS (grant agreement No. 314003) and the UMRIDA (grant agreement No.
+605036) projects.
+It has also received funding from the French National Research Agency (ANR)
+within the OPUS (ANR-07-TLOG-0015) and CHORUS (ANR-13-MONU-0005) projects.
 
 # References
