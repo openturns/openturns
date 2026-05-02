@@ -249,4 +249,10 @@ requirements.
 No generative AI was used in the creation of the software, the technical 
 documentation, or the algorithm design.
 
+# Acknowledgements
+
+We acknowledge support from the OpenTURNS consortium.
+Additional funding was provided by EDF and Airbus through development
+contracts with Phimeca, IMACS, INRIA, Aristé and NTH.
+
 # References
