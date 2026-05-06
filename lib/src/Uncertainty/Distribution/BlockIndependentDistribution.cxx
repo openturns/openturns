@@ -100,22 +100,33 @@ String BlockIndependentDistribution::__str__(const String & ) const
 /* Distribution collection accessor */
 void BlockIndependentDistribution::setDistributionCollection(const DistributionCollection & coll)
 {
+  // unfold BlockIndependentDistribution items
+  DistributionCollection coll2;
+  for (UnsignedInteger i = 0; i < coll.getSize(); ++ i)
+  {
+    BlockIndependentDistribution *p_block = dynamic_cast<BlockIndependentDistribution*>(coll[i].getImplementation().get());
+    if (p_block)
+      coll2.add(p_block->getDistributionCollection());
+    else
+      coll2.add(coll[i]);
+  }
+
   // Check if the collection is not empty
-  const UnsignedInteger size = coll.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
-  distributionCollection_ = coll;
+  const UnsignedInteger size = coll2.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty"; 
   Description description(0);
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger distributionDimension = coll[i].getDimension();
+    const UnsignedInteger distributionDimension = coll2[i].getDimension();
     dimension += distributionDimension;
-    const Description distributionCollection(coll[i].getDescription());
+    const Description distributionCollection(coll2[i].getDescription());
     for (UnsignedInteger j = 0; j < distributionDimension; ++j) description.add(distributionCollection[j]);
-    parallel = parallel && coll[i].getImplementation()->isParallel();
+    parallel = parallel && coll2[i].getImplementation()->isParallel();
   }
+  distributionCollection_ = coll2;
   setParallel(parallel);
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs

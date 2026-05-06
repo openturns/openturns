@@ -232,3 +232,8 @@ print(
 # test BlockIndependentCopula.getMarginal in reverse
 copula = ot.BlockIndependentCopula([ot.IndependentCopula(2), ot.NormalCopula(2)])
 print(copula.getMarginal([3, 2, 1, 0]))
+
+# check folding
+d1 = ot.BlockIndependentCopula([ot.FrankCopula(3.0), ot.ClaytonCopula(2.0)])
+d2 = ot.BlockIndependentCopula([ot.IndependentCopula(2), d1, ot.NormalCopula(2)])
+assert len(d2.getCopulaCollection()) == 4
