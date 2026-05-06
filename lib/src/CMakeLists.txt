@@ -28,6 +28,9 @@ endif ()
 # Exclude Dlib sources from unity build (Lapack re-included)
 if (dlib_FOUND)
   set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    set_source_files_properties (Base/Optim/Dlib.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=maybe-uninitialized")
+  endif ()
 endif ()
 
 # Exclude Ipopt sources
