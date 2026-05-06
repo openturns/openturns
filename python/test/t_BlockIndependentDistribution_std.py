@@ -247,3 +247,8 @@ distribution = ot.BlockIndependentDistribution(
 support = distribution.getSupport(ot.Interval([2] * 4, [5] * 4))
 print(support)
 assert support.getSize() == 9
+
+# check folding
+d1 = ot.BlockIndependentDistribution([ot.Uniform(), ot.Gumbel()])
+d2 = ot.BlockIndependentDistribution([ot.Triangular(), d1, ot.Trapezoidal()])
+assert len(d2.getDistributionCollection()) == 4
