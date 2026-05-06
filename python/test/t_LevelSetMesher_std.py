@@ -92,3 +92,17 @@ gGreater = mesh.draw()
 ott.assert_almost_equal(
     gLess.getDrawable(0).getData(), gGreater.getDrawable(0).getData(), 1e-4, 1e-4
 )
+
+# Build based on field
+f = ot.SymbolicFunction(["x", "y"], ["(x-0.5)^3+y^4"])
+levelSet = ot.LevelSet(f, ot.LessOrEqual(), 0.0)
+
+# First case, no values in the field. They will be computed in LevelSetMesher
+mesh1 = ot.LevelSetMesher([16] * 2).build(levelSet, ot.Field(mesh, 0))
+
+# Second case, values are provided.
+values = f(mesh.getVertices())
+mesh2 = ot.LevelSetMesher([16] * 2).build(levelSet, ot.Field(mesh, values))
+
+# Check that the two meshes are identical
+ott.assert_almost_equal(mesh1.getVertices(), mesh2.getVertices(), 1e-4, 1e-4)
