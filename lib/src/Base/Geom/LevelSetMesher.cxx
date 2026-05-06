@@ -114,7 +114,6 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 {
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
-  if (!(dimension <= 3)) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Bool project) const";
   return build(levelSet, Interval(levelSet.getLowerBound(), levelSet.getUpperBound()), project);
 }
 
@@ -125,15 +124,30 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (boundingBox.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the bounding box is of dimension=" << boundingBox.getDimension() << ", expected dimension=" << dimension;
-  // First, mesh the bounding box
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
+  const Function function(levelSet.getFunction());
+  const Field field(boundingMesh, function(boundingMesh.getVertices()));
+  return build(levelSet, field, project);
+}
+
+Mesh LevelSetMesher::build(const LevelSet & levelSet,
+                           const Field & field,
+                           const Bool project) const
+{
+  const UnsignedInteger dimension = levelSet.getDimension();
+  if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
+  if (field.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the field is of input dimension=" << field.getInputDimension() << ", expected input dimension=" << dimension;
+  if (field.getOutputDimension() != 1) LOGWARN(OSS() << "The field output dimension=" << field.getOutputDimension() << " is different from 1. The function defining the level set will be evaluated over the vertices of the mesh to get the values.");
+  // Extract the mesh and vertices from the field
+  const Mesh boundingMesh(field.getMesh());
   Sample boundingVertices(boundingMesh.getVertices());
   const UnsignedInteger numVertices = boundingVertices.getSize();
   const IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
   // Second, keep only the simplices with a majority of vertices in the level set
   const Function function(levelSet.getFunction());
-  const Point values(function(boundingVertices).asPoint());
+  // Use field values directly if 1D output (precomputed), otherwise evaluate the level-set function
+  const Point values(field.getOutputDimension() == 1 ? field.getValues().asPoint() : function(boundingVertices).asPoint());
   const Scalar level = levelSet.getLevel();
   const ComparisonOperator comparison(levelSet.getOperator());
   Indices goodSimplices(0);
