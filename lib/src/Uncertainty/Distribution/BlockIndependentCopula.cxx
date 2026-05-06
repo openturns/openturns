@@ -44,8 +44,6 @@ static const Factory<BlockIndependentCopula> Factory_ComposedCopula("ComposedCop
 /* Default constructor */
 BlockIndependentCopula::BlockIndependentCopula()
   : DistributionImplementation()
-  , copulaCollection_(0)
-  , isIndependent_(false)
 {
   isCopula_ = true;
   setName("BlockIndependentCopula");
@@ -56,8 +54,6 @@ BlockIndependentCopula::BlockIndependentCopula()
 /* Default constructor */
 BlockIndependentCopula::BlockIndependentCopula(const DistributionCollection & coll)
   : DistributionImplementation()
-  , copulaCollection_()
-  , isIndependent_(false)
 {
   isCopula_ = true;
   setName("BlockIndependentCopula");
@@ -107,10 +103,20 @@ String BlockIndependentCopula::__str__(const String & ) const
 /* Copula collection accessor */
 void BlockIndependentCopula::setCopulaCollection(const DistributionCollection & coll)
 {
+  // unfold BlockIndependentCopula items
+  DistributionCollection coll2;
+  for (UnsignedInteger i = 0; i < coll.getSize(); ++ i)
+  {
+    BlockIndependentCopula *p_block = dynamic_cast<BlockIndependentCopula*>(coll[i].getImplementation().get());
+    if (p_block)
+      coll2.add(p_block->getCopulaCollection());
+    else
+      coll2.add(coll[i]);
+  }
+
   // Check if the collection is not empty
-  const UnsignedInteger size = coll.getSize();
+  const UnsignedInteger size = coll2.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
-  copulaCollection_ = coll;
   Description description(0);
   UnsignedInteger dimension = 0;
   // Compute the dimension, build the description and check the independence
@@ -118,15 +124,16 @@ void BlockIndependentCopula::setCopulaCollection(const DistributionCollection & 
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (!coll[i].isCopula())
+    if (!coll2[i].isCopula())
       throw InvalidArgumentException(HERE) << "Element " << i << " is not a copula";
-    const UnsignedInteger copulaDimension = coll[i].getDimension();
+    const UnsignedInteger copulaDimension = coll2[i].getDimension();
     dimension += copulaDimension;
-    const Description copulaDescription(coll[i].getDescription());
+    const Description copulaDescription(coll2[i].getDescription());
     for (UnsignedInteger j = 0; j < copulaDimension; ++j) description.add(copulaDescription[j]);
-    isIndependent_ = isIndependent_ && copulaCollection_[i].hasIndependentCopula();
-    parallel = parallel && coll[i].getImplementation()->isParallel();
+    isIndependent_ = isIndependent_ && coll2[i].hasIndependentCopula();
+    parallel = parallel && coll2[i].getImplementation()->isParallel();
   }
+  copulaCollection_ = coll2;
   setParallel(parallel);
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs
