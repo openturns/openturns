@@ -179,7 +179,6 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
       temp2 = OT::convert< OT::_PySequence_, OT::baseType >(valObj);
       val2 = &temp2;
     }
-    assert( val2 );
     for ( OT::UnsignedInteger j = 0; j < val2->getNbColumns(); ++ j)
     {
       for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
@@ -202,7 +201,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   Py_ssize_t step2 = 0;
   Py_ssize_t slicelength2 = 0;
 
-  if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
+  if (!PyArg_ParseTuple(args, "OO:" #baseType "___getitem__", &obj1, &obj2)) SWIG_fail;
 
   // convert first list argument 
   if (PySlice_Check(obj1))
