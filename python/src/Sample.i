@@ -223,7 +223,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
       result.setDescription(self->getDescription());
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(args))
     {
@@ -247,7 +247,7 @@ PyObject * __getitem__(PyObject * args) const
         result.at(i) = self->at(index);
       }
       result.setDescription(self->getDescription());
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PyObject_HasAttrString(args, "__int__"))
     {
@@ -267,7 +267,7 @@ PyObject * __getitem__(PyObject * args) const
 
   PyObject * obj1 = 0;
   PyObject * obj2 = 0;
-  if (!PyArg_ParseTuple(args,(char *)"OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
+  if (!PyArg_ParseTuple(args, "OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
 
   if (OT::isAPython< OT::_PyInt_ >(obj1))
   {
@@ -365,7 +365,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size1; ++ i)
         result.at(i, 0) = self->at(start1 + i * step1, index2);
       result.setDescription(OT::Description(1, self->getDescription()[index2]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySlice_Check(obj2))
     {
@@ -380,15 +380,25 @@ PyObject * __getitem__(PyObject * args) const
       size2 = PySlice_AdjustIndices(self->getDimension(), &start2, &stop2, step2);
 
       OT::Sample result(size1, size2);
-      for (Py_ssize_t i = 0; i < size1; ++ i)
-        for (Py_ssize_t j = 0; j < size2; ++ j)
-          result.at(i, j) = self->at(start1 + i * step1, start2 + j * step2);
+      if (step2 == 1)
+      {
+        for (Py_ssize_t i = 0; i < size1; ++ i)
+          std::copy(self->getImplementation()->data_begin() + (start1 + i * step1) * self->getDimension() + start2,
+                    self->getImplementation()->data_begin() + (start1 + i * step1) * self->getDimension() + start2 + size2,
+                    result.getImplementation()->data_begin() + i * size2);
+      }
+      else
+      {
+        for (Py_ssize_t i = 0; i < size1; ++ i)
+          for (Py_ssize_t j = 0; j < size2; ++ j)
+            result.at(i, j) = self->at(start1 + i * step1, start2 + j * step2);
+      }
       OT::Description entireDescription(self->getDescription());
       OT::Description description(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
         description[j] = entireDescription[start2 + j*step2];
       result.setDescription(description);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -421,7 +431,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[indices2[j]];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
   }
   else if (PySequence_Check(obj1))
@@ -461,7 +471,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size1; ++ i)
         result.at(i, 0) = self->at(indices1[i], index2);
       result.setDescription(OT::Description(1, self->getDescription()[index2]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySlice_Check(obj2))
     {
@@ -484,7 +494,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[start2 + j*step2];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -517,7 +527,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[indices2[j]];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::Sample(result), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
   }
   else
@@ -550,7 +560,6 @@ void __setitem__(PyObject * args, PyObject * valObj)
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
-      assert(val);
       for (Py_ssize_t i = 0; i < size; ++ i)
         self->at(start + i*step) = val->at(i);
     }
@@ -607,7 +616,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
   PyObject * obj1 = 0;
   PyObject * obj2 = 0;
-  if (!PyArg_ParseTuple(args,(char *)"OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
+  if (!PyArg_ParseTuple(args, "OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
 
   if (OT::isAPython< OT::_PyInt_ >(obj1))
   {
@@ -712,7 +721,6 @@ void __setitem__(PyObject * args, PyObject * valObj)
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
-    assert(val);
 
     if (OT::isAPython< OT::_PyInt_ >(obj2))
     {
@@ -741,9 +749,23 @@ void __setitem__(PyObject * args, PyObject * valObj)
         throw OT::InvalidArgumentException(HERE) << "Sample.__setitem__: PySlice_Unpack failed";
       size2 = PySlice_AdjustIndices(self->getDimension(), &start2, &stop2, step2);
 
-      for (Py_ssize_t i = 0; i < size1; ++ i)
-        for (Py_ssize_t j = 0; j < size2; ++ j)
-          self->at(start1 + i * step1, start2 + j * step2) = val->at(i, j);
+      if (val->getSize() < static_cast<OT::UnsignedInteger>(size1) ||
+          val->getDimension() < static_cast<OT::UnsignedInteger>(size2))
+        throw OT::InvalidArgumentException(HERE) << "Assigned Sample is too small for the selected slice";
+      if (step2 == 1)
+      {
+        self->copyOnWrite();
+        for (Py_ssize_t i = 0; i < size1; ++ i)
+          std::copy(val->getImplementation()->data_begin() + i * val->getDimension(),
+                    val->getImplementation()->data_begin() + i * val->getDimension() + size2,
+                    self->getImplementation()->data_begin() + (start1 + i * step1) * self->getDimension() + start2);
+      }
+      else
+      {
+        for (Py_ssize_t i = 0; i < size1; ++ i)
+          for (Py_ssize_t j = 0; j < size2; ++ j)
+            self->at(start1 + i * step1, start2 + j * step2) = val->at(i, j);
+      }
     }
     else if (PySequence_Check(obj2))
     {
@@ -800,7 +822,6 @@ void __setitem__(PyObject * args, PyObject * valObj)
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
-    assert(val);
 
     if (OT::isAPython< OT::_PyInt_ >(obj2))
     {
