@@ -33,6 +33,7 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated StandardDistributionPolynomialFactory class
  * UniVariateDistributionPolynomialFactory moved to experimental
+ * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
 
 === Documentation ===
 
