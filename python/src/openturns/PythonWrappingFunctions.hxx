@@ -1321,19 +1321,6 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
         throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
     }
   }
-  else if (PyObject_HasAttrString(pyObj, "getNbColumns"))
-  {
-    // case of conversion from XMatrix to YMatrix
-    // X could be Square,Triangular,Identity...
-    // YMatrix might be Matrix of one of its inheritance types
-    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj, "getNbColumns", "()"));
-    ScopedPyObjectPointer rowsObj(PyObject_CallMethod(pyObj, "getNbRows", "()"));
-    ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));
-    Pointer< Collection< Scalar > > ptr = buildCollectionFromPySequence< Scalar >(implObj.get());
-    UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >(colunmsObj.get());
-    UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >(rowsObj.get());
-    p_implementation = new MatrixImplementation(nbRows, nbColumns, *ptr);
-  }
   else
   {
     // try to convert from a sequence of sequences
@@ -1612,21 +1599,6 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
       else
         throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
     }
-  }
-
-  // case of conversion from XMatrix to YMatrix
-  // X could be Square,Triangular,Identity...
-  // YMatrix might be Matrix of one of its inheritance types
-  if (PyObject_HasAttrString(pyObj, "getNbColumns"))
-  {
-    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj, "getNbColumns", "()"));
-    ScopedPyObjectPointer rowsObj(PyObject_CallMethod(pyObj, "getNbRows", "()"));
-    ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));
-    Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >(implObj.get());
-    UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >(colunmsObj.get());
-    UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >(rowsObj.get());
-    ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation(nbRows, nbColumns, *ptr);
-    return p_implementation;
   }
 
   // else try to convert from a sequence of sequences
