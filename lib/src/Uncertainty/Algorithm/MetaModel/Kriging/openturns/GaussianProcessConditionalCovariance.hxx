@@ -90,9 +90,11 @@ public:
       const Indices & indices) const;
 
   /** Compute joint normal distribution conditionally to observations*/
-  virtual Normal operator()(const Sample & xi) const;
+  virtual Normal getMarginalDistribution(const Point & xi) const;
+  virtual Normal getMarginalDistribution(const Sample & xi) const;
 
-  /** Compute joint normal distribution conditionally to observations*/
+  /** @deprecated Compute joint normal distribution conditionally to observations*/
+  virtual Normal operator()(const Sample & xi) const;
   virtual Normal operator()(const Point & xi) const;
 
   /** Method save() stores the object through the StorageManager */

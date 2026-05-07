@@ -177,7 +177,7 @@ def test_two_outputs():
             [0, 8859.22, 0, 11818.623],
         ]
     )
-    covariance = gccc([[9.5], [10.0]]).getCovariance()
+    covariance = gccc.getMarginalDistribution([[9.5], [10.0]]).getCovariance()
     print(covariance)
     ott.assert_almost_equal(covariance, reference_covariance, 0.0, 2e-2)
 
