@@ -62,7 +62,7 @@ PyObject * __getitem__(PyObject * args) const {
   Py_ssize_t step2 = 0;
   Py_ssize_t slicelength2 = 0;
 
-  if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
+  if (!PyArg_ParseTuple(args, "OO:" #baseType "___getitem__", &obj1, &obj2)) SWIG_fail;
 
   // convert first list argument 
   if (PySlice_Check(obj1))
@@ -113,15 +113,15 @@ PyObject * __getitem__(PyObject * args) const {
     if ( PySlice_Check( obj2 ) )
     {
       // case #1: [slice/slice] => baseType
-      OT::baseType result( slicelength1, slicelength2 );
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      OT::baseType ## Implementation result(slicelength1, slicelength2);
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
-        for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
+        for (Py_ssize_t j = 0; j < slicelength2; ++ j)
         {
-          result.operator()(i, j) = self->operator()( start1 + i*step1, start2 + j*step2 );
+          result.operator()(i, j) = self->operator()(start1 + i * step1, start2 + j * step2);
         }
       }
-      return SWIG_NewPointerObj((new OT::baseType(static_cast< const OT::baseType& >(result))), SWIG_TypeQuery("OT::" #baseType " *"),  SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj(new OT::baseType(result), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN);
     }
     else
     {
