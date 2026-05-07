@@ -15,12 +15,12 @@ public:
     }
   }
 
-  OT::Scalar operator() (OT::UnsignedInteger i, OT::UnsignedInteger j) const override
+  OT::Scalar operator() (const OT::UnsignedInteger i, const OT::UnsignedInteger j) const override
   {
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
-    OT::Scalar value = OT::convert<OT::_PyFloat_, OT::Scalar>(result.get());
+    const OT::Scalar value = OT::convert<OT::_PyFloat_, OT::Scalar>(result.get());
     return value;
   }
 private:
@@ -38,13 +38,19 @@ public:
     }
   }
 
-  void compute(OT::UnsignedInteger i, OT::UnsignedInteger j, OT::Matrix* localValues) const override
+  void compute(const OT::UnsignedInteger i, const OT::UnsignedInteger j, OT::Matrix* localValues) const override
   {
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
-    OT::Matrix value(OT::convert<OT::_PySequence_, OT::Matrix>(result.get()));
-    *localValues = value;
+
+    void * ptr = nullptr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(result.get(), &ptr, SWIG_TypeQuery("OT::Matrix *"), SWIG_POINTER_NO_NULL))) {
+      OT::Matrix *p_matrix = reinterpret_cast< OT::Matrix * >(ptr);
+      *localValues = *p_matrix;
+    }
+    else
+      throw OT::InvalidArgumentException(HERE) << "Object passed as argument is not convertible to a Matrix";
   }
 private:
   PyObject * pyObj_ = NULL;
