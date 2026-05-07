@@ -86,19 +86,38 @@ private:
 #define PyTuple_GET_SIZE PyTuple_Size
 #define PyList_GET_ITEM PyList_GetItem
 #define PyTuple_GET_ITEM PyTuple_GetItem
+#endif
 
-// PySequence_Fast should not be used in limited API
-// it was removed from limited API in 3.14
-#ifdef PySequence_Fast_GET_ITEM
-#undef PySequence_Fast_GET_ITEM
+inline
+Py_ssize_t Sequence_Fast_GET_SIZE(PyObject *o)
+{
+#ifdef Py_LIMITED_API
+  return PySequence_Length(o);
+#else
+  return PySequence_Fast_GET_SIZE(o);
 #endif
-#ifdef PySequence_Fast_GET_SIZE
-#undef PySequence_Fast_GET_SIZE
-#endif
-#define PySequence_Fast_GET_ITEM PySequence_GetItem
-#define PySequence_Fast_GET_SIZE PySequence_Length
+}
 
+inline
+PyObject* Sequence_Fast_GET_ITEM(PyObject *o, Py_ssize_t i)
+{
+#ifdef Py_LIMITED_API
+  return PySequence_GetItem(o, i); // new ref
+#else
+  return PySequence_Fast_GET_ITEM(o, i); // borrowed ref
 #endif
+}
+
+inline
+void Sequence_Fast_DECREF_ITEM(PyObject *o)
+{
+#ifdef Py_LIMITED_API
+  Py_XDECREF(o);
+#else
+  (void)o;
+#endif
+}
+
 
 void handleException();
 
@@ -607,14 +626,16 @@ canConvertCollectionObjectFromPySequence(PyObject * pyObj)
 
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
 
-  const UnsignedInteger size = PySequence_Fast_GET_SIZE(newPyObj.get());
+  const UnsignedInteger size = Sequence_Fast_GET_SIZE(newPyObj.get());
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+    PyObject * elt = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
     if (!canConvert< typename traitsPythonType< T >::Type, T >(elt))
     {
+      Sequence_Fast_DECREF_ITEM(elt);
       return false;
     }
+    Sequence_Fast_DECREF_ITEM(elt);
   }
 
   return true;
@@ -631,7 +652,7 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
   if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
-  const UnsignedInteger size = PySequence_Fast_GET_SIZE(newPyObj.get());
+  const UnsignedInteger size = Sequence_Fast_GET_SIZE(newPyObj.get());
   if ((sz != 0) && (sz != (int)size))
   {
     throw InvalidArgumentException(HERE) << "Sequence object has incorrect size " << size << ". Must be " << sz << ".";
@@ -640,14 +661,16 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
 
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+    PyObject * elt = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
     try
     {
       (*p_coll)[i] = checkAndConvert< typename traitsPythonType< T >::Type, T >(elt);
+      Sequence_Fast_DECREF_ITEM(elt);
     }
     catch (const Exception &)
     {
       delete p_coll;
+      Sequence_Fast_DECREF_ITEM(elt);
       throw;
     }
   }
@@ -917,32 +940,35 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
   if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
-  const UnsignedInteger size = PySequence_Fast_GET_SIZE(newPyObj.get());
+  const UnsignedInteger size = Sequence_Fast_GET_SIZE(newPyObj.get());
   if (size == 0) return Sample();
 
   // Get dimension of first point
-  PyObject * firstPoint = PySequence_Fast_GET_ITEM(newPyObj.get(), 0);
+  PyObject * firstPoint = Sequence_Fast_GET_ITEM(newPyObj.get(), 0);
   check<_PySequence_>(firstPoint);
   ScopedPyObjectPointer newPyFirstObj(PySequence_Fast(firstPoint, ""));
-  const UnsignedInteger dimension = PySequence_Fast_GET_SIZE(newPyFirstObj.get());
+  Sequence_Fast_DECREF_ITEM(firstPoint);
+  const UnsignedInteger dimension = Sequence_Fast_GET_SIZE(newPyFirstObj.get());
   // Allocate result Sample
   Sample sample(size, dimension);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    PyObject * pointObj = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+    PyObject * pointObj = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
     ScopedPyObjectPointer newPyPointObj(PySequence_Fast(pointObj, ""));
     if (i > 0)
     {
       // Check that object is a sequence, and has the right size
       check<_PySequence_>(pointObj);
-      const UnsignedInteger subDim = static_cast<UnsignedInteger>(PySequence_Fast_GET_SIZE(newPyPointObj.get()));
+      const UnsignedInteger subDim = static_cast<UnsignedInteger>(Sequence_Fast_GET_SIZE(newPyPointObj.get()));
       if (subDim != dimension)
         throw InvalidArgumentException(HERE) << "Inner sequences must have the same dimension";
     }
+    Sequence_Fast_DECREF_ITEM(pointObj);
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
-      PyObject * value = PySequence_Fast_GET_ITEM(newPyPointObj.get(), j);
+      PyObject * value = Sequence_Fast_GET_ITEM(newPyPointObj.get(), j);
       sample(i, j) = checkAndConvert<_PyFloat_, Scalar>(value);
+      Sequence_Fast_DECREF_ITEM(value);
     }
   }
   return sample;
@@ -1115,22 +1141,24 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
   if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
-  const UnsignedInteger size = PySequence_Fast_GET_SIZE(newPyObj.get());
+  const UnsignedInteger size = Sequence_Fast_GET_SIZE(newPyObj.get());
   if (size == 0) return IndicesCollection();
   // Allocate a Collection of Indices
   Collection<Indices> coll(size);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    PyObject * indicesObj = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+    PyObject * indicesObj = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
     ScopedPyObjectPointer newPyIndicesObj(PySequence_Fast(indicesObj, ""));
     // Check that object is a sequence
     check<_PySequence_>(indicesObj);
-    const UnsignedInteger dimension = PySequence_Fast_GET_SIZE(newPyIndicesObj.get());
+    Sequence_Fast_DECREF_ITEM(indicesObj);
+    const UnsignedInteger dimension = Sequence_Fast_GET_SIZE(newPyIndicesObj.get());
     Indices newIndices(dimension);
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
-      PyObject * value = PySequence_Fast_GET_ITEM(newPyIndicesObj.get(), j);
+      PyObject * value = Sequence_Fast_GET_ITEM(newPyIndicesObj.get(), j);
       newIndices[j] = checkAndConvert<_PyInt_, UnsignedInteger>(value);
+      Sequence_Fast_DECREF_ITEM(value);
     }
     coll[i] = newIndices;
   }
