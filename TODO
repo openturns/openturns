@@ -11,3 +11,4 @@ Remove deprecated LinearModelResult from formula and coefficientsNames
 Remove deprecated LinearModelResult.getFormula()
 Remove deprecated LinearModelResult.getCoefficientsNames()
 Remove deprecated LinearModelResult.buildMethod()
+Remove GaussianProcessConditionalCovariance.operator() in some future version

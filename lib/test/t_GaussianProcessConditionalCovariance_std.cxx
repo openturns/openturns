@@ -217,7 +217,7 @@ int main(int, char *[])
       const SquareMatrix nullMatrix(4);
       const Point pointOfInterest = {9.5, 10.0};
       const Sample sample(Sample::BuildFromPoint(pointOfInterest));
-      const CovarianceMatrix covarianceMat(gccc(sample).getCovariance());
+      const CovarianceMatrix covarianceMat(gccc.getMarginalDistribution(sample).getCovariance());
       std::cout << covarianceMat << std::endl;
       assert_almost_equal(covarianceMat, reference_covariance.transpose(), 0.0, 2e-2);
     }

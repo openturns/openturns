@@ -446,27 +446,39 @@ Sample GaussianProcessConditionalCovariance::getConditionalMarginalVariance(cons
 
 
 /* Compute joint normal distribution conditionally to observations*/
-Normal GaussianProcessConditionalCovariance::operator()(const Point & xi) const
+Normal GaussianProcessConditionalCovariance::getMarginalDistribution(const Point & xi) const
 {
   const Sample sample(1, xi);
-  return operator()(sample);
+  return getMarginalDistribution(sample);
 }
 
 /* Compute joint normal distribution conditionally to observations*/
-Normal GaussianProcessConditionalCovariance::operator()(const Sample & xi) const
+Normal GaussianProcessConditionalCovariance::getMarginalDistribution(const Sample & xi) const
 {
   // The Normal distribution is defined by its mean & covariance
-  LOGDEBUG("In GaussianProcessConditionalCovariance::operator() : evaluating the mean");
+  LOGDEBUG("In GaussianProcessConditionalCovariance::getMarginalDistribution() : evaluating the mean");
   const Sample meanAsSample(getConditionalMean(xi));
   // Mean should be a Point ==> data are copied form the Sample to a Point
   const Point mean(meanAsSample.getImplementation()->getData());
-  LOGDEBUG("In GaussianProcessConditionalCovariance::operator() : evaluating the covariance");
+  LOGDEBUG("In GaussianProcessConditionalCovariance::getMarginalDistribution() : evaluating the covariance");
   const CovarianceMatrix covarianceMatrix = getConditionalCovariance(xi);
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
   // Even if this check is done in Normal::Normal, we perform debugging
-  LOGDEBUG("In GaussianProcessConditionalCovariance::operator() : evaluating the Normal distribution");
+  LOGDEBUG("In GaussianProcessConditionalCovariance::getMarginalDistribution() : evaluating the Normal distribution");
   // Finally return the distribution
   return Normal(mean, covarianceMatrix);
+}
+
+Normal GaussianProcessConditionalCovariance::operator()(const Point & xi) const
+{
+  LOGWARN("GaussianProcessConditionalCovariance::operator() is deprecated, use getMarginalDistribution");
+  return getMarginalDistribution(xi);
+}
+
+Normal GaussianProcessConditionalCovariance::operator()(const Sample & xi) const
+{
+  LOGWARN("GaussianProcessConditionalCovariance::operator() is deprecated, use getMarginalDistribution");
+  return getMarginalDistribution(xi);
 }
 
 /* Method save() stores the object through the StorageManager */

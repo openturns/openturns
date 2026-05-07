@@ -44,13 +44,13 @@ GaussianProcessRandomVector::GaussianProcessRandomVector(const GaussianProcessRe
   , sample_(Sample(1, point))
 {
   const GaussianProcessConditionalCovariance gpcc(gprResult);
-  setDistribution(gpcc(point));
+  setDistribution(gpcc.getMarginalDistribution(point));
 }
 
 /* Default constructor */
 GaussianProcessRandomVector::GaussianProcessRandomVector(const GaussianProcessRegressionResult & gprResult,
     const Sample & sample)
-  : UsualRandomVector(GaussianProcessConditionalCovariance(gprResult)(sample))
+  : UsualRandomVector(GaussianProcessConditionalCovariance(gprResult).getMarginalDistribution(sample))
   , gprResult_(gprResult)
   , sample_(sample)
 {
