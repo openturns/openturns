@@ -54,17 +54,17 @@ PyObject * __getitem__(PyObject * arg) const
   else if (PySequence_Check(arg))
   {
     OT::ScopedPyObjectPointer newPyObj(PySequence_Fast(arg, ""));
-    const Py_ssize_t size = PySequence_Fast_GET_SIZE(newPyObj.get());
+    const Py_ssize_t size = OT::Sequence_Fast_GET_SIZE(newPyObj.get());
     collectionType result(size);
     for (Py_ssize_t i = 0; i < size; ++ i)
     {
-      PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+      PyObject * elt = OT::Sequence_Fast_GET_ITEM(newPyObj.get(), i);
       long index = 0;
       if (OT::isAPython<OT::_NumPyInt_>(elt))
         index = OT::convert< OT::_NumPyInt_, OT::SignedInteger>(elt);
       else
         throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
-
+      OT::Sequence_Fast_DECREF_ITEM(elt);
       if (index < 0) {
         index += self->getSize();
       }
@@ -138,17 +138,17 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
   else if (PySequence_Check(arg))
   {
     OT::ScopedPyObjectPointer newPyObj(PySequence_Fast(arg, ""));
-    const Py_ssize_t size = PySequence_Fast_GET_SIZE(newPyObj.get());
+    const Py_ssize_t size = OT::Sequence_Fast_GET_SIZE(newPyObj.get());
     OT::Indices indices(size);
     for (Py_ssize_t i = 0; i < size; ++ i)
     {
-      PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+      PyObject * elt = OT::Sequence_Fast_GET_ITEM(newPyObj.get(), i);
       long index = 0;
       if (OT::isAPython<OT::_NumPyInt_>(elt))
         index = OT::convert< OT::_NumPyInt_, OT::SignedInteger>(elt);
       else
         throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
-
+      OT::Sequence_Fast_DECREF_ITEM(elt);
       if (index < 0) {
         index += self->getSize();
       }

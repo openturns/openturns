@@ -229,16 +229,17 @@ PyObject * __getitem__(PyObject * args) const
     {
       // case 0.2: [sequence] => Sample
       OT::ScopedPyObjectPointer seq(PySequence_Fast(args, ""));
-      const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
+      const Py_ssize_t size = OT::Sequence_Fast_GET_SIZE(seq.get());
       OT::Sample result(size, self->getDimension());
       for (Py_ssize_t i = 0; i < size; ++ i)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq.get(), i);
         long index = 0;
         if (OT::isAPython<OT::_NumPyInt_>(elt))
           index = OT::convert< OT::_NumPyInt_, OT::SignedInteger>(elt);
         else
           throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
+        OT::Sequence_Fast_DECREF_ITEM(elt);
         if (index < 0)
           index += self->getSize();
         if (index < 0)
@@ -316,11 +317,11 @@ PyObject * __getitem__(PyObject * args) const
     {
       // case 1.3: [int/sequence] => Point
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
-      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      const Py_ssize_t size2 = OT::Sequence_Fast_GET_SIZE(seq2.get());
       OT::Point result(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
         if (PyInt_Check(elt))
         {
           long index2 = PyInt_AsLong(elt);
@@ -332,6 +333,7 @@ PyObject * __getitem__(PyObject * args) const
         }
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        OT::Sequence_Fast_DECREF_ITEM(elt);
       }
       return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
@@ -392,12 +394,12 @@ PyObject * __getitem__(PyObject * args) const
     {
       // case 2.3: [slice/sequence] => Sample
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
-      Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      Py_ssize_t size2 = OT::Sequence_Fast_GET_SIZE(seq2.get());
       OT::Sample result(size1, size2);
       OT::Indices indices2(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
         if (PyInt_Check(elt))
         {
           long index2 = PyInt_AsLong(elt);
@@ -409,6 +411,7 @@ PyObject * __getitem__(PyObject * args) const
         }
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        OT::Sequence_Fast_DECREF_ITEM(elt);
       }
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
@@ -424,11 +427,11 @@ PyObject * __getitem__(PyObject * args) const
   else if (PySequence_Check(obj1))
   {
     OT::ScopedPyObjectPointer seq1(PySequence_Fast(obj1, ""));
-    const Py_ssize_t size1 = PySequence_Fast_GET_SIZE(seq1.get());
+    const Py_ssize_t size1 = OT::Sequence_Fast_GET_SIZE(seq1.get());
     OT::Indices indices1(size1);
     for (Py_ssize_t i = 0; i < size1; ++ i)
     {
-      PyObject * elt = PySequence_Fast_GET_ITEM(seq1.get(), i);
+      PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq1.get(), i);
       if (PyInt_Check(elt))
       {
         long index1 = PyInt_AsLong(elt);
@@ -440,6 +443,7 @@ PyObject * __getitem__(PyObject * args) const
       }
       else
         SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      OT::Sequence_Fast_DECREF_ITEM(elt);
     }
 
     if (OT::isAPython< OT::_PyInt_ >(obj2))
@@ -486,11 +490,11 @@ PyObject * __getitem__(PyObject * args) const
     {
       // case 3.3: [sequence/sequence] => Sample
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
-      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      const Py_ssize_t size2 = OT::Sequence_Fast_GET_SIZE(seq2.get());
       OT::Indices indices2(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
         if (PyInt_Check(elt))
         {
           long index2 = PyInt_AsLong(elt);
@@ -502,6 +506,7 @@ PyObject * __getitem__(PyObject * args) const
         }
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        OT::Sequence_Fast_DECREF_ITEM(elt);
       }
       OT::Sample result(size1, size2);
       for (Py_ssize_t i = 0; i < size1; ++ i)
@@ -553,7 +558,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
     {
       // case 0.2: [sequence] <= Sample
       OT::ScopedPyObjectPointer seq(PySequence_Fast(args, ""));
-      const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
+      const Py_ssize_t size = OT::Sequence_Fast_GET_SIZE(seq.get());
       OT::Sample temp;
       OT::Sample *val = 0;
       if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
@@ -563,12 +568,13 @@ void __setitem__(PyObject * args, PyObject * valObj)
       assert(val);
       for (Py_ssize_t i = 0; i < size; ++ i)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq.get(), i);
         long index = 0;
         if (OT::isAPython<OT::_NumPyInt_>(elt))
           index = OT::convert< OT::_NumPyInt_, OT::SignedInteger>(elt);
         else
           throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
+        OT::Sequence_Fast_DECREF_ITEM(elt);
         if (index < 0)
           index += self->getSize();
         if (index < 0)
@@ -658,12 +664,12 @@ void __setitem__(PyObject * args, PyObject * valObj)
     {
       // case 1.3: [int/sequence] <= Point
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
-      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      const Py_ssize_t size2 = OT::Sequence_Fast_GET_SIZE(seq2.get());
 
       OT::Indices indices2(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
         if (PyInt_Check(elt))
         {
           long index2 = PyInt_AsLong(elt);
@@ -675,6 +681,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
         }
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        OT::Sequence_Fast_DECREF_ITEM(elt);
       }
 
       OT::Point temp;
@@ -742,11 +749,11 @@ void __setitem__(PyObject * args, PyObject * valObj)
     {
       // case 2.3: [slice/sequence] <= Sample
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
-      Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      Py_ssize_t size2 = OT::Sequence_Fast_GET_SIZE(seq2.get());
       OT::Indices indices2(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
         if (PyInt_Check(elt))
         {
           long index2 = PyInt_AsLong(elt);
@@ -758,6 +765,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
         }
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        OT::Sequence_Fast_DECREF_ITEM(elt);
       }
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
@@ -767,11 +775,11 @@ void __setitem__(PyObject * args, PyObject * valObj)
   else if (PySequence_Check(obj1))
   {
     OT::ScopedPyObjectPointer seq1(PySequence_Fast(obj1, ""));
-    const Py_ssize_t size1 = PySequence_Fast_GET_SIZE(seq1.get());
+    const Py_ssize_t size1 = OT::Sequence_Fast_GET_SIZE(seq1.get());
     OT::Indices indices1(size1);
     for (Py_ssize_t i = 0; i < size1; ++ i)
     {
-      PyObject * elt = PySequence_Fast_GET_ITEM(seq1.get(), i);
+      PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq1.get(), i);
       if (PyInt_Check(elt))
       {
         long index1 = PyInt_AsLong(elt);
@@ -783,6 +791,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       }
       else
         SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      OT::Sequence_Fast_DECREF_ITEM(elt);
     }
 
     OT::Sample temp;
@@ -827,11 +836,11 @@ void __setitem__(PyObject * args, PyObject * valObj)
     {
       // case 3.3: [sequence/sequence] <= Sample
       OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
-      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      const Py_ssize_t size2 = OT::Sequence_Fast_GET_SIZE(seq2.get());
       OT::Indices indices2(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
-        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
         if (PyInt_Check(elt))
         {
           long index2 = PyInt_AsLong(elt);
@@ -843,6 +852,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
         }
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        OT::Sequence_Fast_DECREF_ITEM(elt);
       }
       for (Py_ssize_t i = 0; i < size1; ++ i)
         for (Py_ssize_t j = 0; j < size2; ++ j)
