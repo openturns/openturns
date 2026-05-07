@@ -56,6 +56,9 @@ public:
     return *this;
   }
 
+  ScopedPyObjectPointer(const ScopedPyObjectPointer&) = delete;
+  ScopedPyObjectPointer& operator=(const ScopedPyObjectPointer&) = delete;
+
   PyObject & operator*() const
   {
     return *pyObj_;
@@ -66,7 +69,7 @@ public:
     return pyObj_;
   }
 
-  bool isNull()
+  bool isNull() const
   {
     return !pyObj_;
   }
@@ -275,7 +278,7 @@ convert< _NumPyInt_, SignedInteger >(PyObject * pyObj)
 {
   if (isAPython<_PyInt_>(pyObj))
     return convert<_PyInt_, SignedInteger>(pyObj);
-  ScopedPyObjectPointer intValue(PyObject_CallMethod(pyObj, const_cast<char *>("__int__"), NULL));
+  ScopedPyObjectPointer intValue(PyObject_CallMethod(pyObj, "__int__", NULL));
   if (intValue.isNull())
     handleException();
   return convert<_PyInt_, SignedInteger>(intValue.get());
@@ -640,14 +643,13 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
     PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
     try
     {
-      check<typename traitsPythonType< T >::Type>(elt);
+      (*p_coll)[i] = checkAndConvert< typename traitsPythonType< T >::Type, T >(elt);
     }
-    catch (const InvalidArgumentException &)
+    catch (const Exception &)
     {
       delete p_coll;
       throw;
     }
-    (*p_coll)[i] = convert< typename traitsPythonType< T >::Type, T >(elt);
   }
 
   return p_coll;
@@ -879,7 +881,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   }
 #endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
-  if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
+  if (PyObject_HasAttrString(pyObj, "shape"))
   {
     ScopedPyObjectPointer shapeObj(PyObject_GetAttrString(pyObj, "shape"));
     if (!shapeObj.get()) throw;
@@ -1079,7 +1081,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
   }
 #endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
-  if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
+  if (PyObject_HasAttrString(pyObj, "shape"))
   {
     ScopedPyObjectPointer shapeObj(PyObject_GetAttrString(pyObj, "shape"));
     if (shapeObj.get())
@@ -1209,7 +1211,7 @@ inline
 MatrixImplementation*
 convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
 {
-  MatrixImplementation *p_implementation = 0;
+  MatrixImplementation *p_implementation = nullptr;
 #if !defined(Py_LIMITED_API) || (Py_LIMITED_API >= 0x030b0000)
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
@@ -1247,7 +1249,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   }
 #endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
-  if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
+  if (PyObject_HasAttrString(pyObj, "shape"))
   {
     ScopedPyObjectPointer shapeObj(PyObject_GetAttrString(pyObj, "shape"));
     if (shapeObj.get())
@@ -1279,6 +1281,11 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
                 throw;
               }
             }
+            else
+            {
+              delete p_implementation;
+              throw InvalidArgumentException(HERE) << "Call to __getitem__ failed";
+            }
           }
         }
       }
@@ -1286,20 +1293,14 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
         throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
     }
   }
-  else if (PyObject_HasAttrString(pyObj, const_cast<char *>("getNbColumns")))
+  else if (PyObject_HasAttrString(pyObj, "getNbColumns"))
   {
     // case of conversion from XMatrix to YMatrix
     // X could be Square,Triangular,Identity...
     // YMatrix might be Matrix of one of its inheritance types
-    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod (pyObj,
-                                     const_cast<char *>("getNbColumns"),
-                                     const_cast<char *>("()")));
-    ScopedPyObjectPointer rowsObj(PyObject_CallMethod (pyObj,
-                                  const_cast<char *>("getNbRows"),
-                                  const_cast<char *>("()")));
-    ScopedPyObjectPointer implObj(PyObject_CallMethod (pyObj,
-                                  const_cast<char *>("getImplementation"),
-                                  const_cast<char *>("()")));
+    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj, "getNbColumns", "()"));
+    ScopedPyObjectPointer rowsObj(PyObject_CallMethod(pyObj, "getNbRows", "()"));
+    ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));
     Pointer< Collection< Scalar > > ptr = buildCollectionFromPySequence< Scalar >(implObj.get());
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >(colunmsObj.get());
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >(rowsObj.get());
@@ -1340,7 +1341,10 @@ convert< _PySequence_, SquareMatrix >(PyObject * pyObj)
 {
   MatrixImplementation *p_implementation = convert< _PySequence_, MatrixImplementation* >(pyObj);
   if (p_implementation->getNbRows() != p_implementation->getNbColumns())
+  {
+    delete p_implementation;
     throw InvalidArgumentException(HERE) << "The matrix is not square";
+  }
   return SquareMatrix(p_implementation);
 }
 
@@ -1541,7 +1545,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
   }
 #endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
-  if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
+  if (PyObject_HasAttrString(pyObj, "shape"))
   {
     ScopedPyObjectPointer shapeObj(PyObject_GetAttrString(pyObj, "shape"));
     if (shapeObj.get())
@@ -1585,17 +1589,11 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
   // case of conversion from XMatrix to YMatrix
   // X could be Square,Triangular,Identity...
   // YMatrix might be Matrix of one of its inheritance types
-  if (PyObject_HasAttrString(pyObj, const_cast<char *>("getNbColumns")))
+  if (PyObject_HasAttrString(pyObj, "getNbColumns"))
   {
-    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod (pyObj,
-                                     const_cast<char *>("getNbColumns"),
-                                     const_cast<char *>("()")));
-    ScopedPyObjectPointer rowsObj(PyObject_CallMethod (pyObj,
-                                  const_cast<char *>("getNbRows"),
-                                  const_cast<char *>("()")));
-    ScopedPyObjectPointer implObj(PyObject_CallMethod (pyObj,
-                                  const_cast<char *>("getImplementation"),
-                                  const_cast<char *>("()")));
+    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj, "getNbColumns", "()"));
+    ScopedPyObjectPointer rowsObj(PyObject_CallMethod(pyObj, "getNbRows", "()"));
+    ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));
     Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >(implObj.get());
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >(colunmsObj.get());
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >(rowsObj.get());
@@ -1723,7 +1721,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
   }
 #endif
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
-  if (PyObject_HasAttrString(pyObj, const_cast<char *>("shape")))
+  if (PyObject_HasAttrString(pyObj, "shape"))
   {
     ScopedPyObjectPointer shapeObj(PyObject_GetAttrString(pyObj, "shape"));
     if (shapeObj.get())
@@ -1767,21 +1765,13 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
         throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
     }
   }
-  else if (PyObject_HasAttrString(pyObj, const_cast<char *>("getNbSheets")))
+  else if (PyObject_HasAttrString(pyObj, "getNbSheets"))
   {
     // case of conversion from XTensor to YTensor
-    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod (pyObj,
-                                     const_cast<char *>("getNbColumns"),
-                                     const_cast<char *>("()")));
-    ScopedPyObjectPointer rowsObj(PyObject_CallMethod (pyObj,
-                                  const_cast<char *>("getNbRows"),
-                                  const_cast<char *>("()")));
-    ScopedPyObjectPointer sheetsObj(PyObject_CallMethod (pyObj,
-                                    const_cast<char *>("getNbSheets"),
-                                    const_cast<char *>("()")));
-    ScopedPyObjectPointer implObj(PyObject_CallMethod (pyObj,
-                                  const_cast<char *>("getImplementation"),
-                                  const_cast<char *>("()")));
+    ScopedPyObjectPointer colunmsObj(PyObject_CallMethod(pyObj,"getNbColumns", "()"));
+    ScopedPyObjectPointer rowsObj(PyObject_CallMethod(pyObj, "getNbRows", "()"));
+    ScopedPyObjectPointer sheetsObj(PyObject_CallMethod(pyObj, "getNbSheets", "()"));
+    ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));
     Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >(implObj.get());
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >(colunmsObj.get());
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >(rowsObj.get());
@@ -1919,7 +1909,7 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = 
 
 
 inline
-ScopedPyObjectPointer deepCopy(PyObject * pyObj)
+PyObject* deepCopy(PyObject* pyObj)
 {
   ScopedPyObjectPointer copyModule(PyImport_ImportModule("copy"));
   if (copyModule.isNull())
@@ -1929,8 +1919,8 @@ ScopedPyObjectPointer deepCopy(PyObject * pyObj)
   if (deepCopyMethod.isNull())
     throw InternalException(HERE) << "cannot access deepcopy()";
 
-  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod.get(), pyObj, NULL));
-  if (pyObjDeepCopy.isNull())
+  PyObject* pyObjDeepCopy = PyObject_CallFunctionObjArgs(deepCopyMethod.get(), pyObj, NULL);
+  if (pyObjDeepCopy == NULL)
     handleException();
   return pyObjDeepCopy;
 }
