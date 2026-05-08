@@ -148,6 +148,35 @@ Point SklarCopula::computeDDF(const Point & point) const
   return result;
 }
 
+/* Get the log PDF of the distribution
+   F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n))
+   so p(x_1,\dots,x_n) = c(F_1(x_1),\dots,F_n(x_n))\prod_{i=1}^n p_i(x_i)
+   and logp(x_1,\dots,x_n) = logc(F_1(x_1),\dots,F_n(x_n)) + \sum_{i=1}^n logp_i(x_i) */
+Scalar SklarCopula::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension " << dimension << ", here dimension=" << point.getDimension();
+
+  // Early exit for the independent case
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Scalar ui = point[i];
+    if ((ui <= 0.0) || ui >= 1.0) return -SpecFunc::MaxScalar;
+  }
+  if (distribution_.hasIndependentCopula()) return 0.0;
+  Point x(dimension);
+  Scalar sum = 0.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Point xi(marginalCollection_[i].computeQuantile(point[i]));
+    x[i] = xi[0];
+    sum += marginalCollection_[i].computeLogPDF(xi);
+    if (sum <= -SpecFunc::MaxScalar) return -SpecFunc::MaxScalar;
+  }
+  return distribution_.computeLogPDF(x) - sum;
+}
+
 /* Get the PDF of the distribution
    F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n))
    so p(x_1,\dots,x_n) = c(F_1(x_1),\dots,F_n(x_n))\prod_{i=1}^n p_i(x_i) */
