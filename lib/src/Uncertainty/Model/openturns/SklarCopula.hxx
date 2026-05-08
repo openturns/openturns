@@ -68,6 +68,10 @@ public:
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
+  /** Get the log-PDF of the distribution */
+  using DistributionImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
+
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;

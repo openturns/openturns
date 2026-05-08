@@ -31,3 +31,12 @@ estimatedStudentCopula = factory.buildAsStudentCopula()
 print("Default copula=", estimatedStudentCopula)
 estimatedStudentCopula = factory.buildAsStudentCopula(distribution.getParameter())
 print("StudentCopula from parameters=", estimatedStudentCopula)
+
+copula = ot.StudentCopula(3.5, ot.CorrelationMatrix(3, [1.0, 0.2, 0.3, 0.2, 1.0, 0.4, 0.3, 0.4, 1.0]))
+sample = copula.getSample(1000)
+estimated = ot.StudentCopulaFactory().buildAsStudentCopula(sample)
+
+nuRef = 3.5
+nuEst = estimated.getNu()
+print(f"Estimated nu={nuEst}")
+ott.assert_almost_equal(nuEst, nuRef, 1e-1, 1e-1)
