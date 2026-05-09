@@ -3,6 +3,7 @@
 import openturns as ot
 import math
 
+
 def q_norm(enumerate_function, indices):
     """
     Compute the Q-Norm of the multi-index
@@ -18,8 +19,9 @@ def q_norm(enumerate_function, indices):
 
     for j in range(dimension):
         result += math.pow(float(indices[j]), q)
-    
+
     return math.pow(result, 1.0 / q)
+
 
 ot.TESTPREAMBLE()
 
