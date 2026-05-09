@@ -22,6 +22,7 @@
 #define OPENTURNS_HYPERBOLICENUMERATEFUNCTION_HXX
 
 #include <list>
+#include <vector>
 
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -103,6 +104,9 @@ private:
 
   /** Q-Norm q term */
   Scalar q_;
+
+  /** Lookup table for cached power evaluations */
+  mutable std::vector<Scalar> powLUT_;
 
   /** Cache of already generated indices */
   mutable IndiceCache candidates_;

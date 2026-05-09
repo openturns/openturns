@@ -63,11 +63,13 @@ String HyperbolicEnumerateFunction::__repr__() const
          << " q=" << q_;
 }
 
+/* Initialize the generation of indices */
 void HyperbolicEnumerateFunction::initialize()
 {
   cache_.clear();
   candidates_.clear();
-  // Insertion de l'indice 0, avec une norme q de 0.0 dans la liste des candidats
+  powLUT_.clear();
+  // Inserting index 0, with a q-norm of 0.0, into the candidate list
   ValueType zero(Indices(getDimension(), 0), 0.0);
   candidates_.insert(candidates_.begin(), zero);
 }
@@ -77,22 +79,37 @@ Scalar HyperbolicEnumerateFunction::qNorm(const Indices & indices) const
 {
   Scalar result = 0.0;
   UnsignedInteger dimension = indices.getSize();
+  // When q=1, the q-Norm is just the 1-norm
   if (q_ == 1.0)
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
       result += indices[j];
-    return result;
   }
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
-    result += std::pow(static_cast<Scalar>(indices[j]), q_);
-  return std::pow(result, 1.0 / q_);
+  else
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      const UnsignedInteger k = indices[j];
+      // Dynamically expand the lookup table if a higher degree k is encountered
+      if (k >= powLUT_.size())
+      {
+        for (UnsignedInteger i = powLUT_.size(); i <= k; ++ i)
+          powLUT_.push_back(std::pow(static_cast<Scalar>(i), q_));
+      }
+      result += powLUT_[k];
+    }
+    result = std::pow(result, 1.0 / q_);
+  }
+  return result;
 }
 
+/* Returns the maximum degree of the multi-index */
 UnsignedInteger HyperbolicEnumerateFunction::computeDegree(const Indices& indices) const
 {
   return *std::max_element(indices.begin(), indices.end());
 }
 
+/* The bijective association between an integer and a set of indices */
 Indices HyperbolicEnumerateFunction::operator() (const UnsignedInteger index) const
 {
   for (UnsignedInteger i = cache_.getSize(); i <= index; ++ i)
@@ -141,6 +158,7 @@ Indices HyperbolicEnumerateFunction::operator() (const UnsignedInteger index) co
   return cache_[index];
 }
 
+/* The inverse of the association */
 UnsignedInteger HyperbolicEnumerateFunction::inverse(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
@@ -161,6 +179,7 @@ UnsignedInteger HyperbolicEnumerateFunction::inverse(const Indices & indices) co
   return result;
 }
 
+/* The cardinal of the given strata */
 UnsignedInteger HyperbolicEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
   UnsignedInteger result = getStrataCumulatedCardinal(strataIndex);
@@ -168,12 +187,14 @@ UnsignedInteger HyperbolicEnumerateFunction::getStrataCardinal(const UnsignedInt
   return result;
 }
 
+/* The cardinal of the cumulated strata lower or equal to the given strata */
 UnsignedInteger HyperbolicEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
   while (strataCumulatedCardinal_.getSize() <= strataIndex) operator()(cache_.getSize());
   return strataCumulatedCardinal_[strataIndex];
 }
 
+/* The index of the strata of degree max < degree */
 UnsignedInteger HyperbolicEnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
   UnsignedInteger index = 0;
