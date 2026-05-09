@@ -7,6 +7,8 @@ import math
 def q_norm(enumerate_function, indices):
     """
     Compute the Q-Norm of the multi-index
+
+    Note. We reimplement qNorm, because it is a private method of HyperbolicEnumerateFunction
     """
     result = 0.0
     q = enumerate_function.getQ()
@@ -53,9 +55,12 @@ for dimension in range(1, 4):
     for index in range(size):
         multiindex = f(index)
         indexQNorm = q_norm(f, multiindex)
-        if not f(index) == g(index):
-            raise Exception("spam", f(index), g(index))
+        referenceIndexQNorm = q_norm(f, multiindex)
         print(f"index={index}, multi-index={multiindex}, indexQNorm={indexQNorm:.4f}")
+        if not f(index) == g(index):
+            raise Exception(f"Computed index={index}, "
+                            f"multiindex={multiindex} (q-norm={indexQNorm:.4f}), "
+                            f"reference multiindex={g(index)} (q-norm={referenceIndexQNorm:.4f})")
         # Check that the Q-Norms are increasing
         if index > 0:
             assert indexQNorm >= previousIndexQNorm

@@ -20,6 +20,7 @@
  */
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/HyperbolicEnumerateFunction.hxx"
 #include "openturns/OSS.hxx"
@@ -31,6 +32,51 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HyperbolicEnumerateFunction)
 
 static const Factory<HyperbolicEnumerateFunction> Factory_HyperbolicEnumerateFunction;
+
+/* Custom hash functor implementation for Indices */
+std::size_t HyperbolicEnumerateFunction::IndicesHash::operator()(const Indices & indices) const
+{
+  std::size_t seed = 0;
+  const UnsignedInteger size = indices.getSize();
+  for (UnsignedInteger j = 0; j < size; ++j)
+    seed ^= std::hash<UnsignedInteger>()(indices[j]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+  return seed;
+}
+
+/* Comparator implementation for the priority queue (min-heap ordering) */
+bool HyperbolicEnumerateFunction::CandidateComparator::operator()(const ValueType & lhs, const ValueType & rhs) const
+{
+  const Scalar qNormTolerance=ResourceMap::GetAsScalar("HyperbolicEnumerateFunction-QNormTolerance");
+  // 1. Compare q-norm
+  if (std::abs(lhs.second - rhs.second) > qNormTolerance)
+    return lhs.second > rhs.second; // greater-than yields a min-heap
+
+  const Indices & alpha = lhs.first;
+  const Indices & beta = rhs.first;
+  const UnsignedInteger dimension = alpha.getSize();
+
+  // 2. Compare sum of degrees
+  UnsignedInteger sumAlpha = 0;
+  UnsignedInteger sumBeta = 0;
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    sumAlpha += alpha[j];
+    sumBeta += beta[j];
+  }
+  if (sumAlpha != sumBeta)
+    return sumAlpha > sumBeta;
+
+  // 3. Graded Lexicographical order tie-breaker: from left to right,
+  // larger degree comes first
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    const UnsignedInteger idx = j - 1;
+    if (alpha[idx] != beta[idx])
+      return alpha[idx] < beta[idx];
+  }
+
+  return false;
+}
 
 /* Default constructor */
 HyperbolicEnumerateFunction::HyperbolicEnumerateFunction()
@@ -67,11 +113,15 @@ String HyperbolicEnumerateFunction::__repr__() const
 void HyperbolicEnumerateFunction::initialize()
 {
   cache_.clear();
-  candidates_.clear();
+  candidates_ = IndiceCandidates(); // std::priority_queue has no clear() method
+  visitedCandidates_.clear();
   powLUT_.clear();
+
   // Inserting index 0, with a q-norm of 0.0, into the candidate list
-  ValueType zero(Indices(getDimension(), 0), 0.0);
-  candidates_.insert(candidates_.begin(), zero);
+  Indices zeroIndices(getDimension(), 0);
+  ValueType zero(zeroIndices, 0.0);
+  visitedCandidates_.insert(zeroIndices);
+  candidates_.push(zero);
 }
 
 /* Returns the q-norm of the multi-index */
@@ -117,8 +167,8 @@ Indices HyperbolicEnumerateFunction::operator() (const UnsignedInteger index) co
     if (candidates_.empty())
       throw NotDefinedException(HERE) << "Cannot enumerate up to index=" << index << " because of the bounds.";
 
-    ValueType current(candidates_.front());
-    candidates_.pop_front();
+    ValueType current(candidates_.top());
+    candidates_.pop();
 
     if ((cache_.getSize() > 0) && (current.second > qNorm(cache_[cache_.getSize() - 1]))) 
       strataCumulatedCardinal_.add( cache_.getSize() );
@@ -133,26 +183,13 @@ Indices HyperbolicEnumerateFunction::operator() (const UnsignedInteger index) co
         continue;
       ++ nextIndices[j];
 
-      Scalar nextNorm = qNorm(nextIndices);
-      ValueType next(nextIndices, nextNorm);
-      IndiceCache::iterator it = candidates_.begin();
-
-      // Maintain candidates list sorted by q-norm
-      while ((it != candidates_.end()) && (it->second < nextNorm)) ++ it;
-
-      // Check for duplicates
-      Bool duplicate = false;
-      while ((it != candidates_.end()) && (it->second == nextNorm))
+      // O(1) duplicate check via unordered_set
+      if (visitedCandidates_.find(nextIndices) == visitedCandidates_.end())
       {
-        if (it->first == nextIndices)
-        {
-          duplicate = true;
-          break;
-        }
-        ++ it;
+        visitedCandidates_.insert(nextIndices);
+        Scalar nextNorm = qNorm(nextIndices);
+        candidates_.push(ValueType(nextIndices, nextNorm));
       }
-
-      if (!duplicate) candidates_.insert(it, next);
     } 
   }
   return cache_[index];

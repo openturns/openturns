@@ -25,6 +25,8 @@ using namespace OT;
 using namespace OT::Test;
 
 /* Returns the q-norm of the multi-index */
+// Note. We reimplement qNorm, because it is a private method of 
+// HyperbolicEnumerateFunction
 Scalar qNorm(const HyperbolicEnumerateFunction & enumerateFunction, const Indices & indices)
 {
   Scalar result = 0.0;

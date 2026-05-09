@@ -22,7 +22,10 @@
 #define OPENTURNS_HYPERBOLICENUMERATEFUNCTION_HXX
 
 #include <list>
+#include <queue>
+#include <unordered_set>
 #include <vector>
+#include <utility>
 
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -43,7 +46,6 @@ class OT_API HyperbolicEnumerateFunction
 public:
 
   typedef std::pair< Indices, Scalar > ValueType;
-  typedef std::list<ValueType>         IndiceCache;
 
   /** Default constructor */
   HyperbolicEnumerateFunction();
@@ -91,16 +93,33 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  /** Initialize the generation of indices */
-  void initialize();
-
   /** Returns the q-norm of the indice set */
   Scalar qNorm(const Indices & indices) const;
+
+  /** Initialize the generation of indices */
+  void initialize();
 
   /** Returns the maximum degree of the indice set */
   UnsignedInteger computeDegree(const Indices & indices) const;
 
 private:
+
+#ifndef SWIG
+  /** Custom hash functor for Indices to be used in std::unordered_set */
+  struct IndicesHash
+  {
+    std::size_t operator()(const Indices & indices) const;
+  };
+
+  /** Comparator for the priority queue (implements strict total ordering for a min-heap) */
+  struct CandidateComparator
+  {
+    bool operator()(const ValueType & lhs, const ValueType & rhs) const;
+  };
+
+  typedef std::priority_queue<ValueType, std::vector<ValueType>, CandidateComparator> IndiceCandidates;
+  typedef std::unordered_set<Indices, IndicesHash> IndiceVisitedSet;
+#endif /* SWIG */
 
   /** Q-Norm q term */
   Scalar q_;
@@ -109,7 +128,10 @@ private:
   mutable std::vector<Scalar> powLUT_;
 
   /** Cache of already generated indices */
-  mutable IndiceCache candidates_;
+  mutable IndiceCandidates candidates_;
+
+  /** Hash set tracking all discovered indices to prevent duplicates */
+  mutable IndiceVisitedSet visitedCandidates_;
 
   /** Candidate indices */
   mutable Collection<Indices> cache_;
