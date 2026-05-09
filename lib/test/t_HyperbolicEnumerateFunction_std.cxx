@@ -24,6 +24,23 @@
 using namespace OT;
 using namespace OT::Test;
 
+/* Returns the q-norm of the multi-index */
+Scalar qNorm(const HyperbolicEnumerateFunction & enumerateFunction, const Indices & indices)
+{
+  Scalar result = 0.0;
+  const Scalar q = enumerateFunction.getQ();
+  UnsignedInteger dimension = indices.getSize();
+  if (q == 1.0)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      result += indices[j];
+    return result;
+  }
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    result += std::pow(static_cast<Scalar>(indices[j]), q);
+  return std::pow(result, 1.0 / q);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -32,28 +49,41 @@ int main(int, char *[])
   try
   {
 
-    fullprint << "Default q : " << ResourceMap::GetAsScalar("HyperbolicEnumerateFunction-DefaultQ") << std::endl << std::endl;
+    fullprint << "Default q : " 
+              << ResourceMap::GetAsScalar("HyperbolicEnumerateFunction-DefaultQ") 
+              << std::endl << std::endl;
 
     // first verify consistency with LinearEnumerateFunction
     UnsignedInteger size = 10;
     UnsignedInteger stratas = 5;
     for (UnsignedInteger dimension = 1; dimension < 4; ++ dimension)
     {
-      HyperbolicEnumerateFunction f( dimension, 1.0 );
+      HyperbolicEnumerateFunction f(dimension, 1.0);
       LinearEnumerateFunction g(dimension);
-      fullprint << "First " << size << " values for dimension " << dimension << std::endl;
+      fullprint << "First " << size << " values for dimension " 
+                << dimension << std::endl;
+      Scalar previousQNorm = 0.0;
       for (UnsignedInteger index = 0; index < size; ++index)
       {
-        if (f(index) != g(index))
+        const Indices indices = f(index);
+        const Scalar indicesQNorm = qNorm(f, indices);
+        if (indices != g(index))
           throw InternalException(HERE) << "Results are different";
-        fullprint << "index=" << index << " " << f(index) << std::endl;
+        fullprint << "index=" << index << ", multi-index=" << indices 
+                  << ", qNorm = " << indicesQNorm << std::endl;
+        // Check that Q-Norms are increasing
+        if (index > 0)
+          assert(indicesQNorm >= previousQNorm);
+        // Update QNorm for next loop
+        previousQNorm = indicesQNorm;
       }
       Indices strataCardinal;
       for ( UnsignedInteger index = 0; index < stratas; ++ index )
       {
         strataCardinal.add( f.getStrataCardinal(index) );
       }
-      fullprint << "And first " << stratas << " strata cardinals :" << strataCardinal << std::endl << std::endl;
+      fullprint << "And first " << stratas << " strata cardinals :" 
+                << strataCardinal << std::endl << std::endl;
     }
 
     // values with varying q
@@ -68,18 +98,30 @@ int main(int, char *[])
       for (UnsignedInteger j = 0; j < qValues.getDimension(); ++ j)
       {
         Scalar q = qValues[j];
-        fullprint << "First " << size << " values dimension=" << dimension << " q=" << q << std::endl;
+        fullprint << "First " << size << " values dimension=" << dimension 
+                  << " q=" << q << std::endl;
         HyperbolicEnumerateFunction f( dimension,  q);
+        Scalar previousQNorm = 0.0;
         for (UnsignedInteger index = 0; index < size; ++index)
         {
-          fullprint << "index=" << index << " " << f(index) << std::endl;
+          const Indices indices = f(index);
+          const Scalar indicesQNorm = qNorm(f, indices);
+          fullprint << "index=" << index << ", multi-index=" << indices 
+                    << ", qNorm=" << indicesQNorm << std::endl;
+          // Check that Q-Norms are increasing
+          if (index > 0)
+            assert(indicesQNorm >= previousQNorm);
+          // Update QNorm for next loop
+          previousQNorm = indicesQNorm;
         }
         Indices strataCardinal;
         for ( UnsignedInteger index = 0; index < stratas; ++ index )
         {
           strataCardinal.add( f.getStrataCardinal(index) );
         }
-        fullprint << "And first " << stratas << " strata cardinals :" << strataCardinal << std::endl << std::endl;
+        fullprint << "And first " << stratas 
+                  << " strata cardinals :" << strataCardinal << std::endl 
+                  << std::endl;
       }
     }
 
@@ -92,7 +134,8 @@ int main(int, char *[])
     for (UnsignedInteger index = 0; index < size; ++index)
     {
       Indices multiIndex(marginalEnumerate(index));
-      fullprint << "index=" << index << ", multi-index=" << multiIndex << std::endl;
+      fullprint << "index=" << index 
+                << ", multi-index=" << multiIndex << std::endl;
     }
 
 

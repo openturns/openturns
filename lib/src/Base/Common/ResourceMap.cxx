@@ -1638,6 +1638,9 @@ void ResourceMap::loadDefaultConfiguration()
   // HyperbolicAnisotropicEnumerateFunction parameters //
   addAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ", 0.4);
 
+    // HyperbolicEnumerateFunction parameters //
+  addAsScalar("HyperbolicEnumerateFunction-DefaultQ", 0.4);
+
   // MarginalTransformationEvaluation parameters //
   addAsBool("MarginalTransformationEvaluation-Simplify", true);
   addAsScalar("MarginalTransformationEvaluation-DefaultTailThreshold", 0.99);

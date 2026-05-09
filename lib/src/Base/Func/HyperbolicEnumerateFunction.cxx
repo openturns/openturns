@@ -32,15 +32,15 @@ CLASSNAMEINIT(HyperbolicEnumerateFunction)
 
 static const Factory<HyperbolicEnumerateFunction> Factory_HyperbolicEnumerateFunction;
 
-/* Constructeur par défaut */
+/* Default constructor */
 HyperbolicEnumerateFunction::HyperbolicEnumerateFunction()
   : EnumerateFunctionImplementation()
   , q_(0.0)
 {
-  // Rien à faire
+  // Nothing to do
 }
 
-/* Constructeur avec paramètres */
+/* Parameter constructor */
 HyperbolicEnumerateFunction::HyperbolicEnumerateFunction(const UnsignedInteger dimension,
     const Scalar q)
   : EnumerateFunctionImplementation(dimension)
@@ -49,13 +49,13 @@ HyperbolicEnumerateFunction::HyperbolicEnumerateFunction(const UnsignedInteger d
   initialize();
 }
 
-/* Constructeur virtuel */
+/* Virtual constructor */
 HyperbolicEnumerateFunction * HyperbolicEnumerateFunction::clone() const
 {
   return new HyperbolicEnumerateFunction(*this);
 }
 
-/* Convertisseur en chaîne de caractères */
+/* String converter */
 String HyperbolicEnumerateFunction::__repr__() const
 {
   return OSS() << "class=" << getClassName()
@@ -72,7 +72,7 @@ void HyperbolicEnumerateFunction::initialize()
   candidates_.insert(candidates_.begin(), zero);
 }
 
-/* Retourne la norme q de l'ensemble d'indices */
+/* Returns the q-norm of the multi-index */
 Scalar HyperbolicEnumerateFunction::qNorm(const Indices & indices) const
 {
   Scalar result = 0.0;
@@ -108,6 +108,7 @@ Indices HyperbolicEnumerateFunction::operator() (const UnsignedInteger index) co
 
     cache_.add(current.first);
 
+    // Generate all neighbor indices
     for(UnsignedInteger j = 0; j < getDimension(); ++ j)
     {
       Indices nextIndices(current.first);
@@ -119,8 +120,10 @@ Indices HyperbolicEnumerateFunction::operator() (const UnsignedInteger index) co
       ValueType next(nextIndices, nextNorm);
       IndiceCache::iterator it = candidates_.begin();
 
+      // Maintain candidates list sorted by q-norm
       while ((it != candidates_.end()) && (it->second < nextNorm)) ++ it;
 
+      // Check for duplicates
       Bool duplicate = false;
       while ((it != candidates_.end()) && (it->second == nextNorm))
       {
@@ -193,7 +196,7 @@ UnsignedInteger HyperbolicEnumerateFunction::getMaximumDegreeStrataIndex(const U
   return strataIndex - 1;
 }
 
-/* Accesseur Q */
+/* Q accessor */
 void HyperbolicEnumerateFunction::setQ(const Scalar q)
 {
   if (!(q > 0.0)) throw InvalidRangeException( HERE ) << "q parameter should be positive, but q=" << q;
@@ -206,14 +209,14 @@ Scalar HyperbolicEnumerateFunction::getQ() const
   return q_;
 }
 
-/* Accesseur limite supérieure */
+/* Upper bound accessor */
 void HyperbolicEnumerateFunction::setUpperBound(const Indices & upperBound)
 {
   EnumerateFunctionImplementation::setUpperBound(upperBound);
   initialize();
 }
 
-/* La fonction d'énumération marginale */
+/* The marginal enumeration function */
 EnumerateFunction HyperbolicEnumerateFunction::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger inputDimension = getDimension();
@@ -226,14 +229,14 @@ EnumerateFunction HyperbolicEnumerateFunction::getMarginal(const Indices & indic
   return enumerateFunctionMarginal;
 }
 
-/* Sauvegarde de l'objet */
+/* Method save() stores the object through the StorageManager */
 void HyperbolicEnumerateFunction::save(Advocate & adv) const
 {
   EnumerateFunctionImplementation::save(adv);
   adv.saveAttribute( "q_", q_ );
 }
 
-/* Chargement de l'objet */
+/* Method load() reloads the object from the StorageManager */
 void HyperbolicEnumerateFunction::load(Advocate & adv)
 {
   EnumerateFunctionImplementation::load(adv);

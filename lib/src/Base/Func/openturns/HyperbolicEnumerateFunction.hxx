@@ -49,7 +49,7 @@ public:
 
   /** Parameter constructor */
   HyperbolicEnumerateFunction(const UnsignedInteger dimension,
-                                       const Scalar q = ResourceMap::GetAsScalar("HyperbolicEnumerateFunction-DefaultQ"));
+                              const Scalar q = ResourceMap::GetAsScalar("HyperbolicEnumerateFunction-DefaultQ"));
 
   /** Virtual constructor */
   HyperbolicEnumerateFunction * clone() const override;
