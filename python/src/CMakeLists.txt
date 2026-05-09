@@ -89,6 +89,7 @@ ot_add_python_module(func func_module.i
                       EnumerateFunctionImplementation.i EnumerateFunctionImplementation_doc.i
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i
+                      HyperbolicEnumerateFunction.i HyperbolicEnumerateFunction_doc.i
                       NormInfEnumerateFunction.i NormInfEnumerateFunction_doc.i
                       EvaluationImplementation.i EvaluationImplementation_doc.i
                       Evaluation.i Evaluation_doc.i
