@@ -1,0 +1,436 @@
+Default q : 0.4 
+
+inverse([0,0,0,0,0])= 0
+inverse([2,0,0,0,0])= 6
+First 10 values for dimension 1
+index=0, multi-index=[0], indexQNorm=0.0000
+index=1, multi-index=[1], indexQNorm=1.0000
+index=2, multi-index=[2], indexQNorm=2.0000
+index=3, multi-index=[3], indexQNorm=3.0000
+index=4, multi-index=[4], indexQNorm=4.0000
+index=5, multi-index=[5], indexQNorm=5.0000
+index=6, multi-index=[6], indexQNorm=6.0000
+index=7, multi-index=[7], indexQNorm=7.0000
+index=8, multi-index=[8], indexQNorm=8.0000
+index=9, multi-index=[9], indexQNorm=9.0000
+And first 5 strata cardinals : [1, 1, 1, 1, 1] 
+
+First 10 values for dimension 2
+index=0, multi-index=[0,0], indexQNorm=0.0000
+index=1, multi-index=[1,0], indexQNorm=1.0000
+index=2, multi-index=[0,1], indexQNorm=1.0000
+index=3, multi-index=[2,0], indexQNorm=2.0000
+index=4, multi-index=[1,1], indexQNorm=2.0000
+index=5, multi-index=[0,2], indexQNorm=2.0000
+index=6, multi-index=[3,0], indexQNorm=3.0000
+index=7, multi-index=[2,1], indexQNorm=3.0000
+index=8, multi-index=[1,2], indexQNorm=3.0000
+index=9, multi-index=[0,3], indexQNorm=3.0000
+And first 5 strata cardinals : [1, 2, 3, 4, 5] 
+
+First 10 values for dimension 3
+index=0, multi-index=[0,0,0], indexQNorm=0.0000
+index=1, multi-index=[1,0,0], indexQNorm=1.0000
+index=2, multi-index=[0,1,0], indexQNorm=1.0000
+index=3, multi-index=[0,0,1], indexQNorm=1.0000
+index=4, multi-index=[2,0,0], indexQNorm=2.0000
+index=5, multi-index=[1,1,0], indexQNorm=2.0000
+index=6, multi-index=[1,0,1], indexQNorm=2.0000
+index=7, multi-index=[0,2,0], indexQNorm=2.0000
+index=8, multi-index=[0,1,1], indexQNorm=2.0000
+index=9, multi-index=[0,0,2], indexQNorm=2.0000
+And first 5 strata cardinals : [1, 3, 6, 10, 15] 
+
+First 25 values dimension= 2  q= 0.75
+index=0, multiindex=[0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0], Q-Norm=1.0000
+index=2, multiindex=[0,1], Q-Norm=1.0000
+index=3, multiindex=[2,0], Q-Norm=2.0000
+index=4, multiindex=[0,2], Q-Norm=2.0000
+index=5, multiindex=[1,1], Q-Norm=2.5198
+index=6, multiindex=[3,0], Q-Norm=3.0000
+index=7, multiindex=[0,3], Q-Norm=3.0000
+index=8, multiindex=[2,1], Q-Norm=3.7259
+index=9, multiindex=[1,2], Q-Norm=3.7259
+index=10, multiindex=[4,0], Q-Norm=4.0000
+index=11, multiindex=[0,4], Q-Norm=4.0000
+index=12, multiindex=[3,1], Q-Norm=4.8724
+index=13, multiindex=[1,3], Q-Norm=4.8724
+index=14, multiindex=[5,0], Q-Norm=5.0000
+index=15, multiindex=[0,5], Q-Norm=5.0000
+index=16, multiindex=[2,2], Q-Norm=5.0397
+index=17, multiindex=[4,1], Q-Norm=5.9891
+index=18, multiindex=[1,4], Q-Norm=5.9891
+index=19, multiindex=[6,0], Q-Norm=6.0000
+index=20, multiindex=[0,6], Q-Norm=6.0000
+index=21, multiindex=[3,2], Q-Norm=6.2678
+index=22, multiindex=[2,3], Q-Norm=6.2678
+index=23, multiindex=[7,0], Q-Norm=7.0000
+index=24, multiindex=[0,7], Q-Norm=7.0000
+And first 5 strata cardinals : [1, 2, 2, 1, 2]
+Cardinals per degree= [1, 3, 6, 10, 14] 
+
+First 25 values dimension= 2  q= 0.5
+index=0, multiindex=[0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0], Q-Norm=1.0000
+index=2, multiindex=[0,1], Q-Norm=1.0000
+index=3, multiindex=[2,0], Q-Norm=2.0000
+index=4, multiindex=[0,2], Q-Norm=2.0000
+index=5, multiindex=[3,0], Q-Norm=3.0000
+index=6, multiindex=[0,3], Q-Norm=3.0000
+index=7, multiindex=[1,1], Q-Norm=4.0000
+index=8, multiindex=[4,0], Q-Norm=4.0000
+index=9, multiindex=[0,4], Q-Norm=4.0000
+index=10, multiindex=[5,0], Q-Norm=5.0000
+index=11, multiindex=[0,5], Q-Norm=5.0000
+index=12, multiindex=[2,1], Q-Norm=5.8284
+index=13, multiindex=[1,2], Q-Norm=5.8284
+index=14, multiindex=[6,0], Q-Norm=6.0000
+index=15, multiindex=[0,6], Q-Norm=6.0000
+index=16, multiindex=[7,0], Q-Norm=7.0000
+index=17, multiindex=[0,7], Q-Norm=7.0000
+index=18, multiindex=[3,1], Q-Norm=7.4641
+index=19, multiindex=[1,3], Q-Norm=7.4641
+index=20, multiindex=[2,2], Q-Norm=8.0000
+index=21, multiindex=[8,0], Q-Norm=8.0000
+index=22, multiindex=[0,8], Q-Norm=8.0000
+index=23, multiindex=[4,1], Q-Norm=9.0000
+index=24, multiindex=[1,4], Q-Norm=9.0000
+And first 5 strata cardinals : [1, 2, 2, 2, 3]
+Cardinals per degree= [1, 3, 5, 7, 10] 
+
+First 25 values dimension= 2  q= 0.25
+index=0, multiindex=[0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0], Q-Norm=1.0000
+index=2, multiindex=[0,1], Q-Norm=1.0000
+index=3, multiindex=[2,0], Q-Norm=2.0000
+index=4, multiindex=[0,2], Q-Norm=2.0000
+index=5, multiindex=[3,0], Q-Norm=3.0000
+index=6, multiindex=[0,3], Q-Norm=3.0000
+index=7, multiindex=[4,0], Q-Norm=4.0000
+index=8, multiindex=[0,4], Q-Norm=4.0000
+index=9, multiindex=[5,0], Q-Norm=5.0000
+index=10, multiindex=[0,5], Q-Norm=5.0000
+index=11, multiindex=[6,0], Q-Norm=6.0000
+index=12, multiindex=[0,6], Q-Norm=6.0000
+index=13, multiindex=[7,0], Q-Norm=7.0000
+index=14, multiindex=[0,7], Q-Norm=7.0000
+index=15, multiindex=[8,0], Q-Norm=8.0000
+index=16, multiindex=[0,8], Q-Norm=8.0000
+index=17, multiindex=[9,0], Q-Norm=9.0000
+index=18, multiindex=[0,9], Q-Norm=9.0000
+index=19, multiindex=[10,0], Q-Norm=10.0000
+index=20, multiindex=[0,10], Q-Norm=10.0000
+index=21, multiindex=[11,0], Q-Norm=11.0000
+index=22, multiindex=[0,11], Q-Norm=11.0000
+index=23, multiindex=[12,0], Q-Norm=12.0000
+index=24, multiindex=[0,12], Q-Norm=12.0000
+And first 5 strata cardinals : [1, 2, 2, 2, 2]
+Cardinals per degree= [1, 3, 5, 7, 9] 
+
+First 25 values dimension= 3  q= 0.75
+index=0, multiindex=[0,0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0,0], Q-Norm=1.0000
+index=2, multiindex=[0,1,0], Q-Norm=1.0000
+index=3, multiindex=[0,0,1], Q-Norm=1.0000
+index=4, multiindex=[2,0,0], Q-Norm=2.0000
+index=5, multiindex=[0,2,0], Q-Norm=2.0000
+index=6, multiindex=[0,0,2], Q-Norm=2.0000
+index=7, multiindex=[1,1,0], Q-Norm=2.5198
+index=8, multiindex=[1,0,1], Q-Norm=2.5198
+index=9, multiindex=[0,1,1], Q-Norm=2.5198
+index=10, multiindex=[3,0,0], Q-Norm=3.0000
+index=11, multiindex=[0,3,0], Q-Norm=3.0000
+index=12, multiindex=[0,0,3], Q-Norm=3.0000
+index=13, multiindex=[2,1,0], Q-Norm=3.7259
+index=14, multiindex=[2,0,1], Q-Norm=3.7259
+index=15, multiindex=[1,2,0], Q-Norm=3.7259
+index=16, multiindex=[0,2,1], Q-Norm=3.7259
+index=17, multiindex=[1,0,2], Q-Norm=3.7259
+index=18, multiindex=[0,1,2], Q-Norm=3.7259
+index=19, multiindex=[4,0,0], Q-Norm=4.0000
+index=20, multiindex=[0,4,0], Q-Norm=4.0000
+index=21, multiindex=[0,0,4], Q-Norm=4.0000
+index=22, multiindex=[1,1,1], Q-Norm=4.3267
+index=23, multiindex=[3,1,0], Q-Norm=4.8724
+index=24, multiindex=[3,0,1], Q-Norm=4.8724
+And first 5 strata cardinals : [1, 3, 3, 3, 3]
+Cardinals per degree= [1, 4, 10, 19, 29] 
+
+First 25 values dimension= 3  q= 0.5
+index=0, multiindex=[0,0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0,0], Q-Norm=1.0000
+index=2, multiindex=[0,1,0], Q-Norm=1.0000
+index=3, multiindex=[0,0,1], Q-Norm=1.0000
+index=4, multiindex=[2,0,0], Q-Norm=2.0000
+index=5, multiindex=[0,2,0], Q-Norm=2.0000
+index=6, multiindex=[0,0,2], Q-Norm=2.0000
+index=7, multiindex=[3,0,0], Q-Norm=3.0000
+index=8, multiindex=[0,3,0], Q-Norm=3.0000
+index=9, multiindex=[0,0,3], Q-Norm=3.0000
+index=10, multiindex=[1,1,0], Q-Norm=4.0000
+index=11, multiindex=[1,0,1], Q-Norm=4.0000
+index=12, multiindex=[0,1,1], Q-Norm=4.0000
+index=13, multiindex=[4,0,0], Q-Norm=4.0000
+index=14, multiindex=[0,4,0], Q-Norm=4.0000
+index=15, multiindex=[0,0,4], Q-Norm=4.0000
+index=16, multiindex=[5,0,0], Q-Norm=5.0000
+index=17, multiindex=[0,5,0], Q-Norm=5.0000
+index=18, multiindex=[0,0,5], Q-Norm=5.0000
+index=19, multiindex=[2,1,0], Q-Norm=5.8284
+index=20, multiindex=[2,0,1], Q-Norm=5.8284
+index=21, multiindex=[1,2,0], Q-Norm=5.8284
+index=22, multiindex=[0,2,1], Q-Norm=5.8284
+index=23, multiindex=[1,0,2], Q-Norm=5.8284
+index=24, multiindex=[0,1,2], Q-Norm=5.8284
+And first 5 strata cardinals : [1, 3, 3, 3, 6]
+Cardinals per degree= [1, 4, 7, 10, 16] 
+
+First 25 values dimension= 3  q= 0.25
+index=0, multiindex=[0,0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0,0], Q-Norm=1.0000
+index=2, multiindex=[0,1,0], Q-Norm=1.0000
+index=3, multiindex=[0,0,1], Q-Norm=1.0000
+index=4, multiindex=[2,0,0], Q-Norm=2.0000
+index=5, multiindex=[0,2,0], Q-Norm=2.0000
+index=6, multiindex=[0,0,2], Q-Norm=2.0000
+index=7, multiindex=[3,0,0], Q-Norm=3.0000
+index=8, multiindex=[0,3,0], Q-Norm=3.0000
+index=9, multiindex=[0,0,3], Q-Norm=3.0000
+index=10, multiindex=[4,0,0], Q-Norm=4.0000
+index=11, multiindex=[0,4,0], Q-Norm=4.0000
+index=12, multiindex=[0,0,4], Q-Norm=4.0000
+index=13, multiindex=[5,0,0], Q-Norm=5.0000
+index=14, multiindex=[0,5,0], Q-Norm=5.0000
+index=15, multiindex=[0,0,5], Q-Norm=5.0000
+index=16, multiindex=[6,0,0], Q-Norm=6.0000
+index=17, multiindex=[0,6,0], Q-Norm=6.0000
+index=18, multiindex=[0,0,6], Q-Norm=6.0000
+index=19, multiindex=[7,0,0], Q-Norm=7.0000
+index=20, multiindex=[0,7,0], Q-Norm=7.0000
+index=21, multiindex=[0,0,7], Q-Norm=7.0000
+index=22, multiindex=[8,0,0], Q-Norm=8.0000
+index=23, multiindex=[0,8,0], Q-Norm=8.0000
+index=24, multiindex=[0,0,8], Q-Norm=8.0000
+And first 5 strata cardinals : [1, 3, 3, 3, 3]
+Cardinals per degree= [1, 4, 7, 10, 13] 
+
+First 25 values dimension= 4  q= 0.75
+index=0, multiindex=[0,0,0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0,0,0], Q-Norm=1.0000
+index=2, multiindex=[0,1,0,0], Q-Norm=1.0000
+index=3, multiindex=[0,0,1,0], Q-Norm=1.0000
+index=4, multiindex=[0,0,0,1], Q-Norm=1.0000
+index=5, multiindex=[2,0,0,0], Q-Norm=2.0000
+index=6, multiindex=[0,2,0,0], Q-Norm=2.0000
+index=7, multiindex=[0,0,2,0], Q-Norm=2.0000
+index=8, multiindex=[0,0,0,2], Q-Norm=2.0000
+index=9, multiindex=[1,1,0,0], Q-Norm=2.5198
+index=10, multiindex=[1,0,1,0], Q-Norm=2.5198
+index=11, multiindex=[1,0,0,1], Q-Norm=2.5198
+index=12, multiindex=[0,1,1,0], Q-Norm=2.5198
+index=13, multiindex=[0,1,0,1], Q-Norm=2.5198
+index=14, multiindex=[0,0,1,1], Q-Norm=2.5198
+index=15, multiindex=[3,0,0,0], Q-Norm=3.0000
+index=16, multiindex=[0,3,0,0], Q-Norm=3.0000
+index=17, multiindex=[0,0,3,0], Q-Norm=3.0000
+index=18, multiindex=[0,0,0,3], Q-Norm=3.0000
+index=19, multiindex=[2,1,0,0], Q-Norm=3.7259
+index=20, multiindex=[2,0,1,0], Q-Norm=3.7259
+index=21, multiindex=[2,0,0,1], Q-Norm=3.7259
+index=22, multiindex=[1,2,0,0], Q-Norm=3.7259
+index=23, multiindex=[0,2,1,0], Q-Norm=3.7259
+index=24, multiindex=[0,2,0,1], Q-Norm=3.7259
+And first 5 strata cardinals : [1, 4, 4, 6, 4]
+Cardinals per degree= [1, 5, 15, 31, 51] 
+
+First 25 values dimension= 4  q= 0.5
+index=0, multiindex=[0,0,0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0,0,0], Q-Norm=1.0000
+index=2, multiindex=[0,1,0,0], Q-Norm=1.0000
+index=3, multiindex=[0,0,1,0], Q-Norm=1.0000
+index=4, multiindex=[0,0,0,1], Q-Norm=1.0000
+index=5, multiindex=[2,0,0,0], Q-Norm=2.0000
+index=6, multiindex=[0,2,0,0], Q-Norm=2.0000
+index=7, multiindex=[0,0,2,0], Q-Norm=2.0000
+index=8, multiindex=[0,0,0,2], Q-Norm=2.0000
+index=9, multiindex=[3,0,0,0], Q-Norm=3.0000
+index=10, multiindex=[0,3,0,0], Q-Norm=3.0000
+index=11, multiindex=[0,0,3,0], Q-Norm=3.0000
+index=12, multiindex=[0,0,0,3], Q-Norm=3.0000
+index=13, multiindex=[1,1,0,0], Q-Norm=4.0000
+index=14, multiindex=[1,0,1,0], Q-Norm=4.0000
+index=15, multiindex=[1,0,0,1], Q-Norm=4.0000
+index=16, multiindex=[0,1,1,0], Q-Norm=4.0000
+index=17, multiindex=[0,1,0,1], Q-Norm=4.0000
+index=18, multiindex=[0,0,1,1], Q-Norm=4.0000
+index=19, multiindex=[4,0,0,0], Q-Norm=4.0000
+index=20, multiindex=[0,4,0,0], Q-Norm=4.0000
+index=21, multiindex=[0,0,4,0], Q-Norm=4.0000
+index=22, multiindex=[0,0,0,4], Q-Norm=4.0000
+index=23, multiindex=[5,0,0,0], Q-Norm=5.0000
+index=24, multiindex=[0,5,0,0], Q-Norm=5.0000
+And first 5 strata cardinals : [1, 4, 4, 4, 10]
+Cardinals per degree= [1, 5, 9, 13, 23] 
+
+First 25 values dimension= 4  q= 0.25
+index=0, multiindex=[0,0,0,0], Q-Norm=0.0000
+index=1, multiindex=[1,0,0,0], Q-Norm=1.0000
+index=2, multiindex=[0,1,0,0], Q-Norm=1.0000
+index=3, multiindex=[0,0,1,0], Q-Norm=1.0000
+index=4, multiindex=[0,0,0,1], Q-Norm=1.0000
+index=5, multiindex=[2,0,0,0], Q-Norm=2.0000
+index=6, multiindex=[0,2,0,0], Q-Norm=2.0000
+index=7, multiindex=[0,0,2,0], Q-Norm=2.0000
+index=8, multiindex=[0,0,0,2], Q-Norm=2.0000
+index=9, multiindex=[3,0,0,0], Q-Norm=3.0000
+index=10, multiindex=[0,3,0,0], Q-Norm=3.0000
+index=11, multiindex=[0,0,3,0], Q-Norm=3.0000
+index=12, multiindex=[0,0,0,3], Q-Norm=3.0000
+index=13, multiindex=[4,0,0,0], Q-Norm=4.0000
+index=14, multiindex=[0,4,0,0], Q-Norm=4.0000
+index=15, multiindex=[0,0,4,0], Q-Norm=4.0000
+index=16, multiindex=[0,0,0,4], Q-Norm=4.0000
+index=17, multiindex=[5,0,0,0], Q-Norm=5.0000
+index=18, multiindex=[0,5,0,0], Q-Norm=5.0000
+index=19, multiindex=[0,0,5,0], Q-Norm=5.0000
+index=20, multiindex=[0,0,0,5], Q-Norm=5.0000
+index=21, multiindex=[6,0,0,0], Q-Norm=6.0000
+index=22, multiindex=[0,6,0,0], Q-Norm=6.0000
+index=23, multiindex=[0,0,6,0], Q-Norm=6.0000
+index=24, multiindex=[0,0,0,6], Q-Norm=6.0000
+And first 5 strata cardinals : [1, 4, 4, 4, 4]
+Cardinals per degree= [1, 5, 9, 13, 17] 
+
+dim 1 degree 0 max_degree_strata_index 0
+degree 0 size 1
+dim 1 degree 1 max_degree_strata_index 1
+degree 1 size 2
+dim 1 degree 2 max_degree_strata_index 2
+degree 2 size 3
+dim 1 degree 3 max_degree_strata_index 3
+degree 3 size 4
+dim 1 degree 4 max_degree_strata_index 4
+degree 4 size 5
+dim 1 degree 5 max_degree_strata_index 5
+degree 5 size 6
+dim 1 degree 6 max_degree_strata_index 6
+degree 6 size 7
+dim 1 degree 7 max_degree_strata_index 7
+degree 7 size 8
+dim 1 degree 8 max_degree_strata_index 8
+degree 8 size 9
+dim 1 degree 9 max_degree_strata_index 9
+degree 9 size 10
+dim 2 degree 0 max_degree_strata_index 0
+degree 0 size 1
+dim 2 degree 1 max_degree_strata_index 1
+degree 1 size 3
+dim 2 degree 2 max_degree_strata_index 3
+degree 2 size 6
+dim 2 degree 3 max_degree_strata_index 5
+degree 3 size 10
+dim 2 degree 4 max_degree_strata_index 8
+degree 4 size 15
+dim 2 degree 5 max_degree_strata_index 11
+degree 5 size 21
+dim 2 degree 6 max_degree_strata_index 13
+degree 6 size 25
+dim 2 degree 7 max_degree_strata_index 17
+degree 7 size 32
+dim 2 degree 8 max_degree_strata_index 21
+degree 8 size 40
+dim 2 degree 9 max_degree_strata_index 26
+degree 9 size 49
+dim 3 degree 0 max_degree_strata_index 0
+degree 0 size 1
+dim 3 degree 1 max_degree_strata_index 1
+degree 1 size 4
+dim 3 degree 2 max_degree_strata_index 3
+degree 2 size 10
+dim 3 degree 3 max_degree_strata_index 6
+degree 3 size 20
+dim 3 degree 4 max_degree_strata_index 9
+degree 4 size 32
+dim 3 degree 5 max_degree_strata_index 13
+degree 5 size 50
+dim 3 degree 6 max_degree_strata_index 17
+degree 6 size 65
+dim 3 degree 7 max_degree_strata_index 24
+degree 7 size 93
+dim 3 degree 8 max_degree_strata_index 30
+degree 8 size 123
+dim 3 degree 9 max_degree_strata_index 38
+degree 9 size 156
+index= 0 [0,0]
+index= 1 [1,0]
+index= 2 [0,1]
+index= 3 [2,0]
+index= 4 [1,1]
+index= 5 [0,2]
+index= 6 [3,0]
+index= 7 [2,1]
+index= 8 [1,2]
+index= 9 [0,3]
+index= 10 [4,0]
+index= 11 [3,1]
+index= 12 [2,2]
+index= 13 [1,3]
+index= 14 [5,0]
+index= 15 [4,1]
+index= 16 [3,2]
+index= 17 [2,3]
+index= 18 [6,0]
+index= 19 [5,1]
+index= 20 [4,2]
+index= 21 [3,3]
+index= 22 [7,0]
+index= 23 [6,1]
+index= 24 [5,2]
+index= 0 [0,0]
+index= 1 [1,0]
+index= 2 [0,1]
+index= 3 [2,0]
+index= 4 [1,1]
+index= 5 [0,2]
+index= 6 [3,0]
+index= 7 [2,1]
+index= 8 [1,2]
+index= 9 [0,3]
+index= 10 [3,1]
+index= 11 [2,2]
+index= 12 [1,3]
+index= 13 [0,4]
+index= 14 [3,2]
+index= 15 [2,3]
+index= 16 [1,4]
+index= 17 [0,5]
+index= 18 [3,3]
+index= 19 [2,4]
+index= 20 [1,5]
+index= 21 [0,6]
+index= 22 [3,4]
+index= 23 [2,5]
+index= 24 [1,6]
+Test getMarginal() from indices
+index= 0 [0,0,0] 0
+index= 1 [1,0,0] 1
+index= 2 [0,1,0] 2
+index= 3 [0,0,1] 3
+index= 4 [2,0,0] 4
+index= 5 [0,2,0] 5
+index= 6 [0,0,2] 6
+index= 7 [3,0,0] 7
+index= 8 [0,3,0] 8
+index= 9 [0,0,3] 9
+Test getMarginal() from a single integer
+index= 0 [0] 0
+index= 1 [1] 1
+index= 2 [2] 2
+index= 3 [3] 3
+index= 4 [4] 4
+index= 5 [5] 5
+index= 6 [6] 6
+index= 7 [7] 7
+index= 8 [8] 8
+index= 9 [9] 9

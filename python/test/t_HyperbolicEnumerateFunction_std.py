@@ -9,7 +9,7 @@ def q_norm(enumerate_function, indices):
     Compute the Q-Norm of the multi-index
     """
     result = 0.0
-    q = enumerate_function.get_q()
+    q = enumerate_function.getQ()
     dimension = len(indices)
 
     if q == 1.0:
@@ -32,7 +32,7 @@ print(
 )
 
 # check constructor
-f = ot.HyperbolicEnumerateFunction(0.75)
+f = ot.HyperbolicEnumerateFunction(5, 0.75)
 
 # check inverse when the cache is empty
 print("inverse([0,0,0,0,0])=", f.inverse([0, 0, 0, 0, 0]))
@@ -49,12 +49,18 @@ for dimension in range(1, 4):
     f = ot.HyperbolicEnumerateFunction(dimension, 1.0)
     g = ot.LinearEnumerateFunction(dimension)
     print("First", size, "values for dimension", dimension)
+    previousIndexQNorm = 0.0
     for index in range(size):
         multiindex = f(index)
         indexQNorm = q_norm(f, multiindex)
         if not f(index) == g(index):
             raise Exception("spam", f(index), g(index))
-        print(f"index={index}, multi-index={multiindex}, indexQNorm={indexQNorm}")
+        print(f"index={index}, multi-index={multiindex}, indexQNorm={indexQNorm:.4f}")
+        # Check that the Q-Norms are increasing
+        if index > 0:
+            assert indexQNorm >= previousIndexQNorm
+        # Update Q-Norm for next loop
+        previousIndexQNorm = indexQNorm
     strataCardinal = []
     for index in range(stratas):
         strataCardinal.append(int(f.getStrataCardinal(index)))
@@ -67,8 +73,17 @@ for dimension in range(2, 5):
     for q in [0.75, 0.5, 0.25]:
         print("First", size, "values dimension=", dimension, " q=", q)
         f = ot.HyperbolicEnumerateFunction(dimension, q)
+        previousIndexQNorm = 0.0
         for index in range(size):
-            print("index=", index, repr(f(index)))
+            multiindex = f(index)
+            indexQNorm = q_norm(f, multiindex)
+            print(f"index={index}, multiindex={multiindex}, Q-Norm={indexQNorm:.4f}")
+            # Check that the Q-Norms are increasing
+            if index > 0:
+                assert indexQNorm >= previousIndexQNorm
+            # Update Q-Norm for next loop
+            previousIndexQNorm = indexQNorm
+        # Check getStrataCardinal()
         strataCardinal = []
         for index in range(stratas):
             strataCardinal.append(int(f.getStrataCardinal(index)))
