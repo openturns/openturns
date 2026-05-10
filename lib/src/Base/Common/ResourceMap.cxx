@@ -1640,7 +1640,7 @@ void ResourceMap::loadDefaultConfiguration()
 
     // HyperbolicEnumerateFunction parameters //
   addAsScalar("HyperbolicEnumerateFunction-DefaultQ", 0.4);
-  addAsScalar("HyperbolicEnumerateFunction-QNormTolerance", 0.4);
+  addAsScalar("HyperbolicEnumerateFunction-QNormTolerance", 1.0e-13);
 
   // MarginalTransformationEvaluation parameters //
   addAsBool("MarginalTransformationEvaluation-Simplify", true);
