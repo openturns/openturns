@@ -74,8 +74,8 @@ int main(int, char *[])
         fullprint << "index=" << index << ", multi-index=" << indices 
                   << ", qNorm = " << indicesQNorm << std::endl;
         // Check that Q-Norms are increasing
-        if (index > 0)
-          assert(indicesQNorm >= previousQNorm);
+        if (index > 0 && indicesQNorm < previousQNorm)
+          throw InternalException(HERE) << "Q-Norm sequence is not increasing";
         // Update QNorm for next loop
         previousQNorm = indicesQNorm;
       }
@@ -111,8 +111,8 @@ int main(int, char *[])
           fullprint << "index=" << index << ", multi-index=" << indices 
                     << ", qNorm=" << indicesQNorm << std::endl;
           // Check that Q-Norms are increasing
-          if (index > 0)
-            assert(indicesQNorm >= previousQNorm);
+          if (index > 0 && indicesQNorm < previousQNorm)
+            throw InternalException(HERE) << "Q-Norm sequence is not increasing";
           // Update QNorm for next loop
           previousQNorm = indicesQNorm;
         }
