@@ -27,7 +27,7 @@ cmake -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
       -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Wshadow -Wsuggest-override -Werror -D_GLIBCXX_ASSERTIONS" \
       -DCMAKE_LINKER_TYPE=MOLD \
       -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-shadow" -DSWIG_CXX_COMPILE_FLAGS="-Wno-suggest-override" \
-      -DUSE_SPHINX=ON -DSPHINX_FLAGS="-W -T -j4" \
+      -DUSE_SPHINX=ON -DSPHINX_FLAGS="-W -T -j4" -DUSE_SPHINX_EXT_MATHJAX=OFF \
       -B build ${source_dir}
 cd build
 make install
