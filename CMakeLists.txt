@@ -394,6 +394,14 @@ if (DISABLE_FP_CONTRACT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffp-contract=off")
 endif ()
 
+option (USE_MOLD "Use mold linker" ON)
+if (USE_MOLD AND NOT DEFINED CMAKE_LINKER_TYPE)
+  find_program (MOLD_EXECUTABLE NAMES mold)
+endif ()
+if (MOLD_EXECUTABLE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=mold")
+endif ()
+
 # Find system prerequisites
 include (CheckIncludeFile)
 include (CheckFunctionExists)
