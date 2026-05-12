@@ -94,8 +94,8 @@ k_ref = {
 }
 for n in k_ref.keys():
     k1, k2 = algo.computeBilateralRank(n)
-    binomial = ot.Binomial(n, alpha)
-    p = binomial.computeProbability(ot.Interval(k1, k2))
+    binom = ot.Binomial(n, alpha)
+    p = binom.computeCDF(k2) - binom.computeCDF(k1)
     print(f"n={n} k1={k1} k2={k2} p={p:.6f}")
     assert (k1, k2) == k_ref[n]
     assert p >= beta
@@ -107,11 +107,11 @@ for n in k_ref.keys():
     for i1 in range(n):
         for i2 in range(i1, n):
             # we compute P(k1<X<=k2)=P(k1+1<=X<=k2), CDF(k2)-CDF(k1) also works
-            p = binomial.computeProbability(ot.Interval(i1 + 1, i2))
+            p = binom.computeCDF(i2) - binom.computeCDF(i1)
             if (p >= beta) and (p < bestP):
                 bestP = p
                 bestK1K2 = i1, i2
-    # print(n, bestK1K2, bestP)
+    print(n, (k1, k2), bestK1K2, bestP)
     assert (k1, k2) == bestK1K2
 
 # validate confidence intervals by probability estimation
@@ -460,7 +460,7 @@ for i in range(3, 7):
     n = 10**i
     k1, k2 = algo.computeAsymptoticBilateralRank(n)
     binom = ot.Binomial(n, alpha)
-    p = binom.computeProbability(ot.Interval(k1, k2))
+    p = binom.computeCDF(k2) - binom.computeCDF(k1)
     print(f"n={n} ci=[{k1}, {k2}] p={p}")
     atol = 2.0 * n**-0.5
     ott.assert_almost_equal(p, beta, 0.0, atol)
@@ -468,3 +468,133 @@ for i in range(3, 7):
         sample = dist.getSample(n)
         ci = algo.computeAsymptoticBilateralConfidenceInterval(sample)
         assert ci.contains(qalpha)
+
+# bilateral ranks bug
+alpha = 0.95
+beta = 0.90
+n = 975
+algo = ot.QuantileConfidence(alpha, beta)
+k1, k2 = algo.computeBilateralRank(n)
+binom = ot.Binomial(n, alpha)
+p = binom.computeCDF(k2) - binom.computeCDF(k1)
+print(f"n={n} k1={k1} k2={k2} p={p}")
+assert (k1, k2) == (910, 935)
+assert p >= beta
+
+alpha = 0.51762756742630334
+beta = 0.95
+n = 674726183
+algo = ot.QuantileConfidence(alpha, beta)
+k1, k2 = algo.computeBilateralRank(n)
+binom = ot.Binomial(n, alpha)
+p = binom.computeCDF(k2) - binom.computeCDF(k1)
+print(f"n={n} k1={k1} k2={k2} p={p}")
+assert p >= beta
+
+# edge cases for computeBilateralRank
+# 1. alpha < 0.5 with CDF(0) underflow (CDF(0) < epsilon)
+for alpha in [0.01, 0.05]:
+    beta = 0.95
+    algo = ot.QuantileConfidence(alpha, beta)
+    nMin = algo.computeBilateralMinimumSampleSize()
+    for n in [nMin, nMin + 100, nMin + 1000]:
+        k1, k2 = algo.computeBilateralRank(n)
+        binom = ot.Binomial(n, alpha)
+        p = binom.computeCDF(k2) - binom.computeCDF(k1)
+        print(f"alpha={alpha} n={n} k1={k1} k2={k2} p={p}")
+        assert k2 < n
+        assert k1 < k2
+        assert p >= beta
+        # k1=0 should provide a valid interval at nMin
+        if n == nMin:
+            p0_val = binom.computeCDF(0)
+            k2_zero = binom.computeScalarQuantile(p0_val + beta)
+            if k2_zero < n:
+                p0 = binom.computeCDF(k2_zero) - p0_val
+                assert p0 >= beta
+
+# 2. alpha > 0.5 (quantile in upper tail)
+for alpha in [0.95, 0.99]:
+    beta = 0.90
+    algo = ot.QuantileConfidence(alpha, beta)
+    nMin = algo.computeBilateralMinimumSampleSize()
+    for n in [nMin, nMin + 100, nMin + 1000]:
+        k1, k2 = algo.computeBilateralRank(n)
+        binom = ot.Binomial(n, alpha)
+        p = binom.computeCDF(k2) - binom.computeCDF(k1)
+        print(f"alpha={alpha} n={n} k1={k1} k2={k2} p={p}")
+        assert k2 < n
+        assert k1 < k2
+        assert p >= beta
+        if n == nMin:
+            p0_val = binom.computeCDF(0)
+            k2_zero = binom.computeScalarQuantile(p0_val + beta)
+            if k2_zero < n:
+                p0 = binom.computeCDF(k2_zero) - p0_val
+                assert p0 >= beta
+
+# 3. alpha = 0.5 (symmetric)
+for beta in [0.9, 0.99]:
+    alpha = 0.5
+    algo = ot.QuantileConfidence(alpha, beta)
+    nMin = algo.computeBilateralMinimumSampleSize()
+    for n in [nMin, nMin + 100]:
+        k1, k2 = algo.computeBilateralRank(n)
+        binom = ot.Binomial(n, alpha)
+        p = binom.computeCDF(k2) - binom.computeCDF(k1)
+        print(f"alpha={alpha} beta={beta} n={n} k1={k1} k2={k2} p={p}")
+        assert k2 < n
+        assert k1 < k2
+        assert p >= beta
+
+# 4. beta close to 1
+alpha = 0.05
+for beta in [0.99, 0.999]:
+    algo = ot.QuantileConfidence(alpha, beta)
+    nMin = algo.computeBilateralMinimumSampleSize()
+    for n in [nMin, nMin + 1000]:
+        k1, k2 = algo.computeBilateralRank(n)
+        binom = ot.Binomial(n, alpha)
+        p = binom.computeCDF(k2) - binom.computeCDF(k1)
+        print(f"alpha={alpha} beta={beta} n={n} k1={k1} k2={k2} p={p}")
+        assert k2 < n
+        assert k1 < k2
+        assert p >= beta
+
+# 5. very large n with alpha=0.05 (CDF(0) underflows)
+alpha = 0.05
+beta = 0.95
+algo = ot.QuantileConfidence(alpha, beta)
+for n in [5000, 10000, 100000, 1000000]:
+    k1, k2 = algo.computeBilateralRank(n)
+    binom = ot.Binomial(n, alpha)
+    p = binom.computeCDF(k2) - binom.computeCDF(k1)
+    print(f"alpha={alpha} n={n} k1={k1} k2={k2} p={p}")
+    assert k2 < n
+    assert k1 < k2
+    assert p >= beta
+
+# 6. confidence level such that it is exactly equal to the difference of known ranks
+n = int(1e6)
+k1_ref = 49625
+k2_ref = 50533
+alpha = 0.05
+binom = ot.Binomial(n, alpha)
+beta = binom.computeCDF(k2_ref) - binom.computeCDF(k1_ref)
+algo = ot.QuantileConfidence(alpha, beta)
+k1, k2 = algo.computeBilateralRank(n)
+assert k1 == k1_ref
+assert k2 == k2_ref
+
+# random tests
+for _ in range(int(1e2)):
+    alpha = ot.RandomGenerator.Generate()
+    algo = ot.QuantileConfidence(alpha, beta)
+    nMin = algo.computeBilateralMinimumSampleSize()
+    n = nMin + ot.RandomGenerator.IntegerGenerate(int(1e6))
+    k1, k2 = algo.computeBilateralRank(n)
+    binom = ot.Binomial(n, alpha)
+    p = binom.computeCDF(k2) - binom.computeCDF(k1)
+    assert k2 < n
+    assert k1 < k2
+    assert p >= beta
