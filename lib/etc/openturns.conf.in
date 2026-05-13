@@ -1172,6 +1172,9 @@
   <!-- OT::CholeskyMethod parameters -->
   <CholeskyMethod-LargeCase value_int="128" />
 
+  <!-- OT::LinearModelResult parameters -->
+  <LinearModelResult-DecompositionMethod value_str="QR" />
+
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value_bool="true" />
 

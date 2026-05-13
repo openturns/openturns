@@ -121,8 +121,6 @@ private:
 
   void checkSampleSize() const;
 
-  SymmetricMatrix getGramInverse() const;
-
   Normal computeDistributionForPredictionOrObservation(const Point & x0, const Bool observation) const;
 
   /** linear model result */

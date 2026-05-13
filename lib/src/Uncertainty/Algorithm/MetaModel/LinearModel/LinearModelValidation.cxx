@@ -118,7 +118,7 @@ Sample LinearModelValidation::ComputeMetamodelKFoldPredictions(
 {
   const Sample outputSample(linearModelResult.getOutputSample());
   const Sample residualsSample(linearModelResult.getSampleResiduals());
-  SymmetricMatrix projectionMatrix(linearModelResult.buildMethod().getH());
+  SymmetricMatrix projectionMatrix(linearModelResult.getLeastSquaresMethod().getH());
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelKFoldPredictions(
                                outputSample, residualsSample, projectionMatrix, splitter));
   return cvPredictions;

@@ -87,6 +87,7 @@ int main(int, char *[])
   {
     // Tests for asymptotic distributions
     // Note: the code that computes the reference values is in the Python script (t_LinearModelAnalysis_std.py)
+    fullprint << "Tests for asymptotic distributions" << std::endl;
 
     RandomGenerator::SetSeed(0);
     const UnsignedInteger sample_size = 1000;
@@ -155,6 +156,88 @@ int main(int, char *[])
     expected_parameters = {3.5, 0.100477};
     atol = 4.0e-1 / std::sqrt(sample_size);
     assert_almost_equal(computed_parameters, expected_parameters, 0.0, atol);
+  }
+
+  {
+    fullprint << "Test checkSampleSize exception" << std::endl;
+    
+    // Create a small sample
+    UnsignedInteger size = 5;
+    Sample x(size, 1);
+    Sample y(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      x[i][0] = i;
+      y[i][0] = 1.0 + 0.5 * i;
+    }
+
+    LinearModelAlgorithm algo(x, y);
+    LinearModelAnalysis analysis(algo.getResult());
+
+    // Force a high threshold to trigger the exception
+    ResourceMap::SetAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions", 10);
+
+    // Verification of exception throw for distributions
+    try
+    {
+      analysis.getCoefficientsDistribution();
+      // If we reach this line, the test must fail
+      throw TestFailed("InvalidArgumentException not thrown by getCoefficientsDistribution despite small sample size.");
+    }
+    catch (const InvalidArgumentException & ex)
+    {
+      fullprint << "Caught expected InvalidArgumentException: " << ex.what()<< std::endl;
+    }
+
+    // Reset ResourceMap to default values
+    ResourceMap::Reset();
+  }
+
+  {
+    fullprint << "Test x0 dimension exception" << std::endl;
+    // Sample with valid size
+    UnsignedInteger size = 20;
+    Sample x(size, 1);
+    Sample y(size, 1);
+    LinearModelAlgorithm algo(x, y);
+    LinearModelAnalysis analysis(algo.getResult());
+
+    try
+    {
+      // The model expects dimension 1, we provide dimension 2
+      Point x0(2, 0.0); 
+      analysis.getPredictionDistribution(x0);
+      throw TestFailed("InvalidArgumentException not thrown for invalid x0 dimension");
+    }
+    catch (const InvalidArgumentException & ex)
+    {
+      fullprint << "Caught expected InvalidArgumentException for invalid x0 dimension: " << ex.what() << std::endl;
+    }
+  }
+  {
+    fullprint << "Test LinearModelAnalysis constructor exception (DOF <= 0)" << std::endl;
+
+    // A sample of size 2 for a model with 2 parameters (intercept + slope)
+    // results in 0 degrees of freedom.
+    UnsignedInteger size = 2;
+    Sample x(size, 1);
+    Sample y(size, 1);
+    x[0][0] = 1.0; x[1][0] = 2.0;
+    y[0][0] = 1.1; y[1][0] = 2.1;
+
+    LinearModelAlgorithm algo(x, y);
+    LinearModelResult result(algo.getResult());
+
+    try
+    {
+      // This should throw because DOF <= 0
+      LinearModelAnalysis analysis(result);
+      throw TestFailed("InvalidArgumentException not thrown by LinearModelAnalysis constructor with null DOF.");
+    }
+    catch (const InvalidArgumentException & ex)
+    {
+      fullprint << "Caught expected exception: " << ex.what() << std::endl;
+    }
   }
 
   return ExitCode::Success;

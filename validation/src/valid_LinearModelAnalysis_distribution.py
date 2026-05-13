@@ -1,6 +1,7 @@
 import openturns as ot
 import openturns.viewer as otv
 
+
 class SampleEstimatorLinearRegression(ot.PythonRandomVector):
     def __init__(self, sample_size, standard_deviation, coefficients, estimator, x0=None):
         """
@@ -33,9 +34,9 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         if self.estimator == "variance":
             result = self.getRegressionResult()
             return [result.getResidualsVariance()]
-        elif self.estimator.startswith("coefficient"):
+        elif self.estimator.startswith("coefficient_"):
             result = self.getRegressionResult()
-            index = int(self.estimator[-1])
+            index = int(self.estimator.split("_")[-1])
             return [result.getCoefficients()[index]]
         elif self.estimator == "prediction":
             result = self.getRegressionResult()
@@ -44,6 +45,7 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         elif self.estimator == "observation":
             error = self.error_distribution.getRealization()
             return self.linear_model(self.x0) + error
+
 
 def center_distribution(distribution, mean):
     """
@@ -61,6 +63,7 @@ def center_distribution(distribution, mean):
     else:
         raise ValueError("Unsupported distribution type: " + distribution.getClassName())
 
+
 def test_estimator(sample_size, standard_deviation, coefficients, repetitions_size, estimator, gaussian=None, x0=None):
     # Compute the asymptotic distribution of the estimator
     pyRV = SampleEstimatorLinearRegression(sample_size, standard_deviation, coefficients, estimator, x0)
@@ -68,8 +71,8 @@ def test_estimator(sample_size, standard_deviation, coefficients, repetitions_si
     analysis = ot.LinearModelAnalysis(result)
     if estimator == "variance":
         distribution = analysis.getVarianceDistribution(gaussian)
-    elif estimator.startswith("coefficient"):
-        index = int(estimator[-1])
+    elif estimator.startswith("coefficient_"):
+        index = int(estimator.split("_")[-1])
         distribution = analysis.getCoefficientsDistribution().getMarginal(index)
     elif estimator == "prediction":
         distribution = analysis.getPredictionDistribution(x0)

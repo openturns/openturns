@@ -128,7 +128,7 @@ Examples
 
 In order to access the projection matrix, we build the least squares method.
 
->>> lsMethod = result.buildMethod()
+>>> lsMethod = result.getLeastSquaresMethod()
 >>> projectionMatrix = lsMethod.getH()
 )RAW"
 

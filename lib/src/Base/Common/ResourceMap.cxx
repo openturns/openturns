@@ -1816,6 +1816,9 @@ void ResourceMap::loadDefaultConfiguration()
   // CholeskyMethod parameters //
   addAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
 
+  // LinearModelResult parameters //
+  addAsString("LinearModelResult-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
+
   // Classifier parameters //
   addAsBool("Classifier-Parallel", true);
 

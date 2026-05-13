@@ -265,18 +265,13 @@ void LinearModelAnalysis::checkSampleSize() const
     throw InvalidArgumentException(HERE) << "The sample size is too small (must be at least " << minSize << ")";
 }
 
-SymmetricMatrix LinearModelAnalysis::getGramInverse() const
-{
-  return linearModelResult_.getDesign().computeGram().inverse();
-}
-
 /* Asymptotic distribution of the coefficients */
 Normal LinearModelAnalysis::getCoefficientsDistribution() const
 {
   checkSampleSize();
 
   const Point beta(linearModelResult_.getCoefficients());
-  const SymmetricMatrix gramInverse(getGramInverse());
+  const SymmetricMatrix gramInverse(linearModelResult_.getLeastSquaresMethod().getGramInverse());
   const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
   const CovarianceMatrix covariance(residualsVariance * gramInverse);
   return Normal(beta, covariance);
@@ -285,8 +280,6 @@ Normal LinearModelAnalysis::getCoefficientsDistribution() const
 /* Asymptotic distribution of the variance of the residuals */
 Distribution LinearModelAnalysis::getVarianceDistribution(const Bool gaussian) const
 {
-  checkSampleSize();
-
   const UnsignedInteger sampleSize = linearModelResult_.getInputSample().getSize();
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
   const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
@@ -298,6 +291,8 @@ Distribution LinearModelAnalysis::getVarianceDistribution(const Bool gaussian) c
   }
   else
   {
+    checkSampleSize();
+
     const Scalar mu = residualsVariance;
     const Scalar sd = residualsVariance * std::sqrt(2.0 * sampleSize) / (sampleSize - p);
     return Normal(mu, sd);
@@ -323,11 +318,13 @@ Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const 
 
   const Point prediction(x.transpose() * linearModelResult_.getCoefficients());
   // M = X^T.G^{-1}.X
-  const Matrix m = x.getImplementation()->genProd(*getGramInverse().getImplementation(), true, false).symProd(*x.getImplementation(), 'L');
+  const SymmetricMatrix gramInverse(linearModelResult_.getLeastSquaresMethod().getGramInverse());
+  const Matrix m = x.getImplementation()->genProd(*gramInverse.getImplementation(), true, false).symProd(*x.getImplementation(), 'L');
   const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
   Scalar sigma2 = m(0, 0) * residualsVariance;
   if (observation)
     sigma2 += residualsVariance;
+  sigma2 = std::max(sigma2, 0.0);
   Scalar sigma = std::sqrt(sigma2);
   sigma = std::max(sigma, ResourceMap::GetAsScalar("LinearModelAnalysis-MinimumSigma"));
   return Normal(prediction[0], sigma);

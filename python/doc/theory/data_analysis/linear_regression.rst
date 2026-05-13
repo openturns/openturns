@@ -55,8 +55,8 @@ test to identify such situations is available: Fisher’s test.
 For each estimated coefficient :math:`\widehat{a}_\ell`, an important
 characteristic is the so-called “*p*-value” of Fisher’s test. The
 coefficient is said to be “significant” if and only if
-:math:`\alpha_{\ell \textrm{lim}}` is greater than a value
-:math:`\alpha` chosen by the user (typically 5% or 10%). The higher the
+:math:`\alpha_{\ell \textrm{lim}}` is lower than a value
+:math:`\alpha` chosen by the user (typically 5% or 10%). The lower the
 *p*-value, the more significant the coefficient.
 
 Another important characteristic of the adjusted linear model is the
@@ -77,7 +77,7 @@ Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
 of the linear model, whereas a value close to 0 indicates that the
 linear model does not provide a relevant forecast. A statistical test
 allows one to detect significant values of :math:`R^2`. Again, a
-*p*-value is provided: the higher the *p*-value, the more
+*p*-value is provided: the lower the *p*-value, the more
 significant the coefficient of determination.
 
 By definition, the multiple regression model is only relevant for linear

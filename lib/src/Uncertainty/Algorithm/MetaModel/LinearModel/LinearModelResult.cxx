@@ -37,7 +37,7 @@ LinearModelResult::LinearModelResult()
   // Nothing to do
 }
 
-/* Parameter constructor */
+/* @deprecated Parameter constructor */
 LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Basis & basis,
                                      const Matrix & design,
@@ -55,6 +55,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , design_(design)
+  , leastSquaresMethod_()
   , coefficients_(coefficients)
   , condensedFormula_(formula)
   , coefficientsNames_(coefficientsNames)
@@ -76,6 +77,57 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                          << ", basis size = " << coefficients_.getSize()
                                          << ", degrees of freedom = " << degreesOfFreedom;
   checkIntercept();
+  const DesignProxy designProxy(inputSample_, basis_);
+  Indices addedIndices(basis_.getSize());
+  addedIndices.fill();
+  leastSquaresMethod_ = LeastSquaresMethod::Build(
+    ResourceMap::GetAsString("LinearModelResult-DecompositionMethod"),
+    designProxy,
+    addedIndices);
+  leastSquaresMethod_.update(addedIndices, Indices(0), Indices(0));
+}
+
+/* @deprecated Parameter constructor */
+LinearModelResult::LinearModelResult(const Sample & inputSample,
+                                     const Basis & basis,
+                                     const Matrix & design,
+                                     const Sample & outputSample,
+                                     const Function & metaModel,
+                                     const Point & coefficients,
+                                     const Sample & sampleResiduals,
+                                     const Sample & standardizedResiduals,
+                                     const Point & diagonalGramInverse,
+                                     const Point & leverages,
+                                     const Point & cookDistances,
+                                     const Scalar residualsVariance)
+  : LinearModelResult::LinearModelResult(
+    inputSample, 
+    basis, 
+    design, 
+    outputSample, 
+    metaModel, 
+    coefficients,
+    basis.__str__(),
+    BuildDefaultCoefficientsNames(basis),
+    sampleResiduals, 
+    standardizedResiduals, 
+    diagonalGramInverse, 
+    leverages, 
+    cookDistances, 
+    residualsVariance)
+{
+  // Nothing to do
+}
+
+Description LinearModelResult::BuildDefaultCoefficientsNames(const Basis & basis)
+{
+  // Description of the basis
+  Description coefficientsNames(0);
+  for (UnsignedInteger k = 0; k < basis.getSize(); ++k)
+  {
+    coefficientsNames.add(basis[k].__str__());
+  }
+  return coefficientsNames;
 }
 
 /* Virtual constructor */
@@ -140,7 +192,8 @@ String LinearModelResult::__repr_markdown__() const
       << "- Cook's distances size=" << cookDistances_.getSize() << "\n"
       << "- residuals variance=" << residualsVariance_ << "\n"
       << "- has intercept=" << hasIntercept_ << "\n"
-      << "- is model selection=" << involvesModelSelection_ << "\n";
+      << "- is model selection=" << involvesModelSelection_ << "\n"
+      << "- least squares method=" << leastSquaresMethod_ << "\n";
   oss << "\n";
   return oss;
 }
@@ -162,7 +215,18 @@ String LinearModelResult::__repr__() const
          << " cookDistances dimension=" << cookDistances_.getDimension()
          << " residuals variance= " << residualsVariance_
          << " hasIntercept=" << hasIntercept_
-         << " involvesModelSelection=" << involvesModelSelection_;
+         << " involvesModelSelection=" << involvesModelSelection_
+         << " leastSquaresMethod=" << leastSquaresMethod_;
+}
+
+LeastSquaresMethod LinearModelResult::getLeastSquaresMethod() const
+{
+  return leastSquaresMethod_;
+}
+
+void LinearModelResult::setLeastSquaresMethod(const LeastSquaresMethod & leastSquaresMethod)
+{
+  leastSquaresMethod_ = leastSquaresMethod;
 }
 
 Basis LinearModelResult::getBasis() const
@@ -296,17 +360,10 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
   return standardErrors;
 }
 
+/* @deprecated */
 LeastSquaresMethod LinearModelResult::buildMethod() const
 {
-  LeastSquaresMethod leastSquaresMethod;
-  leastSquaresMethod = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), design_);
-  const UnsignedInteger basisSize =  design_.getNbColumns();
-  Indices addedIndices(basisSize);
-  addedIndices.fill();
-  Indices conservedIndices(0);
-  Indices removedIndices(0);
-  leastSquaresMethod.update(addedIndices, conservedIndices, removedIndices);
-  return leastSquaresMethod;
+  return leastSquaresMethod_;
 }
 
 /* involvesModelSelection accessor */
@@ -337,6 +394,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "cookDistances_", cookDistances_ );
   adv.saveAttribute( "residualsVariance_", residualsVariance_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
+  adv.saveAttribute( "leastSquaresMethod_", leastSquaresMethod_ );
 }
 
 
@@ -363,6 +421,19 @@ void LinearModelResult::load(Advocate & adv)
     adv.loadAttribute( "sigma2_", residualsVariance_ );
   if (adv.hasAttribute("involvesModelSelection_"))
     adv.loadAttribute("involvesModelSelection_", involvesModelSelection_);
-}
+  if (adv.hasAttribute("leastSquaresMethod_"))
+    adv.loadAttribute( "leastSquaresMethod_", leastSquaresMethod_ );
+  else
+  {
+    const DesignProxy designProxy(inputSample_, basis_);
+    Indices addedIndices(basis_.getSize());
+    addedIndices.fill();
+    leastSquaresMethod_ = LeastSquaresMethod::Build(
+      ResourceMap::GetAsString("LinearModelResult-DecompositionMethod"),
+      designProxy,
+      addedIndices);
+    leastSquaresMethod_.update(addedIndices, Indices(0), Indices(0));
+  }
+
 
 END_NAMESPACE_OPENTURNS

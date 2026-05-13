@@ -96,8 +96,8 @@ class SampleEstimatorLinearRegression(ot.PythonRandomVector):
         elif self.estimator == "standard-deviation":
             lmAnalysis = ot.LinearModelAnalysis(lmResult)
             output = lmAnalysis.getResidualsStandardError()
-        elif self.estimator.startswith("coefficient"):
-            index = int(self.estimator[-1])
+        elif self.estimator.startswith("coefficient_"):
+            index = int(self.estimator.split("_", 1)[1])
             output = lmResult.getCoefficients()[index]
         else:
             raise ValueError("Unknown estimator %s" % (self.estimator))
@@ -146,8 +146,8 @@ def plot_sample_by_kernel_smoothing(
             graph2 = distribution.drawMarginal1DPDF(0, xlb, xub, 100)
             graph2.setLegends(["Asymptotic"])
             graph.add(graph2)
-        elif estimator.startswith("coefficient"):
-            index = int(estimator[-1])
+        elif estimator.startswith("coefficient_"):
+            index = int(estimator.split("_", 1)[1])
             lmResult = pyRV.getRegressionResult()
             lmAnalysis = ot.LinearModelAnalysis(lmResult)
             distribution = lmAnalysis.getCoefficientsDistribution()
