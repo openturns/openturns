@@ -749,11 +749,12 @@ void __setitem__(PyObject * args, PyObject * valObj)
         throw OT::InvalidArgumentException(HERE) << "Sample.__setitem__: PySlice_Unpack failed";
       size2 = PySlice_AdjustIndices(self->getDimension(), &start2, &stop2, step2);
 
-      if (step2 == 0) // FIXME
+      if (step2 == 1)
       {
+        self->at(start1, start2) = val->at(0, 0); // trigger copyOnWrite
         for (Py_ssize_t i = 0; i < size1; ++ i)
           std::copy(val->getImplementation()->data_begin() + i * val->getDimension(),
-                    val->getImplementation()->data_begin() + (i + 1) * val->getDimension(),
+                    val->getImplementation()->data_begin() + i * val->getDimension() + size2,
                     self->getImplementation()->data_begin() + (start1 + i * step1) * self->getDimension() + start2);
       }
       else
