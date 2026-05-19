@@ -257,3 +257,13 @@ print("repr:")
 print(f.__repr__())
 print("HTML:")
 print(f._repr_html_())
+
+# crash in expression initialization
+f = ot.SymbolicFunction(["x0"], ["zou * 42"])
+x = ot.Uniform().getSample(10)
+for i in range(5):
+    try:
+        y = f(x)
+    except Exception as exc:
+        # print(exc)
+        assert "Undefined symbol" in str(exc)
