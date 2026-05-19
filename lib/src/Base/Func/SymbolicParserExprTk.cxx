@@ -117,9 +117,6 @@ struct SymbolicParserExprTkPolicy
   inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     const UnsignedInteger threadIndex = TBBImplementation::GetThreadIndex();
-    if (!evaluation_.threadStack_[threadIndex].getDimension())
-      evaluation_.threadExpressions_[threadIndex] = evaluation_.allocateExpressions(evaluation_.threadStack_[threadIndex]);
-
     const UnsignedInteger inputDimension = evaluation_.inputVariablesNames_.getSize();
     const UnsignedInteger outputDimension = (evaluation_.outputVariablesNames_.getSize() > 0 ) ? evaluation_.outputVariablesNames_.getSize() : evaluation_.formulas_.getSize();
     if (evaluation_.outputVariablesNames_.getSize() == 0)
@@ -172,11 +169,24 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   if (outputDimension == 0) return Sample(inS.getSize(), 0);
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
+
   if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
   {
     threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
     threadStack_.resize(TBBImplementation::GetThreadsNumber());
+    try
+    {
+      for (UnsignedInteger i = 0; i < threadStack_.getSize(); ++ i)
+        threadExpressions_[i] = allocateExpressions(threadStack_[i]);
+    }
+    catch (const std::exception &)
+    {
+      // we want the allocateExpressions to enter the condition and throw each time
+      threadExpressions_.clear();
+      throw;
+    }
   }
+
   const SymbolicParserExprTkPolicy policy(inS, result, *this);
   TBBImplementation::ParallelFor(0, size, policy, smallSize_);
   return result;
