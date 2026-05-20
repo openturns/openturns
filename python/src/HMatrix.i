@@ -20,6 +20,7 @@ public:
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
+    OT::handleException();
     const OT::Scalar value = OT::convert<OT::_PyFloat_, OT::Scalar>(result.get());
     return value;
   }
@@ -43,7 +44,7 @@ public:
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
-
+    OT::handleException();
     void * ptr = nullptr;
     if (SWIG_IsOK(SWIG_ConvertPtr(result.get(), &ptr, SWIG_TypeQuery("OT::Matrix *"), SWIG_POINTER_NO_NULL))) {
       OT::Matrix *p_matrix = reinterpret_cast< OT::Matrix * >(ptr);
