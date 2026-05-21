@@ -462,7 +462,7 @@ void TruncatedNormal::computeMean() const
     if (logphiA == logphiB) mean_ = Point(1, mu_);
     else
     {
-      if (logphiA > logphiB) mean_ = Point(1, mu_ + sigma_ * std::exp(normalizationFactor_ + logphiA + log1p(-std::exp(logphiB / logphiA))));
+      if (logphiA > logphiB) mean_ = Point(1, mu_ + sigma_ * std::exp(normalizationFactor_ + logphiA + log1p(-std::exp(logphiB - logphiA))));
       else mean_ = Point(1, mu_ - sigma_ * std::exp(normalizationFactor_ + logphiB + log1p(-std::exp(logphiA - logphiB))));
     }
   }
@@ -496,7 +496,7 @@ Point TruncatedNormal::getSkewness() const
 Point TruncatedNormal::getKurtosis() const
 {
   if (PhiANorm_ >= PhiBNorm_)
-    return DistributionImplementation::getSkewness();
+    return DistributionImplementation::getKurtosis();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const Scalar ratio2 = ratio * ratio;
   const Scalar crossTerm1 = (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_;
