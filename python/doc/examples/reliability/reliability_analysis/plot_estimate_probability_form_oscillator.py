@@ -14,7 +14,7 @@ Using the FORM - SORM algorithms on a nonlinear function
 # %%
 from openturns.usecases import oscillator
 import openturns as ot
-from matplotlib import pyplot as plt
+import openturns.viewer as otv
 import numpy as np
 
 ot.RandomGenerator.SetSeed(1)
@@ -46,57 +46,43 @@ event.setName("failure")
 # ---------------------------------
 
 # %%
-# Let’s have a look on 2D cross cuts of the limit state function. For each 2D cross cut, the other variables are fixed to the input distribution mean values.
+# Let's have a look on 2D cross cuts of the limit state function. For each 2D cross cut, the other variables are fixed to the input distribution mean values.
 # This graph allows one to have a first idea of the variations of the function in pairs of dimensions. The colors of each contour plot are comparable.
 # The number of contour levels are related to the amount of variation of the function in the corresponding coordinates.
 
 
-fig = plt.figure(figsize=(12, 12))
 lowerBound = [1e-5] * 8
 upperBound = distribution.getRange().getUpperBound()
-
-# Definition of number of meshes in x and y axes for the 2D cross cut plots
 nX = 50
-nY = 50
-for i in range(distribution.getDimension()):
-    for j in range(i):
-        crossCutIndices = []
-        crossCutReferencePoint = []
-        for k in range(distribution.getDimension()):
-            if k != i and k != j:
-                crossCutIndices.append(k)
-                # Definition of the reference point
-                crossCutReferencePoint.append(distribution.getMean()[k])
-        # Definition of 2D cross cut function
-        crossCutFunction = ot.ParametricFunction(
-            model, crossCutIndices, crossCutReferencePoint
-        )
-        crossCutLowerBound = [lowerBound[j], lowerBound[i]]
-        crossCutUpperBound = [upperBound[j], upperBound[i]]
-        # Definition of the mesh
-        inputData = ot.Box([nX, nY]).generate()
-        inputData *= ot.Point(crossCutUpperBound) - ot.Point(crossCutLowerBound)
-        inputData += ot.Point(crossCutLowerBound)
-        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nY + 2)
-        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nY + 2)
-        data = crossCutFunction(inputData)
-        meshZ = np.array(data).reshape(nX + 2, nY + 2)
-        levels = [(150 + 3 * i) for i in range(101)]
-
-        # Creation of the contour
-        index = 1 + i * distribution.getDimension() + j
-
-        ax = fig.add_subplot(
-            distribution.getDimension(), distribution.getDimension(), index
-        )
-        ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
-        ax.set_xticks([])
-        ax.set_yticks([])
-        # Creation of axes title
-        if j == 0:
-            ax.set_ylabel(distribution.getDescription()[i])
-        if i == 7:
-            ax.set_xlabel(distribution.getDescription()[j])
+description = distribution.getDescription()
+description.add("")
+model.setDescription(description)
+grid = model.drawCrossCuts(
+    distribution.getMean(),
+    lowerBound,
+    upperBound,
+    [nX] * distribution.getDimension(),
+    False,
+    True,
+    -5.0,
+    50.0,
+)
+view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
+axes = view.getAxes()
+fig = view.getFigure()
+fig.set_size_inches(12, 12)
+fig.colorbar(
+    view.getSubviews()[1][0].getContourSets()[0], ax=axes[:-2, -1], fraction=0.3
+)
+for i in range(len(axes)):
+    for j in range(i + 1):
+        if i < len(axes) - 1:
+            axes[i][j].xaxis.set_ticklabels([])
+        if j > 0:
+            axes[i][j].yaxis.set_ticklabels([])
+        axes[i][j].set_xticks([])
+        axes[i][j].set_yticks([])
+fig.subplots_adjust(top=0.99, bottom=0.05, left=0.06, right=0.99)
 
 # %%
 # Computation of reference probability with Monte-Carlo simulation
@@ -166,95 +152,73 @@ print("Design point in physical space : ", result.getPhysicalSpaceDesignPoint())
 
 # %%
 
-distributionStandard = ot.Normal(distribution.getDimension())
 inverseIsoProbabilistic = distribution.getInverseIsoProbabilisticTransformation()
 standardSpaceLimitState = ot.ComposedFunction(model, inverseIsoProbabilistic)
-standardSpaceLimitStateFunction = ot.PythonFunction(8, 1, standardSpaceLimitState)
-
-fig = plt.figure(figsize=(12, 12))
-lowerBound = [-4] * 8
-upperBound = [4] * 8
 
 # sphinx_gallery_thumbnail_number = 2
 
-# Definition of number of meshes in x and y axes for the 2D cross cut plots
 nX = 50
-nY = 50
+xMin = designPointStandardSpace - ot.Point(distribution.getDimension(), 4.0)
+xMax = designPointStandardSpace + ot.Point(distribution.getDimension(), 4.0)
+description = distribution.getDescription()
+description.add("")
+standardSpaceLimitState.setDescription(description)
+grid = standardSpaceLimitState.drawCrossCuts(
+    designPointStandardSpace, xMin, xMax, [nX] * distribution.getDimension(),
+    False, True, -5.0, 50.0,
+)
+view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
+axes = view.getAxes()
+axFigure = view.getFigure()
+axFigure.set_size_inches(12, 12)
+
 my_labels = {
     "MPP": "Design Point",
     "O": "Origin in Standard Space",
     "TLSF": "True Limit State Function",
     "ALSF": "Approximated Limit State Function",
 }
+
 for i in range(distribution.getDimension()):
     for j in range(i):
+        ax = axes[i - 1][j]
+
         crossCutIndices = []
         crossCutReferencePoint = []
         for k in range(distribution.getDimension()):
             if k != i and k != j:
                 crossCutIndices.append(k)
-                # Definition of the reference point
                 crossCutReferencePoint.append(designPointStandardSpace[k])
-        # Definition of 2D cross cut function
         crossCutFunction = ot.ParametricFunction(
-            standardSpaceLimitStateFunction, crossCutIndices, crossCutReferencePoint
+            standardSpaceLimitState, crossCutIndices, crossCutReferencePoint
         )
 
-        crossCutLowerBound = [
-            lowerBound[j] + designPointStandardSpace[j],
-            lowerBound[i] + designPointStandardSpace[i],
-        ]
-        crossCutUpperBound = [
-            upperBound[j] + designPointStandardSpace[j],
-            upperBound[i] + designPointStandardSpace[i],
-        ]
-        # Definition of the mesh
-        inputData = ot.Box([nX, nY]).generate()
+        crossCutLowerBound = [xMin[j], xMin[i]]
+        crossCutUpperBound = [xMax[j], xMax[i]]
+        inputData = ot.Box([nX, nX]).generate()
         inputData *= ot.Point(crossCutUpperBound) - ot.Point(crossCutLowerBound)
         inputData += ot.Point(crossCutLowerBound)
-        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nY + 2)
-        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nY + 2)
+        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nX + 2)
+        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nX + 2)
         data = crossCutFunction(inputData)
-        meshZ = np.array(data).reshape(nX + 2, nY + 2)
-        levels = [(150 + 3 * i) for i in range(101)]
+        meshZ = np.array(data).reshape(nX + 2, nX + 2)
 
-        # Creation of the contour
-        index = 1 + i * distribution.getDimension() + j
-
-        ax = fig.add_subplot(
-            distribution.getDimension(), distribution.getDimension(), index
-        )
-
-        graph = ot.Graph()
-
-        ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
-
-        cs0 = ax.plot(
+        ax.plot(
             designPointStandardSpace[j],
             designPointStandardSpace[i],
             "o",
             label=my_labels["MPP"],
         )
-        cs1 = ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
+        ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
         cs2 = ax.contour(meshX, meshY, meshZ, [0.0])
-
-        ax.set_xticks([])
-        ax.set_yticks([])
 
         u0 = [designPointStandardSpace[j], designPointStandardSpace[i]]
         algo = ot.LinearTaylor(u0, crossCutFunction)
         algo.run()
         responseSurface = algo.getMetaModel()
         data2 = responseSurface(inputData)
-        meshZ2 = np.array(data2).reshape(nX + 2, nY + 2)
-
+        meshZ2 = np.array(data2).reshape(nX + 2, nX + 2)
         cs3 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
-
-        # Creation of axes title
-        if j == 0:
-            ax.set_ylabel(distribution.getDescription()[i])
-        if i == 7:
-            ax.set_xlabel(distribution.getDescription()[j])
 
         if i == 1 and j == 0:
             h2, l2 = cs2.legend_elements()
@@ -315,13 +279,20 @@ print("Simulation budget:", optim_res.getCallsNumber())
 # %%
 # In order to visualize the SORM limit state approximation, we can draw cross cuts of SORM oscultating parabola using second order Taylor approximation.
 
-fig = plt.figure(figsize=(12, 12))
-lowerBound = [-4] * 8
-upperBound = [4] * 8
-
-# Definition of number of meshes in x and y axes for the 2D cross cut plots
 nX = 50
-nY = 50
+xMin = designPointStandardSpace - ot.Point(distribution.getDimension(), 4.0)
+xMax = designPointStandardSpace + ot.Point(distribution.getDimension(), 4.0)
+description = distribution.getDescription()
+description.add("")
+standardSpaceLimitState.setDescription(description)
+grid = standardSpaceLimitState.drawCrossCuts(
+    designPointStandardSpace, xMin, xMax, [nX] * distribution.getDimension(),
+    False, True, -5.0, 50.0,
+)
+view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
+axes = view.getAxes()
+axFigure = view.getFigure()
+axFigure.set_size_inches(12, 12)
 
 my_labels = {
     "MPP": "Design Point",
@@ -332,69 +303,44 @@ my_labels = {
 
 for i in range(distribution.getDimension()):
     for j in range(i):
+        ax = axes[i - 1][j]
+
         crossCutIndices = []
         crossCutReferencePoint = []
         for k in range(distribution.getDimension()):
             if k != i and k != j:
                 crossCutIndices.append(k)
-                # Definition of the reference point
                 crossCutReferencePoint.append(designPointStandardSpace[k])
-        # Definition of 2D cross cut function
         crossCutFunction = ot.ParametricFunction(
-            standardSpaceLimitStateFunction, crossCutIndices, crossCutReferencePoint
+            standardSpaceLimitState, crossCutIndices, crossCutReferencePoint
         )
 
-        crossCutLowerBound = [
-            lowerBound[j] + designPointStandardSpace[j],
-            lowerBound[i] + designPointStandardSpace[i],
-        ]
-        crossCutUpperBound = [
-            upperBound[j] + designPointStandardSpace[j],
-            upperBound[i] + designPointStandardSpace[i],
-        ]
-        # Definition of the mesh
-        inputData = ot.Box([nX, nY]).generate()
+        crossCutLowerBound = [xMin[j], xMin[i]]
+        crossCutUpperBound = [xMax[j], xMax[i]]
+        inputData = ot.Box([nX, nX]).generate()
         inputData *= ot.Point(crossCutUpperBound) - ot.Point(crossCutLowerBound)
         inputData += ot.Point(crossCutLowerBound)
-        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nY + 2)
-        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nY + 2)
+        meshX = np.array(inputData)[:, 0].reshape(nX + 2, nX + 2)
+        meshY = np.array(inputData)[:, 1].reshape(nX + 2, nX + 2)
         data = crossCutFunction(inputData)
-        meshZ = np.array(data).reshape(nX + 2, nY + 2)
-        levels = [(150 + 3 * i) for i in range(101)]
+        meshZ = np.array(data).reshape(nX + 2, nX + 2)
 
-        # Creation of the contour
-        index = 1 + i * distribution.getDimension() + j
-
-        ax = fig.add_subplot(
-            distribution.getDimension(), distribution.getDimension(), index
-        )
-
-        graph = ot.Graph()
-        ax.pcolormesh(meshX, meshY, meshZ, cmap="hsv", vmin=-5, vmax=50, shading="auto")
-        cs0 = ax.plot(
+        ax.plot(
             designPointStandardSpace[j],
             designPointStandardSpace[i],
             "o",
             label=my_labels["MPP"],
         )
-        cs1 = ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
+        ax.plot(0.0, 0.0, "rs", label=my_labels["O"])
         cs2 = ax.contour(meshX, meshY, meshZ, [0.0])
-        ax.set_xticks([])
-        ax.set_yticks([])
 
         u0 = [designPointStandardSpace[j], designPointStandardSpace[i]]
         algo = ot.QuadraticTaylor(u0, crossCutFunction)
         algo.run()
         responseSurface = algo.getMetaModel()
         data2 = responseSurface(inputData)
-        meshZ2 = np.array(data2).reshape(nX + 2, nY + 2)
+        meshZ2 = np.array(data2).reshape(nX + 2, nX + 2)
         cs3 = ax.contour(meshX, meshY, meshZ2, [0.0], linestyles="dotted")
-
-        # Creation of axes title
-        if j == 0:
-            ax.set_ylabel(distribution.getDescription()[i])
-        if i == 7:
-            ax.set_xlabel(distribution.getDescription()[j])
 
         if i == 1 and j == 0:
             h2, l2 = cs2.legend_elements()
@@ -434,3 +380,4 @@ print(
 
 # %%
 # We can see that this post-treatment of FORM result allows one to greatly improve the quality of the probability estimation.
+otv.View.ShowAll()
