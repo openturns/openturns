@@ -136,6 +136,7 @@ Point ClaytonCopula::getRealization() const
     const Scalar logU1 = std::log(u1);
     const Scalar logU2 = std::log(u2);
     realization[1] = u2 * (1.0 - logU2 * theta_ * (1.0 + logU1 - 0.5 * theta_ * ((1.0 + logU2) * logU1 * logU1 + (2.0 + logU2) * (1.0 + logU1))));
+    return realization;
   }
   if (theta_ < 1.0e8) realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
   else realization[1] = u1 * (1.0 - (log1p(-u2) + std::log(u2)) / theta_);
