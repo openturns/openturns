@@ -540,7 +540,7 @@ Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample &,
     Sample & ) const
 {
   // Method is defined in Jansen/Saltelli/Martinez/Mauntz classes
-  throw new NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "SobolIndicesAlgorithmImplementation::computeIndices";
 }
 
 
