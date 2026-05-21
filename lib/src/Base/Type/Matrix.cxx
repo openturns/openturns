@@ -358,7 +358,7 @@ void Matrix::setDiagonal(const Scalar value, const SignedInteger k)
 }
 
 /** Fill diagonal with values */
-void Matrix::Matrix::setDiagonal(const Matrix &diag, const SignedInteger k)
+void Matrix::setDiagonal(const Matrix &diag, const SignedInteger k)
 {
   copyOnWrite();
   getImplementation()->setDiagonal(*diag.getImplementation(), k);
