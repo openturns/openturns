@@ -36,8 +36,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorImplementation)
 
 static const Factory<HSICEstimatorImplementation> Factory_HSICEstimatorImplementation;
-static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
-
 /* Default constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation()
   : PersistentObject()
@@ -65,11 +63,6 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(
   if (covarianceModelCollection_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if (outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
   if (inputSample_.getSize() != outputSample_.getSize()) throw InvalidDimensionException(HERE) << "Input and output samples must have the same size";
-
-  // limit number of input matrix cached according to a size defined in bytes
-  const UnsignedInteger cacheSize = ResourceMap::GetAsUnsignedInteger("HSICEstimator-InputCovarianceMatrixCacheSizeMb");
-  inputCovarianceMatrixCollection_.resize(std::min(1LL * inputDimension_, (cacheSize * 1000000LL) / (n_ * n_ * 8)));
-  LOGINFO(OSS() << "caching " << inputCovarianceMatrixCollection_.getSize() << " / " << inputDimension_ << " HSIC input covariance matrices");
 }
 
 /* Virtual constructor */
@@ -78,22 +71,15 @@ HSICEstimatorImplementation * HSICEstimatorImplementation::clone() const
   return new HSICEstimatorImplementation(*this);
 }
 
-/* Compute the covariance matrices associated to the inputs and outputs */
+/* Compute the output covariance matrix */
 void HSICEstimatorImplementation::computeCovarianceMatrices()
 {
-  for (UnsignedInteger dim = 0; dim < inputCovarianceMatrixCollection_.getSize(); ++ dim)
-  {
-    inputCovarianceMatrixCollection_[dim] = covarianceModelCollection_[dim].discretize(inputSample_.getMarginal(dim));
-  }
   outputCovarianceMatrix_ = covarianceModelCollection_[inputDimension_].discretize(outputSample_);
 }
 
 CovarianceMatrix HSICEstimatorImplementation::getInputCovarianceMatrix(const UnsignedInteger j) const
 {
-  if (j < inputCovarianceMatrixCollection_.getSize())
-    return inputCovarianceMatrixCollection_[j];
-  else
-    return covarianceModelCollection_[j].discretize(inputSample_.getMarginal(j));
+  return covarianceModelCollection_[j].discretize(inputSample_.getMarginal(j));
 }
 
 /** Compute the weights from the weight function */
@@ -620,7 +606,6 @@ void HSICEstimatorImplementation::save(Advocate & adv) const
   adv.saveAttribute( "permutationSize_", permutationSize_ );
   adv.saveAttribute( "isAlreadyComputedIndices_", isAlreadyComputedIndices_ );
   adv.saveAttribute( "isAlreadyComputedPValuesPermutation_", isAlreadyComputedPValuesPermutation_ );
-  adv.saveAttribute( "inputCovarianceMatrixCollection_", inputCovarianceMatrixCollection_ );
   adv.saveAttribute( "outputCovarianceMatrix_", outputCovarianceMatrix_ );
 }
 
@@ -647,7 +632,6 @@ void HSICEstimatorImplementation::load(Advocate & adv)
   adv.loadAttribute( "permutationSize_", permutationSize_ );
   adv.loadAttribute( "isAlreadyComputedIndices_", isAlreadyComputedIndices_ );
   adv.loadAttribute( "isAlreadyComputedPValuesPermutation_", isAlreadyComputedPValuesPermutation_ );
-  adv.loadAttribute( "inputCovarianceMatrixCollection_", inputCovarianceMatrixCollection_ );
   adv.loadAttribute( "outputCovarianceMatrix_", outputCovarianceMatrix_ );
   if (adv.hasAttribute("isAlreadyComputedPValuesAsymptotic_") && (adv.hasAttribute("PValuesAsymptotic_")))
   {

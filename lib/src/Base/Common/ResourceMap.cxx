@@ -1065,7 +1065,6 @@ void ResourceMap::loadDefaultConfiguration()
   // HSIC parameters //
   addAsBool("HSICEstimator-ParallelPValues", true);
   addAsUnsignedInteger("HSICEstimator-PermutationSize", 100);
-  addAsUnsignedInteger("HSICEstimator-InputCovarianceMatrixCacheSizeMb", 1000); // 1 Gb
 
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);
