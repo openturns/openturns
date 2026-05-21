@@ -298,7 +298,7 @@ Scalar NonCentralStudentCDF(const Scalar nu,
   // Special case when |delta| << 1
   if (std::abs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
-  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - nu);
+  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - delta);
   // Special case when |x| << 1
   if (std::abs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
   // Small nu
@@ -451,7 +451,7 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // Special case when |delta| << 1
   if (std::abs(delta / (4.0 * nu)) < precision) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
-  if (nu > 1.0 / precision) return DistFunc::pNormal(x - nu);
+  if (nu > 1.0 / precision) return DistFunc::pNormal(x - delta);
   // Special case when |x| << 1
   if (std::abs(x) < precision) return DistFunc::pNormal(-delta, tail);
   Scalar t = x;
