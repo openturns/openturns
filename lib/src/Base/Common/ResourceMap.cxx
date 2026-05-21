@@ -726,6 +726,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Pie parameters //
   addAsScalar("Pie-HorizontalMargin", 0.3);
   addAsScalar("Pie-VerticalMargin", 0.1);
+  addAsScalar("Pie-SmallValue", 1.0e-4);
 
   // DrawableImplementation parameters //
   addAsScalar("Drawable-DefaultLineWidth", 1.0);

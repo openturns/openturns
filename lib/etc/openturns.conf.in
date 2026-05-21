@@ -82,6 +82,7 @@
   <!-- OT::Pie parameters -->
   <Pie-HorizontalMargin value_float="0.3"  />
   <Pie-VerticalMargin   value_float="0.1"  />
+  <Pie-SmallValue       value_float="1.0e-4" />
 
   <!-- OT::DrawableImplementation parameters -->
   <Drawable-DefaultLineWidth    value_float="1.0"          />
