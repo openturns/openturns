@@ -134,10 +134,27 @@ void Study::save()
 
   mgr.initialize( SaveAction() );
 
+  // Pre-mark labeled objects as saved so that when a container saves
+  // its attributes, nested labeled objects are only referenced by id
+  // instead of being fully serialized without their label.
   for(LabelMap::const_iterator it = labelMap_.begin();
       it != labelMap_.end(); ++it)
   {
-    mgr.save(*map_[ it->second ], it->first, true);
+    mgr.markObjectAsSaved( map_[ it->second ]->getId() );
+  }
+
+  // Save labeled objects in insertion order so dependencies
+  // (objects nested inside containers) are saved before
+  // their containers, ensuring correct load order.
+  for (std::vector<String>::const_iterator it = labelOrder_.begin();
+       it != labelOrder_.end(); ++it)
+  {
+    const String & label = *it;
+    LabelMap::const_iterator itLabel = labelMap_.find(label);
+    if (itLabel == labelMap_.end()) continue;
+    PersistentObject & obj = *map_[ itLabel->second ];
+    mgr.cleanSavedObject( obj.getId() );
+    mgr.save( obj, label, true );
   }
 
   for(Map::const_iterator it = map_.begin();
@@ -328,7 +345,12 @@ Study::StorageManagerImplementation Study::getStorageManager() const
 /* Define a label for an object */
 void Study::defineLabel(Id id, const String & label)
 {
-  if (! label.empty()) labelMap_[ label ] = id;
+  if (! label.empty())
+  {
+    if (labelMap_.find(label) == labelMap_.end())
+      labelOrder_.push_back(label);
+    labelMap_[ label ] = id;
+  }
 }
 
 
@@ -372,6 +394,7 @@ void Study::remove(const String & label)
   Map::iterator it_obj = map_.find( it_label->second );
   map_.erase(it_obj);
   labelMap_.erase( it_label );
+  labelOrder_.erase(std::remove(labelOrder_.begin(), labelOrder_.end(), label), labelOrder_.end());
 }
 
 /* Add a PersistentObject to the study */

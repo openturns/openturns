@@ -218,6 +218,9 @@ private:
   /** The map storing the saved objects */
   LabelMap labelMap_;
 
+  /** The ordered list of labels, in insertion order */
+  std::vector<String> labelOrder_;
+
   /** The StorageManager that drives the load/store operations */
   StorageManagerImplementation p_storageManager_;
 

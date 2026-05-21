@@ -370,6 +370,12 @@ void StorageManager::cleanSavedObjects() const
   savedObjects_.erase(savedObjects_.begin(), savedObjects_.end());
 }
 
+/* Remove the saved status of an object */
+void StorageManager::cleanSavedObject(Id id) const
+{
+  savedObjects_.erase(id);
+}
+
 
 /*
  * This method saves the PersistentObject onto the medium
