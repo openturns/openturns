@@ -177,3 +177,26 @@ for i in range(conditioningDistributionCollection.getSize()):
         "Survival(inverseSurvival)=%.6f"
         % distribution.computeSurvivalFunction(inverseSurvival)
     )
+
+# ComputeExpectation with dirac/discrete at non-first indices
+# Conditioning: [Uniform, Dirac, Binomial, Uniform]
+# Dirac at index 1, discrete at index 2
+atoms = ot.DistributionCollection()
+atoms.add(ot.Uniform(0.0, 1.0))
+atoms.add(ot.Dirac(0.5))
+atoms.add(ot.Binomial(3, 0.5))
+atoms.add(ot.Uniform(3.0, 4.0))
+conditioning = ot.JointDistribution(atoms)
+link = ot.SymbolicFunction(
+    ["y0", "y1", "y2", "y3"], ["y0+y1+y2+y3", "1.0"]
+)
+conditioned = ot.Normal()
+compound = ot.CompoundDistribution(conditioned, conditioning, link)
+print("distribution=", compound)
+# Use PosteriorDistribution to exercise computeExpectation
+observations = ot.Normal().getSample(5)
+post = ot.PosteriorDistribution(compound, observations)
+print("mean=", post.getMean())
+print("covariance=", post.getCovariance())
+mean = post.getMean()
+print("CDF(mean)=%.12g" % post.computeCDF(mean))
