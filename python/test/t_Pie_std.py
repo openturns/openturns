@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -63,3 +64,21 @@ myPie1 = ot.Pie(data, labels, ot.Point(2), 1, palette)
 
 # Then, draw it
 myGraph.add(myPie1)
+
+# Test the "Other" aggregation for small values
+data2 = ot.Point([0.5, 0.3, 1e-6, 2e-7])
+labels2 = ["A", "B", "C", "D"]
+pie2 = ot.Pie(data2, labels2)
+ott.assert_almost_equal(pie2.getData().asPoint(), [0.5, 0.3, 1.2e-6], 1e-6, 0.0)
+assert pie2.getLabels() == ["A", "B", "C|D"], "Other aggregation labels mismatch"
+assert pie2.getData().getSize() == 3, "Expected 3 slices after aggregation"
+
+# Also test without labels (no crash)
+data3 = ot.Point([0.5, 0.3, 1e-6])
+pie3 = ot.Pie(data3)
+ott.assert_almost_equal(pie3.getData().asPoint(), [0.5, 0.3, 1e-6], 1e-6, 0.0)
+# with small value only
+data4 = ot.Point([1e-6])
+pie4 = ot.Pie(data4, ["tiny"])
+ott.assert_almost_equal(pie4.getData().asPoint(), [1e-6], 1e-6, 0.0)
+assert pie4.getLabels() == ["tiny"], "Single small value label"
