@@ -707,8 +707,8 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genV
 
   ComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
-  ComplexCollection copyPoint(nbRows_);
-  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
+  ComplexCollection copyPoint(nbColumns_);
+  std::copy(pt.begin(), pt.end(), copyPoint.begin());
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
@@ -729,8 +729,8 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genV
 
   ComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
-  ComplexCollection copyPoint(nbRows_);
-  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
+  ComplexCollection copyPoint(nbColumns_);
+  std::copy(pt.begin(), pt.end(), copyPoint.begin());
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
