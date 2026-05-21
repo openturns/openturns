@@ -101,7 +101,9 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   // Get the coefficients from the cache if possible
   if (n < cacheSize - 1)
   {
-    const Scalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
+    const Scalar betaNp1 = -monicRecurrenceCoefficients_[n + 1][2];
+    if (betaNp1 <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build an orthonormal polynomial of degree " << n + 1 << " for a degenerate distribution (beta_{" << n + 1 << "}=0).";
+    const Scalar inverseSqrtBetaNp1 = 1.0 / sqrt(betaNp1);
     Coefficients coefficients(3);
     coefficients[0] = inverseSqrtBetaNp1;
     if (std::abs(monicRecurrenceCoefficients_[n][1]) > 0.0)
