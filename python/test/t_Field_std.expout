@@ -12,7 +12,7 @@ value[4]= [-2.29006,-1.28289,-1.31178]
 value[4, 0]=-2.29006
 nearest[2]= [0.793156,-0.470526,0.261018]
 mesh= Mesh(dimension=3, vertices=8, simplices=6)
-input mean= [-0.0859856,-0.496935,0.0517341]
+input mean= [-0.0644892,-0.372701,0.0388006]
 norm=1.8157
 deformed= Mesh(dimension=3, vertices=8, simplices=6)
 description= [v0,v1,v2,X0,X1,X2]

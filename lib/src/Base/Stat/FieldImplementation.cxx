@@ -336,7 +336,7 @@ struct FieldInputMeanFunctor
       const Indices simplex(field_.mesh_.getSimplex(i));
       Point meanValue(dimension, 0.0);
       for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
-      accumulator_ += (volumes_[i] / dimension) * meanValue;
+      accumulator_ += (volumes_[i] / (meshDimension + 1.0)) * meanValue;
     }
   }
 
