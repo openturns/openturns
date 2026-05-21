@@ -152,8 +152,8 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  Scalar nu_;
-  Scalar normalizationFactor_;
+  Scalar nu_ = 0.0;
+  Scalar normalizationFactor_ = 0.0;
 
 }; /* class InverseChiSquare */
 

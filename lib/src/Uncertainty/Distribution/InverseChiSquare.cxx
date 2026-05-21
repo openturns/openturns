@@ -34,19 +34,15 @@ static const Factory<InverseChiSquare> Factory_InverseChiSquare;
 /* Default constructor */
 InverseChiSquare::InverseChiSquare()
   : DistributionImplementation()
-  , nu_(1.0)
-  , normalizationFactor_(0.0)
 {
   setName("InverseChiSquare");
   setDimension(1);
-  computeRange();
+  setNu(1.0);
 }
 
 /* Parameters constructor */
 InverseChiSquare::InverseChiSquare(const Scalar nu)
   : DistributionImplementation()
-  , nu_(0.0)
-  , normalizationFactor_(0.0)
 {
   setName("InverseChiSquare");
   setNu(nu);
