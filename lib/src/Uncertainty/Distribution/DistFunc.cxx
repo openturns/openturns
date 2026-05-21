@@ -797,7 +797,7 @@ UnsignedInteger DistFunc::rHypergeometric(const UnsignedInteger n,
   for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
   {
     p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
-    probabilities[k] = p;
+    probabilities[x] = p;
   }
   p = probabilities[xMode];
   for (UnsignedInteger x = xMode; x > xMin; --x)
@@ -823,12 +823,12 @@ Indices DistFunc::rHypergeometric(const UnsignedInteger n,
   for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
   {
     p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
-    probabilities[k] = p;
+    probabilities[x] = p;
   }
   p = probabilities[xMode];
   for (UnsignedInteger x = xMode; x > xMin; --x)
   {
-    p *= (x / (k - x - 1.0)) * ((n + x - m - k) / (m - x - 1.0));
+    p *= (x / (k - x + 1.0)) * ((n + x - m - k) / (m - x + 1.0));
     probabilities[x - 1] = p;
   }
   return rDiscrete(probabilities, size);
