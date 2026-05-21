@@ -209,6 +209,16 @@ void OrthogonalUniVariatePolynomialFactory::save(Advocate & adv) const
   adv.saveAttribute( "measure_", measure_ );
   adv.saveAttribute( "coefficientsCache_", coefficientsCache_ );
 
+  adv.saveAttribute("recurrenceCoefficientsCache_", recurrenceCoefficientsCache_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void OrthogonalUniVariatePolynomialFactory::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute( "measure_", measure_ );
+  adv.loadAttribute( "coefficientsCache_", coefficientsCache_ );
   // recurrenceCoefficientsCache_ changed type from PersistentCollection<Coefficients> to Sample in 1.19
   // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
   if (adv.getStudyVersion() >= 102000)
@@ -223,16 +233,6 @@ void OrthogonalUniVariatePolynomialFactory::save(Advocate & adv) const
       for (UnsignedInteger j = 0; j < 3; ++j)
         recurrenceCoefficientsCache_(i, j) = coefficientsColl[i][j];
   }
-}
-
-
-/* Method load() reloads the object from the StorageManager */
-void OrthogonalUniVariatePolynomialFactory::load(Advocate & adv)
-{
-  PersistentObject::load(adv);
-  adv.loadAttribute( "measure_", measure_ );
-  adv.loadAttribute( "coefficientsCache_", coefficientsCache_ );
-  adv.loadAttribute( "recurrenceCoefficientsCache_", recurrenceCoefficientsCache_ );
 }
 
 END_NAMESPACE_OPENTURNS
