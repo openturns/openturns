@@ -178,18 +178,18 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     try
     {
       jacobian = algorithm->getProblem().getResidualFunction().gradient(inP).transpose();
+      if (algorithm->getProblem().hasBounds())
+      {
+        for (int j = 0; j < n; ++ j)
+          for (int i = 0; i < m; ++ i)
+            jacobian(i, j) *= jacfac[j];
+      }
+      std::copy(jacobian.data(), jacobian.data() + m * n, fjac);
     }
     catch (const std::exception & exc)
     {
       LOGWARN(OSS() << "CMinpack failed to evaluate residual gradient for x=" << inP.__str__() << " msg=" << exc.what());
     }
-    if (algorithm->getProblem().hasBounds())
-    {
-      for (int j = 0; j < n; ++ j)
-        for (int i = 0; i < m; ++ i)
-          jacobian(i, j) *= jacfac[j];
-    }
-    std::copy(jacobian.data(), jacobian.data() + m * n, fjac);
   }
 
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
