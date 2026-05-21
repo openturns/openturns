@@ -71,3 +71,27 @@ study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager(fileName))
 study.load()
 os.remove(fileName)
+
+# test nested object save/load (issue #2551)
+fileName = "study_nested.xml"
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager(fileName))
+f = ot.SymbolicFunction(
+    ["x1", "x2"], ["x1*sin(x2)", "cos(x1+x2)", "(x2+1)*exp(x1-2*x2)"]
+)
+x = ot.Normal(2).getSample(50)
+y = f(x)
+algo = ot.LinearLeastSquares(x, y)
+algo.run()
+mm = algo.getResult().getMetaModel()
+study.add("mm", mm)
+study.add("algo", algo)
+study.save()
+
+study = ot.Study(fileName)
+study.load()
+mm2 = ot.Function()
+study.fillObject("mm", mm2)
+algo2 = ot.LinearLeastSquares()
+study.fillObject("algo", algo2)
+os.remove(fileName)
