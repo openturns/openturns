@@ -153,8 +153,8 @@ void GaussianProcessFitterResult::setCholeskyFactor(const TriangularMatrix & cov
 {
   const UnsignedInteger size = getInputSample().getSize();
   const UnsignedInteger outputDimension = getMetaModel().getOutputDimension();
-  if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
-    throw InvalidArgumentException(HERE) << "In GaussianProcessFitterResult::setCholeskyFactor, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
+  if (covarianceCholeskyFactor.getDimension() != 0 && covarianceCholeskyFactor.getDimension() != size * outputDimension)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessFitterResult::setCholeskyFactor, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor.getDimension();
   if (covarianceHMatrix_.getNbRows() != 0)
   {
     if (covarianceHMatrix_.getNbRows() != covarianceHMatrix_.getNbColumns())
