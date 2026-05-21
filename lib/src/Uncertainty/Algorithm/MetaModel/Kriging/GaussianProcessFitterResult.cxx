@@ -31,6 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GaussianProcessFitterResult)
 static const Factory<GaussianProcessFitterResult> Factory_GaussianProcessFitterResult;
+static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
 
 /* Default constructor */
 GaussianProcessFitterResult::GaussianProcessFitterResult()
