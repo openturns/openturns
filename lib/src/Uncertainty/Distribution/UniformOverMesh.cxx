@@ -251,6 +251,7 @@ void UniformOverMesh::setMesh(const Mesh & mesh)
   meshDomain_ = MeshDomain(mesh);
   simplicesVolumes_ = mesh.computeSimplicesVolume();
   meshVolume_ = std::accumulate(simplicesVolumes_.begin(), simplicesVolumes_.end(), 0.0);
+  if (!(meshVolume_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a mesh of positive volume.";
   probabilities_ = simplicesVolumes_ / meshVolume_;
   DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
   const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber");
