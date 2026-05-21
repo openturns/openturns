@@ -465,7 +465,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
   {
     if (isCopula()) return x;
     const UnsignedInteger j = conditioningDimension;
-    Scalar conditionalCDF = 1.0;
+    Scalar conditionalCDF = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
       conditionalCDF += SpecFunc::RegularizedIncompleteBeta(logFactors_(i, j), binNumber_ - logFactors_(i, j) + 1.0, x);
     return SpecFunc::Clip01(conditionalCDF / size);
