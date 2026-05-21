@@ -100,6 +100,8 @@ protected:
   /** Check for data validity */
   void checkData(const Point & data) const override;
 
+  void setData(const Point & data) override;
+
 private:
 
   /** Collection of Strings representing the color palettes */
