@@ -202,7 +202,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   {
     if (enableExtrapolation_)
     {
-      return values_[iLeft];
+      return Point(values_.getDimension());
     }
     else
     {
@@ -216,7 +216,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   {
     if (enableExtrapolation_)
     {
-      return values_[iRight];
+      return Point(values_.getDimension());
     }
     else
     {
@@ -232,7 +232,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   const Scalar alpha = 1.0 - theta;
   const Scalar beta = theta * alpha;
   const Scalar gamma = 2.0 * theta - 1.0;
-  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-values_(iLeft, i) + values_(iLeft + 1, i) + alpha * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, 1) - theta * derivatives_(iLeft + 1, i))) + beta * (2.0 * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (- derivatives_(iLeft, 1) - derivatives_(iLeft + 1, i)))) / h;
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-values_(iLeft, i) + values_(iLeft + 1, i) + alpha * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i))) + beta * (2.0 * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (- derivatives_(iLeft, i) - derivatives_(iLeft + 1, i)))) / h;
   return value;
 }
 
