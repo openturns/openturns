@@ -40,3 +40,10 @@ A =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=U
 B =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.5,0),(0.866025,0),(-0.866025,0),(0.5,0)]
 identity =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(0,0),(0,0),(1,0)]
 ptResult2 =  [(1,0),(2,0)]
+test 12 : non-square matrix multiplication with a point
+wide A (2x3) * pt (3) =  [(38,14),(47,20)]
+wide A (2x3) * ptc (3) =  [(38,14),(47,20)]
+tall B (3x2) * pt (2) =  [(15,18),(21,4),(25,6)]
+tall B (3x2) * ptc (2) =  [(15,18),(21,4),(25,6)]
+narrow C (1x2) * pt (2) =  [(11,0)]
+narrow D (2x1) * pt (1) =  [(5,0),(10,0)]
