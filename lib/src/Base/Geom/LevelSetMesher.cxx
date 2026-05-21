@@ -98,7 +98,7 @@ void LevelSetMesher::setDiscretization(const Indices & discretization)
 {
   // At least one slice per dimension
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
-    if (!(discretization_[i] > 0)) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
+    if (!(discretization[i] > 0)) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
   discretization_ = discretization;
 }
 
