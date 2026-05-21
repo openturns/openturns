@@ -77,11 +77,8 @@ String Exception::__repr__() const noexcept
 /* Point accessor */
 const char * Exception::where() const noexcept
 {
-  const String whereStr(point_.str());
-  const UnsignedInteger size = whereStr.size();
-  char *buffer = new char[size + 1];
-  std::copy(&whereStr[0], &whereStr[0] + size + 1, buffer);
-  return buffer;
+  if (cachedWhere_.empty()) cachedWhere_ = point_.str();
+  return cachedWhere_.c_str();
 }
 
 
