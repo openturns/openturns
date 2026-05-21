@@ -140,7 +140,7 @@ Complex EiContinuedFractionForward(const Complex & z)
 
 Scalar EiContinuedFractionForward(const Scalar z)
 {
-  return std::real(EiContinuedFractionBackward(Complex(z, 0.0)));
+  return std::real(EiContinuedFractionForward(Complex(z, 0.0)));
 }
 
 
