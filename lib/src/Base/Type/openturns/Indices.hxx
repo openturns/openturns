@@ -84,7 +84,8 @@ public:
   /** Check if the indices are strictly increasing */
   Bool isStrictlyIncreasing() const;
 
-  /** Fill the indices with a linear progression, starting from start value by step stepsize */
+  /** Fill the indices with a linear progression */
+  void iota(const UnsignedInteger initialValue = 0);
   void fill(const UnsignedInteger initialValue = 0,
             const UnsignedInteger stepSize = 1);
 
