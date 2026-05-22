@@ -74,3 +74,11 @@ interval = ot.Interval(
 )
 p = d.computeProbability(interval)
 assert p > 0.0, "!positive proba"
+
+# getSampleByQMC: static SobolSequence must match each distribution's dimension
+dist1 = ot.Normal()
+sample1 = dist1.getSampleByQMC(10)
+assert sample1.getDimension() == 1
+dist2 = ot.Normal(2)
+sample2 = dist2.getSampleByQMC(10)
+assert sample2.getDimension() == 2
