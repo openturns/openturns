@@ -27,6 +27,8 @@
 
 %include Indices_doc.i
 
+%ignore OT::Indices::iota;
+
 %include openturns/Indices.hxx
 namespace OT {
 

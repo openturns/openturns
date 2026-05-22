@@ -62,10 +62,20 @@ Bool Indices::isStrictlyIncreasing() const
   return true;
 }
 
-/* Fill the indices with a linear progression, starting from start value by step stepsize */
+/* Fill the indices with a linear progression */
+void Indices::iota(const UnsignedInteger initialValue)
+{
+  std::iota(begin(), end(), initialValue);
+}
+
 void Indices::fill(const UnsignedInteger initialValue,
                    const UnsignedInteger stepSize)
 {
+  if (stepSize == 1)
+  {
+    iota(initialValue);
+    return;
+  }
   const UnsignedInteger size = getSize();
   UnsignedInteger value = initialValue;
   for (UnsignedInteger i = 0; i < size; ++i)
