@@ -70,6 +70,7 @@ SmoothedUniform SmoothedUniformFactory::buildAsSmoothedUniform(const Sample & sa
   const Scalar variance = sample.computeVariance()[0];
   if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a SmoothedUniform distribution from a constant sample.";
   const Scalar kurtosis = sample.computeKurtosis()[0];
+  if (!(kurtosis <= 3.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a SmoothedUniform distribution from a sample with kurtosis > 3";
   const Scalar delta = std::pow(120.0 * variance * variance * (3.0 - kurtosis), 0.25);
   const Scalar a = mean - 0.5 * delta;
   const Scalar b = mean + 0.5 * delta;
