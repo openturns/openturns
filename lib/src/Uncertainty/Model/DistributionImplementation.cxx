@@ -665,7 +665,7 @@ Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger si
 
 Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
-  static SobolSequence sequence(dimension_);
+  const SobolSequence sequence(dimension_);
   const Sample u(sequence.generate(size));
   Sample result(size, dimension_);
   const DistributionSequentialConditionalQuantilePolicy policy(*this, u, result);
