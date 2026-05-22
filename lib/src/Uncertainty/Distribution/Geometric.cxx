@@ -120,6 +120,7 @@ void Geometric::computeRange()
 /* Get one realization of the distribution */
 Point Geometric::getRealization() const
 {
+  if (p_ == 1.0) return {1.0};
   return Point(1, ceil(std::log(RandomGenerator::Generate()) / log1p(-p_)));
 }
 
@@ -180,6 +181,7 @@ Scalar Geometric::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  if (p_ == 1.0) return 1.0;
   if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));
 }
