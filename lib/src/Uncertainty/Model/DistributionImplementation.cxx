@@ -1439,8 +1439,12 @@ Complex DistributionImplementation::computeGeneratingFunction(const Complex & z)
   // Create the generating function as a univariate polynomial. It will be used as such if the distribution is integral, or as a container for the individual probabilities if the distribution is not integral
   if (!isAlreadyCreatedGeneratingFunction_)
   {
-    generatingFunction_ = UniVariatePolynomial(getProbabilities());
-    isAlreadyCreatedGeneratingFunction_ = true;
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyCreatedGeneratingFunction_)
+    {
+      generatingFunction_ = UniVariatePolynomial(getProbabilities());
+      isAlreadyCreatedGeneratingFunction_ = true;
+    }
   }
   // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
   if (isIntegral())
@@ -3065,7 +3069,11 @@ Point DistributionImplementation::getMean() const
 {
   if (isCopula())
     return Point(getDimension(), 0.5);
-  if (!isAlreadyComputedMean_) computeMean();
+  if (!isAlreadyComputedMean_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedMean_) computeMean();
+  }
   return mean_;
 }
 
@@ -3402,7 +3410,11 @@ void DistributionImplementation::computeCovarianceGeneral() const
 /* Get the covariance of the distribution */
 CovarianceMatrix DistributionImplementation::getCovariance() const
 {
-  if (!isAlreadyComputedCovariance_) computeCovariance();
+  if (!isAlreadyComputedCovariance_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedCovariance_) computeCovariance();
+  }
   return covariance_;
 }
 
@@ -3574,7 +3586,11 @@ void DistributionImplementation::setIntegrationNodesNumber(const UnsignedInteger
 /* Gauss nodes and weights accessor */
 Point DistributionImplementation::getGaussNodesAndWeights(Point & weights) const
 {
-  if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
+  if (!isAlreadyComputedGaussNodesAndWeights_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
+  }
   weights = gaussWeights_;
   return gaussNodes_;
 }
@@ -3849,7 +3865,11 @@ void DistributionImplementation::computeStandardDistribution() const
 /* Get the standard distribution */
 Distribution DistributionImplementation::getStandardDistribution() const
 {
-  if (!isAlreadyComputedStandardDistribution_) computeStandardDistribution();
+  if (!isAlreadyComputedStandardDistribution_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedStandardDistribution_) computeStandardDistribution();
+  }
   return p_standardDistribution_;
 }
 

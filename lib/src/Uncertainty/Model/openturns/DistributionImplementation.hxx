@@ -21,6 +21,9 @@
 #ifndef OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX
 
+#include <memory>
+#include <mutex>
+
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
@@ -868,6 +871,9 @@ protected:
 
   /** The integration nodes number for covariance computation */
   mutable UnsignedInteger integrationNodesNumber_;
+
+  /** Mutex for thread-safe caching */
+  mutable std::shared_ptr<std::recursive_mutex> cacheMutex_{std::make_shared<std::recursive_mutex>()};
 
   /** Flags to avoid redundant computations */
   mutable Bool isAlreadyComputedMean_;
