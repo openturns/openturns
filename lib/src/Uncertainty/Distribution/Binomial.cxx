@@ -302,10 +302,12 @@ UnsignedInteger Binomial::getN() const
 void Binomial::computeRange()
 {
   // Degenerate cases
-  if (p_ == 0.0) setRange(Interval(0.0, 0.0));
-  if (p_ == 1.0) setRange(Interval(n_, n_));
-  // Usual case
-  setRange(Interval(0.0, n_));
+  if (p_ == 0.0)
+    setRange(Interval(0.0, 0.0));
+  else if (p_ == 1.0)
+    setRange(Interval(n_, n_));
+  else // Usual case
+    setRange(Interval(0.0, n_));
 }
 
 /* Get the quantile of the distribution */
