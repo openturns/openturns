@@ -127,7 +127,8 @@ Expression ExpressionParser::Parse(const char* buf,
       buf_str[i] = PEV3UNARYMINUS;
 
   Expression ret;
-  input_ = new std::stringstream(buf_str);
+  std::stringstream input(buf_str);
+  input_ = &input;
   no_of_functions_ = 0;
   no_of_errors_ = 0;
 
@@ -136,7 +137,7 @@ Expression ExpressionParser::Parse(const char* buf,
   table_["pi_"] = PEV3PI;
   table_["e_"] = PEV3E;
 
-  while (*input_)
+  while (input)
   {
     get_token();
     switch(curr_tok_)
@@ -152,8 +153,7 @@ Expression ExpressionParser::Parse(const char* buf,
       default:
         ret = expr(false);
     } // switch(curr_tok_)
-  } // while (*input)
-  delete input_;
+  } // while (input)
   input_ = 0;
   nerrors = no_of_errors_;
   return ret;
@@ -413,8 +413,9 @@ Token_value ExpressionParser::get_token()
       if (isalpha(ch) || (ch == '_'))
       {
         char* sv = string_value_;
+        char* const end = string_value_ + sizeof(string_value_) - 1;
         *sv = ch;
-        while (input_->get(ch) && (isalnum(ch) || (ch == '_')))
+        while (input_->get(ch) && (isalnum(ch) || (ch == '_')) && sv < end)
         {
           ++sv;
           *sv = ch;
