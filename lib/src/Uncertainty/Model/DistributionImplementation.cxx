@@ -1318,14 +1318,10 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar T = 0.5 * (b - a);
       const Scalar c = 0.5 * (a + b);
       const Scalar dt = T / N;
-      static Point pdfGrid;
-      if (!pdfGrid.getSize())
-      {
-        Sample locations(Box(Indices(1, 2 * N - 1)).generate());
-        locations *= Point(1, b - a);
-        locations += Point(1, a);
-        pdfGrid = computePDF(locations).getImplementation()->getData();
-      }
+
+      const Sample locations(Box(Indices({2 * N - 1}), range_).generate());
+      const Point pdfGrid(computePDF(locations).getImplementation()->getData());
+
       const Scalar omegaDt = x * dt;
       const Scalar omegaDt2 = omegaDt * omegaDt;
       const Scalar cosOmegaDt = std::cos(omegaDt);
