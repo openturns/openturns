@@ -345,10 +345,13 @@ void Contour::checkData(const Sample & data) const
  */
 void Contour::buildDefaultLevels(const UnsignedInteger number)
 {
+  levels_.clear();
+  labels_.clear();
   // Use the empirical quantiles
-  const Sample sortedData(data_.sort(0));
   const UnsignedInteger size = data_.getSize();
-  levels_ = Point(number);
+  if (size == 0) return;
+  const Sample sortedData(data_.sort(0));
+  levels_.resize(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData(static_cast<UnsignedInteger>(size * (i + 0.5) / number), 0);
   levels_.erase(std::unique(levels_.begin(), levels_.end()), levels_.end());
 }
@@ -357,7 +360,7 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
 void Contour::buildDefaultLabels()
 {
   const UnsignedInteger number = levels_.getDimension();
-  labels_ = Description(number);
+  labels_.resize(number);
   for (UnsignedInteger i = 0; i < number; ++i) labels_[i] = OSS() << levels_[i];
 }
 
