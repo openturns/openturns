@@ -110,7 +110,9 @@ UnsignedInteger QuadrantSampling::getQuadrantIndex() const
 
 void QuadrantSampling::setQuadrantOrientation(const Point & quadrantOrientation)
 {
-  if ((quadrantOrientation.getDimension() > 0) && (quadrantOrientation.getDimension() != getDimension())) throw InvalidDimensionException(HERE) << "Quadrant orientation dimension (" << quadrantOrientation.getDimension() << " ) should be " << getDimension();
+  if (quadrantOrientation.getDimension() && (quadrantOrientation.getDimension() != getDimension())) throw InvalidDimensionException(HERE) << "Quadrant orientation dimension (" << quadrantOrientation.getDimension() << " ) should be " << getDimension();
+  if (quadrantOrientation.getDimension() && !(quadrantOrientation.normSquare() > 0.0))
+    throw InvalidArgumentException(HERE) << "Quadrant orientation norm must be positive";
   quadrantOrientation_ = quadrantOrientation;
   updateRotation();
 }
@@ -161,7 +163,10 @@ void QuadrantSampling::updateRotation()
     // Gram-Schmidt algorithm
     Sample f(p, p);
     // f0 = u* / ||u*||
-    f[0] = u / u.norm();
+    const Scalar uNorm = u.norm();
+    if (!(uNorm > 0.0))
+      throw InvalidArgumentException(HERE) << "QuadrantSampling: null norm in updateRotation";
+    f[0] = u / uNorm;
     for (UnsignedInteger k = 1; k < p; ++ k)
     {
       // fk = ek
