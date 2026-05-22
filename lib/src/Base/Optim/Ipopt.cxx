@@ -271,8 +271,6 @@ String Ipopt::__repr__() const
         oss << optionName << "=" << ResourceMap::GetAsUnsignedInteger(keys[i]) << "\n";
       else if (type == "bool")
         oss << optionName << "=" << ResourceMap::GetAsBool(keys[i]) << "\n";
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Ipopt option " << optionName;
     }
 
   return oss;
