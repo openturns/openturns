@@ -174,8 +174,8 @@ Point IteratedQuadrature::integrate(const Function & function,
   {
     // Check the compatibility of the lower bound functions and the upper bound functions
     // First, check the number of such functions
-    if (lowerBounds.getSize() != inputDimension - 1) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " lower bound functions, got " << lowerBounds.getSize();
-    if (upperBounds.getSize() != inputDimension - 1) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " upper bound functions, got " << upperBounds.getSize();
+    if (lowerBounds.getSize() + 1 != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " lower bound functions, got " << lowerBounds.getSize();
+    if (upperBounds.getSize() + 1 != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " upper bound functions, got " << upperBounds.getSize();
     // Second, check the input and output dimensions of each bound function
     for (UnsignedInteger i = 1; i < inputDimension; ++i)
     {
