@@ -1759,6 +1759,8 @@ Sample DistributionImplementation::computePDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
   IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
@@ -1786,6 +1788,8 @@ Sample DistributionImplementation::computeLogPDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
   IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
@@ -1813,6 +1817,8 @@ Sample DistributionImplementation::computeCDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
   IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
@@ -1828,6 +1834,7 @@ Sample DistributionImplementation::computeComplementaryCDF(const Scalar xMin,
     Sample & grid) const
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the CDF over a regular 1D grid if the dimension is > 1";
+  if (pointNumber <= 1) throw InvalidArgumentException(HERE) << "Error: pointNumber must be > 1";
   Sample result(pointNumber, 2);
   Scalar x = xMin;
   Scalar step = (xMax - xMin) / Scalar(pointNumber - 1.0);
@@ -1859,6 +1866,7 @@ Sample DistributionImplementation::computeQuantile(const Scalar qMin,
     const Bool tail) const
 {
   // First, build the regular grid for the quantile levels
+  if (pointNumber <= 1) throw InvalidArgumentException(HERE) << "Error: pointNumber must be > 1";
   grid = Sample(pointNumber, 1);
   for (UnsignedInteger i = 0; i < pointNumber; ++i) grid(i, 0) = qMin + i * (qMax - qMin) / (pointNumber - 1.0);
   // Use possible parallelization
