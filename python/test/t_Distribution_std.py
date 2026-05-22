@@ -1,4 +1,5 @@
 import openturns as ot
+import openturns.testing as ott
 
 # comparison via implementation
 assert ot.Triangular() == ot.Triangular(), "Triangular==Triangular"
@@ -82,3 +83,11 @@ assert sample1.getDimension() == 1
 dist2 = ot.Normal(2)
 sample2 = dist2.getSampleByQMC(10)
 assert sample2.getDimension() == 2
+
+# check generic computeCharacteristicFunction has no global cache
+x = 500000.0
+dist1 = ot.Student(3.0)
+cf = dist1.computeCharacteristicFunction(x)
+dist2 = ot.Rice()
+cf = dist2.computeCharacteristicFunction(x)
+ott.assert_almost_equal(cf, 2.655225e-12 + 1.321260e-18j)
