@@ -269,7 +269,7 @@ UnsignedInteger EvaluationImplementation::getParameterDimension() const
 /* Get the i-th marginal function */
 Evaluation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
+  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
@@ -298,7 +298,7 @@ Bool EvaluationImplementation::isLinear() const
 Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) const
 {
   // Check dimension consistency
-  if (!(index <= getInputDimension()))
+  if (index >= getInputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
 
   return false;
@@ -330,9 +330,9 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
                                      const UnsignedInteger pointNumber,
                                      const GraphImplementation::LogScale scale) const
 {
-  if (!(getInputDimension() >= 1)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1, here inputDimension=" << getInputDimension();
-  if (!(inputMarginal < getInputDimension())) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
-  if (!(outputMarginal < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
+  if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1, here inputDimension=" << getInputDimension();
+  if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
+  if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
   if (!(xMin <= xMax)) throw InvalidArgumentException(HERE) << "Error: xMin (" << xMin << ") cannot be greater than xMax(" << xMax << ")";
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
@@ -393,9 +393,9 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const GraphImplementation::LogScale scale,
                                      const Bool isFilled) const
 {
-  if (!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
-  if (!(xMin.getDimension() == 2 && xMax.getDimension() == 2 && pointNumber.getSize() == 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
-  if (!(pointNumber[0] > 2 && pointNumber[1] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
+  if (xMin.getDimension() != 2 || xMax.getDimension() != 2 || pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
+  if (pointNumber[0] < 2 || pointNumber[1] < 2) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
   if (useLogX && (!(xMin[0] > 0.0 && xMax[0] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
   const Bool useLogY = (scale == GraphImplementation::LOGY || scale == GraphImplementation::LOGXY);
@@ -571,15 +571,16 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point & centralPoint,
     const Scalar vMax) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (!(inputDimension >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with input dimension=" << inputDimension << " less than 2 using this method. See the other draw() methods.";
+  if (inputDimension < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with input dimension=" << inputDimension << " less than 2 using this method. See the other draw() methods.";
   if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw cross cuts of a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
-  if (!(xMin.getDimension() == inputDimension && xMax.getDimension() == inputDimension && pointNumber.getSize() == inputDimension)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be of dimension " << inputDimension;
+  if (xMin.getDimension() != inputDimension || xMax.getDimension() != inputDimension || pointNumber.getSize() != inputDimension) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be of dimension " << inputDimension;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
-    if (!(pointNumber[i] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
-  const Bool buildVMinMax = vMax == -SpecFunc::Infinity && vMin == -SpecFunc::Infinity;
-  Scalar vMinCal = buildVMinMax ? SpecFunc::Infinity : vMin;
-  Scalar vMaxCal = vMax;
-  if (!buildVMinMax && !(vMin < vMax))throw InvalidArgumentException(HERE) << "Error: the vMin value must be less than the vMax value";
+    if (pointNumber[i] < 2) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  const Bool buildVMin = (vMin == -SpecFunc::Infinity);
+  const Bool buildVMax = (vMax == -SpecFunc::Infinity);
+  Scalar vMinCal = buildVMin ? SpecFunc::Infinity : vMin;
+  Scalar vMaxCal = buildVMax ? -SpecFunc::Infinity : vMax;
+  if (!buildVMin && !buildVMax && !(vMin < vMax)) throw InvalidArgumentException(HERE) << "Error: the vMin value must be less than the vMax value";
   //Building component samples
   Collection<Sample>samples(inputDimension);
   for (UnsignedInteger iX = 0; iX < inputDimension; iX++)
@@ -619,11 +620,8 @@ GridLayout EvaluationImplementation::drawCrossCuts(const Point & centralPoint,
       } // j
       // Compute the output sample, using possible parallelism
       const Sample z((*this)(inputSample));
-      if (buildVMinMax)
-      {
-        vMinCal = std::min(vMinCal, z.getMin()[0]);
-        vMaxCal = std::max(vMaxCal, z.getMax()[0]);
-      }
+      if (buildVMin) vMinCal = std::min(vMinCal, z.getMin()[0]);
+      if (buildVMax) vMaxCal = std::max(vMaxCal, z.getMax()[0]);
       Contour isoValues(x, y, z);
       isoValues.setIsFilled(isFilled);
       isoValues.setDrawLabels(!isFilled);
