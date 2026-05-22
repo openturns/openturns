@@ -143,8 +143,15 @@ Scalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
     const Scalar p,
     const Sample & sample)
 {
-  std::map<UnsignedInteger, Scalar> logLikelihoodCache;
   const UnsignedInteger size = sample.getSize();
+  // Special case p == 1: degenerate at k = n
+  if (p == 1.0)
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (static_cast<UnsignedInteger>(round(sample(i, 0))) != n) return -SpecFunc::Infinity;
+    return 0.0;
+  }
+  std::map<UnsignedInteger, Scalar> logLikelihoodCache;
   const Scalar logNFactorial = SpecFunc::LogGamma(n + 1.0);
   const Scalar logP = std::log(p);
   const Scalar logQ = log1p(-p);
