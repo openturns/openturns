@@ -1275,7 +1275,7 @@ ProfileLikelihoodResult GeneralizedExtremeValueFactory::buildReturnLevelProfileL
   profileLikelihoodEvaluation(solver.getResult().getOptimalPoint());
   const Scalar sigma = profileLikelihoodEvaluation.getOptimalPoint()[0];
   const Scalar xi = profileLikelihoodEvaluation.getOptimalPoint()[1];
-  const Scalar mu = zm - sigma * std::expm1(-xi * logLog1pM) / xi;
+  const Scalar mu = (std::abs(xi) < SpecFunc::Precision ? zm + sigma * logLog1pM : zm - sigma * std::expm1(-xi * logLog1pM) / xi);
   const Point optimalParameter({mu, sigma, xi});
 
   const Distribution distribution(buildAsGeneralizedExtremeValue(optimalParameter));
