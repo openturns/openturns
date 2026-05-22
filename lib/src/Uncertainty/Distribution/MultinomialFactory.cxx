@@ -76,6 +76,7 @@ Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
     if (sumI > maxSum)
       maxSum = sumI;
   }
+  if (maxSum == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution from a sample with all zero entries";
   p *= 1.0 / (maxSum * size);
   Multinomial result(maxSum, p);
   result.setDescription(sample.getDescription());
