@@ -187,12 +187,14 @@ Scalar Logistic::computeEntropy() const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Logistic::computeCharacteristicFunction(const Scalar x) const
 {
+  if (x == 0.0) return 1.0;
   const Scalar piBetaU = M_PI * beta_ * x;
   return std::exp(Complex(0.0, x * mu_)) * piBetaU / std::sinh(piBetaU);
 }
 
 Complex Logistic::computeLogCharacteristicFunction(const Scalar x) const
 {
+  if (x == 0.0) return 0.0;
   const Scalar piBetaU = M_PI * beta_ * x;
   return Complex(0.0, x * mu_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
 }
