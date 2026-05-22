@@ -745,23 +745,17 @@ void Pagmo::run()
 #if PAGMO_VERSION_NR >= 201901
   const OptimizationProblem problem(getProblem());
   const UnsignedInteger inputDimension = problem.getObjective().getInputDimension();
-  const UnsignedInteger blockSize = getBlockSize();
-  const UnsignedInteger blockNumber = static_cast<UnsignedInteger>(ceil(1.0 * size / blockSize));
-  for (UnsignedInteger outerSampling = 0; outerSampling < blockNumber; ++ outerSampling)
+  Sample inSb(size, inputDimension);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    inSb[i] = pproblem.renumber(startingSample[i], false);
+  const pagmo::vector_double inV(inSb.getImplementation()->getData().toStdVector());
+  const pagmo::vector_double outV(prob.batch_fitness(inV));
+  const UnsignedInteger nf = outV.size() / size;
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const UnsignedInteger effectiveBlockSize = ((outerSampling == (blockNumber - 1)) && (size % blockSize)) ? (size % blockSize) : blockSize;
-    Sample inSb(effectiveBlockSize, inputDimension);
-    for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
-      inSb[i] = pproblem.renumber(startingSample[i + outerSampling * blockSize], false);
-    const pagmo::vector_double inV(inSb.getImplementation()->getData().toStdVector());
-    const pagmo::vector_double outV(prob.batch_fitness(inV));
-    const UnsignedInteger nf = outV.size() / effectiveBlockSize;
-    for (UnsignedInteger i = 0; i < effectiveBlockSize; ++ i)
-    {
-      const pagmo::vector_double inVi(inV.begin() + i * inputDimension, inV.begin() + (i + 1) * inputDimension);
-      const pagmo::vector_double outVi(outV.begin() + i * nf, outV.begin() + (i + 1) * nf);
-      pop.push_back(inVi, outVi);
-    }
+    const pagmo::vector_double inVi(inV.begin() + i * inputDimension, inV.begin() + (i + 1) * inputDimension);
+    const pagmo::vector_double outVi(outV.begin() + i * nf, outV.begin() + (i + 1) * nf);
+    pop.push_back(inVi, outVi);
   }
 #else
   for (UnsignedInteger i = 0; i < size; ++ i)
