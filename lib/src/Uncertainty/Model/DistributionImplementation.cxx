@@ -698,7 +698,7 @@ Point DistributionImplementation::computeDDF(const Point & point) const
   {
     const UnsignedInteger dimension = getDimension();
     Point ddf(dimension);
-    const Scalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
+    const Scalar h = std::cbrt(pdfEpsilon_);
     LOGINFO(OSS() << "h=" << h);
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
@@ -734,7 +734,7 @@ Point DistributionImplementation::computeDDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar DistributionImplementation::computePDF(const Point & point) const
 {
-  const Scalar epsilon = 2.0 * std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar epsilon = 2.0 * std::cbrt(cdfEpsilon_);
   const Sample xSample(((Box(Indices(dimension_, 0)).generate() - Point(dimension_, 0.5)) * Point(dimension_, epsilon)) + point);
   const Sample cdfSample(computeCDF(xSample));
   Scalar pdf = 0.0;
@@ -1948,9 +1948,9 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // Increment for centered differences
-  const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const Scalar eps = std::cbrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   // Increment for noncentered differences
-  const Scalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const Scalar eps2 = std::sqrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
@@ -2115,9 +2115,9 @@ Point DistributionImplementation::computeCDFGradient(const Point & point) const
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // We will use centered differences
-  const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const Scalar eps = std::cbrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   // Increment for noncentered differences
-  const Scalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const Scalar eps2 = std::sqrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
