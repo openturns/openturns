@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include <algorithm>
+#include <limits>
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
@@ -1158,23 +1159,27 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
   Scalar probability = 1.0;
   if (hasIndependentCopula())
   {
-    for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i).getImplementation()->computeProbabilityGeneral1D(a[i], b[i]);
-  } // independent
+    // independent case
+    for (UnsignedInteger i = 0; i < dimension_; ++ i)
+      probability *= getMarginal(i).getImplementation()->computeProbabilityGeneral1D(a[i], b[i]);
+  }
   else
   {
     // P(\bigcap_i ai < Xi \leq bi) = \sum_c (−1)^n(c) F(c_1,c_2,...,c_n)
     // with c = (c_i, i =1, ..., n), c_i \in [a_i, b_i]
     // and n(c) = Card({c_i == a_i, i = 1, ..., n})
     probability = 0.0;
+    if (dimension_ >= std::numeric_limits<UnsignedInteger>::digits)
+      throw InternalException(HERE) << "Error: dimension too large for inclusion-exclusion probability computation";
     const UnsignedInteger iMax = 1 << dimension_;
     Point probabilities(iMax);
-    for( UnsignedInteger i = 0; i < iMax; ++i )
+    for (UnsignedInteger i = 0; i < iMax; ++ i)
     {
       Bool evenLower = true;
       Point c(b);
-      for( UnsignedInteger j = 0; j < dimension_; ++j )
+      for (UnsignedInteger j = 0; j < dimension_; ++ j)
       {
-        const UnsignedInteger mask = 1 << j;
+        const UnsignedInteger mask = 1L << j;
         if (i & mask)
         {
           c[j] = a[j];
