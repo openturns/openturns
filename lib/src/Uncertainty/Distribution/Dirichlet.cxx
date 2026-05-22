@@ -39,12 +39,6 @@ static const Factory<Dirichlet> Factory_Dirichlet;
 /* Default constructor */
 Dirichlet::Dirichlet()
   : DistributionImplementation()
-  , theta_(0)
-  , sumTheta_(0.0)
-  , normalizationFactor_(0.0)
-  , isInitializedCDF_(false)
-  , integrationNodes_(0)
-  , integrationWeights_(0)
 {
   setName("Dirichlet");
   setTheta(Point(2, 1.0));
@@ -54,12 +48,6 @@ Dirichlet::Dirichlet()
 /* Parameters constructor */
 Dirichlet::Dirichlet(const Point & theta)
   : DistributionImplementation()
-  , theta_(0)
-  , sumTheta_(0.0)
-  , normalizationFactor_(0.0)
-  , isInitializedCDF_(false)
-  , integrationNodes_(0)
-  , integrationWeights_(0)
 {
   setName("Dirichlet");
   setTheta(theta);
@@ -160,22 +148,25 @@ Scalar Dirichlet::computeLogPDF(const Point & point) const
 void Dirichlet::initializeIntegration() const
 {
   const UnsignedInteger dimension = getDimension();
-  // Initialization at the first call
-  static const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize"));
   // Do we have to initialize the CDF data?
   if (!isInitializedCDF_)
   {
-    integrationNodes_ = PointCollection(0);
-    integrationWeights_ = PointCollection(0);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
+    std::lock_guard<std::mutex> lock(*cacheMutex_);
+    if (!isInitializedCDF_)
     {
-      Point marginalWeights;
-      Point marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
-      integrationNodes_.add(marginalNodes);
-      integrationWeights_.add(marginalWeights);
+      const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize");
+      integrationNodes_ = PointCollection(0);
+      integrationWeights_ = PointCollection(0);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        Point marginalWeights;
+        Point marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
+        integrationNodes_.add(marginalNodes);
+        integrationWeights_.add(marginalWeights);
+      }
+      isInitializedCDF_ = true;
     }
-    isInitializedCDF_ = true;
-  } // !isInitialized
+  }
 }
 
 /* Get the CDF of the distribution */
@@ -281,10 +272,21 @@ Scalar Dirichlet::computeCDF(const Point & point) const
     return value;
   }
   // Use crude Monte Carlo for now, with a fixed sampling size
-  static const UnsignedInteger samplingSize(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultSamplingSize"));
-  RandomGeneratorState initialState(RandomGenerator::GetState());
-  RandomGenerator::SetSeed(samplingSize);
-  static const Sample sample(getSample(samplingSize));
+  if (!isInitializedCDFSample_)
+  {
+    std::lock_guard<std::mutex> lock(*cacheMutex_);
+    if (!isInitializedCDFSample_)
+    {
+      const UnsignedInteger samplingSize = ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultSamplingSize");
+      RandomGeneratorState initialState(RandomGenerator::GetState());
+      RandomGenerator::SetSeed(samplingSize);
+      cdfSample_ = getSample(samplingSize);
+      RandomGenerator::SetState(initialState);
+      isInitializedCDFSample_ = true;
+    }
+  }
+  const Sample & sample(cdfSample_);
+  const UnsignedInteger samplingSize = sample.getSize();
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < samplingSize; ++i)
   {
@@ -298,7 +300,6 @@ Scalar Dirichlet::computeCDF(const Point & point) const
       }
     successNumber += success;
   }
-  RandomGenerator::SetState(initialState);
   return Scalar(successNumber) / samplingSize;
 }
 
@@ -531,6 +532,8 @@ void Dirichlet::setTheta(const Point & theta)
   setDimension(size - 1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+  isInitializedCDF_ = false;
+  isInitializedCDFSample_ = false;
   computeRange();
 }
 
