@@ -292,10 +292,12 @@ Scalar Bernoulli::getP() const
 void Bernoulli::computeRange()
 {
   // Degenerate cases
-  if (p_ == 0.0) setRange(Interval(0.0, 0.0));
-  if (p_ == 1.0) setRange(Interval(1.0, 1.0));
-  // Usual case
-  setRange(Interval(0.0, 1.0));
+  if (p_ == 0.0)
+    setRange(Interval(0.0, 0.0));
+  else if (p_ == 1.0)
+    setRange(Interval(1.0, 1.0));
+  else // Usual case
+    setRange(Interval(0.0, 1.0));
 }
 
 /* Method save() stores the object through the StorageManager */
