@@ -97,6 +97,7 @@ Scalar HSICUStat::computeHSICIndex(const CovarianceMatrix &covarianceMatrix1,
 
   Scalar hsic = 0.0;
   const SignedInteger n = weights.getDimension();
+  if (n < 4) throw InvalidArgumentException(HERE) << "HSIC U-stat requires at least 4 samples. Here n=" << n;
   const Point ones(n, 1.0);
 
   const SquareMatrix Kv(covarianceMatrix1 * covarianceMatrix2);
