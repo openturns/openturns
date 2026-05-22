@@ -751,7 +751,7 @@ Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension,
     Scalar Q = A * (2.0 * A * A - P1 / P3) + P0 / P3;
     Scalar R = std::sqrt(-std::pow(P, 3.0));
     Scalar TH = acos(-Q / (2.0 * R)) / 3.0;
-    R = 2.0 * std::pow(R, 1.0 / 3.0);
+    R = 2.0 * std::cbrt(R);
     Scalar TP = 2.0 * M_PI / 3.0;
     Scalar A1 = -A + R * std::cos(TH);
     Scalar A2 = -A + R * std::cos(TH + 2 * TP);

@@ -158,8 +158,8 @@ Scalar EllipticalDistribution::computeLogDensityGenerator(const Scalar betaSquar
 Scalar EllipticalDistribution::computeDensityGeneratorDerivative(const Scalar betaSquare) const
 {
   // Use centered finite difference
-  const Scalar epsilon = std::pow(ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon"), 1.0 / 3.0);
-  return (computeDensityGenerator(betaSquare + epsilon) - computeDensityGenerator(betaSquare - epsilon)) / epsilon;
+  const Scalar epsilon = std::cbrt(ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon"));
+  return (computeDensityGenerator(betaSquare + epsilon) - computeDensityGenerator(betaSquare - epsilon)) / (2.0 * epsilon);
 }
 
 /* Compute the seconde derivative of the density generator */

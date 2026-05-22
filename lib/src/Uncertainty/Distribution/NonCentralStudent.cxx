@@ -113,7 +113,7 @@ Point NonCentralStudent::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar eps = std::pow(pdfEpsilon_, 1.0 / 3.0);
+  const Scalar eps = std::cbrt(pdfEpsilon_);
   Point pdfGradient(3);
   pdfGradient[0] = (DistFunc::dNonCentralStudent(nu_ + eps, delta_, point[0] - gamma_) - DistFunc::dNonCentralStudent(nu_ - eps, delta_, point[0] - gamma_)) / (2.0 * eps);
   pdfGradient[1] = (DistFunc::dNonCentralStudent(nu_, delta_ + eps, point[0] - gamma_) - DistFunc::dNonCentralStudent(nu_, delta_ - eps, point[0] - gamma_)) / (2.0 * eps);
@@ -126,7 +126,7 @@ Point NonCentralStudent::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar eps = std::cbrt(cdfEpsilon_);
   Point cdfGradient(3);
   cdfGradient[0] = (DistFunc::pNonCentralStudent(nu_ + eps, delta_, point[0] - gamma_, false) - DistFunc::pNonCentralStudent(nu_ - eps, delta_, point[0] - gamma_, false)) / (2.0 * eps);
   cdfGradient[1] = (DistFunc::pNonCentralStudent(nu_, delta_ + eps, point[0] - gamma_, false) - DistFunc::pNonCentralStudent(nu_, delta_ - eps, point[0] - gamma_, false)) / (2.0 * eps);

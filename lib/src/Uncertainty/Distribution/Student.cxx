@@ -376,7 +376,7 @@ Point Student::computeCDFGradient(const Point & point) const
   {
     Point cdfGradient(3, 0.0);
     const Scalar x = point[0] - mean_[0];
-    const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+    const Scalar eps = std::cbrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
     const Scalar i2Eps = 0.5 / eps;
     cdfGradient[0] = (DistFunc::pStudent(nu_ + eps, x / sigma_[0]) - DistFunc::pStudent(nu_ - eps, x / sigma_[0])) * i2Eps;
     // Opposite sign for eps because x - eps = point[0] - (mu + eps)
