@@ -130,7 +130,10 @@ Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution
     const UnsignedInteger outputDimension,
     Distribution & error)
 {
-  const Scalar varianceError = (r.getDimension() > thetaStar.getDimension()) ? (r.normSquare() / (r.getDimension() - thetaStar.getDimension())) : 0.0;
+  if (!(r.getDimension() > thetaStar.getDimension()))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate residual variance because residual dimension="
+                                         << r.getDimension() << " is not greater than parameter dimension=" << thetaStar.getDimension();
+  const Scalar varianceError = r.normSquare() / (r.getDimension() - thetaStar.getDimension());
   CovarianceMatrix covarianceThetaStar;
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");
   covarianceThetaStar = CovarianceMatrix((gramInverse * varianceError).getImplementation());
