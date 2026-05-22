@@ -628,7 +628,7 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
   const Scalar w = 1.0 / (nu + x2);
   Scalar logFactor = logConstant + halfNup1_2 * std::log(nu * w);
   // Special treatment for very low value to avoid NaNs due to 0.Inf
-  static const Scalar logPrecision(std::log(precision));
+  const Scalar logPrecision = std::log(precision);
   if (logFactor < logPrecision)
   {
     Scalar value = 0.0;
