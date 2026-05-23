@@ -297,7 +297,7 @@ Point FiniteDiscreteDistribution::computePDFGradient(const Point & point) const
   {
     if ((point - points_[i]).norm() < supportEpsilon_)
     {
-      pdfGradient[i] = 1.0;
+      pdfGradient[dimension * size + i] = 1.0;
       break;
     }
   }
@@ -316,8 +316,8 @@ Point FiniteDiscreteDistribution::computeCDFGradient(const Point & point) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     UnsignedInteger j = 0;
-    while ((j < dimension) && (point[j] <= points_(i, j))) ++j;
-    if (j == dimension) cdfGradient[i] = 1.0;
+    while ((j < dimension) && (point[j] >= points_(i, j))) ++j;
+    if (j == dimension) cdfGradient[dimension * size + i] = 1.0;
   }
   return cdfGradient;
 }
@@ -812,6 +812,8 @@ void FiniteDiscreteDistribution::load(Advocate & adv)
   adv.loadAttribute( "probabilities_", probabilities_ );
   adv.loadAttribute( "cumulativeProbabilities_", cumulativeProbabilities_ );
   adv.loadAttribute( "hasUniformWeights_", hasUniformWeights_ );
+  if (!hasUniformWeights_)
+    DistFunc::rDiscreteSetup(probabilities_, base_, alias_);
   computeRange();
 }
 

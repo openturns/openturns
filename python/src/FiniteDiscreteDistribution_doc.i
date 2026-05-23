@@ -9,7 +9,7 @@ points : 2-d sequence of float
 weights : sequence of float, optional
     List of :math:`n` weights :math:`p_i`, :math:`i = 1, \ldots, n`.
     If :math:`\sum_{i=1}^n p_i \neq 1`, the weights are normalized.
-    Default value is [1].
+    If not specified, equal weights :math:`1/n` are used.
 
 Notes
 -----
