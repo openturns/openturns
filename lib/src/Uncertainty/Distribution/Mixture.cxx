@@ -159,7 +159,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   if (size == 0) throw InvalidArgumentException(HERE) << "Cannot build a Mixture based on an empty distribution collection.";
   if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "The number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
   Scalar maximumWeight = weights[0];
-  Scalar weightSum = maximumWeight;
+  Scalar weightSum = 0.0;
   UnsignedInteger dimension = coll[0].getDimension();
   // First loop, check the atoms dimensions and the weights values
   for(UnsignedInteger i = 0; i < size; ++i)
@@ -412,10 +412,10 @@ Scalar Mixture::computeConditionalPDF(const Scalar x,
   z.add(x);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar wI = p_[i];
-    conditioningPDF += wI * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
-    if (conditioningPDF > 0.0)
-      conditionedPDF += wI * distributionCollection_[i].getMarginal(conditionedIndices).computePDF(z);
+    const Scalar weightedMarginalAtomPDF = p_[i] * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
+    conditioningPDF += weightedMarginalAtomPDF;
+    if (weightedMarginalAtomPDF > 0.0)
+      conditionedPDF += p_[i] * distributionCollection_[i].getMarginal(conditionedIndices).computePDF(z);
   }
   if (conditioningPDF == 0.0) return 0.0;
   return conditionedPDF / conditioningPDF;
@@ -649,7 +649,7 @@ Mixture::PointWithDescriptionCollection Mixture::getParametersCollection() const
   // Form a big Point from the dependence parameters of each atom
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (distributionCollection_[i].getParametersCollection().getSize() >= dimension - 1)
+    if (distributionCollection_[i].getParametersCollection().getSize() > dimension)
     {
       const PointWithDescription atomDependenceParameters(distributionCollection_[i].getParametersCollection()[dimension]);
       const Description atomDescription(atomDependenceParameters.getDescription());
