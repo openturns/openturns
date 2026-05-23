@@ -24,6 +24,7 @@
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,8 +97,9 @@ void ProbabilitySimulationResult::setVarianceEstimate(const Scalar varianceEstim
 }
 
 /* Probability estimate distribution accessor */
-Normal ProbabilitySimulationResult::getProbabilityDistribution() const
+Distribution ProbabilitySimulationResult::getProbabilityDistribution() const
 {
+  if (varianceEstimate_ <= 0.0) return Dirac(probabilityEstimate_);
   return Normal(probabilityEstimate_, std::sqrt(varianceEstimate_));
 }
 
