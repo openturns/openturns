@@ -162,6 +162,7 @@ Point Geometric::computePDFGradient(const Point & point) const
 
   const Scalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return Point(1, 0.0);
+  if (p_ == 1.0) return Point(1, 0.0);
   return Point(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
 }
 
@@ -211,7 +212,7 @@ Complex Geometric::computeGeneratingFunction(const Complex & z) const
 Sample Geometric::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const SignedInteger kMin = static_cast< SignedInteger > (std::max(0.0, ceil(interval.getLowerBound()[0])));
+  const SignedInteger kMin = static_cast< SignedInteger > (std::max(1.0, ceil(interval.getLowerBound()[0])));
   const SignedInteger kMax = static_cast< SignedInteger > (std::min(getRange().getUpperBound()[0], floor(interval.getUpperBound()[0])));
   Sample result(0, 1);
   for (SignedInteger k = kMin; k <= kMax; ++k)

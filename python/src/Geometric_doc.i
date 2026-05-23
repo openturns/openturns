@@ -1,15 +1,6 @@
 %feature("docstring") OT::Geometric
 R"RAW(Geometric distribution.
 
-Parameters
-----------
-p : float, :math:`0 < p \leq 1`
-    Success probability of the associated Bernoulli trial.
-
-    Default value is 0.5.
-
-Notes
------
 Its probability distribution function is defined as:
 
 .. math::
@@ -28,6 +19,14 @@ Its first moments are:
         \Expect{X} & = & \frac{1}{p} \\
         \Var{X} & = & \frac{1 - p}{p^2}
     \end{eqnarray*}
+
+Parameters
+----------
+p : float, :math:`0 < p \leq 1`
+    Success probability of the associated Bernoulli trial.
+
+    Default value is 0.5.
+
 
 See Also
 --------

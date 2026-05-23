@@ -61,8 +61,22 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 # computeProbability regression test for discrete distributions
 p = ot.Geometric(0.5).computeProbability(ot.Interval(2, 6))
-assert p == 0.484375, "wrong discrete interval proba"
+ott.assert_almost_equal(p, 0.484375)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Test getSupport does not include k=0 (support starts at 1)
+dist_geo = ot.Geometric(0.5)
+support = dist_geo.getSupport(ot.Interval(-1.0, 0.5))
+ott.assert_almost_equal(support.getSize(), 0)
+
+# Test getSupport returns correct values for a valid interval
+support = dist_geo.getSupport(ot.Interval(1.0, 3.0))
+ott.assert_almost_equal(support, ot.Sample([[1.0], [2.0], [3.0]]))
+
+# Test computePDFGradient at p=1, k=1 does not return NaN
+dist_p1 = ot.Geometric(1.0)
+pdf_grad = dist_p1.computePDFGradient([1.0])
+assert not any(map(lambda x: x != x, pdf_grad)), "PDF gradient should not be NaN at p=1"
