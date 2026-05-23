@@ -65,3 +65,8 @@ print("probabilities=", distribution.getProbabilities())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Test CDF/complementaryCDF for small negative k near 0
+dist = ot.Poisson(2.5)
+ott.assert_almost_equal(dist.computeCDF([-1e-14]), 0.0)
+ott.assert_almost_equal(dist.computeComplementaryCDF([-1e-14]), 1.0)
