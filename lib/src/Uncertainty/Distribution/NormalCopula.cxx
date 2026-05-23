@@ -499,7 +499,7 @@ Point NormalCopula::computeSequentialConditionalCDF(const Point & x) const
   {
     Point result(dimension_);
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = (!((x[i] > 0.0) && (x[i] < 1.0)) ? 0.0 : 1.0);
+      result[i] = SpecFunc::Clip01(x[i]);
     return result;
   }
   return DistFunc::pNormal(normal_.getInverseCholesky() * DistFunc::qNormal(x));
@@ -604,21 +604,8 @@ CorrelationMatrix NormalCopula::computeLowerTailDependenceMatrix() const
 
 void NormalCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
-  // Check if the given parameters are ok
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
-  const Point parameters(parametersCollection[0]);
-  const UnsignedInteger dimension = getDimension();
-  if (parameters.getDimension() != dimension * (dimension - 1) / 2) throw InvalidArgumentException(HERE) << "Error: got " << parameters.getDimension() << " parameters instead of " << dimension * (dimension - 1) / 2;
-  if (dimension == 1) return;
-  UnsignedInteger dependenceIndex = 0;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    for (UnsignedInteger j = 0; j < i; ++j)
-    {
-      correlation_(i, j) = parameters[dependenceIndex];
-      ++dependenceIndex;
-    }
-  }
+  setParameter(parametersCollection[0]);
 }
 
 Point NormalCopula::getParameter() const

@@ -165,3 +165,14 @@ standard = ot.JointDistribution(standard_list)
 transformation = ot.DistributionTransformation(distribution, standard)
 standard_sample = transformation(ot.Normal(distribution.getDimension()).getSample(10))
 print(standard_sample)
+
+# computeSequentialConditionalCDF for independent copula
+dim = 3
+indepCopula = ot.NormalCopula(dim)
+assert indepCopula.hasIndependentCopula()
+pt = [0.1 * i + 0.05 for i in range(dim)]
+seqCDF = indepCopula.computeSequentialConditionalCDF(pt)
+ott.assert_almost_equal(seqCDF, pt)
+pt2 = ot.Point([0.0, 1.0, 0.5])
+seqCDF2 = indepCopula.computeSequentialConditionalCDF(pt2)
+ott.assert_almost_equal(seqCDF2, [0.0, 1.0, 0.5])
