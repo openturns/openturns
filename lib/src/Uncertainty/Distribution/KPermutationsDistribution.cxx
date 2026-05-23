@@ -168,7 +168,6 @@ Scalar KPermutationsDistribution::computeCDF(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  if (dimension == 1) return static_cast < Scalar >(k_) / n_;
   Point sortedPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -186,8 +185,12 @@ Scalar KPermutationsDistribution::computeCDF(const Point & point) const
 Scalar KPermutationsDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  const UnsignedInteger i = static_cast< UnsignedInteger >(ceil(prob * (n_ - 1.0)));
-  return (tail ? n_ - 1.0 - i : i);
+  const Scalar p = (tail ? 1.0 - prob : prob);
+  if (p <= 0.0) return 0.0;
+  if (p >= 1.0) return n_ - 1.0;
+  const Scalar x = n_ * p - 1.0;
+  const UnsignedInteger i = static_cast< UnsignedInteger >(ceil(x));
+  return i;
 } // computeScalarQuantile
 
 /* Compute the quantile of the KPermutationsDistribution distribution */
@@ -197,7 +200,7 @@ Point KPermutationsDistribution::computeQuantile(const Scalar prob,
 {
   const Scalar p = (tail ? 1.0 - prob : prob);
   if (p <= 0.0) return Point(k_, 0.0);
-  if (p >= 1.0) return Point(k_, n_);
+  if (p >= 1.0) return Point(k_, n_ - 1.0);
   UnsignedInteger iMin = 0;
   UnsignedInteger iMax = n_;
   while (iMax > iMin + 1)
