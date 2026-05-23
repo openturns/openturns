@@ -111,3 +111,10 @@ validation.setStandardDeviationTolerance(0.1)  # estimator is slow to converge
 validation.setSkewnessTolerance(0.45)  # estimator is slow to converge
 validation.setCorrelationTolerance(0.1)
 validation.run()
+
+# Test that setSigmaLog updates the normalization factor
+dist = ot.LogNormal(0.0, 1.0, 0.0)
+point = [1.0]
+dist.setSigmaLog(2.0)
+dist_fresh = ot.LogNormal(0.0, 2.0, 0.0)
+ott.assert_almost_equal(dist.computePDF(point), dist_fresh.computePDF(point))
