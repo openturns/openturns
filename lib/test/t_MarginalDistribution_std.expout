@@ -51,10 +51,10 @@ oneSample first=class=Point name=Unnamed dimension=3 values=[2,3,1] last=class=P
 mean=class=Point name=Unnamed dimension=3 values=[1.4254,1.434,1.4148]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.22176,-0.210245,-0.186975,-0.210245,1.24377,-0.217845,-0.186975,-0.217845,1.21306]
 Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
-pdf     =0.00250271
+pdf     =0.0417611
 cdf=0.135956
 ccdf=0.864044
-survival=0.457828
+survival=0.0131141
 quantile=class=Point name=Unnamed dimension=3 values=[4,4,4]
 cdf(quantile)=0.976008
 quantile (tail)=class=Point name=Unnamed dimension=3 values=[1,1,1]
