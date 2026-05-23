@@ -177,7 +177,7 @@ Complex WeibullMin::computeCharacteristicFunction(const Scalar x) const
   */
   if (x == 0.0) return 1.0;
   // Special case: beta == 1 -> exponential distribution
-  if (alpha_ == 1.0) return 1.0 / Complex(1.0, -x / beta_);
+  if (alpha_ == 1.0) return std::exp(Complex(0.0, x * gamma_)) / Complex(1.0, -x * beta_);
   // If beta < 1.0, the series based on the Gamma function is divergent so use the generic implementation
   if (alpha_ < 1.0) return DistributionImplementation::computeCharacteristicFunction(x);
   Complex value(1.0);
