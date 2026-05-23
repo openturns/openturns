@@ -109,7 +109,7 @@ Sample CSVParser::load() const
   const String commentMarkers(ResourceMap::GetAsString("Sample-CommentMarker"));
   if (commentMarkers.size() != 1)
     throw InvalidArgumentException(HERE) << "The entry Sample-CommentMarker must be a string of size 1";
-  if (allowEmptyLines_ && (commentMarkers[0] == fieldSeparator_ || commentMarkers[0] == decimalSeparator_))
+  if (allowComments_ && (commentMarkers[0] == fieldSeparator_ || commentMarkers[0] == decimalSeparator_))
     throw InvalidArgumentException(HERE) << "The comment marker must be different from the field and decimal separators";
   pLineReaderParams.mCommentPrefix = commentMarkers[0];
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
