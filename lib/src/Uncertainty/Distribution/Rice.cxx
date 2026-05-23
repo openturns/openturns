@@ -23,7 +23,6 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -291,7 +290,7 @@ void Rice::setNu(const Scalar nu)
   {
     nu_ = nu;
     isAlreadyComputedMean_ = false;
-    // The covariance does not depend on nu
+    isAlreadyComputedCovariance_ = false;
     computeRange();
   }
 }
