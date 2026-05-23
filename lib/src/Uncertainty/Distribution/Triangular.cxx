@@ -269,7 +269,7 @@ Scalar Triangular::computeScalarQuantile(const Scalar prob,
   if (tail)
   {
     if (bm < prob * ba) return a_ + std::sqrt((1.0 - prob) * ba * ma);
-    return b_ - std::sqrt(prob * ba * (b_ - m_));
+    return b_ - std::sqrt(prob * ba * bm);
   }
   if (ba * prob < ma) return a_ + std::sqrt(prob * ba * ma);
   return b_ - std::sqrt((1.0 - prob) * ba * bm);
