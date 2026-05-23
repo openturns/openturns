@@ -117,9 +117,10 @@ Normal::Normal(const Point & mean,
     else
     {
       sigma[i] = std::sqrt(cii);
-      for (UnsignedInteger j = 0; j < i; ++ j)
-        if (sigma[j] > 0.0)
-          R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      if (sigma[i] > 0.0)
+        for (UnsignedInteger j = 0; j < i; ++ j)
+          if (sigma[j] > 0.0)
+            R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
     }
   }
   *this = Normal(mean, sigma, R);
