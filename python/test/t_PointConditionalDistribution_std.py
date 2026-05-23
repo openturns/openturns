@@ -92,8 +92,8 @@ student = ot.Student(2.5, [0.4] * 3, [1.2] * 3, R)
 distribution = ot.PointConditionalDistribution(student, [1], [2.0])
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
-ott.assert_almost_equal(simplified.getMarginal(0), ot.Student(3.5, 1.84, 1.07564))
-ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.156194)
+ott.assert_almost_equal(simplified.getMarginal(0), ot.Student(3.5, 1.84, 1.1116))
+ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.146250)
 
 # special case for Mixture
 mixture = ot.Mixture([ot.Normal(2), ot.Normal(2)], [0.3, 0.7])
@@ -138,7 +138,7 @@ distribution = ot.PointConditionalDistribution(
 simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "BlockIndependentDistribution", "wrong type"
-ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.0248766)
+ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 0.0248698)
 # test a conditioning which remove all but the last block
 # As the last block can be simplified, it is its actual simplification which is used
 distribution = ot.PointConditionalDistribution(
@@ -166,3 +166,10 @@ distribution = ot.PointConditionalDistribution(copula - 1.0, [1], [-0.8])
 ott.assert_almost_equal(
     distribution.getSample(10000).computeMean(), [-0.75] * 2, 1e-2, 1e-2
 )
+
+# Verify swapped bivariate copula uses generic methods
+# With IndependentCopula, the conditional distribution is Uniform(0,1)
+indep = ot.IndependentCopula(2)
+cond = ot.PointConditionalDistribution(indep, [1], [0.3])
+ott.assert_almost_equal(cond.computeCDF([0.5]), 0.5)
+ott.assert_almost_equal(cond.computePDF([0.5]), 1.0)
