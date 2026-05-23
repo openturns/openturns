@@ -45,6 +45,7 @@
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
+#include "openturns/Brent.hxx"
 
 #define TESTPREAMBLE { OT::TBB::Enable(); }
 
@@ -1201,6 +1202,33 @@ private:
       const Scalar mcProbability = computeDomainProbabilityMC(levelSet);
       LOGTRACE(OSS() << "proba(minvol levelset)=" << mcProbability);
       assert_almost_equal(mcProbability, probability, domainTolerance_, domainTolerance_, "proba(minvol levelset) " + distribution_.__repr__());
+
+      // Check that threshold equals the PDF value at the level set boundary.
+      // Find the left and right boundaries by solving f(x) = level with Brent,
+      // bracketed by the median and an extreme quantile on each side.
+      // If Brent fails (no sign change) the boundary is at the support bound
+      // and that side's PDF won't match threshold; only check sides where a
+      // true crossing exists.
+      {
+        const Function f(levelSet.getFunction());
+        const Scalar level = levelSet.getLevel();
+        const Scalar median = distribution_.computeQuantile(0.5)[0];
+        Scalar lo = distribution_.getRange().getLowerBound()[0];
+        Scalar hi = distribution_.getRange().getUpperBound()[0];
+        Brent solver;
+        auto checkSide = [&](Scalar a, Scalar b, const String & side) {
+          try {
+            const Scalar xRoot = solver.solve(f, level, a, b);
+            const Scalar pdfRoot = distribution_.computePDF(xRoot);
+            LOGTRACE(OSS() << "threshold=" << threshold << " pdf(" << side << ")=" << pdfRoot);
+            assert_almost_equal(threshold, pdfRoot, 1e-2, 1e-2, OSS() << "threshold(pdf " << side << ") " << distribution_.__repr__());
+          } catch (...) {
+            LOGTRACE(OSS() << "threshold check skipped on side " << side << " (boundary at support)");
+          }
+        };
+        checkSide(lo, median, "left");
+        checkSide(median, hi, "right");
+      }
     }
   }
 

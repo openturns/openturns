@@ -188,8 +188,8 @@ Interval Uniform::computeBilateralConfidenceIntervalWithMarginalProbability(cons
 LevelSet Uniform::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   const SymbolicFunction function("x", String(OSS() << std::setprecision(17) << 2.0 / (b_ - a_) << " * abs(x - (" << 0.5 * (a_ + b_) << "))"));
-  threshold = prob;
-  return LevelSet(function, LessOrEqual(), threshold);
+  threshold = 1.0 / (b_ - a_);
+  return LevelSet(function, LessOrEqual(), prob);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
