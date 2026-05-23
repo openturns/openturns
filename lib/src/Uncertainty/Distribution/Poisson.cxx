@@ -142,7 +142,7 @@ Scalar Poisson::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
-  if (k < -supportEpsilon_) return 0.0;
+  if (k < 0.0) return 0.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_, true);
 }
 
@@ -151,7 +151,7 @@ Scalar Poisson::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
-  if (k < -supportEpsilon_) return 1.0;
+  if (k < 0.0) return 1.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_);
 }
 
@@ -173,7 +173,7 @@ Point Poisson::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar k = point[0];
-  if (k < -supportEpsilon_) return Point(1, 0.0);
+  if (k < 0.0) return Point(1, 0.0);
   return Point(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LogGamma(floor(k) + 1.0)));
 }
 
