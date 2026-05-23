@@ -300,3 +300,11 @@ numericalRange = ot.Interval(
 )
 truncated = ot.TruncatedDistribution(dist, numericalRange)
 assert truncated.getSimplifiedVersion() == dist
+
+# Bug 2: gradient methods return zero for points inside bounds_ but outside getRange()
+weibull = ot.WeibullMin()
+trunc_w = ot.TruncatedDistribution(weibull, ot.Interval(-10.0, 10.0))
+# getRange() = [0, 10] (intersection with WeibullMin's support), bounds_ = [-10, 10]
+point_out = [-5.0]  # inside bounds_, outside getRange()
+ott.assert_almost_equal(trunc_w.computePDFGradient(point_out), [0.0] * 5)
+ott.assert_almost_equal(trunc_w.computeCDFGradient(point_out), [0.0] * 5)
