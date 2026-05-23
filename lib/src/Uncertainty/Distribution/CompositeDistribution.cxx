@@ -225,7 +225,7 @@ void CompositeDistribution::update()
       {
         throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << root;
       }
-      if (!std::isfinite(root)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << root;
+      if (!std::isfinite(value)) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << root;
       increasing_.add(value > values_[values_.getSize() - 1]);
       values_.add(value);
       probabilities_.add(antecedent_.computeCDF(root));
@@ -357,7 +357,7 @@ Scalar CompositeDistribution::computePDF(const Point & point) const
     fA = fB;
     b = bounds_[i];
     fB = values_[i];
-    const Bool mustSolve = (increasing_[i - 1] && (fA <= x) && (x < fB)) || (!increasing_[i - 1] && (fB <= x) && (x < fA));
+    const Bool mustSolve = (increasing_[i - 1] && (fA <= x) && (x <= fB)) || (!increasing_[i - 1] && (fB <= x) && (x <= fA));
     if (mustSolve)
     {
       const Point fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
@@ -366,7 +366,7 @@ Scalar CompositeDistribution::computePDF(const Point & point) const
       {
         const Matrix gradient(function_.gradient(fInvX));
         if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
-        const Scalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
+        const Scalar denominator = std::abs(gradient(0, 0));
         if (std::isfinite(denominator) && (denominator != 0.0)) pdf += numerator / denominator;
         LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator << ", pdf=" << pdf);
       }
