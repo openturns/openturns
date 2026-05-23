@@ -45,17 +45,17 @@ NormalCopulaFactory * NormalCopulaFactory::clone() const
 
 Distribution NormalCopulaFactory::build(const Sample & sample) const
 {
-  return buildAsNormalCopula(sample).clone();
+  return buildAsNormalCopula(sample);
 }
 
 Distribution NormalCopulaFactory::build(const Point & parameters) const
 {
-  return buildAsNormalCopula(parameters).clone();
+  return buildAsNormalCopula(parameters);
 }
 
 Distribution NormalCopulaFactory::build() const
 {
-  return buildAsNormalCopula().clone();
+  return buildAsNormalCopula();
 }
 
 NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) const
