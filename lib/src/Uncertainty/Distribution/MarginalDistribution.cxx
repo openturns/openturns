@@ -200,12 +200,26 @@ Scalar MarginalDistribution::computePDF(const Point & point) const
     if (isDiscrete())
     {
       const Point probabilities(distribution_.getProbabilities());
-      // We modify the support in-place to speed-up the computation
-      Sample support(distribution_.getImplementation()->getSupport());
-      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-        for (UnsignedInteger j = 0; j < indices_.getSize(); ++j)
-          support(i, indices_[j]) = point[j];
-      return distribution_.computePDF(support).asPoint().dot(probabilities);
+      const Sample support(distribution_.getSupport());
+      const UnsignedInteger supportSize = support.getSize();
+      const UnsignedInteger outputDimension = indices_.getSize();
+      Scalar result = 0.0;
+      for (UnsignedInteger i = 0; i < supportSize; ++i)
+      {
+        Bool match = true;
+        for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        {
+          const UnsignedInteger indexJ = indices_[j];
+          if (std::abs(support(i, indexJ) - point[j]) > supportEpsilon_)
+          {
+            match = false;
+            break;
+          }
+        }
+        if (match)
+          result += probabilities[i];
+      }
+      return result;
     }
   } // use PDF
   return DistributionImplementation::computePDF(point);
