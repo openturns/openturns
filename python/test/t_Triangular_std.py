@@ -153,3 +153,14 @@ for distribution in coll:
         ot.Log.Show(ot.Log.TRACE)
         validation = ott.DistributionValidation(distribution)
         validation.run()
+
+# Test PDF and DDF at support boundaries for all cases (incl. degenerate)
+for a, m, b in [(-0.5, 1.5, 2.5), (-0.5, -0.5, 2.5), (-0.5, 2.5, 2.5)]:
+    dist = ot.Triangular(a, m, b)
+    # PDF and DDF at left boundary
+    ott.assert_almost_equal(dist.computePDF(a), 0.0)
+    ott.assert_almost_equal(dist.computeDDF(a), 0.0)
+    # PDF and DDF at right boundary
+    ott.assert_almost_equal(dist.computePDF(b), 0.0)
+    if m == b:
+        ott.assert_almost_equal(dist.computeDDF(b), 0.0)
