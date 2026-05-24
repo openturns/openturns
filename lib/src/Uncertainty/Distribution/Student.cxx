@@ -88,10 +88,15 @@ Student::Student(const Scalar nu,
 }
 
 Student::Student(const Scalar nu,
-                 const Point & mu,
+                 const Point & mean,
                  const CovarianceMatrix & C)
+: EllipticalDistribution(mean,
+                         Point(mean.getDimension(), 1.0),
+                         CorrelationMatrix(mean.getDimension()),
+                         1.0)
+
 {
-  const UnsignedInteger dimension = mu.getDimension();
+  const UnsignedInteger dimension = mean.getDimension();
   if (C.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "The mean vector and the covariance matrix have incompatible dimensions";
   Point sigma(dimension);
@@ -99,13 +104,14 @@ Student::Student(const Scalar nu,
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar cii = C(i, i);
-    if (!(cii > 0.0))
-      throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+    if (!(cii >= 0.0))
+      throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be non-negative";
     sigma[i] = std::sqrt(cii);
     for (UnsignedInteger j = 0; j < i; ++ j)
-      R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      if ((sigma[i] > 0.0) && (sigma[j] > 0.0))
+        R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
   }
-  *this = Student(nu, mu, sigma, R);
+  *this = Student(nu, mean, sigma, R);
 }
 
 /* Comparison operator */
@@ -188,7 +194,7 @@ Point Student::getRealization() const
   Point value(dimension);
   // First, a realization of independent standard normal coordinates
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = DistFunc::rNormal();
-  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * inverseCholesky_.solveLinearSystem(value) + mean_;
+  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * (getCholesky() * value) + mean_;
 }
 
 
@@ -228,11 +234,28 @@ Scalar Student::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  // Check support for degenerate dimensions
+  Bool allDegenerate = true;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (point[i] < mean_[i]) return 0.0;
+    }
+    else allDegenerate = false;
+  }
+  if (allDegenerate) return 1.0;
+
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   // Special case for dimension 2
-  if (dimension == 2) return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], R_(1, 0));
+  if (dimension == 2)
+  {
+    if (sigma_[0] == 0.0) return DistFunc::pStudent(nu_, (point[1] - mean_[1]) / sigma_[1]);
+    if (sigma_[1] == 0.0) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
+    return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], R_(1, 0));
+  }
 #endif
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
@@ -340,6 +363,9 @@ Scalar Student::computeProbability(const Interval & interval) const
 Scalar Student::computeEntropy() const
 {
   const UnsignedInteger dimension = getDimension();
+  // Degenerate dimensions give infinite entropy
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    if (sigma_[i] == 0.0) return SpecFunc::LowestScalar;
   // normalizationFactor_ == 1/\sqrt{|Det(\Sigma)|}
   // studentNormalizationFactor_ = SpecFunc::LogGamma(0.5 * (nu + dimension)) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
   return 0.5 * (nu_ + dimension) * (SpecFunc::Psi(0.5 * (nu_ + dimension)) - SpecFunc::Psi(0.5 * nu_)) - std::log(normalizationFactor_) - studentNormalizationFactor_;
@@ -402,6 +428,58 @@ Scalar Student::computeConditionalPDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
+  if (sigma_[conditioningDimension] == 0.0) return 0.0;
+  // Identify non-degenerate conditioning dimensions
+  Bool hasDegenerate = false;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+  if (hasDegenerate)
+  {
+    Indices activeIndices;
+    for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      if (sigma_[i] == 0.0)
+      {
+        if (std::abs(y[i] - mean_[i]) > SpecFunc::Precision) return 0.0;
+      }
+      else activeIndices.add(i);
+    }
+    const UnsignedInteger activeDim = activeIndices.getSize();
+    if (activeDim == 0)
+    {
+      const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
+      return std::exp(-0.5 * (nu_ + 1.0) * log1p(z * z / nu_) - SpecFunc::LogBeta(0.5, 0.5 * nu_)) / sigma_[conditioningDimension] / std::sqrt(nu_);
+    }
+    const TriangularMatrix cholesky(getCholesky());
+    MatrixImplementation R_active(activeDim, activeDim);
+    Point yCentered(activeDim);
+    for (UnsignedInteger j = 0; j < activeDim; ++j)
+    {
+      const UnsignedInteger idx = activeIndices[j];
+      yCentered[j] = y[idx] - mean_[idx];
+      for (UnsignedInteger k = 0; k <= j; ++k)
+      {
+        const UnsignedInteger kdx = activeIndices[k];
+        Scalar r = 0.0;
+        const UnsignedInteger maxS = std::min(idx, kdx);
+        for (UnsignedInteger s = 0; s <= maxS; ++s)
+          r += cholesky(idx, s) * cholesky(kdx, s);
+        R_active(j, k) = r;
+        R_active(k, j) = r;
+      }
+    }
+    const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+    const Scalar nuCond = nu_ + activeDim;
+    MatrixImplementation cholYFactor = R_active.computeCholesky();
+    Scalar sigmaCond = std::sqrt((nu_ + Point(cholYFactor.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
+    Scalar meanRos = 0.0;
+    for (UnsignedInteger j = 0; j < activeDim; ++j)
+      meanRos += inverseCholesky_(conditioningDimension, activeIndices[j]) * yCentered[j] / std::sqrt(sigma_[activeIndices[j]]);
+    meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    const Scalar z = (x - meanRos) / sigmaCond;
+    return std::exp(-0.5 * (nuCond + 1.0) * log1p(z * z / nuCond) - SpecFunc::LogBeta(0.5, 0.5 * nuCond)) / sigmaCond / std::sqrt(nuCond);
+  }
   // Special case for no conditioning or independent copula
   if (conditioningDimension == 0)
   {
@@ -457,6 +535,54 @@ Scalar Student::computeConditionalCDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
+  if (sigma_[conditioningDimension] == 0.0) return (x >= mean_[conditioningDimension] ? 1.0 : 0.0);
+  // Identify non-degenerate conditioning dimensions
+  Bool hasDegenerate = false;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+  if (hasDegenerate)
+  {
+    Indices activeIndices;
+    for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      if (sigma_[i] == 0.0)
+      {
+        if (std::abs(y[i] - mean_[i]) > SpecFunc::Precision) return (x >= mean_[conditioningDimension] ? 1.0 : 0.0);
+      }
+      else activeIndices.add(i);
+    }
+    const UnsignedInteger activeDim = activeIndices.getSize();
+    if (activeDim == 0)
+      return DistFunc::pStudent(nu_, (x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
+    const TriangularMatrix cholesky(getCholesky());
+    MatrixImplementation R_active(activeDim, activeDim);
+    Point yCentered(activeDim);
+    for (UnsignedInteger j = 0; j < activeDim; ++j)
+    {
+      const UnsignedInteger idx = activeIndices[j];
+      yCentered[j] = y[idx] - mean_[idx];
+      for (UnsignedInteger k = 0; k <= j; ++k)
+      {
+        const UnsignedInteger kdx = activeIndices[k];
+        Scalar r = 0.0;
+        const UnsignedInteger maxS = std::min(idx, kdx);
+        for (UnsignedInteger s = 0; s <= maxS; ++s)
+          r += cholesky(idx, s) * cholesky(kdx, s);
+        R_active(j, k) = r;
+        R_active(k, j) = r;
+      }
+    }
+    const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+    const Scalar nuCond = nu_ + activeDim;
+    MatrixImplementation cholYFactor = R_active.computeCholesky();
+    Scalar sigmaCond = std::sqrt((nu_ + Point(cholYFactor.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
+    Scalar meanRos = 0.0;
+    for (UnsignedInteger j = 0; j < activeDim; ++j)
+      meanRos += inverseCholesky_(conditioningDimension, activeIndices[j]) * yCentered[j] / std::sqrt(sigma_[activeIndices[j]]);
+    meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    return DistFunc::pStudent(nuCond, (x - meanRos) / sigmaCond);
+  }
   // Special case for no conditioning or independent copula
   if (conditioningDimension == 0)
     return DistFunc::pStudent(nu_, (x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
@@ -486,6 +612,7 @@ Scalar Student::computeConditionalCDF(const Scalar x,
   return DistFunc::pStudent(nuCond, (x - meanRos) / sigmaCond);
 }
 
+
 Point Student::computeSequentialConditionalCDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
@@ -508,6 +635,53 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
+  // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
+  if (sigma_[conditioningDimension] == 0.0) return mean_[conditioningDimension];
+  // Identify non-degenerate conditioning dimensions
+  Bool hasDegenerate = false;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    if (sigma_[i] == 0.0) { hasDegenerate = true; break; }
+  if (hasDegenerate)
+  {
+    Indices activeIndices;
+    for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      if (sigma_[i] == 0.0)
+      {
+        if (std::abs(y[i] - mean_[i]) > SpecFunc::Precision) return mean_[conditioningDimension];
+      }
+      else activeIndices.add(i);
+    }
+    const UnsignedInteger activeDim = activeIndices.getSize();
+    if (activeDim == 0) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qStudent(nu_, q);
+    const TriangularMatrix cholesky(getCholesky());
+    MatrixImplementation R_active(activeDim, activeDim);
+    Point yCentered(activeDim);
+    for (UnsignedInteger j = 0; j < activeDim; ++j)
+    {
+      const UnsignedInteger idx = activeIndices[j];
+      yCentered[j] = y[idx] - mean_[idx];
+      for (UnsignedInteger k = 0; k <= j; ++k)
+      {
+        const UnsignedInteger kdx = activeIndices[k];
+        Scalar r = 0.0;
+        const UnsignedInteger maxS = std::min(idx, kdx);
+        for (UnsignedInteger s = 0; s <= maxS; ++s)
+          r += cholesky(idx, s) * cholesky(kdx, s);
+        R_active(j, k) = r;
+        R_active(k, j) = r;
+      }
+    }
+    const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+    const Scalar nuCond = nu_ + activeDim;
+    MatrixImplementation cholYFactor = R_active.computeCholesky();
+    Scalar sigmaCond = std::sqrt((nu_ + Point(cholYFactor.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
+    Scalar meanRos = 0.0;
+    for (UnsignedInteger j = 0; j < activeDim; ++j)
+      meanRos += inverseCholesky_(conditioningDimension, activeIndices[j]) * yCentered[j] / std::sqrt(sigma_[activeIndices[j]]);
+    meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    return meanRos + sigmaCond * DistFunc::qStudent(nuCond, q);
+  }
   // Special case when no contitioning or independent copula
   if (conditioningDimension == 0) return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, q);
   // General case
@@ -773,6 +947,7 @@ Scalar Student::computeScalarQuantile(const Scalar prob,
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  if (sigma_[0] == 0.0) return mean_[0];
   if (tail ? (prob >= 1.0 - SpecFunc::ScalarEpsilon) : (prob <= SpecFunc::ScalarEpsilon)) return - SpecFunc::Infinity;
   return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, prob, tail);
 }
