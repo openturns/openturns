@@ -105,7 +105,9 @@ Point Gumbel::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-(1.0 / beta_) * (point[0] - gamma_));
+  const Scalar X = -(1.0 / beta_) * (point[0] - gamma_);
+  if (X > SpecFunc::LogMaxScalar) return Point(1, 0.0);
+  const Scalar expX = std::exp(X);
   return Point(1, (1.0 / beta_) * (1.0 / beta_) * (expX - 1.0) * expX * std::exp(-expX));
 }
 
@@ -120,7 +122,9 @@ Scalar Gumbel::computePDF(const Point & point) const
 
 Scalar Gumbel::computePDF(const Scalar u) const
 {
-  const Scalar expX = std::exp(-(1.0 / beta_) * (u - gamma_));
+  const Scalar X = -(1.0 / beta_) * (u - gamma_);
+  if (X > SpecFunc::LogMaxScalar) return 0.0;
+  const Scalar expX = std::exp(X);
   return (1.0 / beta_) * expX * std::exp(-expX);
 }
 
@@ -201,8 +205,10 @@ Point Gumbel::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
+  const Scalar X = -(1.0 / beta_) * (point[0] - gamma_);
+  if (X > SpecFunc::LogMaxScalar) return Point(2, 0.0);
   const Scalar x = point[0] - gamma_;
-  const Scalar expX = std::exp(-x / beta_);
+  const Scalar expX = std::exp(X);
   const Scalar pdf = (1.0 / beta_) * expX * std::exp(-expX);
   Point pdfGradient(2);
   pdfGradient[0] = (x * (1.0 - expX) - beta_) * std::exp((-beta_ * expX - x) / beta_) / (beta_ * beta_ * beta_);
@@ -215,8 +221,10 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
+  const Scalar X = -(1.0 / beta_) * (point[0] - gamma_);
+  if (X > SpecFunc::LogMaxScalar) return Point(2, 0.0);
   const Scalar x = point[0] - gamma_;
-  const Scalar expX = std::exp(-x / beta_);
+  const Scalar expX = std::exp(X);
   const Scalar cdf = std::exp(-expX);
   Point cdfGradient(2);
   cdfGradient[0] = -x * expX * std::exp(-expX) / (beta_ * beta_);
