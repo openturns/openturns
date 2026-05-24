@@ -181,9 +181,6 @@ private:
   /** Get the covariance of a kernelMixture */
   void computeCovariance() const override;
 
-  /** Compute the normalization factor */
-  void computeNormalizationFactor();
-
   /** The kernel of the kernelMixture */
   Pointer<DistributionImplementation> p_kernel_;
 
@@ -194,7 +191,7 @@ private:
   Point bandwidthInverse_;
 
   /** The (n\product_{k=1}^{dim}h_k)^{-1} normalization factor */
-  Scalar normalizationFactor_;
+  Scalar normalizationFactor_ = 0.0;
 
   /** The sample of the kernelMixture */
   Sample sample_;
@@ -212,7 +209,7 @@ private:
   PiecewiseHermiteEvaluation ccdfApproximation_;
 
   /** Do I have an approximation for the CDF? */
-  Bool useApproximatePDFCDF_;
+  Bool useApproximatePDFCDF_ = false;
 
 }; /* class KernelMixture */
 
