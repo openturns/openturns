@@ -515,11 +515,11 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
 
 CovarianceMatrix EllipticalDistribution::getShape() const
 {
-  CovarianceMatrix shape(R_);
   const UnsignedInteger dimension = getDimension();
+  CovarianceMatrix shape(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
-      shape(i, j) *= sigma_[i] * sigma_[j];
+      shape(i, j) = R_(i, j) * sigma_[i] * sigma_[j];
   return shape;
 }
 
@@ -529,11 +529,11 @@ void EllipticalDistribution::update()
   const UnsignedInteger dimension = getDimension();
   if (dimension > 1)
   {
-    // Build the shape matrix
-    CovarianceMatrix shape(R_);
+    // Build the shape matrix (copy values explicitly to avoid sharing with R_)
+    CovarianceMatrix shape(dimension);
     for (UnsignedInteger i = 0; i < dimension; ++ i)
       for (UnsignedInteger j = 0; j <= i; ++ j)
-        shape(i, j) *= sigma_[i] * sigma_[j];
+        shape(i, j) = R_(i, j) * sigma_[i] * sigma_[j];
 
     // Identify non-degenerate dimensions
     Indices nonDegenerate;
