@@ -85,7 +85,7 @@ R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
 Returns
 -------
 gamma : float
-    Scale parameter :math:`\gamma`.)RAW"
+    Position parameter :math:`\gamma`.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -104,8 +104,8 @@ R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
 
 Parameters
 ----------
-gamma : float, :math:`\beta \in \Rset`
-    Scale parameter :math:`\gamma`.)RAW"
+gamma : float, :math:`\gamma \in \Rset`
+    Position parameter :math:`\gamma`.)RAW"
 
 // ---------------------------------------------------------------------
 
