@@ -1,5 +1,5 @@
 %feature("docstring") OT::DualLinearCombinationFunction
-R"RAW(Linear combination of functions with vectorial weights.
+R"RAW(Combination of scalar functions with multivariate weights.
 
 Allows one to create a function which is the linear combination
 of scalar functions with vectorial weights.
