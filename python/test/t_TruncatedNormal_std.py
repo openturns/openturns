@@ -125,3 +125,17 @@ for distribution in [
         validation.skipCorrelation()
         validation.skipConfidenceInterval()
     validation.run()
+
+# Issue #3024: far right-tail truncation with normal scale
+t = ot.TruncatedNormal(0.0, 1.0, 10.0, 39.0)
+ott.assert_almost_equal(t.computePDF(10.1), 3.6963528500427416, 1e-12)
+ott.assert_almost_equal(t.computeCDF(10.1), 0.6375114502856419, 1e-12)
+ott.assert_almost_equal(t.computeComplementaryCDF(10.1), 0.36248854971435807, 1e-12)
+# Symmetrical left-tail case
+t2 = ot.TruncatedNormal(0.0, 1.0, -39.0, -10.0)
+ott.assert_almost_equal(t2.computePDF(-10.1), 3.6963528500427416, 1e-12)
+ott.assert_almost_equal(t2.computeCDF(-10.1), 0.36248854971435807, 1e-12)
+# quantile/cdf failure with low-probability truncation interval
+t3 = ot.TruncatedNormal(-52.0658, 1.56137, -2.22475e-05, 0.1408)
+ott.assert_almost_equal(t3.computeScalarQuantile(0.5), 0.030153711943197572, 1e-12)
+ott.assert_almost_equal(t3.computeCDF(0.0), 0.00049999351035801, 1e-12)
