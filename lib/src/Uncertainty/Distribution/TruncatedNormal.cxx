@@ -36,7 +36,6 @@ static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
   : DistributionImplementation()
-  , mu_(0.0)
   , sigma_(1.0)
   , a_(-1.0)
   , b_(1.0)
@@ -64,16 +63,8 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
                                  const Scalar b)
   : DistributionImplementation()
   , mu_(mu)
-  , sigma_(0.0)
   , a_(a)
   , b_(b)
-  , aNorm_(0.0)
-  , bNorm_(0.0)
-  , phiANorm_(0.0)
-  , phiBNorm_(0.0)
-  , PhiANorm_(0.0)
-  , PhiBNorm_(0.0)
-  , normalizationFactor_(0.0)
 {
   setName("TruncatedNormal");
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
@@ -85,13 +76,14 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
   bNorm_ = (b_ - mu_) * iSigma;
   PhiANorm_ = DistFunc::pNormal(aNorm_);
   PhiBNorm_ = DistFunc::pNormal(bNorm_);
-  Scalar denominator = PhiBNorm_ - PhiANorm_;
-  // If left tail truncature, use tail CDF to compute the normalization factor
-  if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
+  const Scalar denominator = PhiBNorm_ - PhiANorm_;
   // A positive denominator, i.e.  PhiANorm_ < PhiBNorm_, will switch all the methods to the classical implementations,
   // otherwise we use a log-scale approach, less accurate but with a wider range.
   if (!(denominator <= 0.0))
+  {
     normalizationFactor_ = 1.0 / denominator;
+    normalizationFactorIsLog_ = false;
+  }
   else
   {
     if ((bNorm_ < 0.0) || (std::abs(aNorm_) >= std::abs(bNorm_)))
@@ -106,6 +98,7 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
       const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
       normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
     }
+    normalizationFactorIsLog_ = true;
   }
   phiANorm_ = DistFunc::dNormal(aNorm_);
   phiBNorm_ = DistFunc::dNormal(bNorm_);
@@ -188,7 +181,7 @@ Point TruncatedNormal::computeDDF(const Point & point) const
   if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return Point(1, -std::exp(normalizationFactor_  + DistFunc::logdNormal(xNorm)) * xNorm * iSigma * iSigma);
   return Point(1, -normalizationFactor_ * xNorm * DistFunc::dNormal(xNorm) * iSigma * iSigma);
 }
@@ -203,7 +196,7 @@ Scalar TruncatedNormal::computePDF(const Point & point) const
   if ((x <= a_) || (x > b_)) return 0.0;
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
   {
     const Scalar logPDF = normalizationFactor_ + DistFunc::logdNormal(xNorm);
     const Scalar pdf = std::exp(logPDF) * iSigma;
@@ -223,8 +216,8 @@ Scalar TruncatedNormal::computeLogPDF(const Point & point) const
   if ((x <= a_) || (x > b_)) return SpecFunc::LowestScalar;
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
-  if (PhiANorm_ >= PhiBNorm_)
-    return normalizationFactor_ + DistFunc::logdNormal(xNorm) - std::log(iSigma);
+  if (normalizationFactorIsLog_)
+    return normalizationFactor_ + DistFunc::logdNormal(xNorm) + std::log(iSigma);
   return std::log(SpecFunc::ISQRT2PI * iSigma * normalizationFactor_) - 0.5 * xNorm * xNorm;
 }
 
@@ -238,8 +231,14 @@ Scalar TruncatedNormal::computeCDF(const Point & point) const
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
   const Scalar xNorm = (x - mu_)  / sigma_;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
   {
+    if (aNorm_ >= 0.0)
+    {
+      const Scalar logTailX = DistFunc::logpNormal(xNorm, true);
+      const Scalar logTailB = DistFunc::logpNormal(bNorm_, true);
+      return 1.0 - std::exp(normalizationFactor_ + logTailX + log1p(-std::exp(logTailB - logTailX)));
+    }
     const Scalar logCDFA = DistFunc::logpNormal(aNorm_);
     const Scalar logCDFX = DistFunc::logpNormal(xNorm);
     return std::exp(normalizationFactor_ + logCDFX + log1p(-std::exp(logCDFA - logCDFX)));
@@ -254,10 +253,15 @@ Scalar TruncatedNormal::computeComplementaryCDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= a_) return 1.0;
   if (x > b_) return 0.0;
-  // Don't call pNormal with tail in the next line
   const Scalar xNorm = (x - mu_) / sigma_;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
   {
+    if (aNorm_ >= 0.0)
+    {
+      const Scalar logTailX = DistFunc::logpNormal(xNorm, true);
+      const Scalar logTailB = DistFunc::logpNormal(bNorm_, true);
+      return std::exp(normalizationFactor_ + logTailX + log1p(-std::exp(logTailB - logTailX)));
+    }
     const Scalar logCDFB = DistFunc::logpNormal(bNorm_);
     const Scalar logCDFX = DistFunc::logpNormal(xNorm);
     return std::exp(normalizationFactor_ + logCDFB + log1p(-std::exp(logCDFX - logCDFB)));
@@ -268,7 +272,7 @@ Scalar TruncatedNormal::computeComplementaryCDF(const Point & point) const
 /* Compute the entropy of the distribution */
 Scalar TruncatedNormal::computeEntropy() const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::computeEntropy();
   return 0.5 - std::log(SpecFunc::ISQRT2PI * normalizationFactor_ / sigma_) + 0.5 * (aNorm_ * phiANorm_ - bNorm_ * phiBNorm_) * normalizationFactor_;
 }
@@ -342,7 +346,7 @@ LevelSet TruncatedNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex TruncatedNormal::computeCharacteristicFunction(const Scalar x) const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return std::exp(computeLogCharacteristicFunction(x));
   const Scalar iSigma2 = 1.0 / (sigma_ * std::sqrt(2.0));
   const Scalar alpha = (a_ - mu_) * iSigma2;
@@ -361,7 +365,7 @@ Complex TruncatedNormal::computeLogCharacteristicFunction(const Scalar x) const
   const Scalar t = x * sigma_ / std::sqrt(2.0);
   const Complex w1(SpecFunc::Faddeeva(Complex(-t, -alpha)));
   const Complex w2(SpecFunc::Faddeeva(Complex(-t, -beta)));
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     throw NotYetImplementedException(HERE) << "In TruncatedNormal::computeLogCharacteristicFunction(const Scalar x)";
   return Complex(0.0, x * mu_) + std::log(w2 * std::exp(Complex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(Complex(-alpha * alpha, 2.0 * alpha * t))) + std::log(0.5 * normalizationFactor_);
 }
@@ -374,7 +378,7 @@ Point TruncatedNormal::computePDFGradient(const Point & point) const
   const Scalar x = point[0];
   Point pdfGradient(4, 0.0);
   if ((x <= a_) || (x > b_)) return pdfGradient;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::computePDFGradient(point);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
@@ -397,7 +401,7 @@ Point TruncatedNormal::computeLogPDFGradient(const Point & point) const
   const Scalar x = point[0];
   Point logPdfGradient(getParameterDimension());
   if (!(x > a_) || !(x < b_)) return logPdfGradient;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::computeLogPDFGradient(point);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
@@ -419,7 +423,7 @@ Point TruncatedNormal::computeCDFGradient(const Point & point) const
   const Scalar x = point[0];
   Point cdfGradient(4, 0.0);
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::computeCDFGradient(point);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
@@ -439,7 +443,7 @@ Scalar TruncatedNormal::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::computeScalarQuantile(prob, tail);
   if (tail) return mu_ + sigma_ * DistFunc::qNormal(PhiBNorm_ - prob / normalizationFactor_);
   return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + prob / normalizationFactor_);
@@ -455,7 +459,7 @@ Scalar TruncatedNormal::computeProbability(const Interval & interval) const
 /* Compute the mean of the distribution */
 void TruncatedNormal::computeMean() const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
   {
     const Scalar logphiA = DistFunc::logdNormal(aNorm_);
     const Scalar logphiB = DistFunc::logdNormal(bNorm_);
@@ -474,7 +478,7 @@ void TruncatedNormal::computeMean() const
 /* Get the standard deviation of the distribution */
 Point TruncatedNormal::getStandardDeviation() const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::getStandardDeviation();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   return Point(1, sigma_ * std::sqrt(1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio));
@@ -483,7 +487,7 @@ Point TruncatedNormal::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point TruncatedNormal::getSkewness() const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::getSkewness();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const Scalar ratio2 = ratio * ratio;
@@ -495,7 +499,7 @@ Point TruncatedNormal::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point TruncatedNormal::getKurtosis() const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     return DistributionImplementation::getKurtosis();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const Scalar ratio2 = ratio * ratio;
@@ -516,7 +520,7 @@ Distribution TruncatedNormal::getStandardRepresentative() const
 /* Compute the covariance of the distribution */
 void TruncatedNormal::computeCovariance() const
 {
-  if (PhiANorm_ >= PhiBNorm_)
+  if (normalizationFactorIsLog_)
     DistributionImplementation::computeCovariance();
   else
   {
@@ -597,9 +601,7 @@ void TruncatedNormal::setA(const Scalar a)
     const Scalar iSigma = 1.0 / sigma_;
     aNorm_ = (a_ - mu_) * iSigma;
     PhiANorm_ = DistFunc::pNormal(aNorm_);
-    Scalar denominator = PhiBNorm_ - PhiANorm_;
-    // If left tail truncature, use tail CDF to compute the normalization factor
-    if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
+    const Scalar denominator = PhiBNorm_ - PhiANorm_;
     if (denominator <= 0.0)
     {
       if ((bNorm_ < 0.0) || (std::abs(aNorm_) >= std::abs(bNorm_)))
@@ -614,9 +616,13 @@ void TruncatedNormal::setA(const Scalar a)
         const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
         normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
       }
+      normalizationFactorIsLog_ = true;
     }
     else
+    {
       normalizationFactor_ = 1.0 / denominator;
+      normalizationFactorIsLog_ = false;
+    }
     phiANorm_ = DistFunc::dNormal(aNorm_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -654,9 +660,13 @@ void TruncatedNormal::setB(const Scalar b)
         const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
         normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
       }
+      normalizationFactorIsLog_ = true;
     }
     else
+    {
       normalizationFactor_ = 1.0 / denominator;
+      normalizationFactorIsLog_ = false;
+    }
     phiBNorm_ = DistFunc::dNormal(bNorm_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -684,6 +694,7 @@ void TruncatedNormal::save(Advocate & adv) const
   adv.saveAttribute( "PhiANorm_", PhiANorm_ );
   adv.saveAttribute( "PhiBNorm_", PhiBNorm_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
+  adv.saveAttribute( "normalizationFactorIsLog_", normalizationFactorIsLog_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -701,6 +712,10 @@ void TruncatedNormal::load(Advocate & adv)
   adv.loadAttribute( "PhiANorm_", PhiANorm_ );
   adv.loadAttribute( "PhiBNorm_", PhiBNorm_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
+  if (adv.hasAttribute("normalizationFactorIsLog_"))
+    adv.loadAttribute( "normalizationFactorIsLog_", normalizationFactorIsLog_ );
+  else
+    normalizationFactorIsLog_ = (PhiANorm_ >= PhiBNorm_);
   computeRange();
 }
 

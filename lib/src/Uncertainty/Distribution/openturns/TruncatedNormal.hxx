@@ -179,18 +179,19 @@ private:
   void computeRange() override;
 
   /** The main parameter set of the distribution */
-  Scalar mu_;
-  Scalar sigma_;
-  Scalar a_;
-  Scalar b_;
+  Scalar mu_ = 0.0;
+  Scalar sigma_ = 0.0;
+  Scalar a_ = 0.0;
+  Scalar b_ = 0.0;
   /** Useful quantities */
-  Scalar aNorm_;
-  Scalar bNorm_;
-  Scalar phiANorm_;
-  Scalar phiBNorm_;
-  Scalar PhiANorm_;
-  Scalar PhiBNorm_;
-  Scalar normalizationFactor_;
+  Scalar aNorm_ = 0.0;
+  Scalar bNorm_ = 0.0;
+  Scalar phiANorm_ = 0.0;
+  Scalar phiBNorm_ = 0.0;
+  Scalar PhiANorm_ = 0.0;
+  Scalar PhiBNorm_ = 0.0;
+  Scalar normalizationFactor_ = 0.0;
+  Bool normalizationFactorIsLog_ = false;
 
 }; /* class TruncatedNormal */
 
