@@ -114,7 +114,7 @@ Point Arcsine::computeDDF(const Point & point) const
 
   const Scalar x = point[0];
   Scalar ddf = 0.0;
-  if ((a_ < x) && (x <= b_))
+  if ((a_ < x) && (x < b_))
   {
     ddf = (x - 0.5 * (a_ + b_)) / (M_PI * (x - a_) * (b_ - x) * std::sqrt((x - a_) * (b_ - x)));
   }
@@ -180,7 +180,7 @@ Point Arcsine::computePDFGradient(const Point & point) const
   Point pdfGradient2(2);
   const Scalar x = point[0];
 
-  if ((a_ < x) && (x <= b_))
+  if ((a_ < x) && (x < b_))
   {
     pdfGradient[0] = -0.5 * (b_ - a_) * std::sqrt((b_ - x) * (x - a_)) / (M_PI * (x - b_) * (x - b_) * (x - a_) * (x - a_));
     pdfGradient[1] = (0.5 * (a_ + b_) - x) * std::sqrt((b_ - x) * (x - a_)) / (M_PI * (x - a_) * (x - a_) * (b_ - x) * (b_ - x));
@@ -198,7 +198,7 @@ Point Arcsine::computeCDFGradient(const Point & point) const
   Point cdfGradient(2);
   Point cdfGradient2(2);
   const Scalar x = point[0];
-  if ((a_ < x) && (x <= b_))
+  if ((a_ < x) && (x < b_))
   {
     cdfGradient[0] = (0.5 * (a_ + b_) - x) / (M_PI * 0.5 * (b_ - a_) * std::sqrt((b_ - x) * (x - a_)));
     cdfGradient[1]  = -1.0 / (M_PI * std::sqrt((b_ - x) * (x - a_)));
