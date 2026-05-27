@@ -187,8 +187,10 @@ void NonCentralChiSquare::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const Scalar w = getWeight();
+  const UnsignedInteger maximumIteration = getMaximumIteration();
   *this = NonCentralChiSquare(parameter[0], parameter[1]);
   setWeight(w);
+  setMaximumIteration(maximumIteration);
 }
 
 Description NonCentralChiSquare::getParameterDescription() const
@@ -199,7 +201,7 @@ Description NonCentralChiSquare::getParameterDescription() const
 /* Nu accessor */
 void NonCentralChiSquare::setNu(const Scalar nu)
 {
-  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
   if (nu != nu_)
   {
     nu_ = nu;
