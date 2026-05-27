@@ -340,6 +340,8 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 
 Distribution MaximumLikelihoodFactory::build(const Point & parameter) const
 {
+  if (parameter.getDimension() != distribution_.getParameterDimension())
+    throw InvalidArgumentException(HERE) << "Error: expected parameter of size " << distribution_.getParameterDimension() << ", got size " << parameter.getSize();
   Distribution result(distribution_);
   // set known values
   Point parameter2(parameter);
@@ -397,6 +399,8 @@ OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationAlgorithm() const
 void MaximumLikelihoodFactory::save(Advocate & adv) const
 {
   DistributionFactoryImplementation::save(adv);
+  adv.saveAttribute("distribution_", distribution_);
+  adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
   adv.saveAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }
@@ -405,6 +409,10 @@ void MaximumLikelihoodFactory::save(Advocate & adv) const
 void MaximumLikelihoodFactory::load(Advocate & adv)
 {
   DistributionFactoryImplementation::load(adv);
+  if (adv.hasAttribute("distribution_"))
+    adv.loadAttribute("distribution_", distribution_);
+  if (adv.hasAttribute("solver_"))
+    adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
   adv.loadAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }
