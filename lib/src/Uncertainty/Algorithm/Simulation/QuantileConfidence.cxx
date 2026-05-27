@@ -53,10 +53,10 @@ QuantileConfidence::QuantileConfidence(const Scalar alpha, const Scalar beta)
   , alpha_(alpha)
   , beta_(beta)
 {
-  if (!(alpha >= 0.0) || !(alpha <= 1.0))
+  if (!(alpha >= 0.0 && alpha <= 1.0))
     throw InvalidArgumentException(HERE)
       << "Quantile level must be in [0, 1], but alpha = " << alpha;
-  if (!(beta >= 0.0) || !(beta <= 1.0))
+  if (!(beta >= 0.0 && beta <= 1.0))
     throw InvalidArgumentException(HERE)
       << "Confidence level must be in [0, 1], but beta = " << beta;
 }

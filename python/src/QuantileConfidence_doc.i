@@ -18,8 +18,8 @@ with a confidence greater than :math:`\beta` using order statistics.
 
 Let :math:`x_{\alpha}` be the unknown quantile of level :math:`\alpha`
 of the random variable :math:`X` of dimension 1.
-Let :math:`(X_0, \dots, X_{\sampleSize - 1})` be a sample of independent
-and identically distributed variables according to :math:`X`.
+Let :math:`(X_0, \dots, X_{\sampleSize - 1})` be independent
+copies of :math:`X`.
 
 We now introduce the order statistics used to compute the quantile bounds.
 Let :math:`X_{(k)}` be the :math:`k+1` -th order statistics of
@@ -41,7 +41,7 @@ corresponds to :math:`X_{(k - 1)}` in our notation.
 
 Examples
 --------
-In the next example, we compute a confidence interval
+In the following example, we compute a confidence interval
 for the quantile of level 95% with confidence 95%.
 More precisely, we compute an upper bound of this quantile.
 
@@ -63,7 +63,7 @@ More precisely, we compute an upper bound of this quantile.
 R"RAW(Evaluate the rank of a quantile lower or upper bound.
 
 If `lowerBounded` is `True`, the lower rank :math:`k_{low}` is the largest rank :math:`k` with
-:math:`0 \leq k \leq \sampleSize - 1` such that:
+:math:`0 \leq k < \sampleSize` such that:
 
 .. math::
 
@@ -74,7 +74,7 @@ unilateral confidence interval for the quantile :math:`x_\alpha` with
 confidence :math:`\beta`.
 
 If `lowerBounded` is `False`, the upper rank :math:`k_{up}` is the smallest rank :math:`k` with
-:math:`0 \leq k \leq \sampleSize - 1` such that:
+:math:`0 \leq k < \sampleSize` such that:
 
 .. math::
 
@@ -90,7 +90,7 @@ which a solution exists, and the solution itself.
 Parameters
 ----------
 size : int
-    Sample size
+    Sample size :math:`\sampleSize`.
 lowerBounded : bool, optional
     False to compute the upper bound of the quantile,
     True for the lower bound.
@@ -103,7 +103,7 @@ rank : int
 
 Examples
 --------
-In the next example, we consider a sample which size is 100.
+In the following example, we consider a sample of size 100.
 We compute the rank of the observation such that :math:`x_{(k)}`
 is a lower bound of the quantile of order :math:`\alpha`, with confidence
 :math:`\beta`.
@@ -124,7 +124,7 @@ See [meeker2017]_, Table J.11, page 548 for comparison.
 %feature("docstring") OT::QuantileConfidence::computeBilateralRank
 R"RAW(Evaluate the ranks of a quantile bilateral bound.
 
-The ranks :math:`k_1, k_2` with :math:`0 \leq k_1 \leq k_2 \leq \sampleSize - 1`
+The ranks :math:`k_1, k_2` with :math:`0 \leq k_1 \leq k_2 < \sampleSize`
 are defined by:
 
 .. math::
@@ -176,7 +176,7 @@ by the order statistic:
     \left[X_{(k)}, +\infty\right)
 
 where :math:`k` is the largest rank such that
-:math:`0 \leq k \leq \sampleSize - 1` and:
+:math:`0 \leq k < \sampleSize` and:
 
 .. math::
 
@@ -190,7 +190,7 @@ by the order statistic:
     \left(-\infty, X_{(k)}\right]
 
 where :math:`k` is the smallest rank such that
-:math:`0 \leq k \leq \sampleSize - 1` and:
+:math:`0 \leq k < \sampleSize` and:
 
 .. math::
 
@@ -206,7 +206,7 @@ sample : 2-d sequence of float
     Sample of the variable :math:`X`.
 lowerBounded : bool, optional
     False to compute the upper bound of the quantile,
-    True for the lower bound.
+    True to compute its lower bound.
     Default value is False.
 
 Returns
@@ -216,7 +216,7 @@ ci : :class:`~openturns.Interval`
 
 Examples
 --------
-In the next example, we compute a confidence interval
+In the following example, we compute a confidence interval
 for the quantile of level 95% with confidence 95%.
 More precisely, we compute an upper bound of this quantile.
 
@@ -242,7 +242,7 @@ sample : 2-d sequence of float
     Sample of the variable :math:`X`.
 lowerBounded : bool, optional
     False to compute the upper bound of the quantile,
-    True for the lower bound.
+    True to compute its lower bound.
     Default value is False.
 
 Returns
@@ -287,7 +287,7 @@ the order statistics:
     [X_{(k_1)}, X_{(k_2)}]
 
 where :math:`(k_1, k_2)`  are the ranks with
-:math:`0 \leq k_1 \leq k_2 \leq \sampleSize - 1` defined by:
+:math:`0 \leq k_1 \leq k_2 < \sampleSize` defined by:
 
 .. math::
 
@@ -368,7 +368,7 @@ Examples
 %feature("docstring") OT::QuantileConfidence::computeUnilateralMinimumSampleSize
 R"RAW(Evaluate the minimum sample size for the unilateral confidence interval.
 
-Let :math:`k \geq 0` be the given (tail) rank using 0-indexing.
+Let :math:`k \geq 0` be the given (tail) rank using 0-based indexing.
 The method computes the smallest sample size :math:`\sampleSize` required to
 guarantee a confidence level :math:`\beta` for the specified unilateral
 confidence interval of the quantile :math:`x_\alpha`.
@@ -406,7 +406,7 @@ which a solution exists, and the solution itself.
 Parameters
 ----------
 tail_rank : int, optional, :math:`k \geq 0`
-    The (tail) rank of the quantile, using 0-indexing.
+    The (tail) rank of the quantile, using 0-based indexing.
     Default value is 0.
 lowerBounded : bool, optional
     False to compute the upper bound of the quantile,
@@ -420,7 +420,7 @@ size : int
 
 Examples
 --------
-In the next example, we compute the smallest sample size such that the
+In the following example, we compute the smallest sample size such that the
 largest observation in the sample, i.e. :math:`x_{(\sampleSize - 1)}`, is an
 upper bound of the quantile of order :math:`\alpha`, with confidence
 :math:`\beta`.
@@ -484,7 +484,7 @@ True
 %feature("docstring") OT::QuantileConfidence::computeBilateralMinimumSampleSize
 R"RAW(Evaluate the minimum size of the sample for the bilateral confidence interval.
 
-The method determines the smallest sample size :math:`\sampleSize` so that:
+The method determines the smallest sample size :math:`\sampleSize` such that:
 
 .. math::
 
@@ -632,7 +632,7 @@ alpha : float
 Returns
 -------
 alpha : float
-    Quantile level
+    Quantile level.
 "
 
 // ---------------------------------------------------------------------
@@ -654,7 +654,7 @@ beta : float
 Returns
 -------
 beta : float
-    Confidence level
+    Confidence level.
 "
 
 // ---------------------------------------------------------------------
@@ -687,7 +687,7 @@ rank : int
     Rank :math:`k` of the order statistic.
 lowerBounded : bool, optional
     False to consider the upper bound of the quantile,
-    True for the lower bound.
+    True to consider its lower bound.
     Default value is False.
 
 Returns
