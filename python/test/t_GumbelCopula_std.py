@@ -106,3 +106,7 @@ ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(0)
 validation = ott.DistributionValidation(copula)
 validation.run()
+
+# Verify upper tail dependence: lambda_U = 2 - 2^(1/theta)
+chi = copula.computeUpperTailDependenceMatrix()[0, 1]
+ott.assert_almost_equal(chi, 2.0 - 2.0 ** (1.0 / 2.5), 1e-5, 1e-5)
