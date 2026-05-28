@@ -100,7 +100,9 @@ Sample CSVParser::load() const
     throw FileNotFoundException(HERE) << "CSVParser cannot open file '" << fileName_ << "'";
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
-  const int pColumnNameIdx = skippedLinesNumber_ != 0 ? skippedLinesNumber_ - 1 : -1;
+  if (skippedLinesNumber_ > static_cast<UnsignedInteger>(std::numeric_limits<int>::max()))
+    throw InvalidArgumentException(HERE) << "Too many skipped lines";
+  const int pColumnNameIdx = skippedLinesNumber_ != 0 ? static_cast<int>(skippedLinesNumber_ - 1) : -1;
   rapidcsv::LabelParams pLabelParams(pColumnNameIdx, -1);
   rapidcsv::SeparatorParams pSeparatorParams(fieldSeparator_, true);
   rapidcsv::ConverterParams pConverterParams;
