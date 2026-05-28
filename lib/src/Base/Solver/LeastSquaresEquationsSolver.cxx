@@ -114,8 +114,8 @@ Point LeastSquaresEquationsSolver::solve(const Function & function,
   {
     LOGWARN("Default optimization algorithm could not solve the least squares problem. Trying to set up a new one...");
     solver = OptimizationAlgorithm::Build(lsqProblem);
+    solver.setProblem(lsqProblem);
   }
-  solver.setProblem(lsqProblem);
   solver.run();
   callsNumber_ = solver.getResult().getCallsNumber();
   const Point min_value_obtained = solver.getResult().getOptimalValue();
