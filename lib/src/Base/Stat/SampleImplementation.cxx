@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <iterator>
 #include <regex>
+#include <limits>
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -668,8 +669,11 @@ SampleImplementation & SampleImplementation::add(const Point & point)
                                          << ") expected : "
                                          << getDimension();
   const UnsignedInteger oldSize = size_;
+  const UnsignedInteger newCount = oldSize + 1;
+  if (dimension_ != 0 && newCount > std::numeric_limits<UnsignedInteger>::max() / dimension_)
+    throw InternalException(HERE) << "Error: cannot add point, overflow detected";
+  data_.resize(newCount * dimension_);
   ++ size_;
-  data_.resize(size_ * dimension_);
   std::copy(point.begin(), point.begin() + dimension_, data_.begin() + oldSize * dimension_);
   return *this;
 }
