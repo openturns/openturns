@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -116,4 +117,16 @@ for UseRandomSVD, RandomSVDVariant in [
     algo.run()
     result = algo.getResult()
     evs = result.getEigenvalues()
-    assert len(evs) == 10, "expected 10 values"
+    ott.assert_almost_equal(len(evs), 10)
+
+    # 2d test
+    mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
+    cov2D = ot.ExponentialModel([1.0], [1.0, 2.0], ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0]))
+    sample = ot.GaussianProcess(cov2D, mesh).getSample(16)
+    algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
+    algo.run()
+    result = algo.getResult()
+    lambd = result.getEigenvalues()
+    print("2D Halko2011 eigenvalues=", lambd)
+    print("2D Halko2011 modes=", result.getModesAsProcessSample())
+    ott.assert_almost_equal(lambd[0] > 0.0, True)
