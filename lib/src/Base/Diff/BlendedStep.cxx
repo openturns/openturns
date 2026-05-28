@@ -32,6 +32,7 @@ static const Factory<BlendedStep> Factory_BlendedStep;
 /* Default constructor */
 BlendedStep::BlendedStep()
   : FiniteDifferenceStepImplementation()
+  , eta_({ResourceMap::GetAsScalar("BlendedStep-DefaultEta")})
 {
   // Nothing to do
 }
@@ -40,14 +41,14 @@ BlendedStep::BlendedStep()
 BlendedStep::BlendedStep(const Point & epsilon, const Scalar eta)
   : FiniteDifferenceStepImplementation(epsilon)
 {
-  setEta( Point( epsilon.getDimension(), eta ) );
+  setEta(Point(epsilon.getDimension(), eta));
 }
 
 /* Parameters constructor */
 BlendedStep::BlendedStep(const Point & epsilon, const Point & eta)
   : FiniteDifferenceStepImplementation(epsilon)
 {
-  setEta( eta );
+  setEta(eta);
 }
 
 /* String converter */
@@ -84,12 +85,14 @@ Point BlendedStep::operator()(const Point & inP) const
 void BlendedStep::save(Advocate & adv) const
 {
   FiniteDifferenceStepImplementation::save(adv);
+  adv.saveAttribute("eta_", eta_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void BlendedStep::load(Advocate & adv)
 {
   FiniteDifferenceStepImplementation::load(adv);
+  adv.loadAttribute("eta_", eta_);
 }
 
 /* Eta accessor */
