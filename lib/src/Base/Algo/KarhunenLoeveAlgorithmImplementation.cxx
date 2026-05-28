@@ -77,6 +77,7 @@ UnsignedInteger KarhunenLoeveAlgorithmImplementation::getNbModes() const
 
 void KarhunenLoeveAlgorithmImplementation::setNbModes(const UnsignedInteger nbModes)
 {
+  if (nbModes == 0) throw InvalidArgumentException(HERE) << "Error: the number of modes must be positive, got nbModes=" << nbModes;
   nbModes_ = nbModes;
 }
 
