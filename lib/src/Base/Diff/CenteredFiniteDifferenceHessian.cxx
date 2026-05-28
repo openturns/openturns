@@ -80,7 +80,7 @@ String CenteredFiniteDifferenceHessian::__repr__() const
   oss << "class=" << CenteredFiniteDifferenceHessian::GetClassName()
       << " name=" << getName()
       << " epsilon=" << getEpsilon().__repr__()
-      << " evaluation=" << evaluation_.getImplementation()->__repr__();
+      << " evaluation=" << evaluation_.__repr__();
   return oss;
 }
 
