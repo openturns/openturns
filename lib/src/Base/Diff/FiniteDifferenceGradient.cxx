@@ -101,6 +101,7 @@ FiniteDifferenceGradient * FiniteDifferenceGradient::clone() const
 /* Comparison operator */
 Bool FiniteDifferenceGradient::operator ==(const FiniteDifferenceGradient & other) const
 {
+  if (this == &other) return true;
   return (getEpsilon() == other.getEpsilon());
 }
 
