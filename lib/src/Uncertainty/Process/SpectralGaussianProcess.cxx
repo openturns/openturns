@@ -37,14 +37,6 @@ static const Factory<SpectralGaussianProcess> Factory_SpectralGaussianProcess;
 
 SpectralGaussianProcess::SpectralGaussianProcess()
   : ProcessImplementation()
-  , spectralModel_()
-  , maximalFrequency_(0.0)
-  , nFrequency_(0)
-  , frequencyStep_(0.0)
-  , choleskyFactorsCache_(0)
-  , choleskyFactorsCache1D_(0)
-  , alpha_(0)
-  , fftAlgorithm_()
 {
   setOutputDimension(spectralModel_.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
@@ -55,13 +47,6 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
     const RegularGrid & timeGrid)
   : ProcessImplementation()
   , spectralModel_(spectralModel)
-  , maximalFrequency_(0.0)
-  , nFrequency_(0)
-  , frequencyStep_(0.0)
-  , choleskyFactorsCache_(0)
-  , choleskyFactorsCache1D_(0)
-  , alpha_(0)
-  , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
   setOutputDimension(spectralModel.getOutputDimension());
@@ -77,11 +62,6 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , spectralModel_(spectralModel)
   , maximalFrequency_(maximalFrequency)
   , nFrequency_(nFrequency)
-  , frequencyStep_(0.0)
-  , choleskyFactorsCache_(0)
-  , choleskyFactorsCache1D_(0)
-  , alpha_(0)
-  , fftAlgorithm_()
 {
   if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
   if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
@@ -385,6 +365,7 @@ void SpectralGaussianProcess::save(Advocate & adv) const
   adv.saveAttribute("nFrequency_", nFrequency_);
   adv.saveAttribute("choleskyFactorsCache_", choleskyFactorsCache_);
   adv.saveAttribute("choleskyFactorsCache1D_", choleskyFactorsCache1D_);
+  adv.saveAttribute("frequencyStep_", frequencyStep_);
   adv.saveAttribute("alpha_", alpha_);
   adv.saveAttribute("fftAlgorithm_", fftAlgorithm_);
 }
@@ -400,7 +381,13 @@ void SpectralGaussianProcess::load(Advocate & adv)
   adv.loadAttribute("alpha_", alpha_);
   adv.loadAttribute("fftAlgorithm_", fftAlgorithm_);
   if (adv.hasAttribute("choleskyFactorsCache1D_"))
+  {
     adv.loadAttribute("choleskyFactorsCache1D_", choleskyFactorsCache1D_);
+    if (adv.hasAttribute("frequencyStep_"))
+      adv.loadAttribute("frequencyStep_", frequencyStep_);
+    else if (nFrequency_ != 0)
+      frequencyStep_ = maximalFrequency_ / nFrequency_;
+  }
   else
     *this = SpectralGaussianProcess(spectralModel_, maximalFrequency_, nFrequency_);
 }
