@@ -263,7 +263,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       for (UnsignedInteger i = 1; i <= iMax; ++i)
       {
         AGi = A.genProd(A.genProd(AGi, true, false), false, false);
-        std::copy(AGi.begin(), AGi.end(), H.begin() + i * l);
+        std::copy(AGi.begin(), AGi.end(), H.begin() + i * l * m);
         LOGINFO(OSS() << "H=" << H.getNbRows() << "x" << H.getNbColumns());
       }
       LOGINFO("Create QR decomposition of H");
