@@ -109,9 +109,12 @@ KarhunenLoeveSVDAlgorithm * KarhunenLoeveSVDAlgorithm::clone() const
 */
 void KarhunenLoeveSVDAlgorithm::run()
 {
+  // Check the sample is not empty
+  const UnsignedInteger size = sample_.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Karhunen-Loeve decomposition from an empty sample";
+  if (!centeredSample_ && size < 2) throw InvalidArgumentException(HERE) << "Error: cannot center a sample of size " << size;
   // Compute the design matrix of the sample
   LOGINFO("Build the Design matrix");
-  const UnsignedInteger size = sample_.getSize();
   const UnsignedInteger kTilde = centeredSample_ ? size : size - 1;
   const UnsignedInteger verticesNumber = sample_.getMesh().getVerticesNumber();
   const UnsignedInteger dimension = sample_.getDimension();
