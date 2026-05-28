@@ -139,6 +139,13 @@ aSample = ot.Sample.ImportFromTextFile(fname, ";", 1)
 print("import with skipped lines, desc=", repr(aSample))
 assert (aSample.getSize(), aSample.getDimension()) == (3, 4), "skipped/desc"
 
+# header-only file with skippedLines should not crash
+with open(fname, "w") as f:
+    f.write("x,y,z\n")
+aSample = ot.Sample.ImportFromTextFile(fname, ",", 1)
+print("header-only sample=", repr(aSample))
+assert aSample.getSize() == 0, "header-only/csv"
+
 # description with an empty component
 with open(fname, "w") as f:
     f.write("a,,c\n1.0,2.0,3.0")
