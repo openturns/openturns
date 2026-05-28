@@ -134,9 +134,10 @@ void WhittleFactory::computeSpectralDensity(const UserDefinedSpectralModel & spe
   // Suppress first value if the associated frequency is zero
   if (frequencyGrid.getStart() == 0.0)
   {
-    --m_;
+    -- m_;
     kStart = 1;
   }
+  if (m_ == 0) throw NotDefinedException(HERE) << "No positive frequencies available for Whittle estimation";
   const Scalar fMax = frequencyGrid.getEnd();
   normalizedFrequencies_ = Point(m_);
   spectralDensity_ = Point(m_);
