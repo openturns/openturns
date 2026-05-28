@@ -90,6 +90,12 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
   // Create the optimization solver parameters using the parameters in the ResourceMap
   initializeCobylaSolverParameter();
+
+  // Set up currentP_ and currentQ_ from the first candidate pair
+  if (p.getSize() > 0) currentP_ = p[0];
+  if (q.getSize() > 0) currentQ_ = q[0];
+
+  initialize();
 }
 
 void ARMALikelihoodFactory::initialize()
