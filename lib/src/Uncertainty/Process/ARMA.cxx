@@ -65,7 +65,7 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
   , hasComputedNThermalization_(false)
   , nThermalization_(0)
 {
-  if (ARCoefficients_.getDimension() != MACoefficients_.getDimension())
+  if (ARCoefficients.getDimension() != MACoefficients.getDimension())
     throw InvalidArgumentException(HERE) << "Error:  Incompatible dimensions for coefficients of AR part and MA part";
   ARCoefficients_ = ARCoefficients;
   MACoefficients_ = MACoefficients;
@@ -97,7 +97,7 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
   , hasComputedNThermalization_(false)
   , nThermalization_(0)
 {
-  if (ARCoefficients_.getDimension() != MACoefficients_.getDimension())
+  if (ARCoefficients.getDimension() != MACoefficients.getDimension())
     throw InvalidArgumentException(HERE) << "Error:  Incompatible dimensions for coefficients of AR part and MA part";
   ARCoefficients_ = ARCoefficients;
   MACoefficients_ = MACoefficients;
