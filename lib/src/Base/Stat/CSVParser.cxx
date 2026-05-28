@@ -166,12 +166,13 @@ Sample CSVParser::load() const
   // headers if there exist any non-empty non-special unparsable value on the first row
   Bool haveHeaders = false;
   const Description specList = {"inf", "-inf", "INF", "-INF", "Inf", "-Inf", "nan", "NAN", "NaN"};
-  for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specList.contains(doc.GetCell<std::string>(j, 0)))
-    {
-      haveHeaders = true;
-      break;
-    }
+  if (doc.GetRowCount() > 0)
+    for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
+      if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specList.contains(doc.GetCell<std::string>(j, 0)))
+      {
+        haveHeaders = true;
+        break;
+      }
 
   // consider failed when no value has been successfully parsed (outside header)
   if (doc.GetRowCount() > (haveHeaders ? 1 : 0) && !oneOk)
