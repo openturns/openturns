@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -74,3 +75,13 @@ print("mean of ", size, " integer realizations=", mean)
 for i in range(slice):
     frequencies[i] = frequencies[i] / size
     print("frequency for value ", i, "=", frequencies[i])
+
+# IntegerGenerate(0) should throw (div by zero guard)
+with ott.assert_raises(TypeError):
+    ot.RandomGenerator.IntegerGenerate(0)
+
+# SetState with out-of-bounds index should throw
+state = ot.RandomGenerator.GetState()
+badState = ot.RandomGeneratorState(state.getBuffer(), 99999)
+with ott.assert_raises(TypeError):
+    ot.RandomGenerator.SetState(badState)
