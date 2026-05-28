@@ -44,7 +44,6 @@ RandomVectorMetropolisHastings::RandomVectorMetropolisHastings(const RandomVecto
     const Function & linkFunction)
   : MetropolisHastingsImplementation(initialState, marginalIndices)
 {
-  setRandomVector(randomVector);
   if (linkFunction.getEvaluation().getImplementation()->isActualImplementation())
   {
     if (linkFunction.getInputDimension() != initialState.getDimension())
@@ -55,6 +54,7 @@ RandomVectorMetropolisHastings::RandomVectorMetropolisHastings(const RandomVecto
                                             << ") does not match the parameter dimension of the randomVector (" << randomVector.getParameter().getDimension() << ").";
     randomVectorLinkFunction_ = linkFunction;
   }
+  setRandomVector(randomVector);
 }
 
 
