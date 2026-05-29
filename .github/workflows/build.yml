@@ -57,7 +57,7 @@ jobs:
           ctest --output-on-failure --timeout 100 -E cppcheck -j2 --repeat after-timeout:2 --schedule-random
 
   aarch64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     env:
       MAKEFLAGS: -j4
     steps:
