@@ -1516,7 +1516,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("LineSampling-DefaultAdaptiveImportantDirection", true);
 
   // Analytical parameters //
-  addAsScalar("Analytical-LimitStateToleranceFactor", 1.1);
+  addAsScalar("Analytical-LimitStateToleranceFactor", 1.15);
 
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);
