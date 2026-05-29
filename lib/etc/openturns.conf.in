@@ -862,7 +862,7 @@
   <LineSampling-DefaultAdaptiveImportantDirection value_bool="true" />
 
   <!-- OT::Analytical parameters -->
-  <Analytical-LimitStateToleranceFactor value_float="1.1" />
+  <Analytical-LimitStateToleranceFactor value_float="1.15" />
 
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />
