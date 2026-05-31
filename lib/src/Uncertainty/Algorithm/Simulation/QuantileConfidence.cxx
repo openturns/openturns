@@ -107,9 +107,18 @@ UnsignedInteger QuantileConfidence::computeUnilateralRank(const UnsignedInteger 
   return rank;
 }
 
-// Compute argmin (k1, k2) P_B((k1, k2]) under constraints P_B((k1, k2]) >= beta,
-// 0 <= k1 <= k2 <= n - 1, with B ~ Binomial(n, alpha)
 Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) const
+{
+  const String method = ResourceMap::GetAsString("QuantileConfidence-Method");
+  if (method == "hybrid") return computeBilateralRankHybrid(size);
+  else if (method == "jump") return computeBilateralRankJump(size);
+  else if (method == "epsilon") return computeBilateralRankEpsilon(size);
+  else throw InvalidArgumentException(HERE) << "Error: invalid value for bilateral rank method: " << method;
+}
+
+// Compute argmin (k1, k2) P_X([k1, k2]) under constraint P_X([k1, k2])>=beta, 
+// with X~B(n, alpha)
+Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger size) const
 {
   const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
   if (size < minimumSize)
@@ -120,11 +129,83 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
   // Consider the Binomial(n=size, alpha).
   // Find the indices (k1, k2) with smallest probability >=beta.
   const Binomial binomial(size, alpha_);
+
+  Bool found = false;
+  Scalar pBest = 2.0;
+  UnsignedInteger k1Best = 0;
+  UnsignedInteger k2Best = size;
+
   const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
+  UnsignedInteger k1 = binomial.computeScalarQuantile(probabilityEpsilon);
+  Scalar p1 = binomial.computeCDF(k1);
+
+  UnsignedInteger lastK2 = -1;
+  Scalar p2 = -1.0;
+
+  while (k1 < size)
+  {
+    // Check that CDF(k1) + beta <= 1, otherwise computeScalarQuantile fails
+    if (p1 + beta_ > 1.0)
+      break;
+
+    // Compute k2 from p1
+    const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
+
+    // Ensure the upper rank is within the valid sample index range [0, size - 1]
+    if (k2 >= size)
+      break;
+
+    // Compute P(k1 < X <= k2) = CDF(k2) - CDF(k1)
+    if (k2 != lastK2) {
+      lastK2 = k2;
+      p2 = binomial.computeCDF(k2);
+    }
+    const Scalar p = p2 - p1;
+    if ((p >= beta_) && (p < pBest))
+    {
+      pBest = p;
+      k1Best = k1;
+      k2Best = k2;
+      found = true;
+    }
+    // Find the next significant probability jump
+    UnsignedInteger ell;
+    Scalar pEll;
+    if (searchProbabilityJump(size, k1, ell, pEll))
+    {
+      k1 = ell;
+      p1 = pEll;
+    }
+    else
+      break;
+    
+  } // while k1
+  if (!found)
+    throw InvalidArgumentException(HERE)
+      << "Cannot find suitable ranks for size=" 
+      << size << ", alpha=" << alpha_ << ", beta=" << beta_ <<". "
+      << "Increase the size, or decrease the confidence level.";
+  return {k1Best, k2Best};
+}
+
+// Compute argmin (k1, k2) P_B((k1, k2]) under constraints P_B((k1, k2]) >= beta,
+// 0 <= k1 <= k2 <= n - 1, with B ~ Binomial(n, alpha)
+Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger size) const
+{
+  const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
+  if (size < minimumSize)
+    throw InvalidArgumentException(HERE) 
+        << "Cannot compute bilateral rank as size (" << size 
+        << ") is lower than minimum size (" << minimumSize << ")";
+
+  // Consider the Binomial(n=size, alpha).
+  // Find the indices (k1, k2) with smallest probability >=beta.
+  const Binomial binomial(size, alpha_);
   Bool found = false;
   Scalar pBest = SpecFunc::MaxScalar;
   UnsignedInteger k1Best = 0;
   UnsignedInteger k2Best = size;
+  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
   UnsignedInteger k1 = binomial.computeScalarQuantile(probabilityEpsilon);
   Scalar p1 = binomial.computeCDF(k1);
   UnsignedInteger k2 = k1;
@@ -165,6 +246,131 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
       << "Increase the size, or decrease the confidence level.";
 
   return {k1Best, k2Best};
+}
+
+// Compute argmin (k1, k2) P_X([k1, k2]) under constraint P_X([k1, k2])>=beta, 
+// with X~B(n, alpha)
+Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size) const
+{
+  const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
+  if (size < minimumSize)
+    throw InvalidArgumentException(HERE) 
+        << "Cannot compute bilateral rank as size (" << size 
+        << ") is lower than minimum size (" << minimumSize << ")";
+
+  // Consider the Binomial(n=size, alpha).
+  // Find the indices (k1, k2) with smallest probability >=beta.
+  const Binomial binomial(size, alpha_);
+  Bool found = false;
+  Scalar pBest = 2.0;
+  UnsignedInteger k1Best = 0;
+  UnsignedInteger k2Best = size;
+  UnsignedInteger k1 = 0;
+  Scalar p1 = binomial.computeCDF(k1);
+  UnsignedInteger lastK2 = -1;
+  Scalar p2 = -1.0;
+  while (k1 < size)
+  {
+    // Check that CDF(k1) + beta <= 1, otherwise computeScalarQuantile fails
+    if (p1 + beta_ > 1.0)
+      break;
+
+    // Compute k2 from p1
+    const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
+
+    // Ensure the upper rank is within the valid sample index range [0, size - 1]
+    if (k2 >= size)
+      break;
+
+    // Compute P(k1 < X <= k2) = CDF(k2) - CDF(k1)
+    if (k2 != lastK2) {
+      lastK2 = k2;
+      p2 = binomial.computeCDF(k2);
+    }
+    const Scalar p = p2 - p1;
+    if ((p >= beta_) && (p < pBest))
+    {
+      pBest = p;
+      k1Best = k1;
+      k2Best = k2;
+      found = true;
+    }
+    // Find the next significant probability jump
+    UnsignedInteger ell;
+    Scalar pEll;
+    if (searchProbabilityJump(size, k1, ell, pEll))
+    {
+      k1 = ell;
+      p1 = pEll;
+    }
+    else
+      break;
+    
+  } // while k1
+  if (!found)
+    throw InvalidArgumentException(HERE)
+      << "Cannot find suitable ranks for size=" 
+      << size << ", alpha=" << alpha_ << ", beta=" << beta_ <<". "
+      << "Increase the size, or decrease the confidence level.";
+  return {k1Best, k2Best};
+}
+
+
+/** For a given size and k in [0, size - 1], 
+ * find the smallest ell greater or equal than k such that 
+ * F(ell) > F(k) + epsilon and ell > k.
+ * On output, if the algorithm succeeds, then ell <= size - 1.
+ * Otherwise, ell = size. */
+Bool QuantileConfidence::searchProbabilityJump(const UnsignedInteger size, const UnsignedInteger k, UnsignedInteger & ell, Scalar & pEll) const
+{
+  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
+  const Binomial binomial(size, alpha_);
+  const Scalar probabilityReference = binomial.computeCDF(k) + probabilityEpsilon;
+
+  if (probabilityReference >= 1.0)
+  {
+    ell = size;
+    return false;
+  }
+
+  // Phase 1: Exponential search to find an exact valid bracket (low, high]
+  UnsignedInteger low = k;
+  UnsignedInteger high = k + 1;
+  Scalar pHigh;
+
+  while (true)
+  {
+    pHigh = binomial.computeCDF(high);
+
+    if (pHigh > probabilityReference)
+      break;
+
+    low = high;
+    const UnsignedInteger diff = high - k;
+    // Safely double the search step while preventing integer overflow
+    high = (size - high < diff) ? size : high + diff;
+  }
+
+  // Phase 2: Standard binary search within the invariant interval (low, high]
+  // Find the smallest ell such that F(ell) > F(k) + epsilon.
+  while (high - low > 1)
+  {
+    // Overflow-safe midpoint calculation
+    const UnsignedInteger center = low + (high - low) / 2;
+    const Scalar probabilityCenter = binomial.computeCDF(center);
+
+    if (probabilityCenter > probabilityReference)
+    {
+      high = center;
+      pHigh = probabilityCenter;
+    }
+    else
+      low = center;
+  }
+
+  ell = high;
+  pEll = pHigh;
+  return ell < size;
 }
 
 // compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k

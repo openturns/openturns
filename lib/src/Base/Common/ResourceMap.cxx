@@ -1822,6 +1822,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // QuantileConfidence parameters //
   addAsScalar("QuantileConfidence-ProbabilityEpsilon", 1.0e-15);
+  addAsString("QuantileConfidence-EpsilonMethod", "Jump");
 }
 
 void ResourceMap::reset()

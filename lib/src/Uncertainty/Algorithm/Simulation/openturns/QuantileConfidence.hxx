@@ -91,6 +91,14 @@ private:
   Scalar alpha_ = 0.0;
   Scalar beta_ = 0.0;
 
+  mutable UnsignedInteger countFEval_ = 0;
+  mutable UnsignedInteger countQEval_ = 0;
+
+  /** Find the smallest ell such that F(ell) > F(k) and ell > k */
+  Bool searchProbabilityJump(const UnsignedInteger size, const UnsignedInteger k, UnsignedInteger & ell, Scalar & pEll) const;
+  Indices computeBilateralRankEpsilon(const UnsignedInteger size) const;
+  Indices computeBilateralRankJump(const UnsignedInteger size) const;
+  Indices computeBilateralRankHybrid(const UnsignedInteger size) const;
 }; /* class QuantileConfidence */
 
 END_NAMESPACE_OPENTURNS
