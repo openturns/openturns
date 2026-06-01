@@ -39,6 +39,7 @@ GeneralizedExtremeValue::GeneralizedExtremeValue()
 {
   setName("GeneralizedExtremeValue");
   setDimension(1);
+  computeRange();
 }
 
 /* Parameters constructor to use when the two bounds are finite */

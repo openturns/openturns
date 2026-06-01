@@ -128,6 +128,7 @@ Building distributions from samples
 
     UniformFactory
     VonMisesFactory
+    experimental.VonMisesFisherFactory
     WeibullMinFactory
     WeibullMaxFactory
 

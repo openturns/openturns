@@ -771,6 +771,12 @@
   <VonMisesFactory-ResidualPrecision value_float="1e-12"        />
   <VonMisesFactory-MaximumIteration  value_int="10" />
   
+  <!-- OT::VonMisesFisherFactory parameters -->
+  <VonMisesFisherFactory-AbsolutePrecision value_float="1e-12"        />
+  <VonMisesFisherFactory-RelativePrecision value_float="1e-12"        />
+  <VonMisesFisherFactory-ResidualPrecision value_float="1e-12"        />
+  <VonMisesFisherFactory-MaximumIteration  value_int="10" />
+  
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
 

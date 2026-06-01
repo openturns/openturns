@@ -229,7 +229,8 @@ Scalar SpecFunc::DeltaLogBesselI10(const Scalar x)
 
 Scalar SpecFunc::BesselInu(const Scalar x, const Scalar nu)
 {
-  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Expected a positive value for nu, got nu=" << nu;
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Expected a positive value for nu, got nu=" << nu;
+  if (nu == 0.0) return BesselI0(x);
   if (x == 0.0) return 0.0;
   // Check if nu is an integer
   const UnsignedInteger inu = nu;
@@ -251,7 +252,9 @@ Scalar SpecFunc::BesselInu(const Scalar x, const Scalar nu)
 // "Accurate Computation of the Logarithm of Modified Bessel Functions on GPUs"
 Scalar SpecFunc::LogBesselInu(const Scalar x, const Scalar nu)
 {
-  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Expected a positive value for nu, got nu=" << nu;
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Expected a positive value for nu, got nu=" << nu;
+  if (nu == 0.0) return LogBesselI0(x);
+  if (nu == 1.0) return LogBesselI1(x);
   if (x <= 0.0) return LowestScalar;
   const Scalar logX = std::log(x);
   const Scalar logNu = std::log(nu);

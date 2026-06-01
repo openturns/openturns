@@ -41,3 +41,20 @@ parameters= [[mu : -0.5, kappa : 1.5]]
 Standard representative= VonMises(mu = -0.5, kappa=1.5)
 Circular mean= -0.5
 Circular variance= 0.403866761169
+
+Additional tests
+VonMises(mu=0.0, kappa=0.1)
+VonMises(mu=0.0, kappa=1.0)
+VonMises(mu=0.0, kappa=10.0)
+VonMises(mu=2.0, kappa=5.0)
+setMu range OK
+setKappa OK
+setParameter round-trip OK
+getParametersCollection OK
+invalid kappa raises OK
+Large kappa PDF(0)=3.98441
+Large kappa quantile OK
+Small kappa uniformity OK
+DDF gradient FD OK
+Quantile/CDF round-trip OK
+All tests passed

@@ -63,6 +63,8 @@
 %include TruncatedDistributionFactory.i
 %include SquaredNormalFactory.i
 %include InverseGammaFactory.i
+%include VonMisesFisher.i
+%include VonMisesFisherFactory.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
