@@ -230,6 +230,8 @@ Bool ParametricEvaluation::isLinear() const
 
 Bool ParametricEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
+  if (index >= getInputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
   return function_.isLinearlyDependent(inputPositions_[index]);
 }
 
