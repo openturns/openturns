@@ -37,6 +37,7 @@
 %include EnumerateFunction.i
 %include LinearEnumerateFunction.i
 %include HyperbolicAnisotropicEnumerateFunction.i
+%include HyperbolicEnumerateFunction.i
 %include NormInfEnumerateFunction.i
 %include FieldImplementation.i
 %include Field.i

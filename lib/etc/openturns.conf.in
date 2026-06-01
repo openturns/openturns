@@ -996,6 +996,10 @@
   <!-- OT::HyperbolicAnisotropicEnumerateFunction parameters -->
   <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_float="0.4" />
 
+  <!-- OT::HyperbolicEnumerateFunction parameters -->
+  <HyperbolicEnumerateFunction-DefaultQ value_float="0.4" />
+  <HyperbolicEnumerateFunction-QNormTolerance value_float="1.0e-13" />
+
   <!-- OT::MarginalTransformationEvaluation parameters -->
   <MarginalTransformationEvaluation-Simplify             value_bool="true"     />
   <MarginalTransformationEvaluation-DefaultTailThreshold value_float="0.99"    />

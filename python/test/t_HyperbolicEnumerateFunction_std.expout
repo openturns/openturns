@@ -1,0 +1,38 @@
+Default q : 0.4 
+
+inverse([0,0,0,0,0])= 0
+inverse([2,0,0,0,0])= 6
+First 10 values for dimension 1
+index=0, multi-index=[0], indexQNorm=0.0000
+index=1, multi-index=[1], indexQNorm=1.0000
+index=2, multi-index=[2], indexQNorm=2.0000
+index=3, multi-index=[3], indexQNorm=3.0000
+index=4, multi-index=[4], indexQNorm=4.0000
+index=5, multi-index=[5], indexQNorm=5.0000
+index=6, multi-index=[6], indexQNorm=6.0000
+index=7, multi-index=[7], indexQNorm=7.0000
+index=8, multi-index=[8], indexQNorm=8.0000
+index=9, multi-index=[9], indexQNorm=9.0000
+And first 5 strata cardinals : [1, 1, 1, 1, 1] 
+
+First 10 values for dimension 2
+index=0, multi-index=[0,0], indexQNorm=0.0000
+index=1, multi-index=[1,0], indexQNorm=1.0000
+index=2, multi-index=[0,1], indexQNorm=1.0000
+index=3, multi-index=[2,0], indexQNorm=2.0000
+index=4, multi-index=[1,1], indexQNorm=2.0000
+index=5, multi-index=[0,2], indexQNorm=2.0000
+index=6, multi-index=[3,0], indexQNorm=3.0000
+index=7, multi-index=[2,1], indexQNorm=3.0000
+index=8, multi-index=[1,2], indexQNorm=3.0000
+index=9, multi-index=[0,3], indexQNorm=3.0000
+And first 5 strata cardinals : [1, 2, 3, 4, 5] 
+
+First 10 values for dimension 3
+index=0, multi-index=[0,0,0], indexQNorm=0.0000
+index=1, multi-index=[1,0,0], indexQNorm=1.0000
+index=2, multi-index=[0,1,0], indexQNorm=1.0000
+index=3, multi-index=[0,0,1], indexQNorm=1.0000
+index=4, multi-index=[2,0,0], indexQNorm=2.0000
+index=5, multi-index=[1,1,0], indexQNorm=2.0000
+index=6, multi-index=[0,2,0], indexQNorm=2.0000
