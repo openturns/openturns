@@ -4,21 +4,22 @@ R"RAW(Adaptive order Fehlberg method.
 Parameters
 ----------
 transitionFunction : :class:`~openturns.Function`
-    The function defining the flow of the ordinary differential equation.
+    The right hand side :math:`f(t, \vect{y})` of the ordinary differential equation
+    :math:`\vect{y}' = f(t, \vect{y})`.
     The calling sequence is `dydt = phi(y)` where `y` is the state vector,
     `dydt` represents the derivative of `y` with respect to `t`,
     and `t` is the first parameter of the function.
     To create this function, use :class:`~openturns.ParametricFunction` in order to set the time
     variable `t` as a parameter (see below for an example).
-localPrecision : float
+localPrecision : float, optional
     The expected absolute error on one step.
-    The default value corresponds to the key `Fehlberg-LocalPrecision`
-    in :class:`~openturns.ResourceMap`.
-order : int, :math:`\text{order} \in \{0, 1, 2, 3, 4\}`
+    Default value depends on the key `Fehlberg-LocalPrecision`
+    in :class:`~openturns.ResourceMap` (default: :math:`10^{-10}`).
+order : int, optional, :math:`\text{order} \in \{0, 1, 2, 3, 4\}`
     The order of the method, ie the exponent :math:`p` in the estimate of the
     local error for a step of size :math:`h` written as :math:`\cO(h^p)`.
-    The default value corresponds to the key `Fehlberg-DefaultOrder`
-    in :class:`~openturns.ResourceMap`.
+    Default value depends on the key `Fehlberg-DefaultOrder`
+    in :class:`~openturns.ResourceMap` (default: 4).
 
 Notes
 -----
