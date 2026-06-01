@@ -409,6 +409,8 @@ Bibliography
 .. [park1990] Byeong U. Park and J. S. Marron.
     *Comparison of data-driven bandwidth selectors.*
     Journal of the American Statistical Association, 85(409) :66–72, 1990.
+.. [pinzon2023] Carlos Pinzón, Kangsoo Jung. *Fast Python sampler for the von Mises Fisher distribution*.
+    2023. ⟨hal-04004568v2⟩
 .. [pearson1907] Pearson, K. (1901).
     *On lines and planes of closest fit to systems of points in space.*
     The London, Edinburgh, and Dublin philosophical magazine and journal of

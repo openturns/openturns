@@ -113,6 +113,7 @@ Building distributions from samples
     TruncatedNormalFactory
     UniformFactory
     VonMisesFactory
+    experimental.VonMisesFisherFactory
     WeibullMinFactory
     WeibullMaxFactory
 
