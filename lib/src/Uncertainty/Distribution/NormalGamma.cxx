@@ -113,7 +113,7 @@ void NormalGamma::computeLogNormalization()
 /* Compute the mean of the distribution */
 void NormalGamma::computeMean() const
 {
-  mean_ = {mu_, alpha_ / beta_};
+  mean_ = {alpha_ / beta_, mu_};
   isAlreadyComputedMean_ = true;
 }
 
@@ -189,7 +189,7 @@ public:
     const Scalar & y = point[0];
     const Scalar scale = std::sqrt(0.5 * kappa_ * y);
     const Scalar A = (flag_ == 0 ? 0.0 : SpecFunc::Erf(scale * uMin_));
-    const Scalar B = (flag_ == 1 ? 1.0 : SpecFunc::Erf(scale * uMax_));
+    const Scalar B = (flag_ == 1 ? 1.0 : (flag_ == 0 ? 1.0 + SpecFunc::Erf(scale * uMax_) : SpecFunc::Erf(scale * uMax_)));
     const Scalar kernelValue = 0.5 * std::exp(logNormalization_ + (alpha_ - 1.0) * std::log(y) - beta_ * y) * (B - A);
     return Point(1, kernelValue);
   }
@@ -398,7 +398,7 @@ void NormalGamma::setKappa(const Scalar kappa)
 {
   if (kappa != kappa_)
   {
-    if (!(kappa_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
+    if (!(kappa > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
     kappa_ = kappa;
     computeLogNormalization();
     isAlreadyComputedCovariance_ = false;
@@ -415,7 +415,7 @@ void NormalGamma::setAlpha(const Scalar alpha)
 {
   if (!(alpha == alpha_))
   {
-    if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
+    if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
     alpha_ = alpha;
     computeLogNormalization();
     isAlreadyComputedMean_ = false;
@@ -433,7 +433,7 @@ void NormalGamma::setBeta(const Scalar beta)
 {
   if (!(beta == beta_))
   {
-    if (!(beta_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
+    if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
     beta_ = beta;
     computeLogNormalization();
     isAlreadyComputedMean_ = false;
