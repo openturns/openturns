@@ -110,6 +110,8 @@ UnsignedInteger QuantileConfidence::computeUnilateralRank(const UnsignedInteger 
 Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) const
 {
   const String method = ResourceMap::GetAsString("QuantileConfidence-Method");
+  LOGDEBUG(OSS(false) << "computeBilateralRank(" << size << ")");
+  LOGDEBUG(OSS(false) << "method = " << method << ", alpha = " << alpha_ << ", beta = " << beta_);
   if (method == "hybrid") return computeBilateralRankHybrid(size);
   else if (method == "jump") return computeBilateralRankJump(size);
   else if (method == "epsilon") return computeBilateralRankEpsilon(size);
@@ -120,6 +122,7 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
 // with X~B(n, alpha)
 Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger size) const
 {
+  LOGDEBUG(OSS(false) << "computeBilateralRankHybrid(" << size << ")");
   const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
   if (size < minimumSize)
     throw InvalidArgumentException(HERE) 
@@ -131,16 +134,18 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
   const Binomial binomial(size, alpha_);
 
   Bool found = false;
-  Scalar pBest = 2.0;
+  Scalar pBest = SpecFunc::MaxScalar;
   UnsignedInteger k1Best = 0;
-  UnsignedInteger k2Best = size;
+  UnsignedInteger k2Best = size - 1;
 
   const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
-  UnsignedInteger k1 = binomial.computeScalarQuantile(probabilityEpsilon);
-  Scalar p1 = binomial.computeCDF(k1);
+  UnsignedInteger k1 = 0;
+  Scalar p1= binomial.computeCDF(0);
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")");
+  ++countFEval_;
 
-  UnsignedInteger lastK2 = -1;
-  Scalar p2 = -1.0;
+  UnsignedInteger lastK2 = size;
+  Scalar p2 = SpecFunc::MaxScalar;
 
   while (k1 < size)
   {
@@ -150,15 +155,20 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
 
     // Compute k2 from p1
     const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
+    LOGDEBUG(OSS(false) << "Quantile(" << p1 + beta_ << ") = " << k2);
+    ++countQEval_;
 
     // Ensure the upper rank is within the valid sample index range [0, size - 1]
     if (k2 >= size)
       break;
 
     // Compute P(k1 < X <= k2) = CDF(k2) - CDF(k1)
-    if (k2 != lastK2) {
+    if (k2 != lastK2)
+    {
       lastK2 = k2;
       p2 = binomial.computeCDF(k2);
+      LOGDEBUG(OSS(false) << "CDF(" << k2 << ")");
+      ++countFEval_;
     }
     const Scalar p = p2 - p1;
     if ((p >= beta_) && (p < pBest))
@@ -171,7 +181,7 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
     // Find the next significant probability jump
     UnsignedInteger ell;
     Scalar pEll;
-    if (searchProbabilityJump(size, k1, ell, pEll))
+    if (searchProbabilityJump(size, k1, p1, probabilityEpsilon, ell, pEll))
     {
       k1 = ell;
       p1 = pEll;
@@ -185,6 +195,8 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
       << "Cannot find suitable ranks for size=" 
       << size << ", alpha=" << alpha_ << ", beta=" << beta_ <<". "
       << "Increase the size, or decrease the confidence level.";
+
+  LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
   return {k1Best, k2Best};
 }
 
@@ -204,10 +216,14 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
   Bool found = false;
   Scalar pBest = SpecFunc::MaxScalar;
   UnsignedInteger k1Best = 0;
-  UnsignedInteger k2Best = size;
+  UnsignedInteger k2Best = size - 1;
   const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
   UnsignedInteger k1 = binomial.computeScalarQuantile(probabilityEpsilon);
+  LOGDEBUG(OSS(false) << "Quantile(" << probabilityEpsilon << ") = " << k1);
+  ++countQEval_;
   Scalar p1 = binomial.computeCDF(k1);
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")");
+  ++countFEval_;
   UnsignedInteger k2 = k1;
   Scalar p2 = p1;
   while (k1 < size)
@@ -217,8 +233,12 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
     {
       ++k2;
       // Only compute CDF if k2 is within the valid sample index range
-      if (k2 < size) 
+      if (k2 < size)
+      {
         p2 = binomial.computeCDF(k2);
+        LOGDEBUG(OSS(false) << "CDF(" << k2 << ")");
+        ++countFEval_;
+      }
     }
 
     // If k2 goes out of bounds without satisfying the constraint, terminate search
@@ -237,7 +257,8 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
     // Go on to the next value of k1
     ++k1;
     p1 = binomial.computeCDF(k1);
-    
+    LOGDEBUG(OSS(false) << "CDF(" << k1 << ")");
+    ++countFEval_;
   } // while k1
   if (!found)
     throw InvalidArgumentException(HERE)
@@ -245,6 +266,7 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
       << size << ", alpha=" << alpha_ << ", beta=" << beta_ <<". "
       << "Increase the size, or decrease the confidence level.";
 
+  LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
   return {k1Best, k2Best};
 }
 
@@ -252,6 +274,7 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
 // with X~B(n, alpha)
 Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size) const
 {
+  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
   const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
   if (size < minimumSize)
     throw InvalidArgumentException(HERE) 
@@ -262,13 +285,15 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
   // Find the indices (k1, k2) with smallest probability >=beta.
   const Binomial binomial(size, alpha_);
   Bool found = false;
-  Scalar pBest = 2.0;
+  Scalar pBest = SpecFunc::MaxScalar;
   UnsignedInteger k1Best = 0;
-  UnsignedInteger k2Best = size;
+  UnsignedInteger k2Best = size - 1;
   UnsignedInteger k1 = 0;
   Scalar p1 = binomial.computeCDF(k1);
-  UnsignedInteger lastK2 = -1;
-  Scalar p2 = -1.0;
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")" << p1);
+  ++countFEval_;
+  UnsignedInteger lastK2 = size;
+  Scalar p2 = SpecFunc::MaxScalar;
   while (k1 < size)
   {
     // Check that CDF(k1) + beta <= 1, otherwise computeScalarQuantile fails
@@ -277,6 +302,8 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
 
     // Compute k2 from p1
     const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
+    LOGDEBUG(OSS(false) << "Quantile(" << p1 + beta_ << ") = " << k2);
+    ++countQEval_;
 
     // Ensure the upper rank is within the valid sample index range [0, size - 1]
     if (k2 >= size)
@@ -286,6 +313,8 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
     if (k2 != lastK2) {
       lastK2 = k2;
       p2 = binomial.computeCDF(k2);
+      LOGDEBUG(OSS(false) << "CDF(" << k2 << ")" << p2);
+      ++countFEval_;
     }
     const Scalar p = p2 - p1;
     if ((p >= beta_) && (p < pBest))
@@ -298,7 +327,7 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
     // Find the next significant probability jump
     UnsignedInteger ell;
     Scalar pEll;
-    if (searchProbabilityJump(size, k1, ell, pEll))
+    if (searchProbabilityJump(size, k1, p1, probabilityEpsilon, ell, pEll))
     {
       k1 = ell;
       p1 = pEll;
@@ -312,6 +341,8 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
       << "Cannot find suitable ranks for size=" 
       << size << ", alpha=" << alpha_ << ", beta=" << beta_ <<". "
       << "Increase the size, or decrease the confidence level.";
+
+  LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
   return {k1Best, k2Best};
 }
 
@@ -321,11 +352,10 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
  * F(ell) > F(k) + epsilon and ell > k.
  * On output, if the algorithm succeeds, then ell <= size - 1.
  * Otherwise, ell = size. */
-Bool QuantileConfidence::searchProbabilityJump(const UnsignedInteger size, const UnsignedInteger k, UnsignedInteger & ell, Scalar & pEll) const
+Bool QuantileConfidence::searchProbabilityJump(const UnsignedInteger size, const UnsignedInteger k, const Scalar pk, const Scalar probabilityEpsilon, UnsignedInteger & ell, Scalar & pEll) const
 {
-  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
   const Binomial binomial(size, alpha_);
-  const Scalar probabilityReference = binomial.computeCDF(k) + probabilityEpsilon;
+  const Scalar probabilityReference = pk + probabilityEpsilon;
 
   if (probabilityReference >= 1.0)
   {
@@ -341,6 +371,8 @@ Bool QuantileConfidence::searchProbabilityJump(const UnsignedInteger size, const
   while (true)
   {
     pHigh = binomial.computeCDF(high);
+    LOGDEBUG(OSS(false) << "CDF(" << high << ") = " << pHigh);
+    ++countFEval_;
 
     if (pHigh > probabilityReference)
       break;
@@ -358,6 +390,8 @@ Bool QuantileConfidence::searchProbabilityJump(const UnsignedInteger size, const
     // Overflow-safe midpoint calculation
     const UnsignedInteger center = low + (high - low) / 2;
     const Scalar probabilityCenter = binomial.computeCDF(center);
+    LOGDEBUG(OSS(false) << "CDF(" << center << ") = " << probabilityCenter);
+    ++countFEval_;
 
     if (probabilityCenter > probabilityReference)
     {
