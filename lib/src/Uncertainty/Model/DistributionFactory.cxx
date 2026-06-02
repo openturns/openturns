@@ -62,6 +62,7 @@
 #include "openturns/RiceFactory.hxx"
 #include "openturns/SkellamFactory.hxx"
 #include "openturns/SmoothedUniformFactory.hxx"
+#include "openturns/SquaredNormalFactory.hxx"
 #include "openturns/StudentFactory.hxx"
 #include "openturns/StudentCopulaFactory.hxx"
 #include "openturns/TrapezoidalFactory.hxx"
@@ -105,6 +106,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(RayleighFactory());
   collection.add(RiceFactory());
   collection.add(SmoothedUniformFactory());
+  collection.add(SquaredNormalFactory());
   collection.add(StudentFactory());
   collection.add(TrapezoidalFactory());
   collection.add(TriangularFactory());
