@@ -24,7 +24,7 @@ The importance factor of :math:`X_i` is defined by:
     :label: eta_i
 
     \eta_i = \frac{ \frac{\partial \model}{\partial x_i}(\vect{\mu}) }{\Var Y} \sum_{j=1}^\inputDim
-    \frac{\partial \model}{\partial x_j}(\vect{\mu})\Cov(X_i, X_j)
+    \frac{\partial \model}{\partial x_j}(\vect{\mu})\Cov(X_i, X_j).
 
 
 If the model is linear (i.e. if the model is equal to its first-order Taylor expansion),
