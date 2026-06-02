@@ -33,7 +33,7 @@ equal to the variance of an input variable (:math:`X_i`).
 Case 1: :math:`\outputDim=1`, :math:`Y = \model(\inputRV) \in \Rset`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In this section, we analyse the special case where :math:`q = 1` and :math:`Y = h(\inputRV) \in \Rset`.
+In this section, we analyse the special case where :math:`q = 1` and :math:`Y = \model(\inputRV) \in \Rset`.
 
 The second-order Taylor expansion of :math:`\model` at the point :math:`\inputRV = \vect{\mu}` is:
 
