@@ -114,6 +114,7 @@ Building distributions from samples
 
     :template: class.rst_t
 
+    experimental.SquaredNormalFactory
     experimental.TruncatedDistributionFactory
 
     :template: DistributionFactory.rst_t
