@@ -98,6 +98,7 @@
 #include "openturns/InverseChiSquare.hxx"
 #include "openturns/InverseGamma.hxx"
 #include "openturns/InverseNormal.hxx"
+#include "openturns/InverseGammaFactory.hxx"
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/InverseWishart.hxx"
 #include "openturns/KPermutationsDistribution.hxx"

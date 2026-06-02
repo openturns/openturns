@@ -60,6 +60,7 @@
 %include MarginalUniformOrderStatistics.i
 %include TruncatedDistributionFactory.i
 %include SquaredNormalFactory.i
+%include InverseGammaFactory.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
