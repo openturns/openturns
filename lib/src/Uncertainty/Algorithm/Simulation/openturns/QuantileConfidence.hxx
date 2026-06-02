@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/Binomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -95,10 +96,11 @@ private:
   mutable UnsignedInteger countQEval_ = 0;
 
   /** Find the smallest ell such that F(ell) > F(k) and ell > k */
-  Bool searchProbabilityJump(const UnsignedInteger size, const UnsignedInteger k, const Scalar pk, const Scalar probabilityEpsilon, UnsignedInteger & ell, Scalar & pEll) const;
+  Bool searchProbabilityJump(const Binomial binomial, const UnsignedInteger size, const UnsignedInteger k, const Scalar pk, const Scalar probabilityEpsilon, UnsignedInteger & ell, Scalar & pEll) const;
   Indices computeBilateralRankEpsilon(const UnsignedInteger size) const;
   Indices computeBilateralRankJump(const UnsignedInteger size) const;
   Indices computeBilateralRankHybrid(const UnsignedInteger size) const;
+  Indices computeBilateralRankBisection(const UnsignedInteger size) const;
 }; /* class QuantileConfidence */
 
 END_NAMESPACE_OPENTURNS
