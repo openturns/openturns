@@ -40,3 +40,7 @@ correlation= [[ 1 0 ]
  [ 0 1 ]]
 parameters= [[mu : 1, kappa : 2, alpha : 3, beta : 4]]
 Standard representative= NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
+logPDF outside range (y<=a)= -inf
+logPDF outside range (y>=b)= -inf
+Setters with same value: mu= 1.0 kappa= 2.0 alpha= 3.0 beta= 4.0
+Setters new values: mu= 2.0 kappa= 3.0 alpha= 4.0 beta= 5.0
