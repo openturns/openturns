@@ -124,6 +124,13 @@ Field ProcessSample::getField(const UnsignedInteger index) const
   return getImplementation()->getField(index);
 }
 
+void ProcessSample::setField(const UnsignedInteger index,
+                             const Field & field)
+{
+  copyOnWrite();
+  getImplementation()->setField(index, field);
+}
+
 void ProcessSample::setField(const Field & field,
                              const UnsignedInteger index)
 {

@@ -34,6 +34,7 @@
  * Deprecated StandardDistributionPolynomialFactory class
  * UniVariateDistributionPolynomialFactory moved to experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
+ * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
 
 === Documentation ===
 
