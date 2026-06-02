@@ -202,18 +202,48 @@ Indices QuantileConfidence::computeBilateralRankAsymptoticInit(const UnsignedInt
       LOGDEBUG(OSS(false) << "p = " << p << " >= beta = " << beta_ << ", new best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
     }
     
-    // Find the next significant probability jump
-    UnsignedInteger ell;
-    Scalar pEll;
-    if (searchProbabilityJump(binomial, size, k1, p1, probabilityEpsilon, ell, pEll))
+    // Jump directly to the optimal k1 for the current k2, or to the next k2.
+    // k2 changes when p1 + beta_ > p2, meaning p1 > p2 - beta_
+    const Scalar targetP1 = p2 - beta_;
+    
+    UnsignedInteger nextK1 = binomial.computeScalarQuantile(targetP1);
+    LOGDEBUG(OSS(false) << "targetP1 = " << targetP1 << ", Quantile(" << targetP1 << ") = " << nextK1);
+    ++countQEval_;
+    
+    Scalar pNext = binomial.computeCDF(nextK1);
+    LOGDEBUG(OSS(false) << "nextK1 = " << nextK1 << ", CDF(" << nextK1 << ") = " << pNext);
+    ++countFEval_;
+
+    // Ensure pNext is strictly greater than targetP1 to force k2 to increment
+    if (pNext <= targetP1)
     {
-      LOGDEBUG(OSS(false) << "Search for jump: next k1 = " << ell << ", CDF(" << ell << ") = " << pEll);
-      k1 = ell;
-      p1 = pEll;
+      nextK1++;
+      if (nextK1 > size) break;
+      pNext = binomial.computeCDF(nextK1);
+      LOGDEBUG(OSS(false) << "nextK1 = " << nextK1 << ", CDF(" << nextK1 << ") = " << pNext);
+      ++countFEval_;
+    }
+
+    // The best k1 for the current k2 is exactly the one before the jump
+    const UnsignedInteger optimalK1 = (nextK1 > 0) ? nextK1 - 1 : 0;
+
+    if (k1 < optimalK1)
+    {
+      // Fast-forward k1 to the optimal value for the current k2.
+      // The continue statement forces the loop to evaluate this optimal pair.
+      k1 = optimalK1;
+      p1 = binomial.computeCDF(k1);
+      LOGDEBUG(OSS(false) << "k1 = " << k1 << ", CDF(" << k1 << ") = " << p1);
+      ++countFEval_;
+      continue; 
     }
     else
-      break;
-      
+    {
+      // We have already evaluated the optimal pair. 
+      // Jump to nextK1 to update k2 in the next loop iteration.
+      k1 = nextK1;
+      p1 = pNext;
+    }      
   } // while k1
   
   if (!found)
