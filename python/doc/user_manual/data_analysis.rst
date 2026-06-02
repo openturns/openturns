@@ -111,6 +111,13 @@ Building distributions from samples
     TrapezoidalFactory
     TriangularFactory
     TruncatedNormalFactory
+
+    :template: class.rst_t
+
+    experimental.TruncatedDistributionFactory
+
+    :template: DistributionFactory.rst_t
+
     UniformFactory
     VonMisesFactory
     WeibullMinFactory
