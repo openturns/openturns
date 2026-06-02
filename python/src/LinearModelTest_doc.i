@@ -11,7 +11,6 @@ R"RAW(Test the nullity of the linear regression model coefficients.
 
     LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModelResult, level*)
 
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
@@ -50,7 +49,10 @@ where :math:`\epsilon` is the residual, supposed to follow the standard Normal
 distribution.
 
 The LinearModelFisher test checks the nullity of the regression linear model
-coefficients (Fisher distribution is used).
+coefficients (Fisher distribution is used).  The hypothesis is rejected when the  *p*-value
+is less than a given threshold (typically 5% or 10%). Thus, the lower the *p*-value,
+the more significant the coefficient.
+
 
 Examples
 --------
