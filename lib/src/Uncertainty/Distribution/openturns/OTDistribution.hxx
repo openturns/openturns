@@ -162,6 +162,7 @@
 #include "openturns/SmoothedUniform.hxx"
 #include "openturns/SmoothedUniformFactory.hxx"
 #include "openturns/SquaredNormal.hxx"
+#include "openturns/SquaredNormalFactory.hxx"
 #include "openturns/Student.hxx"
 #include "openturns/StudentCopula.hxx"
 #include "openturns/StudentCopulaFactory.hxx"
