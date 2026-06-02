@@ -172,6 +172,7 @@
 #include "openturns/Triangular.hxx"
 #include "openturns/TriangularFactory.hxx"
 #include "openturns/TruncatedDistribution.hxx"
+#include "openturns/TruncatedDistributionFactory.hxx"
 #include "openturns/TruncatedNormal.hxx"
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/TruncatedOverMesh.hxx"
