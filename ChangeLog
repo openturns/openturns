@@ -32,6 +32,7 @@
  * RatioOfUniforms moved out of experimental
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
+ * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
 
 === Documentation ===
 
