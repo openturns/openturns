@@ -101,6 +101,7 @@ private:
   Indices computeBilateralRankJump(const UnsignedInteger size) const;
   Indices computeBilateralRankHybrid(const UnsignedInteger size) const;
   Indices computeBilateralRankBisection(const UnsignedInteger size) const;
+  Indices computeBilateralRankAsymptoticInit(const UnsignedInteger size) const;
 }; /* class QuantileConfidence */
 
 END_NAMESPACE_OPENTURNS

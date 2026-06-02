@@ -116,7 +116,114 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
   else if (method == "jump") return computeBilateralRankJump(size);
   else if (method == "epsilon") return computeBilateralRankEpsilon(size);
   else if (method == "bisection") return computeBilateralRankBisection(size);
+  else if (method == "asymptoticInit") return computeBilateralRankAsymptoticInit(size);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for bilateral rank method: " << method;
+}
+
+// Compute argmin (k1, k2) P_X([k1, k2]) under constraint P_X([k1, k2])>=beta, 
+// with X~B(n, alpha), using an asymptotic first guess for k1 when n is large.
+Indices QuantileConfidence::computeBilateralRankAsymptoticInit(const UnsignedInteger size) const
+{
+  LOGDEBUG(OSS(false) << "computeBilateralRankAsymptoticInit(" << size << ")");
+  const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
+  if (size < minimumSize)
+    throw InvalidArgumentException(HERE) 
+        << "Cannot compute bilateral rank as size (" << size 
+        << ") is lower than minimum size (" << minimumSize << ")";
+
+  const Binomial binomial(size, alpha_);
+
+  Bool found = false;
+  Scalar pBest = SpecFunc::MaxScalar;
+  UnsignedInteger k1Best = 0;
+  UnsignedInteger k2Best = size - 1;
+
+  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
+  
+  // Retrieve configuration parameters from the ResourceMap
+  const UnsignedInteger sizeLimit = ResourceMap::GetAsUnsignedInteger("QuantileConfidence-AsymptoticSizeLimit");
+  const Scalar stdDevFactor = ResourceMap::GetAsScalar("QuantileConfidence-AsymptoticStdDevFactor");
+
+  UnsignedInteger k1 = 0;
+
+  // Use asymptotic approximation as a first guess when size exceeds the limit
+  if (size > sizeLimit)
+  {
+    LOGDEBUG(OSS(false) << "Asymptotic initialization for k1");
+    const Indices asympRanks = computeAsymptoticBilateralRank(size);
+    const Scalar stdDev = std::sqrt(size * alpha_ * (1.0 - alpha_));
+    const UnsignedInteger margin = static_cast<UnsignedInteger>(stdDevFactor * stdDev);
+    k1 = (asympRanks[0] > margin) ? asympRanks[0] - margin : 0;
+  }
+  else
+  {
+    LOGDEBUG(OSS(false) << "Epsilon initialization for k1");
+    // Skip the strictly zero-probability region for smaller sample sizes
+    k1 = binomial.computeScalarQuantile(probabilityEpsilon);
+  }
+  Scalar p1 = binomial.computeCDF(k1);
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
+  ++countFEval_;
+
+  UnsignedInteger lastK2 = size;
+  Scalar p2 = SpecFunc::MaxScalar;
+
+  while (k1 < size)
+  {
+    // Check that CDF(k1) + beta <= 1, otherwise computeScalarQuantile fails
+    if (p1 + beta_ > 1.0)
+      break;
+
+    // Compute k2 from p1, ensuring p2 >= p1 + beta
+    const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
+    LOGDEBUG(OSS(false) << "Quantile(" << p1 + beta_ << ") = " << k2);
+    ++countQEval_;
+
+    // Ensure the upper rank is within the valid sample index range [0, size - 1]
+    if (k2 >= size)
+      break;
+
+    // Compute P(k1 < X <= k2) = CDF(k2) - CDF(k1)
+    if (k2 != lastK2)
+    {
+      lastK2 = k2;
+      p2 = binomial.computeCDF(k2);
+      LOGDEBUG(OSS(false) << "k2 = " << k2 << ", CDF(" << k2 << ") = " << p2);
+      ++countFEval_;
+    }
+    
+    const Scalar p = p2 - p1;
+    if ((p >= beta_) && (p < pBest))
+    {
+      pBest = p;
+      k1Best = k1;
+      k2Best = k2;
+      found = true;
+      LOGDEBUG(OSS(false) << "p = " << p << " >= beta = " << beta_ << ", new best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
+    }
+    
+    // Find the next significant probability jump
+    UnsignedInteger ell;
+    Scalar pEll;
+    if (searchProbabilityJump(binomial, size, k1, p1, probabilityEpsilon, ell, pEll))
+    {
+      LOGDEBUG(OSS(false) << "Search for jump: next k1 = " << ell << ", CDF(" << ell << ") = " << pEll);
+      k1 = ell;
+      p1 = pEll;
+    }
+    else
+      break;
+      
+  } // while k1
+  
+  if (!found)
+    throw InvalidArgumentException(HERE)
+      << "Cannot find suitable ranks for size=" 
+      << size << ", alpha=" << alpha_ << ", beta=" << beta_ <<". "
+      << "Increase the size, or decrease the confidence level.";
+
+  LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
+  return {k1Best, k2Best};
 }
 
 // Compute argmin (k1, k2) P_X([k1, k2]) under constraint P_X([k1, k2])>=beta, 
@@ -140,9 +247,11 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
   UnsignedInteger k2Best = size - 1;
 
   const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
-  UnsignedInteger k1 = 0;
-  Scalar p1= binomial.computeCDF(0);
-  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")");
+  UnsignedInteger k1 = binomial.computeScalarQuantile(probabilityEpsilon);
+  LOGDEBUG(OSS(false) << "Quantile(" << probabilityEpsilon << ") = " << k1);
+  ++countQEval_;
+  Scalar p1= binomial.computeCDF(k1);
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
   ++countFEval_;
 
   UnsignedInteger lastK2 = size;
@@ -168,7 +277,7 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
     {
       lastK2 = k2;
       p2 = binomial.computeCDF(k2);
-      LOGDEBUG(OSS(false) << "CDF(" << k2 << ")");
+      LOGDEBUG(OSS(false) << "CDF(" << k2 << ") = " << p2);
       ++countFEval_;
     }
     const Scalar p = p2 - p1;
@@ -178,6 +287,7 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
       k1Best = k1;
       k2Best = k2;
       found = true;
+      LOGDEBUG(OSS(false) << "p = " << p << " >= beta = " << beta_ << ", new best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
     }
     // Find the next significant probability jump
     UnsignedInteger ell;
@@ -218,7 +328,7 @@ Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger 
   Scalar p1Prev = 0.0;
   UnsignedInteger k1 = 0;
   Scalar p1 = binomial.computeCDF(k1);
-  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")" << " p1=" << p1);
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
   ++countFEval_;
   Scalar p2Prev = 0.0;
   // we pass increments of cdf in the scale of beta to quantile function
@@ -233,7 +343,7 @@ Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger 
       k1Prev = k1;
       k1 = std::min(k1 + inc, size);
       p1 = binomial.computeCDF(k1);
-      LOGDEBUG(OSS(false) << "CDF(" << k1 << ")" << " p1=" << p1);
+      LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
       ++countFEval_;
       inc *= 2;
     }
@@ -245,7 +355,7 @@ Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger 
     {
       const UnsignedInteger k1Mid = (k1Min + k1Max) / 2;
       const Scalar p1Mid = binomial.computeCDF(k1Mid);
-      LOGDEBUG(OSS(false) << "CDF(" << k1Mid << ")" << " p1Mid=" << p1Mid);
+      LOGDEBUG(OSS(false) << "CDF(" << k1Mid << ") = " << p1Mid);
       ++countFEval_;
       if (p1Mid > p1Prev + epsilon)
         k1Max = k1Mid;
@@ -254,7 +364,7 @@ Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger 
     }
     k1 = k1Max;
     p1 = binomial.computeCDF(k1);
-    LOGDEBUG(OSS(false) << "CDF(" << k1 << ")" << " p1=" << p1);
+    LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
     ++countFEval_;
 
     // we have to stop when the probability will cross the bound
@@ -278,7 +388,7 @@ Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger 
     else
     {
       p2 = binomial.computeCDF(k2);
-      LOGDEBUG(OSS(false) << "CDF(" << k2 << ")" << " p2=" << p2);
+      LOGDEBUG(OSS(false) << "CDF(" << k2 << ") = " << p2);
       ++countFEval_;
     }
     k2Prev = k2;
@@ -294,8 +404,11 @@ Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger 
       pBest = p;
       k1Best = k1;
       k2Best = k2;
+      LOGDEBUG(OSS(false) << "p = " << p << " >= beta = " << beta_ << ", new best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
     }
   } // while k1
+  if (k1Best >= size || k2Best >= size)
+    throw InternalException(HERE) << "Cannot compute bilateral rank: no valid interval found for size=" << size;
   LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
   return {k1Best, k2Best};
 }
@@ -322,7 +435,7 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
   LOGDEBUG(OSS(false) << "Quantile(" << probabilityEpsilon << ") = " << k1);
   ++countQEval_;
   Scalar p1 = binomial.computeCDF(k1);
-  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")");
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
   ++countFEval_;
   UnsignedInteger k2 = k1;
   Scalar p2 = p1;
@@ -336,7 +449,7 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
       if (k2 < size)
       {
         p2 = binomial.computeCDF(k2);
-        LOGDEBUG(OSS(false) << "CDF(" << k2 << ")");
+        LOGDEBUG(OSS(false) << "CDF(" << k2 << ") = " << p2);
         ++countFEval_;
       }
     }
@@ -353,11 +466,12 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
       k1Best = k1;
       k2Best = k2;
       found = true;
+      LOGDEBUG(OSS(false) << "p = " << p << " >= beta = " << beta_ << ", new best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
     }
     // Go on to the next value of k1
     ++k1;
     p1 = binomial.computeCDF(k1);
-    LOGDEBUG(OSS(false) << "CDF(" << k1 << ")");
+    LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
     ++countFEval_;
   } // while k1
   if (!found)
@@ -374,7 +488,7 @@ Indices QuantileConfidence::computeBilateralRankEpsilon(const UnsignedInteger si
 // with X~B(n, alpha)
 Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size) const
 {
-  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
+  LOGDEBUG(OSS(false) << "computeBilateralRankJump(" << size << ")");
   const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
   if (size < minimumSize)
     throw InvalidArgumentException(HERE) 
@@ -384,16 +498,20 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
   // Consider the Binomial(n=size, alpha).
   // Find the indices (k1, k2) with smallest probability >=beta.
   const Binomial binomial(size, alpha_);
+
   Bool found = false;
   Scalar pBest = SpecFunc::MaxScalar;
   UnsignedInteger k1Best = 0;
   UnsignedInteger k2Best = size - 1;
+
   UnsignedInteger k1 = 0;
   Scalar p1 = binomial.computeCDF(k1);
-  LOGDEBUG(OSS(false) << "CDF(" << k1 << ")" << p1);
+  LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
   ++countFEval_;
+
   UnsignedInteger lastK2 = size;
   Scalar p2 = SpecFunc::MaxScalar;
+  const Scalar probabilityEpsilon = ResourceMap::GetAsScalar("QuantileConfidence-ProbabilityEpsilon");
   while (k1 < size)
   {
     // Check that CDF(k1) + beta <= 1, otherwise computeScalarQuantile fails
@@ -413,7 +531,7 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
     if (k2 != lastK2) {
       lastK2 = k2;
       p2 = binomial.computeCDF(k2);
-      LOGDEBUG(OSS(false) << "CDF(" << k2 << ")" << p2);
+      LOGDEBUG(OSS(false) << "CDF(" << k2 << ") = " << p2);
       ++countFEval_;
     }
     const Scalar p = p2 - p1;
@@ -423,6 +541,7 @@ Indices QuantileConfidence::computeBilateralRankJump(const UnsignedInteger size)
       k1Best = k1;
       k2Best = k2;
       found = true;
+      LOGDEBUG(OSS(false) << "p = " << p << " >= beta = " << beta_ << ", new best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
     }
     // Find the next significant probability jump
     UnsignedInteger ell;
