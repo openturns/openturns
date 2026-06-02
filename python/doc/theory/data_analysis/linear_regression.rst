@@ -11,14 +11,14 @@ The output random variable is approximated by:
 .. math::
     :label: RandomLinearModel
 
-    Y = \sum_{j=1}^{p} a_j \varphi_j(\inputRV) + \epsilon
+    Y = a_0 + \sum_{j=1}^{p} a_j \varphi_j(\inputRV) + \epsilon
 
 
 where :math:`a_0, a_1, ..., a_{p} \in \Rset` are scalar coefficients,
 :math:`\epsilon` a random
 variable with zero mean and constant variance :math:`\sigma^2` independent from
 the coefficients :math:`a_k` and :math:`(\varphi_j)_{1 \leq j \leq p}`  a functional basis
-such that :math:`\phi_j : \Rset^{p} \rightarrow \Rset`.
+such that :math:`\phi_j : \Rset^{\inputDim} \rightarrow \Rset`.
 
 The linear model between :math:`\vect{x}` and :math:`y` is defined by:
 
@@ -127,9 +127,9 @@ The coefficient of determination is (see [baron2014]_ page 399):
 
     R^2 = \frac{SS_{REG}}{SS_{TOT}}.
 
-The coefficient of determination measures the part
-of the variance explained by the linear regression model. 
 
+The coefficient of determination measures the part
+of the variance explained by the linear regression model.
 
 Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
 of the linear model, whereas a value close to 0 indicates that the
@@ -199,7 +199,7 @@ The variance of the estimator of the parameters is:
 
 .. math::
 
-    \Var{\hat{a}_k} = \hat{\sigma}^2 (\Tr{\mat{\Psi}} \mat{\Psi})^{-1}
+    \Var{\hat{a}_k} = \hat{\sigma}^2 (\Tr{\mat{\Psi}} \mat{\Psi})^{-1}_{k,k}
 
 Let :math:`\operatorname{SD}(\hat{a}_k)` be the standard deviation of the
 estimator of :math:`a_k`:
