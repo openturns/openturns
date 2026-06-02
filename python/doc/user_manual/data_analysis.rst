@@ -51,6 +51,13 @@ Building distributions from samples
     GeometricFactory
     GumbelFactory
     HistogramFactory
+
+    :template: class.rst_t
+
+    experimental.InverseGammaFactory
+
+    :template: DistributionFactory.rst_t
+
     InverseNormalFactory
 
     :template: classWithPlot.rst_t
