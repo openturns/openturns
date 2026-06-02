@@ -45,6 +45,7 @@
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/IndependentCopulaFactory.hxx"
+#include "openturns/InverseGammaFactory.hxx"
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/LaplaceFactory.hxx"
 #include "openturns/LogisticFactory.hxx"
@@ -95,6 +96,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(GeneralizedParetoFactory());
   collection.add(GumbelFactory());
   collection.add(HistogramFactory());
+  collection.add(InverseGammaFactory());
   collection.add(InverseNormalFactory());
   collection.add(LaplaceFactory());
   collection.add(LogisticFactory());
