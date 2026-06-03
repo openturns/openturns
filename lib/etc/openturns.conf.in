@@ -1177,7 +1177,7 @@
   <View-ImageFormat value_str="png" />
 
   <QuantileConfidence-ProbabilityEpsilon value_float="1.0e-15" />
-  <QuantileConfidence-Method value_str="asymptoticInit" />
+  <QuantileConfidence-Method value_str="doubleJump" />
   <QuantileConfidence-AsymptoticSizeLimit value_int="1000000" />
   <QuantileConfidence-AsymptoticStdDevFactor value_float="4.0" />
 
