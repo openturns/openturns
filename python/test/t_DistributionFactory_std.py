@@ -65,6 +65,7 @@ params = {
     "StudentFactory": 0.15,
     "TrapezoidalFactory": 1.0,
     "TriangularFactory": 0.025,
+    "SmoothedUniformFactory": 0.15,
 }
 
 for factory in factories:

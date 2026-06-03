@@ -103,8 +103,8 @@ beta= [0.974679]
 conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[a_marginal_0 : 0, b_marginal_0 : 1],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
-Mean  [0.49998]
-Covariance  [[ 2.42797 ]]
+Mean  [0.502679]
+Covariance  [[ 2.41987 ]]
 Elliptical distribution=  False
 Elliptical copula=  True
 Independent copula=  True
@@ -122,10 +122,10 @@ oneSample=     [ X0         ]
 9 : [  1.0006    ]
 anotherSample mean= [0.493427]
 anotherSample covariance= [[ 2.39148 ]]
-Zero point=  [0]  pdf=0.253294  cdf=0.368038
-Quantile= [3.05746]
+Zero point=  [0]  pdf=0.253531  cdf=0.366855
+Quantile= [3.05467]
 CDF(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05552]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05002]
 Survival(inverseSurvival)=0.950000
 conditioning distribution= JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
@@ -182,9 +182,9 @@ CDF(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.00756]
 Survival(inverseSurvival)=0.950000
 distribution= CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1,y2,y3]->[y0+y1+y2+y3,1.0], Y~JointDistribution(Uniform(a = 0, b = 1), Dirac(point = [0.5]), Binomial(n = 3, p = 0.5), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
-mean= [0.0488831,0.5,1.10965e-09,3.05199]
-covariance= [[  0.0025985    0           -1.12808e-11 -4.69849e-05 ]
+mean= [0.0512962,0.5,1.12211e-09,3.04773]
+covariance= [[  0.00248444   0           -1.12537e-11  2.31264e-05 ]
  [  0            0            0            0           ]
- [ -1.12808e-11  0            1.10965e-09 -1.03519e-11 ]
- [ -4.69849e-05  0           -1.03519e-11  0.00235954  ]]
-CDF(mean)=0.354278426973
+ [ -1.12537e-11  0            1.12211e-09 -1.13468e-11 ]
+ [  2.31264e-05  0           -1.13468e-11  0.00253318  ]]
+CDF(mean)=0.365115744839

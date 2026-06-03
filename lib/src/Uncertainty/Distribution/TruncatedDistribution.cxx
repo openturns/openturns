@@ -25,6 +25,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/TruncatedNormal.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/MultivariateUniform.hxx"
 #include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -302,6 +303,13 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
       }
     }
     simplified = FiniteDiscreteDistribution(reducedSupport, reducedProbabilities);
+    return true;
+  }
+  if (kind == "MultivariateUniform")
+  {
+    // Truncating a MultivariateUniform yields a MultivariateUniform with the truncated bounds
+    const Interval truncatedRange(getRange());
+    simplified = MultivariateUniform(truncatedRange.getLowerBound(), truncatedRange.getUpperBound());
     return true;
   }
   // At this point, no more simplification in the multivariate case

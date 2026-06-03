@@ -53,6 +53,7 @@
 #include "openturns/LogUniformFactory.hxx"
 #include "openturns/MeixnerDistributionFactory.hxx"
 #include "openturns/MultinomialFactory.hxx"
+#include "openturns/MultivariateUniformFactory.hxx"
 #include "openturns/PolyaFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/NormalFactory.hxx"
@@ -131,6 +132,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(FrankCopulaFactory());
   collection.add(GumbelCopulaFactory());
   collection.add(IndependentCopulaFactory());
+  collection.add(MultivariateUniformFactory());
   collection.add(NormalCopulaFactory());
   collection.add(NormalFactory());
   collection.add(PlackettCopulaFactory());
