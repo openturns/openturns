@@ -8,6 +8,7 @@
 
 ==== New classes ====
  * InverseGammaFactory (openturns.experimental)
+ * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
 

@@ -24,7 +24,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/JointDistribution.hxx"
-#include "openturns/Uniform.hxx"
+#include "openturns/MultivariateUniform.hxx"
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/GaussianProcessRegression.hxx"
 #include "openturns/GaussianProcessConditionalCovariance.hxx"
@@ -240,14 +240,12 @@ void EfficientGlobalOptimization::run()
       const Point upperBound(bounds.getUpperBound());
       const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
       const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
-      JointDistribution::DistributionCollection coll;
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
         if (!finiteLowerBound[i] || !finiteUpperBound[i])
           throw InvalidArgumentException(HERE) << "Bounds must be finite";
-        coll.add(Uniform(lowerBound[i], upperBound[i]));
       }
-      const JointDistribution distribution(coll);
+      const MultivariateUniform distribution(lowerBound, upperBound);
       Sample improvementExperiment(distribution.getSample(multiStartExperimentSize_));
       // retain best P/N points as starting points
       improvementExperiment.stack(improvementObjective(improvementExperiment));
