@@ -13,17 +13,17 @@ Parameters
 x : :class:`~openturns.Sample`
     Input sample
 func_coll : sequence of :class:`~openturns.Function`
-    Basis
+    The functional basis :math:`(\phi_k)_{1 \leq k \leq m}`
 basis : :class:`~openturns.Basis`
-    Basis
+    The functional basis :math:`(\phi_k)_{1 \leq k \leq m}`
 matrix : 2-d sequence of float
-    The design matrix
+    The design matrix :math:`\mat{D}`
 
 Notes
 -----
 Let :math:`(\phi_k)_{1 \leq k \leq m}` be a functional basis of size :math:`m`, where each function
 :math:`\phi_k: \Rset^\inputDim \rightarrow \Rset` with :math:`\inputDim \geq 1`.
-Let :math:`(\vect{x}^j)_{1 \leq j \leq \sampleSize}` be
+Let :math:`(\vect{x}^j)_{1 \leq j \leq \sampleSize}` be some
 input vectors in :math:`\Rset^\inputDim`.
 
 The class builds the matrix :math:`\mat{D} = (d_{jk})_{jk} \in \Rset^{\sampleSize\times m}` defined by:

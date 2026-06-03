@@ -25,7 +25,7 @@ Let :math:`\mat{A} \in \cM_{N+1, \outputDim}` and :math:`\vect{\Psi(\vect{x})} \
     :label: defAPsi
 
     \mat{A} & = \Tr{(\vect{a}_0 | \dots | \vect{a}_N)}\\
-    \vect{\Psi(\vect{x})} & = \Tr{(\Psi_0(\vect{x}), \dots, \Psi_N(\vect{x})}
+    \vect{\Psi(\vect{x})} & = \Tr{(\Psi_0(\vect{x}), \dots, \Psi_N(\vect{x}))}
 
 Then the meta model :eq:`LSMetaModel` can be written as:
 
