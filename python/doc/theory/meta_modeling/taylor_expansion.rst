@@ -53,7 +53,7 @@ which can be written as:
     \ux_0 \right \rangle, \ux-\ux_0 \right \rangle
 
 
-where :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq \inputDim, 1\leq k \leq \inputDim}` is the Hessian tensor of order 3 evaluated at :math:`\ux_0`:
+where :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq \inputDim, 1\leq k \leq \outputDim}` is the Hessian tensor of order 3 evaluated at :math:`\ux_0`:
 
 
 .. math::

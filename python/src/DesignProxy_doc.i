@@ -13,18 +13,18 @@ Parameters
 x : :class:`~openturns.Sample`
     Input sample
 func_coll : sequence of :class:`~openturns.Function`
-    Basis
-basis : sequence of :class:`~openturns.Basis`
-    Basis
+    The functional basis :math:`(\phi_k)_{1 \leq k \leq m}`
+basis : :class:`~openturns.Basis`
+    The functional basis :math:`(\phi_k)_{1 \leq k \leq m}`
 matrix : 2-d sequence of float
-The design matrix
+    The design matrix :math:`\mat{D}`
 
 Notes
 -----
 Let :math:`(\phi_k)_{1 \leq k \leq m}` be a functional basis of size :math:`m`, where each function
 :math:`\phi_k: \Rset^\inputDim \rightarrow \Rset` with :math:`\inputDim \geq 1`.
 Let :math:`(\vect{x}^j)_{1 \leq j \leq \sampleSize}` be some
-input vectors in :math:`Rset^\inputDim`.
+input vectors in :math:`\Rset^\inputDim`.
 
 The class builds the matrix :math:`\mat{D} = (d_{jk})_{jk} \in \Rset^{\sampleSize\times m}` defined by:
 
@@ -36,7 +36,7 @@ Can be useful for an iterative
 least squares problem resolution or in interaction with :class:`~openturns.LeastSquaresMethod`
 to select the algorithm used for the resolution of linear least-squares problems.
 
-It is posisble to directly specify the values :math:`(d_{jk})_{jk}` in the last constructor.
+It is possible to directly specify the values :math:`(d_{jk})_{jk}` in the last constructor.
 
 Examples
 --------
