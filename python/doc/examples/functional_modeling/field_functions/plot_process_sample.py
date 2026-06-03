@@ -121,38 +121,29 @@ view = otv.View(graph)
 # ------------------------------
 
 # %%
-# It is possible to create a :class:`~openturns.ProcessSample` from the obtained field samples.
-# For that, each obtained sample is added to the :class:`~openturns.ProcessSample` using the :class:`~openturns.Field` structure.
-# When the :class:`~openturns.ProcessSample` is created, by default a process sample with a value of 0.
-# for all the vertices is stored so it is important to remove it.
-
-# %%
+# It is possible to create a :class:`~openturns.ProcessSample` from the obtained field samples
 process_sample = ot.ProcessSample(mesh, n_samples, 1)
-process_sample.clear()
 for i in range(n_samples):
-    process_sample.add(ot.Field(mesh, Y_list[i]))
+    process_sample[i] = Y_list[i]
 
 # %%
 # It is then possible to compute different statistics on the :class:`~openturns.ProcessSample` such as the mean, median, variance, ...
-
-# %%
 process_sample_mean = process_sample.computeMean()
 process_sample_median = process_sample.computeMedian()
 process_sample_variance = process_sample.computeVariance()
 
 # %%
 # Let's visualize the mean of the process sample.
+# We only display a subset of the realizations using slicing.
 
 # %%
 graph = ot.Graph(
     "Sample process mean and realizations", "Strain", "Stress (Pa)", True, ""
 )
-for i in range(n_samples):
-    if i == 0:
-        label = "process samples"
-    else:
-        label = ""
-    curve = ot.Curve(vertices, Y_list[i], label)
+process_sample_vis = process_sample[::5]
+for i in range(process_sample_vis.getSize()):
+    label = "process samples" if i == 0 else ""
+    curve = ot.Curve(vertices, process_sample_vis[i], label)
     curve.setColor("blue")
     graph.add(curve)
 
