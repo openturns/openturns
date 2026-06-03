@@ -215,7 +215,8 @@ Indices QuantileConfidence::computeBilateralRankDoubleJump(const UnsignedInteger
     LOGDEBUG(OSS(false) << "nextK1 = " << nextK1 << ", CDF(" << nextK1 << ") = " << pNext);
     ++countFEval_;
 
-    // Ensure pNext is strictly greater than targetP1 to force k2 to increment
+    // Force pNext > targetP1 to guarantee k2 increments in the next iteration.
+    // This prevents an infinite loop in the rare event that F(k1Next) = p2 - beta.
     if (pNext <= targetP1)
     {
       nextK1++;
