@@ -71,18 +71,17 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   // Then, evaluate the function on this sample
   Sample blockSample(standardEvent_.getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
+  const Sample logPInitial(standardDistribution_.computeLogPDF(inputSample));
+  const Sample logPImportance(standardDistribution_.computeLogPDF(inputSample - standardSpaceDesignPoint));
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
     const Point realization(inputSample[i]);
-    Bool failureControl = realization.dot(standardSpaceDesignPoint) > betaSquare;
-    // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) > beta^2,
-    // else it is made using the linear event dot(u,u*) < beta^2.
-    failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);
+    // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) >= beta^2,
+    // else it is made using the linear event dot(u,u*) <= beta^2.
+    const Bool failureControl = (originFailure ? realization.dot(standardSpaceDesignPoint) <= betaSquare : realization.dot(standardSpaceDesignPoint) >= betaSquare);
     const Bool failureEvent = standardEvent_.getDomain().contains(blockSample[i]);
-    blockSample(i, 0) = controlProbability_;
-    const Scalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
-    if (factor != 0.0)
-      blockSample(i, 0) += factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
+    const Scalar weight = std::exp(logPInitial(i, 0) - logPImportance(i, 0));
+    blockSample(i, 0) = controlProbability_ + (Scalar(failureEvent) - Scalar(failureControl)) * weight;
   }
   return blockSample;
 }

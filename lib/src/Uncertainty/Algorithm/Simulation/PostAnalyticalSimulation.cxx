@@ -37,8 +37,9 @@ static const Factory<PostAnalyticalSimulation> Factory_PostAnalyticalSimulation;
 /* Constructor with parameters */
 PostAnalyticalSimulation::PostAnalyticalSimulation()
   : EventSimulation()
-  , controlProbability_(0.)
+  , controlProbability_(0.0)
 {
+  // Nothing to do
 }
 
 /* Constructor with parameters */
@@ -50,6 +51,8 @@ PostAnalyticalSimulation::PostAnalyticalSimulation(const AnalyticalResult & anal
 {
   // Compute the probability associated to the analytical result
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult.getHasoferReliabilityIndex());
+  if (analyticalResult_.getIsStandardPointOriginInFailureSpace())
+    controlProbability_ = 1.0 - controlProbability_;
 }
 
 /* Virtual constructor */
@@ -95,6 +98,8 @@ void PostAnalyticalSimulation::load(Advocate & adv)
   standardEvent_ = StandardEvent(getEvent());
   standardDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult_.getHasoferReliabilityIndex());
+  if (analyticalResult_.getIsStandardPointOriginInFailureSpace())
+    controlProbability_ = 1.0 - controlProbability_;
 }
 
 END_NAMESPACE_OPENTURNS
