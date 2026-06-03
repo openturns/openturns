@@ -64,6 +64,11 @@ Continuous parametric distributions
     LogNormal
     LogUniform
     MeixnerDistribution
+
+    :template: classWithPlot.rst_t
+    experimental.MultivariateUniform
+
+    :template: Distribution.rst_t
     NonCentralChiSquare
     NonCentralStudent
     Normal

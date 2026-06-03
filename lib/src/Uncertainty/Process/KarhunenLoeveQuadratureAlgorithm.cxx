@@ -27,8 +27,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/Uniform.hxx"
-#include "openturns/JointDistribution.hxx"
+#include "openturns/MultivariateUniform.hxx"
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
@@ -93,7 +92,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   , domain_(domain)
   , domainLowerBound_(domainBounds.getLowerBound())
   , domainUpperBound_(domainBounds.getUpperBound())
-  , experiment_(GaussProductExperiment(JointDistribution(Collection<Distribution>(domain.getDimension(), Uniform())), Indices(domain.getDimension(), marginalDegree + 1)))
+  , experiment_(GaussProductExperiment(MultivariateUniform(Point(domain.getDimension(), -1.0), Point(domain.getDimension(), 1.0)), Indices(domain.getDimension(), marginalDegree + 1)))
   , mustScale_(true)
 {
   // Check the arguments

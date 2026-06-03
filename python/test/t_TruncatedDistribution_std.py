@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 import math as m
 
@@ -293,6 +294,16 @@ ott.assert_almost_equal(
         ],
     ),
 )
+# MultivariateUniform truncation simplification
+mvu = otexp.MultivariateUniform([0.0, 1.0], [2.0, 3.0])
+truncMvu = ot.TruncatedDistribution(
+    mvu, ot.Interval([0.5, 1.5], [1.5, 2.5])
+)
+simplified = truncMvu.getSimplifiedVersion()
+assert "MultivariateUniform" in str(simplified.getClassName)
+ott.assert_almost_equal(simplified.getRange().getLowerBound(), [0.5, 1.5])
+ott.assert_almost_equal(simplified.getRange().getUpperBound(), [1.5, 2.5])
+
 # check simplification logic only checks numerical range
 dist = ot.Gumbel(1.0, 0.0)
 numericalRange = ot.Interval(
