@@ -18,7 +18,7 @@ where :math:`a_0, a_1, ..., a_{p} \in \Rset` are scalar coefficients,
 :math:`\epsilon` a random
 variable with zero mean and constant variance :math:`\sigma^2` independent from
 the coefficients :math:`a_k` and :math:`(\varphi_j)_{1 \leq j \leq p}`  a functional basis
-such that :math:`\phi_j : \Rset^{\inputDim} \rightarrow \Rset`.
+such that :math:`\varphi_j : \Rset^{\inputDim} \rightarrow \Rset`.
 
 The linear model between :math:`\vect{x}` and :math:`y` is defined by:
 
@@ -153,8 +153,7 @@ The unbiased estimator of the variance is (see [baron2014]_ page 400,
 Fisher - test
 ~~~~~~~~~~~~~
 
-The  Fisher’s statistic (see :class:`~openturns.LinearModelTest`)
-tests if a coefficient is significantly different to the null value. If not,
+The  Fisher’s statistic tests if a coefficient is significantly different from the null value. If not,
 it indicates that the variable :math:`\varphi_i(\inputRV)` does not
 bring valuable information to the forecast :math:`\hat{Y}`. The lower the *p*-value, the more
 significant the coefficient.

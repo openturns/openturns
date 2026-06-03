@@ -23,14 +23,12 @@ for :math:`k \in \{1, ..., \outputDim\}` which can be written as:
     \metaModel(\ux) = \model(\ux_0) + \mat{L} (\ux-\ux_0)
 
 
-where :math:`\mat{L} = (L_{ki})_{1 \leq k \leq \inputDim, 1\leq i \leq \inputDim}` is the Jacobian
+where :math:`\mat{L} = (L_{ki})_{1 \leq k \leq \outputDim, 1\leq i \leq \inputDim}` is the Jacobian
 matrix evaluated at the point :math:`\ux_0`:
 
 .. math::
 
-    L_{ki} = \frac{\partial h_k}{\partial x_i}(\ux_0)
-
-for :math:`i \in \{1, ..., \inputDim\}` and :math:`j \in \{1, ..., \inputDim\}`.
+    L_{ki} = \frac{\partial \model_k}{\partial x_i}(\ux_0)
 
 
 Second-order Taylor expansion
@@ -60,9 +58,9 @@ where :math:`\mat{Q} = (Q_{ijk})_{1 \leq i,j \leq \inputDim, 1\leq k \leq \input
 
 .. math::
 
-    Q_{ijk} = \frac{\partial^2 h_k}{\partial x_i \partial x_j} (\ux_0)
+    Q_{ijk} = \frac{\partial^2 \model_k}{\partial x_i \partial x_j} (\ux_0)
 
-for :math:`i, j \in \{1, ..., \inputDim\}` and :math:`k \in \{1, ..., \inputDim\}`.
+for :math:`i, j \in \{1, ..., \inputDim\}` and :math:`k \in \{1, ..., \outputDim\}`.
 
 The first and second order Taylor expansions are used in the following cases:
 
