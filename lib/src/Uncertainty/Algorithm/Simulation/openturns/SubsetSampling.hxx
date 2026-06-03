@@ -54,6 +54,9 @@ public:
   void setConditionalProbability(Scalar conditionalProbability);
   Scalar getConditionalProbability() const;
 
+  /** Result accessor */
+  ProbabilitySimulationResult getResult() const;
+
   /** Accessor to the minimum probability */
   void setMinimumProbability(const Scalar minimumProbability);
   Scalar getMinimumProbability() const;

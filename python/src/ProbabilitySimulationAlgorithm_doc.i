@@ -230,6 +230,17 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ProbabilitySimulationAlgorithm::getResult
+"Accessor to the results.
+
+Returns
+-------
+result : :class:`~openturns.ProbabilitySimulationResult`
+    Structure containing all the results obtained after simulation
+    and created by the method :py:meth:`run`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ProbabilitySimulationAlgorithm::getExperiment
 "Accessor to the experiment.
 

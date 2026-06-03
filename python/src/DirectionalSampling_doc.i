@@ -166,3 +166,14 @@ Parameters
 strategy : :class:`~openturns.SamplingStrategy`
     Direction sampling strategy used
     to sample directions in the standard space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DirectionalSampling::getResult
+"Accessor to the results.
+
+Returns
+-------
+result : :class:`~openturns.ProbabilitySimulationResult`
+    Structure containing all the results obtained after simulation
+    and created by the method :py:meth:`run`."

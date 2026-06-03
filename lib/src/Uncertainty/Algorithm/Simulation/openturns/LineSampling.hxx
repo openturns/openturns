@@ -45,6 +45,9 @@ public:
   /** Virtual constructor */
   LineSampling * clone() const override;
 
+  /** Result accessor */
+  ProbabilitySimulationResult getResult() const;
+
   /** Initial alpha accessor */
   void setInitialAlpha(const Point & initialAlpha);
   Point getInitialAlpha() const;

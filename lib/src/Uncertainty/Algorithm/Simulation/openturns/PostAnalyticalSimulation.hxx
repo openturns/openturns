@@ -54,6 +54,9 @@ public:
   /** Event accessor */
   AnalyticalResult getAnalyticalResult() const;
 
+  /** Result accessor */
+  ProbabilitySimulationResult getResult() const;
+
   /** Control probability accessor */
   Scalar getControlProbability() const;
 

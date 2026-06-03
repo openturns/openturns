@@ -53,9 +53,6 @@ public:
   /** Event accessor */
   RandomVector getEvent() const;
 
-  /** Result accessor */
-  ProbabilitySimulationResult getResult() const;
-
   /** String converter */
   String __repr__() const override;
 
@@ -72,9 +69,6 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-
-  /** Result accessor */
-  void setResult(const ProbabilitySimulationResult & result);
 
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();

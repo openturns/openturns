@@ -44,17 +44,6 @@ SimulationResult)RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EventSimulation::getResult
-"Accessor to the results.
-
-Returns
--------
-results : :class:`~openturns.SimulationResult`
-    Structure containing all the results obtained after simulation and created
-    by the method :py:meth:`run`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::EventSimulation::getEvent
 "Accessor to the event.
 
