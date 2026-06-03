@@ -110,6 +110,65 @@ estimators are obtained analytically:
 
     - See :doc:`/auto_data_analysis/distribution_fitting/plot_maximumlikelihood_estimator`
 
+Asymptotic distribution of the maximum likelihood estimator
+-----------------------------------------------------------
+
+Under regularity conditions, the maximum likelihood estimator (MLE)
+:math:`\hat{\vect{\theta}}` is asymptotically normal. More precisely,
+
+.. math::
+
+   \sqrt{N} \left( \hat{\vect{\theta}} - \vect{\theta}_0 \right)
+   \xrightarrow{d} \mathcal{N}\left( \vect{0}, \mat{I}(\vect{\theta}_0)^{-1} \right)
+
+where :math:`\vect{\theta}_0` is the true parameter value and
+:math:`\mat{I}(\vect{\theta}_0)` is the Fisher information matrix.
+
+The Fisher information matrix measures the amount of information that the
+data carries about the unknown parameter :math:`\vect{\theta}`. For a
+parametric model with log-density :math:`\log f_X(x; \vect{\theta})`, it is
+defined as:
+
+.. math::
+
+   \mat{I}(\vect{\theta})_{ij}
+   = \mathbb{E}\left[ \frac{\partial \log f_X(X; \vect{\theta})}{\partial \theta_i}
+                     \frac{\partial \log f_X(X; \vect{\theta})}{\partial \theta_j} \right]
+
+In practice, the expected Fisher information matrix is often replaced by
+the **observed Fisher information matrix**, evaluated at the MLE
+:math:`\hat{\vect{\theta}}`:
+
+.. math::
+
+   \hat{\mat{I}}(\hat{\vect{\theta}})_{ij}
+   = \sum_{k=1}^{N}
+     \frac{\partial \log f_X(x_k; \hat{\vect{\theta}})}{\partial \theta_i}
+     \frac{\partial \log f_X(x_k; \hat{\vect{\theta}})}{\partial \theta_j}
+
+The asymptotic covariance matrix of the MLE is then estimated by the
+inverse of the observed Fisher information matrix:
+
+.. math::
+
+   \widehat{\mat{\Sigma}}_{\hat{\vect{\theta}}}
+   = \hat{\mat{I}}(\hat{\vect{\theta}})^{-1}
+
+This result is used by the
+:meth:`~openturns.DistributionFactory.buildEstimator` method when the
+model is estimated by maximum likelihood and is regular. In that case,
+the parameter distribution is a normal distribution:
+:math:`\hat{\vect{\theta}} \sim \mathcal{N}\left( \hat{\vect{\theta}},
+\hat{\mat{I}}(\hat{\vect{\theta}})^{-1} \right)`.
+
+.. topic:: API:
+
+    - :meth:`~openturns.DistributionFactory.buildEstimator`
+
+.. topic:: Examples:
+
+    - :doc:`/auto_data_analysis/distribution_fitting/plot_asymptotic_estimators_distribution`
+
 .. topic:: References:
 
     - [saporta1990]_
