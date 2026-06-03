@@ -65,6 +65,16 @@ event : :class:`~openturns.RandomVector`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::EventSimulation::setEvent
+"Accessor to the event.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we want to evaluate the probability."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::EventSimulation::run
 "Launch simulation.
 
