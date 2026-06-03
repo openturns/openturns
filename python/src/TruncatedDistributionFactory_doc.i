@@ -23,7 +23,7 @@ Examples
 >>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
->>> sample = ot.TruncatedDistribution(distribution, ot.Interval(-1.0, 1.0)).getSample(30)
+>>> sample = ot.TruncatedDistribution(distribution, ot.Interval(-1.0, 1.0)).getSample(50)
 >>> factory = otexp.TruncatedDistributionFactory(distribution)
 >>> estimated = factory.build(sample)
 "

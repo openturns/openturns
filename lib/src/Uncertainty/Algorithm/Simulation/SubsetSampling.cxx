@@ -26,7 +26,7 @@
 #include "openturns/ChiSquare.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/JointDistribution.hxx"
-#include "openturns/Uniform.hxx"
+#include "openturns/MultivariateUniform.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 
@@ -387,7 +387,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
 {
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
-  const Distribution randomWalk(JointDistribution(JointDistribution::DistributionCollection(dimension_, Uniform(-0.5 * proposalRange_, 0.5 * proposalRange_))));
+  const Distribution randomWalk(MultivariateUniform(Point(dimension_, -0.5 * proposalRange_), Point(dimension_, 0.5 * proposalRange_)));
   const UnsignedInteger Nc = seedNumber_;
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)

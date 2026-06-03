@@ -103,8 +103,8 @@ beta= [0.974679]
 conditioning distribution= JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[a_marginal_0 : 0, b_marginal_0 : 1],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
-Mean  [0.49998]
-Covariance  [[ 2.42797 ]]
+Mean  [0.502679]
+Covariance  [[ 2.41987 ]]
 Elliptical distribution=  False
 Elliptical copula=  True
 Independent copula=  True
@@ -122,10 +122,10 @@ oneSample=     [ X0         ]
 9 : [  1.0006    ]
 anotherSample mean= [0.493427]
 anotherSample covariance= [[ 2.39148 ]]
-Zero point=  [0]  pdf=0.253294  cdf=0.368038
-Quantile= [3.05746]
+Zero point=  [0]  pdf=0.253531  cdf=0.366855
+Quantile= [3.05467]
 CDF(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05552]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05002]
 Survival(inverseSurvival)=0.950000
 conditioning distribution= JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  CompoundDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=id_2, Y~JointDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))

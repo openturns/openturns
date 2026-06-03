@@ -132,6 +132,8 @@
 #include "openturns/Mixture.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/MultinomialFactory.hxx"
+#include "openturns/MultivariateUniform.hxx"
+#include "openturns/MultivariateUniformFactory.hxx"
 #include "openturns/Polya.hxx"
 #include "openturns/PolyaFactory.hxx"
 #include "openturns/NonCentralChiSquare.hxx"
