@@ -141,6 +141,7 @@ X = ot.RandomVector(ot.Normal())
 Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
 event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+algo.setMaximumOuterSampling(100000)
 algo.run()
 result = algo.getResult()
 assert_almost_equal(
