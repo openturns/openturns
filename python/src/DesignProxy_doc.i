@@ -32,7 +32,7 @@ The class builds the matrix :math:`\mat{D} = (d_{jk})_{jk} \in \Rset^{\sampleSiz
    d_{jk} = \phi_k(\vect{x}^j) \quad 1 \leq k \leq m, \quad 1 \leq j \leq \sampleSize
 
 The matrix columns are effectively built when the *computeDesign* method is activated. The values are stored in a cache.
-Can be useful for an iterative
+This can be useful for an iterative
 least squares problem resolution or in interaction with :class:`~openturns.LeastSquaresMethod`
 to select the algorithm used for the resolution of linear least-squares problems.
 
@@ -90,8 +90,8 @@ indices : sequence of int
 
 Returns
 -------
-psiAk : :class:`~openturns.Matrix`
-    The design matrix"
+designMatrix : :class:`~openturns.Matrix`
+    The design matrix."
 
 // ---------------------------------------------------------------------
 
@@ -101,7 +101,7 @@ psiAk : :class:`~openturns.Matrix`
 Returns
 -------
 rowFilter : :class:`~openturns.Indices`
-    Sub-indices in of the sample in the current indices"
+    Indices of the rows retained from the input sample."
 
 // ---------------------------------------------------------------------
 
@@ -111,17 +111,17 @@ rowFilter : :class:`~openturns.Indices`
 Returns
 -------
 sampleSize : int
-    Size of sample accounting for row filter"
+    Size of sample accounting for row filter."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DesignProxy::setRowFilter
-"Row filter accessor.
+"Set the row filter.
 
 Parameters
 ----------
 rowFilter : sequence of int
-    Sub-indices in of the sample in the current indices"
+    Indices of the rows to retain from the input sample."
 
 // ---------------------------------------------------------------------
 
@@ -131,4 +131,4 @@ rowFilter : sequence of int
 Returns
 -------
 hasRowFilter : bool
-    Whether sub-indices of the basis are set"
+    Whether a filter is applied to the rows of the input sample."

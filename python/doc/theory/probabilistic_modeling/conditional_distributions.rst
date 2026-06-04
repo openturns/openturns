@@ -348,22 +348,22 @@ Let it be:
 .. math::
 
     \cD\left(\vect{Y}_{\overline{\cI}}|\vect{Y}_\cI = \vect{q}_\cI \right) = \prod_{i\in \overline{\cI}}
-    \left[ y_i^{min}, y_i^{max}\right]
+    \left[ y_{i, \min}, y_{i, \max}\right]
 
 Then, inversely, we compute the quantiles of each :math:`F_i` for :math:`i \in \cI` which have the same order as the bounds
-:math:`y_i^{min}` and :math:`y_i^{max}` with respect :math:`\Phi`:
+:math:`y_{i, \min}` and :math:`y_{i, \max}` with respect :math:`\Phi`:
 
 .. math::
 
-    x_i^{min} & = F_i^{-1}\circ \Phi \left (y_i^{min} \right) \\
-    x_i^{max} & = F_i^{-1}\circ \Phi \left (y_i^{max} \right)
+    x_{i, \min} & = F_i^{-1}\circ \Phi \left (y_{i, \min} \right) \\
+    x_{i, \max} & = F_i^{-1}\circ \Phi \left (y_{i, \max} \right)
 
 We assign to :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` the numerical range defined by:
 
 .. math::
 
-    \cD \left(\vect{X}_{\overline{\cI}}|\vect{X}_\cI = \vect{x}_\cI \right) = \prod_{i\in \overline{\cI}} \left[ x_i^{min},
-    x_i^{max}\right]
+    \cD \left(\vect{X}_{\overline{\cI}}|\vect{X}_\cI = \vect{x}_\cI \right) = \prod_{i\in \overline{\cI}} \left[ x_{i, \min},
+    x_{i, \max}\right]
 
 
 Case 3: Create a distribution whose parameters are random
