@@ -132,3 +132,25 @@ for i, event in enumerate(all_events):
     myAlgo.run()
     print("MonteCarlo result=", myAlgo.getResult())
     print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())
+
+# Test setter of event
+
+experiment = ot.MonteCarloExperiment()
+X = ot.RandomVector(ot.Normal())
+Y = ot.CompositeRandomVector(ot.SymbolicFunction(['X'], ['X']), X)
+event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
+algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+algo.run()
+result = algo.getResult()
+print(result.getProbabilityEstimate())
+
+
+Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(['X'], ['2*X']), X)
+event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
+algo.setEvent(event2)
+algo.run()
+result2 = algo.getResult()
+print(result2.getProbabilityEstimate())
+
+
+

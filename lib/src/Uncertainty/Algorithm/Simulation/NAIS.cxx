@@ -61,6 +61,12 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
+/*  Event accessor */
+void NAIS::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+}
+
 /* Keep event sample */
 void NAIS::setKeepSample(const Bool keepSample)
 {

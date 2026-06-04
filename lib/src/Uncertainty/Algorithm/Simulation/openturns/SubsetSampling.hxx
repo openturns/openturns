@@ -91,6 +91,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
+  
 private:
   /** Compute the block sample */
   Sample computeBlockSample() override;

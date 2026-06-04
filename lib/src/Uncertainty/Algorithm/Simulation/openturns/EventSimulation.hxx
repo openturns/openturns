@@ -54,7 +54,7 @@ public:
   RandomVector getEvent() const;
   
   /** Event accessor */
-  void setEvent(const RandomVector & event);
+  virtual void setEvent(const RandomVector & event);
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
