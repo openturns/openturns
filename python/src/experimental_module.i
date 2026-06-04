@@ -52,7 +52,6 @@
 
 /* Uncertainty */
 %import metamodel_module.i
-%include simulation_module.i
 
 /* Uncertainty/Process */
 %import model_process_module.i
