@@ -64,6 +64,8 @@ NAIS * NAIS::clone() const
 /*  Event accessor */
 void NAIS::setEvent(const RandomVector & event)
 {
+
+  const Bool previousSense = getEvent().getOperator()(0, 1);
   EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
   const Interval range(getEvent().getAntecedent().getDistribution().getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());

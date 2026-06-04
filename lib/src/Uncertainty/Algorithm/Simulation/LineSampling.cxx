@@ -73,7 +73,7 @@ void LineSampling::setEvent(const RandomVector & event)
   
   const UnsignedInteger inputDimension = getEvent().getAntecedent().getDistribution().getDimension();
   if (initialAlpha_.getDimension() != inputDimension)
-    throw InvalidArgumentException(HERE) << "Got a direction of dimension=" << initialAlpha_.getDimension()
+    throw InvalidArgumentException(HERE) << "Got a direction of dimension=" << initialAlpha_.getDimension();
 
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE) << "Output dimension for LineSampling cannot be greater than 1, here output dimension=" << outputDimension;
