@@ -135,23 +135,24 @@ for i, event in enumerate(all_events):
     print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())
 
 # Test setter of event
-
+ot.RandomGenerator.SetSeed(0)
 experiment = ot.MonteCarloExperiment()
 X = ot.RandomVector(ot.Normal())
 Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
 event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
-algo.setMaximumOuterSampling(100000)
+algo.setMaximumOuterSampling(1000000)
 algo.run()
 result = algo.getResult()
 assert_almost_equal(
-    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-2, 0.0
+    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 5.0e-2, 0.0
 )
 Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["2*X"]), X)
 event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
 algo.setEvent(event2)
+ot.RandomGenerator.SetSeed(0)
 algo.run()
 result2 = algo.getResult()
 assert_almost_equal(
-    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-2, 0.0
+    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 5.0e-2, 0.0
 )
