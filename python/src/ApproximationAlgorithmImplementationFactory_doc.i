@@ -36,21 +36,15 @@ R"RAW(Build the approximation.
 Parameters
 ----------
 x : 2-d sequence of float
-    The input random observations :math:`\left\{\vect{X}^{(1)}, ..., \vect{X}^{(n)}\right\}` 
-    where :math:`\vect{X}=(X_1, \dots, X_{n_X})^T` is the input of the physical
-    model, :math:`n_X` is the input dimension and :math:`n` is the sample size.
+    The input sample :math:`\left\{\vect{x}^{(1)}, ..., \vect{x}^{(\sizeSample)}\right\}`
+    where :math:`\vect{y}\in \Rset^\inputDim`
 y : 2-d sequence of float
-    The output random observations :math:`\left\{\vect{Y}^{(1)}, ..., \vect{Y}^{(n)}\right\}` 
-    where :math:`\vect{Y}=(Y_1, \dots, Y_{n_Y})^T` is the output of the physical
-    model, :math:`n_Y` is the output dimension and :math:`n` is the sample size.
+    The output sample :math:`\left\{\vect{y}^{(1)}, ..., \vect{y}^{(\sizeSample)}\right\}`
+    where :math:`\vect{y}\in \Rset^\outputDim`
 weight : sequence of float
-    Weights associated to the input sample points
-    such that the corresponding weighted experiment is a good approximation of
-    :math:`\mu`, where :math:`\mu` is the distribution of the standard
-    random vector :math:`\vect{Z}` associated with the physical input random
-    vector :math:`\vect{X}`. If unspecified, all weights are equal to
-    :math:`\frac{1}{n}`, where :math:`n` is the size of the
-    sample.
+    Weights
+    
+    By default, all the weights are equal to :math:`\frac{1}{\sizeSample}`
 psi : sequence of :class:`~openturns.Function`
     The functional basis.
 indices : sequence of int
@@ -59,6 +53,11 @@ indices : sequence of int
 Returns
 -------
 algorithm: :class:`~openturns.ApproximationAlgorithm`
-    The estimation algorithm.)RAW"
+    The estimation algorithm.
+
+Notes
+-----
+The finite discrete distribution based on the input sample and the weights defines the inner product that will be used to solve the least squares problem.
+)RAW"
 
 // ---------------------------------------------------------------------
