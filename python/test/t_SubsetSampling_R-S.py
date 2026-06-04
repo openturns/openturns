@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-from openturns.testing import assert_almost_equal
 
 #
 # Physical model
@@ -162,7 +161,7 @@ algo = ot.SubsetSampling(event, 0.1)
 algo.setMaximumOuterSampling(100000)
 algo.run()
 result = algo.getResult()
-assert_almost_equal(
+ott.assert_almost_equal(
     result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-2, 0.0
 )
 ot.RandomGenerator.SetSeed(0)
@@ -171,6 +170,6 @@ event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
 algo.setEvent(event2)
 algo.run()
 result2 = algo.getResult()
-assert_almost_equal(
+ott.assert_almost_equal(
     result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-2, 0.0
 )

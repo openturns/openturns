@@ -74,7 +74,23 @@ ProbabilitySimulationAlgorithm * ProbabilitySimulationAlgorithm::clone() const
 /*  Event accessor */
 void ProbabilitySimulationAlgorithm::setEvent(const RandomVector & event)
 {
-  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+
+  const RandomVector normalizedEvent =
+    event.isComposite() ? event.getImplementation()->asComposedEvent() : event;  
+  EventSimulation::setEvent(normalizedEvent);
+
+  if (getEvent().isComposite())
+  {
+    if (!isExperimentProvided_)
+      setExperiment(MonteCarloExperiment());
+    else
+      setExperiment(experiment_);
+    isExperimentProvided_ = true;
+  }
+  else
+  {
+    isExperimentProvided_ = false;
+  }
 }
 
 void ProbabilitySimulationAlgorithm::setExperiment(const WeightedExperiment & experiment)
