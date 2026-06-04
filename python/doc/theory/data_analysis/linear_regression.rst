@@ -53,6 +53,7 @@ The coefficients :math:`(a_0, \ldots, a_{p})` and the variance :math:`\sigma^2`
 are determined via the least-squares method (refer to  :any:`least_squares` to get details on the resolution of the problem):
 
 .. math::
+    :label: linRegCoef
 
     \left\{ \widehat{a}_0,\ldots,\widehat{a}_{p} \right\} = \textrm{argmin} \sum_{i=1}^{\sampleSize} \left( y_i -  \hat{y}_i\right)^2
 
