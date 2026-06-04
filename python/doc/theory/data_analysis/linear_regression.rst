@@ -47,11 +47,11 @@ Then, the residuals defined by:
 are independent realizations of  :math:`\epsilon`. To ensure the independence of the residuals, the random variables
 :math:`(\varphi_j(\inputRV))_{1 \leq j \leq p}` need to be independent.
 
-The linear coefficients :math:`(a_1, \ldots, a_{p})`  and the variance :math:`\sigma^2` are estimated by maximizing the likelihood of the residuals according to the distribution of :math:`\epsilon`.
+The linear coefficients :math:`(a_1, \ldots, a_{p})`  and the variance :math:`\sigma^2` are estimated by maximizing the
+likelihood of the residuals according to the distribution of :math:`\epsilon`.
 
-If the noise  :math:`\varepsilon` follows a normal distribution with zero mean, the maximization of the residuals likelihood is
-equivalent to solving the least-squares problem (see [bingham2010]_ theorem
-1.8 page 22):
+If the noise  :math:`\varepsilon` follows a normal distribution with zero mean, the maximization of the residuals
+likelihood is equivalent to solving the least-squares problem (see [bingham2010]_ theorem 1.8 page 22):
 
 .. math::
     :label: linRegCoef
