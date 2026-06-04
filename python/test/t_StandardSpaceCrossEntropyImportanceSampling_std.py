@@ -41,17 +41,21 @@ algo = ot.StandardSpaceCrossEntropyImportanceSampling(E4, 0.35)
 # Test setter of event
 ot.RandomGenerator.SetSeed(0)
 X = ot.RandomVector(ot.Normal())
-Y = ot.CompositeRandomVector(ot.SymbolicFunction(['X'], ['X']), X)
+Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
 event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
-algo = ot.StandardSpaceCrossEntropyImportanceSampling(event,0.25)
+algo = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.25)
 algo.setMaximumOuterSampling(100000)
 algo.run()
 result = algo.getResult()
-assert_almost_equal(result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-2, 0.0)
+assert_almost_equal(
+    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-2, 0.0
+)
 ot.RandomGenerator.SetSeed(0)
-Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(['X'], ['2 * X']), X)
+Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["2 * X"]), X)
 event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
 algo.setEvent(event2)
 algo.run()
 result2 = algo.getResult()
-assert_almost_equal(result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-2, 0.0)
+assert_almost_equal(
+    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-2, 0.0
+)
