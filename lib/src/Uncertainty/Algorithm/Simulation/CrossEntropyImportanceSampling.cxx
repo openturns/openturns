@@ -121,7 +121,7 @@ void CrossEntropyImportanceSampling::run()
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
     
-  Sample auxiliaryInputSample(0, initialDistribution_.getDimension());
+  Sample auxiliaryInputSample(0, initialDistribution.getDimension());
   Sample auxiliaryOutputSample(0, 1);
 
   const Function limitState(getLimitState());
