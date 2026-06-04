@@ -71,6 +71,11 @@ ProbabilitySimulationAlgorithm * ProbabilitySimulationAlgorithm::clone() const
   return new ProbabilitySimulationAlgorithm(*this);
 }
 
+/*  Event accessor */
+void ProbabilitySimulationAlgorithm::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+}
 
 void ProbabilitySimulationAlgorithm::setExperiment(const WeightedExperiment & experiment)
 {

@@ -69,6 +69,11 @@ SubsetSampling * SubsetSampling::clone() const
   return new SubsetSampling(*this);
 }
 
+/*  Event accessor */
+void SubsetSampling::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+}
 
 /* Performs the actual computation. */
 void SubsetSampling::run()

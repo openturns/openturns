@@ -59,6 +59,11 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
   return new AdaptiveDirectionalStratification(*this);
 }
 
+/*  Event accessor */
+void AdaptiveDirectionalStratification::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+}
 
 
 void AdaptiveDirectionalStratification::run()

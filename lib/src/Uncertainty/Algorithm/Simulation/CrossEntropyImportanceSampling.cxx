@@ -62,6 +62,12 @@ Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
   return getEvent().getAntecedent().getDistribution();
 }
 
+/*  Event accessor */
+void CrossEntropyImportanceSampling::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+}
+
 // Get quantileLevel
 Scalar CrossEntropyImportanceSampling::getQuantileLevel() const
 {
