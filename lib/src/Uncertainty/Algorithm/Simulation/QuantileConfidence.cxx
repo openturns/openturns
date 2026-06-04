@@ -118,7 +118,63 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
   else if (method == "bisection") return computeBilateralRankBisection(size);
   else if (method == "asymptoticInit") return computeBilateralRankAsymptoticInit(size);
   else if (method == "doubleJump") return computeBilateralRankDoubleJump(size);
+  else if (method == "symmetric") return computeBilateralRankSymmetric(size);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for bilateral rank method: " << method;
+}
+
+
+// compute argmin (k1, k2) P_Xd(]k1, k2]) under constraint P_Xd(]k1, k2])>=beta, with Xd~B(n, alpha)
+// This is from https://github.com/openturns/openturns/pull/3211, 4th june 2026
+Indices QuantileConfidence::computeBilateralRankSymmetric(const UnsignedInteger size) const
+{
+  LOGDEBUG(OSS(false) << "computeBilateralRankSymmetric(" << size << ")");
+  const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
+  if (size < minimumSize)
+    throw InvalidArgumentException(HERE) << "Cannot compute bilateral rank as size (" << size << ") is lower than minimum size (" << minimumSize << ")";
+
+  const Binomial binomial(size, alpha_);
+  Scalar pBest = SpecFunc::MaxScalar;
+  Indices kBest;
+  UnsignedInteger k1 = 0;
+  UnsignedInteger iteration = 0;
+  while (k1 < size)
+  {
+    ++iteration;
+    LOGDEBUG(OSS(false) << "- Iteration " << iteration << ", k1 = " << k1);
+    // update CDF at k1, stop when it crosses the bound
+    const Scalar p1 = binomial.computeCDF(k1);
+    LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
+    ++countFEval_;
+    if (p1 + beta_ >= 1.0)
+      break;
+
+    // we know P(]k1, k2])>=beta which gives k2 directly from k1(p1)
+    const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
+    LOGDEBUG(OSS(false) << "Quantile(" << p1 + beta_ << ") = " << k2);
+    ++countQEval_;
+    const Scalar p2 = binomial.computeCDF(k2);
+    LOGDEBUG(OSS(false) << "CDF(" << k2 << ") = " << p2);
+    ++countFEval_;
+
+    // we compute P(k1<Xd<=k2)=CDF(k2)-CDF(k1) and check for improvement
+    const Scalar p = p2 - p1;
+    if ((p >= beta_) && (p < pBest))
+    {
+      pBest = p;
+      kBest = {k1, k2};
+    }
+
+    // k1 advances right before the next CDF bump at qB(p2-beta), ensure it stays stricly increasing
+    k1 = std::max(binomial.computeScalarQuantile(p2 - beta_) - 1.0, k1 + 1.0);
+    LOGDEBUG(OSS(false) << "Quantile(" << p2 - beta_ << ")");
+    ++countQEval_;
+  }
+
+  if (kBest.getSize()==0)
+    throw InternalException(HERE) << "Cannot compute bilateral rank: no valid interval found for size=" << size;
+  LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
+  LOGDEBUG(OSS(false) << "Iterations = " << iteration << ", best p = " << pBest << ", best ranks: k1 = " << kBest[0] << ", k2 = " << kBest[1]);
+  return kBest;
 }
 
 // Compute argmin (k1, k2) P_X([k1, k2]) under constraint P_X([k1, k2])>=beta, 
@@ -161,6 +217,8 @@ Indices QuantileConfidence::computeBilateralRankDoubleJump(const UnsignedInteger
     LOGDEBUG(OSS(false) << "Epsilon initialization for k1");
     // Skip the strictly zero-probability region for smaller sample sizes
     k1 = binomial.computeScalarQuantile(probabilityEpsilon);
+    LOGDEBUG(OSS(false) << "Quantile(" << probabilityEpsilon << ") = " << k1);
+    ++countQEval_;
   }
   Scalar p1 = binomial.computeCDF(k1);
   LOGDEBUG(OSS(false) << "CDF(" << k1 << ") = " << p1);
@@ -168,9 +226,12 @@ Indices QuantileConfidence::computeBilateralRankDoubleJump(const UnsignedInteger
 
   UnsignedInteger lastK2 = size;
   Scalar p2 = SpecFunc::MaxScalar;
+  UnsignedInteger iteration = 0;
 
   while (k1 < size)
   {
+    ++iteration;
+    LOGDEBUG(OSS(false) << "- Iteration " << iteration << ", k1 = " << k1 << ", p1 = " << p1);
     // Check that CDF(k1) + beta <= 1, otherwise computeScalarQuantile fails
     if (p1 + beta_ > 1.0)
       break;
@@ -208,23 +269,12 @@ Indices QuantileConfidence::computeBilateralRankDoubleJump(const UnsignedInteger
     const Scalar targetP1 = p2 - beta_;
     
     UnsignedInteger nextK1 = binomial.computeScalarQuantile(targetP1);
-    LOGDEBUG(OSS(false) << "targetP1 = " << targetP1 << ", Quantile(" << targetP1 << ") = " << nextK1);
+    LOGDEBUG(OSS(false) << "Quantile(" << targetP1 << ") = " << nextK1);
     ++countQEval_;
     
     Scalar pNext = binomial.computeCDF(nextK1);
     LOGDEBUG(OSS(false) << "nextK1 = " << nextK1 << ", CDF(" << nextK1 << ") = " << pNext);
     ++countFEval_;
-
-    // Force pNext > targetP1 to guarantee k2 increments in the next iteration.
-    // This prevents an infinite loop in the rare event that F(k1Next) = p2 - beta.
-    if (pNext <= targetP1)
-    {
-      nextK1++;
-      if (nextK1 > size) break;
-      pNext = binomial.computeCDF(nextK1);
-      LOGDEBUG(OSS(false) << "nextK1 = " << nextK1 << ", CDF(" << nextK1 << ") = " << pNext);
-      ++countFEval_;
-    }
 
     // The best k1 for the current k2 is exactly the one before the jump
     const UnsignedInteger optimalK1 = (nextK1 > 0) ? nextK1 - 1 : 0;
@@ -242,9 +292,19 @@ Indices QuantileConfidence::computeBilateralRankDoubleJump(const UnsignedInteger
     else
     {
       // We have already evaluated the optimal pair. 
-      // Jump to nextK1 to update k2 in the next loop iteration.
-      k1 = nextK1;
-      p1 = pNext;
+      // Jump to nextK1, ensuring strict progression to avoid infinite loops
+      k1 = std::max(nextK1, k1 + 1);
+      if (k1 == nextK1)
+      {
+        p1 = pNext;
+      }
+      else
+      {
+        // Recompute p1 if k1 was forced to increment beyond nextK1
+        p1 = binomial.computeCDF(k1);
+        LOGDEBUG(OSS(false) << "k1 = " << k1 << ", CDF(" << k1 << ") = " << p1);
+        ++countFEval_;
+      }
     }      
   } // while k1
   
@@ -255,6 +315,7 @@ Indices QuantileConfidence::computeBilateralRankDoubleJump(const UnsignedInteger
       << "Increase the size, or decrease the confidence level.";
 
   LOGDEBUG(OSS(false) << "FEval = " << countFEval_ << ", QEval = " << countQEval_);
+  LOGDEBUG(OSS(false) << "Iterations = " << iteration << ", best p = " << pBest << ", best ranks: k1 = " << k1Best << ", k2 = " << k2Best);
   return {k1Best, k2Best};
 }
 
@@ -449,6 +510,7 @@ Indices QuantileConfidence::computeBilateralRankHybrid(const UnsignedInteger siz
 }
 
 // compute argmin (k1, k2) P_Xd([k1, k2]) under constraint P_Xd(]k1, k2])>=beta, with Xd~B(n, alpha)
+// This is from https://github.com/openturns/openturns/pull/3211, 2th june 2026
 Indices QuantileConfidence::computeBilateralRankBisection(const UnsignedInteger size) const
 {
   LOGDEBUG(OSS(false) << "computeBilateralRankBisection(" << size << ")");

@@ -103,6 +103,7 @@ private:
   Indices computeBilateralRankBisection(const UnsignedInteger size) const;
   Indices computeBilateralRankAsymptoticInit(const UnsignedInteger size) const;
   Indices computeBilateralRankDoubleJump(const UnsignedInteger size) const;
+  Indices computeBilateralRankSymmetric(const UnsignedInteger size) const;
 }; /* class QuantileConfidence */
 
 END_NAMESPACE_OPENTURNS
