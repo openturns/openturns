@@ -7,7 +7,7 @@ This class models a least-squares problem defined by:
 
     \min_{\ux \in \Rset^{\inputDim}} ||f(\ux)||^2_2
 
-where :math:`f: \Rset^{\inputDim} \right \Rset^{\outputDim}` is called the *residual function*.
+where :math:`f: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` is called the *residual function*.
 
 Parameters
 ----------
