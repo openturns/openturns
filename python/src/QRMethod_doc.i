@@ -11,13 +11,13 @@ Available constructors:
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
-    Input sample
+    The design proxy that builds the design matrix
 weight : sequence of float
-    Output weights
+    The output weights
 indices : sequence of int
-    Indices allowed in the basis
+    The indices allowed in the basis
 design : 2-d sequence of float
-    A priori known design matrix
+    The known design matrix
 
 See also
 --------

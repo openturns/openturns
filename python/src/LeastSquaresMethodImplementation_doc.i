@@ -17,7 +17,7 @@ weight : sequence of float
 indices : sequence of int
     The indices allowed in the basis
 design : 2-d sequence of float
-    The apriori known design matrix
+    The known design matrix
 
 See also
 --------
