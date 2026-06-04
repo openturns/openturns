@@ -2,6 +2,7 @@
 
 import sys
 import openturns as ot
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 
@@ -142,12 +143,14 @@ event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
 algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 algo.run()
 result = algo.getResult()
-print(result.getProbabilityEstimate())
-
-
+assert_almost_equal(
+    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-2, 0.0
+)
 Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["2*X"]), X)
 event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
 algo.setEvent(event2)
 algo.run()
 result2 = algo.getResult()
-print(result2.getProbabilityEstimate())
+assert_almost_equal(
+    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-2, 0.0
+)

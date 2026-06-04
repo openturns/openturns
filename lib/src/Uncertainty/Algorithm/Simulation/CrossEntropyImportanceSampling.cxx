@@ -65,7 +65,11 @@ Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
 /*  Event accessor */
 void CrossEntropyImportanceSampling::setEvent(const RandomVector & event)
 {
+  const Bool previousSense = getEvent().getOperator()(0, 1);
   EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const Bool newSense = getEvent().getOperator()(0, 1);
+  if (previousSense != newSense)
+    quantileLevel_ = 1.0 - quantileLevel_;  
 }
 
 // Get quantileLevel

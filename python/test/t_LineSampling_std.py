@@ -5,7 +5,6 @@ import openturns.testing as ott
 from openturns.usecases import cantilever_beam
 from openturns.usecases import stressed_beam
 import math
-from openturns.testing import assert_almost_equal
 
 # stressed_beam ##############################################
 
@@ -252,7 +251,7 @@ algo.setMaximumOuterSampling(100000)
 algo.setMaximumCoefficientOfVariation(0.01)
 algo.run()
 result = algo.getResult()
-assert_almost_equal(
+ott.assert_almost_equal(
     result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-1, 0.0
 )
 ot.RandomGenerator.SetSeed(0)
@@ -261,6 +260,6 @@ event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
 algo.setEvent(event2)
 algo.run()
 result2 = algo.getResult()
-assert_almost_equal(
+ott.assert_almost_equal(
     result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-1, 0.0
 )

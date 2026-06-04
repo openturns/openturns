@@ -68,12 +68,12 @@ DirectionalSampling * DirectionalSampling::clone() const
 /*  Event accessor */
 void DirectionalSampling::setEvent(const RandomVector & event)
 {
-  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
-  
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
   standardEvent_ = StandardEvent(getEvent());
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
   inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
+  samplingStrategy_.setDimension(inputDistribution_.getDimension());
 }
 
 /* Compute the contribution of a direction to the probability given the roots x_0,...,x_{n-1} of the performance function along the direction.
