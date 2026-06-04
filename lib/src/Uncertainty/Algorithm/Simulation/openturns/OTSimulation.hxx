@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Simulation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,6 @@
 #include "openturns/SimulationResult.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/SimulationSensitivityAnalysis.hxx"
-#include "openturns/Wilks.hxx"
 #include "openturns/SubsetSamplingResult.hxx"
 #include "openturns/SubsetSampling.hxx"
 #include "openturns/QuadrantSampling.hxx"

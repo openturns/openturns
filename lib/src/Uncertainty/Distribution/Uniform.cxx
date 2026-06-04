@@ -2,7 +2,7 @@
 /**
  *  @brief The Uniform distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -110,8 +110,8 @@ Point Uniform::getRealization() const
 /* Get a sample of the distribution */
 Sample Uniform::getSample(const UnsignedInteger size) const
 {
-  SampleImplementation result(size, 1);
-  result.setData(RandomGenerator::Generate(size));
+  Sample result(size, 1);
+  result.getImplementation()->setData(RandomGenerator::Generate(size));
   result *= Point(1, b_ - a_);
   result += Point(1, a_);
   result.setName(getName());

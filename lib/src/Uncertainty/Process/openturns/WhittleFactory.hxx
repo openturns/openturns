@@ -2,7 +2,7 @@
 /**
  *  @brief The class enables to get the coefficients of an ARMA process using its spectral density function
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -116,7 +116,7 @@ private :
   /** Time grid associated with the given data */
   mutable RegularGrid timeGrid_;
 
-  /** Number of frequecies - Used to pass data to be used in computeLogLikeliHood */
+  /** Number of frequencies - Used to pass data to be used in computeLogLikeliHood */
   mutable UnsignedInteger m_;
 
   /** only used to pass data to be used in computeLogLikeliHood */

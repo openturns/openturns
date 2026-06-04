@@ -2,7 +2,7 @@
 /**
  *  @brief StandardSpaceCrossEntropyImportanceSampling implements Importance Sampling by Cross Entropy algorithm in Standard Space
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,10 @@ public:
   /** Virtual constructor */
   StandardSpaceCrossEntropyImportanceSampling * clone() const override;
 
+  /** String converter */
+  String __repr__() const override;
 protected:
+  Distribution getInitialDistribution() const override;
 
   /** Limit state accessor */
   Function getLimitState() const override;

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all distributions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -408,13 +408,13 @@ public:
   virtual Point getKurtosis() const;
 
   /** Get the raw moments of the distribution */
-  virtual Point getMoment(const UnsignedInteger n) const;
+  virtual Point getMoment(const UnsignedInteger k) const;
 
   /** Get the centered moments of the distribution */
-  virtual Point getCentralMoment(const UnsignedInteger n) const;
+  virtual Point getCentralMoment(const UnsignedInteger k) const;
 
   /** Get the shifted moments of the distribution */
-  virtual Point getShiftedMoment(const UnsignedInteger n,
+  virtual Point getShiftedMoment(const UnsignedInteger k,
                                  const Point & shift) const;
 
   /** Get the covariance of the distribution */
@@ -1946,21 +1946,18 @@ OT_API Distribution operator - (const DistributionImplementation & distribution)
 
 OT_API Distribution operator - (const DistributionImplementation::Implementation & p_distribution);
 
+OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
+                            const DistributionImplementation::Implementation & p_right);
 
+OT_API Distribution maximum(const DistributionImplementation & left,
+                            const DistributionImplementation::Implementation & p_right);
+
+OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
+                            const DistributionImplementation & right);
+
+OT_API Distribution maximum(const DistributionImplementation & left,
+                            const DistributionImplementation & right);
 #endif
-
-OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
-                            const DistributionImplementation::Implementation & p_right);
-
-OT_API Distribution maximum(const DistributionImplementation & left,
-                            const DistributionImplementation::Implementation & p_right);
-
-OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
-                            const DistributionImplementation & right);
-
-OT_API Distribution maximum(const DistributionImplementation & left,
-                            const DistributionImplementation & right);
-
 
 END_NAMESPACE_OPENTURNS
 

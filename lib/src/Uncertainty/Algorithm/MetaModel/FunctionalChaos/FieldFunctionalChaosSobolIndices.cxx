@@ -2,7 +2,7 @@
 /**
  *  @brief Sensitivity analysis for field functional chaos
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,6 +62,8 @@ String FieldFunctionalChaosSobolIndices::__repr__() const
 
 void FieldFunctionalChaosSobolIndices::setResult(const FieldFunctionalChaosResult & result)
 {
+  if (result.getFCEResult().getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosSobolIndices is not available with domination method";
   result_ = result;
 
   cumulatedInputSizes_.clear();

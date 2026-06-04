@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class LinearModelAlgorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,7 +89,7 @@ int main(int, char *[])
         leverageFirstElements[i] = leverages[i];
       assert_almost_equal(leverageFirstElements, leverages_reference, 1e-6, 0.0);
 
-      LeastSquaresMethod lsMethod(result.buildMethod());
+      LeastSquaresMethod lsMethod(result.getLeastSquaresMethod());
       SymmetricMatrix projectionMatrix(lsMethod.getH());
       assert_equal(projectionMatrix.getNbRows(), size);
       assert_equal(projectionMatrix.getNbColumns(), size);

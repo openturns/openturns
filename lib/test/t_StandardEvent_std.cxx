@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of StandardEvent class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -116,7 +116,7 @@ int main(int, char *[])
     p[0] = 0.0;
     p[1] = 0.3;
     p[2] = 0.325;
-    UserDefined myDistribution3(x, p);
+    FiniteDiscreteDistribution myDistribution3(x, p);
     /* We create a 'usual' RandomVector from the Distribution */
     RandomVector vect3(myDistribution3);
 

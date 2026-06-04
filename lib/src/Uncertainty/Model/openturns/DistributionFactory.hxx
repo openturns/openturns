@@ -2,7 +2,7 @@
 /**
  * @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,9 +77,6 @@ public:
   void setKnownParameter(const Indices & positions, const Point & values);
   Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
-
-  // @deprecated
-  void setKnownParameter(const Point & values, const Indices & positions);
 
   /** Catalog of factories */
   static DistributionFactoryCollection GetContinuousUniVariateFactories();

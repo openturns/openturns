@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class TruncatedNormal for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -168,10 +168,6 @@ int main(int, char *[])
       fullprint << "mean=" << mean << std::endl;
       Point standardDeviation = distribution.getStandardDeviation();
       fullprint << "standard deviation=" << standardDeviation << std::endl;
-      Point skewness = distribution.getSkewness();
-      fullprint << "skewness=" << skewness << std::endl;
-      Point kurtosis = distribution.getKurtosis();
-      fullprint << "kurtosis=" << kurtosis << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance=" << covariance << std::endl;
       CovarianceMatrix correlation = distribution.getCorrelation();

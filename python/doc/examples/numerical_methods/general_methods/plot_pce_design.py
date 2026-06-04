@@ -17,7 +17,7 @@ Compute leave-one-out error of a polynomial chaos expansion
 # In this advanced example, we use the :class:`~openturns.DesignProxy`
 # and :class:`~openturns.QRMethod` low level classes.
 # A naive implementation of this method is presented in
-# :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_cv`
+# :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_cv`
 # using K-Fold cross-validation.
 
 # %%
@@ -221,7 +221,7 @@ im = ishigami_function.IshigamiModel()
 
 # %%
 nTrain = 100
-xTrain = im.inputDistribution.getSample(nTrain)
+xTrain = im.distribution.getSample(nTrain)
 yTrain = im.model(xTrain)
 
 # %%
@@ -295,7 +295,7 @@ chaosResult = ComputeSparseLeastSquaresFunctionalChaos(
     yTrain,
     multivariateBasis,
     basisSize,
-    im.inputDistribution,
+    im.distribution,
     sparse,
 )
 
@@ -396,7 +396,7 @@ for j in range(nTrain):
         yTrainLOO,
         multivariateBasis,
         basisSize,
-        im.inputDistribution,
+        im.distribution,
         sparse,
     )
     metamodelLOO = chaosResultLOO.getMetaModel()
@@ -409,7 +409,7 @@ print(f"mseLOO = {mseLOO:.6g}")
 # For each point in the training sample, we plot the predicted leave-one-out
 # output prediction depending on the observed output.
 
-graph = ot.Graph("Leave-one-out validation", "Observation", "LOO prediction", True)
+graph = ot.Graph("Leave-one-out validation", "Observation", "LOO prediction")
 cloud = ot.Cloud(yTrain, predictionsLOO)
 graph.add(cloud)
 curve = ot.Curve(yTrain, yTrain)

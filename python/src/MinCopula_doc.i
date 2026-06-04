@@ -1,0 +1,32 @@
+%feature("docstring") OT::MinCopula
+R"RAW(MinCopula.
+
+The Min Copula is defined by:
+
+.. math::
+
+    C(u_1, \cdots, u_n) = \min_{i=1, \cdots, n} u_i
+
+for :math:`u_i \in [0, 1]`
+
+Parameters
+----------
+n : int
+    Dimension of the copula, :math:`n \geq 1`.
+    Default value is 2.
+
+See also
+--------
+Distribution
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.MinCopula(2)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)
+)RAW"

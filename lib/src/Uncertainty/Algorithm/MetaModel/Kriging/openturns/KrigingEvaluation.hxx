@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -84,7 +84,7 @@ public:
 
 protected:
 
-  // BasisCollection ==> Persistent for save attribut
+  // BasisCollection ==> Persistent for save attribute
   Basis basis_;
 
   /// Training (input) sample

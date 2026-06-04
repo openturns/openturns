@@ -2,7 +2,7 @@
 /**
  * @brief The test file of class SymbolicGradient for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,6 +48,11 @@ int main(int, char *[])
     point[0] =  4.0;
     point[1] = -4.0;
     fullprint << "value at " << point << "=" << gradient.gradient(point) << std::endl;
+    // Check for symbolic differentiation with constants
+    {
+      SymbolicEvaluation f(Description(1, "x"), Description(1, "y"), Description(1, "e_*x^2+x*_e+cos(pi_*x)+sin(x*pi_)"));
+      fullprint << SymbolicGradient(f).getFormula(0, 0) << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

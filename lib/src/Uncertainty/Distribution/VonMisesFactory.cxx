@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for VonMises distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,29 +55,29 @@ public:
     // Nothing to do
   }
 
-  VonMisesFactoryParameterConstraint * clone() const
+  VonMisesFactoryParameterConstraint * clone() const override
   {
     return new VonMisesFactoryParameterConstraint(*this);
   }
 
-  Point operator()(const Point & parameter) const
+  Point operator()(const Point & parameter) const override
   {
     const Scalar kappa = parameter[0];
     if (!(kappa > 0.0)) throw InvalidArgumentException(HERE) << "Error: the kappa parameter must be positive.";
     return Point(1, SpecFunc::DeltaLogBesselI10(kappa) - logMeanCos_);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss(true);
     oss << "class=VonMisesFactoryParameterConstraint"
@@ -85,7 +85,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss(false);
     oss << "VonMisesFactoryParameterConstraint("

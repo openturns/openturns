@@ -2,7 +2,7 @@
 /**
  *  @brief TaylorExpansionMoments implements Taylor expansion for moments estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -216,7 +216,7 @@ void TaylorExpansionMoments::computeCovariance() const
           covariance_(i, j) += gradientAtMean_(l, i) * inputCovariance_(l, k) * gradientAtMean_(k, j);
     }
   /* We check that outputCovariance is really symmetric positive definite */
-  if (!covariance_.isPositiveDefinite()) LOGWARN(OSS() << "Warning! The covariance matrix computed by quadratic cumul is not positive definite outputCovariance=" << covariance_);
+  if (!covariance_.isPositiveDefinite()) LOGWARN(OSS() << "The covariance matrix computed by quadratic cumul is not positive definite outputCovariance=" << covariance_);
   isAlreadyComputedCovariance_ = true;
 } // TaylorExpansionMoments::computeCovariance()
 

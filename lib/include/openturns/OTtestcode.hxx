@@ -2,7 +2,7 @@
 /**
  *  @brief The header file that declares exit codes for tests
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -103,7 +103,7 @@ class TestFailed : public std::exception
 public:
   TestFailed(const std::string & message) : message_(message) {}
   ~TestFailed() throw() {}
-  const char * what() const throw()
+  const char * what() const noexcept override
   {
     return message_.c_str();
   }
@@ -270,7 +270,16 @@ void checkClassWithClassName()
 
 inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
-  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b))
+  if (std::isinf(a) && std::isinf(b))
+  {
+    if (a * b < 0.0)
+      throw TestFailed(OSS() << "Value a: " << a << " and b: " << b << " are different " << errMsg << " prod=" << (a * b));
+    else
+      return;
+  }
+  if (std::isnan(a) && std::isnan(b))
+    return;
+  if (!std::isfinite(a) || !std::isfinite(b))
     throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
   if (std::abs(a - b) > atol + rtol * std::abs(b))
   {
@@ -280,25 +289,18 @@ inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rto
 
 inline void assert_almost_equal(const Complex & a, const Complex & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
-  if (!SpecFunc::IsNormal(a.real()) || !SpecFunc::IsNormal(b.real()) ||
-      !SpecFunc::IsNormal(a.imag()) || !SpecFunc::IsNormal(b.imag()))
-    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
-  if (std::abs(a - b) > atol + rtol * std::abs(b))
+  if (std::isfinite(a.real()) && std::isfinite(b.real()) && std::isfinite(a.imag()) && std::isfinite(b.imag()))
   {
-    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+    if (std::abs(a - b) > atol + rtol * std::abs(b))
+      throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+  }
+  else
+  {
+    assert_almost_equal(a.real(), b.real(), rtol, atol, errMsg);
+    assert_almost_equal(a.imag(), b.imag(), rtol, atol, errMsg);
   }
 }
 
-inline void assert_almost_equal(const Indices &a, const Indices &b, const String errMsg = "")
-{
-  if (a.getSize() != b.getSize())
-    throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
-  const UnsignedInteger size = a.getSize();
-  for (UnsignedInteger j = 0; j < size; ++j)
-  {
-    assert_almost_equal(a[j], b[j], 0, 0, errMsg);
-  }
-}
 
 inline void assert_almost_equal(const Point & a, const Point & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
@@ -433,6 +435,12 @@ public:
     checkGeneral();
     checkRealization();
     checkComparison();
+
+    if (enablePDFAtlowerBound_)
+    {
+      checkFiniteLowerBoundPDF();
+    }
+
     if (enablePDF_)
     {
       checkPDF();
@@ -481,6 +489,10 @@ public:
   void skipPDF()
   {
     enablePDF_ = false;
+  }
+  void skipPDFAtLowerBound()
+  {
+    enablePDFAtlowerBound_ = false;
   }
   void skipCDF()
   {
@@ -630,6 +642,7 @@ public:
   {
     fittingSamplingSize_ = fittingSamplingSize;
   }
+
 
 private:
 
@@ -1271,7 +1284,7 @@ private:
     LOGTRACE(OSS() << "sequential conditional quantile=" << seqQ.__str__());
     if (seqQ.getDimension() != distribution_.getDimension())
       throw TestFailed(OSS() << "wrong seq quantile dim (" << seqCDF.getDimension() << ") for " << distribution_);
-    
+
     // check consistency with computeSequentialConditionalQuantile
     for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
     {
@@ -1288,15 +1301,15 @@ private:
       Point y(i);
       std::copy(seqQ.begin(), seqQ.begin() + i, y.begin());
       for (UnsignedInteger j = 1; j < 10; ++j)
-	{
-	  const Scalar pj = 0.1 * j;
-	  const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
-	  const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
-	  LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
-	  assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
-	}
+      {
+        const Scalar pj = 0.1 * j;
+        const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
+        const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
+        LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
+        assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
+      }
     }
-    
+
   }
 
   void checkTransformation() const
@@ -1348,8 +1361,19 @@ private:
     assert_almost_equal(xGrad, xGradFD, cdfTolerance_, cdfTolerance_, "transform grad " + distribution_.__repr__());
   }
 
+  void checkFiniteLowerBoundPDF() const
+  {
+    if (!distribution_.isContinuous() || distribution_.getDimension() != 1)
+      return;
+
+    LOGTRACE(OSS() << "checking PDF at lower bound, if finite...");
+    if (distribution_.getRange().getFiniteLowerBound()[0] && distribution_.computePDF(distribution_.getRange().getLowerBound()) != 0.)
+      throw TestFailed(OSS() << "PDF at finite lower bound is " << distribution_.computePDF(distribution_.getRange().getLowerBound()) << " instead of 0" );
+  }
+
   Distribution distribution_;
   Bool enablePDF_ = true;
+  Bool enablePDFAtlowerBound_ = true;
   Bool enableCDF_ = true;
   Bool enableComplementaryCDF_ = true;
   Bool enableDDF_ = true;

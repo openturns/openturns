@@ -2,7 +2,7 @@
 /**
  *  @brief Exception defines top-most exception strategies
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <assert.h>
 //#include <typeinfo>
 #include "openturns/OSS.hxx"
@@ -62,21 +61,21 @@ Exception::Exception(const PointInSourceFile & point,
 
 
 /* Destructor */
-Exception::~Exception() throw()
+Exception::~Exception() noexcept
 {
   // Nothing to do
 }
 
 
 /* String converter */
-String Exception::__repr__() const throw()
+String Exception::__repr__() const noexcept
 {
   return OSS() << className_ << " : " << reason_;
 }
 
 
 /* Point accessor */
-const char * Exception::where() const throw()
+const char * Exception::where() const noexcept
 {
   const String whereStr(point_.str());
   const UnsignedInteger size = whereStr.size();
@@ -87,14 +86,14 @@ const char * Exception::where() const throw()
 
 
 /* Reason accessor */
-const char * Exception::what() const throw()
+const char * Exception::what() const noexcept
 {
   return reason_.c_str();
 }
 
 
 /* Class name accessor */
-const char * Exception::type() const throw()
+const char * Exception::type() const noexcept
 {
   return className_;
 }
@@ -125,7 +124,7 @@ OStream & operator <<(OStream & OS, const Exception & obj)
   static const CName CName ## Obj ( HERE );     \
   CName::CName(const PointInSourceFile & point) \
     : Exception(point, CName ## Name) {}        \
-  CName::~CName () throw() {}
+  CName::~CName () noexcept {}
 
 DEFINE_EXCEPTION( FileNotFoundException )
 DEFINE_EXCEPTION( InternalException )
@@ -133,7 +132,6 @@ DEFINE_EXCEPTION( InvalidArgumentException )
 DEFINE_EXCEPTION( InvalidDimensionException )
 DEFINE_EXCEPTION( NotYetImplementedException )
 DEFINE_EXCEPTION( OutOfBoundException )
-DEFINE_EXCEPTION( XMLException )
 DEFINE_EXCEPTION( XMLParserException )
 DEFINE_EXCEPTION( InterruptionException )
 DEFINE_EXCEPTION( NotSymmetricDefinitePositiveException )
@@ -141,7 +139,6 @@ DEFINE_EXCEPTION( InvalidRangeException )
 DEFINE_EXCEPTION( NotDefinedException )
 DEFINE_EXCEPTION( FileOpenException )
 DEFINE_EXCEPTION( StudyFileParsingException )
-DEFINE_EXCEPTION( ObjectNotInStudyException )
 DEFINE_EXCEPTION( ConfigurationFileParsingException )
 DEFINE_EXCEPTION( TimeoutException )
 

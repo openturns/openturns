@@ -2,7 +2,7 @@
 /**
  *  @brief Analytical implements an algorithm to find the design point
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,6 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/RandomVector.hxx"
-#include "openturns/StandardEvent.hxx"
 #include "openturns/AnalyticalResult.hxx"
 
 
@@ -52,15 +51,10 @@ public:
 
   /** Constructor with parameters */
   Analytical(const OptimizationAlgorithm & solver,
-             const RandomVector & compositeEvent,
-             const Point & physicalStartingPoint = Point()); // deprecated argument
+             const RandomVector & compositeEvent);
 
   /** Virtual constructor */
   Analytical * clone() const override;
-
-  /** @deprecated Physical starting point accessor */
-  Point getPhysicalStartingPoint() const;
-  void setPhysicalStartingPoint(const Point & physicalStartingPoint);
 
   /** Event accessor */
   RandomVector getEvent() const;
@@ -96,8 +90,8 @@ protected:
 
   friend class Factory<Analytical>;
 
-private:
   OptimizationAlgorithm nearestPointAlgorithm_;
+private:
   RandomVector event_;
   AnalyticalResult result_;
 

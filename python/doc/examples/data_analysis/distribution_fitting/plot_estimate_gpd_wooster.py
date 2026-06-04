@@ -8,7 +8,6 @@ Estimate a GPD on the Wooster temperature data
 # to the 5-year series of daily minimum temperatures recorded in Wooster, Ohio between 1983 and 1988.
 # Readers should refer to [coles2001]_ example 1.7 to get more details.
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import coles
 import pandas as pd
@@ -25,7 +24,7 @@ full = pd.read_csv(coles.Coles().wooster, index_col=0, parse_dates=True)
 full["Temperature"] = full["Temperature"].apply(lambda x: x * -1.0)
 print(full[:10])
 title = "Negated Wooster daily minimum temperatures"
-graph = ot.Graph(title, "Day index", "Temperature (°F)", True, "")
+graph = ot.Graph(title, "Day index", "Temperature (°F)")
 days = ot.Sample([[i] for i in range(len(full))])
 sample = ot.Sample.BuildFromDataFrame(full)
 cloud = ot.Cloud(days, sample)
@@ -75,7 +74,7 @@ for season in full_season:
 # It is possible to extract the data belonging to the same cluster and the
 # cluster maximum series.
 first100 = ot.Sample.BuildFromDataFrame(full[350:450])
-part = otexp.SamplePartition(first100)
+part = ot.SamplePartition(first100)
 u = 0.0
 r = 4
 peaks, clusters = part.getPeakOverThreshold(u, r)
@@ -105,7 +104,7 @@ winter = full_season["winter"]
 winter_sample = ot.Sample.BuildFromDataFrame(winter)
 
 # partition the aggregated winter sample according to indices (enforces separation of seasons from different years)
-part = otexp.SamplePartition.ExtractFromDataFrame(full, winter)
+part = ot.SamplePartition.ExtractFromDataFrame(full, winter)
 
 factory = ot.GeneralizedParetoFactory()
 for u in [-10.0, -20.0]:
@@ -137,7 +136,7 @@ for u in [-10.0, -20.0]:
         print(f"x100={xm_100.getMean()} ({xm_100.getStandardDeviation()})")
 
         # plot the return level
-        validation = otexp.GeneralizedParetoValidation(result_LL, peaks)
+        validation = ot.GeneralizedParetoValidation(result_LL, peaks)
         grid = validation.drawDiagnosticPlot()
         rlPlot = grid.getGraph(1, 0)
         rlPlot.setTitle(rlPlot.getTitle() + f" (u={u} r={r})")

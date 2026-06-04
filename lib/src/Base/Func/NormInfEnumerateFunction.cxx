@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -120,29 +120,25 @@ UnsignedInteger NormInfEnumerateFunction::inverse(const Indices & indices) const
   UnsignedInteger result = 0;
   // If no upper bound we can skip a full hypercube of indices
   if (upperBound_.getSize() < dimension)
-    {
-      const UnsignedInteger maxIndex = *std::max_element(indices.begin(), indices.end());
-      result = SpecFunc::IPow(maxIndex - 1, dimension);
-    }
+  {
+    const UnsignedInteger maxIndex = *std::max_element(indices.begin(), indices.end());
+    result = SpecFunc::IPow(maxIndex - 1, dimension);
+  }
   while ((*this)(result) != indices) ++result;
   return result;
 }
 
 
 /* The cardinal of the given strata
- * = strataIndex^dimension-(strataIndex-1)^dimension
+ * = 1 for strataIndex=0
+ * = (strataIndex+1)^dimension-strataIndex^dimension
  */
 UnsignedInteger NormInfEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
-  const UnsignedInteger dimension = getDimension();
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
-    if (strataIndex > upperBound_[j])
-      throw NotYetImplementedException(HERE) << "in NormInfEnumerateFunction::getStrataCardinal";
-
+  UnsignedInteger cardinal = getStrataCumulatedCardinal(strataIndex);
   if (strataIndex > 0)
-    return getStrataCumulatedCardinal(strataIndex) - getStrataCumulatedCardinal(strataIndex - 1);
-  else
-    return 1;
+    cardinal -= getStrataCumulatedCardinal(strataIndex - 1);
+  return cardinal;
 }
 
 /* The cardinal of the cumulated strata less or equal to the given strata
@@ -151,11 +147,17 @@ UnsignedInteger NormInfEnumerateFunction::getStrataCardinal(const UnsignedIntege
 UnsignedInteger NormInfEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
   const UnsignedInteger dimension = getDimension();
+  UnsignedInteger cardinal = 1;
+  Bool isSaturated = false;
   for (UnsignedInteger j = 0; j < dimension; ++ j)
-    if (strataIndex > upperBound_[j])
-      throw NotYetImplementedException(HERE) << "in NormInfEnumerateFunction::getStrataCumulatedCardinal";
+  {
+    isSaturated = isSaturated && (upperBound_[j] < strataIndex);
+    cardinal *= std::max(strataIndex + 1, upperBound_[j] + 1);
+  }
+  if (isSaturated)
+    throw NotDefinedException(HERE) << "in NormInfEnumerateFunction::getStrataCumulatedCardinal, no strata of index=" << strataIndex;
 
-  return std::pow(1.0 * strataIndex, 1.0 * dimension);
+  return cardinal;
 }
 
 /* The index of the strata of degree max < degree */

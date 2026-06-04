@@ -1,0 +1,38 @@
+%feature("docstring") OT::DualLinearCombinationFunction
+R"RAW(Linear combination of functions with vectorial weights.
+
+Allows one to create a function which is the linear combination
+of scalar functions with vectorial weights.
+
+:math:`functionCollection  = (f_1, \hdots, f_N)`
+where :math:`\forall 1 \leq i \leq N, \,     f_i: \Rset^n \rightarrow \Rset`
+and :math:`scalarCoefficientColl = (\vect{c}_1, \hdots, \vect{c}_N), \vect{c}_i \in \Rset^p`
+then the linear combination is:
+
+.. math::
+
+    vectLinComb  \left|\begin{array}{rcl}
+                  \Rset^n & \rightarrow & \Rset^{p} \\
+                  \vect{X} & \mapsto & \displaystyle \sum_{i=1}^N \vect{c}_i f_i (\vect{X})
+              \end{array}\right.
+
+Parameters
+----------
+functionCollection : sequence of :class:`~openturns.Function`
+    Collection of functions.
+vectorCoefficientColl : 2-d sequence of float
+    Collection of vectorial weights.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1 + 2 * x2 + x3'])
+>>> f2 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1^2 + x2'])
+>>> functions = [f1, f2]
+>>> coefficients = [[2.0, 4.0], [3.0, 1.0]]
+>>> vectLinComb = ot.DualLinearCombinationFunction(functions, coefficients)
+>>> print(vectLinComb([1, 2, 3]))
+[25,35]
+)RAW"

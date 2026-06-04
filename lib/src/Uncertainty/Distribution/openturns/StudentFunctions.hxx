@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the computation of the Student T
  *         CDF and quantile
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,10 +34,10 @@ Scalar StudentCDF(const Scalar nu,
                   const Bool tail = false);
 
 Scalar Student2DCDF(const Scalar nu,
-                  const Scalar x0,
-                  const Scalar x1,
-                  const Scalar rho,
-                  const Bool tail = false);
+                    const Scalar x0,
+                    const Scalar x1,
+                    const Scalar rho,
+                    const Bool tail = false);
 
 Scalar StudentQuantile(const Scalar nu,
                        const Scalar p,

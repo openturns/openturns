@@ -41,3 +41,11 @@ namespace OT {
 } // Indices
 
 } // OT
+
+// needed for compatibility with pandas indexation (see is_list_like internal method)
+%pythoncode %{
+def _Indices___iter__(self):
+    for i in range(self.getSize()):
+        yield self[i]
+Indices.__iter__ = _Indices___iter__
+%}

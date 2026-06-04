@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and by-products
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -93,7 +93,8 @@ Point KarhunenLoeveResultImplementation::getEigenvalues() const
 
 Graph KarhunenLoeveResultImplementation::drawEigenvalues() const
 {
-  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Eigenvalue", true, "topright");
+  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Eigenvalue");
+  graph.setLegendPosition("topright");
   const UnsignedInteger K = eigenvalues_.getSize();
   Point indices(K);
   for (UnsignedInteger i = 0; i < K; ++ i)
@@ -106,7 +107,8 @@ Graph KarhunenLoeveResultImplementation::drawEigenvalues() const
 
 Graph KarhunenLoeveResultImplementation::drawCumulatedEigenvaluesRemainder() const
 {
-  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Cumulated eigenvalue normalized remainder", true, "topright");
+  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Cumulated eigenvalue normalized remainder");
+  graph.setLegendPosition("topright");
   const UnsignedInteger K = eigenvalues_.getSize();
   Point indices(K);
   for (UnsignedInteger i = 0; i < K; ++ i)

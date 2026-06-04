@@ -2,7 +2,7 @@
 /**
  *  @brief Class PersistentObject saves and reloads the object's internal state
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,12 +77,12 @@ public:
 
   /** Move constructor */
   PersistentObject(PersistentObject && other) noexcept
-      : p_name_(other.p_name_)
-      , id_(other.id_)
-      , shadowedId_(other.shadowedId_)
-      , studyVisible_(other.studyVisible_)
-    {
-    }
+    : p_name_(other.p_name_)
+    , id_(other.id_)
+    , shadowedId_(other.shadowedId_)
+    , studyVisible_(other.studyVisible_)
+  {
+  }
 
   /**
    * Virtual constructor
@@ -225,7 +225,7 @@ public:
   /**
    * %Object name query
    *
-   * This methos returns true if a name was given to the object
+   * This methods returns true if a name was given to the object
    * @return True if object has a name
    */
   inline

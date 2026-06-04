@@ -80,11 +80,11 @@
 # for details on how to write such a method.
 def __Sample_getattribute(self, name):
     """Implement attribute accesses."""
-    if name == '__array_interface__':
-        self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
-                                                'typestr': "|f" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__() or 1), True),
-                                                'version': 3, 
+    if name == "__array_interface__":
+        self.__dict__["__array_interface__"] = {"shape": (self.getSize(), self.getDimension()),
+                                                "typestr": f"|f{self.__elementsize__()}",
+                                                "data": (int(self.__baseaddress__() or 1), True),
+                                                "version": 3,
                                                 }
     return super(Sample, self).__getattribute__(name)
 Sample.__getattribute__ = __Sample_getattribute
@@ -99,7 +99,7 @@ def __Sample_asDataFrame(self):
         The converted data
     """
     from pandas import DataFrame
-    df = DataFrame.from_records(self, columns=list(self.getDescription()))
+    df = DataFrame.from_records(self, columns=self.getDescription())
     return df
 Sample.asDataFrame = __Sample_asDataFrame
 
@@ -126,22 +126,24 @@ Sample.BuildFromDataFrame = __Sample_BuildFromDataFrame
 
 def __Sample_repr_html(self):
     """Get HTML representation."""
-    html = '<table>\n'
     desc = self.getDescription()
     ell_threshold = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisThreshold")
     ell_size = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisSize")
+    fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
     size = self.getSize()
     dim = self.getDimension()
     ellipsis = size * dim > ell_threshold
+    html = "<table><thead>\n"
     if not desc.isBlank():
         if ellipsis and dim > 2 * ell_size:
-            html += '  <tr><th></th><th>'
-            html += '</th><th>'.join(desc[0:ell_size])
+            html += "  <tr><th></th><th>"
+            html += "</th><th>".join(desc[0:ell_size])
             html += f'</th><th colspan="{dim - 2 * ell_size}">...</th><th>'
-            html += '</th><th>'.join(desc[-ell_size:])
-            html += '</th></tr>\n'
+            html += "</th><th>".join(desc[-ell_size:])
+            html += "</th></tr>\n"
         else:
-            html += '  <tr><td></td><th>' + '</th><th>'.join(desc) + '</th></tr>\n'
+            html += "  <tr><td></td><th>" + "</th><th>".join(desc) + "</th></tr>\n"
+    html += "</thead><tbody>\n"
     for i in range(size):
         if ellipsis and size > 2 * ell_size:
             if i == ell_size:
@@ -150,22 +152,20 @@ def __Sample_repr_html(self):
             else:
                 if i > ell_size and i < size - ell_size:
                     continue
-        # Write row
-        fmt = openturns.common.ResourceMap.GetAsString("Sample-PrintFormat")
         if ellipsis and dim > 2 * ell_size:
-            html += '  <tr><th>' + str(i)
+            html += f"  <tr><th>{i}"
             if dim > 0:
-                html += '</th><td>'
-            html += '</td><td>'.join([fmt.format(x) for x in self[i, 0:ell_size]])
+                html += "</th><td>"
+            html += "</td><td>".join([fmt.format(x) for x in self[i, 0:ell_size]])
             html += f'<td colspan="{dim - 2 * ell_size}">...</td><td>'
-            html += '</td><td>'.join([fmt.format(x) for x in self[i, -ell_size:]])
-            html += '</td></tr>\n'
+            html += "</td><td>".join([fmt.format(x) for x in self[i, -ell_size:]])
+            html += "</td></tr>\n"
         else:
-            html += '  <tr><th>' + str(i)
+            html += f"  <tr><th>{i}"
             if dim > 0:
-                html += '</th><td>' + '</td><td>'.join([fmt.format(x) for x in self[i]])
-            html += '</td></tr>\n'
-    html += '</table>'
+                html += "</th><td>" + "</td><td>".join([fmt.format(x) for x in self[i]])
+            html += "</td></tr>\n"
+    html += "</tbody></table>"
     return html
 
 Sample._repr_html_ = __Sample_repr_html
@@ -223,7 +223,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
       result.setDescription(self->getDescription());
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(args))
     {
@@ -246,7 +246,7 @@ PyObject * __getitem__(PyObject * args) const
         result.at(i) = self->at(index);
       }
       result.setDescription(self->getDescription());
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PyObject_HasAttrString(args, "__int__"))
     {
@@ -260,7 +260,7 @@ PyObject * __getitem__(PyObject * args) const
       if (index < 0)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point result(self->at(index));
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
   }
 
@@ -310,7 +310,7 @@ PyObject * __getitem__(PyObject * args) const
       OT::Point result(size2);
       for (Py_ssize_t j = 0; j < size2; ++ j)
         result.at(j) = self->at(index1, start2 + j * step2);
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -333,7 +333,7 @@ PyObject * __getitem__(PyObject * args) const
         else
           SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
       }
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN);
     }
   }
   else if (PySlice_Check(obj1))
@@ -363,7 +363,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size1; ++ i)
         result.at(i, 0) = self->at(start1 + i * step1, index2);
       result.setDescription(OT::Description(1, self->getDescription()[index2]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySlice_Check(obj2))
     {
@@ -386,7 +386,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         description[j] = entireDescription[start2 + j*step2];
       result.setDescription(description);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -418,7 +418,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[indices2[j]];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
   }
   else if (PySequence_Check(obj1))
@@ -457,7 +457,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size1; ++ i)
         result.at(i, 0) = self->at(indices1[i], index2);
       result.setDescription(OT::Description(1, self->getDescription()[index2]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySlice_Check(obj2))
     {
@@ -480,7 +480,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[start2 + j*step2];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
     else if (PySequence_Check(obj2))
     {
@@ -512,7 +512,7 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
         marginalDescription[j] = description[indices2[j]];
       result.setDescription(marginalDescription);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
     }
   }
   else
@@ -541,7 +541,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Sample temp;
       OT::Sample *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
@@ -556,7 +556,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
       OT::Sample temp;
       OT::Sample *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
@@ -589,7 +589,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -646,7 +646,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -679,7 +679,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -701,7 +701,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
     OT::Sample temp;
     OT::Sample *val = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
@@ -787,7 +787,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
 
     OT::Sample temp;
     OT::Sample *val = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))) {
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
@@ -863,6 +863,15 @@ Sample(const Sample & other)
 Sample(PyObject * pyObj)
 {
   return new OT::Sample( OT::convert< OT::_PySequence_, OT::Sample>(pyObj) );  
+}
+
+// mimic built-in list.index operator
+UnsignedInteger index(const Point & value)
+{
+  const OT::UnsignedInteger result = self->find(value);
+  if (result >= self->getSize())
+    throw OT::InvalidArgumentException(HERE) << value << " is not in Sample";
+  return result;
 }
 
 Bool __eq__(const Sample & other) { return (*self) == other; }

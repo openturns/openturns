@@ -1,8 +1,7 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 # Create a process on a regular grid
 myGrid = ot.RegularGrid(0.0, 0.1, 100)
 
@@ -46,4 +45,4 @@ fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)

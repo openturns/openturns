@@ -53,25 +53,25 @@ carried out to confirm this.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     distribution = ot.Normal(3.0, 2.0)
     sample = distribution.getSample(150)
     graph = ot.VisualTest.DrawQQplot(sample, distribution)
-    View(graph)
+    otv.View(graph)
 
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     distribution = ot.Normal(3.0, 3.0)
     distribution2 = ot.Normal(2.0, 1.0)
     sample = distribution.getSample(150)
     graph = ot.VisualTest.DrawQQplot(sample, distribution2)
-    View(graph)
+    otv.View(graph)
 
 In this second example, the two samples clearly arise from two different
 distributions.

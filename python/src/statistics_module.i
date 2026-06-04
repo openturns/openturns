@@ -8,6 +8,7 @@
 #include "openturns/OTType.hxx"
 #include "openturns/OTStat.hxx"
 #include "openturns/OTGeom.hxx"
+#include "openturns/OTGraph.hxx"
 #include "openturns/OTFunc.hxx"
 %}
 
@@ -20,6 +21,7 @@
 %import common_module.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
@@ -86,7 +88,9 @@
 %include HMatrixImplementation.i
 %include HMatrix.i
 %include IsotropicCovarianceModel.i
+%include LatentVariableModel.i
 %include CorrelationAnalysis.i
+%include SamplePartition.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i

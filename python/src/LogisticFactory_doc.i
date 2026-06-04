@@ -1,0 +1,47 @@
+%feature("docstring") OT::LogisticFactory
+R"RAW(Logistic factory.
+
+Notes
+-----
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\alpha} = \bar{x}\\
+      \displaystyle\Hat{\beta} = \Hat{\sigma}_x
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, Logistic)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogisticFactory::buildAsLogistic
+"Estimate the distribution as native distribution.
+
+
+**Available usages**:
+
+    buildAsLogistic()
+
+    buildAsLogistic(*sample*)
+
+    buildAsLogistic(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Logistic`.
+
+Returns
+-------
+distribution : :class:`~openturns.Logistic`
+    The estimated distribution as a Logistic.
+    
+    In the first usage, the default Logistic distribution is built."
+

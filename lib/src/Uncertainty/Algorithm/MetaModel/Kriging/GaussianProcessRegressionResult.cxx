@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a gaussian process regressions estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -116,9 +116,9 @@ GaussianProcessRegressionResult::LinearAlgebra GaussianProcessRegressionResult::
 }
 
 /* process accessor */
-Process GaussianProcessRegressionResult::getNoise() const
+GaussianProcess GaussianProcessRegressionResult::getCenteredProcess() const
 {
-  return gpfResult_.getNoise();
+  return gpfResult_.getCenteredProcess();
 }
 
 /* Method that returns the covariance factor - Lapack */
@@ -131,6 +131,12 @@ TriangularMatrix GaussianProcessRegressionResult::getCholeskyFactor() const
 HMatrix GaussianProcessRegressionResult::getHMatCholeskyFactor() const
 {
   return gpfResult_.getHMatCholeskyFactor();
+}
+
+/* Fitter result accessor */
+GaussianProcessFitterResult GaussianProcessRegressionResult::getGaussianProcessFitterResult() const
+{
+  return gpfResult_;
 }
 
 /* Method save() stores the object through the StorageManager */

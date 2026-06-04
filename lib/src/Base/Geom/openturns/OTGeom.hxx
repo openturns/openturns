@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Geom
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
 
 #ifndef OPENTURNS_OTGEOM_HXX
 #define OPENTURNS_OTGEOM_HXX
+
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Interval.hxx"

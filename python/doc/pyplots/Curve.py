@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 from math import sin, pi
 
 # Generate the data for the curves to be drawn
@@ -9,7 +9,7 @@ data = [
 ]
 
 # Create an empty graph
-graph = ot.Graph("Curve example", "x", "sin(x)", True, "")
+graph = ot.Graph("Curve example", "x", "sin(x)")
 
 # Create the curve
 curve = ot.Curve(data, "blue", "solid", 2, "")
@@ -20,4 +20,4 @@ graph.add(curve)
 fig = plt.figure(figsize=(6, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=False)
+otv.View(graph, figure=fig, axes=[axis], add_legend=False)

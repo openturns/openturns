@@ -2,7 +2,7 @@
 /**
  *  @brief ProcessSampleImplementation Class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -121,7 +121,7 @@ void ProcessSampleImplementation::add(const Field & field)
     mesh_ = field.getMesh();
   }
   else if ((data_[0].getDimension() == field.getOutputDimension()) && (mesh_ == field.getMesh())) data_.add(field.getValues());
-  else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimenson or its mesh are incompatible.";
+  else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimension or its mesh are incompatible.";
 }
 
 void ProcessSampleImplementation::add(const Sample & values)
@@ -557,7 +557,8 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
 
   // Discretization of the x axis
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, "Time", "Values", true, "topright");
+  Graph graph(title, "Time", "Values");
+  graph.setLegendPosition("topright");
   const UnsignedInteger size = data_.getSize();
   const Description colors(Drawable::BuildDefaultPalette(size));
   for (UnsignedInteger i = 0; i < size; ++i)

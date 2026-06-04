@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a gaussian process fitter
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,14 +24,11 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/Process.hxx"
+#include "openturns/GaussianProcess.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/Basis.hxx"
-#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +49,7 @@ public:
 
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   GaussianProcessFitterResult();
@@ -65,9 +63,7 @@ public:
                               const Point & trendCoefficients,
                               const CovarianceModel & covarianceModel,
                               const Scalar optimalLogLikelihood,
-                              const LinearAlgebra linearAlgebraMethod,
-                              const Point & residuals = Point(),
-                              const Point & relativeErrors = Point());
+                              const LinearAlgebra linearAlgebraMethod);
 
   /** Virtual constructor */
   GaussianProcessFitterResult * clone() const override;
@@ -95,40 +91,27 @@ public:
   Matrix getRegressionMatrix() const;
 
   /** process accessor */
-  Process getNoise() const;
+  GaussianProcess getCenteredProcess() const;
+
+  /** Output sample noise accessor */
+  void setNoise(const CovarianceMatrixCollection & noise);
+  CovarianceMatrixCollection getNoise() const;
+
+  /** Accessor to the Cholesky factor */
+  TriangularMatrix getCholeskyFactor() const; // lapack
+  HMatrix getHMatCholeskyFactor() const; // hmat
+  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                         const HMatrix & covarianceHMatrix);
+
+  /** rho accessor */
+  void setStandardizedOutput(const Point & rho);
+  Point getStandardizedOutput() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
-
-protected:
-
-  // GaussianProcessFitter::run could set the Cholesky factor
-  friend class GaussianProcessFitter;
-
-  // GaussianProcessRegressionResult could use Cholesky setters
-  friend class GaussianProcessRegressionResult;
-
-  // GaussianProcessRegressionResult could use Cholesky setters
-  friend class GaussianProcessRegression;
-
-  /** Accessor to the Cholesky factor*/
-  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
-                         const HMatrix & covarianceHMatrix);
-
-  /** Method that returns the covariance factor - lapack */
-  TriangularMatrix getCholeskyFactor() const;
-
-  /** Method that returns the covariance factor - hmat */
-  HMatrix getHMatCholeskyFactor() const;
-
-  /** rho accessor */
-  Point getRho() const;
-  void setRho(const Point & rho);
-
 
 private:
 
@@ -148,13 +131,13 @@ private:
   Point rho_;
 
   /** optimal log-likelihood value */
-  Scalar optimalLogLikelihood_;
+  Scalar optimalLogLikelihood_ = 0.0;
 
   /** Linear algebra method */
   LinearAlgebra linearAlgebraMethod_;
 
   /** Boolean for Cholesky. */
-  Bool hasCholeskyFactor_;
+  Bool hasCholeskyFactor_ = false;
 
   /** Cholesky factor  */
   TriangularMatrix covarianceCholeskyFactor_;
@@ -162,7 +145,10 @@ private:
   /** Cholesky factor when using hmat-oss/hmat */
   HMatrix covarianceHMatrix_;
 
-} ; /* class GaussianProcessFitterResult */
+  /** Noise on the output sample */
+  PersistentCollection<CovarianceMatrix> noise_;
+
+}; /* class GaussianProcessFitterResult */
 
 
 END_NAMESPACE_OPENTURNS

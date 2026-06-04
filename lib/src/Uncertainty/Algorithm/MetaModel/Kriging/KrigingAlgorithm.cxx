@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,6 +69,8 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
+
+  LOGWARN("KrigingAlgorithm is deprecated, use GaussianProcessRegression");
 }
 
 /* Virtual constructor */
@@ -80,7 +82,7 @@ KrigingAlgorithm * KrigingAlgorithm::clone() const
 void KrigingAlgorithm::computeGamma()
 {
   // Get cholesky factor & rho from glm
-  LOGINFO("Solve L^t.gamma = rho");
+  LOGDEBUG("Solve L^t.gamma = rho");
   if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT")
   {
     gamma_ = covarianceCholeskyFactorHMatrix_.solveLower(rho_, true);
@@ -95,9 +97,9 @@ void KrigingAlgorithm::computeGamma()
 /* Perform regression */
 void KrigingAlgorithm::run()
 {
-  LOGINFO("Launch GeneralLinearModelAlgorithm for the optimization");
+  LOGDEBUG("Launch GeneralLinearModelAlgorithm for the optimization");
   glmAlgo_.run();
-  LOGINFO("End of GeneralLinearModelAlgorithm run");
+  LOGDEBUG("End of GeneralLinearModelAlgorithm run");
 
   // Covariance coefficients are computed once, ever if optimiser is fixed
   rho_ = glmAlgo_.getRho();
@@ -108,10 +110,10 @@ void KrigingAlgorithm::run()
     covarianceCholeskyFactorHMatrix_ = glmResult.getHMatCholeskyFactor();
   else
     covarianceCholeskyFactor_ = glmResult.getCholeskyFactor();
-  LOGINFO("Compute the interpolation part");
+  LOGDEBUG("Compute the interpolation part");
   computeGamma();
-  LOGINFO("Store the estimates");
-  LOGINFO("Build the output meta-model");
+  LOGDEBUG("Store the estimates");
+  LOGDEBUG("Build the output meta-model");
   Function metaModel;
 
   // We use directly the points
@@ -142,7 +144,7 @@ void KrigingAlgorithm::run()
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
-  result_ = KrigingResult(inputSample_, outputSample_, metaModel, basis, beta, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_, residuals, relativeErrors);
+  result_ = KrigingResult(inputSample_, outputSample_, metaModel, basis, beta, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
 }
 
 

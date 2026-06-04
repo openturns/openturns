@@ -49,9 +49,6 @@ simulations is the following:
 
     \widehat{P}_{f,DS} = \frac{1}{N} \sum_{i=1}^N q_i
 
-The following figure illustrates the principle of an iteration in
-dimension 2.
-
 The Central Limit Theorem enables the difference between the estimated
 value and the sought value to be controlled by means of a confidence
 interval (if N is sufficiently large, typically :math:`N` > a few dozens
@@ -150,7 +147,7 @@ the choice of:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_directional_sampling`
+    - See :doc:`/auto_reliability/reliability_analysis/plot_estimate_probability_directional_sampling`
 
 
 .. topic:: References:

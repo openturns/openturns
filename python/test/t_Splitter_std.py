@@ -5,17 +5,18 @@ import openturns as ot
 N = 10
 
 splitters = [ot.LeaveOneOutSplitter(N)]
-splitter = ot.KFoldSplitter(N, 5)
-splitters.append(splitter)
-splitter = ot.KFoldSplitter(N, 5)
-splitter.setRandomize(True)
-splitters.append(splitter)
+splitters.append(ot.KFoldSplitter(N, 3))
+splitters.append(ot.KFoldSplitter(N, 5))
+kfold = ot.KFoldSplitter(N, 5)
+kfold.setRandomize(True)
+splitters.append(kfold)
+splitters.append(ot.KFoldSplitter(N, N))
 
 for splitter in splitters:
-    print("splitter=", splitter)
+    print(f"splitter={splitter}")
     size = 0
     for indices1, indices2 in splitter:
-        print("indices=", indices1, indices2)
+        print(f"indices={indices1}, {indices2}")
 
         assert len(indices1) + len(indices2) == N, "not enough indices"
 
@@ -33,6 +34,6 @@ for splitter in splitters:
 indices = [8, 0]
 sample = ot.Normal().getSample(N)
 sample_i = sample[indices]
-print("sample=", sample, "indices=", indices, "sample_i=", sample_i)
+print(f"sample={sample} indices={indices} sample_i={sample_i}")
 assert len(sample_i) == len(indices), "wrong selection len"
 assert sample_i[0] == sample[indices[0]], "wrong first item in selection"

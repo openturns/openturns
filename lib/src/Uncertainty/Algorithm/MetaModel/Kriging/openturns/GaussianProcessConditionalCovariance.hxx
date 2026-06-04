@@ -2,7 +2,7 @@
 /**
  *  @brief The postprocessing of a GPR result (conditional covariance)
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,10 +70,10 @@ public:
   virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
   /** Compute covariance matrices conditionally to observations (1 cov / point)*/
-  virtual CovarianceMatrixCollection getConditionalMarginalCovariance(const Sample & xi) const;
+  virtual CovarianceMatrixCollection getDiagonalCovarianceCollection(const Sample & xi) const;
 
   /** Compute covariance matrix conditionally to observations (1 cov of size outdimension)*/
-  virtual CovarianceMatrix getConditionalMarginalCovariance(const Point & xi) const;
+  virtual CovarianceMatrix getDiagonalCovariance(const Point & xi) const;
 
   /** Compute marginal variance conditionally to observations (1 cov of size outdimension)*/
   virtual Scalar getConditionalMarginalVariance(const Point & point,

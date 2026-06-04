@@ -11,10 +11,8 @@ How to fill an area
 
 # %%
 import openturns as ot
-from openturns import viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We generate a sample from the standard Normal distribution.
@@ -22,7 +20,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 dist = ot.Normal()
 graph = dist.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 
@@ -63,8 +61,8 @@ graph = dist.drawPDF()
 graph.add(boundsPoly)
 graph.setTitle("Area = %.3f" % (area))
 graph.setLegends([""])
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
 
 # %%
 # The CDF difference is equal to the area under the curve.
+otv.View.ShowAll()

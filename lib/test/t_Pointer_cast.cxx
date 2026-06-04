@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Pointer for cast
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ public:
     fullprint << "BaseClass::doit ("
               << getName() << ")" << std::endl;
   }
-  virtual BaseClass * clone() const
+  BaseClass * clone() const override
   {
     return new BaseClass(*this);
   }
@@ -89,14 +89,14 @@ public:
     fullprint << "~DerivedClass ("
               << getName() << ")" << std::endl;
   }
-  virtual void doit() const
+  void doit() const override
   {
     OStream fullprint(std::cout);
 
     fullprint << "DerivedClass::doit ("
               << getName() << ")" << std::endl;
   }
-  virtual DerivedClass * clone() const
+  DerivedClass * clone() const override
   {
     return new DerivedClass(*this);
   }
@@ -124,7 +124,7 @@ public:
     fullprint << "NotDerivedClass::doit ("
               << getName() << ")" << std::endl;
   }
-  virtual NotDerivedClass * clone() const
+  NotDerivedClass * clone() const override
   {
     return new NotDerivedClass(*this);
   }

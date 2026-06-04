@@ -1,6 +1,8 @@
-==================
-Stochastic process
-==================
+.. _stochastic_process:
+
+===========================
+Stochastic process modeling
+===========================
 
 .. currentmodule:: openturns
 
@@ -66,7 +68,7 @@ Categorical variables
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.LatentVariableModel
+    LatentVariableModel
 
 Spectral information
 ====================

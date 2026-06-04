@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for elliptical distributions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -328,7 +328,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
       const Scalar betaSquare = iLx * iLx;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
+      if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -349,7 +349,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       }
       const Scalar betaSquare = iLx * iLx + iLy * iLy;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
+      if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -373,7 +373,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       }
       const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
+      if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -381,7 +381,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Point iLx(inverseCholesky_ * (point - mean_));
       const Scalar betaSquare = iLx.normSquare();
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
+      if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
   }
 }

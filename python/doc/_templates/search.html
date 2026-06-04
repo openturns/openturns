@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
     
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -22,12 +21,14 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="#" />
   <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
+    document.addEventListener("DOMContentLoaded", function () {
+      Search.loadIndex("searchindex.js");
+    });
   </script>
   
   <script type="text/javascript" id="searchindexloader"></script>
   
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
 
   </head><body>
@@ -71,7 +72,11 @@
             
   <h1 id="search-documentation">Search</h1>
   <div id="fallback" class="admonition warning">
-  <script type="text/javascript">$('#fallback').hide();</script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("fallback").style.display = "none";
+  });
+  </script>
   <p>
     Please activate JavaScript to enable the search
     functionality.
@@ -85,9 +90,9 @@
   </p>
   <form action="" method="get">
     <input type="text" name="q" value="" /><br/>
-    <input id="ExampleBox" name="e" type="checkbox" checked onchange="javascript:divHideClass('Example')"/> Examples
-    <input id="APIBox" name="a" type="checkbox"  checked onchange="javascript:divHideClass('API')"/> API
-    <input id="TheoryBox" name="t" type="checkbox" checked onchange="javascript:divHideClass('Theory')"/> Theory
+    <input id="ExampleBox" name="e" type="checkbox" checked onchange="divHideClass('Example')"/> Examples
+    <input id="APIBox" name="a" type="checkbox"  checked onchange="divHideClass('API')"/> API
+    <input id="TheoryBox" name="t" type="checkbox" checked onchange="divHideClass('Theory')"/> Theory
 
     <input type="submit" value="search" />
     <span id="search-progress" style="padding-left: 10px"></span>
@@ -110,10 +115,10 @@ var getUrlParameter = function getUrlParameter(sParam) {
     return "off";
 };
 
-if( getUrlParameter('e') == "on" || getUrlParameter('a') == "on" || getUrlParameter('t') == "on" ){
-  $("#ExampleBox").prop( "checked",  getUrlParameter('e') == "on");
-  $("#APIBox").prop( "checked",  getUrlParameter('a') == "on" );
-  $("#TheoryBox").prop( "checked",  getUrlParameter('t') == "on" );
+if (getUrlParameter('e') == "on" || getUrlParameter('a') == "on" || getUrlParameter('t') == "on") {
+  document.getElementById("ExampleBox").checked = (getUrlParameter('e') == "on");
+  document.getElementById("APIBox").checked = (getUrlParameter('a') == "on");
+  document.getElementById("TheoryBox").checked = (getUrlParameter('t') == "on");
 }
 
 </script>
@@ -136,15 +141,17 @@ function divHideClass(classToHideorShow){
   var els = document.getElementsByClassName("search")[0].getElementsByClassName(classToHideorShow);
 
   var hideOrShow = true;
-  if(classToHideorShow == 'Example'){
-    hideOrShow=$("#ExampleBox").is(":checked"); }
-  if(classToHideorShow == 'API'){
-    hideOrShow=$("#APIBox").is(":checked"); }
-  if(classToHideorShow == 'Theory'){
-    hideOrShow=$("#TheoryBox").is(":checked");} 
+  if (classToHideorShow == 'Example') {
+    hideOrShow = document.getElementById("ExampleBox").checked;
+  }
+  if (classToHideorShow == 'API') {
+    hideOrShow = document.getElementById("APIBox").checked;
+  }
+  if (classToHideorShow == 'Theory') {
+    hideOrShow = document.getElementById("TheoryBox").checked;
+  }
 
-  for (var i = 0; i < els.length; i++) { 
-    el = els[i];
+  for (let el of els) {
     elementHideShow(el, hideOrShow);
   }
 }                               

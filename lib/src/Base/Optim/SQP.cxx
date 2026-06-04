@@ -3,7 +3,7 @@
  *  @brief SQP is an actual implementation for
  *         OptimizationAlgorithmImplementation using the SQP algorithm.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -265,7 +265,7 @@ void SQP::run()
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
     {
       stop = true;
-      LOGTRACE(OSS() << "SQP was stopped by user");
+      LOGINFO(OSS() << "SQP was stopped by user");
       result_.setStatus(OptimizationResult::INTERRUPTION);
       result_.setStatusMessage(OSS() << "SQP was stopped by user");
     }
@@ -274,7 +274,7 @@ void SQP::run()
     const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
     if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
     {
-      LOGTRACE("Optim timeout");
+      LOGINFO("Optim timeout");
       stop = true;
       result_.setStatus(OptimizationResult::TIMEOUT);
       result_.setStatusMessage(OSS() << "SQP optimization timeout after " << timeDuration << "s");

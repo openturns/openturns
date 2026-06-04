@@ -1,0 +1,95 @@
+%feature("docstring") OT::Dirichlet
+R"RAW(Dirichlet distribution.
+
+The Dirichlet distribution is used to model a random vector :math:`\inputRV = (X_1, \dots, X_{\inputDim+1})`
+in the unit cube which sum is equal to 1:
+
+.. math::
+
+    & \sum_{i=1}^{\inputDim+1} X_i = 1 \\
+    & X_i \in [0,1] \quad \forall 1 \leq i \leq \inputDim +1
+    
+This relation implies that :math:`X_{\inputDim +1} = 1 - \sum_{i=1}^{\inputDim} X_i`. Then, the last component is fully determined by the other components. The random vector is actually of dimension :math:`\inputDim`.
+
+The Dirichlet distribution implemented in the library models the random vector :math:`\inputRV = (X_1, \dots, X_{\inputDim})` of dimension :math:`\inputDim` and such that:
+
+.. math::
+
+    & \sum_{i=1}^{\inputDim} X_i \leq 1 \\
+    & X_i \in [0,1] \forall 1 \leq i \leq \inputDim
+
+
+Let :math:`\vect{\theta} = (\theta_1, \dots, \theta_{\inputDim+1})` be a vector which all components are
+strictly positive. Let :math:`|\vect{\theta}|_1 = \sum_{i=1}^{\inputDim+1} \theta_i` be the 1-norm of :math:`\vect{\theta}`
+and let the multivariate Beta function be defined in terms of the Gamma function:
+
+.. math::
+
+    B(\vect{\theta}) = \dfrac{\prod_{i=1}^{\inputDim+1}\Gamma(\theta_i)}{\Gamma(|\vect{\theta}|_1)}
+
+The Dirichlet probability distribution function is defined as:
+
+.. math::
+
+    \pdf = \frac{1}{B(\vect{\theta})} 
+            \left( 1  - \sum_{i=1}^{\inputDim} x_i \right)^{\theta_{\inputDim+1}-1}
+            \prod_{i=1}^{\inputDim} x_i^{\theta_i - 1}, \quad \vect{x} \in \supp{\inputRV}
+
+where:
+
+.. math::
+
+    \supp{\inputRV}=  \{ \vect{x} \in [0,1]^\inputDim \, |\,  \sum_{i=1}^\inputDim x_i \leq 1 \}
+
+Its first moments are:
+
+.. math::
+
+      \Expect{\inputRV} & =  \dfrac{1}{|\vect{\theta}|_1} \vect{\theta}\\
+      \Cov{\inputRV} & =  -\dfrac{1}{|\vect{\theta}|_1^2(|\vect{\theta}|_1+1)}
+               \left( \theta_i \theta_j \right)_{1 \leq i,j \leq \inputDim}
+
+Parameters
+----------
+theta : sequence of float, optional
+    The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter
+    with :math:`\theta_i > 0` for all :math:`i` and :math:`d \geq 1`.
+
+    Default value is [1.0, 1.0].
+
+See Also
+--------
+Multinomial
+
+Examples
+--------
+Create a distribution of dimension :math:`\inputDim = 2`:
+
+>>> import openturns as ot
+>>> distribution = ot.Dirichlet([1.0, 1.0, 1.0])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dirichlet::getTheta
+R"RAW(Accessor to the distribution's vector parameter.
+
+Returns
+-------
+theta : sequence of float, :class:`~openturns.Point`,
+        The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dirichlet::setTheta
+R"RAW(Accessor to the distribution's vector parameter.
+
+Parameters
+----------
+theta : sequence of float, 
+        The :math:`(\theta_1, \dots, \theta_{\inputDim+1})` parameter
+        with :math:`\theta_i > 0` for all :math:`i` and :math:`d \geq 1`)RAW"

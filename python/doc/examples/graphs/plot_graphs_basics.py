@@ -16,10 +16,9 @@ A quick start guide to graphs
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import matplotlib.pyplot as plt
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 n = ot.Normal()
@@ -27,7 +26,7 @@ n
 
 # %%
 graph = n.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # To configure the look of the plot, we can first observe the type of graph returned by the `drawPDF` method returns: it is a :class:`~openturns.Graph`.
@@ -46,7 +45,7 @@ graph.setYTitle("PDF")
 graph.setTitle("Probability density function of the standard Gaussian distribution")
 graph.setLegends(["N"])
 graph.setColors(["blue"])
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Combine several graphs
@@ -62,14 +61,14 @@ sample = n.getSample(100)
 
 # %%
 histo = ot.HistogramFactory().build(sample).drawPDF()
-view = viewer.View(histo)
+view = otv.View(histo)
 
 # %%
 # Then we add the histogram to the `graph` with the `add` method. The `graph` then contains two plots.
 
 # %%
 graph.add(histo)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw a cloud
@@ -103,10 +102,10 @@ n = 500
 sample = mixture.getSample(n)
 
 # %%
-graph = ot.Graph("n=%d" % (n), "X1", "X2", True, "")
+graph = ot.Graph(f"{n=}", "X1", "X2")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We sometimes want to customize the graph by choosing the type of point (square, triangle, circle, etc.), of line (continuous, dashed, etc.) or another parameter.
@@ -127,12 +126,12 @@ ot.Drawable.GetValidColors()[0:10]
 # In the following graph, we use the "aquamarine1" color with "fcircle" circles.
 
 # %%
-graph = ot.Graph("n=%d" % (n), "X1", "X2", True, "")
+graph = ot.Graph("n=%d" % (n), "X1", "X2")
 cloud = ot.Cloud(sample)
 cloud.setColor("aquamarine1")
 cloud.setPointStyle("fcircle")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Configure the style of points and the thickness of a curve
@@ -145,7 +144,7 @@ g = ot.SymbolicFunction("x", "sin(x)")
 
 # %%
 graph = g.draw(-2, 2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # One would rather get a dashed curve: let us search for the available line styles.
@@ -173,12 +172,12 @@ x = linearSample(-2, 2, 50)
 y = g(x)
 
 # %%
-graph = ot.Graph("Sinus", "x", "sin(x)", True)
+graph = ot.Graph("Sinus", "x", "sin(x)")
 curve = ot.Curve(x, y)
 curve.setLineStyle("dashed")
 curve.setLineWidth(4)
 graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -203,7 +202,8 @@ def createHSVColor(indexCurve, maximumNumberOfCurves):
 pofa = ot.HermiteFactory()
 
 # %%
-graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y", True, "lower right")
+graph = ot.Graph("Orthonormal Hermite polynomials", "x", "y")
+graph.setLegendPosition("lower right")
 degreemax = 5
 for k in range(degreemax):
     pk = pofa.build(k)
@@ -211,7 +211,7 @@ for k in range(degreemax):
     curve.setLegends(["P%d" % (k)])
     curve.setColors([createHSVColor(k, degreemax)])
     graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create matrices of graphs
@@ -231,21 +231,21 @@ myCDF = n.drawCDF()
 grid = ot.GridLayout(1, 2)
 grid.setGraph(0, 0, myPDF)
 grid.setGraph(0, 1, myCDF)
-_ = viewer.View(grid)
+_ = otv.View(grid)
 
 # %%
 # Another method is to create a figure with the `figure` function from `Matplotlib`,
 # then add two graphs with the `add_subplot` function.
-# We use the `viewer.View` function to create the required `Matplotlib` object.
+# We use the `otv.View` function to create the required `Matplotlib` object.
 # Since we are not interested by the output of the `View` function, we use the dummy variable `_` as output.
 # The title is finally configured with `suptitle`.
 
 # %%
 fig = plt.figure(figsize=(12, 4))
 ax_pdf = fig.add_subplot(1, 2, 1)
-_ = viewer.View(myPDF, figure=fig, axes=[ax_pdf])
+_ = otv.View(myPDF, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
-_ = viewer.View(myCDF, figure=fig, axes=[ax_cdf])
+_ = otv.View(myCDF, figure=fig, axes=[ax_cdf])
 _ = fig.suptitle("The gaussian")
 
 # %%
@@ -260,7 +260,7 @@ _ = fig.suptitle("The gaussian")
 # %%
 n = ot.Normal()
 graph = n.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 view.save("normal.png")
 
 # %%
@@ -286,7 +286,7 @@ graph = n.drawPDF()
 # The `figure_kw` keyword argument sets the optional arguments of the figure. In the following statement, we set the figure size in inches
 
 # %%
-view = viewer.View(graph, figure_kw={"figsize": (12, 8)})
+view = otv.View(graph, figure_kw={"figsize": (12, 8)})
 
 # %%
 # The `getFigure` method returns the current figure. This allows one to configure it as any other Matplotlib figure. In the following example, we configure the `suptitle`.
@@ -300,5 +300,8 @@ fig
 # The `plot_kw` optional argument sets the arguments of the plot. In the following example, we set the color of the plot in blue.
 
 # %%
-view = viewer.View(graph, plot_kw={"color": "blue"})
-plt.show()
+view = otv.View(graph, plot_kw={"color": "blue"})
+
+# %%
+# Display all figures
+otv.View.ShowAll()

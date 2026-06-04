@@ -151,5 +151,5 @@ Sequential experiments
     :toctree: _generated/
     :template: class.rst_t
 
-    experimental.SequentialSamplingAlgorithm
-    experimental.LOLAVoronoi
+    SequentialSamplingAlgorithm
+    LOLAVoronoi

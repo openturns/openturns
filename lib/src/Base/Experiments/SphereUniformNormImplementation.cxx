@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of a generic grid iterator.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -40,7 +40,7 @@ public:
     stepX_ = step[0];
   }
 
-  Sample getPoints(const UnsignedInteger distance) const
+  Sample getPoints(const UnsignedInteger distance) const override
   {
     const UnsignedInteger size = getSizeOfLevel(distance);
     Sample points(size, 1);
@@ -60,7 +60,7 @@ public:
     return points;
   }
 
-  UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const
+  UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const override
   {
     if (distance == 0) return 0;
     if (isSymmetric())
@@ -93,7 +93,7 @@ public:
     stepY_ = step[1];
   }
 
-  Sample getPoints(const UnsignedInteger distance) const
+  Sample getPoints(const UnsignedInteger distance) const override
   {
     // Basic method that uses Sample
     if (distance == 0) return Sample(1, 2);
@@ -164,7 +164,7 @@ public:
     return points;
   }
 
-  UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const
+  UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const override
   {
     if (distance == 0) return 0;
     if (isSymmetric())
@@ -203,7 +203,7 @@ public:
     stepZ_ = step[2];
   }
 
-  Sample getPoints(const UnsignedInteger distance) const
+  Sample getPoints(const UnsignedInteger distance) const override
   {
     // Basic method that uses Sample
     if (distance == 0) return Sample(1, 3);
@@ -313,7 +313,7 @@ public:
     return points;
   }
 
-  UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const
+  UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const override
   {
     if (distance == 0) return 0;
     if (isSymmetric())

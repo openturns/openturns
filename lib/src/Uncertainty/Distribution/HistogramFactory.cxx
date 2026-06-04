@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Histogram distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -89,7 +88,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   if (!(bandwidth > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive bandwidth, got bandwidth=" << bandwidth;
   // Construct the histogram
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
@@ -108,7 +107,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
   // Construct the histogram
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
@@ -144,7 +143,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   // Construct the histogram
   Point heights(binNumber);
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];

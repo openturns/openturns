@@ -1,30 +1,46 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 lowerBound = [0.0, 0.0]
 upperBound = [1.0, 1.0]
 interv = ot.Interval(lowerBound, upperBound)
-mesher = ot.IntervalMesher([6] * 2)
-mesh = mesher.build(interv, True)
+mesher = ot.IntervalMesher([4] * 2)
+inputMesh = mesher.build(interv)
 
-f = ot.SymbolicFunction(['x', 'y'], ['sin(pi_*x)*sin(pi_*y)'])
-values = f(mesh.getVertices())
+lowerBound = [0.0, 0.0]
+upperBound = [1.0, 1.0]
+interv = ot.Interval(lowerBound, upperBound)
+mesher = ot.IntervalMesher([8] * 2)
+tempMesh = mesher.build(interv)
+transform = ot.SymbolicFunction(["x", "y"], ["x^2", "y^2"])
+outputMesh = ot.Mesh(transform(tempMesh.getVertices()), tempMesh.getSimplices())
 
-field = ot.Field(mesh, values)
-func_P1 = ot.P1LagrangeEvaluation(field)
+f = ot.SymbolicFunction(["x", "y"], ["sin(pi_*x)*sin(pi_*y)"])
+values_inputMesh = f(inputMesh.getVertices())
+input_field = ot.Field(inputMesh, values_inputMesh)
 
-graph = mesh.draw()
-graph.setColors(['lightblue'])
-draw_f = f.draw(lowerBound, upperBound, [1024] * 2).getDrawable(0)
-draw_f.setLineStyle('dashed')
-lev = draw_f.getLevels()
-draw_fP1 = func_P1.draw(lowerBound, upperBound, [1024] * 2).getDrawable(0).getImplementation()
-draw_fP1.setLevels(lev)
-draw_fP1.setColorBarPosition('')
-graph.add(draw_f)
-graph.add(draw_fP1)
-graph.setTitle(r"P1 Lagrange interpolation (solid) of $(x,y) \mapsto \sin(\pi x) \sin(\pi y)$ (dashed) from a mesh (blue solid)")
-graph.setXTitle('$x$')
-graph.setYTitle('$y$')
+dim_field = 1
+func_P1 = ot.P1LagrangeInterpolation(inputMesh, tempMesh, dim_field)
 
-view = View(graph, figure_kw={"figsize": (10, 4)}, add_legend=False)
+values_outputMesh = func_P1(values_inputMesh)
+output_field = ot.Field(tempMesh, values_outputMesh)
+
+graph_1 = input_field.drawMarginal(0)
+graph_1.setXTitle("$x$")
+graph_1.setYTitle("$y$")
+graph_1.setTitle(r"Function $x \rightarrow sin(\pi x)sin(\pi y)$ on the input mesh")
+graph_1.setLegendPosition("")
+
+graph_2 = output_field.drawMarginal(0)
+graph_2.setLegendPosition("")
+graph_2.setXTitle("$x$")
+graph_2.setYTitle("$y$")
+graph_2.setTitle(r"Function $x \rightarrow sin(\pi x)sin(\pi y)$ on the output mesh")
+
+grid = ot.GridLayout(1, 2)
+grid.setGraph(0, 0, graph_1)
+grid.setGraph(0, 1, graph_2)
+
+
+view = otv.View(grid)
+view.show()

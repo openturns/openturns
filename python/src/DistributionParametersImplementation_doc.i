@@ -1,0 +1,127 @@
+%define OT_DistributionParameters_doc
+"Define a distribution with particular parameters.
+
+This class enables to create a set of non-native parameters in order to
+define distribution.
+
+A *DistributionParameters* object can be used through its derived classes:
+
+- :class:`~openturns.ArcsineMuSigma`
+- :class:`~openturns.BetaMuSigma`
+- :class:`~openturns.GammaMuSigma`
+- :class:`~openturns.GumbelMuSigma`
+- :class:`~openturns.GumbelLambdaGamma`
+- :class:`~openturns.LogNormalMuSigma`
+- :class:`~openturns.LogNormalMuSigmaOverMu`
+- :class:`~openturns.WeibullMinMuSigma`
+
+See also
+--------
+ParametrizedDistribution, Distribution"
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation
+OT_DistributionParameters_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_getDistribution_doc
+"Build a distribution based on a set of native parameters.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution built with the native parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::getDistribution
+OT_DistributionParameters_getDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_setValues_doc
+"Accessor to the parameters values.
+
+Parameters
+----------
+values : sequence of float
+    List of parameters values."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::setValues
+OT_DistributionParameters_setValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_getValues_doc
+"Accessor to the parameters values.
+
+Returns
+-------
+values : :class:`~openturns.Point`
+    List of parameters values."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::getValues
+OT_DistributionParameters_getValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_getDescription_doc
+"Get the description of the parameters.
+
+Returns
+-------
+collection : :class:`~openturns.Description`
+    List of parameters names."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::getDescription
+OT_DistributionParameters_getDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_evaluate_doc
+"Compute native parameters values.
+
+Returns
+-------
+values : :class:`~openturns.Point`
+    The native parameter values."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::evaluate
+OT_DistributionParameters_evaluate_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_gradient_doc
+R"RAW(Get the gradient.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    The gradient of the transformation of the native parameters into the new
+    parameters.
+
+Notes
+-----
+
+If we note :math:`(p_1, \dots, p_q)` the native parameters and :math:`(p'_1, \dots, p'_q)` the new ones, then the gradient matrix is :math:`\left( \dfrac{\partial p'_i}{\partial p_j} \right)_{1 \leq i,j \leq  q}`.)RAW"
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::gradient
+OT_DistributionParameters_gradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionParameters_inverse_doc
+"Convert to native parameters.
+
+Parameters
+----------
+inP : sequence of float
+    The non-native parameters.
+
+Returns
+-------
+outP : :class:`~openturns.Point`
+    The native parameters."
+%enddef
+%feature("docstring") OT::DistributionParametersImplementation::inverse
+OT_DistributionParameters_inverse_doc
+

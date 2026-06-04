@@ -10,7 +10,6 @@ Getting started
 # %%
 from openturns.usecases import cantilever_beam
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 
 
@@ -26,8 +25,15 @@ print(data[:5])
 
 # %%
 # Infer marginals from most common 1-d parametric distributions
-marginal_factories = [ot.NormalFactory(), ot.BetaFactory(), ot.UniformFactory(), ot.LogNormalFactory(),
-                      ot.TriangularFactory(), ot.WeibullMinFactory(), ot.WeibullMaxFactory()]
+marginal_factories = [
+    ot.NormalFactory(),
+    ot.BetaFactory(),
+    ot.UniformFactory(),
+    ot.LogNormalFactory(),
+    ot.TriangularFactory(),
+    ot.WeibullMinFactory(),
+    ot.WeibullMaxFactory(),
+]
 estimated_marginals = []
 for index in range(data.getDimension()):
     best_model, _ = ot.FittingTest.BestModelBIC(data[:, index], marginal_factories)
@@ -43,7 +49,11 @@ _ = otv.View(graph)
 # %%
 # Infer the copula from common n-d parametric copulas in the ranks space
 # If the copula is known it can be provided directly through :class:`~openturns.NormalCopula` for example
-copula_factories = [ot.IndependentCopulaFactory(), ot.NormalCopulaFactory(), ot.StudentCopulaFactory()]
+copula_factories = [
+    ot.IndependentCopulaFactory(),
+    ot.NormalCopulaFactory(),
+    ot.StudentCopulaFactory(),
+]
 copula_sample = ot.Sample(data.getSize(), data.getDimension())
 for index in range(data.getDimension()):
     copula_sample[:, index] = estimated_marginals[index].computeCDF(data[:, index])
@@ -114,7 +124,7 @@ _ = otv.View(graph)
 # For simplicity we can use a method that does not impose special requirements on the design of experiments
 sobol_x = distribution.getSample(5000)
 sobol_y = metamodel(sobol_x)
-algo = otexp.RankSobolSensitivityAlgorithm(sobol_x, sobol_y)
+algo = ot.RankSobolSensitivityAlgorithm(sobol_x, sobol_y)
 print(algo.getFirstOrderIndices())
 
 # %%

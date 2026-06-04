@@ -1,7 +1,7 @@
 // SWIG file func_module.i
 
 %module(package="openturns", docstring="Function primitives.") func
-#pragma SWIG nowarn=302,314,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -28,10 +28,6 @@
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
-/* Base/Algo */
-%include NearestNeighbourAlgorithmImplementation.i
-%include NearestNeighbourAlgorithm.i
-
 /* Base/Geom */
 %import geom_module.i
 %import BaseGeomTemplateDefs.i
@@ -53,21 +49,6 @@
 %include Gradient.i
 %include HessianImplementation.i
 %include Hessian.i
-%include NoEvaluation.i
-%include NoGradient.i
-%include NoHessian.i
-%include TranslationEvaluation.i
-%include LinearEvaluation.i
-%include LinearGradient.i
-%include QuadraticEvaluation.i
-%include ConstantGradient.i
-%include ConstantHessian.i
-%include ComposedEvaluation.i
-%include ComposedGradient.i
-%include ComposedHessian.i
-%include ProductEvaluation.i
-%include ProductGradient.i
-%include ProductHessian.i
 %include FunctionImplementation.i
 %include ProductFunction.i
 %include Function.i
@@ -94,16 +75,13 @@
 %include PointToFieldConnection.i
 %include PointToPointEvaluation.i
 %include PointToPointConnection.i
+%include VertexFieldToPointFunction.i
 %include IndicatorFunction.i
 %include DistanceToDomainFunction.i
 %include ValueFunction.i
 %include VertexValueFunction.i
 %include DualLinearCombinationEvaluation.i
-%include DualLinearCombinationGradient.i
-%include DualLinearCombinationHessian.i
 %include LinearCombinationEvaluation.i
-%include LinearCombinationGradient.i
-%include LinearCombinationHessian.i
 %include LinearFunction.i
 %include TranslationFunction.i
 %include QuadraticFunction.i
@@ -113,21 +91,11 @@
 %include UniVariatePolynomialImplementation.i
 %include UniVariatePolynomial.i
 %include AggregatedEvaluation.i
-%include PiecewiseLinearEvaluation.i
-%include PiecewiseHermiteEvaluation.i
 %include SymbolicEvaluation.i
-%include SymbolicGradient.i
-%include SymbolicHessian.i
+%include ConstantFunction.i
 %include DatabaseFunction.i
-%include DatabaseEvaluation.i
-%include IndicatorEvaluation.i
-%include DistanceToDomainEvaluation.i
 %include ProductPolynomialEvaluation.i
 %include ParametricEvaluation.i
-%include ParametricGradient.i
-%include ParametricHessian.i
-%include P1LagrangeEvaluation.i
-%include P1LagrangeInterpolation.i
 %include BasisImplementation.i
 %include Basis.i
 %include BasisSequenceImplementation.i
@@ -139,22 +107,10 @@
 %include UniVariateFunctionFamily.i
 %include TensorizedUniVariateFunctionFactory.i
 %include LARS.i
-%include BoxCoxEvaluation.i
 %include BoxCoxTransform.i
-%include InverseBoxCoxEvaluation.i
 %include InverseBoxCoxTransform.i
-%include TrendEvaluation.i
 %include TrendTransform.i
-%include InverseTrendEvaluation.i
 %include InverseTrendTransform.i
-%include BasisFactory.i
-%include ConstantBasisFactory.i
-%include LinearBasisFactory.i
-%include QuadraticBasisFactory.i
-%include NullHessian.i
-%include MarginalEvaluation.i
-%include MarginalGradient.i
-%include MarginalHessian.i
 
 /* At last we include template definitions */
 %include BaseFuncTemplateDefs.i

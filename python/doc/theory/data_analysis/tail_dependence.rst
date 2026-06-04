@@ -23,7 +23,7 @@ We denote by :math:`\lambda_U` or :math:`\chi` the upper tail dependence coeffic
 
 .. math::
 
-    \lambda_U = \chi = \lim_{u \to 1} \Pset[F_2(X_2) > u | F_1(X_1) > u]
+    \lambda_U = \chi = \lim_{u \to 1} \Prob{F_2(X_2) > u | F_1(X_1) > u}
 
 provided that the limit exists.
 
@@ -46,7 +46,7 @@ to :math:`1`. As a matter of fact, when :math:`u` is close to :math:`1`, we have
 
 .. math::
 
-    \chi(u) = 2 - \frac{1-C(u,u)}{1-u} + o(1) = \Pset[F_2(X_2) > u | F1(X_1) > u] + o(1)
+    \chi(u) = 2 - \frac{1-C(u,u)}{1-u} + o(1) = \Prob{F_2(X_2) > u | F1(X_1) > u} + o(1)
 
 which proves that:
 
@@ -74,7 +74,7 @@ We illustrate two cases where the variables are:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -88,7 +88,7 @@ We illustrate two cases where the variables are:
     grid = ot.GridLayout(1,2)
     grid.setGraph(0,0,graph1)
     grid.setGraph(0,1,graph2)
-    View(grid)
+    otv.View(grid)
 
 **Upper extremal dependence coefficient**
 
@@ -97,19 +97,19 @@ given by the function :math:`\chi(u)` defined by:
 
 .. math::
 
-    \bar{\chi}(u) = \frac{\log (\Pset [F_1(X_1) > u] \Pset [F_2(X_2) > u])}{\log [F_1(X_1) > u, F_2(X_2) > u]}, \forall u \in [0,1]
+    \bar{\chi}(u) = \frac{\log (\Prob{F_1(X_1) > u}\Prob{F_2(X_2) > u})}{\log \Prob{F_1(X_1) > u, F_2(X_2) > u}}, \forall u \in [0,1]
 
 We show that:
 
 .. math::
 
-    \bar{\chi}(u) = \frac{2 \log 1-u}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
+    \bar{\chi}(u) = \frac{2 \log (1-u)}{\log \bar{C}(u,u)} - 1, \forall u \in [0,1]
 
 where :math:`\bar{C}` is the copula survival function defined by:
 
 .. math::
 
-    \bar{C}(u_1, u_2) =  \Pset [U_1 > u_1, U_2 > u_2] = 1-u_1-u_2+C(u_1, u_2), \forall u \in [0,1]
+    \bar{C}(u_1, u_2) =  \Prob{U_1 > u_1, U_2 > u_2} = 1-u_1-u_2+C(u_1, u_2), \forall u \in [0,1]
 
 And we can define the upper extremal dependence coefficient by:
 
@@ -128,7 +128,7 @@ We illustrate the function :math:`\bar{\chi}(u)` for both previous cases.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -142,7 +142,7 @@ We illustrate the function :math:`\bar{\chi}(u)` for both previous cases.
     grid2 = ot.GridLayout(1,2)
     grid2.setGraph(0,0,graph1)
     grid2.setGraph(0,1,graph2)
-    View(grid2)
+    otv.View(grid2)
 
 As a result, the pair :math:`(\chi, \bar{\chi})` can be used as a summary of extremal dependence of
 :math:`\vect{X} = (X_1, X_2)` as follows:
@@ -161,7 +161,7 @@ We denote by :math:`\lambda_L` the lower tail dependence coefficient:
 
 .. math::
 
-    \lambda_L = \lim_{u \to 0} [F_2(X_2) < u| F_1(X_1) < u]
+    \lambda_L = \lim_{u \to 0} \Prob{F_2(X_2) < u| F_1(X_1) < u}
 
 provided that the limit exists.
 
@@ -219,7 +219,7 @@ We illustrate two cases where the variables are:
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -233,7 +233,7 @@ We illustrate two cases where the variables are:
     grid3 = ot.GridLayout(1,2)
     grid3.setGraph(0,0,graph1)
     grid3.setGraph(0,1,graph2)
-    View(grid3)
+    otv.View(grid3)
 
 **Lower extremal dependence coefficient**
 
@@ -270,7 +270,7 @@ the right.
 .. plot::
 
     import openturns as ot
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     ot.RandomGenerator.SetSeed(0)
     copula1 = ot.FrankCopula()
@@ -284,7 +284,7 @@ the right.
     grid4 = ot.GridLayout(1,2)
     grid4.setGraph(0,0,graph1)
     grid4.setGraph(0,1,graph2)
-    View(grid4)
+    otv.View(grid4)
 
 As a result, the pair :math:`(\chi_L, \bar{\chi}_L)` can be used as a summary of extremal dependence of
 :math:`\vect{X} = (X_1, X_2)` as follows:

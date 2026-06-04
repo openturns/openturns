@@ -44,7 +44,8 @@ sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
 sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
 cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
 cloud2 = ot.Cloud(sample2, "red", "fcircle", "Sample2 Cloud")
-graph = ot.Graph("two samples clouds", "x1", "x2", True, "upper right")
+graph = ot.Graph("two samples clouds", "x1", "x2")
+graph.setLegendPosition("upper right")
 graph.add(cloud1)
 graph.add(cloud2)
 view = View(graph)
@@ -52,14 +53,15 @@ view = View(graph)
 view.show()
 
 # Cloud, empty legend
-graph = ot.Graph("two samples clouds", "x1", "x2", True, "upper right")
+graph = ot.Graph("two samples clouds", "x1", "x2")
+graph.setLegendPosition("upper right")
 cloud1 = ot.Cloud(sample1)
 graph.add(cloud1)
 view = View(graph)
 view.show()
 
 # Text
-graph = ot.Graph("Annotated cloud", "x", "y", True, "")
+graph = ot.Graph("Annotated cloud", "x", "y")
 distribution = ot.Normal(2)
 size = 30
 sample2D = distribution.getSample(size)
@@ -162,7 +164,8 @@ for i in range(size):
     cursor[0] = tmp
     cursor[1] = tmp * tmp
     data2[i] = cursor
-graph = ot.Graph("Some polygons", "x1", "x2", True, "upper right")
+graph = ot.Graph("Some polygons", "x1", "x2")
+graph.setLegendPosition("upper right")
 myPolygon1 = ot.Polygon(data1)
 myPolygon1.setColor("blue")
 myPolygon1.setLegend("polygon 1")
@@ -184,7 +187,8 @@ palette[0] = "blue"
 for i in range(size):
     vertices = generator.getSample(3)
     array[i] = ot.Polygon(vertices, palette[i], palette[size - i - 1])
-graph = ot.Graph("An array of polygons", "x", "y", True, "upper right")
+graph = ot.Graph("An array of polygons", "x", "y")
+graph.setLegendPosition("upper right")
 parray = ot.PolygonArray(array)
 parray.setLegend("array of polys")
 graph.add(parray)
@@ -255,7 +259,8 @@ assert b"PNG" in png[:10]
 
 # BuildDefaultPalette, BuildTableauPalette
 ncurves = 5
-graph = ot.Graph("BuildPalette", "X", "Y", True, "upper right")
+graph = ot.Graph("BuildPalette", "X", "Y")
+graph.setLegendPosition("upper right")
 n = 20
 x = ot.Sample([[i] for i in range(n)])
 for i in range(ncurves):
@@ -290,7 +295,7 @@ y = [[-3.58], [-2.38667], [-1.19333], [0], [1.19333], [2.38667], [3.58]]
 contour = ot.Contour(x, y, outputSample)
 contour.setLevels([0.0])
 contour.setLabels(["0.0"])
-graph = ot.Graph("", "", "", True)
+graph = ot.Graph("", "", "")
 graph.add(contour)
 view = View(graph)
 

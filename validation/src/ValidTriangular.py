@@ -1,7 +1,7 @@
-from sympy import *
+import sympy as sp
 
-x, a_, m_, b_ = symbols('x a_ m_ b_')
+x, a_, m_, b_ = sp.symbols("x a_ m_ b_")
 
 cdf_am = (x - a_) * (x - a_) / (b_ - a_) / (m_ - a_)
 
-print("cdf_am/db", simplify(diff(cdf_am, b_)))
+print("cdf_am/db", sp.simplify(sp.diff(cdf_am, b_)))

@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,15 +67,15 @@ const Scalar ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 const UnsignedInteger MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const Scalar Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
-// Some facilities for NaN and inf
-OT_API Bool IsNormal(const Scalar value);
-
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 OT_API Scalar BesselI0(const Scalar x);
 OT_API Scalar LogBesselI0(const Scalar x);
 // Modified first kind Bessel function of order 1: BesselI1(x) = \sum_{m=0}\infty\frac{1}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
 OT_API Scalar BesselI1(const Scalar x);
 OT_API Scalar LogBesselI1(const Scalar x);
+// Modified first kind Bessel function of order nu: BesselInu(x) = \sum_{m=0}\infty(x/2)^{\nu+2m}/(m!Gamma(\nu+m+1))
+OT_API Scalar BesselInu(const Scalar x, const Scalar nu);
+OT_API Scalar LogBesselInu(const Scalar x, const Scalar nu);
 // Difference between the logarithms of BesselI1 and BesselI0:
 OT_API Scalar DeltaLogBesselI10(const Scalar x);
 // Modified second kind Bessel function of order nu: BesselK(nu, x)=\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}}
@@ -237,13 +237,16 @@ OT_API UnsignedInteger BinomialCoefficient(const UnsignedInteger n,
 
 // log-binomial coefficient C(n, k)
 OT_API Scalar LogBinomialCoefficient(const UnsignedInteger n,
-    const UnsignedInteger k);
+                                     const UnsignedInteger k);
 
 // Accurate summation
 OT_API Scalar AccurateSum(const Point & v);
 
 // clip value on [0, 1]
 OT_API Scalar Clip01(const Scalar prob, const Bool tail = false);
+
+// clip value on [a, b]
+OT_API Scalar Clip(const Scalar x, const Scalar a, const Scalar b);
 
 } /* SpecFunc */
 

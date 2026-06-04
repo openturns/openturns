@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Trapezoidal distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include "openturns/TrapezoidalFactory.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
@@ -75,7 +74,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (!(xMax > xMin))
     throw InvalidArgumentException(HERE) << "Error: cannot estimate a Trapezoidal distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
 

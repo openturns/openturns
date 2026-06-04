@@ -2,7 +2,7 @@
 /**
  *  @brief Result of GEV profile likelihood
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,6 @@
 #include "openturns/Brent.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Text.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -103,7 +102,7 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
   Scalar scaling = epsilon;
   while (((flb - threshold <= 0.0) == (fx - threshold <= 0.0)) && (lb > xMin_))
   {
-    if (!SpecFunc::IsNormal(flb))
+    if (!std::isfinite(flb))
       throw InvalidArgumentException(HERE) << "inf @" << lb;
     scaling *= 2.0;
     lb -= scaling;
@@ -116,7 +115,7 @@ Interval ProfileLikelihoodResult::getParameterConfidenceInterval() const
   Scalar fub = profileLikelihoodFunction_(Point({ub}))[0];
   while ((fub - threshold <= 0.0) == (fx - threshold <= 0.0))
   {
-    if (!SpecFunc::IsNormal(fub))
+    if (!std::isfinite(fub))
       throw InvalidArgumentException(HERE) << "inf @" << ub;
     scaling *= 2.0;
     ub += scaling;

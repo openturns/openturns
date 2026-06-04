@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an fixedExperiment plane
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/FixedExperiment.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,7 +38,7 @@ FixedExperiment::FixedExperiment()
 
 /* Constructor with parameters */
 FixedExperiment::FixedExperiment(const Sample & sample)
-  : WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
+  : WeightedExperimentImplementation(FiniteDiscreteDistribution(sample), sample.getSize())
   , sample_(sample)
   , weights_(sample.getSize(), 1.0 / sample.getSize())
 {
@@ -47,7 +47,7 @@ FixedExperiment::FixedExperiment(const Sample & sample)
 /* Constructor with parameters */
 FixedExperiment::FixedExperiment(const Sample & sample,
                                  const Point & weights)
-  : WeightedExperimentImplementation(UserDefined(sample, weights), sample.getSize())
+  : WeightedExperimentImplementation(FiniteDiscreteDistribution(sample, weights), sample.getSize())
   , sample_(sample)
   , weights_(weights)
 {

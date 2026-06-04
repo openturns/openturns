@@ -2,7 +2,7 @@
 /**
  *  @brief This class provides operating system specific variables
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,20 +49,38 @@ const char * Os::GetDirectoryListSeparator()
 void Os::Remove(const String& fileName)
 {
   if (!ResourceMap::GetAsBool("Os-RemoveFiles")) return;
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  if (!std::filesystem::remove(std::filesystem::path{u8FileName}))
+#else
   if (!std::filesystem::remove(std::filesystem::u8path(fileName)))
+#endif
   {
-    Log::Warn(OSS() << "Warning: cannot remove file " << fileName);
+    LOGWARN(OSS() << "Os: cannot remove file " << fileName);
   }
 }
 
 Bool Os::IsDirectory(const String & fileName)
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  return std::filesystem::is_directory(std::filesystem::path{u8FileName});
+#else
   return std::filesystem::is_directory(std::filesystem::u8path(fileName));
+#endif
 }
 
 Bool Os::IsFile(const String & fileName)
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  return std::filesystem::is_regular_file(std::filesystem::path{u8FileName});
+#else
   return std::filesystem::is_regular_file(std::filesystem::u8path(fileName));
+#endif
 }
 
 END_NAMESPACE_OPENTURNS

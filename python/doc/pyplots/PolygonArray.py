@@ -1,7 +1,6 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 generator = ot.Normal(2)
 size = 5
 array = []
@@ -10,7 +9,7 @@ for i in range(size):
     vertices = generator.getSample(3)
     array.append(ot.Polygon(vertices, palette[i], palette[size - i - 1]))
 
-graph = ot.Graph("PolygonArray example", "x1", "x2", True)
+graph = ot.Graph("PolygonArray example", "x1", "x2")
 graph.add(ot.PolygonArray(array))
 
-View(graph, figure_kw={"figsize": (4, 4)})
+otv.View(graph, figure_kw={"figsize": (4, 4)})

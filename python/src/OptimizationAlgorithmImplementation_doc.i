@@ -1,0 +1,442 @@
+%define OT_OptimizationAlgorithm_doc
+"Base class for optimization wrappers.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem.
+
+Notes
+-----
+Class :class:`~openturns.OptimizationAlgorithm` is an abstract class, which has several implementations.
+The default implementation is :class:`~openturns.Cobyla`
+
+See also
+--------
+AbdoRackwitz, Cobyla, SQP, TNC, NLopt
+
+Examples
+--------
+Define an optimization problem to find the minimum of the Rosenbrock function:
+
+>>> import openturns as ot
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem(rosenbrock)
+>>> solver = ot.OptimizationAlgorithm(problem)
+>>> solver.setStartingPoint([0, 0])
+>>> solver.setMaximumResidualError(1.e-3)
+>>> solver.setMaximumCallsNumber(10000)
+>>> solver.run()
+>>> result = solver.getResult()
+>>> x_star = result.getOptimalPoint()
+>>> y_star = result.getOptimalValue()"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation
+OT_OptimizationAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
+R"RAW(Accessor to maximum allowed absolute error.
+
+Parameters
+----------
+maximumAbsoluteError : float
+    Maximum allowed absolute error, where the absolute error is defined by
+    :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}`
+    and :math:`\vect{x}_n` are two consecutive approximations of the optimum.)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumAbsoluteError
+OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
+R"RAW(Accessor to maximum allowed absolute error.
+
+Returns
+-------
+maximumAbsoluteError : float
+    Maximum allowed absolute error, where the absolute error is defined by
+    :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}`
+    and :math:`\vect{x}_n` are two consecutive approximations of the optimum.)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumAbsoluteError
+OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumConstraintError_doc
+R"RAW(Accessor to maximum allowed constraint error.
+
+Parameters
+----------
+maximumConstraintError : float
+    Maximum allowed constraint error, where the constraint error is defined by
+    :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gathers all the equality and inequality constraints (violated values only)
+)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumConstraintError
+OT_OptimizationAlgorithm_setMaximumConstraintError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumConstraintError_doc
+R"RAW(Accessor to maximum allowed constraint error.
+
+Returns
+-------
+maximumConstraintError : float
+    Maximum allowed constraint error, where the constraint error is defined by
+    :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gathers all the equality and inequality constraints (violated values only)
+)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumConstraintError
+OT_OptimizationAlgorithm_getMaximumConstraintError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
+"Accessor to maximum allowed number of iterations.
+
+Returns
+-------
+maximumIterationNumber : int
+    Maximum allowed number of iterations."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumIterationNumber
+OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
+"Accessor to maximum allowed number of calls.
+
+Returns
+-------
+maximumEvaluationNumber : int
+    Maximum allowed number of direct objective function calls through the `()` operator.
+    Does not take into account eventual indirect calls through finite difference gradient calls."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumCallsNumber
+OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getProblem_doc
+"Accessor to optimization problem.
+
+Returns
+-------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."
+
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getProblem
+OT_OptimizationAlgorithm_getProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getResult_doc
+"Accessor to optimization result.
+
+Returns
+-------
+result : :class:`~openturns.OptimizationResult`
+    Result class."
+
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getResult
+OT_OptimizationAlgorithm_getResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getStartingPoint_doc
+"Accessor to starting point.
+
+Returns
+-------
+startingPoint : :class:`~openturns.Point`
+    Starting point."
+
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getStartingPoint
+OT_OptimizationAlgorithm_getStartingPoint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getStartingSample_doc
+"Accessor to starting sample.
+
+Returns
+-------
+startingSample : :class:`~openturns.Sample`
+    Starting sample."
+
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getStartingSample
+OT_OptimizationAlgorithm_getStartingSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_run_doc
+"Launch the optimization."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::run
+OT_OptimizationAlgorithm_run_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
+"Accessor to maximum allowed number of iterations.
+
+Parameters
+----------
+maximumIterationNumber : int
+    Maximum allowed number of iterations."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumIterationNumber
+OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
+"Accessor to maximum allowed number of calls
+
+Parameters
+----------
+maximumEvaluationNumber : int
+    Maximum allowed number of direct objective function calls through the `()` operator.
+    Does not take into account eventual indirect calls through finite difference gradient calls."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumCallsNumber
+OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumRelativeError_doc
+R"RAW(Accessor to maximum allowed relative error.
+
+Parameters
+----------
+maximumRelativeError : float
+    Maximum allowed relative error, where the relative error is defined by
+    :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}`
+    if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumRelativeError
+OT_OptimizationAlgorithm_setMaximumRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumRelativeError_doc
+R"RAW(Accessor to maximum allowed relative error.
+
+Returns
+-------
+maximumRelativeError : float
+    Maximum allowed relative error, where the relative error is defined by
+    :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}`
+    if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumRelativeError
+OT_OptimizationAlgorithm_getMaximumRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumResidualError_doc
+R"RAW(Accessor to maximum allowed residual error.
+
+Parameters
+----------
+maximumResidualError : float
+    Maximum allowed residual error, where the residual error is defined by
+    :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}`
+    if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumResidualError
+OT_OptimizationAlgorithm_setMaximumResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumResidualError_doc
+R"RAW(Accessor to maximum allowed residual error.
+
+Returns
+-------
+maximumResidualError : float
+    Maximum allowed residual error, where the residual error is defined by
+    :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}`
+    if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumResidualError
+OT_OptimizationAlgorithm_getMaximumResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setProblem_doc
+"Accessor to optimization problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setProblem
+OT_OptimizationAlgorithm_setProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setResult_doc
+"Accessor to optimization result.
+
+Parameters
+----------
+result : :class:`~openturns.OptimizationResult`
+    Result class."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setResult
+OT_OptimizationAlgorithm_setResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setStartingPoint_doc
+"Accessor to starting point.
+
+Parameters
+----------
+startingPoint : :class:`~openturns.Point`
+    Starting point."
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setStartingPoint
+OT_OptimizationAlgorithm_setStartingPoint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setStartingSample_doc
+"Accessor to starting sample.
+
+Parameters
+----------
+startingSample : :class:`~openturns.Sample`
+    Starting sample."
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setStartingSample
+OT_OptimizationAlgorithm_setStartingSample_doc
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setProgressCallback_doc
+R"RAW(Set up a progress callback.
+
+Can be used to programmatically report the progress of an optimization.
+
+Parameters
+----------
+callback : callable
+    Takes a float as argument as percentage of progress.
+
+Examples
+--------
+>>> import sys
+>>> import openturns as ot
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem(rosenbrock)
+>>> solver = ot.OptimizationAlgorithm(problem)
+>>> solver.setStartingPoint([0, 0])
+>>> solver.setMaximumResidualError(1.e-3)
+>>> solver.setMaximumCallsNumber(10000)
+>>> def report_progress(progress):
+...     sys.stderr.write('-- progress=' + str(progress) + '%\n')
+>>> solver.setProgressCallback(report_progress)
+>>> solver.run()
+)RAW"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setProgressCallback
+OT_OptimizationAlgorithm_setProgressCallback_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setStopCallback_doc
+"Set up a stop callback.
+
+Can be used to programmatically stop an optimization.
+
+Parameters
+----------
+callback : callable
+    Returns an int deciding whether to stop or continue.
+
+Examples
+--------
+>>> import openturns as ot
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem(rosenbrock)
+>>> solver = ot.OptimizationAlgorithm(problem)
+>>> solver.setStartingPoint([0, 0])
+>>> solver.setMaximumResidualError(1.e-3)
+>>> solver.setMaximumCallsNumber(10000)
+>>> def ask_stop():
+...     return True
+>>> solver.setStopCallback(ask_stop)
+>>> solver.run()"
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setStopCallback
+OT_OptimizationAlgorithm_setStopCallback_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setCheckStatus_doc
+"Accessor to check status flag.
+
+Parameters
+----------
+checkStatus : bool
+    Whether to check the termination status.
+    If set to **False**, :meth:`run` will not throw an exception if the algorithm
+    does not fully converge and will allow one to still find a feasible candidate."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setCheckStatus
+OT_OptimizationAlgorithm_setCheckStatus_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getCheckStatus_doc
+"Accessor to check status flag.
+
+Returns
+-------
+checkStatus : bool
+    Whether to check the termination status.
+    If set to **False**, :meth:`run` will not throw an exception if the algorithm
+    does not fully converge and will allow one to still find a feasible candidate."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getCheckStatus
+OT_OptimizationAlgorithm_getCheckStatus_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+"Accessor to the maximum duration.
+
+Parameters
+----------
+maximumTime : float
+    Maximum optimization duration in seconds."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumTimeDuration
+OT_OptimizationAlgorithm_setMaximumTimeDuration_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumTimeDuration_doc
+"Accessor to the maximum duration.
+
+Returns
+-------
+maximumTime : float
+    Maximum optimization duration in seconds."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumTimeDuration
+OT_OptimizationAlgorithm_getMaximumTimeDuration_doc

@@ -2,7 +2,7 @@
 /**
  *  @brief Efficient implementation of the computation of the k factor
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,12 +52,12 @@ public:
     // Nothing to do
   }
 
-  KernelFunction * clone() const
+  KernelFunction * clone() const override
   {
     return new KernelFunction(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const Scalar z = point[0];
     return Point(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * DistFunc::dNormal(z / sigma_) / sigma_);
@@ -68,17 +68,17 @@ public:
     x_ = x;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss(true);
     oss << "class=KernelFunction"
@@ -91,7 +91,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss(false);
     oss << "KernelFunction("
@@ -129,29 +129,29 @@ public:
     // Nothing to do
   }
 
-  ConstraintFunction * clone() const
+  ConstraintFunction * clone() const override
   {
     return new ConstraintFunction(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const Scalar x = point[0];
     kernel_.setX(x);
     return GaussKronrod(ResourceMap::GetAsUnsignedInteger("KFactor-DefaultIntegrationNodesNumber"), ResourceMap::GetAsScalar("KFactor-Precision"), GaussKronrodRule(GaussKronrodRule::G7K15)).integrate(kernel_, Interval(0.0, KFactorFunctions_RMAX / std::sqrt(n_)));
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss(true);
     oss << "class=ConstraintFunction"
@@ -162,7 +162,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss(false);
     oss << "ConstraintFunction("

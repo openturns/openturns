@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ref = ot.SymbolicFunction("x", "sin(x)")
 size = 12
@@ -29,9 +30,5 @@ derivatives = [0.0] * 5
 evaluation = ot.PiecewiseHermiteEvaluation(locations, values, derivatives)
 evaluation.setEnableExtrapolation(False)
 f = ot.Function(evaluation)
-try:
+with ott.assert_raises(TypeError):
     f([-12.5])
-except Exception:
-    pass
-else:
-    raise ValueError("test fails because no exception was raised")

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Rayleigh distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/RayleighFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -75,7 +74,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
     sumSquares += xI * xI;
   }
   // Here we test on sumSquares in order to detect also overflows
-  if (!SpecFunc::IsNormal(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
+  if (!std::isfinite(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
   try
   {
     Rayleigh result(std::sqrt(0.5 * sumSquares / size), gamma);

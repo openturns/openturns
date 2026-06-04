@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Cobyla for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,7 @@ int main(int, char *[])
 
   try
   {
-   const Description input = {"x1", "x2", "x3", "x4"};
+    const Description input = {"x1", "x2", "x3", "x4"};
     SymbolicFunction levelFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));

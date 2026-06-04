@@ -171,10 +171,10 @@ independent sampling.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration`
-    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding`
-    - See :doc:`/auto_calibration/bayesian_calibration/plot_rwmh_python_distribution`
-    - See :doc:`/auto_calibration/bayesian_calibration/plot_imh_python_distribution`
+    - See :doc:`/auto_calibration/mcmc_based_calibration/plot_bayesian_calibration`
+    - See :doc:`/auto_calibration/mcmc_based_calibration/plot_bayesian_calibration_flooding`
+    - See :doc:`/auto_calibration/mcmc_based_calibration/plot_rwmh_python_distribution`
+    - See :doc:`/auto_calibration/mcmc_based_calibration/plot_imh_python_distribution`
 
 .. topic:: References:
 

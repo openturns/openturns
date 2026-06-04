@@ -1,0 +1,53 @@
+%feature("docstring") OT::StudentFactory
+R"RAW(Student factory.
+
+Notes
+-----
+Some parameters are estimated by the method of moments and others by the maximum reduced 
+likelihood method:
+
+.. math::
+    :nowrap:
+
+    \begin{align*}
+      \Hat{\mu} = &\Hat{\mu}_x \\
+      \Hat{\sigma} = &\Hat{\sigma}_x\sqrt{\dfrac{\Hat{\nu}-2}{\Hat{\nu}}} \\
+      \Hat{R}_{ij} = &\dfrac{2}{\pi}\arcsin(\tau_{ij})
+    \end{align*}
+
+where :math:`\mat{\tau}` is the sample Kendall tau matrix and :math:`\Hat{\nu}`
+maximizes the reduced likelihood associated to :class:`~openturns.Student` with
+parameters :math:`(\Hat{\nu}, \Hat{\mu}, \hat{\sigma}(\Hat{\nu}), \Hat{\mat{R}})`.
+    
+See also
+--------
+DistributionFactory, Student)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StudentFactory::buildAsStudent
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsStudent()
+
+    buildAsStudent(*sample*)
+
+    buildAsStudent(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+    The parameters of the :class:`~openturns.Student`.
+
+Returns
+-------
+dist : :class:`~openturns.Student`
+    The estimated distribution as a Student.
+    
+    In the first usage, the default Student distribution is built."
+
+

@@ -2,7 +2,7 @@
 /**
  *  @brief Maximum likelihood estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <iomanip>
 #include <fstream>
 #include "openturns/MaximumLikelihoodFactory.hxx"
@@ -110,39 +109,39 @@ public:
     }
   }
 
-  LogLikelihoodEvaluation * clone() const
+  LogLikelihoodEvaluation * clone() const override
   {
     return new LogLikelihoodEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return unknownParameterIndices_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description::BuildDefault(getInputDimension(), "theta");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "lh");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     Scalar result = 0.0;
     // Define conditioned distribution
@@ -205,39 +204,22 @@ public:
     }
   }
 
-  LogLikelihoodGradient * clone() const
+  LogLikelihoodGradient * clone() const override
   {
     return new LogLikelihoodGradient(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return unknownParameterIndices_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
-  {
-    return Description::BuildDefault(getInputDimension(), "theta");
-  }
-
-  Description getOutputDescription() const
-  {
-    return Description(1, "lhG");
-  }
-
-  Description getDescription() const
-  {
-    Description description(getInputDescription());
-    description.add(getOutputDescription());
-    return description;
-  }
-
-  Matrix gradient(const Point & parameter) const
+  Matrix gradient(const Point & parameter) const override
   {
     // Define conditioned distribution
     Distribution distribution(distribution_);
@@ -270,7 +252,7 @@ public:
     const Point logPdfGradient(logPdfGradientSample.computeMean());
 
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
-      if (!SpecFunc::IsNormal(logPdfGradient[j]))
+      if (!std::isfinite(logPdfGradient[j]))
         return result;
 
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
@@ -317,7 +299,7 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
   if (solver.getStartingPoint().getDimension() != logLikelihood.getInputDimension())
   {
     Point effectiveParameter(distribution_.getParameter());
-    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << logLikelihood.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
+    LOGINFO(OSS() << "The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << logLikelihood.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
     // extract unknown values
     Point parameter;

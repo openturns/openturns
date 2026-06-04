@@ -2,7 +2,7 @@
 /**
  *  @brief IpoptProblem implements the Ipopt::TNLP interface
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -281,7 +281,7 @@ bool IpoptProblem::eval_grad_f( int n,
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+    LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
     return false;
   }
 
@@ -320,7 +320,7 @@ bool IpoptProblem::eval_g(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
     std::copy(equalityConstraint.begin(), equalityConstraint.end(), g + k);
@@ -337,7 +337,7 @@ bool IpoptProblem::eval_g(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
     std::copy(inequalityConstraint.begin(), inequalityConstraint.end(), g + k);
@@ -390,7 +390,7 @@ bool IpoptProblem::eval_jac_g(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
@@ -411,7 +411,7 @@ bool IpoptProblem::eval_jac_g(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
@@ -476,7 +476,7 @@ bool IpoptProblem::eval_h(int n,
     }
     catch (const std::exception & exc)
     {
-      LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+      LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
       return false;
     }
 
@@ -493,7 +493,7 @@ bool IpoptProblem::eval_h(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
@@ -512,7 +512,7 @@ bool IpoptProblem::eval_h(int n,
       }
       catch (const std::exception & exc)
       {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
+        LOGINFO(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
         return false;
       }
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
@@ -533,94 +533,6 @@ bool IpoptProblem::eval_h(int n,
       }
   }
 
-  return true;
-}
-
-bool IpoptProblem::eval_gi(int n,
-                           const double* x,
-                           bool /*new_x*/,
-                           int i,
-                           double& gi)
-{
-  // Convert x to OT::Point
-  Point xPoint(n);
-  std::copy(x, x + n, xPoint.begin());
-
-  // Retrieve number of constraints
-  int nbEqualityConstraints = 0;
-  if (optimProblem_.hasEqualityConstraint())
-    nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-
-  // Computing constraints values
-  try
-  {
-    if (i < nbEqualityConstraints)
-      gi = optimProblem_.getEqualityConstraint().getMarginal(i)(xPoint)[0];
-    else
-      gi = optimProblem_.getInequalityConstraint().getMarginal(i - nbEqualityConstraints)(xPoint)[0];
-  }
-  catch (const std::exception & exc)
-  {
-    LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-    return false;
-  }
-  return true;
-}
-
-bool IpoptProblem::eval_grad_gi(int n,
-                                const double* x,
-                                bool /*new_x*/,
-                                int i,
-                                int& nele_grad_gi,
-                                int* jCol,
-                                double* values)
-{
-  // Convert x to OT::Point
-  Point xPoint(n);
-  std::copy(x, x + n, xPoint.begin());
-
-  // Computing constraint derivative
-  nele_grad_gi = n;
-
-  if (values == NULL) // First call
-    for (int j = 0; j < n; ++j)
-      jCol[j] = j;
-  else
-  {
-    // Retrieve number of constraints
-    int nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-
-    if (i < nbEqualityConstraints)
-    {
-      Matrix equalityConstraintGradient;
-      try
-      {
-        equalityConstraintGradient = optimProblem_.getEqualityConstraint().getMarginal(i).gradient(xPoint);
-      }
-      catch (const std::exception & exc)
-      {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-        return false;
-      }
-      for (int j = 0; j < n; ++j)
-        values[j] = equalityConstraintGradient(j, 0);
-    }
-    else
-    {
-      Matrix inequalityConstraintGradient;
-      try
-      {
-        inequalityConstraintGradient = optimProblem_.getInequalityConstraint().getMarginal(i - nbEqualityConstraints).gradient(xPoint);
-      }
-      catch (const std::exception & exc)
-      {
-        LOGWARN(OSS() << "Ipopt went to an abnormal point x=" << xPoint.__str__() << " msg=" << exc.what());
-        return false;
-      }
-      for (int j = 0; j < n; ++j)
-        values[j] = inequalityConstraintGradient(j, 0);
-    }
-  }
   return true;
 }
 

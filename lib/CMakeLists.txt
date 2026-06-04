@@ -40,24 +40,4 @@ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
 # Recurse in subdirectories : test should be run after src (for target OT to be built)
 add_subdirectory (test)
 
-if (DOXYGEN_FOUND)
-
-  # generate Doxyfile
-  set (VERSION ${PACKAGE_VERSION})
-  set (builddir ${CMAKE_CURRENT_BINARY_DIR})
-  set ( top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
-  configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-                    @ONLY)
-
-  # generate html doc and compress it
-  add_custom_target (html 
-                      COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/doc
-                      COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
-                      COMMAND tar czf doc-api-${PACKAGE_VERSION}.tar.gz doc
-                      COMMAND tar cjf doc-api-${PACKAGE_VERSION}.tar.bz2 doc
-                     )
-
-endif ()
-
 install (FILES ${HEADERFILES} DESTINATION ${OPENTURNS_INCLUDE_PATH}/openturns)

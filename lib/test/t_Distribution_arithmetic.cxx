@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Normal for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -171,7 +171,7 @@ int main(int, char *[])
       Point weights(2);
       weights[0] = -1.0;
       weights[1] =  1.0;
-      result = RandomMixture(coll, weights);
+      result = LinearCombinationDistribution(coll, weights);
       fullprint << "result=" << result << std::endl;
       fullprint << "cdf(1.0)=" << result.computeCDF(1.0) << std::endl;
     }
@@ -192,7 +192,7 @@ int main(int, char *[])
       Point weights(2);
       weights[0] = -1.0;
       weights[1] = -1.0;
-      result = RandomMixture(coll, weights);
+      result = LinearCombinationDistribution(coll, weights);
       fullprint << "result=" << result << std::endl;
       fullprint << "cdf(-1.0)=" << result.computeCDF(-1.0) << std::endl;
     }

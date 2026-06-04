@@ -2,7 +2,7 @@
 /**
  *  @brief Discrete compound distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -151,7 +151,7 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
-  /** Create UserDefined distribution_ attribute */
+  /** Create FiniteDiscreteDistribution distribution_ attribute */
   void setBaseAndCompoundDistributions(const Distribution & baseDistribution,
                                        const Distribution & compoundDistribution);
 
@@ -162,7 +162,7 @@ private:
   Distribution compoundDistribution_;
 
   /** Actual discrete integral compound */
-  UserDefined distribution_;
+  FiniteDiscreteDistribution distribution_;
 
   /** Structures for the alias sampling method */
   mutable Point probabilities_;

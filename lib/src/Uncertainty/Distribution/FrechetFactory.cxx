@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Frechet distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@
 #include "openturns/FrechetFactory.hxx"
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -68,7 +67,7 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
-  if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution if data contains NaN or Inf";
+  if (!std::isfinite(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution if data contains NaN or Inf";
   // If the minimum value is zero then one of the shifted values will be zero, leading to an undefined logarithm. The small perturbation is harmless as it is just a matter of getting a reasonable starting point for a further MLE.
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogUniform distribution from a constant sample.";
   // In any case, if the given sample is pathological (lots of zeros, a few positive values) a Frechet distribution is not a plausible candidate.

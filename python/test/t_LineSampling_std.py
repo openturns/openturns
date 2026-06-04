@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 from openturns.usecases import cantilever_beam
 from openturns.usecases import stressed_beam
@@ -37,7 +36,7 @@ print(f"alpha={alpha}")
 ot.RandomGenerator.SetSeed(0)
 solver = ot.Brent(1e-3, 1e-3, 1e-3, 5)
 rootStrategy = ot.MediumSafe(solver)
-algo = otexp.LineSampling(event, alpha, rootStrategy)
+algo = ot.LineSampling(event, alpha, rootStrategy)
 algo.setMaximumCoefficientOfVariation(1e-3)
 algo.setMaximumOuterSampling(1000)
 algo.setStoreHistory(True)
@@ -86,7 +85,7 @@ print(f"alpha={alpha}")
 ot.RandomGenerator.SetSeed(0)
 solver = ot.Brent(1e-3, 1e-3, 1e-3, 5)
 rootStrategy = ot.MediumSafe(solver)
-algo = otexp.LineSampling(event, alpha, rootStrategy)
+algo = ot.LineSampling(event, alpha, rootStrategy)
 algo.setMaximumOuterSampling(1000)
 algo.setMaximumCoefficientOfVariation(5e-2)
 algo.run()
@@ -99,7 +98,12 @@ ott.assert_almost_equal(result.getProbabilityEstimate(), 4.57807e-07)
 print(f"-- 2 branch {'-' * 50}")
 
 X = ot.RandomVector(ot.Normal(2))
-g_twoBranch = ot.SymbolicFunction(["x1", "x2"], ["min(5 + 0.1 * (x1 - x2)^2 - (x1 + x2) / sqrt(2), 5 + 0.1 * (x1 - x2)^2 + (x1 + x2) / sqrt(2))"])
+g_twoBranch = ot.SymbolicFunction(
+    ["x1", "x2"],
+    [
+        "min(5 + 0.1 * (x1 - x2)^2 - (x1 + x2) / sqrt(2), 5 + 0.1 * (x1 - x2)^2 + (x1 + x2) / sqrt(2))"
+    ],
+)
 Y_twoBranch = ot.CompositeRandomVector(g_twoBranch, X)
 threshold = 1.5
 event_twoBranch = ot.ThresholdEvent(Y_twoBranch, ot.Less(), threshold)
@@ -124,7 +128,7 @@ alpha_twoBranch = result.getStandardSpaceDesignPoint()
 ot.RandomGenerator.SetSeed(0)
 solver = ot.Brent(1e-3, 1e-3, 1e-3, 5)
 rootStrategy = ot.MediumSafe(solver)
-algo = otexp.LineSampling(event_twoBranch, alpha_twoBranch, rootStrategy)
+algo = ot.LineSampling(event_twoBranch, alpha_twoBranch, rootStrategy)
 algo.setSearchOppositeDirection(False)
 algo.setMaximumOuterSampling(1000)
 algo.setMaximumCoefficientOfVariation(5e-2)
@@ -143,7 +147,7 @@ print(result)
 ott.assert_almost_equal(result.getProbabilityEstimate(), 3e-4, 0.0, 1e-5)
 
 # LineSampling / system event / no adaptive alpha
-algo = otexp.LineSampling(unionEvent, alpha_twoBranch, rootStrategy)
+algo = ot.LineSampling(unionEvent, alpha_twoBranch, rootStrategy)
 ot.RandomGenerator.SetSeed(0)
 algo.setMaximumOuterSampling(1000)
 algo.setAdaptiveImportantDirection(False)
@@ -175,7 +179,7 @@ alpha = result.getStandardSpaceDesignPoint()
 # LineSampling
 rootStrategy = ot.SafeAndSlow(ot.Brent(1e-3, 1e-3, 1e-3, 5), 3, 0.1)
 ot.RandomGenerator.SetSeed(0)
-algo = otexp.LineSampling(event, alpha, rootStrategy)
+algo = ot.LineSampling(event, alpha, rootStrategy)
 algo.setMaximumOuterSampling(3000)
 algo.setMaximumCoefficientOfVariation(5e-2)
 algo.run()
@@ -186,7 +190,7 @@ ott.assert_almost_equal(result.getProbabilityEstimate(), 0.00110258, 0.0, 1e-4)
 # complementary
 event = ot.ThresholdEvent(Y, ot.Greater(), threshold)
 ot.RandomGenerator.SetSeed(0)
-algo = otexp.LineSampling(event, alpha, rootStrategy)
+algo = ot.LineSampling(event, alpha, rootStrategy)
 algo.setMaximumOuterSampling(3000)
 algo.setMaximumCoefficientOfVariation(5e-2)
 algo.run()
@@ -196,7 +200,7 @@ ott.assert_almost_equal(result.getProbabilityEstimate(), 0.997749, 0.0, 1e-4)
 
 # complementary + opposite
 ot.RandomGenerator.SetSeed(0)
-algo = otexp.LineSampling(event, alpha, rootStrategy)
+algo = ot.LineSampling(event, alpha, rootStrategy)
 algo.setMaximumOuterSampling(3000)
 algo.setMaximumCoefficientOfVariation(5e-2)
 algo.setSearchOppositeDirection(True)
@@ -210,10 +214,12 @@ ott.assert_almost_equal(result.getProbabilityEstimate(), 0.997749, 0.0, 1e-4)
 print(f"-- paraboloid {'-' * 50}")
 
 # model
-paraboloid = ot.SymbolicFunction(['u1', 'u2', 'u3', 'u4', 'u5'], ['- u5 + u1^2 + u2^2 + u3^2 + u4^2'])
+paraboloid = ot.SymbolicFunction(
+    ["u1", "u2", "u3", "u4", "u5"], ["- u5 + u1^2 + u2^2 + u3^2 + u4^2"]
+)
 b = 3.5
 db = 0.02
-t = 0.
+t = 0.0
 dim = 5
 U = ot.Normal(dim)
 X = ot.RandomVector(U)
@@ -227,7 +233,7 @@ E4 = ot.IntersectionEvent([E1, E3])
 alpha = [0.0, 0.0, 0.0, 0.0, 1.0]
 rootStrategy = ot.SafeAndSlow(ot.Brent(1e-3, 1e-3, 1e-3, 5), 8, 0.01)
 ot.RandomGenerator.SetSeed(0)
-algo = otexp.LineSampling(E4, alpha, rootStrategy)
+algo = ot.LineSampling(E4, alpha, rootStrategy)
 algo.setMaximumOuterSampling(2000)
 algo.setMaximumCoefficientOfVariation(5e-2)
 algo.run()

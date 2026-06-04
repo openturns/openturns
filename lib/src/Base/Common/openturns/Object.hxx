@@ -2,7 +2,7 @@
 /**
  *  @brief The class Object is the top-most class of OpenTURNS
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #define OPENTURNS_OBJECT_HXX
 
 #include <iostream>              // for std::ostream
-#include <sstream>               // for std::ostringstream
 #include "openturns/OTprivate.hxx"
 
 
@@ -127,7 +126,7 @@ private:
  * @param obj The object read by \p os
  * @return A reference to \p os
  *
- * This method allows any Object-derived class to be streamed whitout
+ * This method allows any Object-derived class to be streamed without
  * redefining this method. Each derived-class should have a public
  * method str() that returns a String.
  *

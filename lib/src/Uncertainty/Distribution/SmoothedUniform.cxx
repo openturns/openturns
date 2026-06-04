@@ -2,7 +2,7 @@
 /**
  *  @brief The SmoothedUniform distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ static const Factory<SmoothedUniform> Factory_SmoothedUniform;
 
 /* Default constructor */
 SmoothedUniform::SmoothedUniform()
-  : RandomMixture()
+  : LinearCombinationDistribution()
   , a_(-1.0)
   , b_(1.0)
   , sigma_(1.0)
@@ -53,7 +53,7 @@ SmoothedUniform::SmoothedUniform()
 SmoothedUniform::SmoothedUniform(const Scalar a,
                                  const Scalar b,
                                  const Scalar sigma)
-  : RandomMixture()
+  : LinearCombinationDistribution()
   , a_(a)
   , b_(b)
   , sigma_(sigma)
@@ -117,10 +117,12 @@ Point SmoothedUniform::getRealization() const
 /* Get a sample of the distribution */
 Sample SmoothedUniform::getSample(const UnsignedInteger size) const
 {
-  SampleImplementation result(size, 1);
   const Scalar ba = b_ - a_;
+  Point data(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    result(i, 0) = a_ + ba * RandomGenerator::Generate() + sigma_ * DistFunc::rNormal();
+    data[i] = a_ + ba * RandomGenerator::Generate() + sigma_ * DistFunc::rNormal();
+  Sample result(size, 1);
+  result.getImplementation()->setData(data);
   return result;
 }
 
@@ -433,7 +435,7 @@ Scalar SmoothedUniform::getSigma() const
 /* Method save() stores the object through the StorageManager */
 void SmoothedUniform::save(Advocate & adv) const
 {
-  RandomMixture::save(adv);
+  LinearCombinationDistribution::save(adv);
   adv.saveAttribute( "a_", a_ );
   adv.saveAttribute( "b_", b_ );
   adv.saveAttribute( "sigma_", sigma_ );
@@ -442,7 +444,7 @@ void SmoothedUniform::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SmoothedUniform::load(Advocate & adv)
 {
-  RandomMixture::load(adv);
+  LinearCombinationDistribution::load(adv);
   adv.loadAttribute( "a_", a_ );
   adv.loadAttribute( "b_", b_ );
   adv.loadAttribute( "sigma_", sigma_ );

@@ -18,6 +18,7 @@ Refer to :ref:`optimization_algorithm`.
     OptimizationProblem
     NearestPointProblem
     LeastSquaresProblem
+    experimental.LinearProblem
     OptimizationAlgorithm
     OptimizationResult
     AbdoRackwitz
@@ -26,13 +27,30 @@ Refer to :ref:`optimization_algorithm`.
     CMinpack
     Cobyla
     Dlib
-    EfficientGlobalOptimization
+    experimental.EfficientGlobalOptimization
+    experimental.HiGHS
     Ipopt
     MultiStart
     NLopt
     Pagmo
     SQP
     TNC
+
+Non linear solvers
+==================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    Solver
+    LeastSquaresEquationsSolver
+
+    :template: Solver.rst_t
+    Bisection
+    Brent
+    Secant
+
 
 Integration
 ===========
@@ -43,9 +61,9 @@ Integration
 
     IntegrationAlgorithm
     FilonQuadrature
-    experimental.CubaIntegration
+    CubaIntegration
     SimplicialCubature
-    experimental.ExperimentIntegration
+    ExperimentIntegration
 
 .. autosummary::
     :toctree: _generated/

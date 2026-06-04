@@ -17,11 +17,7 @@ Logistic growth model
 # %%
 from openturns.usecases import logistic_model
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-ot.RandomGenerator.SetSeed(0)
+import openturns.viewer as otv
 
 # %%
 # We load the logistic model from the usecases module :
@@ -36,7 +32,7 @@ uspop = lm.data.getMarginal(1)
 
 # %%
 # We get the input parameters distribution distX :
-distX = lm.distX
+distX = lm.distribution
 
 
 # %%
@@ -93,9 +89,7 @@ cloud.setPointStyle("circle")
 cloud.setLegend("Data")
 graph.add(cloud)
 graph.setLegendPosition("upper left")
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
 
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

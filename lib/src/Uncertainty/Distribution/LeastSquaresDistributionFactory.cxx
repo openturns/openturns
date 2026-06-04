@@ -2,7 +2,7 @@
 /**
  *  @brief Least squares estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <iomanip>
 #include <fstream>
 #include "openturns/LeastSquaresDistributionFactory.hxx"
@@ -111,39 +110,39 @@ public:
       empiricalCDF_[i] = sample.computeEmpiricalCDF(sample[i]);
   }
 
-  LeastSquaresFactoryResidualEvaluation * clone() const
+  LeastSquaresFactoryResidualEvaluation * clone() const override
   {
     return new LeastSquaresFactoryResidualEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return unknownParameterIndices_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return sample_.getSize();
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description::BuildDefault(getInputDimension(), "theta");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(sample_.getSize(), "r");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     // Define conditinned distribution
     Distribution distribution(distribution_);
@@ -201,7 +200,7 @@ Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) con
   if (solver.getStartingPoint().getDimension() != residual.getInputDimension())
   {
     Point effectiveParameter(distribution_.getParameter());
-    LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << residual.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
+    LOGINFO(OSS() << "The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << residual.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
     // extract unknown values
     Point parameter;

@@ -1,0 +1,200 @@
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm
+R"RAW(Computation of Karhunen-Loeve decomposition using SVD approximation.
+
+Available constructors:
+    KarhunenLoeveSVDAlgorithm(*sample, threshold, centeredSample*)
+
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, threshold, centeredSample*)
+
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, sampleWeights, threshold, centeredSample*)
+
+Parameters
+----------
+sample : :class:`~openturns.ProcessSample`
+    The sample containing the observations.
+verticesWeights : sequence of float
+    The weights associated to the vertices of the mesh defining the sample.
+sampleWeights : sequence of float
+    The weights associated to the fields of the sample.
+threshold : positive float, default=0.0
+    The threshold used to select the most significant eigenmodes, defined in :class:`~openturns.KarhunenLoeveAlgorithm`.
+centeredSample : bool, default=False
+    Flag to tell if the sample is drawn according to a centered
+    process or if it has to be centered using the empirical mean.
+    
+Notes
+-----
+The Karhunen-Loeve SVD algorithm solves the Fredholm problem associated to the
+covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm`
+to get the notations.
+If the mesh is regular, then this decomposition is equivalent to the principal
+component analysis (PCA) (see [pearson1907]_, [hotelling1933]_, [jackson1991]_, [jolliffe2002]_).
+In other fields such as computational fluid dynamics for example,
+this is called proper orthogonal decomposition (POD) (see [luo2018]_).
+
+The SVD approach is a particular case of the quadrature approach (see
+:class:`~openturns.KarhunenLoeveQuadratureAlgorithm`)  where we consider the
+functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq d, 1 \leq p \leq P}` of
+:math:`L^2(\cD, \Rset^d)` defined on :math:`\cD` by:
+
+.. math:: 
+
+    \vect{\theta}_p^j(\vect{s})= \left[\mat{C}(\vect{s}, \vect{s}_p) \right]_{:, j}
+
+The SVD approach is used when the covariance function is not explicitly known but only
+through :math:`K` fields :math:`(\vect{X}_1, \dots, \vect{X}_K)`  respectively
+associated to the weights :math:`p_1, \dots, p_K`. The weights are not necessarily all equal
+when, for example, the fields have been generated from an importance sampling technique.
+
+The SVD approach consists in approximating :math:`\mat{C}` by its empirical estimator computed from the :math:`K` fields
+which have been centered and in taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as
+the :math:`L` quadrature points to compute the integrals of the Fredholm problem.
+
+We denote by :math:`(\tilde{\vect{X}}_1, \dots, \tilde{\vect{X}}_K` the centered fields. If the mean process is not known,
+it is approximated by :math:`\sum_{k=1}^K p_k \vect{X}_k`.
+
+The empirical estimator of :math:`\mat{C}` is then defined by:
+
+.. math::
+
+    \tilde{\mat{C}}_K = \sum_{k=1}^K \tilde{p}_k \vect{X}_k  \Tr{\vect{X}_k}
+
+where :math:`\widetilde{K} = p_k` if the :math:`\vect{X}_k` are already centered or
+if the mean process is known, and :math:`\widetilde{K} = \dfrac{K}{K-1}p_k` if the mean
+process has been estimated from the :math:`K` fields.
+
+We suppose now that :math:`K < Ld`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}` and
+:math:`\mat{\Psi}_k = \sqrt{\mat{W}}^{-1} \,\mat{\Phi}_k` (see
+:class:`~openturns.KarhunenLoeveQuadratureAlgorithm`).
+
+As the matrix :math:`\mat{\Theta} = \mat{C}` is nonsingular, the Galerkin and collocation
+approaches are equivalent and both lead to the following singular value problem for :math:`\mat{Y}`:
+
+.. math::
+    :label: QuadCollDim1_ter
+
+     \mat{Y}\,\Tr{\mat{Y}}\,\mat{\Psi}_k  & = \lambda_k \mat{\Psi}_k.
+
+The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{Ld,\widetilde{K}}(\Rset)` is:
+
+.. math::
+
+    \mat{Y} = \mat{U}\, \mat{\Sigma} \, \Tr{\mat{V}}
+
+where  the matrices :math:`\mat{U} \in \mathcal{M}_{Ld, \widetilde{K}}(\Rset)`, 
+:math:`\mat{\Sigma}\in \mathcal{M}_{\widetilde{K},\widetilde{K}}(\Rset)`, 
+:math:`\mat{V} \in \mathcal{M}_{\widetilde{K},\widetilde{K}}(\Rset)` are such that :
+
+- :math:`\Tr{\mat{V}}\mat{V} =\mat{V}\Tr{\mat{V}}= \mat{I}_{\widetilde{K}}`,  
+- :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\widetilde{K}}` ,
+- :math:`\mat{\Sigma} = \diag(\sigma_1, \dots, \sigma_{\widetilde{K}})`.
+
+Then the columns of :math:`\mat{U}` are the eigenvectors of :math:`\mat{Y}\Tr{\mat{Y}}`
+associated to the eigenvalues :math:`\sigma_k^2`.
+
+We deduce the modes and eigenvalues of the Fredholm problem for :math:`k \leq \widetilde{K}`:
+
+.. math::
+
+      \mat{\Phi}_k & = \dfrac{1}{\lambda_k} \sqrt{\mat{W}}\, \mat{U}_k \\
+      \lambda_k & = \dfrac{\sigma_k^2}{\widetilde{K}}.
+
+For :math:`k \leq \widetilde{K}`, we have:
+
+.. math::
+
+    \widetilde{\vect{\varphi}}_k(\vect{t})= \sum_{\ell=1}^L  C(\vect{t}, \vect{\xi}_\ell) \vect{\phi}_{\ell,k} 
+
+The most computationally intensive part of the algorithm is the computation of the
+SVD decomposition. By default, it is done using LAPACK dgesdd routine. While being
+very accurate and reasonably fast for small to medium sized problems, it becomes
+prohibitively slow for large cases. The user can choose to use a stochastic
+algorithm instead, with the constraint that the number of singular values to be
+computed has to be fixed a priori.
+The following keys of :class:`~openturns.ResourceMap` allow one to select and tune
+these algorithms:
+
+- 'KarhunenLoeveSVDAlgorithm-UseRandomSVD' which triggers the use of a random
+  algorithm. By default, it is set to *False* and LAPACK is used.
+- 'KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank' which fixes the number of
+  singular values to compute. By default it is set to 1000.	
+- 'KarhunenLoeveSVDAlgorithm-RandomSVDVariant' which can be equal to either
+  'Halko2010' for [halko2010]_ (the default) or 'Halko2011' for [halko2011]_.
+  These two algorithms have very similar structures, the first one being based
+  on a random compression of both the rows and columns of :math:`\mat{Y}`, the
+  second one being based on an iterative compressed sampling of the columns of
+  :math:`\mat{Y}`.
+- 'KarhunenLoeveSVDAlgorithm-halko2011Margin' and
+  'KarhunenLoeveSVDAlgorithm-halko2011Iterations' to fix the parameters of the
+  'halko2011' variant. See [halko2011]_ for the details.
+
+      
+Examples
+--------
+Create a Karhunen-Loeve SVD algorithm:
+
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> s = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> sample = ot.GaussianProcess(model, mesh).getSample(8)
+>>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, s)
+
+Run it!
+
+>>> algorithm.run()
+>>> result = algorithm.getResult()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::run
+"Computation of the eigenvalues and eigenfunctions values at nodes.
+
+Notes
+-----
+Runs the algorithm and creates the result structure :class:`~openturns.KarhunenLoeveResult`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getSample
+"Accessor to the process sample.
+
+Returns
+-------
+sample : :class:`~openturns.ProcessSample`
+    The process sample containing the observations of the process.
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getSampleWeights
+"Accessor to the weights of the sample.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The weights associated to the fields of the sample.
+
+Notes
+-----
+The fields might not have the same weight, for example if they come from importance sampling.
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getVerticesWeights
+"Accessor to the weights of the vertices.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The weights associated to the vertices of the mesh defining the sample field.
+
+Notes
+-----
+The vertices might not have the same weight, for example if the mesh is not regular.
+"

@@ -549,8 +549,8 @@ we use the :meth:`~openturns.Sample.computeVariance` method of the :class:`~open
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_sobol`
-    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_functional_chaos_sensitivity`
+    - See :doc:`/auto_sensitivity_analysis/plot_sensitivity_sobol`
+    - See :doc:`/auto_sensitivity_analysis/plot_functional_chaos_sensitivity`
 
 .. topic:: References:
 

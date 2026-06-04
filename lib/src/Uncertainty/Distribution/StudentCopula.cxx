@@ -2,7 +2,7 @@
 /**
  *  @brief Student or T-Copula
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,14 +32,14 @@ static const Factory<StudentCopula> Factory_StudentCopula;
 StudentCopula::StudentCopula()
   : SklarCopula(Student(3.0, 2))
 {
-  // Nothing to do
+  setName("StudentCopula");
 }
 
 StudentCopula::StudentCopula(const Scalar nu,
                              const CorrelationMatrix & R)
   : SklarCopula(Student(nu, Point(R.getNbRows(), 0.0), Point(R.getNbRows(), 1.0), R))
 {
-  // Nothing to do
+  setName("StudentCopula");
 }
 
 /* String converter */

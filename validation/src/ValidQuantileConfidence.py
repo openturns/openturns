@@ -24,7 +24,7 @@ for n in [60, 100]:
         if interval3.contains(q):
             p3 += 1.0 / nreps
         if r % 1000 == 0:
-            print(f"{100.0*r/nreps} %")
+            print(f"{100.0 * r / nreps} %")
 
     print(f"p1={p1:.6f} p2={p2:.6f} p3={p3:.6f}")
     assert p1 >= beta

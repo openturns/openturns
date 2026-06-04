@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all functions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -423,10 +423,16 @@ GridLayout Function::drawCrossCuts(const Point & centralPoint,
   return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimensionalCuts, isFilled, vMin, vMax);
 }
 
-void Function::setStopCallback(StopCallback callBack, void * state)
+void Function::setStopCallback(FunctionImplementation::StopCallback callBack, void * state)
 {
   copyOnWrite();
   getImplementation()->setStopCallback(callBack, state);
+}
+
+void Function::setDetachCallback(FunctionImplementation::DetachCallback callBack, void * state)
+{
+  copyOnWrite();
+  getImplementation()->setDetachCallback(callBack, state);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -2,7 +2,7 @@
 /**
  *  @brief Subset simulation method
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -74,7 +74,7 @@ SubsetSampling * SubsetSampling::clone() const
 void SubsetSampling::run()
 {
   // First, initialize some parameters
-  convergenceStrategy_.setDimension(2);
+  convergenceStrategy_.setDimension(3);
   numberOfSteps_ = 0;
   thresholdPerStep_.clear();
   gammaPerStep_.clear();
@@ -92,7 +92,7 @@ void SubsetSampling::run()
   const Function uToX(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
-    Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
+    LOGWARN(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
   if (seedNumber_ < 1)
@@ -176,7 +176,7 @@ void SubsetSampling::run()
     outputSample_.add(currentLevelSample_);
   }
 
-  Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
+  LOGINFO(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   // as long as the conditional failure domain do not overlap the global one
   while (!stop)
   {
@@ -250,7 +250,7 @@ void SubsetSampling::run()
 
     ++ numberOfSteps_;
 
-    Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
+    LOGINFO(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
@@ -313,7 +313,8 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
 
     // store convergence at each block
     const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
-                          varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size
+                          varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size,
+                          1.0 * i
                          };
     convergenceStrategy_.store(convPt);
   }
@@ -561,7 +562,7 @@ Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool 
 void SubsetSampling::setInitialExperiment(const WeightedExperiment & initialExperiment)
 {
   if (!initialExperiment.hasUniformWeights())
-    throw InvalidArgumentException(HERE) << "In SubsetSampling the underlyng weighted experiment must have uniform weights";
+    throw InvalidArgumentException(HERE) << "In SubsetSampling the underlying weighted experiment must have uniform weights";
   initialExperiment_ = initialExperiment;
   initialExperiment_.setSize(getBlockSize());
   initialExperiment_.setDistribution(StandardEvent(getEvent()).getAntecedent().getDistribution());

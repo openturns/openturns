@@ -2,7 +2,7 @@
 /**
  *  @brief Class for Box Cox function implementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class InverseTrendEvaluation
  *
  * This class offers an easy evaluation of the Box Cox function defined by :
- *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) oherwise
+ *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) otherwise
  *  Care that x should be positive
  */
 

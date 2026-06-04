@@ -54,7 +54,7 @@ curveMin.setLegend("min.")
 curveMax = ot.Curve(iterationSample, maxEvolution)
 curveMax.setLegend("max.")
 #
-graph = ot.Graph("Evolution of the min/max", "iteration nb", "min/max", True)
+graph = ot.Graph("Evolution of the min/max", "iteration nb", "min/max")
 graph.add(curveMin)
 graph.add(curveMax)
 graph.setLegendPosition("upper left")

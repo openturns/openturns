@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -184,7 +184,7 @@ void MaternModel::setFullParameter(const Point & parameter)
      - Nu parameter : 1
     CovarianceModelImplementation::setFullParameter checks that size is
     equal to inputDimension_ + dimension_
-  As we set the Nu parameter it is not coherant.
+  As we set the Nu parameter it is not coherent.
   We should check that totalSize = generic totalSize + 1
   */
   // Check the size

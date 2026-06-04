@@ -2,7 +2,7 @@
 /**
  * @brief Proxy class for EvaluationImplementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -156,8 +156,10 @@ public:
              const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
+  /** Detach callback */
+  void setDetachCallback(DetachCallback callBack, void * state = nullptr) override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -165,6 +167,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Evaluation accessor */
+  Evaluation getEvaluation() const;
 
 protected:
 

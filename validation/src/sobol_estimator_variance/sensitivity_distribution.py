@@ -174,12 +174,12 @@ class SensitivityConfidenceTest:
             fo = self.sensitivity_algorithm.getAggregatedFirstOrderIndices()
             to = self.sensitivity_algorithm.getAggregatedTotalOrderIndices()
             # Récupère les distributions asymptotiques
-            distFirstCol[
-                i
-            ] = self.sensitivity_algorithm.getFirstOrderAsymptoticDistribution()
-            distTotalCol[
-                i
-            ] = self.sensitivity_algorithm.getTotalOrderAsymptoticDistribution()
+            distFirstCol[i] = (
+                self.sensitivity_algorithm.getFirstOrderAsymptoticDistribution()
+            )
+            distTotalCol[i] = (
+                self.sensitivity_algorithm.getTotalOrderAsymptoticDistribution()
+            )
             for j in range(self.dim):
                 sampleFirst[i, j] = fo[j]
             for j in range(self.dim):
@@ -190,12 +190,8 @@ class SensitivityConfidenceTest:
         toInterval = self.sensitivity_algorithm.getTotalOrderIndicesInterval()
 
         # compute empirical variance
-        self.std_first_empirical = ot.Sample(
-            sampleFirst
-        ).computeStandardDeviation()
-        self.std_total_empirical = ot.Sample(
-            sampleTotal
-        ).computeStandardDeviation()
+        self.std_first_empirical = ot.Sample(sampleFirst).computeStandardDeviation()
+        self.std_total_empirical = ot.Sample(sampleTotal).computeStandardDeviation()
         return (
             sampleFirst,
             sampleTotal,

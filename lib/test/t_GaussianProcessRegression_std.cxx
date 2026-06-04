@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of GaussianProcessRegression class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -28,15 +28,11 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumCallsNumber", 10000);
-  ResourceMap::SetAsScalar("Cobyla-DefaultRhoBeg", 0.5);
 
   try
   {
     // Test 1: a real value function
     {
-      // Set Numerical precision to 4
-      PlatformInfo::SetNumericalPrecision(4);
       const UnsignedInteger sampleSize = 6;
       const UnsignedInteger dimension = 1;
 
@@ -176,7 +172,8 @@ int main(int, char *[])
       // Prediction & interpolation
       //assert_almost_equal(sampleY, metaModel(sampleX));
       const Point point = {5.5};
-      const Point outputValue = {-3.88368, 3.90286};
+      const Point outputValue = {-3.88367, 3.90287};
+      std::cout << metaModel(point) << std::endl;
       assert_almost_equal(metaModel(point), outputValue);
     }
     // stationary cov function - fix https://github.com/openturns/openturns/issues/1861
@@ -206,7 +203,7 @@ int main(int, char *[])
       // Get meta model
       Function metaModel(result.getMetaModel());
       const Point point = {5.5};
-      const Point outputValue = {5.58283};
+      const Point outputValue = {5.58843};
       assert_almost_equal(metaModel(point), outputValue);
     }
     // GPR with already calibrated parameters

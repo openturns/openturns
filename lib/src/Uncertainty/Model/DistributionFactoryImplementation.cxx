@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -197,13 +197,6 @@ void DistributionFactoryImplementation::setBootstrapSize(const UnsignedInteger b
 {
   if (bootstrapSize == 0) throw InvalidArgumentException(HERE) << "Error: the bootstrap size must be > 0.";
   bootstrapSize_ = bootstrapSize;
-}
-
-
-void DistributionFactoryImplementation::setKnownParameter(const Point & values, const Indices & indices)
-{
-  LOGWARN("DistributionFactory.setKnownParameter(Point, Indices) is deprecated");
-  setKnownParameter(indices, values);
 }
 
 void DistributionFactoryImplementation::setKnownParameter(const Indices & indices, const Point & values)

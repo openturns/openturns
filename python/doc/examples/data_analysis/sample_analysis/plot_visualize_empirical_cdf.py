@@ -8,10 +8,7 @@ Draw the empirical CDF
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # Then create a sample from a Gaussian distribution.
@@ -22,13 +19,13 @@ normal = ot.Normal(1)
 sample = normal.getSample(size)
 
 # %%
-# We draw the empirical CDF based on the :class:`~openturns.UserDefined` distribution.
+# We draw the empirical CDF based on the :class:`~openturns.FiniteDiscreteDistribution` distribution.
 # By default, the `drawCDF` method requires no input argument.
 
 # %%
-distribution = ot.UserDefined(sample)
+distribution = ot.FiniteDiscreteDistribution(sample)
 graph = distribution.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # If required, we can specify the interval that we want to draw.
@@ -37,6 +34,8 @@ view = viewer.View(graph)
 # %%
 xmin = sample.getMin()[0] - 2.0
 xmax = sample.getMax()[0] + 2.0
-graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
-view = viewer.View(graph)
-plt.show()
+graph = ot.FiniteDiscreteDistribution(sample).drawCDF(xmin, xmax)
+view = otv.View(graph)
+
+# %%
+otv.View.ShowAll()

@@ -2,7 +2,7 @@
 /**
  * @brief Proxy class for EvaluationImplementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -274,6 +274,11 @@ void EvaluationProxy::setStopCallback(StopCallback callBack, void * state)
   evaluation_.setStopCallback(callBack, state);
 }
 
+void EvaluationProxy::setDetachCallback(DetachCallback callBack, void * state)
+{
+  evaluation_.setDetachCallback(callBack, state);
+}
+
 /* Method save() stores the object through the StorageManager */
 void EvaluationProxy::save(Advocate & adv) const
 {
@@ -286,6 +291,12 @@ void EvaluationProxy::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
+}
+
+/* Evaluation accessor */
+Evaluation EvaluationProxy::getEvaluation() const
+{
+  return evaluation_;
 }
 
 END_NAMESPACE_OPENTURNS

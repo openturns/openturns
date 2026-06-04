@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a chaos expansion
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,10 +63,7 @@ public:
                         const OrthogonalBasis & orthogonalBasis,
                         const Indices & I,
                         const Sample & alpha_k,
-                        const FunctionCollection & Psi_k,
-                        const Point & residuals = Point(),
-                        const Point & relativeErrors = Point()
-                       );
+                        const FunctionCollection & Psi_k);
 
   /** Virtual constructor */
   FunctionalChaosResult * clone() const override;
@@ -135,9 +132,16 @@ public:
   Point getErrorHistory() const;
   Graph drawErrorHistory() const;
 
+  /** getMarginal accessor */
+  FunctionalChaosResult getMarginal(const UnsignedInteger indexOutput) const;
+  FunctionalChaosResult getMarginal(const Indices & indicesOutput) const;
+
+  /** Domination flag accessor */
+  void setUseDomination(const Bool useDomination);
+  Bool getUseDomination() const;
+
 protected:
 
-private:
   /** The input vector distribution */
   Distribution distribution_;
 
@@ -174,6 +178,9 @@ private:
 
   /** Is model selection? */
   Bool involvesModelSelection_ = false;
+
+  /** Use domination ? */
+  Bool useDomination_ = false;
 
 } ; /* class FunctionalChaosResult */
 

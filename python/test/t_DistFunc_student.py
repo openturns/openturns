@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import math as m
 
 ot.TESTPREAMBLE()
 
@@ -29,7 +30,7 @@ for i1 in range(n1):
 nu = 3.0
 rho = 0.5
 for i in range(5):
-    x0 = x1 = 10.0 ** i
+    x0 = x1 = 10.0**i
     p = ot.DistFunc.pStudent2D(nu, x0, x1, rho)
     print(f"pStudent2D(nu={nu}, x0={x0}, x1={x1}, rho={rho})={p:.6g}")
 
@@ -52,7 +53,7 @@ for x in [
     for nu in [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5]:
         for tail in [False, True]:
             p = ot.DistFunc.pStudent(nu, x, tail)
-            assert ot.SpecFunc.IsNormal(p), "pStudent returns nan"
+            assert m.isfinite(p), "pStudent returns nan"
 
 # qStudent
 nuMin = 0.2

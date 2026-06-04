@@ -3,7 +3,7 @@
  *  @brief BipartiteGraph defines a graph with two sets of nodes (red and black)
  *         and links from one set to the other only.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -52,7 +52,8 @@ Indices BipartiteGraph::getBlackNodes() const
 /* Draw the bipartite graph */
 Graph BipartiteGraph::draw() const
 {
-  Graph graph("Bipartite graph", "", "", true, "topright");
+  Graph graph("Bipartite graph", "", "");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger i = 0; i < getSize(); ++i)
   {
     Point redPoint(2);

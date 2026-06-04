@@ -2,7 +2,7 @@
 /**
  *  @brief DomainImplementation is defined as a domain of \mathbb{R}^d
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,8 +72,8 @@ class DomainImplementationContainsSamplePolicy
 
 public:
   DomainImplementationContainsSamplePolicy(const Sample & input,
-					   DomainImplementation::BoolCollection & output,
-					   const DomainImplementation & domain)
+      DomainImplementation::BoolCollection & output,
+      const DomainImplementation & domain)
     : input_(input)
     , output_(output)
     , domain_(domain)
@@ -84,7 +84,7 @@ public:
   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-	output_[i] = domain_.contains(input_[i]);
+      output_[i] = domain_.contains(input_[i]);
   } // operator ()
 };  // class DomainImplementationContainsSamplePolicy
 

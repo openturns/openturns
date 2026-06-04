@@ -66,14 +66,8 @@ print(
 curvatures = result.getSortedCurvatures()
 curvatures[2] = 0.0
 print("sorted curvatures=", curvatures)
-print(
-    "standard space design point=",
-    result.getStandardSpaceDesignPoint()
-)
-print(
-    "physical space design point=",
-    result.getPhysicalSpaceDesignPoint()
-)
+print("standard space design point=", result.getStandardSpaceDesignPoint())
+print("physical space design point=", result.getPhysicalSpaceDesignPoint())
 
 # Is the standard point origin in failure space?
 print(

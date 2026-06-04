@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a linear model estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ LinearModelResult::LinearModelResult()
   // Nothing to do
 }
 
-/* Parameter constructor */
+/* @deprecated Parameter constructor */
 LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Basis & basis,
                                      const Matrix & design,
@@ -52,9 +52,10 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & leverages,
                                      const Point & cookDistances,
                                      const Scalar residualsVariance)
-  : MetaModelResult(inputSample, outputSample, metaModel, Point(1, 0.0), Point(1, 0.0))
+  : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , design_(design)
+  , leastSquaresMethod_(LeastSquaresMethod(design))
   , coefficients_(coefficients)
   , condensedFormula_(formula)
   , coefficientsNames_(coefficientsNames)
@@ -76,6 +77,47 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                          << ", basis size = " << coefficients_.getSize()
                                          << ", degrees of freedom = " << degreesOfFreedom;
   checkIntercept();
+}
+
+/* @deprecated Parameter constructor */
+LinearModelResult::LinearModelResult(const Sample & inputSample,
+                                     const Basis & basis,
+                                     const Matrix & design,
+                                     const Sample & outputSample,
+                                     const Function & metaModel,
+                                     const Point & coefficients,
+                                     const Sample & sampleResiduals,
+                                     const Sample & standardizedResiduals,
+                                     const Point & diagonalGramInverse,
+                                     const Point & leverages,
+                                     const Point & cookDistances,
+                                     const Scalar residualsVariance)
+  : LinearModelResult(
+    inputSample, 
+    basis, 
+    design, 
+    outputSample, 
+    metaModel, 
+    coefficients,
+    basis.__str__(),
+    BuildDefaultCoefficientsNames(basis),
+    sampleResiduals, 
+    standardizedResiduals, 
+    diagonalGramInverse, 
+    leverages, 
+    cookDistances, 
+    residualsVariance)
+{
+  // Nothing to do
+}
+
+Description LinearModelResult::BuildDefaultCoefficientsNames(const Basis & basis)
+{
+  // Description of the basis
+  Description coefficientsNames(0);
+  for (UnsignedInteger k = 0; k < basis.getSize(); ++k)
+    coefficientsNames.add(basis[k].__str__());
+  return coefficientsNames;
 }
 
 /* Virtual constructor */
@@ -125,7 +167,7 @@ String LinearModelResult::__str__(const String & /*offset*/) const
 String LinearModelResult::__repr_markdown__() const
 {
   OSS oss(false);
-  const UnsignedInteger inputDimension = basis_[0].getInputDimension();
+  const UnsignedInteger inputDimension = basis_.getSize() > 0 ? basis_[0].getInputDimension() : 0;
   oss << getClassName() << "\n"
       << "- input dimension=" << inputDimension << "\n"
       << "- basis size=" << basis_.getSize() << "\n"
@@ -140,7 +182,8 @@ String LinearModelResult::__repr_markdown__() const
       << "- Cook's distances size=" << cookDistances_.getSize() << "\n"
       << "- residuals variance=" << residualsVariance_ << "\n"
       << "- has intercept=" << hasIntercept_ << "\n"
-      << "- is model selection=" << involvesModelSelection_ << "\n";
+      << "- is model selection=" << involvesModelSelection_ << "\n"
+      << "- least squares method=" << leastSquaresMethod_ << "\n";
   oss << "\n";
   return oss;
 }
@@ -162,7 +205,18 @@ String LinearModelResult::__repr__() const
          << " cookDistances dimension=" << cookDistances_.getDimension()
          << " residuals variance= " << residualsVariance_
          << " hasIntercept=" << hasIntercept_
-         << " involvesModelSelection=" << involvesModelSelection_;
+         << " involvesModelSelection=" << involvesModelSelection_
+         << " leastSquaresMethod=" << leastSquaresMethod_;
+}
+
+LeastSquaresMethod LinearModelResult::getLeastSquaresMethod() const
+{
+  return leastSquaresMethod_;
+}
+
+void LinearModelResult::setLeastSquaresMethod(const LeastSquaresMethod & leastSquaresMethod)
+{
+  leastSquaresMethod_ = leastSquaresMethod;
 }
 
 Basis LinearModelResult::getBasis() const
@@ -206,8 +260,8 @@ Sample LinearModelResult::getSampleResiduals() const
 /* Number of degrees of freedom */
 SignedInteger LinearModelResult::getDegreesOfFreedom() const
 {
-  const UnsignedInteger size = inputSample_.getSize();
-  const UnsignedInteger basisSize = coefficients_.getSize();
+  const SignedInteger size = static_cast<SignedInteger>(inputSample_.getSize());
+  const SignedInteger basisSize = static_cast<SignedInteger>(coefficients_.getSize());
   return size - basisSize;
 }
 
@@ -218,7 +272,7 @@ Normal LinearModelResult::getNoiseDistribution() const
   const SignedInteger dof = getDegreesOfFreedom();
   if (dof <= 0)
     throw NotDefinedException(HERE) << "The noise variance is undefined when DOF is null";
-  return Normal(0, std::sqrt(residualsVariance_));
+  return Normal(0.0, std::sqrt(residualsVariance_));
 }
 
 Sample LinearModelResult::getStandardizedResiduals() const
@@ -275,12 +329,12 @@ Scalar LinearModelResult::getAdjustedRSquared() const
     throw NotDefinedException(HERE) << "The adjusted R2 is undefined with a null DOF";
   const UnsignedInteger size = getSampleResiduals().getSize();
   const Scalar R2  = getRSquared();
-  Scalar aR2 = (1.0 - R2);
+  Scalar aR2 = 1.0 - R2;
   if (hasIntercept_)
-    aR2 *= size - 1;
+    aR2 *= static_cast<Scalar>(size - 1);
   else
-    aR2 *= size;
-  return 1 - aR2 / dof;
+    aR2 *= static_cast<Scalar>(size);
+  return 1.0 - aR2 / static_cast<Scalar>(dof);
 }
 
 Point LinearModelResult::getCoefficientsStandardErrors() const
@@ -296,17 +350,10 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
   return standardErrors;
 }
 
+/* @deprecated */
 LeastSquaresMethod LinearModelResult::buildMethod() const
 {
-  LeastSquaresMethod leastSquaresMethod;
-  leastSquaresMethod = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), design_);
-  const UnsignedInteger basisSize =  design_.getNbColumns();
-  Indices addedIndices(basisSize);
-  addedIndices.fill();
-  Indices conservedIndices(0);
-  Indices removedIndices(0);
-  leastSquaresMethod.update(addedIndices, conservedIndices, removedIndices);
-  return leastSquaresMethod;
+  return leastSquaresMethod_;
 }
 
 /* involvesModelSelection accessor */
@@ -337,6 +384,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "cookDistances_", cookDistances_ );
   adv.saveAttribute( "residualsVariance_", residualsVariance_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
+  adv.saveAttribute( "leastSquaresMethod_", leastSquaresMethod_ );
 }
 
 
@@ -363,6 +411,11 @@ void LinearModelResult::load(Advocate & adv)
     adv.loadAttribute( "sigma2_", residualsVariance_ );
   if (adv.hasAttribute("involvesModelSelection_"))
     adv.loadAttribute("involvesModelSelection_", involvesModelSelection_);
+  if (adv.hasAttribute("leastSquaresMethod_"))
+    adv.loadAttribute( "leastSquaresMethod_", leastSquaresMethod_ );
+  else
+    leastSquaresMethod_ = LeastSquaresMethod(design_);
+  checkIntercept();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -1,5 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 f = ot.SymbolicFunction(["x"], ["x + x * sin(x)"])
 inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
@@ -22,4 +22,4 @@ graph.add(ot.Cloud(inputSample, outputSample))
 graph.setLegends(["model", "meta model", "sample"])
 graph.setLegendPosition("upper left")
 graph.setTitle(r"$x + x \; \sin(x)$")
-View(graph)
+otv.View(graph)

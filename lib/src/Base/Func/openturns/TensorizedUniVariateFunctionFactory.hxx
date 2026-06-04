@@ -2,7 +2,7 @@
 /**
  *  @brief This is the tensorized function basis
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,7 +67,7 @@ public:
   /** set the enumerate function that translate unidimensional indices into multidimensional indices */
   void setEnumerateFunction(const EnumerateFunction & phi);
 
-  /** set the function familly collection */
+  /** set the function family collection */
   FunctionFamilyCollection getFunctionFamilyCollection() const;
   void setFunctionFamilyCollection(const FunctionFamilyCollection & coll);
 

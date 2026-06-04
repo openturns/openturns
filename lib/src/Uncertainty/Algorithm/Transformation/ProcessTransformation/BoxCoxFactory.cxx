@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -421,7 +421,8 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
     lambda[d] = optpoint[0];
   }
   // Graphical inspection
-  graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood", true, "topright");
+  graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood");
+  graph.setLegendPosition("topright");
   const Scalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
   const Scalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
   const Scalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));

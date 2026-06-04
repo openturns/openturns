@@ -12,10 +12,6 @@ Create an extreme value distribution
 # %%
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
 
 # %%
 # The generalized extreme value distribution (GEV)
@@ -77,4 +73,4 @@ view = otv.View(graphCDF)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

@@ -25,8 +25,6 @@
 
 %apply const BoolCollection & { OT::Interval::BoolCollection & };
 
-%rename(__eq__) OT::Interval::operator==(const Interval & rhs) const;
-
 %copyctor OT::Interval;
 
 %include openturns/Interval.hxx

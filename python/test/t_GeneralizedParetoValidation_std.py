@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -11,7 +10,7 @@ sample = distribution.getSample(size)
 # fake result
 distributionParameter = ot.Normal(distribution.getParameter(), ot.CovarianceMatrix(3))
 result = ot.DistributionFactoryResult(distribution, distributionParameter)
-validation = otexp.GeneralizedParetoValidation(result, sample)
+validation = ot.GeneralizedParetoValidation(result, sample)
 graph1 = validation.drawReturnLevel()
 assert len(graph1.getDrawables()) == 4, "nb drawables"
 graph2 = validation.drawPDF()

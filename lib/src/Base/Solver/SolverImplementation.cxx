@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 
 #include "openturns/SolverImplementation.hxx"
 #include "openturns/Exception.hxx"
@@ -159,7 +158,12 @@ public:
     // Nothing to do
   }
 
-  Scalar operator() (const Scalar x) const
+  UniVariateFunctionFromFunction * clone() const override
+  {
+    return new UniVariateFunctionFromFunction(*this);
+  }
+
+  Scalar operator() (const Scalar x) const override
   {
     return function_(Point(1, x))[0];
   }
@@ -224,9 +228,9 @@ Point SolverImplementation::solve(const Function &,
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &)";
 }
 
-  Point SolverImplementation::solve(const Function &,
-                                    const Point &,
-                                    const Interval &) const
+Point SolverImplementation::solve(const Function &,
+                                  const Point &,
+                                  const Interval &) const
 {
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function &, const Point &, const Interval&)";
 }

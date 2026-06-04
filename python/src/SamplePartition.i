@@ -2,7 +2,7 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::SamplePartition & clusters ($*ltype temp) %{ temp = OT::SamplePartition(); $1 = &temp; %}
-%typemap(argout) OT::SamplePartition & clusters %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::SamplePartition(*$1), SWIGTYPE_p_OT__SamplePartition,  SWIG_POINTER_OWN)); %}
+%typemap(argout) OT::SamplePartition & clusters %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::SamplePartition(*$1), SWIG_TypeQuery("OT::SamplePartition *"),  SWIG_POINTER_OWN)); %}
 
 %{
 #include "openturns/SamplePartition.hxx"
@@ -28,7 +28,7 @@ def __SamplePartition_ExtractFromDataFrame(full, partial):
 
     Returns
     -------
-    partition : :class:`openturns.experimental.SamplePartition`
+    partition : :class:`openturns.SamplePartition`
         The resulting partition
     """
 
@@ -38,6 +38,6 @@ def __SamplePartition_ExtractFromDataFrame(full, partial):
     # convert the full dataframe to a Sample
     full_sample = openturns.typ.Sample.BuildFromDataFrame(full)
 
-    return openturns.experimental.SamplePartition(full_sample, partial_indices)
+    return openturns.statistics.SamplePartition(full_sample, partial_indices)
 SamplePartition.ExtractFromDataFrame = __SamplePartition_ExtractFromDataFrame
 %}

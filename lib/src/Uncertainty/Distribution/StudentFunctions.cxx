@@ -3,7 +3,7 @@
  *  @brief Efficient implementation of the computation of the Student T
  *         CDF and quantile
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -140,7 +140,7 @@ Scalar Student2DCDF(const Scalar nu,
   if (std::abs(rho) < 1.0)
   {
     const Scalar loLimit = std::asin(rho);
-    if (SpecFunc::IsNormal(x0) && SpecFunc::IsNormal(x1))
+    if (std::isfinite(x0) && std::isfinite(x1))
     {
       // Twice the speed of a ParametricFunction, same accuracy
       const SymbolicFunction kernel("theta", String(OSS(true) << "1/(1+((" << x0 << "*sin(theta)-(" << x1 << "))^2 / cos(theta)^2 + (" << x0 << ")^2)/" << nu << ")^(0.5*" << nu << ")"));

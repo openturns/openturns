@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a chaos expansion
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,10 +59,8 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     const OrthogonalBasis & orthogonalBasis,
     const Indices & I,
     const Sample & alpha_k,
-    const FunctionCollection & Psi_k,
-    const Point & residuals,
-    const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension())), residuals, relativeErrors)
+    const FunctionCollection & Psi_k)
+  : MetaModelResult(inputSample, outputSample, ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension())))
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -72,18 +70,18 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , Psi_k_(Psi_k)
 {
   if (Psi_k.getSize() > 0)
-    {
-      // The composed meta model will be a dual linear combination
-      composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
-    }
+  {
+    // The composed meta model will be a dual linear combination
+    composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
+  }
   else
-    {
-      // The meta model is the null function
-      composedMetaModel_ = ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension()));
-      Psi_k_.add(orthogonalBasis.build(0));
-      alpha_k_ = Sample(1, outputSample.getDimension());
-      I_.add(0);
-    }
+  {
+    // The meta model is the null function
+    composedMetaModel_ = ConstantFunction(inputSample.getDimension(), Point(outputSample.getDimension()));
+    Psi_k_.add(orthogonalBasis.build(0));
+    alpha_k_ = Sample(1, outputSample.getDimension());
+    I_.add(0);
+  }
   if (transformation.getEvaluation().getImplementation()->getClassName() == "IdentityEvaluation")
     metaModel_ = composedMetaModel_;
   else
@@ -111,8 +109,6 @@ String FunctionalChaosResult::__repr__() const
          << " indices=" << I_
          << " coefficients=" << alpha_k_
          << " reduced basis=" << Psi_k_
-         << " residuals=" << residuals_
-         << " relativeErrors=" << relativeErrors_
          << " composedMetaModel=" << composedMetaModel_
          << " metaModel=" << metaModel_
          << " isLeastSquares=" << isLeastSquares_
@@ -147,8 +143,6 @@ String FunctionalChaosResult::__repr_markdown__() const
       << "- inverse transformation=" << inverseTransformation_.getInputDimension() << " -> " << inverseTransformation_.getOutputDimension() << "\n"
       << "- orthogonal basis dimension=" << orthogonalBasis_.getMeasure().getDimension() << "\n"
       << "- indices size=" << indicesSize << "\n"
-      << "- relative errors=" << relativeErrors_ << "\n"
-      << "- residuals=" << residuals_ << "\n"
       << "- is least squares=" << isLeastSquares_ << "\n"
       << "- is model selection=" << involvesModelSelection_ << "\n";
   oss << "\n";
@@ -340,6 +334,9 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   if (!distribution_.hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for an independent copula.";
 
+  if (getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosResult conditional expectation is not available with domination method";
+
   // Create the conditioned orthogonal basis
   if (!orthogonalBasis_.getImplementation()->isTensorProduct())
     throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for a tensor-product basis.";
@@ -410,9 +407,7 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
     orthogonalBasisMarginal,
     listOfActiveReducedIndices,
     activeCoefficients,
-    activeReducedBasis,
-    residuals_,
-    relativeErrors_
+    activeReducedBasis
   );
   return conditionalPCE;
 }
@@ -434,6 +429,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "errorHistory_", errorHistory_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
+  adv.saveAttribute( "useDomination_", useDomination_);
 }
 
 
@@ -460,6 +456,8 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
     adv.loadAttribute( "involvesModelSelection_", involvesModelSelection_ );
   }
+  if (adv.hasAttribute("useDomination_"))
+    adv.loadAttribute("useDomination_", useDomination_);
 }
 
 IndicesCollection FunctionalChaosResult::getIndicesHistory() const
@@ -512,7 +510,8 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   for (UnsignedInteger i = 0; i < size; ++ i)
     for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
       valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
-  Graph result("Selection history", "iteration", "coefficient", true, "upper right");
+  Graph result("Selection history", "iteration", "coefficient");
+  result.setLegendPosition("upper right");
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
     Curve curve(valuesX, valuesY.getMarginal(i));
@@ -549,12 +548,71 @@ Graph FunctionalChaosResult::drawErrorHistory() const
     values(i, 0) = i;
     values(i, 1) = errorHistory_[i];
   }
-  Graph result("Error history", "iteration", "error", true, "upper right");
+  Graph result("Error history", "iteration", "error");
+  result.setLegendPosition("upper right");
   Curve curve(values);
   curve.setColor("blue");
   result.add(curve);
   result.setIntegerXTick(true);
   return result;
+}
+
+FunctionalChaosResult FunctionalChaosResult::getMarginal(const UnsignedInteger indexOutput) const
+{
+  return getMarginal(Indices({indexOutput}));
+}
+
+FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indicesOutput) const
+{
+  const UnsignedInteger outputDimension(outputSample_.getDimension());
+  if ((indicesOutput.getSize() == outputDimension) && indicesOutput.isIncreasing())
+    return *this;
+  if (!indicesOutput.check(outputDimension))
+    throw InvalidArgumentException(HERE) << "Requested indices exceed output dimension (" << outputDimension << ")";
+  const Sample marginalOutputSample(outputSample_.getMarginal(indicesOutput));
+  const Sample marginalCoefficients(alpha_k_.getMarginal(indicesOutput));
+
+  // Extract nonzero coefficients only
+  const UnsignedInteger numberOfCoefficients(marginalCoefficients.getSize());
+  // Set nonzero coefficients
+  const UnsignedInteger numberOfMarginalOutputDimensions = indicesOutput.getSize();
+  Indices nonzeroIndices(0);
+  Sample nonzeroCoefficients(0, numberOfMarginalOutputDimensions);
+  Collection<Function> nonzeroFunctions(0);
+  for (UnsignedInteger i = 0; i < numberOfCoefficients; ++ i)
+  {
+    Point marginalCoeff = marginalCoefficients[i];
+    if (marginalCoeff.normSquare() > 0.0)
+    {
+      nonzeroCoefficients.add(marginalCoeff);
+      nonzeroIndices.add(I_[i]);
+      nonzeroFunctions.add(Psi_k_[i]);
+    }
+  }
+
+  const FunctionalChaosResult marginalPCE(
+    inputSample_,
+    marginalOutputSample,
+    distribution_,
+    transformation_,
+    inverseTransformation_,
+    orthogonalBasis_,
+    nonzeroIndices,
+    nonzeroCoefficients,
+    nonzeroFunctions
+  );
+  return marginalPCE;
+}
+
+/* Domination flag accessor */
+void FunctionalChaosResult::setUseDomination(const Bool useDomination)
+{
+  useDomination_ = useDomination;
+}
+
+Bool FunctionalChaosResult::getUseDomination() const
+{
+  return useDomination_;
 }
 
 END_NAMESPACE_OPENTURNS

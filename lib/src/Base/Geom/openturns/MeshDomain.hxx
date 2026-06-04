@@ -2,7 +2,7 @@
 /**
  *  @brief MeshDomain converts a Mesh into a DomainImplementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,9 +44,6 @@ public:
   /** Default constructor */
   explicit MeshDomain(const Mesh & mesh);
 
-  /** Parameters constructor */
-  MeshDomain(const Mesh & mesh, const EnclosingSimplexAlgorithm & enclosingSimplex);
-
   /** Mesh accessor */
   virtual Mesh getMesh() const;
 
@@ -80,7 +77,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-private:
+protected:
 
   /** The underlying mesh */
   Mesh mesh_;

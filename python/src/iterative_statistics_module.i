@@ -5,6 +5,7 @@
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTCommon.hxx"
+#include "openturns/OTStat.hxx"
 #include "openturns/OTType.hxx"
 #include "openturns/OTIterativeStat.hxx"
 %}

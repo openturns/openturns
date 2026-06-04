@@ -336,6 +336,18 @@ std::ostream & operator<< (std::ostream & outbuf, const BasicExpression & expr)
         case RINT:
           outbuf << "rint";
           break;
+        case FLOOR:
+          outbuf << "floor";
+          break;
+        case CEIL:
+          outbuf << "ceil";
+          break;
+        case TRUNC:
+          outbuf << "trunc";
+          break;
+        case ROUND:
+          outbuf << "round";
+          break;
         case ABS:
           outbuf << "abs";
           break;
@@ -3184,6 +3196,102 @@ Expression Rint(Expression a)
   }
 }
 
+Expression Floor(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    Expression ret;
+    ret.SetToCopyOf(a);
+    ret->SetCoeff(1.0);
+    ret->SetValue(floor(a->GetValue()));
+    ret->SetExponent(1.0);
+    ret->SetOpType(CONST);
+    return ret;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(FLOOR);
+    ret->AddCopyOfNode(a);
+    return ret;
+  }
+}
+
+Expression Ceil(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    Expression ret;
+    ret.SetToCopyOf(a);
+    ret->SetCoeff(1.0);
+    ret->SetValue(ceil(a->GetValue()));
+    ret->SetExponent(1.0);
+    ret->SetOpType(CONST);
+    return ret;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(CEIL);
+    ret->AddCopyOfNode(a);
+    return ret;
+  }
+}
+
+Expression Trunc(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    Expression ret;
+    ret.SetToCopyOf(a);
+    ret->SetCoeff(1.0);
+    ret->SetValue(trunc(a->GetValue()));
+    ret->SetExponent(1.0);
+    ret->SetOpType(CONST);
+    return ret;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(TRUNC);
+    ret->AddCopyOfNode(a);
+    return ret;
+  }
+}
+
+Expression Round(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    Expression ret;
+    ret.SetToCopyOf(a);
+    ret->SetCoeff(1.0);
+    ret->SetValue(round(a->GetValue()));
+    ret->SetExponent(1.0);
+    ret->SetOpType(CONST);
+    return ret;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(ROUND);
+    ret->AddCopyOfNode(a);
+    return ret;
+  }
+}
+
 Expression Abs(Expression a)
 {
   // go for it
@@ -4694,6 +4802,94 @@ Expression RintLink(Expression a)
   }
 }
 
+Expression FloorLink(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    a->SetValue(floor(a->GetValue()));
+    a->SetCoeff(1.0);
+    a->SetExponent(1.0);
+    a->SetOpType(CONST);
+    return a;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(FLOOR);
+    ret->AddNode(a);
+    return ret;
+  }
+}
+
+Expression CeilLink(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    a->SetValue(ceil(a->GetValue()));
+    a->SetCoeff(1.0);
+    a->SetExponent(1.0);
+    a->SetOpType(CONST);
+    return a;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(CEIL);
+    ret->AddNode(a);
+    return ret;
+  }
+}
+
+Expression TruncLink(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    a->SetValue(trunc(a->GetValue()));
+    a->SetCoeff(1.0);
+    a->SetExponent(1.0);
+    a->SetOpType(CONST);
+    return a;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(TRUNC);
+    ret->AddNode(a);
+    return ret;
+  }
+}
+
+Expression RoundLink(Expression a)
+{
+  // go for it
+  if (a->IsLeaf() && a->GetOpType() == CONST)
+  {
+    a->SetValue(round(a->GetValue()));
+    a->SetCoeff(1.0);
+    a->SetExponent(1.0);
+    a->SetOpType(CONST);
+    return a;
+  }
+  else
+  {
+    Expression ret;
+    ret->SetCoeff(1.0);
+    ret->SetExponent(1.0);
+    ret->SetOpType(ROUND);
+    ret->AddNode(a);
+    return ret;
+  }
+}
+
 Expression AbsLink(Expression a)
 {
   // go for it
@@ -5057,6 +5253,18 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
           ret = ret + c;         // tan(f)^2 + 1
           ret = ret * Diff(a->GetNode(0), vi);    // f' * (tan(f)^2 + 1)
           break;
+        case COT:
+          if (sz != 1)
+          {
+            // check that there is exactly one operand
+            throw ErrNotPermitted(19, "Expression", "Diff", "GetSize() != 1",
+                                  "cot must have exactly 1 operand",
+                                  HELPURL);
+          }
+          ret = Sin(a->GetCopyOfNode(0)); // sin(f)
+          ret = ret ^ two;      // sin(f)^2
+          ret = -Diff(a->GetNode(0), vi) / ret; // -f' / sin(f)^2
+          break;
         case ASIN:
           if (sz != 1)
           {
@@ -5133,6 +5341,18 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
           c->One();
           ret = c - ret;
           ret = ret * Diff(a->GetNode(0), vi);    // f' * (1 - tan(f)^2)
+          break;
+        case COTH:
+          if (sz != 1)
+          {
+            // check that there is exactly one operand
+            throw ErrNotPermitted(19, "Expression", "Diff", "GetSize() != 1",
+                                  "coth must have exactly 1 operand",
+                                  HELPURL);
+          }
+          ret = Sinh(a->GetCopyOfNode(0)); // sinh(f)
+          ret = ret ^ two;      // sinh(f)^2
+          ret = -Diff(a->GetNode(0), vi) / ret; // -f' / sinh(f)^2
           break;
         case ASINH:
           if (sz != 1)
@@ -5357,11 +5577,15 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
           break;
         case SIGN:
         case RINT:
+        case FLOOR:
+        case CEIL:
+        case TRUNC:
+        case ROUND:
           if (sz != 1)
           {
             // check that there is exactly one operand
             throw ErrNotPermitted(16, "Expression", "Diff", "GetSize() != 1",
-                                  "sign (rint) must have exactly 1 operand",
+                                  "sign (rint, floor, ceil, trunc, round) must have exactly 1 operand",
                                   HELPURL);
           }
           ret = zero; // 0

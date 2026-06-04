@@ -14,7 +14,6 @@ Composite random vector
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a random vector based on a distribution

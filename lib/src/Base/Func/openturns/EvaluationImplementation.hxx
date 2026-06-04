@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all function implementations
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -179,6 +179,10 @@ public:
   typedef Bool (*StopCallback)(void * state);
   virtual void setStopCallback(StopCallback callBack, void * state = nullptr);
 
+  /** Detach callback */
+  typedef Bool (*DetachCallback)(void * state);
+  virtual void setDetachCallback(DetachCallback callBack, void * state = nullptr);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -200,16 +204,16 @@ protected:
   /** Whether to check the output for invalid values */
   Bool checkOutput_ = true;
 
-private:
+  // callbacks
+  std::pair< StopCallback, void *> stopCallback_;
+  std::pair< DetachCallback, void *> detachCallback_;
 
+private:
   /** The description of the input components */
   Description inputDescription_;
 
   /** The description of the input components */
   Description outputDescription_;
-
-  // callbacks
-  std::pair< StopCallback, void *> stopCallback_;
 
 }; /* class EvaluationImplementation */
 

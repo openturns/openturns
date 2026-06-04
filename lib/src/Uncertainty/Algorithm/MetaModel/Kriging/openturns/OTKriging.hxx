@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Kriging
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,8 @@
 
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/KrigingGradient.hxx"
+#include "openturns/GaussianProcessEvaluation.hxx"
+#include "openturns/GaussianProcessGradient.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/KrigingResult.hxx"
 #include "openturns/GeneralLinearModelResult.hxx"
@@ -32,6 +34,7 @@
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
 #include "openturns/GaussianProcessRegression.hxx"
+#include "openturns/GaussianProcessRegressionCrossValidation.hxx"
 #include "openturns/GaussianProcessConditionalCovariance.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */

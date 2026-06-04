@@ -1,0 +1,239 @@
+%define OT_WeightedExperiment_doc
+R"RAW(Weighted experiment.
+
+Available constructor:
+    WeightedExperiment(*distribution=ot.Uniform(), size=100*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` used to generate the set of input data.
+size : positive int
+    Number :math:`\sampleSize` of points that will be generated in the experiment.
+
+See also
+--------
+ExperimentIntegration
+
+Notes
+-----
+This class is used to generate nodes and their associated weights
+to approximate the weighted integral of a physical model with respect
+to a distribution (see [sullivan2015]_ chapter 9 page 165).
+
+Let :math:`\model : \physicalInputSpace \rightarrow \physicalOutputSpace` 
+be a function where :math:`\physicalInputSpace \subseteq \Rset^{\inputDim}` 
+is the input space and :math:`\physicalOutputSpace \subseteq \Rset^{\outputDim}`
+is the output space.
+Let :math:`\inputRV` be a random vector with dimension :math:`\outputDim`. 
+We are interested in the expected value of the physical model:
+
+.. math::
+
+    \Expect{ \model(\inputRV)}
+    = \int_{\physicalInputSpace} \model(\inputReal) 
+    d\inputMeasure(\inputReal)
+
+where :math:`\inputMeasure` is the distribution of the input random vector.
+If the input has a probability density function, then:
+
+.. math::
+
+    \Expect{ \model(\inputRV)}
+    = \int_{\physicalInputSpace} \model(\inputReal) 
+    \inputProbabilityDensityFunction(\inputReal) d\inputReal
+
+where :math:`\inputProbabilityDensityFunction` is the probability density 
+function of the input random vector.
+
+The class computes the weights :math:`\{w_i \in \Rset\}_{i = 1, ..., \sampleSize}`
+and the nodes :math:`\{\inputReal_i \in \Rset^{\inputDim}\}_{i = 1, ..., \sampleSize}`
+such that 
+
+.. math::
+
+    \Expect{ \model(\inputRV)}
+    \approx \sum_{i = 1}^\sampleSize w_i \model\left(\inputReal_i\right)
+
+By default, all the weights are equal to :math:`w_i = \frac{1}{\sampleSize}`.
+Some quadrature rules e.g. the tensorised Gauss product rule guarantee 
+that all nodes are non negative, but not all rules have that 
+property.
+
+A `WeightedExperiment` object can be created only through its derived classes
+which are in three groups:
+
+1. The random patterns, where the set of input
+   data is generated from the joint distribution of the input random vector,
+   e.g. 
+   :class:`Monte Carlo <openturns.MonteCarloExperiment>`.
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `True`.
+
+2. The :class:`low discrepancy sequences
+   <openturns.LowDiscrepancySequence>` e.g. 
+   :class:`~openturns.SobolSequence`.
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`.
+
+3. The deterministic patterns or *quadrature rules* e.g.
+   :class:`Gauss product <openturns.GaussProductExperiment>`.
+   In this case, the value returned by :meth:`~openturns.WeightedExperiment.isRandom()` is `False`.
+
+In order to estimate the expectation of the model using the nodes and weights,
+we suggest to use the :class:`~openturns.ExperimentIntegration` class.)RAW"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation
+OT_WeightedExperiment_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_generate_doc
+R"RAW(Generate points according to the type of the experiment.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Points :math:`(\inputReal_i)_{i = 1, ..., \sampleSize}` 
+    of the design of experiments. 
+    The sampling method is defined by the type of the weighted experiment.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myExperiment = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> sample = myExperiment.generate()
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+3 : [ -0.355007  1.43725  ]
+4 : [  0.810668  0.793156 ])RAW"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::generate
+OT_WeightedExperiment_generate_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_generateWithWeights_doc
+R"RAW(Generate points and their associated weight according to the type of the experiment.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    The points of the design of experiments. The sampling method
+    is defined by the nature of the experiment.
+weights : :class:`~openturns.Point` of size :math:`\sampleSize`
+    Weights :math:`(w_i)_{i = 1, ..., \sampleSize}` associated with the points. By default,
+    all the weights are equal to :math:`\frac{1}{\sampleSize}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myExperiment = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> sample, weights = myExperiment.generateWithWeights()
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+3 : [ -0.355007  1.43725  ]
+4 : [  0.810668  0.793156 ]
+>>> print(weights)
+[0.2,0.2,0.2,0.2,0.2])RAW"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::generateWithWeights
+OT_WeightedExperiment_generateWithWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_getDistribution_doc
+"Accessor to the distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution of the input random vector."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::getDistribution
+OT_WeightedExperiment_getDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setDistribution_doc
+"Accessor to the distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution of the input random vector."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setDistribution
+OT_WeightedExperiment_setDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_getSize_doc
+R"RAW(Accessor to the size of the generated sample.
+
+Returns
+-------
+size : positive int
+    Number :math:`\sampleSize` of points constituting the design of experiments.)RAW"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::getSize
+OT_WeightedExperiment_getSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setSize_doc
+R"RAW(Accessor to the size of the generated sample.
+
+Parameters
+----------
+size : positive int
+    Number :math:`\sampleSize` of points constituting the design of experiments.)RAW"
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setSize
+OT_WeightedExperiment_setSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_hasUniformWeights_doc
+"Ask whether the experiment has uniform weights.
+
+Returns
+-------
+hasUniformWeights : bool
+    Whether the experiment has uniform weights."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::hasUniformWeights
+OT_WeightedExperiment_hasUniformWeights_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_isRandom_doc
+"Accessor to the randomness of quadrature.
+
+Parameters
+----------
+isRandom : bool
+    Is true if the design of experiments is random.
+    Otherwise, the design of experiment is assumed to be deterministic."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::isRandom
+OT_WeightedExperiment_isRandom_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_WeightedExperiment_setLevels_doc
+"Accessor to the experiment nesting levels.
+
+Parameters
+----------
+levels : sequence of int
+    Nesting level for each component."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::setLevels
+OT_WeightedExperiment_setLevels_doc

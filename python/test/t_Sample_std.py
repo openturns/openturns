@@ -73,7 +73,7 @@ sample3.add(samePoint)
 print("sample3=", repr(sample3))
 
 # We find the new point into the sample
-pos = sample3.find(anotherNewPoint)
+pos = sample3.index(anotherNewPoint)
 if pos != 5:
     print("Error in finding point into sample. Expected 5. Got ", pos)
 
@@ -92,6 +92,8 @@ print("sample5 (linear)=", sample5.asPoint())
 # Selection
 indices = [1, 0, 2, 1, 2]
 print("selection=", sample5.select(indices))
+indices = list(range(len(sample5)))
+print("selection(id)=", sample5.select(indices))
 
 # html conversion
 print(sample1._repr_html_())

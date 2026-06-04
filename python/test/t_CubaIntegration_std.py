@@ -3,7 +3,6 @@
 import openturns as ot
 import math
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -13,8 +12,8 @@ lbIntegration = [0.0, 0.0, 0.0]
 ubIntegration = [1.0, 1.0, 1.0]
 valueRef = -math.sin(1.0) * (math.cos(1.0) - 1.0) * (math.e - 1.0)
 
-for r in otexp.CubaIntegration.GetAlgorithmNames():
-    algoC = otexp.CubaIntegration(r)
+for r in ot.CubaIntegration.GetAlgorithmNames():
+    algoC = ot.CubaIntegration(r)
     value = algoC.integrate(f, ot.Interval(lbIntegration, ubIntegration))
     ott.assert_almost_equal(value[0], valueRef, 1.0e-3, 1.0e-3)
 
@@ -30,11 +29,11 @@ lbIntegration = [0.0, 0.0, 1.0]
 ubIntegration = [2.0, 3.0, 4.0]
 valueRef = [0.108972129575688278, -0.375]
 
-for r in otexp.CubaIntegration.GetAlgorithmNames():
+for r in ot.CubaIntegration.GetAlgorithmNames():
     if r == "suave":
         # Suave is quite inaccurate with these integrands, skipping.
         continue
-    algoC = otexp.CubaIntegration(r)
+    algoC = ot.CubaIntegration(r)
     if r == "vegas":
         # Vegas seemingly needs more favorable parameters there
         algoC.setMaximumRelativeError(5.0e-3)

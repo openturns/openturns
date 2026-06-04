@@ -1,9 +1,9 @@
 
 //                                               -*- C++ -*-
 /**
- * @brief HSICEstimatorImplementation implements the HSIC sensivity indices.
+ * @brief HSICEstimatorImplementation implements the HSIC sensitivity indices.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -407,7 +407,6 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
 {
   if (values.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Values size does not match input dimension";
-  Graph graph(title, "Input marginal number", "", true, "");
 
   /* Define cloud */
   Sample data(values.getDimension(), 2);
@@ -419,6 +418,8 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, const String 
 
   Cloud cloud(data);
   cloud.setPointStyle("circle");
+
+  Graph graph(title, "Input marginal number", "");
   graph.add(cloud);
 
   /* Min & max indices values */

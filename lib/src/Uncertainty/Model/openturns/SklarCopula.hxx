@@ -2,7 +2,7 @@
 /**
  *  @brief The SklarCopula distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,6 +67,10 @@ public:
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
+
+  /** Get the log-PDF of the distribution */
+  using DistributionImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;

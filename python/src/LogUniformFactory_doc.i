@@ -1,0 +1,45 @@
+%feature("docstring") OT::LogUniformFactory
+R"RAW(Log Uniform factory.
+
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{a}_n=(1-1/(2+n))x_{(1,n)}\\
+      \displaystyle\Hat{b}_n=(1+1/(2+n))x_{(n,n)}
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, LogUniform)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogUniformFactory::buildAsLogUniform
+"Estimate the distribution as native distribution.
+
+
+**Available usages**:
+
+    buildAsLogUniform()
+
+    buildAsLogUniform(*sample*)
+
+    buildAsLogUniform(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float,
+    Sample from which the distribution parameters are estimated.
+param : sequence of float,
+   The parameters of the :class:`~openturns.LogUniform`.
+
+Returns
+-------
+distribution : :class:`~openturns.LogUniform`,
+    The estimated distribution as a LogUniform.
+    
+    In the first usage, the default LogUniform distribution is built."
+

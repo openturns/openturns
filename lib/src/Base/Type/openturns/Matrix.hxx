@@ -2,7 +2,7 @@
 /**
  *  @brief Matrix implements the classical mathematical matrix
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -123,7 +123,7 @@ public:
 
   /** Row extraction */
   const Matrix getRow(const UnsignedInteger rowIndex) const;
-  /** Column extration */
+  /** Column extraction */
   const Matrix getColumn(const UnsignedInteger columnIndex) const;
 
   /** Matrix additions (must have the same dimensions) */
@@ -211,7 +211,7 @@ public:
   /** All elements are squared */
   void squareElements();
 
-  /** The forbenius norm */
+  /** The Frobenius norm */
   Scalar frobeniusNorm() const;
 
 }; /* class Matrix */

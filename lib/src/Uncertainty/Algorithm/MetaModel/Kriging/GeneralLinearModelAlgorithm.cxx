@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -88,6 +88,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
+  LOGWARN("GeneralLinearModelAlgorithm is deprecated, use GaussianProcessFitter");
 }
 
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
@@ -123,6 +124,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
+  LOGWARN("GeneralLinearModelAlgorithm is deprecated, use GaussianProcessFitter");
 }
 
 /* Covariance model accessors */
@@ -168,7 +170,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
         }
     } // reducedCovarianceModel_.getDimension() == 1
   } // optimizeParameters_
-  LOGINFO(OSS() << "final active parameters=" << reducedCovarianceModel_.getActiveParameter());
+  LOGDEBUG(OSS() << "final active parameters=" << reducedCovarianceModel_.getActiveParameter());
   // Define the bounds of the optimization problem
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
@@ -199,7 +201,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
         }
       }
     }
-    LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+    LOGINFO(OSS() << "For coherency we set scale upper bounds = " << upperBound.__str__());
 
     // We set the lower bound for the nugget factor to 0.
     const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
@@ -271,7 +273,7 @@ void GeneralLinearModelAlgorithm::computeF()
 {
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
-  LOGINFO("Compute the design matrix");
+  LOGDEBUG("Compute the design matrix");
   // No early exit based on the sample/basis size as F_ must be initialized with the correct dimensions
   // With a multivariate basis of size similar to output dimension, each ith-basis should be applied to elements
   // of corresponding marginal
@@ -334,11 +336,11 @@ void GeneralLinearModelAlgorithm::run()
   //   discretization and factorization, and it computes beta_
   Scalar optimalLogLikelihood = maximizeReducedLogLikelihood();
 
-  LOGINFO("Store the estimates");
+  LOGDEBUG("Store the estimates");
   // Here we do the work twice:
   // 1) To get a collection of Point for the result class
   // 2) To get same results as Sample for the trend NMF
-  LOGINFO("Build the output meta-model");
+  LOGDEBUG("Build the output meta-model");
   Collection<Function> marginalCollections(basis_.getSize());
   Collection<Function> marginalFunctions(outputDimension);
   Point beta_k(basis_.getSize());
@@ -367,26 +369,11 @@ void GeneralLinearModelAlgorithm::run()
     metaModel = ConstantFunction(covarianceModel_.getInputDimension(), Point(covarianceModel_.getOutputDimension(), 0.0));
   }
 
-  // compute residual, relative error
-  const Point outputVariance(outputSample_.computeVariance());
-  const Sample mY(metaModel(inputSample_));
-  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
-
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
-
-  const UnsignedInteger size = inputSample_.getSize();
-  for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
-  {
-    residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
-    relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
-  }
-
   // return optimized covmodel with the original active parameters (see analyticalAmplitude_)
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
-  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, residuals, relativeErrors);
+  result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood);
 
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
   if (keepCholeskyFactor_)
@@ -400,8 +387,6 @@ void GeneralLinearModelAlgorithm::run()
     }
     result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   }
-  else
-    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, basis_, beta_, reducedCovarianceModelCopy, optimalLogLikelihood, residuals, relativeErrors);
   hasRun_ = true;
 }
 
@@ -428,8 +413,8 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   {
     // We only need to compute the log-likelihood function at the initial parameters in order to get the Cholesky factor and the trend coefficients
     const Scalar initialReducedLogLikelihood = reducedLogLikelihoodFunction(initialParameters)[0];
-    LOGINFO("No covariance parameter to optimize");
-    LOGINFO(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
+    LOGDEBUG("No covariance parameter to optimize");
+    LOGDEBUG(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
     return initialReducedLogLikelihood;
   }
   // At this point we have an optimization problem to solve
@@ -448,13 +433,14 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   {
     // Nothing to do if setStartingPoint is not defined
   }
-  LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver);
+  LOGDEBUG(OSS(false) << "Solve problem=" << problem << " using solver=" << solver);
   solver.run();
   const OptimizationAlgorithm::Result result(solver.getResult());
-  const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
-  const Point optimalParameters(result.getOptimalPoint());
-  if (!optimalParameters.getDimension())
+  const Point optimalLogLikelihoodPoint = result.getOptimalValue();
+  if (!optimalLogLikelihoodPoint.getSize())
     throw InvalidArgumentException(HERE) << "optimization in GeneralLinearModelAlgorithm did not yield feasible points";
+  const Scalar optimalLogLikelihood = optimalLogLikelihoodPoint[0];
+  const Point optimalParameters(result.getOptimalPoint());
   const UnsignedInteger callsNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
@@ -465,7 +451,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   }
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
-  LOGINFO(OSS() << callsNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+  LOGDEBUG(OSS() << callsNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
 
   return optimalLogLikelihood;
 }
@@ -518,7 +504,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
-  LOGINFO(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
+  LOGDEBUG(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
   return Point(1, lastReducedLogLikelihood_);
 }
 

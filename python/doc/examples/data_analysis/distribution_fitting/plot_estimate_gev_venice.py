@@ -30,7 +30,7 @@ data = coles.Coles().venice
 # %%
 # The column :math:`i` contains the largest :math:`i` annual sea-levels.
 print(data[:5])
-graph = ot.Graph("Annual maximum sea-levels in Venice", "year", "level (cm)", True, "")
+graph = ot.Graph("Annual maximum sea-levels in Venice", "year", "level (cm)")
 for r in range(10):
     cloud = ot.Cloud(data[:, [0, 1 + r]])
     graph.add(cloud)

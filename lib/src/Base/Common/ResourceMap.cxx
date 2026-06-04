@@ -2,7 +2,7 @@
 /**
  *  @brief ResourceMap defines top-most resourceMap strategies
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ static const char * XMLTag_value_bool             = "value_bool";
 #endif
 
 static std::mutex ResourceMap_InstanceMutex_;
-static ResourceMap * ResourceMap_P_instance_ = 0;
+static ResourceMap * ResourceMap_P_instance_ = nullptr;
 static const ResourceMap_init static_initializer_ResourceMap;
 
 ResourceMap_init::ResourceMap_init()
@@ -54,7 +54,6 @@ ResourceMap_init::ResourceMap_init()
   {
     ResourceMap_P_instance_ = new ResourceMap;
   });
-  assert(ResourceMap_P_instance_);
 }
 
 ResourceMap_init::~ResourceMap_init()
@@ -63,7 +62,7 @@ ResourceMap_init::~ResourceMap_init()
   std::call_once(flag, [&]()
   {
     delete ResourceMap_P_instance_;
-    ResourceMap_P_instance_ = 0;
+    ResourceMap_P_instance_ = nullptr;
   });
 }
 
@@ -226,9 +225,9 @@ Bool ResourceMap::HasStringEnum(const String & key)
   return GetInstance().lock().hasStringEnum(key);
 }
 
-void ResourceMap::Reload()
+void ResourceMap::Reset()
 {
-  return GetInstance().lock().reload();
+  GetInstance().lock().reset();
 }
 
 void ResourceMap::RemoveKey(const String & key)
@@ -243,12 +242,8 @@ std::vector<String> ResourceMap::FindKeys(const String & substr)
 
 /* Default constructor */
 ResourceMap::ResourceMap()
-  : mapString_()
-  , mapScalar_()
-  , mapUnsignedInteger_()
-  , mapBool_()
 {
-  reload();
+  reset();
 }
 
 /* Method for retrieving information from the resource map */
@@ -456,7 +451,7 @@ void ResourceMap::set(const String & key, const String & value)
       // First, try to recover the bool value from the "true" or "false" strings
       if (value == "true") boolValue = true;
       else if (value == "false") boolValue = false;
-      // Second, try to recover the bool from the litteral value
+      // Second, try to recover the bool from the literal value
       else
       {
         std::istringstream iss(value);
@@ -610,7 +605,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
             // First, try to recover the bool value from the "true" or "false" strings
             if (value == "true") boolValue = true;
             else if (value == "false") boolValue = false;
-            // Second, try to recover the bool from the litteral value
+            // Second, try to recover the bool from the literal value
             else
             {
               std::istringstream iss(value);
@@ -625,7 +620,6 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
   } // if root
 #else
   (void)configurationFile;
-  LOGWARN(OSS() << "Cannot parse configuration file due to lacking xml support");
 #endif
 }
 
@@ -688,6 +682,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SymbolicParserExprTk-SmallSize", 100);
   addAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth", 400);
   addAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth", 10000);
+  addAsBool("SymbolicParserExprTk-DisableCommutativeCheck", true);
 
   // SymbolicParserMuParser parameters
   addAsUnsignedInteger("SymbolicParserMuParser-SmallSize", 1000);
@@ -724,7 +719,7 @@ void ResourceMap::loadDefaultConfiguration()
   // PiecewiseLinearEvaluation parameters //
   addAsScalar("PiecewiseLinearEvaluation-EpsilonRegular", 1.0e-12);
   addAsBool("PiecewiseLinearEvaluation-DefaultEnableExtrapolation", true);
-  
+
   // UniVariatePolynomialImplementation parameters //
   addAsUnsignedInteger("UniVariatePolynomial-SmallDegree", 400);
 
@@ -775,8 +770,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FieldToPointConnection parameters //
   addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
 
+  // FieldFunctionalChaosAlgorithm
+  addAsBool("FieldFunctionalChaosAlgorithm-DefaultRecompress", false);
+
   // FieldToPointFunctionalChaosAlgorithm
-  addAsBool("FieldToPointFunctionalChaosAlgorithm-DefaultRecompress", false);
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
@@ -821,6 +818,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Pagmo-InitialSeed", 0);
   addAsString("Pagmo-UnconstrainMethod", "death penalty");
   addAsBool("Pagmo-memory", false);
+  addAsBool("Pagmo-DefaultIncrementalEvolution", false);
   // gaco
   addAsUnsignedInteger("Pagmo-gaco-ker", 63);
   addAsScalar("Pagmo-gaco-q", 1.0);
@@ -929,7 +927,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("LOLAVoronoi-UseTruncatedDistribution", false);
   addAsUnsignedInteger("LOLAVoronoi-MaximumCombinationsNumber", 100);
   addAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber", 15);
-  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize", 1000);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiMinimumSamplingSize", 1000);
+  addAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiMeanSamplingSize", 10);
   addAsString("LOLAVoronoi-DecompositionMethod", "Cholesky", {"SVD", "Cholesky", "QR"});
   addAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum", {"Maximum", "Average"});
 
@@ -1086,7 +1085,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("Field-AutomaticScaling", true);
   addAsScalar("Field-ArrowRatio", 0.01);
   addAsScalar("Field-ArrowScaling", 1.0);
-  addAsUnsignedInteger("Field-LevelNumber", 30);
+  addAsUnsignedInteger("Field-LevelNumber", 10);
 
   // SampleImplementation parameters
   addAsString("Sample-CSVFileSeparator", ";");
@@ -1105,13 +1104,20 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);
+  addAsBool("Mesh-CheckValidity", false);
   addAsScalar("Mesh-AmbientFactor", 0.1);
   addAsScalar("Mesh-DiffuseFactor", 0.7);
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-DefaultThetaX", 0.3);
+  addAsScalar("Mesh-DefaultThetaY", 0.3);
+  addAsScalar("Mesh-DefaultThetaZ", 0.3);
+  addAsString("Mesh-AmbientColor", "white");
+  addAsString("Mesh-EdgeColor", "#FF7F0E88");
+  addAsString("Mesh-FaceColor", "#1F77B488");
+  addAsString("Mesh-LightColor", "white");
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
-  addAsBool("Mesh-CheckValidity", false);
 
   // BoundingVolumeHierarchy parameters
   addAsString("BoundingVolumeHierarchy-Strategy", "Mean");
@@ -1150,10 +1156,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("BurrFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("BurrFactory-MaximumIteration", 10);
 
-  // DeconditionedDistribution parameters //
-  addAsUnsignedInteger("DeconditionedDistribution-MarginalIntegrationNodesNumber", 48);
-  addAsUnsignedInteger("DeconditionedDistribution-MaximumIntegrationNodesNumber", 100000);
-  addAsString("DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct", {"GaussProduct", "QMC", "MC"});
+  // CompoundDistribution parameters //
+  addAsUnsignedInteger("CompoundDistribution-MarginalIntegrationNodesNumber", 48);
+  addAsUnsignedInteger("CompoundDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct", {"GaussProduct", "QMC", "MC"});
 
   // PointConditionalDistribution parameters //
   addAsBool("PointConditionalDistribution-InitializeSampling", true);
@@ -1398,8 +1404,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
 
-  // UserDefined parameters //
-  addAsUnsignedInteger("UserDefined-SmallSize", 10000);
+  // FiniteDiscreteDistribution parameters //
+  addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
   // UniformOverMesh parameters //
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
@@ -1423,18 +1429,18 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("FrankCopulaFactory-ResidualPrecision", 1.0e-14);
   addAsUnsignedInteger("FrankCopulaFactory-MaximumIteration", 100);
 
-  // RandomMixture parameters //
-  addAsBool("RandomMixture-SimplifyAtoms", true);
-  addAsScalar("RandomMixture-DefaultAlpha", 5.0);
-  addAsScalar("RandomMixture-DefaultBeta", 8.5);
-  addAsScalar("RandomMixture-DefaultCDFEpsilon", 1.0e-10);
-  addAsScalar("RandomMixture-DefaultPDFEpsilon", 1.0e-10);
-  addAsUnsignedInteger("RandomMixture-DefaultBlockMax", 16);
-  addAsUnsignedInteger("RandomMixture-DefaultBlockMin", 3);
-  addAsUnsignedInteger("RandomMixture-DefaultMaxSize", 65536);
-  addAsUnsignedInteger("RandomMixture-MaximumSupportSize", 2048);
-  addAsUnsignedInteger("RandomMixture-ProjectionDefaultSize", 25);
-  addAsUnsignedInteger("RandomMixture-SmallSize", 100);
+  // LinearCombinationDistribution parameters //
+  addAsBool("LinearCombinationDistribution-SimplifyAtoms", true);
+  addAsScalar("LinearCombinationDistribution-DefaultAlpha", 5.0);
+  addAsScalar("LinearCombinationDistribution-DefaultBeta", 8.5);
+  addAsScalar("LinearCombinationDistribution-DefaultCDFEpsilon", 1.0e-10);
+  addAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon", 1.0e-10);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMax", 16);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMin", 3);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 65536);
+  addAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 2048);
+  addAsUnsignedInteger("LinearCombinationDistribution-ProjectionDefaultSize", 25);
+  addAsUnsignedInteger("LinearCombinationDistribution-SmallSize", 100);
 
   // Evaluation parameters //
   addAsScalar("Evaluation-ParameterEpsilon", 1.0e-7);
@@ -1476,7 +1482,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SobolSimulationAlgorithm parameters //
   addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel", 0.05);
-  addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-2);
+  addAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-1);
   addAsUnsignedInteger("SobolSimulationAlgorithm-DefaultExperimentSize", 1000);
 
   // SimulationSensitivityAnalysis parameters //
@@ -1504,6 +1510,9 @@ void ResourceMap::loadDefaultConfiguration()
   // LineSampling parameters //
   addAsBool("LineSampling-DefaultSearchOppositeDirection", true);
   addAsBool("LineSampling-DefaultAdaptiveImportantDirection", true);
+
+  // Analytical parameters //
+  addAsScalar("Analytical-LimitStateToleranceFactor", 1.1);
 
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);
@@ -1565,6 +1574,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-PrintEllipsisThreshold", 20);
   addAsString("LinearModelAnalysis-SmallPValueFormat", "{:.4e}");
   addAsString("LinearModelAnalysis-LargePValueFormat", "{:.4f}");
+  addAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions", 20);
+  addAsScalar("LinearModelAnalysis-MinimumSigma", 1.0e-5);
 
   // LinearModelValidation parameters //
   addAsBool("LinearModelValidation-ModelSelection", false);
@@ -1587,12 +1598,15 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GaussianProcessFitter parameters //
   addAsBool("GaussianProcessFitter-KeepCovariance", true);
+  addAsBool("GaussianProcessFitter-OptimizationNormalization", true);
   addAsBool("GaussianProcessFitter-OptimizeParameters", true);
   addAsBool("GaussianProcessFitter-UnbiasedVariance", true);
   addAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", true);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
-  addAsScalar("GaussianProcessFitter-DefaultOptimizationScaleFactor", 2.0);
   addAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
+  addAsScalar("GaussianProcessFitter-DefaultOptimizationNuggetLowerBound", 1.0e-12);
+  addAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 1.0e-3);
+  addAsScalar("GaussianProcessFitter-OptimizationUpperBoundScaleFactor", 2.0);
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
   addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
@@ -1659,6 +1673,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-SmallDimensionEntropy", 3);
   addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
   addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
+  addAsUnsignedInteger("Distribution-SmallSupport", 10);
   addAsScalar("Distribution-SupportEpsilon", 1.0e-14);
 
   // DiscreteMarkovChain parameters //
@@ -1729,7 +1744,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
   addAsScalar("VisualTest-DependenceConfidenceLevel", 0.95);
   addAsScalar("VisualTest-DrawPairsMarginals-AxesMargin", 0.10);
-  
+
   // RandomWalkMetropolisHastings parameters //
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor", 1.2);
   addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound", 0.117); // = 0.5 * 0.234
@@ -1754,7 +1769,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 100);
 
   // CalibrationResult parameters //
-  addAsScalar("CalibrationResult-xRangeMarginFactor", 0.2);
   addAsString("CalibrationResult-PriorLineStyle", "dashed");
   addAsString("CalibrationResult-PosteriorLineStyle", "dotdash");
   addAsString("CalibrationResult-ObservationLineStyle", "solid");
@@ -1786,6 +1800,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
+  addAsUnsignedInteger("LeastSquaresMetaModelSelection-SmallBasisSize", 10);
 
   // SimplicialCubature parameters //
   addAsScalar("SimplicialCubature-DefaultMaximumAbsoluteError", 0.0);
@@ -1801,6 +1816,9 @@ void ResourceMap::loadDefaultConfiguration()
   // CholeskyMethod parameters //
   addAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
 
+  // LinearModelResult parameters //
+  addAsString("LinearModelResult-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
+
   // Classifier parameters //
   addAsBool("Classifier-Parallel", true);
 
@@ -1808,7 +1826,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("View-ImageFormat", "png");
 }
 
-void ResourceMap::reload()
+void ResourceMap::reset()
 {
   const std::vector<String> allKeys(getKeys());
   for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)

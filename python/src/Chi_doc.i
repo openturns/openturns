@@ -1,0 +1,61 @@
+%feature("docstring") OT::Chi
+R"RAW(:math:`\chi` distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{2^{1 - \nu / 2} x^{\nu - 1} \exp(- x^2 / 2)}
+                  {\Gamma(\nu / 2)}, \quad x \in \Rset^{+*}
+
+with :math:`\nu > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \sqrt{2}\,\frac{\Gamma((\nu + 1) / 2)}
+                                        {\Gamma(\nu / 2)} \\
+        \Var{X} & = & \nu - \mu^2
+    \end{eqnarray*}
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`, optional
+    Degrees of freedom.
+
+    Default value is 1.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Chi(2.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Chi::getNu
+"Accessor to the degrees of freedom parameter.
+
+Returns
+-------
+nu : float
+    Degrees of freedom."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Chi::setNu
+R"RAW(Accessor to the degrees of freedom parameter.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    Degrees of freedom.)RAW"

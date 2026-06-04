@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for FarlieGumbelMorgensternCopula distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <cmath>
 
 #include "openturns/FarlieGumbelMorgensternCopulaFactory.hxx"
@@ -68,7 +67,7 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
   // If it is not possible to use Kendall's tau to build the copula, try Spearman's rho
   if (std::abs(theta) > 1.0)
   {
-    LOGWARN(OSS() << "Warning! Unable to build a FarlieGumbelMorgensternCopula based on Kendall's tau: it leads to theta=" << theta << ". Trying to use Spearman's rho instead.");
+    LOGWARN(OSS() << "Unable to build a FarlieGumbelMorgensternCopula based on Kendall's tau: it leads to theta=" << theta << ". Trying to use Spearman's rho instead.");
     theta = 3.0 * sample.computeSpearmanCorrelation().operator()(0, 1);
     if (!(std::abs(theta) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula from Spearman's rho either: it leads to theta=" << theta;
   }

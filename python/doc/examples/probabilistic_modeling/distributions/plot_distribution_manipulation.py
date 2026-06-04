@@ -22,10 +22,7 @@ Distribution manipulation
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # Create an 1-d distribution
@@ -164,12 +161,12 @@ dist_2.computeCDFGradient(dist_2.getMean())
 # %%
 # Draw PDF
 graph = dist_1.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw CDF
 graph = dist_1.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Draw an 1-d quantile curve
@@ -179,7 +176,7 @@ qMin = 0.2
 qMax = 0.6
 nbrPoints = 101
 quantileGraph = dist_1.drawQuantile(qMin, qMax, nbrPoints)
-view = viewer.View(quantileGraph)
+view = otv.View(quantileGraph)
 
 # %%
 # Draw a 2-d quantile curve
@@ -189,5 +186,8 @@ qMin = 0.3
 qMax = 0.9
 nbrPoints = 101
 quantileGraph = dist_2.drawQuantile(qMin, qMax, nbrPoints)
-view = viewer.View(quantileGraph)
-plt.show()
+view = otv.View(quantileGraph)
+
+# %%
+# Display all figures
+otv.View.ShowAll()

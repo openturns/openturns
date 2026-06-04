@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of SimulationResult
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,7 +100,7 @@ Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar 
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
     if (getComparisonOperator()(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
-  if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannont compute the mean point if no point is in the event domain.";
+  if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannot compute the mean point if no point is in the event domain.";
   return filteredSample.computeMean();
 }
 
@@ -296,7 +296,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
         }
         catch (...)
         {
-          String msg("Warning! The importance factors associated with the");
+          String msg("The importance factors associated with the");
           if (probabilityScale) msg += " probability level ";
           else msg += " threshold ";
           msg = String(OSS() << msg << xValue << " are not defined");
@@ -314,7 +314,8 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     xLabel = "probability";
     internalX = static_cast<Scalar>(good) / size;
   }
-  Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
+  Graph graph("Importance factors range", xLabel, "Importance (%)");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
     Curve curve(dataCollection[j]);

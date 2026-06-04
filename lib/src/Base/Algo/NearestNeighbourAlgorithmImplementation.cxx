@@ -3,7 +3,7 @@
  *  @brief  This class provides fast search of neighbours.
  *  This is an abstract class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #include "openturns/NearestNeighbourAlgorithmImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -69,15 +70,37 @@ UnsignedInteger NearestNeighbourAlgorithmImplementation::query(const Point & ) c
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::query(const Point & x) const";
 }
 
+class NearestNeighbourAlgorithmImplementationQuerySamplePolicy
+{
+  const Sample & input_;
+  Indices & output_;
+  const NearestNeighbourAlgorithmImplementation & algo_;
+
+public:
+  NearestNeighbourAlgorithmImplementationQuerySamplePolicy(const Sample & input,
+      Indices & output,
+      const NearestNeighbourAlgorithmImplementation & algo)
+    : input_(input)
+    , output_(output)
+    , algo_(algo)
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      output_[i] = algo_.query(input_[i]);
+  } // operator ()
+};  // class NearestNeighbourAlgorithmImplementationQuerySamplePolicy
+
 /* Get the index of the nearest neighbour of the given points */
 Indices NearestNeighbourAlgorithmImplementation::query(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   Indices result(size);
-  for(UnsignedInteger i = 0; i < size; ++i)
-  {
-    result[i] = query(sample[i]);
-  }
+  const NearestNeighbourAlgorithmImplementationQuerySamplePolicy policy( sample, result, *this );
+  TBBImplementation::ParallelFor(0, size, policy);
   return result;
 }
 
@@ -87,6 +110,11 @@ Indices NearestNeighbourAlgorithmImplementation::queryK(const Point &,
     const Bool ) const
 {
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const";
+}
+
+Indices NearestNeighbourAlgorithmImplementation::queryRadius(const Point &, const Scalar, Point &, const Bool) const
+{
+  throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryRadius(Point, Scalar, Point &, Bool) const";
 }
 
 /* String converter */

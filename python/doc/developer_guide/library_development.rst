@@ -68,7 +68,7 @@ First, add the class to the C++ library
 
 #. Create ``openturns/MyClass.hxx`` and ``MyClass.cxx`` in appropriate subdirectories of lib/src.
    The files must have the standard header comment, with a brief description
-   of the class in Doxygen form and the standard reference to the LGPL license.
+   of the class and the standard reference to the LGPL license.
 
    For the header file ``MyClass.hxx``, the interface must be embraced
    between the preprocessing clauses:
@@ -298,7 +298,7 @@ by the following template:
     #
     #  CMakeLists.txt
     #
-    #  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+    #  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
     #
     #  This library is free software: you can redistribute it and/or modify
     #  it under the terms of the GNU Lesser General Public License as published by

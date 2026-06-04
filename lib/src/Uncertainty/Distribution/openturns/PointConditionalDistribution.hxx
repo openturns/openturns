@@ -2,7 +2,7 @@
 /**
  *  @brief The PointConditionalDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -201,10 +201,10 @@ private:
 
   // decompose elliptical distribution mu/cov
   Point decompose(const Distribution & distribution,
-		  const Indices & conditioningIndices,
-		  const Indices & nonConditioningIndices,
-		  const Point & conditioningValues,
-		  CovarianceMatrix & C) const;
+                  const Indices & conditioningIndices,
+                  const Indices & nonConditioningIndices,
+                  const Point & conditioningValues,
+                  CovarianceMatrix & C) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const override;
@@ -248,7 +248,7 @@ private:
 
   // for the use of generic conditional methods
   Bool useGenericConditionalMethods_ = true;
-  
+
 }; /* class PointConditionalDistribution */
 
 END_NAMESPACE_OPENTURNS

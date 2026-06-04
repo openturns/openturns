@@ -9,7 +9,6 @@ Test a discrete distribution
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create data

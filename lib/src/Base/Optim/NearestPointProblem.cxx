@@ -2,7 +2,7 @@
 /**
  *  @brief NearestPointProblem allows one to describe an optimization problem
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 
 #include "openturns/NearestPointProblem.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -109,7 +108,7 @@ void NearestPointProblem::clearLevelFunction()
 {
   if (levelFunction_.getEvaluation().getImplementation()->isActualImplementation())
   {
-    LOGWARN(OSS() << "Clearing level function");
+    LOGINFO(OSS() << "Clearing level function");
     levelFunction_ = Function();
   }
   levelValue_ = 0.0;

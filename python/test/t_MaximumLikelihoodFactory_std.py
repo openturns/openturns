@@ -11,7 +11,10 @@ infDist = factory.build(sample)
 print(f"estimated distribution={infDist}")
 
 # set (a,b) out of (r, t, a, b)
-factory.setKnownParameter([2, 3], [-1.0, 1.0],)
+factory.setKnownParameter(
+    [2, 3],
+    [-1.0, 1.0],
+)
 infDist = factory.build(sample)
 print(f"estimated distribution with bounds={infDist}")
 

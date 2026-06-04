@@ -2,6 +2,7 @@
 We compare openturns models with R models in case of intercept/no intercept
 we use small tests (5 exactly) mixing various situations
 """
+
 import numpy as np
 from rpy2.robjects import Formula, r
 
@@ -11,26 +12,27 @@ except ImportError:
     from rpy2.robjects.numpy2ri import numpy2rpy as numpy2ri
     from rpy2.robjects.numpy2ri import rpy2py as ri2py
 
-#from rpy2.robjects.numpy2ri import numpy2ri, ri2py
+# from rpy2.robjects.numpy2ri import numpy2ri, ri2py
 from rpy2.robjects.packages import importr, data
 
 import openturns as ot
-# Require 
+
+# Require
 
 stats = importr("stats")
 faraway = importr("faraway")
 savings_data = data(faraway).fetch("savings")["savings"]
-#data(faraway).fetch("savings")["savings"]
+# data(faraway).fetch("savings")["savings"]
 
 # Model 1 : 2 param, non intercept
 sr = ri2py(savings_data)["sr"]
-r.assign('sr', numpy2ri(sr))
+r.assign("sr", numpy2ri(sr))
 pop15 = ri2py(savings_data)["pop15"]
-r.assign('pop15', numpy2ri(pop15))
+r.assign("pop15", numpy2ri(pop15))
 pop75 = ri2py(savings_data)["pop75"]
-r.assign('pop75', numpy2ri(pop75))
+r.assign("pop75", numpy2ri(pop75))
 
-formula = Formula('sr ~ pop75 + pop15 - 1')
+formula = Formula("sr ~ pop75 + pop15 - 1")
 fit = stats.lm(formula)
 summary = stats.summary_lm(fit)
 
@@ -65,10 +67,10 @@ np.testing.assert_almost_equal(result.getRSquared(), r2, 14)
 np.testing.assert_almost_equal(result.getAdjustedRSquared(), ar2, 14)
 np.testing.assert_almost_equal(analysis.getFisherScore(), ftest, 14)
 
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Model 2 : 2 param + intercepts
 
-formula = Formula('sr ~ pop75 + pop15')
+formula = Formula("sr ~ pop75 + pop15")
 fit = stats.lm(formula)
 summary = stats.summary_lm(fit)
 
@@ -86,9 +88,9 @@ np.testing.assert_almost_equal(result.getRSquared(), r2, 14)
 np.testing.assert_almost_equal(result.getAdjustedRSquared(), ar2, 14)
 np.testing.assert_almost_equal(analysis.getFisherScore(), ftest, 14)
 
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Model 3 : 1 param (pop15) + intercepts
-formula = Formula('sr ~ pop15')
+formula = Formula("sr ~ pop15")
 fit = stats.lm(formula)
 summary = stats.summary_lm(fit)
 
@@ -107,9 +109,9 @@ np.testing.assert_almost_equal(result.getRSquared(), r2, 14)
 np.testing.assert_almost_equal(result.getAdjustedRSquared(), ar2, 14)
 np.testing.assert_almost_equal(analysis.getFisherScore(), ftest, 14)
 
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Model 4 : 1 param (pop15) + no intercept intercepts
-formula = Formula('sr ~ pop15 - 1')
+formula = Formula("sr ~ pop15 - 1")
 fit = stats.lm(formula)
 summary = stats.summary_lm(fit)
 
@@ -128,10 +130,10 @@ np.testing.assert_almost_equal(result.getRSquared(), r2, 14)
 np.testing.assert_almost_equal(result.getAdjustedRSquared(), ar2, 14)
 np.testing.assert_almost_equal(analysis.getFisherScore(), ftest, 13)
 
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # Model 5 : only intercept
 
-formula = Formula('sr ~ 1')
+formula = Formula("sr ~ 1")
 fit = stats.lm(formula)
 summary = stats.summary_lm(fit)
 

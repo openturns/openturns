@@ -151,7 +151,7 @@ vector of :math:`\inputDim` independent components.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_fast`
+    - See :doc:`/auto_sensitivity_analysis/plot_sensitivity_fast`
 
 
 .. topic:: References:

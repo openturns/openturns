@@ -18,8 +18,8 @@ Events
     IntersectionEvent
     UnionEvent
 
-Analytical algorithms
-=====================
+Analytical (FORM/SORM)
+======================
 
 .. autosummary::
     :toctree: _generated/
@@ -36,8 +36,8 @@ Analytical algorithms
      SystemFORM
      StrongMaximumTest
 
-Simulations methods
-===================
+Simulation algorithm
+====================
 
 .. autosummary::
     :toctree: _generated/
@@ -48,41 +48,22 @@ Simulations methods
     EventSimulation
     ProbabilitySimulationAlgorithm
     ProbabilitySimulationResult
+    ExpectationSimulationAlgorithm
+    ExpectationSimulationResult
+
+Directional Sampling
+====================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
     DirectionalSampling
-    PostAnalyticalSimulation
-    PostAnalyticalControlledImportanceSampling
-    PostAnalyticalImportanceSampling
-    SubsetSampling
-    SubsetSamplingResult
     AdaptiveDirectionalStratification
-    NAIS
-    NAISResult
-    CrossEntropyImportanceSampling
-    PhysicalSpaceCrossEntropyImportanceSampling
-    StandardSpaceCrossEntropyImportanceSampling
-    CrossEntropyResult
-    experimental.LineSampling
-
-Quantile confidence
-===================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    experimental.QuantileConfidence
-
-Simulation sensitivity analysis
-===============================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    SimulationSensitivityAnalysis
+    LineSampling
 
 Root Strategy
-=============
+-------------
 
 .. autosummary::
     :toctree: _generated/
@@ -94,7 +75,7 @@ Root Strategy
     SafeAndSlow
 
 Sampling Strategy
-=================
+-----------------
 
 .. autosummary::
     :toctree: _generated/
@@ -104,18 +85,38 @@ Sampling Strategy
     RandomDirection
     OrthogonalDirection
 
-Non linear solvers
-==================
+Importance Sampling
+===================
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
-    Solver
-    experimental.LeastSquaresEquationsSolver
+    PostAnalyticalSimulation
+    PostAnalyticalControlledImportanceSampling
+    PostAnalyticalImportanceSampling
+    NAIS
+    NAISResult
+    CrossEntropyImportanceSampling
+    PhysicalSpaceCrossEntropyImportanceSampling
+    StandardSpaceCrossEntropyImportanceSampling
+    CrossEntropyResult
 
-    :template: Solver.rst_t
-    Bisection
-    Brent
-    Secant
+Subset Sampling
+===============
 
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    SubsetSampling
+    SubsetSamplingResult
+
+Reliability oriented sensitivity analysis
+=========================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    SimulationSensitivityAnalysis

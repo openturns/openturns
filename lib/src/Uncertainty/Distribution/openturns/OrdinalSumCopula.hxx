@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements assembly distributions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -165,7 +165,7 @@ private:
   Point blockLengths_;
 
   /** Discrete distribution to select the component of the sum for sampling */
-  UserDefined blockDistribution_;
+  FiniteDiscreteDistribution blockDistribution_;
 }; /* class OrdinalSumCopula */
 
 

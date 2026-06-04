@@ -2,7 +2,7 @@
 /**
  *  @brief Pagmo optimization algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #define OPENTURNS_PAGMO_HXX
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
-#include "openturns/Experiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,6 +78,10 @@ public:
   void setStartingSample(const Sample & startingSample) override;
   Sample getStartingSample() const override;
 
+  /** Incremental evolution accessor */
+  void setIncrementalEvolution(Bool incrementalEvolution);
+  Bool getIncrementalEvolution() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -101,6 +104,9 @@ private:
 
   // batch evaluation granularity
   UnsignedInteger blockSize_ = 1;
+
+  // external loop over generations to continuously update population/fronts in result
+  Bool incrementalEvolution_ = false;
 
 } ; /* class Pagmo */
 

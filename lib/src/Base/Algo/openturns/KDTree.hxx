@@ -2,7 +2,7 @@
 /**
  *  @brief KDTree structure to speed-up queries on large samples
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,11 +64,13 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Get the index of the nearest neighbour of the given point */
-  UnsignedInteger query(const Point & x) const override;
   using NearestNeighbourAlgorithmImplementation::query;
+  UnsignedInteger query(const Point & x) const override;
 
   /** Get the indices of the k nearest neighbours of the given point */
   Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const override;
+
+  Indices queryRadius(const Point & x, const Scalar radius, Point & distanceOut, const Bool sorted  = false) const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

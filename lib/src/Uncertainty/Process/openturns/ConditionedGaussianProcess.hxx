@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the ConditionedGaussianProcess
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 #define OPENTURNS_CONDITIONEDGAUSSIANPROCESS_HXX
 
 #include "openturns/GaussianProcess.hxx"
-#include "openturns/KrigingResult.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +42,7 @@ public:
   ConditionedGaussianProcess();
 
   /** Standard constructor  */
-  ConditionedGaussianProcess(const KrigingResult & result,
+  ConditionedGaussianProcess(const GaussianProcessRegressionResult & result,
                              const Mesh & mesh);
 
   /** Virtual constructor */
@@ -86,10 +86,13 @@ protected:
   void initialize();
 
 private:
-  /** KrigingResult */
-  KrigingResult krigingResult_;
+  /** InputDimension */
+  UnsignedInteger inputDimension_;
 
-  /** Trend part - conditionned by the mesh points */
+  /** Gaussian process result */
+  GaussianProcessRegressionResult gprResult_;
+
+  /** Trend part - conditioned by the mesh points */
   Sample trendEvaluationMesh_;
 
   /** Known values indices */

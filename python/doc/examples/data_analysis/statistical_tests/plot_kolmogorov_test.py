@@ -9,7 +9,6 @@ Use the Kolmogorov/Lilliefors test
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the data.
@@ -96,7 +95,3 @@ result.getThreshold()
 
 # %%
 result.getStatistic()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()

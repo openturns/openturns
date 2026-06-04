@@ -1,0 +1,31 @@
+%feature("docstring") OT::AdaptiveStieltjesAlgorithm
+R"RAW(AdaptiveStieltjes algorithm used to build the orthonormal basis.
+
+The algorithm builds a polynomial basis orthonormal with respect to a specific distribution.
+
+Parameters
+----------
+measure : :class:`~openturns.Distribution`
+    A measure for which the orthonormal polynomial basis is built. 
+
+See also
+--------
+OrthonormalizationAlgorithm
+
+Notes
+-----
+It implements an adaptive Stieltjes algorithm that builds the polynomial family
+orthonormal with respect to the distribution *measure*, using the
+:class:`~openturns.GaussKronrod` adaptive integration method to compute the
+following dot-products: :math:`R_n=\langle Q_n, Q_n\rangle` and
+:math:`S_n=\langle xQ_n, Q_n\rangle` where :math:`Q_n` is the monic polynomial
+associated to the orthonormal polynomial :math:`P_n`, needed to compute the
+coefficients of the three-terms recurrence relation that defines :math:`P_n`
+(see :class:`~openturns.OrthogonalUniVariatePolynomialFamily`):
+
+.. math::
+
+    a_n = 1/\sqrt{\beta_{n+1}}\quad b_n = -\alpha_n/\sqrt{\beta_{n+1}}\quad c_n = -\sqrt{\beta_n/\beta_{n+1}}
+
+where :math:`\alpha_n = S_n / R_n`, :math:`\beta_n  = R_n / R_{n-1}`, :math:`n>0` and :math:`\beta_0 = 0`.
+)RAW"

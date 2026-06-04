@@ -2,7 +2,7 @@
 /**
  *  @brief Contour class for contourchart plots
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -417,10 +417,10 @@ void Contour::load(Advocate & adv)
     adv.loadAttribute("colorMap_", colorMap_);
   else
     colorMap_.clear();
-  // TODO: remove loading of deprecated alpha_ attribute
   if (adv.hasAttribute("alpha_"))
   {
-    Scalar alpha;
+    // OT < 1.25
+    Scalar alpha = 0.0;
     adv.loadAttribute("alpha_", alpha);
     setAlpha(alpha);
   }

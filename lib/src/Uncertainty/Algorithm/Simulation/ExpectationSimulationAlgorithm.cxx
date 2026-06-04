@@ -2,7 +2,7 @@
 /**
  *  @brief Simulation algorithm to estimate an expectation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,7 +100,7 @@ void ExpectationSimulationAlgorithm::run()
   const UnsignedInteger dimension = randomVector_.getDimension();
 
   // First, reset the convergence history
-  convergenceStrategy_.setDimension(2 * dimension);
+  convergenceStrategy_.setDimension(2 * dimension + 1);
 
   UnsignedInteger outerSampling = 0;
   Point meanEstimate(dimension);
@@ -190,6 +190,7 @@ void ExpectationSimulationAlgorithm::run()
     // Update the history
     Point convergencePoint(meanEstimate);
     convergencePoint.add(Point(dimension, -1.0));
+    convergencePoint.add(outerSampling);
     // Get the variance estimate from the result in order to deal with simulation
     // methods that do not provide variance estimate (conventional value: -1.0)
     // It is checked using the value of the standard deviation
@@ -316,17 +317,17 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
   {
     const Scalar expectationEstimate = convergenceSample(i, marginalIndex);
     const Scalar varianceEstimate = convergenceSample(i, dimension + marginalIndex);
-    dataEstimate(i, 0) = i + 1;
+    const Scalar outerIndex = convergenceSample(i, convergenceSample.getDimension() - 1);
+    dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = expectationEstimate;
-    // The bounds are drawn only if there is a useable variance estimate
+    // The bounds are drawn only if there is a usable variance estimate
     if (varianceEstimate >= 0.0)
     {
       // The probability estimate is asymptotically normal
       const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
       const Scalar confidenceLength = 2.0 * xq * sqrt(varianceEstimate);
 
-      Point pt(2);
-      pt[0] = i + 1;
+      Point pt = {outerIndex + 1, 0.0};
       pt[1] = expectationEstimate - 0.5 * confidenceLength;
       dataLowerBound.add(pt);
       pt[1] = expectationEstimate + 0.5 * confidenceLength;
@@ -337,7 +338,8 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
   estimateCurve.setLineWidth(2);
   OSS oss;
   oss << "Expectation convergence graph at level " << level;
-  Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
+  Graph convergenceGraph(oss, "outer iteration", "estimate");
+  convergenceGraph.setLegendPosition("topright");
   convergenceGraph.add(estimateCurve);
   const Curve lowerBoundCurve(dataLowerBound, "bounds");
   Curve upperBoundCurve(dataUpperBound);

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Sample for load and save methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,7 +85,7 @@ int main(int, char *[])
     aTempFile.open("sample.csv", std::ofstream::out);
     aTempFile << "-1.2;2.3;3.4;-4.5\n";
     aTempFile << "5.6;-xxx;7.8;8.9\n";
-    aTempFile << "-0.1;3.2;5..1;7.5\n";
+    aTempFile << "-0.1;3.2;..1;7.5\n";
     aTempFile << "0.9;9.8;8.4;5.4\n";
     aTempFile.close();
 

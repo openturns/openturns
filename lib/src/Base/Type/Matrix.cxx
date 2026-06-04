@@ -2,7 +2,7 @@
 /**
  *  @brief Matrix implements the classical mathematical matrix
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -155,7 +155,7 @@ const Matrix Matrix::getRow(const UnsignedInteger rowIndex) const
   return Implementation(getImplementation()->getRow(rowIndex).clone());
 }
 
-/* Column extration */
+/* Column extraction */
 const Matrix Matrix::getColumn(const UnsignedInteger columnIndex) const
 {
   return Implementation(getImplementation()->getColumn(columnIndex).clone());

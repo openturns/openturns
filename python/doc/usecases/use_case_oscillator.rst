@@ -55,8 +55,7 @@ Eight uncertainties are considered in the system:
 - on the intensity of the white noise excitation (:math:`S_0`).
 
 
-We consider the following distribution fResponse of Two-Degree-of-Freedom Systems
-to White-Noise Base Excitation:
+We consider the following distribution:
 
 - :math:`m_p \sim \text{LogNormalSigmaOverMu}(  \mu_{m_p} = 1.5, \delta_{m_p} = 0.1)`
 - :math:`m_s \sim \text{LogNormalSigmaOverMu}(  \mu_{m_s} = 0.01,  \delta_{m_s} = 0.1)`

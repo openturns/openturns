@@ -2,7 +2,7 @@
 /**
  *  @brief The JointByConditioningDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/CompoundDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -148,8 +148,8 @@ protected:
   /** Values of the Dirac marginals */
   Function linkFunction_;
 
-  /** Deconditioned */
-  DeconditionedDistribution deconditioned_;
+  /** Compound */
+  CompoundDistribution compound_;
 }; /* class JointByConditioningDistribution */
 
 END_NAMESPACE_OPENTURNS

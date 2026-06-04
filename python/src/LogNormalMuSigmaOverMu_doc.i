@@ -1,0 +1,64 @@
+%feature("docstring") OT::LogNormalMuSigmaOverMu
+R"RAW(LogNormal distribution parameters.
+    
+Parameters
+----------
+mu : float
+    Mean :math:`\mu > 0`.
+
+    Default value is :math:`e^{0.5}`.
+delta : float
+    Variation coefficient :math:`\delta = \frac{\sigma}{\mu}`.
+
+    Default value is :math:`(\sqrt{e^{2}-e})e^{-0.5}`.
+gamma : float, optional
+    Location parameter.
+
+    Default value is 0.0.
+
+Notes
+-----
+
+Let :math:`X` be a random variable that follows a LogNormal distribution
+such that:
+
+.. math::
+
+    \Expect{X} &= \mu \\
+    \Var{X} &= \sigma^2
+
+The native parameters of :math:`X` are :math:`\mu_\ell`
+and :math:`\sigma_\ell`, which are such that :math:`\log X` follows a normal distribution
+whose mean is :math:`\mu_\ell` and whose variance is :math:`\sigma_\ell^2`. Then we have:
+
+.. math::
+
+    \sigma_l &= \sqrt{\log{ \left(1+\frac{(\delta \mu)^2}{(\mu-\gamma)^2} \right)}}\\
+    \mu_l &= \log{(\mu-\gamma)} - \frac{\sigma_l^2}{2}
+
+The default values of :math:`(\mu, \delta, \gamma)` are defined so that the associated native parameters
+have the default values: :math:`(\mu_\ell, \sigma_\ell, \gamma_\ell) = (0.0, 1.0, 0.0)`.
+
+See also
+--------
+LogNormal
+
+Examples
+--------
+Create the parameters of the LogNormal distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5)
+
+Convert parameters into the native parameters:
+
+>>> print(parameters.evaluate())
+[-1.00525,1.50164,-0.5]
+
+The gradient of the transformation of the native parameters into the new
+parameters:
+
+>>> print(parameters.gradient())
+[[  0.256272  0.418663  0        ]
+ [ -0.170824  0.113758  0        ]
+ [ -1.6771    0.527516  1        ]])RAW"

@@ -283,7 +283,7 @@ of every input variable.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/sensitivity_analysis/plot_hsic_estimators_ishigami`
+    - See :doc:`/auto_sensitivity_analysis/plot_hsic_estimators_ishigami`
 
 .. topic:: References:
 

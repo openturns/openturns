@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of random vectors
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +29,6 @@
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ComparisonOperator.hxx"
-#include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Process.hxx"
 

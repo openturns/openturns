@@ -2,7 +2,7 @@
 /**
  *  @brief Dlib solvers
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -67,7 +67,7 @@ public:
   }
 
   // Virtual constructor
-  virtual DlibSearchStrategyImplementation * clone() const
+  DlibSearchStrategyImplementation * clone() const override
   {
     return new DlibSearchStrategyImplementation(*this);
   }
@@ -161,7 +161,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibCgSearchStrategy * clone() const
+  DlibCgSearchStrategy * clone() const override
   {
     return new DlibCgSearchStrategy(*this);
   }
@@ -169,7 +169,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::cg_search_strategy().get_next_direction(x, f_value, funct_derivative);
   }
@@ -190,7 +190,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibBfgsSearchStrategy * clone() const
+  DlibBfgsSearchStrategy * clone() const override
   {
     return new DlibBfgsSearchStrategy(*this);
   }
@@ -198,7 +198,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::bfgs_search_strategy().get_next_direction(x, f_value, funct_derivative);
   }
@@ -224,7 +224,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibLbfgsSearchStrategy * clone() const
+  DlibLbfgsSearchStrategy * clone() const override
   {
     return new DlibLbfgsSearchStrategy(*this);
   }
@@ -232,7 +232,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::lbfgs_search_strategy(maxSize_).get_next_direction(x, f_value, funct_derivative);
   }
@@ -260,7 +260,7 @@ public:
   }
 
   /* Virtual constructor */
-  DlibNewtonSearchStrategy * clone() const
+  DlibNewtonSearchStrategy * clone() const override
   {
     return new DlibNewtonSearchStrategy(*this);
   }
@@ -268,7 +268,7 @@ public:
   /* Computation of the line search direction: call to dlib function */
   const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                         const double f_value,
-                                        const DlibMatrix & funct_derivative)
+                                        const DlibMatrix & funct_derivative) override
   {
     return dlib::newton_search_strategy_obj<DlibHessian>(hessian_).get_next_direction(x, f_value, funct_derivative);
   }
@@ -327,12 +327,14 @@ public:
 
     // Compute stop criterion
     const bool timeout = (dlibAlgorithm_.getMaximumTimeDuration() > 0.0) && (timeDuration > dlibAlgorithm_.getMaximumTimeDuration());
+
     bool stopSearch = ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
                        && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                        && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                       || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
                       || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber())
-                      || timeout;
+                      || timeout
+                      || (dlibAlgorithm_.stopCallback_.first && dlibAlgorithm_.stopCallback_.first(dlibAlgorithm_.stopCallback_.second));
 
     lastInput_ = xPoint;
     lastOutput_ = fxPoint;
@@ -537,9 +539,11 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
     }
   }
 
-  // Only "least_squares" and "least_squares_lm" support least squares problems
+  // "least_squares" and "least_squares_lm" require least squares problems
   if (problem.hasResidualFunction() && !(algoName_ == "least_squares" || algoName_ == "least_squares_lm"))
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support least squares problems.";
+  if ((algoName_ == "least_squares" || algoName_ == "least_squares_lm") && !problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm only support least squares problems.";
 
   // "least_squares", "least_squares_lm" and "trust_region" require non bounded variables
   if (problem.hasBounds() && (algoName_ == "least_squares" || algoName_ == "least_squares_lm" || algoName_ == "trust_region"))

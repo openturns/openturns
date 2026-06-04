@@ -3,16 +3,14 @@ MONTE CARLO
 Pf estimation = 2.00000e-04
 Pf Variance estimation = 1.99960e-10
 CoV = 0.07070
-90% Confidence Interval = 4.65188e-05
-CI at 90% =[ 1.76741e-04 ; 2.23259e-04 ]
+90% Confidence Interval = [0.000176741, 0.000223259]
 Limit state calls = 1000000
 ----------------------------------------------------------------------------------------------------
 SUBSET SAMPLING
 Pf estimation = 2.02700e-04
 Pf Variance estimation = 3.01140e-10
 CoV = 0.08561
-90% Confidence Interval = 5.70876e-05
-CI at 90% =[ 1.74156e-04 ; 2.31244e-04 ]
+90% Confidence Interval = [0.000174156, 0.000231244]
 Limit state calls = 40000
 ----------------------------------------------------------------------------------------------------
 MC:     probabilityEstimate=1.000000e+00 varianceEstimate=0.000000e+00 standard deviation=-1.00e+00 coefficient of variation=-1.00e+00 confidenceLength(0.95)=0.00e+00 outerSampling=1000 blockSize=1

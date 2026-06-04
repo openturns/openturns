@@ -2,7 +2,7 @@
 /**
  *  @brief Second order polynomial response surface by least square
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,9 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Function.hxx"
+#include "openturns/MetaModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -58,6 +56,12 @@ public:
   /** Response surface computation */
   void run();
 
+  /** Result accessor */
+  MetaModelResult getResult() const;
+
+  /** Center accessor */
+  Point getCenter() const;
+
   /** Constant accessor */
   Point getConstant() const;
 
@@ -67,13 +71,12 @@ public:
   /** Quadratic accessor */
   SymmetricTensor getQuadratic() const;
 
-  /** Metamodel accessor */
-  Function getMetaModel() const;
-
   /** DataIn accessor */
+  Sample getInputSample() const;
   Sample getDataIn() const;
 
   /** DataOut accessor */
+  Sample getOutputSample() const;
   void setDataOut(const Sample & dataOut);
   Sample getDataOut();
 
@@ -87,7 +90,8 @@ protected:
 private:
   Sample dataIn_;
   Sample dataOut_;
-  Function responseSurface_;
+  MetaModelResult result_;
+  Point center_;
   Point constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;

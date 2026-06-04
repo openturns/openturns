@@ -4,7 +4,9 @@
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTDistribution.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTBayesian.hxx"
 %}
@@ -42,6 +44,11 @@
 %include IndependentMetropolisHastings.i
 %include UserDefinedMetropolisHastings.i
 %include Gibbs.i
+
+/* Uncertainty/Algorithm/Optimization */
+%include SequentialSamplingAlgorithmImplementation.i
+%include SequentialSamplingAlgorithm.i
+%include LOLAVoronoi.i
 
 /* At last we include template definitions */
 %include UncertaintyBayesianTemplateDefs.i

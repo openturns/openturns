@@ -2,7 +2,7 @@
 /**
  *  @brief This class implements the adaptive Fehlberg method of order p/p+1
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Fehlberg.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -274,7 +273,7 @@ Point Fehlberg::computeStep(Pointer<EvaluationImplementation> & transitionFuncti
     transitionFunction->setParameter(parameter);
     f[k + 1] = transitionFunction->operator()(yK);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
-      if (!SpecFunc::IsNormal(f(k + 1, j)))
+      if (!std::isfinite(f(k + 1, j)))
         throw InvalidArgumentException(HERE) << "Fehlberg: transition function returns " << Point(f[k + 1]).__str__() << " at " << yK.__str__() << " with t=" << tK;
   }
   Point PhiI(dimension);

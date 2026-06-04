@@ -2,7 +2,7 @@
 /**
  *  @brief RandomGenerator implements methods to control the random generator
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include "dsfmt.h"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/RandomGeneratorState.hxx"
@@ -87,13 +86,15 @@ RandomGeneratorState RandomGenerator::GetState()
   return state;
 }
 
+void RandomGenerator::Reset()
+{
+  SetSeed(ResourceMap::GetAsUnsignedInteger("RandomGenerator-InitialSeed"));
+}
+
 void RandomGenerator::Initialize()
 {
   if (!IsInitialized_)
-  {
-    SetSeed(ResourceMap::GetAsUnsignedInteger("RandomGenerator-InitialSeed"));
-    IsInitialized_ = true;
-  }
+    Reset();
 }
 
 /* Generate a pseudo-random number uniformly distributed over ]0, 1[ */

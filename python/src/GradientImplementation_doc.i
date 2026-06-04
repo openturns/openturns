@@ -1,0 +1,129 @@
+%define OT_Gradient_doc
+"Numerical math gradient implementation.
+
+See also
+--------
+Function, HessianImplementation
+
+Notes
+-----
+This object is the result of the method *getGradient* of a 
+:class:`~openturns.Function`."
+%enddef
+%feature("docstring") OT::GradientImplementation
+OT_Gradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_getCallsNumber_doc
+"Accessor to the number of times the gradient has been called.
+
+Returns
+-------
+calls_number : int
+    Integer that counts the number of times the gradient has been called
+    since its creation."
+%enddef
+%feature("docstring") OT::GradientImplementation::getCallsNumber
+OT_Gradient_getCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_getInputDimension_doc
+"Accessor to the number of the inputs.
+
+Returns
+-------
+number_inputs : int
+    Number of inputs."
+%enddef
+%feature("docstring") OT::GradientImplementation::getInputDimension
+OT_Gradient_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_getOutputDimension_doc
+"Accessor to the number of the outputs.
+
+Returns
+-------
+number_outputs : int
+    Number of outputs."
+%enddef
+%feature("docstring") OT::GradientImplementation::getOutputDimension
+OT_Gradient_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_getMarginal_doc
+"Accessor to the gradient implementation of a specific output.
+
+Parameters
+----------
+i : int
+    Integer corresponding to the output (Care: it starts at 0).
+indices : sequence of integer
+    The set of indices for which the outputs are extracted.
+
+Returns
+-------
+gradientImplementation : :class:`~openturns.GradientImplementation`
+    A gradient implementation restricted to its components functions which
+    indices are *i* or *indices*."
+%enddef
+%feature("docstring") OT::GradientImplementation::getMarginal
+OT_Gradient_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_gradient_doc
+"Return the Jacobian transposed matrix of the implementation at a point.
+
+Parameters
+----------
+point : sequence of float
+    Point where the Jacobian transposed matrix is calculated.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    The Jacobian transposed matrix of the function at *point*."
+%enddef
+%feature("docstring") OT::GradientImplementation::gradient
+OT_Gradient_gradient_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GradientImplementation::isActualImplementation
+"Accessor to the validity flag.
+
+Returns
+-------
+is_impl : bool
+    Whether the implementation is valid."
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_getParameter_doc
+"Accessor to the parameter values.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    The parameter values."
+%enddef
+%feature("docstring") OT::GradientImplementation::getParameter
+OT_Gradient_getParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Gradient_setParameter_doc
+"Accessor to the parameter values.
+
+Parameters
+----------
+parameter : sequence of float
+    The parameter values."
+%enddef
+%feature("docstring") OT::GradientImplementation::setParameter
+OT_Gradient_setParameter_doc

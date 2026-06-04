@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblemImplementation allows one to describe an optimization problem
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -88,7 +87,7 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
 {
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
-    LOGWARN(OSS() << "Clearing constraints, bounds and variables types");
+    LOGINFO(OSS() << "Clearing constraints, bounds and variables types");
     // Clear constraints
     if (equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation() || inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation())
     {
@@ -212,6 +211,27 @@ Scalar OptimizationProblemImplementation::getLevelValue() const
 void OptimizationProblemImplementation::setLevelValue(Scalar /*levelValue*/)
 {
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelValue";
+}
+
+/* Linear flag accessor */
+Bool OptimizationProblemImplementation::isLinear() const
+{
+  return false;
+}
+
+Point OptimizationProblemImplementation::getLinearCost() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearCost";
+}
+
+Matrix OptimizationProblemImplementation::getLinearConstraintCoefficients() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintCoefficients";
+}
+
+Interval OptimizationProblemImplementation::getLinearConstraintBounds() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintBounds";
 }
 
 /* Dimension accessor */

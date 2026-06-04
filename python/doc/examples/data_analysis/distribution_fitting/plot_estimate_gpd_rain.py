@@ -19,7 +19,6 @@ Estimate a GPD on the daily rainfall data
 # - the profile log-likelihood function.
 #
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.viewer as otv
 from openturns.usecases import coles
 
@@ -119,7 +118,7 @@ for i in range(2):  # exclude u parameter (fixed)
 # - the return level plot,
 # - the data histogram and the density of the fitted model.
 #
-validation = otexp.GeneralizedParetoValidation(result_LL, dataRain)
+validation = ot.GeneralizedParetoValidation(result_LL, dataRain)
 graph = validation.drawDiagnosticPlot()
 view = otv.View(graph)
 

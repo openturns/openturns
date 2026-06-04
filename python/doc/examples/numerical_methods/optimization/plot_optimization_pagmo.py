@@ -8,10 +8,7 @@ Multi-objective optimization using Pagmo
 
 # %%
 import openturns as ot
-from openturns.viewer import View
-
-ot.Log.Show(ot.Log.NONE)
-ot.RandomGenerator.SetSeed(0)
+import openturns.viewer as otv
 
 # %%
 # List available algorithms
@@ -51,7 +48,8 @@ len(fronts)
 
 # %%
 # We show the Pareto front
-graph = ot.Graph("Pareto front", "y1", "y2", True, "upper right")
+graph = ot.Graph("Pareto front", "y1", "y2")
+graph.setLegendPosition("upper right")
 front = algo.getResult().getFinalValues().select(fronts[0]).sortAccordingToAComponent(0)
 data = ot.Sample(2 * front.getSize() - 1, 2)
 for i in range(front.getSize()):
@@ -63,7 +61,7 @@ curve = ot.Curve(data)
 curve.setLegend(f"front {0}")
 graph.add(curve)
 graph.setGrid(True)
-_ = View(graph)
+_ = otv.View(graph)
 
 # %%
 # We show the Pareto front from successive generations
@@ -74,7 +72,8 @@ for gen in range(5):
     algo.run()
     front0 = algo.getResult().getParetoFrontsIndices()[0]
     fronts.append(algo.getResult().getFinalValues().select(front0))
-graph = ot.Graph("Successive fronts", "y1", "y2", True, "upper right")
+graph = ot.Graph("Successive fronts", "y1", "y2")
+graph.setLegendPosition("upper right")
 for k in range(len(fronts)):
     front = fronts[k].sortAccordingToAComponent(0)
     print(front)
@@ -88,9 +87,9 @@ for k in range(len(fronts)):
     curve.setLegend(f"generation {k}")
     graph.add(curve)
 graph.setGrid(True)
-_ = View(graph)
+_ = otv.View(graph)
 
 
-View.ShowAll()
+otv.View.ShowAll()
 
 # %%

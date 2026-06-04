@@ -3,7 +3,7 @@
  *  @brief The class SpectralModelImplementation defines the concept of
  *         spectral model for stationary processes
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -241,7 +241,8 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
     if (module) data(i, 1) = std::abs(value);
     else data(i, 1) = std::arg(value);
   }
-  Graph graph(getName(), "f", String("spectral density") + (module ? String("module") : String("phase")), true, "topright");
+  Graph graph(getName(), "f", String("spectral density") + (module ? String("module") : String("phase")));
+  graph.setLegendPosition("topright");
   Curve curve(data);
   curve.setLineWidth(2);
   if (module) curve.setColor("red");

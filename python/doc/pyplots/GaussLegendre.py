@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 
 f = ot.SymbolicFunction(["x"], ["sin(x)"])
@@ -19,4 +19,4 @@ g.setTitle(r"GaussLegendre example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(value
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=False)
+otv.View(g, figure=fig, axes=[axis], add_legend=False)

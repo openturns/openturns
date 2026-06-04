@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 import math as m
 
 a = -m.pi
@@ -11,7 +11,8 @@ u = [ot.SymbolicFunction(["x"], ["-2-cos(x)"])]
 
 # Draw the graph of the integrand and the bounds:
 
-g = ot.Graph("IteratedQuadrature example", "x", "y", True, "upper right")
+g = ot.Graph("IteratedQuadrature example", "x", "y")
+g.setLegendPosition("upper right")
 g.add(f.draw([a, a], [b, b]))
 curve = ll[0].draw(a, b).getDrawable(0)
 curve.setLineWidth(2)
@@ -62,4 +63,4 @@ g.add(cloud)
 fig = plt.figure(figsize=(4, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=False)
+otv.View(g, figure=fig, axes=[axis], add_legend=False)

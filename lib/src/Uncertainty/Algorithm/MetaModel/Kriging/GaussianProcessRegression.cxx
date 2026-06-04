@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,8 +21,8 @@
 
 #include "openturns/GaussianProcessRegression.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/KrigingEvaluation.hxx"
-#include "openturns/KrigingGradient.hxx"
+#include "openturns/GaussianProcessEvaluation.hxx"
+#include "openturns/GaussianProcessGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/GaussianProcessFitter.hxx"
 
@@ -89,7 +89,7 @@ GaussianProcessRegression::GaussianProcessRegression(const Sample & inputSample,
     throw InvalidArgumentException(HERE) << "GaussianProcessRegression : trend output dimension is " << trendFunction.getOutputDimension() << ", expected " << outputDimension;
 
   const Sample detrended(outputSample_ - trendFunction(inputSample_));
-  // Launch a fit
+  // Launch a fitter without actually fitting, just discretize
   GaussianProcessFitter algo(inputSample_, detrended, covarianceModel_);
   algo.setKeepCholeskyFactor(true);
   algo.setOptimizeParameters(false);
@@ -110,9 +110,9 @@ GaussianProcessRegression * GaussianProcessRegression::clone() const
 Point GaussianProcessRegression::computeGamma() const
 {
   // Get cholesky factor & rho from gaussian fitter result
-  LOGINFO("Solve L^t.gamma = rho");
+  LOGDEBUG("Solve L^t.gamma = rho");
 
-  const Point rho(gaussianProcessFitterResult_.getRho());
+  const Point rho(gaussianProcessFitterResult_.getStandardizedOutput());
 
   const GaussianProcessFitterResult::LinearAlgebra algebraMethod = gaussianProcessFitterResult_.getLinearAlgebraMethod();
   if (algebraMethod == GaussianProcessFitterResult::HMAT)
@@ -131,10 +131,10 @@ void GaussianProcessRegression::run()
 {
 
   // Covariance coefficients are computed once, ever if optimizer is fixed
-  LOGINFO("Compute the interpolation part");
+  LOGDEBUG("Compute the interpolation part");
   const Point gamma(computeGamma());
-  LOGINFO("Store the estimates");
-  LOGINFO("Build the output meta-model");
+  LOGDEBUG("Store the estimates");
+  LOGDEBUG("Build the output meta-model");
   Function metaModel;
 
   // We use directly the points
@@ -146,28 +146,12 @@ void GaussianProcessRegression::run()
   covarianceCoefficients.getImplementation()->setData(gamma);
 
   // Meta model definition
-  metaModel.setEvaluation(new KrigingEvaluation(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
-  metaModel.setGradient(new KrigingGradient(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
+  metaModel.setEvaluation(new GaussianProcessEvaluation(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
+  metaModel.setGradient(new GaussianProcessGradient(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
-  // compute residual, relative error
-  const Point outputVariance(outputSample.computeVariance());
-  const Sample mY(metaModel(inputSample));
-  const Point squaredResiduals((outputSample - mY).computeRawMoment(2));
-
-  const UnsignedInteger size = inputSample.getSize();
-  Point residuals(outputDimension);
-  Point relativeErrors(outputDimension);
-  for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
-  {
-    residuals[outputIndex] = std::sqrt(squaredResiduals[outputIndex] / size);
-    relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
-  }
   result_ = GaussianProcessRegressionResult(gaussianProcessFitterResult_, covarianceCoefficients);
-  // Set metamodel
   result_.setMetaModel(metaModel);
-  result_.setResiduals(residuals);
-  result_.setRelativeErrors(relativeErrors);
 }
 
 

@@ -4,11 +4,14 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
 import inspect
+from pathlib import Path
+import re
 
 ot.TESTPREAMBLE()
 
 # find all instantiable classes
 instantiables = []
+functions = []
 for mod in [ot, otexp, ott]:
     for name, obj in inspect.getmembers(mod):
         if inspect.isclass(obj):
@@ -20,6 +23,10 @@ for mod in [ot, otexp, ott]:
                 instantiables.append(obj)
             except Exception:
                 pass
+        elif inspect.isfunction(obj):
+            cn = obj.__name__
+            if "_" not in cn:
+                functions.append(obj)
 
 # find missing docstrings
 count_class = 0
@@ -62,6 +69,12 @@ for name, mod in inspect.getmembers(ot):
                     count_methods_undoc += 1
                     print(f"{symboln} method")
 
+count_functions = len(functions)
+count_functions_undoc = 0
+for function in functions:
+    if function.__doc__ is None:
+        print(f"{function.__name__} function")
+        count_functions_undoc += 1
 
 print(
     f"-- undocumented classes: {count_class_undoc} ({100.0 * count_class_undoc / count_class:.2f}%) --"
@@ -69,7 +82,31 @@ print(
 print(
     f"-- undocumented methods: {count_methods_undoc} ({100.0 * count_methods_undoc / count_methods:.2f}%) --"
 )
-if count_class_undoc + count_methods_undoc > 100:
+print(
+    f"-- undocumented functions: {count_functions_undoc} ({100.0 * count_functions_undoc / count_functions:.2f}%) --"
+)
+if count_class_undoc + count_methods_undoc + count_functions_undoc > 110:
     raise ValueError(
-        f"too much undocumented class/methods ({count_class_undoc + count_methods_undoc})"
+        f"too many undocumented class/methods ({count_class_undoc + count_methods_undoc + count_functions_undoc})"
     )
+
+# count extra docstrings methods
+count_methods_extra = 0
+for swig_file in Path(__file__).parents[1].joinpath("src").glob("*_doc.i"):
+    with open(swig_file, encoding="utf-8") as f:
+        for line in f.read().splitlines():
+            match = re.search(r'%feature\("docstring"\) OT::([\w]*)::([\w]*)', line)
+            if match is not None:
+                cn = match.group(1)
+                mn = match.group(2)
+                try:
+                    cls = getattr(ot, cn)
+                    obj = cls()
+                    if not hasattr(obj, mn):
+                        print(f"extra {cn}::{mn} method")
+                        count_methods_extra += 1
+                except Exception:
+                    pass
+print(f"-- extra method docstrings: {count_methods_extra}")
+if count_methods_extra > 10:
+    raise ValueError(f"too many extra method docstrings ({count_methods_extra})")

@@ -1,0 +1,206 @@
+%feature("docstring") OT::Collection
+"Collection.
+
+Examples
+--------
+>>> import openturns as ot
+
+- Collection of **real values**:
+
+>>> ot.ScalarCollection(2)
+[0,0]
+>>> ot.ScalarCollection(2, 3.25)
+[3.25,3.25]
+>>> vector = ot.ScalarCollection([2.0, 1.5, 2.6])
+>>> vector
+[2,1.5,2.6]
+>>> vector[1] = 4.2
+>>> vector
+[2,4.2,2.6]
+>>> vector.add(3.8)
+>>> vector
+[2,4.2,2.6,3.8]
+
+- Collection of **complex values**:
+
+>>> ot.ComplexCollection(2)
+[(0,0),(0,0)]
+>>> ot.ComplexCollection(2, 3+4j)
+[(3,4),(3,4)]
+>>> vector = ot.ComplexCollection([2+3j, 1-4j, 3.0])
+>>> vector
+[(2,3),(1,-4),(3,0)]
+>>> vector[1] = 4+3j
+>>> vector
+[(2,3),(4,3),(3,0)]
+>>> vector.add(5+1j)
+>>> vector
+[(2,3),(4,3),(3,0),(5,1)]
+
+- Collection of **booleans**:
+
+>>> ot.BoolCollection(3)
+[0,0,0]
+>>> ot.BoolCollection(3, 1)
+[1,1,1]
+>>> vector = ot.BoolCollection([0, 1, 0])
+>>> vector
+[0,1,0]
+>>> vector[1] = 0
+>>> vector
+[0,0,0]
+>>> vector.add(1)
+>>> vector
+[0,0,0,1]
+
+- Collection of **distributions**:
+
+>>> print(ot.DistributionCollection(2))
+[Uniform(a = -1, b = 1),Uniform(a = -1, b = 1)]
+>>> print(ot.DistributionCollection(2, ot.Gamma(2.75, 1.0)))
+[Gamma(k = 2.75, lambda = 1, gamma = 0),Gamma(k = 2.75, lambda = 1, gamma = 0)]
+>>> vector = ot.DistributionCollection([ot.Normal(), ot.Uniform()])
+>>> print(vector)
+[Normal(mu = 0, sigma = 1),Uniform(a = -1, b = 1)]
+>>> vector[1] = ot.Uniform(-0.5, 1)
+>>> print(vector)
+[Normal(mu = 0, sigma = 1),Uniform(a = -0.5, b = 1)]
+>>> vector.add(ot.Gamma(2.75, 1.0))
+>>> print(vector)
+[Normal(mu = 0, sigma = 1),Uniform(a = -0.5, b = 1),Gamma(k = 2.75, lambda = 1, gamma = 0)]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::add
+"Append a component (in-place).
+
+Parameters
+----------
+value : type depends on the type of the collection.
+    The component to append.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2)
+>>> x.add(1.)
+>>> print(x)
+[0,0,1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::at
+"Access to an element of the collection.
+
+Parameters
+----------
+index : positive int
+    Position of the element to access.
+
+Returns
+-------
+element : type depends on the type of the collection
+    Element of the collection at the position *index*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::clear
+"Reset the collection to zero dimension.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2)
+>>> x.clear()
+>>> x
+class=Point name=Unnamed dimension=0 values=[]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::getSize
+"Get the collection's dimension (or size).
+
+Returns
+-------
+n : int
+    The number of components in the collection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::isEmpty
+"Tell if the collection is empty.
+
+Returns
+-------
+isEmpty : bool
+    *True* if there is no element in the collection.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2)
+>>> x.isEmpty()
+False
+>>> x.clear()
+>>> x.isEmpty()
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::resize
+"Change the size of the collection.
+
+Parameters
+----------
+newSize : positive int
+    New size of the collection.
+
+Notes
+-----
+If the new size is smaller than the older one, the last elements are thrown
+away, else the new elements are set to the default value of the element type.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2, 4)
+>>> print(x)
+[4,4]
+>>> x.resize(1)
+>>> print(x)
+[4]
+>>> x.resize(4)
+>>> print(x)
+[4,0,0,0]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::index
+"Find the index of a given value.
+
+Parameters
+----------
+val : collection value type
+    The value to find
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the value.
+    Throws when the value is not found."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Collection::select
+"Selection from indices.
+
+Parameters
+----------
+indices : sequence of int
+    Indices to select
+
+Returns
+-------
+coll : sequence
+    Sub-collection of values at the selection indices."
+

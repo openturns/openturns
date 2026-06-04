@@ -2,7 +2,7 @@
 /**
  *  @brief The Beta distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -396,7 +396,7 @@ Scalar Beta::getBeta() const
 /* A accessor */
 void Beta::setA(const Scalar a)
 {
-  if (!SpecFunc::IsNormal(a)) throw InvalidArgumentException(HERE) << "The lower bound must be a real value, here a=" << a;
+  if (!std::isfinite(a)) throw InvalidArgumentException(HERE) << "The lower bound must be a real value, here a=" << a;
   if (b_ <= a) throw InvalidArgumentException(HERE) << "The lower bound must be less than the upper bound, here a=" << a << " and b=" << b_;
   if (a != a_)
   {
@@ -415,7 +415,7 @@ Scalar Beta::getA() const
 /* B accessor */
 void Beta::setB(const Scalar b)
 {
-  if (!SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "The upper bound must be a real value, here b=" << b;
+  if (!std::isfinite(b)) throw InvalidArgumentException(HERE) << "The upper bound must be a real value, here b=" << b;
   if (b <= a_) throw InvalidArgumentException(HERE) << "The upper bound must be greater than the lower bound, here a=" << a_ << " and b=" << b;
   if (b != b_)
   {

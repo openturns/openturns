@@ -1,0 +1,129 @@
+%feature("docstring") OT::SmoothedUniform
+R"RAW(SmoothedUniform distribution.
+
+This distribution is the distribution of the sum of a uniform random variable and an independent normal random variable.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{\Phi \left( (b - x)/\sigma \right) - \Phi \left( (a - x)/\sigma \right) }{ b - a }, \quad x \in \Rset
+
+where :math:`\Phi` is the CDF of the standard normal distribution.
+
+Its first moments are defined as:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{a+b}{2} \\
+        \Var{X} & = & \frac{(b-a)^2}{12} + \sigma^2
+    \end{eqnarray*}
+
+Parameters
+----------
+a : float
+    Lower bound of the :class:`~openturns.Uniform` component.
+
+    Default value is -1.0.
+b : float, :math:`b > a`
+    Upper bound of the :class:`~openturns.Uniform` component.
+
+    Default value is 1.0.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation of the :class:`~openturns.Normal` component.
+
+    Default value is 1.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.SmoothedUniform(2.0, 3.0, 1.5)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::getA
+"Accessor to the lower bound of the uniform component.
+
+Returns
+-------
+a : float
+    Lower bound of the :class:`~openturns.Uniform` component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::getB
+"Accessor to the upper bound of the uniform component.
+
+Returns
+-------
+b : float
+    Upper bound of the :class:`~openturns.Uniform` component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::getSigma
+"Accessor to the standard deviation of the normal component.
+
+Returns
+-------
+sigma : float
+    Standard deviation of the :class:`~openturns.Normal` component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::setA
+"Accessor to the lower bound of the uniform component.
+
+Parameters
+----------
+a : float, :math:`a < b`
+    Lower bound of the :class:`~openturns.Uniform` component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::setB
+"Accessor to the upper bound of the uniform component.
+
+Parameters
+----------
+b : float, :math:`a < b`
+    Upper bound of the :class:`~openturns.Uniform` component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::setSigma
+R"RAW(Accessor to the standard deviation of the normal component.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation of the :class:`~openturns.Normal` component.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::setFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Parameters
+----------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SmoothedUniform::getFFTAlgorithm
+"Accessor to the FFT algorithm implementation.
+
+Returns
+-------
+fft : a :class:`~openturns.FFT`
+    A FFT algorithm."

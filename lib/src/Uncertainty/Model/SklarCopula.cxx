@@ -2,7 +2,7 @@
 /**
  *  @brief The SklarCopula distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -42,12 +42,10 @@ static const Factory<SklarCopula> Factory_SklarCopula;
 /* Default constructor */
 SklarCopula::SklarCopula()
   : DistributionImplementation()
-  , distribution_()
-  , marginalCollection_()
 {
   isCopula_ = true;
-  setName( "SklarCopula" );
-  setDimension( 1 );
+  setName("SklarCopula");
+  setDimension(1);
   computeRange();
 }
 
@@ -58,14 +56,15 @@ SklarCopula::SklarCopula(const Distribution & distribution)
   , marginalCollection_(distribution.getDimension())
 {
   isCopula_ = true;
-  setName( "SklarCopula" );
+  setName("SklarCopula");
   // Manage parallelism
   setParallel(distribution.getImplementation()->isParallel());
   // We set the dimension of the SklarCopula distribution
   const UnsignedInteger dimension = distribution.getDimension();
-  setDimension( dimension );
+  setDimension(dimension);
   // Extract all the 1D marginal distributions
-  for (UnsignedInteger i = 0; i < dimension; ++i) marginalCollection_[i] = distribution.getMarginal(i);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    marginalCollection_[i] = distribution.getMarginal(i);
   computeRange();
 }
 
@@ -134,7 +133,7 @@ Point SklarCopula::computeDDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar ui = point[i];
-    if ((ui <= 0.0) || ui >= 1.0) return Point(dimension, 0.0);
+    if (!((ui > 0.0) && (ui < 1.0))) return Point(dimension, 0.0);
     const Point xi(marginalCollection_[i].computeQuantile(ui));
     x[i] = xi[0];
     pdfX[i] = marginalCollection_[i].computePDF(xi);
@@ -147,6 +146,35 @@ Point SklarCopula::computeDDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++ i)
     result[i] = (result[i] - ddfX[i] * pdfDistribution / pdfX[i]) / pdfX[i] / factor;
   return result;
+}
+
+/* Get the log PDF of the distribution
+   F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n))
+   so p(x_1,\dots,x_n) = c(F_1(x_1),\dots,F_n(x_n))\prod_{i=1}^n p_i(x_i)
+   and logp(x_1,\dots,x_n) = logc(F_1(x_1),\dots,F_n(x_n)) + \sum_{i=1}^n logp_i(x_i) */
+Scalar SklarCopula::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the given point must have dimension " << dimension << ", here dimension=" << point.getDimension();
+
+  // Early exit for the independent case
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Scalar ui = point[i];
+    if ((ui <= 0.0) || ui >= 1.0) return -SpecFunc::MaxScalar;
+  }
+  if (distribution_.hasIndependentCopula()) return 0.0;
+  Point x(dimension);
+  Scalar sum = 0.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Point xi(marginalCollection_[i].computeQuantile(point[i]));
+    x[i] = xi[0];
+    sum += marginalCollection_[i].computeLogPDF(xi);
+    if (sum <= -SpecFunc::MaxScalar) return -SpecFunc::MaxScalar;
+  }
+  return distribution_.computeLogPDF(x) - sum;
 }
 
 /* Get the PDF of the distribution

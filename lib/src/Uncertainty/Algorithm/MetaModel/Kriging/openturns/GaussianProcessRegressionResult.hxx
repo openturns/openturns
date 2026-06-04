@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a gaussian process regression estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -78,10 +77,13 @@ public:
   Matrix getRegressionMatrix() const;
 
   /** process accessor */
-  Process getNoise() const;
+  GaussianProcess getCenteredProcess() const;
 
   /** Process coefficients accessor */
   Sample getCovarianceCoefficients() const;
+
+  /** Fitter result accessor */
+  GaussianProcessFitterResult getGaussianProcessFitterResult() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

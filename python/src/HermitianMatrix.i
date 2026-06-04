@@ -9,12 +9,12 @@
 %include openturns/HermitianMatrix.hxx
 
 %pythoncode %{
-def HermitianMatrix___getattribute__(self, name):
+def _HermitianMatrix___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.checkHermitian()
     return super(HermitianMatrix, self).__getattribute__(name)
-HermitianMatrix.__getattribute__ = HermitianMatrix___getattribute__
+HermitianMatrix.__getattribute__ = _HermitianMatrix___getattribute__
 %}
 
 namespace OT {

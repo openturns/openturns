@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for multithreading
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,10 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-#include <iostream>
-#include <cstdlib>
-#include <mutex>
 
 #include "openturns/OTconfig.hxx"
 
@@ -43,7 +39,6 @@ extern "C" {
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static TBBImplementation * TBBImplementation_P_instance_ = 0;
 static const TBB_init initializer_TBBImplementation;
 UnsignedInteger TBBImplementation::ThreadsNumber_ = 1;
 tbb::task_arena * TBBImplementation::P_task_arena_ = 0;
@@ -92,7 +87,6 @@ TBB_init::TBB_init()
   static std::once_flag flag;
   std::call_once(flag, [&]()
   {
-    TBBImplementation_P_instance_ = new TBBImplementation;
     TBBImplementation::Enable();
   });
 }
@@ -102,8 +96,6 @@ TBB_init::~TBB_init()
   static std::once_flag flag;
   std::call_once(flag, [&]()
   {
-    delete TBBImplementation_P_instance_;
-    TBBImplementation_P_instance_ = 0;
     delete TBBImplementation::P_task_arena_;
     TBBImplementation::P_task_arena_ = 0;
   });
@@ -111,8 +103,6 @@ TBB_init::~TBB_init()
 
 
 TBBContext::TBBContext()
-  : ompNumThreads_(0)
-  , openblasNumThreads_(0)
 {
 #ifdef OPENTURNS_HAVE_TBB
   if (TBBImplementation::GetThreadsNumber() > 1)

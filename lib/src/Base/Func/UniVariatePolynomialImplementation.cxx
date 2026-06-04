@@ -2,7 +2,7 @@
 /**
  *  @brief This is a 1D polynomial
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -194,7 +194,6 @@ Complex UniVariatePolynomialImplementation::operator() (const Complex z) const
 
   return y;
 }
-
 
 /* UniVariatePolynomialImplementation derivative */
 Scalar UniVariatePolynomialImplementation::gradient(const Scalar x) const

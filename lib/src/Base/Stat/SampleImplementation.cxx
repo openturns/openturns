@@ -2,7 +2,7 @@
 /**
  *  @brief The class SampleImplementation implements blank free samples
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
  */
 #include <sstream>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
@@ -1085,12 +1086,12 @@ Pointer<SampleImplementation> SampleImplementation::sort(const UnsignedInteger i
 struct Sortable
 {
   Point values_;
-  UnsignedInteger index_;
+  UnsignedInteger index_ = 0;
   Sortable() : values_(1, 0.0), index_(0) {}
   Sortable(const Point & values, const UnsignedInteger index) : values_(values), index_(index) {}
   Bool operator < (const Sortable & other) const
   {
-    return values_[index_] < other.values_[other.index_];
+    return values_[index_] < other.values_[index_];
   }
 };
 
@@ -1404,8 +1405,6 @@ Point SampleImplementation::computeCentralMoment(const UnsignedInteger k) const
  */
 Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 {
-  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
-
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute centered moments on an empty sample";
 
   // Special case: order 0, return (size,...,size)
@@ -1917,12 +1916,30 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Descriptio
 Pointer<SampleImplementation> SampleImplementation::select(const UnsignedIntegerCollection & indices) const
 {
   const UnsignedInteger size = indices.getSize();
-  Pointer<SampleImplementation> result = new SampleImplementation(size, dimension_);
-  for (UnsignedInteger i = 0; i < size; ++i)
+
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const UnsignedInteger index = indices[i];
-    if (!(index < size_)) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
-    std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result->data_.begin() + i * dimension_);
+    if (!(index < size_)) throw InvalidArgumentException(HERE) << "selection expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
+  }
+
+  Pointer<SampleImplementation> result = new SampleImplementation(size, dimension_);
+  UnsignedInteger offset = 0;
+  UnsignedInteger i1 = 0;
+  while (i1 < size)
+  {
+    // count consecutive indices
+    UnsignedInteger i2 = 0;
+    for (i2 = i1 + 1; i2 < size; ++ i2)
+    {
+      if (indices[i2] != indices[i2 - 1] + 1)
+        break;
+    }
+    const UnsignedInteger count = i2 - i1;
+    const UnsignedInteger start = indices[i1];
+    std::copy(data_.begin() + start * dimension_, data_.begin() + (start + count) * dimension_, result->data_.begin() + offset * dimension_);
+    offset += count;
+    i1 = i2;
   }
   result->setDescription(getDescription());
   return result;
@@ -1939,7 +1956,13 @@ void SampleImplementation::exportToCSVFile(const FileName & fileName,
     throw InvalidArgumentException(HERE) << "Decimal separator must be a string of size 1, got " << decimalSeparator.size();
   if (separator == decimalSeparator)
     throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
-  std::ofstream csvFile(fileName);
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  std::ofstream csvFile(std::filesystem::path{u8FileName});
+#else
+  std::ofstream csvFile(std::filesystem::u8path(fileName));
+#endif
   if (csvFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << fileName;
 

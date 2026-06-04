@@ -2,7 +2,7 @@
 /**
  *  @brief PhysicalSpaceCrossEntropyImportanceSampling implements Importance Sampling by Cross Entropy algorithm in Physical Space
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,13 +47,18 @@ public:
   /** Virtual constructor */
   PhysicalSpaceCrossEntropyImportanceSampling * clone() const override;
 
-  /** Set solver */
+  /** String converter */
+  String __repr__() const override;
+
+  /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-
-
-  /** Get solver */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 protected:
 
   /** Function updating the auxiliary distribution as a function of auxiliary distribution parameters */

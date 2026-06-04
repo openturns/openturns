@@ -2,7 +2,7 @@
 /**
  *  @brief The Dirac distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/Dirac.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Distribution.hxx"
@@ -323,7 +322,7 @@ void Dirac::setPoint(const Point & point)
   if (point.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Expected a point of dimension " << dimension;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
-    if (!SpecFunc::IsNormal(point[i])) throw InvalidArgumentException(HERE) << "Cannot build a Dirac from nan/inf values";
+    if (!std::isfinite(point[i])) throw InvalidArgumentException(HERE) << "Cannot build a Dirac from nan/inf values";
   point_ = point;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

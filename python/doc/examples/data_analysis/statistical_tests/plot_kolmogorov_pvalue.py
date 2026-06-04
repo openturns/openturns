@@ -8,20 +8,15 @@ Kolmogorov-Smirnov : understand the p-value
 #
 # * We generate a sample from a Gaussian distribution.
 # * We create a uniform distribution with known parameters.
-# * The Kolmogorov-Smirnov statistics is computed and plot on the empirical cumulated distribution function.
+# * The Kolmogorov-Smirnov statistics is computed and plot on the empirical cumulative distribution function.
 # * We plot the p-value as the area under the part of the curve exceeding the observed statistics.
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # We generate a sample from a standard Gaussian distribution.
-
-# %%
 dist = ot.Normal()
 samplesize = 10
 sample = dist.getSample(samplesize)
@@ -129,9 +124,11 @@ graph.add(curve)
 graph.add(curveStat)
 graph.add(boundsPoly)
 graph.setTitle("Kolmogorov-Smirnov distribution (known parameters)")
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
 
 # %%
 # We observe that the p-value is the area of the curve which corresponds to
 # the KS distances greater than the observed KS statistics.
+
+# %%
+otv.View.ShowAll()

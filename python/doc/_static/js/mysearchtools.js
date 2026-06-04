@@ -69,9 +69,9 @@ const _displayItem = (item, highlightTerms, searchTerms) => {
   let listItem = document.createElement("li");
 
   // filter categories
-  var ExampleScore = $("#ExampleBox").is(":checked");
-  var APIScore = $("#APIBox").is(":checked");
-  var TheoryScore = $("#TheoryBox").is(":checked");
+  const ExampleScore = document.getElementById("ExampleBox").checked;
+  const APIScore = document.getElementById("APIBox").checked;
+  const TheoryScore = document.getElementById("TheoryBox").checked;
   var score = item[4];
   if (score >= 300) {
     listItem.classList.add("Example");
@@ -124,7 +124,7 @@ const _displayItem = (item, highlightTerms, searchTerms) => {
   if (descr)
     listItem.appendChild(document.createElement("span")).innerText =
       " (" + descr + ")";
-  else if (showSearchSummary)
+  else if (showSearchSummary && location.protocol !== "file:")
     fetch(requestUrl)
       .then((responseData) => responseData.text())
       .then((data) => {
@@ -135,21 +135,22 @@ const _displayItem = (item, highlightTerms, searchTerms) => {
       });
   Search.output.appendChild(listItem);
 };
-const _finishSearch = (resultCount) => {
+const _finishSearch = () => {
   Search.stopPulse();
   Search.title.innerText = _("Search Results");
-  if (!resultCount)
+  // Count only visible items (fixes #2254)
+  const visibleCount = Search.output.querySelectorAll('li.show, li:not(.hide)').length;
+  if (!visibleCount)
     Search.status.innerText = Documentation.gettext(
       "Your search did not match any documents. Please make sure that all words are spelled correctly and that you've selected enough categories."
     );
   else
     Search.status.innerText = _(
-      `Search finished, found ${resultCount} page(s) matching the search query.`
+      `Search finished, found ${visibleCount} page(s) matching the search query.`
     );
 };
 const _displayNextItem = (
   results,
-  resultCount,
   highlightTerms,
   searchTerms
 ) => {
@@ -158,12 +159,12 @@ const _displayNextItem = (
   if (results.length) {
     _displayItem(results.pop(), highlightTerms, searchTerms);
     setTimeout(
-      () => _displayNextItem(results, resultCount, highlightTerms, searchTerms),
+      () => _displayNextItem(results, highlightTerms, searchTerms),
       5
     );
   }
   // search finished, update title and status message
-  else _finishSearch(resultCount);
+  else _finishSearch();
 };
 
 /**
@@ -284,8 +285,11 @@ const Search = {
 
       // maybe skip this "word"
       // stopwords array is from language_data.js
+      const isStopword = Array.isArray(stopwords)
+      ? stopwords.indexOf(queryTermLower) !== -1
+      : stopwords.has(queryTermLower);
       if (
-        stopwords.indexOf(queryTermLower) !== -1 ||
+        isStopword ||
         queryTerm.match(/^\d+$/)
       )
         return;
@@ -375,7 +379,7 @@ const Search = {
     // console.info("search results:", Search.lastresults);
 
     // print the results
-    _displayNextItem(results, results.length, highlightTerms, searchTerms);
+    _displayNextItem(results, highlightTerms, searchTerms);
   },
 
   /**
@@ -583,4 +587,4 @@ const Search = {
   },
 };
 
-_ready(Search.init);
+document.addEventListener("DOMContentLoaded", Search.init);

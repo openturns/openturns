@@ -35,11 +35,11 @@ point[0] = 0.25
 point[1] = 0.25
 data[8] = point
 dataOut = myFunc(data)
-myLeastSquares = ot.LinearLeastSquares(data, dataOut)
-myLeastSquares.run()
-responseSurface = ot.Function(myLeastSquares.getMetaModel())
-print("myLeastSquares=", repr(myLeastSquares))
+algo = ot.LinearLeastSquares(data, dataOut)
+algo.run()
+responseSurface = algo.getResult().getMetaModel()
+print("algo=", repr(algo))
 print("responseSurface=", repr(responseSurface))
-inPoint = ot.Point(myFunc.getInputDimension(), 0.1)
+inPoint = [0.1] * 2
 print("myFunc(", repr(inPoint), ")=", repr(myFunc(inPoint)))
 print("responseSurface(", repr(inPoint), ")=", repr(responseSurface(inPoint)))

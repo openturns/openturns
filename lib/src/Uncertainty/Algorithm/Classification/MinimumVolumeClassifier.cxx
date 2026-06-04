@@ -2,7 +2,7 @@
 /**
  *  @brief Associate to a given point its class index
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,8 @@ MinimumVolumeClassifier::MinimumVolumeClassifier(const Distribution & distributi
   if (!distribution.isContinuous())
     throw InvalidArgumentException(HERE) << "Distribution must be continuous";
   std::sort(alpha_.begin(), alpha_.end());
-  (void)std::unique(alpha_.begin(), alpha_.end());
+  auto last = std::unique(alpha_.begin(), alpha_.end());
+  alpha_.erase(last, alpha_.end());
   if (alpha != alpha_)
     throw InvalidArgumentException(HERE) << "Alpha must be sorted and unique";
   const UnsignedInteger size = alpha_.getSize();
@@ -229,7 +230,8 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
   if (dimension == 1)
   {
     grid = GridLayout(1, 1);
-    Graph graph("", description[0], "", true, "topright");
+    Graph graph("", description[0], "");
+    graph.setLegendPosition("topright");
     for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
     {
       Sample sampleXC(separatedSamples[k]);
@@ -246,7 +248,8 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
       for (UnsignedInteger j = 0; j < i; ++ j)
       {
         const Indices indices = {j, i};
-        Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+        Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "");
+        graph.setLegendPosition("topright");
         for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
         {
           const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], ResourceMap::GetAsString("Drawable-DefaultPointStyle"), "");

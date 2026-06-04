@@ -1,11 +1,13 @@
 // SWIG file classification_module.i
 
 %module(package="openturns", docstring="Classification algorithms.") classification
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTDistribution.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTClassification.hxx"
 %}

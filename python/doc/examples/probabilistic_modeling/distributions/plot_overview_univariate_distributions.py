@@ -16,10 +16,8 @@ Overview of univariate distribution management
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Distributions with several parametrizations
@@ -57,7 +55,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 distribution = ot.Beta(2.5, 2.5, -1, 2)
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The :class:`~openturns.BetaMuSigma` class provides another parametrization, based on the expectation :math:`\mu` and the standard deviation  :math:`\sigma` of the random variable:
@@ -138,7 +136,7 @@ S = B + E
 # %%
 graph = S.drawPDF()
 graph.setTitle("Sum of a beta and an exponential distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The exponential function of this distribution can be computed with the `exp` method.
@@ -149,7 +147,7 @@ sumexp = S.exp()
 # %%
 graph = sumexp.drawPDF()
 graph.setTitle("Exponential of a sum of a beta and an exponential")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The `CompositeDistribution` class for more general functions
@@ -182,7 +180,7 @@ dist = ot.CompositeDistribution(f, N)
 # %%
 graph = dist.drawPDF()
 graph.setTitle("Exponential of a gaussian random variable")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In order to check the previous distribution, we compare it with the LogNormal distribution.
@@ -191,7 +189,7 @@ view = viewer.View(graph)
 LN = ot.LogNormal()
 LN.setDescription(["LogNormal"])
 graph = LN.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -239,7 +237,7 @@ class Quartic(ot.PythonDistribution):
     """
 
     def __init__(self):
-        super(Quartic, self).__init__(1)
+        super().__init__(1)
         self.c = 15.0 / 16
 
     def computeCDF(self, x):
@@ -270,5 +268,8 @@ Q.setDescription(["Quartic Kernel"])
 
 # %%
 graph = Q.drawPDF()
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

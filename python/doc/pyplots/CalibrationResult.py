@@ -1,8 +1,6 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 import math as m
-
-ot.RandomGenerator.SetSeed(0)
 
 
 def flooding(X):
@@ -38,4 +36,4 @@ algo.run()
 result = algo.getResult()
 graph = result.drawObservationsVsPredictions()
 
-View(graph)
+otv.View(graph)

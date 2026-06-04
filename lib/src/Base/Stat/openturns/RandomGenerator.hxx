@@ -2,7 +2,7 @@
 /**
  *  @brief RandomGenerator implements methods to control the random generator
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,6 +60,9 @@ public:
   static Point Generate(const UnsignedInteger size);
   /** Generate a pseudo-random vector of integers uniformly distributed over [[0,...,n-1]] */
   static UnsignedIntegerCollection IntegerGenerate(const UnsignedInteger size, const UnsignedInteger n);
+
+  /* Reset with default seed */
+  static void Reset();
 
 private:
   /** Default constructor */

@@ -2,7 +2,7 @@
 /**
  *  @brief Mesh is defined as a collection of n-D vertices and simplices
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -103,6 +103,8 @@ UnsignedInteger Mesh::getDimension() const
 /* Intrinsic dimension accessor */
 UnsignedInteger Mesh::getIntrinsicDimension() const
 {
+  if (!getSimplicesNumber())
+    return 0;
   UnsignedInteger verticesPerSimplex = 1;
   UnsignedInteger lastIndex = simplices_(0, 0);
   while ((verticesPerSimplex <= dimension_) && (simplices_(0, verticesPerSimplex) != lastIndex))
@@ -135,6 +137,7 @@ void Mesh::setVertices(const Sample & vertices)
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
   hasBeenChecked_ = false;
+  isConvex_ = false;
 }
 
 /* Vertex accessor */
@@ -162,8 +165,9 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
   if (!(simplices == simplices_))
   {
     simplices_ = simplices;
+    hasBeenChecked_ = false;
+    isConvex_ = false;
   }
-  hasBeenChecked_ = false;
 }
 
 /* Simplex accessor */
@@ -176,10 +180,11 @@ Indices Mesh::getSimplex(const UnsignedInteger index) const
 /* Check the mesh validity */
 void Mesh::checkValidity() const
 {
-
   if (hasBeenChecked_) return;
+
   // Check the vertices: no duplicate, no unused vertex
   // Check the simplices: no simplex with duplicate vertices, no simplex with unknown vertex, no simplex with a number of vertices different from dimension+1
+  Indices arity(getVerticesNumber(), 0);
   for (UnsignedInteger i = 0; i < getSimplicesNumber(); ++ i)
   {
     Indices simplex(getSimplex(i));
@@ -188,7 +193,16 @@ void Mesh::checkValidity() const
 
     if (*std::max_element(simplex.begin(), simplex.end()) >= getVerticesNumber())
       throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " = " << simplex << " refers to an unknown vertex";
+
+    for (UnsignedInteger j = 0; j <= getDimension(); ++ j)
+      ++ arity[simplex[j]];
   }
+
+  // Check for unused vertex
+  const UnsignedInteger unusedVertexIndex = arity.find(0);
+  if (unusedVertexIndex < getVerticesNumber())
+    throw InvalidArgumentException(HERE) << "Vertex #" << unusedVertexIndex << " is unconnected";
+
   // Check that no ball can be included into the intersection of two simplices
   // One it has been checked everything is ok
   hasBeenChecked_ = true;
@@ -304,133 +318,133 @@ Point Mesh::computeSimplicesVolume() const
   // The mesh has the same dimension as the ambiant space
   const UnsignedInteger intrinsicDimension = getIntrinsicDimension();
   if (dimension_ == intrinsicDimension)
+  {
+    if (dimension_ == 1)
     {
-      if (dimension_ == 1)
-	{
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    {
-	      const Scalar x0 = vertices_(simplices_(index, 0), 0);
-	      const Scalar x1 = vertices_(simplices_(index, 1), 0);
-	      result[index] = std::abs(x1 - x0);
-	    }
-	} // dimension_ == 1
-      else if (dimension_ == 2)
-	{
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    {
-	      const Scalar x0 = vertices_(simplices_(index, 0), 0);
-	      const Scalar y0 = vertices_(simplices_(index, 0), 1);
-	      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
-	      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
-	      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
-	      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
-	      result[index] = 0.5 * std::abs(x02 * y01 - x01 * y02);
-	    }
-	} // dimension_ = 2
-      else if (dimension_ == 3)
-	{
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    {
-	      const Scalar x0 = vertices_(simplices_(index, 0), 0);
-	      const Scalar y0 = vertices_(simplices_(index, 0), 1);
-	      const Scalar z0 = vertices_(simplices_(index, 0), 2);
-	      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
-	      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
-	      const Scalar z01 = vertices_(simplices_(index, 1), 2) - z0;
-	      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
-	      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
-	      const Scalar z02 = vertices_(simplices_(index, 2), 2) - z0;
-	      const Scalar x03 = vertices_(simplices_(index, 3), 0) - x0;
-	      const Scalar y03 = vertices_(simplices_(index, 3), 1) - y0;
-	      const Scalar z03 = vertices_(simplices_(index, 3), 2) - z0;
-	      result[index] = std::abs(x01 * (y02 * z03 - z02 * y03) + y01 * (z02 * x03 - x02 * z03) + z01 * (x02 * y03 - y02 * x03)) / 6.0;
-	    }
-	} // dimension_ == 3
-      else
-	{
-	  // General case
-	  SquareMatrix matrix(dimension_ + 1);
-	  Scalar sign = 0.0;
-	  const Scalar logGamma = SpecFunc::LogGamma(dimension_ + 1);
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    {
-	      buildSimplexMatrix(index, matrix);
-	      result[index] = exp(matrix.computeLogAbsoluteDeterminantInPlace(sign) - logGamma);
-	    }
-	} // dimension_ > 3
-    } // dimension_ == getIntrinsicDimension()
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      {
+        const Scalar x0 = vertices_(simplices_(index, 0), 0);
+        const Scalar x1 = vertices_(simplices_(index, 1), 0);
+        result[index] = std::abs(x1 - x0);
+      }
+    } // dimension_ == 1
+    else if (dimension_ == 2)
+    {
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      {
+        const Scalar x0 = vertices_(simplices_(index, 0), 0);
+        const Scalar y0 = vertices_(simplices_(index, 0), 1);
+        const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+        const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+        const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+        const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+        result[index] = 0.5 * std::abs(x02 * y01 - x01 * y02);
+      }
+    } // dimension_ = 2
+    else if (dimension_ == 3)
+    {
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      {
+        const Scalar x0 = vertices_(simplices_(index, 0), 0);
+        const Scalar y0 = vertices_(simplices_(index, 0), 1);
+        const Scalar z0 = vertices_(simplices_(index, 0), 2);
+        const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+        const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+        const Scalar z01 = vertices_(simplices_(index, 1), 2) - z0;
+        const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+        const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+        const Scalar z02 = vertices_(simplices_(index, 2), 2) - z0;
+        const Scalar x03 = vertices_(simplices_(index, 3), 0) - x0;
+        const Scalar y03 = vertices_(simplices_(index, 3), 1) - y0;
+        const Scalar z03 = vertices_(simplices_(index, 3), 2) - z0;
+        result[index] = std::abs(x01 * (y02 * z03 - z02 * y03) + y01 * (z02 * x03 - x02 * z03) + z01 * (x02 * y03 - y02 * x03)) / 6.0;
+      }
+    } // dimension_ == 3
+    else
+    {
+      // General case
+      SquareMatrix matrix(dimension_ + 1);
+      Scalar sign = 0.0;
+      const Scalar logGamma = SpecFunc::LogGamma(dimension_ + 1);
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      {
+        buildSimplexMatrix(index, matrix);
+        result[index] = exp(matrix.computeLogAbsoluteDeterminantInPlace(sign) - logGamma);
+      }
+    } // dimension_ > 3
+  } // dimension_ == getIntrinsicDimension()
   // The mesh is of codimension 1
   else if (dimension_ == intrinsicDimension + 1)
+  {
+    if (intrinsicDimension == 1)
     {
-      if (intrinsicDimension == 1)
-	{
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    result[index] = (vertices_[simplices_(index, 0)] - vertices_[simplices_(index, 1)]).norm();
-	} // intrinsicDimension == 1
-      else if (intrinsicDimension == 2)
-	{
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    {
-	      Scalar a = (vertices_[simplices_(index, 0)] - vertices_[simplices_(index, 1)]).norm();
-	      Scalar b = (vertices_[simplices_(index, 1)] - vertices_[simplices_(index, 2)]).norm();
-	      Scalar c = (vertices_[simplices_(index, 2)] - vertices_[simplices_(index, 0)]).norm();
-	      // Sort a, b, c in decreasing order
-	      if (a < b)
-		std::swap(a, b);
-	      if (a < c)
-		std::swap(a, c);
-	      if (b < c)
-		std::swap(b, c);
-	      // Here we use a stable formula
-	      result[index] = 0.25 * std::sqrt((a + (b + c)) * (c - (a - b)) * (c + (a - b)) * (a + (b - c)));
-	    } // index
-	} // intrinsicDimension == 2
-      else
-	{
-	  Sample workingVertices(dimension_ + 1, dimension_);
-	  IndicesCollection simplex(1, dimension_ + 1);
-	  SquareMatrix M(dimension_);
-	  SquareMatrix eigenVectors;
-	  // For each simplex in the mesh
-	  for (UnsignedInteger index = 0; index < nrSimplices; ++index)
-	    {
-	      // We know (https://urresearch.rochester.edu/fileDownloadForInstitutionalItem.action?itemId=13451&itemFileId=31154)
-	      // that the hyperplane goes through the center of the vertices
-	      // (ie the mean) and has the eigenvector associated with the
-	      // smallest eigenvalue of M'M (a semi-definite symmetric real
-	      // matrix, so its eigenvalues are all nonnegative)
-	      Point sum(dimension_, 0.0);
-	      for (UnsignedInteger i = 0; i < dimension_; ++i)
-		{
-		  sum += vertices_[simplices_(index, i)];
-		  workingVertices[i] = vertices_[simplices_(index, i)];
-		}
-	      // Here we cannot use computeMean as the last vertex has to
-	      // be dropped from the computation
-	      workingVertices -= sum / dimension_;
-	      // Compute a vector normal to the hyperplane containing
-	      // the current degenerated simplex
-	      for (UnsignedInteger i = 0; i < dimension_; ++i)
-		for (UnsignedInteger j = 0; j < dimension_; ++j)
-		  M(j, i) = workingVertices(i, j);
-	      CovarianceMatrix MtM(M.computeGram(false));
-	      // We know that the eigenvalues are sorted into ascending
-	      // order so the eigenvector we are looking for is the first one.
-	      // No need to store the eigenvalues.
-	      (void) MtM.computeEVInPlace(eigenVectors);
-	      const Point normal(eigenVectors.getImplementation()->begin(), eigenVectors.getImplementation()->begin() + dimension_);
-	      // Add the new point defining a full dimension simplex which
-	      // volume is the surface of the lower dimensional simplex
-	      for (UnsignedInteger i = 0; i < dimension_; ++i)
-		{
-		  workingVertices(dimension_, i) = workingVertices(dimension_ - 1, i) + normal[i];
-		  simplex(0, i) = i;
-		}
-	      simplex(0, dimension_) = dimension_;
-	      result[index] = dimension_ * Mesh(workingVertices, simplex).computeSimplicesVolume()[0];
-	    } // index
-	} // intrinsicDimension > 3
-    } // dimension_ == intrinsicDimension + 1
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+        result[index] = (vertices_[simplices_(index, 0)] - vertices_[simplices_(index, 1)]).norm();
+    } // intrinsicDimension == 1
+    else if (intrinsicDimension == 2)
+    {
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      {
+        Scalar a = (vertices_[simplices_(index, 0)] - vertices_[simplices_(index, 1)]).norm();
+        Scalar b = (vertices_[simplices_(index, 1)] - vertices_[simplices_(index, 2)]).norm();
+        Scalar c = (vertices_[simplices_(index, 2)] - vertices_[simplices_(index, 0)]).norm();
+        // Sort a, b, c in decreasing order
+        if (a < b)
+          std::swap(a, b);
+        if (a < c)
+          std::swap(a, c);
+        if (b < c)
+          std::swap(b, c);
+        // Here we use a stable formula
+        result[index] = 0.25 * std::sqrt((a + (b + c)) * (c - (a - b)) * (c + (a - b)) * (a + (b - c)));
+      } // index
+    } // intrinsicDimension == 2
+    else
+    {
+      Sample workingVertices(dimension_ + 1, dimension_);
+      IndicesCollection simplex(1, dimension_ + 1);
+      SquareMatrix M(dimension_);
+      SquareMatrix eigenVectors;
+      // For each simplex in the mesh
+      for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+      {
+        // We know (https://urresearch.rochester.edu/fileDownloadForInstitutionalItem.action?itemId=13451&itemFileId=31154)
+        // that the hyperplane goes through the center of the vertices
+        // (ie the mean) and has the eigenvector associated with the
+        // smallest eigenvalue of M'M (a semi-definite symmetric real
+        // matrix, so its eigenvalues are all nonnegative)
+        Point sum(dimension_, 0.0);
+        for (UnsignedInteger i = 0; i < dimension_; ++i)
+        {
+          sum += vertices_[simplices_(index, i)];
+          workingVertices[i] = vertices_[simplices_(index, i)];
+        }
+        // Here we cannot use computeMean as the last vertex has to
+        // be dropped from the computation
+        workingVertices -= sum / dimension_;
+        // Compute a vector normal to the hyperplane containing
+        // the current degenerated simplex
+        for (UnsignedInteger i = 0; i < dimension_; ++i)
+          for (UnsignedInteger j = 0; j < dimension_; ++j)
+            M(j, i) = workingVertices(i, j);
+        CovarianceMatrix MtM(M.computeGram(false));
+        // We know that the eigenvalues are sorted into ascending
+        // order so the eigenvector we are looking for is the first one.
+        // No need to store the eigenvalues.
+        (void) MtM.computeEVInPlace(eigenVectors);
+        const Point normal(eigenVectors.getImplementation()->begin(), eigenVectors.getImplementation()->begin() + dimension_);
+        // Add the new point defining a full dimension simplex which
+        // volume is the surface of the lower dimensional simplex
+        for (UnsignedInteger i = 0; i < dimension_; ++i)
+        {
+          workingVertices(dimension_, i) = workingVertices(dimension_ - 1, i) + normal[i];
+          simplex(0, i) = i;
+        }
+        simplex(0, dimension_) = dimension_;
+        result[index] = dimension_ * Mesh(workingVertices, simplex).computeSimplicesVolume()[0];
+      } // index
+    } // intrinsicDimension > 3
+  } // dimension_ == intrinsicDimension + 1
   return result;
 }
 
@@ -636,7 +650,8 @@ Graph Mesh::draw1D() const
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
-  Graph graph(String(OSS() << "Mesh " << getName()), "", getDescription()[0], true, "topright");
+  Graph graph(String(OSS() << "Mesh " << getName()), "", getDescription()[0]);
+  graph.setLegendPosition("topright");
   // The vertices
   Cloud vertices(vertices_, Sample(verticesSize, Point(1, 0.0)));
   vertices.setColor("red");
@@ -662,7 +677,8 @@ Graph Mesh::draw2D() const
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
-  Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1], true, "topright");
+  Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1]);
+  graph.setLegendPosition("topright");
   // The vertices
   Cloud vertices(vertices_);
   vertices.setColor("red");
@@ -685,12 +701,10 @@ Graph Mesh::draw2D() const
   return graph;
 }
 
-Graph Mesh::draw3D(const Bool drawEdge,
-                   const Scalar thetaX,
-                   const Scalar thetaY,
-                   const Scalar thetaZ,
-                   const Bool shading,
-                   const Scalar rho) const
+/* Create a rotation matrix from three Euler angles */
+SquareMatrix Mesh::BuildRotationFromAngles(const Scalar thetaX,
+    const Scalar thetaY,
+    const Scalar thetaZ)
 {
   SquareMatrix R(3);
   const Scalar sinThetaX = sin(thetaX);
@@ -708,7 +722,17 @@ Graph Mesh::draw3D(const Bool drawEdge,
   R(0, 2) =  sinThetaX * sinThetaZ - cosThetaX * sinThetaY * cosThetaZ;
   R(1, 2) =  sinThetaX * cosThetaZ + cosThetaX * sinThetaY * sinThetaZ;
   R(2, 2) =  cosThetaX * cosThetaY;
-  return draw3D(drawEdge, R, shading, rho);
+  return R;
+}
+
+Graph Mesh::draw3D(const Bool drawEdge,
+                   const Scalar thetaX,
+                   const Scalar thetaY,
+                   const Scalar thetaZ,
+                   const Bool shading,
+                   const Scalar rho) const
+{
+  return draw3D(drawEdge, BuildRotationFromAngles(thetaX, thetaY, thetaZ), shading, rho);
 }
 
 namespace
@@ -736,23 +760,66 @@ Graph Mesh::draw3D(const Bool drawEdge,
                    const Bool shading,
                    const Scalar rho) const
 {
+  const UnsignedInteger simplicesSize = simplices_.getSize();
+  const Description colors(simplicesSize, ResourceMap::GetAsString("Mesh-FaceColor"));
+  return draw3D(drawEdge, rotation, shading, rho, colors);
+}
+
+Graph Mesh::draw3D(const Bool drawEdge,
+                   const SquareMatrix & rotation,
+                   const Bool shading,
+                   const Scalar rho,
+                   const Description & colors) const
+{
   checkValidity();
   // First, check if the matrix is a rotation matrix of R^3
   if (rotation.getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: the matrix is not a 3d square matrix.";
-  if (!(Point((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() <= 1e-5)) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
+  if (!(Point((rotation.computeGram() - IdentityMatrix(3)).getImplementation()).norm() <= std::sqrt(SpecFunc::Precision))) throw InvalidArgumentException(HERE) << "Error: the matrix is not an orthogonal matrix.";
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (!(verticesSize > 0)) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
+  // Get the colors, to see if one alpha channel has been activated
+  Bool hasTransparency = false;
+  UnsignedInteger colorNumber = colors.getSize();
+  IndicesCollection colorsAsRGBA(colorNumber, 4);
+  // If no color given, take it from ResourceMap
+  if (colorNumber == 0)
+  {
+    const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-FaceColor"))));
+    // Update the colors to contain the default color
+    colorsAsRGBA = IndicesCollection(1, 4);
+    std::copy(faceRGBA.begin(), faceRGBA.end(), colorsAsRGBA.begin_at(0));
+    hasTransparency = (faceRGBA[3] < 255);
+    ++ colorNumber;
+  }
+  // Convert the colors to RGBA quadruplets
+  else
+  {
+    for (UnsignedInteger i = 0; i < colorNumber; ++i)
+    {
+      const Indices faceRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(colors[i])));
+      std::copy(faceRGBA.begin(), faceRGBA.end(), colorsAsRGBA.begin_at(i));
+    }
+  } // colorNumber > 0
+
+  String edgeColor(ResourceMap::GetAsString("Mesh-EdgeColor"));
+  const Indices edgeRGBA(Drawable::ConvertToRGBA(Drawable::ConvertFromName(edgeColor)));
+  const Scalar redEdge = edgeRGBA[0] / 255.0;
+  const Scalar greenEdge = edgeRGBA[1] / 255.0;
+  const Scalar blueEdge = edgeRGBA[2] / 255.0;
+  const Scalar alphaEdge = edgeRGBA[3] / 255.0;
+
+  hasTransparency = hasTransparency || (drawEdge && (edgeRGBA[3] < 255));
+
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
   const Bool noRotation = rotation.isDiagonal();
   const Point verticesCenter(noRotation ? Point(3) : vertices_.computeMean());
   const Sample visuVertices(noRotation ? vertices_ : rotation.getImplementation()->genSampleProd(vertices_ - verticesCenter, true, false, 'R') + verticesCenter);
-
   // Third, split all the simplices into triangles and compute their mean depth
   Collection< std::pair<Scalar, Indices> > trianglesAndDepth(4 * simplicesSize);
   UnsignedInteger triangleIndex = 0;
-  Indices triangle(3);
+  Indices triangle(4);
   const UnsignedInteger numSimplices = getSimplicesNumber();
   const UnsignedInteger numVertices = getVerticesNumber();
   Collection<Indices> mapVerticesToSimplices(numVertices, Indices(0));
@@ -764,7 +831,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
   } // Loop over simplices
   IndicesCollection verticesToSimplices(mapVerticesToSimplices);
-  const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling");
+  const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling") && (!hasTransparency) && (rho == 1.0);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const UnsignedInteger i0 = simplices_(i, 0);
@@ -782,7 +849,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     // First face: AB=p0p1, AC=p0p2.
     if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex1, visuVertex2)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2)))
     {
-      triangle = {i0, i1, i2};
+      triangle = {i0, i1, i2, i % colorNumber};
       trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i1, 2) + visuVertices(i2, 2);
       trianglesAndDepth[triangleIndex].second = triangle;
       ++triangleIndex;
@@ -791,9 +858,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     // Second face: AB=p0p2, AC=p0p3.
     if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex2, visuVertex3)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3)))
     {
-      triangle[0] = i0;
-      triangle[1] = i2;
-      triangle[2] = i3;
+      triangle = {i0, i2, i3, i % colorNumber};
       trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i2, 2) + visuVertices(i3, 2);
       trianglesAndDepth[triangleIndex].second = triangle;
       ++triangleIndex;
@@ -802,9 +867,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     // Third face: AB=p0p3, AC=p0p1.
     if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex3, visuVertex1)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1)))
     {
-      triangle[0] = i0;
-      triangle[1] = i3;
-      triangle[2] = i1;
+      triangle = {i0, i3, i1, i % colorNumber};
       trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i3, 2) + visuVertices(i1, 2);
       trianglesAndDepth[triangleIndex].second = triangle;
       ++triangleIndex;
@@ -813,6 +876,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     // Fourth face: AB=p1p3, AC=p1p2.
     if (((!backfaceCulling) || Mesh_isVisible(visuVertex1, visuVertex3, visuVertex2)) && (!Mesh_isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2)))
     {
+      triangle = {i1, i3, i2, i % colorNumber};
       triangle[0] = i1;
       triangle[1] = i3;
       triangle[2] = i2;
@@ -824,13 +888,14 @@ Graph Mesh::draw3D(const Bool drawEdge,
   trianglesAndDepth.resize(triangleIndex);
 
   // Fourth, draw the triangles in decreasing depth
-  Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1], true, "topright");
   std::sort(trianglesAndDepth.begin(), trianglesAndDepth.end());
   const Scalar clippedRho = SpecFunc::Clip01(rho);
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
   Sample face(3, 2);
   Sample data;
   Description palette;
+  // If we don't draw edges, we use a PolygonArray for better performance, otherwise we use
+  // a collection of Polygon
   if (!drawEdge)
   {
     data = Sample(3 * trianglesAndDepth.getSize(), 2);
@@ -844,36 +909,37 @@ Graph Mesh::draw3D(const Bool drawEdge,
   const Scalar kAmbient = ResourceMap::GetAsScalar("Mesh-AmbientFactor");
   const Scalar shininess = ResourceMap::GetAsScalar("Mesh-Shininess");
 
-  const Scalar redAmbient = 1.0;
-  const Scalar greenAmbient = 1.0;
-  const Scalar blueAmbient = 0.0;
+  const Indices ambientRGB(Drawable::ConvertToRGB(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-AmbientColor"))));
+  const Scalar redAmbient = ambientRGB[0] / 255.0;
+  const Scalar greenAmbient = ambientRGB[1] / 255.0;
+  const Scalar blueAmbient = ambientRGB[2] / 255.0;
+
   Point Iambient(3);
   Iambient[0] = kAmbient * redAmbient;
   Iambient[1] = kAmbient * greenAmbient;
   Iambient[2] = kAmbient * blueAmbient;
 
-  const Scalar redFace = 0.0;
-  const Scalar greenFace = 0.0;
-  const Scalar blueFace = 1.0;
+  const Indices lightRGB(Drawable::ConvertToRGB(Drawable::ConvertFromName(ResourceMap::GetAsString("Mesh-LightColor"))));
+  const Scalar redLight = lightRGB[0] / 255.0;
+  const Scalar greenLight = lightRGB[1] / 255.0;
+  const Scalar blueLight = lightRGB[2] / 255.0;
 
-  const Scalar redEdge = 1.0;
-  const Scalar greenEdge = 0.0;
-  const Scalar blueEdge = 0.0;
-
-  const Scalar redLight = 1.0;
-  const Scalar greenLight = 1.0;
-  const Scalar blueLight = 1.0;
   Point Ilight(3);
+  String faceColor;
 
-  // Will be modified if shading == true
-  String faceColor = Drawable::ConvertFromRGB(redFace, greenFace, blueFace);
-  String edgeColor = Drawable::ConvertFromRGB(redEdge, greenEdge, blueEdge);
-
+  // Fourth, draw the triangles in decreasing depth
+  Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1]);
+  graph.setLegendPosition("topright");
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
   {
     const UnsignedInteger i0 = trianglesAndDepth[i - 1].second[0];
     const UnsignedInteger i1 = trianglesAndDepth[i - 1].second[1];
     const UnsignedInteger i2 = trianglesAndDepth[i - 1].second[2];
+    const UnsignedInteger colorIndex = trianglesAndDepth[i - 1].second[3];
+    const Scalar redFace = colorsAsRGBA(colorIndex, 0) / 255.0;
+    const Scalar greenFace = colorsAsRGBA(colorIndex, 1) / 255.0;
+    const Scalar blueFace = colorsAsRGBA(colorIndex, 2) / 255.0;
+    const Scalar alphaFace = colorsAsRGBA(colorIndex, 3) / 255.0;
     if (clippedRho < 1.0)
     {
       const Point faceCenter((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
@@ -913,6 +979,8 @@ Graph Mesh::draw3D(const Bool drawEdge,
       N[0] = ab[1] * ac[2] - ab[2] * ac[1];
       N[1] = ab[2] * ac[0] - ab[0] * ac[2];
       N[2] = ab[0] * ac[1] - ab[1] * ac[0];
+      const Scalar Nnorm = N.norm();
+      if (Nnorm == 0.0) continue;
       N /= N.norm();
       // Flip the normal if it is pointing backward
       if (N[2] < 0.0) N *= -1.0;
@@ -927,9 +995,20 @@ Graph Mesh::draw3D(const Bool drawEdge,
       Ilight[1] = Ispecular * greenLight;
       Ilight[2] = Ispecular * blueLight;
       // Face color using Phong model
-      faceColor = Drawable::ConvertFromRGB(Iambient[0] + Idiffuse * redFace + Ilight[0], Iambient[1] + Idiffuse * greenFace + Ilight[1], Iambient[2] + Idiffuse * blueFace + Ilight[2]);
-      edgeColor = Drawable::ConvertFromRGB(Iambient[0] + Idiffuse * redEdge + Ilight[0], Iambient[1] + Idiffuse * greenEdge + Ilight[1], Iambient[2] + Idiffuse * blueEdge + Ilight[2]);
+      const Scalar finalFaceRed   = Iambient[0] + Idiffuse * redFace + Ilight[0];
+      const Scalar finalFaceGreen = Iambient[1] + Idiffuse * greenFace + Ilight[1];
+      const Scalar finalFaceBlue  = Iambient[2] + Idiffuse * blueFace + Ilight[2];
+      if (drawEdge)
+      {
+        const Scalar finalEdgeRed   = Iambient[0] + Idiffuse * redEdge + Ilight[0];
+        const Scalar finalEdgeGreen = Iambient[1] + Idiffuse * greenEdge + Ilight[1];
+        const Scalar finalEdgeBlue  = Iambient[2] + Idiffuse * blueEdge + Ilight[2];
+        edgeColor = Drawable::ConvertFromRGBA(finalEdgeRed, finalEdgeGreen, finalEdgeBlue, alphaEdge);
+      }
+      faceColor = Drawable::ConvertFromRGBA(finalFaceRed, finalFaceGreen, finalFaceBlue, alphaFace);
     } // shading
+    else
+      faceColor = Drawable::ConvertFromRGBA(redFace, greenFace, blueFace, alphaFace);
     if (drawEdge)
     {
       Polygon faceAndEdge(face);
@@ -959,10 +1038,10 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
 {
   std::ifstream file(fileName.c_str(), std::ios::in);
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
-  // Bording case: empty file
+  // Boarding case: empty file
   if (file.eof())
   {
-    Log::Info(OSS() << "File " << fileName << " is empty.");
+    LOGINFO(OSS() << "File " << fileName << " is empty.");
     return Mesh();
   }
   // First, the header: it is made of 3 integers, the number of vertices, the number of simplices and the number of elements on the boundary, currently not used by OT
@@ -1201,6 +1280,17 @@ Mesh Mesh::getSubMesh(const Indices & simplicesIndices) const
   return result;
 }
 
+/* Convex flag */
+void Mesh::setIsConvex(const Bool isConvex)
+{
+  isConvex_ = isConvex;
+}
+
+Bool Mesh::isConvex() const
+{
+  return isConvex_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void Mesh::save(Advocate & adv) const
 {
@@ -1209,6 +1299,7 @@ void Mesh::save(Advocate & adv) const
   adv.saveAttribute("hasBeenChecked_", hasBeenChecked_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
+  adv.saveAttribute("isConvex_", isConvex_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -1219,6 +1310,8 @@ void Mesh::load(Advocate & adv)
   adv.loadAttribute("hasBeenChecked_", hasBeenChecked_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
+  if (adv.hasAttribute("isConvex_"))
+    adv.loadAttribute("isConvex_", isConvex_);
 }
 
 END_NAMESPACE_OPENTURNS

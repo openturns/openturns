@@ -1,0 +1,79 @@
+%feature("docstring") OT::MetaModelResult
+"Data structure containing a metamodel.
+
+Parameters
+----------
+sampleX, sampleY : 2-d sequence of float
+    Input/output samples
+metaModel : :class:`~openturns.Function`
+    Definition of the response surface(s) of the model's output(s).
+
+Notes
+-----
+Structure created by the method run() of :class:`~openturns.GaussianProcessRegression`
+or :class:`~openturns.FunctionalChaosAlgorithm` and obtained thanks to the
+method getResult() of these classes.
+
+See also
+--------
+openturns.LinearModelResult, openturns.FunctionalChaosResult, openturns.GaussianProcessRegressionResult"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getMetaModel
+"Accessor to the metamodel.
+
+Returns
+-------
+metaModel : :class:`~openturns.Function`
+    Metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setMetaModel
+"Accessor to the metamodel.
+
+Parameters
+----------
+metaModel : :class:`~openturns.Function`
+    Metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setInputSample
+"Accessor to the input sample.
+
+Parameters
+----------
+inputSample : :class:`~openturns.Sample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    The input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::setOutputSample
+"Accessor to the output sample.
+
+Parameters
+----------
+outputSample : :class:`~openturns.Sample`
+    The output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelResult::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    The output sample."

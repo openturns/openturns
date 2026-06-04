@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -64,3 +65,9 @@ P1 = ot.UniVariatePolynomial([0.0, 1.0, -2.0, -1.0, 0.0, 1.0])
 print("P1=", P1)
 print("(repr) P1=", repr(P1))
 print("(html) P1=", P1._repr_html_())
+
+# Evaluate a polynomial over a sample
+x = [[1.0], [2.0], [3.0], [4.0], [5.0]]
+y = P2(x)
+yRef = [[-0.2], [-0.3], [-2.8], [-7.7], [-15.0]]
+ott.assert_almost_equal(y, yRef)

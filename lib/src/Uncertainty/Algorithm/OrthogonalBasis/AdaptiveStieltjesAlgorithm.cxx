@@ -4,7 +4,7 @@
  *         the coefficients of the 3 terms recurrence relation of an
  *         orthonormal polynomial family
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -89,7 +89,7 @@ AdaptiveStieltjesAlgorithm * AdaptiveStieltjesAlgorithm::clone() const
    Rn = <Qn,Qn> for n >= 0
    \alpha_n = <xQn,Qn> / Rn
    \beta_n  = Rn / Rn-1 for n >= 1, \beta_0 = 0
-   Remark: here we considere probability measures D, so R0=1, \alpha_0=E[D]=\mu, Q1(x)=x-\mu, \beta_1=R1=Var[D]
+   Remark: here we considered probability measures D, so R0=1, \alpha_0=E[D]=\mu, Q1(x)=x-\mu, \beta_1=R1=Var[D]
    Due to the convention of coefficients for orthonormal polynomials, the coefficients of the monic
    polynomials are stored as [1, -\alpha_n, -\beta_n]
  */

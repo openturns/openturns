@@ -2,7 +2,7 @@
 /**
  *  @brief Approximation with multiple design points based on FORM
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NearestPointProblem.hxx"
+#include "openturns/StandardEvent.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,9 +45,8 @@ MultiFORM::MultiFORM()
   * @brief Standard constructor: the class is defined by an optimization algorithm, a failure event and a physical starting point
   */
 MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
-                     const RandomVector & event,
-                     const Point & physicalStartingPoint)
-  : FORM(solver, event, physicalStartingPoint)
+                     const RandomVector & event)
+  : FORM(solver, event)
   , maximumDesignPointsNumber_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber"))
 {
   // Nothing to do
@@ -74,7 +74,7 @@ String MultiFORM::__repr__() const
   return oss;
 }
 
-/* Function that computes the design point by re-using the Analytical::run() and creates a MultiFORMResult */
+/* Function that computes the design point by reusing the Analytical::run() and creates a MultiFORMResult */
 void MultiFORM::run()
 {
   const Scalar gamma = ResourceMap::GetAsScalar("MultiFORM-DefaultGamma");
@@ -132,7 +132,7 @@ void MultiFORM::run()
     {
       ++ designPointNumber;
       // the symmetric of the design point is the next starting point
-      setPhysicalStartingPoint(getEvent().getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(formResult.getStandardSpaceDesignPoint() * -1.0));
+      nearestPointAlgorithm_.setStartingPoint(getEvent().getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(formResult.getStandardSpaceDesignPoint() * -1.0));
       formResultCollection.add(formResult);
     }
 

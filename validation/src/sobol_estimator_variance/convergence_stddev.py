@@ -94,7 +94,7 @@ def plotVariance(
     """
     fig, ax = pl.subplots()
     ax.set_title(algorithmName)
-    ax.plot(list_sampleSize, 1.0 / sqrt(list_sampleSize), "--", label=u"$1/\\sqrt{n}$")
+    ax.plot(list_sampleSize, 1.0 / sqrt(list_sampleSize), "--", label="$1/\\sqrt{n}$")
 
     for i in range(list_std_first_asymptotic.getDimension()):
         ax.plot(

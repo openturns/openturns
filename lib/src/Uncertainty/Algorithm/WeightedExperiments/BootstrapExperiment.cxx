@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an bootstrapExperiment plane
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/BootstrapExperiment.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -38,7 +38,7 @@ BootstrapExperiment::BootstrapExperiment():
 
 /* Constructor with parameters */
 BootstrapExperiment::BootstrapExperiment(const Sample & sample):
-  WeightedExperimentImplementation(UserDefined(), sample.getSize())
+  WeightedExperimentImplementation(FiniteDiscreteDistribution(), sample.getSize())
   , sample_(sample)
 {
   // Nothing to do
@@ -91,7 +91,7 @@ void BootstrapExperiment::setDistribution(const Distribution & distribution)
 
 Distribution BootstrapExperiment::getDistribution() const
 {
-  return UserDefined(sample_);
+  return FiniteDiscreteDistribution(sample_);
 }
 
 

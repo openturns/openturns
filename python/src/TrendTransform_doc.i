@@ -1,0 +1,75 @@
+%feature("docstring") OT::TrendTransform
+R"RAW(Trend transformation.
+
+Parameters
+----------
+trend : :class:`~openturns.Function`
+    The trend function :math:`f_{trend}` of a process.
+mesh : :class:`~openturns.Mesh`
+    The mesh on which :math:`f_{trend}` is applied.
+
+Notes
+-----
+A multivariate stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` may write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* as follows:
+
+.. math::
+
+    X(\omega,\vect{t}) = X_{stat}(\omega,\vect{t}) + f_{trend}(\vect{t})
+    
+
+We note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values of one field of the process *X*, associated to the mesh :math:`\cM = (\vect{t}_0, \dots, \vect{t}_{N-1})` of :math:`\cD`. We note :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})` the values of the resulting stationary field. Then we have:
+
+.. math::
+
+    \vect{x}^{stat}_i = \vect{x}_i - f_{trend}(\vect{t}_i)
+
+ 
+Examples
+--------
+Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t)=1+2t+t^2`:
+
+>>> import openturns as ot
+>>> myGrid = ot.RegularGrid(0.0, 0.1, 10)
+>>> f = ot.SymbolicFunction(['t'], ['1+2*t+t^2'])
+>>> fTrend = ot.TrendTransform(f, myGrid)
+
+Add it to a process:
+
+>>> amplitude=[5.0]
+>>> scale=[0.2]
+>>> myCovModel=ot.ExponentialModel(scale, amplitude)
+>>> myXProcess=ot.GaussianProcess(myCovModel, myGrid)
+>>> myYProcess = ot.CompositeProcess(fTrend, myXProcess)
+
+Remove it from a field:
+
+>>> myField = myYProcess.getRealization()
+>>> myStatField = fTrend.getInverse()(myField)
+
+Then re-add it:
+
+>>> myInitialField = fTrend(myStatField)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TrendTransform::getInverse
+"Accessor to the inverse trend function.
+
+Returns
+-------
+myInverseTrendTransform : :class:`~openturns.InverseTrendTransform`
+    The :math:`f_{trend}^{-1}` function.
+
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TrendTransform::getTrendFunction
+"Accessor to the trend function.
+
+Returns
+-------
+trend : :class:`~openturns.Function`
+    The trend function :math:`f_{trend}` of a process.
+"

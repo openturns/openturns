@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,15 +51,15 @@ public:
 
   /** Performs the actual computation */
   virtual void run();
-  
+
   /** Starting point accessor */
   virtual void setStartingPoint(const Point & startingPoint);
   virtual Point getStartingPoint() const;
-  
+
   /** Starting sample accessor */
   virtual void setStartingSample(const Sample & startingSample);
   virtual Sample getStartingSample() const;
-    
+
   /** Problem accessor */
   virtual OptimizationProblem getProblem() const;
   virtual void setProblem(const OptimizationProblem & problem);

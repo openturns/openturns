@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Multinomial distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/MultinomialFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -69,7 +68,7 @@ Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
     for (UnsignedInteger j = 0; j < dimension; j++)
     {
       Scalar x = sample(i, j);
-      if (!SpecFunc::IsNormal(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution if data contains NaN or Inf";
+      if (!std::isfinite(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution if data contains NaN or Inf";
       if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Multinomial distribution only from a sample with positive integer components, here sample[" << i << "][" << j << "]=" << x;
       sumI += static_cast<UnsignedInteger>(x);
       p[j] += x;

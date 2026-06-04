@@ -32,19 +32,9 @@ Distribution(PyObject * pyObj)
   return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
 }
 
-Distribution __add__ (Scalar s)
-{
- return *self + s;
-}
-
 Distribution __radd__ (Scalar s)
 {
  return *self + s;
-}
-
-Distribution __sub__(Scalar s)
-{
- return *self - s;
 }
 
 Distribution __rsub__(Scalar s)
@@ -55,11 +45,6 @@ Distribution __rsub__(Scalar s)
 Distribution __neg__()
 {
   return *self * (-1.0);
-}
-
-Distribution __mul__(Scalar s)
-{
- return (*self) * s;
 }
 
 Distribution __rmul__(Scalar s)
@@ -94,11 +79,20 @@ class PythonDistribution:
     dim : positive int
         the distribution dimension
 
+    Notes
+    -----
+    It is not necessary to implement all the methods. Only the *computeCDF()*
+    and *getDimension()* methods are mandatory. In addition, the  *getRange()* method
+    is mandatory in dimension more than 1.
+    All the methods which are not implemented are inherited from
+    :class:`~openturns.Distribution` which implements some generic numerical methods.
+    
+    
     Examples
     --------
     Not useful on its own, see the examples section on how to inherit from it.
     """
-    def __init__(self, dim=0):
+    def __init__(self, dim=1):
         """
         Constructor.
         """
@@ -115,6 +109,12 @@ class PythonDistribution:
         Dimension accessor.
         """
         return self.__dim
+
+    def getRange(self):
+        """
+        Range accessor. Optional, but highly recommended
+        """
+        raise RuntimeError('You must define a method getRange() -> range, where range is an Interval')
 
     def computeCDF(self, X):
         """
@@ -141,7 +141,7 @@ class SciPyDistribution(PythonDistribution):
     >>> distribution.getRealization()  # doctest: +SKIP
     """
     def __init__(self, dist):
-        super(SciPyDistribution, self).__init__(1)
+        super().__init__(1)
         if dist.__class__.__name__ not in ('rv_frozen', 'rv_continuous_frozen', 'rv_histogram', 'rv_discrete_frozen'):
             raise TypeError('Argument is not a scipy 1D distribution')
         self._dist = dist
@@ -268,7 +268,7 @@ class ChaospyDistribution(PythonDistribution):
     >>> distribution.getRealization()  # doctest: +SKIP
     """
     def __init__(self, dist):
-        super(ChaospyDistribution, self).__init__(len(dist))
+        super().__init__(len(dist))
         from chaospy import Iid, J, __version__
         independent = len(dist) == 1
         independent |= isinstance(dist, Iid)
@@ -296,10 +296,16 @@ class ChaospyDistribution(PythonDistribution):
 
     def computePDF(self, X):
         pdf = self._dist.pdf(X)
+        # 0d np.array or np.float
+        if hasattr(pdf, "item"):
+            pdf = pdf.item()
         return pdf
 
     def computeCDF(self, X):
         cdf = self._dist.cdf(X)
+        # 0d np.array or np.float
+        if hasattr(cdf, "item"):
+            cdf = cdf.item()
         return cdf
 
     def getMean(self):

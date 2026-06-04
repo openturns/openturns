@@ -2,7 +2,7 @@
 /**
  *  @brief The ExtremeValueCopula distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -120,7 +120,7 @@ Scalar ExtremeValueCopula::computePDF(const Point & point) const
   const Scalar u = point[0];
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+  if (!((u > 0.0) && (u < 1.0) && (v > 0.0) && (v < 1.0)))
   {
     return 0.0;
   }
@@ -143,7 +143,7 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   const Scalar u = point[0];
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
+  if (!((u > 0.0) && (u < 1.0) && (v > 0.0) && (v < 1.0)))
   {
     return SpecFunc::LowestScalar;
   }
@@ -152,11 +152,11 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   const Scalar logUV = logU + logV;
   const Point ratio(1, logV / logUV);
   const Scalar A = pickandFunction_(ratio)[0];
-  if (!SpecFunc::IsNormal(A)) return SpecFunc::LowestScalar;
+  if (!std::isfinite(A)) return SpecFunc::LowestScalar;
   const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-  if (!SpecFunc::IsNormal(dA)) return SpecFunc::LowestScalar;
+  if (!std::isfinite(dA)) return SpecFunc::LowestScalar;
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
-  if (!SpecFunc::IsNormal(d2A)) return SpecFunc::LowestScalar;
+  if (!std::isfinite(d2A)) return SpecFunc::LowestScalar;
   return logUV * A - 2.0 * std::log(-logUV) - logUV + std::log((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]);
 }
 
@@ -169,22 +169,22 @@ Scalar ExtremeValueCopula::computeCDF(const Point & point) const
   const Scalar u = point[0];
   const Scalar v = point[1];
   // If we are outside of the support, in the lower parts
-  if ((u <= 0.0) || (v <= 0.0))
+  if (!((u > 0.0) && (v > 0.0)))
   {
     return 0.0;
   }
   // If we are outside of the support, in the upper part
-  if ((u >= 1.0) && (v >= 1.0))
+  if (!((u < 1.0) || (v < 1.0)))
   {
     return 1.0;
   }
   // If we are outside of the support for u, in the upper part
-  if (u >= 1.0)
+  if (!(u < 1.0))
   {
     return v;
   }
   // If we are outside of the support for v, in the upper part
-  if (v >= 1.0)
+  if (!(v < 1.0))
   {
     return u;
   }
@@ -209,51 +209,54 @@ public:
     // Nothing to do
   }
 
-  ConditionalCDF * clone() const
+  ConditionalCDF * clone() const override
   {
     return new ConditionalCDF(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
+    if (!((u_ >= 0.0) && (u_ < 1.0))) return Point(1, 0.0);
     const Scalar v = point[0];
+    if (!(v > 0.0)) return Point(1, 0.0);
+    if (!(v < 1.0)) return Point(1, 1.0);
     const Scalar logV = std::log(v);
     const Scalar logUV = std::log(u_ * v);
     const Point ratio(1, logV / logUV);
     const Scalar A = pickandFunction_(ratio)[0];
     const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-    const Scalar conditionalCDF = (A - dA * ratio[0]) * std::exp(logUV * A) / u_;
+    const Scalar conditionalCDF = SpecFunc::Clip01((A - dA * ratio[0]) * std::exp(logUV * A) / u_);
     return Point(1, conditionalCDF);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description(1, "v");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "ConditionalCDF");
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "ConditionalCDF(" << pickandFunction_.__str__() << ", " << u_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "ConditionalCDF(" << pickandFunction_.__str__() << ", " << u_ << ")";

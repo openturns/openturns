@@ -27,4 +27,3 @@ covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0.612372,0.408248,0.25,0.612372,1,0.666667,0.408248,0.408248,0.666667,1,0.612372,0.25,0.408248,0.612372,1]
 parameters=[[]]
 Standard representative=UniformOrderStatistics(dimension = 4)
-Equal? true

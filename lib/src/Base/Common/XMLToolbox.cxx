@@ -2,7 +2,7 @@
 /**
  *  @brief This file provides basic XML functionalities
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,9 +24,6 @@
 #include "openturns/Exception.hxx"
 #include "openturns/XMLToolbox.hxx"
 #include <algorithm>
-#include <cstdio>
-#include <cstdlib>
-#include <cassert>
 
 #include <filesystem>
 
@@ -34,6 +31,11 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
+
+#if LIBXML_VERSION < 21400
+#define XML_PARSE_UNZIP 0
+#endif
+
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -60,9 +62,44 @@ XMLDoc::XMLDoc(const XMLDoc & other) : doc_(xmlCopyDoc( other.doc_, 1 ))
 
 XMLDoc::XMLDoc(const FileName & fileName) : doc_(0)
 {
-  if (!std::ifstream(std::filesystem::u8path(fileName)).good())
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  std::ifstream inputFile(std::filesystem::path{u8FileName}, std::ios_base::binary);
+#else
+  std::ifstream inputFile(std::filesystem::u8path(fileName), std::ios_base::binary);
+#endif
+  if (!inputFile.good())
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for reading";
-  doc_ = xmlReadFile(fileName.c_str(), "UTF-8", 0);
+  const int bufferSize = 4096;
+  char buffer[bufferSize];
+  inputFile.read(buffer, 4);
+
+  // check utf8 BOM (text-mode only)
+  if (buffer[0] == '\xEF' && buffer[1] == '\xBB' && buffer[2] == '\xBF')
+  {
+    // skip BOM
+    inputFile.seekg(3);
+    xmlParserCtxtPtr ctxt;
+    ctxt = xmlCreatePushParserCtxt(NULL, NULL, buffer, 0, fileName.c_str());
+    if (ctxt == NULL) throw XMLParserException(HERE) << "Error in creating parser context for file " << fileName;
+    while (inputFile.good())
+    {
+      inputFile.read(buffer, bufferSize);
+      if (xmlParseChunk(ctxt, buffer, inputFile.gcount(), 0) != 0)
+        throw XMLParserException(HERE) << "Error parsing file " << fileName;
+    }
+    if (xmlParseChunk(ctxt, buffer, 0, 1) != 0)
+      throw XMLParserException(HERE) << "Error parsing file " << fileName;
+    if (!ctxt->wellFormed)
+      throw XMLParserException(HERE) << "Malformed file " << fileName;
+    doc_ = ctxt->myDoc;
+    xmlFreeParserCtxt(ctxt);
+  }
+  else
+  {
+    doc_ = xmlReadFile(fileName.c_str(), "UTF-8", XML_PARSE_UNZIP);
+  }
   if (doc_ == NULL) throw XMLParserException(HERE) << "Error in parsing XML file " << fileName;
 }
 
@@ -95,7 +132,13 @@ XMLDoc::operator xmlDocPtr() const
 
 void XMLDoc::save(const FileName & fileName) const
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  if (!std::ofstream(std::filesystem::path{u8FileName}).good())
+#else
   if (!std::ofstream(std::filesystem::u8path(fileName)).good())
+#endif
     throw FileOpenException(HERE) << "Cannot open file " << fileName << " for writing";
   int rc = xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
   if (rc < 0)
@@ -293,7 +336,6 @@ Bool XML::IsElement(const Node & elt, const String & name)
 Bool XML::ElementHasAttribute(const Node & elt, const String & name)
 {
   XMLString aName = StringToXmlString(name);
-  assert(elt);
   return xmlHasProp(elt, aName) != NULL;
 }
 
@@ -440,19 +482,16 @@ XML::Node XML::GetRootNode( const XMLDoc & doc )
 
 void XML::SetRootNode( const XMLDoc & doc, const Node & root )
 {
-  assert(root);
   xmlDocSetRootElement( doc, root );
 }
 
 XML::Node XML::GetFirstChild( const Node & node )
 {
-  assert(node);
   return node->children;
 }
 
 XML::Node XML::GetNextNode( const Node & node )
 {
-  assert(node);
   return node->next;
 }
 
@@ -465,7 +504,6 @@ void XML::SetDTD( const XMLDoc & doc, const String & name, const String & path )
 
 std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node)
 {
-  assert(node);
   String name = XML::GetNodeName( node );
   os << "XML node='" << name << "'";
 

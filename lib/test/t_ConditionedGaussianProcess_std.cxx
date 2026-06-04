@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ConditionedGaussianProcess for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,11 +70,13 @@ int main(int, char *[])
   Basis basis(ConstantBasisFactory(2).build());
 
   // Kriging algorithm
-  KrigingAlgorithm algo(inputSample, outputSample, covarianceModel, basis);
-  algo.setOptimizeParameters(false);
+  GaussianProcessFitter fitter(inputSample, outputSample, covarianceModel, basis);
+  fitter.setOptimizeParameters(false);
+  fitter.run();
+  GaussianProcessRegression algo(fitter.getResult());
   algo.run();
   // Get result
-  KrigingResult result(algo.getResult());
+  GaussianProcessRegressionResult result(algo.getResult());
   // Build a mesh
   // Start with vertices
   Sample vertices(0, 2);
@@ -124,7 +126,7 @@ int main(int, char *[])
   // Conditioned process
   ConditionedGaussianProcess process(result, mesh2D);
   // Get a realization of the process
-  Field realization( process.getRealization() );
+  Field realization(process.getRealization());
   fullprint << "realization = " << realization << std::endl;
 
   //  Get a sample & compare it to expectation

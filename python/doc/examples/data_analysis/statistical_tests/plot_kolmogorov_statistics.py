@@ -10,13 +10,12 @@ Kolmogorov-Smirnov : understand the statistics
 #
 # * We generate a sample from a Normal distribution.
 # * We create a uniform distribution and estimate its parameters from the sample.
-# * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulated distribution function.
+# * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulative distribution function.
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The `computeKSStatisticsIndex` function computes the Kolmogorov-Smirnov
@@ -71,7 +70,8 @@ def computeKSStatisticsIndex(sample, distribution):
 
 # %%
 def drawKSDistance(sample, distribution, observation, D, distFactory):
-    graph = ot.Graph("KS Distance = %.4f" % (D), "X", "CDF", True, "upper left")
+    graph = ot.Graph("KS Distance = %.4f" % (D), "X", "CDF")
+    graph.setLegendPosition("upper left")
     # Thick vertical line at point x
     ECDF_x_plus = sample.computeEmpiricalCDF(observation)
     ECDF_x_minus = ECDF_x_plus - 1.0 / sample.getSize()
@@ -84,7 +84,7 @@ def drawKSDistance(sample, distribution, observation, D, distFactory):
     curve.setLineWidth(4.0 * curve.getLineWidth())
     graph.add(curve)
     # Empirical CDF
-    empiricalCDF = ot.UserDefined(sample).drawCDF()
+    empiricalCDF = ot.FiniteDiscreteDistribution(sample).drawCDF()
     empiricalCDF.setLegends(["Empirical DF"])
     graph.add(empiricalCDF)
     #
@@ -126,7 +126,7 @@ print("D=", D, ", Index=", index, ", Obs.=", observation)
 
 # %%
 graph = drawKSDistance(sample, distribution, observation, D, distFactory)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

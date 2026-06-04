@@ -1,0 +1,41 @@
+%feature("docstring") OT::MonteCarloExperiment
+R"RAW(MonteCarlo experiment.
+
+Available constructors:
+    MonteCarloExperiment(*distribution, size*)
+
+    MonteCarloExperiment(*size*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` with an independent copula used to generate the
+    set of input data.
+size : positive int
+    Number :math:`\sampleSize` of points that will be generated in the experiment.
+
+Notes
+-----
+MonteCarloExperiment is a random weighted design of experiments (see [hammersley1961]_ page 51, [lemieux2009]_ page 3).
+The :meth:`generate` method computes the nodes :math:`(\inputReal_i)_{i = 1, ..., \sampleSize}`
+by generating independent observations from the distribution :math:`\mu`. The weights associated to the
+points are all equal to :math:`w_i = \frac{1}{\sampleSize}` where :math:`\sampleSize` is the sample size. 
+When the :meth:`generate` method is
+called a second time, the generated sample changes.
+
+See also
+--------
+WeightedExperiment
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> print(experiment.generate())
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+3 : [ -0.355007  1.43725  ]
+4 : [  0.810668  0.793156 ])RAW"

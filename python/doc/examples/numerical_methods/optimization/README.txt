@@ -1,4 +1,4 @@
-.. _Optimization:
+.. _optimization_examples:
 
 Optimization
 ------------

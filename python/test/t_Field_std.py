@@ -49,3 +49,20 @@ os.remove(fname)
 
 scalarField = ot.Field(mesh3D, ot.Sample(len(vertices), [1.0]))
 print("deformed with complement=", scalarField.asDeformedMesh([1], [0, 2, 3]))
+
+# Default draw for 3D field (output marginal 0
+graph = field.draw()
+print(graph)
+# Draw a given marginal
+graph = field.drawMarginal(1)
+print(graph)
+# Draw in 3D with tuning
+graph = field.draw3D(
+    2,
+    True,
+    ot.Mesh.BuildRotationFromAngles(0.2, 0.3, 0.4),
+    True,
+    0.9,
+    ["red", "green", "blue"],
+)
+print(graph)

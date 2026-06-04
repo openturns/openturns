@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -23,3 +24,14 @@ print("algo =", fittingAlgo)
 result = fittingAlgo.run(x, y, w, basis, indices)
 
 print("result = %g" % result)
+
+# illustrate the other usages
+proxy = ot.DesignProxy(x, basis)
+method = ot.QRMethod(proxy, indices)
+# use the other run methods to cover them
+result2 = fittingAlgo.run(y, w, indices, proxy)
+ott.assert_almost_equal(result, result2, 1e-5, 1e-5)
+result3 = fittingAlgo.run(y, indices, proxy)
+ott.assert_almost_equal(result, result3, 1e-5, 1e-5)
+result4 = fittingAlgo.run(method, y)
+ott.assert_almost_equal(result, result4, 1e-5, 1e-5)

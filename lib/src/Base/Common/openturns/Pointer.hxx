@@ -2,7 +2,7 @@
 /**
  *  @brief The class Pointer implements a shared pointer strategy
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -95,7 +95,7 @@ public:
 
   /**
    * Copy constructor adds one more reference
-   * on the underying object so its reference counter is
+   * on the underlying object so its reference counter is
    * incremented by one
    */
   template <class Derived>
@@ -106,7 +106,7 @@ public:
 #ifndef SWIG
   /**
    * Equality operator adds one more reference
-   * on the underying object so its reference counter is
+   * on the underlying object so its reference counter is
    * incremented by one
    */
   template <class Derived>

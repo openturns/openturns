@@ -2,7 +2,7 @@
 /**
  *  @brief LinearModelAlgorithm implements the linear model
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,7 +91,6 @@ LinearModelAlgorithm * LinearModelAlgorithm::clone() const
   return new LinearModelAlgorithm(*this);
 }
 
-
 /* Perform regression */
 void LinearModelAlgorithm::run()
 {
@@ -130,13 +129,6 @@ void LinearModelAlgorithm::run()
   // The design proxy evaluated on the basis function
   const Matrix fX(proxy.computeDesign(indices));
 
-  // Description of the basis
-  Description coefficientsNames(0);
-  for (UnsignedInteger k = 0; k < basis_.getSize(); ++k)
-  {
-    coefficientsNames.add(basis_[k].__str__());
-  }
-
   // Residual sample
   const Sample residualSample(outputSample_ - metaModel(inputSample_));
 
@@ -162,8 +154,10 @@ void LinearModelAlgorithm::run()
   }
 
   result_ = LinearModelResult(inputSample_, basis_, fX, outputSample_, metaModel,
-                              coefficients, basis_.__str__(), coefficientsNames, residualSample,
-                              standardizedResiduals, diagonalGramInverse, leverages, cookDistances, sigma2);
+                              coefficients, residualSample,
+                              standardizedResiduals, diagonalGramInverse,
+                              leverages, cookDistances, sigma2);
+  result_.setLeastSquaresMethod(algo);
 
   hasRun_ = true;
 }

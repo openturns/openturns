@@ -2,7 +2,7 @@
 /**
  *  @brief Default LinearLeastSquaresCalibration
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -111,7 +111,7 @@ void LinearLeastSquaresCalibration::run()
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
   const Point deltaTheta(method.solve(deltaY));
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
-    if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+    if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
 
   const Point thetaStar(getStartingPoint() - deltaTheta);
   const Point r(deltaY - gradientObservations_ * deltaTheta);
@@ -123,10 +123,10 @@ void LinearLeastSquaresCalibration::run()
 }
 
 Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(const Point & thetaStar,
-										 const Point & r,
-										 const SquareMatrix & gramInverse,
-										 const UnsignedInteger outputDimension,
-										 Distribution & error)
+    const Point & r,
+    const SquareMatrix & gramInverse,
+    const UnsignedInteger outputDimension,
+    Distribution & error)
 {
   const Scalar varianceError = r.normSquare() / (r.getDimension() - thetaStar.getDimension());
   CovarianceMatrix covarianceThetaStar;
@@ -148,16 +148,16 @@ Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution
     throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable. Try to increase the \"LinearLeastSquaresCalibration-Regularization\" key in ResourceMap";
   }
   if (outputDimension > 0)
+  {
+    try
     {
-      try
-	{
-	  error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * varianceError).getImplementation());
-	}
-      catch (...)
-	{
-	  error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * SpecFunc::MaxScalar).getImplementation());
-	}
-    } // outputDimension > 0
+      error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * varianceError).getImplementation());
+    }
+    catch (...)
+    {
+      error = Normal(Point(outputDimension), (IdentityMatrix(outputDimension) * SpecFunc::MaxScalar).getImplementation());
+    }
+  } // outputDimension > 0
   return parameterPosterior;
 }
 

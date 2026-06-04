@@ -3,11 +3,9 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 
-ot_add_source_file (MetaModelResult.cxx)
 ot_add_source_file (MetaModelAlgorithm.cxx)
 ot_add_source_file (MetaModelValidation.cxx)
 
-ot_install_header_file (MetaModelResult.hxx)
 ot_install_header_file (MetaModelAlgorithm.hxx)
 ot_install_header_file (MetaModelValidation.hxx)
 

@@ -1,2 +1,3 @@
 gradient=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x0,x1,x2] outputVariablesNames=[y0] formulas=[x0^2+2*x1+3*x2^3]
 value at class=Point name=Unnamed dimension=3 values=[4,-4,0]=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=1 values=[8,2,0]
+(2.71828)+(5.43656*x)+((-3.14159*(sin(3.14159*x))))+((3.14159*(cos(3.14159*x))))

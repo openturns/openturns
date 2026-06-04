@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements assembly distributions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -87,9 +87,6 @@ public:
 
   /** Get one realization of the JointDistribution */
   Point getRealization() const override;
-protected:
-  Sample getSampleParallel(const UnsignedInteger size) const;
-public:
   Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the JointDistribution */
@@ -237,25 +234,6 @@ private:
 
 }; /* class JointDistribution */
 
-
-// @deprecated
-class OT_API ComposedDistribution
-  : public JointDistribution
-{
-  CLASSNAME
-public:
-  ComposedDistribution()
-    : JointDistribution() {}
-
-  explicit ComposedDistribution(const DistributionCollection & coll)
-    : JointDistribution(coll) {}
-
-  /** Default constructor */
-  ComposedDistribution(const DistributionCollection & coll,
-                       const Distribution & copula)
-    : JointDistribution(coll, copula) {}
-
-};
 
 END_NAMESPACE_OPENTURNS
 

@@ -1,13 +1,11 @@
 import openturns as ot
-import openturns.experimental as otexp
-from openturns.viewer import View
+import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 grid = ot.GridLayout(1, 2)
-pdf_2d = ot.Graph("Uniform order statistics, PDF", "x1", "x2", True)
-cdf_2d = ot.Graph("Uniform order statistics, CDF", "x1", "x2", True)
+pdf_2d = ot.Graph("Uniform order statistics, PDF", "x1", "x2")
+cdf_2d = ot.Graph("Uniform order statistics, CDF", "x1", "x2")
 
-distribution_2d = otexp.UniformOrderStatistics(2)
+distribution_2d = ot.UniformOrderStatistics(2)
 
 cloud = ot.Cloud(distribution_2d.getSample(1000))
 
@@ -23,6 +21,6 @@ grid.setGraph(0, 0, pdf_2d)
 grid.setGraph(0, 1, cdf_2d)
 grid.setTitle("UniformOrderStatistics")
 grid.setLegendPosition("upper right")
-v = View(grid)
+v = otv.View(grid)
 fig = v.getFigure()
 fig.axes[1].legend(loc="best")

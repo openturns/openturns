@@ -111,7 +111,7 @@ fail:
 # for details.
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
-def Tensor___getattribute__(self, name):
+def _Tensor___getattribute__(self, name):
     """Implement attribute accesses."""
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getNbRows(), self.getNbColumns(), self.getNbSheets()),
@@ -121,7 +121,7 @@ def Tensor___getattribute__(self, name):
                                                 'version': 3,
                                                 }
     return super(Tensor, self).__getattribute__(name)
-Tensor.__getattribute__ = Tensor___getattribute__
+Tensor.__getattribute__ = _Tensor___getattribute__
 %}
 
 namespace OT {

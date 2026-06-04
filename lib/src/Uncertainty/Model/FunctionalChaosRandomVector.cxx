@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for functionalChaos random vectors
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -79,6 +79,8 @@ CovarianceMatrix FunctionalChaosRandomVector::getCovariance() const
 /* Compute the covariance */
 void FunctionalChaosRandomVector::computeCovariance() const
 {
+  if (functionalChaosResult_.getUseDomination())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosRandomVector.computeCovariance is not available with domination method.";
   const UnsignedInteger dimension = getDimension();
   const Indices indices(functionalChaosResult_.getIndices());
   const Sample coefficients(functionalChaosResult_.getCoefficients());

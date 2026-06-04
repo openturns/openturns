@@ -1,14 +1,13 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
 # Latent variable model for 4 categorical levels and
 # a 3-dimensional latent space
-k = otexp.LatentVariableModel(4, 3)
+k = ot.LatentVariableModel(4, 3)
 k.setLatentVariables([0.1, 0.2, 0.3, -0.1, -0.2, -0.3, 0.4])
 k.setScale([1.5])
 k.setAmplitude([2.0])

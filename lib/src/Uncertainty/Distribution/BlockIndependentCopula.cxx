@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedCopulas
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,6 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(BlockIndependentCopula)
 
 static const Factory<BlockIndependentCopula> Factory_BlockIndependentCopula;
+static const Factory<BlockIndependentCopula> Factory_ComposedCopula("ComposedCopula");
 
 /* Default constructor */
 BlockIndependentCopula::BlockIndependentCopula()
@@ -512,7 +513,7 @@ Point BlockIndependentCopula::computeSequentialConditionalCDF(const Point & x) c
   Point result(dimension_);
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = (x[i] < 0.0 ? 0.0 : x[i] > 1.0 ? 1.0 : x[i]);
+      result[i] = SpecFunc::Clip01(x[i]);
   else
   {
     const UnsignedInteger size = copulaCollection_.getSize();
@@ -538,7 +539,7 @@ Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar q, const 
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension == 0) return q;
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   if (conditioningDimension == 0) return q;
@@ -566,7 +567,10 @@ Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point &
   Point result(dimension_);
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = (q[i] < 0.0 ? 0.0 : q[i] > 1.0 ? 1.0 : q[i]);
+    {
+      if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+      result[i] = q[i];
+    }
   else
   {
     const UnsignedInteger size = copulaCollection_.getSize();
@@ -822,9 +826,5 @@ void BlockIndependentCopula::load(Advocate & adv)
   adv.loadAttribute( "isIndependent_", isIndependent_ );
   computeRange();
 }
-
-CLASSNAMEINIT(ComposedCopula)
-
-static const Factory<ComposedCopula> Factory_ComposedCopula;
 
 END_NAMESPACE_OPENTURNS

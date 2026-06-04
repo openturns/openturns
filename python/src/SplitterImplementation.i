@@ -35,8 +35,8 @@ PyObject* __next__()
     return 0;
   }
   PyObject* result = PyTuple_New(2);
-  PyTuple_SET_ITEM(result, 0, SWIG_NewPointerObj(indicesTrain.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN));
-  PyTuple_SET_ITEM(result, 1, SWIG_NewPointerObj(indicesTest.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN));
+  PyTuple_SET_ITEM(result, 0, SWIG_NewPointerObj(indicesTrain.clone(), SWIG_TypeQuery("OT::Indices *"), SWIG_POINTER_OWN));
+  PyTuple_SET_ITEM(result, 1, SWIG_NewPointerObj(indicesTest.clone(), SWIG_TypeQuery("OT::Indices *"), SWIG_POINTER_OWN));
   return result;
 }
 

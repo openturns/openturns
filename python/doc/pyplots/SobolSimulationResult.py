@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 fo_dist = ot.Normal(
     [0.154081, 0.872087, 0.0122877, 0.0433801],
@@ -19,4 +19,4 @@ graph = result.draw()
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)

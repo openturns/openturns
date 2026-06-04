@@ -1,11 +1,13 @@
 // SWIG file weightedexperiment_module.i
 
 %module(package="openturns", docstring="Weighted designs of experiments.") weightedexperiment
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTDistribution.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTWeightedExperiments.hxx"
 %}
@@ -50,6 +52,7 @@
 %include LeaveOneOutSplitter.i
 %include TensorProductExperiment.i
 %include SmolyakExperiment.i
+%include ExperimentIntegration.i
 
 /* At last we include template definitions */
 %include UncertaintyWeightedExperimentTemplateDefs.i

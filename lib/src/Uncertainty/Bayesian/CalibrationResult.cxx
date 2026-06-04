@@ -2,7 +2,7 @@
 /**
  *  @brief CalibrationResult stores the result of a CalibrationAlgorithmImplementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -244,73 +244,33 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
-  const Scalar xRangeMarginFactor = ResourceMap::GetAsScalar("CalibrationResult-xRangeMarginFactor");
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
   const Point initialPoint(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const Bool upperRightGraph = (j == dimension - 1);
-    Graph graph("", getParameterPrior().getDescription()[j], "", true, "topright");
+    Graph graph("", getParameterPrior().getDescription()[j], "");
+    graph.setLegendPosition("topright");
+
+    // The graph must show:
+    // + the full posterior PDF
+    // + the full prior PDF
+    // + the initial point
+
+    const Distribution priorJ(getParameterPrior().getMarginal(j));
+    const Distribution posteriorJ(getParameterPosterior().getMarginal(j));
+
     if (j == 0)
     {
       // Show the Y title only for the first graph
       graph.setYTitle("PDF");
     }
 
-    // The graph must show:
-    // + the full posterior PDF
-    // + the full prior PDF if it does not shrink too much the posterior graph
-    // + the initial point
-
-    // Dry run: draw everything using the natural parameters
-    // posterior
-    Drawable postPDF(getParameterPosterior().getMarginal(j).drawPDF().getDrawable(0));
-    const Scalar xMinPost = postPDF.getData().getMin()[0];
-    const Scalar xMaxPost = postPDF.getData().getMax()[0];
-
-    // initialPoint
-    const Scalar xInitialPoint = initialPoint[j];
-
-    // Compute min and max bounds of graphics
-    Scalar xMin;
-    Scalar xMax;
     if (bayesian_)
     {
-      // In the Bayesian framework, only the prior and posterior matters.
-      // prior
-      Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF().getDrawable(0));
-      const Scalar xMinPrior = priorPDF.getData().getMin()[0];
-      const Scalar xMaxPrior = priorPDF.getData().getMax()[0];
-
-      // Now, build the common range
-      xMin = std::min(xMinPrior, xMinPost);
-      xMax = std::max(xMaxPrior, xMaxPost);
-    }
-    else
-    {
-      // In the Least Squares framework, only the initial point and posterior matters.
-      // The initial point is just a point: this is why we need a margin here.
-      // The prior is flat: ignore it to compute the bounds.
-      // Now, build the common range
-      const Scalar xMinRaw = std::min(xMinPost, xInitialPoint);
-      const Scalar xMaxRaw = std::max(xMaxPost, xInitialPoint);
-      const Scalar xScaledRange = xRangeMarginFactor * (xMaxRaw - xMinRaw);
-      xMin = xMinRaw - xScaledRange;
-      xMax = xMaxRaw + xScaledRange;
-    }
-
-    if (bayesian_)
-    {
-      Drawable priorPDF(getParameterPrior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0));
-      if (upperRightGraph)
-      {
-        priorPDF.setLegend("Prior");
-      }
-      else
-      {
-        priorPDF.setLegend("");
-      }
+      Drawable priorPDF(priorJ.drawPDF().getDrawable(0));
+      priorPDF.setLegend(upperRightGraph ? "Prior" : "");
       priorPDF.setColor(priorColor_);
       priorPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PriorLineStyle"));
       graph.add(priorPDF);
@@ -318,43 +278,23 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     else
     {
       Sample data(1, 2);
-      data(0, 0) = xInitialPoint;
+      data(0, 0) = initialPoint[j];
       Cloud cloudStartingPoint;
       cloudStartingPoint = Cloud(data);
       cloudStartingPoint.setColor(priorColor_);
-      cloudStartingPoint.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle" ));
-      if (upperRightGraph)
-      {
-        cloudStartingPoint.setLegend("Starting point");
-      }
-      else
-      {
-        cloudStartingPoint.setLegend("");
-      }
+      cloudStartingPoint.setPointStyle(ResourceMap::GetAsString("CalibrationResult-PriorPointStyle"));
+      cloudStartingPoint.setLegend(upperRightGraph ? "Starting point" : "");
       graph.add(cloudStartingPoint);
     }
 
-    // Now draw everything using the common range
-    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax).getDrawable(0);
+    Drawable postPDF(posteriorJ.drawPDF().getDrawable(0));
     if (upperRightGraph)
-    {
-      if (bayesian_)
-      {
-        postPDF.setLegend("Posterior");
-      }
-      else
-      {
-        postPDF.setLegend("Calibrated");
-      }
-    }
+      postPDF.setLegend(bayesian_ ? "Posterior" : "Calibrated");
     else
-    {
       postPDF.setLegend("");
-    }
     postPDF.setColor(posteriorColor_);
     postPDF.setLineStyle(ResourceMap::GetAsString("CalibrationResult-PosteriorLineStyle"));
     graph.add(postPDF);
-
     grid.setGraph(0, j, graph);
   }
   return grid;
@@ -371,7 +311,8 @@ GridLayout CalibrationResult::drawResiduals() const
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     const Bool upperRightGraph = (j == outputDimension - 1);
-    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
+    Graph graph("", outputObservations_.getDescription()[j] + " residuals", "PDF");
+    graph.setLegendPosition("topright");
 
     // Get the distributions
     const Distribution errorJ(getObservationsError().getMarginal(j));
@@ -466,7 +407,8 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
       String xTitle = (i == outputDimension - 1) ? xDescription[j] : "";
       // Only the first column
       String yTitle = (j == 0) ? yDescription[i] : "";
-      Graph graph("", xTitle, yTitle, true, "topright");
+      Graph graph("", xTitle, yTitle);
+      graph.setLegendPosition("topright");
       const Sample inputObservations_j(inputObservations_.getMarginal(j));
 
       // observation
@@ -514,7 +456,8 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
   const Description yDescription(outputObservations_.getDescription());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions", true, "topleft");
+    Graph graph("", yDescription[j] + " observations", yDescription[j] + " predictions");
+    graph.setLegendPosition("topleft");
     const Sample outputObservations_j(outputObservations_.getMarginal(j));
 
     const Bool upperRightGraph = (j == outputDimension - 1);

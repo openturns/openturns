@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,8 +72,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
-  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
@@ -95,8 +93,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
-  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
@@ -119,7 +115,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCovariance_(spatialCovariance)
   , outputCovarianceCholeskyFactor_(0)
   , isDiagonal_(spatialCovariance.isDiagonal())
-  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(0)
 {
@@ -315,7 +310,7 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
     return gradient;
   }
   // Finite difference estimate
-  // Care operator() yields SquareMatrix, which are not necessarly symmetric
+  // Care operator() yields SquareMatrix, which are not necessarily symmetric
   // Thus we should account for all elements of operator()(s,t)
   Matrix gradient(size, outputDimension_ * outputDimension_);
   const SquareMatrix covRef(operator()(s, t));
@@ -1020,8 +1015,12 @@ Description CovarianceModelImplementation::getFullParameterDescription() const
 /* Indices of the active parameters */
 void CovarianceModelImplementation::setActiveParameter(const Indices & active)
 {
-  if (!active.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the active parameter indices must be given in increasing order, here active=" << active;
   activeParameter_ = active;
+  std::sort(activeParameter_.begin(), activeParameter_.end());
+  auto last = std::unique(activeParameter_.begin(), activeParameter_.end());
+  activeParameter_.erase(last, activeParameter_.end());
+  if (activeParameter_ != active)
+    throw InvalidArgumentException(HERE) << "Active parameter indices must be unique";
 }
 
 Indices CovarianceModelImplementation::getActiveParameter() const
@@ -1214,7 +1213,8 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       data(i, 0) = tau;
       data(i, 1) = value;
     }
-    Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
+    Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"));
+    graph.setLegendPosition("topright");
     Curve curve(data);
     curve.setLineWidth(2);
     graph.add(curve);
@@ -1262,7 +1262,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       rowShift += outputDimension_;
     } // i
   } // outputDimension_ > 1
-  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true);
+  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t");
   graph.setGrid(true);
   Contour isoValues(gridT, gridT, data);
   isoValues.setDrawLabels(false);

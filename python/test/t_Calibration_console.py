@@ -29,8 +29,10 @@ for i in range(2):
     err_cov[i, i] = 0.1**2
 p0cov = prior.getCovariance()
 p0 = prior.getMean()
-algos = [ot.GaussianNonLinearCalibration(model_p, obs_in, obs_out, p0, p0cov, err_cov),
-         ot.NonLinearLeastSquaresCalibration(model_p, obs_in, obs_out, p0)]
+algos = [
+    ot.GaussianNonLinearCalibration(model_p, obs_in, obs_out, p0, p0cov, err_cov),
+    ot.NonLinearLeastSquaresCalibration(model_p, obs_in, obs_out, p0),
+]
 for algo in algos:
     names = []
     if ot.PlatformInfo.HasFeature("cminpack"):

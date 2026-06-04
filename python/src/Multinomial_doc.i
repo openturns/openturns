@@ -1,0 +1,173 @@
+%feature("docstring") OT::Multinomial
+R"RAW(Multinomial distribution.
+
+
+Parameters
+----------
+N : int
+    Number of trials.
+
+    Default value is 1.
+P : sequence of float, :math:`p_i \geq 0, i = 1, \ldots, d` and :math:`\sum_{i = 1}^d p_i \leq 1`
+    Component probabilities.
+
+    Default value is [0.5].
+
+Notes
+-----
+
+This distribution differs from the classical multinomial distribution definition.
+The classical multinomial distribution is constrained by :math:`\sum_{i = 1}^d p_i=1` and is supported by
+:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`. The OpenTURNS distribution is
+constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:`q \leq 1` and is supported in general by
+:math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N\right\}`.
+
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = \vect{x}} = \frac{N!}{x_1! \ldots x_d! (N - s)!}
+                                 p_1^{x_1} \ldots p_d^{x_d} (1 - q)^{N - s}\mathbf{1}_{\vect{x} \in \cS}
+
+where :math:`s=\sum_{i = 1}^d x_i`.
+
+If :math:`q=1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i = N`.
+In this case, we recover the classical definition of the multinomial distribution.
+
+If :math:`q<1`, then the distribution generates realizations :math:`\vect{x}=(x_1,\dots,x_d)` such that :math:`\sum_{i = 1}^d x_i \leq N`.
+It allows one to recover the binomial distribution as a special case of multinomial distribution when :math:`d=1`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X_i} & = & N p_i, \quad i = 1, \ldots, n \\
+        \Var{X_i} & = & N p_i (1 - p_i), \quad i = 1, \ldots, n \\
+        \Cov{X_i, X_j} & = & - N p_i p_j, \quad i, j = 1, \ldots, n, i \neq j
+    \end{eqnarray*}
+
+See Also
+--------
+Dirichlet
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Multinomial(1, [0.5])
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getN
+"Accessor to the number of experiments parameter :math:`N`.
+
+Returns
+-------
+N : int
+    Number of experiments :math:`N`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setN
+R"RAW(Accessor to the number of experiments parameter :math:`N`.
+
+Parameters
+----------
+N : int, :math:`\sum_{i = 1}^n x_i \leq N`
+    Number of experiments :math:`N`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getP
+R"RAW(Accessor to the component probabilities parameter :math:`\vect{p}`.
+
+Returns
+-------
+P : :class:`~openturns.Point`
+    Component probabilities :math:`\vect{p}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setP
+R"RAW(Accessor to the component probabilities parameter :math:`\vect{p}`.
+
+Parameters
+----------
+P : sequence of float, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
+    Component probabilities (all positive with sum less than unity).)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Returns
+-------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Parameters
+----------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Returns
+-------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setEta
+"Accessor to the maximum absolute error in CDF computation.
+
+Parameters
+----------
+eta : float
+    The maximum absolute error in the Poisson summation-based CDF computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::getSmallA
+"Accessor to the threshold in generating function computation.
+
+Returns
+-------
+smallA : float
+    The threshold triggering the algorithm for the computation of the generating
+    function of a truncated Poisson distribution. If the argument of the
+    generating function is smaller than *smallA* the computation is done using
+    the polynomial form of the generating function, otherwise it is done as a
+    correction of the generating function of the untruncated Poisson distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Multinomial::setSmallA
+"Accessor to the threshold in generating function computation.
+
+Parameters
+----------
+smallA : float
+    The threshold triggering the algorithm for the computation of the generating
+    function of a truncated Poisson distribution. If the argument of the
+    generating function is smaller than *smallA* the computation is done using
+    the polynomial form of the generating function, otherwise it is done as a
+    correction of the generating function of the untruncated Poisson distribution."

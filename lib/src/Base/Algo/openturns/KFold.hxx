@@ -2,7 +2,7 @@
 /**
  *  @brief K-Fold cross validation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,13 +51,13 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  using FittingAlgorithmImplementation::run;
   /** Perform cross-validation */
   Scalar run(const Sample & x,
              const Sample & y,
              const Point & weight,
              const FunctionCollection & basis,
              const Indices & indices) const override;
-#ifndef SWIG
   Scalar run(const Sample & y,
              const Point & weight,
              const Indices & indices,
@@ -65,7 +65,6 @@ public:
 
   Scalar run(LeastSquaresMethod & method,
              const Sample & y) const override;
-#endif
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

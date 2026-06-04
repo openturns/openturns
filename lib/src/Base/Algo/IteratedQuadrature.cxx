@@ -2,7 +2,7 @@
 /**
  *  @brief Implement an iterated quadrature based on a 1D quadrature
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,9 +64,9 @@ class IteratedQuadraturePartialFunctionWrapper : public FunctionImplementation
 public:
   /* Default constructor */
   IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
-                          const Function & function,
-                          const IteratedQuadrature::FunctionCollection & lowerBounds,
-                          const IteratedQuadrature::FunctionCollection & upperBounds)
+      const Function & function,
+      const IteratedQuadrature::FunctionCollection & lowerBounds,
+      const IteratedQuadrature::FunctionCollection & upperBounds)
     : FunctionImplementation()
     , quadrature_(quadrature)
     , function_(function)
@@ -93,7 +93,7 @@ public:
     }
     const Point value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
     for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
-      if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
+      if (!std::isfinite(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
     return value;
   }
 
@@ -122,7 +122,7 @@ public:
       } // Loop over bound functions
       result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
       for (UnsignedInteger i = 0; i < outputDimension; ++i)
-        if (!SpecFunc::IsNormal(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+        if (!std::isfinite(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
     } // Loop over sample points
     return result;
   }

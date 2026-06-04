@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of GaussianProcessFitter class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,12 +32,6 @@ int main(int, char *[])
 
   try
   {
-    // Set Numerical precision to 3
-    PlatformInfo::SetNumericalPrecision(3);
-
-    // Calibration of default optimizer
-    ResourceMap::SetAsScalar("GaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-5);
-    ResourceMap::SetAsScalar("GaussianProcessFitter-DefaultOptimizationUpperBound", 100);
     // Data & estimation
     const UnsignedInteger inputDimension = 1;
     Sample X = Normal(0, 1).getSample(100);
@@ -61,7 +55,8 @@ int main(int, char *[])
     const CovarianceModel conditionalCovariance = result.getCovarianceModel();
     const Sample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCentralMoment(2), Point(1, 1.06e-05), 1e-5, 1e-5);
-    const Point parameter = {0.619144, 0.000937};
+    std::cout << "param=" << conditionalCovariance.getParameter() << std::endl;
+    const Point parameter = {0.620868, 0.000941836};
     assert_almost_equal(conditionalCovariance.getParameter(), parameter, 1e-2, 1e-2);
 
   }

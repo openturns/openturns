@@ -3,7 +3,7 @@
  *  @brief The class FieldImplementation implements values indexed by
  *  the vertices of a Mesh
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
  */
 
 #include <algorithm>
+#include <filesystem>
 #include <string>
 #include "openturns/OTconfig.hxx"
 #include "openturns/FieldImplementation.hxx"
@@ -459,7 +460,7 @@ Graph FieldImplementation::draw() const
   if ((getInputDimension() == 1) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
-    Graph graph(title, description_[0], description_[1], true, "");
+    Graph graph(title, description_[0], description_[1]);
     const Curve curveSerie(getValues());
     graph.add(curveSerie);
     return graph;
@@ -468,7 +469,7 @@ Graph FieldImplementation::draw() const
   if ((getInputDimension() == 2) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
-    Graph graph(title, description_[0], description_[1], true, "");
+    Graph graph(title, description_[0], description_[1]);
     // Get the bounding box of the mesh to set the head size of the arrow
     // It must be independent from the values as we want the same size for
     // all the arrows
@@ -544,10 +545,11 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
 {
   if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
   const UnsignedInteger meshDimension = getInputDimension();
-  if (!(meshDimension <= 2)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
+  if (!(meshDimension <= 3)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 3.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, description_[0], description_[index + 1], true, "topright");
+  Graph graph(title, description_[0], description_[index + 1]);
+  graph.setLegendPosition("topright");
   if (meshDimension == 1)
   {
     // Discretization of the x axis
@@ -571,6 +573,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     {
       // Compute the iso-values
       Point levels(levelsNumber);
+      Indices markedLevels(levelsNumber, 0);
       Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
@@ -631,23 +634,16 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
               if (v2 == v1) data[1] = x1;
               else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
             }
-            graph.add(Curve(data, palette[j], "solid"));
+            Curve curve(data, palette[j], "solid");
+            if (!markedLevels[j])
+            {
+              curve.setLegend(OSS() << level);
+              markedLevels[j] = 1;
+            }
+            graph.add(curve);
           } // (level >= v0) && (level <= v2)
         } // j
       } // i
-      // Simple colorbar
-      const Scalar minValue = marginalValues.getMin()[0];
-      const Scalar maxValue = marginalValues.getMax()[0];
-      const Point xMin(mesh_.getVertices().getMin());
-      for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
-      {
-        Cloud point(Sample(1, xMin));
-        point.setPointStyle("none");
-        point.setColor(palette[i]);
-        if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
-        else point.setLegend(" ");
-        graph.add(point);
-      }
     } // interpolate
     else
     {
@@ -685,22 +681,41 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           graph.add(point);
         }
       } // No simplex
-      // Simple colorbar
-      const Point xMin(mesh_.getVertices().getMin());
-      for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
-      {
-        Cloud point(Sample(1, xMin));
-        point.setPointStyle("none");
-        point.setColor(palette[(i * (size - 1)) / (levelsNumber - 1)]);
-        if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
-        else point.setLegend(" ");
-        graph.add(point);
-      }
+      // FIXME: restore legend: previously legend was attached to invisible objects
     } // !interpolate
   } // meshDimension == 2
+  else if (meshDimension == 3)
+  {
+    const Description palette(Drawable::BuildDefaultPalette(marginalValues.getSize()));
+    const SquareMatrix rotation(Mesh::BuildRotationFromAngles());
+    graph = draw3D(index, false, rotation, true, 1.0, palette);
+  }
   return graph;
 }
 
+Graph FieldImplementation::draw3D(const UnsignedInteger index,
+                                  const Bool drawEdge,
+                                  const SquareMatrix & rotation,
+                                  const Bool shading,
+                                  const Scalar rho,
+                                  const Description & palette) const
+{
+  if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
+  if (getInputDimension() != 3) throw InvalidArgumentException(HERE) << "Error: draw3D is for 3D fields only";
+  if (palette.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: palette should contain at least one color";
+  // Compute the mean marginal value for each simplex
+  const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
+  const IndicesCollection simplices(mesh_.getSimplices());
+  Point meanValues(simplicesNumber);
+  for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
+    meanValues[i] = 0.25 * (values_(simplices(i, 0), index) + values_(simplices(i, 1), index) + values_(simplices(i, 2), index) + values_(simplices(i, 3), index));
+  // Create the colors associated to these values and the given palette
+  const Scalar alpha = Drawable::ConvertToRGBA(Drawable::ConvertFromName(palette[0]))[3] / 255.0;
+  const Description colors(Drawable::ConvertValuesToColors(meanValues, palette, alpha));
+  Graph graph(mesh_.draw3D(drawEdge, rotation, shading, rho, colors));
+  graph.setTitle(OSS() << getName() << " " << description_[getInputDimension() + index]);
+  return graph;
+}
 
 /* Method save() stores the object through the StorageManager */
 void FieldImplementation::save(Advocate & adv) const
@@ -728,7 +743,13 @@ void FieldImplementation::load(Advocate & adv)
 /* Export to VTK file */
 void FieldImplementation::exportToVTKFile(const String & fileName) const
 {
-  std::ofstream file(fileName.c_str(), std::ios::out);
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  std::ofstream file(std::filesystem::path{u8FileName});
+#else
+  std::ofstream file(std::filesystem::u8path(fileName));
+#endif
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
   const String content(mesh_.streamToVTKFormat());
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();

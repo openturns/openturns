@@ -2,7 +2,7 @@
 /**
  *  @brief This class provides all the treatments for wrapper file manipulation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,10 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <vector>                 // for std::vector
 #include <string>                 // for std::string
-#include <cstdlib>                // for getenv
-#include <cstring>                // for strdup
 
 #ifdef _WIN32
 #include "openturns/OTwindows.h"  // for GetModuleFileName
@@ -62,9 +59,6 @@ const char * Path::OpenturnsConfigPathVariableName_ = "OPENTURNS_CONFIG_PATH";
 
 /* The HOME subdirectory path */
 const char * Path::HomeConfigSubdirectory_ = "/openturns/etc";
-
-/* The 'openturns' configuration subdirectory path */
-const char * Path::PrefixConfigSubdirectory_ = "/openturns";
 
 /*
  * Default constructor
@@ -107,7 +101,13 @@ FileName Path::GetInstallationDirectory()
 
 FileName Path::GetParentDirectory(const FileName & fileName)
 {
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  return std::filesystem::path{u8FileName}.parent_path().string();
+#else
   return std::filesystem::u8path(fileName).parent_path().string();
+#endif
 }
 
 
@@ -189,15 +189,14 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   {
     directory = String(otHome);
 #ifndef _WIN32
-    directory += "/etc";
-    directory += PrefixConfigSubdirectory_;
+    directory += "/etc/openturns";
 #endif
     dirExists = Os::IsDirectory(directory);
   }
   if (!dirExists)
   {
     // See in NOTE above why we use c_str() here
-    directory = String() + String(SYSCONFIG_PATH).c_str() + PrefixConfigSubdirectory_;
+    directory = String() + String(SYSCONFIG_PATH).c_str();
   }
   directoryList.push_back(directory);
 

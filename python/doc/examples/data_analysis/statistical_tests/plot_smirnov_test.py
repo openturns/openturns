@@ -28,9 +28,8 @@ Test identical distributions
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate 3 samples, `sample1` and `sample2` arise from the same distribution
@@ -45,12 +44,12 @@ sample3 = distribution2.getSample(100)
 # %%
 # Visually compare `sample1` and `sample2` using QQ-plot
 graph = ot.VisualTest.DrawQQplot(sample1, sample2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Visually compare `sample1` and `sample3` using QQ-plot
 graph = ot.VisualTest.DrawQQplot(sample1, sample3)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Numerically test `sample1` against `sample2`
@@ -71,3 +70,7 @@ print(
     "p-value=%.6g" % test_result.getPValue(),
     "threshold=%.6g" % test_result.getThreshold(),
 )
+
+# %%
+# Display all figures
+otv.View.ShowAll()

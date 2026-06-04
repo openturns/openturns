@@ -1,0 +1,51 @@
+%feature("docstring") OT::NormalCopulaFactory
+R"RAW(Normal Copula factory.
+
+Notes
+-----
+We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
+
+The correlation matrix :math:`\mat{R}_n` is first estimated using Kendall's tau by:
+
+.. math::
+
+    R_{n,ij} = \sin\left(\frac{\pi}{2}\Hat{\tau}_{n,ij}\right)_{\strut}
+
+and if it fails, using Spearman's correlation:
+
+.. math::
+
+    R_{n,ij} = 2\sin\left(\frac{\pi}{6}\Hat{\rho}_{n,ij}\right)_{\strut}
+
+    
+See also
+--------
+DistributionFactory, NormalCopula)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalCopulaFactory::buildAsNormalCopula
+"Estimate the copula as native copula.
+
+**Available usages**:
+
+    buildAsNormalCopula()
+
+    buildAsNormalCopula(*sample*)
+
+    buildAsNormalCopula(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+   The parameters of the :class:`~openturns.NormalCopula`.
+
+Returns
+-------
+copula : :class:`~openturns.NormalCopula`
+    The estimated copula as a Normal copula.
+    
+    In the first usage, the default Normal copula is built."

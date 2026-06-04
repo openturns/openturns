@@ -3,7 +3,7 @@
  *  @file  HMatrixImplementation.cxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-#include <cstdlib>
 #include <cstring>
 
 #include "openturns/HMatrixImplementation.hxx"
@@ -464,7 +463,7 @@ Scalar HMatrixImplementation::computeApproximateLargestEigenValue(const Scalar e
     nextEigenValue = nextEigenVector.norm();
     precision = std::abs(nextEigenValue - currentEigenValue);
     found = precision <= epsilon * nextEigenValue;
-    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    LOGDEBUG(OSS() << "(" << iteration << ") precision=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
     if (found) break;
     currentEigenValue = nextEigenValue;
   }

@@ -2,7 +2,7 @@
 /**
  *  @brief CMinpack solver
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -204,7 +204,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   }
   if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {
-    LOGWARN("CMinpack was stopped by user");
+    LOGINFO("CMinpack was stopped by user");
     return -1;
   }
   return 0;
@@ -216,6 +216,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
 void CMinpack::run()
 {
 #ifdef OPENTURNS_HAVE_CMINPACK
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
   Point startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension)
@@ -310,7 +311,7 @@ void CMinpack::run()
       variables.
     MODE is an integer input variable.  If MODE = 1, the variables
       will be scaled internally.  If MODE = 2, the scaling is speci-
-      fied by the input DIAG.  Other values of MODE are equivalent
+      field by the input DIAG.  Other values of MODE are equivalent
       to MODE = 1.
     FACTOR is a positive input variable used in determining the ini-
       tial step bound.  This bound is set to the product of FACTOR
@@ -389,8 +390,7 @@ void CMinpack::run()
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
                &ipvt[0], &qtf[0], &wa1[0], &wa2[0], &wa3[0], &wa4[0]);
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
-
+  result_ = OptimizationResult(getProblem());
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();
   result_.setTimeDuration(timeDuration);
@@ -434,7 +434,7 @@ void CMinpack::run()
       result_.setStatusMessage("Unknown");
       throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
-  LOGDEBUG(OSS() << "CMinpack status: " << result_.getStatusMessage());
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

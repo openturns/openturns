@@ -2,7 +2,7 @@
 /**
  *  @brief The JointByConditioningDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -86,10 +86,10 @@ void JointByConditioningDistribution::computeRange()
   Interval::BoolCollection finiteUpperBound(conditioningDistribution_.getRange().getFiniteUpperBound());
 
   // Then, the conditioned distribution
-  lowerBound.add(deconditioned_.getRange().getLowerBound());
-  finiteLowerBound.add(deconditioned_.getRange().getFiniteLowerBound());
-  upperBound.add(deconditioned_.getRange().getUpperBound());
-  finiteUpperBound.add(deconditioned_.getRange().getFiniteUpperBound());
+  lowerBound.add(compound_.getRange().getLowerBound());
+  finiteLowerBound.add(compound_.getRange().getFiniteLowerBound());
+  upperBound.add(compound_.getRange().getUpperBound());
+  finiteUpperBound.add(compound_.getRange().getFiniteUpperBound());
 
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
@@ -124,9 +124,9 @@ JointByConditioningDistribution * JointByConditioningDistribution::clone() const
 Point JointByConditioningDistribution::getRealization() const
 {
   Point yx(conditioningDistribution_.getRealization());
-  Distribution deconditioned(conditionedDistribution_);
-  deconditioned.setParameter(linkFunction_(yx));
-  yx.add(deconditioned.getRealization());
+  Distribution compound(conditionedDistribution_);
+  compound.setParameter(linkFunction_(yx));
+  yx.add(compound.getRealization());
   return yx;
 }
 
@@ -141,13 +141,13 @@ Scalar JointByConditioningDistribution::computePDF(const Point & point) const
   std::copy(point.begin(), point.begin() + conditioningDimension, y.begin());
   const Scalar conditioningPDF = conditioningDistribution_.computePDF(y);
   if (conditioningPDF == 0.0) return 0.0;
-  Distribution deconditioned(conditionedDistribution_);
+  Distribution compound(conditionedDistribution_);
   const Point parameters(linkFunction_(y));
-  deconditioned.setParameter(parameters);
+  compound.setParameter(parameters);
   Point x(conditionedDimension);
   std::copy(point.begin() + conditioningDimension, point.end(), x.begin());
-  const Scalar deconditionedPDF = deconditioned.computePDF(x);
-  return deconditionedPDF * conditioningPDF;
+  const Scalar compoundPDF = compound.computePDF(x);
+  return compoundPDF * conditioningPDF;
 }
 
 /* Conditioned distribution accessor */
@@ -177,12 +177,12 @@ public:
     // Nothing to do
   }
 
-  JointByConditioningCDFKernel * clone() const
+  JointByConditioningCDFKernel * clone() const override
   {
     return new JointByConditioningCDFKernel(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     const Scalar pdfY = conditioningDistribution_.computePDF(point);
     if (pdfY == 0.0) return Point(1, 0.0);
@@ -193,22 +193,22 @@ public:
     return Point(1, pdfY * cdfX);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return conditioningDistribution_.getDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return conditioningDistribution_.getDescription();
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(1, "JointByConditioningCDFKernel");
   }
@@ -281,7 +281,7 @@ void JointByConditioningDistribution::setConditionedAndConditioningDistributions
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
   setDimension(conditioningDimension + conditionedDistribution.getDimension());
-  deconditioned_ = DeconditionedDistribution(conditionedDistribution, conditioningDistribution, linkFunction);
+  compound_ = CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction);
   computeRange();
 
   Description description(conditioningDistribution.getDescription());
@@ -312,7 +312,7 @@ Distribution JointByConditioningDistribution::getMarginal(const UnsignedInteger 
   // If the index is in the conditioning part
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   if (i < conditioningDimension) return conditioningDistribution_.getMarginal(i);
-  return deconditioned_.getMarginal(i - conditioningDimension);
+  return compound_.getMarginal(i - conditioningDimension);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -334,7 +334,7 @@ Distribution JointByConditioningDistribution::getMarginal(const Indices & indice
     if (indices[i] >= conditioningDimension)
       conditionedIndices.add(indices[i] - conditioningDimension);
   if (conditionedIndices.getSize() == size)
-    return deconditioned_.getMarginal(conditionedIndices);
+    return compound_.getMarginal(conditionedIndices);
   return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 
@@ -411,12 +411,12 @@ public:
     // Nothing to do
   }
 
-  KernelCovariance * clone() const
+  KernelCovariance * clone() const override
   {
     return new KernelCovariance(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     Point value(outputDimension_);
     const Scalar pdf(distribution_.computePDF(point));
@@ -434,17 +434,17 @@ public:
     return value;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return dimension_;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return outputDimension_;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss(true);
     oss << "class=KernelCovariance"
@@ -455,7 +455,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss(false);
     oss << "KernelCovariance("
@@ -591,7 +591,7 @@ Scalar JointByConditioningDistribution::computeConditionalQuantile(const Scalar 
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for a conditioning only in the conditioning part
   const UnsignedInteger conditioningDistributionDimension = conditioningDistribution_.getDimension();
   if ((conditioningDimension < conditioningDistributionDimension))

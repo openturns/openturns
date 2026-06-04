@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
-distribution = otexp.UniformOrderStatistics(4)
+distribution = ot.UniformOrderStatistics(4)
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
 
@@ -19,13 +19,6 @@ print("Continuous = ", distribution.isContinuous())
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
-
-# Test for sampling
-size = 10000
-oneSample = distribution.getSample(size)
-print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
-print("mean=", oneSample.computeMean())
-print("covariance=", oneSample.computeCovariance())
 
 # Define a point
 point = [0.1, 0.15, 0.25, 0.45]
@@ -55,11 +48,6 @@ quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)=%.5e" % distribution.computeCDF(quantile))
 
-print("entropy     =%.5e" % distribution.computeEntropy())
-print(
-    "entropy (MC)=%.5e"
-    % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0]
-)
 mean = distribution.getMean()
 print("mean=", mean)
 #
@@ -81,3 +69,9 @@ print("correlation=", correlation)
 parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 print("Standard representative=", distribution.getStandardRepresentative())
+
+ot.Log.Show(ot.Log.TRACE)
+validation = ott.DistributionValidation(distribution)
+validation.skipCorrelation()
+validation.skipMoments()
+validation.run()

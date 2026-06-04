@@ -1,0 +1,220 @@
+%feature("docstring") OT::SymbolicFunction
+R"RAW(Symbolic function.
+
+Parameters
+----------
+inputs : sequence of str, or str
+    List of input variables names of the function.
+formulas : sequence of str, or str
+    List of analytical formulas between the inputs and the outputs.
+    The function is defined by *outputs = formulas(inputs)*.
+
+Available functions:
+
+    - sin
+    - cos
+    - tan
+    - asin
+    - acos
+    - atan
+    - sinh
+    - cosh
+    - tanh
+    - asinh
+    - acosh
+    - atanh
+    - log2
+    - log10
+    - log
+    - ln
+    - lngamma
+    - gamma
+    - exp
+    - erf
+    - erfc
+    - sqrt
+    - cbrt
+    - besselJ0
+    - besselJ1
+    - besselY0
+    - besselY1
+    - sign
+    - rint
+    - abs
+    - min
+    - max
+    - sum
+    - avg
+    - floor
+    - ceil
+    - trunc
+    - round
+
+Available operators:
+
+    - <= (less or equal)
+    - >= (greater or equal)
+    - != (not equal)
+    - == (equal)
+    - > (greater than)
+    - < (less than)
+    - \+ (addition)
+    - \- (subtraction)
+    - \* (multiplication)
+    - / (division)
+    - ^ (raise x to the power of y)
+
+Available constants:
+
+    - e\_ (Euler's constant)
+    - pi\_ (Pi)
+
+Notes
+-----
+The library relies on the `ExprTk <http://www.partow.net/programming/exprtk/>`_ parser,
+but it can also use the legacy `muParser <https://beltoforion.de/en/muparser/>`_ parser if enabled,
+this is controlled by the `SymbolicParser-Backend` :class:`~openturns.ResourceMap` entry.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x0', 'x1'], ['x0 + x1', 'x0 - x1'])
+>>> print(f([1, 2]))
+[3,-1]
+
+`ExprTk <http://www.partow.net/programming/exprtk/>`_
+allows one to write multiple outputs; in this case, the constructor has a special syntax,
+it contains input variables names, but also output variables names, and formula is a string:
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x0', 'x1'], ['y0', 'y1'], 'y0 := x0 + x1; y1 := x0 - x1')
+>>> print(f([1, 2]))
+[3,-1]
+
+The following example uses the min and sqrt functions:
+
+>>> formula = 'min(-x1 - x2 - x3 + 3 * sqrt(3), -x3 + 3)'
+>>> limitStateFunction = ot.SymbolicFunction(['x1', 'x2', 'x3'], [formula])
+>>> print(limitStateFunction([1, 2, 3]))
+[-0.803848]
+
+The following example splits the formula into four parts to manage its length:
+
+>>> formula = '15.59 * 1e4 - x1 *x2^3 / (2 * x3^3) *'
+>>> formula += '((x4^2 - 4 * x5 * x6 * x7^2 + '
+>>> formula += 'x4 * (x6 + 4 * x5 + 2 *x6 * x7)) / '
+>>> formula += '(x4 * x5 * (x4 + x6 + 2 *x6 *x7)))'
+>>> input_variables = ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7']
+>>> limitStateFunction = ot.SymbolicFunction(input_variables, [formula])
+>>> print(limitStateFunction([1, 2, 3, 4, 5, 6, 7]))
+[155900]
+
+`ExprTk <http://www.partow.net/programming/exprtk/>`_
+allows one to manage intermediate variables with the `var` keyword.
+This is convenient in the situation where several outputs require
+the same intermediate calculation or if the output is a complex
+function of the input.
+In the following example, we compute the `alpha` variable which is
+the slope of the river in the flooding example.
+This slope is then used in the computation of the height `H`.
+
+>>> import openturns as ot
+>>> inputs = ['Q', 'Ks', 'Zv', 'Zm', 'Hd', 'Zb', 'L', 'B']
+>>> outputs = ['H', 'S']
+>>> formula = 'var alpha := (Zm - Zv)/L;'
+>>> formula += 'H := (Q / (Ks * B * sqrt(alpha)))^(3.0 / 5.0);'
+>>> formula += 'var Zc := H + Zv;'
+>>> formula += 'var Zd := Zb + Hd;'
+>>> formula += 'S := Zc - Zd'
+>>> myFunction = ot.SymbolicFunction(inputs, outputs, formula)
+>>> X = [1013.0, 30.0, 50.0, 55.0, 8, 55.5, 5000.0, 300.0]
+>>> print(myFunction(X))
+[2.142,-11.358]
+
+The following example illustrates a function for a system of two components.
+
+>>> equations = ['var g1 := x1^2 -8 * x2 + 16']
+>>> equations.append('var g2 := -16 * x1 + x2 + 32')
+>>> equations.append('gsys := max(g1, g2)')
+>>> formula = ';'.join(equations)
+>>> limitStateFunction = ot.SymbolicFunction(['x1', 'x2'], ['gsys'], formula)
+>>> print(limitStateFunction([1, 2]))
+[18]
+
+See the `ExprTk <http://www.partow.net/programming/exprtk/>`_
+documentation for details.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::getFormulas
+"Formulas accessor.
+
+Returns
+-------
+list_functions : :class:`~openturns.Description`
+    List of the formulas.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidFunctions
+"Return the list of valid functions.
+
+Returns
+-------
+list_functions : :class:`~openturns.Description`
+    List of the available functions.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymbolicFunction.GetValidFunctions()[0])
+sin(arg) -> sine function"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidParsers
+"Return the list of built-in parsers.
+
+Analytical formulas can be parsed by 'MuParser' or 'ExprTk'
+parsers, but this support may be disabled at build-time.
+This method returns the list of parsers available at run-time.
+Parser can be switched by changing 'SymbolicParser-Backend'
+ResourceMap entry.
+
+Returns
+-------
+list_constants : :class:`~openturns.Description`
+    List of the available parsers."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidConstants
+"Return the list of valid constants.
+
+Returns
+-------
+list_constants : :class:`~openturns.Description`
+    List of the available constants.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymbolicFunction.GetValidConstants()[0])
+e_ -> Euler's constant (2.71828...)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidOperators
+"Return the list of valid operators.
+
+Returns
+-------
+list_operators : :class:`~openturns.Description`
+    List of the available operators.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymbolicFunction.GetValidOperators()[0])
+= -> assignment, can only be applied to variable names (priority -1)"

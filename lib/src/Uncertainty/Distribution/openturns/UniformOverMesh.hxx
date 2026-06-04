@@ -2,7 +2,7 @@
 /**
  *  @brief The UniformOverMesh distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/Dirichlet.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -101,17 +101,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-
 protected:
-
-private:
-
-  /** Compute the mean of the distribution */
-  void computeMean() const override;
-
-  /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange() override;
-
   /** The main parameter set of the distribution */
   Mesh mesh_;
 
@@ -139,6 +129,15 @@ private:
   /** Structures for the alias sampling method */
   Point base_;
   Indices alias_;
+
+private:
+
+  /** Compute the mean of the distribution */
+  void computeMean() const override;
+
+  /** Compute the numerical range of the distribution given the parameters values */
+  void computeRange() override;
+
 }; /* class UniformOverMesh */
 
 

@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -76,8 +76,8 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
     {
       const Scalar value = expressions_[outputIndex]->value();
       // ExprTk does not throw on domain/division errors
-      if (checkOutput_ && !SpecFunc::IsNormal(value))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      if (checkOutput_ && !std::isfinite(value))
+        throw NotDefinedException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       result[outputIndex] = value;
     } // outputIndex
   } // outputVariablesNames_.getSize() == 0
@@ -91,8 +91,8 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
     {
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
-        if (!SpecFunc::IsNormal(result[outputIndex]))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+        if (!std::isfinite(result[outputIndex]))
+          throw NotDefinedException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       }
     } // checkResult
   } // !outputVariablesNames_.getSize() == 0
@@ -133,8 +133,8 @@ struct SymbolicParserExprTkPolicy
         {
           const Scalar value = evaluation_.threadExpressions_[threadIndex][outputIndex]->value();
           // ExprTk does not throw on domain/division errors
-          if (evaluation_.checkOutput_ && !SpecFunc::IsNormal(value))
-            throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
+          if (evaluation_.checkOutput_ && !std::isfinite(value))
+            throw NotDefinedException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
           output_(i, outputIndex) = value;
         }
       }
@@ -153,8 +153,8 @@ struct SymbolicParserExprTkPolicy
         if (evaluation_.checkOutput_)
           for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
           {
-            if (!SpecFunc::IsNormal(output_(i, outputIndex)))
-              throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[0] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
+            if (!std::isfinite(output_(i, outputIndex)))
+              throw NotDefinedException(HERE) << "Cannot evaluate " << evaluation_.formulas_[0] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
           }
       } // i
     }
@@ -172,22 +172,13 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   if (outputDimension == 0) return Sample(inS.getSize(), 0);
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
-  if (size < smallSize_)
+  if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
   {
-    // account for the penalty on small samples
-    for (UnsignedInteger i = 0; i < size; ++ i)
-      result[i] = operator()(inS[i]);
+    threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
+    threadStack_.resize(TBBImplementation::GetThreadsNumber());
   }
-  else
-  {
-    if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
-    {
-      threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
-      threadStack_.resize(TBBImplementation::GetThreadsNumber());
-    }
-    const SymbolicParserExprTkPolicy policy(inS, result, *this);
-    TBBImplementation::ParallelFor(0, size, policy);
-  }
+  const SymbolicParserExprTkPolicy policy(inS, result, *this);
+  TBBImplementation::ParallelFor(0, size, policy, smallSize_);
   return result;
 }
 
@@ -245,6 +236,8 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
   exprtk::parser<Scalar> parser;
   parser.settings().set_max_stack_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxStackDepth"));
   parser.settings().set_max_node_depth(ResourceMap::GetAsUnsignedInteger("SymbolicParserExprTk-MaxNodeDepth"));
+  if (ResourceMap::GetAsBool("SymbolicParserExprTk-DisableCommutativeCheck"))
+    parser.settings().disable_commutative_check(); // implicit multiplication like '3x' not supported by the gradient parser
   // For each parser of a formula, do
   for (UnsignedInteger outputIndex = 0; outputIndex < numberOfParsers; ++ outputIndex)
   {

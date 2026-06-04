@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <cmath>
 
 #include "openturns/Normal.hxx"
@@ -111,17 +110,17 @@ Normal::Normal(const Point & mean,
   {
     const Scalar cii = C(i, i);
     if (!(cii > 0.0))
-      {
-	sigma[i] = 0.0;
-	// throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
-      }
+    {
+      sigma[i] = 0.0;
+      // throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be strictly positive";
+    }
     else
-      {
-	sigma[i] = std::sqrt(cii);
-	for (UnsignedInteger j = 0; j < i; ++ j)
-	  if (sigma[j] > 0.0)
-	    R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
-      }
+    {
+      sigma[i] = std::sqrt(cii);
+      for (UnsignedInteger j = 0; j < i; ++ j)
+        if (sigma[j] > 0.0)
+          R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+    }
   }
   *this = Normal(mean, sigma, R);
 }
@@ -486,7 +485,7 @@ Scalar Normal::computeProbability(const Interval & interval) const
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
     const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension())));
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
+    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return DistributionImplementation::computeProbability(interval);
   }
@@ -631,15 +630,15 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar Normal::computeConditionalQuantile(const Scalar q,
- 
+
     const Point & y) const
- 
+
 {
- 
+
   const UnsignedInteger conditioningDimension = y.getDimension();
- 
+
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no conditioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(q);
   // General case
@@ -649,12 +648,14 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
     meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
 
   meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
-  return meanRos + sigmaRos * DistFunc::qNormal(q); 
+  return meanRos + sigmaRos * DistFunc::qNormal(q);
 }
- 
+
 Point Normal::computeSequentialConditionalQuantile(const Point & q) const
 {
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
   if (hasIndependentCopula())
   {
     Point result(dimension_);

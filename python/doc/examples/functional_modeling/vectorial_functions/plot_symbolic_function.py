@@ -13,10 +13,7 @@ Create a symbolic function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # create a symbolic function
@@ -39,5 +36,8 @@ print("x=", x, "df(x)=", function.gradient(x))
 # %%
 # draw isocontours of f around [2,3]
 graph = function.draw(0, 1, 0, [2.0, 3.0], [1.5, 2.5], [2.5, 3.5])
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

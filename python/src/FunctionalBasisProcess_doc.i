@@ -1,0 +1,86 @@
+%feature("docstring") OT::FunctionalBasisProcess
+R"RAW(Functional basis process.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution of the random vector :math:`\vect{A}=(A_1,\dots, A_K)`.
+basis : sequence of :class:`~openturns.Function`
+    Collection of deterministic functions.
+mesh : :class:`~openturns.Mesh`
+    Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
+
+Notes
+-----
+A functional basis process :math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`, writes:
+
+.. math::
+
+    X(\omega,\vect{t})=\sum_{i=1}^K A_i(\omega)\phi_i(\vect{t}) \quad  \forall \omega \in \Omega and \forall \vect{t} \in \cD
+
+with :math:`\phi_i: \Rset^n \rightarrow \Rset^d` for :math:`1 \leq i \leq K` and :math:`\vect{A}=(A_1,\dots, A_K)` a random vector of dimension :math:`K`.
+
+Examples
+--------
+Create the coefficients distribution:
+
+>>> import openturns as ot
+>>> coefDist = ot.Normal([2]*2, [5]*2, ot.CorrelationMatrix(2))
+
+Create a basis of functions:
+
+>>> phi_1 = ot.SymbolicFunction(['t'], ['sin(t)'])
+>>> phi_2 = ot.SymbolicFunction(['t'], ['cos(t)*cos(t)'])
+>>> myBasis = ot.Basis([phi_1, phi_2])
+
+Create a mesh:
+
+>>> myMesh = ot.RegularGrid(0.0, 0.1, 10)
+
+Create the functional basis process:
+
+>>> myFBProcess = ot.FunctionalBasisProcess(coefDist, myBasis, myMesh)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalBasisProcess::getBasis
+R"RAW(Get the basis of deterministic functions.
+
+Returns
+-------
+basis : collection of :class:`~openturns.Function`
+    Collection of functions :math:`(\phi_i)_{1 \leq i \leq K}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalBasisProcess::getDistribution
+R"RAW(Get the coefficients distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The distribution of the random vector :math:`\vect{A}=(A_1,\dots, A_K)` of dimension :math:`K`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalBasisProcess::setBasis
+R"RAW(Set the basis of deterministic functions.
+
+Parameters
+----------
+basis : sequence of :class:`~openturns.Function`
+    Collection of functions :math:`(\phi_i)_{1 \leq i \leq K}`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalBasisProcess::setDistribution
+R"RAW(Set the coefficients distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The distribution of the random vector :math:`\vect{A}=(A_1,\dots, A_K)` of dimension :math:`K`.)RAW"
+
+
+

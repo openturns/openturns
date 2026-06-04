@@ -3,7 +3,7 @@
  *  @file  HMatrixImplementation.hxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -208,7 +208,7 @@ class OT_API CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 public:
   CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices);
 
-  Scalar operator()(UnsignedInteger i, UnsignedInteger j) const;
+  Scalar operator()(UnsignedInteger i, UnsignedInteger j) const override;
 
 private:
   const CovarianceModel covarianceModel_;
@@ -226,7 +226,7 @@ class OT_API CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyF
 public:
   CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices);
 
-  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const;
+  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const override;
 
 private:
   const CovarianceModel covarianceModel_;

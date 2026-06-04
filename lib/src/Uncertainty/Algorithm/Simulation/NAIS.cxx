@@ -2,7 +2,7 @@
 /**
  *  @brief NAIS implement Non Parametric Adaptive Importance Sampling algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 
 #include "openturns/NAIS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Mixture.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,10 +46,9 @@ NAIS::NAIS()
 NAIS::NAIS(const RandomVector & event,
            const Scalar quantileLevel)
   : EventSimulation(event.getImplementation()->asComposedEvent())
-  , initialDistribution_(getEvent().getAntecedent().getDistribution())
   , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
-  const Interval range(initialDistribution_.getRange());
+  const Interval range(getEvent().getAntecedent().getDistribution().getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
   for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
@@ -75,7 +75,7 @@ Scalar NAIS::getQuantileLevel() const
 }
 
 // Set quantileLevel
-void NAIS::setQuantileLevel(const Scalar & quantileLevel)
+void NAIS::setQuantileLevel(const Scalar quantileLevel)
 {
   quantileLevel_ = quantileLevel;
 }
@@ -112,11 +112,12 @@ Distribution NAIS::computeAuxiliaryDistribution(const Sample & sample,
   return auxiliaryDistribution;
 }
 
-// Function computing weigths of sample
+// Function computing weights of sample
 Point NAIS::computeWeights(const Sample & sample,
                            const Sample & outputSample,
                            const Scalar eventThresholdLocal,
-                           const Distribution & auxiliaryDistribution)
+                           const Distribution & auxiliaryDistribution,
+                           const Distribution & initialDistribution)
 {
   Indices indiceCritic(0);
   for (UnsignedInteger i = 0; i < sample.getSize(); ++i)
@@ -129,7 +130,7 @@ Point NAIS::computeWeights(const Sample & sample,
   // Extract the relevant sample
   const Sample criticalSample(sample.select(indiceCritic));
   // Compute initial distribution logPDF in parallel
-  const Sample initialLogPDF = initialDistribution_.computeLogPDF(criticalSample);
+  const Sample initialLogPDF = initialDistribution.computeLogPDF(criticalSample);
   // Compute initial distribution logPDF in parallel
   const Sample auxilliaryLogPDF = auxiliaryDistribution.computeLogPDF(criticalSample);
   Point weights = Point(sample.getSize());
@@ -151,9 +152,10 @@ void NAIS::run()
   numberOfSteps_ = 0;
   result_ = NAISResult();
 
+  const Distribution initialDistribution(getEvent().getAntecedent().getDistribution());
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
   if (sampleSize < 2)
-    throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
+    throw InvalidArgumentException(HERE) << "In NAIS::run, sample size has to be greater than one for variance estimation";
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
@@ -166,7 +168,7 @@ void NAIS::run()
   // initial experiment evaluation with the initial distribution
   for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
   {
-    const Sample blockSample(initialDistribution_.getSample(getBlockSize()));
+    const Sample blockSample(initialDistribution.getSample(getBlockSize()));
     auxiliaryInputSample.add(blockSample);
     auxiliaryOutputSample.add(getEvent().getFunction()(blockSample));
 
@@ -202,13 +204,13 @@ void NAIS::run()
   {
     currentQuantile = getEvent().getThreshold();
     thresholdPerStep_.add(currentQuantile);
-    auxiliaryDistribution = initialDistribution_;
+    auxiliaryDistribution = initialDistribution;
   }
   else
   {
     thresholdPerStep_.add(currentQuantile);
     // Computation of weights
-    weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, initialDistribution_);
+    weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, initialDistribution, initialDistribution);
 
     // Computation of auxiliary distribution
     auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
@@ -217,7 +219,7 @@ void NAIS::run()
   while ((comparator(getEvent().getThreshold(), currentQuantile)) && (currentQuantile != getEvent().getThreshold()))
   {
     // Drawing of samples using auxiliary density and evaluation on limit state function
-    auxiliaryInputSample = Sample(0, initialDistribution_.getDimension());
+    auxiliaryInputSample = Sample(0, initialDistribution.getDimension());
     auxiliaryOutputSample = Sample(0, 1);
 
     for (UnsignedInteger i = 0; i < getMaximumOuterSampling(); ++ i)
@@ -257,7 +259,7 @@ void NAIS::run()
     {
       thresholdPerStep_.add(currentQuantile);
       // Computation of weights
-      weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution);
+      weights = computeWeights(auxiliaryInputSample, auxiliaryOutputSample, currentQuantile, auxiliaryDistribution, initialDistribution);
 
       // Update of auxiliary distribution
       auxiliaryDistribution = computeAuxiliaryDistribution(auxiliaryInputSample, weights);
@@ -282,7 +284,7 @@ void NAIS::run()
   const Sample sampleCritic(auxiliaryInputSample.select(indicesCritic));
 
   // Evaluate initial log PDF in parallel on failure sample
-  Sample logPDFInitCritic(initialDistribution_.computeLogPDF(sampleCritic));
+  Sample logPDFInitCritic(initialDistribution.computeLogPDF(sampleCritic));
 
   // Evaluate auxiliary log PDF in parallel on failure sample
   Sample logPDFAuxiliaryCritic(auxiliaryDistribution.computeLogPDF(sampleCritic));
@@ -364,6 +366,49 @@ UnsignedInteger NAIS::getStepsNumber() const
 NAISResult NAIS::getResult() const
 {
   return naisResult_;
+}
+
+
+/* String converter */
+String NAIS::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << EventSimulation::__repr__()
+      << " quantileLevel=" << quantileLevel_;
+  return oss;
+}
+
+
+/* Method save() stores the object through the StorageManager */
+void NAIS::save(Advocate & adv) const
+{
+  EventSimulation::save(adv);
+  adv.saveAttribute("quantileLevel_", quantileLevel_);
+  adv.saveAttribute("naisResult_", naisResult_);
+
+  adv.saveAttribute("numberOfSteps_", numberOfSteps_);
+  adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
+
+  adv.saveAttribute("keepSample_", keepSample_);
+  adv.saveAttribute("inputSample_", inputSample_);
+  adv.saveAttribute("outputSample_", outputSample_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void NAIS::load(Advocate & adv)
+{
+  EventSimulation::load(adv);
+  adv.loadAttribute("quantileLevel_", quantileLevel_);
+  adv.loadAttribute("naisResult_", naisResult_);
+
+  adv.loadAttribute("numberOfSteps_", numberOfSteps_);
+  adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);
+
+  adv.loadAttribute("keepSample_", keepSample_);
+  adv.loadAttribute("inputSample_", inputSample_);
+  adv.loadAttribute("outputSample_", outputSample_);
 }
 
 END_NAMESPACE_OPENTURNS

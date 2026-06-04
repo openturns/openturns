@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for GeneralizedPareto distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -143,7 +143,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const Scalar stddev = sample.computeStandardDeviation()[0];
   if (stddev == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution from a constant sample.";
   const Scalar xi = -0.5 * (std::pow(mean / stddev, 2.0) - 1.0);
@@ -213,7 +213,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 {
   LOGINFO("Using method of exponential regression");
   const Scalar mu = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
@@ -257,7 +257,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const Sample sortedSample(sample.sort(0) - Point(1, u));
   // Compute the first probability weighted moment
   Scalar m = 0.0;
@@ -330,7 +330,8 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
   Curve curveCIUp(u, ciUp, "CI up");
   curveCIUp.setColor("blue");
   curveCIUp.setLineStyle("dashed");
-  Graph result("Mean residual life plot", "Threshold", "Mean excess", true, "topleft");
+  Graph result("Mean residual life plot", "Threshold", "Mean excess");
+  result.setLegendPosition("topleft");
   result.add(curveMrl);
   result.add(curveCILow);
   result.add(curveCIUp);
@@ -720,7 +721,8 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Curve curveScaleCIUp(uS, scaleCIUp, "CI up");
   curveScaleCIUp.setColor("blue");
   curveScaleCIUp.setLineStyle("dashed");
-  Graph scaleGraph("Modified scale threshold stability", "", "Modified scale parameter", true, "topleft");
+  Graph scaleGraph("Modified scale threshold stability", "", "Modified scale parameter");
+  scaleGraph.setLegendPosition("topleft");
   scaleGraph.add(curveScale);
   scaleGraph.add(curveScaleCILow);
   scaleGraph.add(curveScaleCIUp);
@@ -734,7 +736,8 @@ GridLayout GeneralizedParetoFactory::drawParameterThresholdStability(const Sampl
   Curve curveXiCIUp(uS, xiCIUp, "CI up");
   curveXiCIUp.setColor("blue");
   curveXiCIUp.setLineStyle("dashed");
-  Graph shapeGraph("Shape threshold stability", "Threshold", "Shape parameter", true, "topleft");
+  Graph shapeGraph("Shape threshold stability", "Threshold", "Shape parameter");
+  shapeGraph.setLegendPosition("topleft");
   shapeGraph.add(curveXi);
   shapeGraph.add(curveXiCILow);
   shapeGraph.add(curveXiCIUp);

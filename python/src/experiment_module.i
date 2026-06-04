@@ -1,7 +1,7 @@
 // SWIG file experiment_module.i
 
 %module(package="openturns", docstring="Designs of experiments.") experiment
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"

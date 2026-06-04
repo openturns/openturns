@@ -30,10 +30,7 @@ Estimate a non stationary covariance function
 # %%
 import math as m
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # Create the time grid
@@ -62,7 +59,7 @@ func.setDescription([":math:`s`", ":math:`t`", ":math:`cov`"])
 graph = func.draw([t0] * 2, [tmax] * 2)
 graph.setTitle("Original covariance model")
 graph.setLegendPosition("")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Create data from a non stationary Normal process Omega * [0,T]--> R
@@ -97,5 +94,7 @@ estimatedModel = factory.build(sample)
 graph = estimatedModel.draw(0, 0, t0, tmax, 256, False)
 graph.setTitle("Estimated covariance model")
 graph.setLegendPosition("")
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+# %%
+otv.View.ShowAll()

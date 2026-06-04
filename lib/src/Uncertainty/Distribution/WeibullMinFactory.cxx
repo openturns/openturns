@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for WeibullMin distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/WeibullMinFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
@@ -69,7 +68,7 @@ WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a WeibullMin distribution from a constant sample.";
 
   const Point parameters = {mean, sigma, gamma};

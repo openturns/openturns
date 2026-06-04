@@ -2,7 +2,7 @@
 /**
  *  @brief Mesh is defined as a collection of n-D vertices and simplices
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -138,20 +138,30 @@ public:
                       SquareMatrix & simplexMatrix);
 #endif
 
+  /** Create a rotation matrix from three Euler angles */
+  static SquareMatrix BuildRotationFromAngles(const Scalar thetaX = ResourceMap::GetAsScalar("Mesh-DefaultThetaX"),
+      const Scalar thetaY = ResourceMap::GetAsScalar("Mesh-DefaultThetaY"),
+      const Scalar thetaZ = ResourceMap::GetAsScalar("Mesh-DefaultThetaZ"));
+
   /** Drawing method */
   Graph draw() const;
   Graph draw1D() const;
   Graph draw2D() const;
   Graph draw3D(const Bool drawEdge = true,
-               const Scalar thetaX = 0.0,
-               const Scalar thetaY = 0.0,
-               const Scalar thetaZ = 0.0,
-               const Bool shading = false,
+               const Scalar thetaX = ResourceMap::GetAsScalar("Mesh-DefaultThetaX"),
+               const Scalar thetaY = ResourceMap::GetAsScalar("Mesh-DefaultThetaY"),
+               const Scalar thetaZ = ResourceMap::GetAsScalar("Mesh-DefaultThetaZ"),
+               const Bool shading = true,
                const Scalar rho = 1.0) const;
   Graph draw3D(const Bool drawEdge,
                const SquareMatrix & rotation,
                const Bool shading,
                const Scalar rho) const;
+  Graph draw3D(const Bool drawEdge,
+               const SquareMatrix & rotation,
+               const Bool shading,
+               const Scalar rho,
+               const Description & colors) const;
 
   /** String converter */
   String __repr__() const override;
@@ -179,6 +189,10 @@ public:
   /** Sub-mesh */
   Mesh getSubMesh(const Indices & simplicesIndices) const;
 
+  /** Convex flag */
+  void setIsConvex(const Bool isConvex);
+  Bool isConvex() const;
+
 protected:
   // Build the affine matrix associated with a given simplex
   void buildSimplexMatrix(const UnsignedInteger index,
@@ -199,6 +213,9 @@ protected:
 
   // The simplices
   IndicesCollection simplices_;
+
+  // convex flag
+  Bool isConvex_ = false;
 
 }; /* class Mesh */
 

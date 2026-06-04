@@ -29,7 +29,7 @@ Several classical techniques exist:
       normal distribution is numerically invertible over :math:`[A,B]`
       with :math:`A\simeq -17.3` and :math:`B\simeq 8.5`.
 
--  The rejection method: suppose that one want to sample a random
+-  The rejection method: suppose that one wants to sample a random
    variable :math:`X` with a continuous distribution with PDF
    :math:`p_X` and that we know how to sample a random variable
    :math:`Y` with a continuous distribution with PDF :math:`p_Y`. We
@@ -59,12 +59,12 @@ Several classical techniques exist:
       cheap function :math:`m` such that :math:`m(u) \geq \rho(u)`: one
       checks if :math:`u\geq m(u)` and directly reject :math:`y` if the
       test is positive (quick rejection test). The combination of quick
-      acceptation and quick rejection is called a *squeeze*.
+      acceptance and quick rejection is called a *squeeze*.
 
    -  The test :math:`u\leq \rho(u)` can be replaced by an equivalent
       one but much more computationally efficient.
 
--  The transformation method: suppose that one want to sample a random
+-  The transformation method: suppose that one wants to sample a random
    variable that is the image by a simple transformation of another
    random variable (or random vector) that can easily be sampled. It is
    easy to sample this last random variable (or vector) and then
@@ -177,7 +177,7 @@ The techniques implemented in each distribution are:
    - Sequential search for :math:`\mu < 6`
    - Ratio of uniforms for :math:`\mu\geq 6`
 
-- RandomMixture: Transformation
+- LinearCombinationDistribution: Transformation
 - Rayleigh: CDF inversion
 - Rice: Transformation
 - Skellam: Transformation
@@ -196,7 +196,7 @@ The techniques implemented in each distribution are:
    - small truncation interval: CDF inversion
    - large truncation interval: rejection
 - Uniform: Transformation.
-- UserDefined: Sequential search.
+- FiniteDiscreteDistribution: Sequential search.
 - WeibullMin: CDF inversion.
 - Zipf-Mandelbrot: Bisection search.
 

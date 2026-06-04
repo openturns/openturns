@@ -9,7 +9,6 @@ Sample manipulation
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # A typical example

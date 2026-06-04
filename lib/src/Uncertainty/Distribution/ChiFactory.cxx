@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Chi distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include "openturns/ChiFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,7 +63,7 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Chi distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution if data contains NaN or Inf";
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Chi distribution from a constant sample.";

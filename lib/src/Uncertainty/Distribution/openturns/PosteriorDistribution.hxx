@@ -2,7 +2,7 @@
 /**
  *  @brief The PosteriorDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
-#include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/CompoundDistribution.hxx"
 #include "openturns/RatioOfUniforms.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,17 +43,17 @@ public:
   PosteriorDistribution();
 
   /** Parameters constructor */
-  PosteriorDistribution(const DeconditionedDistribution & deconditionedDistribution,
+  PosteriorDistribution(const CompoundDistribution & compoundDistribution,
                         const Sample & observations);
 
   PosteriorDistribution(const Distribution & conditionedDistribution,
-			const Distribution & conditioningDistribution,
-			const Sample & observations);
+                        const Distribution & conditioningDistribution,
+                        const Sample & observations);
 
   PosteriorDistribution(const Distribution & conditionedDistribution,
-			const Distribution & conditioningDistribution,
-			const Function & linkFunction,
-			const Sample & observations);
+                        const Distribution & conditioningDistribution,
+                        const Function & linkFunction,
+                        const Sample & observations);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -94,9 +94,9 @@ public:
 
   /* Interface specific to PosteriorDistribution */
 
-  /** Deconditioned distribution accessor */
-  void setDeconditionedDistribution(const DeconditionedDistribution & deconditionedDistribution);
-  DeconditionedDistribution getDeconditionedDistribution() const;
+  /** Compound distribution accessor */
+  void setCompoundDistribution(const CompoundDistribution & compoundDistribution);
+  CompoundDistribution getCompoundDistribution() const;
 
   /** ConditionedDistribution distribution accessor */
   void setConditionedDistribution(const Distribution & conditionedDistribution);
@@ -155,8 +155,8 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-  /** The underlying deconditioned distribution */
-  DeconditionedDistribution deconditionedDistribution_;
+  /** The underlying compound distribution */
+  CompoundDistribution compoundDistribution_;
 
   /** The observations */
   Sample observations_;

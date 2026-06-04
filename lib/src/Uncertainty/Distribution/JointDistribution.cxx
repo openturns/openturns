@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedDistributions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,6 +50,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(JointDistribution)
 
 static const Factory<JointDistribution> Factory_JointDistribution;
+static const Factory<JointDistribution> Factory_ComposedDistribution("ComposedDistribution");
 
 /* Default constructor */
 JointDistribution::JointDistribution()
@@ -128,7 +129,7 @@ Bool JointDistribution::equals(const DistributionImplementation & other) const
   const JointDistribution* p_other = dynamic_cast<const JointDistribution*>(&other);
   if (p_other != 0) return (*this == *p_other);
   // Third, check by properties
-  // We coud go there eg. when comparing a JointDistribution([Normal()]*2) with a Normal(2)
+  // We could go there eg. when comparing a JointDistribution([Normal()]*2) with a Normal(2)
   // The copula...
   // Store the result of hasIndependentCopula() as it may be costly.
   const Bool hasIndependent = hasIndependentCopula();
@@ -410,7 +411,7 @@ struct ComposedDistributionComputeSamplePolicy
 }; /* end struct ComposedDistributionComputeSamplePolicy */
 
 /* Get a sample of the distribution */
-Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
+Sample JointDistribution::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!core_.isCopula() || !hasIndependentCopula())
@@ -419,8 +420,8 @@ Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
     // of possible parallelism of the getSample() method of the core
     const Sample coreSample(core_.getSample(size));
     Sample result(size, dimension);
-    const ComposedDistributionComputeSamplePolicy policy( coreSample, result, distributionCollection_ );
-    TBBImplementation::ParallelFor( 0, size, policy );
+    const ComposedDistributionComputeSamplePolicy policy(coreSample, result, distributionCollection_);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
@@ -440,17 +441,11 @@ Sample JointDistribution::getSampleParallel(const UnsignedInteger size) const
       shift += dimension;
     }
   }
-  SampleImplementation result(size, dimension);
-  result.setData(data);
+  Sample result(size, dimension);
+  result.getImplementation()->setData(data);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
-}
-
-Sample JointDistribution::getSample(const UnsignedInteger size) const
-{
-  if (isParallel_) return getSampleParallel(size);
-  return DistributionImplementation::getSample(size);
 }
 
 /* Get the DDF of the JointDistribution */
@@ -849,7 +844,8 @@ Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     u[i] = distributionCollection_[i].computeCDF(x[i]);
   if (core_.isCopula() && hasIndependentCopula()) return u;
-  return core_.computeSequentialConditionalCDF(u);
+  const Point result(core_.computeSequentialConditionalCDF(u));
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -865,7 +861,11 @@ Scalar JointDistribution::computeConditionalQuantile(const Scalar q,
   if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeScalarQuantile(q);
   // General case
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+  {
+    if (!((y[i] >= range_.getLowerBound()[i]) && (y[i] <= range_.getUpperBound()[i]))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
+    u[i] = distributionCollection_[i].computeCDF(y[i]);
+  }
   return distributionCollection_[conditioningDimension].computeScalarQuantile(core_.computeConditionalQuantile(q, u));
 }
 
@@ -1452,20 +1452,20 @@ Bool JointDistribution::isElliptical() const
   const NormalCopula* p_normalCopula = dynamic_cast<const NormalCopula*>(core_.getImplementation().get());
   // If the copula is a NormalCopula, check the marginal distributions
   if (p_normalCopula || hasIndependentCopula())
+  {
+    Bool normalMarginals = true;
+    for (UnsignedInteger i = 0; i < getDimension(); ++i)
     {
-      Bool normalMarginals = true;
-      for (UnsignedInteger i = 0; i < getDimension(); ++i)
-	{
-	  const Normal* p_normal = dynamic_cast<const Normal*>(distributionCollection_[i].getImplementation().get());
-	  // The marginal is not a normal distribution
-	  if (!p_normal)
-	    {
-	      normalMarginals = false;
-	      break;
-	    }
-	} // for i
-      if (normalMarginals) return true;
-    } // if (p_normalCopula || hasIndependentCopula())
+      const Normal* p_normal = dynamic_cast<const Normal*>(distributionCollection_[i].getImplementation().get());
+      // The marginal is not a normal distribution
+      if (!p_normal)
+      {
+        normalMarginals = false;
+        break;
+      }
+    } // for i
+    if (normalMarginals) return true;
+  } // if (p_normalCopula || hasIndependentCopula())
   // More involved case: Student copula with compatible Student marginals. As we must check the degrees of freedom, a dynamic cast is needed
   const StudentCopula* p_studentCopula = dynamic_cast<const StudentCopula*>(core_.getImplementation().get());
   // The copula is not a StudentCopula, as it is the last case we test it ends the method
@@ -1526,9 +1526,5 @@ void JointDistribution::load(Advocate & adv)
     adv.loadAttribute( "core_", core_ );
   computeRange();
 }
-
-CLASSNAMEINIT(ComposedDistribution)
-
-static const Factory<ComposedDistribution> Factory_ComposedDistribution;
 
 END_NAMESPACE_OPENTURNS

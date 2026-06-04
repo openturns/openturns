@@ -51,8 +51,6 @@ entropy=1.92725
 entropy (MC)=1.92747
 mean=class=Point name=Unnamed dimension=1 values=[1.5]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.84222]
-skewness=class=Point name=Unnamed dimension=1 values=[0]
-kurtosis=class=Point name=Unnamed dimension=1 values=[1.99309]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.39378]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -101,8 +99,6 @@ entropy=-2.82958
 entropy (MC)=-2.83014
 mean=class=Point name=Unnamed dimension=1 values=[3.97828]
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.0217084]
-skewness=class=Point name=Unnamed dimension=1 values=[-1.99718]
-kurtosis=class=Point name=Unnamed dimension=1 values=[-1.99718]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.000471255]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

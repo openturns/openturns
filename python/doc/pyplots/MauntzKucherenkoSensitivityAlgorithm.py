@@ -1,8 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
-
-ot.RandomGenerator.SetSeed(0)
+import openturns.viewer as otv
 
 
 def flooding(X):
@@ -42,4 +40,4 @@ graph = sensitivityAnalysis.draw()
 fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=True)
+otv.View(graph, figure=fig, axes=[axis], add_legend=True)

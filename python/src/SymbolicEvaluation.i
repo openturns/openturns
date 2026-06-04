@@ -1,10 +1,10 @@
 // SWIG file SymbolicEvaluation.i
 
-OTAutodoc(SymbolicEvaluation)
-
 %{
 #include "openturns/SymbolicEvaluation.hxx"
 %}
+
+%include SymbolicEvaluation_doc.i
 
 %copyctor OT::SymbolicEvaluation;
 

@@ -44,7 +44,7 @@ Compare frequentist and Bayesian estimation
 #
 # The second case is such that the link function :math:`g_2` is not bijective on the range of :math:`\pi_{\vect{Y}}^{0,2}`.
 #
-# The Bayesian approach uses the :class:`~openturns.experimental.PosteriorDistribution` that estimates the posterior distribution of :math:`\vect{Y}` denoted by
+# The Bayesian approach uses the :class:`~openturns.PosteriorDistribution` that estimates the posterior distribution of :math:`\vect{Y}` denoted by
 # :math:`\pi_{\vect{Y}}^\sampleSize` maximizing the likelihood of the conditioned model on the sample, weighted by the prior distribution
 # :math:`\pi_{\vect{Y}}^0`. From the :math:`\pi_{\vect{Y}}^\sampleSize` distribution, we extract the vector of modes
 # denoted by :math:`\vect{Y}_n^m`: this point maximizes :math:`\pi_{\vect{Y}}^\sampleSize`.
@@ -60,13 +60,12 @@ Compare frequentist and Bayesian estimation
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 
 ot.ResourceMap.SetAsUnsignedInteger(
-    "DeconditionedDistribution-MarginalIntegrationNodesNumber", 32
+    "CompoundDistribution-MarginalIntegrationNodesNumber", 32
 )
 ot.ResourceMap.SetAsString(
-    "DeconditionedDistribution-ContinuousDiscretizationMethod", "GaussProduct"
+    "CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct"
 )
 
 
@@ -116,13 +115,13 @@ conditioning.setDescription(["Y0", "Y1"])
 # %%
 # We have to decondition the :math:`\vect{X}|\vect{\Theta} = g(\vect{Y})` distribution with
 # respect to the  prior distribution :math:`\pi_{\vect{Y}}^{0,1}` in order to get the
-# final distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.DeconditionedDistribution`.
-deconditioned = ot.DeconditionedDistribution(conditioned, conditioning, linkFunction)
+# final distribution of :math:`\vect{X}`. To do that, we use the :class:`~openturns.CompoundDistribution`.
+compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 
 # %%
-# Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the deconditioned distribution of :math:`\vect{X}` and
+# Then, we can create the posterior distribution :math:`\pi_{\vect{Y}}^\sampleSize` based on the compound distribution of :math:`\vect{X}` and
 # the sample.
-posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
+posterior_Y = ot.PosteriorDistribution(compound, observations)
 
 # %%
 # From  :math:`\pi_{\vect{Y}}^\sampleSize`, we get:
@@ -135,7 +134,7 @@ posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
 #   :math:`KL\left(\cN_2\left(g(\vect{Y}_n^m)\right), \cN_2 \left(\vect{\theta}\right) \right)`.
 #
 theta_Bay = linkFunction(computeMode(posterior_Y))
-print('Theta Bay =', theta_Bay)
+print("Theta Bay =", theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
 dist_estimateur_Bay = posterior_Y
@@ -146,7 +145,7 @@ interval_Bay, beta = (
 print("Beta =", beta)
 print("Condifence interval Bay =\n", interval_Bay)
 print("Volume =", interval_Bay.getVolume())
-sample = model_Bay.getSample(1000000)
+sample = model_Bay.getSample(10000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
@@ -157,7 +156,7 @@ print("Kullback-Leibler distance Bay =", dist_Bay[0])
 # The frequentist approach estimates a normal distribution from the sample. We fix the known parameters :math:`(\mu_0, \mu_1, \rho)`
 # to their true values.
 lh_factory = ot.NormalFactory()
-lh_factory.setKnownParameter([0.0, 0.0, 0.0], [0, 2, 4])
+lh_factory.setKnownParameter([0, 2, 4], [0.0] * 3)
 lh_est = lh_factory.buildEstimator(observations)
 
 # %%
@@ -172,7 +171,7 @@ lh_est = lh_factory.buildEstimator(observations)
 #
 model_ML = lh_est.getDistribution()
 theta_ML = model_ML.getParameter()
-print('Theta ML = ', theta_Bay)
+print("Theta ML = ", theta_Bay)
 dist_estimator_ML = lh_est.getParameterDistribution().getMarginal([1, 3])
 interval_ML, beta = (
     dist_estimator_ML.computeBilateralConfidenceIntervalWithMarginalProbability(alpha)
@@ -180,7 +179,7 @@ interval_ML, beta = (
 print("Beta =", beta)
 print("Condifence interval ML =\n", interval_ML)
 print("Volume =", interval_ML.getVolume())
-sample = model_ML.getSample(1000000)
+sample = model_ML.getSample(10000)
 dist_KL = (
     model_ML.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
@@ -335,13 +334,13 @@ linkFunction = ot.SymbolicFunction(
 )
 conditioning = ot.JointDistribution([ot.Triangular(-1.0, 0.0, 1.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
-deconditioned = ot.DeconditionedDistribution(conditioned, conditioning, linkFunction)
-posterior_Y = otexp.PosteriorDistribution(deconditioned, observations)
-sample_posterior = linkFunction(posterior_Y.getSample(100000)).getMarginal([1, 3])
+compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
+posterior_Y = ot.PosteriorDistribution(compound, observations)
+sample_posterior = linkFunction(posterior_Y.getSample(10000)).getMarginal([1, 3])
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 
 theta_Bay = linkFunction(computeMode(posterior_Y))
-print('Theta Bay =', theta_Bay)
+print("Theta Bay =", theta_Bay)
 model_Bay = ot.Distribution(conditioned)
 model_Bay.setParameter(theta_Bay)
 alpha = 0.95
@@ -351,7 +350,7 @@ interval_Bay, beta = (
 print("Beta =", beta)
 print("Condifence interval Bay =\n", interval_Bay)
 print("Volume =", interval_Bay.getVolume())
-sample = model_Bay.getSample(1000000)
+sample = model_Bay.getSample(10000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()

@@ -2,7 +2,7 @@
 /**
  *  @brief A math expression parser
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@
 
 #include "openturns/SymbolicParserMuParser.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/TBBImplementation.hxx"
 
 #include "muParser.h"
@@ -123,7 +122,7 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
   if (inP.getDimension() != inputDimension)
-    throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
+    throw InvalidArgumentException(HERE) << "Invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Point();
   initialize();
   std::copy(inP.begin(), inP.end(), stack_.begin());
@@ -134,14 +133,14 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
     {
       const Scalar value = expressions_[outputIndex]->Eval();
       // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
-      if (checkOutput_ && !SpecFunc::IsNormal(value))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      if (checkOutput_ && !std::isfinite(value))
+        throw NotDefinedException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
       result[outputIndex] = value;
     } // outputIndex
   }
   catch (const mu::Parser::exception_type & ex)
   {
-    throw InternalException(HERE) << ex.GetMsg();
+    throw NotDefinedException(HERE) << ex.GetMsg();
   }
   return result;
 }
@@ -181,7 +180,7 @@ struct SymbolicParserMuParserPolicy
         {
           const Scalar value = evaluation_.threadExpressions_[threadIndex][outputIndex]->Eval();
           // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
-          if (evaluation_.checkOutput_ && !SpecFunc::IsNormal(value))
+          if (evaluation_.checkOutput_ && !std::isfinite(value))
             throw InternalException(HERE) << "Cannot evaluate " << evaluation_.formulas_[outputIndex] << " at " << evaluation_.inputVariablesNames_.__str__() << "=" << Point(input_[i]).__str__();
           output_(i, outputIndex) = value;
         }

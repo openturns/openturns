@@ -8,7 +8,7 @@ Generate random variates by inverting the CDF
 # Abstract
 # --------
 #
-# In this example, we show how to generate random variates by inversion of the cumulated distribution function.
+# In this example, we show how to generate random variates by inversion of the cumulative distribution function.
 # In simple situations, this method is rarely used in practice because of problems with performance,
 # statistical quality of the generated random variates and numerical accuracy of the generated numbers when we use floating point numbers.
 # However, it is an interesting method to know about because it is a building block for other algorithms and can be used to visualize the distribution of the generated numbers.
@@ -19,7 +19,7 @@ Generate random variates by inverting the CDF
 #
 # Let :math:`\beta>0` and :math:`\alpha>0` be two real parameters: :math:`\alpha` is a shape parameter and  :math:`\beta` is a scale parameter.
 #
-# The cumulated distribution function of the WeibullMin distribution (also referred as `Weibull distribution`) is:
+# The cumulative distribution function of the WeibullMin distribution (also referred as `Weibull distribution`) is:
 #
 # .. math::
 #    F(x) = 1 - \exp\left(-\frac{x-\gamma}{\beta}\right)^\alpha,
@@ -97,11 +97,8 @@ Generate random variates by inverting the CDF
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
-
-ot.Log.Show(ot.Log.NONE)
-
 
 # %%
 # The following function defines the quantile function of the :class:`~openturns.WeibullMin` distribution.
@@ -110,7 +107,6 @@ ot.Log.Show(ot.Log.NONE)
 # that we accept in order to better understand the algorithm.)
 
 
-# %%
 def weibullQ(argument):
     """
     WeibullMin quantile function
@@ -166,7 +162,7 @@ histo.setLegends(["Sample"])
 wpdf = W.drawPDF()
 wpdf.setLegends(["Weibull"])
 histo.add(wpdf)
-view = viewer.View(histo)
+view = otv.View(histo)
 
 # %%
 # We see that the empirical histogram of the generated outcomes is close to the exact density of the Weibull distribution.
@@ -203,7 +199,7 @@ weibullSample = sample[:, 0]
 uniformSample = sample[:, 1]
 
 # %%
-graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" % (alpha, beta, n), "x", "U", True)
+graph = ot.Graph(f"Weibull {alpha=}, {beta=}, {n=}", "x", "U")
 # Add the CDF plot
 curve = W.drawCDF()
 graph.add(curve)
@@ -216,7 +212,7 @@ for i in range(n):
     curve.setColor("red")
     curve.setLineStyle("dashed")
     graph.add(curve)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Show all the graphs.

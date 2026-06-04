@@ -1,0 +1,72 @@
+%feature("docstring") OT::StandardEvent
+R"RAW(Event defined in the standard space.
+
+Available constructor:
+    StandardEvent(*antecedent, comparisonOperator, threshold*)
+
+    StandardEvent(*event*)
+
+Parameters
+----------
+antecedent : :class:`~openturns.RandomVector` of dimension 1
+    Output variable of interest.
+comparisonOperator : :class:`~openturns.ComparisonOperator`
+    Comparison operator used to compare *antecedent* with *threshold*.
+threshold : float
+    *threshold* we want to compare to *antecedent*.
+event : :class:`~openturns.RandomVector`
+    Physical event associated with the standard event to be created.
+
+Notes
+-----
+An event is defined as follows:
+
+.. math::
+
+    \cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X},\vect{d}) \le 0\}
+
+where :math:`\vect{X}` denotes a random input vector, representing the sources
+of uncertainties, :math:`\vect{d}` is a determinist vector, representing the
+fixed variables and :math:`g(\vect{X},\vect{d})` is the limit state function of
+the model.
+
+One way to evaluate the probability content :math:`P_f` of the event :math:`\cD_f`:
+
+.. math::
+
+    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})\di{\vect{x}}
+
+is to use an isoprobabilistic transformation to move from the physical space
+to a standard normal space (U-space) where distributions are spherical
+(invariant by rotation by definition), with zero mean, unit variance and unit
+correlation matrix. The usual isoprobabilistic transformations are the 
+Generalized Nataf transformation and Rosenblatt transformation.
+
+In that new U-space, the event can be expressed in terms of 
+the transformed limit state function of the model :math:`g`
+
+.. math::
+
+    \cD_f = \{\vect{U} \in \Rset^n \, | \, g(\vect{U}\,,\,\vect{d}) \le 0\}
+
+See also
+--------
+Analytical, SORM, FORM, SORMResult, FORMResult, StrongMaximumTest, ImportanceSamplingExperiment
+
+Examples
+--------
+
+A StandardEvent created from a limit state function :
+
+>>> import openturns as ot
+>>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal(4)
+>>> vect = ot.RandomVector(myDistribution)
+>>> output = ot.CompositeRandomVector(myFunction, vect)
+>>> myStandardEvent = ot.StandardEvent(output, ot.Less(), 1.0)
+
+A StandardEvent based on an event :
+
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), 1.0)
+>>> myStandardEvent = ot.StandardEvent(myEvent)
+)RAW"

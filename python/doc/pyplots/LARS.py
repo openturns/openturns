@@ -2,16 +2,15 @@
 
 import openturns as ot
 from openturns.usecases import ishigami_function
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # data
-ot.RandomGenerator.SetSeed(0)
 im = ishigami_function.IshigamiModel()
 N = 1000
 g = im.model
-x = im.inputDistribution.getSample(N)
+x = im.distribution.getSample(N)
 P = x.getDimension()
-marginals = [im.inputDistribution.getMarginal(i) for i in range(P)]
+marginals = [im.distribution.getMarginal(i) for i in range(P)]
 y = g(x)
 
 # polynomial chaos
@@ -26,9 +25,9 @@ adaptiveStrategy = ot.FixedStrategy(
 )
 projectionStrategy = ot.LeastSquaresStrategy(approximationAlgorithm)
 algo = ot.FunctionalChaosAlgorithm(
-    x, y, im.inputDistribution, adaptiveStrategy, projectionStrategy
+    x, y, im.distribution, adaptiveStrategy, projectionStrategy
 )
 algo.run()
 result = algo.getResult()
 graph = result.drawSelectionHistory()
-View(graph)
+otv.View(graph)

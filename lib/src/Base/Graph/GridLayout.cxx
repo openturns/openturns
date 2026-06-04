@@ -2,7 +2,7 @@
 /**
  *  @brief Grid layout of graphs
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,8 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdio>
-#include <cstdlib>
 
 
 #include "openturns/PersistentObjectFactory.hxx"
@@ -54,14 +52,26 @@ void GridLayout::add(const GridLayout & grid)
   for (UnsignedInteger i = 0; i < getNbRows(); ++i)
   {
     for (UnsignedInteger j = 0; j < getNbColumns(); ++j)
-      {
-        LOGDEBUG(OSS() << "Trying to add graphs at row " << i << " and column " << j);
-        Graph host(getGraph(i, j));
-        const Graph guest(grid.getGraph(i, j));
-        host.add(guest);
-        setGraph(i, j, host);
-      }
+    {
+      LOGDEBUG(OSS() << "Trying to add graphs at row " << i << " and column " << j);
+      Graph host(getGraph(i, j));
+      const Graph guest(grid.getGraph(i, j));
+      host.add(guest);
+      setGraph(i, j, host);
+    }
   }
+}
+
+void GridLayout::setLegendCorner(const Point & corner)
+{
+  for (UnsignedInteger i = 0; i < graphCollection_.getSize(); ++ i)
+    graphCollection_[i].setLegendCorner(corner);
+}
+
+void GridLayout::setLogScale(const GraphImplementation::LogScale logScale)
+{
+  for (UnsignedInteger i = 0; i < graphCollection_.getSize(); ++ i)
+    graphCollection_[i].setLogScale(logScale);
 }
 
 /* String converter */

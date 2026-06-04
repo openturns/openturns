@@ -2,7 +2,7 @@
 /**
  *  @brief Estimation by matching quantiles
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <iomanip>
 #include <fstream>
 #include "openturns/QuantileMatchingFactory.hxx"
@@ -114,39 +113,39 @@ public:
     }
   }
 
-  QuantileMatchingEvaluation * clone() const
+  QuantileMatchingEvaluation * clone() const override
   {
     return new QuantileMatchingEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return probabilities_.getSize();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return getInputDimension();
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description::BuildDefault(getInputDimension(), "theta");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(getOutputDimension(), "r");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
     Point effectiveParameter(parameterDimension);

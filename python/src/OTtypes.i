@@ -6,12 +6,11 @@
 %include std_map.i
 %include std_complex.i
 
-%include openturns/OT.hxx
 %include openturns/OTtypes.hxx
 %include openturns/OTdebug.h
 
 %{
-#include "openturns/OT.hxx"
+#include "openturns/OTtypes.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
 %}
 

@@ -2,7 +2,7 @@
 /**
  *  @brief The PointConditionalDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -98,33 +98,33 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
   // first, check ResourceMap
   useGenericConditionalMethods_ = ResourceMap::GetAsBool("PointConditionalDistribution-UseGenericConditionalMethods");
   if (useGenericConditionalMethods_)
+  {
+    // then, check if we are in a case where it *could be* possible to use these methods
+    const UnsignedInteger conditioningSize = conditioningIndices.getSize();
+    // is the point conditional distribution univariate?
+    if (conditioningSize == fullDimension - 1)
     {
-      // then, check if we are in a case where it *could be* possible to use these methods
-      const UnsignedInteger conditioningSize = conditioningIndices.getSize();
-      // is the point conditional distribution univariate?
-      if (conditioningSize == fullDimension - 1)
-	{
-	  // If we are in the case of a symmetric bivariate copula (elliptical or archimedean), then X0|X1=x is the same as X1|X0=x
-	  // but only the last one allows for the use of generic methods. Change the conditioning order in this case
-	  if ((conditioningSize > 0) && (distribution.getDimension() == 2) && distribution.isCopula() && (conditioningIndices[0] == 1))
-	    {
-	      // elliptical case: swap the conditioning
-	      if (distribution.hasIndependentCopula())
-		conditioningIndices_[0] = 0;
-	      else
-		{
-		  const ArchimedeanCopula * p_archimedean = dynamic_cast< ArchimedeanCopula * >(distribution.getCopula().getImplementation().get());
-		  // archimedean case: swap the conditioning
-		  if (p_archimedean)
-		    conditioningIndices_[0] = 0;
-		} // No elliptical copula
-	    } // bivariate copula to swap
-	  // Now, check if the last component is the one conditioned by the others
-	  useGenericConditionalMethods_ = (conditioningSize > 0) && (conditioningIndices[conditioningSize - 1] == (fullDimension - 2));
-	} // conditioningSize == fullDimension - 1
-      else
-	useGenericConditionalMethods_ = false;
-    } // useGenericConditionalMethods_ from ResourceMap
+      // If we are in the case of a symmetric bivariate copula (elliptical or archimedean), then X0|X1=x is the same as X1|X0=x
+      // but only the last one allows for the use of generic methods. Change the conditioning order in this case
+      if ((conditioningSize > 0) && (distribution.getDimension() == 2) && distribution.isCopula() && (conditioningIndices[0] == 1))
+      {
+        // elliptical case: swap the conditioning
+        if (distribution.hasIndependentCopula())
+          conditioningIndices_[0] = 0;
+        else
+        {
+          const ArchimedeanCopula * p_archimedean = dynamic_cast< ArchimedeanCopula * >(distribution.getCopula().getImplementation().get());
+          // archimedean case: swap the conditioning
+          if (p_archimedean)
+            conditioningIndices_[0] = 0;
+        } // No elliptical copula
+      } // bivariate copula to swap
+      // Now, check if the last component is the one conditioned by the others
+      useGenericConditionalMethods_ = (conditioningSize > 0) && (conditioningIndices[conditioningSize - 1] == (fullDimension - 2));
+    } // conditioningSize == fullDimension - 1
+    else
+      useGenericConditionalMethods_ = false;
+  } // useGenericConditionalMethods_ from ResourceMap
   // it is ok to condition continuous marginals by a discrete one and vice-versa
   const Distribution marginalConditioned(distribution.getMarginal(conditioningIndices.complement(fullDimension)));
   if (!marginalConditioned.isDiscrete() && !marginalConditioned.isContinuous())
@@ -357,7 +357,7 @@ void PointConditionalDistribution::update()
   {
     if (conditioningIndices_.getSize())
       logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
-    if (!SpecFunc::IsNormal(logNormalizationFactor_))
+    if (!std::isfinite(logNormalizationFactor_))
       throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
   }
 
@@ -467,7 +467,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
       const Point mu(decompose(distribution_, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C));
       const Point mY(conditioningValues_ - mu.select(conditioningIndices_));
       const Scalar dy = mY.dot(distribution_.getMarginal(conditioningIndices_).getCovariance().solveLinearSystem(mY));
-      Student *p_student = dynamic_cast<Student *>(distribution_.getStandardDistribution().getImplementation().get());
+      const Student *p_student = dynamic_cast<Student *>(distribution_.getImplementation().get());
       const Scalar nu = p_student->getNu();
       const UnsignedInteger py = conditioningIndices_.getSize();
       C = CovarianceMatrix((C * std::sqrt((nu + dy) / (nu + py))).getImplementation());
@@ -492,8 +492,8 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
       if (w > 0.0)
       {
         newWeights.add(weights[i] * w);
-	const PointConditionalDistribution atom(atoms[i], conditioningIndices_, conditioningValues_);
-	newAtoms.add(atom.getSimplifiedVersion());
+        const PointConditionalDistribution atom(atoms[i], conditioningIndices_, conditioningValues_);
+        newAtoms.add(atom.getSimplifiedVersion());
       }
     } // for i
     simplified = Mixture(newAtoms, newWeights);
@@ -555,7 +555,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         const Scalar xJ = conditioningValues_[j];
         logWi += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
       } // j
-      if (SpecFunc::IsNormal(logWi))
+      if (std::isfinite(logWi))
       {
         weights.add(std::exp(logWi));
         Collection<Distribution> atomComponents(dimension);
@@ -588,28 +588,28 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     return true;
   }
 
-  // Joint. Has we don't have an efficient PointConditionalCopula we restrict ourselve to the Bernstein copula
+  // Joint. Has we don't have an efficient PointConditionalCopula we restrict ourselves to the Bernstein copula
   JointDistribution *p_joint = dynamic_cast<JointDistribution *>(distribution_.getImplementation().get());
   if (p_joint)
   {
     const EmpiricalBernsteinCopula *p_bernstein = dynamic_cast<EmpiricalBernsteinCopula *>(distribution_.getCopula().getImplementation().get());
     if (p_bernstein)
+    {
+      const Collection<Distribution> marginals(p_joint->getDistributionCollection());
+      Point coreConditioniningValues(conditioningIndices_.getSize());
+      for (UnsignedInteger i = 0; i < conditioningIndices_.getSize(); ++ i)
       {
-	const Collection<Distribution> marginals(p_joint->getDistributionCollection());
-	Point coreConditioniningValues(conditioningIndices_.getSize());
-	for (UnsignedInteger i = 0; i < conditioningIndices_.getSize(); ++ i)
-	  {
-	    const Scalar conditioningValueI = marginals[conditioningIndices_[i]].computeCDF(conditioningValues_[i]);
-	    // If the conditioning value is too close to 1 or too close to 0
-	    // the conditioning of the core will fail
-	    if ((conditioningValueI <= cdfEpsilon_) || (conditioningValueI >= 1.0 - cdfEpsilon_))
-	      return false;
-	    coreConditioniningValues[i] = conditioningValueI;
-	  }
-	const PointConditionalDistribution conditionalCore(p_joint->getCore(), conditioningIndices_, coreConditioniningValues);
-	simplified = JointDistribution(marginals.select(nonConditioningIndices_), conditionalCore);
-	return true;
-      } // p_bernstein
+        const Scalar conditioningValueI = marginals[conditioningIndices_[i]].computeCDF(conditioningValues_[i]);
+        // If the conditioning value is too close to 1 or too close to 0
+        // the conditioning of the core will fail
+        if ((conditioningValueI <= cdfEpsilon_) || (conditioningValueI >= 1.0 - cdfEpsilon_))
+          return false;
+        coreConditioniningValues[i] = conditioningValueI;
+      }
+      const PointConditionalDistribution conditionalCore(p_joint->getCore(), conditioningIndices_, coreConditioniningValues);
+      simplified = JointDistribution(marginals.select(nonConditioningIndices_), conditionalCore);
+      return true;
+    } // p_bernstein
   } // p_joint
 
   return false;
@@ -661,15 +661,15 @@ void PointConditionalDistribution::computeRange()
         const Point mu = decompose(normal, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C);
         const Normal conditionedNormal(mu, C);
         const Interval normalConditionedRange(conditionedNormal.getRange());
-	conditionedRange.setLowerBound(normalConditionedRange.getLowerBound());
-	conditionedRange.setUpperBound(normalConditionedRange.getUpperBound());
+        conditionedRange.setLowerBound(normalConditionedRange.getLowerBound());
+        conditionedRange.setUpperBound(normalConditionedRange.getUpperBound());
       } // Strategy = Normal
       // Third strategy
       else
       {
         const UnsignedInteger dimension = distribution_.getDimension();
         const Point mean(dimension, 0.0);
-	const CorrelationMatrix Rspearman(distribution_.getSpearmanCorrelation());
+        const CorrelationMatrix Rspearman(distribution_.getSpearmanCorrelation());
         const CovarianceMatrix covariance(NormalCopula::GetCorrelationFromSpearmanCorrelation(Rspearman));
         const Normal normal(mean, covariance);
         // Extract the marginal distributions
@@ -1032,11 +1032,11 @@ void PointConditionalDistribution::setParameter(const Point & parameter)
   if (parameter != currentParameter)
   {
     if (ResourceMap::GetAsBool("PointConditionalDistribution-UseFullParameters"))
-      {
-	conditionedParameter = Point(distribution_.getParameter().getSize());
-	std::copy(parameter.begin(), parameter.begin() + conditionedParameter.getSize(), conditionedParameter.begin());
-	distribution_.setParameter(conditionedParameter);
-      }
+    {
+      conditionedParameter = Point(distribution_.getParameter().getSize());
+      std::copy(parameter.begin(), parameter.begin() + conditionedParameter.getSize(), conditionedParameter.begin());
+      distribution_.setParameter(conditionedParameter);
+    }
     // then conditioning values
     std::copy(parameter.begin() + conditionedParameter.getSize(), parameter.end(), conditioningValues_.begin());
   }

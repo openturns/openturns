@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Uniform distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/UniformFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -67,7 +66,7 @@ Uniform UniformFactory::buildAsUniform(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an UserDefined distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an FiniteDiscreteDistribution distribution if data contains NaN or Inf";
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Uniform distribution from a constant sample.";
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);

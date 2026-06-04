@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Bernoulli distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include "openturns/BernoulliFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Binomial.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -71,7 +70,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);
-    if (!SpecFunc::IsNormal(x))
+    if (!std::isfinite(x))
       throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution if data contains NaN or Inf";
     const SignedInteger iX = static_cast<SignedInteger>(std::round(x));
     if ((std::abs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1)))

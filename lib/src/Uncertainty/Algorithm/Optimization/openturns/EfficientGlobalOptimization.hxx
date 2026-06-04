@@ -2,7 +2,7 @@
 /**
  *  @brief EfficientGlobalOptimization or EGO algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/KrigingResult.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,8 +46,7 @@ public:
 
   /** Constructor with parameters */
   EfficientGlobalOptimization(const OptimizationProblem & problem,
-                              const KrigingResult & krigingResult,
-                              const Function & noise = Function());
+                              const GaussianProcessRegressionResult & gprResult);
 
   /** Virtual constructor */
   EfficientGlobalOptimization * clone() const override;
@@ -81,19 +80,15 @@ public:
   void setAEITradeoff(const Scalar c);
   Scalar getAEITradeoff() const;
 
-  /** Metamodel noise function accessor */
-  void setMetamodelNoise(const Function & metaModelNoise);
-  Function getMetamodelNoise() const;
-
   /** Improvement noise function accessor */
-  void setNoiseModel(const Function & noiseModel);
-  Function getNoiseModel() const;
+  void setNoiseFunction(const Function & noiseFunction);
+  Function getNoiseFunction() const;
 
   /** Expected improvement function */
   Sample getExpectedImprovement() const;
 
-  /** Kriging result accessor (especially useful after run() has been called) */
-  KrigingResult getKrigingResult() const;
+  /** GPR result accessor (especially useful after run() has been called) */
+  GaussianProcessRegressionResult getGaussianProcessRegressionResult() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -107,7 +102,7 @@ protected:
   void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
-  KrigingResult krigingResult_;
+  GaussianProcessRegressionResult gprResult_;
   OptimizationAlgorithm solver_;
 
   // whether the solver was set
@@ -128,11 +123,8 @@ private:
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
   Scalar aeiTradeoff_ = 0.0;
 
-  // noise model called at design points
-  Function metamodelNoise_;
-
-  // optional noise model for improvement optimization only
-  Function noiseModel_;
+  // noise function
+  Function noiseFunction_;
 
   Sample expectedImprovement_;
 

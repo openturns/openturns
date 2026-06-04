@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Model
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 
 #include "openturns/ArchimedeanCopula.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/DeconditionedRandomVector.hxx"
+#include "openturns/CompoundRandomVector.hxx"
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactory.hxx"
@@ -48,5 +48,6 @@
 #include "openturns/StandardEvent.hxx"
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/RatioOfUniforms.hxx"
+#include "openturns/GaussianProcessRandomVector.hxx"
 
 #endif /* OPENTURNS_OTMODEL_HXX */

@@ -2,7 +2,7 @@
 /**
  *  @brief Default NonLinearLeastSquaresCalibration
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,11 +25,7 @@
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/BootstrapExperiment.hxx"
-#include "openturns/LowDiscrepancyExperiment.hxx"
-#include "openturns/SobolSequence.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/MultiStart.hxx"
-#include "openturns/TNC.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
@@ -88,34 +84,34 @@ public:
     if (outputObservations.getDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected output observations of dimension=" << model.getOutputDimension() << ", got dimension=" << outputObservations.getDimension();
   }
 
-  CalibrationModelEvaluation * clone() const
+  CalibrationModelEvaluation * clone() const override
   {
     return new CalibrationModelEvaluation(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     Function localModel(model_);
     localModel.setParameter(point);
     return localModel(inputObservations_).getImplementation()->getData() - outputObservations_.getImplementation()->getData();
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return model_.getParameterDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return model_.getOutputDimension() * inputObservations_.getSize();
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return model_.getParameterDescription();
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     const Description atomicOutputDescription(model_.getOutputDescription());
     Description outputDescription(0);
@@ -125,21 +121,21 @@ public:
     return outputDescription;
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "CalibrationModelEvaluation(" << model_.__str__() << ", " << inputObservations_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "CalibrationModelEvaluation(" << model_.__str__() << ", " << inputObservations_ << ")";
@@ -177,12 +173,12 @@ public:
     // Nothing to do
   }
 
-  CalibrationModelGradient * clone() const
+  CalibrationModelGradient * clone() const override
   {
     return new CalibrationModelGradient(*this);
   }
 
-  Matrix gradient(const Point & point) const
+  Matrix gradient(const Point & point) const override
   {
     Function parametrizedModel(evaluation_.getModel());
     parametrizedModel.setParameter(point);
@@ -200,39 +196,24 @@ public:
     return gradientObservations;
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return evaluation_.getInputDimension();
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return evaluation_.getOutputDimension();
   }
 
-  Description getInputDescription() const
-  {
-    return evaluation_.getInputDescription();
-  }
-
-  Description getOutputDescription() const
-  {
-    return evaluation_.getOutputDescription();
-  }
-
-  Description getDescription() const
-  {
-    return evaluation_.getDescription();
-  }
-
-  String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "CalibrationModelGradient(" << evaluation_ << ")";
     return oss;
   }
 
-  String __str__(const String & ) const
+  String __str__(const String & ) const override
   {
     OSS oss;
     oss << "CalibrationModelGradient(" << evaluation_ << ")";

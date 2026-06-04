@@ -25,7 +25,8 @@ for i in range(size):
     data2[i] = cursor
 
 # Create an empty graph
-myGraph = ot.Graph("Some curves", "x1", "x2", True, "topright")
+myGraph = ot.Graph("Some curves", "x1", "x2")
+myGraph.setLegendPosition("upper right")
 
 # Create the first curve
 myCurve1 = ot.Curve(data1, "blue", "dashed", 2, "linear function")

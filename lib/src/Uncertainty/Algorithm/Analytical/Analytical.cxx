@@ -2,7 +2,7 @@
 /**
  *  @brief Analytical implements an algorithm to find the design point
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,8 @@
 #include "openturns/Analytical.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NearestPointProblem.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/StandardEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,21 +36,14 @@ static const Factory<Analytical> Factory_Analytical;
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
-                       const RandomVector & event,
-                       const Point & physicalStartingPoint)
+                       const RandomVector & event)
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
     event_(event)
 {
-  if (physicalStartingPoint.getSize())
-  {
-    LOGWARN("FORM/SORM physicalStartingPoint argument is deprecated");
-    nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
-  }
-
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
 
-  try 
+  try
   {
     if (nearestPointAlgorithm_.getStartingPoint().getDimension() != dimension)
       throw InvalidArgumentException(HERE) << "Starting point dimension (" << nearestPointAlgorithm_.getStartingPoint().getDimension() << ") does not match event dimension (" << dimension << ").";
@@ -58,9 +53,9 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
     if (nearestPointAlgorithm_.getStartingSample().getDimension() != dimension)
       throw InvalidArgumentException(HERE) << "Starting sample dimension (" << nearestPointAlgorithm_.getStartingSample()[0].getDimension() << ") does not match event dimension (" << dimension << ").";
   }
-  
+
   if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
-      throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
+    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
 }
 
 
@@ -68,20 +63,6 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 Analytical * Analytical::clone() const
 {
   return new Analytical(*this);
-}
-
-/* Physical starting point accessor */
-Point Analytical::getPhysicalStartingPoint() const
-{
-  LOGWARN("Analytical.getPhysicalStartingPoint is deprecated");
-  return nearestPointAlgorithm_.getStartingPoint();
-}
-
-/* Physical starting point accessor */
-void Analytical::setPhysicalStartingPoint(const Point & physicalStartingPoint)
-{
-  LOGWARN("Analytical.setPhysicalStartingPoint is deprecated");
-  nearestPointAlgorithm_.setStartingPoint(physicalStartingPoint);
 }
 
 /* Event accessor */
@@ -139,14 +120,14 @@ void Analytical::run()
     /* set the starting sample of the algorithm in the standard space */
     nearestPointAlgorithm.setStartingSample(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(nearestPointAlgorithm.getStartingSample()));
   }
-  
+
   /* solve the nearest point problem */
   nearestPointAlgorithm.run();
-  
+
   /* set standard space design point in Result */
   Point standardSpaceDesignPoint(nearestPointAlgorithm.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
-  
+
   result_ = AnalyticalResult(standardSpaceDesignPoint, event_, true);
 
   /* store the optimization result into the analytical result */
@@ -167,7 +148,10 @@ void Analytical::run()
 
   const Scalar limitStateTolerance = nearestPointAlgorithm.getMaximumConstraintError();
 
-  if (!(residual <= 1.1 * limitStateTolerance)) // 1.1 is added to prevent numerical approximation made in Cobyla for constraint satisfaction tolerance.
+  // to prevent numerical approximation made in Cobyla for constraint satisfaction tolerance
+  const Scalar toleranceFactor = ResourceMap::GetAsScalar("Analytical-LimitStateToleranceFactor");
+
+  if (!(residual <= toleranceFactor * limitStateTolerance))
     throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: " << limitStateTolerance;
 
 } /* Analytical::run() */

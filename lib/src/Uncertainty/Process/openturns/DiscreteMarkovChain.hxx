@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements a discrete Markov chain process
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Process.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -88,7 +88,7 @@ public:
   void setMesh(const Mesh & mesh) override;
 
   /** Stationary distribution computation */
-  UserDefined computeStationaryDistribution() const;
+  FiniteDiscreteDistribution computeStationaryDistribution() const;
 
   /** DOT export */
   void exportToDOTFile(const FileName & filename) const;
@@ -109,7 +109,7 @@ private:
   SquareMatrix transitionMatrix_ ;
 
   /** The current position of the chain */
-  mutable UnsignedInteger currentState_;
+  mutable UnsignedInteger currentState_ = 0;
 
 }; /* class DiscreteMarkovChain */
 

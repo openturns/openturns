@@ -2,7 +2,7 @@
 /**
  *  @brief Point implements the classical mathematical point
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -195,5 +195,27 @@ OT_API Point operator - (const Point & lhs);
 
 
 END_NAMESPACE_OPENTURNS
+
+#ifndef SWIG
+
+namespace std
+{
+template<> struct hash<OT::Point >
+{
+  size_t operator()(const OT::Point & coll) const noexcept
+  {
+    constexpr std::size_t adder = 0x9e3779b9;
+    size_t seed = 0;
+    for (OT::UnsignedInteger i = 0; i < coll.getSize(); ++ i)
+    {
+      size_t hi = hash<OT::Scalar> {}(coll[i]);
+      seed = seed ^ (hi + adder + (seed << 6) + (seed >> 2));
+    }
+    return seed;
+  }
+};
+}
+
+#endif
 
 #endif /* OPENTURNS_POINT_HXX */

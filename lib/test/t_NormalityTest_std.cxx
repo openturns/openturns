@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Test
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -93,7 +93,7 @@ int main(int, char *[])
   p[0] = 0.3;
   p[1] = 0.2;
   p[2] = 0.5;
-  UserDefined userdefined(x, p);
+  FiniteDiscreteDistribution userdefined(x, p);
   distributionCollection.add(userdefined);
   discreteDistributionCollection.add(userdefined);
 

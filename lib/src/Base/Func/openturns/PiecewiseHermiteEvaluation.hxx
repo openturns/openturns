@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of a hermite piecewise scalar function
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,7 @@ public:
   PiecewiseHermiteEvaluation(const Point & locations,
                              const Sample & values,
                              const Sample & derivatives);
-  
+
   /** Virtual constructor */
   PiecewiseHermiteEvaluation * clone() const override;
 
@@ -68,11 +68,11 @@ public:
   /** Locations accessor */
   Point getLocations() const;
   void setLocations(const Point & locations);
-  
+
   /** enableExtrapolation accessor */
   Bool getEnableExtrapolation() const;
   void setEnableExtrapolation(const Bool & enableExtrapolation);
-  
+
   /** Values accessor */
   Sample getValues() const;
   void setValues(const Sample & values);
@@ -81,7 +81,7 @@ public:
   Sample getDerivatives() const;
   void setDerivatives(const Sample & derivatives);
 
-  /** Simultaneous locations and values acessor */
+  /** Simultaneous locations and values accessor */
   void setLocationsValuesAndDerivatives(const Point & locations,
                                         const Sample & values,
                                         const Sample & derivatives);
@@ -98,14 +98,14 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-    
+
 protected:
 
 private:
 
   /** Enable extrapolation */
   Bool enableExtrapolation_ = false;
-  
+
   // The locations
   Point locations_;
 

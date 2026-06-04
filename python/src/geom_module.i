@@ -6,6 +6,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTCommon.hxx"
 #include "openturns/OTGeom.hxx"
+#include "openturns/OTGraph.hxx"
 #include "openturns/OTStat.hxx"
 #include "openturns/OTType.hxx"
 #include "openturns/OTAlgo.hxx"
@@ -24,12 +25,6 @@
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
-/* Base/Algo */
-%include NearestNeighbourAlgorithmImplementation.i
-%include NearestNeighbourAlgorithm.i
-%include EnclosingSimplexAlgorithmImplementation.i
-%include EnclosingSimplexAlgorithm.i
-
 /* Base/Graph */
 %import graph_module.i
 %import BaseGraphTemplateDefs.i
@@ -41,7 +36,6 @@
 %include RegularGrid.i
 %include IntervalMesher.i
 %include BoundaryMesher.i
-%include MeshDomain.i
 %include DomainComplement.i
 %include DomainIntersection.i
 %include DomainUnion.i

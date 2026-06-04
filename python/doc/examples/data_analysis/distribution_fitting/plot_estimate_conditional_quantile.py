@@ -18,14 +18,8 @@ Estimate a conditional quantile
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 import numpy as np
-
-ot.Log.Show(ot.Log.NONE)
-
-# %%
-# Set the random generator seed
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 # Defining the marginals
@@ -48,13 +42,13 @@ sample = distX.getSample(1000)
 # Let's see the data
 
 # %%
-graph = ot.Graph("2D-Normal sample", "x1", "x2", True, "")
+graph = ot.Graph("2D-Normal sample", "x1", "x2")
 cloud = ot.Cloud(sample, "blue", "fsquare", "My Cloud")
 graph.add(cloud)
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("A sample from $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the isolines of the PDF of :math:`X` :
@@ -62,7 +56,7 @@ graph = distX.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We estimate the density with kernel smoothing :
@@ -76,7 +70,7 @@ graph = estimated.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$ estimated by kernel smoothing")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -102,12 +96,12 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True, "")
+graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$")
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In this case the :math:`Q_2` quantile is constant because of the independence of the marginals.
@@ -134,13 +128,13 @@ sample = distX.getSample(1000)
 # Let's see the data
 
 # %%
-graph = ot.Graph("2D-Normal sample", "x1", "x2", True, "")
+graph = ot.Graph("2D-Normal sample", "x1", "x2")
 cloud = ot.Cloud(sample, "blue", "fsquare", "My Cloud")
 graph.add(cloud)
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("A sample from $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw the isolines of the PDF of :math:`X` :
@@ -148,7 +142,7 @@ graph = distX.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We estimate the density with kernel smoothing :
@@ -161,7 +155,7 @@ graph = estimated.drawPDF()
 graph.setXTitle("$X_1$")
 graph.setYTitle("$X_2$")
 graph.setTitle("iso-PDF of $X=(X_1, X_2)$ estimated by kernel smoothing")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -187,12 +181,12 @@ yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 # %%
 cxy_app = ot.Curve(x, yapp)
 cxy_ex = ot.Curve(x, yex)
-graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$", True, "")
+graph = ot.Graph("90% quantile of $X_2 | X_1=x_1$", "$x_1$", "$Q_2(x_1)$")
 graph.add(cxy_app)
 graph.add(cxy_ex)
 graph.setLegends(["$Q_2$ kernel smoothing", "$Q_2$ exact"])
 graph.setLegendPosition("lower right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Our estimated conditional quantile is a good approximate and should be better the more data we have. We can observe it by increasing the number of samples.

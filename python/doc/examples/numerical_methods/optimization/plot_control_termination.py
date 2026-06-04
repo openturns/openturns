@@ -10,7 +10,6 @@ Control algorithm termination
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define an event to compute a probability

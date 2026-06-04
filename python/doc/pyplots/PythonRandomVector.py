@@ -1,7 +1,5 @@
 import openturns as ot
-from openturns.viewer import View
-
-ot.RandomGenerator.SetSeed(0)
+import openturns.viewer as otv
 
 
 class NormalTruncatedToBall(ot.PythonRandomVector):
@@ -33,7 +31,7 @@ myRV = ot.RandomVector(NormalTruncatedToBall(2, 1.5))
 myRV.setParameter([1.3, 0.6])
 sample = myRV.getSample(1000)
 
-graph = ot.Graph("Sample from a PythonRandomVector", "", "", True, "")
+graph = ot.Graph("Sample from a PythonRandomVector", "", "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
-View(graph)
+otv.View(graph)

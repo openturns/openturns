@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Type
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,6 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SparseMatrix.hxx"
-#include "openturns/Mesh.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -44,9 +43,6 @@
 #include "openturns/TensorImplementation.hxx"
 #include "openturns/ComplexTensorImplementation.hxx"
 #include "openturns/ComplexTensor.hxx"
-#include "openturns/DomainImplementation.hxx"
-#include "openturns/Domain.hxx"
-#include "openturns/Interval.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/HermitianMatrix.hxx"

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class DiscreteMarkovChain
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,7 +63,7 @@ int main(int, char *[])
     transition(2, 2) = 0.20;
     fullprint << "### Transition matrix:" << std::endl << transition << std::endl << std::endl;
 
-    /* Origin choice (UserDefined distribution)*/
+    /* Origin choice (FiniteDiscreteDistribution distribution)*/
     Sample states(3, 1);
     states(0, 0) = 0;
     states(1, 0) = 1;
@@ -74,7 +74,7 @@ int main(int, char *[])
     weights[1] = 0.15;
     weights[2] = 0.35;
 
-    UserDefined origin(states, weights);
+    FiniteDiscreteDistribution origin(states, weights);
 
     /* Transition matrix accessor */
     processDefault.setTransitionMatrix(transition);

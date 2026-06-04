@@ -5,11 +5,7 @@ Create and draw scalar distributions
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
+import openturns.viewer as otv
 
 # %%
 # A continuous distribution
@@ -35,14 +31,14 @@ graphPDF = distribution.drawPDF()
 graphPDF.setTitle(
     r"PDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$"
 )
-view = viewer.View(graphPDF)
+view = otv.View(graphPDF)
 
 # %%
 graphCDF = distribution.drawCDF()
 graphCDF.setTitle(
     r"CDF of a normal distribution with parameters $\mu = 2.2$ and $\sigma = 0.6$"
 )
-view = viewer.View(graphCDF)
+view = otv.View(graphCDF)
 
 
 # %%
@@ -64,12 +60,12 @@ print(sample)
 # We draw its PDF and its CDF :
 graphPDF = distribution.drawPDF()
 graphPDF.setTitle(r"PDF of a geometric distribution with parameter $p = 0.7$")
-view = viewer.View(graphPDF)
+view = otv.View(graphPDF)
 
 # %%
 graphCDF = distribution.drawCDF()
 graphCDF.setTitle(r"CDF of a geometric distribution with parameter $p = 0.7$")
-view = viewer.View(graphCDF)
+view = otv.View(graphCDF)
 
 # %%
 # Conclusion
@@ -80,4 +76,4 @@ view = viewer.View(graphCDF)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

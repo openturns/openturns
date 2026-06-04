@@ -2,7 +2,7 @@
 /**
  *  @brief The linear model validation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -118,7 +118,7 @@ Sample LinearModelValidation::ComputeMetamodelKFoldPredictions(
 {
   const Sample outputSample(linearModelResult.getOutputSample());
   const Sample residualsSample(linearModelResult.getSampleResiduals());
-  SymmetricMatrix projectionMatrix(linearModelResult.buildMethod().getH());
+  SymmetricMatrix projectionMatrix(linearModelResult.getLeastSquaresMethod().getH());
   const Sample cvPredictions(MetaModelValidation::ComputeMetamodelKFoldPredictions(
                                outputSample, residualsSample, projectionMatrix, splitter));
   return cvPredictions;
@@ -139,18 +139,18 @@ SplitterImplementation LinearModelValidation::getSplitter() const
 /* Method save() stores the object through the StorageManager */
 void LinearModelValidation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "linearModelResult_", linearModelResult_ );
-  adv.saveAttribute( "splitter_", splitter_ );
+  MetaModelValidation::save(adv);
+  adv.saveAttribute("linearModelResult_", linearModelResult_);
+  adv.saveAttribute("splitter_", splitter_ );
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void LinearModelValidation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "linearModelResult_", linearModelResult_ );
-  adv.loadAttribute( "splitter_", splitter_ );
+  MetaModelValidation::load(adv);
+  adv.loadAttribute("linearModelResult_", linearModelResult_);
+  adv.loadAttribute("splitter_", splitter_);
 }
 
 END_NAMESPACE_OPENTURNS

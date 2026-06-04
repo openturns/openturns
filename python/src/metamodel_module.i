@@ -1,15 +1,17 @@
 // SWIG file metamodel_module.i
 
 %module(package="openturns", docstring="Meta-modelling.") metamodel
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 #include "openturns/OTWeightedExperiments.hxx"
 #include "openturns/OTOrthogonalBasis.hxx"
+#include "openturns/OTProcess.hxx"
 #include "openturns/OTMetaModel.hxx"
 %}
 
@@ -38,6 +40,7 @@
 
 /* Uncertainty/Model */
 %import randomvector_module.i
+%import model_process_module.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include MetaModelResult.i
@@ -73,19 +76,29 @@
 %include ThresholdEvent.i
 %include DomainEvent.i
 %include ProcessEvent.i
-%include DeconditionedRandomVector.i
+%include CompoundRandomVector.i
 %include StandardEvent.i
 %include IntersectionEvent.i
 %include UnionEvent.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i
+%include FunctionalChaosValidation.i
 %include KrigingRandomVector.i
+%include GaussianProcessFitterResult.i
+%include GaussianProcessFitter.i
+%include GaussianProcessRegressionResult.i
+%include GaussianProcessRegression.i
+%include GaussianProcessConditionalCovariance.i
+%include GaussianProcessRandomVector.i
+%include ConditionedGaussianProcess.i
 %include LeastSquaresExpansion.i
 %include IntegrationExpansion.i
 %include FieldFunctionalChaosResult.i
+%include FieldFunctionalChaosAlgorithm.i
 %include FieldToPointFunctionalChaosAlgorithm.i
 %include FieldFunctionalChaosSobolIndices.i
+%include PointToFieldFunctionalChaosAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintyMetaModelTemplateDefs.i

@@ -10,13 +10,9 @@ Sort a sample
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
-ot.RandomGenerator.SetSeed(0)
-
-
 # %%
 # We start by defining the distribution of a regular non-biased die.
-die_distribution = ot.UserDefined([[i] for i in range(1, 7)])
+die_distribution = ot.FiniteDiscreteDistribution([[i] for i in range(1, 7)])
 
 # %%
 # We consider now an experiment with two independent dice and build the corresponding random vector :

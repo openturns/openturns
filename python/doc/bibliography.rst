@@ -28,6 +28,9 @@ Bibliography
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://jimbeck.caltech.edu/papers_pdf/estimation_of_small_failure_probabilities.pdf>`__
+.. [Motoyama2025] Hitoshi Motoyama (2025) *The Bahadur representations of quantile estimators in general unequal probability sampling*,
+     Communications in Statistics - Theory and Methods, 54:13, 3820-3836, DOI: 10.1080/03610926.2024.2406382
+     `pdf <https://www.tandfonline.com/doi/epdf/10.1080/03610926.2024.2406382?needAccess=true>`__
 .. [baudin2015] Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015)
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
@@ -83,6 +86,10 @@ Bibliography
     *An introduction to orthogonal polynomials.* Dover publications.
 .. [chapelle2002] Chapelle, O., Vapnik, V., & Bengio, Y. (2002).
     *Model selection for small sample regression.* Machine Learning, 48(1-3), 9.
+.. [clouvel2025] Clouvel, L., Iooss, B., Chabridon, V., Il Idrissi, M. & Robin, F. (2025).
+    *An overview of variance-based importance measures in the linear regression context: comparative analyses and numerical tests*,
+    Socio-Environmental Systems Modeling, vol. 7, 18681, doi:10.18174/sesmo.18681
+    `pdf <https://sesmo.org/article/view/18681/18319>`__
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
@@ -98,6 +105,7 @@ Bibliography
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
+.. [david1981] David, H.A. (1981). *Order statistics.*, New-York:Wiley.
 .. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
     Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
@@ -149,7 +157,7 @@ Bibliography
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
-.. [Feller1970] Feller W.,
+.. [feller1970] Feller W.,
     *An Introduction to Probability Theory and Its Application*, John Wiley \& Sons,
     2nd edition, Vol. 2.
 .. [fischer2017] Fischer, R. (2017). *Modelling the dependence of order
@@ -164,8 +172,11 @@ Bibliography
 .. [gamboa2022] Gamboa, F., Gremaud, P., Klein, T. & Lagnoux, A. *Global sensitivity analysis:
     A novel generation of mighty estimators based on rank statistics* Bernoulli 28(4): 2345-2374, 2022.
     `pdf <https://hal.science/hal-02474902v4/file/New_Look_Bernoulli_4.pdf>`__
+.. [garnier2008] Garnier, J. *Quantile estimation* ECODOQUI 2008
 .. [gautschi2004] Gautschi, W. (2004).
     *Orthogonal polynomials: computation and approximation.* OUP Oxford.
+.. [genest2003] Genest, C. & Boies, JC. *Detecting Dependence with Kendall Plots.*
+    The American Statistician 57(4): 275-284, 2003.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003.
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__
@@ -182,6 +193,12 @@ Bibliography
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
 .. [gobet2016] Gobet, E., 2016, *Monte-Carlo Methods and Stochastic Processes: From Linear to Non-Linear*,
     Chapman \& Hall/CRC.
+.. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
+    Wiley StatsRef: Statistics Reference Online, Wiley
+.. [ginsbourger2025] Ginsbouger, D., & Schärer, C. (2025).
+    *Fast calculation of Gaussian Process Multiple-Fold Cross-Validation Residuals and their Covariances*,
+    Journal of Computational and Graphical Statistics, 34:1, 1-14.
+    `pdf <https://www.tandfonline.com/doi/pdf/10.1080/10618600.2024.2353633>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -238,7 +255,7 @@ Bibliography
     *Simple boundary correction for kernel density estimation*,
     Statistics and Computing. Vol. 3, Issue 3, 1993, pp. 135-146,
     https://doi.org/10.1007/BF00147776
-.. [Kallenberg2021] Kallenberg, O.
+.. [kallenberg2021] Kallenberg, O.
     *Fundations of Modern Probability*,
     Springer, 3rd edition, 2021.
 .. [Keutelian1991] Hovhannes Keutelian.
@@ -307,7 +324,7 @@ Bibliography
     Hubert W. Lilliefors
     Journal of the American Statistical Association,
     Vol. 62, No. 318. (Jun., 1967), pp. 399-402.
-    `pdf <http://www.bios.unc.edu/~mhudgens/bios/662/2008fall/Backup/lilliefors1967.pdf>`__
+    `pdf <https://web.physics.utah.edu/~belz/phys4730/lab18/1967_lilliefors_jasa.pdf>`__
 .. [Limbourg2010] Limbourg, P., & De Rocquigny, E. (2010).
     *Uncertainty analysis using evidence theory–confronting level-1 and
     level-2 approaches with data availability and computational constraints.*
@@ -401,7 +418,7 @@ Bibliography
     High-Performance Simulation-Based Optimization, 189-224.
 .. [peng2014] L. Peng, R. Wang, *Interval Estimation for Bivariate t-Copulas via Kendall's Tau*
     Casualty Actuarial Society, Volume 8/Issue 1, 2014.
-    `pdf <https://sas.uwaterloo.ca/~wang/papers/2014PW(Variance).pdf>`__
+    `pdf <https://sas.uwaterloo.ca/~wang/papers/2014Peng-Wang-Variance.pdf>`__
 .. [peter2019] Jacques Peter, Eric Savin, Itham Salah el Din.
     Generalized polynomial chaos and stochastic collocation methods
     for uncertainty quantification in aerodynamics.
@@ -523,6 +540,8 @@ Bibliography
     In Handbook of computational statistics (pp. 469-497). Springer, Berlin, Heidelberg.
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
+.. [wilks1948] Wilks, S. S. (1948). Order statistics. Bulletin of the American Mathematical Society, 54(1) :6–50.
+.. [robert2004] Robert C.P., Casella G. *Monte-Carlo Statistical Methods*, Springer, ISBN 0-387-21239-6, 2nd ed, 2004.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 .. [xiu2010] Xiu, D. (2010).

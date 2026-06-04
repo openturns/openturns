@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for metamodel algorithms
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,12 +24,12 @@
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/DistributionFactory.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/HypothesisTest.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +47,7 @@ MetaModelAlgorithm::MetaModelAlgorithm()
 /* Constructor with parameters */
 MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
                                        const Sample & outputSample)
-  : MetaModelAlgorithm(inputSample, outputSample, UserDefined(inputSample))
+  : MetaModelAlgorithm(inputSample, outputSample, FiniteDiscreteDistribution(inputSample))
 {
   // Nothing to do
 }
@@ -56,7 +56,7 @@ MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
 MetaModelAlgorithm::MetaModelAlgorithm(const Sample & inputSample,
                                        const Point & weights,
                                        const Sample & outputSample)
-  : MetaModelAlgorithm(inputSample, weights, outputSample, UserDefined(inputSample))
+  : MetaModelAlgorithm(inputSample, weights, outputSample, FiniteDiscreteDistribution(inputSample))
 {
   // Nothing to do
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for distribution-based random vectors
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -120,6 +120,12 @@ void UsualRandomVector::setParameter(const Point & parameter)
 Description UsualRandomVector::getParameterDescription() const
 {
   return distribution_.getParameterDescription();
+}
+
+/** Set the underlying distribution  */
+void UsualRandomVector::setDistribution(const Distribution & distribution)
+{
+  distribution_ = distribution;
 }
 
 /* Method save() stores the object through the StorageManager */

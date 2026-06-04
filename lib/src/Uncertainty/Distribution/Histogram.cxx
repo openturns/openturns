@@ -2,7 +2,7 @@
 /**
  *  @brief The Histogram distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -161,7 +161,7 @@ Scalar Histogram::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   Scalar x = point[0] - first_;
   const UnsignedInteger size = width_.getSize();
-  if ((x < 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
+  if ((x <= 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
   // Find the bin index by bisection
   UnsignedInteger iMin = 0;
   if (x < cumulatedWidth_[iMin]) return height_[iMin];
@@ -524,7 +524,8 @@ Graph Histogram::drawPDF(const Scalar xMin,
   if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);
-  Graph graphPDF(title, xName, "PDF", true, "topright");
+  Graph graphPDF(title, xName, "PDF");
+  graphPDF.setLegendPosition("topright");
   const UnsignedInteger size = width_.getSize();
   // Check for the border cases
   // If the histogram is completely at the right or at the left of the plot range,
@@ -564,7 +565,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
   while ((indexRight < size) && (first_ + cumulatedWidth_[indexRight] < xMax)) ++indexRight;
   // The graph is made of full bars for the class indices between indexLeft and indexRight
   // The graph can include completely the first class or not. It is checked using first_.
-  // The graph can include completely the last class or not. It is checked usind indexRight == size.
+  // The graph can include completely the last class or not. It is checked using indexRight == size.
   // !!! Only the first part of the graph has a label !!!
   // The first class is completely included
   if (xMin <= first_)

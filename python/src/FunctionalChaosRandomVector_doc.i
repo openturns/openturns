@@ -1,0 +1,286 @@
+%feature("docstring") OT::FunctionalChaosRandomVector
+R"RAW(Functional chaos random vector.
+
+Allows one to simulate a variable through a chaos decomposition,
+and retrieve its mean and covariance analytically from the chaos coefficients.
+
+Parameters
+----------
+functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
+    A result from a functional chaos decomposition.
+
+Notes
+-----
+This class can be used to get probabilistic properties of a
+functional chaos expansion or polynomial chaos expansion (PCE).
+For example, we can get the output mean or the output covariance matrix
+using the coefficients of the expansion.
+
+Moreover, we can use this class to simulate random observations
+of the output.
+We consider the same notations as in the :class:`~openturns.FunctionalChaosAlgorithm`
+class.
+The functional chaos decomposition of *h* is:
+
+.. math::
+
+    h = \model \circ T^{-1} = \sum_{k=0}^{\infty} \vect{a}_k \Psi_k 
+
+
+which can be truncated to the finite set :math:`\cK \subset \Nset`:
+
+.. math::
+
+    \widetilde{h} =  \sum_{k \in \cK} \vect{a}_k \Psi_k.
+
+The approximation :math:`\widetilde{h}` can be used to build an efficient random 
+generator of :math:`Y` based on the random vector :math:`\standardRV`,
+using the equation:
+
+.. math::
+
+    \widetilde{Y} = \widetilde{h}(\standardRV).
+
+This equation can be used to simulate independent random observations
+from the PCE.
+This can be done by simulating independent observations from
+the distribution of the standardized random vector :math:`\standardRV`,
+which are then pushed forward through the expansion.
+
+See also
+--------
+FunctionalChaosAlgorithm, FunctionalChaosResult
+
+Examples
+--------
+First, we create the PCE.
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> inputDimension = 1
+>>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
+>>> distribution = ot.JointDistribution([ot.Uniform()] * inputDimension)
+>>> polyColl = [0.0] * inputDimension
+>>> for i in range(distribution.getDimension()):
+...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+>>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+>>> degree = 4
+>>> indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
+>>> adaptiveStrategy = ot.FixedStrategy(productBasis, indexMax)
+>>> samplingSize = 50
+>>> experiment = ot.MonteCarloExperiment(distribution, samplingSize)
+>>> inputSample = experiment.generate()
+>>> outputSample = model(inputSample)
+>>> projectionStrategy = ot.LeastSquaresStrategy()
+>>> algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample, \
+...     distribution, adaptiveStrategy, projectionStrategy)
+>>> algo.run()
+>>> functionalChaosResult = algo.getResult()
+
+Secondly, we get the probabilistic properties of the PCE.
+We can get an estimate of the
+mean of the output of the physical model.
+
+>>> functionalChaosRandomVector = ot.FunctionalChaosRandomVector(functionalChaosResult)
+>>> mean = functionalChaosRandomVector.getMean()
+>>> print(mean)
+[0.301168]
+
+We can get an estimate of the covariance matrix
+of the output of the physical model.
+
+>>> covariance = functionalChaosRandomVector.getCovariance()
+>>> print(covariance)
+[[ 0.0663228 ]]
+
+We can finally generate observations from the PCE random
+vector.
+
+>>> simulatedOutputSample = functionalChaosRandomVector.getSample(5)
+>>> print(simulatedOutputSample)
+    [ v0         ]
+0 : [ 0.302951   ]
+1 : [ 0.0664952  ]
+2 : [ 0.0257105  ]
+3 : [ 0.00454319 ]
+4 : [ 0.149589   ])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosRandomVector::getFunctionalChaosResult
+"Accessor to the functional chaos result.
+
+Returns
+-------
+functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
+    The result from a functional chaos decomposition."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosRandomVector::getMean
+R"RAW(Accessor to the mean of the functional chaos expansion.
+
+Let :math:`\inputDim \in \Nset` be the dimension of the input random vector, 
+let :math:`\outputDim \in \Nset` be the dimension of the output random vector,
+and let :math:`P + 1 \in \Nset` be the size of the basis.
+We consider the following functional chaos expansion:
+
+.. math::
+
+      \widetilde{\outputRV} = \sum_{k = 0}^P \vect{a}_k \psi_k(\standardRV)
+
+where :math:`\widetilde{\outputRV} \in \Rset^{\outputDim}` is the approximation of the output 
+random variable :math:`\outputRV` by the expansion, 
+:math:`\left\{\vect{a}_k \in \Rset^{\outputDim}\right\}_{k = 0, ..., P}` are the coefficients, 
+:math:`\left\{\psi_k: \Rset^{\inputDim} \rightarrow \Rset\right\}_{k = 0, ..., P}` are the 
+orthonormal functions in the basis, 
+and :math:`\standardRV \in \Rset^{\inputDim}` is the standardized random input vector.
+The previous equation can be equivalently written as follows:
+
+.. math::
+
+      \widetilde{Y}_i = \sum_{k = 0}^P a_{ki} \psi_k(\standardRV)
+
+for :math:`i = 1, ..., \outputDim`
+where :math:`a_{ki} \in \Rset` is the :math:`i`-th component of the
+:math:`k`-th coefficient in the expansion:
+
+.. math::
+
+      \vect{a}_k = \begin{pmatrix}a_{k, 1} \\ \vdots\\ a_{k, \outputDim} \end{pmatrix}.
+
+The mean of the functional chaos expansion is the first coefficient
+in the expansion:
+
+.. math::
+
+      \Expect{\widetilde{\outputRV}} = \vect{a}_0.
+
+Returns
+-------
+mean : :class:`~openturns.Point`, dimension :math:`\outputDim`
+    The mean of the functional chaos expansion.
+
+Examples
+--------
+
+>>> from openturns.usecases import ishigami_function
+>>> import openturns as ot
+>>> im = ishigami_function.IshigamiModel()
+>>> sampleSize = 300
+>>> inputTrain = im.distribution.getSample(sampleSize)
+>>> outputTrain = im.model(inputTrain)
+>>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
+>>> selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
+>>> projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
+>>> totalDegree = 10
+>>> enumerateFunction = multivariateBasis.getEnumerateFunction()
+>>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
+>>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
+>>> chaosAlgo = ot.FunctionalChaosAlgorithm(
+...     inputTrain, outputTrain, im.distribution, adaptiveStrategy, projectionStrategy
+... )
+>>> chaosAlgo.run()
+>>> chaosResult = chaosAlgo.getResult()
+>>> randomVector = ot.FunctionalChaosRandomVector(chaosResult)
+>>> mean = randomVector.getMean()
+>>> print('mean=', mean[0])
+mean= 3.50...)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosRandomVector::getCovariance
+R"RAW(Accessor to the covariance of the functional chaos expansion.
+
+Let :math:`\inputDim \in \Nset` be the dimension of the input random vector, 
+let :math:`\outputDim \in \Nset` be the dimension of the output random vector.
+and let :math:`P + 1 \in \Nset` be the size of the basis.
+We consider the following functional chaos expansion:
+
+.. math::
+
+      \widetilde{\outputRV} = \sum_{k = 0}^P \vect{a}_k \psi_k(\standardRV)
+
+where
+:math:`\widetilde{\outputRV} \in \Rset^{\outputDim}` is the approximation of the output 
+random variable :math:`\outputRV` by the expansion, 
+:math:`\left\{\vect{a}_k \in \Rset^{\outputDim}\right\}_{k = 0, ..., P}` are the coefficients, 
+:math:`\left\{\psi_k: \Rset^{\inputDim} \rightarrow \Rset\right\}_{k = 0, ..., P}` are the 
+orthonormal functions in the basis, 
+and :math:`\standardRV \in \Rset^{\inputDim}` is the standardized random input vector.
+The previous equation can be equivalently written as follows:
+
+.. math::
+
+      \widetilde{Y}_i = \sum_{k = 0}^P a_{k, i} \psi_k(\standardRV)
+
+for :math:`i = 1, ..., \outputDim`
+where :math:`a_{ki} \in \Rset` is the :math:`i`-th component of the
+:math:`k`-th coefficient in the expansion:
+
+.. math::
+
+      \vect{a}_k = \begin{pmatrix}a_{k, 1} \\ \vdots\\ a_{k, \outputDim} \end{pmatrix}.
+
+The covariance matrix of the functional chaos expansion is
+the matrix :math:`\matcov \in \Rset^{\outputDim \times \outputDim}`, where each
+component is:
+
+.. math::
+
+      c_{ij} = \Cov{\widetilde{Y}_i, \widetilde{Y}_j}
+
+for :math:`i,j = 1, ..., \outputDim`.
+The covariance can be computed using the coefficients of the 
+expansion:
+
+.. math::
+
+      \Cov{\widetilde{Y}_i, \widetilde{Y}_j} = \sum_{k = 1}^P a_{k, i} a_{k, j}
+
+for :math:`i,j = 1, ..., \outputDim`.
+This covariance involves all the coefficients, except the first one.
+The diagonal of the covariance matrix is the marginal variance:
+
+.. math::
+
+      \Var{\widetilde{Y}_i} = \sum_{k = 1}^P a_{k, i}^2
+
+for :math:`i = 1, ..., \outputDim`.
+
+Returns
+-------
+covariance : :class:`~openturns.CovarianceMatrix`, dimension :math:`\outputDim \times \outputDim`
+    The covariance of the functional chaos expansion.
+
+Examples
+--------
+
+>>> from openturns.usecases import ishigami_function
+>>> import openturns as ot
+>>> import math
+>>> im = ishigami_function.IshigamiModel()
+>>> sampleSize = 300
+>>> inputTrain = im.distribution.getSample(sampleSize)
+>>> outputTrain = im.model(inputTrain)
+>>> multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
+>>> selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
+>>> projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
+>>> totalDegree = 10
+>>> enumerateFunction = multivariateBasis.getEnumerateFunction()
+>>> basisSize = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
+>>> adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
+>>> chaosAlgo = ot.FunctionalChaosAlgorithm(
+...     inputTrain, outputTrain, im.distribution, adaptiveStrategy, projectionStrategy
+... )
+>>> chaosAlgo.run()
+>>> chaosResult = chaosAlgo.getResult()
+>>> randomVector = ot.FunctionalChaosRandomVector(chaosResult)
+>>> covarianceMatrix = randomVector.getCovariance()
+>>> print('covarianceMatrix=', covarianceMatrix[0, 0])
+covarianceMatrix= 13.8...
+>>> outputDimension = outputTrain.getDimension()
+>>> stdDev = ot.Point([math.sqrt(covarianceMatrix[i, i]) for i in range(outputDimension)])
+>>> print('stdDev=', stdDev[0])
+stdDev= 3.72...)RAW"

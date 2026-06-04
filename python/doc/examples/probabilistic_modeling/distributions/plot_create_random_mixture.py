@@ -1,19 +1,14 @@
 """
-Create a random mixture
-=======================
+Create a linear combination of distributions
+============================================
 """
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create a mixture of distributions
-# ---------------------------------
-#
 # We define an affine combination of input random variables.
 #
 # .. math::
@@ -28,21 +23,21 @@ ot.Log.Show(ot.Log.NONE)
 
 
 # %%
-# We create the distributions associated to the input random variables :
+# We create the distributions associated to the input random variables
 X1 = ot.Exponential(1.5)
 X2 = ot.Normal(4.0, 1.0)
 
 # %%
-# We define an offset `a0` :
+# We define an offset `a0`
 a0 = 2.0
 
 # %%
-# We create the `weights` :
+# We create the `weights`
 weight = [5.0, 1.0]
 
 # %%
 # We create the affine combination :math:`Y` :
-distribution = ot.RandomMixture([X1, X2], weight, a0)
+distribution = ot.LinearCombinationDistribution([X1, X2], weight, a0)
 print(distribution)
 
 # %%
@@ -68,12 +63,12 @@ print("Probability : %.3f" % prb)
 # %%
 # We draw its PDF :
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We draw its CDF :
 graph = distribution.drawCDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%
@@ -90,7 +85,7 @@ view = viewer.View(graph)
 
 # %%
 # We create the distribution associated to the dice roll :
-X = ot.UserDefined([[i] for i in range(1, 7)])
+X = ot.FiniteDiscreteDistribution([[i] for i in range(1, 7)])
 
 # %%
 # Let's roll the dice a few times !
@@ -101,29 +96,28 @@ print(sample)
 N = 20
 
 # %%
-# We create a collection of identically distributed :math:`X_i` :
+# We create a collection of identically distributed :math:`X_i`
 coll = [X] * N
 
 # %%
-# We create the weights and an affine combination :
+# We create the weights and an affine combination
 weight = [1.0] * N
-distribution = ot.RandomMixture(coll, weight)
+distribution = ot.LinearCombinationDistribution(coll, weight)
 
 # %%
-# We compute the probability to exceed a sum of 100 after 20 dice rolls :
+# We compute the probability to exceed a sum of 100 after 20 dice rolls
 print("Probability : %.3g" % distribution.computeComplementaryCDF(100))
 
 # %%
-# We draw its PDF :
+# We draw its PDF
 graph = distribution.drawPDF()
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
-# and its CDF :
+# and its CDF
 graph = distribution.drawCDF()
-view = viewer.View(graph)
-
+view = otv.View(graph)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

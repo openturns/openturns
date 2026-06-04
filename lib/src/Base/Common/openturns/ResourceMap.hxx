@@ -2,7 +2,7 @@
 /**
  *  @brief ResourceMap defines a resource catalog
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -93,8 +93,8 @@ public:
   /** Remove a key */
   static void RemoveKey(const String & key);
 
-  /** Reload configuration */
-  static void Reload();
+  /** Reset configuration */
+  static void Reset();
 
   /** Get the list of keys associated to a class */
   static std::vector<String> FindKeys(const String & substr);
@@ -268,8 +268,8 @@ protected:
   /** Load the configuration defined at installation time */
   void loadDefaultConfiguration();
 
-  /** Reload configuration */
-  void reload();
+  /** Reset configuration */
+  void reset();
 
   /** Get the list of keys associated to a class */
   std::vector<String> findKeys(const String & substr);

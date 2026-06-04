@@ -1,0 +1,123 @@
+%define OT_OrthogonalBasis_doc
+"Orthogonal basis.
+
+Notes
+-----
+OrthogonalBasis is the interface class of the OrthogonalFunctionFactory
+implementation, which is an
+:class:`~openturns.OrthogonalProductPolynomialFactory` in the particular case
+of polynomial chaos expansion.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create an orthogonal basis
+>>> polynomialCollection = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polynomialCollection)"
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory
+OT_OrthogonalBasis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalBasis_build_doc
+R"RAW(Get the term of the basis collection at a given index or multi-indices.
+
+Parameters
+----------
+index : int
+    Indicates the term of the basis which must be constructed. In other words,
+    *index* is used by a bijection from :math:`\Nset` to :math:`\Nset^d`
+    (with :math:`d` the dimension of the basis). The bijection is detailed in
+    :class:`~openturns.EnumerateFunction`.
+indices : sequence of int
+    Indicates the term of the basis which must be constructed. In other words,
+    *indices* is used by a bijection from :math:`\Nset^d` to :math:`\Nset`
+    (with :math:`d` the dimension of the basis). The bijection is the inverse of
+    :class:`~openturns.EnumerateFunction`.
+
+Returns
+-------
+function : :class:`~openturns.Function`
+    The term of the basis collection at the index *index* or the inverse of
+    *indices*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create an orthogonal basis
+>>> polynomialCollection = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis =  ot.OrthogonalProductPolynomialFactory(polynomialCollection)
+>>> termBasis = productBasis.build(4)
+>>> print(termBasis.getEvaluation())
+-1.11803 + 3.3541 * x0^2
+>>> termBasis = productBasis.build(5)
+>>> print(termBasis.getEvaluation())
+1.73205 * x0 * (-1 + x1)
+>>> termBasis2 = productBasis.build([1, 1, 0])
+>>> print(termBasis2.getEvaluation())
+1.73205 * x0 * (-1 + x1)
+)RAW"
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory::build
+OT_OrthogonalBasis_build_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalBasis_getEnumerateFunction_doc
+"Return the enumerate function.
+
+Returns
+-------
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    Enumerate function that translates unidimensional indices into
+    multidimensional indices."
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory::getEnumerateFunction
+OT_OrthogonalBasis_getEnumerateFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalBasis_getMeasure_doc
+"Get the measure upon which the basis is orthogonal.
+
+Returns
+-------
+measure : :class:`~openturns.Distribution`
+    Measure upon which the basis is orthogonal.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # Create an orthogonal basis
+>>> polynomialCollection = [ot.LegendreFactory(), ot.LaguerreFactory(), ot.HermiteFactory()]
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(polynomialCollection)
+>>> measure = productBasis.getMeasure()
+>>> print(measure.getMarginal(0))
+Uniform(a = -1, b = 1)
+>>> print(measure.getMarginal(1))
+Gamma(k = 1, lambda = 1, gamma = 0)
+>>> print(measure.getMarginal(2))
+Normal(mu = 0, sigma = 1)"
+%enddef
+%feature("docstring") OT::OrthogonalFunctionFactory::getMeasure
+OT_OrthogonalBasis_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalFunctionFactory::getMarginal
+R"RAW(Get the marginal orthogonal functions.
+
+Parameters
+----------
+indices : sequence of int, :math:`0 \leq i < \inputDim`
+    List of marginal indices of the input variables.
+
+Returns
+-------
+functionFamilylist : list of :class:`~openturns.OrthogonalBasis`
+    The marginal orthogonal functions.)RAW"

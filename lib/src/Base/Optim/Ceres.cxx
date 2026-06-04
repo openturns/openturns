@@ -2,7 +2,7 @@
 /**
  *  @brief Ceres solver
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -228,7 +228,7 @@ public:
     : ceres::IterationCallback()
     , algorithm_(algorithm) {}
 
-  virtual ceres::CallbackReturnType operator()(const ceres::IterationSummary & summary)
+  virtual ceres::CallbackReturnType operator()(const ceres::IterationSummary & summary) override
   {
     if (algorithm_.progressCallback_.first)
       algorithm_.progressCallback_.first(100.0 * summary.iteration / algorithm_.getMaximumIterationNumber(), algorithm_.progressCallback_.second);
@@ -249,6 +249,7 @@ protected:
 void Ceres::run()
 {
 #ifdef OPENTURNS_HAVE_CERES
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
@@ -500,11 +501,12 @@ void Ceres::run()
     time = summary.total_time_in_seconds;
   }
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setIterationNumber(iterationNumber);
   result_.setStatusMessage(ceres::TerminationTypeToString(termination_type));
   result_.setTimeDuration(time);
 
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   if (termination_type == ceres::FAILURE)
   {
     result_.setStatus(OptimizationResult::FAILURE);

@@ -13,7 +13,6 @@ Create an aggregated function
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # assume a list of functions to aggregate

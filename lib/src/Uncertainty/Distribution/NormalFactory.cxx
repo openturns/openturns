@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Normal distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ Normal NormalFactory::buildAsNormal(const Sample & sample) const
     const UnsignedInteger dimension = sample.getDimension();
     const Point levels = {0.25, 0.5, 0.75};
     const Sample quantiles(sample.computeQuantilePerComponent(levels));
-    // Factor to conver inter-quartiles into standard deviation
+    // Factor to convert inter-quartiles into standard deviation
     static const Scalar alpha = 1.0 / 1.3489795003921634;
     const Point std((quantiles[2] - quantiles[0]) * alpha);
     if (dimension == 1) return Normal(quantiles(1, 0), std[0]);

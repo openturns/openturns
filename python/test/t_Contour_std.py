@@ -27,7 +27,8 @@ levels = ot.Point(size)
 for i in range(size):
     levels[i] = (0.5 + i) / size
 # Create an empty graph
-myGraph = ot.Graph("Complex iso lines", "u1", "u2", True, "topright")
+myGraph = ot.Graph("Complex iso lines", "u1", "u2")
+myGraph.setLegendPosition("upper right")
 
 # Create the first cloud
 myContour = ot.Contour(nX + 2, nY + 2, data)

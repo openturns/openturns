@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of a linear piecewise scalar function
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -70,13 +70,13 @@ public:
   /** enableExtrapolation accessor */
   Bool getEnableExtrapolation() const;
   void setEnableExtrapolation(const Bool & enableExtrapolation);
-  
+
   /** Values accessor */
   Sample getValues() const;
   void setValues(const Point & values);
   void setValues(const Sample & values);
 
-  /** Simultaneous locations and values acessor */
+  /** Simultaneous locations and values accessor */
   void setLocationsAndValues(const Point & locations,
                              const Sample & values);
 
@@ -106,7 +106,7 @@ protected:
 private:
   /** Enable extrapolation */
   Bool enableExtrapolation_ = false;
-  
+
   // The locations
   Point locations_;
 

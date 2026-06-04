@@ -17,9 +17,8 @@ Create a Joint by Conditioning  distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We consider the following case: :math:`X|\vect{\Theta} \sim \cN(\vect{\Theta})`
@@ -39,7 +38,7 @@ XgivenThetaDist = ot.Normal()
 # %%
 # At last, we create the distribution of :math:`(Y,X)`:
 XDist = ot.JointByConditioningDistribution(XgivenThetaDist, YDist, f)
-XDist.setDescription(["Y", r"$X|\mathbf{\boldsymbol{\Theta}} = f(Y)$"])
+XDist.setDescription(["Y", r"$X|\mathbf{\Theta} = f(Y)$"])
 XDist
 
 # %%
@@ -55,7 +54,7 @@ cloud = ot.Cloud(sample)
 cloud.setColor("red")
 cloud.setLegend("sample")
 graph.add(cloud)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 view.ShowAll()

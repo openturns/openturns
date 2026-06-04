@@ -125,7 +125,7 @@ for i in range(len(sigma0s)):
     sampler = ot.Gibbs([mean_sampler, std_sampler])
     realization = sampler.getRealization()
 
-    sigmay = ot.DeconditionedDistribution(ot.Normal(), prior).getStandardDeviation()[0]
+    sigmay = ot.CompoundDistribution(ot.Normal(), prior).getStandardDeviation()[0]
     w = size * sigma0**2.0 / (size * sigma0**2.0 + sigmay**2.0)
 
     print("prior variance= %.12g" % (sigma0**2.0))
@@ -165,7 +165,7 @@ class CensoredWeibull(ot.PythonDistribution):
     """
 
     def __init__(self, beta=5000.0, alpha=2.0):
-        super(CensoredWeibull, self).__init__(2)
+        super().__init__(2)
         self.beta = beta
         self.alpha = alpha
 

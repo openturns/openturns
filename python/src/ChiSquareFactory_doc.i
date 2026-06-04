@@ -1,0 +1,45 @@
+%feature("docstring") OT::ChiSquareFactory
+R"RAW(Chi-Square factory.
+
+Notes
+-----
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \Hat{\nu} = \bar{x}
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, ChiSquare)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ChiSquareFactory::buildAsChiSquare
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsChiSquare()
+
+    buildAsChiSquare(*sample*)
+
+    buildAsChiSquare(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.ChiSquare`.
+   
+Returns
+-------
+dist : :class:`~openturns.ChiSquare`
+    The estimated distribution as a Chi Square.
+    
+    In the first usage, the default Chi Square distribution is built."
+

@@ -56,3 +56,10 @@ Kolmogorov-Smirnov   | 0.821849 |
 ---------------------------------
 
 Confidence intervals with level=0.95 : class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0.920867,0.0837015,9.99664] upper bound=class=Point name=Unnamed dimension=3 values=[1.03712,0.137429,10.0018] finite lower bound=[1,1,1] finite upper bound=[1,1,1]
+Tests for asymptotic distributions
+Test checkSampleSize exception
+Caught expected InvalidArgumentException: The sample size is too small (must be at least 10)
+Test x0 dimension exception
+Caught expected InvalidArgumentException for invalid x0 dimension: The point has an invalid dimension (expected: 1)
+Test LinearModelAnalysis constructor exception (DOF <= 0)
+Caught expected exception: Cannot perform linear model analysis when DOF is null

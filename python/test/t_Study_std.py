@@ -54,3 +54,20 @@ study.fillObject("x", x)
 assert len(x) == 1 and x[0] == 42.0, "wrong x"
 print(x)
 os.remove(fileName)
+
+# uft8 BOM
+fileName = "study_bom.xml"
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager(fileName))
+study.add("x", ot.Point([42.0]))
+study.save()
+# prepend BOM
+with open(fileName, "rb") as f:
+    data = f.read()
+with open(fileName, "wb") as f:
+    f.write(b"\xEF\xBB\xBF")
+    f.write(data)
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager(fileName))
+study.load()
+os.remove(fileName)

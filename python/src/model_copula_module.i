@@ -1,11 +1,12 @@
 // SWIG file model_copula_module.i
 
 %module(package="openturns", docstring="Copulas.") model_copula
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 %}
@@ -30,29 +31,11 @@
 %include SklarCopula.i
 
 /* Uncertainty/Distribution (copulas) */
-%include AliMikhailHaqCopula.i
-%include AliMikhailHaqCopulaFactory.i
-%include IndependentCopula.i
-%include IndependentCopulaFactory.i
-%include MinCopula.i
-%include NormalCopula.i
-%include NormalCopulaFactory.i
-%include FarlieGumbelMorgensternCopula.i
-%include FarlieGumbelMorgensternCopulaFactory.i
-%include FrankCopula.i
-%include FrankCopulaFactory.i
-%include ClaytonCopula.i
-%include ClaytonCopulaFactory.i
-%include GumbelCopula.i
-%include GumbelCopulaFactory.i
 %include BlockIndependentDistribution.i
 %include JointDistribution.i
 %include CumulativeDistributionNetwork.i
 %include BlockIndependentCopula.i
-%include MarshallOlkinCopula.i
 %include OrdinalSumCopula.i
-%include PlackettCopula.i
-%include PlackettCopulaFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyModelCopulaTemplateDefs.i

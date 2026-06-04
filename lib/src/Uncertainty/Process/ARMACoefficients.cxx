@@ -2,7 +2,7 @@
 /**
  *  @brief ARMACoefficients class enables to stock coefficients of an ARMA process
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ ARMACoefficients::ARMACoefficients(const UnsignedInteger & size,
 ARMACoefficients::ARMACoefficients(const SquareMatrixCollection & collection)
   : PersistentCollection<SquareMatrix>(0)
 {
-  // Adding elements one by one and checking coherance of dimension
+  // Adding elements one by one and checking coherence of dimension
   const UnsignedInteger collectionSize = collection.getSize();
   if (collectionSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an ARMACoefficients object based on an empty collection of matrices.";
   dimension_ = collection[0].getDimension();

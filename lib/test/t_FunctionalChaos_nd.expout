@@ -6,8 +6,6 @@ FunctionalChaosResult
 - inverse transformation=3 -> 3
 - orthogonal basis dimension=3
 - indices size=36
-- relative errors=[0.0107646,0.0196501]
-- residuals=[0.00527094,0.0324338]
 - is least squares=true
 - is model selection=true
 
@@ -58,8 +56,6 @@ FunctionalChaosResult
 - inverse transformation=3 -> 3
 - orthogonal basis dimension=3
 - indices size=36
-- relative errors=[0.0107646,0.0196501]
-- residuals=[0.00527094,0.0324338]
 - is least squares=true
 - is model selection=true
 
@@ -118,8 +114,6 @@ FunctionalChaosResult
 - inverse transformation=3 -> 3
 - orthogonal basis dimension=3
 - indices size=84
-- relative errors=[0.00708265,0.0115021]
-- residuals=[0.0042755,0.0248145]
 - is least squares=true
 - is model selection=false
 
@@ -218,8 +212,6 @@ FunctionalChaosResult
 - inverse transformation=3 -> 3
 - orthogonal basis dimension=3
 - indices size=84
-- relative errors=[0.00708265,0.0115021]
-- residuals=[0.0042755,0.0248145]
 - is least squares=true
 - is model selection=false
 

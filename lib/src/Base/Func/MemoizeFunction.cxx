@@ -2,7 +2,7 @@
 /**
  *  @brief This class is a Function with history of input and output.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +35,7 @@ static const Factory<MemoizeFunction> Factory_MemoizeFunction;
 
 /* Default constructor */
 MemoizeFunction::MemoizeFunction ()
-  : FunctionImplementation()
+  : FunctionImplementation(new MemoizeEvaluation)
 {
   // Nothing to do
 }
@@ -79,20 +79,6 @@ MemoizeFunction * MemoizeFunction::clone() const
 String MemoizeFunction::__repr__() const
 {
   return FunctionImplementation::__repr__();
-}
-
-/** Operator () */
-Point MemoizeFunction::operator() (const Point & inPoint) const
-{
-  ++ callsNumber_;
-  return getEvaluation().operator()(inPoint);
-}
-
-/** Operator () */
-Sample MemoizeFunction::operator() (const Sample & inSample) const
-{
-  callsNumber_ += inSample.getSize();
-  return getEvaluation().operator()(inSample);
 }
 
 /* Function implementation accessors */
@@ -149,7 +135,7 @@ Sample MemoizeFunction::getCacheOutput() const
 void MemoizeFunction::clearCache() const
 {
   MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
-  return p_evaluation->clearCache();
+  p_evaluation->clearCache();
 }
 
 

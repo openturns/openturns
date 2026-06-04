@@ -9,7 +9,6 @@ Import / export a sample via a CSV file
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a sample from a 2-d Gaussian distribution.

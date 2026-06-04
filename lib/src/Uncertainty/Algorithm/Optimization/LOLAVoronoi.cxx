@@ -2,7 +2,7 @@
 /**
  *  @brief LOLA-Voronoi sequential design
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -54,7 +54,8 @@ LOLAVoronoi::LOLAVoronoi(const Sample & x,
   : SequentialSamplingAlgorithmImplementation(x, y)
   , distribution_(distribution)
   , neighbourhoodCandidatesNumber_(ResourceMap::GetAsUnsignedInteger("LOLAVoronoi-DefaultNeighbourhoodCandidatesNumber"))
-  , voronoiSamplingSize_(ResourceMap::GetAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiSamplingSize"))
+  , voronoiMinimumSamplingSize_(ResourceMap::GetAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiMinimumSamplingSize"))
+  , voronoiMeanSamplingSize_(ResourceMap::GetAsUnsignedInteger("LOLAVoronoi-DefaultVoronoiMeanSamplingSize"))
 {
   // LOLA criterion needs at least m=2d neighbours to compute gradient approximations
   if (x.getSize() < 2 * x.getDimension() + 1)
@@ -84,11 +85,12 @@ String LOLAVoronoi::__repr__() const
 void LOLAVoronoi::computeVoronoiScore() const
 {
   // estimate the Voronoi cell size by Monte Carlo (2.5.1.1, algorithm 2)
-  const Sample voronoiSample(distribution_.getSample(voronoiSamplingSize_));
+  const UnsignedInteger voronoiSamplingSize = std::max(voronoiMinimumSamplingSize_, voronoiMeanSamplingSize_ * x_.getSize());
+  const Sample voronoiSample(distribution_.getSample(voronoiSamplingSize));
   const Indices indices = tree_.query(voronoiSample);
   voronoiScore_ = Point(x_.getSize());
-  for (UnsignedInteger i = 0; i < voronoiSamplingSize_; ++ i)
-    voronoiScore_[indices[i]] += 1.0 / voronoiSamplingSize_;
+  for (UnsignedInteger i = 0; i < voronoiSamplingSize; ++ i)
+    voronoiScore_[indices[i]] += 1.0 / voronoiSamplingSize;
 }
 
 
@@ -210,7 +212,6 @@ struct LVLOLAScorePolicy
         }
 
       } // candidate neighbourhood loop
-
       // now compute the score
       const Point prx(lola_.x_[i]);
       const Point pry(lola_.y_[i]);
@@ -222,7 +223,7 @@ struct LVLOLAScorePolicy
         for (UnsignedInteger j = 0; j < d; ++ j)
           p(ti, j) = prtx[j] - prx[j];
       }
-
+      LeastSquaresMethod leastSquares = LeastSquaresMethod::Build(methodName_, p);
       Scalar eprAgg = 0.0;
       for (UnsignedInteger k = 0; k < lola_.y_.getDimension(); ++ k)
       {
@@ -235,7 +236,7 @@ struct LVLOLAScorePolicy
         }
 
         // g = \argmin ||pg-f|| cf 3.3.3 equation (3.8)
-        const Point g(LeastSquaresMethod::Build(methodName_, p).solve(f));
+        const Point g(leastSquares.solve(f));
 
         // local nonlinearity, 3.3.4 equation (3.9)
         Scalar epr = 0.0;
@@ -274,20 +275,23 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
   if (size > x_.getSize())
     throw InvalidArgumentException(HERE) << "cannot ask more than " << x_.getSize() << " new samples (asked " << size << ")";
 
+  const Scalar lambda = ResourceMap::GetAsScalar("LOLAVoronoi-HybridScoreTradeoff");
+  if (!(lambda >= 0.0) || !(lambda <= 1.0))
+    throw InvalidArgumentException(HERE) << "The LOLAVoronoi-HybridScoreTradeoff entry must be in [0, 1]";
+
   tree_ = KDTree(x_);
 
   LOGINFO("LOLAVoronoi updating voronoi score");
   computeVoronoiScore();
   LOGINFO("LOLAVoronoi updating LOLA score");
   computeLOLAScore();
+  LOGINFO("LOLAVoronoi updating hybrid score");
   // hybrid score, see 3.4 equation (3.10)
   const Scalar sumLS = std::accumulate(lolaScore_.begin(), lolaScore_.end(), 0.0);
-  const Scalar lambda = ResourceMap::GetAsScalar("LOLAVoronoi-HybridScoreTradeoff");
-  if (!(lambda >= 0.0) || !(lambda <= 1.0))
-    throw InvalidArgumentException(HERE) << "The LOLAVoronoi-HybridScoreTradeoff entry must be in [0, 1]";
   hybridScore_ = voronoiScore_ * lambda;
-  for (UnsignedInteger i = 0; i < x_.getSize(); ++ i)
-    hybridScore_[i] += (1.0 - lambda) * lolaScore_[i] / sumLS;
+  if (sumLS > 0.0)
+    for (UnsignedInteger i = 0; i < x_.getSize(); ++ i)
+      hybridScore_[i] += (1.0 - lambda) * lolaScore_[i] / sumLS;
   const Indices ranking(Sample::BuildFromPoint(hybridScore_).argsort(false));
   const UnsignedInteger d = x_.getDimension();
   Sample result(0, d);
@@ -311,11 +315,11 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
     for (UnsignedInteger j = 0; j < m; ++ j)
     {
       const Point xj = x_[neighbourhood[j]];
-      const Scalar distance = (xi - xj).norm();
+      const Scalar distance = (xi - xj).normSquare();
       if (distance > neighbourhoodMaximumDistance)
         neighbourhoodMaximumDistance = distance;
     } // j loop
-
+    neighbourhoodMaximumDistance = std::sqrt(neighbourhoodMaximumDistance);
     // new points only, avoids rebuilding the whole index when adding a new candidate
     Sample xiNew(1, xi);
     xiNew.add(result);
@@ -325,16 +329,21 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
     const Point width(d, neighbourhoodMaximumDistance);
     const Interval bounds(xi - width, xi + width);
     Sample voronoiSample;
+    const UnsignedInteger voronoiSamplingSize = voronoiMinimumSamplingSize_;
+
+    LOGDEBUG(OSS() << "LOLAVoronoi generating " << voronoiSamplingSize << " potential candidates");
     if (ResourceMap::GetAsBool("LOLAVoronoi-UseTruncatedDistribution"))
     {
+      LOGDEBUG("Use truncated distribution");
       const TruncatedDistribution truncated(distribution_, bounds);
-      voronoiSample = truncated.getSample(voronoiSamplingSize_);
+      voronoiSample = truncated.getSample(voronoiSamplingSize);
     }
     else
     {
-      voronoiSample = Sample(voronoiSamplingSize_, distribution_.getDimension());
+      LOGDEBUG("Use rejection");
+      voronoiSample = Sample(voronoiSamplingSize, distribution_.getDimension());
       UnsignedInteger index = 0;
-      while (index < voronoiSamplingSize_)
+      while (index < voronoiSamplingSize)
       {
         const Point point(distribution_.getRealization());
         if (bounds.contains(point))
@@ -345,13 +354,16 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
         }
       } // while
     } // else
+    LOGDEBUG("LOLAVoronoi select best candidate");
     Point newPoint;
     Scalar candidatesMaximumDistance = 0.0;
-    for (UnsignedInteger k = 0; k < voronoiSamplingSize_; ++ k)
+    const Indices indicesK(tree_.query(voronoiSample));
+    const Indices indicesNew(treeNew.query(voronoiSample));
+    for (UnsignedInteger k = 0; k < voronoiSamplingSize; ++ k)
     {
       const Point vk(voronoiSample[k]);
-      const UnsignedInteger indexK = tree_.query(vk);
-      const UnsignedInteger indexNew = treeNew.query(vk);
+      const UnsignedInteger indexK = indicesK[k];
+      const UnsignedInteger indexNew = indicesNew[k];
 
       // consider only the points inside the voronoi cell of x_i taking into account the cells around accepted candidates
       if ((indexK == rankingI) && (indexNew == 0))
@@ -368,12 +380,12 @@ Sample LOLAVoronoi::generate(const UnsignedInteger size) const
           candidatesMaximumDistance = distance;
           newPoint = vk;
         }
-      }
-    }
+      } // if
+    } // for k
     // if no candidates could be accepted for this cell retry from next ranked point
     if (newPoint.getDimension())
       result.add(newPoint);
-  }
+  } //  while (result.getSize() < size)
   return result;
 }
 
@@ -394,14 +406,27 @@ Sample LOLAVoronoi::getHybridScore() const
 }
 
 /* Voronoi sampling size accessor */
-void LOLAVoronoi::setVoronoiSamplingSize(const UnsignedInteger voronoiSamplingSize)
+void LOLAVoronoi::setVoronoiMinimumSamplingSize(const UnsignedInteger voronoiMinimumSamplingSize)
 {
-  voronoiSamplingSize_ = voronoiSamplingSize;
+  voronoiMinimumSamplingSize_ = voronoiMinimumSamplingSize;
 }
 
-UnsignedInteger LOLAVoronoi::getVoronoiSamplingSize() const
+UnsignedInteger LOLAVoronoi::getVoronoiMinimumSamplingSize() const
 {
-  return voronoiSamplingSize_;
+  return voronoiMinimumSamplingSize_;
+}
+
+/* Voronoi sampling ratio accessor */
+void LOLAVoronoi::setVoronoiMeanSamplingSize(const UnsignedInteger voronoiMeanSamplingSize)
+{
+  if (voronoiMeanSamplingSize <= 0)
+    throw InvalidArgumentException(HERE) << "The Voronoi mean sampling size should be positive";
+  voronoiMeanSamplingSize_ = voronoiMeanSamplingSize;
+}
+
+UnsignedInteger LOLAVoronoi::getVoronoiMeanSamplingSize() const
+{
+  return voronoiMeanSamplingSize_;
 }
 
 /* Neighbourhood candidates number accessor */
@@ -420,7 +445,8 @@ void LOLAVoronoi::save(Advocate & adv) const
 {
   SequentialSamplingAlgorithmImplementation::save(adv);
   adv.saveAttribute("neighbourhoodCandidatesNumber_", neighbourhoodCandidatesNumber_);
-  adv.saveAttribute("voronoiSamplingSize_", voronoiSamplingSize_);
+  adv.saveAttribute("voronoiMinimumSamplingSize_", voronoiMinimumSamplingSize_);
+  adv.saveAttribute("voronoiMeanSamplingSize_", voronoiMeanSamplingSize_);
 }
 
 
@@ -429,7 +455,11 @@ void LOLAVoronoi::load(Advocate & adv)
 {
   SequentialSamplingAlgorithmImplementation::load(adv);
   adv.loadAttribute("neighbourhoodCandidatesNumber_", neighbourhoodCandidatesNumber_);
-  adv.loadAttribute("voronoiSamplingSize_", voronoiSamplingSize_);
+  if (adv.hasAttribute("voronoiMinimumSamplingSize_")) // OT >=1.26
+  {
+    adv.loadAttribute("voronoiMinimumSamplingSize_", voronoiMinimumSamplingSize_);
+    adv.loadAttribute("voronoiMeanSamplingSize_", voronoiMeanSamplingSize_);
+  }
 }
 
 END_NAMESPACE_OPENTURNS

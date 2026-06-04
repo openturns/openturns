@@ -1,0 +1,473 @@
+%feature("docstring") OT::Contour
+R"RAW(Contour.
+
+Available constructors:
+
+    Contour(*dimX, dimY, data*)
+
+    Contour(*sampleX, sampleY, data*)
+
+Parameters
+----------
+dimX, dimY : int
+    Dimensions of *data*.
+data : 2-d sequence of float of dimension 1 and of size :math:`dimX*dimY`
+    These values are those of a function :math:`f: \Rset^2 \rightarrow \Rset`
+    on each point of the grid with *dimX* points along the :math:`X`-direction
+    and *dimY* points along the :math:`Y`-direction. The :math:`(X, Y)`-
+    values are stored row-by-row.
+sampleX, sampleY : two 2-d sequences of float of dimension 1
+    First and second coordinates. If not specified the points are equally
+    spaced in :math:`[0, 1]` along the :math:`X` and :math:`Y`-directions.
+
+Examples
+--------
+
+Using the first constructor:
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
+>>> # Generate the data for the curves to be drawn
+>>> nX = 75
+>>> nY = 75
+>>> inputData = ot.Box([nX, nY]).generate()
+>>> inputData *= [10.0] * 2
+>>> inputData += [-5.0] * 2
+>>> data = f(inputData)
+>>> levels = [(0.5 + i) / 5 for i in range(5)]
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('Complex iso lines', 'u1', 'u2', True)
+>>> # Create the contour
+>>> myContour = ot.Contour(nX + 2, nY + 2, data)
+>>> myContour.setLevels(levels)
+>>> myGraph.add(myContour)
+
+Using the second constructor:
+
+>>> import openturns as ot
+>>> g = ot.SymbolicFunction(['R','S'],['(R * S)^0.75'])
+>>> # Generate the data for the curves to be drawn
+>>> nX = 10
+>>> nY = 10
+>>> lowerBound = [1.6, 0.0]
+>>> upperBound = [6.3, 4.3]
+>>> bounds = ot.Interval(lowerBound, upperBound)
+>>> boxExperiment = ot.Box([nX, nY], bounds)
+>>> inputSample = boxExperiment.generate()
+>>> outputSample = g(inputSample)
+>>> # Generate the grid for the contour plot
+>>> xstep = (upperBound[0] - lowerBound[0])/(nX + 1)
+>>> x = ot.RegularGrid(lowerBound[0], xstep, nX + 2).getVertices()
+>>> ystep = (upperBound[1] - lowerBound[1])/(nY + 1)
+>>> y = ot.RegularGrid(lowerBound[1], ystep, nY + 2).getVertices()
+>>> # Create an empty graph
+>>> myGraph = ot.Graph('Complex iso lines', 'u1', 'u2', True, '')
+>>> levels = [-1.0, 1.0, 3.0, 5.0, 7.0, 9.0]
+>>> labels = ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5']
+>>> drawLabels = True
+>>> # Create the contour and plot it
+>>> myContour = ot.Contour(x, y, outputSample)
+>>> myContour.setLevels(levels)
+>>> myContour.setLabels(labels)
+>>> myContour.setDrawLabels(drawLabels)
+>>> myGraph.add(myContour)
+)RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::buildDefaultLabels
+"Build default labels by taking the level values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::buildDefaultLevels
+R"RAW(Build default levels.
+
+Parameters
+----------
+n : int
+    Number of levels. If not specified, the default value is taken in the
+    :class:`~openturns.ResourceMap` in the `Contour-DefaultLevelsNumber` key and :math:`n=10`.
+
+Notes
+-----
+It builds :math:`n` level values and the associated labels which are the level
+values. The level values are the empirical quantiles of the data to be sliced
+at orders :math:`q_k` regularly distributed over :math:`]0,1[`:
+:math:`q_k = \frac{1}{n} \left( k+ \frac{1}{2} \right)` for
+:math:`0 \leq k \leq n-1`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::isFilled
+"Accessor to the isFilled flag of the Contour element.
+
+Returns
+-------
+isFilled : bool
+    True if the iso-curves must be filled.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Contour(2,2,ot.Sample(4,1)).isFilled())
+False
+
+See Also
+--------
+setIsFilled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setIsFilled
+"Accessor to the flag isFilled of the Contour element.
+
+Parameters
+----------
+isFilled : bool
+    True if the iso-curves must be filled.
+
+See Also
+--------
+isFilled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getColorBarPosition
+"Accessor to the color position inside the graph containing the Contour element.
+
+Returns
+-------
+colorBarPosition : str
+    The name of the color bar position or '' if the color bar should not be displayed.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> contour.setColorBarPosition('right')
+>>> print(contour.getColorBarPosition())
+right
+
+See Also
+--------
+setColorBarPosition"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setColorBarPosition
+"Accessor to the color position inside the graph containing the Contour element.
+
+Parameters
+----------
+colorBarPosition : str
+    The name of the color bar position or '' if the color bar should not be displayed.
+
+See Also
+--------
+getColorBarPosition"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getColorMap
+"Accessor to the color map name of the Contour element.
+
+Returns
+-------
+colorMap : str
+    The name of the color map used to color the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Contour(2,2,ot.Sample(4,1)).getColorMap())
+viridis
+
+See Also
+--------
+setColorMap, GetValidColorMaps"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setColorMap
+"Accessor to the name of the color map used to color the Contour element.
+
+Parameters
+----------
+colorMap : str
+    The name of the color map used to color the Contour element. Use :meth:`GetValidColorMaps`
+    for a list of available values.
+
+See Also
+--------
+getColorMap, GetValidColorMaps"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::isVminUsed
+"Accessor to the flag isVminUsed of the Contour element.
+If false, the *vmin* value is ignored.
+
+Returns
+-------
+isVminUsed : bool
+    The flag isVminUsed of the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> print(contour.isVminUsed())
+False
+
+See Also
+--------
+setIsVminUsed"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setIsVminUsed
+"Accessor to the flag isVminUsed of the Contour element.
+If false, the *vmin* value is ignored.
+
+Parameters
+----------
+used : bool
+    The flag isVminUsed of the Contour element.
+
+See Also
+--------
+isVminUsed"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getVmin
+"Accessor to the vmin value of the Contour element.
+
+Returns
+-------
+vmin : float
+    The vmin value of the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> contour.setVmin(5.0)
+>>> print(contour.getVmin())
+5.0
+
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
+See Also
+--------
+setVmin"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setVmin
+"Accessor to the vmin value of the Contour element.
+
+Parameters
+----------
+vmin : float
+    The vmin value of the Contour element.
+
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
+See Also
+--------
+getVmin"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::isVmaxUsed
+"Accessor to the flag isVmaxUsed of the Contour element.
+If false, the *vmax* value is ignored.
+
+Returns
+-------
+isVmaxUsed : bool
+    The flag isVmaxUsed of the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> print(contour.isVmaxUsed())
+False
+
+See Also
+--------
+setIsVmaxUsed"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setIsVmaxUsed
+"Accessor to the flag isVmaxUsed of the Contour element.
+If false, the *vmax* value is ignored.
+
+Parameters
+----------
+used : bool
+    The flag isVmaxUsed of the Contour element.
+
+See Also
+--------
+isVmaxUsed"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getVmax
+"Accessor to the vmax value of the Contour element.
+
+Returns
+-------
+vmax : float
+    The vmax value of the Contour element.
+
+Examples
+--------
+>>> import openturns as ot
+>>> contour = ot.Contour(2,2,ot.Sample(4,1))
+>>> contour.setVmax(5.0)
+>>> print(contour.getVmax())
+5.0
+
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
+See Also
+--------
+setVmax"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setVmax
+"Accessor to the vmax value of the Contour element.
+
+Parameters
+----------
+vmax : float
+    The vmax value of the Contour element.
+
+Notes
+-----
+The full documentation is available in the Matplotlib
+`contour <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html>`_
+page.
+
+See Also
+--------
+getVmax"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getColorMapNorm
+"Accessor to the normalization method of the Contour element.
+
+Returns
+-------
+norm : str
+    The name of the normalization method used to scale scalar data to the [0, 1] range before
+    mapping to colors using the color map.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Contour(2,2,ot.Sample(4,1)).getColorMapNorm())
+linear
+
+See Also
+--------
+setColorMapNorm, GetValidNorms"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setColorMapNorm
+"Accessor to the normalization method of the Contour element.
+
+Parameters
+----------
+norm : str
+    The name of the normalization method used to scale scalar data to the [0, 1] range before
+    mapping to colors using the color map. Use :meth:`GetValidNorms` for a list of
+    available values.
+
+See Also
+--------
+getColorMapNorm, GetValidNorms"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getExtend
+"Accessor to the filling mode of values that are outside the levels range of the Contour element.
+
+Returns
+-------
+extend : str
+    Determines the color filling of values that are outside the levels range.
+    If 'neither', values outside the levels range are not colored. If 'min',
+    'max' or 'both', color the values below, above or below and above the levels range.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Contour(2,2,ot.Sample(4,1)).getExtend())
+both
+
+See Also
+--------
+setExtend, GetValidExtends"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setExtend
+"Accessor to the filling mode of values that are outside the levels range of the Contour element.
+
+Parameters
+----------
+extend : str
+    Determines the color filling of values that are outside the levels range.
+    If 'neither', values outside the levels range are not colored. If 'min',
+    'max' or 'both', color the values below, above or below and above the levels range.
+    Use :meth:`GetValidExtends` for a list of available values.
+
+See Also
+--------
+getExtend, GetValidExtends"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::getHatches
+R"RAW(Accessor to the hatches used for filling the contour element.
+
+Returns
+-------
+hatches : :class:`~openturns.Description`
+    A list of cross hatch patterns to use on the filled areas.
+    Hatches can use following characters : /\|-+xoO.*)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Contour::setHatches
+R"RAW(Accessor to the hatches used for filling the contour element.
+
+Parameters
+----------
+hatches : sequence of str
+    A list of cross hatch patterns to use on the filled areas.
+    Hatches can use following characters : /\|-+xoO.*)RAW"

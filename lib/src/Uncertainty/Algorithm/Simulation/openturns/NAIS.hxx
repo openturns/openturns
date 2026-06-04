@@ -2,7 +2,7 @@
 /**
  *  @brief NAIS implement Non Parametric Adaptive Importance Sampling algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,8 +22,6 @@
 #define OPENTURNS_NAIS_HXX
 
 #include "openturns/EventSimulation.hxx"
-#include "openturns/Mixture.hxx"
-#include "openturns/JointDistribution.hxx"
 #include "openturns/NAISResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -50,18 +48,18 @@ public:
   /** Virtual constructor */
   NAIS * clone() const override;
 
-  /** Get quantileLevel */
+  /** Quantile Level accessor */
+  void setQuantileLevel(const Scalar quantileLevel);
   Scalar getQuantileLevel() const;
-
-  /** Set quantileLevel */
-  void setQuantileLevel(const Scalar & quantileLevel);
 
   /** Main function that computes the failure probability */
   void run() override;
 
+  /** String converter */
+  String __repr__() const override;
+
   /** Accessor to results */
   NAISResult getResult() const;
-
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
@@ -77,24 +75,27 @@ public:
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 private:
 
   /** Function computing the auxiliary distribution as a function of current samples and associated weights */
   Distribution computeAuxiliaryDistribution(const Sample & sample,
       const Point & weights);
 
-  /** Function computing weigths  of sample */
+  /** Function computing weights  of sample */
   Point computeWeights(const Sample & sample,
                        const Sample & respectiveSamples,
                        const Scalar eventThresholdLocal,
-                       const Distribution & AuxiliaryDistribution);
+                       const Distribution & auxiliaryDistribution,
+                       const Distribution & initialDistribution);
 
 
   /** Select sample indices according to status */
   Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
-
-  // Initial distribution
-  Distribution initialDistribution_;
 
   // Quantile
   Scalar quantileLevel_ = 0.0;

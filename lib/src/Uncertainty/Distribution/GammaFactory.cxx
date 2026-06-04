@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Gamma distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/GammaFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -68,7 +67,7 @@ Gamma GammaFactory::buildAsGamma(const Sample & sample) const
   const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution if data contains NaN or Inf";
+  if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Gamma distribution from a constant sample.";
   Scalar lambda = (mu - gamma) / sigma;
   const Scalar k = lambda * lambda;

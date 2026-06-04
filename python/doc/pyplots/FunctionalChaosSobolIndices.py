@@ -1,9 +1,8 @@
 import openturns as ot
 from math import pi
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Create the function
-ot.RandomGenerator.SetSeed(0)
 formula = ["sin(X1) + 7. * sin(X2)^2 + 0.1 * X3^4 * sin(X1)"]
 input_names = ["X1", "X2", "X3"]
 g = ot.SymbolicFunction(input_names, formula)
@@ -35,4 +34,6 @@ dim_input = distribution.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
-View(ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order))
+otv.View(
+    ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+)

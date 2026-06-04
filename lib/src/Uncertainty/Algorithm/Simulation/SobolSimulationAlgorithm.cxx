@@ -2,7 +2,7 @@
 /**
  *  @brief Simulation algorithm to estimate Sobol indices
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -111,7 +111,7 @@ void SobolSimulationAlgorithm::run()
   const UnsignedInteger dimension = model_.getInputDimension();
 
   // First, reset the convergence history
-  convergenceStrategy_.setDimension(4 * dimension);
+  convergenceStrategy_.setDimension(4 * dimension + 1);
 
   UnsignedInteger outerSampling = 0;
   const UnsignedInteger experimentSize = getExperimentSize();
@@ -156,6 +156,8 @@ void SobolSimulationAlgorithm::run()
       if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
       {
         LOGINFO(OSS() << "Maximum time exceeded");
+        if (outerSampling == 0)
+          throw InternalException (HERE) << "Stopped without enough samples";
         stop = true;
       }
 
@@ -295,6 +297,7 @@ void SobolSimulationAlgorithm::run()
     convergencePoint.add(meanTO);
     convergencePoint.add(reducedVarianceFO);
     convergencePoint.add(reducedVarianceTO);
+    convergencePoint.add(outerSampling);
     convergenceStrategy_.store(convergencePoint);
 
     // callbacks
@@ -377,17 +380,17 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
   {
     const Scalar expectationEstimate = convergenceSample(i, marginalIndex);
     const Scalar varianceEstimate = convergenceSample(i, 2 * dimension + marginalIndex);
-    dataEstimate(i, 0) = i + 1;
+    const Scalar outerIndex = convergenceSample(i, convergenceSample.getDimension() - 1);
+    dataEstimate(i, 0) = outerIndex + 1;
     dataEstimate(i, 1) = expectationEstimate;
-    // The bounds are drawn only if there is a useable variance estimate
+    // The bounds are drawn only if there is a usable variance estimate
     if (varianceEstimate >= 0.0)
     {
       // The probability estimate is asymptotically normal
       const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
       const Scalar confidenceLength = 2.0 * xq * sqrt(varianceEstimate);
 
-      Point pt(2);
-      pt[0] = i + 1;
+      Point pt = {outerIndex + 1, 0.0};
       pt[1] = expectationEstimate - 0.5 * confidenceLength;
       dataLowerBound.add(pt);
       pt[1] = expectationEstimate + 0.5 * confidenceLength;
@@ -398,7 +401,8 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
   estimateCurve.setLineWidth(2);
   OSS oss;
   oss << label << " order index convergence graph at level " << level;
-  Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
+  Graph convergenceGraph(oss, "outer iteration", "estimate");
+  convergenceGraph.setLegendPosition("topright");
   convergenceGraph.add(estimateCurve);
   const Curve lowerBoundCurve(dataLowerBound, "bounds");
   Curve upperBoundCurve(dataUpperBound);

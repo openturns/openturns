@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all function implementations
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -221,11 +221,25 @@ public:
   typedef Bool (*StopCallback)(void * state);
   virtual void setStopCallback(StopCallback callBack, void * state = nullptr);
 
+  /** Detach callback */
+  typedef Bool (*DetachCallback)(void * state);
+  virtual void setDetachCallback(StopCallback callBack, void * state = nullptr);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  /** Flag to tell if the currentt gradient is a default implementation */
+  mutable Bool useDefaultGradientImplementation_ = false;
+
+  /** Flag to tell if the current hessian is a default implementation */
+  mutable Bool useDefaultHessianImplementation_ = false;
+
+  /** Counter for the number of calls */
+  mutable AtomicInt callsNumber_;
 
 private:
   /** A pointer on the actual function implementation */
@@ -236,18 +250,6 @@ private:
 
   /** A pointer on the actual hessian implementation */
   Hessian hessian_;
-
-protected:
-
-  /** Flag to tell if the current gradient is a default implementation */
-  mutable Bool useDefaultGradientImplementation_ = false;
-
-  /** Flag to tell if the curren hessian is a default implementation */
-  mutable Bool useDefaultHessianImplementation_ = false;
-
-  /** Counter for the number of calls */
-  mutable AtomicInt callsNumber_;
-
 }; /* class FunctionImplementation */
 
 

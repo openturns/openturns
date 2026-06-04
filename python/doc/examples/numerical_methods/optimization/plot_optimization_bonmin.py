@@ -12,7 +12,6 @@ Optimization using bonmin
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # List available algorithms

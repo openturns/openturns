@@ -3,7 +3,7 @@
  *  @brief The class building chaos expansions based on a least-squares
  *         approach.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -93,6 +93,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Domination flag accessor */
+  void setUseDomination(const Bool useDomination) override;
 private:
 
   /** The orthogonal basis used for the projection */
@@ -110,9 +112,6 @@ private:
   /** Attributes to speed-up recomputations on different active functions */
   DesignProxy designProxy_;
 
-  Function transformation_;
-
-  Function inverseTransformation_;
 } ; /* class LeastSquaresExpansion */
 
 

@@ -3,13 +3,12 @@
 import openturns as ot
 from openturns.usecases import ishigami_function
 from openturns.testing import assert_almost_equal
-import openturns.experimental as otexp
 
 
 def computeMSENaiveLOO(
     inputSample,
     outputSample,
-    inputDistribution,
+    distribution,
     adaptiveStrategy,
     projectionStrategy,
 ):
@@ -22,7 +21,7 @@ def computeMSENaiveLOO(
         The inputSample dataset.
     outputSample : Sample(size, output_dimension)
         The outputSample dataset.
-    inputDistribution : ot.Distribution.
+    distribution : ot.Distribution.
         The distribution of the input variable.
     adaptiveStrategy : ot.AdaptiveStrategy
         The method to select relevant coefficients.
@@ -52,7 +51,7 @@ def computeMSENaiveLOO(
         algoLOO = ot.FunctionalChaosAlgorithm(
             inputSampleTrain,
             outputSampleTrain,
-            inputDistribution,
+            distribution,
             adaptiveStrategy,
             projectionStrategy,
         )
@@ -73,7 +72,7 @@ def computeMSENaiveLOO(
 def computeMSENaiveKFold(
     inputSample,
     outputSample,
-    inputDistribution,
+    distribution,
     adaptiveStrategy,
     projectionStrategy,
     kParameter=5,
@@ -87,7 +86,7 @@ def computeMSENaiveKFold(
         The inputSample dataset.
     outputSample : Sample(size, output_dimension)
         The outputSample dataset.
-    inputDistribution : ot.Distribution.
+    distribution : ot.Distribution.
         The distribution of the input variable.
     adaptiveStrategy : ot.AdaptiveStrategy
         The method to select relevant coefficients.
@@ -118,7 +117,7 @@ def computeMSENaiveKFold(
         algoKFold = ot.FunctionalChaosAlgorithm(
             inputSampleTrain,
             outputSampleTrain,
-            inputDistribution,
+            distribution,
             adaptiveStrategy,
             projectionStrategy,
         )
@@ -140,7 +139,7 @@ ot.TESTPREAMBLE()
 # Problem parameters
 im = ishigami_function.IshigamiModel()
 
-dimension = im.inputDistribution.getDimension()
+dimension = im.distribution.getDimension()
 
 # Compute the sample size from number of folds to guarantee a non constant integer
 # number of points per fold
@@ -160,12 +159,12 @@ selectionAlgorithm = (
     ot.PenalizedLeastSquaresAlgorithmFactory()
 )  # Get a full PCE: do not use model selection.
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
-inputSample = im.inputDistribution.getSample(sampleSize)
+inputSample = im.distribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 algo = ot.FunctionalChaosAlgorithm(
     inputSample,
     outputSample,
-    im.inputDistribution,
+    im.distribution,
     adaptiveStrategy,
     projectionStrategy,
 )
@@ -175,7 +174,7 @@ chaosResult = algo.getResult()
 #
 print("1. Analytical leave-one-out")
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = otexp.FunctionalChaosValidation(chaosResult, splitterLOO)
+validationLOO = ot.FunctionalChaosValidation(chaosResult, splitterLOO)
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)
 assert validationLOO.getSplitter().getN() == sampleSize
@@ -184,7 +183,7 @@ assert validationLOO.getSplitter().getN() == sampleSize
 mseLOOnaive = computeMSENaiveLOO(
     inputSample,
     outputSample,
-    im.inputDistribution,
+    im.distribution,
     adaptiveStrategy,
     projectionStrategy,
 )
@@ -209,7 +208,7 @@ assert_almost_equal(r2ScoreReference, r2ScoreLOO[0], rtolLOO, atolLOO)
 #
 print("2. Analytical K-Fold")
 splitterKF = ot.KFoldSplitter(sampleSize, kFoldParameter)
-validationKFold = otexp.FunctionalChaosValidation(chaosResult, splitterKF)
+validationKFold = ot.FunctionalChaosValidation(chaosResult, splitterKF)
 print("KFold with K = ", kFoldParameter)
 assert validationKFold.getSplitter().getN() == sampleSize
 
@@ -221,7 +220,7 @@ print("Analytical KFold MSE = ", mseKFoldAnalytical)
 mseKFoldnaive = computeMSENaiveKFold(
     inputSample,
     outputSample,
-    im.inputDistribution,
+    im.distribution,
     adaptiveStrategy,
     projectionStrategy,
     kFoldParameter,
@@ -250,12 +249,12 @@ selectionAlgorithm = (
     ot.LeastSquaresMetaModelSelectionFactory()
 )  # Get a sparse PCE (i.e. with model selection).
 projectionStrategy = ot.LeastSquaresStrategy(selectionAlgorithm)
-inputSample = im.inputDistribution.getSample(sampleSize)
+inputSample = im.distribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 algo = ot.FunctionalChaosAlgorithm(
     inputSample,
     outputSample,
-    im.inputDistribution,
+    im.distribution,
     adaptiveStrategy,
     projectionStrategy,
 )
@@ -264,14 +263,14 @@ chaosResult = algo.getResult()
 
 # Analytical leave-one-out
 splitterLOO = ot.LeaveOneOutSplitter(sampleSize)
-validationLOO = otexp.FunctionalChaosValidation(chaosResult, splitterLOO)
+validationLOO = ot.FunctionalChaosValidation(chaosResult, splitterLOO)
 mseLOOAnalytical = validationLOO.computeMeanSquaredError()
 print("Analytical LOO MSE = ", mseLOOAnalytical)
 # Naive leave-one-out
 mseLOOnaive = computeMSENaiveLOO(
     inputSample,
     outputSample,
-    im.inputDistribution,
+    im.distribution,
     adaptiveStrategy,
     projectionStrategy,
 )

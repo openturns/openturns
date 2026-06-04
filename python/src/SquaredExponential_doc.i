@@ -1,0 +1,70 @@
+%feature("docstring") OT::SquaredExponential
+R"RAW(Squared exponential covariance function.
+
+Available constructors:
+    SquaredExponential(*spatialDim*)
+
+    SquaredExponential(*scale*)
+
+    SquaredExponential(*scale, amplitude*)
+
+Parameters
+----------
+spatialDim : int
+    Spatial dimension :math:`n`.
+    When not fulfilled, the input dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
+    By default, equal to 1.
+scale : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    The size of :math:`\vect{\theta}` is the input dimension.
+amplitude : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+
+Notes
+-----
+The *squared exponential function* is a stationary covariance function with dimension :math:`d=1`.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The  *squared exponential* function is defined by:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sigma^2 e^{-\frac{1}{2}  \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+The correlation function :math:`\rho` writes:
+
+.. math::
+
+    \rho(\vect{s}, \vect{t}) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a standard squared exponential covariance function:
+
+>>> import openturns as ot
+>>> covModel = ot.SquaredExponential(2)
+>>> t = [0.1, 0.3]
+>>> s = [0.2, 0.4]
+>>> print(covModel(s, t))
+[[ 0.99005 ]]
+>>> tau = [0.1, 0.3]
+>>> print(covModel(tau))
+[[ 0.951229 ]]
+
+Create a squared exponential covariance function specifying the scale vector (amplitude is fixed to 1):
+
+>>> covModel2 = ot.SquaredExponential([1.5, 2.5])
+>>> covModel2bis = ot.SquaredExponential([1.5] * 3)
+
+Create a  squared exponential covariance function specifying the scale vector and the amplitude :
+
+>>> covModel3 = ot.SquaredExponential([1.5, 2.5], [3.5])
+)RAW"

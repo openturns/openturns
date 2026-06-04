@@ -34,7 +34,8 @@ sample1 = distribution1.getSample(size)
 sample2 = distribution2.getSample(size)
 
 # Create an empty graph
-myGraph = ot.Graph("Normal sample", "x1", "x2", True, "topright")
+myGraph = ot.Graph("Normal sample", "x1", "x2")
+myGraph.setLegendPosition("upper right")
 
 # Create the first cloud
 myCloud1 = ot.Cloud(sample1, "blue", "fsquare", "First Cloud")

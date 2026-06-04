@@ -1,0 +1,66 @@
+%feature("docstring") OT::Geometric
+R"RAW(Geometric distribution.
+
+Parameters
+----------
+p : float, :math:`0 < p \leq 1`
+    Success probability of the associated Bernoulli trial.
+
+    Default value is 0.5.
+
+Notes
+-----
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{X = k} = p (1 - p)^{k - 1},
+                   \quad \forall k \in \Nset^*
+
+with :math:`0 < p \leq 1`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{1}{p} \\
+        \Var{X} & = & \frac{1 - p}{p^2}
+    \end{eqnarray*}
+
+See Also
+--------
+Bernoulli
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Geometric(0.5)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Geometric::getP
+"Accessor to the success probability parameter.
+
+Returns
+-------
+p : float
+    The success probability of the Bernoulli trial."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Geometric::setP
+R"RAW(Accessor to the success probability parameter.
+
+Parameters
+----------
+p : float, :math:`0 < p \leq 1`
+    The success probability of the Bernoulli trial.)RAW"

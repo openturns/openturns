@@ -1,0 +1,62 @@
+%feature("docstring") OT::CompoundRandomVector
+R"RAW(Conditional random vector.
+
+Helper class for defining the random vector :math:`\vect{X}` such that  :math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`, with :math:`\vect{\Theta}` a random vector of dimension the dimension of :math:`\vect{\Theta}`.
+
+Parameters
+----------
+conditionedDist : :class:`~openturns.Distribution`
+    the distribution of :math:`\vect{X}|\vect{\Theta}`, whose parameters will be overwritten by :math:`\vect{\Theta}`.
+parametersRandomVector : :class:`~openturns.RandomVector`
+    the parameters random vector :math:`\vect{\Theta}` of the `conditionedDist` distribution. 
+
+Notes
+-----
+Let :math:`\inputRV` be a random vector of dimension :math:`\inputDim` such that
+:math:`\vect{X}|\vect{\Theta}` follows the distribution :math:`\mathcal{L}_{\vect{X}|\vect{\Theta}}`,
+with :math:`\vect{\Theta}` a random vector following the distribution :math:`\mathcal{L}_{\vect{\Theta}}`.
+
+Then this class implements the random vector :math:`\inputRV`. Note that a :class:`~openturns.RandomVector` can only be sampled.
+
+There is no restriction on the random vector :math:`\vect{\Theta}`. It can be created from any multivariate distribution or
+as the output of a function :math:`f` applied to an input random vector :math:`\vect{Y}`: :math:`\vect{\Theta} = f(\vect{Y})`.
+
+Note that in some restricted cases, it is possible to create the distribution of :math:`\inputRV` using the class :class:`~openturns.CompoundDistribution`.
+
+Examples
+--------
+Create a random vector:
+
+>>> import openturns as ot
+>>> distXgivenT = ot.Exponential()
+>>> distGamma = ot.Uniform(1.0, 2.0)
+>>> distAlpha = ot.Uniform(0.0, 0.1)
+>>> distTheta = ot.JointDistribution([distGamma, distAlpha])
+>>> rvTheta = ot.RandomVector(distTheta)
+>>> rvX = ot.CompoundRandomVector(distXgivenT, rvTheta)
+
+Draw a sample:
+
+>>> sample = rvX.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompoundRandomVector::getRandomParameters
+R"RAW(Accessor to the distribution's random parameter `randomParameters`.
+
+Returns
+-------
+randomParameters : :class:`~openturns.RandomVector`, the random parameters :math:`\vect{\Theta}`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompoundRandomVector::getDistribution
+R"RAW(Accessor to the distribution's conditioned distribution parameter `conditionedDistribution`.
+
+Returns
+-------
+conditionedDistribution : :class:`~openturns.Distribution`, the distribution of :math:`\vect{X}|\vect{\Theta}=\vect{\theta}`, where the parameters :math:`\vect{\theta}` are equal to the  values used to generate the last realization of :math:`\vect{X}`.
+)RAW"
+

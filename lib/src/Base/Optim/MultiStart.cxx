@@ -2,7 +2,7 @@
 /**
  *  @brief MultiStart optimization algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,6 @@ void MultiStart::checkSolver(const OptimizationAlgorithm & solver) const
 
 void MultiStart::setProblem(const OptimizationProblem & problem)
 {
-  checkStartingSampleConsistentWithOptimizationProblem(startingSample_, problem);
   OptimizationAlgorithmImplementation::setProblem(problem);
   solver_.setProblem(problem);
 }
@@ -85,6 +84,7 @@ void MultiStart::checkProblem(const OptimizationProblem & ) const
 void MultiStart::run()
 {
   if (startingSample_.getSize() == 0) throw InvalidArgumentException(HERE) << "No starting points are set.";
+  checkStartingSampleConsistentWithOptimizationProblem(startingSample_, getProblem());
   const UnsignedInteger problemDimension = getProblem().getDimension();
   if (problemDimension == 0) throw InvalidArgumentException(HERE) << "No problem has been set.";
   if (problemDimension != startingSample_.getDimension())
@@ -111,7 +111,7 @@ void MultiStart::run()
     const UnsignedInteger remainingCallsNumber = std::max(static_cast<SignedInteger>(getMaximumCallsNumber() - callsNumber), 0L);
     solver.setMaximumCallsNumber(std::min(remainingCallsNumber, solver_.getMaximumCallsNumber()));
 
-    // ensure we do not exceeed the global time budget
+    // ensure we do not exceed the global time budget
     const Scalar remainingTimeDuration = (getMaximumTimeDuration() > 0.0) ? std::max(getMaximumTimeDuration() - timeDuration, 1e-10) : SpecFunc::MaxScalar;
     solver.setMaximumTimeDuration((solver_.getMaximumTimeDuration() > 0.0) ? std::min(remainingTimeDuration, solver_.getMaximumTimeDuration()) : remainingTimeDuration);
 
@@ -119,8 +119,6 @@ void MultiStart::run()
     {
       solver.run();
       const OptimizationResult localResult(solver.getResult());
-      if (!localResult.getOptimalPoint().getDimension())
-        throw InvalidArgumentException(HERE) << "no feasible point";
       ++ successNumber;
       LOGDEBUG(OSS() << "Local search succeeded with " << localResult.getStatusMessage());
 
@@ -143,7 +141,7 @@ void MultiStart::run()
     }
     catch (const Exception & ex)
     {
-      LOGDEBUG(OSS() << "Local search failed with " << ex);
+      LOGINFO(OSS() << "Local search " << i << "/" << size << " failed with " << ex);
     }
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
@@ -176,7 +174,7 @@ void MultiStart::run()
       Bool stop = stopCallback_.first(stopCallback_.second);
       if (stop)
       {
-        LOGWARN(OSS() << "MultiStart was stopped by user");
+        LOGINFO(OSS() << "MultiStart was stopped by user");
         break;
       }
     }
@@ -242,7 +240,6 @@ Point MultiStart::getStartingPoint() const
 /* Starting sample accessor */
 void MultiStart::setStartingSample(const Sample & startingSample)
 {
-  checkStartingSampleConsistentWithOptimizationProblem(startingSample, getProblem());
   startingSample_ = startingSample;
 }
 

@@ -21,10 +21,12 @@ elementaryFunctions.append("atanh")
 elementaryFunctions.append("log2")
 elementaryFunctions.append("log10")
 elementaryFunctions.append("log")
+elementaryFunctions.append("log1p")
 elementaryFunctions.append("ln")
 elementaryFunctions.append("lngamma")
 elementaryFunctions.append("gamma")
 elementaryFunctions.append("exp")
+elementaryFunctions.append("expm1")
 elementaryFunctions.append("erf")
 elementaryFunctions.append("erfc")
 elementaryFunctions.append("sqrt")
@@ -44,6 +46,7 @@ elementaryFunctions.append("floor")
 elementaryFunctions.append("ceil")
 elementaryFunctions.append("trunc")
 elementaryFunctions.append("round")
+elementaryFunctions.append("cot")
 
 
 # Check the creation of the elementary functions
@@ -199,7 +202,7 @@ f = ot.SymbolicFunction("x", "sqrt(x)")
 ev = f.getEvaluation()
 # triggers copyOnWrite, ev is no longer the Evaluation of f
 ev.setCheckOutput(False)
-print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(ev([-1.0])[0]))
+print(f, ", f([-1]) is normal?", m.isfinite(ev([-1.0])[0]))
 
 # joe copula bug
 f = ot.SymbolicFunction(["t"], ["(t*3)^(-1)"])

@@ -39,20 +39,6 @@ OTTypedInterfaceObjectHelper(Basis)
 
 %include openturns/Basis.hxx
 
-%extend OT::Collection<OT::Function>
-{
-
-OT::Collection<OT::Function> (PyObject * pyObj)
-{
-  return OT::buildCollectionFromPySequence<OT::Function>(pyObj);
-}
-
-
-}
-
-
-
-
 namespace OT {
 
 %extend Basis {

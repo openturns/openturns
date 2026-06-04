@@ -1,0 +1,106 @@
+%feature("docstring") OT::MetaModelAlgorithm
+"Base class for metamodel algorithms.
+
+Parameters
+----------
+sampleX, sampleY : 2-d sequence of float
+    Input/output samples
+distribution : :class:`~openturns.Distribution`, optional
+    Joint probability density function of the physical input vector.
+
+See also
+--------
+LinearModelAlgorithm, GeneralLinearModelAlgorithm, FunctionalChaosAlgorithm"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::BuildDistribution
+"Recover the distribution, with metamodel performance in mind.
+
+For each marginal, find the best 1-d continuous parametric model
+else fallback to the use of a nonparametric one.
+
+The selection is done as follow:
+
+  - We start with a list of all parametric models (all factories)
+  - For each model, we estimate its parameters if feasible.
+  - We check then if model is `valid`, ie if its Kolmogorov score exceeds a threshold 
+    fixed in the `MetaModelAlgorithm-PValueThreshold` ResourceMap key. Default value is 5%
+  - We sort all `valid` models and return the one with the optimal criterion. 
+  
+For the last step, the criterion might be `BIC`, `AIC` or `AICC`. The specification of the criterion is
+done through the `MetaModelAlgorithm-ModelSelectionCriterion` ResourceMap key. Default value is fixed to `BIC`.
+Note that if there is no `valid` candidate, we estimate a non-parametric model (:class:`~openturns.KernelSmoothing`
+or :class:`~openturns.Histogram`). The `MetaModelAlgorithm-NonParametricModel` ResourceMap key allows selecting
+the preferred one. Default value is `Histogram`
+
+One each marginal is estimated, we use the Spearman independence test on each component pair to decide whether an 
+independent copula. In case of non independence, we rely on a :class:`~openturns.NormalCopula`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Input sample.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Input distribution."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::getDistribution
+"Accessor to the joint probability density function of the physical input vector.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function of the physical input vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::setDistribution
+"Accessor to the joint probability density function of the physical input vector.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Joint probability density function of the physical input vector."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input sample of a model evaluated apart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output sample of a model evaluated apart."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelAlgorithm::run
+"Compute the response surfaces.
+
+Notes
+-----
+It computes the response surfaces and creates a
+:class:`~openturns.MetaModelResult` structure containing all the results."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::MetaModelAlgorithm::getWeights
+"Return the weights of the input sample.
+
+Returns
+-------
+weights : sequence of float
+    The weights of the points in the input sample."

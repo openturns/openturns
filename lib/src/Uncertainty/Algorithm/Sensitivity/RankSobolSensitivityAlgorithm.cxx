@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for Rank Sobol Sensitivity Algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,6 +73,11 @@ void RankSobolSensitivityAlgorithm::setDesign(const Sample & inputDesign,
   for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
     if (!(referenceVariance_[j] > 0.0))
       throw InvalidArgumentException(HERE) << "Cannot compute Sobol indices when output variance is null";
+
+  // reset intermediate results
+  alreadyComputedIndicesDistribution_ = false;
+  varianceI_.clear();
+  varianceTI_.clear();
 }
 
 
@@ -174,8 +179,6 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstOrderIndices(const Descriptio
     const Point & firstOrderIndices,
     const Interval & firstOrderConfidenceInterval)
 {
-  Graph graph("Sobol' indices", "inputs", "index value", true, "");
-
   const UnsignedInteger dimension = firstOrderIndices.getDimension();
 
   // Define cloud for FO
@@ -188,7 +191,7 @@ Graph RankSobolSensitivityAlgorithm::DrawSobolFirstOrderIndices(const Descriptio
   }
 
   const Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
-
+  Graph graph("Sobol' indices", "inputs", "index value");
   graph.add(firstOrderIndicesGraph);
 
   // Description

@@ -1,14 +1,16 @@
 // SWIG file model_process_module.i
 
 %module(package="openturns", docstring="Stochastic process.") model_process
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 #include "openturns/OTProcess.hxx"
+#include "openturns/OTWeightedExperiments.hxx"
 %}
 
 %include typemaps.i
@@ -24,9 +26,6 @@
 %import model_copula_module.i
 %import randomvector_module.i
 %import weightedexperiment_module.i
-/* imports for ConditionedGaussianProcess */
-%import MetaModelResult.i
-%import KrigingResult.i
 
 /* Uncertainty/Process */
 %include WhiteNoise.i
@@ -45,7 +44,6 @@
 %include WhittleFactory.i
 %include ARMALikelihoodFactory.i
 %include ARMAFactory.i
-%include ConditionedGaussianProcess.i
 %include KarhunenLoeveQuadratureAlgorithm.i
 %include KarhunenLoeveSVDAlgorithm.i
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Class for Inverse Box Cox function
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class InverseBoxCoxEvaluation
  *
  * This class offers an easy evaluation of the Box Cox function defined by :
- *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) oherwise
+ *  h(x) = \frac{x^\lambda - 1}{\lambda} for \lambda non zero, log(x) otherwise
  *  Care that x should be positive
  */
 
@@ -47,9 +47,9 @@ public:
   InverseBoxCoxEvaluation();
 
   /** Parameter constructor */
-  explicit InverseBoxCoxEvaluation(const Point & lamda);
+  explicit InverseBoxCoxEvaluation(const Point & lambda);
 
-  InverseBoxCoxEvaluation(const Point & lamda,
+  InverseBoxCoxEvaluation(const Point & lambda,
                           const Point & shift);
 
   /** Virtual constructor */

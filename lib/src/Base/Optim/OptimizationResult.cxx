@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult stores the result of a OptimizationAlgorithmImplementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -349,7 +349,7 @@ void OptimizationResult::store(const Point & x,
   {
     Bool isNormal = true;
     for (UnsignedInteger j = 0; j < x.getDimension(); ++ j)
-      if (!SpecFunc::IsNormal(x[j]))
+      if (!std::isfinite(x[j]))
         isNormal = false;
     for (UnsignedInteger j = 0; j < y.getDimension(); ++ j)
       if (std::isnan(y[j]))
@@ -379,7 +379,8 @@ Graph OptimizationResult::drawErrorHistory() const
 {
   if (getProblem().getObjective().getOutputDimension() > 1)
     throw NotYetImplementedException(HERE) << "drawErrorHistory is not available for multi-objective";
-  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright");
+  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value");
+  result.setLegendPosition("topright");
   result.setLogScale(GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
@@ -427,7 +428,8 @@ Graph OptimizationResult::drawOptimalValueHistory() const
     throw NotYetImplementedException(HERE) << "drawOptimalValueHistory is not available for multi-objective";
   if (!getOptimalPoint().getDimension())
     throw InvalidDimensionException(HERE) << "drawOptimalValueHistory cannot be called without feasible point";
-  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright");
+  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value");
+  result.setLegendPosition("topright");
   result.setGrid(true);
   result.setGridColor("black");
   const Sample dataX(getInputSample());

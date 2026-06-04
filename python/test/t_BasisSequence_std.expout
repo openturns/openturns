@@ -1,1 +1,6 @@
 sequence = class=BasisSequenceImplementation collection=[] masterBasis=class=Basis coll=[]
+b1=class=Basis coll=[]
+dim=0
+indices=[]
+masterB=class=Basis coll=[]
+size=1

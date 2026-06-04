@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements a discrete Markov chain process
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,7 @@
  *
  */
 
+#include <filesystem>
 #include <iostream>
 #include "openturns/DiscreteMarkovChain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -40,7 +41,6 @@ DiscreteMarkovChain::DiscreteMarkovChain()
   : ProcessImplementation()
   , origin_(Dirac(0))
   , transitionMatrix_(IdentityMatrix(1))
-  , currentState_(0)
 {
   // Set the dimension of the process
   setOutputDimension(1);
@@ -52,7 +52,6 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
   : ProcessImplementation()
   , origin_(origin)
   , transitionMatrix_(transitionMatrix.transpose())
-  , currentState_(0)
 {
   // Set the dimension of the process
   setOutputDimension(1);
@@ -73,7 +72,6 @@ DiscreteMarkovChain::DiscreteMarkovChain(const Distribution & origin,
   : ProcessImplementation()
   , origin_(origin)
   , transitionMatrix_(transitionMatrix.transpose())
-  , currentState_(0)
 {
   // Set the dimension of the process
   setOutputDimension(1);
@@ -291,7 +289,7 @@ void DiscreteMarkovChain::setMesh(const Mesh & mesh)
 }
 
 /* Stationary distribution computation */
-UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
+FiniteDiscreteDistribution DiscreteMarkovChain::computeStationaryDistribution() const
 {
   const UnsignedInteger dimension = transitionMatrix_.getDimension();
   SquareComplexMatrix eigenvectors;
@@ -305,7 +303,7 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
       largestEV = eigenvalues[i].real();
       indexMax = i;
     }
-  // Now extract the corresponding eigenvector. We know that it can be chosen with positive components and a L1 norm equal to 1, and it is the probability table of the stationary distribution. There is no need to normalize it as it is done in the UserDefined distribution.
+  // Now extract the corresponding eigenvector. We know that it can be chosen with positive components and a L1 norm equal to 1, and it is the probability table of the stationary distribution. There is no need to normalize it as it is done in the FiniteDiscreteDistribution distribution.
   Sample support(dimension, 1);
   Point probabilities(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -313,16 +311,22 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
     support(i, 0) = i;
     probabilities[i] = std::abs(eigenvectors(i, indexMax).real());
   }
-  return UserDefined(support, probabilities);
+  return FiniteDiscreteDistribution(support, probabilities);
 }
 
 /* DOT export */
-void DiscreteMarkovChain::exportToDOTFile(const FileName & filename) const
+void DiscreteMarkovChain::exportToDOTFile(const FileName & fileName) const
 {
-  std::ofstream dotFile(filename.c_str());
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName.data()),
+                                 reinterpret_cast<const char8_t*>(fileName.data() + fileName.size()));
+  std::ofstream dotFile(std::filesystem::path{u8FileName});
+#else
+  std::ofstream dotFile(std::filesystem::u8path(fileName));
+#endif
   if (dotFile.fail())
-    throw FileOpenException(HERE) << "Could not open file " << filename;
-  dotFile.imbue(std::locale("C"));
+    throw FileOpenException(HERE) << "Could not open file " << fileName;
+  dotFile.imbue(std::locale::classic());
   dotFile << "digraph " << getName() << " {\n";
   dotFile << "layout=" << ResourceMap::Get("DiscreteMarkovChain-DOTLayout") << "\n";
   dotFile << "node[shape=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeShape") << ", color=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeColor") << "]\n";

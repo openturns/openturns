@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 domain = ot.Interval(-1.0, 1.0)
 basis = ot.OrthogonalProductFunctionFactory([ot.FourierSeriesFactory()])
@@ -26,4 +26,4 @@ for mode in modes:
 fig = plt.figure(figsize=(6, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(g, figure=fig, axes=[axis], add_legend=False)
+otv.View(g, figure=fig, axes=[axis], add_legend=False)

@@ -2,7 +2,7 @@
 /**
  *  @brief The UniformOverMesh distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -198,24 +198,23 @@ Scalar UniformOverMesh::computeProbabilityContinuous(const Interval & interval) 
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "UniformOverMesh interval must have dimension " << getDimension() << ", got " << interval.getDimension();
   Scalar probability = 0.0;
-  const Interval intersection(interval.intersect(getRange()));
-  if (intersection.isEmpty())
+  const Interval interval2(interval.intersect(getRange()));
+  if (interval2.isEmpty())
     probability = 0.0;
-  else if (intersection == getRange())
+  else if (interval2 == getRange())
     probability = 1.0;
   else
   {
     try
     {
-      const Mesh intersectionMesh(mesh_.intersect(IntervalMesher(Indices(getDimension(), 1)).build(intersection)));
-      const Point intersectionVolumes(intersectionMesh.computeSimplicesVolume());
-      const Scalar intersectionVolume = std::accumulate(intersectionVolumes.begin(), intersectionVolumes.end(), 0.0);
-      probability = intersectionVolume / meshVolume_;
+      const Mesh intervalMesh(IntervalMesher(Indices(getDimension(), 1)).build(interval2));
+      const Mesh intersectionMesh(mesh_.intersect(intervalMesh));
+      probability = intersectionMesh.getVolume() / meshVolume_;
     }
     catch (const NotYetImplementedException &)
     {
       // no boost support
-      probability = integrationAlgorithm_.integrate(getPDF(), intersection)[0];
+      probability = integrationAlgorithm_.integrate(getPDF(), interval2)[0];
     }
   }
   return probability;
@@ -257,7 +256,7 @@ void UniformOverMesh::setMesh(const Mesh & mesh)
   const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber");
   const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(maximumIntegrationNumber, 1.0 / getDimension())));
   const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber");
-  if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * getDimension()) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"UniformOverMesh-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"UniformOverMesh-MarginalIntegrationNodesNumber\"");
+  if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes=" << std::pow(candidateNumber, 1.0 * getDimension()) << ". It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"UniformOverMesh-MaximumIntegrationNodesNumber\" or decrease the ResourceMap key \"UniformOverMesh-MarginalIntegrationNodesNumber\"");
   integrationAlgorithm_ = GaussLegendre(Indices(getDimension(), std::min(maximumNumber, candidateNumber)));
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

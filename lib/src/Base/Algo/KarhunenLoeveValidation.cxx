@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition validation services
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -120,7 +120,8 @@ GridLayout KarhunenLoeveValidation::drawValidation() const
   const Point maxS(fieldSample.getMax());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", OSS() << "Observed - " << description[j], OSS() << "Reduced - " << description[j], true, "topright");
+    Graph graph("", OSS() << "Observed - " << description[j], OSS() << "Reduced - " << description[j]);
+    graph.setLegendPosition("topright");
 
     // diagonal
     Sample diagonalPoints(2, 2);
@@ -156,7 +157,7 @@ Graph KarhunenLoeveValidation::drawObservationWeight(const UnsignedInteger k) co
     x[i] = i;
   }
   const Curve curve(x, v);
-  Graph result(OSS() << "Field weight axis " << k, "Field index", "w", true);
+  Graph result(OSS() << "Field weight axis " << k, "Field index", "w");
   result.add(curve);
   return result;
 }
@@ -180,7 +181,7 @@ Graph KarhunenLoeveValidation::drawObservationQuality() const
     q[i] = ratio * ratio;
   }
   const Curve curve(x, q);
-  Graph result(OSS() << "Field quality", "Field index", "q", true);
+  Graph result(OSS() << "Field quality", "Field index", "q");
   result.add(curve);
   return result;
 }

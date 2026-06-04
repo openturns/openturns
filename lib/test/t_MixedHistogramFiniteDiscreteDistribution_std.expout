@@ -1,0 +1,23 @@
+Distribution class=MixedHistogramFiniteDiscreteDistribution name=MixedHistogramFiniteDiscreteDistribution dimension=2 ticksCollection=[class=Point name=Unnamed dimension=4 values=[0,1,3,6],class=Point name=Unnamed dimension=3 values=[1,2,3]] kind=[1,0] probabilityTable=class=Point name=Unnamed dimension=9 values=[0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
+Distribution MixedHistogramFiniteDiscreteDistribution(ticksCollection = [[0,1,3,6],[1,2,3]], kind = [1,0], probabilityTable = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45])
+mean=[2.6,2.4]
+covariance=[[  3.17333  -0.106667 ]
+ [ -0.106667  0.506667 ]]
+Elliptical = false
+Continuous = false
+oneRealization=[1.27055,2]
+oneSample first=[0.969423,2] last=[5.69837,1]
+mean=[2.57463,2.3987]
+covariance=[[  3.15764  -0.118133 ]
+ [ -0.118133  0.511389 ]]
+Point= [1,1]
+log pdf=-3.80666
+pdf     =0.0222222
+cdf=0.0222222
+ccdf=0.977778
+quantile=[5.625,3]
+cdf(quantile)=0.95
+standard deviation=[1.78139,0.711805]
+skewness=[0.278086,-0.754198]
+kurtosis=[1.81163,2.29778]
+Standard representative=MixedHistogramFiniteDiscreteDistribution(ticksCollection = [[0,1,3,6],[1,2,3]], kind = [1,0], probabilityTable = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45])

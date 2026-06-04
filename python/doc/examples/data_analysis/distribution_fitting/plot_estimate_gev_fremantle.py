@@ -515,7 +515,7 @@ print(
 # SOI explains
 # some of the variation in annual maximum sea-levels after allowance for the time variation
 # in the process.
-graph = ot.Graph("SOI at Fremantle", "SOI", "level (m)", True, "")
+graph = ot.Graph("SOI at Fremantle", "SOI", "level (m)")
 cloud = ot.Cloud(data.getMarginal([2, 1]))
 cloud.setColor("red")
 graph.add(cloud)

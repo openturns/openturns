@@ -3,7 +3,7 @@
  *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -55,6 +55,13 @@ public:
   WeightedExperiment getExperiment() const;
   void setExperiment(const WeightedExperiment & experiment);
 
+  /** Keep event sample */
+  void setKeepSample(const Bool keepSample);
+
+  /** Input/output sample accessor according to select flag */
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -70,6 +77,7 @@ public:
 protected:
 
   /** Compute the block sample and the points that realized the event */
+  Bool keepSample_ = false;
   Sample computeBlockSample() override;
   Sample computeBlockSampleComposite();
 
@@ -77,6 +85,9 @@ protected:
   WeightedExperiment experiment_;
   Bool isExperimentProvided_ = false;
 private:
+
+  Sample inputSample_;
+  Sample outputSample_;
 
 } ; /* class ProbabilitySimulationAlgorithm */
 

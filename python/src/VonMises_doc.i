@@ -1,0 +1,94 @@
+%feature("docstring") OT::VonMises
+R"RAW(Von Mises distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{e^{\kappa\cos(x-\mu)}}
+                  {2\pi \mathrm{I}_0(\kappa)}, \quad x \in [\mu-\pi, \mu+\pi]
+
+with :math:`\kappa > 0` and :math:`\mathrm{I}_0` the modified Bessel function of order 0.
+
+Parameters
+----------
+mu : float
+    Mean parameter.
+
+    Default value is 0.0.
+kappa : float, :math:`\kappa > 0`
+    Concentration parameter.
+
+    Default value is 1.0.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.VonMises(1.0, 2.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getMu
+"Accessor to the location parameter.
+
+Returns
+-------
+mu : float
+    Mean parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::setMu
+"Accessor to the location parameter.
+
+Parameters
+----------
+mu : float
+    Mean parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getKappa
+"Accessor to the concentration parameter.
+
+Returns
+-------
+kappa : float
+    Concentration parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::setKappa
+R"RAW(Accessor to the concentration parameter.
+
+Parameters
+----------
+kappa : float, :math:`\kappa > 0`
+    Concentration parameter.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getCircularMean
+R"RAW(Accessor to the circular mean.
+
+Returns
+-------
+mu : float
+    Circular mean :math:`\mu`)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VonMises::getCircularVariance
+R"RAW(Accessor to the circular variance.
+
+Returns
+-------
+var : float
+    Circular variance :math:`1-\frac{I_1(\kappa)}{I_0(\kappa)}`)RAW"

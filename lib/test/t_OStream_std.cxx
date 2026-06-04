@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class OStream for pretty printing of Objects
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,11 +27,11 @@ using namespace OT::Test;
 class MyTest : public Object
 {
 public:
-  virtual String __repr__() const
+  String __repr__() const override
   {
     return String("MyTest class");
   }
-  virtual String __str__(const String & )  const
+  String __str__(const String & )  const override
   {
     return String("What a beautiful print !");
   }

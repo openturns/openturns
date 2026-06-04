@@ -1,14 +1,21 @@
 // SWIG file transformation_module.i
 
 %module(package="openturns", docstring="Transformations.") transformation
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
 #include "openturns/OTTransformation.hxx"
+#include "openturns/OTFunctionalChaos.hxx"
+#include "openturns/OTWeightedExperiments.hxx"
+#include "openturns/OTOrthogonalBasis.hxx"
+#include "openturns/OTProcess.hxx"
+#include "openturns/OTLinearModel.hxx"
+#include "openturns/OTKriging.hxx"
 %}
 
 %include typemaps.i

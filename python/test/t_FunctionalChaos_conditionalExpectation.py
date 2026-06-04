@@ -1,16 +1,15 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.experimental as otexp
 from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 
 # Create Ishigami
 im = ishigami_function.IshigamiModel()
-input_names = im.inputDistribution.getDescription()
+input_names = im.distribution.getDescription()
 sampleSize = 500
-inputSample = im.inputDistribution.getSample(sampleSize)
+inputSample = im.distribution.getSample(sampleSize)
 outputSample = im.model(inputSample)
 
 # Create PCE
@@ -26,7 +25,7 @@ adaptiveStrategy = ot.FixedStrategy(multivariateBasis, basisSize)
 chaosAlgorithm = ot.FunctionalChaosAlgorithm(
     inputSample,
     outputSample,
-    im.inputDistribution,
+    im.distribution,
     adaptiveStrategy,
     projectionStrategy,
 )
@@ -88,13 +87,13 @@ for index in range(len(listOfParametricFunctions)):
     conditionalExpectationFunctionExact = ot.ParametricFunction(
         conditionalExpectationParametric, [0, 1], [im.a, im.b]
     )
-    marginalDistribution = im.inputDistribution.getMarginal(conditioningIndices)
+    marginalDistribution = im.distribution.getMarginal(conditioningIndices)
     # Compute L2 error between the two functions
     experiment = ot.LowDiscrepancyExperiment(
         ot.SobolSequence(), marginalDistribution, sampleSizeTest, True
     )
     # experiment = ot.MonteCarloExperiment(marginalDistribution, sampleSizeTest)
-    integration = otexp.ExperimentIntegration(experiment)
+    integration = ot.ExperimentIntegration(experiment)
     error = integration.computeL2Norm(
         conditionalPCEFunction - conditionalExpectationFunctionExact
     )

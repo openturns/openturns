@@ -1,0 +1,63 @@
+%feature("docstring") OT::ARMAState
+"Last state recorded of an ARMA process.
+
+Parameters
+----------
+values : :class:`~openturns.Sample`
+    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
+noises : :class:`~openturns.Sample`
+    Last :math:`q` values of the white noise defining the :math:`ARMA(p,q)` process of dimension :math:`d`.
+
+Examples
+--------
+Define a state of an :math:`ARMA(4,2)` process of dimension 1:
+
+>>> import openturns as ot
+>>> myLastValues = ot.Sample([[0.6], [0.7], [0.3], [0.2]])
+>>> myLastNoiseValues = ot.Sample([[1.2], [1.8]])
+>>> myARMAState = ot.ARMAState(myLastValues, myLastNoiseValues)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAState::getDimension
+"Accessor to the dimension of coefficients in the list.
+
+Returns
+-------
+dimension : int
+    The dimension :math:`d` of the ARMA process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAState::getX
+"Accessor to the last values of the ARMA process.
+
+Returns
+-------
+values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
+    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAState::getEpsilon
+"Accessor to the last values of the noise defining the ARMA process.
+
+Returns
+-------
+noises : :class:`~openturns.Sample` of size :math:`q` and dimension :math:`d`
+    Last :math:`q` values of the white noise of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAState::setXEpsilon
+"Accessor to the last values of the noise defining the ARMA process.
+
+Parameters
+----------
+values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
+    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+noises : :class:`~openturns.Sample` of size :math:`q` and dimension :math:`d`
+    Last :math:`q` values of the white noise of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
+"

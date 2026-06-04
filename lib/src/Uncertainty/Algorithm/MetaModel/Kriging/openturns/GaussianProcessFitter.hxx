@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds gaussian processes
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -46,6 +46,7 @@ class OT_API GaussianProcessFitter
 public:
 
   typedef GaussianProcessFitterResult::LinearAlgebra LinearAlgebra;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   GaussianProcessFitter();
@@ -69,7 +70,7 @@ public:
   GaussianProcessFitterResult getResult();
 
   /** Objective function (reduced log-Likelihood) accessor */
-  Function getObjectiveFunction();
+  Function getReducedLogLikelihoodFunction();
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
@@ -87,9 +88,14 @@ public:
   Bool getKeepCholeskyFactor() const;
   void setKeepCholeskyFactor(const Bool keepCholeskyFactor);
 
-  // method accessors
+  /** Linear algebra mode accessor */
   void setMethod(const LinearAlgebra method);
   LinearAlgebra getMethod() const;
+
+  /** Noise accessor */
+  void setNoise(const CovarianceMatrixCollection & noise);
+  void setNoise(const Point & noise);
+  CovarianceMatrixCollection getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -244,6 +250,10 @@ private:
 
   /** Cache of the last computed reduced log-likelihood */
   Scalar lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
+
+  /** Noise on the output sample */
+  PersistentCollection<CovarianceMatrix> noise_;
+
 }; // class GaussianProcessFitter
 
 

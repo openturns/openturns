@@ -8,14 +8,11 @@ Draw the QQ-Plot
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create data
-ot.RandomGenerator.SetSeed(0)
 distribution = ot.Gumbel(0.2, 0.5)
 sample = distribution.getSample(100)
 sample.setDescription(["Sample"])
@@ -27,10 +24,12 @@ distribution = ot.GumbelFactory().build(sample)
 # %%
 # Draw QQ plot
 graph = ot.VisualTest.DrawQQplot(sample, distribution)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Incorrect proposition
 graph = ot.VisualTest.DrawQQplot(sample, ot.WeibullMin())
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+# %%
+otv.View.ShowAll()

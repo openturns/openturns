@@ -2,7 +2,7 @@
 /**
  *  @brief Second order polynomial response surface by least square
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,7 +63,7 @@ String QuadraticLeastSquares::__repr__() const
       << " name=" << getName ()
       << " dataIn=" << dataIn_
       << " dataOut=" << dataOut_
-      << " responseSurface=" << responseSurface_
+      << " result=" << result_
       << " constant=" << constant_
       << " linear=" << linear_
       << " quadratic=" << quadratic_;
@@ -77,6 +77,8 @@ void QuadraticLeastSquares::run()
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
   const UnsignedInteger coefficientsDimension = 1 + inputDimension + (inputDimension * (inputDimension + 1)) / 2;
+  /* Center the data using the empirical mean */
+  center_ = dataIn_.computeMean();
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -86,7 +88,7 @@ void QuadraticLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const Point currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex] - center_);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -106,7 +108,7 @@ void QuadraticLeastSquares::run()
       /* Then, the off-diagonal terms */
       for(UnsignedInteger componentIndexTranspose = componentIndex + 1; componentIndexTranspose < inputDimension; ++componentIndexTranspose)
       {
-        componentMatrix(sampleIndex, rowIndex) = 0.5 * currentSample[componentIndex] * currentSample[componentIndexTranspose];
+        componentMatrix(sampleIndex, rowIndex) = currentSample[componentIndex] * currentSample[componentIndexTranspose];
         ++rowIndex;
       } // off-diagonal terms
     } // quadratic term
@@ -143,17 +145,26 @@ void QuadraticLeastSquares::run()
       } // Off-diagonal terms
     } // quadratic term
   } // output components
-  const Point center(inputDimension, 0.0);
-  responseSurface_ = QuadraticFunction(center, constant_, linear_, quadratic_);
+  result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center_, constant_, linear_, quadratic_));
 }
 
 /* DataIn accessor */
+Sample QuadraticLeastSquares::getInputSample() const
+{
+  return dataIn_;
+}
+
 Sample QuadraticLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
+Sample QuadraticLeastSquares::getOutputSample() const
+{
+  return dataOut_;
+}
+
 Sample QuadraticLeastSquares::getDataOut()
 {
   return dataOut_;
@@ -163,6 +174,12 @@ void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
   dataOut_ = dataOut;
+}
+
+/* Center accessor */
+Point QuadraticLeastSquares::getCenter() const
+{
+  return center_;
 }
 
 /* Constant accessor */
@@ -184,9 +201,9 @@ SymmetricTensor QuadraticLeastSquares::getQuadratic() const
 }
 
 /* Metamodel accessor */
-Function QuadraticLeastSquares::getMetaModel() const
+MetaModelResult QuadraticLeastSquares::getResult() const
 {
-  return responseSurface_;
+  return result_;
 }
 
 void QuadraticLeastSquares::save(Advocate & adv) const
@@ -194,7 +211,8 @@ void QuadraticLeastSquares::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("dataIn_", dataIn_);
   adv.saveAttribute("dataOut_", dataOut_);
-  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("result_", result_);
+  adv.saveAttribute("center_", center_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
   adv.saveAttribute("quadratic_", quadratic_);
@@ -206,10 +224,14 @@ void QuadraticLeastSquares::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("dataIn_", dataIn_);
   adv.loadAttribute("dataOut_", dataOut_);
-  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("result_", result_);
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);
   adv.loadAttribute("quadratic_", quadratic_);
+  if (adv.hasAttribute("center_"))
+    adv.loadAttribute("center_", center_);
+  else
+    center_ = Point(linear_.getNbRows());
 }
 
 END_NAMESPACE_OPENTURNS

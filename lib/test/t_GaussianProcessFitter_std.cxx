@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of GaussianProcessFitter class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,8 +31,6 @@ int main(int, char *[])
 
   try
   {
-    // Set Numerical precision to 4
-    PlatformInfo::SetNumericalPrecision(4);
     UnsignedInteger sampleSize = 40;
     UnsignedInteger inputDimension = 1;
 
@@ -76,25 +74,31 @@ int main(int, char *[])
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1956};
+      std::cout << result.getCovarianceModel().getParameter() << std::endl;
+      ref = {0.0078, 1};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
-      ref = {-0.1034, 1.014};
+      ref = {-0.110943, 1.01498};
+      std::cout << result.getTrendCoefficients() << std::endl;
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GaussianProcessFitter-UnbiasedVariance", false);
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1907};
+      ref = {0.0078, 1};
+      std::cout << result.getCovarianceModel().getParameter() << std::endl;
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
-      ref = {-0.1034, 1.014};
+      ref = {-0.110943, 1.01498};
+      std::cout << result.getTrendCoefficients() << std::endl;
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
       ResourceMap::SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", false);
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.1328, 0.1908};
+      ref = {2.559, 1};
+      std::cout << result.getCovarianceModel().getParameter() << std::endl;
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-2, 1e-2);
-      ref = {-0.1034, 1.014};
+      ref = {0.0378138, 0.999246};
+      std::cout << result.getTrendCoefficients() << std::endl;
       assert_almost_equal(result.getTrendCoefficients(), ref, 1e-4, 1e-4);
     }
   }

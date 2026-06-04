@@ -2,7 +2,7 @@
 /**
  *  @brief The MaximumDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <cmath>
 
 #include "openturns/MaximumDistribution.hxx"
@@ -155,13 +154,13 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   if (allSame_) return variablesNumber_ * distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
   // General case, use finite difference
   if (!distribution_.hasIndependentCopula())
-    {
-      const Scalar x = point[0];
-      const Scalar epsilon = std::pow(quantileEpsilon_, 1.0 / 3.0) * (1.0 + std::abs(x));
-      const Scalar xp = x + epsilon;
-      const Scalar xm = x - epsilon;
-      return (computeCDF(xp) - computeCDF(xm)) / (xp - xm);
-    }
+  {
+    const Scalar x = point[0];
+    const Scalar epsilon = std::pow(quantileEpsilon_, 1.0 / 3.0) * (1.0 + std::abs(x));
+    const Scalar xp = x + epsilon;
+    const Scalar xm = x - epsilon;
+    return (computeCDF(xp) - computeCDF(xm)) / (xp - xm);
+  }
   // Special treatment of the independent copula case
   const UnsignedInteger size = distribution_.getDimension();
   Point marginalCDF(size);

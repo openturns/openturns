@@ -41,7 +41,7 @@ Create your own distribution given its quantile function
 
 # %%
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # %%
 # Then, we create the :math:`G` function with :math:`\rho = 2.0`.
@@ -66,5 +66,5 @@ distF = ot.CompositeDistribution(g, ot.Uniform(0.0, 1.0))
 g = distF.drawPDF()
 g.setTitle("A distribution based on the quantile function.")
 g.setLegendPosition("")
-view = View(g)
+view = otv.View(g)
 view.ShowAll()

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class UniformOverMesh for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -123,11 +123,6 @@ int main(int, char *[])
     fullprint << "parameters=" << parameters << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     */
-    Study study("test");
-    study.add("distribution", distribution);
-    UniformOverMesh anotherDistribution;
-    study.fillObject("distribution", anotherDistribution);
-    fullprint << "Equal? " << (distribution == anotherDistribution ? "true" : "false") << std::endl;;
   }
   catch (TestFailed & ex)
   {

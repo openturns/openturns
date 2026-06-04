@@ -62,7 +62,9 @@ resultMC = myMC.getResult()
 PFMC = resultMC.getProbabilityEstimate()
 CVMC = resultMC.getCoefficientOfVariation()
 variance_PF_MC = resultMC.getVarianceEstimate()
-length90MC = resultMC.getConfidenceLength(0.90)
+length90MC = resultMC.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 N_MC = resultMC.getOuterSampling() * resultMC.getBlockSize()
 
 #
@@ -71,7 +73,9 @@ resultSS = mySS.getResult()
 PFSS = resultSS.getProbabilityEstimate()
 CVSS = resultSS.getCoefficientOfVariation()
 variance_PF_SS = resultSS.getVarianceEstimate()
-length90SS = resultSS.getConfidenceLength(0.90)
+length90SS = resultSS.getProbabilityDistribution().computeBilateralConfidenceInterval(
+    0.9
+)
 N_SS = resultSS.getOuterSampling() * resultSS.getBlockSize()
 
 #
@@ -81,26 +85,14 @@ print("MONTE CARLO")
 print("Pf estimation = %.5e" % PFMC)
 print("Pf Variance estimation = %.5e" % variance_PF_MC)
 print("CoV = %.5f" % CVMC)
-print("90% Confidence Interval =", "%.5e" % length90MC)
-print(
-    "CI at 90% =[",
-    "%.5e" % (PFMC - 0.5 * length90MC),
-    "; %.5e" % (PFMC + 0.5 * length90MC),
-    "]",
-)
+print("90% Confidence Interval =", length90MC)
 print("Limit state calls =", N_MC)
 print("-" * 100)
 print("SUBSET SAMPLING")
 print("Pf estimation = %.5e" % PFSS)
 print("Pf Variance estimation = %.5e" % variance_PF_SS)
 print("CoV = %.5f" % CVSS)
-print("90% Confidence Interval =", "%.5e" % length90SS)
-print(
-    "CI at 90% =[",
-    "%.5e" % (PFSS - 0.5 * length90SS),
-    "; %.5e" % (PFSS + 0.5 * length90SS),
-    "]",
-)
+print("90% Confidence Interval =", length90SS)
 print("Limit state calls =", N_SS)
 
 

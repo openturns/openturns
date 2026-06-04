@@ -2,7 +2,7 @@
 /**
  *  @brief Ipopt optimization solver.
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 #ifdef OPENTURNS_HAVE_IPOPT
@@ -43,10 +42,10 @@ Ipopt::Ipopt()
   // Nothing to do
 }
 
-Ipopt::Ipopt( OptimizationProblem & problem)
+Ipopt::Ipopt(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
 {
-  // Nothing to do
+  checkProblem(getProblem());
 }
 
 /* Virtual constructor */
@@ -107,8 +106,7 @@ static void GetOptionsFromResourceMap(::Ipopt::SmartPtr<::Ipopt::OptionsList> op
 void Ipopt::run()
 {
 #ifdef OPENTURNS_HAVE_IPOPT
-  // Check problem
-  checkProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
 
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
@@ -149,9 +147,6 @@ void Ipopt::run()
   LOGDEBUG(optionsLog);
 
   const Sample inputHistory(ipoptProblem->getInputHistory());
-  setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),
-                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
   if (status < 0)
     result_.setStatus(OptimizationResult::FAILURE);
@@ -227,6 +222,10 @@ void Ipopt::run()
       break;
   }
   result_.setStatusMessage(statusMessage);
+
+  setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),
+                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
 
   if (status < 0)
   {

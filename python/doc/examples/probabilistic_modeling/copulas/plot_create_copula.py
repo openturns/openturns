@@ -10,7 +10,6 @@ Create a copula
 # %%
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the distribution

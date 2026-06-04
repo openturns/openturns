@@ -2,7 +2,7 @@
 /**
  *  @brief Bonmin allows one to describe a MINLP optimization algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 #ifdef OPENTURNS_HAVE_BONMIN
@@ -52,6 +51,7 @@ Bonmin::Bonmin( OptimizationProblem & problem,
   , algoName_()
 {
   setAlgorithmName(algoName);
+  checkProblem(getProblem());
 }
 
 /* Virtual constructor */
@@ -133,8 +133,7 @@ static void GetOptionsFromResourceMap(::Ipopt::SmartPtr<::Ipopt::OptionsList> op
 void Bonmin::run()
 {
 #ifdef OPENTURNS_HAVE_BONMIN
-  // Check problem
-  checkProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
 
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
@@ -181,14 +180,13 @@ void Bonmin::run()
   catch (::Bonmin::TNLPSolver::UnsolvedError *exc)
   {
     const Sample inputHistory(tminlp->getInputHistory());
-    setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
-                                   getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                   getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
-
     result_.setStatus(OptimizationResult::FAILURE);
     std::ostringstream oss;
     exc->printError(oss);
     result_.setStatusMessage(oss.str());
+    setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
+                                   getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                   getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
     return;
   }
   catch(const ::Bonmin::OsiTMINLPInterface::SimpleError & exc)
@@ -210,10 +208,6 @@ void Bonmin::run()
   LOGINFO(optionsLog);
 
   const Sample inputHistory(tminlp->getInputHistory());
-  setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
-                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
-                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
-
   const ::Bonmin::TMINLP::SolverReturn status = tminlp->getStatus();
   const Description bonminExitStatus = {"SUCCESS", "INFEASIBLE", "CONTINUOUS_UNBOUNDED",
                                         "LIMIT_EXCEEDED", "USER_INTERRUPT", "MINLP_ERROR"
@@ -233,6 +227,9 @@ void Bonmin::run()
   if (tminlp->getTimeOut())
     result_.setStatus(OptimizationResult::TIMEOUT);
 
+  setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
+                                 getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
+                                 getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())

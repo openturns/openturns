@@ -2,7 +2,7 @@
 /**
  *  @brief First order polynomial response surface by least square
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,7 +66,7 @@ String LinearLeastSquares::__repr__() const
       << " name=" << getName()
       << " dataIn=" << dataIn_
       << " dataOut=" << dataOut_
-      << " responseSurface=" << responseSurface_
+      << " result=" << result_
       << " constant=" << constant_
       << " linear=" << linear_;
   return oss;
@@ -79,6 +79,8 @@ void LinearLeastSquares::run()
   const UnsignedInteger outputDimension = dataOut_.getDimension();
   const UnsignedInteger dataInSize = dataIn_.getSize();
   const UnsignedInteger coefficientsDimension = 1 + inputDimension;
+  /* Center the data using the empirical mean */
+  center_ = dataIn_.computeMean();
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
@@ -87,8 +89,8 @@ void LinearLeastSquares::run()
   for(UnsignedInteger sampleIndex = 0; sampleIndex < dataInSize; ++sampleIndex)
   {
     /* build the componentMatrix */
-    /* get the current sample x */
-    const Point currentSample(dataIn_[sampleIndex]);
+    /* get the current centered sample x */
+    const Point currentSample(dataIn_[sampleIndex] - center_);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -121,20 +123,31 @@ void LinearLeastSquares::run()
       ++coefficientsIndex;
     } // linear term
   } // output components
-  const Point center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
-  responseSurface_.setEvaluation(new LinearEvaluation(center, constant_, linear_));
-  responseSurface_.setGradient(new ConstantGradient(linear_));
-  responseSurface_.setHessian(new ConstantHessian(SymmetricTensor(center.getDimension(), constant_.getDimension())));
+  Function responseSurface;
+  responseSurface.setEvaluation(new LinearEvaluation(center_, constant_, linear_));
+  responseSurface.setGradient(new ConstantGradient(linear_));
+  responseSurface.setHessian(new ConstantHessian(SymmetricTensor(center_.getDimension(), constant_.getDimension())));
+  result_ = MetaModelResult(dataIn_, dataOut_, responseSurface);
 }
 
 /* DataIn accessor */
+Sample LinearLeastSquares::getInputSample() const
+{
+  return dataIn_;
+}
+
 Sample LinearLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
+Sample LinearLeastSquares::getOutputSample() const
+{
+  return dataOut_;
+}
+
 Sample LinearLeastSquares::getDataOut() const
 {
   return dataOut_;
@@ -144,6 +157,12 @@ void LinearLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
   dataOut_ = dataOut;
+}
+
+/* Center accessor */
+Point LinearLeastSquares::getCenter() const
+{
+  return center_;
 }
 
 /* Constant accessor */
@@ -158,18 +177,16 @@ Matrix LinearLeastSquares::getLinear() const
   return linear_;
 }
 
-/* Metamodel accessor */
-Function LinearLeastSquares::getMetaModel() const
+MetaModelResult LinearLeastSquares::getResult() const
 {
-  return responseSurface_;
+  return result_;
 }
 
 void LinearLeastSquares::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute("dataIn_", dataIn_);
-  adv.saveAttribute("dataOut_", dataOut_);
-  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("result_", result_);
+  adv.saveAttribute("center_", center_);
   adv.saveAttribute("constant_", constant_);
   adv.saveAttribute("linear_", linear_);
 }
@@ -178,11 +195,13 @@ void LinearLeastSquares::save(Advocate & adv) const
 void LinearLeastSquares::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute("dataIn_", dataIn_);
-  adv.loadAttribute("dataOut_", dataOut_);
-  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("result_", result_);
   adv.loadAttribute("constant_", constant_);
   adv.loadAttribute("linear_", linear_);
+  if (adv.hasAttribute("center_"))
+    adv.loadAttribute("center_", center_);
+  else
+    center_ = Point(linear_.getNbRows());
 }
 
 END_NAMESPACE_OPENTURNS

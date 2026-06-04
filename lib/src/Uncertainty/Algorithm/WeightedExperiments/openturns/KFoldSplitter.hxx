@@ -2,7 +2,7 @@
 /**
  *  @brief KFoldSplitter
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -48,6 +48,9 @@ public:
   /** Generate next set of indices */
   Indices generate(Indices & indicesTest) const override;
 
+  /** Reset sequence state */
+  void reset() const override;
+
   /** Number of indices pairs accessor */
   UnsignedInteger getSize() const override;
 
@@ -66,6 +69,7 @@ public:
 private:
   UnsignedInteger k_ = 0;
   Indices shuffle_;
+  mutable UnsignedInteger start_ = 0;
 
 }; /* class KFoldSplitter */
 

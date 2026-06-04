@@ -2,7 +2,7 @@
 /**
  *  @brief Default GaussianLinearCalibration
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,13 +95,13 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
 
 
 Matrix GaussianLinearCalibration::ComputeDesignMatrix(const UnsignedInteger parameterDimension,
-                                                      const UnsignedInteger outputDimension,
-                                                      const UnsignedInteger size,
-                                                      const Distribution & parameterPrior,
-                                                      const Matrix & gradientObservations,
-                                                      const Bool globalErrorCovariance,
-                                                      const CovarianceMatrix & errorCovariance,
-                                                      TriangularMatrix & errorInverseCholesky)
+    const UnsignedInteger outputDimension,
+    const UnsignedInteger size,
+    const Distribution & parameterPrior,
+    const Matrix & gradientObservations,
+    const Bool globalErrorCovariance,
+    const CovarianceMatrix & errorCovariance,
+    TriangularMatrix & errorInverseCholesky)
 {
   const UnsignedInteger dimension = errorCovariance.getDimension();
   // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
@@ -184,7 +183,7 @@ void GaussianLinearCalibration::run()
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
-    if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+    if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
 
   const Point thetaStar(getParameterMean() + deltaTheta);
   const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());

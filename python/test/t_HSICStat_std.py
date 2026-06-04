@@ -9,7 +9,7 @@ ot.RandomGenerator.SetSeed(0)
 
 # Ishigami use-case
 ishigami = ishigami_function.IshigamiModel()
-distX = ishigami.inputDistribution
+distX = ishigami.distribution
 
 # Get a sample of it
 size = 100

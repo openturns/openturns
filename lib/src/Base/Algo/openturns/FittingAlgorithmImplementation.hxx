@@ -2,7 +2,7 @@
 /**
  *  @brief Cross-validation algorithm implementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -64,7 +64,6 @@ public:
                      const FunctionCollection & psi,
                      const Indices & indices) const;
 
-#ifndef SWIG
   virtual Scalar run(const Sample & y,
                      const Point & weight,
                      const Indices & indices,
@@ -76,8 +75,6 @@ public:
 
   virtual Scalar run(LeastSquaresMethod & method,
                      const Sample & y) const;
-
-#endif
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

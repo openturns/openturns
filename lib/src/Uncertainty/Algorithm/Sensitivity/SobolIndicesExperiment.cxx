@@ -2,7 +2,7 @@
 /**
  *  @brief @brief Experiment to compute Sobol' indices
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ SobolIndicesExperiment::SobolIndicesExperiment(const WeightedExperiment & experi
   if (!experiment.getDistribution().hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the distribution must have an independent copula";
   if (!experiment.hasUniformWeights())
-    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the underlyng weighted experiment must have uniform weights";
+    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the underlying weighted experiment must have uniform weights";
 
   const UnsignedInteger size = experiment.getSize();
   const UnsignedInteger dimension = experiment.getDistribution().getDimension();

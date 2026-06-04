@@ -1,12 +1,11 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 sample = ot.Normal(2).getSample(30)
 
 # Create an empty graph
-graph = ot.Graph("Text example", "x1", "x2", True, "")
+graph = ot.Graph("Text example", "x1", "x2")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
@@ -42,4 +41,4 @@ graph.add(annotations)
 fig = plt.figure(figsize=(4, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
-View(graph, figure=fig, axes=[axis], add_legend=False)
+otv.View(graph, figure=fig, axes=[axis], add_legend=False)

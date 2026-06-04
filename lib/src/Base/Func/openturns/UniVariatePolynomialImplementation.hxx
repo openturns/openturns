@@ -2,7 +2,7 @@
 /**
  *  @brief This is a 1D polynomial
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -65,6 +65,7 @@ public:
   virtual String _repr_html_(const String & variableName) const;
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
+  using UniVariateFunctionImplementation::operator();
   Scalar operator() (const Scalar x) const override;
   Complex operator() (const Complex z) const;
 

@@ -3,7 +3,7 @@
  *  @brief The class that implements the composition between
  *         functions implementations
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -99,8 +99,10 @@ public:
   Bool isParallel() const override;
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
+  /** Detach callback */
+  void setDetachCallback(DetachCallback callBack, void * state = nullptr) override;
 
 protected:
 

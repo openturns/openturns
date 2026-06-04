@@ -7,10 +7,6 @@ Create and draw multivariate distributions
 # In this example we create and draw multidimensional distributions.
 import openturns as ot
 import openturns.viewer as otv
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
 
 # %%
 # Create a multivariate model with a :class:`~openturns.JointDistribution`
@@ -47,13 +43,13 @@ distribution = ot.JointDistribution(marginals, cop)
 # First, we draw the probability density functions of each component.
 graph_PDF_0 = marginals[0].drawPDF()
 graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
-graph_PDF_0.setLegends(['instrumental marg', 'marg'])
+graph_PDF_0.setLegends(["instrumental marg", "marg"])
 graph_PDF_0.setTitle("First component")
 view = otv.View(graph_PDF_0)
 
 graph_PDF_1 = marginals[1].drawPDF()
 graph_PDF_1.add(distribution.getMarginal(1).drawPDF())
-graph_PDF_1.setLegends(['instrumental marg', 'marg'])
+graph_PDF_1.setLegends(["instrumental marg", "marg"])
 graph_PDF_1.setTitle("Second component")
 view = otv.View(graph_PDF_1)
 
@@ -61,13 +57,13 @@ view = otv.View(graph_PDF_1)
 # Then, we draw the cumulative distribution functions.
 graph_CDF_0 = marginals[0].drawCDF()
 graph_CDF_0.add(distribution.getMarginal(0).drawCDF())
-graph_CDF_0.setLegends(['instrumental marg', 'marg'])
+graph_CDF_0.setLegends(["instrumental marg", "marg"])
 graph_CDF_0.setTitle("First component")
 view = otv.View(graph_CDF_0)
 
 graph_CDF_1 = marginals[1].drawCDF()
 graph_CDF_1.add(distribution.getMarginal(1).drawCDF())
-graph_CDF_1.setLegends(['instrumental marg', 'marg'])
+graph_CDF_1.setLegends(["instrumental marg", "marg"])
 graph_CDF_1.setTitle("Second component")
 view = otv.View(graph_CDF_1)
 
@@ -79,12 +75,12 @@ graph_cop = cop_dist.drawPDF()
 # Get the Contour Drawable's actual implementation from the Graph
 # produced by drawPDF in order to access all its methods
 contour_cop = cop.drawPDF().getDrawable(1).getImplementation()
-contour_cop.setLineStyle('dashed')
+contour_cop.setLineStyle("dashed")
 # Remove the colorbar
 contour_cop.setColorBarPosition("")
 graph_cop.add(contour_cop)
 # Add the contour without a colorbargraph_cop.add(cop.drawPDF())
-graph_cop.setTitle('Distribution copula and core')
+graph_cop.setTitle("Distribution copula and core")
 view = otv.View(graph_cop)
 
 # %%
@@ -121,13 +117,13 @@ distribution = ot.JointDistribution(inst_marginals, core_dir)
 # First, we draw the probability density functions of each component.
 graph_PDF_0 = inst_marginals[0].drawPDF()
 graph_PDF_0.add(distribution.getMarginal(0).drawPDF())
-graph_PDF_0.setLegends(['instrumental marg', 'marg'])
+graph_PDF_0.setLegends(["instrumental marg", "marg"])
 graph_PDF_0.setTitle("First component")
 view = otv.View(graph_PDF_0)
 
 graph_PDF_1 = inst_marginals[1].drawPDF()
 graph_PDF_1.add(distribution.getMarginal(1).drawPDF())
-graph_PDF_1.setLegends(['instrumental marg', 'marg'])
+graph_PDF_1.setLegends(["instrumental marg", "marg"])
 graph_PDF_1.setTitle("Second component")
 view = otv.View(graph_PDF_1)
 
@@ -135,13 +131,13 @@ view = otv.View(graph_PDF_1)
 # Then, we draw the cumulative distribution functions.
 graph_CDF_0 = inst_marginals[0].drawCDF()
 graph_CDF_0.add(distribution.getMarginal(0).drawCDF())
-graph_CDF_0.setLegends(['instrumental marg', 'marg'])
+graph_CDF_0.setLegends(["instrumental marg", "marg"])
 graph_CDF_0.setTitle("First component")
 view = otv.View(graph_CDF_0)
 
 graph_CDF_1 = inst_marginals[1].drawCDF()
 graph_CDF_1.add(distribution.getMarginal(1).drawCDF())
-graph_CDF_1.setLegends(['instrumental marg', 'marg'])
+graph_CDF_1.setLegends(["instrumental marg", "marg"])
 graph_CDF_1.setTitle("Second component")
 view = otv.View(graph_CDF_1)
 
@@ -155,10 +151,10 @@ graph_core = core_dir.drawPDF()
 core_draw = graph_core.getDrawable(0).getImplementation()
 core_draw.setColorBarPosition("")
 core_draw.setLevels(levels)
-core_draw.setLineStyle('dashed')
+core_draw.setLineStyle("dashed")
 
 graph_cop.add(core_draw)
-graph_cop.setTitle('Distribution copula and core')
+graph_cop.setTitle("Distribution copula and core")
 view = otv.View(graph_cop)
 
 # %%
@@ -178,7 +174,7 @@ view = otv.View(graph)
 #
 #  - the :class:`~openturns.Normal` distribution,
 #  - the :class:`~openturns.Student` distribution,
-#  - the :class:`~openturns.UserDefined` distribution.
+#  - the :class:`~openturns.FiniteDiscreteDistribution` distribution.
 #
 # The Normal distribution
 # ^^^^^^^^^^^^^^^^^^^^^^^
@@ -207,13 +203,13 @@ graph.setTitle("Bivariate Student PDF")
 view = otv.View(graph)
 
 # %%
-# The UserDefined distribution
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# The FiniteDiscreteDistribution distribution
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# We can also define our own distribution with the :class:`~openturns.UserDefined` distribution.
+# We can also define our own distribution with the :class:`~openturns.FiniteDiscreteDistribution` distribution.
 # For instance consider the square :math:`[-1,1] \times [-1, 1]` with some
 # random points uniformly drawn. For each point the weight chosen is the square
-# of the distance to the origin. The :class:`~openturns.UserDefined` class normalizes the weights.
+# of the distance to the origin. The :class:`~openturns.FiniteDiscreteDistribution` class normalizes the weights.
 
 # %%
 # We first generate random points in the square.
@@ -222,7 +218,7 @@ N = 100
 sample = distUniform2.getSample(N)
 
 # %%
-# We then build the points and weights for the `UserDefined` distribution.
+# We then build the points and weights for the `FiniteDiscreteDistribution` distribution.
 points = []
 weights = []
 for i in range(N):
@@ -231,14 +227,16 @@ for i in range(N):
 
 # %%
 # We build the distribution :
-distribution = ot.UserDefined(points, weights)
+distribution = ot.FiniteDiscreteDistribution(points, weights)
 graph = distribution.drawPDF()
 graph.setTitle("User defined PDF")
 
 # %%
 # We can generate and display a sample from this distribution.
 omega = distribution.getSample(100)
-cloud = ot.Cloud(omega, "black", "fdiamond", "Sample from UserDefined distribution")
+cloud = ot.Cloud(
+    omega, "black", "fdiamond", "Sample from FiniteDiscreteDistribution distribution"
+)
 graph.add(cloud)
 view = otv.View(graph)
 
@@ -247,4 +245,4 @@ view = otv.View(graph)
 
 # %%
 # Display all figures
-plt.show()
+otv.View.ShowAll()

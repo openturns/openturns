@@ -1,26 +1,18 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+
 
 ot.TESTPREAMBLE()
 
 factories = ot.DistributionFactory.GetUniVariateFactories()
 for factory in factories:
     dist = factory.build()
-    try:
+    with ott.assert_raises(TypeError):
         qm1 = dist.computeQuantile(-1.0)
-        raise ValueError(
-            f"Expected a TypeError but with dist = {dist} got quantile(-1) = {qm1}"
-        )
-    except TypeError:
-        pass
-    try:
+    with ott.assert_raises(TypeError):
         q2 = dist.computeQuantile(2.0)
-        raise ValueError(
-            f"Expected a TypeError but with dist = {dist} got quantile(2) = {q2}"
-        )
-    except TypeError:
-        pass
     q0 = dist.computeQuantile(0.0)[0]
     q1 = dist.computeQuantile(1.0)[0]
     q0p = dist.computeQuantile(ot.SpecFunc.MinScalar)[0]

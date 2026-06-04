@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Exception for standard methods
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -104,7 +104,6 @@ int main(int, char *[])
   rc |= check< InvalidDimensionException >();
   rc |= check< NotYetImplementedException >();
   rc |= check< OutOfBoundException >();
-  rc |= check< XMLException >();
   rc |= check< XMLParserException >();
   rc |= check< InterruptionException >();
   rc |= check< NotSymmetricDefinitePositiveException >();
@@ -112,7 +111,6 @@ int main(int, char *[])
   rc |= check< NotDefinedException >();
   rc |= check< FileOpenException >();
   rc |= check< StudyFileParsingException >();
-  rc |= check< ObjectNotInStudyException >();
   rc |= check< ConfigurationFileParsingException >();
 
   return rc;

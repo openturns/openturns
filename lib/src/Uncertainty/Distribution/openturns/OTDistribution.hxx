@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,7 @@
 #include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/CompositeDistribution.hxx"
-#include "openturns/DeconditionedDistribution.hxx"
+#include "openturns/CompoundDistribution.hxx"
 #include "openturns/PointConditionalDistribution.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
 #include "openturns/JointByConditioningDistribution.hxx"
@@ -81,6 +81,7 @@
 #include "openturns/GeneralizedExtremeValueValidation.hxx"
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/GeneralizedParetoFactory.hxx"
+#include "openturns/GeneralizedParetoValidation.hxx"
 #include "openturns/Geometric.hxx"
 #include "openturns/GeometricFactory.hxx"
 #include "openturns/Gumbel.hxx"
@@ -126,7 +127,7 @@
 #include "openturns/MeixnerDistributionFactory.hxx"
 #include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/MinCopula.hxx"
-#include "openturns/MixedHistogramUserDefined.hxx"
+#include "openturns/MixedHistogramFiniteDiscreteDistribution.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/MultinomialFactory.hxx"
@@ -151,7 +152,7 @@
 #include "openturns/PosteriorDistribution.hxx"
 #include "openturns/ProductDistribution.hxx"
 #include "openturns/QuantileMatchingFactory.hxx"
-#include "openturns/RandomMixture.hxx"
+#include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/Rayleigh.hxx"
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/Rice.hxx"
@@ -179,8 +180,8 @@
 #include "openturns/UniformMuSigma.hxx"
 #include "openturns/UniformOrderStatistics.hxx"
 #include "openturns/UniformOverMesh.hxx"
-#include "openturns/UserDefined.hxx"
-#include "openturns/UserDefinedFactory.hxx"
+#include "openturns/FiniteDiscreteDistribution.hxx"
+#include "openturns/FiniteDiscreteDistributionFactory.hxx"
 #include "openturns/VonMises.hxx"
 #include "openturns/VonMisesFactory.hxx"
 #include "openturns/WeibullMax.hxx"

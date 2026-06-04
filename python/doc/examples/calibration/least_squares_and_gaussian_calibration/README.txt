@@ -1,4 +1,4 @@
-.. _Least squares and gaussian calibration:
+.. _Least squares and Gaussian calibration:
 
-Least squares and gaussian calibration
+Least squares and Gaussian calibration
 --------------------------------------

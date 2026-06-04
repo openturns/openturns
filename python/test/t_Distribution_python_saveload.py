@@ -7,7 +7,7 @@ import os
 
 class UniformNdPy(ot.PythonDistribution):
     def __init__(self, a=[0.0], b=[1.0]):
-        super(UniformNdPy, self).__init__(len(a))
+        super().__init__(len(a))
         if len(a) != len(b):
             raise ValueError("Invalid bounds")
         for i in range(len(a)):

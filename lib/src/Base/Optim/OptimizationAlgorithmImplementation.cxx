@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -83,7 +83,7 @@ Sample OptimizationAlgorithmImplementation::getStartingSample() const
 void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startingPoint)
 {
   for (UnsignedInteger j = 0; j < startingPoint.getDimension(); ++ j)
-    if (!SpecFunc::IsNormal(startingPoint[j]))
+    if (!std::isfinite(startingPoint[j]))
       throw InvalidArgumentException(HERE) << "Optimization starting point has nan/inf values: " << startingPoint;
   startingPoint_ = startingPoint;
 }
@@ -289,8 +289,6 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
   const Sample & inputHistory, const Sample & outputHistory,
   const Sample & inequalityHistory, const Sample & equalityHistory)
 {
-  // Update the result
-  result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = inputHistory.getSize();
   if (outputHistory.getSize() != size)
     throw InvalidArgumentException(HERE) << "OptimizationAlgorithmImplementation output size does not match input size";
@@ -366,15 +364,13 @@ void OptimizationAlgorithmImplementation::setResultFromEvaluationHistory(
     }
     result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError, getMaximumConstraintError());
   }
+  result_.setCallsNumber(size);
   if (!result_.getOptimalPoint().getDimension())
   {
     result_.setStatus(OptimizationResult::FAILURE);
-    if (checkStatus_)
-      throw InvalidArgumentException(HERE) << "no feasible point found during optimization";
-    else
-      LOGWARN(OSS() << "no feasible point found during optimization");
+    result_.setStatusMessage("No feasible point found |" + result_.getStatusMessage());
+    throw InvalidArgumentException(HERE) << "No feasible point found during optimization";
   }
-  result_.setCallsNumber(size);
 }
 
 

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,7 +45,7 @@ public:
     // Nothing to do
   }
 
-  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
+  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const override
   {
     if (i == j)
     {
@@ -151,7 +151,7 @@ SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
   // If tau.norm1 is zero we compute the covariance matrix
   // Otherwise the returned value is 0
-  if (tau.norm() == 0)
+  if (tau.norm() <= SpecFunc::ScalarEpsilon)
     return outputCovariance_;
   else
     return SquareMatrix(outputDimension_).getImplementation();
@@ -163,8 +163,8 @@ Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
     throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
-  if (tau.norm() == 0)
-    return outputCovariance_(0, 0);
+  if (tau.norm() <= SpecFunc::ScalarEpsilon)
+    return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
 }
@@ -184,10 +184,12 @@ Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_ite
     tauNorm += dx * dx;
   }
   tauNorm = sqrt(tauNorm);
-  if (tauNorm == 0)
-    return outputCovariance_(0, 0);
+  if (tauNorm <= SpecFunc::ScalarEpsilon)
+    return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
+  // call getImplementation to avoid write accessor as outputCovariance_ is declared mutable
+  // which is triggering copyOnWrite resulting TBB threading issues
 }
 
 Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
@@ -197,7 +199,7 @@ Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
   if (std::abs(tau) <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0);
+    return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
 }
@@ -225,8 +227,8 @@ struct DiracCovarianceModelDiscretizePolicy
     {
       const UnsignedInteger indexBlock = index * dimension_;
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        for (UnsignedInteger i = 0; i < dimension_; ++i)
-          output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_(i, j);
+        for (UnsignedInteger i = j; i < dimension_; ++i)
+          output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_.getImplementation()->operator()(i, j);
     }
   }
 }; /* end struct DiracCovarianceModelDiscretizePolicy */
@@ -237,7 +239,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
   if (ResourceMap::GetAsBool("DiracCovarianceModel-CheckUnique") && (vertices.sortUnique().getSize() != vertices.getSize()))
     return CovarianceModelImplementation::discretize(vertices);
 
-  // Here is the opimized discretization method, correct if no repeated points
+  // Here is the optimized discretization method, correct if no repeated points
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
@@ -291,7 +293,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
   if (ResourceMap::GetAsBool("DiracCovarianceModel-CheckUnique") && (vertices.sortUnique().getSize() != vertices.getSize()))
     return CovarianceModelImplementation::discretizeAndFactorize(vertices);
 
-  // Here is the opimized discretization method, correct if no repeated points
+  // Here is the optimized discretization method, correct if no repeated points
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
@@ -426,7 +428,7 @@ void DiracCovarianceModel::setAmplitude(const Point & amplitude)
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
     if (!(amplitude[i] > 0))
-      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive but the #" << i << " component equals " << amplitude[i];
+      throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be strictly positive but the #" << i << " component equals " << amplitude[i];
   }
   amplitude_ = amplitude;
   computeCovariance();

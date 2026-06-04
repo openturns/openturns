@@ -2,7 +2,7 @@
 /**
  *  @brief StorageManager provides an interface for different storage classes
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,8 +21,6 @@
 #ifndef OPENTURNS_STORAGEMANAGER_HXX
 #define OPENTURNS_STORAGEMANAGER_HXX
 
-#include <iostream>              // for std::ostream
-#include <vector>                // for std::vector
 #include <set>                   // for std::set
 #include <map>                   // for std::map
 #include "openturns/Object.hxx"

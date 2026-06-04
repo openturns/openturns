@@ -2,7 +2,7 @@
 /**
  *  @brief Study keeps all PersistentObjects in a file
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -130,7 +130,6 @@ String Study::__str__(const String & ) const
 /* This method saves the study through the storage manager */
 void Study::save()
 {
-  assert(p_storageManager_);
   StorageManager & mgr = *p_storageManager_;
 
   mgr.initialize( SaveAction() );
@@ -154,7 +153,6 @@ void Study::save()
 /* This method reloads the study from the storage manager */
 void Study::load()
 {
-  assert(p_storageManager_);
   StorageManager & mgr = *p_storageManager_;
 
   mgr.initialize( LoadAction() );

@@ -2,7 +2,7 @@
 /**
  *  @brief The Student distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <cmath>
 
 #include "openturns/Student.hxx"
@@ -297,7 +296,7 @@ Scalar Student::computeProbability(const Interval & interval) const
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
     const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension())));
     const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
+    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return DistributionImplementation::computeProbability(interval);
   }
@@ -508,7 +507,7 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
   // Special case when no contitioning or independent copula
   if (conditioningDimension == 0) return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, q);
   // General case
@@ -745,7 +744,7 @@ Description Student::getParameterDescription() const
 /* Nu accessor */
 void Student::setNu(const Scalar nu)
 {
-  if (nu <= 2.0) LOGWARN(OSS() << "Warning! As nu <= 2, the covariance of the distribution will not be defined");
+  if (nu <= 2.0) LOGWARN(OSS() << "As nu <= 2, the covariance of the distribution will not be defined");
   const UnsignedInteger dimension = getDimension();
   nu_ = nu;
   // Only set the covarianceScalingFactor if nu > 0, else its value is -1.0

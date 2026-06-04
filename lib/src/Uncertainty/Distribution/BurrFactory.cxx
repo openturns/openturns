@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Burr distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include "openturns/BurrFactory.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -75,7 +74,7 @@ struct BurrFactoryParameterConstraint
       sumLogXC += log1p(xC);
     }
     /* MLE second parameter */
-    if (!SpecFunc::IsNormal(sumLogXC) || !(sumLogXC > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate the k parameter";
+    if (!std::isfinite(sumLogXC) || !(sumLogXC > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate the k parameter";
     const Scalar k = size / sumLogXC;
 
     /* MLE equation first parameter */
@@ -113,7 +112,7 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
   if (!(sample.getMin()[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
   BurrFactoryParameterConstraint constraint(sample);
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution if data contains NaN or Inf";
+  if (!std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution if data contains NaN or Inf";
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Burr distribution from a constant sample.";
   const Function f(bindMethod<BurrFactoryParameterConstraint, Point, Point>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval

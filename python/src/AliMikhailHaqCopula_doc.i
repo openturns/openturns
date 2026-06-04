@@ -1,0 +1,58 @@
+%feature("docstring") OT::AliMikhailHaqCopula
+R"RAW(AliMikhailHaq copula.
+
+The AliMikhailHaq copula is a bivariate Archimedean copula defined by:
+
+.. math::
+
+    C(u_1, u_2) = \frac{u_1 u_2}{1- \theta (1 - u_1)(1 - u_2)}
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+And its generator is:
+
+.. math::
+
+    \varphi(t) = \log \left( \frac{1-\theta(1-t)}{t} \right)
+
+Parameters
+----------
+theta : float, optional
+    Parameter :math:`\theta`, :math:`-1 \leq \theta \leq 1`.
+    Default value is 0.5.
+
+See also
+--------
+ArchimedeanCopula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.AliMikhailHaqCopula(0.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AliMikhailHaqCopula::getTheta
+R"RAW(Get the parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    Parameter :math:`\theta` of the copula.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AliMikhailHaqCopula::setTheta
+R"RAW(Set the parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float, :math:`-1 \leq \theta \leq 1`
+    Parameter :math:`\theta` of the copula.)RAW"

@@ -8,18 +8,15 @@ Iterated Functions System
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
+import openturns.viewer as otv
+
+# sphinx_gallery_thumbnail_number = 4
 import math as m
-
-ot.Log.Show(ot.Log.NONE)
-
 
 # %%
 # **Tree traversal algorithm (the chaos game)**
 
 
-# %%
 def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blue"):
     # Any set of initial points should work in theory
     initialPoints = ot.Normal(2).getSample(batch_size)
@@ -32,7 +29,7 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     # tweak search bounds
     xMin, xMax = 0.0, -m.log(dim) / m.log(max(all_r))
     fMax = fs([xMax])[0]
-    eps = ot.SpecFunc.Precision ** 0.5
+    eps = ot.SpecFunc.Precision**0.5
     if abs(fMax) < eps:
         xMax += eps
     s = ot.Brent().solve(fs, 0.0, xMin, xMax)
@@ -40,7 +37,7 @@ def drawIFS(f_i, skip=100, iterations=1000, batch_size=1, name="IFS", color="blu
     probabilities = [r**s + 1e-2 for r in all_r]
     # Build the sampling distribution
     support = [[i] for i in range(dim)]
-    choice = ot.UserDefined(support, probabilities)
+    choice = ot.FiniteDiscreteDistribution(support, probabilities)
     currentPoints = initialPoints
     points = ot.Sample(0, 2)
     # Convert the f_i into LinearEvaluation to benefit from the evaluation over
@@ -95,7 +92,7 @@ graph, s = drawIFS(
     f_i, skip=100, iterations=100000, batch_size=1, name="Spiral", color="blue"
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Fern
@@ -108,7 +105,8 @@ graph, s = drawIFS(
     f_i, skip=100, iterations=100000, batch_size=1, name="Fern", color="green"
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
+# sphinx_gallery_thumbnail_number = 2
+view = otv.View(graph)
 
 # %%
 # Dragon
@@ -119,7 +117,7 @@ graph, s = drawIFS(
     f_i, skip=100, iterations=100000, batch_size=1, name="Dragon", color="red"
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # Sierpinski triangle
@@ -136,7 +134,8 @@ graph, s = drawIFS(
     color="magenta",
 )
 print("Box counting dimension=%.3f" % s)
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
 
 # %%
+# Display all figures
+otv.View.ShowAll()

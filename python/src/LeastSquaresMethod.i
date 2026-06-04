@@ -8,6 +8,6 @@
 
 OTTypedInterfaceObjectHelper(LeastSquaresMethod)
 
-%copyctor OT::LeastSquaresMethod;
+%apply const OT::LeastSquaresMethod & { OT::LeastSquaresMethod & };
 
 %include openturns/LeastSquaresMethod.hxx

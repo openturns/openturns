@@ -1,0 +1,12 @@
+%feature("docstring") OT::Hann
+R"RAW(Hann filtering windows.
+
+Notes
+-----
+The Hann windows is implemented using the formula:
+
+.. math::
+
+    w(t) =  \sqrt{\dfrac{8}{3}} \sin(\pi t)^2\fcar{[0,1]}{t}
+
+)RAW"

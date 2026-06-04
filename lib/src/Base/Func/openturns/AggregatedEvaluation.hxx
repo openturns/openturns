@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of an aggregation of functions from R^n to R^p_1,...,R^n to R^p_k
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -94,8 +94,10 @@ public:
   Bool isParallel() const override;
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = nullptr) override;
+
+  /** Detach callback */
+  void setDetachCallback(DetachCallback callBack, void * state = nullptr) override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

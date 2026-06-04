@@ -2,7 +2,7 @@
 /**
  *  @brief Univariate function implementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -66,6 +66,16 @@ Scalar UniVariateFunctionImplementation::operator() (const Scalar ) const
   throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::operator() (const Scalar x)";
 }
 
+Sample UniVariateFunctionImplementation::operator() (const Sample & x) const
+{
+  if (x.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension 1, got dimension " << x.getDimension();
+  const UnsignedInteger size = x.getSize();
+  Sample result(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result(i, 0) = (*this)(x(i, 0));
+  return result;
+}
+
 /* UniVariateFunctionImplementation gradient */
 Scalar UniVariateFunctionImplementation::gradient(const Scalar ) const
 {
@@ -94,7 +104,8 @@ Graph UniVariateFunctionImplementation::draw(const Scalar xMin,
   Curve curve(data);
   curve.setLineWidth(2.0);
   curve.setLegend(getName());
-  Graph graph(getName(), "x", "y", true, "topright");
+  Graph graph(getName(), "x", "y");
+  graph.setLegendPosition("topright");
   graph.add(curve);
   return graph;
 }

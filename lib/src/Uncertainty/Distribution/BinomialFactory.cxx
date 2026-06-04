@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Binomial distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,7 +73,7 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);
-    if (!SpecFunc::IsNormal(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution if data contains NaN or Inf";
+    if (!std::isfinite(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution if data contains NaN or Inf";
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
     if (!(std::abs(x - iX) <= supportEpsilon) || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample made of nonnegative integers, here x=" << x;

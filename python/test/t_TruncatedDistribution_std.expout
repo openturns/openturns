@@ -24,7 +24,7 @@ entropy=1.074411
 Minimum volume interval= [1, 3.7326]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.57038} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]))
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 2, sigma = 1.5, a = 1, b = 4))
 beta= [0.207966]
 Bilateral confidence interval= [1.07578, 3.85894]
 beta= [0.95]
@@ -78,7 +78,7 @@ entropy=1.390942
 Minimum volume interval= [1, 4.673]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.62114} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[))
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 2, sigma = 1.5, a = 1, b = 13.4759))
 beta= [0.0727201]
 Bilateral confidence interval= [1.08613, 5.12246]
 beta= [0.95]
@@ -132,7 +132,7 @@ entropy=1.608447
 Minimum volume interval= [-0.53617, 4]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.65813} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4]))
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 2, sigma = 1.5, a = -9.47594, b = 4))
 beta= [0.0700792]
 Bilateral confidence interval= [-1.00085, 3.80883]
 beta= [0.95]
@@ -186,7 +186,7 @@ entropy=1.074411
 Minimum volume interval= [1, 3.7326]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.57038} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4]))
+MinimumVolumeLevelSetEvaluation(TruncatedNormal(mu = 2, sigma = 1.5, a = 1, b = 4))
 beta= [0.207966]
 Bilateral confidence interval= [1.07578, 3.85894]
 beta= [0.95]
@@ -260,7 +260,7 @@ conditional PDF=0.540165
 sequential conditional PDF=[0.540165,0.540165]
 conditional CDF=0.543689
 sequential conditional CDF=[0.543689,0.543689]
-Distribution  TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[)
+Distribution  WeibullMin(beta = 2, alpha = 3, gamma = 0)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[2.23016]
@@ -275,8 +275,8 @@ pdf (ref)=0.553345
 cdf=0.344184
 ccdf=0.655816
 cdf (ref)=0.344184
-pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.479854,0.0924181,-0.270908,0]
-cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.415009,-0.0795937,-0.553345,0]
+pdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.479854,0.0924181,-0.270908]
+cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.415009,-0.0795937,-0.553345]
 quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
 quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
 cdf(quantile)=0.950000
@@ -286,7 +286,7 @@ entropy=0.979345
 Minimum volume interval= [0.53717, 3.0308]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.24308} with f=
-MinimumVolumeLevelSetEvaluation(TruncatedDistribution(WeibullMin(beta = 2, alpha = 3, gamma = 0), bounds = [0, (6.36519) +inf[))
+MinimumVolumeLevelSetEvaluation(WeibullMin(beta = 2, alpha = 3, gamma = 0))
 beta= [0.106131]
 Bilateral confidence interval= [0.587271, 3.09026]
 beta= [0.95]
@@ -304,10 +304,10 @@ kurtosis      = class=Point name=Unnamed dimension=1 values=[2.72946]
 kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[2.72946]
 covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.421332]
 covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.421332]
-parameters      = [class=PointWithDescription name=X0 dimension=4 description=[beta,alpha,gamma,lowerBound] values=[2,3,0,0]]
+parameters      = [class=PointWithDescription name=X0 dimension=3 description=[beta,alpha,gamma] values=[2,3,0]]
 parameters (ref)= [class=PointWithDescription name=X0 dimension=3 description=[beta,alpha,gamma] values=[2,3,0]]
-parameter       = class=Point name=Unnamed dimension=4 values=[2,3,0,0]
-parameter desc  = [beta,alpha,gamma,lowerBound]
+parameter       = class=Point name=Unnamed dimension=3 values=[2,3,0]
+parameter desc  = [beta,alpha,gamma]
 marginal 0      = class=WeibullMin name=WeibullMin dimension=1 beta=2 alpha=3 gamma=0
 Standard representative= WeibullMin(beta = 1, alpha = 3, gamma = 0)
 conditional PDF=0.586847
@@ -336,12 +336,11 @@ d= TruncatedDistribution(BlockIndependentCopula(NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]])), bounds = [0, 1]
 [0, 1]
 [0, 1]
-[0, 1]) simplified= BlockIndependentDistribution(TruncatedDistribution(NormalCopula(R = [[ 1 0 ]
- [ 0 1 ]]), bounds = [0, 1]
-[0, 1]), TruncatedDistribution(NormalCopula(R = [[ 1 0 ]
- [ 0 1 ]]), bounds = [0, 1]
-[0, 1]))
+[0, 1]) simplified= BlockIndependentCopula(NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]), NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]))
 d= TruncatedDistribution(Dirichlet(theta = [0.7,0.3]), bounds = [0.2, 2.4]) simplified= Beta(alpha = 0.7, beta = 0.3, a = 0.2, b = 1)
+d= TruncatedDistribution(TruncatedDistribution(Normal(mu = 0, sigma = 1), bounds = [-1, 1]), bounds = [-1, 1]) simplified= TruncatedNormal(mu = 0, sigma = 1, a = -1, b = 1)
 after setbounds q@0.9= [29.628]
 proba=0.001382
 q@0.1= [0.425]

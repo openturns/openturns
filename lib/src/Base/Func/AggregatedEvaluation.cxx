@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of an aggregation of functions from R^n to R^p_1,...,R^n to R^p_k
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,8 +34,6 @@ static const Factory<AggregatedEvaluation> Factory_AggregatedEvaluation;
 /* Default constructor */
 AggregatedEvaluation::AggregatedEvaluation()
   : EvaluationImplementation()
-  , functionsCollection_(0)
-  , outputDimension_(0)
 {
   // Nothing to do
 }
@@ -44,8 +42,6 @@ AggregatedEvaluation::AggregatedEvaluation()
 /* Parameters constructor */
 AggregatedEvaluation::AggregatedEvaluation(const FunctionCollection & functionsCollection)
   : EvaluationImplementation()
-  , functionsCollection_(0)
-  , outputDimension_(0)
 {
   setFunctionsCollection(functionsCollection);
 }
@@ -327,6 +323,12 @@ void AggregatedEvaluation::setStopCallback(StopCallback callBack, void * state)
 {
   for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
     functionsCollection_[i].setStopCallback(callBack, state);
+}
+
+void AggregatedEvaluation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    functionsCollection_[i].setDetachCallback(callBack, state);
 }
 
 END_NAMESPACE_OPENTURNS

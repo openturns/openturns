@@ -3,20 +3,19 @@
 set -xe
 git config --global --add safe.directory /io
 
-uid=$1
-gid=$2
+UID_GID=$1
 
 env
 
 cd /tmp
-mkdir build && cd build
-
 cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
-      -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage -fuse-ld=mold" \
+      -DCMAKE_LINKER_TYPE=MOLD \
+      -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage" \
       -DSWIG_COMPILE_FLAGS="-O1" \
       -DUSE_HMAT=ON \
-      /io
+      -B build /io
+cd build
 make install
 OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 200 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 #make tests
@@ -28,7 +27,7 @@ time lcov --capture --directory . --output-file coverage.info --include "*.cxx" 
 genhtml --output-directory coverage coverage.info
 cp -v coverage.info coverage
 
-if test -n "${uid}" -a -n "${gid}"
+if test -n "${UID_GID}"
 then
-  sudo chown -R ${uid}:${gid} coverage && sudo cp -r coverage /io
+  sudo chown -R ${UID_GID} coverage && sudo cp -r coverage /io
 fi

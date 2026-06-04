@@ -15,6 +15,8 @@
 %ignore OT::FunctionImplementation::getUseDefaultHessianImplementation;
 %ignore OT::FunctionImplementation::setUseDefaultHessianImplementation;
 
+%ignore OT::FunctionImplementation::setDetachCallback;
+
 %copyctor OT::FunctionImplementation;
 
 %include openturns/FunctionImplementation.hxx

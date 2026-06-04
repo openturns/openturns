@@ -2,7 +2,7 @@
 /**
  *  @brief Univariate function
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -69,6 +69,11 @@ String UniVariateFunction::__str__(const String & offset) const
 
 /* UniVariateFunction are evaluated as functors */
 Scalar UniVariateFunction::operator() (const Scalar x) const
+{
+  return getImplementation()->operator()(x);
+}
+
+Sample UniVariateFunction::operator() (const Sample & x) const
 {
   return getImplementation()->operator()(x);
 }

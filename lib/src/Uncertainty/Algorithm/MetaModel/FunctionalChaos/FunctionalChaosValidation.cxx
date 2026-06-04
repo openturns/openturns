@@ -2,7 +2,7 @@
 /**
  *  @brief Validation of a functional chaos expansion
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -123,6 +123,11 @@ Sample FunctionalChaosValidation::ComputeMetamodelLeaveOneOutPredictions(
   const Sample inputSample(functionalChaosResult.getInputSample());
   const FunctionCollection reducedBasis(functionalChaosResult.getReducedBasis());
   const UnsignedInteger reducedBasisSize = reducedBasis.getSize();
+  const UnsignedInteger sampleSize = inputSample.getSize();
+
+  if (reducedBasisSize >= sampleSize)
+    throw InvalidArgumentException(HERE) << "FunctionalChaosValidation: basis size for LOO (" << reducedBasisSize << ") must be lesser than the sample size (" << sampleSize << ")";
+
   const Function transformation(functionalChaosResult.getTransformation());
   const Sample standardSample(transformation(inputSample));
   DesignProxy designProxy(standardSample, reducedBasis);
@@ -166,15 +171,17 @@ Sample FunctionalChaosValidation::ComputeMetamodelKFoldPredictions(
 /* Method save() stores the object through the StorageManager */
 void FunctionalChaosValidation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "functionalChaosResult_", functionalChaosResult_ );
+  MetaModelValidation::save(adv);
+  adv.saveAttribute("functionalChaosResult_", functionalChaosResult_);
+  adv.saveAttribute("splitter_", splitter_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void FunctionalChaosValidation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "functionalChaosResult_", functionalChaosResult_ );
+  MetaModelValidation::load(adv);
+  adv.loadAttribute("functionalChaosResult_", functionalChaosResult_);
+  adv.loadAttribute("splitter_", splitter_ );
 }
 
 END_NAMESPACE_OPENTURNS

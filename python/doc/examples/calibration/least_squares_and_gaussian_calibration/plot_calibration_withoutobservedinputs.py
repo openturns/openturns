@@ -155,7 +155,8 @@ xmax = max(abscissas)
 
 npoints = 50
 palette = ot.Drawable.BuildDefaultPalette(4)
-graph = ot.Graph("Calibration without observations", "x", "y", True, "lower right")
+graph = ot.Graph("Calibration without observations", "x", "y")
+graph.setLegendPosition("lower right")
 curve = trueFunction.draw(xmin, xmax, npoints).getDrawable(0)
 curve.setLineStyle("dotted")
 curve.setLegend("True model")

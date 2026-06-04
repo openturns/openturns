@@ -2,7 +2,7 @@
 /**
  *  @brief CSV parser
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,13 +19,12 @@
  *
  */
 
-#include <cstring>       // std::strerror
-
 #include "openturns/CSVParser.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OTconfig.hxx"
 
-#include <filesystem>
+#include <filesystem> // for u8path
+#include <charconv> // for from_chars
 #include "rapidcsv.h"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,8 +43,8 @@ CSVParser::CSVParser()
 }
 
 CSVParser::CSVParser(const String & fileName)
-: Object()
-, fileName_(fileName) {}
+  : Object()
+  , fileName_(fileName) {}
 
 
 /* String converter */
@@ -91,8 +90,14 @@ void CSVParser::setNumericalSeparator(const char decimalSeparator)
 
 Sample CSVParser::load() const
 {
-  if (!std::ifstream(std::filesystem::u8path(fileName_)).good())
-    throw FileNotFoundException(HERE) << "Cannot open file '" << fileName_ << "'. Reason: " << std::strerror(errno);
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  const std::u8string u8FileName(reinterpret_cast<const char8_t*>(fileName_.data()),
+                                 reinterpret_cast<const char8_t*>(fileName_.data() + fileName_.size()));
+  if (!std::ifstream(std::filesystem::path{u8FileName}))
+#else
+  if (!std::ifstream(std::filesystem::u8path(fileName_)))
+#endif
+    throw FileNotFoundException(HERE) << "CSVParser cannot open file '" << fileName_ << "'";
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
   const int pColumnNameIdx = skippedLinesNumber_ != 0 ? skippedLinesNumber_ - 1 : -1;
@@ -108,30 +113,34 @@ Sample CSVParser::load() const
     throw InvalidArgumentException(HERE) << "The comment marker must be different from the field and decimal separators";
   pLineReaderParams.mCommentPrefix = commentMarkers[0];
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
-  Description description;
   std::ifstream stream;
   stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+#if defined(__cplusplus) && (__cplusplus >= 202002L)
+  stream.open(std::filesystem::path {u8FileName}, std::ios::binary);
+#else
   stream.open(std::filesystem::u8path(fileName_), std::ios::binary);
+#endif
   rapidcsv::Document doc(stream, pLabelParams, pSeparatorParams, pConverterParams, pLineReaderParams);
   Sample result(doc.GetRowCount(), doc.GetColumnCount());
   Bool oneOk = false;
 
-  auto convLambda = [this, &oneOk](const std::string& pStr, Scalar& pVal)
+  auto convLambda = [this, &oneOk](const std::string & pStr, double & pVal)
   {
-    std::istringstream iss(pStr);
-    iss.imbue(std::locale(std::locale::classic(), new CSVParserFormat(decimalSeparator_)));
-    iss >> pVal;
-    if (iss.fail() || iss.bad() || !iss.eof())
+    std::string pStr2(pStr);
+    if (this->decimalSeparator_ != '.')
+      std::replace(pStr2.begin(), pStr2.end(), this->decimalSeparator_, '.');
+
+#ifdef OPENTURNS_HAVE_STD_FROM_CHARS_DOUBLE
+    auto status = std::from_chars(pStr2.data(), pStr2.data() + pStr2.size(), pVal);
+    if (status.ec != std::errc{})
+#else
+    char * str_end = pStr2.data();
+    pVal = std::strtod(pStr2.data(), &str_end);
+    if (str_end == pStr2.data())
+#endif
     {
-      const std::map<String, Scalar> infMap = {{"inf", SpecFunc::Infinity}, {"+inf", SpecFunc::Infinity}, {"-inf", -SpecFunc::Infinity},
-                                               {"Inf", SpecFunc::Infinity}, {"+Inf", SpecFunc::Infinity}, {"-Inf", -SpecFunc::Infinity},
-                                               {"INF", SpecFunc::Infinity}, {"+INF", SpecFunc::Infinity}, {"-INF", -SpecFunc::Infinity}};
-      // handle inf values
-      if (infMap.count(pStr))
-        pVal = infMap.at(pStr);
-      else
-        // invalid values are set to nan
-        pVal = std::numeric_limits<Scalar>::quiet_NaN();
+      // invalid values are set to nan
+      pVal = std::numeric_limits<Scalar>::quiet_NaN();
     }
     else
       oneOk = true;
@@ -154,10 +163,11 @@ Sample CSVParser::load() const
     }
   }
 
-  // headers if unparsable values on the first row
+  // headers if there exist any non-empty non-special unparsable value on the first row
   Bool haveHeaders = false;
+  const Description specList = {"inf", "-inf", "INF", "-INF", "Inf", "-Inf", "nan", "NAN", "NaN"};
   for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (std::isnan(result(0, j)))
+    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specList.contains(doc.GetCell<std::string>(j, 0)))
     {
       haveHeaders = true;
       break;
@@ -169,7 +179,7 @@ Sample CSVParser::load() const
 
   if (haveHeaders)
   {
-    description.resize(doc.GetColumnCount());
+    Description description(doc.GetColumnCount());
     for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
     {
       try
@@ -180,14 +190,10 @@ Sample CSVParser::load() const
       {
         // line may be incomplete
       }
-    }
-    // reject empty components
-    for (UnsignedInteger j = 0; j < description.getSize(); ++ j)
+      // avoid empty components
       if (description[j].empty())
-      {
-        description = Description::BuildDefault(result.getDimension(), "data_");
-        break;
-      }
+        description[j] = OSS() << "Unnamed_" << j;
+    }
     result.setDescription(description);
     result.erase(0, 1);
   }

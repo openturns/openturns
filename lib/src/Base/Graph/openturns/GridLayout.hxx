@@ -2,7 +2,7 @@
 /**
  *  @brief Grid layout of graphs
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -81,6 +81,11 @@ public:
   /** Add a GridLayout */
   void add(const GridLayout & grid);
 
+  /** Legend bounding box accessor */
+  void setLegendCorner(const Point & corner);
+
+  /** Set log scale for x, y both or none axes */
+  void setLogScale(const GraphImplementation::LogScale logScale);
 private:
 
   /** Number of row/column */

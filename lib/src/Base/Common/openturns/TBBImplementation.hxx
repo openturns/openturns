@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for multithreading
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -118,14 +118,14 @@ public:
 BEGIN_NAMESPACE_OPENTURNS
 
 // disables blas threading inside TBB parallel regions
-class TBBContext
+class OT_API TBBContext
 {
 public:
   TBBContext();
   ~TBBContext();
 private:
-  int ompNumThreads_;
-  int openblasNumThreads_;
+  int ompNumThreads_ = 0;
+  int openblasNumThreads_ = 0;
 };
 
 class OT_API TBBImplementation

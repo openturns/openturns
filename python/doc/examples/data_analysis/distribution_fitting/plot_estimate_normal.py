@@ -4,9 +4,6 @@ Fit a parametric distribution
 """
 
 # %%
-
-
-# %%
 # In this example we estimate the parameters of a distribution from a given sample.
 # Once we are settled on a good candidate, we use the corresponding factory to fit
 # the distribution. Each distribution factory has one or several estimators available.
@@ -15,11 +12,7 @@ Fit a parametric distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
+import openturns.viewer as otv
 
 # %%
 # The Normal distribution
@@ -44,7 +37,7 @@ print(distribution.getParameter())
 # We draw the fitted distribution
 graph = distribution.drawPDF()
 graph.setTitle("Fitted Normal distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Student distribution
@@ -70,7 +63,7 @@ print(distribution.getParameter())
 # Draw fitted distribution
 graph = distribution.drawPDF()
 graph.setTitle("Fitted Student distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Pareto distribution
@@ -91,7 +84,8 @@ print(distribution.getParameter())
 
 graph = distribution.drawPDF()
 graph.setTitle("Fitted Pareto distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
-
-plt.show()
+# %%
+# Display all graphs
+otv.View.ShowAll()

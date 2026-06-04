@@ -2,7 +2,7 @@
 /**
  *  @brief TNC is an actual implementation for OptimizationAlgorithmImplementation using the TNC library
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include <cmath> // For HUGE_VAL
-#include <cstring> // std::memset
 
 #include "openturns/TNC.hxx"
 #include "algotnc.h"
@@ -109,6 +108,7 @@ void TNC::checkProblem(const OptimizationProblem & problem) const
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {
+  result_ = OptimizationResult(getProblem());
   const UnsignedInteger dimension = getProblem().getDimension();
 
   Point x(getStartingPoint());
@@ -208,15 +208,17 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  const int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumCallsNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = nullptr;
 
-  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_ = OptimizationResult(getProblem());
   result_.setStatusMessage(tnc_rc_string[returnCode - TNC_MINRC]);
   if (returnCode == TNC_MAXFUN)
     result_.setStatus(OptimizationResult::MAXIMUMCALLS);
   else if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
     result_.setStatus(OptimizationResult::FAILURE);
+
+  setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -389,7 +391,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   try
   {
     for (UnsignedInteger i = 0; i < dimension; ++ i)
-      if (!SpecFunc::IsNormal(inP[i]))
+      if (!std::isfinite(inP[i]))
         throw InvalidArgumentException(HERE) << "TNC got a nan input value";
 
     outP = problem.getObjective().operator()(inP);
@@ -406,11 +408,11 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   }
   catch (const std::exception & exc)
   {
-    LOGWARN(OSS() << "TNC went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
+    LOGINFO(OSS() << "TNC went to an abnormal point x=" << inP.__str__() << " y=" << outP.__str__() << " msg=" << exc.what());
 
     // penalize it
     *f = problem.isMinimization() ? SpecFunc::Infinity : -SpecFunc::Infinity;
-    std::memset(g, 0, dimension);
+    std::fill(g, g + dimension, 0.0);
 
     // exit gracefully
     return 1;
@@ -424,10 +426,12 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
+  int returnValue = 0;
+
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
   if (!(algorithm->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
-    return 1;
+    returnValue = 1;
 
   // callbacks
   if (algorithm->progressCallback_.first)
@@ -442,8 +446,9 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     else
       throw InternalException(HERE) << "Null p_nfeval";
     algorithm->result_.setStatus(OptimizationResult::INTERRUPTION);
+    returnValue = 1;
   }
-  return 0;
+  return returnValue;
 }
 
 END_NAMESPACE_OPENTURNS

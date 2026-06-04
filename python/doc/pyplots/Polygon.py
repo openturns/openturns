@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 # Generate the data for the polygons to be drawn
 size = 50
@@ -21,7 +21,7 @@ for i in range(size):
     data2[i] = cursor
 
 # Create an empty graph
-graph = ot.Graph("Polygons example", "x1", "x2", True)
+graph = ot.Graph("Polygons example", "x1", "x2")
 
 # Create the first polygon
 myPolygon1 = ot.Polygon(data1)
@@ -39,4 +39,4 @@ graph.add(myPolygon2)
 graph.setLogScale(1)
 
 fig = plt.figure(figsize=(5, 5))
-View(graph, figure=fig)
+otv.View(graph, figure=fig)

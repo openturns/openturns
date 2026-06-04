@@ -2,7 +2,7 @@
 /**
  *  @brief The Normal distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,8 +37,8 @@ class OT_API Normal
 
   CLASSNAME
 
-    /** The NormalCopula class is closely related with the Normal class */
-    friend class NormalCopula;
+  /** The NormalCopula class is closely related with the Normal class */
+  friend class NormalCopula;
 
 public:
 

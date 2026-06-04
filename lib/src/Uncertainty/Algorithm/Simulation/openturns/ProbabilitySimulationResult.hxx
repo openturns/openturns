@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of SimulationResult
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -85,7 +85,7 @@ public:
   /** Draw the importance factors */
   Graph drawImportanceFactors() const;
 
-  /** Confidence length */
+  /** Confidence length @deprecated */
   virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
@@ -101,8 +101,8 @@ protected:
 
   /* The event we are interested in */
   RandomVector event_;
-  Scalar probabilityEstimate_;
-  Scalar varianceEstimate_;
+  Scalar probabilityEstimate_ = 0.0;
+  Scalar varianceEstimate_ = 0.0;
 
 }; // class ProbabilitySimulationResult
 

@@ -2,7 +2,7 @@
 /**
  *  @brief Exception defines top-most exception strategies
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 #ifndef SWIG
 /*
  * A helper class that saves the position where it was instantiated in file.
- * This class works in conjonction with the preprocessor (cpp). See HERE macro
+ * This class works in conjunction with the preprocessor (cpp). See HERE macro
  */
 class OT_API PointInSourceFile
 {
@@ -102,31 +102,31 @@ public:
   Exception(const Exception & other);
 
   /** Destructor */
-  virtual ~Exception() throw();
+  virtual ~Exception() noexcept;
 
   /** @copydoc Object::__repr__() const */
-  String __repr__() const throw();
+  String __repr__() const noexcept;
 
   /** Point accessor
    *
    * This method returns a string describing where the exception was launched.
    * No need to free the string.
    */
-  const char * where() const throw();
+  const char * where() const noexcept;
 
   /** Reason accessor
    *
    * This method returns a string describing what was the reason of the exception.
    * No need to free the string.
    */
-  const char * what() const throw();
+  const char * what() const noexcept override;
 
   /** Class name accessor
    *
    * This method returns a string containing the class of the exception.
    * No need to free the string.
    */
-  const char * type() const throw();
+  const char * type() const noexcept;
 
   /** Stream operator
    *
@@ -188,7 +188,7 @@ OT_API OStream & operator <<(OStream & OS, const Exception & obj);
   {                                                             \
   public:                                                       \
     CName (const PointInSourceFile & point);                    \
-    virtual ~CName () throw();                                  \
+    virtual ~CName () noexcept;                                  \
     template <class T> CName & operator << (T obj)              \
     {                                                           \
       this->Exception::operator << ( obj );                     \
@@ -240,13 +240,6 @@ NEW_EXCEPTION( NotYetImplementedException );
 NEW_EXCEPTION( OutOfBoundException );
 
 /**
- * @class XMLException
- * @brief Raised when a general XML error was detected
- * @internal
- */
-NEW_EXCEPTION( XMLException );
-
-/**
  * @class XMLParserException
  * @brief Raised when an XML error was detected during file parsing
  * @internal
@@ -294,13 +287,6 @@ NEW_EXCEPTION( FileOpenException );
  * @internal
  */
 NEW_EXCEPTION( StudyFileParsingException );
-
-/**
- * @class ObjectNotInStudyException
- * @brief Raised when a file does not belong to a saved study
- * @internal
- */
-NEW_EXCEPTION( ObjectNotInStudyException );
 
 /**
  * @class ConfigurationFileParsingException

@@ -20,19 +20,11 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/installed-OTconfig.h.in
                 @ONLY)
 
 if (NOT ot_configure_date)
-  if (UNIX)
-    execute_process (COMMAND date "+%a, %d %b %Y %H:%M:%S %z"
-                      OUTPUT_VARIABLE ot_configure_date
-                      OUTPUT_STRIP_TRAILING_WHITESPACE
-                   )
-  elseif(MSVC OR WINTEL)
-    execute_process (COMMAND cmd " /C date /T"
-                      OUTPUT_VARIABLE ot_configure_date
-                      OUTPUT_STRIP_TRAILING_WHITESPACE)
-  endif()
+  string (TIMESTAMP ot_configure_date UTC)
   set (ot_configure_date "${ot_configure_date}" CACHE STRING "First configure date.")
 endif ()
-if (NOT ot_revision)
+
+if (EXISTS ${PROJECT_SOURCE_DIR}/.git AND NOT ot_revision)
   execute_process (COMMAND git rev-parse --short HEAD
                     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                     OUTPUT_VARIABLE ot_revision

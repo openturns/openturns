@@ -49,7 +49,6 @@ Defining Python and symbolic functions: a quick start introduction to functions
 import numpy as np
 import openturns as ot
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We first define the input random vector of the function.
@@ -215,7 +214,7 @@ print(empiricalSd)
 # How to manage the history
 # -------------------------
 #
-# The `MemoizeFunction` class defines a history system to store the calls to the function.
+# The :class:`openturns.MemoizeFunction` class defines a history system to store the calls to the function.
 #
 #  ====================   ===============================================
 #  Methods                Description
@@ -223,8 +222,8 @@ print(empiricalSd)
 #  `enableHistory()`      enables the history (it is enabled by default)
 #  `disableHistory()`     disables the history
 #  `clearHistory()`       deletes the content of the history
-#  `getHistoryInput()`    a `Sample`, the history of inputs X
-#  `getHistoryOutput()`   a `Sample`, the history of outputs Y
+#  `getInputHistory()`    a `Sample`, the history of inputs X
+#  `getOutputHistory()`   a `Sample`, the history of outputs Y
 #  ====================   ===============================================
 
 # %%

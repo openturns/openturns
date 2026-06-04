@@ -2,7 +2,7 @@
 /**
  *  @brief The Polya distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -292,10 +292,10 @@ void Polya::computeRange()
   Scalar upper = 1.0;
   Scalar step = 1.0;
   while (computeComplementaryCDF(upper) > cdfEpsilon_)
-    {
-      upper += step;
-      step *=2.0;
-    }
+  {
+    upper += step;
+    step *= 2.0;
+  }
   const Point upperBound(1, upper);
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);

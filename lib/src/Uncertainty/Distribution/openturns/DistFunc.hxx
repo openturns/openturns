@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -276,10 +276,10 @@ OT_API Point pStudent(const Scalar nu,
                       const Bool tail = false);
 
 OT_API Scalar pStudent2D(const Scalar nu,
-                      const Scalar x1,
-                      const Scalar x2,
-                      const Scalar rho,
-                      const Bool tail = false);
+                         const Scalar x1,
+                         const Scalar x2,
+                         const Scalar rho,
+                         const Bool tail = false);
 
 OT_API Scalar qStudent(const Scalar nu,
                        const Scalar p,

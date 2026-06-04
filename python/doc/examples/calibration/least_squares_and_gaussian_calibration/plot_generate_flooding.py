@@ -139,7 +139,7 @@ data
 # Plot the Y observations versus the X observations.
 
 # %%
-graph = ot.Graph("Observations", "Q (m3/s)", "H (m)", True)
+graph = ot.Graph("Observations", "Q (m3/s)", "H (m)")
 # Plot the model before calibration
 curve = mycf.draw(100.0, 4000.0).getDrawable(0)
 curve.setLegend("True model")

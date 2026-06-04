@@ -1,9 +1,9 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
 grid = ot.GridLayout(1, 2)
-pdf_2d = ot.Graph("KPermutations, PDF", "x1", "x2", True)
-cdf_2d = ot.Graph("KPermutations, CDF", "x1", "x2", True)
+pdf_2d = ot.Graph("KPermutations, PDF", "x1", "x2")
+cdf_2d = ot.Graph("KPermutations, CDF", "x1", "x2")
 
 distribution_2d = ot.KPermutationsDistribution(2, 10)
 
@@ -18,6 +18,6 @@ grid.setGraph(0, 0, pdf_2d)
 grid.setGraph(0, 1, cdf_2d)
 grid.setTitle("KPermutationsDistribution")
 grid.setLegendPosition("upper right")
-v = View(grid)
+v = otv.View(grid)
 fig = v.getFigure()
 fig.axes[1].legend(loc="best")

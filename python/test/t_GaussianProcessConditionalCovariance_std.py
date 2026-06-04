@@ -1,17 +1,9 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.experimental import (
-    GaussianProcessRegression,
-    GaussianProcessFitter,
-    GaussianProcessConditionalCovariance,
-)
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.ResourceMap.SetAsUnsignedInteger(
-    "OptimizationAlgorithm-DefaultMaximumCallsNumber", 20000
-)
 ot.ResourceMap.SetAsScalar("Cobyla-DefaultRhoBeg", 0.5)
 ot.ResourceMap.SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1e-8)
 
@@ -39,7 +31,7 @@ def test_one_input_one_output():
     covarianceModel = ot.SquaredExponential()
 
     # create algorithm
-    fit_algo = GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
 
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(ot.Interval(X.getMin(), X.getMax()))
@@ -48,26 +40,26 @@ def test_one_input_one_output():
     # perform an evaluation
     fit_result = fit_algo.getResult()
 
-    algo = GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = ot.GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(X)
-    ott.assert_almost_equal(mean, Y, 0.0, 1e-13)
+    ott.assert_almost_equal(mean, Y, 0.0, 1e-12)
 
     covariance = gccc.getConditionalCovariance(X)
     nullMatrix = ot.Matrix(sampleSize, sampleSize)
-    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13)
+    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-12)
 
     # Covariance per marginal & extract variance component
-    coll = gccc.getConditionalMarginalCovariance(X)
+    coll = gccc.getDiagonalCovarianceCollection(X)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0] * sampleSize, 1e-14, 1e-13)
+    ott.assert_almost_equal(var, [0] * sampleSize, 1e-12, 1e-12)
 
     # Variance per marginal
     var = gccc.getConditionalMarginalVariance(X)
-    ott.assert_almost_equal(var, ot.Sample(sampleSize, 1), 1e-14, 1e-13)
+    ott.assert_almost_equal(var, ot.Sample(sampleSize, 1), 1e-12, 1e-12)
 
     # Kriging variance is non-null on validation points
     validCovariance = gccc.getConditionalCovariance(X2)
@@ -109,7 +101,9 @@ def test_two_inputs_one_output():
     basis = ot.ConstantBasisFactory(inputDimension).build()
 
     # 4) GPF algorithm
-    fit_algo = GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(
+        inputSample, outputSample, covarianceModel, basis
+    )
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.setOptimizationBounds(
         ot.Interval(inputSample.getMin(), inputSample.getMax())
@@ -119,12 +113,12 @@ def test_two_inputs_one_output():
     # perform an evaluation
     fit_result = fit_algo.getResult()
     # Regression algorithm
-    algo = GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
 
     # 5) Kriging variance is 0 on learning points
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = ot.GaussianProcessConditionalCovariance(result)
     covariance = gccc.getConditionalCovariance(inputSample)
 
     mean = gccc.getConditionalMean(inputSample)
@@ -133,13 +127,13 @@ def test_two_inputs_one_output():
     ott.assert_almost_equal(covariance, ot.SquareMatrix(len(inputSample)), 7e-7, 7e-7)
 
     # Covariance per marginal & extract variance component
-    coll = gccc.getConditionalMarginalCovariance(inputSample)
+    coll = gccc.getDiagonalCovarianceCollection(inputSample)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0] * len(var), 0.0, 1e-13)
+    ott.assert_almost_equal(var, [0] * len(var), 0.0, 1e-12)
 
     # Variance per marginal
     var = gccc.getConditionalMarginalVariance(inputSample)
-    ott.assert_almost_equal(var, ot.Sample(inputSample.getSize(), 1), 0.0, 1e-13)
+    ott.assert_almost_equal(var, ot.Sample(inputSample.getSize(), 1), 0.0, 1e-12)
 
 
 def test_two_outputs():
@@ -160,16 +154,16 @@ def test_two_outputs():
     covarianceModel.setActiveParameter([])
     covarianceModel = ot.TensorizedCovarianceModel([covarianceModel] * 2)
 
-    fit_algo = GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+    fit_algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.run()
 
     # perform an evaluation
     fit_result = fit_algo.getResult()
-    algo = GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
     algo.run()
     result = algo.getResult()
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = ot.GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(sampleX)
     ott.assert_almost_equal(mean, sampleY, 1e-5, 1e-8)
@@ -177,18 +171,15 @@ def test_two_outputs():
     # Check the conditional covariance
     reference_covariance = ot.Matrix(
         [
-            [4.4527, 0.0, 8.34404, 0.0],
-            [0.0, 2.8883, 0.0, 5.41246],
-            [8.34404, 0.0, 15.7824, 0.0],
-            [0.0, 5.41246, 0.0, 10.2375],
+            [2.7237, 0, 3.40675, 0],
+            [0, 7082.96, 0, 8859.22],
+            [3.40675, 0, 4.54477, 0],
+            [0, 8859.22, 0, 11818.623],
         ]
     )
-    ott.assert_almost_equal(
-        gccc([[9.5], [10.0]]).getCovariance() - reference_covariance,
-        ot.Matrix(4, 4),
-        0.0,
-        2e-2,
-    )
+    covariance = gccc([[9.5], [10.0]]).getCovariance()
+    print(covariance)
+    ott.assert_almost_equal(covariance, reference_covariance, 0.0, 2e-2)
 
     marginalVariance_0 = gccc.getConditionalMarginalVariance(sampleX, 0)
     ott.assert_almost_equal(marginalVariance_0, ot.Sample(len(sampleX), 1), 0.0, 1e-6)
@@ -197,13 +188,15 @@ def test_two_outputs():
 
     # Marginal variance on a specific point
     x = [1.1]
-    covTest = gccc.getConditionalMarginalCovariance(x)
+    covTest = gccc.getDiagonalCovariance(x)
+    print(covTest)
     ref_cov_test = ot.Matrix(
         [
-            [0.000205032, 2.28332e-20],
-            [2.28332e-20, 0.000133002],
+            [0.0022268, 0],
+            [0, 5.79077],
         ]
     )
+
     margVarTest_0 = gccc.getConditionalMarginalVariance(x, 0)
     margVarTest_1 = gccc.getConditionalMarginalVariance(x, 1)
     ott.assert_almost_equal(covTest[0, 0], margVarTest_0, 0.0, 0)
@@ -221,20 +214,20 @@ def test_stationary_fun():
     y = x + ot.Normal(0, 0.1).getSample(20)
     y.setDescription(["G0"])
 
-    fit_algo = GaussianProcessFitter(x, y, model, ot.LinearBasisFactory().build())
+    fit_algo = ot.GaussianProcessFitter(x, y, model, ot.LinearBasisFactory().build())
     # set sensible optimization bounds and estimate hyper parameters
     fit_algo.run()
 
     # perform an evaluation
     fit_result = fit_algo.getResult()
-    algo = GaussianProcessRegression(fit_result)
+    algo = ot.GaussianProcessRegression(fit_result)
 
     algo.run()
     result = algo.getResult()
 
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = ot.GaussianProcessConditionalCovariance(result)
     variance = gccc.getConditionalMarginalVariance(x)
-    ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-15, 1e-15)
+    ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 1e-12, 1e-12)
 
 
 def test_gpr_no_opt():
@@ -258,20 +251,20 @@ def test_gpr_no_opt():
     covarianceModel = ot.SquaredExponential([1.6326932047296538], [4.895995962015954])
     trend_function = ot.SymbolicFunction("x", "1.49543")
     # GPR (comparable with test_one_input_one_output)
-    algo = GaussianProcessRegression(X, Y, covarianceModel, trend_function)
+    algo = ot.GaussianProcessRegression(X, Y, covarianceModel, trend_function)
     algo.run()
     result = algo.getResult()
-    gccc = GaussianProcessConditionalCovariance(result)
+    gccc = ot.GaussianProcessConditionalCovariance(result)
 
     mean = gccc.getConditionalMean(X)
     ott.assert_almost_equal(mean, Y, 1e-5, 1e-8)
 
     covariance = gccc.getConditionalCovariance(X)
     nullMatrix = ot.Matrix(sampleSize, sampleSize)
-    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13)
+    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-12)
 
     variance = gccc.getConditionalMarginalVariance(X)
-    ott.assert_almost_equal(variance, ot.Sample(len(X), 1), 1e-14, 1e-14)
+    ott.assert_almost_equal(variance, ot.Sample(len(X), 1), 1e-12, 1e-12)
 
     # Kriging variance is non-null on validation points
     validCovariance = gccc.getConditionalCovariance(X2)

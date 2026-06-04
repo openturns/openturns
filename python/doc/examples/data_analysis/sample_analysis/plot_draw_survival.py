@@ -69,9 +69,8 @@ Draw a survival function
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
+import openturns.viewer as otv
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 sigma = 1.4
@@ -103,12 +102,12 @@ p1 + p2
 # %%
 graph = distribution.drawCDF()
 graph.setTitle("CDF of a distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 graph = distribution.drawSurvivalFunction()
 graph.setTitle("Survival function of a distribution")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # In order to get finite bounds for the next graphics, we compute the `xmin`
@@ -130,7 +129,7 @@ npoints = 50
 logScaleX = True
 graph = distribution.drawSurvivalFunction(xmin, xmax, npoints, logScaleX)
 graph.setTitle("Survival function of a distribution where X axis is in log scale")
-view = viewer.View(graph)
+view = otv.View(graph)
 # graph
 
 # %%
@@ -144,7 +143,7 @@ graph.setLogScale(ot.GraphImplementation.LOGXY)
 graph.setTitle(
     "Survival function of a distribution where X and Y axes are in log scale"
 )
-view = viewer.View(graph)
+view = otv.View(graph)
 # graph
 
 # %%
@@ -182,22 +181,22 @@ p1 + p2
 # -----------------------------
 
 # %%
-# In order to draw the empirical functions of a `Sample`, we use the :class:`~openturns.UserDefined` class.
+# In order to draw the empirical functions of a `Sample`, we use the :class:`~openturns.FiniteDiscreteDistribution` class.
 #
 # * The `drawCDF` method plots the CDF.
 # * The `drawSurvivalFunction` method plots the survival function.
 
 # %%
-userdefined = ot.UserDefined(sample)
+userdefined = ot.FiniteDiscreteDistribution(sample)
 graph = userdefined.drawCDF()
 graph.setTitle("CDF of a sample")
-view = viewer.View(graph)
+view = otv.View(graph)
 # graph
 
 # %%
 graph = userdefined.drawSurvivalFunction()
 graph.setTitle("Empirical survival function of a sample")
-view = viewer.View(graph)
+view = otv.View(graph)
 # graph
 
 # %%
@@ -210,7 +209,7 @@ pointNumber = sample.getSize()
 logScaleX = True
 graph = userdefined.drawSurvivalFunction(xmin, xmax, pointNumber, logScaleX)
 graph.setTitle("Empirical survival function of a sample; X axis in log-scale")
-view = viewer.View(graph)
+view = otv.View(graph)
 # graph
 
 # %%
@@ -226,7 +225,7 @@ logScaleX = True
 graph = userdefined.drawSurvivalFunction(xmin, xmax, pointNumber, logScaleX)
 graph.setLogScale(ot.GraphImplementation.LOGXY)
 graph.setTitle("Empirical survival function of a sample; X and Y axes in log-scale")
-view = viewer.View(graph)
+view = otv.View(graph)
 # graph
 
 # %%
@@ -249,7 +248,7 @@ graphDistribution.setLegends(["GPD"])
 graph.add(graphDistribution)
 graph.setLegendPosition("upper right")
 graph.setTitle("GPD against the sample - n=%d" % (sample.getSize()))
-view = viewer.View(graph)
+view = otv.View(graph)
 
 
 # %%

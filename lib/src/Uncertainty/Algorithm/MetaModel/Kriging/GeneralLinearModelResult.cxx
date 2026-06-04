@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a linear model estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,10 +47,8 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const Basis & basis,
     const Point & trendCoefficients,
     const CovarianceModel & covarianceModel,
-    const Scalar optimalLogLikelihood,
-    const Point & residuals,
-    const Point & relativeErrors)
-  : MetaModelResult(inputSample, outputSample, metaModel, residuals, relativeErrors)
+    const Scalar optimalLogLikelihood)
+  : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , beta_(trendCoefficients)
   , covarianceModel_(covarianceModel)

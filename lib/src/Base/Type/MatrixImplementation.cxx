@@ -2,7 +2,7 @@
 /**
  *  @brief MatrixImplementation implements the classical mathematical MatrixImplementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,10 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <functional>
 #include <numeric>
-#include <cstring> // std::memset
 
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
@@ -189,7 +187,7 @@ void MatrixImplementation::resize(const UnsignedInteger newRowDim,
   {
     for (UnsignedInteger j = 1; j < nbColumns_; ++ j)
       std::copy(data() + j * nbRows_, data() + j * nbRows_ + newRowDim, const_cast<Scalar*>(data()) + j * newRowDim);
-    std::memset(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, 0, (nbRows_ - newRowDim + 1) * sizeof(Scalar));
+    std::fill(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, const_cast<Scalar*>(data()) + nbColumns_ * newRowDim + (nbRows_ - newRowDim + 1), 0.0);
   }
   resize(newRowDim * newColDim);
   if (newRowDim > nbRows_)
@@ -198,7 +196,7 @@ void MatrixImplementation::resize(const UnsignedInteger newRowDim,
     for (SignedInteger j = (minCol - 1); (j >= 0); -- j)
     {
       std::copy(data() + j * nbRows_, data() + (j + 1) * nbRows_, const_cast<Scalar*>(data()) + j * newRowDim);
-      std::memset(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, 0, (newRowDim - nbRows_) * sizeof(Scalar));
+      std::fill(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, const_cast<Scalar*>(data()) + (j + 1) * newRowDim, 0.0);
     }
   }
   nbRows_ = newRowDim;
@@ -239,7 +237,7 @@ const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger
   return row;
 }
 
-/* Column extration */
+/* Column extraction */
 const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger columnIndex) const
 {
   if (!(columnIndex < nbColumns_)) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
@@ -647,18 +645,15 @@ Bool MatrixImplementation::isTriangular(Bool lower) const
 }
 
 /* Comparison operator */
-Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
+Bool MatrixImplementation::operator == (const MatrixImplementation & other) const
 {
-  const MatrixImplementation &lhs(*this);
   Bool equality = true;
-
-  if (&lhs != &rhs)   // Not the same object
+  if (this != &other)
   {
-    const Collection<Scalar> & refLhs(static_cast<const Collection<Scalar> >(lhs));
-    const Collection<Scalar> & refRhs(static_cast<const Collection<Scalar> >(rhs));
-    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && refLhs == refRhs);
+    const Collection<Scalar> & refLhs(*this);
+    const Collection<Scalar> & refRhs(other);
+    equality = (nbRows_ == other.nbRows_ && nbColumns_ == other.nbColumns_ && (refLhs == refRhs));
   }
-
   return equality;
 }
 
@@ -1302,7 +1297,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSquare(Scalar & maximum
   Point currentEigenVector(dimension, 1.0);
   Point nextEigenVector(genVectProd(currentEigenVector));
   Scalar nextEigenValue = nextEigenVector.norm();
-  if (!SpecFunc::IsNormal(nextEigenValue))
+  if (!std::isfinite(nextEigenValue))
     throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
@@ -1315,7 +1310,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSquare(Scalar & maximum
     nextEigenValue = nextEigenVector.norm();
     precision = std::abs(nextEigenValue - maximumModule);
     found = precision <= epsilon * nextEigenValue;
-    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    LOGDEBUG(OSS() << "(" << iteration << ") precision=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
     maximumModule = nextEigenValue;
   }
   return found;
@@ -1330,7 +1325,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
   Point currentEigenVector(dimension, 1.0);
   Point nextEigenVector(symVectProd(currentEigenVector));
   Scalar nextEigenValue = nextEigenVector.norm();
-  if (!SpecFunc::IsNormal(nextEigenValue))
+  if (!std::isfinite(nextEigenValue))
     throw InvalidArgumentException(HERE) << "Cannot compute eigen value due to nan/inf values";
   maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
   Bool found = false;
@@ -1343,7 +1338,7 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
     nextEigenValue = nextEigenVector.norm();
     precision = std::abs(nextEigenValue - maximumModule);
     found = precision <= epsilon * nextEigenValue;
-    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    LOGDEBUG(OSS() << "(" << iteration << ") precision=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
     maximumModule = nextEigenValue;
   }
   return found;
@@ -1365,7 +1360,7 @@ Point MatrixImplementation::computeSingularValuesInPlace()
   // check for nans, cf https://github.com/Reference-LAPACK/lapack/issues/469
   for (UnsignedInteger j = 0; j < getNbColumns(); ++ j)
     for (UnsignedInteger i = 0; i < getNbRows(); ++ i)
-      if (!SpecFunc::IsNormal(operator()(i, j)))
+      if (!std::isfinite(operator()(i, j)))
         throw InvalidArgumentException(HERE) << "Cannot compute singular values due to nan/inf values";
 
   char jobz = 'N';
@@ -1549,7 +1544,7 @@ MatrixImplementation MatrixImplementation::computeRegularizedCholesky() const
     throw InvalidArgumentException(HERE) << "In MatrixImplementation::computeRegularizedCholesky, could not compute the Cholesky factor."
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)
-    LOGWARN(OSS() <<  "Warning! Scaling up to " << cumulatedScaling << " was needed in order to factorize the matrix.");
+    LOGINFO(OSS() <<  "Scaling up to " << cumulatedScaling << " was needed in order to factorize the matrix.");
   return choleskyFactor;
 }
 

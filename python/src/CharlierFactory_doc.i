@@ -1,0 +1,56 @@
+%feature("docstring") OT::CharlierFactory
+R"RAW(Charlier specific orthonormal univariate polynomial family.
+
+For :class:`~openturns.Poisson`'s distribution.
+
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Location parameter of :class:`~openturns.Poisson`'s distribution.
+
+Notes
+-----
+Any sequence of orthogonal polynomials has a recurrence formula relating any
+three consecutive polynomials as follows:
+
+.. math::
+
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+
+The recurrence coefficients for the Charlier polynomials come analytically and
+read:
+
+.. math::
+
+    \begin{array}{rcl}
+        a_i & = & \displaystyle - \frac{1}{\sqrt{\lambda (i + 1)}} \\
+        b_i & = & \displaystyle \frac{i + \lambda}{\sqrt{\lambda (i + 1)}} \\
+        c_i & = & \displaystyle - \sqrt{1 - \frac{1}{i + 1}}
+    \end{array}, \quad 1 < i
+
+where :math:`\lambda` is the location parameter of
+:class:`~openturns.Poisson`'s distribution.
+
+See also
+--------
+StandardDistributionPolynomialFactory
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial_factory = ot.CharlierFactory()
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+1 - X
+0.707107 - 2.12132 * X + 0.707107 * X^2)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CharlierFactory::getLambda
+"Accessor to the location parameter of :class:`~openturns.Poisson`.
+
+Returns
+-------
+lambda : float
+    Location parameter of :class:`~openturns.Poisson`'s distribution."

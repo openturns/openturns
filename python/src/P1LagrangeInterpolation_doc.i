@@ -1,0 +1,89 @@
+%feature("docstring") OT::P1LagrangeInterpolation
+"P1 interpolation of values between two meshes.
+
+Available constructors:
+
+    P1LagrangeInterpolation(*inputMesh, outputMesh, dimension*)
+
+    P1LagrangeInterpolation(*inputMesh, outputMesh, dimension, enclosingSimplex, nearestNeighbour*)
+
+Parameters
+----------
+inputMesh : :class:`~openturns.Mesh`
+    Input mesh.
+
+outputMesh : :class:`~openturns.Mesh`
+    Output mesh.
+
+dimension : int
+    Dimension of fields to evaluate.
+
+enclosingSimplex : :class:`~openturns.EnclosingSimplexAlgorithm`
+    Algorithm used to find the enclosing simplex of each output point in
+    input mesh.  If a point is not contained in any mesh simplex, the
+    nearest point is used.
+    
+    Default algorithm is :class:`~openturns.BoundingVolumeHierarchy` built
+    on the vertices and simplices of the *inputMesh*.
+
+nearestNeighbour : :class:`~openturns.NearestNeighbourAlgorithm`
+    Algorithm used to find nearest neighbour of an output point, when it
+    is not contained in any simplex of input mesh.
+    
+    Default algorithm is :class:`~openturns.KDTree` built on the vertices of the *inputMesh*.
+
+Notes
+-----
+A P1LagrangeInterpolation is a particular :class:`~openturns.FieldFunction`. It allows one to
+evaluate a :class:`~openturns.FieldFunction` defined on a mesh (*inputMesh*)
+on another mesh (*outputMesh*) by piecewise linear interpolation.
+
+The P1LagrangeInterpolation builds a projection
+matrix between the *inputMesh* and the *outputMesh*.
+Then, when evaluated on the field values attached to the *inputMesh*,
+it returns the field values attached to the *outputMesh*.
+
+The dimension of the field values can change. But the dimension of
+both meshes must be the same."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeInterpolation::getInputMesh
+"Accessor to the input mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    Input mesh."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeInterpolation::setDimension
+"Accessor to dimension of fields which are evaluated.
+
+Parameters
+----------
+dimension : int
+    Dimension of input fields which are going to be evaluated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeInterpolation::getEnclosingSimplexAlgorithm
+"Accessor to the algorithm used to find enclosing simplex.
+
+Returns
+-------
+enclosingSimplex : :class:`~openturns.EnclosingSimplexAlgorithm`
+    Enclosing simplex algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeInterpolation::getNearestNeighbourAlgorithm
+"Accessor to the algorithm used to find nearest neighbours.
+
+This algorithm is used only when point is not contained in any simplex.
+
+Returns
+-------
+nearestNeighbour : :class:`~openturns.NearestNeighbourAlgorithm`
+    Nearest neighbour algorithm."

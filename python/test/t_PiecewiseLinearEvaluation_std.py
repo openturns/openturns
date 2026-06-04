@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ref = ot.SymbolicFunction("x", "sin(x)")
 size = 12
@@ -24,9 +25,5 @@ values = [-2.0, 2.0, 1.0, 3.0, 5.0]
 evaluation = ot.PiecewiseLinearEvaluation(locations, values)
 evaluation.setEnableExtrapolation(False)
 f = ot.Function(evaluation)
-try:
+with ott.assert_raises(TypeError):
     f([-12.5])
-except Exception:
-    pass
-else:
-    raise ValueError("test fails because no exception was raised")

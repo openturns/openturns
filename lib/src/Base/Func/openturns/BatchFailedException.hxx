@@ -2,7 +2,7 @@
 /**
  *  @brief Exception thrown during a Sample evaluation to retrieve partial results
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,8 +47,6 @@ public:
     if (succeededIndices_.getSize() != outputSample.getSize())
       throw InvalidArgumentException(HERE) << "indices size must match output size";
   }
-
-  virtual ~BatchFailedException() throw() {}
 
   template <class T> BatchFailedException & operator << (T obj)
   {

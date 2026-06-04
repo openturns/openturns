@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements functions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -170,8 +170,11 @@ public:
                                    const Scalar vMax = -SpecFunc::Infinity) const;
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * state);
-  void setStopCallback(StopCallback callBack, void * state = nullptr);
+  void setStopCallback(EvaluationImplementation::StopCallback callBack, void * state = nullptr);
+
+  /** Detach callback */
+  void setDetachCallback(EvaluationImplementation::DetachCallback callBack, void * state = nullptr);
+
 
 }; /* class Evaluation */
 

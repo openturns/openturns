@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all drawables
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -231,6 +231,11 @@ public:
                                 const Scalar saturation,
                                 const Scalar value,
                                 const Scalar alpha);
+
+  /** Convert a collection of scalar into a collection of colors, aka a Description */
+  static Description ConvertValuesToColors(const Point & values,
+      const Description & palette,
+      const Scalar alpha);
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);

@@ -2,7 +2,7 @@
 /**
  * @brief CorrelationAnalysis implements the sensitivity analysis methods based on correlation coefficients
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -130,8 +130,8 @@ Point CorrelationAnalysis::ComputeSRC(const Sample & firstSample,
 {
   const UnsignedInteger dimension = firstSample.getDimension();
   //if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
-  // Var(X+a) = Var(X); However for numerical stability, data are centered
-  LinearLeastSquares regressionAlgorithm(firstSample - firstSample.computeMean(), secondSample);
+  // No need to center data as it is done by LinearLeastSquares
+  LinearLeastSquares regressionAlgorithm(firstSample, secondSample);
   regressionAlgorithm.run();
   // Linear coefficients
   const Point linear(*regressionAlgorithm.getLinear().getImplementation());
@@ -179,8 +179,8 @@ Point CorrelationAnalysis::ComputePCC(const Sample & firstSample,
     LinearLeastSquares remainingVersusTruncatedInput(truncatedInput, remainingInput);
     remainingVersusTruncatedInput.run();
 
-    const Sample residualOutput(secondSample - outputVersusTruncatedInput.getMetaModel()(truncatedInput));
-    const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getMetaModel()(truncatedInput));
+    const Sample residualOutput(secondSample - outputVersusTruncatedInput.getResult().getMetaModel()(truncatedInput));
+    const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getResult().getMetaModel()(truncatedInput));
 
     // Compute the correlation between the residuals
     pcc[index] = ComputeLinearCorrelation(residualOutput, residualRemaining)[0];

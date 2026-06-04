@@ -17,9 +17,6 @@ Estimate a multivariate distribution
 import openturns as ot
 import math as m
 
-ot.Log.Show(ot.Log.NONE)
-ot.RandomGenerator.SetSeed(0)
-
 # %%
 # Generate some multivariate data to estimate, with correlation
 cop1 = ot.AliMikhailHaqCopula(0.6)

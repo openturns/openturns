@@ -2,7 +2,7 @@
 /**
  *  @brief This class provides all the mechanism of path manipulation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_PATH_HXX
 #define OPENTURNS_PATH_HXX
 
-#include <iostream>              // for std::ostream
 #include <vector>                // for std::vector
 #include "openturns/OTprivate.hxx"
 
@@ -95,14 +94,6 @@ protected:
    * The HOME subdirectory path
    */
   static const char * HomeConfigSubdirectory_;
-
-  /**
-   * @var static const char * Path::PrefixConfigSubdirectory_
-   *
-   * The 'prefix' subdirectory path
-   */
-  static const char * PrefixConfigSubdirectory_;
-
 
 private:
   /** Get the parent directory */

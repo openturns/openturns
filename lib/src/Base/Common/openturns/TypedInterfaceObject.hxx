@@ -2,7 +2,7 @@
 /**
  *  @brief TypedInterfaceObject implements InterfaceObject for a specific class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,13 +75,13 @@ public:
 #endif
 
   /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
-  inline virtual ImplementationAsPersistentObject getImplementationAsPersistentObject() const
+  inline ImplementationAsPersistentObject getImplementationAsPersistentObject() const override
   {
     return p_implementation_;
   }
 
   /** Set the pointer to the underlying implementation object */
-  inline virtual void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj)
+  inline void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj) override
   {
     p_implementation_.assign(obj);
   }
@@ -93,13 +93,13 @@ public:
   }
 
   /** Name accessor */
-  inline virtual void setName(const String & name)
+  inline void setName(const String & name) override
   {
     this->copyOnWrite();
     p_implementation_->setName(name);
   }
   /** Name accessor */
-  inline virtual String getName() const
+  inline String getName() const override
   {
     return p_implementation_->getName();
   }

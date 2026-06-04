@@ -12,7 +12,7 @@ Sample
     :template: class.rst_t
 
     Sample
-    experimental.SamplePartition
+    SamplePartition
 
 .. _parametric_distribution_factories:
 
@@ -42,6 +42,7 @@ Building distributions from samples
     DiracFactory
     DirichletFactory
     ExponentialFactory
+    FiniteDiscreteDistributionFactory
     FisherSnedecorFactory
     FrechetFactory
     GammaFactory
@@ -105,13 +106,12 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     SkellamFactory
-    experimental.SmoothedUniformFactory
+    SmoothedUniformFactory
     StudentFactory
     TrapezoidalFactory
     TriangularFactory
     TruncatedNormalFactory
     UniformFactory
-    UserDefinedFactory
     VonMisesFactory
     WeibullMinFactory
     WeibullMaxFactory
@@ -195,7 +195,7 @@ Graphical tests
 
     :template: class.rst_t
     GeneralizedExtremeValueValidation
-    experimental.GeneralizedParetoValidation
+    GeneralizedParetoValidation
 
 Hypothesis tests
 ----------------
@@ -255,3 +255,11 @@ Iterative statistics
     IterativeMoments
     IterativeThresholdExceedance
 
+Quantile confidence
+===================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    QuantileConfidence

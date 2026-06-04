@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for SmoothedUniform distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/SmoothedUniformFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 
@@ -66,7 +65,7 @@ SmoothedUniform SmoothedUniformFactory::buildAsSmoothedUniform(const Sample & sa
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a SmoothedUniform distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a SmoothedUniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an UserDefined distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an FiniteDiscreteDistribution distribution if data contains NaN or Inf";
   // method of moments
   const Scalar variance = sample.computeVariance()[0];
   if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a SmoothedUniform distribution from a constant sample.";

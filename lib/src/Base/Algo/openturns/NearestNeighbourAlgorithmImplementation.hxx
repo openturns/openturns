@@ -3,7 +3,7 @@
  *  @brief  This class provides fast search of neighbours.
  *  This is an abstract class
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,6 +62,9 @@ public:
 
   /* Get the indices of the k nearest neighbours of the given point */
   virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted = false) const;
+
+  /* Get the indices of the neighbours inside radius of the given point */
+  virtual Indices queryRadius(const Point & x, const Scalar radius, Point & distanceOut, const Bool sorted = false) const;
 
   /** String converter */
   String __repr__() const override;

@@ -47,7 +47,8 @@ for i in range(size):
     data2[index, 1] += 1
 
 # Create an empty graph
-myGraph = ot.Graph("Some barplots", "y", "frequency", True, "topleft")
+myGraph = ot.Graph("Some barplots", "y", "frequency")
+myGraph.setLegendPosition("upper left")
 
 # Create the first barplot
 myBarPlot1 = ot.BarPlot(data1, min1, "blue", "shaded", "dashed", "histogram1")

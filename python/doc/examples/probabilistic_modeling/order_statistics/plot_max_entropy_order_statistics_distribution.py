@@ -51,7 +51,6 @@ import openturns.viewer as otv
 
 ot.ResourceMap.SetAsString("Contour-DefaultColorMapNorm", "rank")
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the distributions :math:`X_i`:

@@ -1,0 +1,98 @@
+%feature("docstring") OT::IteratedQuadrature
+R"RAW(Multivariate integration algorithm.
+
+Parameters
+----------
+univariateQuadrature : :class:`~openturns.IntegrationAlgorithm`
+
+    By default, the integration algorithm is the Gauss-Kronrod
+    algorithm (:class:`~openturns.GaussKronrod`)  with the parameters
+    `IteratedQuadrature-MaximumSubIntervals`,
+    `IteratedQuadrature-MaximumError`, `IteratedQuadrature-Rule` in :class:`~openturns.ResourceMap`.
+
+Notes
+-----
+This class enables to approximate the following integral:
+
+.. math::
+
+    I_f = \int_{a}^{b}\, \int_{l_1(x_0)}^{u_1(x_0)}\, \int_{l_2(x_0, x_1)}^{u_2(x_0,x_1)}\, \int_{l_{n-1}(x_0, \dots, x_{n-2})}^{u_{n-1}(x_0, \dots, x_{n-2})} \, f(x_0, \dots, x_{n-1})\di{x_{n-1}}\dots\di{x_0}
+
+with :math:`f: \Rset^n \mapsto \Rset^p`, :math:`l_k, u_k: \Rset^k \mapsto \Rset` and :math:`n\geq 1`. For :math:`n=1`, there is no bound functions :math:`l_k` and :math:`u_k`.
+
+
+Note that the default parametrisation of the :class:`~openturns.GaussKronrod` class
+leads to a more precise evaluation of the integral but at a greater cost.
+
+It is recommended to increase the order of the quadrature
+rule and the number of subintervals if the integrand or one of
+the bound functions is smooth but with many oscillations.
+
+When the function :math:`f: \Rset \mapsto \Rset^p` has a scalar input, use the iterated quadrature algorithm of the :class:`~openturns.GaussKronrod` class.
+
+Examples
+--------
+Create an iterated quadrature algorithm:
+
+>>> import openturns as ot
+>>> import math as m
+>>> a = -m.pi
+>>> b = m.pi
+>>> f = ot.SymbolicFunction(['x', 'y'], ['1+cos(x)*sin(y)'])
+>>> l = [ot.SymbolicFunction(['x'], [' 2+cos(x)'])]
+>>> u = [ot.SymbolicFunction(['x'], ['-2-cos(x)'])]
+
+Evaluate the integral with high precision:
+
+>>> Iref = ot.IteratedQuadrature(ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))).integrate(f, a, b, l, u)
+
+Evaluate the integral with the default IteratedQuadrature algorithm:
+
+>>> Idefault = ot.IteratedQuadrature().integrate(f, a, b, l, u)
+>>> relative_error = abs(1.0-Idefault[0]/Iref[0])
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IteratedQuadrature::integrate
+R"RAW(Evaluation of the integral of :math:`f` on a domain.
+
+Available usages:
+    integrate(*f, interval*)
+
+    integrate(*f, a, b, lowerBoundFunctions, upperBoundFunctions*)
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^n \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^n` 
+    The integration domain. 
+a,b : float 
+    Bounds of the integration interval of the first scalar input :math:`x_0`
+lowerBoundFunctions, upperBoundFunctions : list of :class:`~openturns.Function`
+    List of :math:`n` functions :math:`(l_0, \dots, l_{n-1})` and :math:`(u_0, \dots, u_{n-1})` where :math:`l_k, u_k: \Rset^k \mapsto \Rset` defining the integration domain as defined above.
+    The bound functions can cross each other. 
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::IteratedQuadrature::getAlgorithm
+"Accessor to the underlying 1D integration algorithm.
+
+Returns
+-------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    The 1D integration algorithm used recursively over the dimensions of the integration domain."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::IteratedQuadrature::setAlgorithm
+"Set the underlying 1D integration algorithm.
+
+Parameters
+----------
+algo : :class:`~openturns.IntegrationAlgorithm`
+    The 1D integration algorithm used recursively over the dimensions of the integration domain."

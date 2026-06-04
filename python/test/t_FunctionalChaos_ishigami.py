@@ -7,9 +7,9 @@ ot.TESTPREAMBLE()
 
 # Problem parameters
 im = ishigami_function.IshigamiModel()
-distribution = im.inputDistribution
+distribution = im.distribution
 model = im.model
-dimension = im.inputDistribution.getDimension()
+dimension = im.distribution.getDimension()
 sobolFirstOrderReference = [im.S1, im.S2, im.S3]
 sobolSecondOrderReference = [im.S12, im.S13, im.S23]
 sobolTotalReference = [im.ST1, im.ST2, im.ST3]

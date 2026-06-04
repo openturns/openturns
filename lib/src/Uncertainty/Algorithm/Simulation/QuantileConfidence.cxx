@@ -2,7 +2,7 @@
 /**
  *  @brief Quantile confidence interval computation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -166,6 +166,13 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
 // compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k
 Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & sample, const Bool tail) const
 {
+  Scalar coverageOut = -1.0;
+  return computeUnilateralConfidenceIntervalWithCoverage(sample, coverageOut, tail);
+}
+
+// compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k and the actual coverage
+Interval QuantileConfidence::computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool tail) const
+{
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Expected a sample of dimension 1";
   Point lowerBound(1, -SpecFunc::MaxScalar);
@@ -174,15 +181,18 @@ Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & 
   Interval::BoolCollection finiteUpperBound(1, false);
   const Sample sortedSample(sample.sort());
   const UnsignedInteger k = computeUnilateralRank(sample.getSize(), tail);
+  const Binomial binomial(sample.getSize(), getAlpha());
   if (tail)
   {
     lowerBound[0] = sortedSample(k, 0);
     finiteLowerBound[0] = true;
+    coverageOut = binomial.computeComplementaryCDF(k);
   }
   else
   {
     upperBound[0] = sortedSample(k, 0);
     finiteUpperBound[0] = true;
+    coverageOut = binomial.computeCDF(k);
   }
   return Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
 }
@@ -190,9 +200,18 @@ Interval QuantileConfidence::computeUnilateralConfidenceInterval(const Sample & 
 // compute interval of the form [X_k1; X_k2] from bilateral ranks k1, k2
 Interval QuantileConfidence::computeBilateralConfidenceInterval(const Sample & sample) const
 {
+  Scalar coverageOut = -1.0;
+  return computeBilateralConfidenceIntervalWithCoverage(sample, coverageOut);
+}
+
+// compute interval of the form [X_k1; X_k2] from bilateral ranks k1, k2 with actual coverage
+Interval QuantileConfidence::computeBilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut) const
+{
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Expected a sample of dimension 1";
   const Indices rank(computeBilateralRank(sample.getSize()));
+  const Binomial binomial(sample.getSize(), getAlpha());
+  coverageOut = binomial.computeCDF(rank[1]) - binomial.computeCDF(rank[0]);
   const Sample sortedSample(sample.sort());
   return Interval(Point({sortedSample(rank[0], 0)}), Point({sortedSample(rank[1], 0)}));
 }
@@ -204,8 +223,8 @@ class QuantileConfidenceEvaluation: public EvaluationImplementation
 {
 public:
   QuantileConfidenceEvaluation(const Scalar alpha,
-                  const UnsignedInteger rank,
-                  const Bool tail)
+                               const UnsignedInteger rank,
+                               const Bool tail)
     : EvaluationImplementation()
     , alpha_(alpha)
     , rank_(rank)
@@ -214,22 +233,22 @@ public:
     // Nothing to do
   }
 
-  QuantileConfidenceEvaluation * clone() const
+  QuantileConfidenceEvaluation * clone() const override
   {
     return new QuantileConfidenceEvaluation(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     return {DistFunc::pBeta(rank_ + 1, point[0] - rank_, tail_ ? 1.0 - alpha_ : alpha_)};
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 1;
   }
@@ -251,7 +270,7 @@ UnsignedInteger QuantileConfidence::computeUnilateralMinimumSampleSize(const Uns
   //   \beta  = beta_
   //   r      = rank
   // It rewrites F_{N,alpha}(N-r-1)>=beta where F_{N,alpha} is the CDF of the
-  // Binomial(N, alpha) ditribution.
+  // Binomial(N, alpha) distribution.
   // Easy case: rank=0, the quantile bound is given by the largest upper statistics. The equation to solve is N=\min{n|1-\alpha^n>=\beta}
   Scalar nApprox = 0.0;
   const Function wilksConstraint(QuantileConfidenceEvaluation(alpha_, rank, tail).clone());

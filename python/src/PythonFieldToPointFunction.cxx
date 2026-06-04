@@ -2,7 +2,7 @@
 /**
  * @brief PythonFieldToPointFunction implementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@
  */
 #include <Python.h>
 #include <cstdio>
-#include "openturns/swigpyrun.h"
+#include "openturns/swigpyrun_once.h"
 
 #include "openturns/PythonFieldToPointFunction.hxx"
 #include "openturns/OSS.hxx"

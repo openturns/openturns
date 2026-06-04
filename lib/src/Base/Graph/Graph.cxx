@@ -2,7 +2,7 @@
 /**
  *  @brief Graph implements graphic devices for plotting through R
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -115,14 +115,6 @@ void Graph::setDrawable(const UnsignedInteger index, const Drawable & drawable)
   copyOnWrite();
   getImplementation()->setDrawable(index, drawable);
 }
-
-void Graph::setDrawable(const Drawable & drawable,
-                        const UnsignedInteger index)
-{
-  copyOnWrite();
-  getImplementation()->setDrawable(drawable, index);
-}
-
 
 /* Global color accessor */
 Description Graph::getColors() const

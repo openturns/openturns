@@ -7,16 +7,13 @@ Create a quadratic function
 # In this example we are going to create a quadratic function of the form
 #
 # .. math::
-#    f : \underline{X} \mapsto \underline{\underline{A}} ( \underline{X} - \underline{b} ) + \underline{c}
-#    + \frac{1}{2} \underline{X}^T \times \underline{\underline{\underline{M}}} \times \underline{X}
+#    f : \vect{x} \mapsto \mat{A} ( \vect{x} - \vect{b} ) + \vect{c}
+#    + \frac{1}{2} \vect{x}^T\tens{M}\vect{x}
 #
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # create a quadratic function
@@ -36,5 +33,8 @@ print(function(x))
 graph = (
     ot.ParametricFunction(function, [1, 2], [2.0, 1.0]).getMarginal(1).draw(0.0, 2.0)
 )
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+# %%
+# Display all graphs
+otv.View.ShowAll()

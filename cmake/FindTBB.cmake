@@ -15,7 +15,7 @@
 #  TBB_ROOT_DIR - root dir (ex. /usr/local)
 
 #=============================================================================
-# Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -32,6 +32,7 @@ find_path (TBB_INCLUDE_DIR NAMES tbb/tbb.h DOC "TBB include directory")
 set (TBB_INCLUDE_DIRS ${TBB_INCLUDE_DIR})
 
 # version
+unset (_VERSION_FILE)
 if (EXISTS ${TBB_INCLUDE_DIR}/oneapi/tbb/version.h)
   set (_VERSION_FILE ${TBB_INCLUDE_DIR}/oneapi/tbb/version.h)
 elseif (EXISTS ${TBB_INCLUDE_DIR}/tbb/tbb_stddef.h)

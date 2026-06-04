@@ -41,7 +41,7 @@ int main(int, char *[])
 
   // Create the input distribution
   const Collection<Distribution> marginals(dimension, Uniform(-M_PI, M_PI));
-  const ComposedDistribution distribution(marginals);
+  const JointDistribution distribution(marginals);
 
   // Create the orthogonal basis
   const Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension, LegendreFactory());

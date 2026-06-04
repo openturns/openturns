@@ -3,7 +3,7 @@
  *  @brief The class that implements the composition between numerical
  *        math functions implementations
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -220,5 +220,10 @@ void ComposedEvaluation::setStopCallback(StopCallback callBack, void * state)
   rightFunction_.setStopCallback(callBack, state);
 }
 
+void ComposedEvaluation::setDetachCallback(DetachCallback callBack, void * state)
+{
+  leftFunction_.setDetachCallback(callBack, state);
+  rightFunction_.setDetachCallback(callBack, state);
+}
 
 END_NAMESPACE_OPENTURNS

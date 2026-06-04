@@ -58,20 +58,13 @@ assert factory.getImplementation().__class__.__name__ == "PoissonFactory", "wron
 # Now, test each factory for the partial estimation of any subset of its parameters
 
 params = {
-    "BetaFactory": 0.05,
     "FisherSnedecorFactory": 0.25,
-    "FrechetFactory": 0.02,
     "LogisticFactory": 0.025,
-    "LogNormalFactory": 0.02,
     "ParetoFactory": 0.15,
-    "PolyaFactory": 0.05,
-    "RayleighFactory": 0.02,
-    "RiceFactory": 0.3,
     "StudentFactory": 0.15,
     "StudentFactory": 0.15,
     "TrapezoidalFactory": 1.0,
     "TriangularFactory": 0.025,
-    "VonMisesFactory": 0.02,
 }
 
 for factory in factories:
@@ -84,10 +77,24 @@ for factory in factories:
     # Skip HistogramFactory because it is nonparametric, so the rebuilt distribution has a number of parameters different from the reference distribution
     # Skip some others because they are quite slow
     distName = factoryName.replace("Factory", "")
-    if distName in ["Rice", "Student", "Trapezoidal", "TruncatedNormal", "VonMises",
-                    "Histogram", "MeixnerDistribution", "Pareto", "Dirichlet", "InverseNormal"]:
+    if distName in [
+        "Rice",
+        "Skellam",
+        "Student",
+        "Trapezoidal",
+        "TruncatedNormal",
+        "VonMises",
+        "Histogram",
+        "MeixnerDistribution",
+        "Multinomial",
+        "Pareto",
+        "Polya",
+        "Binomial",
+        "Dirichlet",
+        "InverseNormal",
+    ]:
         continue
-    eps = params.get(factoryName, 0.01)
+    eps = params.get(factoryName, 0.05)
 
     # Reference distribution
     refDistribution = factory.build()

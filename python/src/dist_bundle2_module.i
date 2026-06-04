@@ -1,10 +1,11 @@
 // SWIG file dist_module.i
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle2
-#pragma SWIG nowarn=302,509
+
 
 %{
 #include "openturns/OTconfig.hxx"
+#include "openturns/OTAlgorithm.hxx"
 #include "openturns/OTBase.hxx"
 #include "openturns/OTModel.hxx"
 #include "openturns/OTDistribution.hxx"
@@ -51,16 +52,17 @@
 %include MeixnerDistributionFactory.i
 %include MethodOfMomentsFactory.i
 %include Mixture.i
-%include MixedHistogramUserDefined.i
+%include MixedHistogramFiniteDiscreteDistribution.i
 %include TruncatedDistribution.i
 /* Must be after TruncatedDistribution */
 %include KernelSmoothing.i
 /* Must be after Mixture */
-%include DeconditionedDistribution.i
+%include CompoundDistribution.i
 %include Multinomial.i
 %include MultinomialFactory.i
 %include Polya.i
 %include PolyaFactory.i
+%include PosteriorDistribution.i
 %include NonCentralChiSquare.i
 %include NonCentralStudent.i
 %include Normal.i

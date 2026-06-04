@@ -1,0 +1,18 @@
+%feature("docstring") OT::SobolSequence
+R"RAW(Sobol sequence.
+
+Parameters
+----------
+dimension : positive int, :math:`1\leq d \leq 1111`
+    Dimension of the points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sequence = ot.SobolSequence(2)
+>>> print(sequence.generate(5))
+0 : [ 0.5   0.5   ]
+1 : [ 0.75  0.25  ]
+2 : [ 0.25  0.75  ]
+3 : [ 0.375 0.375 ]
+4 : [ 0.875 0.875 ])RAW"

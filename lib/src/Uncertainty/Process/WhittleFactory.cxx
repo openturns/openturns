@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of process
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -443,7 +443,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       if (m_ > static_cast<UnsignedInteger>(n + 2)) currentInformationCriteria[0] = -2.0 * logLikelihood + 2.0 * (n + 1) * m_ / (m_ - n - 2);
       else
       {
-        LOGWARN(OSS() << "Warning! Unable to compute the corrected AIC criteria, too few data (" << m_ << ") for the model complexity (" << n + 1);
+        LOGWARN(OSS() << "Unable to compute the corrected AIC criteria, too few data (" << m_ << ") for the model complexity (" << n + 1);
         currentInformationCriteria[0] = SpecFunc::Infinity;
       }
       // Second, the AIC

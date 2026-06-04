@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Beta distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/BetaFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/BetaMuSigma.hxx"
 
@@ -70,7 +69,7 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
-  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
+  if (!std::isfinite(a) || !std::isfinite(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Beta distribution from a constant sample.";
 
   const Scalar mu = sample.computeMean()[0];

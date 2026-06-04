@@ -2,7 +2,7 @@
 /**
  *  @brief Implement a tensorized Gauss-Legendre quadrature
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -109,11 +109,11 @@ void GaussLegendre::generateNodesAndWeights()
     marginalNodes[i] = Point(integrationNodesNumber);
     marginalWeights[i] = Point(integrationNodesNumber);
     for (UnsignedInteger j = 0; j < integrationNodesNumber; ++j)
-      {
-	fastgl::QuadPair p(fastgl::GLPair(integrationNodesNumber, integrationNodesNumber - j));
-	marginalNodes[i][j] = 0.5 * (1.0 + p.x());
-	marginalWeights[i][j] = 0.5 * p.weight;
-      } // For j
+    {
+      fastgl::QuadPair p(fastgl::GLPair(integrationNodesNumber, integrationNodesNumber - j));
+      marginalNodes[i][j] = 0.5 * (1.0 + p.x());
+      marginalWeights[i][j] = 0.5 * p.weight;
+    } // For j
   } // For i
   // Now, generate the nD rule over [0, 1]^n
   IndicesCollection allTuples(Tuples(discretization_).generate());

@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Exponential distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
  */
 #include "openturns/ExponentialFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -67,7 +66,7 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
-  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
   const Scalar sigma = sample.computeStandardDeviation()[0];
   // If sample with constant null data, build an approximation of Dirac(0) by hand
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Exponential distribution from a constant sample.";

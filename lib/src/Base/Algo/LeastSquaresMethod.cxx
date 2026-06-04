@@ -2,7 +2,7 @@
 /**
  *  @brief LeastSquares solving algorithm interface
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,6 +72,13 @@ LeastSquaresMethod::LeastSquaresMethod(const Implementation & p_implementation)
 /* Constructor from implementation */
 LeastSquaresMethod::LeastSquaresMethod(const LeastSquaresMethodImplementation & implementation)
   : TypedInterfaceObject<LeastSquaresMethodImplementation>(implementation.clone())
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation pointer */
+LeastSquaresMethod::LeastSquaresMethod(LeastSquaresMethodImplementation * p_implementation)
+  : TypedInterfaceObject<LeastSquaresMethodImplementation>(p_implementation)
 {
   // Nothing to do
 }

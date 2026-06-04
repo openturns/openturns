@@ -2,7 +2,7 @@
 /**
  *  @brief Metropolis-Hastings algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,11 +61,11 @@ public:
   /** Virtual constructor */
   RandomWalkMetropolisHastings * clone() const override;
 
-  /** Intrumental accessor */
+  /** Instrumental accessor */
   void setProposal(const Distribution & proposal);
   Distribution getProposal() const;
 
-  /** Burnin accessor */
+  /** burn-in accessor */
   void setBurnIn(const UnsignedInteger burnIn);
   UnsignedInteger getBurnIn() const;
 

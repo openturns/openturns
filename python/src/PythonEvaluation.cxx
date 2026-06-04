@@ -2,7 +2,7 @@
 /**
  * @brief PythonEvaluation implementation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,8 +61,8 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   if (PyObject_HasAttrString(pyObj_, "getInputDescription"))
   {
     ScopedPyObjectPointer descIn(PyObject_CallMethod(pyObj_,
-                                const_cast<char *>("getInputDescription"),
-                                const_cast<char *>("()")));
+                                 const_cast<char *>("getInputDescription"),
+                                 const_cast<char *>("()")));
     if (descIn.isNull())
       handleException();
     setInputDescription(checkAndConvert< _PySequence_, Description >(descIn.get()));
@@ -186,7 +186,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
     ScopedPyObjectPointer execName(convert< String, _PyString_ >("_exec"));
     result = PyObject_CallMethodObjArgs(pyObj_, execName.get(), point.get(), NULL);
     if (! result.get())
-      PyErr_SetString(PyExc_RuntimeError, "_exec did not return any value");
+      handleException();
     else if (! PySequence_Check(result.get()))
       PyErr_SetString(PyExc_TypeError, "_exec return value is not a sequence");
   }
@@ -232,10 +232,10 @@ Point PythonEvaluation::operator() (const Point & inP) const
             PyErr_SetString(PyExc_TypeError, "_exec_sample return value is not a sequence");
         }
         else
-          PyErr_SetString(PyExc_RuntimeError, "_exec_sample did not return any value");
+          handleException();
       }
       else
-        PyErr_SetString(PyExc_RuntimeError, "openturns.memoryview.Buffer.augment did not return any value");
+        handleException();
     }
   }
 #endif

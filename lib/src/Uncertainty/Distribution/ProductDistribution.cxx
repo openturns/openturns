@@ -2,7 +2,7 @@
 /**
  *  @brief The ProductDistribution distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
 #include <cmath>
 
 #include "openturns/ProductDistribution.hxx"
@@ -135,12 +134,12 @@ public:
     // Nothing to do
   }
 
-  PDFKernelProductDistribution * clone() const
+  PDFKernelProductDistribution * clone() const override
   {
     return new PDFKernelProductDistribution(*this);
   }
 
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
@@ -188,12 +187,12 @@ public:
     // Nothing to do
   }
 
-  CDFKernelProductDistribution * clone() const
+  CDFKernelProductDistribution * clone() const override
   {
     return new CDFKernelProductDistribution(*this);
   }
 
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
@@ -230,12 +229,12 @@ public:
     // Nothing to do
   }
 
-  ComplementaryCDFKernelProductDistributionProductDistribution * clone() const
+  ComplementaryCDFKernelProductDistributionProductDistribution * clone() const override
   {
     return new ComplementaryCDFKernelProductDistributionProductDistribution(*this);
   }
 
-  Scalar operator() (const Scalar u) const
+  Scalar operator() (const Scalar u) const override
   {
     const Scalar value = p_left_->computePDF(u);
     if (value == 0.0) return 0.0;
@@ -269,12 +268,12 @@ public:
     // Nothing to do
   };
 
-  CFKernelProductDistribution * clone() const
+  CFKernelProductDistribution * clone() const override
   {
     return new CFKernelProductDistribution(*this);
   }
 
-  Point operator() (const Point & point) const
+  Point operator() (const Point & point) const override
   {
     Point value(2);
     const Scalar u = point[0];
@@ -285,12 +284,12 @@ public:
     return value;
   };
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return 2;
   }

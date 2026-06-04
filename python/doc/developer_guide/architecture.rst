@@ -119,16 +119,17 @@ The benefits of this approach are:
 The Python module
 ~~~~~~~~~~~~~~~~~
 
-| The binding of the library is done almost automatically by SWIG
-  (Simplified Wrapper Interface Generator) through a set of SWIG
-  interface files (.i).
-| The main target language is python. These swig files contain some
-  specific ’glue code’ to each class for the target script language.
-  SWIG parses the library headers and theses swig interface files to
-  generates the corresponding module source yet to be compiled to
-  produce a binary python module, see [fig:swig]. The process is shared
-  between several modules for modularity and to speed up compilation
-  time with parallel builds.
+The binding of the library is done almost automatically by SWIG
+(Simplified Wrapper Interface Generator) through a set of SWIG
+interface files (.i).
+
+The main target language is python. These swig files contain some
+specific ’glue code’ to each class for the target script language.
+SWIG parses the library headers and theses swig interface files to
+generates the corresponding module source yet to be compiled to
+produce a binary python module, see [fig:swig]. The process is shared
+between several modules for modularity and to speed up compilation
+time with parallel builds.
 
 .. figure:: Figures/design/swig.png
    :alt: Python module generation process
@@ -199,6 +200,8 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Optimization (optional)               | `Bonmin <https://projects.coin-or.org/Bonmin>`_                                 | 1.8.7             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Optimization (optional)               | `HiGHS <https://highs.dev/>`_                                                   | 1.10              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Optimization (optional)               | `Ipopt <https://coin-or.github.io/Ipopt/>`_                                     | 3.11.9            |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Optimization (optional)               | `Pagmo <https://esa.github.io/pagmo2/>`_                                        | 2.12.0            |
@@ -213,9 +216,13 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Nearest neighbor search (optional)    | `nanoflann <https://github.com/jlblancoc/nanoflann>`_                           | 1.3.2             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Python support                        | `Python <https://www.python.org/>`_                                             | 3.6               |
+| Python support                        | `Python <https://www.python.org/>`_                                             | 3.8               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Plotting library (optional)           | `Matplotlib <https://matplotlib.org/>`_                                         | 3.0               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | 0.3.5             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | C++/Python wrapper                    | `SWIG <https://www.swig.org/>`_                                                 | 4.0               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -225,19 +232,18 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_                                | 0.9.0             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.7               |
+| Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.17              |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_      | 0.5               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `sphinxcontrib.jquery <https://github.com/sphinx-contrib/jquery/>`_             | 4.1               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | 0.3.5             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
+| LaTeX (optional for doc)              | `texlive <https://tug.org/texlive/>`_                                           | 2018              |
+|                                       |                                                                                 |                   |
+|                                       | - texlive-latex-recommended                                                     |                   |
+|                                       | - texlive-latex-extra                                                           |                   |
+|                                       | - texlive-science                                                               |                   |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 
-The versions given here are only meant as indications of minimum version and newer ones
-may be used.
+The versions given here are only meant as indications of minimum version and newer ones may be used.
 
 
 Internal dependencies
@@ -343,18 +349,19 @@ implementation choices that were made.
 Bridge pattern
 ~~~~~~~~~~~~~~
 
-| The bridge pattern is a design pattern used in software engineering
-  which is meant to “decouple an abstraction from its implementation so
-  that the two can vary independently”. The bridge uses encapsulation,
-  aggregation, and can use inheritance to separate responsibilities into
-  different classes.
-| When a class varies often, the features of object-oriented programming
-  become very useful because changes to a program’s code can be made
-  easily with minimal prior knowledge about the program. The bridge
-  pattern is useful when both the class as well as what it does vary
-  often. The class itself can be thought of as the implementation and
-  what the class can do as the abstraction. The bridge pattern can also
-  be thought of as two layers of abstraction.
+The bridge pattern is a design pattern used in software engineering
+which is meant to “decouple an abstraction from its implementation so
+that the two can vary independently”. The bridge uses encapsulation,
+aggregation, and can use inheritance to separate responsibilities into
+different classes.
+
+When a class varies often, the features of object-oriented programming
+become very useful because changes to a program’s code can be made
+easily with minimal prior knowledge about the program. The bridge
+pattern is useful when both the class as well as what it does vary
+often. The class itself can be thought of as the implementation and
+what the class can do as the abstraction. The bridge pattern can also
+be thought of as two layers of abstraction.
 
 This pattern is one of the most widely used in . Some examples are:
 

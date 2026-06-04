@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 myColl = [ot.ClaytonCopula(0.3), ot.NormalCopula(3)]
 myMergedCop = ot.BlockIndependentCopula(myColl)
@@ -19,6 +19,6 @@ cdf_axis = fig.add_subplot(122)
 pdf_axis.set_xlim(auto=True)
 cdf_axis.set_xlim(auto=True)
 
-View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
-View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
+otv.View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
+otv.View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
 fig.suptitle("BlockIndependentCopula(Clayton(0.3), NormalCopula(3)): pdf and cdf")

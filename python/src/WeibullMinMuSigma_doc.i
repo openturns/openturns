@@ -1,0 +1,48 @@
+%feature("docstring") OT::WeibullMinMuSigma
+R"RAW(WeibullMin distribution parameters.
+
+Parameters
+----------
+mu : float
+    Mean.
+
+    Default value is 1.0.
+sigma : float
+    Standard deviation :math:`\sigma > 0`.
+
+    Default value is 1.0.
+gamma : float, optional
+    Shift parameter :math:`\gamma < \mu`.
+
+    Default value is 0.0.
+
+Notes
+-----
+The native parameters :math:`\alpha` and :math:`\beta` are searched such as:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \mu & = &  \gamma + \beta \,\Gamma\left(1 + \frac{1}{\alpha}\right) \\
+        \sigma^2 & = & \beta^2 \left( \Gamma \left( 1 + \frac{2}{\alpha} \right) - \Gamma^2 \left( 1 + \frac{1}{\alpha} \right) \right)
+    \end{eqnarray*}
+
+
+The :math:`\gamma` parameter is the same.
+
+See also
+--------
+WeibullMin
+
+Examples
+--------
+Create the parameters  :math:`(\mu, \sigma, \gamma)` of the WeibullMin distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.WeibullMinMuSigma(1.3, 1.23, -0.5)
+
+Convert parameters into the native parameters  :math:`(\beta, \alpha, \gamma)`:
+
+>>> print(parameters.evaluate())
+[1.99222,1.48961,-0.5])RAW"

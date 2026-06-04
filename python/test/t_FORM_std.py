@@ -87,7 +87,9 @@ algo_multistart = ot.FORM(myMultiStartCobyla, myEvent)
 # Perform the simulation
 algo_multistart.run()
 result_multistart = algo_multistart.getResult()
-assert_almost_equal(result_multistart.getEventProbability(), result.getEventProbability(), 1e-4, 0.0)
+assert_almost_equal(
+    result_multistart.getEventProbability(), result.getEventProbability(), 1e-4, 0.0
+)
 
 # run twice
 f = ot.SymbolicFunction(["x"], ["x-1.25"])

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all EmpiricalBernsteinCopulas
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -241,9 +241,9 @@ Scalar EmpiricalBernsteinCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  if (binNumber_ == 1) return 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
+  if (binNumber_ == 1) return 1.0;
   Scalar pdfValue = 0.0;
   Point logX(dimension);
   Point log1mX(dimension);
@@ -270,9 +270,9 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  if (binNumber_ == 1) return 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return SpecFunc::LowestScalar;
+  if (binNumber_ == 1) return 0.0;
   Scalar sumPDFValue = 0.0;
   Point logX(dimension);
   Scalar log1mX = 0.0;
@@ -458,7 +458,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
   if (x <= 0.0) return 0.0;
   if (x >= 1.0) return 1.0;
   for (UnsignedInteger i = 0; i < y.getDimension(); ++i)
-    if (y[i] <= 0.0 || y[i] >= 1.0) return 0.0;
+    if ((y[i] <= 0.0) || (y[i] >= 1.0)) return 0.0;
   const UnsignedInteger size = copulaSample_.getSize();
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
@@ -468,7 +468,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
     Scalar conditionalCDF = 1.0;
     for (UnsignedInteger i = 0; i < size; ++i)
       conditionalCDF += SpecFunc::RegularizedIncompleteBeta(logFactors_(i, j), binNumber_ - logFactors_(i, j) + 1.0, x);
-    return conditionalCDF / size;
+    return SpecFunc::Clip01(conditionalCDF / size);
   } // (conditioningDimension == 0) || (hasIndependentCopula())
   // Case with conditioning. The PDFs are computed up to an 1/n factor, which simplifies during the division.
   Point allConditioningAtomPDF(size);
@@ -489,7 +489,7 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
   Scalar conditionedCDF = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
     conditionedCDF += SpecFunc::RegularizedIncompleteBeta(logFactors_(i, conditioningDimension), binNumber_ - logFactors_(i, conditioningDimension) + 1.0, x) * allConditioningAtomPDF[i];
-  return conditionedCDF / conditioningPDF;
+  return SpecFunc::Clip01(conditionedCDF / conditioningPDF);
 }
 
 Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x) const
@@ -500,11 +500,16 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x)
   // Special case for no conditioning or independent copula
   if (hasIndependentCopula())
   {
-    if (isCopula()) return Point(dimension_, 1.0);
+    if (isCopula())
+    {
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
+        result[j] = SpecFunc::Clip01(x[j]);
+      return result;
+    } // isCopula
     for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      if (x[j] <= 0.0) result[j] = 0.0;
-      else if (x[j] >= 1.0) result[j] = 1.0;
+      if (!(x[j] > 0.0)) result[j] = 0.0;
+      else if (!(x[j] < 1.0)) result[j] = 1.0;
       else
       {
         Scalar conditionalPDF = 0.0;
@@ -522,7 +527,7 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x)
   {
     Scalar conditionedPDF = 0.0;
     Scalar conditionedCDF = 0.0;
-    if ((x[j] > 0.0) && (x[j] < 1.0) && conditioningPDF > 0.0)
+    if ((x[j] > 0.0) && (x[j] < 1.0) && (conditioningPDF > 0.0))
     {
       const Scalar logX = std::log(x[j]);
       const Scalar log1mX = std::log1p(-x[j]);
@@ -535,7 +540,7 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x)
       }
     } // 0<x<1
     else return result;
-    result[j] = conditionedCDF / conditioningPDF;
+    result[j] = SpecFunc::Clip01(conditionedCDF / conditioningPDF);
     conditioningPDF = conditionedPDF;
   } // j
   return result;

@@ -10,4 +10,6 @@ OTTypedInterfaceObjectHelper(Evaluation)
 
 %copyctor OT::Evaluation;
 
+%ignore OT::Evaluation::setDetachCallback;
+
 %include openturns/Evaluation.hxx

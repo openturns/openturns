@@ -2,7 +2,6 @@
 
 import openturns as ot
 import openturns.testing as ott
-import openturns.experimental as otexp
 
 ot.TESTPREAMBLE()
 
@@ -101,7 +100,7 @@ cores.append(anotherCopula)
 atoms = [aCopula, anotherCopula]
 cores.append(ot.Mixture(atoms, [0.25, 0.75]))
 # With a non-copula core
-cores.append(otexp.UniformOrderStatistics(dim))
+cores.append(ot.UniformOrderStatistics(dim))
 # With a core which support is strictly included in the unit cube
 cores.append(ot.KernelMixture(ot.Beta(2.0, 3.0, 0.2, 0.8), [1.0] * dim, [[0.0] * dim]))
 ot.ResourceMap.SetAsBool("JointDistribution-UseGenericCovarianceAlgorithm", True)
@@ -333,19 +332,41 @@ validation.run()
 # Check if one can detect if the distribution is elliptical
 # Normal marginals, independent copula
 distribution = ot.JointDistribution([ot.Normal(1.0, 2.0), ot.Normal(-2.0, 1.0)])
-print("Normal marginals, independent copula, isElliptical?", distribution.isElliptical())
+print(
+    "Normal marginals, independent copula, isElliptical?", distribution.isElliptical()
+)
 # Normal marginals, normal copula
 R = ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0])
-distribution = ot.JointDistribution([ot.Normal(1.0, 2.0), ot.Normal(-2.0, 1.0)], ot.NormalCopula(R))
+distribution = ot.JointDistribution(
+    [ot.Normal(1.0, 2.0), ot.Normal(-2.0, 1.0)], ot.NormalCopula(R)
+)
 print("Normal marginals, normal copula, isElliptical?", distribution.isElliptical())
 # Normal marginals, non-normal copula
-distribution = ot.JointDistribution([ot.Normal(1.0, 2.0), ot.Normal(-2.0, 1.0)], ot.ClaytonCopula(1.0))
+distribution = ot.JointDistribution(
+    [ot.Normal(1.0, 2.0), ot.Normal(-2.0, 1.0)], ot.ClaytonCopula(1.0)
+)
 print("Normal marginals, non-normal copula, isElliptical?", distribution.isElliptical())
 # Student marginals, Student copula, all with the same nu
 nu = 3.5
-distribution = ot.JointDistribution([ot.Student(nu, 1.0, 2.0), ot.Student(nu, -2.0, 1.0)], ot.StudentCopula(nu, R))
-print("Student marginals, Student copula, same nu, isElliptical?", distribution.isElliptical())
-distribution = ot.JointDistribution([ot.Student(nu, 1.0, 2.0), ot.Student(nu, -2.0, 1.0)], ot.StudentCopula(nu + 1.0, R))
-print("Student marginals same nu, Student copula different nu, isElliptical?", distribution.isElliptical())
-distribution = ot.JointDistribution([ot.Student(nu + 1.0, 1.0, 2.0), ot.Student(nu, -2.0, 1.0)], ot.StudentCopula(nu + 1.0, R))
-print("Student marginals different nu, Student copula same nu as first marginal, isElliptical?", distribution.isElliptical())
+distribution = ot.JointDistribution(
+    [ot.Student(nu, 1.0, 2.0), ot.Student(nu, -2.0, 1.0)], ot.StudentCopula(nu, R)
+)
+print(
+    "Student marginals, Student copula, same nu, isElliptical?",
+    distribution.isElliptical(),
+)
+distribution = ot.JointDistribution(
+    [ot.Student(nu, 1.0, 2.0), ot.Student(nu, -2.0, 1.0)], ot.StudentCopula(nu + 1.0, R)
+)
+print(
+    "Student marginals same nu, Student copula different nu, isElliptical?",
+    distribution.isElliptical(),
+)
+distribution = ot.JointDistribution(
+    [ot.Student(nu + 1.0, 1.0, 2.0), ot.Student(nu, -2.0, 1.0)],
+    ot.StudentCopula(nu + 1.0, R),
+)
+print(
+    "Student marginals different nu, Student copula same nu as first marginal, isElliptical?",
+    distribution.isElliptical(),
+)

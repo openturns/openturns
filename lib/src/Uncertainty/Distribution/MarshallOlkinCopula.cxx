@@ -2,7 +2,7 @@
 /**
  *  @brief The MarshallOlkinCopula distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -210,7 +210,7 @@ CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
 Uses the algorithm from Devroye (1987) and
 presented in
 “An Introduction to Copulas”, 2nd Edition, Nelsen, Springer.
-Section Exercice 3.4, page 58.
+Section Exercise 3.4, page 58.
  */
 Point MarshallOlkinCopula::getRealization() const
 {

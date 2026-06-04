@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of a linear piecewise scalar function
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -138,8 +138,8 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
   if (values_.getSize() == 1) return values_[0];
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
-    
-  if (x <= locations_[iLeft]) 
+
+  if (x <= locations_[iLeft])
   {
     if (enableExtrapolation_)
     {
@@ -147,10 +147,10 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
+      throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[iLeft];
     }
   }
-  
+
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight])
   {
@@ -160,7 +160,7 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
     }
     else
     {
-       throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
+      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
     }
   }
   iLeft = FindSegmentIndex(locations_, x, 0, isRegular_);
@@ -201,7 +201,7 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
         throw InvalidArgumentException(HERE) << "Error : input point is less than the lower bound of the locations=" << locations_[0];
       }
     }
-    
+
     UnsignedInteger iRight = maxIndex;
     if (x >= locations_[iRight])
     {

@@ -2,7 +2,7 @@
 /**
  *  @brief The linear model analysis
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -27,6 +27,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Text.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/Gamma.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/VisualTest.hxx"
@@ -255,6 +256,93 @@ Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar lev
   return bounds;
 }
 
+/* Check that the sample size is large enough to compute asymptotic distributions */
+void LinearModelAnalysis::checkSampleSize() const
+{
+  const UnsignedInteger size = linearModelResult_.getInputSample().getSize();
+  const UnsignedInteger minSize = ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions");
+  if (!(size >= minSize))
+    throw InvalidArgumentException(HERE) << "The sample size is too small (must be at least " << minSize << ")";
+}
+
+/* Asymptotic distribution of the coefficients */
+Normal LinearModelAnalysis::getCoefficientsDistribution() const
+{
+  checkSampleSize();
+
+  const Point beta(linearModelResult_.getCoefficients());
+  const SymmetricMatrix gramInverse(linearModelResult_.getLeastSquaresMethod().getGramInverse());
+  const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
+  const CovarianceMatrix covariance(residualsVariance * gramInverse);
+  return Normal(beta, covariance);
+}
+
+/* Asymptotic distribution of the variance of the residuals */
+Distribution LinearModelAnalysis::getVarianceDistribution(const Bool gaussian) const
+{
+  const UnsignedInteger sampleSize = linearModelResult_.getInputSample().getSize();
+  const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
+  const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
+  if (residualsVariance <= 0.0)
+    throw NotDefinedException(HERE) << "Residual variance must be strictly positive.";
+  if (gaussian)
+  {
+    const Scalar k = (sampleSize - p) / 2.0;
+    const Scalar lambda = k / residualsVariance;
+    return Gamma(k, lambda);
+  }
+  else
+  {
+    checkSampleSize();
+
+    const Scalar mu = residualsVariance;
+    const Scalar sd = residualsVariance * std::sqrt(2.0 * sampleSize) / (sampleSize - p);
+    return Normal(mu, sd);
+  }
+}
+
+Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const Point & x0, const Bool observation) const
+{
+  checkSampleSize();
+
+  const Basis basis(linearModelResult_.getBasis());
+  if (x0.getDimension() != basis.getInputDimension())
+    throw InvalidArgumentException(HERE) << "The point has an invalid dimension (expected: " << basis.getInputDimension() << ")";
+
+  // Apply the basis functions on the input vector
+  const UnsignedInteger size = basis.getSize();
+  Matrix x(size, 1);
+  for(UnsignedInteger i = 0; i < size; i++)
+  {
+    const Function f(basis[i]);
+    x(i, 0) = f(x0)[0];
+  }
+
+  const Point prediction(x.transpose() * linearModelResult_.getCoefficients());
+  // M = X^T.G^{-1}.X
+  const SymmetricMatrix gramInverse(linearModelResult_.getLeastSquaresMethod().getGramInverse());
+  const Matrix m = x.getImplementation()->genProd(*gramInverse.getImplementation(), true, false).symProd(*x.getImplementation(), 'L');
+  const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
+  Scalar sigma2 = m(0, 0) * residualsVariance;
+  if (observation)
+    sigma2 += residualsVariance;
+  sigma2 = std::max(sigma2, 0.0);
+  Scalar sigma = std::sqrt(sigma2);
+  sigma = std::max(sigma, ResourceMap::GetAsScalar("LinearModelAnalysis-MinimumSigma"));
+  return Normal(prediction[0], sigma);
+}
+
+/* Asymptotic distribution of the prediction on an input */
+Normal LinearModelAnalysis::getPredictionDistribution(const Point & x0) const
+{
+  return computeDistributionForPredictionOrObservation(x0, false);
+}
+
+/* Asymptotic distribution of the observed output for an input */
+Normal LinearModelAnalysis::getOutputObservationDistribution(const Point & x0) const
+{
+  return computeDistributionForPredictionOrObservation(x0, true);
+}
 
 /* Fisher test */
 Scalar LinearModelAnalysis::getFisherScore() const
@@ -370,7 +458,8 @@ Graph LinearModelAnalysis::drawModelVsFitted() const
   dataFull.stack(fitted);
 
   // The graph object
-  Graph graph("Model vs Fitted", "Model", "Fitted values", true, "topright");
+  Graph graph("Model vs Fitted", "Model", "Fitted values");
+  graph.setLegendPosition("topright");
 
   // Validation graph
   Sample bissectriceCurve(2, 2);
@@ -426,7 +515,8 @@ Graph LinearModelAnalysis::drawResidualsVsFitted() const
   const UnsignedInteger size(fitted.getSize());
   Sample dataFull(fitted);
   dataFull.stack(residuals);
-  Graph graph("Residuals vs Fitted", "Fitted values", "Residuals", true, "topright");
+  Graph graph("Residuals vs Fitted", "Fitted values", "Residuals");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst residuals
@@ -472,7 +562,8 @@ Graph LinearModelAnalysis::drawScaleLocation() const
     sqrtStdResiduals(i, 0) = std::sqrt(std::abs(stdResiduals(i, 0)));
   }
   dataFull.stack(sqrtStdResiduals);
-  Graph graph("Scale-Location", "Fitted values", "|Std. residuals|^0.5", true, "topright");
+  Graph graph("Scale-Location", "Fitted values", "|Std. residuals|^0.5");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst standardized residuals
@@ -576,7 +667,8 @@ Graph LinearModelAnalysis::drawCookDistance() const
       annotations[index] = (OSS() << index + 1);
     }
   }
-  Graph graph("Cook's distance", "Obs. number", "Cook's distance", true, "topright");
+  Graph graph("Cook's distance", "Obs. number", "Cook's distance");
+  graph.setLegendPosition("topright");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Sample dataFull(2, 2);
@@ -612,7 +704,8 @@ Graph LinearModelAnalysis::drawResidualsVsLeverages() const
   }
   Sample dataFull(leveragesS);
   dataFull.stack(stdResiduals);
-  Graph graph("Residuals vs Leverage", "Leverage", "Std. residuals", true, "topright");
+  Graph graph("Residuals vs Leverage", "Leverage", "Std. residuals");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst Cook's distance
@@ -702,7 +795,8 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
     dataFull(i, 0) = leverages[i] / (1.0 - leverages[i]);
     dataFull(i, 1) = cookdistances[i];
   }
-  Graph graph("Cook's dist vs Leverage h[ii]/(1-h[ii])", "Leverage h[ii]/(1-h[ii])", "Cook's distance", true, "topright");
+  Graph graph("Cook's dist vs Leverage h[ii]/(1-h[ii])", "Leverage h[ii]/(1-h[ii])", "Cook's distance");
+  graph.setLegendPosition("topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
   // Add point identifiers for worst Cook's distance

@@ -80,7 +80,6 @@ import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import chaboche_model
 
-ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate the observations
@@ -112,7 +111,7 @@ print("Outputs:", cm.model.getOutputDescription())
 # We get the Chaboche model and the joint input distribution :
 
 # %%
-inputDistribution = cm.inputDistribution
+inputDistribution = cm.distribution
 print("inputDistribution:")
 inputDistribution
 
@@ -176,7 +175,7 @@ data
 # Then we plot the model and compare it to the observations.
 
 # %%
-graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)", True)
+graph = ot.Graph("Model with true parameters", "Strain", "Stress (MPa)")
 # Plot the model
 curve = mycf.draw(cm.strainMin, cm.strainMax, 50).getDrawable(0)
 curve.setLegend("True model")

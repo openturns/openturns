@@ -1,6 +1,6 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
 
 def C(tau):
@@ -36,4 +36,4 @@ cov_graph.setTitle("User defined stationary covariance model")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+otv.View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)

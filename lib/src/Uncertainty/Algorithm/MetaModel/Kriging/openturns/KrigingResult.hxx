@@ -2,7 +2,7 @@
 /**
  *  @brief The result of a kriging estimation
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,9 +58,7 @@ public:
                 const Basis & basis,
                 const Point & trendCoefficients,
                 const CovarianceModel & covarianceModel,
-                const Sample & covarianceCoefficients,
-                const Point & residuals = Point(),
-                const Point & relativeErrors = Point());
+                const Sample & covarianceCoefficients);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
   KrigingResult(const Sample & inputSample,
@@ -71,9 +69,7 @@ public:
                 const CovarianceModel & covarianceModel,
                 const Sample & covarianceCoefficients,
                 const TriangularMatrix & covarianceCholeskyFactor,
-                const HMatrix & covarianceHMatrix,
-                const Point & residuals = Point(),
-                const Point & relativeErrors = Point());
+                const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
   KrigingResult * clone() const override;

@@ -1,0 +1,45 @@
+%feature("docstring") OT::PoissonFactory
+R"RAW(Poisson factory.
+
+Notes
+-----
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\lambda}_n = \bar{x}_n
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, Poisson)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PoissonFactory::buildAsPoisson
+"Estimate the distribution as native distribution.
+
+
+**Available usages**:
+
+    buildAsPoisson()
+
+    buildAsPoisson(*sample*)
+
+    buildAsPoisson(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : sequence of float
+   The parameters of the :class:`~openturns.Poisson`.
+
+Returns
+-------
+distribution : :class:`~openturns.Poisson`
+    The estimated distribution as a Poisson.
+    
+    In the first usage, the default Poisson distribution is built."

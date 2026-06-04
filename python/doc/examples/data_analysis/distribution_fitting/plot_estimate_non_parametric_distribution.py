@@ -14,11 +14,7 @@ Fit a non parametric distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
+import openturns.viewer as otv
 
 # %%
 # An introductory example
@@ -27,7 +23,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We create the data from a :class:`~openturns.Gamma` distribution :
-ot.RandomGenerator.SetSeed(0)
 distribution = ot.Gamma(6.0, 1.0)
 sample = distribution.getSample(800)
 
@@ -44,7 +39,7 @@ kernel_plot = estimated.drawPDF().getDrawable(0)
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We can obtain the bandwdth parameter :
@@ -66,7 +61,7 @@ kernel_plot = estimated.drawPDF().getDrawable(0)
 graph.add(kernel_plot)
 graph.setLegends(["original", "KS-Silverman"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The Silverman rule of thumb to estimate the bandwidth provides a better estimate for the distribution. We can also study the impact of the kernel selection.
@@ -135,7 +130,7 @@ graph.setLegends(
     ["original", "KS-Normal", "KS-Triangular", "KS-Epanechnikov", "KS-Uniform"]
 )
 
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # We observe that all the kernels produce very similar results in practice.
@@ -195,7 +190,7 @@ graph.add(kernelMB_plot)
 # %%
 graph.setLegends(["original", "KS-Silverman", "KS-Plugin", "KS-Mixed"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # As expected the Silverman seriously overfit the data and the other rules are more to the point.
@@ -253,7 +248,7 @@ graph.add(kernel2_plot)
 
 graph.setLegends(["original", "KS", "KS with boundary correction"])
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The boundary correction made has a remarkable impact on the quality of the estimate for the small values.
@@ -318,6 +313,7 @@ for i, distribution in enumerate(distCollection):
     graph.add(curve)
     grid.setGraph(i // 3, i % 3, graph)
 
-view = viewer.View(grid)
+view = otv.View(grid)
 
-plt.show()
+# %%
+otv.View.ShowAll()

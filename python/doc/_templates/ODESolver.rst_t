@@ -6,7 +6,7 @@
 
     import openturns as ot
     from matplotlib import pyplot as plt
-    from openturns.viewer import View
+    import openturns.viewer as otv
 
     def flow(X):
         Y0 = X[0]
@@ -43,7 +43,7 @@
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    View(graph, figure=fig)
+    otv.View(graph, figure=fig)
     plt.xlabel(r'$y_0$')
     plt.ylabel(r'$y_1$')
     plt.grid()

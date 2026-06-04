@@ -275,7 +275,7 @@ To summarize:
 
 .. topic:: API:
 
-    - See :class:`~openturns.RandomMixture`
+    - See :class:`~openturns.LinearCombinationDistribution`
 
 .. topic:: Examples:
 

@@ -1,0 +1,83 @@
+%feature("docstring") OT::KPermutationsDistribution
+R"RAW(KPermutations distribution.
+
+Parameters
+----------
+k : int, :math:`k > 0`
+n : int, :math:`n > 0`
+
+See also
+--------
+KPermutations
+
+Notes
+-----
+:class:`~openturns.KPermutationsDistribution` is the discrete uniform
+distribution on the set of injective functions :math:`(i_0, \hdots, i_{k_1})`
+from :math:`\{0, \hdots, k-1\}` into :math:`\{0, \hdots, n-1\}`.
+Its probability distribution function is defined as:
+
+.. math::
+
+    \Prob{\vect{X} = (i_0, \hdots, i_{k-1})} = \frac{(n-k)!}{n!}
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X_i} & = & \frac{n - 1}{2}, \quad i = 1, \ldots, k \\
+        \Var{X_i} & = & \frac{n^2-1}{12}, \quad i = 1, \ldots, k \\
+        \Cov{X_i, X_j} & = & -\frac{1 + n}{12}, \quad i, j = 1, \ldots, k, i \neq j
+    \end{eqnarray*}
+
+
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.KPermutationsDistribution(6, 8)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(10)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutationsDistribution::getN
+"Accessor to the parameter :math:`n`.
+
+Returns
+-------
+n : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutationsDistribution::getK
+"Accessor to the parameter :math:`k`.
+
+Returns
+-------
+k : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutationsDistribution::setN
+"Accessor to the parameter :math:`n`.
+
+Parameters
+----------
+n : int, :math:`n > 0`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KPermutationsDistribution::setK
+"Accessor to the parameter :math:`k`.
+
+Parameters
+----------
+k : int, :math:`k > 0`"

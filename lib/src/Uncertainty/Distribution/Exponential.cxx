@@ -2,7 +2,7 @@
 /**
  *  @brief The Exponential distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -107,7 +107,7 @@ Point Exponential::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  if (point[0] < gamma_) return Point(1, 0.0);
+  if (point[0] <= gamma_) return Point(1, 0.0);
   return Point(1, -lambda_ * computePDF(point));
 }
 
@@ -123,7 +123,7 @@ Scalar Exponential::computePDF(const Point & point) const
 Scalar Exponential::computePDF(const Scalar u) const
 {
   const Scalar x = u - gamma_;
-  if (x < 0.0) return 0.0;
+  if (x <= 0.0) return 0.0;
   return lambda_ * std::exp(-lambda_ * x);
 }
 
@@ -137,7 +137,7 @@ Scalar Exponential::computeLogPDF(const Point & point) const
 Scalar Exponential::computeLogPDF(const Scalar u) const
 {
   const Scalar x = u - gamma_;
-  if (x < 0.0) return SpecFunc::LowestScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   return std::log(lambda_) - lambda_ * x;
 }
 

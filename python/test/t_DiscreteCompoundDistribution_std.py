@@ -59,6 +59,6 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipParameters()  # see UserDefined
+validation.skipParameters()  # see FiniteDiscreteDistribution
 validation.skipInverseSurvival()  # numerical artifact ?
 validation.run()

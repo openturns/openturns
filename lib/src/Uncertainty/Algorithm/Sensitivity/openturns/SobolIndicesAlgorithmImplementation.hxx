@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation for sobol indices algorithms
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -150,7 +150,7 @@ protected:
   virtual Sample computeIndices(const Sample & design,
                                 Sample & VTi) const;
 
-  /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
+  /** Internal method that returns a bootstrap NS collection of size inputDimension + 2 */
   Sample getBootstrapDesign(const Indices & indices) const;
 
   /** Function that computes aggregated indices using Vi/VTi + variance  */

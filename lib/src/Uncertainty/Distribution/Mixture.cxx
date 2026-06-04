@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all Mixtures
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -156,12 +156,12 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 {
   // Not const because the collection will be simplified and its size reduced
   UnsignedInteger size = coll.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Mixture based on an empty distribution collection.";
-  if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Cannot build a Mixture based on an empty distribution collection.";
+  if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "The number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
   Scalar maximumWeight = weights[0];
   Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
-  // First loop, check the atoms dimensions and the weigths values
+  // First loop, check the atoms dimensions and the weights values
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (dimension != coll[i].getDimension())
@@ -178,15 +178,17 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     throw InvalidArgumentException(HERE) << "Collection of distributions has atoms with too small total weight=" << weightSum << " for a threshold equal to Mixture-SmallWeight=" << smallWeight;
   // Second loop, keep only the atoms with a significant weight and update the sum
   weightSum = 0.0;
-  distributionCollection_ = DistributionCollection(0);
-  p_ = Point(0);
+  distributionCollection_.clear();
+  p_.clear();
   isCopula_ = true;
+  Indices removed;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar w = weights[i];
     if (w < smallWeight)
     {
-      LOGWARN(OSS() << "Removed the mixture's distribution #" << i << " with a too small weight=" << w << " wrt the maximum weight=" << maximumWeight);
+      if (removed.getSize() < 20)
+        removed.add(i);
     }
     else
     {
@@ -197,6 +199,11 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
       isCopula_ = isCopula_ && coll[i].isCopula();
     }
   } // i
+
+  if (removed.getSize())
+  {
+    LOGINFO(OSS() << "Pruned the mixture at indices " << removed.__str__().substr(0, 50) << "... wrt the maximum weight=" << maximumWeight);
+  }
 
   // Update the size of the collection as null-weighted distributions could have been dismissed
   size = distributionCollection_.getSize();
@@ -464,7 +471,7 @@ Scalar Mixture::computeConditionalCDF(const Scalar x,
     if (weightedMarginalAtomPDF > 0.0)
       conditionedCDF += distributionCollection_[i].computeConditionalCDF(x, y) * weightedMarginalAtomPDF;
   }
-  if (conditioningPDF <= 0.0) return 0.0;
+  if (!(conditioningPDF > 0.0)) return 0.0;
   // No need to normalize by 1/h as it simplifies
   return SpecFunc::Clip01(conditionedCDF / conditioningPDF);
 }
@@ -507,14 +514,14 @@ Point Mixture::computeSequentialConditionalCDF(const Point & x) const
       const Scalar wI = weights[i];
       const Distribution marginalAtom(distributionCollection_[i].getMarginal(conditioning));
       const Scalar weightedMarginalAtomPDF = wI * marginalAtom.computePDF(currentX);
-      if (weightedMarginalAtomPDF > 0.0)
+      if (!(weightedMarginalAtomPDF <= 0.0))
       {
         pdfConditioned += weightedMarginalAtomPDF;
         cdfConditioned += marginalAtom.computeConditionalCDF(xConditioned, y) * weightedAtomsPDF[i];
         weightedAtomsPDF[i] = weightedMarginalAtomPDF;
       } // atomMarginalPDF > 0.0
     } // i
-    result[conditioningDimension] = cdfConditioned / pdfConditioning;
+    result[conditioningDimension] = SpecFunc::Clip01(cdfConditioned / pdfConditioning);
     pdfConditioning = pdfConditioned;
   } // conditioningDimension
   return result;

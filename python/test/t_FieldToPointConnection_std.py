@@ -72,7 +72,7 @@ def f2Pfunc(X):
 
 
 field2PFunction = ot.PythonFieldToPointFunction(mesh2D, 1, 1, f2Pfunc)
-fieldFunction = ot.ValueFunction(ot.SymbolicFunction(["x", "y"], ["3x"]), mesh2D)
+fieldFunction = ot.ValueFunction(ot.SymbolicFunction(["x", "y"], ["3*x"]), mesh2D)
 myFunc = ot.FieldToPointConnection(field2PFunction, fieldFunction)
 print("myFunc=", myFunc)
 # Get the input and output description

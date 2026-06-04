@@ -90,7 +90,7 @@ function with zero mean, unit variance and with type :math:`\psi`.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_form`
+    - See :doc:`/auto_reliability/reliability_analysis/plot_estimate_probability_form`
 
 .. topic:: References:
 

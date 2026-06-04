@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements functions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -283,10 +283,16 @@ GridLayout Evaluation::drawCrossCuts(const Point & centralPoint,
   return getImplementation()->drawCrossCuts(centralPoint, xMin, xMax, pointNumber, withMonoDimensionalCuts, isFilled, vMin, vMax);
 }
 
-void Evaluation::setStopCallback(StopCallback callBack, void * state)
+void Evaluation::setStopCallback(EvaluationImplementation::StopCallback callBack, void * state)
 {
   copyOnWrite();
   getImplementation()->setStopCallback(callBack, state);
+}
+
+void Evaluation::setDetachCallback(EvaluationImplementation::DetachCallback callBack, void * state)
+{
+  copyOnWrite();
+  getImplementation()->setDetachCallback(callBack, state);
 }
 
 END_NAMESPACE_OPENTURNS

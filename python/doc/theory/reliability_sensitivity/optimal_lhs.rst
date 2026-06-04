@@ -181,7 +181,7 @@ the design into the initial space.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/design_of_experiments/plot_optimal_lhs`
+    - See :doc:`/auto_design_of_experiments/plot_optimal_lhs`
 
 
 .. topic:: References:

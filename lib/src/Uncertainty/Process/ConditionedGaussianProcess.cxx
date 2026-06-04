@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the ConditionedGaussianProcess process
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/GaussianProcessConditionalCovariance.hxx"
 #include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,19 +35,15 @@ static const Factory<ConditionedGaussianProcess> Factory_ConditionedGaussianProc
 
 ConditionedGaussianProcess::ConditionedGaussianProcess()
   : GaussianProcess()
-  , krigingResult_()
-  , trendEvaluationMesh_()
-  , knownValuesIndices_()
 {
   // Nothing to do
 }
 
-ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & result,
+ConditionedGaussianProcess::ConditionedGaussianProcess(const GaussianProcessRegressionResult & result,
     const Mesh & mesh)
   : GaussianProcess()
-  , krigingResult_(result)
-  , trendEvaluationMesh_()
-  , knownValuesIndices_()
+  , inputDimension_(result.getMetaModel().getInputDimension())
+  , gprResult_(result)
 {
   // set covariance model
   covarianceModel_ = result.getCovarianceModel();
@@ -58,7 +55,6 @@ ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & res
   // Initialize
   initialize();
 }
-
 
 /* Virtual constructor */
 ConditionedGaussianProcess * ConditionedGaussianProcess::clone() const
@@ -96,7 +92,10 @@ void ConditionedGaussianProcess::initialize()
   if (isInitialized_) return;
   const Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
-  CovarianceMatrix covarianceMatrix(krigingResult_.getConditionalCovariance(vertices));
+  CovarianceMatrix covarianceMatrix;
+  GaussianProcessConditionalCovariance gpcc(gprResult_);
+  covarianceMatrix = gpcc.getConditionalCovariance(vertices);
+
   // Now check if there is any point both in the input sample and in the mesh vertices.
   // They are characterized by
   // a zero cross: a null row and a null column which cross at a zero diagonal element.
@@ -125,11 +124,11 @@ void ConditionedGaussianProcess::initialize()
   covarianceCholeskyFactor_ = covarianceMatrix.computeRegularizedCholesky();
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
-  const Function krigingEvaluation(krigingResult_.getMetaModel());
+  const Function gprEvaluation(gprResult_.getMetaModel());
   // Evaluation of the trend over the mesh
-  trendEvaluationMesh_ = krigingEvaluation(vertices);
+  trendEvaluationMesh_ = gprEvaluation(vertices);
   // Set the trend function
-  trend_ = TrendTransform(krigingEvaluation, mesh_);
+  trend_ = TrendTransform(gprEvaluation, mesh_);
   // Set descriptions
   trend_.setInputDescription( Description::BuildDefault(getInputDimension(), "x"));
   trend_.setOutputDescription( Description::BuildDefault(getOutputDimension(), "y"));
@@ -141,10 +140,10 @@ void ConditionedGaussianProcess::initialize()
 /* Mesh accessor */
 void ConditionedGaussianProcess::setMesh(const Mesh & mesh)
 {
-  // Checking dimension coherancy between kriging result & mesh
-  if (mesh.getDimension() != krigingResult_.getMetaModel().getInputDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, incompatible dimension between mesh & kriging. Here, mesh dimension = " << mesh.getDimension()
-                                         << " and kriging input dimension = " <<  krigingResult_.getMetaModel().getInputDimension();
+  // Checking dimension coherency between kriging result & mesh
+  if (mesh.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, incompatible dimension between mesh & kriging (aka gaussian process regression). Here, mesh dimension = " << mesh.getDimension()
+                                         << " and kriging input dimension = " <<  inputDimension_;
   // Set the mesh
   isInitialized_ = false;
   ProcessImplementation::setMesh(mesh);
@@ -202,7 +201,8 @@ Bool ConditionedGaussianProcess::isStationary() const
 void ConditionedGaussianProcess::save(Advocate & adv) const
 {
   GaussianProcess::save(adv);
-  adv.saveAttribute("krigingResult_", krigingResult_);
+  adv.saveAttribute("inputDimension_", inputDimension_);
+  adv.saveAttribute("gprResult_", gprResult_);
   adv.saveAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
   adv.saveAttribute("knownValuesIndices_", knownValuesIndices_);
 }
@@ -211,7 +211,8 @@ void ConditionedGaussianProcess::save(Advocate & adv) const
 void ConditionedGaussianProcess::load(Advocate & adv)
 {
   GaussianProcess::load(adv);
-  adv.loadAttribute("krigingResult_", krigingResult_);
+  adv.loadAttribute("inputDimension_", inputDimension_);
+  adv.loadAttribute("gprResult_", gprResult_);
   adv.loadAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
   adv.loadAttribute("knownValuesIndices_", knownValuesIndices_);
 }

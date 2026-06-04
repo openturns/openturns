@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -206,7 +206,7 @@ private:
   /** check that sample is centered to precision eps */
   void checkYCentered(const Sample & Y);
 
-  // The covariance model parametric familly
+  // The covariance model parametric family
   CovarianceModel covarianceModel_;
   mutable CovarianceModel reducedCovarianceModel_;
 

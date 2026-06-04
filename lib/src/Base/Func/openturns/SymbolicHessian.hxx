@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the Hessian of analytical functions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -96,8 +96,8 @@ private:
      reference associated with the variables may have change after the construction */
   void initialize() const;
 
-  mutable Bool isInitialized_;
-  mutable Bool isAnalytical_;
+  mutable Bool isInitialized_ = false;
+  mutable Bool isAnalytical_ = true;
   Pointer<SymbolicEvaluation> p_evaluation_;
 
   /** A mathematical expression parser from the muParser library */

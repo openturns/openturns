@@ -8,10 +8,7 @@ Fit a parametric copula
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as otv
 
 # %%
 # Create data
@@ -32,5 +29,8 @@ distribution.getParameter()
 # %%
 # Draw fitted distribution
 graph = distribution.drawPDF()
-view = viewer.View(graph)
-plt.show()
+view = otv.View(graph)
+
+# %%
+# Display all figures
+otv.View.ShowAll()

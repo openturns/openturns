@@ -2,7 +2,7 @@
 /**
  *  @brief The class building chaos expansions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -114,6 +114,10 @@ public:
 
   AdaptiveStrategy getAdaptiveStrategy() const;
 
+  /** Domination flag accessor */
+  virtual void setUseDomination(const Bool useDomination);
+  Bool getUseDomination() const;
+
   /** Computes the functional chaos */
   void run() override;
 
@@ -129,17 +133,7 @@ public:
 private:
 
   /** Marginal computation */
-  void runMarginal(const UnsignedInteger marginalIndex,
-                   Indices & indices,
-                   Point & coefficients,
-                   Scalar & residual,
-                   Scalar & relativeError);
-
-  /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  Function transformation_;
-
-  /** The inverse isoprobabilistic transformation */
-  Function inverseTransformation_;
+  void runMarginal(const UnsignedInteger marginalIndex, Indices & indices, Point & coefficients);
 
   /** The composed model */
   Function composedModel_;
@@ -151,12 +145,22 @@ private:
   ProjectionStrategy projectionStrategy_;
 
   /** Maximum residual */
-  Scalar maximumResidual_;
+  Scalar maximumResidual_ = 0.0;
 
 protected:
+  Bool initializeTransformation(const Distribution & measure);
 
   /** Result of the projection */
   FunctionalChaosResult result_;
+
+  /** domination flag */
+  Bool useDomination_ = false;
+
+  /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
+  Function transformation_;
+
+  /** The inverse isoprobabilistic transformation */
+  Function inverseTransformation_;
 
 } ; /* class FunctionalChaosAlgorithm */
 

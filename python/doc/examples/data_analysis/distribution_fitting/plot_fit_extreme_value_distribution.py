@@ -5,15 +5,7 @@ Fit an extreme value distribution
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
-# %%
-# Set the random generator seed
-ot.RandomGenerator.SetSeed(0)
-
+import openturns.viewer as otv
 
 # %%
 # The generalized extreme value distribution (GEV)
@@ -73,7 +65,7 @@ graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setLegends(["GEV fitting", "histogram"])
 graph.setLegendPosition("upper right")
 
-view = viewer.View(graph)
+view = otv.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(-20.0, 20.0)
 
@@ -112,7 +104,7 @@ graph.setLegends(
     ]
 )
 graph.setLegendPosition("upper right")
-view = viewer.View(graph)
+view = otv.View(graph)
 axes = view.getAxes()  # axes is a matplotlib object
 _ = axes[0].set_xlim(-20.0, 20.0)
 
@@ -160,7 +152,7 @@ graph.setTitle("Generalized Pareto distribution fitting on a sample")
 graph.setLegends(["GPD fitting", "histogram"])
 graph.setLegendPosition("upper right")
 
-view = viewer.View(graph)
+view = otv.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(-1.0, 10.0)
 
@@ -190,8 +182,10 @@ graph.setTitle("Generalized Pareto distribution fitting on a sample")
 graph.setLegends(["GPD fitting", "histogram"])
 graph.setLegendPosition("upper right")
 
-view = viewer.View(graph)
+view = otv.View(graph)
 axes = view.getAxes()
 _ = axes[0].set_xlim(-1.0, 10.0)
 
-plt.show()
+# %%
+# Display all graphs
+otv.View.ShowAll()

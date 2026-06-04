@@ -1,8 +1,7 @@
 import openturns as ot
 from matplotlib import pyplot as plt
-from openturns.viewer import View
+import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
 N = 512
 a = 20.0
 # myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
@@ -42,4 +41,4 @@ cov_graph.setTitle("Stationary covariance model estimation")
 
 fig = plt.figure(figsize=(10, 4))
 cov_axis = fig.add_subplot(111)
-view = View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+view = otv.View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)

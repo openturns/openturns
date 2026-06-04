@@ -4,7 +4,7 @@
  *  using a maximization of the likelihood function. We use here some articles of J.A.Mauricio (http://www.ucm.es/info/ecocuan/jam/)
  *  to use an efficient method
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -886,7 +886,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
       for (UnsignedInteger i = 0; i <= j; ++i)
       {
         autoCovariance_(i, j) = W0(i, j);
-        // Using the symetry
+        // Using the symmetry
         autoCovariance_(j, i) = W0(i, j);
       }
     }

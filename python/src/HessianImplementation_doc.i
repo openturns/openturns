@@ -1,0 +1,130 @@
+%define OT_Hessian_doc
+"Numerical math hessian implementation.
+
+See also
+--------
+Function, GradientImplementation
+
+Notes
+-----
+This object is the result of the method *getHessian* of a 
+:class:`~openturns.Function`."
+%enddef
+%feature("docstring") OT::HessianImplementation
+OT_Hessian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_getCallsNumber_doc
+"Accessor to the number of times the hessian has been called.
+
+Returns
+-------
+calls_number : int
+    Integer that counts the number of times the hessian has been called
+    since its creation."
+%enddef
+%feature("docstring") OT::HessianImplementation::getCallsNumber
+OT_Hessian_getCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_getInputDimension_doc
+"Accessor to the number of the inputs.
+
+Returns
+-------
+number_inputs : int
+    Number of inputs."
+%enddef
+%feature("docstring") OT::HessianImplementation::getInputDimension
+OT_Hessian_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_getOutputDimension_doc
+"Accessor to the number of the outputs.
+
+Returns
+-------
+number_outputs : int
+    Number of outputs."
+%enddef
+%feature("docstring") OT::HessianImplementation::getOutputDimension
+OT_Hessian_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_getMarginal_doc
+"Accessor to the hessian implementation of a specific output.
+
+Parameters
+----------
+i : int
+    Integer corresponding to the output (Care: it starts at 0).
+indices : sequence of integer
+    The set of indices for which the outputs are extracted.
+
+Returns
+-------
+hessianImplementation : :class:`~openturns.HessianImplementation`
+    A hessian implementation restricted to its components functions which
+    indices are *i* or *indices*."
+%enddef
+%feature("docstring") OT::HessianImplementation::getMarginal
+OT_Hessian_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_hessian_doc
+"Return the Jacobian transposed matrix of the implementation at a point.
+
+Parameters
+----------
+point : sequence of float
+    Point where the Jacobian transposed matrix is calculated.
+
+Returns
+-------
+hessian : :class:`~openturns.Matrix`
+    The Jacobian transposed matrix of the function at *point*."
+%enddef
+%feature("docstring") OT::HessianImplementation::hessian
+OT_Hessian_hessian_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HessianImplementation::isActualImplementation
+"Accessor to the validity flag.
+
+Returns
+-------
+is_impl : bool
+    Whether the implementation is valid."
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_getParameter_doc
+"Accessor to the parameter values.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    The parameter values."
+%enddef
+%feature("docstring") OT::HessianImplementation::getParameter
+OT_Hessian_getParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Hessian_setParameter_doc
+"Accessor to the parameter values.
+
+Parameters
+----------
+parameter : sequence of float
+    The parameter values."
+%enddef
+%feature("docstring") OT::HessianImplementation::setParameter
+OT_Hessian_setParameter_doc
+

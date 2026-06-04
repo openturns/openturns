@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the tuples experiment plane
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,7 +56,7 @@ IndicesCollection Tuples::generate() const
   /* Dimension of the realizations */
   const UnsignedInteger dimension = bounds_.getSize();
   /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
-  UnsignedInteger size = 1;
+  UnsignedInteger size = std::min(1UL, dimension);
   const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {

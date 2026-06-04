@@ -2,7 +2,7 @@
 /**
  *  @brief LevelSet is defined as the set of points such that f(x_1,...,x_n) <= level
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ static const Factory<LevelSet> Factory_LevelSet;
 LevelSet::LevelSet()
   : DomainImplementation(1)
   , function_(ConstantFunction(1, Point({1.0})))
-  , operator_(LessOrEqual())
+, operator_(LessOrEqual())
 {
   // Nothing to do
 }
@@ -340,7 +340,7 @@ Bool LevelSet::operator == (const LevelSet & other) const
   return (function_ == other.function_) && (operator_ == other.operator_) && (level_ == other.level_);
 }
 
-/* Functio accessor */
+/* Function accessor */
 Function LevelSet::getFunction() const
 {
   return function_;

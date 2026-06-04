@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for Parametrized distributions
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -106,6 +106,12 @@ Scalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) co
   return distribution_.computeComplementaryCDF(point);
 }
 
+/* Get the probability content of an interval */
+Scalar ParametrizedDistribution::computeProbability(const Interval & interval) const
+{
+  return distribution_.computeProbability(interval);
+}
+
 /* Compute the entropy of the distribution */
 Scalar ParametrizedDistribution::computeEntropy() const
 {
@@ -129,6 +135,11 @@ Point ParametrizedDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   return distribution_.computeQuantile(prob, tail);
+}
+
+Scalar ParametrizedDistribution::computeScalarQuantile(const Scalar prob, const Bool tail) const
+{
+  return distribution_.computeScalarQuantile(prob, tail);
 }
 
 /* Get the product minimum volume interval containing a given probability of the distribution */

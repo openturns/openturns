@@ -28,10 +28,7 @@ from openturns.usecases import linthurst
 
 
 # %%
-
 palette = ot.Drawable.BuildTableauPalette(5)
-
-ot.RandomGenerator.SetSeed(0)
 
 # %%
 #
@@ -270,3 +267,7 @@ view = otv.View(graph)
 # which is why the points are not close to the diagonal of the plot.
 # Hence, the confidence intervals do not cross the diagonal very often.
 # In this case, we may want to create a more accurate metamodel.
+
+# %%
+# Display all figures
+otv.View.ShowAll()

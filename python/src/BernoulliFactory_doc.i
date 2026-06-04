@@ -1,0 +1,44 @@
+%feature("docstring") OT::BernoulliFactory
+R"RAW(Bernoulli factory.
+
+Notes
+-----
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{p}_n = \bar{x}_n
+    \end{eqnarray*}
+
+See also
+--------
+DistributionFactory, Bernoulli)RAW"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BernoulliFactory::buildAsBernoulli
+"Estimate the distribution as native distribution.
+
+**Available usages**:
+
+    buildAsBernoulli()
+
+    buildAsBernoulli(*sample*)
+
+    buildAsBernoulli(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+param : sequence of float
+   The parameters of the :class:`~openturns.Bernoulli`.
+
+Returns
+-------
+distribution : :class:`~openturns.Bernoulli`
+    The estimated distribution as a Bernoulli.
+    
+    In the first usage, the default Bernoulli distribution is built."
+

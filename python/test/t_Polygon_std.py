@@ -23,7 +23,8 @@ for i in range(size):
     data2[i] = cursor
 
 # Create an empty graph
-graph = ot.Graph("Some polygons", "x1", "x2", True, "topright")
+graph = ot.Graph("Some polygons", "x1", "x2")
+graph.setLegendPosition("upper right")
 
 # Create the first polygon
 polygon1 = ot.Polygon(data1)

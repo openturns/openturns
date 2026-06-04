@@ -1,8 +1,6 @@
 import openturns as ot
-from openturns.viewer import View
+import openturns.viewer as otv
 
-ot.RandomGenerator.SetSeed(0)
-ot.ResourceMap.Reload()
 ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 64)
 ot.ResourceMap.SetAsUnsignedInteger("Mesh-LargeSize", 0)
 
@@ -16,8 +14,8 @@ xMin = [-5.0] * 2
 xMax = [5.0] * 2
 box = ot.Interval(xMin, xMax)
 mesh = ot.LevelSetMesher([51] * 2).build(levelSet, box, False)
-pdf_2d = ot.Graph("Uniform distribution over a mesh, PDF", "x1", "x2", True)
-cdf_2d = ot.Graph("Uniform distribution over a mesh, CDF", "x1", "x2", True)
+pdf_2d = ot.Graph("Uniform distribution over a mesh, PDF", "x1", "x2")
+cdf_2d = ot.Graph("Uniform distribution over a mesh, CDF", "x1", "x2")
 distribution_2d = ot.UniformOverMesh(mesh)
 mesh_g = mesh.draw()
 mesh_g.setLegends([""])
@@ -44,6 +42,6 @@ grid.setGraph(1, 0, pdf_2d)
 grid.setGraph(1, 1, cdf_2d)
 grid.setTitle("UniformOverMesh")
 grid.setLegendPosition("upper right")
-v = View(grid)
+v = otv.View(grid)
 fig = v.getFigure()
 fig.axes[1].legend(loc="best")

@@ -39,10 +39,7 @@ from openturns.usecases import logistic_model
 import openturns as ot
 import numpy as np
 import openturns.viewer as otv
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
+from matplotlib import pyplot as plt
 
 # %%
 # We load the logistic model from the usecases module :
@@ -75,7 +72,8 @@ populationObservations = observedSample[:, 1]
 populationObservations[0:5]
 
 # %%
-graph = ot.Graph("", "Time (years)", "Population (Millions)", True, "upper left")
+graph = ot.Graph("", "Time (years)", "Population (Millions)")
+graph.setLegendPosition("upper left")
 cloud = ot.Cloud(timeObservations, populationObservations)
 cloud.setLegend("Observations")
 cloud.setPointStyle(
@@ -372,8 +370,5 @@ view = otv.View(
 )
 plt.subplots_adjust(right=0.8)
 
-otv.View.ShowAll()
-
 # %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

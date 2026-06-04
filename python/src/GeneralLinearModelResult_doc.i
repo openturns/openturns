@@ -1,0 +1,154 @@
+%feature("docstring") OT::GeneralLinearModelResult
+R"RAW(General linear model result.
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.Sample`
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
+metaModel : :class:`~openturns.Function`
+    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:metaModel.
+basis :  :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^d \rightarrow \Rset^p)` for each :math:`l \in [1, b]`.
+    Its size should be equal to zero if the trend is not estimated.
+trendCoef : sequence of float
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)` stored as a Point.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance function of the Gaussian process with its optimized parameters.
+optimalLogLikelihood : float
+    The maximum log-likelihood corresponding to the model.
+
+Notes
+-----
+The structure is usually created by the method *run()* of a :class:`~openturns.GeneralLinearModelAlgorithm`, and obtained thanks to the *getResult()* method.
+
+The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
+
+.. math::
+    :label: metaModel
+
+    \tilde{\cM}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \dots  \\
+        \mu_p(\vect{x}) 
+       \end{array}
+     \right)
+
+where :math:`\mu_l(\vect{x}) = \sum_{j=1}^{b} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` are the trend functions
+(the :math:`l-th` marginal of `\varphi(x)`).
+
+
+.. math::
+    :label: metaModelWithT
+
+    \tilde{\cM}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1\circ T(\vect{x}) \\
+        \dots  \\
+        \mu_p\circ T(\vect{x}) 
+       \end{array}
+     \right)
+
+Examples
+--------
+Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
+>>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
+>>> sampleY = f(sampleX)
+
+Create the algorithm:
+
+>>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
+>>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
+>>> algo = ot.GeneralLinearModelAlgorithm(sampleX, sampleY, covarianceModel, basis)
+>>> algo.run()
+
+Get the result:
+
+>>> result = algo.getResult()
+
+Get the meta model:
+
+>>> metaModel = result.getMetaModel()
+>>> graph = metaModel.draw(0.0, 7.0)
+>>> cloud = ot.Cloud(sampleX, sampleY)
+>>> cloud.setPointStyle('fcircle')
+>>> graph = ot.Graph()
+>>> graph.add(cloud)
+>>> graph.add(f.draw(0.0, 7.0))
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralLinearModelResult::getTrendCoefficients
+R"RAW(Accessor to the trend coefficients.
+
+Returns
+-------
+trendCoef : :class:`~openturns.Point`
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralLinearModelResult::getCovarianceModel
+"Accessor to the covariance model.
+
+Returns
+-------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model of the Gaussian process *W*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralLinearModelResult::getBasis
+R"RAW(Accessor to the functional basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    Functional basis of size :math:`b` : :math:`(\varphi^l: \Rset^d \rightarrow \Rset^p)` for each :math:`l \in [1, b]`.
+
+Notes
+-----
+If the trend is not estimated, the collection is empty. 
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralLinearModelResult::getMetaModel
+R"RAW(Accessor to the metamodel.
+
+Returns
+-------
+metaModel : :class:`~openturns.Function`
+    The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModel`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralLinearModelResult::getNoise
+"Accessor to the Gaussian process.
+
+Returns
+-------
+process : :class:`~openturns.Process`
+    Returns the Gaussian process :math:`W` with the optimized parameters.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralLinearModelResult::getOptimalLogLikelihood
+"Accessor to the optimal log-likelihood of the model.
+
+Returns
+-------
+optimalLogLikelihood : float
+    The value of the log-likelihood corresponding to the model.
+"
+
+// ---------------------------------------------------------------------
+

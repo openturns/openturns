@@ -5,11 +5,7 @@ Test the copula
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
-
-ot.Log.Show(ot.Log.NONE)
-
+import openturns.viewer as otv
 
 # %%
 # Copula fitting test using Kendall plot
@@ -39,12 +35,12 @@ ot.ResourceMap.SetAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 25)
 # We can test a specific copula model for a given sample,
 copula_test = ot.GumbelCopula(3)
 graph = ot.VisualTest.DrawKendallPlot(sample1, copula_test)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # or test whether two samples have the same copula model
 graph = ot.VisualTest.DrawKendallPlot(sample1, sample2)
-view = viewer.View(graph)
+view = otv.View(graph)
 
 # %%
 # The first test gives a positive result as the blue curve is near the identity line which is not the case for the second test.
@@ -78,7 +74,8 @@ rankCloud = ot.Cloud(rankSample, "blue", "plus", "sample")
 
 # %%
 # We can plot the graph with rank sample and estimated copula :
-myGraph = ot.Graph("Parametric estimation of the copula", "X", "Y", True, "upper left")
+myGraph = ot.Graph("Parametric estimation of the copula", "X", "Y")
+myGraph.setLegendPosition("upper left")
 myGraph.setLegendPosition("lower right")
 myGraph.add(rankCloud)
 
@@ -103,13 +100,9 @@ contour_estCop.setLegend("Gumbel copula")
 contour_estCop.setColor("red")
 # Add the iso-curves graph into the cloud one
 myGraph.add(contour_estCop)
-view = viewer.View(myGraph)
+view = otv.View(myGraph)
 
 
 # %%
 # Display figures
-plt.show()
-
-# %%
-# Reset default settings
-ot.ResourceMap.Reload()
+otv.View.ShowAll()

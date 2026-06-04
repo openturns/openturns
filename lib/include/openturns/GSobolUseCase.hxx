@@ -2,7 +2,7 @@
 /**
  *  @brief The header file that defines the GSobol' Use Case
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -35,15 +35,10 @@ public:
   GSobolUseCase(const UnsignedInteger & dimension, const Point & a)
     : dimension_(dimension)
     , a_(a)
-    , mean_(1.0)
   {
-    // Reference analytical values
-    ;
-    variance_ = 1.0;
     // Create the gSobol function
     Description inputVariables(dimension);
-    Description formula(1);
-    formula[0] = "1.0";
+    Description formula = {"1.0"};
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       variance_ *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
@@ -99,10 +94,10 @@ public:
 private:
   Function model_;
   JointDistribution inputDistribution_;
-  UnsignedInteger dimension_;
+  UnsignedInteger dimension_ = 0;
   Point a_;
-  Scalar mean_;
-  Scalar variance_;
+  Scalar mean_ = 1.0;
+  Scalar variance_ = 1.0;
 
 }; /* class GSobolUseCase */
 

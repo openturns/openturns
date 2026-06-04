@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for LogNormal distribution
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,7 +61,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
   if (sample.getSize() < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution using the method of moments with a sample of size less than 3.";
   // ME
   const Scalar std = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
+  if (!std::isfinite(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of moments.";
   const Scalar skew = sample.computeSkewness()[0];
   const Scalar a3 = skew;
@@ -82,7 +82,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
 LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
+  if (!std::isfinite(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
   const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   Scalar step = std * std::sqrt(quantileEpsilon);
@@ -154,7 +154,7 @@ struct LogNormalFactoryMMEParameterConstraint
 LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
+  if (!std::isfinite(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of modified moments.";
   const Scalar mean = sample.computeMean()[0];
   const Scalar xMin = sample.getMin()[0];
@@ -308,10 +308,14 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
   }
   LinearLeastSquares leastSquares(dataIn, dataOut);
   leastSquares.run();
-  const Scalar a0 = leastSquares.getConstant()[0];
+  // leastSquares gives a relation of the form z = a * (y - c) + b
+  // and we need to rewrite it as z = a1 * y + a0
+  // so a1 = a and a0 = b - a1 * c
+  const Scalar c = leastSquares.getCenter()[0];
   const Scalar a1 = leastSquares.getLinear()(0, 0);
+  const Scalar a0 = leastSquares.getConstant()[0];
   const Scalar sigmaLog = 1.0 / a1;
-  const Scalar muLog = -a0 * sigmaLog;
+  const Scalar muLog = -(a0 - a1 * c) * sigmaLog;
   return LogNormal(muLog, sigmaLog, gamma);
 }
 
@@ -331,39 +335,39 @@ public:
     }
   }
 
-  LogNormalFactoryResidualEvaluation * clone() const
+  LogNormalFactoryResidualEvaluation * clone() const override
   {
     return new LogNormalFactoryResidualEvaluation(*this);
   }
 
-  UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return 1;
   }
 
-  UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return sample_.getSize();
   }
 
-  Description getInputDescription() const
+  Description getInputDescription() const override
   {
     return Description(1, "gamma");
   }
 
-  Description getOutputDescription() const
+  Description getOutputDescription() const override
   {
     return Description(sample_.getSize(), "r");
   }
 
-  Description getDescription() const
+  Description getDescription() const override
   {
     Description description(getInputDescription());
     description.add(getOutputDescription());
     return description;
   }
 
-  Point operator() (const Point & parameter) const
+  Point operator() (const Point & parameter) const override
   {
     const Scalar gamma = parameter[0];
     const UnsignedInteger size = sample_.getSize();
@@ -374,13 +378,7 @@ public:
     }
     LinearLeastSquares leastSquares(dataIn, dataOut_);
     leastSquares.run();
-    const Scalar a0 = leastSquares.getConstant()[0];
-    const Scalar a1 = leastSquares.getLinear()(0, 0);
-    Point result(size);
-    for (UnsignedInteger i = 0; i < size; ++ i)
-    {
-      result[i] = dataOut_(i, 0) - (a1 * dataIn(i, 0) + a0);
-    }
+    const Point result((dataOut_ - leastSquares.getResult().getMetaModel()(dataIn)).asPoint());
     return result;
   }
 

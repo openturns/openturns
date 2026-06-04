@@ -2,7 +2,7 @@
 /**
  *  @brief CrossEntropyImportanceSampling implement Importance Sampling by Cross Entropy algorithm
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,20 +39,21 @@ public:
   CrossEntropyImportanceSampling();
 
   /** Default constructor */
-  explicit  CrossEntropyImportanceSampling(const RandomVector & event,
-      const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
+  explicit CrossEntropyImportanceSampling(const RandomVector & event,
+                                          const Scalar quantileLevel = ResourceMap::GetAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel"));
 
   /** Virtual constructor */
   CrossEntropyImportanceSampling * clone() const override;
 
-  /** Get quantileLevel */
+  /** Quantile Level accessor */
+  void setQuantileLevel(const Scalar quantileLevel);
   Scalar getQuantileLevel() const;
-
-  /** Set quantileLevel */
-  void setQuantileLevel(const Scalar & quantileLevel);
 
   /** Main function that computes the failure probability */
   void run() override;
+
+  /** String converter */
+  String __repr__() const override;
 
   /** Accessor to results */
   CrossEntropyResult getResult() const;
@@ -71,7 +72,13 @@ public:
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
 protected:
+  virtual Distribution getInitialDistribution() const;
 
   /** Limit state accessor */
   virtual Function getLimitState() const;
@@ -87,9 +94,6 @@ protected:
 
   /** Select sample indices according to status */
   Indices getSampleIndices(const UnsignedInteger step, const Bool status) const;
-
-  // Initial distribution
-  Distribution initialDistribution_;
 
   // Auxiliary distribution
   Distribution auxiliaryDistribution_;

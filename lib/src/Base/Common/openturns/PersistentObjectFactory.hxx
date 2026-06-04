@@ -2,7 +2,7 @@
 /**
  *  @brief Class PersistentObjectFactory reloads a PersistentObject from a storage manager
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -101,19 +101,23 @@ public:
     registerMe(PERSISTENT::GetClassName());
   }
 
+  explicit Factory(const String & alias)
+  {
+    registerMe(alias);
+  }
+
   /** Virtual constructor */
-  virtual Factory * clone() const
+  Factory * clone() const override
   {
     return new Factory(*this);
   }
 
   /** Method build() creates a new PersistentObject from the storage manager */
-  virtual PersistentObject * build(StorageManager & mgr) const
+  PersistentObject * build(StorageManager & mgr) const override
   {
     Advocate adv ( mgr.readObject() );
 
     PERSISTENT * p_rebuildObject = new PERSISTENT();
-    assert(p_rebuildObject && "PersistentObject not allocated");
     //try {
 
     p_rebuildObject->load(adv);
@@ -126,7 +130,7 @@ public:
   }
 
   /** Method assign() fills a PersistentObject with another one (must have same type) */
-  virtual void assign(PersistentObject & po, const PersistentObject & other) const
+  void assign(PersistentObject & po, const PersistentObject & other) const override
   {
     PERSISTENT & ref_po          = static_cast<PERSISTENT &>(po);
     const PERSISTENT & ref_other = static_cast<const PERSISTENT &>(other);

@@ -2,7 +2,7 @@
 /**
  *  @brief LHSResult
  *
- *  Copyright 2005-2025 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -196,7 +196,7 @@ Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
   curve.setLegend(title);
   curve.setLineStyle("solid");
   curve.setLineWidth(2);
-  Graph graph(title, "Iterations", data.getDescription()[0], true, "");
+  Graph graph(title, "Iterations", data.getDescription()[0]);
   graph.add(curve);
   return graph;
 }
@@ -293,7 +293,7 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   cloud.setLegend(drawTitle);
   cloud.setLineStyle("solid");
   cloud.setLineWidth(2);
-  Graph graph(drawTitle, description[0], description[1], true, "");
+  Graph graph(drawTitle, description[0], description[1]);
   graph.add(cloud);
   return graph;
 }

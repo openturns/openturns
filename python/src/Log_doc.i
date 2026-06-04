@@ -1,0 +1,232 @@
+%feature("docstring") OT::Log
+"Logging utilities.
+
+No constructor, only static methods are available."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Show
+"Accessor to the log flags.
+
+Parameters
+----------
+flags : int
+    Log flags to enable.
+
+    Available values to be ORed:
+
+    - DBG
+    - INFO
+    - USER
+    - WARN
+    - ERROR
+    - TRACE
+    - DEFAULT
+    - NONE
+    - ALL
+
+Examples
+--------
+Turn warnings off:
+
+>>> import openturns as ot
+>>> ot.Log.Show(ot.Log.NONE)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Flags
+"Accessor to the log flags.
+
+Returns
+-------
+flags : int
+    The enabled log flags."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Debug
+"Log debug message.
+
+Parameters
+----------
+message : str
+    The message to log"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Error
+"Log error message.
+
+Parameters
+----------
+message : str
+    The message to log"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Warn
+"Log warning message.
+
+Parameters
+----------
+message : str
+    The message to log"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::User
+"Log user message.
+
+Parameters
+----------
+message : str
+    The message to log"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Trace
+"Log execution trace message.
+
+Parameters
+----------
+message : str
+    The message to log."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Info
+"Log information message.
+
+Parameters
+----------
+message : str
+    The message to log"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Flush
+"Flush pending messages."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Repeat
+"Whether to report repeated messages.
+
+Parameters
+----------
+repeat : bool
+    Whether to report repeated messages"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::SetFile
+"Redirect logs to a file.
+
+Parameters
+----------
+file_name : str
+    Log file name
+
+Examples
+--------
+Write warnings in a file:
+
+>>> import openturns as ot
+>>> ot.Log.SetFile('Warnings.log')
+
+Set to an empty string to stop redirection:
+
+>>> ot.Log.SetFile('')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::SetColor
+"Color accessor.
+
+Parameters
+----------
+severity : int
+    Log level
+color : str or int
+    Log color"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::GetColor
+"Color accessor.
+
+Parameters
+----------
+severity : int
+    Log level
+
+Returns
+-------
+color : str
+    Log color"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::HasDebug
+"Test whether debug level is enabled.
+
+Returns
+-------
+has_log : bool
+    Whether the level is enabled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::HasUser
+"Test whether user level is enabled.
+
+Returns
+-------
+has_log : bool
+    Whether the level is enabled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::HasInfo
+"Test whether information level is enabled.
+
+Returns
+-------
+has_log : bool
+    Whether the level is enabled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::HasError
+"Test whether error level is enabled.
+
+Returns
+-------
+has_log : bool
+    Whether the level is enabled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::HasTrace
+"Test whether execution trace level is enabled.
+
+Returns
+-------
+has_log : bool
+    Whether the level is enabled"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::HasWarn
+"Test whether warning level is enabled.
+
+Returns
+-------
+has_log : bool
+    Whether the level is enabled"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Log::Reset
+"Reset settings."
