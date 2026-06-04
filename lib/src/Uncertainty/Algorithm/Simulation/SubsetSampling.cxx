@@ -92,7 +92,7 @@ void SubsetSampling::run()
   const Function uToX(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
-    LOGWARN(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
+    LOGWARN(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criterion.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
   if (seedNumber_ < 1)
