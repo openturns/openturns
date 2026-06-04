@@ -112,6 +112,9 @@ void CrossEntropyImportanceSampling::run()
   if (sampleSize < 2)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
 
+  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
+    Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
+    
   Sample auxiliaryInputSample(0, initialDistribution_.getDimension());
   Sample auxiliaryOutputSample(0, 1);
 
