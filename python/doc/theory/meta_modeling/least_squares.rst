@@ -90,6 +90,9 @@ because the solution may be particularly sensitive to rounding errors.
 The least-squares problem is rather solved using more robust numerical methods
 such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
 
+Refer to :any:`least_squares_resolution` to get some numerical methods that can be used in order to
+solve least squares problems.
+
 Particular case 1: The functional basis is composed of polynomials with degree less or equal to 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In this particular case, the functional basis is defined by :math:`N = 1+\inputDim` linear functions:

@@ -30,6 +30,8 @@ This method implements a method to solve the least squares problem specified in
 
 Refer to :any:`least_squares` to get all the notations.
 
+Refer to :any:`least_squares_resolution` to get details on the numerical method.
+
 Examples
 --------
 Solves a linear least squares problem with SVD method:

@@ -36,15 +36,15 @@ R"RAW(Build the approximation.
 Parameters
 ----------
 x : 2-d sequence of float
-    The input sample :math:`\left\{\vect{x}^{(1)}, ..., \vect{x}^{(\sizeSample)}\right\}`
+    The input sample :math:`\left\{\vect{x}^{(1)}, ..., \vect{x}^{(\sampleSize)}\right\}`
     where :math:`\vect{y}\in \Rset^\inputDim`
 y : 2-d sequence of float
-    The output sample :math:`\left\{\vect{y}^{(1)}, ..., \vect{y}^{(\sizeSample)}\right\}`
+    The output sample :math:`\left\{\vect{y}^{(1)}, ..., \vect{y}^{(\sampleSize)}\right\}`
     where :math:`\vect{y}\in \Rset^\outputDim`
 weight : sequence of float
     Weights
     
-    By default, all the weights are equal to :math:`\frac{1}{\sizeSample}`
+    By default, all the weights are equal to :math:`\frac{1}{\sampleSize}`
 psi : sequence of :class:`~openturns.Function`
     The functional basis.
 indices : sequence of int

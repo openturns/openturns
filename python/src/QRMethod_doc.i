@@ -28,6 +28,10 @@ Notes
 This method implements a method to solve the least squares problem specified in
 :eq:`def_A_lsmethod` and :eq:`func_obj_def`, using the QR method.
 
+Refer to :any:`least_squares` to get all the notations.
+
+Refer to :any:`least_squares_resolution` to get details on the numerical method.
+
 
 Examples
 --------

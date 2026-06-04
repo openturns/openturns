@@ -9,6 +9,8 @@ This class models a least-squares problem defined by:
 
 where :math:`f: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` is called the *residual function*.
 
+Refer to :any:`least_squares` for more details on the resolution of least-squares problem.
+
 Parameters
 ----------
 residualFunction : :class:`~openturns.Function`
