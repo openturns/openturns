@@ -63,7 +63,7 @@ Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
 }
 
 /* Setter for MaximumCoefficientOfVariation. */
-void CrossEntropyImportanceSampling::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation)
+void CrossEntropyImportanceSampling::setMaximumCoefficientOfVariation(const Scalar)
 {
     throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm.";
 }
