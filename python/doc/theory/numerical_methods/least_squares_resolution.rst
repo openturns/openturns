@@ -128,6 +128,7 @@ where :math:`\matr{U}~\in \Rset^{N \times N}` and
          \end{array}
          \right)
        \end{aligned}
+
 In the previous equation, :math:`\matr{S}_1~\in \Rset^{P \times P}`
 is a diagonal matrix containing the singular values
 :math:`\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_P > 0` of
