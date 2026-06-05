@@ -14,8 +14,8 @@ computational cost, in order to obtain accurate results.
 A possible solution to overcome this problem is to project the model
 :math:`\model` in a suitable functional space, such as
 the Hilbert space :math:`L^2\left(\mu_{\inputRV}\right)` of square-integrable functions with
-respect to :math:`\mu_{\inputRV}`. This projection is called a *functional chaos expansion* of
-the model :math:`\model`.
+respect to :math:`\mu_{\inputRV}`. This projection is called a *functional chaos expansion* of 
+:math:`\model`.
 
 The principles of the building of a functional chaos expansion are described in the sequel.
 
@@ -74,7 +74,7 @@ The associated norm is defined by:
 
 for any :math:`h \in L^2\left(\mu_{\inputRV}\right)`.
 
-The Hilbert space :math:`L^2\left(\mu_{\inputRV}\right)` admits an orthonormal basis denoted by
+The Hilbert space :math:`L^2\left(\mu_{\inputRV}\right)` admits a basis denoted by
 :math:`(\psi_k)_{k \geq 0}` with :math:`\psi_k : \Rset^{\inputDim} \rightarrow \Rset`. Therefore, any
 :math:`h \in L^2\left(\mu_{\inputRV}\right)` can be written as a *functional chaos expansion*
 (see [lemaitre2010]_ page 39):
@@ -172,9 +172,9 @@ density condition :eq:`fermetureP` must also be satisfied:
 
 - First, for all polynomial spaces :math:`\cP_n` to be subspaces of
   :math:`L^2\left(\mu_{\inputRV}\right)`, it is required that
-  :math:`\langle X^n, 1 \rangle_{L^2\left(\mu_{\inputRV}\right)} = \Expect{X^n}` for
+  :math:`\langle x^n, 1 \rangle_{L^2\left(\mu_{\inputRV}\right)} = \Expect{X^n}` for
   :math:`n \geq 0` be finite in the scalar case, and
-  :math:`\left\langle \prod_{i \in A} X_i^{n_i}, 1 \right\rangle_{L^2\left(\mu_{\inputRV}\right)} =
+  :math:`\left\langle \prod_{i \in A} x_i^{n_i}, 1 \right\rangle_{L^2\left(\mu_{\inputRV}\right)} =
   \Expect{\prod_{i \in A} X_i^{n_i}}` with :math:`A \subset \llbracket 1, d \rrbracket` in
   dimension :math:`\inputDim`.
   This implies that the measure :math:`\mu_{\inputRV}` must have finite moments of all orders.
