@@ -65,7 +65,7 @@ Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
 /* Setter for MaximumCoefficientOfVariation. */
 void CrossEntropyImportanceSampling::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation)
 {
-    throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm."  << maximumCoefficientOfVariation;
+    throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm.";
 }
 
 
@@ -124,9 +124,6 @@ void CrossEntropyImportanceSampling::run()
   const UnsignedInteger sampleSize = getMaximumOuterSampling() * getBlockSize();
   if (sampleSize < 2)
     throw InvalidArgumentException(HERE) << "In CrossEntropyImportanceSampling::run, sample size has to be greater than one for variance estimation";
-
-  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
-    Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criterion.");
     
   Sample auxiliaryInputSample(0, initialDistribution.getDimension());
   Sample auxiliaryOutputSample(0, 1);
