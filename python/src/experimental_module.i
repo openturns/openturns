@@ -60,6 +60,46 @@
 /* Uncertainty/Distribution */
 %include MarginalUniformOrderStatistics.i
 
+/* Uncertainty/Algorithm/Transformation */
+%{
+namespace OT {
+  template <>
+  struct traitsPythonType<OT::Distribution>
+  {
+    typedef _PyObject_ Type;
+  };
+  template <>
+  inline bool canConvert< _PyObject_, OT::Distribution >(PyObject * pyObj)
+  {
+    void * ptr = 0;
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Distribution *"), SWIG_POINTER_NO_NULL))) {
+      OT::Distribution * p_it = reinterpret_cast< OT::Distribution * >(ptr);
+      return p_it != NULL;
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::DistributionImplementation *"), SWIG_POINTER_NO_NULL))) {
+      OT::DistributionImplementation * p_impl = reinterpret_cast< OT::DistributionImplementation * >(ptr);
+      return p_impl != NULL;
+    }
+    return false;
+  }
+  template <>
+  inline OT::Distribution convert< _PyObject_, OT::Distribution >(PyObject * pyObj)
+  {
+    void * ptr = 0;
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Distribution *"), SWIG_POINTER_NO_NULL))) {
+      OT::Distribution * p_it = reinterpret_cast< OT::Distribution * >(ptr);
+      return *p_it;
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::DistributionImplementation *"), SWIG_POINTER_NO_NULL))) {
+      OT::DistributionImplementation * p_impl = reinterpret_cast< OT::DistributionImplementation * >(ptr);
+      return *p_impl;
+    } else {
+      throw OT::InvalidArgumentException(HERE) << "Object passed as argument is not convertible to a Distribution";
+    }
+    return OT::Distribution();
+  }
+}
+%}
+%include MarginalTransformationFunction.i
+
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
 %include EfficientGlobalOptimization.i

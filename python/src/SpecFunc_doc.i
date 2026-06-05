@@ -89,7 +89,7 @@ R"RAW(Modified first kind Bessel function of order nu.
 Parameters
 ----------
 x : float
-nu : float :math:`\in \Rset^*_+`
+nu : float :math:`\in \Rset_+`
 
 Returns
 -------
@@ -112,7 +112,7 @@ openturns.SpecFunc.BesselInu
 Parameters
 ----------
 x : float
-nu : float :math:`\in \Rset^*_+`
+nu : float :math:`\in \Rset_+`
 
 Returns
 -------

@@ -25,5 +25,6 @@
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/MarginalTransformationGradient.hxx"
 #include "openturns/MarginalTransformationHessian.hxx"
+#include "openturns/MarginalTransformationFunction.hxx"
 
 #endif /* OPENTURNS_OTMARGINALTRANSFORMATION_HXX */

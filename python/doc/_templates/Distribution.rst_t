@@ -8,6 +8,7 @@
     from matplotlib import pyplot as plt
     import openturns.viewer as otv
 
+    import openturns.experimental as otexp
     ot.RandomGenerator.SetSeed(0)
     title = None
     if "{{ objname }}" == "Bernoulli":
@@ -49,7 +50,10 @@
         distribution = ot.Normal([0.0, 0.0], cov)
         title = "Normal dist. with correlation coefficient {}".format(cov[0, 1])
     else:
-        distribution = ot.{{ objname }}()
+        if hasattr(ot, "{{ objname }}"):
+            distribution = ot.{{ objname }}()
+        else:
+            distribution = otexp.{{ objname }}()
 
     dimension = distribution.getDimension()
     if title is None:
