@@ -400,6 +400,7 @@ ot_pyinstallcheck_test (GaussianProcessRandomVector_std)
 
 ## Transformation
 ot_pyinstallcheck_test (MarginalTransformationEvaluation_std)
+ot_pyinstallcheck_test (MarginalTransformationFunction_std)
 ot_pyinstallcheck_test (MarginalTransformationGradient_std)
 ot_pyinstallcheck_test (MarginalTransformationHessian_std)
 ot_pyinstallcheck_test (InverseNatafIndependentCopulaEvaluation_std)
