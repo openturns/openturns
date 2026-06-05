@@ -200,7 +200,7 @@ of the input sample. Its elements are defined by:
 for :math:`i = 1, \dots, \sampleSize` and :math:`j = 1, \dots, p`.
 
 Consequently, the ordinary least squares problem can be expressed in matrix form, and the normal
-equations guarantee that the matrix :math:`\Tr{\mat{\Psi}}\mat{\Psi}` is invertible provided the basis 
+equations guarantee that the matrix :math:`\Tr{\mat{\Psi}}\mat{\Psi}` is invertible provided the basis
 unctions are linearly independent.
 
 The variance of the estimator of the parameters is:
