@@ -16,9 +16,9 @@ The linear regression model is defined by:
 
 
 where :math:`a_1, ..., a_{p} \in \Rset` are scalar coefficients,
-:math:`\epsilon` a random
+:math:`\epsilon` is a random
 noise with zero mean and constant variance :math:`\sigma^2` independent from
-the random variables :math:`\varphi_j(\inputRV)` and :math:`(\varphi_j)_{1 \leq j \leq p}`  a functional basis
+the random variables :math:`\varphi_j(\inputRV)` and :math:`(\varphi_j)_{1 \leq j \leq p}`  is a functional basis
 such that :math:`\varphi_j : \Rset^{\inputDim} \rightarrow \Rset`.
 
 The forecast output random variable is defined by:
@@ -34,37 +34,35 @@ We denote by:
 
 .. math::
 
-   \widehat{y}_i =  \sum_{j=1}^{p} a_j \varphi_j(\vect{x}_i)
+   \widehat{y}_i = \sum_{j=1}^{p} a_j \varphi_j(\vect{x}_i)
 
 the linear forecast values of the :math:`\vect{x}_i`.
 
-Then, the residuals defined by:
+The residuals are defined by:
 
 .. math::
 
     \epsilon_i  = y_i -\widehat{y}_i
 
-are independent realizations of  :math:`\epsilon`. To ensure the independence of the residuals, the random variables
-:math:`(\varphi_j(\inputRV))_{1 \leq j \leq p}` need to be independent.
+and are assumed to be independent realizations of  :math:`\epsilon`.
 
-The linear coefficients :math:`(a_1, \ldots, a_{p})`  and the variance :math:`\sigma^2` are estimated by maximizing the
+The linear coefficients :math:`(a_1, \ldots, a_{p})` and the variance :math:`\sigma^2` are estimated by maximizing the
 likelihood of the residuals according to the distribution of :math:`\epsilon`.
 
 If the noise  :math:`\varepsilon` follows a normal distribution with zero mean, the maximization of the residuals
-likelihood is equivalent to solving the least-squares problem (see [bingham2010]_ theorem 1.8 page 22):
+likelihood with respect to the normal distribution is equivalent to solving the least-squares problem (see [bingham2010]_ theorem 1.8 page 22):
 
 .. math::
     :label: linRegCoef
 
-    \left\{ \widehat{a}_1,\ldots,\widehat{a}_{p} \right\} = \textrm{argmin} \sum_{i=1}^{\sampleSize} \left( y_i - \widehat{y}_i\right)^2
-
+    \left\{ \widehat{a}_1,\ldots,\widehat{a}_{p} \right\} = \textrm{argmin} \sum_{i=1}^{\sampleSize}
+    \left( y_i - \widehat{y}_i\right)^2
 
 Refer to  :any:`least_squares` to get details on the resolution of the problem.
 
 In addition, considering a normal noise enables to make tests of
 significance (see [rawlings2001]_ page 3).
 In particular, this enables to use the F-test and T-test detailed in the next sections.
-and the maximum likelihood method are equivalent.
 
 Statistics
 ~~~~~~~~~~
@@ -80,26 +78,21 @@ The total sum of squares (see [baron2014]_ page 398) is:
 .. math::
 
     SS_{\text{TOT}}
-    = \sum_{j = 1}^\sampleSize \left(y_j - \bar{y}_j\right)^2
-    = \left(\vect{y} - \bar{\vect{y}}\right)^T \left(\vect{y} - \bar{\vect{y}}\right).
+    = \sum_{j = 1}^\sampleSize \left(y_j - \bar{y}\right)^2.
 
-where :math:`\bar{\vect{y}} = (\bar{y}, ..., \bar{y})^T \in \Rset^{\sampleSize}`.
 The regression sum of squares is:
 
 .. math::
 
     SS_{\text{REG}}
-    = \sum_{j = 1}^\sampleSize \left(\hat{y}_j - \bar{y}_j\right)^2
-    = \left(\hat{\vect{y}} - \bar{\vect{y}}\right)^T \left(\hat{\vect{y}} - \bar{\vect{y}}\right).
+    = \sum_{j = 1}^\sampleSize \left(\hat{y}_j - \bar{y}\right)^2.
 
 The error sum of squares is:
 
 .. math::
 
     SS_{\text{ERR}}
-    = \sum_{j = 1}^\sampleSize \left(y_j -\widehat{y}_j\right)^2
-    = \left(\vect{y} -\widehat{\vect{y}}\right)^T \left(\vect{y} -\widehat{\vect{y}}\right).
-
+    = \sum_{j = 1}^\sampleSize \left(y_j -\widehat{y}_j\right)^2.
 
 Caution
 ~~~~~~~
@@ -121,7 +114,6 @@ but not all books use the same convention:
 
 Coefficient of determination
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 The coefficient of determination is (see [baron2014]_ page 399):
 
 .. math::
@@ -141,14 +133,12 @@ significant the coefficient of determination.
 
 Variance
 ~~~~~~~~
-
 The unbiased estimator of the variance is (see [baron2014]_ page 400,
 [bingham2010]_ page 67):
 
 .. math::
 
    \widehat{\sigma}^2 = \frac{SS_{\text{ERR}}}{\sampleSize - p}.
-
 
 Fisher - test
 ~~~~~~~~~~~~~
@@ -169,7 +159,7 @@ More precisely, the ANOVA F-test is based on the hypothesis:
 
 .. math::
 
-    H_0 : a_1 = . . . = a_p = 0
+    H_0 : a_1 = \ldots = a_p = 0
     \qquad \textrm{vs} \qquad
     H_A : \textrm{at least one } a_k \neq 0.
 
@@ -189,7 +179,6 @@ distribution :math:`F_{p - 1, \sampleSize - p}` (see [baron2014]_ page 400, [far
 
 T-test for individual coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 We assume that the residual :math:`\varepsilon` follows a normal distribution with zero mean.
 
 The T-test is based on the hypothesis that one single coefficient is zero.
@@ -200,11 +189,25 @@ More precisely, let :math:`\hat{\sigma}^2` be the estimator of the variance
 
    \widehat{\sigma}^2 = \frac{SS_{\text{ERR}}}{\sampleSize - p}.
 
+Let us define the design matrix :math:`\mat{\Psi}` of dimensions :math:`\sampleSize \times p`.
+This matrix evaluates each of the :math:`p` basis functions on the :math:`\sampleSize` observations
+of the input sample. Its elements are defined by:
+
+.. math::
+
+    \mat{\Psi}_{i,j} = \varphi_j(\vect{x}_i)
+
+for :math:`i = 1, \dots, \sampleSize` and :math:`j = 1, \dots, p`.
+
+Consequently, the ordinary least squares problem can be expressed in matrix form, and the normal
+equations guarantee that the matrix :math:`\Tr{\mat{\Psi}}\mat{\Psi}` is invertible provided the basis 
+unctions are linearly independent.
+
 The variance of the estimator of the parameters is:
 
 .. math::
 
-    \Var{\hat{a}_k} =\widehat{\sigma}^2 (\Tr{\mat{\Psi}} \mat{\Psi})^{-1}_{k,k}
+    \Var{\hat{a}_k} =\widehat{\sigma}^2 (\Tr{\mat{\Psi}} \mat{\Psi})^{-1}_{k,k}.
 
 Let :math:`\operatorname{SD}(\hat{a}_k)` be the standard deviation of the
 estimator of :math:`a_k`:
@@ -232,13 +235,13 @@ with :math:`\sampleSize - p` degrees of freedom (see [baron2014]_ page 401).
 
 Distribution of estimators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 The estimated coefficients follow the distribution:
 
 .. math::
     :label: linRegCoefDist
 
-    \widehat{\vect{a}} \sim \cN(\vect{a}, \sigma^2 \left(\Tr{\mat{\Psi}} \mat{\Psi}\right)^{-1})
+    \widehat{\vect{a}} \sim \cN(\vect{a}, \sigma^2 \left(\Tr{\mat{\Psi}}
+    \mat{\Psi}\right)^{-1}).
 
 It is exact in case of normally-distributed errors, otherwise it is asymptotic.
 
@@ -249,14 +252,15 @@ The estimated variance of the error follows a Gamma distribution in case of norm
 
     \widehat{\sigma}^2 \sim \operatorname{Gamma}(\alpha, \theta)
 
-with :math:`\alpha = \frac{\sampleSize - p}{2}` and :math:`\theta = \frac{2\sigma^2}{\sampleSize - p}`.
+with :math:`\alpha = \frac{\sampleSize - p}{2}` and
+:math:`\theta = \frac{2\sigma^2}{\sampleSize - p}`.
 
 In the general case, the asymptotic distribution is normal:
 
 .. math::
     :label: linRegVarDist2
 
-    \widehat{\sigma}^2 \sim \cN\left(\sigma^2, \frac{2  \sigma^4}{\sampleSize - p}\right)
+    \widehat{\sigma}^2 \sim \cN\left(\sigma^2, \frac{2  \sigma^4}{\sampleSize - p}\right).
 
 The prediction on a given input vector :math:`\vect{x}_0` is defined by:
 
@@ -264,27 +268,25 @@ The prediction on a given input vector :math:`\vect{x}_0` is defined by:
 
    \widehat{y} = \Tr{\vect{x}} \vect{\hat{a}}
 
-where :math:`\vect{x} = \Tr{(\Psi_1(\vect{x}_0),\dots,\Psi_p(\vect{x}_0))}`.
+where :math:`\vect{x} = \Tr{(\varphi_1(\vect{x}_0),\dots,\varphi_p(\vect{x}_0))}`.
 
 In case of normally-distributed errors, it follows the distribution:
 
 .. math::
     :label: linRegPredictDist
 
-    \widehat{y} \sim \cN\left(\Tr{\vect{x}} \vect{a}, \Tr{\vect{x}} (\Tr{\mat{\Psi}} \mat{\Psi})^{-1} \vect{x} \sigma^2\right)
+    \widehat{y} \sim \cN\left(\Tr{\vect{x}} \vect{a}, \Tr{\vect{x}} (\Tr{\mat{\Psi}}
+    \mat{\Psi})^{-1} \vect{x} \sigma^2\right).
 
 Moreover:
 
 .. math::
     :label: linRegOutputDist
 
-    Y -\widehat{y} \sim \cN\left(0, \left(1 + \Tr{\vect{x}} \left(\Tr{\mat{\Psi}} \mat{\Psi}\right)^{-1} \vect{x}\right) \sigma^2\right)
-
-
+    Y -\widehat{y} \sim \cN\left(0, \left(1 + \Tr{\vect{x}} \left(\Tr{\mat{\Psi}} \mat{\Psi}\right)^{-1} \vect{x}\right) \sigma^2\right).
 
 Some illustrations
 ~~~~~~~~~~~~~~~~~~
-
 By definition, the linear regression model is only relevant for linear
 relationships, as in the following simple example where
 :math:`Y = a_0 + a_1 X_1`.
