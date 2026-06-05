@@ -49,7 +49,7 @@ The class provides several methods that compute asymptotic distributions: :meth:
 :meth:`getPredictionDistribution` and :meth:`getOutputObservationDistribution`. They assume that the sample size is at least equal to 20 (that number
 can be changed by modifying the :class:`~openturns.ResourceMap` key ``LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions``).
 
-Regression theory is introduced in :ref:`regression_analysis`.
+Regression theory is introduced in :ref:`linear_regression`.
 The goodness-of-fit tests for normality are presented in
 :ref:`graphical_fitting_test`, :ref:`chi2_fitting_test`,
 :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`, and

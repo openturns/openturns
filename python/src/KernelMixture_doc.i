@@ -6,9 +6,9 @@ all the kernels of the combination are of the same
 discrete or continuous family. The kernels are centered on the sample points. The multivariate kernel
 is a tensorized product of the same univariate kernel.
 
-The treatment of such a Mixture has been optimized.
+The treatment of such a Mixture :math:`\inputRV` has been optimized.
 
-We denote by :math:`(\vect{s}_1, \dots, \vect{s}_\sampleSize) \in \Rset^\inputDim`
+We denote by :math:`\vect{s} = (\vect{s}_1, \dots, \vect{s}_\sampleSize) \in \Rset^\inputDim`
 a sample from :math:`\inputRV`.
 
 For continuous atoms, the probability density function :math:`\inputRV` is defined by:
@@ -18,6 +18,27 @@ For continuous atoms, the probability density function :math:`\inputRV` is defin
     \inputMeasure(\vect{x}) =  \sum_{i=1}^\sampleSize \dfrac{1}{\sampleSize} \prod_{j=1}^\inputDim \dfrac{1}{h^j}k\left(\frac{x^j-s^j_i}{h^j}\right)
 
 where :math:`k` is the kernel pdf.
+
+The mean of the Mixture is the vector :math:`(\mu^1, \dots, \mu^\inputDim)` defined by:
+
+.. math::
+
+    \mu^j = \bar{s}^j + h^j \mu_K
+
+where :math:`\bar{s}^j` is the :math:`j`-th component of the mean vector of the sample points
+:math:`\vect{s}` and :math:`\mu_K` the mean of the kernel.
+
+The covariance matrix :math:`\Cov{\inputRV}` is defined by:
+
+.. math::
+
+    \Cov{\inputRV} = \left( 1 - \dfrac{1}{\sampleSize} \right) \Cov{\vect{s}} + \sigma_K
+    \left( \mbox{Diag}(\vect{h})\right)^2
+
+where :math:`\sigma_K` is the standard deviation of the kernel, :math:`\Cov{\vect{s}}` the covariance
+matrix of the sample points :math:`\vect{s}` and :math:`\mbox{Diag}(\vect{h})` is the diagonal matrix
+with the :math:`h^j` on the diagonal.
+
 
 Parameters
 ----------

@@ -46,6 +46,6 @@ This class is used in the :any:`functional chaos expansion context <functional_c
 in the class :class:`~openturns.FunctionalChaosAlgorithm`. It is not usable outside this context.
 
 The model is approximated by the meta model defined in :any:`functional_chaos` by equation :eq:`metaModelPn`
-and the coefficients :math:`a_k)_{k \in I_n}` are computed with the inner product defined in :any:`functional_chaos`
+and the coefficients :math:`(a_k)_{k \in I_n}` are computed with the inner product defined in :any:`functional_chaos`
 by equation :eq:`scalProd`. This computation makes sense if and only if the basis is orthonormal with respect to the distribution :math:`\mu_{\inputRV}`.
 )RAW"

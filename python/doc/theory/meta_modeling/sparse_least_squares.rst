@@ -35,7 +35,7 @@ with regard to a given criterion.
 Context
 ~~~~~~~
 
-Consider the mathematical model :math:`h` of a physical system depending
+Consider the mathematical model :math:`\model` of a physical system depending
 on :math:`\inputDim` input parameters
 :math:`\vect{x} = (x_{1},\dots,x_{\inputDim})^{\textsf{T}}`. Note that
 these input variables are assumed to be deterministic in this section.
@@ -44,18 +44,18 @@ The model response may be approximated by a finite number of coefficients as fol
 .. math::
   :label: 5-2.1
 
-    h(\vect{x}) \, \, \approx \, \, \widetilde{h}(\vect{x}) \, \, = \, \, \sum_{j=0}^{P-1} \; a_{j} \; \psi_{j}(\vect{x})
+    \model(\vect{x}) \, \, \approx \, \, \metaModel(\vect{x}) \, \, = \, \, \sum_{j=0}^{P-1} \; a_{j} \; \psi_{j}(\vect{x})
 
 where :math:`\{\psi_{j} : \Rset^{\inputDim} \rightarrow \Rset\}_{j = 0, ..., P - 1}` is a multivariate
 functional basis.
 Let us consider a set of values taken by the input vector (i.e. an
 experimental design)
-:math:`\vect{\vect{\cX}} = (\vect{x}^{(1)},\dots,\vect{x}^{(N)})^{\textsf{T}}`
+:math:`\vect{\vect{\cX}} = (\vect{x}^{(1)},\dots,\vect{x}^{(\sampleSize)})^{\textsf{T}}`
 as well as the vector
-:math:`\vect{\cY} = (h(\vect{x}^{(1)}),\dots,h(\vect{x}^{(N)}))^{\textsf{T}} =  (y^{(1)},\dots,y^{(N)})^{\textsf{T}}`
+:math:`\vect{\cY} = (\model(\vect{x}^{(1)}),\dots,\model(\vect{x}^{(\sampleSize)}))^{\textsf{T}} =  (y^{(1)},\dots,y^{(\sampleSize)})^{\textsf{T}}`
 of the corresponding model evaluations. It is assumed that the number
 of terms :math:`P` in the functional basis is of similar size to
-:math:`N`, or even possibly significantly larger than :math:`N`. In
+:math:`\sampleSize`, or even possibly significantly larger than :math:`\sampleSize`. In
 such a situation it is not possible to compute the
 coefficients by ordinary least squares, since the corresponding system
 is ill-posed. Methods that may be employed as an alternative are
@@ -71,7 +71,7 @@ as follows:
   .. math::
     :label: 5-2.5
 
-      \textrm{Minimize} \quad \quad \sum_{i=1}^{N} \; \left( h(\vect{x}^{(i)}) \; - \; \vect{a}^{\textsf{T}} \vect{\psi}(\vect{x}^{(i)})  \right)^{2}
+      \textrm{Minimize} \quad \quad \sum_{i=1}^{\sampleSize} \; \left( \model(\vect{x}^{(i)}) \; - \; \vect{a}^{\textsf{T}} \vect{\psi}(\vect{x}^{(i)})  \right)^{2}
          \, + \,  C \; \|\vect{a}\|_{1}^{2}
 
 where :math:`\|\vect{a}\|_{1} = \sum_{j=0}^{P-1} |a_{j}|` and
@@ -150,7 +150,7 @@ procedure is continued. The LARS algorithm is detailed below:
    until some other predictor :math:`\vect{\psi}_{l}` has as much
    correlation with the current residual.
 
-#. Continue this way until :math:`m = \min(P,N-1)` predictors have been
+#. Continue this way until :math:`m = \min(P,\sampleSize-1)` predictors have been
    entered.
 
 Steps 2 and 3 correspond to a “move” of the *active* coefficients
@@ -161,7 +161,7 @@ Vector :math:`\tilde{\vect{w}}^{(k)}` and coefficient
 :math:`\gamma^{(k)}` are referred to as the LARS *descent direction*
 and *step*, respectively. Both quantities may be derived
 algebraically.
-Note that if :math:`N \geq P`, then the last step of LARS provides the
+Note that if :math:`\sampleSize \geq P`, then the last step of LARS provides the
 ordinary least-square solution. It is shown that LARS is noticeably
 efficient since it only requires the computational cost of ordinary
 least-square regression on :math:`P` predictors for producing a
@@ -180,7 +180,7 @@ to a maximum value. The modified algorithm is as follows:
 -  If a non zero coefficient hits zero, discard it from the current
    metamodel and recompute the current joint least-square direction.
 
--  Continue this way until :math:`m = \min(P,N-1)` predictors have been
+-  Continue this way until :math:`m = \min(P,\sampleSize-1)` predictors have been
    entered.
 
 Note that the LAR-based LASSO procedure may take more than :math:`m`
