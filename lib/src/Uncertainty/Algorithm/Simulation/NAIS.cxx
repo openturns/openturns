@@ -65,7 +65,7 @@ NAIS * NAIS::clone() const
 void NAIS::setEvent(const RandomVector & event)
 {
 
-  const Bool previousSense = getEvent().getOperator()(0, 1);
+  const Bool previousDirection = getEvent().getOperator()(0, 1);
   EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
   const Interval range(getEvent().getAntecedent().getDistribution().getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
@@ -74,8 +74,8 @@ void NAIS::setEvent(const RandomVector & event)
     if (rangeUpper[i] || rangeLower[i])
       throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution";
 
-  const Bool newSense = getEvent().getOperator()(0, 1);
-  if (previousSense != newSense)
+  const Bool newDirection = getEvent().getOperator()(0, 1);
+  if (previousDirection != newDirection)
     quantileLevel_ = 1.0 - quantileLevel_;
 }
 
