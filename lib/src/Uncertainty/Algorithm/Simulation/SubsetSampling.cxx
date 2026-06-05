@@ -70,6 +70,13 @@ SubsetSampling * SubsetSampling::clone() const
 }
 
 
+/* Setter for MaximumCoefficientOfVariation. */
+void SubsetSampling::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation)
+{
+    throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm." << maximumCoefficientOfVariation;
+}
+
+
 /* Performs the actual computation. */
 void SubsetSampling::run()
 {
