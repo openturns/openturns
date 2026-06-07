@@ -45,6 +45,7 @@ SlicedInverseRegressionResult::SlicedInverseRegressionResult(const OT::Matrix & 
   , center_(center)
   , eigenValues_(eigenValues)
 {
+  // Nothing to do
 }
 
 /* Virtual constructor method */
@@ -70,6 +71,8 @@ Function SlicedInverseRegressionResult::getTransformation() const
 Function SlicedInverseRegressionResult::getInverseTransformation() const
 {
   const UnsignedInteger outputDim = directions_.getNbColumns();
+  // Matrix::solveLinearSystem uses SVD (generalized inverse)
+  // to handle the rectangular case where outputDim < inputDimension
   Matrix inv(directions_.transpose().solveLinearSystem(IdentityMatrix(outputDim)));
   return LinearFunction(Point(outputDim, 0.0), center_, inv);
 }

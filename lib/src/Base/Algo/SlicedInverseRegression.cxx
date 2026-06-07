@@ -34,7 +34,7 @@ static Factory<SlicedInverseRegression> Factory_SlicedInverseRegression;
 SlicedInverseRegression::SlicedInverseRegression()
   : PersistentObject()
 {
-  // Nothing to do
+  sliceNumber_ = ResourceMap::GetAsUnsignedInteger("SlicedInverseRegression-DefaultSliceNumber");
 }
 
 SlicedInverseRegression::SlicedInverseRegression(const Sample & inputSample,
@@ -72,9 +72,9 @@ void SlicedInverseRegression::run()
   // regress X on Y by slicing the Y-range. Each slice contains roughly
   // the same number of observations. The remainder is spread over the
   // first slices so no observations are dropped.
-  const Indices supervisionIndices = outputSample_.argsort();
-  Collection<Indices> list_chunk(sliceNumber_);
-  Indices chunk_population(sliceNumber_);
+  const Indices supervisionIndices(outputSample_.argsort());
+  Collection<Indices> listChunk(sliceNumber_);
+  Indices chunkPopulation(sliceNumber_);
   const UnsignedInteger baseSize = size / sliceNumber_;
   const UnsignedInteger remainder = size % sliceNumber_;
   UnsignedInteger offset = 0;
@@ -83,24 +83,21 @@ void SlicedInverseRegression::run()
     const UnsignedInteger localSize = baseSize + (i < remainder ? 1 : 0);
     Indices chunk(localSize);
     std::copy(supervisionIndices.begin() + offset, supervisionIndices.begin() + offset + localSize, chunk.begin());
-    list_chunk[i] = chunk;
-    chunk_population[i] = localSize;
+    listChunk[i] = chunk;
+    chunkPopulation[i] = localSize;
     offset += localSize;
   }
 
   // Step 2  -- Center the input data
   const Point mean(inputSample_.computeMean());
-  Sample X_centered(inputSample_);
-  X_centered -= mean;
+  Sample XCentered(inputSample_);
+  XCentered -= mean;
 
-  // Step 3  -- QR decomposition: X_centered = Q * R
+  // Step 3  -- QR decomposition: XCentered = Q * R
   // The Q matrix (size x inputDimension) provides a standardized
   // representation of X (equivalent to ZCA whitening). The R factor
   // encodes the rotation back to the original coordinate system.
-  Matrix Q(size, inputDimension);
-  for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < inputDimension; ++j)
-      Q(i, j) = X_centered(i, j);
+  Matrix Q(Matrix(inputDimension, size, XCentered.getImplementation()->getData()).transpose());
   Matrix R;
   Q.computeQRInPlace(R);
 
@@ -113,12 +110,12 @@ void SlicedInverseRegression::run()
   Matrix zMeans(sliceNumber_, inputDimension);
   for (UnsignedInteger j = 0; j < sliceNumber_; ++j)
   {
-    const UnsignedInteger localSize = chunk_population[j];
+    const UnsignedInteger localSize = chunkPopulation[j];
     const Scalar scale = sqrtSize / std::sqrt(1.0 * localSize);
     Point sumQ(inputDimension, 0.0);
     for (UnsignedInteger k = 0; k < localSize; ++k)
     {
-      const UnsignedInteger index = list_chunk[j][k];
+      const UnsignedInteger index = listChunk[j][k];
       for (UnsignedInteger i = 0; i < inputDimension; ++i)
         sumQ[i] += Q(index, i);
     }
@@ -133,7 +130,7 @@ void SlicedInverseRegression::run()
   // the cross-product matrix M explicitly.
   // zMeans is (H x d); SVD gives at most min(H, d) components.
   Matrix U, VT;
-  const Point singularValues = zMeans.computeSVD(U, VT, false);
+  const Point singularValues(zMeans.computeSVD(U, VT, false));
   // singularValues in descending order.
   // VT is (min(H, d) x d); rows are the right singular vectors.
   // Transpose to get eigenvectors as columns: (d x min(H, d)).
@@ -150,7 +147,8 @@ void SlicedInverseRegression::run()
   //   alpha = R^{-1} * beta  (where R2 = sqrt(n) * R)
   // This undoes the QR whitening so the directions are expressed in
   // terms of the original centered coordinates.
-  TriangularMatrix R2((R * sqrtSize).getImplementation(), false);
+  Matrix R2matrix(R * sqrtSize);
+  TriangularMatrix R2(R2matrix.getImplementation(), false);
   Matrix directions = R2.solveLinearSystemInPlace(eigenVectors);
 
   // Step 7  -- Keep only the requested number of modes
@@ -164,9 +162,12 @@ void SlicedInverseRegression::run()
     Scalar normJ = 0.0;
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       normJ += directions(i, j) * directions(i, j);
-    const Scalar invNormJ = 1.0 / std::sqrt(normJ);
-    for (UnsignedInteger i = 0; i < inputDimension; ++i)
-      directions(i, j) *= invNormJ;
+    if (normJ > 0.0)
+    {
+      const Scalar invNormJ = 1.0 / std::sqrt(normJ);
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+        directions(i, j) *= invNormJ;
+    }
   }
   result_ = SlicedInverseRegressionResult(directions, mean, eigenValues);
 }

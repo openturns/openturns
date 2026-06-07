@@ -23,6 +23,7 @@
 
 #include "openturns/Sample.hxx"
 #include "openturns/SlicedInverseRegressionResult.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +43,7 @@ public:
 
   SlicedInverseRegression(const Sample & inputSample,
                           const Sample & outputSample,
-                          const UnsignedInteger sliceNumber = 10);
+                          const UnsignedInteger sliceNumber = ResourceMap::GetAsUnsignedInteger("SlicedInverseRegression-DefaultSliceNumber"));
 
   /** Virtual constructor method */
   SlicedInverseRegression * clone() const override;
