@@ -100,6 +100,7 @@
 #include "openturns/InverseNormal.hxx"
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/InverseWishart.hxx"
+#include "openturns/Kent.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/KernelMixture.hxx"
 #include "openturns/KernelSmoothing.hxx"
