@@ -170,8 +170,8 @@ protected:
   /** The correlation matrix (Rij) of the distribution */
   CorrelationMatrix R_;
 
-  /** The inverse Cholesky factor of the covariance matrix */
-  TriangularMatrix inverseCholesky_;
+  /** The Cholesky factor of the covariance matrix */
+  TriangularMatrix cholesky_;
 
   /** The normalization factor of the distribution */
   Scalar normalizationFactor_ = 0.0;

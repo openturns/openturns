@@ -69,6 +69,42 @@ int main(int, char *[])
       }
     } // qGamma
     {
+      // qChiSquare
+      Scalar nuMin = 0.5;
+      Scalar nuMax = 5.0;
+      UnsignedInteger nNu = 5;
+      Scalar qMin = 0.1;
+      Scalar qMax = 0.9;
+      UnsignedInteger nQ = 5;
+      for (UnsignedInteger i1 = 0; i1 < nNu; ++i1)
+      {
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (nNu - 1);
+        for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
+        {
+          Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+          fullprint << "qChiSquare(" << nu << ", " << q << ")=" << DistFunc::qChiSquare(nu, q) << ", complementary=" << DistFunc::qChiSquare(nu, q, true) << std::endl;
+        }
+      }
+    } // qChiSquare
+    {
+      // qChi
+      Scalar nuMin = 0.5;
+      Scalar nuMax = 5.0;
+      UnsignedInteger nNu = 5;
+      Scalar qMin = 0.1;
+      Scalar qMax = 0.9;
+      UnsignedInteger nQ = 5;
+      for (UnsignedInteger i1 = 0; i1 < nNu; ++i1)
+      {
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (nNu - 1);
+        for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
+        {
+          Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+          fullprint << "qChi(" << nu << ", " << q << ")=" << DistFunc::qChi(nu, q) << ", complementary=" << DistFunc::qChi(nu, q, true) << std::endl;
+        }
+      }
+    } // qChi
+    {
       // rGamma
       Scalar kMin = 0.2;
       Scalar kMax = 5.0;

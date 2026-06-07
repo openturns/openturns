@@ -166,6 +166,8 @@
 #include "openturns/StudentCopula.hxx"
 #include "openturns/StudentCopulaFactory.hxx"
 #include "openturns/StudentFunctions.hxx"
+#include "openturns/Student2DCDF.hxx"
+#include "openturns/Student3DCDF.hxx"
 #include "openturns/StudentFactory.hxx"
 #include "openturns/Trapezoidal.hxx"
 #include "openturns/TrapezoidalFactory.hxx"

@@ -375,36 +375,9 @@ Scalar Normal::computeCDF(const Point & point) const
     const Scalar probability = allWeights.dot(allPDF.getImplementation()->getData());
     return probability;
   }
-  // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
-  RandomGeneratorState initialState(RandomGenerator::GetState());
-  RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-  Scalar value = 0.0;
-  Scalar variance = 0.0;
-  Scalar a99 = DistFunc::qNormal(0.995);
-  const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" );
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / blockSize;
-  Scalar precision = 0.0;
-  for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
-  {
-    const Sample sample(getSample(blockSize));
-    LOGDEBUG(OSS(false) << "indexOuter=" << indexOuter << ", point=" << point << ", sample=" << sample);
-    const Scalar valueBlock = sample.computeEmpiricalCDF(point);
-    const Scalar varianceBlock = valueBlock * (1.0 - valueBlock) / blockSize;
-    LOGDEBUG(OSS(false) << "valueBlock=" << valueBlock << ", varianceBlock=" << varianceBlock);
-    const Scalar norm = 1.0 / (indexOuter + 1.0);
-    variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
-    value = (value * indexOuter + valueBlock) * norm;
-    LOGDEBUG(OSS(false) << "value=" << value << ", variance=" << variance);
-    // Quick return for value = 1
-    if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
-    // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
-    LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
-  }
-  RandomGenerator::SetState(initialState);
-  return value;
+  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz)
+  LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  return DistFunc::pNormalND(point, mean_, cholesky_);
 } // computeCDF
 
 Sample Normal::computeCDF(const Sample & sample) const
@@ -508,46 +481,20 @@ Scalar Normal::computeProbability(const Interval & interval) const
     return value;
   }
   /* General case */
-  // For moderate dimension, use a Gauss-Legendre integration
-  if (dimension <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
+  // For the bidimensional case, use specialized high precision routine
+  if (dimension == 2) return DistFunc::pNormal2D(lower[0], lower[1], upper[0], upper[1], R_(0, 1));
+  // For the tridimensional case, use specialized high precision routine
+  if (dimension == 3) return DistFunc::pNormal3D(lower[0], lower[1], lower[2], upper[0], upper[1], upper[2], R_(0, 1), R_(0, 2), R_(1, 2));
+  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz)
+  LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is large. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  Point lowerBounds(interval.getLowerBound());
+  Point upperBounds(interval.getUpperBound());
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
-    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension())));
-    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
-    setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return DistributionImplementation::computeProbability(interval);
+    if (!finiteLower[i]) lowerBounds[i] = SpecFunc::LowestScalar;
+    if (!finiteUpper[i]) upperBounds[i] = SpecFunc::MaxScalar;
   }
-  // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");
-  Scalar value = 0.0;
-  Scalar variance = 0.0;
-  Scalar a99 = DistFunc::qNormal(0.995);
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" );
-  Scalar precision = 0.0;
-  for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
-  {
-    Scalar valueBlock = 0.0;
-    Scalar varianceBlock = 0.0;
-    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ); ++indexSample)
-    {
-      // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      Scalar ind = interval.numericallyContains(getRealization());
-      Scalar norm = 1.0 / (indexSample + 1.0);
-      varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
-      valueBlock = (valueBlock * indexSample + ind) * norm;
-    }
-    Scalar norm = 1.0 / (indexOuter + 1.0);
-    variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
-    value = (value * indexOuter + valueBlock) * norm;
-    // Quick return for value = 1
-    if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
-    // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
-    LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
-  }
-  return value;
+  return DistFunc::pNormalND(lowerBounds, upperBounds, mean_, cholesky_);
 }
 
 /* Get the CDF gradient of the distribution */
@@ -600,14 +547,27 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
     // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z/2)
     return DistFunc::dNormal(z) / sigma_[conditioningDimension];
   }
-  // General case
-  Scalar meanRos = 0.0;
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  // General case: use Cholesky factor L, solve L_YY * z = y - mean_y
+  Point z(y);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
-  const Scalar z = (x - meanRos) / sigmaRos;
-  return DistFunc::dNormal(z) / sigmaRos;
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (z[i] != mean_[i]) return 0.0;
+      z[i] = 0.0;
+      continue;
+    }
+    z[i] -= mean_[i];
+    for (UnsignedInteger j = 0; j < i; ++j)
+      z[i] -= cholesky_(i, j) * z[j];
+    z[i] /= cholesky_(i, i);
+  }
+  const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
+  Scalar meanRos = mean_[conditioningDimension];
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += cholesky_(conditioningDimension, i) * z[i];
+  const Scalar scaledX = (x - meanRos) / sigmaRos;
+  return DistFunc::dNormal(scaledX) / sigmaRos;
 }
 
 Point Normal::computeSequentialConditionalPDF(const Point & x) const
@@ -627,7 +587,14 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
     }
   else
   {
-    const Point u(inverseCholesky_ * (x - mean_));
+    Point u(x - mean_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      for (UnsignedInteger j = 0; j < i; ++j)
+        u[i] -= cholesky_(i, j) * u[j];
+      if (sigma_[i] > 0.0) u[i] /= cholesky_(i, i);
+      else u[i] = 0.0;
+    }
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       if (sigma_[i] == 0.0)
@@ -635,7 +602,7 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
         result[i] = 0.0;
         continue;
       }
-      result[i] = DistFunc::dNormal(u[i]) * inverseCholesky_(i, i);
+      result[i] = DistFunc::dNormal(u[i]) / cholesky_(i, i);
     }
   }
   return result;
@@ -652,12 +619,25 @@ Scalar Normal::computeConditionalCDF(const Scalar x,
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
     return DistFunc::pNormal((x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
-  // General case
-  Scalar meanRos = 0.0;
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  // General case: use Cholesky factor L, solve L_YY * z = y - mean_y
+  Point z(y);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (z[i] != mean_[i]) return (x >= mean_[conditioningDimension] ? 1.0 : 0.0);
+      z[i] = 0.0;
+      continue;
+    }
+    z[i] -= mean_[i];
+    for (UnsignedInteger j = 0; j < i; ++j)
+      z[i] -= cholesky_(i, j) * z[j];
+    z[i] /= cholesky_(i, i);
+  }
+  const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
+  Scalar meanRos = mean_[conditioningDimension];
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += cholesky_(conditioningDimension, i) * z[i];
   return DistFunc::pNormal((x - meanRos) / sigmaRos);
 }
 
@@ -674,7 +654,15 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
     }
     return result;
   }
-  Point result(DistFunc::pNormal(inverseCholesky_ * (x - mean_)));
+  Point u(x - mean_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++j)
+      u[i] -= cholesky_(i, j) * u[j];
+    if (sigma_[i] > 0.0) u[i] /= cholesky_(i, i);
+    else u[i] = 0.0;
+  }
+  Point result(DistFunc::pNormal(u));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     if (sigma_[i] == 0.0) result[i] = (x[i] >= mean_[i] ? 1.0 : 0.0);
   return result;
@@ -695,13 +683,25 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
   if (sigma_[conditioningDimension] == 0.0) return mean_[conditioningDimension];
   // Special case when no conditioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(q);
-  // General case
-  Scalar meanRos = 0.0;
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  // General case: use Cholesky factor L, solve L_YY * z = y - mean_y
+  Point z(y);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky_(conditioningDimension, i) * (y[i] - mean_[i]);
-
-  meanRos = mean_[conditioningDimension] - sigmaRos * meanRos;
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (z[i] != mean_[i]) return mean_[conditioningDimension];
+      z[i] = 0.0;
+      continue;
+    }
+    z[i] -= mean_[i];
+    for (UnsignedInteger j = 0; j < i; ++j)
+      z[i] -= cholesky_(i, j) * z[j];
+    z[i] /= cholesky_(i, i);
+  }
+  const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
+  Scalar meanRos = mean_[conditioningDimension];
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += cholesky_(conditioningDimension, i) * z[i];
   return meanRos + sigmaRos * DistFunc::qNormal(q);
 }
 
@@ -805,7 +805,7 @@ Scalar Normal::getRoughness() const
   else
   {
     for (UnsignedInteger d = 0; d < dimension_; ++d)
-      roughness *= 0.2820947917738781434740398 * inverseCholesky_(d, d);
+      roughness *= 0.2820947917738781434740398 / cholesky_(d, d);
   }
   return roughness;
 }

@@ -41,6 +41,42 @@ for i1 in range(nK):
             ")=%.6g" % ot.DistFunc.qGamma(k, q),
             ", complementary=%.6g" % ot.DistFunc.qGamma(k, q, True),
         )
+# qChiSquare
+nuMin = 0.5
+nuMax = 5.0
+nNu = 5
+qMin = 0.1
+qMax = 0.9
+nQ = 5
+for i1 in range(nNu):
+    nu = nuMin + (nuMax - nuMin) * i1 / (nNu - 1)
+    for iQ in range(nQ):
+        q = qMin + (qMax - qMin) * iQ / (nQ - 1)
+        print(
+            "qChiSquare(",
+            nu,
+            ",  %.12g" % q,
+            ")=%.6g" % ot.DistFunc.qChiSquare(nu, q),
+            ", complementary=%.6g" % ot.DistFunc.qChiSquare(nu, q, True),
+        )
+# qChi
+nuMin = 0.5
+nuMax = 5.0
+nNu = 5
+qMin = 0.1
+qMax = 0.9
+nQ = 5
+for i1 in range(nNu):
+    nu = nuMin + (nuMax - nuMin) * i1 / (nNu - 1)
+    for iQ in range(nQ):
+        q = qMin + (qMax - qMin) * iQ / (nQ - 1)
+        print(
+            "qChi(",
+            nu,
+            ",  %.12g" % q,
+            ")=%.6g" % ot.DistFunc.qChi(nu, q),
+            ", complementary=%.6g" % ot.DistFunc.qChi(nu, q, True),
+        )
 # rGamma
 kMin = 0.2
 kMax = 5.0

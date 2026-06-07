@@ -233,7 +233,7 @@ Scalar ChiSquare::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  return 2.0 * DistFunc::qGamma(0.5 * nu_, prob, tail);
+  return DistFunc::qChiSquare(nu_, prob, tail);
 }
 
 Scalar ChiSquare::computeProbability(const Interval & interval) const

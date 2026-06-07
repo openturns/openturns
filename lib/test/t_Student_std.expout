@@ -118,9 +118,9 @@ density generator derivative     =-0.0240859
 density generator derivative (FD)=-0.0240859
 density generator second derivative     =0.0157485
 density generator second derivative (FD)=0.0157485
-conditional PDF=0.346427
-conditional CDF=0.28387
-conditional quantile=1.3784
-sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[0.0368059,0.239298]
-sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[1.5,2.5])=class=Point name=Unnamed dimension=2 values=[0.98281,0.608644]
-sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.98281,0.608644])=class=Point name=Unnamed dimension=2 values=[1.5,2.5]
+conditional PDF=0.357054
+conditional CDF=0.298441
+conditional quantile=1.33698
+sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[0.0368059,0.218236]
+sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[1.5,2.5])=class=Point name=Unnamed dimension=2 values=[0.98281,0.679933]
+sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.98281,0.679933])=class=Point name=Unnamed dimension=2 values=[1.5,2.5]

@@ -342,11 +342,18 @@ Low-level distribution functions
     DistFunc.pNormal
     DistFunc.pNormal2D
     DistFunc.pNormal3D
+    DistFunc.pNormalND
+    DistFunc.pNormalOrthantND
     DistFunc.pPearsonCorrelation
     DistFunc.pSpearmanCorrelation
     DistFunc.pStudent
     DistFunc.pStudent2D
+    DistFunc.pStudent3D
+    DistFunc.pStudentND
+    DistFunc.pStudentOrthantND
     DistFunc.qBeta
+    DistFunc.qChi
+    DistFunc.qChiSquare
     DistFunc.qDickeyFullerConstant
     DistFunc.qDickeyFullerNoConstant
     DistFunc.qDickeyFullerTrend

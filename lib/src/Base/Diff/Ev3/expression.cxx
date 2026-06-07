@@ -1300,8 +1300,6 @@ bool BasicExpression::GetLinearInfo(std::vector<double> & lincoeff,
         {
           if (i > 0)
           {
-            //std::cerr << "BasicExpression::GetLinearInfo: WARNING: "
-            //          << "run Simplify() first\n";
           }
           c += GetNode(i)->GetValue();
         }
@@ -1376,8 +1374,6 @@ bool BasicExpression::GetPureLinearInfo(std::vector<double> & lincoeff,
         {
           if (i > 0)
           {
-            //std::cerr << "BasicExpression::GetLinearInfo: WARNING: "
-            //          << "run Simplify() first\n";
           }
           c += GetNode(i)->GetValue();
         }

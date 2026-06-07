@@ -159,3 +159,17 @@ rStudent( 5.0 )=-1.79918
 rStudent( 5.0 )=2.25695
 rStudent( 5.0 )=-0.510679
 rStudent( 5.0 )=-0.715766
+Student(3.0).computeCDF([0.5,0.5])=0.528184
+Student(3.0).computeProbability([-0.5,0.5]x[-0.5,0.5])=0.155607
+pStudent2D(ie, nu=3.0, a1=-0.5, a2=-0.5, b1=0.5, b2=0.5, rho=0.5)=0.155607
+pStudent2D(nu=3.0, 0.5, 0.5, rho=0.5, tail=True)=0.179632
+Student(3.0).computeCDF([0.5,0.5,0.5])=0.365941
+Student(3.0).computeProbability([-0.5,0.5]^3)=0.0651276
+pStudent3D(nu=3.0, 0.5, 0.5, 0.5, corr)=0.365941
+pStudent3D(nu=3.0, 0.5, 0.5, 0.5, corr, tail=True)=0.0670897
+pStudent3D(nu=3.0, [-0.5,0.5]^3, corr)=0.0651276
+MVT d=2 independent
+MVT d=2 correlated
+MVT d=2 with mu
+Error: nu <= 0
+MVT d=1 exact

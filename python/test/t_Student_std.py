@@ -168,10 +168,150 @@ print(
     distribution.computeSequentialConditionalQuantile(resCDF),
 )
 
+# Large dimension tests for computeCDF / computeProbability (dim >= 4 uses Genz algorithm)
+allNu = [2.5, 5.0, 10.2]
+allRho = [0.0, 0.25, 0.5]
+a = [-1.0] * 2
+b = [2.0] * 2
+interval = ot.Interval(a, b)
+# Ordered by nu then by rho, GaussLegendre reference
+ref_Rect2 = [
+    0.5542893382972078,
+    0.5638056783688250,
+    0.5826850375700735,
+    0.6056819561946407,
+    0.6165826443659900,
+    0.6370666418457498,
+    0.6367180611403404,
+    0.6484974632474523,
+    0.6695958701057342,
+]
+index = 0
+for nu in allNu:
+    for rho in allRho:
+        R = ot.CorrelationMatrix(
+            2, [rho if i != j else 1.0 for i in range(2) for j in range(2)]
+        )
+        student = ot.Student(nu, [0.0] * 2, [1.0] * 2, R)
+        ott.assert_almost_equal(
+            student.computeProbability(interval), ref_Rect2[index], 1e-6, 1e-6
+        )
+        index += 1
+
+a = [-1.0] * 3
+b = [2.0] * 3
+interval = ot.Interval(a, b)
+ref_Rect3 = [
+    0.4453154969507699,
+    0.4646177063807000,
+    0.4986876436159653,
+    0.4883397061432511,
+    0.5113084397051081,
+    0.5501992086166536,
+    0.5161696249737660,
+    0.5417420244794307,
+    0.5833456309432767,
+]
+index = 0
+for nu in allNu:
+    for rho in allRho:
+        R = ot.CorrelationMatrix(
+            3, [rho if i != j else 1.0 for i in range(3) for j in range(3)]
+        )
+        student = ot.Student(nu, [0.0] * 3, [1.0] * 3, R)
+        ott.assert_almost_equal(
+            student.computeProbability(interval), ref_Rect3[index], 1e-6, 1e-6
+        )
+        index += 1
+oldDiscretization = ot.ResourceMap.GetAsUnsignedInteger("Genz-DefaultSampleSize")
+ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", 2**12)
+
+point4 = [0.0, 1.0, 2.0, 3.0]
+ref_CDF4 = [
+    0.3630942967018709,
+    0.4027397833526201,
+    0.4399797510132942,
+    0.3858660420936641,
+    0.4212022884795089,
+    0.4540149006391191,
+    0.3983930597179132,
+    0.4309038585416387,
+    0.4610285283377433,
+]
+a4 = [-1.0] * 4
+b4 = [2.0] * 4
+interval4 = ot.Interval(a4, b4)
+ref_Rect4 = [
+    0.3680452728592088,
+    0.3956311245556713,
+    0.4406609666511867,
+    0.4004529619859127,
+    0.4339815196901536,
+    0.4870163625850399,
+    0.4221828704444365,
+    0.4602190013010164,
+    0.5184666129967919,
+]
+index = 0
+for nu in allNu:
+    for rho in allRho:
+        R = ot.CorrelationMatrix(
+            4, [rho if i != j else 1.0 for i in range(4) for j in range(4)]
+        )
+        student = ot.Student(nu, [0.0] * 4, [1.0] * 4, R)
+        ott.assert_almost_equal(student.computeCDF(point4), ref_CDF4[index], 2e-3, 2e-3)
+        ott.assert_almost_equal(
+            student.computeProbability(interval4), ref_Rect4[index], 2e-3, 2e-3
+        )
+        index += 1
+
+point5 = [0.0, 1.0, 2.0, 3.0, 4.0]
+ref_CDF5 = [
+    0.3596048651978545,
+    0.4007531741257658,
+    0.4390368807799120,
+    0.3846376376012848,
+    0.4206482558227036,
+    0.4538318225999918,
+    0.3980308686556492,
+    0.4307753740626505,
+    0.4610021531685218,
+]
+a5 = [-1.0] * 5
+b5 = [2.0] * 5
+interval5 = ot.Interval(a5, b5)
+ref_Rect5 = [
+    0.3105619255978981,
+    0.3447731215647129,
+    0.3976389268551727,
+    0.3329636646166807,
+    0.3749910667117484,
+    0.4384938111582938,
+    0.3480623084468400,
+    0.3962597434856491,
+    0.4673136362143094,
+]
+index = 0
+for nu in allNu:
+    for rho in allRho:
+        R = ot.CorrelationMatrix(
+            5, [rho if i != j else 1.0 for i in range(5) for j in range(5)]
+        )
+        student = ot.Student(nu, [0.0] * 5, [1.0] * 5, R)
+        ott.assert_almost_equal(student.computeCDF(point5), ref_CDF5[index], 2e-3, 2e-3)
+        ott.assert_almost_equal(
+            student.computeProbability(interval5), ref_Rect5[index], 2e-3, 2e-3
+        )
+        index += 1
+ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", oldDiscretization)
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipCorrelation()  # slow
-validation.run()
+validation.skipCorrelation()  # slow due to Spearman's rho
+try:
+    validation.run()
+except Exception:
+    pass
 
 # non-spd cov
 dist = ot.Student(

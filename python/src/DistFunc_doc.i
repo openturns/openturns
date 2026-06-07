@@ -324,13 +324,13 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::pNormal2D
-R"RAW(Cumulative distribution function  of an 2D standard Normal distribution.
+R"RAW(Cumulative distribution function of a 2D standard Normal distribution.
 
 Parameters
 ----------
 x1 : float
     First component of :math:`\vect{x}`.
-x2 : float, :math:`\sigma >0`
+x2 : float
     Second component of :math:`\vect{x}`.
 rho : float
     Correlation between the first and second margin.
@@ -349,11 +349,15 @@ Notes
 -----
 The Normal distribution is bidimensional, centered and with a unit-variance.
 
+The second calling signature computes the rectangular probability
+:math:`\Prob{a_1 \leq X_1 \leq b_1, a_2 \leq X_2 \leq b_2}`.
+
 Examples
 --------
 >>> import openturns as ot
 >>> cdf = ot.DistFunc.pNormal2D(1.0, 1.0, 0.9)
 >>> cdf = ot.DistFunc.pNormal2D(1.0, 1.0, 0.9, True)
+>>> prob = ot.DistFunc.pNormal2D(-1.0, -1.0, 1.0, 1.0, 0.9)
 )RAW"
 // ---------------------------------------------------------------------
 
@@ -364,7 +368,7 @@ Parameters
 ----------
 x1 : float
     First component of :math:`\vect{x}`.
-x2 : float, :math:`\sigma >0`
+x2 : float
     Second component of :math:`\vect{x}`.
 x3 : float
     Third component of :math:`\vect{x}`.
@@ -389,11 +393,15 @@ Notes
 -----
 The Normal distribution is tridimensional, centered and with a unit-variance.
 
+The second calling signature computes the rectangular probability
+:math:`\Prob{a_1 \leq X_1 \leq b_1, a_2 \leq X_2 \leq b_2, a_3 \leq X_3 \leq b_3}`.
+
 Examples
 --------
 >>> import openturns as ot
 >>> cdf = ot.DistFunc.pNormal3D(1.0, 0.5, 2.5, 0.5, 0.2, 0.0)
 >>> cdf = ot.DistFunc.pNormal3D(1.0, 0.5, 2.5, 0.5, 0.2, 0.0, True)
+>>> prob = ot.DistFunc.pNormal3D(-1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 0.5, 0.2, 0.0)
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -1111,18 +1119,98 @@ rho : float
 tail : bool, optional
     Tail flag.
     Default value is False.
-    If True, the complementary CDF is computed.
+    If True, the probability :math:`P(X_1 > x_1, X_2 > x_2)` is computed.
 
 Returns
 -------
-p : float or sequence of float
-    The CDF or the complementary CDF at x1, x2
+p : float
+    The CDF or the upper tail probability at x1, x2
 
 Examples
 --------
 >>> import openturns as ot
 >>> cdf = ot.DistFunc.pStudent2D(2.5, 0.1, 0.1, 0.5)
 >>> cdf = ot.DistFunc.pStudent2D(2.5, 0.1, 0.1, 0.5, True)
+)RAW"
+
+%feature("docstring") OT::DistFunc::pStudent2D
+R"RAW(Rectangular probability of a 2-d Student distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+a1, a2 : float
+    Lower bounds.
+b1, b2 : float
+    Upper bounds.
+rho : float
+    Correlation coefficient.
+
+Returns
+-------
+p : float
+    The probability :math:`P(a_1 < X_1 < b_1, a_2 < X_2 < b_2)`
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.pStudent2D(2.5, -0.5, -0.5, 0.5, 0.5, 0.5)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pStudent3D
+R"RAW(Cumulative distribution function of a 3-d Student distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+x1, x2, x3 : float
+    Location.
+rho12, rho13, rho23 : float
+    Correlation coefficients.
+tail : bool, optional
+    Tail flag.
+    Default value is False.
+    If True, the probability :math:`P(X_1 > x_1, X_2 > x_2, X_3 > x_3)` is computed.
+
+Returns
+-------
+p : float
+    The CDF or the upper tail probability at x1, x2, x3
+
+Examples
+--------
+>>> import openturns as ot
+>>> cdf = ot.DistFunc.pStudent3D(2.5, 0.1, 0.1, 0.1, 0.5, 0.5, 0.5)
+>>> cdf = ot.DistFunc.pStudent3D(2.5, 0.1, 0.1, 0.1, 0.5, 0.5, 0.5, True)
+)RAW"
+
+%feature("docstring") OT::DistFunc::pStudent3D
+R"RAW(Rectangular probability of a 3-d Student distribution.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The :math:`\nu` parameter.
+a1, a2, a3 : float
+    Lower bounds.
+b1, b2, b3 : float
+    Upper bounds.
+rho12, rho13, rho23 : float
+    Correlation coefficients.
+
+Returns
+-------
+p : float
+    The probability :math:`P(a_1 < X_1 < b_1, a_2 < X_2 < b_2, a_3 < X_3 < b_3)`
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.pStudent3D(2.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5)
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -1560,6 +1648,88 @@ Examples
 >>> r = ot.DistFunc.rGamma(2.5)
 )RAW"
 
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qChiSquare
+R"RAW(Quantile of a ChiSquare distribution on :math:`[0,+\infty[`.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The number of degrees of freedom.
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool, optional
+    Tail flag.
+    Default value is False.
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}
+             x^{\nu/2 - 1}
+             \exp\left(-\frac{x}{2}\right),
+             \quad x \in [0; +\infty[
+
+with :math:`\nu > 0`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qChiSquare(2.5, 0.95)
+>>> q = ot.DistFunc.qChiSquare(2.5, 0.95, True)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::qChi
+R"RAW(Quantile of a Chi distribution on :math:`[0,+\infty[`.
+
+Parameters
+----------
+nu : float, :math:`\nu > 0`
+    The number of degrees of freedom.
+p : float, in :math:`[0,1]`
+    The probability.
+tail : bool, optional
+    Tail flag.
+    Default value is False.
+    If True, the quantile associated to :math:`(1-p)` is computed.
+
+Returns
+-------
+q : float
+    The quantile of order :math:`p` or :math:`(1-p)`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{2^{1-\frac{\nu}{2}}}{\Gamma(\nu/2)}
+             x^{\nu-1}
+             \exp\left(-\frac{x^2}{2}\right),
+             \quad x \in [0; +\infty[
+
+with :math:`\nu > 0`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> q = ot.DistFunc.qChi(2.5, 0.95)
+>>> q = ot.DistFunc.qChi(2.5, 0.95, True)
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -2040,4 +2210,193 @@ Examples
 >>> import openturns as ot
 >>> q = ot.DistFunc.pDickeyFullerNoConstant(5.4)
 >>> q = ot.DistFunc.pDickeyFullerNoConstant(5.4, True)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pNormalOrthantND
+R"RAW(Orthant probability of a N-dimensional Normal distribution using the Ridgway SMC algorithm.
+
+Parameters
+----------
+a : sequence of float
+    Lower bound.
+b : sequence of float
+    Upper bound.
+mu : sequence of float
+    Mean vector.
+sigma : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix.
+L : :class:`~openturns.TriangularMatrix`
+    Cholesky factor of the covariance matrix.
+M : int, optional
+    Number of particles used in the SMC integration.
+    Default value is given by the 'Ridgway-DefaultParticleNumber' key
+    in :class:`~openturns.ResourceMap`.
+alpha : float, optional
+    ESS threshold for resampling.
+    Default value is given by the 'Ridgway-DefaultAlpha' key
+    in :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+p : float
+    The probability :math:`P(a_1 \leq X_1 \leq b_1, \dots, a_d \leq X_d \leq b_d)`.
+
+Notes
+-----
+This method uses the Ridgway algorithm, a Sequential Monte Carlo (SMC) method
+to compute the rectangular probability of a multivariate Normal distribution
+[ridgway2016]_. The distribution is centered with unit variance. The SMC
+approach is particularly effective for high-dimensional problems, especially
+when the probability is very small.
+
+Examples
+--------
+>>> import openturns as ot
+>>> L = ot.TriangularMatrix(1)
+>>> L[0, 0] = 1.0
+>>> p = ot.DistFunc.pNormalOrthantND([-1.0], [1.0], L)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pStudentOrthantND
+R"RAW(Orthant probability of a N-dimensional Student distribution using the Ridgway SMC algorithm.
+
+Parameters
+----------
+a : sequence of float
+    Lower bound.
+b : sequence of float
+    Upper bound.
+mu : sequence of float
+    Mean vector.
+sigma : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix.
+L : :class:`~openturns.TriangularMatrix`
+    Cholesky factor of the covariance matrix.
+nu : float
+    Degrees of freedom, :math:`\nu > 0`.
+M : int, optional
+    Number of particles used in the SMC integration.
+    Default value is given by the 'Ridgway-DefaultParticleNumber' key
+    in :class:`~openturns.ResourceMap`.
+alpha : float, optional
+    ESS threshold for resampling.
+    Default value is given by the 'Ridgway-DefaultAlpha' key
+    in :class:`~openturns.ResourceMap`.
+N : int, optional
+    Number of Sobol' points for the outer Student integration.
+    Default value is given by the 'Ridgway-DefaultStudentSampleSize' key
+    in :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+p : float
+    The probability :math:`P(a_1 \leq X_1 \leq b_1, \dots, a_d \leq X_d \leq b_d)`.
+
+Notes
+-----
+This method uses the Ridgway algorithm, a Sequential Monte Carlo (SMC) method
+to compute the rectangular probability of a multivariate Student distribution
+[ridgway2016]_. The distribution is centered with unit variance.
+
+The Student-t probability is computed via the representation
+:math:`T = Z / \sqrt{W / \nu}` where :math:`Z \sim \mathcal{N}(0, \Sigma)`
+and :math:`W \sim \chi^2_\nu`, using a Sobol' quasi-Monte Carlo integration
+over the chi-squared scale factor.
+
+Examples
+--------
+>>> import openturns as ot
+>>> L = ot.TriangularMatrix(1)
+>>> L[0, 0] = 1.0
+>>> p = ot.DistFunc.pStudentOrthantND([-1.0], [1.0], L, 5.0)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pNormalND
+R"RAW(Rectangular probability of a N-dimensional Normal distribution.
+
+Parameters
+----------
+a : sequence of float
+    Lower bound.
+b : sequence of float
+    Upper bound.
+mu : sequence of float
+    Mean vector.
+sigma : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix.
+L : :class:`~openturns.TriangularMatrix`
+    Cholesky factor of the covariance matrix.
+n : int, optional
+    Number of Sobol' points used in the QMC integration.
+    Default value is given by the 'Genz-DefaultSampleSize' key
+    in :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+p : float
+    The probability :math:`P(a_1 \leq X_1 \leq b_1, \dots, a_d \leq X_d \leq b_d)`.
+
+Notes
+-----
+This method uses the Genz algorithm, a quasi-Monte Carlo integration based on
+Sobol' sequences to compute the rectangular probability of a
+multivariate Normal distribution. In dimension 1, the exact probability
+is returned. The distribution is centered with unit variance.
+
+Examples
+--------
+>>> import openturns as ot
+>>> L = ot.TriangularMatrix(1)
+>>> L[0, 0] = 1.0
+>>> p = ot.DistFunc.pNormalND([-1.0], [1.0], L)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pStudentND
+R"RAW(Rectangular probability of a N-dimensional Student distribution.
+
+Parameters
+----------
+a : sequence of float
+    Lower bound.
+b : sequence of float
+    Upper bound.
+mu : sequence of float
+    Mean vector.
+sigma : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix.
+L : :class:`~openturns.TriangularMatrix`
+    Cholesky factor of the covariance matrix.
+nu : float
+    Degrees of freedom, :math:`\nu > 0`.
+n : int, optional
+    Number of Sobol' points used in the QMC integration.
+    Default value is given by the 'Genz-DefaultSampleSize' key
+    in :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+p : float
+    The probability :math:`P(a_1 \leq X_1 \leq b_1, \dots, a_d \leq X_d \leq b_d)`.
+
+Notes
+-----
+This method uses the Genz algorithm, a quasi-Monte Carlo integration based on
+Sobol' sequences to compute the rectangular probability of a
+multivariate Student distribution. The distribution is centered with
+unit variance.
+
+Examples
+--------
+>>> import openturns as ot
+>>> L = ot.TriangularMatrix(1)
+>>> L[0, 0] = 1.0
+>>> p = ot.DistFunc.pStudentND([-1.0], [1.0], L, 5.0)
 )RAW"

@@ -29,8 +29,12 @@
 #include "openturns/KFactorFunctions.hxx"
 #include "openturns/KolmogorovFunctions.hxx"
 #include "openturns/Normal2DCDF.hxx"
+#include "openturns/Student2DCDF.hxx"
+#include "openturns/Student3DCDF.hxx"
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Genz.hxx"
+#include "openturns/Ridgway.hxx"
 
 #ifdef OPENTURNS_HAVE_BOOST
 
@@ -622,6 +626,22 @@ Scalar DistFunc::qGamma(const Scalar k,
   if (!tail && (p >= 1.0 - SpecFunc::ScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, 1.0 - SpecFunc::ScalarEpsilon, tail);
   return SpecFunc::RegularizedIncompleteGammaInverse(k, p, tail);
 }
+/* CDF Inverse of the ChiSquare distribution */
+Scalar DistFunc::qChiSquare(const Scalar nu,
+                            const Scalar p,
+                            const Bool tail)
+{
+  return 2.0 * qGamma(0.5 * nu, p, tail);
+}
+
+/* CDF Inverse of the Chi distribution */
+Scalar DistFunc::qChi(const Scalar nu,
+                      const Scalar p,
+                      const Bool tail)
+{
+  return std::sqrt(qChiSquare(nu, p, tail));
+}
+
 /* Random number generation
    We use the algorithm described in:
    Variables": ACM Transactions on Mathematical Software, Vol. 26, No. 3,
@@ -1168,6 +1188,15 @@ Scalar DistFunc::pNormal2D(const Scalar x1,
   return Normal2DCDF(x1, x2, rho, tail);
 }
 
+Scalar DistFunc::pNormal2D(const Scalar a1,
+                           const Scalar a2,
+                           const Scalar b1,
+                           const Scalar b2,
+                           const Scalar rho)
+{
+  return Normal2DRectangularProbability(a1, a2, b1, b2, rho);
+}
+
 Scalar DistFunc::pNormal3D(const Scalar x1,
                            const Scalar x2,
                            const Scalar x3,
@@ -1177,6 +1206,19 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
                            const Bool tail)
 {
   return Normal3DCDF(x1, x2, x3, rho12, rho13, rho23, tail);
+}
+
+Scalar DistFunc::pNormal3D(const Scalar a1,
+                           const Scalar a2,
+                           const Scalar a3,
+                           const Scalar b1,
+                           const Scalar b2,
+                           const Scalar b3,
+                           const Scalar rho12,
+                           const Scalar rho13,
+                           const Scalar rho23)
+{
+  return Normal3DRectangularProbability(a1, a2, a3, b1, b2, b3, rho12, rho13, rho23);
 }
 
 /* CDF inverse
@@ -1608,7 +1650,43 @@ Scalar DistFunc::pStudent2D(const Scalar nu,
                             const Scalar rho,
                             const Bool tail)
 {
-  return StudentFunctions::Student2DCDF(nu, x1, x2, rho, tail);
+  return Student2DCDF(nu, x1, x2, rho, tail);
+}
+
+Scalar DistFunc::pStudent2D(const Scalar nu,
+                            const Scalar a1,
+                            const Scalar a2,
+                            const Scalar b1,
+                            const Scalar b2,
+                            const Scalar rho)
+{
+  return Student2DRectangularProbability(nu, a1, a2, b1, b2, rho);
+}
+
+Scalar DistFunc::pStudent3D(const Scalar nu,
+                            const Scalar x1,
+                            const Scalar x2,
+                            const Scalar x3,
+                            const Scalar rho12,
+                            const Scalar rho13,
+                            const Scalar rho23,
+                            const Bool tail)
+{
+  return Student3DCDF(nu, x1, x2, x3, rho12, rho13, rho23, tail);
+}
+
+Scalar DistFunc::pStudent3D(const Scalar nu,
+                            const Scalar a1,
+                            const Scalar a2,
+                            const Scalar a3,
+                            const Scalar b1,
+                            const Scalar b2,
+                            const Scalar b3,
+                            const Scalar rho12,
+                            const Scalar rho13,
+                            const Scalar rho23)
+{
+  return Student3DRectangularProbability(nu, a1, a2, a3, b1, b2, b3, rho12, rho13, rho23);
 }
 
 /* CDF inverse */
@@ -2310,6 +2388,138 @@ Scalar DistFunc::kFactor(const UnsignedInteger n,
 {
   if (!(n >= 2)) throw InvalidArgumentException(HERE) << "Error: the population size n must be at least 2";
   return KFactorFunctions::KFactor(n, n - 1, p, 1.0 - alpha);
+}
+
+Scalar DistFunc::pNormalOrthantND(const Point & a, const Point & b,
+                                  const TriangularMatrix & L,
+                                  const UnsignedInteger M,
+                                  const Scalar alpha)
+{
+  return mvn_orthant_probability(a, b, L, M, alpha);
+}
+
+Scalar DistFunc::pNormalOrthantND(const Point & a, const Point & b,
+                                  const CovarianceMatrix & sigma,
+                                  const UnsignedInteger M,
+                                  const Scalar alpha)
+{
+  return mvn_orthant_probability(a, b, sigma, M, alpha);
+}
+
+Scalar DistFunc::pNormalOrthantND(const Point & a, const Point & b,
+                                  const Point & mu, const CovarianceMatrix & sigma,
+                                  const UnsignedInteger M,
+                                  const Scalar alpha)
+{
+  return mvn_orthant_probability(a, b, mu, sigma, M, alpha);
+}
+
+Scalar DistFunc::pNormalOrthantND(const Point & a, const Point & b,
+                                  const Point & mu, const TriangularMatrix & L,
+                                  const UnsignedInteger M,
+                                  const Scalar alpha)
+{
+  return mvn_orthant_probability(a, b, mu, L, M, alpha);
+}
+
+Scalar DistFunc::pStudentOrthantND(const Point & a, const Point & b,
+                                   const TriangularMatrix & L,
+                                   const Scalar nu,
+                                   const UnsignedInteger M,
+                                   const Scalar alpha,
+                                   const UnsignedInteger N)
+{
+  return mvt_orthant_probability(a, b, L, nu, M, alpha, N);
+}
+
+Scalar DistFunc::pStudentOrthantND(const Point & a, const Point & b,
+                                   const CovarianceMatrix & sigma,
+                                   const Scalar nu,
+                                   const UnsignedInteger M,
+                                   const Scalar alpha,
+                                   const UnsignedInteger N)
+{
+  return mvt_orthant_probability(a, b, sigma, nu, M, alpha, N);
+}
+
+Scalar DistFunc::pStudentOrthantND(const Point & a, const Point & b,
+                                   const Point & mu, const CovarianceMatrix & sigma,
+                                   const Scalar nu,
+                                   const UnsignedInteger M,
+                                   const Scalar alpha,
+                                   const UnsignedInteger N)
+{
+  return mvt_orthant_probability(a, b, mu, sigma, nu, M, alpha, N);
+}
+
+Scalar DistFunc::pStudentOrthantND(const Point & a, const Point & b,
+                                   const Point & mu, const TriangularMatrix & L,
+                                   const Scalar nu,
+                                   const UnsignedInteger M,
+                                   const Scalar alpha,
+                                   const UnsignedInteger N)
+{
+  return mvt_orthant_probability(a, b, mu, L, nu, M, alpha, N);
+}
+
+Scalar DistFunc::pNormalND(const Point & a, const Point & b,
+                            const TriangularMatrix & L,
+                            const UnsignedInteger n)
+{
+  return mvn_rectangular_probability(a, b, L, n);
+}
+
+Scalar DistFunc::pNormalND(const Point & a, const Point & b,
+                            const CovarianceMatrix & sigma,
+                            const UnsignedInteger n)
+{
+  return mvn_rectangular_probability(a, b, sigma, n);
+}
+
+Scalar DistFunc::pNormalND(const Point & a, const Point & b,
+                            const Point & mu, const CovarianceMatrix & sigma,
+                            const UnsignedInteger n)
+{
+  return mvn_rectangular_probability(a, b, mu, sigma, n);
+}
+
+Scalar DistFunc::pNormalND(const Point & a, const Point & b,
+                            const Point & mu, const TriangularMatrix & L,
+                            const UnsignedInteger n)
+{
+  return mvn_rectangular_probability(a, b, mu, L, n);
+}
+
+Scalar DistFunc::pStudentND(const Point & a, const Point & b,
+                             const TriangularMatrix & L,
+                             const Scalar nu,
+                             const UnsignedInteger n)
+{
+  return mvt_rectangular_probability(a, b, L, nu, n);
+}
+
+Scalar DistFunc::pStudentND(const Point & a, const Point & b,
+                             const CovarianceMatrix & sigma,
+                             const Scalar nu,
+                             const UnsignedInteger n)
+{
+  return mvt_rectangular_probability(a, b, sigma, nu, n);
+}
+
+Scalar DistFunc::pStudentND(const Point & a, const Point & b,
+                             const Point & mu, const CovarianceMatrix & sigma,
+                             const Scalar nu,
+                             const UnsignedInteger n)
+{
+  return mvt_rectangular_probability(a, b, mu, sigma, nu, n);
+}
+
+Scalar DistFunc::pStudentND(const Point & a, const Point & b,
+                             const Point & mu, const TriangularMatrix & L,
+                             const Scalar nu,
+                             const UnsignedInteger n)
+{
+  return mvt_rectangular_probability(a, b, mu, L, nu, n);
 }
 
 END_NAMESPACE_OPENTURNS

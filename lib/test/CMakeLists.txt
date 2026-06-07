@@ -495,9 +495,11 @@ ot_check_test (DistFunc_kolmogorov)
 ot_check_test (DistFunc_noncentralchisquare)
 ot_check_test (DistFunc_noncentralstudent)
 ot_check_test (DistFunc_normal)
+ot_check_test (DistFunc_orthant)
 ot_check_test (DistFunc_poisson)
 ot_check_test (DistFunc_spearman)
 ot_check_test (DistFunc_student)
+ot_check_test (DistFunc_student_orthant)
 
 # Model
 ot_check_test (DistributionFactory_std)

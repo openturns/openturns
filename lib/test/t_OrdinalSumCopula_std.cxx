@@ -47,9 +47,9 @@ int main(int, char *[])
 
     // Compute probability
     Interval frankNormal({0.0, 0.0}, {0.7, 0.9});
-    assert_equal(copula.computeProbability(frankNormal), 0.7);
+    assert_almost_equal(copula.computeProbability(frankNormal), 0.7, 1e-13, 1e-13);
     Interval normalClayton({0.1, 0.2}, {1.2, 1.3});
-    assert_equal(copula.computeProbability(normalClayton), 0.8);
+    assert_almost_equal(copula.computeProbability(normalClayton), 0.8, 1e-13, 1e-13);
 
     // Is this copula elliptical ?
     fullprint << "Elliptical distribution= " << (copula.isElliptical() ? "true" : "false") << std::endl;

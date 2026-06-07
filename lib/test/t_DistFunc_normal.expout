@@ -30,3 +30,14 @@ rNormal()=-0.355007
 rNormal()=1.43725
 rNormal()=0.810668
 rNormal()=0.793156
+MVN d=1 exact
+MVN d=2 independent
+MVN d=2 correlated
+MVN d=2 with mu
+Error: dimension mismatch
+Error: a > b
+Error: n = 0
+Error: L(i,i) <= 0
+Edge: a == b
+Edge: wide interval
+MVN d=3 independent

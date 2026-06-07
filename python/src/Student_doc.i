@@ -72,26 +72,6 @@ R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\
 Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in  \cM_{d \times d}(\Rset)`
     Covariance matrix.
 
-Notes
------
-The CDF is computed using several algorithms, depending on the dimension of the distribution:
-
-- In dimension 1, it is done using boost algorithm or the incomplete
-  regularized beta function if boost is not available;
-- In dimension 2, it is done using an integration in dimension 1 of a
-  dedicated kernel;
-- In dimension 3 to the value given by the entry *Student-SmallDimension* of
-  :class:`~openturns.ResourceMap`, it is done using the generic algorithm for
-  unimodal distributions. This algorithm is controlled by a positive scale
-  given by the entry *Student-CDFScaleFactor* of
-  :class:`~openturns.ResourceMap`.
-- In dimension greater than the entry *Student-SmallDimension* of
-  :class:`~openturns.ResourceMap`, it is done using a Monte Carlo estimation
-  controlled by the *Student-MinimumCDFEpsilon*,
-  *Student-MinimumNumberOfPoints* and *Student-MaximumNumberOfPoints* entries
-  of :class:`~openturns.ResourceMap`.
-
-
 Examples
 --------
 Create a distribution:
@@ -133,6 +113,66 @@ distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5
  [ -0.5  0    1    0    0   ]
  [  0    0    0    1   -0.2 ]
  [  0    0    0   -0.2  1   ]])
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::computeCDF
+R"RAW(Compute the cumulative distribution function.
+
+See the class notes for the algorithm selection strategy.
+
+Parameters
+----------
+x : sequence of float
+    Point in :math:`\Rset^d`.
+
+Returns
+-------
+F : float
+    CDF value at :math:`x`.
+
+Notes
+-----
+The algorithm depends on the dimension:
+
+- dim 1: direct evaluation via the regularized incomplete beta function;
+- dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pStudent2D`);
+- dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pStudent3D`);
+- dim >= 4: quasi-Monte Carlo Genz algorithm with *Genz-DefaultSampleSize*
+  Sobol' realizations, conditioning on the Chi-square factor of the
+  Student representation.
+
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Student::computeProbability
+R"RAW(Compute the probability content of an interval.
+
+See the class notes for the algorithm selection strategy.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    Interval over which the probability is computed.
+
+Returns
+-------
+P : float
+    Probability of the interval.
+
+Notes
+-----
+The algorithm depends on the dimension:
+
+- dim 1: generic 1D algorithm;
+- dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pStudent2D`);
+- dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pStudent3D`);
+- dim >= 4: quasi-Monte Carlo Genz algorithm with *Genz-DefaultSampleSize*
+  Sobol' realizations, conditioning on the Chi-square factor of the
+  Student representation.
+
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -24,6 +24,8 @@
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/IteratedQuadrature.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -334,6 +336,53 @@ void krnrdt(const Scalar a,
   fc = tvnf(cen - t, h1, h2, h3, r23, a12, a13) + tvnf(cen + t, h1, h2, h3, r23, a12, a13);
   resk = wid * (resk + wgk[10] * fc);
   err = std::abs(resk - wid * resg);
+}
+
+Scalar Normal3DRectangularProbability(const Scalar a1,
+                                       const Scalar a2,
+                                       const Scalar a3,
+                                       const Scalar b1,
+                                       const Scalar b2,
+                                       const Scalar b3,
+                                       const Scalar rho12,
+                                       const Scalar rho13,
+                                       const Scalar rho23)
+{
+  if (!(std::abs(rho12) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
+  if (!(std::abs(rho13) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho13=" << rho13;
+  if (!(std::abs(rho23) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho23 must be in [-1, 1], here rho23=" << rho23;
+  const Scalar delta = rho12 * rho12 + rho13 * rho13 + rho23 * rho23 - 2.0 * rho12 * rho13 * rho23;
+  if (!(delta <= 1.0)) throw InvalidArgumentException(HERE) << "Error: delta=rho12^2+rho13^2+rho23^2-2*rho12*rho13*rho23 must be less or equal to 1, here delta=" << delta;
+  if ((a1 >= b1) || (a2 >= b2) || (a3 >= b3)) return 0.0;
+  // Inclusion-exclusion: 2^3 = 8 terms
+  Scalar prob = 0.0;
+  const Scalar x1[2] = {b1, a1};
+  const Scalar x2[2] = {b2, a2};
+  const Scalar x3[2] = {b3, a3};
+  for (UnsignedInteger i = 0; i < 2; ++i)
+  {
+    for (UnsignedInteger j = 0; j < 2; ++j)
+    {
+      for (UnsignedInteger k = 0; k < 2; ++k)
+      {
+        const Scalar sign = ((i + j + k) % 2 == 0) ? 1.0 : -1.0;
+        prob += sign * Normal3DCDF(x1[i], x2[j], x3[k], rho12, rho13, rho23, false);
+      }
+    }
+  }
+  prob = SpecFunc::Clip01(prob);
+  if (prob > 0.0) return prob;
+  // Fallback to multivariate integration when prob == 0.0
+  CorrelationMatrix R(3);
+  R(0, 1) = rho12;
+  R(0, 2) = rho13;
+  R(1, 2) = rho23;
+  const Normal distribution(Point(3, 0.0), Point(3, 1.0), R);
+  const Point lower({a1, a2, a3});
+  const Point upper({b1, b2, b3});
+  const Interval interval(Interval(lower, upper).intersect(distribution.getRange()));
+  if (interval.isEmpty()) return 0.0;
+  return IteratedQuadrature().integrate(distribution.getPDF(), interval)[0];
 }
 
 #undef NORMAL3DCDF_INF
