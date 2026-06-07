@@ -1421,6 +1421,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("VonMisesFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("VonMisesFactory-MaximumIteration", 10);
 
+  // Kent parameters //
+  addAsScalar("Kent-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("Kent-MaximumIteration", 50);
+
+  // KentFactory parameters //
+  addAsScalar("KentFactory-AbsolutePrecision", 1.0e-8);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 

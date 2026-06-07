@@ -266,6 +266,9 @@ Bibliography
 .. [Keutelian1991] Hovhannes Keutelian.
     *The Kolmogorov-Smirnov test when parameters are estimated from data*,
     30 April 1991, Fermilab.
+.. [kent2013] Kent J.T., Ganeiber A.M., Mardia K.V.,
+    *A new method to simulate the Bingham and related distributions in directional data analysis with applications*,
+    arXiv:1310.8110, 2013.
 .. [kiureghian1998] Kiureghian A., Dakessian T., *Multiple design points in first and second-order reliability*
     Structural Safety, Volume 20, Issue 1, 1998, Pages 37-49
     `pdf <https://openturns.github.io/openturns/papers/kiureghian1998.pdf>`__

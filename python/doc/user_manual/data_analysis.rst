@@ -59,6 +59,7 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     InverseNormalFactory
+    experimental.KentFactory
 
     :template: classWithPlot.rst_t
 

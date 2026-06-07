@@ -96,6 +96,7 @@ Continuous parametric distributions
     :template: classWithPlot.rst_t
     UniformOverMesh
     UniformOrderStatistics
+    experimental.Kent
     experimental.MarginalUniformOrderStatistics
 
     :template: Distribution.rst_t
