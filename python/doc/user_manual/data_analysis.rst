@@ -52,6 +52,7 @@ Building distributions from samples
     GumbelFactory
     HistogramFactory
     InverseNormalFactory
+    experimental.KentFactory
 
     :template: classWithPlot.rst_t
 

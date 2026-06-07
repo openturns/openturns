@@ -769,6 +769,13 @@
   <VonMisesFactory-RelativePrecision value_float="1e-12"        />
   <VonMisesFactory-ResidualPrecision value_float="1e-12"        />
   <VonMisesFactory-MaximumIteration  value_int="10" />
+
+  <!-- OT::Kent parameters -->
+  <Kent-OrthogonalityThreshold value_float="1e-12"        />
+  <Kent-MaximumIteration  value_int="50" />
+
+  <!-- OT::KentFactory parameters -->
+  <KentFactory-AbsolutePrecision value_float="1e-8"        />
   
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
