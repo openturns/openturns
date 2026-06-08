@@ -65,6 +65,17 @@ DirectionalSampling * DirectionalSampling::clone() const
   return new DirectionalSampling(*this);
 }
 
+/*  Event accessor */
+void DirectionalSampling::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  standardEvent_ = StandardEvent(getEvent());
+  standardFunction_ = standardEvent_.getImplementation()->getFunction();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
+  samplingStrategy_.setDimension(inputDistribution_.getDimension());
+}
+
 /* Compute the contribution of a direction to the probability given the roots x_0,...,x_{n-1} of the performance function along the direction.
    If the origin is in the failure space:
    dP = 1.0 - \sum_{k=0}^{n-1}F^c(x_k)
