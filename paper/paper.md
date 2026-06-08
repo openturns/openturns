@@ -13,7 +13,7 @@ tags:
   - machine learning
   - supervised machine learning
   - unsupervised machine learning
-  - surrogate modelling
+  - surrogate modeling
   - polynomial chaos expansion
   - gaussian process regression
   - sensitivity analysis
@@ -21,7 +21,7 @@ tags:
   - function approximation
   - Quasi-Monte Carlo methods
   - optimization
-  - Reliability Analysis
+  - reliability analysis
   - Markov chain Monte Carlo
   - copula
   - dimensionality reduction
@@ -105,12 +105,12 @@ Although the landscape is highly fragmented with significant specialization,
 these tools fall into two broad categories.
 First, there are general-purpose libraries, which aim to provide
 most of the features used in research and engineering to perform UQ studies.
-In this class of tools, we find Dakota[@adams2025dakota], Raven[@RAVENuserMan],
-Sparse Grid++[@pflueger10spatially], PSUADE[@tong2024psuade],
-URANIE[@blanchard2019uranie], UQLab[@marelli2014uqlab],
-UQTk[@Debusschere2017UQTk], OpenCOSSAN[@Patelli2016Cossan],
-UQPy[@olivier2020uqpy], EasyVVUQ[@SULEIMENOVA2021101402],
-SmartUQ[@absil2016smart], and NESSUS[@McFarland2017], among others.
+In this class of tools, we find Dakota [@adams2025dakota], Raven [@RAVENuserMan],
+Sparse Grid++ [@pflueger10spatially], PSUADE [@tong2024psuade],
+URANIE [@blanchard2019uranie], UQLab [@marelli2014uqlab],
+UQTk [@Debusschere2017UQTk], OpenCOSSAN [@Patelli2016Cossan],
+UQPy [@olivier2020uqpy], EasyVVUQ [@SULEIMENOVA2021101402],
+SmartUQ [@absil2016smart], and NESSUS [@McFarland2017], among others.
 These tools and libraries are provided in a variety of languages including
 Matlab (e.g., UQLab), Python (e.g., UQPy), and ROOT/C++ (e.g., URANIE).
 Some of these tools are open-source (e.g., EasyVVUQ), while others are
@@ -121,10 +121,10 @@ Many of these libraries are massive software
 projects (e.g., Dakota has more than 300,000 lines of code).
 Some of these tools have a graphical user interface (e.g., SmartUQ), but not all.
 The second category comprises a large number of specialized libraries.
-In this class of tools, we find, for example, GPy[@gpy2014] for Gaussian
-Processes, QUESO[@McDougall2017] for Bayesian inference, SALib[@Herman2017]
-and sensitivity[@iooss2026sensitivity] for sensitivity analysis and
-ChaosPy[@feinberg2015chaospy] for polynomial chaos expansion, among
+In this class of tools, we find, for example, GPy [@gpy2014] for Gaussian
+Processes, QUESO [@McDougall2017] for Bayesian inference, SALib [@Herman2017]
+and sensitivity [@iooss2026sensitivity] for sensitivity analysis and
+ChaosPy [@feinberg2015chaospy] for polynomial chaos expansion, among
 many others.
 Most of these tools are relatively small software projects (e.g.,
 ChaosPy has approximately 30,000 lines of code).
@@ -206,8 +206,8 @@ Dependency indicators can be computed (Pearson and Spearman correlations).
 Inference of parametric and non-parametric univariate or multivariate
 probabilistic models, including copula models, can be performed, along with 
 several statistical tests to validate the estimation (quantitative tests such as the 
-Kolmogorov–Smirnov or Lilliefors tests, and graphical tests such as the
-quantile–quantile plot).
+Kolmogorov-Smirnov or Lilliefors tests, and graphical tests such as the
+quantile-quantile plot).
 
 The library provides an abstract representation of vector-valued or field-based
 mathematical functions that allows for composition, aggregation, symbolic or
@@ -237,8 +237,8 @@ For supervised learning, OpenTURNS enables the construction
 of surrogate models from data, such as linear regression models,
 polynomial chaos expansions, and Gaussian process regression.
 These surrogate models can also be built for models with functional inputs.
-The optimization of the Gaussian process regression hyperparameters can be
-performed on an arbitrary subset thereof.
+The optimization can be performed on an arbitrary subset of the Gaussian
+process regression hyperparameters.
 
 In many cases, probabilistic analyses use optimization algorithms (e.g.,
 for supervised learning or calibration).
