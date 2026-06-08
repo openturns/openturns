@@ -64,6 +64,10 @@ LineSampling * LineSampling::clone() const
   return new LineSampling(*this);
 }
 
+ProbabilitySimulationResult LineSampling::getResult() const
+{
+  return result_;
+}
 
 /* Performs the actual computation. */
 void LineSampling::run()

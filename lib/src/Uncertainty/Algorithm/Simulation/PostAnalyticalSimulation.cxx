@@ -70,6 +70,11 @@ Scalar PostAnalyticalSimulation::getControlProbability() const
   return controlProbability_;
 }
 
+ProbabilitySimulationResult PostAnalyticalSimulation::getResult() const
+{
+  return result_;
+}
+
 /* String converter */
 String PostAnalyticalSimulation::__repr__() const
 {

@@ -175,6 +175,27 @@ quantileLevel : float  :math:`0<quantileLevel<1`
     
 // ---------------------------------------------------------------------------
 
+%feature("docstring") OT::NAIS::getWeights
+"Auxiliary distribution input sample associated weights accessor of the final NAIS step.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    Auxiliary distribution input sample associated weights."    
+    
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::NAIS::getResult
+"Accessor to the results.
+
+Returns
+-------
+result : :class:`~openturns.NAISResult`
+    Structure containing all the results obtained after simulation
+    and created by the method :py:meth:`run`."
+
+// ---------------------------------------------------------------------------
+
 %feature("docstring") OT::NAIS::setKeepSample
 "Sample storage accessor.
 

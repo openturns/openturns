@@ -54,6 +54,9 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  /** Result accessor */
+  ProbabilitySimulationResult getResult() const;
+
   /** Root strategy accessor */
   void setRootStrategy(const RootStrategy & rootStrategy);
   RootStrategy getRootStrategy() const;

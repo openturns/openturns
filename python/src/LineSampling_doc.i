@@ -249,3 +249,14 @@ Parameters
 strategy : :class:`~openturns.RootStrategy`
     Root strategy to evaluate the frontiers of
     the event along each direction in the standard space."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LineSampling::getResult
+"Accessor to the results.
+
+Returns
+-------
+result : :class:`~openturns.ProbabilitySimulationResult`
+    Structure containing all the results obtained after simulation
+    and created by the method :py:meth:`run`."

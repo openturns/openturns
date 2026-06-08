@@ -71,6 +71,10 @@ ProbabilitySimulationAlgorithm * ProbabilitySimulationAlgorithm::clone() const
   return new ProbabilitySimulationAlgorithm(*this);
 }
 
+ProbabilitySimulationResult ProbabilitySimulationAlgorithm::getResult() const
+{
+  return result_;
+}
 
 void ProbabilitySimulationAlgorithm::setExperiment(const WeightedExperiment & experiment)
 {

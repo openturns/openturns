@@ -69,6 +69,10 @@ SubsetSampling * SubsetSampling::clone() const
   return new SubsetSampling(*this);
 }
 
+ProbabilitySimulationResult SubsetSampling::getResult() const
+{
+  return result_;
+}
 
 /* Performs the actual computation. */
 void SubsetSampling::run()
@@ -253,7 +257,7 @@ void SubsetSampling::run()
     LOGINFO(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   }
 
-  setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
+  result_ = SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare));
 
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - t0_).count();

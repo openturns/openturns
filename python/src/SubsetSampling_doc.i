@@ -235,6 +235,17 @@ range : float
 
 // ---------------------------------------------------------------------------
 
+%feature("docstring") OT::SubsetSampling::getResult
+"Accessor to the results.
+
+Returns
+-------
+result : :class:`~openturns.ProbabilitySimulationResult`
+    Structure containing all the results obtained after simulation
+    and created by the method :py:meth:`run`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SubsetSampling::setInitialExperiment
 "Initial experiment accessor.
 

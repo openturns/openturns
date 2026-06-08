@@ -75,18 +75,6 @@ RandomVector EventSimulation::getEvent() const
   return event_;
 }
 
-/* Result accessor */
-void EventSimulation::setResult(const ProbabilitySimulationResult & result)
-{
-  result_ = result;
-}
-
-/* Result accessor */
-ProbabilitySimulationResult EventSimulation::getResult() const
-{
-  return result_;
-}
-
 /* String converter */
 String EventSimulation::__repr__() const
 {

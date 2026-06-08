@@ -278,3 +278,14 @@ Returns
 gamma : :class:`~openturns.Point`
     T statistic value.)RAW"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AdaptiveDirectionalStratification::getResult
+"Accessor to the results.
+
+Returns
+-------
+result : :class:`~openturns.ProbabilitySimulationResult`
+    Structure containing all the results obtained after simulation
+    and created by the method :py:meth:`run`."
+

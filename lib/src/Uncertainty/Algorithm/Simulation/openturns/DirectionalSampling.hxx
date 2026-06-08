@@ -62,6 +62,9 @@ public:
   void setSamplingStrategy(const SamplingStrategy & samplingStrategy);
   SamplingStrategy getSamplingStrategy() const;
 
+  /** Result accessor */
+  ProbabilitySimulationResult getResult() const;
+
   /** String converter */
   String __repr__() const override;
 

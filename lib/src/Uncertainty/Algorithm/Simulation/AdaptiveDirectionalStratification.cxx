@@ -59,7 +59,10 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
   return new AdaptiveDirectionalStratification(*this);
 }
 
-
+ProbabilitySimulationResult AdaptiveDirectionalStratification::getResult() const
+{
+  return result_;
+}
 
 void AdaptiveDirectionalStratification::run()
 {

@@ -65,6 +65,11 @@ DirectionalSampling * DirectionalSampling::clone() const
   return new DirectionalSampling(*this);
 }
 
+ProbabilitySimulationResult DirectionalSampling::getResult() const
+{
+  return result_;
+}
+
 /* Compute the contribution of a direction to the probability given the roots x_0,...,x_{n-1} of the performance function along the direction.
    If the origin is in the failure space:
    dP = 1.0 - \sum_{k=0}^{n-1}F^c(x_k)
