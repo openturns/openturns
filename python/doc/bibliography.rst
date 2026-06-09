@@ -230,6 +230,9 @@ Bibliography
 .. [jackson1991] Jackson, J. E. (1991).
     *A user’s guide to principal components.*
     John Wiley & Sons.
+.. [jakeman2019] Jakeman J., Franzelin F., Narayan A., Eldred M., Pflüger D. (2019)
+    *Polynomial chaos expansions for dependent random variables*,
+    Computer Methods in Applied Mechanics and Engineering, 351, pp.643-666.
 .. [janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
     normality and efficiency of two Sobol index estimators*,
     ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.

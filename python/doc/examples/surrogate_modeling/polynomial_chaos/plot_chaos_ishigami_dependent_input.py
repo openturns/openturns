@@ -150,7 +150,10 @@ view = otv.View(graph)
 # -------------------------------
 # Now, we want to use the domination method, which means that the basis created by the
 # adaptive strategy is used to project the model. This basis is not orthonormal to
-# :math:`\mu_{\inputRV}`.
+# :math:`\mu_{\inputRV}`. For more information on domination, see, e.g., [jakeman2019]_.
+# Note that domination methods require the basis' measure to be a constant multiple of a density
+# that is greater than the input distributions density---for unbounded domains, this entails
+# choosing a basis orthogonal w.r.t. a density that has appropriate tail decay.
 #
 # We use the :meth:`~openturns.FunctionalChaosAlgorithm.setUseDomination` method.
 # We implement the same steps as before, until the validation graph.
