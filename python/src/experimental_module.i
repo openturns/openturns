@@ -57,6 +57,7 @@
 %import model_process_module.i
 
 /* Uncertainty/Distribution */
+%include Kent.i
 %include MarginalUniformOrderStatistics.i
 
 /* Uncertainty/Algorithm/Metamodel */
