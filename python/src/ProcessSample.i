@@ -17,7 +17,8 @@ namespace OT {
       return *p_it;
     }
     else {
-      return *OT::buildCollectionFromPySequence< OT::Sample >(pyObj);
+      OT::Pointer<OT::Collection<OT::Sample> > p_coll = OT::buildCollectionFromPySequence< OT::Sample >(pyObj);
+      return *p_coll;
     }
     return OT::Collection<OT::Sample>();
   }
