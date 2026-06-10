@@ -136,7 +136,7 @@ void EventSimulation::run()
   {
     // Perform a block of simulation
     const Sample blockSample(computeBlockSample());
-    LOGDEBUG(OSS() << "EventSimulation::run: blockSample=\n" << blockSample);
+    LOGDEBUG(OSS() << "EventSimulation::run: blockSample=\n" << blockSample.__str__());
     ++outerSampling;
     // Then, actualize the estimates
     const Scalar meanBlock = blockSample.computeMean()[0];
@@ -159,7 +159,7 @@ void EventSimulation::run()
     result_.setVarianceEstimate(reducedVarianceEstimate);
     result_.setOuterSampling(outerSampling);
     // Display the result at each outer sample
-    LOGDEBUG(result_.__repr__());
+    LOGDEBUG(result_.__str__());
     // Get the coefficient of variation back
     // We use the result to compute these quantities in order to
     // delegate the treatment of the degenerate cases (i.e. the
