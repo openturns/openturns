@@ -1824,6 +1824,12 @@ void ResourceMap::loadDefaultConfiguration()
 
   // viewer.View parameters //
   addAsString("View-ImageFormat", "png");
+
+  // QuantileConfidence parameters //
+  addAsScalar("QuantileConfidence-ProbabilityEpsilon", 1.0e-15);
+  addAsString("QuantileConfidence-Method", "doubleJump", {"hybrid", "jump", "epsilon", "bisection", "asymptoticInit", "doubleJump", "symmetric"});
+  addAsUnsignedInteger("QuantileConfidence-AsymptoticSizeLimit", 1000000);
+  addAsScalar("QuantileConfidence-AsymptoticStdDevFactor", 4.0);
 }
 
 void ResourceMap::reset()
