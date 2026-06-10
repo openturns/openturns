@@ -100,67 +100,44 @@ UnsignedInteger QuantileConfidence::computeUnilateralRank(const UnsignedInteger 
   return rank;
 }
 
-// compute argmin (k1, k2) P_X([k1, k2]) under constraint P_X([k1, k2])>=beta, with X~B(n, alpha)
+// compute argmin (k1, k2) P_Xd(]k1, k2]) under constraint P_Xd(]k1, k2])>=beta, with Xd~B(n, alpha)
 Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) const
 {
   const UnsignedInteger minimumSize = computeBilateralMinimumSampleSize();
   if (size < minimumSize)
     throw InvalidArgumentException(HERE) << "Cannot compute bilateral rank as size (" << size << ") is lower than minimum size (" << minimumSize << ")";
 
-  // find the indices of interval ]k1, k2] with smallest probability >=beta according to a Binomial(n=size, alpha)
   const Binomial binomial(size, alpha_);
-  Scalar pBest = SpecFunc::MaxScalar;
-  UnsignedInteger k1Best = size;
-  UnsignedInteger k2Best = size;
-  Scalar p1Prev = 0.0;
+  Scalar pBest = 2.0;
+  Indices kBest;
   UnsignedInteger k1 = 0;
   while (k1 < size)
   {
-    // find upper bound of cdf increment location
-    Scalar p1 = binomial.computeCDF(k1);
-    UnsignedInteger inc = 1;
-    UnsignedInteger k1Prev = k1;
-    while (p1 == p1Prev)
-    {
-      k1Prev = k1;
-      k1 += inc;
-      p1 = binomial.computeCDF(k1);
-      inc *= 2;
-    }
-
-    // find exact cdf increment location
-    UnsignedInteger k1Max = k1;
-    UnsignedInteger k1Min = k1Prev;
-    while (k1Max - k1Min > 1)
-    {
-      const UnsignedInteger k1Mid = (k1Min + k1Max) / 2;
-      const Scalar p1Mid = binomial.computeCDF(k1Mid);
-      if (p1Mid > p1Prev)
-        k1Max = k1Mid;
-      else
-        k1Min = k1Mid;
-    }
-    k1 = k1Max;
-
-    // we have to stop when the probability will cross the bound
-    if (p1 + beta_ > 1.0)
+    // update CDF at k1, stop when it crosses the bound
+    const Scalar p1 = binomial.computeCDF(k1);
+    if (p1 + beta_ >= 1.0)
       break;
 
-    // we know P([k1, k2])>=beta which gives k2 directly from k1(p1)
+    // we know P(]k1, k2])>=beta which gives k2 directly from k1(p1)
     const UnsignedInteger k2 = binomial.computeScalarQuantile(p1 + beta_);
-    p1Prev = p1;
+    const Scalar p2 = binomial.computeCDF(k2);
 
-    // we compute P(k1<X<=k2)=P(k1+1<=X<=k2), CDF(k2)-CDF(k1) also works
-    const Scalar p = binomial.computeProbability(Interval(k1 + 1, k2));
+    // we compute P(k1<Xd<=k2)=CDF(k2)-CDF(k1) and check for improvement
+    const Scalar p = p2 - p1;
     LOGDEBUG(OSS() << "k1=" << k1 << " k2=" << k2 << " p=" << p);
     if ((p >= beta_) && (p < pBest))
     {
       pBest = p;
-      k1Best = k1;
-      k2Best = k2;
+      kBest = {k1, k2};
     }
-  } // while k1
-  return {k1Best, k2Best};
+
+    // k1 advances right before the next CDF bump at qB(p2-beta), ensure it stays stricly increasing
+    k1 = std::max(binomial.computeScalarQuantile(p2 - beta_) - 1.0, k1 + 1.0);
+  }
+
+  if (!kBest.getSize())
+    throw InternalException(HERE) << "Cannot compute bilateral rank: no valid interval found for size=" << size;
+  return kBest;
 }
 
 // compute interval of the form [X_k; +inf[ or ]-inf; X_k] from unilateral rank k
