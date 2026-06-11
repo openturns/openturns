@@ -68,7 +68,7 @@ EllipticalDistribution::EllipticalDistribution(const Point & mu,
         << "Arguments have incompatible dimensions: R dimension=" << dimension
         << " sigma dimension=" << sigma.getDimension()
         << " mu dimension=" << mu.getDimension();
-  // We check that the marginal standard deviations are > 0
+  // We check that the marginal standard deviations are >= 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
     if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
   // Then we set the dimension of the Elliptical distribution
@@ -105,7 +105,9 @@ Bool EllipticalDistribution::equals(const DistributionImplementation & other) co
 Point EllipticalDistribution::normalize(const Point & x) const
 {
   Point u(x - mean_);
-  for (UnsignedInteger i = 0; i < getDimension(); ++i) u[i] /= sigma_[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+    if (sigma_[i] > 0.0) u[i] /= sigma_[i];
+    else u[i] = 0.0;
   return u;
 }
 
@@ -176,6 +178,17 @@ Point EllipticalDistribution::computeDDF(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
+  // Check support for degenerate dimensions
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (point[i] != mean_[i]) return Point(dimension, 0.0);
+      // Any degenerate dimension makes the DDF singular w.r.t. full Lebesgue measure
+      if (dimension > 1) return Point(dimension, 0.0);
+    }
+  }
 
   switch(dimension)
   {
@@ -258,10 +271,22 @@ Scalar EllipticalDistribution::computePDF(const Point & point) const
   if (point.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  // Check support for degenerate dimensions
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (point[i] != mean_[i]) return 0.0;
+      // Any degenerate dimension makes the PDF singular w.r.t. full Lebesgue measure
+      if (dimension > 1) return 0.0;
+    }
+  }
+
   switch(dimension)
   {
     case 1:
     {
+      if (sigma_[0] == 0.0) return 0.0;
       const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
       return normalizationFactor_ * computeDensityGenerator(iLx * iLx);
     }
@@ -321,10 +346,22 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
   if (point.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  // Check support for degenerate dimensions
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if (point[i] != mean_[i]) return SpecFunc::LowestScalar;
+      // Any degenerate dimension makes the PDF singular w.r.t. full Lebesgue measure
+      if (dimension > 1) return SpecFunc::LowestScalar;
+    }
+  }
+
   switch(dimension)
   {
     case 1:
     {
+      if (sigma_[0] == 0.0) return SpecFunc::LowestScalar;
       const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
       const Scalar betaSquare = iLx * iLx;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
@@ -406,11 +443,19 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   Point pdfGradient(2 * dimension + (dimension > 1 ? ((dimension - 1) * dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    Scalar iSigma = 1.0 / sigma_[i];
-    // dPDF / dmu_i
-    pdfGradient[2 * i] = -2.0 * normalizationFactor_ * phiDerivative * iRu[i] * iSigma;
-    // dPDF / dsigma_i
-    pdfGradient[2 * i + 1] = pdfGradient[2 * i] * u[i] - normalizationFactor_ * phi * iSigma;
+    if (sigma_[i] > 0.0)
+    {
+      const Scalar iSigma = 1.0 / sigma_[i];
+      // dPDF / dmu_i
+      pdfGradient[2 * i] = -2.0 * normalizationFactor_ * phiDerivative * iRu[i] * iSigma;
+      // dPDF / dsigma_i
+      pdfGradient[2 * i + 1] = pdfGradient[2 * i] * u[i] - normalizationFactor_ * phi * iSigma;
+    }
+    else
+    {
+      pdfGradient[2 * i] = 0.0;
+      pdfGradient[2 * i + 1] = 0.0;
+    }
   }
   if (getDimension() > 1)
   {
@@ -470,11 +515,11 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
 
 CovarianceMatrix EllipticalDistribution::getShape() const
 {
-  CovarianceMatrix shape(R_);
   const UnsignedInteger dimension = getDimension();
+  CovarianceMatrix shape(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
-      shape(i, j) *= sigma_[i] * sigma_[j];
+      shape(i, j) = R_(i, j) * sigma_[i] * sigma_[j];
   return shape;
 }
 
@@ -484,11 +529,97 @@ void EllipticalDistribution::update()
   const UnsignedInteger dimension = getDimension();
   if (dimension > 1)
   {
-    // Try to compute the Cholesky factor of the shape matrix
-    TriangularMatrix cholesky(getCholesky());
-    inverseCholesky_ = cholesky.inverse().getImplementation();
-    normalizationFactor_ = 1.0;
-    for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky(i, i);
+    // Build the shape matrix (copy values explicitly to avoid sharing with R_)
+    CovarianceMatrix shape(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+      for (UnsignedInteger j = 0; j <= i; ++ j)
+        shape(i, j) = R_(i, j) * sigma_[i] * sigma_[j];
+
+    // Identify non-degenerate dimensions
+    Indices nonDegenerate;
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+      if (sigma_[i] > 0.0) nonDegenerate.add(i);
+    const UnsignedInteger effectiveDimension = nonDegenerate.getSize();
+
+    if (effectiveDimension == dimension)
+    {
+      // Standard case: all dimensions are non-degenerate
+      TriangularMatrix cholesky(shape.computeRegularizedCholesky());
+      inverseCholesky_ = cholesky.inverse().getImplementation();
+      normalizationFactor_ = 1.0;
+      for (UnsignedInteger i = 0; i < dimension; ++ i) normalizationFactor_ /= cholesky(i, i);
+    }
+    else if (effectiveDimension == 0)
+    {
+      // All dimensions degenerate
+      inverseCholesky_ = TriangularMatrix(dimension);
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+        for (UnsignedInteger j = 0; j <= i; ++ j)
+          inverseCholesky_(i, j) = 0.0;
+      normalizationFactor_ = 1.0;
+    }
+    else
+    {
+      // Mixed case: extract submatrix for non-degenerate dimensions
+      CovarianceMatrix subShape(effectiveDimension);
+      for (UnsignedInteger ii = 0; ii < effectiveDimension; ++ ii)
+      {
+        const UnsignedInteger i = nonDegenerate[ii];
+        for (UnsignedInteger jj = 0; jj <= ii; ++ jj)
+        {
+          const UnsignedInteger j = nonDegenerate[jj];
+          subShape(ii, jj) = sigma_[i] * R_(i, j) * sigma_[j];
+        }
+      }
+
+      TriangularMatrix subCholesky(subShape.computeRegularizedCholesky());
+
+      // Build the full Cholesky factor (lower triangular) with zeros for degenerate dims
+      TriangularMatrix cholesky(dimension);
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+      {
+        if (sigma_[i] > 0.0)
+        {
+          const UnsignedInteger ii = nonDegenerate.find(i);
+          for (UnsignedInteger j = 0; j <= i; ++ j)
+          {
+            if (sigma_[j] > 0.0)
+            {
+              const UnsignedInteger jj = nonDegenerate.find(j);
+              cholesky(i, j) = subCholesky(ii, jj);
+            }
+            else
+              cholesky(i, j) = 0.0;
+          }
+        }
+        else
+        {
+          for (UnsignedInteger j = 0; j <= i; ++ j)
+            cholesky(i, j) = 0.0;
+        }
+      }
+
+      // Invert only the non-degenerate subblock, then build full inverse with zeros
+      TriangularMatrix subInverse(subCholesky.inverse().getImplementation());
+      inverseCholesky_ = TriangularMatrix(dimension);
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+      {
+        for (UnsignedInteger j = 0; j <= i; ++ j)
+        {
+          if ((sigma_[i] > 0.0) && (sigma_[j] > 0.0))
+          {
+            const UnsignedInteger ii = nonDegenerate.find(i);
+            const UnsignedInteger jj = nonDegenerate.find(j);
+            inverseCholesky_(i, j) = subInverse(ii, jj);
+          }
+          else
+            inverseCholesky_(i, j) = 0.0;
+        }
+      }
+      normalizationFactor_ = 1.0;
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+        if (sigma_[i] > 0.0) normalizationFactor_ /= cholesky(i, i);
+    }
   } // dimension > 1
   else  // dimension 1
   {
@@ -496,8 +627,16 @@ void EllipticalDistribution::update()
     {
       inverseCholesky_ = TriangularMatrix(1);
     }
-    inverseCholesky_(0, 0) = 1.0 / sigma_[0];
-    normalizationFactor_ = 1.0 / sigma_[0];
+    if (sigma_[0] > 0.0)
+    {
+      inverseCholesky_(0, 0) = 1.0 / sigma_[0];
+      normalizationFactor_ = 1.0 / sigma_[0];
+    }
+    else
+    {
+      inverseCholesky_(0, 0) = 0.0;
+      normalizationFactor_ = 1.0;
+    }
   } // dimension == 1
   isAlreadyComputedMean_ = true;
 }
@@ -546,9 +685,9 @@ void EllipticalDistribution::setSigma(const Point & sigma)
         << ") differ from distribution dimension(" << getDimension()
         << "). Unable to construct elliptical distribution object.";
 
-  // We check that the marginal standard deviations are > 0
+  // We check that the marginal standard deviations are >= 0
   for(UnsignedInteger i = 0; i < sigma.getDimension(); ++i)
-    if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
+    if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
   sigma_ = sigma;
   update();
   computeRange();
@@ -579,17 +718,8 @@ void EllipticalDistribution::setR(const CorrelationMatrix & R)
         << ") differ from distribution dimension(" << getDimension()
         << "). Unable to construct elliptical distribution object.";
 
-  CovarianceMatrix shape(R.getImplementation());
-  const UnsignedInteger dimension = getDimension();
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j <= i; ++j)
-      shape(i, j) *= sigma_[i] * sigma_[j];
-  TriangularMatrix cholesky(shape.computeRegularizedCholesky());
-  inverseCholesky_ = cholesky.inverse().getImplementation();
   R_ = R;
-  normalizationFactor_ = 1.0;
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
-    normalizationFactor_ /= cholesky(i, i);
+  update();
   isAlreadyComputedCovariance_ = false;
 }
 
@@ -602,7 +732,66 @@ CorrelationMatrix EllipticalDistribution::getR() const
 /* Cholesky factor of the correlation matrix accessor */
 TriangularMatrix EllipticalDistribution::getCholesky() const
 {
-  return getShape().computeRegularizedCholesky();
+  const UnsignedInteger dimension = getDimension();
+  if (dimension == 1)
+  {
+    TriangularMatrix cholesky(1);
+    cholesky(0, 0) = sigma_[0];
+    return cholesky;
+  }
+  // Check for degenerate dimensions
+  Indices nonDegenerate;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    if (sigma_[i] > 0.0) nonDegenerate.add(i);
+  const UnsignedInteger effectiveDimension = nonDegenerate.getSize();
+
+  if (effectiveDimension == dimension)
+  {
+    // Standard case: all dimensions are non-degenerate
+    return getShape().computeRegularizedCholesky();
+  }
+
+  CovarianceMatrix shape(getShape());
+
+  if (effectiveDimension == 0)
+  {
+    // All degenerate
+    TriangularMatrix cholesky(dimension);
+    return cholesky;
+  }
+
+  // Mixed case: extract submatrix for non-degenerate dimensions
+  CovarianceMatrix subShape(effectiveDimension);
+  for (UnsignedInteger ii = 0; ii < effectiveDimension; ++ ii)
+  {
+    const UnsignedInteger i = nonDegenerate[ii];
+    for (UnsignedInteger jj = 0; jj <= ii; ++ jj)
+    {
+      const UnsignedInteger j = nonDegenerate[jj];
+      subShape(ii, jj) = shape(i, j);
+    }
+  }
+
+  TriangularMatrix subCholesky(subShape.computeRegularizedCholesky());
+
+  // Build full Cholesky with zeros for degenerate dimensions
+  TriangularMatrix cholesky(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    if (sigma_[i] > 0.0)
+    {
+      const UnsignedInteger ii = nonDegenerate.find(i);
+      for (UnsignedInteger j = 0; j <= i; ++ j)
+      {
+        if (sigma_[j] > 0.0)
+        {
+          const UnsignedInteger jj = nonDegenerate.find(j);
+          cholesky(i, j) = subCholesky(ii, jj);
+        }
+      }
+    }
+  }
+  return cholesky;
 }
 
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
@@ -743,7 +932,7 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
   {
     mean_[0] = parametersCollection[0][0];
     sigma_[0] = parametersCollection[0][1];
-    if (!(sigma_[0] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_[0];
+    if (!(sigma_[0] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma_[0];
   }
   else
   {
@@ -751,7 +940,7 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
     {
       mean_[i] = parametersCollection[i][0];
       sigma_[i] = parametersCollection[i][1];
-      if (!(sigma_[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_[i];
+      if (!(sigma_[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma_[i];
     }
     UnsignedInteger parameterIndex = 0;
     for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -804,8 +993,8 @@ void EllipticalDistribution::setParameter(const Point & parameters)
   {
     mean[i] = parameters[2 * i];
     sigma[i] = parameters[2 * i + 1];
-    if (!(sigma[i] > 0.0))
-      throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
+    if (!(sigma[i] >= 0.0))
+      throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
   }
   if (dimension > 1)
   {
@@ -818,7 +1007,6 @@ void EllipticalDistribution::setParameter(const Point & parameters)
         ++ index;
       }
     }
-    setR(R);
   }
   // commit all changes at once
   mean_ = mean;
@@ -857,7 +1045,6 @@ void EllipticalDistribution::save(Advocate & adv) const
   DistributionImplementation::save(adv);
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
-  adv.saveAttribute( "mu_", mean_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
@@ -868,10 +1055,6 @@ void EllipticalDistribution::load(Advocate & adv)
   DistributionImplementation::load(adv);
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
-  if (adv.hasAttribute("mean_duplicate"))
-    adv.loadAttribute( "mean_duplicate", mean_ );
-  else
-    adv.loadAttribute( "mu_", mean_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
 }

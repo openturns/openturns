@@ -10,10 +10,11 @@
   $1 = (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
 }
 
-%typemap(in) const OT::DistributionImplementation::PointCollection & {
+%typemap(in) const OT::DistributionImplementation::PointCollection & (OT::Pointer<OT::Collection<OT::Point> > temp) {
   if (!SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Point >($input);
+      temp = OT::buildCollectionFromPySequence< OT::Point >($input);
+      $1 = temp.get();
     } catch (const OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Point");
     }

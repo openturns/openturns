@@ -61,7 +61,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
   (void) kwds;
 
   memset(&self->bufferview, 0, sizeof(BufferView));
-  if (PyArg_ParseTuple(args, (char*) "n:Buffer", &bufferLength))
+  if (PyArg_ParseTuple(args, "n:Buffer", &bufferLength))
   {
     /* Unpickling: allocate an empty data memory block, it will be filled up by Buffer_setstate */
     self->bufferview.itemsize = sizeof(double);
@@ -72,7 +72,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
   }
   PyErr_Clear();
 
-  if (! PyArg_ParseTuple(args, (char*) "(OO!)O!:Buffer", &addrObj, &PyBool_Type, &ownObj, &PyTuple_Type, &shapeObj))
+  if (! PyArg_ParseTuple(args, "(OO!)O!:Buffer", &addrObj, &PyBool_Type, &ownObj, &PyTuple_Type, &shapeObj))
   {
     return -1;
   }
@@ -277,7 +277,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
     PyErr_SetString(PyExc_TypeError, "cannot populate a Buffer we do not own");
     return NULL;
   }
-  if (! PyArg_ParseTuple(args, (char*) "(O!O!s#):__setstate__", &PyTuple_Type, &shapeObj, &PyTuple_Type, &strideObj, &rawData, &length))
+  if (! PyArg_ParseTuple(args, "(O!O!s#):__setstate__", &PyTuple_Type, &shapeObj, &PyTuple_Type, &strideObj, &rawData, &length))
     return NULL;
 
   if (length != self->bufferview.length * self->bufferview.itemsize)

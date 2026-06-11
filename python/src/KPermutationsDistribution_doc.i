@@ -1,17 +1,6 @@
 %feature("docstring") OT::KPermutationsDistribution
 R"RAW(KPermutations distribution.
 
-Parameters
-----------
-k : int, :math:`k > 0`
-n : int, :math:`n > 0`
-
-See also
---------
-KPermutations
-
-Notes
------
 :class:`~openturns.KPermutationsDistribution` is the discrete uniform
 distribution on the set of injective functions :math:`(i_0, \hdots, i_{k_1})`
 from :math:`\{0, \hdots, k-1\}` into :math:`\{0, \hdots, n-1\}`.
@@ -32,7 +21,14 @@ Its first moments are:
         \Cov{X_i, X_j} & = & -\frac{1 + n}{12}, \quad i, j = 1, \ldots, k, i \neq j
     \end{eqnarray*}
 
+Parameters
+----------
+k : int, :math:`k > 0`
+n : int, :math:`n > 0`
 
+See also
+--------
+KPermutations
 
 Examples
 --------

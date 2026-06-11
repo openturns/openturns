@@ -82,7 +82,7 @@ Examples
 >>> secondSample = sample[:, 2]
 >>> test_result = ot.HypothesisTest.FullPearson(firstSample, secondSample)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 statistic=13.61 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 statistic=-0.133027 description=[]]
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 statistic=13.61 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=1.10488 statistic=-0.133027 description=[]]
 >>> independent_samples = test_result[0].getBinaryQualityMeasure()
 )RAW"
 
@@ -179,7 +179,7 @@ Examples
 >>> secondSample = sample[:, 3]
 >>> test_result = ot.HypothesisTest.PartialPearson(firstSample, secondSample, [0, 2])
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 statistic=9.91178 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 statistic=-1.33717 description=[]]
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 statistic=9.91178 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=1.80807 statistic=-1.33717 description=[]]
 >>> independent_samples = test_result[0].getBinaryQualityMeasure()
 )RAW"
 

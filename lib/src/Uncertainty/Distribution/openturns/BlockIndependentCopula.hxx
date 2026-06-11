@@ -165,7 +165,7 @@ private:
   DistributionPersistentCollection copulaCollection_;
 
   /** Flag to tell if the copula is independent */
-  Bool isIndependent_;
+  Bool isIndependent_ = false;
 
 }; /* class BlockIndependentCopula */
 

@@ -117,3 +117,15 @@ for UseRandomSVD, RandomSVDVariant in [
     result = algo.getResult()
     evs = result.getEigenvalues()
     assert len(evs) == 10, "expected 10 values"
+
+    # 2d test
+    mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
+    cov2D = ot.ExponentialModel([1.0], [1.0, 2.0], ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0]))
+    sample = ot.GaussianProcess(cov2D, mesh).getSample(16)
+    algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
+    algo.run()
+    result = algo.getResult()
+    lambd = result.getEigenvalues()
+    print("2D Halko2011 eigenvalues=", lambd)
+    print("2D Halko2011 modes=", result.getModesAsProcessSample())
+    assert lambd[0] > 0.0, "first eigenvalue must be positive"

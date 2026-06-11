@@ -164,10 +164,8 @@ private:
   /** Actual discrete integral compound */
   FiniteDiscreteDistribution distribution_;
 
-  /** Structures for the alias sampling method */
+  /** Cached probabilities */
   mutable Point probabilities_;
-  mutable Point base_;
-  mutable Indices alias_;
 }; /* class DiscreteCompoundDistribution */
 
 

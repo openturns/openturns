@@ -80,7 +80,8 @@ public:
   void clear();
 
   /** Field accessor */
-  void setField (const Field & field, const UnsignedInteger i);
+  void setField (const UnsignedInteger i, const Field & field);
+  void setField (const Field & field, const UnsignedInteger i); // @deprecated
   Field getField (const UnsignedInteger i) const;
 #ifndef SWIG
 

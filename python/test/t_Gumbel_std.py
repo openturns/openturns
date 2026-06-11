@@ -102,6 +102,13 @@ parameters = distribution.getParametersCollection()
 print("parameters=", repr(parameters))
 print("Standard representative=", distribution.getStandardRepresentative())
 
+# Test for NaN in far left tail
+far_left = [-1000.0]
+ott.assert_almost_equal(distribution.computePDF(far_left), 0.0)
+ott.assert_almost_equal(distribution.computeDDF(far_left), [0.0])
+ott.assert_almost_equal(distribution.computePDFGradient(far_left), [0.0, 0.0])
+ott.assert_almost_equal(distribution.computeCDFGradient(far_left), [0.0, 0.0])
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()

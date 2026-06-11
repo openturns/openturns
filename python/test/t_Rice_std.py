@@ -100,3 +100,15 @@ validation.skipProbability()
 validation.skipEntropy()  # slow
 validation.skipMinimumVolumeLevelSet()  # slow
 validation.run()
+
+# test that covariance is recomputed after setNu
+dist2 = ot.Rice(2.0, 3.0)
+std1 = dist2.getStandardDeviation()
+cov1 = dist2.getCovariance()
+dist2.setNu(5.0)
+std2 = dist2.getStandardDeviation()
+cov2 = dist2.getCovariance()
+assert std2[0] != std1[0]
+assert cov2[0, 0] != cov1[0, 0]
+dist3 = ot.Rice(2.0, 5.0)
+ott.assert_almost_equal(std2[0], dist3.getStandardDeviation()[0])

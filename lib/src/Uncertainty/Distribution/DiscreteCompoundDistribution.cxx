@@ -178,6 +178,7 @@ void DiscreteCompoundDistribution::setBaseAndCompoundDistributions(const Distrib
 Scalar DiscreteCompoundDistribution::computePDF(const Point & point) const
 {
   const Scalar x = point[0];
+  if (x < 0.0) return 0.0;
   const UnsignedInteger ix = static_cast<UnsignedInteger>(x);
   if (ix >= probabilities_.getSize()) return 0.0;
   if (std::abs(ix - x) > pdfEpsilon_) return 0.0;
@@ -290,6 +291,7 @@ void DiscreteCompoundDistribution::load(Advocate & adv)
   adv.loadAttribute("baseDistribution_", baseDistribution_);
   adv.loadAttribute("compoundDistribution_", compoundDistribution_);
   adv.loadAttribute("distribution_", distribution_);
+  computeRange();
 }
 
 /* Base distribution accessor */

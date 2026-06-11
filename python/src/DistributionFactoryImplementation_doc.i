@@ -44,7 +44,7 @@ OT_DistributionFactory_build_doc
 // ---------------------------------------------------------------------
 
 %define OT_DistributionFactory_buildEstimator_doc
-"Build the distribution and the parameter distribution.
+R"RAW(Build the distribution and the parameter distribution.
 
 Parameters
 ----------
@@ -60,18 +60,39 @@ resDist : :class:`~openturns.DistributionFactoryResult`
 
 Notes
 -----
+See :any:`maximum_likelihood` for the theory of maximum likelihood
+estimation and the definition of the Fisher information matrix.
+
 According to the way the native parameters of the distribution are estimated, the parameters distribution differs:
 
-    - Moments method: the asymptotic parameters distribution is normal and estimated by Bootstrap on the initial data;
-    - Maximum likelihood method with a regular model: the asymptotic parameters distribution is normal and its covariance matrix is the inverse Fisher information matrix;
-    - Other methods: the asymptotic parameters distribution is estimated by Bootstrap on the initial data and kernel fitting (see :class:`~openturns.KernelSmoothing`).
+    - **Moments method**: the asymptotic parameters distribution is normal and estimated by Bootstrap on the initial data;
+    - **Maximum likelihood method with a regular model**: the asymptotic parameters distribution is normal and its covariance matrix is the inverse of the observed Fisher information matrix
 
+      .. math::
+
+          \widehat{\mat{\Sigma}}_{\hat{\vect{\theta}}}
+          = \left( \sum_{k=1}^{N}
+            \frac{\partial \log f_X(x_k; \hat{\vect{\theta}})}{\partial \theta_i}
+            \frac{\partial \log f_X(x_k; \hat{\vect{\theta}})}{\partial \theta_j}
+            \right)^{-1}
+
+    - **Other methods**: the asymptotic parameters distribution is estimated by Bootstrap on the initial data and kernel fitting (see :class:`~openturns.KernelSmoothing`).
 
 If another set of parameters is specified, the native parameters distribution is first estimated and the new distribution is determined from it:
 
-    - if the native parameters distribution is normal and the transformation regular at the estimated parameters values: the asymptotic parameters distribution is normal and its covariance matrix determined from the inverse Fisher information matrix of the native parameters and the transformation;
+    - if the native parameters distribution is normal and the transformation regular at the estimated parameters values: the asymptotic parameters distribution is normal and its covariance matrix is determined from the covariance matrix of the native parameters and the delta method
+
+      .. math::
+
+          \widehat{\mat{\Sigma}}_{\vect{\alpha}}
+          = \mat{J}_{\vect{\alpha}}(\hat{\vect{\theta}})
+            \widehat{\mat{\Sigma}}_{\hat{\vect{\theta}}}
+            \mat{J}_{\vect{\alpha}}(\hat{\vect{\theta}})^{\intercal}
+
+      where :math:`\mat{J}_{\vect{\alpha}}(\vect{\theta}) = \partial \vect{\alpha} / \partial \vect{\theta}` is the Jacobian matrix of the transformation from native parameters :math:`\vect{\theta}` to the new parametrization :math:`\vect{\alpha}`;
+
     - in the other cases, the asymptotic parameters distribution is estimated by Bootstrap on the initial data and kernel fitting.
-"
+)RAW"
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::buildEstimator
 OT_DistributionFactory_buildEstimator_doc

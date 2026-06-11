@@ -72,7 +72,7 @@ class TestInverseWishartMethods(ut.TestCase):
             for j in range(i):
                 cls.L[i, j] = U.getRealization()[0]
         cls.determinant *= cls.determinant
-        cls.Scale = ot.CovarianceMatrix(cls.L * cls.L.transpose())
+        cls.Scale = ot.CovarianceMatrix((cls.L * cls.L.transpose()).getImplementation())
 
     def test_computeLogPDF_1D_case(self):
         """Test InverseWishart.computeLogPDF in the one-dimensional case"""
@@ -148,7 +148,7 @@ class TestInverseWishartMethods(ut.TestCase):
         """Test InverseWishart.getSample and InverseWishart.getMean"""
         d, Scale, DoF, N = self.dimension, self.Scale, self.DoF, int(1e4)
         Identity = ot.CovarianceMatrix(d)
-        Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity))
+        Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity).getImplementation())
         inverse_wishart = ot.InverseWishart(Scale, DoF)
         sample_inverse = ot.Sample(N, (d * (d + 1)) // 2)
         sample = ot.Sample(N, (d * (d + 1)) // 2)

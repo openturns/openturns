@@ -29,7 +29,7 @@ PyObject * __getitem__(PyObject * args) const {
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
 
-  if (!PyArg_ParseTuple(args,(char *)"OOO:" #baseType "___getitem__",&obj1,&obj2,&obj3)) SWIG_fail;
+  if (!PyArg_ParseTuple(args, "OOO:" #baseType "___getitem__", &obj1, &obj2, &obj3)) SWIG_fail;
 
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {

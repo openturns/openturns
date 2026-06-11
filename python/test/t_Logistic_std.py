@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math
 import openturns as ot
 import openturns.testing as ott
 
@@ -107,5 +108,36 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipCharacteristicFunction()  # FIXME
 validation.run()
+
+# Test extreme values in asymptotic expansions
+distribution0 = ot.Logistic(0.0, 1.0)
+for z in [100.0, 1000.0, -100.0, -1000.0]:
+    point = [z]
+    ddf = distribution0.computeDDF(point)
+    assert ddf[0] == ddf[0]
+    assert abs(ddf[0]) < 1.0
+    pdfGrad = distribution0.computePDFGradient(point)
+    assert pdfGrad[0] == pdfGrad[0]
+    assert pdfGrad[1] == pdfGrad[1]
+    assert abs(pdfGrad[0]) < 1.0
+    assert abs(pdfGrad[1]) < 1.0
+    cdfGrad = distribution0.computeCDFGradient(point)
+    assert cdfGrad[0] == cdfGrad[0]
+    assert cdfGrad[1] == cdfGrad[1]
+    assert abs(cdfGrad[0]) < 1.0
+    assert abs(cdfGrad[1]) < 1.0
+
+for x in [100.0, 500.0, 1000.0, -100.0, -500.0, -1000.0]:
+    cf = distribution0.computeCharacteristicFunction(x)
+    assert cf.real == cf.real
+    assert cf.imag == cf.imag
+    logcf = distribution0.computeLogCharacteristicFunction(x)
+    assert logcf.real == logcf.real
+    assert logcf.imag == logcf.imag
+    assert logcf.real < 0.0
+
+for x in [1.0, 10.0, 50.0]:
+    cf = distribution0.computeCharacteristicFunction(x)
+    logcf = distribution0.computeLogCharacteristicFunction(x)
+    ott.assert_almost_equal(abs(cf), math.exp(logcf.real), 1e-12, 0.0)

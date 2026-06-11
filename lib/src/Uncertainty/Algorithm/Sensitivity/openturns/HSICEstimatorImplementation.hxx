@@ -140,8 +140,8 @@ protected:
   /* Compute the covariance matrices associated to the inputs and outputs */
   virtual void computeCovarianceMatrices();
 
-  /* Cached accessor to input covariance matrix */
-  virtual CovarianceMatrix getInputCovarianceMatrix(const UnsignedInteger j) const;
+  /* Accessor to input covariance matrix */
+  CovarianceMatrix getInputCovarianceMatrix(const UnsignedInteger j) const;
 
   /** Compute p-value with permutation */
   virtual void computePValuesPermutationSequential() const;
@@ -193,7 +193,6 @@ private:
   mutable Bool isAlreadyComputedIndices_ = false;
   mutable Bool isAlreadyComputedPValuesPermutation_ = false;
   mutable Bool isAlreadyComputedPValuesAsymptotic_ = false;
-  PersistentCollection <CovarianceMatrix> inputCovarianceMatrixCollection_;
 };
 
 END_NAMESPACE_OPENTURNS

@@ -139,12 +139,19 @@ Field ProcessSampleImplementation::getField(const UnsignedInteger index) const
   return Field(mesh_, data_[index]);
 }
 
-void ProcessSampleImplementation::setField(const Field & field,
-    const UnsignedInteger index)
+void ProcessSampleImplementation::setField(const UnsignedInteger index,
+                                           const Field & field)
 {
   if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   if (field.getOutputDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getOutputDimension();
   data_[index] = field.getValues();
+}
+
+void ProcessSampleImplementation::setField(const Field & field,
+    const UnsignedInteger index)
+{
+  LOGWARN("ProcessSample.setField(Field, int) is deprecated, use ProcessSample.setField(int, Field)");
+  setField(index, field);
 }
 
 Sample & ProcessSampleImplementation::operator[] (const UnsignedInteger index)

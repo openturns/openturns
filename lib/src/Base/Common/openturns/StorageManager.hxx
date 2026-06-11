@@ -244,6 +244,11 @@ public:
    */
   void markObjectAsSaved(Id id) const;
 
+  /** Remove the saved status of an object
+   * @internal
+   */
+  void cleanSavedObject(Id id) const;
+
 protected:
 
   /** Refresh the status of saved objects */

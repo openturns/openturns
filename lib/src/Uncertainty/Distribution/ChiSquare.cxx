@@ -114,7 +114,7 @@ ChiSquare * ChiSquare::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void ChiSquare::computeRange()
 {
-  setRange(Gamma(0.5, 0.5 * nu_, 0.0).getRange());
+  setRange(Gamma(0.5 * nu_, 0.5, 0.0).getRange());
 }
 
 /** Update the derivative attributes */

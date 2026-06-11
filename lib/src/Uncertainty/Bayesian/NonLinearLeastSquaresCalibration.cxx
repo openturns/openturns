@@ -48,7 +48,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
     const Sample & inputObservations,
     const Sample & outputObservations,
     const Point & startingPoint)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {

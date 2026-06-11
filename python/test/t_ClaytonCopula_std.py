@@ -143,3 +143,7 @@ ott.assert_almost_equal(
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.run()
+
+# Verify upper tail dependence is zero for Clayton
+chi = copula.computeUpperTailDependenceMatrix()[0, 1]
+ott.assert_almost_equal(chi, 0.0, 1e-5, 1e-5)

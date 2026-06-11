@@ -68,14 +68,17 @@ intersphinx_mapping = {
     "matplotlib": ("https://matplotlib.org/stable/", (None, "matplotlib-objects.inv"))
 }
 
-extensions.append("sphinx.ext.imgmath")
-mnpkg = Path(__file__).resolve().parent / "math_notations"
-imgmath_latex_preamble = rf"\usepackage{{{mnpkg.as_posix()}}}"
-imgmath_use_preview = True
-if subprocess.run(["dvisvgm", "-V"], shell=True, capture_output=True).returncode == 0:
-    imgmath_image_format = "svg"
-# embed image files inside html
-imgmath_embed = True
+if "@USE_SPHINX_EXT_IMGMATH@" == "ON":
+    extensions.append("sphinx.ext.imgmath")
+    mnpkg = Path(__file__).resolve().parent / "math_notations"
+    imgmath_latex_preamble = rf"\usepackage{{{mnpkg.as_posix()}}}"
+    imgmath_use_preview = True
+    if subprocess.run(["dvisvgm", "-V"], shell=True, capture_output=True).returncode == 0:
+        imgmath_image_format = "svg"
+    # embed image files inside html
+    imgmath_embed = True
+else:
+    extensions.append("sphinx.ext.mathjax")
 
 extensions.append("matplotlib.sphinxext.plot_directive")
 plot_formats = ["svg"]

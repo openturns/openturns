@@ -190,12 +190,16 @@ CorrelationMatrix ArchimedeanCopula::computeUpperTailDependenceMatrix() const
 {
   CorrelationMatrix result(dimension_);
   /* The upper tail dependence is given by
-     lambdaU = \lim_{x\rightarrow 1^{-}} 2 - 2\psi'(x) / \psi'(\psi^{-1}(2\psi(x)))
-             = \lim_{x\rightarrow 0^{+}} 2 - 2\psi'(2x) / \psi'(x)
-     but as one can have psi'(0)=-inf, resulting
-     into a NaN, we evaluate the expression at quantileEpsilon_.
+     lambdaU = \lim_{u\rightarrow 1^{-}} 2 - 2\psi'(u) / \psi'(\psi^{-1}(2\psi(u)))
+     but evaluation at u=1 gives 0/0, resulting
+     into a NaN, so we evaluate the expression at u=1-quantileEpsilon_.
   */
-  const Scalar lambdaU = 2.0 - 2.0 * computeArchimedeanGeneratorDerivative(2.0 * quantileEpsilon_) / computeArchimedeanGeneratorDerivative(quantileEpsilon_);
+  const Scalar u = 1.0 - quantileEpsilon_;
+  const Scalar phi0 = computeArchimedeanGenerator(u);
+  const Scalar phiInv = computeInverseArchimedeanGenerator(2.0 * phi0);
+  const Scalar dphi0 = computeArchimedeanGeneratorDerivative(u);
+  const Scalar dphiDen = computeArchimedeanGeneratorDerivative(phiInv);
+  const Scalar lambdaU = 2.0 - 2.0 * dphi0 / dphiDen;
   /* For an archimedean copula, all the upper tail dependence indices are equal */
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = j + 1; i < dimension_; ++i)

@@ -136,6 +136,8 @@ Description Pie::getLabels() const
 }
 void Pie::setLabels(const Description & labels)
 {
+  if (labels.getSize() != data_.getSize())
+    throw InvalidDimensionException(HERE) << "Labels size (" << labels.getSize() << ") must match data size (" << data_.getSize() << ")";
   labels_ = labels;
 }
 
@@ -205,6 +207,44 @@ void Pie::checkData(const Point & data) const
   {
     throw InvalidArgumentException(HERE) << "Expected at least one strictly positive data, but max=" << xMax;
   }
+}
+
+void Pie::setData(const Point & data)
+{
+  checkData(data);
+  if (labels_.getSize() && labels_.getSize() != data.getSize())
+    throw InvalidDimensionException(HERE) << "Labels size (" << labels_.getSize()
+                                          << ") must match data size (" << data.getSize() << ")";
+
+  // Filter out values too small to display, aggregate them as "Other"
+  const UnsignedInteger size = data.getSize();
+  Point filteredData;
+  Description filteredLabels;
+  Scalar otherSum = 0.0;
+  const Scalar epsilon = ResourceMap::GetAsScalar("Pie-SmallValue");
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (data[i] > epsilon)
+    {
+      filteredData.add(data[i]);
+      if (labels_.getSize())
+        filteredLabels.add(labels_[i]);
+    }
+    else
+    {
+      otherSum += data[i];
+      LOGWARN(OSS() << "Value " << data[i] << " is too small to be displayed in the pie chart");
+    }
+  }
+  if (otherSum > 0.0)
+  {
+    filteredData.add(otherSum);
+    if (labels_.getSize())
+      filteredLabels.add("Other");
+  }
+  if (labels_.getSize())
+    labels_ = filteredLabels;
+  DrawableImplementation::setData(filteredData);
 }
 
 /* Build default palette

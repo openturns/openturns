@@ -123,6 +123,7 @@ Point Triangular::computeDDF(const Point & point) const
   if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   const Scalar ddf = 2.0 / (b_ - a_);
   if (x < m_) return Point(1, ddf / (m_ - a_));
+  if (m_ == b_) return Point(1, 0.0);
   return Point(1, ddf / (m_ - b_));
 }
 
@@ -133,6 +134,7 @@ Scalar Triangular::computePDF(const Scalar x) const
   if ((x <= a_) || (x > b_)) return 0.0;
   const Scalar pdf = 2.0 / (b_ - a_);
   if (x < m_) return pdf * (x - a_) / (m_ - a_);
+  if (m_ == b_ && x == b_) return 0.0;
   return pdf * (x - b_) / (m_ - b_);
 }
 

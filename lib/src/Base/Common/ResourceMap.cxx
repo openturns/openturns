@@ -726,6 +726,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Pie parameters //
   addAsScalar("Pie-HorizontalMargin", 0.3);
   addAsScalar("Pie-VerticalMargin", 0.1);
+  addAsScalar("Pie-SmallValue", 1.0e-4);
 
   // DrawableImplementation parameters //
   addAsScalar("Drawable-DefaultLineWidth", 1.0);
@@ -1062,7 +1063,6 @@ void ResourceMap::loadDefaultConfiguration()
   // HSIC parameters //
   addAsBool("HSICEstimator-ParallelPValues", true);
   addAsUnsignedInteger("HSICEstimator-PermutationSize", 100);
-  addAsUnsignedInteger("HSICEstimator-InputCovarianceMatrixCacheSizeMb", 1000); // 1 Gb
 
   // RandomGenerator parameters //
   addAsUnsignedInteger("RandomGenerator-InitialSeed", 0);
@@ -1512,7 +1512,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("LineSampling-DefaultAdaptiveImportantDirection", true);
 
   // Analytical parameters //
-  addAsScalar("Analytical-LimitStateToleranceFactor", 1.1);
+  addAsScalar("Analytical-LimitStateToleranceFactor", 1.15);
 
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);

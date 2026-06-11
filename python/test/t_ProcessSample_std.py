@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -145,3 +146,48 @@ try:
     assert False, "should not go there"
 except Exception:
     pass
+
+# Test slicing __getitem__
+# slice
+processSample3 = processSample[0:3]
+assert processSample3.getSize() == 3, "slice getitem size"
+ott.assert_almost_equal(processSample3[0], processSample[0])
+ott.assert_almost_equal(processSample3[1], processSample[1])
+ott.assert_almost_equal(processSample3[2], processSample[2])
+
+# slice with step
+processSample4 = processSample[0:5:2]
+assert processSample4.getSize() == 3, "slice step getitem size"
+ott.assert_almost_equal(processSample4[0], processSample[0])
+ott.assert_almost_equal(processSample4[1], processSample[2])
+ott.assert_almost_equal(processSample4[2], processSample[4])
+
+# negative slice
+processSample5 = processSample[-3:]
+assert processSample5.getSize() == 3, "negative slice getitem size"
+ott.assert_almost_equal(processSample5[0], processSample[-3])
+ott.assert_almost_equal(processSample5[1], processSample[-2])
+ott.assert_almost_equal(processSample5[2], processSample[-1])
+
+# sequence __getitem__
+processSample6 = processSample[[0, 2, 4]]
+assert processSample6.getSize() == 3, "sequence getitem size"
+ott.assert_almost_equal(processSample6[0], processSample[0])
+ott.assert_almost_equal(processSample6[1], processSample[2])
+ott.assert_almost_equal(processSample6[2], processSample[4])
+
+# slice __setitem__
+fill = ot.ProcessSample(mesh, 3, outputDimension)
+for i in range(3):
+    fill[i] = ot.Normal(outputDimension).getSample(mesh.getVerticesNumber())
+processSample[0:3] = fill
+for i in range(3):
+    ott.assert_almost_equal(processSample[i], fill[i])
+
+# sequence __setitem__
+fill2 = ot.ProcessSample(mesh, 2, outputDimension)
+for i in range(2):
+    fill2[i] = ot.Normal(outputDimension).getSample(mesh.getVerticesNumber())
+processSample[[1, 3]] = fill2
+ott.assert_almost_equal(processSample[1], fill2[0])
+ott.assert_almost_equal(processSample[3], fill2[1])

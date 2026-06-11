@@ -60,7 +60,7 @@ int main(int, char *[])
     fullprint << "psample1=" << psample1 << std::endl;
 
     // change the first component using operator []
-    psample1.setField(timeSerie, 0);
+    psample1.setField(0, timeSerie);
     psample1.setName("PSample1");
     fullprint << "changing psample1[0] with []" << std::endl;
     fullprint << "psample1[0]=" << psample1[0] << std::endl;

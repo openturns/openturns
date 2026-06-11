@@ -102,3 +102,10 @@ print("kurtosis=", repr(kurtosis))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Check range upper bound for various nu
+for nu in [0.5, 1.0, 2.0, 5.0, 10.0]:
+    d = ot.ChiSquare(nu)
+    # range upper bound should be > 0.99 quantile
+    q = d.computeQuantile(0.99)[0]
+    assert d.getRange().getUpperBound()[0] > q, "Range too small for nu=%s" % nu

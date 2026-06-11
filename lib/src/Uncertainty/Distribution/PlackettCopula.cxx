@@ -176,7 +176,7 @@ Scalar PlackettCopula::computeCDF(const Point & point) const
   // If we are in the support
   // Independent or nearly independent case
   if (std::abs(thetaMinus1_) < std::sqrt(SpecFunc::Precision))
-    return u * v * (1.0 + (1.0 - u) * (1.0 - v));
+    return u * v * (1.0 + thetaMinus1_ * (1.0 - u) * (1.0 - v));
   // General case
   return (1.0 + thetaMinus1_ * (u + v) - std::sqrt(std::pow(1.0 + thetaMinus1_ * (u + v), 2.0) - 4.0 * u * v * theta_ * thetaMinus1_)) / (2.0 * thetaMinus1_);
 }
@@ -331,7 +331,7 @@ void PlackettCopula::computeCovariance() const
 /* Tell if the distribution has independent copula */
 Bool PlackettCopula::hasIndependentCopula() const
 {
-  return (theta_ == 0.0);
+  return (theta_ == 1.0);
 }
 
 /* Theta accessor */

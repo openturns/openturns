@@ -222,7 +222,8 @@ Scalar Multinomial::computePDF(const Point & point) const
   {
     // Here we know that round(point[i]) >= 0
     k = x[i];
-    pdf *= DistFunc::dBinomial(n_ - sumK, p_[i] / sumP, k);
+    if (sumP > 0.0)
+      pdf *= DistFunc::dBinomial(n_ - sumK, p_[i] / sumP, k);
     sumK += k;
     sumP -= p_[i];
   }
@@ -359,12 +360,12 @@ Scalar Multinomial::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  const Indices kPoint(point.begin(), point.end());
   // Early exit for 1D case
   if (dimension == 1)
   {
     if (point[0] < -supportEpsilon_) return 0.0;
     if (point[0] > n_ + supportEpsilon_) return 1.0;
+    const Indices kPoint(point.begin(), point.end());
     return DistFunc::pBeta(n_ - kPoint[0], kPoint[0] + 1, 1.0 - p_[0]);
   }
   // First, check the boarding cases
@@ -375,12 +376,15 @@ Scalar Multinomial::computeCDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     // If the given point does not cover any point of the support, return 0.0
-    if (point[i] < -supportEpsilon_) return 0.0;
+    if (point[i] < 0.0) return 0.0;
     if (point[i] < n_ - supportEpsilon_) indices.add(i);
-    allZero = allZero && (std::abs(point[i]) < supportEpsilon_);
-    sumX += kPoint[i];
+    allZero = allZero && (point[i] <= supportEpsilon_);
   }
-  // If we are at the origin, CDF=PDF(0,...,0)
+  // Now we know all components are non-negative, so conversion is safe
+  const Indices kPoint(point.begin(), point.end());
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    sumX += kPoint[i];
+  // If we are at the origin, CDF = probability of the zero vector
   if (allZero) return std::pow(1.0 - sumP_, static_cast<int>(n_));
   // If the atoms with non zero probability sum to N
   if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_)) return computePDF(point);
@@ -440,11 +444,16 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   {
     const Scalar a = interval.getLowerBound()[0];
     const Scalar b = interval.getUpperBound()[0];
-    if (p_[0] == 1.0) return (a <= 0.0 && b >= 0.0) ? 0.0 : 1.0;
+    if (p_[0] == 1.0) return (a <= static_cast<Scalar>(n_) && b >= static_cast<Scalar>(n_)) ? 1.0 : 0.0;
     if ((a > n_ + supportEpsilon_) || (b < -supportEpsilon_)) return 0.0;
     if ((a < -supportEpsilon_) && (b > n_ + supportEpsilon_)) return 1.0;
     Scalar probability = DistFunc::pBeta(n_ - floor(b), floor(b) + 1, 1.0 - p_[0]);
-    if (a > 0.0) probability -= DistFunc::pBeta(n_ - floor(a), floor(a) + 1, 1.0 - p_[0]);
+    if (a > 0.0)
+    {
+      const Scalar aFloor = std::ceil(a) - 1.0;
+      if (aFloor >= 0.0)
+        probability -= DistFunc::pBeta(n_ - static_cast<UnsignedInteger>(aFloor), static_cast<UnsignedInteger>(aFloor) + 1, 1.0 - p_[0]);
+    }
     return probability;
   }
   Point lower(interval.getLowerBound());
@@ -517,7 +526,11 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
 /* Get the survival function of the distribution */
 Scalar Multinomial::computeSurvivalFunction(const Point & point) const
 {
-  return computeProbability(Interval(point, Point(dimension_, n_)));
+  const UnsignedInteger dimension = getDimension();
+  Point shift(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    shift[i] = std::floor(point[i]) + 1.0;
+  return computeProbability(Interval(shift, Point(dimension_, n_)));
 }
 
 /* Compute the scalar quantile of the 1D multinomial distribution */
@@ -552,7 +565,8 @@ Scalar Multinomial::computeConditionalPDF(const Scalar x,
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  return DistFunc::dBinomial(static_cast<UnsignedInteger>(x), static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / sumP);
+  if (sumP >= 1.0 - supportEpsilon_) return (x == 0.0 ? 1.0 : 0.0);
+  return DistFunc::dBinomial(static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / (1.0 - sumP), static_cast<UnsignedInteger>(x));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -578,7 +592,8 @@ Scalar Multinomial::computeConditionalCDF(const Scalar x,
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  return DistFunc::pBeta(n_ - sumY - floor(x), floor(x), 1.0 - p_[conditioningDimension] / sumP);
+  if (sumP >= 1.0 - supportEpsilon_) return (x >= 0.0 ? 1.0 : 0.0);
+  return DistFunc::pBeta(n_ - sumY - floor(x), floor(x) + 1, 1.0 - p_[conditioningDimension] / (1.0 - sumP));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -605,7 +620,11 @@ Scalar Multinomial::computeConditionalQuantile(const Scalar q,
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  return Binomial(static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / sumP).computeQuantile(q)[0];
+  if (sumP >= 1.0 - supportEpsilon_) return 0.0;
+  const Scalar condP = p_[conditioningDimension] / (1.0 - sumP);
+  if (condP <= 0.0) return 0.0;
+  if (condP >= 1.0) return static_cast<Scalar>(n_ - sumY);
+  return Binomial(static_cast<UnsignedInteger>(n_ - sumY), condP).computeQuantile(q)[0];
 }
 
 /* Get the i-th marginal distribution */
@@ -796,7 +815,7 @@ void Multinomial::setParameter(const Point & parameter)
 /* Check if the distribution is elliptical */
 Bool Multinomial::isElliptical() const
 {
-  return (getDimension() > 1) && (p_[0] == 0.5);
+  return false;
 }
 
 /* P accessor */

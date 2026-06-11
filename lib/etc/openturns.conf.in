@@ -82,6 +82,7 @@
   <!-- OT::Pie parameters -->
   <Pie-HorizontalMargin value_float="0.3"  />
   <Pie-VerticalMargin   value_float="0.1"  />
+  <Pie-SmallValue       value_float="1.0e-4" />
 
   <!-- OT::DrawableImplementation parameters -->
   <Drawable-DefaultLineWidth    value_float="1.0"          />
@@ -412,7 +413,6 @@
   <!-- OT::HSICEstimator parameters -->
   <HSICEstimator-ParallelPValues value_bool="true" />
   <HSICEstimator-PermutationSize value_int="100" />
-  <HSICEstimator-InputCovarianceMatrixCacheSizeMb value_int="1000" />
 
   <!-- OT::RandomGenerator parameters -->
   <RandomGenerator-InitialSeed value_int="0" />
@@ -862,7 +862,7 @@
   <LineSampling-DefaultAdaptiveImportantDirection value_bool="true" />
 
   <!-- OT::Analytical parameters -->
-  <Analytical-LimitStateToleranceFactor value_float="1.1" />
+  <Analytical-LimitStateToleranceFactor value_float="1.15" />
 
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />

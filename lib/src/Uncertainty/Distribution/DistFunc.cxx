@@ -410,7 +410,7 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
       {
         if (s >= u)
         {
-          result[k] = (complementary ? n - k : k);
+          result[index] = (complementary ? n - k : k);
           break;
         }
         t *= r * (n - k) / (k + 1.0);
@@ -1003,7 +1003,7 @@ Scalar DistFunc::pNonCentralChiSquare(const Scalar nu,
   }
 #undef FORWARD_ITERATION
 #undef BACKWARD_ITERATION
-  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in DistFunc::dNonCentralChiSquare(nu, lambda, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", lambda=" << lambda << " and x=" << x);
+  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in DistFunc::pNonCentralChiSquare(nu, lambda, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", lambda=" << lambda << " and x=" << x);
   // Clip to [0,1] in order to get rid of small rounding error
   value = (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
   // Check if we are asked for the tail CDF
@@ -1526,7 +1526,7 @@ Scalar DistFunc::pPearsonCorrelation(const UnsignedInteger size, const Scalar rh
   if (rho <= -1.0 + SpecFunc::Precision) return (tail ? 1.0 : 0.0);
   if (rho >=  1.0 - SpecFunc::Precision) return (tail ? 0.0 : 1.0);
   const Scalar rhoSquared = rho * rho;
-  const Scalar t = std::abs(rho) * std::sqrt((size - 2.0) / (1.0 - rhoSquared));
+  const Scalar t = rho * std::sqrt((size - 2.0) / (1.0 - rhoSquared));
   return pStudent(size - 2.0, t, tail);
 }
 
@@ -1833,7 +1833,7 @@ Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
   const Scalar prob = (tail ? 1.0 - p : p);
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
-  const Scalar x001 = -4.96;
+  const Scalar x001 = -3.96;
   const Scalar x005 = -3.41;
   const Scalar x010 = -3.13;
   if (prob < 0.01)
@@ -1868,7 +1868,7 @@ Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
     LOGWARN(OSS() << "Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
   }
-  throw NotYetImplementedException(HERE) << "In DistFunc::pDickeyFullerNoConstant(const Scalar x, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
+  throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerTrend(const Scalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
 }
 
 Scalar DistFunc::qDickeyFullerConstant(const Scalar p,
@@ -2122,7 +2122,7 @@ Point DistFunc::rUniformTetrahedron(const Point & a,
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
-  if (d.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the fourth point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
+  if (d.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the fourth point has a dimension=" << d.getDimension() << ", expected dimension=" << dimension;
   Point result(dimension);
   rUniformTetrahedron(&a[0], &b[0], &c[0], &d[0], dimension, &result[0]);
   return result;
