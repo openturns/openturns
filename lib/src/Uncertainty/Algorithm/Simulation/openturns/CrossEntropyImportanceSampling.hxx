@@ -77,6 +77,10 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+  
+  /** Maximum coefficient of variation accessor */
+  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation) override;
+  
 protected:
   virtual Distribution getInitialDistribution() const;
 

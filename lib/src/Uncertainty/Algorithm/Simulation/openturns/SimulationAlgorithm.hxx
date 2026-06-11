@@ -48,7 +48,7 @@ public:
   UnsignedInteger getMaximumOuterSampling() const;
 
   /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation);
+  virtual void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation);
   Scalar getMaximumCoefficientOfVariation() const;
 
   /** Maximum standard deviation accessor */
