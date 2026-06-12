@@ -181,14 +181,12 @@ bool operator < (const NSI_point & lhs, const NSI_point & rhs)
 
 bool operator > (const NSI_point & lhs, const NSI_point & rhs)
 {
-  return !( lhs <= rhs );
+  return rhs < lhs;
 }
 
 bool operator <= (const NSI_point & lhs, const NSI_point & rhs)
 {
-  return std::lexicographical_compare(lhs.begin(), lhs.end(),
-                                      rhs.begin(), rhs.end(),
-                                      std::less_equal<Scalar>());
+  return !(rhs < lhs);
 }
 
 bool operator >= (const NSI_point & lhs, const NSI_point & rhs)
@@ -246,14 +244,12 @@ bool operator < (const NSI_const_point & lhs, const NSI_const_point & rhs)
 
 bool operator > (const NSI_const_point & lhs, const NSI_const_point & rhs)
 {
-  return !( lhs <= rhs );
+  return rhs < lhs;
 }
 
 bool operator <= (const NSI_const_point & lhs, const NSI_const_point & rhs)
 {
-  return std::lexicographical_compare(lhs.begin(), lhs.end(),
-                                      rhs.begin(), rhs.end(),
-                                      std::less_equal<Scalar>());
+  return !(rhs < lhs);
 }
 
 bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs)

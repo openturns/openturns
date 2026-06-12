@@ -65,11 +65,15 @@ void RandomGenerator::SetState(const RandomGeneratorState & state)
   const UnsignedInteger stateSize = Generator_.get_state_length_32();
   /* The unusual case, the given seed is too small. It is completed with 0 */
   Indices stateArray(state.buffer_);
+  stateArray.resize(stateSize);
   for (UnsignedInteger i = size; i < stateSize; ++i)
     stateArray.add(0);
+  // Validate the index before mutating global RNG state
+  const UnsignedInteger maxIndex = stateSize / 2 - 2;
+  if (state.index_ > maxIndex)
+    throw InvalidArgumentException(HERE) << "State index out of bounds, got " << state.index_ << " max=" << maxIndex;
   // Set the state array
-  Generator_.set_state(&stateArray[0]);
-  // Set the index
+  Generator_.set_state(const_cast<UnsignedInteger*>(stateArray.data()));
   Generator_.set_index(state.index_);
   IsInitialized_ = true;
   return;
@@ -107,6 +111,7 @@ Scalar RandomGenerator::Generate()
 /* Generate a pseudo-random integer uniformly distributed over [[0,...,n-1]] */
 UnsignedInteger RandomGenerator::IntegerGenerate(const UnsignedInteger n)
 {
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be positive, got n=" << n;
   Initialize();
   return Generator_.igen((uint32_t)(n));
 }
@@ -126,6 +131,7 @@ Point RandomGenerator::Generate(const UnsignedInteger size)
 /* Generate a pseudo-random vector of numbers uniformly distributed over ]0, 1[ */
 RandomGenerator::UnsignedIntegerCollection RandomGenerator::IntegerGenerate(const UnsignedInteger size, const UnsignedInteger n)
 {
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be positive, got n=" << n;
   UnsignedIntegerCollection result(size);
   Initialize();
   for (UnsignedInteger i = 0; i < size; ++ i)

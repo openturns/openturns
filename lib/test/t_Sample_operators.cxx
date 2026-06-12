@@ -96,6 +96,55 @@ int main(int, char *[])
     sample1 *= scaling;
     fullprint << "after a scaling of vector=" << scaling << " sample1=" << sample1 << std::endl;
 
+    // NSI_point ordering operators
+    {
+      Sample sample(2, Point(2, 1.0));
+      sample(0, 1) = 5.0;
+
+      const NSI_point row0 = sample[0];
+      const NSI_point row1 = sample[1];
+
+      fullprint << "row0 = " << row0 << std::endl;
+      fullprint << "row1 = " << row1 << std::endl;
+
+      // operator <
+      fullprint << "row0 < row1 = " << (row0 < row1) << " (expected 0)" << std::endl;
+      fullprint << "row1 < row0 = " << (row1 < row0) << " (expected 1)" << std::endl;
+
+      // operator <=
+      fullprint << "row0 <= row1 = " << (row0 <= row1) << " (expected 0)" << std::endl;
+      fullprint << "row1 <= row0 = " << (row1 <= row0) << " (expected 1)" << std::endl;
+
+      // operator >
+      fullprint << "row0 > row1 = " << (row0 > row1) << " (expected 1)" << std::endl;
+      fullprint << "row1 > row0 = " << (row1 > row0) << " (expected 0)" << std::endl;
+
+      // operator >=
+      fullprint << "row0 >= row1 = " << (row0 >= row1) << " (expected 1)" << std::endl;
+      fullprint << "row1 >= row0 = " << (row1 >= row0) << " (expected 0)" << std::endl;
+
+      // operator ==
+      fullprint << "row0 == row1 = " << (row0 == row1) << " (expected 0)" << std::endl;
+
+      // operator !=
+      fullprint << "row0 != row1 = " << (row0 != row1) << " (expected 1)" << std::endl;
+
+      // Consistency checks
+      if ((row0 <= row1) && (row1 <= row0))
+        throw TestFailed("operator <= violates antisymmetry");
+
+      if ((row0 > row1) != (row1 < row0))
+        throw TestFailed("operator > is inconsistent with operator <");
+
+      if ((row0 <= row1) != !(row0 > row1))
+        throw TestFailed("operator <= is inconsistent with operator >");
+
+      if ((row0 >= row1) != !(row0 < row1))
+        throw TestFailed("operator >= is inconsistent with operator <");
+    }
+
+
+
   }
   catch (TestFailed & ex)
   {

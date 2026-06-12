@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import math
 
 # ARMA(p, q)
 p = 2
@@ -55,3 +56,16 @@ factory.setInitialConditions(ar, ma, cov)
 result = ot.ARMA(factory.build(timeSeries))
 print("original process = ", myARMA)
 # print('Estimated ARMA= ', result)
+
+# Indices-based constructor (p and q as Indices) should produce finite coefficients
+factory2 = ot.ARMALikelihoodFactory([p], [q], dim)
+factory2.setInitialConditions(ar, ma, cov)
+result2 = ot.ARMA(factory2.build(timeSeries))
+for coeff in result2.getARCoefficients():
+    for i in range(dim):
+        for j in range(dim):
+            assert math.isfinite(coeff[i, j]), "Non-finite AR coefficient"
+for coeff in result2.getMACoefficients():
+    for i in range(dim):
+        for j in range(dim):
+            assert math.isfinite(coeff[i, j]), "Non-finite MA coefficient"

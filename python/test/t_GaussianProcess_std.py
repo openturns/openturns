@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import math
 
 # Default dimension parameter to evaluate the model
 inputDimension = 1
@@ -113,3 +114,15 @@ myProcess5.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 sample = myProcess5.getSample(size)
 print("mean over ", size, " realizations = ", sample.computeMean())
 print("variance over ", size, " realizations = ", sample.computeVariance())
+
+# Non-stationary trend should be evaluated at mesh vertices, not process values
+mesh = ot.RegularGrid(0.0, 1.0, 3)
+trend6 = ot.TrendTransform(ot.SymbolicFunction("t", "2*t"), mesh)
+gp6 = ot.GaussianProcess(trend6, ot.SquaredExponential([1.0]), mesh)
+gp6.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
+field = gp6.getRealization()
+print("non-stationary trend field mesh = ", field.getMesh())
+print("non-stationary trend field values = ", field.getValues())
+assert field.getMesh() == ot.Mesh(mesh), "mesh mismatch"
+for v in field.getValues():
+    assert math.isfinite(v[0]), "non-finite value"

@@ -45,7 +45,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
     const Sample & outputObservations,
     const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , methodName_(methodName)
@@ -67,7 +67,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
     const Sample & outputObservations,
     const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , methodName_(methodName)

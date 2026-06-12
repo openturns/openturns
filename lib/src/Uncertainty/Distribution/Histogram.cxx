@@ -467,10 +467,9 @@ Point Histogram::getHeight() const
 Point Histogram::getSingularities() const
 {
   const UnsignedInteger size = width_.getSize();
-  // Here we know that size > 0
-  Scalar x = first_ + width_[0];
-  Point singularities(1, x);
-  for (UnsignedInteger i = 1; i < size - 1; ++i)
+  Point singularities;
+  Scalar x = first_;
+  for (UnsignedInteger i = 0; i + 1 < size; ++i)
   {
     x += width_[i];
     singularities.add(x);

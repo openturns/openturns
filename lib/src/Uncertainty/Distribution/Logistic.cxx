@@ -106,8 +106,19 @@ Point Logistic::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  Scalar expX = std::exp((point[0] - mu_) / beta_);
-  Scalar betaExpX = beta_ * (1.0 + expX);
+  const Scalar z = (point[0] - mu_) / beta_;
+  if (z > 12.38075336)
+  {
+    const Scalar expMZ = std::exp(-z);
+    return Point(1, -expMZ * (1.0 - 4.0 * expMZ) / (beta_ * beta_));
+  }
+  if (z < -12.38075336)
+  {
+    const Scalar expZ = std::exp(z);
+    return Point(1, expZ * (1.0 - 4.0 * expZ) / (beta_ * beta_));
+  }
+  const Scalar expX = std::exp(z);
+  const Scalar betaExpX = beta_ * (1.0 + expX);
   return Point(1, beta_ * expX * (1.0 - expX) / (betaExpX * betaExpX * betaExpX));
 }
 
@@ -189,6 +200,14 @@ Complex Logistic::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
   const Scalar piBetaU = M_PI * beta_ * x;
+  const Scalar absPiBetaU = std::abs(piBetaU);
+  if (absPiBetaU > 20.0)
+  {
+    // sinh(x) ~ sign(x) * exp(|x|) / 2 for large |x|
+    // piBetaU / sinh(piBetaU) ~ 2 * |piBetaU| * exp(-|piBetaU|)
+    const Scalar factor = 2.0 * absPiBetaU * std::exp(-absPiBetaU);
+    return std::exp(Complex(0.0, x * mu_)) * factor;
+  }
   return std::exp(Complex(0.0, x * mu_)) * piBetaU / std::sinh(piBetaU);
 }
 
@@ -196,30 +215,71 @@ Complex Logistic::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 0.0;
   const Scalar piBetaU = M_PI * beta_ * x;
+  const Scalar absPiBetaU = std::abs(piBetaU);
+  if (absPiBetaU > 20.0)
+  {
+    return Complex(0.0, x * mu_) + std::log(2.0 * absPiBetaU) - absPiBetaU;
+  }
   return Complex(0.0, x * mu_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
 }
 
 /* Get the PDFGradient of the distribution */
 Point Logistic::computePDFGradient(const Point & point) const
 {
-  Scalar x = (point[0] - mu_) / beta_;
-  Scalar expX = std::exp(x);
-  Scalar betaExpX = beta_ * (1.0 + expX);
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar z = (point[0] - mu_) / beta_;
+  if (z > 12.38075336)
+  {
+    const Scalar expMZ = std::exp(-z);
+    Point pdfGradient(2);
+    pdfGradient[0] = expMZ * (1.0 - 4.0 * expMZ) / (beta_ * beta_);
+    pdfGradient[1] = expMZ * ((z - 1.0) - 2.0 * expMZ * (2.0 * z - 1.0)) / (beta_ * beta_);
+    return pdfGradient;
+  }
+  if (z < -12.38075336)
+  {
+    const Scalar expZ = std::exp(z);
+    Point pdfGradient(2);
+    pdfGradient[0] = -expZ * (1.0 - 4.0 * expZ) / (beta_ * beta_);
+    pdfGradient[1] = -expZ * ((z + 1.0) - 2.0 * expZ * (2.0 * z + 1.0)) / (beta_ * beta_);
+    return pdfGradient;
+  }
+  const Scalar expX = std::exp(z);
+  const Scalar betaExpX = beta_ * (1.0 + expX);
   Point pdfGradient(2);
   pdfGradient[0] = beta_ * expX * (expX - 1.0) / (betaExpX * betaExpX * betaExpX);
-  pdfGradient[1] = pdfGradient[0] * x - expX / (betaExpX * betaExpX);
+  pdfGradient[1] = pdfGradient[0] * z - expX / (betaExpX * betaExpX);
   return pdfGradient;
 }
 
 /* Get the CDFGradient of the distribution */
 Point Logistic::computeCDFGradient(const Point & point) const
 {
-  Scalar x = (point[0] - mu_) / beta_;
-  Scalar expX = std::exp(x);
-  Scalar betaExpX = beta_ * (1.0 + expX);
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar z = (point[0] - mu_) / beta_;
+  if (z > 12.01454911)
+  {
+    const Scalar expMZ = std::exp(-z);
+    Point cdfGradient(2);
+    cdfGradient[0] = -expMZ * (1.0 - 2.0 * expMZ) / beta_;
+    cdfGradient[1] = cdfGradient[0] * z;
+    return cdfGradient;
+  }
+  if (z < -12.01454911)
+  {
+    const Scalar expZ = std::exp(z);
+    Point cdfGradient(2);
+    cdfGradient[0] = -expZ / beta_;
+    cdfGradient[1] = cdfGradient[0] * z;
+    return cdfGradient;
+  }
+  const Scalar expX = std::exp(z);
+  const Scalar betaExpX = beta_ * (1.0 + expX);
   Point cdfGradient(2);
   cdfGradient[0] = -beta_ * expX / (betaExpX * betaExpX);
-  cdfGradient[1] = cdfGradient[0] * x;
+  cdfGradient[1] = cdfGradient[0] * z;
   return cdfGradient;
 }
 
