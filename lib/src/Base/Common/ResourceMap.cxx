@@ -1417,6 +1417,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("VonMisesFactory-ResidualPrecision", 1.0e-12);
   addAsUnsignedInteger("VonMisesFactory-MaximumIteration", 10);
 
+  // VonMisesFisherFactory parameters //
+  addAsScalar("VonMisesFisherFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("VonMisesFisherFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("VonMisesFisherFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("VonMisesFisherFactory-MaximumIteration", 10);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 

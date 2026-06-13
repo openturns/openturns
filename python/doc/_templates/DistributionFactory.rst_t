@@ -17,11 +17,18 @@
     ref = factory.build()
     dimension = ref.getDimension()
     if dimension <= 2:
+        a = distribution.getRange().getLowerBound()
+        b = distribution.getRange().getUpperBound()
+        aFinite = distribution.getRange().getFiniteLowerBound()
+        bFinite = distribution.getRange().getFiniteUpperBound()
         if dimension == 1:
             sample = ref.getSample(50)
             distribution = factory.build(sample)
             distribution.setDescription(['$t$'])
-            pdf_graph = distribution.drawPDF(256)
+            if not(aFinite[0] and bFinite[0]):
+                pdf_graph = distribution.drawPDF(256)
+            else:
+                pdf_graph = distribution.drawPDF(a[0], b[0], 256)
             cloud = ot.Cloud(sample, ot.Sample(sample.getSize(), 1))
             cloud.setColor('blue')
             cloud.setPointStyle('fcircle')
@@ -34,7 +41,10 @@
             sample = ref.getSample(500)
             distribution = factory.build(sample)
             distribution.setDescription(['$t_0$', '$t_1$'])
-            pdf_graph = distribution.drawPDF([256]*2)
+            if not(aFinite[0] and bFinite[0] and aFinite[1] and bFinite[1]):
+                pdf_graph = distribution.drawPDF([256]*2)
+            else:
+                pdf_graph = distribution.drawPDF(a, b, [256]*2)
             cloud = ot.Cloud(sample)
             cloud.setColor('red')
             cloud.setPointStyle('fcircle')
