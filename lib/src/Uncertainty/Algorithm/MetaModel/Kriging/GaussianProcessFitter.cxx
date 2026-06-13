@@ -485,7 +485,7 @@ Point GaussianProcessFitter::computeReducedLogLikelihood(const Point & parameter
   LOGDEBUG(OSS(false) << "log-determinant=" << logDeterminant << ", rho=" << rho_);
   const Scalar epsilon = rho_.normSquare();
   LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
-  if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
+  if (!(epsilon > 0)) lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
   LOGDEBUG(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
