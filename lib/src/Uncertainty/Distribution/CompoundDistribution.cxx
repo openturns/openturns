@@ -20,7 +20,7 @@
  */
 #include <cmath>
 #include "openturns/CompoundDistribution.hxx"
-#include "openturns/JointDistribution.hxx"
+#include "openturns/MultivariateUniform.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/Box.hxx"
@@ -237,7 +237,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
   UnsignedInteger continuousAtomsNumber = 0;
   if (continuousDimension > 0)
   {
-    const JointDistribution measure(Collection< Distribution >(continuousDimension, Uniform()));
+    const MultivariateUniform measure(Point(continuousDimension, -1.0), Point(continuousDimension, 1.0));
     // Create the DOE for continuous integration
     const String method(ResourceMap::GetAsString("CompoundDistribution-ContinuousDiscretizationMethod"));
     const UnsignedInteger maximumIntegrationNumber = ResourceMap::GetAsUnsignedInteger( "CompoundDistribution-MaximumIntegrationNodesNumber" );

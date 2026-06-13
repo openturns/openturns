@@ -58,6 +58,11 @@
 
 /* Uncertainty/Distribution */
 %include MarginalUniformOrderStatistics.i
+%include MultivariateUniform.i
+%include MultivariateUniformFactory.i
+%include TruncatedDistributionFactory.i
+%include SquaredNormalFactory.i
+%include InverseGammaFactory.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i

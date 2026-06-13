@@ -51,6 +51,13 @@ Building distributions from samples
     GeometricFactory
     GumbelFactory
     HistogramFactory
+
+    :template: class.rst_t
+
+    experimental.InverseGammaFactory
+
+    :template: DistributionFactory.rst_t
+
     InverseNormalFactory
 
     :template: classWithPlot.rst_t
@@ -111,6 +118,14 @@ Building distributions from samples
     TrapezoidalFactory
     TriangularFactory
     TruncatedNormalFactory
+
+    :template: class.rst_t
+
+    experimental.SquaredNormalFactory
+    experimental.TruncatedDistributionFactory
+
+    :template: DistributionFactory.rst_t
+
     UniformFactory
     VonMisesFactory
     WeibullMinFactory

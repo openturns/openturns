@@ -45,6 +45,7 @@
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/IndependentCopulaFactory.hxx"
+#include "openturns/InverseGammaFactory.hxx"
 #include "openturns/InverseNormalFactory.hxx"
 #include "openturns/LaplaceFactory.hxx"
 #include "openturns/LogisticFactory.hxx"
@@ -52,6 +53,7 @@
 #include "openturns/LogUniformFactory.hxx"
 #include "openturns/MeixnerDistributionFactory.hxx"
 #include "openturns/MultinomialFactory.hxx"
+#include "openturns/MultivariateUniformFactory.hxx"
 #include "openturns/PolyaFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/NormalFactory.hxx"
@@ -62,6 +64,7 @@
 #include "openturns/RiceFactory.hxx"
 #include "openturns/SkellamFactory.hxx"
 #include "openturns/SmoothedUniformFactory.hxx"
+#include "openturns/SquaredNormalFactory.hxx"
 #include "openturns/StudentFactory.hxx"
 #include "openturns/StudentCopulaFactory.hxx"
 #include "openturns/TrapezoidalFactory.hxx"
@@ -94,6 +97,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(GeneralizedParetoFactory());
   collection.add(GumbelFactory());
   collection.add(HistogramFactory());
+  collection.add(InverseGammaFactory());
   collection.add(InverseNormalFactory());
   collection.add(LaplaceFactory());
   collection.add(LogisticFactory());
@@ -105,6 +109,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(RayleighFactory());
   collection.add(RiceFactory());
   collection.add(SmoothedUniformFactory());
+  collection.add(SquaredNormalFactory());
   collection.add(StudentFactory());
   collection.add(TrapezoidalFactory());
   collection.add(TriangularFactory());
@@ -127,6 +132,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(FrankCopulaFactory());
   collection.add(GumbelCopulaFactory());
   collection.add(IndependentCopulaFactory());
+  collection.add(MultivariateUniformFactory());
   collection.add(NormalCopulaFactory());
   collection.add(NormalFactory());
   collection.add(PlackettCopulaFactory());

@@ -7,6 +7,10 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * InverseGammaFactory (openturns.experimental)
+ * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
+ * SquaredNormalFactory (openturns.experimental)
+ * TruncatedDistributionFactory (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
