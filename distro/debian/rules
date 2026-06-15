@@ -41,6 +41,7 @@ override_dh_auto_configure:
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
 	        -Dot_system_version:STRING='Debian $(shell uname -mo)' \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
+            -DCMAKE_BUILD_RPATH_USE_ORIGIN:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=lib/$(DEB_HOST_MULTIARCH) \
             -DOPENTURNS_PYTHON_MODULE_PATH=lib/python3/dist-packages \
