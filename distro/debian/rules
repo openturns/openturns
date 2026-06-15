@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+# Fixing the locales to build reproducibly.
+export LC_ALL=C.UTF-8
+
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 include /usr/share/dpkg/buildflags.mk
 CFLAGS+=$(CPPFLAGS)
