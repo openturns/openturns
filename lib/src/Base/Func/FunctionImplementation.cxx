@@ -231,9 +231,9 @@ Point FunctionImplementation::getParameter() const
 
 void FunctionImplementation::setParameter(const Point & parameter)
 {
-  evaluation_.setParameter(parameter);
-  gradient_.setParameter(parameter);
-  hessian_.setParameter(parameter);
+  evaluation_.getImplementation()->setParameter(parameter);
+  gradient_.getImplementation()->setParameter(parameter);
+  hessian_.getImplementation()->setParameter(parameter);
 }
 
 /* Parameters description accessor */

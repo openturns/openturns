@@ -124,3 +124,10 @@ f1.setGradient(ot.NonCenteredFiniteDifferenceGradient([1e-5] * 3, f1.getEvaluati
 f2 = ot.ParametricFunction(f1, [1, 0], [4.0, 5.0])
 pgrad = f2.parameterGradient([7.0])
 ott.assert_almost_equal(pgrad[0, 0], 3.0)
+
+# From issue #3233: gradient after setParameter should reflect the new parameter value
+g_sym = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2"])
+g_param = ot.ParametricFunction(g_sym, [0], [0])
+ott.assert_almost_equal(g_param.gradient([1])[0, 0], 0.0)
+g_param.setParameter([1])
+ott.assert_almost_equal(g_param.gradient([1])[0, 0], 1.0)
