@@ -1,0 +1,17 @@
+Description: enhancing build reproducibility: putting the architecture in the
+ system information instead of the kernel version
+Author: Pierre Gruet <pgt@debian.org>
+Forwarded: no
+Last-Update: 2026-06-09
+
+--- a/lib/include/OTconfigure_args.hxx.in
++++ b/lib/include/OTconfigure_args.hxx.in
+@@ -30,7 +30,7 @@
+ static const char CompilerId[]            = "@CMAKE_CXX_COMPILER_ID@";
+ static const char CompilerVersion[]       = "@CMAKE_CXX_COMPILER_VERSION@";
+ static const char SystemName[]            = "@CMAKE_SYSTEM_NAME@";
+-static const char SystemVersion[]         = "@CMAKE_SYSTEM_VERSION@";
++static const char SystemVersion[]         = "@ot_system_version@";
+ static const char SystemProcessor[]       = "@CMAKE_SYSTEM_PROCESSOR@";
+ 
+ END_NAMESPACE_OPENTURNS

@@ -39,6 +39,7 @@ override_dh_auto_configure:
 	dh_auto_configure -Bbuilddir -- \
             $(with_tbb) \
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
+	        -Dot_system_version:STRING='Debian $(shell uname -mo)' \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=lib/$(DEB_HOST_MULTIARCH) \
