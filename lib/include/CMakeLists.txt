@@ -21,8 +21,9 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/installed-OTconfig.h.in
 
 if (NOT ot_configure_date)
   string (TIMESTAMP ot_configure_date UTC)
-  set (ot_configure_date "${ot_configure_date}" CACHE STRING "First configure date.")
 endif ()
+set (ot_configure_date "${ot_configure_date}" CACHE STRING "First configure date")
+set (ot_system_version "${CMAKE_SYSTEM_VERSION}" CACHE STRING "System version")
 
 if (EXISTS ${PROJECT_SOURCE_DIR}/.git AND NOT ot_revision)
   execute_process (COMMAND git rev-parse --short HEAD
