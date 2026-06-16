@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+# Fixing the locales to build reproducibly.
+export LC_ALL=C.UTF-8
+
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 include /usr/share/dpkg/buildflags.mk
 CFLAGS+=$(CPPFLAGS)
@@ -36,9 +39,11 @@ override_dh_auto_configure:
 	dh_auto_configure -Bbuilddir -- \
             $(with_tbb) \
             -Dot_configure_date:STRING='$(BUILD_DATE)' \
+            -Dot_system_version:STRING='Debian $(shell uname -mo)' \
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=lib/$(DEB_HOST_MULTIARCH) \
+            -DCMAKE_BUILD_RPATH_USE_ORIGIN:BOOL=ON \
             -DOPENTURNS_PYTHON_MODULE_PATH=lib/python3/dist-packages \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
 	        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 \
