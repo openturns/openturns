@@ -68,7 +68,7 @@ DirectionalSampling * DirectionalSampling::clone() const
 /*  Event accessor */
 void DirectionalSampling::setEvent(const RandomVector & event)
 {
-  if !event.isComposite() throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
   EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
   standardEvent_ = StandardEvent(getEvent());
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
