@@ -1495,6 +1495,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SubsetSampling-DefaultConditionalProbability", 0.1);
   addAsScalar("SubsetSampling-DefaultProposalRange", 2.0);
   addAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling", 10000);
+  addAsScalar("SubsetSampling-DefaultAdaptationLowerBound", 0.3);
+  addAsScalar("SubsetSampling-DefaultAdaptationUpperBound", 0.5);
+  addAsScalar("SubsetSampling-DefaultAdaptationExpansionFactor", 1.1);
+  addAsScalar("SubsetSampling-DefaultAdaptationShrinkFactor", 0.9);
+  addAsUnsignedInteger("SubsetSampling-DefaultAdaptationPeriod", 30);
 
   // NAIS parameters //
   addAsScalar("NAIS-DefaultQuantileLevel", 0.25);

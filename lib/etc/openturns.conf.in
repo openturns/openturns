@@ -842,9 +842,14 @@
   <SimulationSensitivityAnalysis-DefaultSampleMargin value_int="400" />
 
   <!-- OT::SubsetSampling parameters -->
-  <SubsetSampling-DefaultConditionalProbability value_float="0.1"             />
-  <SubsetSampling-DefaultProposalRange          value_float="2.0"             />
-  <SubsetSampling-DefaultMaximumOuterSampling   value_int="10000" />
+  <SubsetSampling-DefaultConditionalProbability       value_float="0.1"   />
+  <SubsetSampling-DefaultProposalRange                value_float="2.0"   />
+  <SubsetSampling-DefaultMaximumOuterSampling         value_int="10000"   />
+  <SubsetSampling-DefaultAdaptationLowerBound         value_float="0.3"   />
+  <SubsetSampling-DefaultAdaptationUpperBound         value_float="0.5"   />
+  <SubsetSampling-DefaultAdaptationExpansionFactor    value_float="1.1"   />
+  <SubsetSampling-DefaultAdaptationShrinkFactor       value_float="0.9"   />
+  <SubsetSampling-DefaultAdaptationPeriod             value_int="30"      />
 
   <!-- OT::NAIS parameters -->
   <NAIS-DefaultQuantileLevel value_float="0.25" />
