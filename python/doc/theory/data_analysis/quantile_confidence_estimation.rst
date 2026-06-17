@@ -357,19 +357,13 @@ This can be equivalently expressed using the binomial distribution:
     F_{(\sampleSize, \alpha)}(\sampleSize - k_2)
     - F_{(\sampleSize, \alpha)}(k_1 - 1) \geq \beta.
 
-Note that the problem is defined differently from equation
-:eq:`EqOrderStatMinRankLength`.
-To determine this minimum sample size, we solve equation :eq:`EqOrderMinSizeBilsol`
-with respect to the sample size :math:`\sampleSize`.
-We use an optimization algorithm to compute :math:`\sampleSize_{\text{sol}}` in
-the set :math:`\{ k, k + 1, \dots\}`.
-We can reduce the search space to the interval
-:math:`\llbracket k, \sampleSize_2 \rrbracket` where :math:`\sampleSize_2` is a
-size that satisfies equation :eq:`EqOrderMinSizeBilsol`.
-It can be determined using the approximation of the binomial distribution by the
-normal distribution with the same mean and variance.
+Unlike the formulation in equation :eq:EqOrderStatMinRankLength, where the
+sample size is fixed and the ranks are the unknowns, this approach fixes the
+relative ranks to determine the minimum required sample size.
+To find the exact minimum :math:`\sampleSize_{\text{sol}}` that solves equation
+:eq:`EqOrderMinSizeBilsol`, we use an optimization algorithm.
 
-Once the smallest size :math:`\sampleSize` has been estimated, a sample of size
+Once the smallest size :math:`\sampleSize` has been computed, a sample of size
 :math:`\sampleSize` can be generated from :math:`X` and a lower and an upper
 bound of :math:`x_{\alpha}` are estimated using :math:`x_{(k_1)}` and
 :math:`x_{(\sampleSize - k_2 + 1)}`.
