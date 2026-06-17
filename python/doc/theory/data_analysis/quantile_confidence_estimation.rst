@@ -286,16 +286,18 @@ The previous equation is equivalent to:
 
     F_{(\sampleSize, \alpha)}(\sampleSize - k)\geq \beta.
 
-Note that the problem is defined differently from equation :eq:`EqOrderStatB`.
+Unlike the formulation leading to equation :eq:`EqOrderStatB`, where the
+sample size is fixed and the rank is the unknown, here the relative rank
+is fixed and the sample size is the variable to determine.
 To determine this minimum sample size, we solve equation :eq:`EqOrderStat2Bbis`
-with respect to the sample size :math:`\sampleSize`.
-We use an optimization algorithm to compute :math:`\sampleSize_{\text{sol}}` in
+for the sample size :math:`\sampleSize`.
+An optimization algorithm is used to compute :math:`\sampleSize_{\text{sol}}` from
 the set :math:`\{ k, k + 1, \dots\}`.
 We can reduce the search space to the interval
-:math:`\llbracket k, \sampleSize_2 \rrbracket` where :math:`\sampleSize_2` is a
-size that satisfies equation :eq:`EqOrderStat2Bbis`.
-It can be determined using the approximation of the binomial distribution by the
-normal distribution with the same mean and variance.
+:math:`\llbracket k, \sampleSize_2 \rrbracket`, where :math:`\sampleSize_2` is a
+sample size that satisfies equation :eq:`EqOrderStat2Bbis`.
+This value :math:`\sampleSize_2` can be determined using the normal
+approximation of the binomial distribution with the same mean and variance.
 
 Once the smallest size :math:`\sampleSize` has been estimated, a sample of size
 :math:`\sampleSize` can be generated from :math:`X` and an upper bound of
