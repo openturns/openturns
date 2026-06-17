@@ -106,3 +106,29 @@ for nDistribution in range(len(coll)):
     validation.skipConditional()  # FIXME
     validation.skipTransformation()  # FIXME
     validation.run()
+
+# Test computeSequentialConditionalQuantile wrapping BlockIndependentCopula
+marginals = [ot.Normal()] * 4
+a = 0.8
+b = 0.1
+copulas = [
+    ot.NormalCopula(ot.CorrelationMatrix([[1.0, a], [a, 1.0]])),
+    ot.NormalCopula(ot.CorrelationMatrix([[1.0, b], [b, 1.0]]))
+]
+block_independent_copula = ot.BlockIndependentCopula(copulas)
+point = ot.Point([0.7] * 4)
+
+# Direct BlockIndependentCopula (contiguous blocks)
+joint_direct = ot.JointDistribution(marginals, block_independent_copula)
+ref = joint_direct.computeSequentialConditionalQuantile(point)
+
+# MarginalDistribution with reordering (non-contiguous blocks)
+marginal_distribution = block_independent_copula.getMarginal([0, 2, 1, 3])
+joint_permuted = ot.JointDistribution(marginals, marginal_distribution)
+result = joint_permuted.computeSequentialConditionalQuantile(point)
+
+# Expected: result is a permutation of ref
+# ref for BIC [NormalCopula(a), NormalCopula(b)] gives SCQ components in order 0,1,2,3
+# With indices [0,2,1,3], result should be [ref[0], ref[2], ref[1], ref[3]]
+expected = [ref[0], ref[2], ref[1], ref[3]]
+ott.assert_almost_equal(result, expected, 1e-5, 1e-5)
