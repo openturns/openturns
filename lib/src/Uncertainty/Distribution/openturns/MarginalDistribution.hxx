@@ -141,8 +141,16 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const override;
 
-  /** Compute the scalar quantile of Xi | X1, ..., Xi-1 */
+  /** Compute the sequential conditional quantile */
   Point computeSequentialConditionalQuantile(const Point & q) const override;
+
+  /** Compute the CDF of Xi | X1, ..., Xi-1 */
+  using DistributionImplementation::computeConditionalCDF;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+
+  /** Compute the quantile of Xi | X1, ..., Xi-1 */
+  using DistributionImplementation::computeConditionalQuantile;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
