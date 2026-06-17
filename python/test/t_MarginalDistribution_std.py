@@ -103,7 +103,7 @@ for nDistribution in range(len(coll)):
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
     validation.skipDependenceMeasures()  # slow
-    validation.skipConditional()  # FIXME
+    validation.skipConditional()  # TRACE enabled, avoid LOGTRACE in output
     validation.skipTransformation()  # FIXME
     validation.run()
 
@@ -132,3 +132,45 @@ result = joint_permuted.computeSequentialConditionalQuantile(point)
 # With indices [0,2,1,3], result should be [ref[0], ref[2], ref[1], ref[3]]
 expected = [ref[0], ref[2], ref[1], ref[3]]
 ott.assert_almost_equal(result, expected, 1e-5, 1e-5)
+
+# Test computeConditionalCDF and computeConditionalQuantile on MarginalDistribution
+# Case 1: Independent normal components
+fullNormal = ot.Normal(3)
+margNormal = ot.MarginalDistribution(fullNormal, [2, 0, 1])
+x = 0.5
+
+# conditioning dimension 0 => should match the marginal CDF
+cdf0 = margNormal.computeConditionalCDF(x, [])
+ott.assert_almost_equal(cdf0, ot.Normal().computeCDF(x))
+
+# conditioning dimension 1 with independent copula => same as unconditional
+cdf1 = margNormal.computeConditionalCDF(x, [0.3])
+ott.assert_almost_equal(cdf1, ot.Normal().computeCDF(x))
+
+# conditional quantile with conditioning dimension 0
+q = 0.95
+q0 = margNormal.computeConditionalQuantile(q, [])
+ott.assert_almost_equal(q0, ot.Normal().computeQuantile(q)[0])
+
+# conditional quantile with conditioning dimension 1 (independent)
+q1 = margNormal.computeConditionalQuantile(q, [0.3])
+ott.assert_almost_equal(q1, ot.Normal().computeQuantile(q)[0])
+
+# Case 2: Dependent normal components (via NormalCopula)
+R = ot.CorrelationMatrix(3)
+R[0, 1] = 0.8
+fullDep = ot.Normal([0.0] * 3, [1.0] * 3, R)
+margDep = ot.MarginalDistribution(fullDep, [0, 1])
+# Conditional distribution of X1 | X0 = 0.3 is Normal(0.3*0.8, sqrt(1-0.8^2))
+rho = 0.8
+condDist = ot.Normal(0.3 * rho, (1.0 - rho ** 2) ** 0.5)
+cdfCond = margDep.computeConditionalCDF(0.5, [0.3])
+ott.assert_almost_equal(cdfCond, condDist.computeCDF(0.5))
+qCond = margDep.computeConditionalQuantile(0.95, [0.3])
+ott.assert_almost_equal(qCond, condDist.computeQuantile(0.95)[0])
+
+# Case 3: consistency between conditional CDF and conditional quantile
+qTest = 0.3
+xFromQ = margDep.computeConditionalQuantile(qTest, [0.3])
+cdfFromQ = margDep.computeConditionalCDF(xFromQ, [0.3])
+ott.assert_almost_equal(cdfFromQ, qTest)
