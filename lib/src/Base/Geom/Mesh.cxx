@@ -250,20 +250,20 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const Scalar x = point[0];
     const Scalar x0 = vertices_(simplices_(index, 0), 0);
     const Scalar x1 = vertices_(simplices_(index, 1), 0);
-    if ((x - x0) * (x - x1) > epsilon)
+    const Scalar xMin = std::min(x0, x1);
+    const Scalar xMax = std::max(x0, x1);
+    if ((x < xMin - epsilon) || (x > xMax + epsilon))
       return false;
     coordinates = Point(2);
     if (x0 == x1)
     {
       // x, x0 and x1 are amost at the same position, any value would work.
-      coordinates[0] = 1.0;
-      coordinates[1] = 0.0;
+      coordinates = {1.0, 0.0};
     }
     else
     {
       const Scalar alpha = (x1 - x) / (x1 - x0);
-      coordinates[0] = alpha;
-      coordinates[1] = 1.0 - alpha;
+      coordinates = {alpha, 1.0 - alpha};
     }
     return true;
   }
@@ -275,8 +275,15 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
     const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
     const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+    Scalar maxEdgeSq = x01 * x01 + y01 * y01;
+    const Scalar edge02Sq = x02 * x02 + y02 * y02;
+    if (edge02Sq > maxEdgeSq) maxEdgeSq = edge02Sq;
+    const Scalar x12 = x02 - x01;
+    const Scalar y12 = y02 - y01;
+    const Scalar edge12Sq = x12 * x12 + y12 * y12;
+    if (edge12Sq > maxEdgeSq) maxEdgeSq = edge12Sq;
     const Scalar det = (x02 * y01 - y02 * x01);
-    if (det == 0.0)
+    if (std::abs(det) < epsilon * maxEdgeSq)
     {
       return false;
     }
@@ -1206,9 +1213,7 @@ Mesh Mesh::intersect(const Mesh & other) const
 
     // fix orientation
     if (boost::geometry::area(tri1) < 0.0)
-    {
       boost::geometry::correct(tri1);
-    }
 
     for (UnsignedInteger i2 = 0; i2 < other.getSimplicesNumber(); ++ i2)
     {
@@ -1219,8 +1224,11 @@ Mesh Mesh::intersect(const Mesh & other) const
         const Point pj2(other.vertices_[other.simplices_(i2, j2 % 3)]);
         boost::geometry::append(tri2.outer(), point_t(pj2[0], pj2[1]));
       }
+
+      // fix orientation
       if (boost::geometry::area(tri2) < 0.0)
-        throw InvalidArgumentException(HERE) << "Simplex at index " << i2 << " is not anti-clockwise";
+        boost::geometry::correct(tri2);
+
       std::deque<polygon_t> output;
       boost::geometry::intersection(tri1, tri2, output);
       for (const polygon_t & poly : output)
