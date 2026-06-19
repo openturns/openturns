@@ -24,6 +24,7 @@
 #include "openturns/FORM.hxx"
 #include "openturns/IntersectionEvent.hxx"
 #include "openturns/UnionEvent.hxx"
+#include "openturns/ThresholdEventImplementation.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/SpecFunc.hxx"
 
@@ -80,15 +81,15 @@ void SystemFORM::setEvent(const RandomVector & event)
     unionCollection.add(event);
   for (UnsignedInteger i = 0; i < unionCollection.getSize(); ++ i)
   {
-    if (unionCollection[i].getImplementation()->getClassName() == "IntersectionEvent")
+    const IntersectionEvent *intersectionEvent = dynamic_cast<IntersectionEvent*>(unionCollection[i].getImplementation().get());
+    if (intersectionEvent)
     {
-      const IntersectionEvent *intersectionEvent = dynamic_cast<IntersectionEvent*>(unionCollection[i].getImplementation().get());
       Collection<RandomVector> intersectionCollection(intersectionEvent->getEventCollection());
       for (UnsignedInteger j = 0; j < intersectionCollection.getSize(); ++ j)
-        if (intersectionCollection[j].getImplementation()->getClassName() != "ThresholdEventImplementation")
+        if (!dynamic_cast<ThresholdEventImplementation*>(intersectionCollection[j].getImplementation().get()))
           throw InvalidArgumentException(HERE) << "Event is not in disjunctive normal form";
     }
-    else if (unionCollection[i].getImplementation()->getClassName() != "ThresholdEventImplementation")
+    else if (!dynamic_cast<ThresholdEventImplementation*>(unionCollection[i].getImplementation().get()))
       throw InvalidArgumentException(HERE) << "Event is not in disjunctive normal form";
   }
   Analytical::setEvent(event);
@@ -108,9 +109,9 @@ void SystemFORM::run()
   Collection<Indices> parallelRegionIdCollection;
   for (UnsignedInteger i = 0; i < unionCollection.getSize(); ++ i)
   {
-    if (unionCollection[i].getImplementation()->getClassName() == "IntersectionEvent")
+    const IntersectionEvent *intersectionEvent = dynamic_cast<IntersectionEvent*>(unionCollection[i].getImplementation().get());
+    if (intersectionEvent)
     {
-      const IntersectionEvent *intersectionEvent = dynamic_cast<IntersectionEvent*>(unionCollection[i].getImplementation().get());
       Collection<RandomVector> intersectionCollection(intersectionEvent->getEventCollection());
       leafEventCollection.add(intersectionCollection);
       Indices parallelRegionId(intersectionCollection.getSize());
@@ -143,7 +144,7 @@ void SystemFORM::run()
       const FORMResult result(algo.getResult());
       const Scalar beta = result.getGeneralisedReliabilityIndex();
       idToBetaMap[id] = beta;
-      idToAlphaMap[id] = result.getStandardSpaceDesignPoint() * (1.0 / beta);
+      idToAlphaMap[id] = (beta > 0.0 ? result.getStandardSpaceDesignPoint() * (1.0 / beta) : Point(result.getStandardSpaceDesignPoint().getDimension(), 0.0));
       formResultCollection.add(result);
       LOGINFO(OSS() << "SystemFORM: event=" << id << " beta=" << result.getGeneralisedReliabilityIndex());
     }
