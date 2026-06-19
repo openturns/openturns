@@ -144,7 +144,6 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
   Sample result(size, inDimension);
   const BoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBBImplementation::ParallelFor( 0, size, policy );
-  result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;
