@@ -140,10 +140,6 @@ void Analytical::run()
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
 
   /* check if result is valid */
-  const Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
-
-  const Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
-
   const Scalar residual = result_.getOptimizationResult().getConstraintError();
 
   const Scalar limitStateTolerance = nearestPointAlgorithm.getMaximumConstraintError();
@@ -152,7 +148,12 @@ void Analytical::run()
   const Scalar toleranceFactor = ResourceMap::GetAsScalar("Analytical-LimitStateToleranceFactor");
 
   if (!(residual <= toleranceFactor * limitStateTolerance))
+  {
+    const Point physicalSpaceDesignPoint(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint));
+
+    const Point valuePhysicalSpaceDesignPoint(event_.getImplementation()->getFunction().operator()(physicalSpaceDesignPoint));
     throw Exception(HERE) << "Obtained design point is not on the limit state: its image by the limit state function is " << valuePhysicalSpaceDesignPoint[0] << ", which is incompatible with the threshold: " << event_.getThreshold() << " considering the limit state tolerance of the optimization algorithm: " << limitStateTolerance;
+  }
 
 } /* Analytical::run() */
 
