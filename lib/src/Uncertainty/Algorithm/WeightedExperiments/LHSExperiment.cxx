@@ -38,7 +38,6 @@ static const Factory<LHSExperiment> Factory_LHSExperiment;
 /* Default constructor */
 LHSExperiment::LHSExperiment()
   : WeightedExperimentImplementation()
-  , marginals_(1, distribution_)
   , shuffle_(0, 0)
 {
   // Check if the distribution has an independent copula and build the transformation
@@ -50,7 +49,6 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
                              const Bool alwaysShuffle,
                              const Bool randomShift)
   : WeightedExperimentImplementation(size)
-  , marginals_(1, distribution_)
   , shuffle_(0, 0)
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
@@ -65,7 +63,6 @@ LHSExperiment::LHSExperiment(const Distribution & distribution,
                              const Bool alwaysShuffle,
                              const Bool randomShift)
   : WeightedExperimentImplementation(distribution, size)
-  , marginals_(0)
   , shuffle_(0, 0)
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
@@ -98,9 +95,10 @@ String LHSExperiment::__str__(const String & ) const
   OSS oss;
   oss << GetClassName()
       << "(distribution=" << distribution_
-      << ", size" << size_
+      << ", size=" << size_
       << ", always shuffle=" << alwaysShuffle_
-      << ", random shift=" << randomShift_;
+      << ", random shift=" << randomShift_
+      << ")";
   return oss;
 }
 
