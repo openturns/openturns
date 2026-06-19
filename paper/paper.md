@@ -67,7 +67,7 @@ OpenTURNS (www.openturns.org) is an open-source Python package for
 probabilistic modeling, uncertainty quantification (UQ), and machine learning.
 It provides a unified interface, granting users access to a comprehensive 
 set of state-of-the-art algorithms and modeling tools.
-The library is supported by extensive, regularly updated
+The library is supported by extensive, regularly updated,
 easy to read documentation, including introductory examples, various use cases, 
 tutorials, and user guides, enhancing its accessibility.
 OpenTURNS integrates seamlessly with NumPy, Pandas, and other
@@ -112,7 +112,7 @@ UQTk [@Debusschere2017UQTk], OpenCOSSAN [@Patelli2016Cossan],
 UQPy [@olivier2020uqpy], EasyVVUQ [@SULEIMENOVA2021101402],
 SmartUQ [@absil2016smart], and NESSUS [@McFarland2017], among others.
 These tools and libraries are provided in a variety of languages including
-Matlab (e.g., UQLab), Python (e.g., UQPy), and ROOT/C++ (e.g., URANIE).
+MATLAB (e.g., UQLab), Python (e.g., UQPy), and ROOT/C++ (e.g., URANIE).
 Some of these tools are open-source (e.g., EasyVVUQ), while others are
 commercial products (e.g., NESSUS).
 Other libraries have become open-source over time (e.g., UQLab became
@@ -163,7 +163,7 @@ mandatory.
 
 OpenTURNS relies on a dual-language architecture to balance computational 
 efficiency with user accessibility.
-The core library is implemented in C++, which handles the memory management and
+The core library is implemented in C++, which handles memory management and
 heavy computational workloads required by Monte Carlo simulations, 
 high-dimensional integration, and optimization algorithms.
 This C++ core is then exposed through a Python interface using SWIG. 
@@ -202,7 +202,7 @@ processes in arbitrary dimensions) associated with several covariance
 kernels (e.g., exponential, Matérn, and squared exponential).
 
 The library provides extensive data analysis capabilities.
-Dependency indicators can be computed (Pearson and Spearman correlations).
+Dependency indicators can be computed (e.g., Pearson and Spearman correlations).
 Inference of parametric and non-parametric univariate or multivariate
 probabilistic models, including copula models, can be performed, along with 
 several statistical tests to validate the estimation (quantitative tests such as the 
@@ -272,8 +272,8 @@ multiple science and engineering domains
 The Persalys graphical user interface [@persalys], built on top of OpenTURNS,
 enables users to perform UQ analyses with no (or minimal) Python
 programming.
-OpenTURNS is a requirement for several other tools including [@gemseo] 
-and [@Roy2018] for example.
+OpenTURNS is a requirement for several other tools, including [@gemseo] 
+and [@Roy2018], for example.
 
 An annual Users’ Day has been held since 2008, fostering collaboration
 and knowledge exchange among researchers, engineers, and educators.
@@ -281,7 +281,7 @@ and knowledge exchange among researchers, engineers, and educators.
 # AI usage disclosure
 
 Generative AI (Gemini 3.1 Pro) was used to verify the grammar and spelling of this paper,
-check the choices of the words and check that the paper comply with the
+check word choices, and check that the paper complies with the
 requirements.
 No generative AI was used in the creation of the software, the technical 
 documentation, or the algorithm design.
