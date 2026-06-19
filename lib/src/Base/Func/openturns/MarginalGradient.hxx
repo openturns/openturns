@@ -66,6 +66,12 @@ public:
   /** Gradient method */
   Matrix gradient(const Point & inP) const override;
 
+  /** Accessor for the underlying gradient */
+  Pointer<GradientImplementation> getGradient() const;
+
+  /** Accessor for the marginal indices */
+  Indices getIndices() const;
+
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const override;
 

@@ -22,6 +22,7 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
+#include "openturns/MarginalGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/PointWithDescription.hxx"
 
@@ -128,9 +129,13 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger pointDimension = inP.getDimension();
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
+  // Unwrap MarginalGradient if present
+  const GradientImplementation * p_gradient_impl = function_.getGradient().getImplementation().get();
+  const MarginalGradient * p_marginal = dynamic_cast<const MarginalGradient *>(p_gradient_impl);
+  if (p_marginal) p_gradient_impl = p_marginal->getGradient().getImplementation().get();
   // Special case if the gradient of the underlying function is based on finite differences
   {
-    const CenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const CenteredFiniteDifferenceGradient *>(function_.getGradient().getImplementation().get());
+    const CenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const CenteredFiniteDifferenceGradient *>(p_gradient_impl);
     if (p_gradient)
     {
       // Retrieve the full gradient parameters
@@ -147,7 +152,7 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
   }
   // Second try: NonCenteredFiniteDifferenceGradient
   {
-    const NonCenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const NonCenteredFiniteDifferenceGradient *>(function_.getGradient().getImplementation().get());
+    const NonCenteredFiniteDifferenceGradient * p_gradient = dynamic_cast<const NonCenteredFiniteDifferenceGradient *>(p_gradient_impl);
     if (p_gradient)
     {
       // Retrieve the full gradient parameters
