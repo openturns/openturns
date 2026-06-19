@@ -42,6 +42,8 @@ static const Factory<SklarCopula> Factory_SklarCopula;
 /* Default constructor */
 SklarCopula::SklarCopula()
   : DistributionImplementation()
+  , distribution_(Uniform(0.0, 1.0))
+  , marginalCollection_(1, Uniform(0.0, 1.0))
 {
   isCopula_ = true;
   setName("SklarCopula");
@@ -333,7 +335,7 @@ Scalar SklarCopula::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
-  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return q;
@@ -448,7 +450,9 @@ Bool SklarCopula::hasEllipticalCopula() const
 /* Distribution accessor */
 void SklarCopula::setDistribution(const Distribution & distribution)
 {
-  distribution_ = distribution;
+  const Scalar w = getWeight();
+  *this = SklarCopula(distribution);
+  setWeight(w);
 }
 
 /* Distribution accessor */
