@@ -21,7 +21,6 @@
 
 #include "openturns/UnionEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/IntersectionEvent.hxx"
 #include "openturns/DomainEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -164,7 +163,7 @@ RandomVector UnionEvent::getAntecedent() const
 RandomVector UnionEvent::asComposedEvent() const
 {
   const UnsignedInteger size = eventCollection_.getSize();
-  if (!size) throw InvalidArgumentException(HERE) << "Intersection has been improperly initialized: event collection is empty";
+  if (!size) throw InvalidArgumentException(HERE) << "Union has been improperly initialized: event collection is empty";
 
   RandomVector composedEvent;
   try
