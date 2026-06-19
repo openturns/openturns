@@ -123,7 +123,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
     }
     else
     {
-      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
+      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
     }
   }
 
@@ -202,7 +202,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   {
     if (enableExtrapolation_)
     {
-      return values_[iLeft];
+      return derivatives_[iLeft];
     }
     else
     {
@@ -216,7 +216,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   {
     if (enableExtrapolation_)
     {
-      return values_[iRight];
+      return derivatives_[iRight];
     }
     else
     {
@@ -232,7 +232,7 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   const Scalar alpha = 1.0 - theta;
   const Scalar beta = theta * alpha;
   const Scalar gamma = 2.0 * theta - 1.0;
-  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-values_(iLeft, i) + values_(iLeft + 1, i) + alpha * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, 1) - theta * derivatives_(iLeft + 1, i))) + beta * (2.0 * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (- derivatives_(iLeft, 1) - derivatives_(iLeft + 1, i)))) / h;
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-values_(iLeft, i) + values_(iLeft + 1, i) - gamma * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i))) + beta * (2.0 * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (- derivatives_(iLeft, i) - derivatives_(iLeft + 1, i)))) / h;
   return value;
 }
 
@@ -246,7 +246,16 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  if (locations.isNonDecreasing())
+
+  Bool strictlyIncreasing = true;
+  for (UnsignedInteger i = 1; i < size; ++ i)
+    if (!(locations[i] > locations[i - 1]))
+    {
+      strictlyIncreasing = false;
+      break;
+    }
+
+  if (strictlyIncreasing)
   {
     locations_ = locations;
   }
@@ -257,6 +266,9 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
     for (UnsignedInteger i = 0; i < size; ++i)
       locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
     std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+    for (UnsignedInteger i = 1; i < size; ++ i)
+      if (!(locationAndIndex[i].first > locationAndIndex[i - 1].first))
+        throw InvalidArgumentException(HERE) << "The locations must be unique";
     for (UnsignedInteger i = 0; i < size; ++i)
       locations_[i] = locationAndIndex[i].first;
     const UnsignedInteger outputDimension = values_.getDimension();
@@ -329,6 +341,9 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & 
   for (UnsignedInteger i = 0; i < size; ++i)
     locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
   std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+  for (UnsignedInteger i = 1; i < size; ++ i)
+    if (!(locationAndIndex[i].first > locationAndIndex[i - 1].first))
+      throw InvalidArgumentException(HERE) << "The locations must be unique";
   locations_ = Point(size);
   values_ = Sample(size, outputDimension);
   derivatives_ = Sample(size, outputDimension);
