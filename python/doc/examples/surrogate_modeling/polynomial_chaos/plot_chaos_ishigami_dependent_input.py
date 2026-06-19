@@ -141,7 +141,7 @@ val = ot.MetaModelValidation(outputTest, metamodel_predictions)
 r2Score = val.computeR2Score()[0]
 print(f"r2Score with Transformation method = {r2Score:.6f}")
 graph = val.drawValidation()
-graph.setTitle(f"R2={r2Score * 100:.2f}%, use domination = false")
+graph.setTitle(f"R2={r2Score * 100:.2f}%, with transformation")
 view = otv.View(graph)
 
 
@@ -162,9 +162,9 @@ metamodel_dom = chaos_result.getMetaModel()
 metamodel_dom_predictions = metamodel_dom(inputTest)
 val = ot.MetaModelValidation(outputTest, metamodel_dom_predictions)
 r2Score = val.computeR2Score()[0]
-print(f"r2Score with Domination method = {r2Score:.6f}")
+print(f"r2Score with No transformation method = {r2Score:.6f}")
 graph = val.drawValidation()
-graph.setTitle(f"R2={r2Score * 100:.2f}%, use domination = true")
+graph.setTitle(f"R2={r2Score * 100:.2f}%, no transformation")
 view = otv.View(graph)
 
 # %%
@@ -174,7 +174,7 @@ view = otv.View(graph)
 # the multivariate basis of the approximation space is not orthonormal to the input distribution
 # :math:`\mu_{\inputRV}`.
 # It can be explained by the fact that the multivariate tensorized basis used by the
-# domination method is able to
+# no transformation method is able to
 # capture the tensorized structure of the Ishigami model. This was not the case of the
 # Transformation method which uses a basis in the :math:`\vect{X}` -space which is not tensorized,
 # due to the action of the isoprobabilist transformation.

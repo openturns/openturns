@@ -56,7 +56,8 @@ Examples
 0.707107 - 0.707107 * X
 0.5 - 1.25 * X + 0.25 * X^2
 >>> print(polynomial_factory.getRecurrenceCoefficients(1))
-[-0.353553,1.41421,-0.5]RAW"
+[-0.353553,1.41421,-0.5]
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -80,6 +81,6 @@ Of the :class:`~openturns.Polya` distribution.
 
 Returns
 -------
-r : int
+r : float
     Parameter :math:`r` of the underlying :class:`~openturns.Polya`
     distribution."
