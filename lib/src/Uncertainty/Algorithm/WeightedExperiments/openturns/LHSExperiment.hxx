@@ -23,7 +23,6 @@
 
 #include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,8 +38,6 @@ class OT_API LHSExperiment
 {
   CLASSNAME
 public:
-
-  typedef Collection<Distribution> DistributionCollection;
 
   /** Default constructor */
   LHSExperiment();
@@ -97,9 +94,6 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  // Marginal distributions
-  mutable DistributionCollection marginals_;
-
   // Cells shuffle
   mutable Matrix shuffle_;
 
