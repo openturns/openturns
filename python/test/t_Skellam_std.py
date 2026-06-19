@@ -29,6 +29,7 @@ LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.12g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
+ott.assert_almost_equal(PDF, distribution.computeCDF(point) - distribution.computeCDF([point[0] - 1.0]), 1e-12, 0.0)
 
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)

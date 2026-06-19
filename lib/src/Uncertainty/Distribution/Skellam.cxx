@@ -138,7 +138,7 @@ Scalar Skellam::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar k = point[0];
+  const Scalar k = std::floor(point[0]);
   if (k < 0.0) return DistFunc::pNonCentralChiSquare(-2.0 * k, 2.0 * lambda1_, 2.0 * lambda2_, false, cdfEpsilon_, maximumIteration_);
   return DistFunc::pNonCentralChiSquare(2.0 * (k + 1.0), 2.0 * lambda2_, 2.0 * lambda1_, true, cdfEpsilon_, maximumIteration_);
 }
@@ -245,7 +245,9 @@ void Skellam::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const Scalar w = getWeight();
+  const UnsignedInteger savedMaximumIteration = maximumIteration_;
   *this = Skellam(parameter[0], parameter[1]);
+  maximumIteration_ = savedMaximumIteration;
   setWeight(w);
 }
 
