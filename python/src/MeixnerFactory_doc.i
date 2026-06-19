@@ -23,7 +23,7 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i\\
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i \geq 0\\
     P_{-1} & = 0 \\
     P_0 & = 1
 
@@ -54,7 +54,7 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 0.707107 - 0.707107 * X
-0.5 - 1.25 * X + 0.25 * X^2)
+0.5 - 1.25 * X + 0.25 * X^2
 >>> print(polynomial_factory.getRecurrenceCoefficients(1))
 [-0.353553,1.41421,-0.5]RAW"
 
