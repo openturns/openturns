@@ -1,7 +1,7 @@
 %feature("docstring") OT::CharlierFactory
 R"RAW(Charlier specific orthonormal univariate polynomial family.
 
-For :class:`~openturns.Poisson`'s distribution.
+For :class:`~openturns.Poisson`'s distribution :math:`\cP(\lambda)`.
 
 Parameters
 ----------
@@ -23,7 +23,7 @@ three consecutive polynomials as follows:
     
 
 The recurrence coefficients for the Charlier polynomials come analytically and
-read :
+read for :math:`i \geq 0`:
 
 .. math::
 

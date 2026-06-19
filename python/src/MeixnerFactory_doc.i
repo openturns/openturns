@@ -1,7 +1,7 @@
 %feature("docstring") OT::MeixnerFactory
 R"RAW(Meixner specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Polya` distribution.
+For the :class:`~openturns.Polya` distribution :math:`\cP(r,p)`.
 
 Parameters
 ----------

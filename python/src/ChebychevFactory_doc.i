@@ -10,7 +10,9 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i > 0
+    P_{i + 1} & = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad  i \geq 0 \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Chebychev polynomials come analytically and
 read :math:`a_0=\sqrt{2}, b_0=0, c_0=0`, :math:`a_1=2, b_1=0,c_1=-\sqrt{2}` and for :math:`i>1`, :math:`a_i=2, b_i=0, c_i=-1`.

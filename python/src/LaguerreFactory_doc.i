@@ -1,7 +1,7 @@
 %feature("docstring") OT::LaguerreFactory
 R"RAW(Laguerre specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Gamma` distribution.
+For the :class:`~openturns.Gamma` distribution :math:`\Gamma(k, 1,0)`.
 
 Parameters
 ----------
@@ -23,25 +23,26 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+    P_{i + 1} & = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad  i \geq 0 \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
+
 
 The recurrence coefficients for the Laguerre polynomials come analytically and
-read:
+read :math:`i \geq 0`:
 
 .. math::
 
-    \begin{array}{rcl}
-        a_i & = & \omega_i \\
-        b_i & = & - (2 i + k_a + 1) \omega_i \\
-        c_i & = & - \sqrt{(i + k_a) i} \omega_i
-    \end{array}, \quad 1 < i
+        a_i & =  \omega_i \\
+        b_i & =  - (2 i + k_a + 1) \omega_i \\
+        c_i & =  - \sqrt{(i + k_a) i} \omega_i
 
 where :math:`k_a` is the alternative shape parameter of the
 :class:`~openturns.Gamma` distribution, and:
 
 .. math::
 
-    \omega_i = \frac{1}{\sqrt{(i + 1) (i + k_a + 1)}} , \quad 1 < i
+    \omega_i = \frac{1}{\sqrt{(i + 1) (i + k_a + 1)}}
 
 See also
 --------
