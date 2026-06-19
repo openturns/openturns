@@ -114,7 +114,7 @@ private:
   Sample values_;
 
   // Are locations regularly spaced?
-  Bool isRegular_;
+  Bool isRegular_ = false;
 
 } ; /* class PiecewiseLinearEvaluation */
 
