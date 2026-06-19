@@ -21,7 +21,8 @@
 #ifndef OPENTURNS_HYPERBOLICANISOTROPICENUMERATEFUNCTION_HXX
 #define OPENTURNS_HYPERBOLICANISOTROPICENUMERATEFUNCTION_HXX
 
-#include <list>
+#include <queue>
+#include <unordered_set>
 
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/Point.hxx"
@@ -40,9 +41,34 @@ class OT_API HyperbolicAnisotropicEnumerateFunction
 {
   CLASSNAME
 public:
-
+#ifndef SWIG
   typedef std::pair< Indices, Scalar > ValueType;
-  typedef std::list<ValueType>                   IndiceCache;
+
+  struct PriorityCompare
+  {
+    bool operator()(const ValueType & lhs, const ValueType & rhs) const
+    {
+      if (lhs.second != rhs.second) return lhs.second > rhs.second;
+      return rhs.first < lhs.first;
+    }
+  };
+
+  typedef std::priority_queue<ValueType, std::vector<ValueType>, PriorityCompare> IndiceCache;
+
+  // Adapted from boost::hash_combine
+  struct IndicesHash
+  {
+    std::size_t operator()(const Indices & indices) const
+    {
+      std::size_t seed = 0;
+      for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+      {
+        seed ^= std::hash<UnsignedInteger>()(indices[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+      }
+      return seed;
+    }
+  };
+#endif
 
   /** Default constructor */
   HyperbolicAnisotropicEnumerateFunction();
@@ -115,11 +141,14 @@ private:
   /** Q-Norm q term */
   Scalar q_;
 
-  /** Cache of already generated indices */
+  /** Highest priority (smallest norm) candidate indices */
   mutable IndiceCache candidates_;
 
-  /** Candidate indices */
+  /** Cache of already generated indices */
   mutable Collection<Indices> cache_;
+
+  /** Set of indices already in the priority queue (deduplication) */
+  mutable std::unordered_set<Indices, IndicesHash> visited_;
 
   /** Cumulated strata cardinals */
   mutable Indices strataCumulatedCardinal_;

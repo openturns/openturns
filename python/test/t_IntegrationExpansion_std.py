@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.testing import assert_almost_equal
+import openturns.testing as ott
 from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
@@ -337,38 +337,36 @@ condensedIndices = [
 ]
 expectedCoefficientsHyper = [
     3.5,
+    0,
+    0,
     1.62542,
     0,
-    0,
-    0,
     -0.594723,
+    0,
+    0,
     0,
     -1.29064,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
     -1.95229,
     0,
+    0,
+    0,
+    0,
+    0,
     0.194929,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     1.37242,
     0,
     0,
+    0,
+    0,
     1.35741,
     0,
+    0,
+    0,
     -0.0126684,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -384,16 +382,18 @@ expectedCoefficientsHyper = [
     0,
     0,
     0,
+    0,
     0.409177,
+    0,
+    0,
+    0,
     0,
     0.00046142,
     0,
     0,
     0,
+    0,
     -1.08975,
-    0,
-    0,
-    0,
     0,
     0,
     0.0459147,
@@ -455,7 +455,7 @@ for doe in doeList:
     err = (coeffs - ref).norm()
     rtol = 5.0e-2
     atol = 5.0e-2
-    assert_almost_equal(err, 0.0, rtol, atol)
+    ott.assert_almost_equal(err, 0.0, rtol, atol)
     # Check the function restriction
     algo.setActiveFunctions(condensedIndices)
     print("algo=", algo)
@@ -464,7 +464,7 @@ for doe in doeList:
     coeffs = result.getCoefficients().asPoint()
     ref = expectedCoefficientsCondensed[: coeffs.getSize()]
     err = (coeffs - ref).norm()
-    assert_almost_equal(err, 0.0, rtol, atol)
+    ott.assert_almost_equal(err, 0.0, rtol, atol)
     if wMin == wMax:
         # Create the polynomial chaos algorithm using the full constructor
         algo = ot.IntegrationExpansion(
@@ -476,7 +476,7 @@ for doe in doeList:
         coeffs = result.getCoefficients().asPoint()
         ref = expectedCoefficientsLinear[: coeffs.getSize()]
         err = (coeffs - ref).norm()
-        assert_almost_equal(err, 0.0, rtol, atol)
+        ott.assert_almost_equal(err, 0.0, rtol, atol)
     # Create the polynomial chaos algorithm using the simplified constructor
     algo = ot.IntegrationExpansion(inputSample, weights, outputSample, distribution)
     algo.run()
@@ -487,7 +487,7 @@ for doe in doeList:
     err = (coeffs - ref).norm()
     rtol = 1.0e-2
     atol = 1.0e-2
-    assert_almost_equal(err, 0.0, rtol, atol)
+    ott.assert_almost_equal(err, 0.0, rtol, atol)
     # Check the constructors assuming uniform weights
     if wMin == wMax:
         # Create the polynomial chaos algorithm using the simplified constructor
@@ -500,4 +500,4 @@ for doe in doeList:
         err = (coeffs - ref).norm()
         rtol = 1.0e-2
         atol = 1.0e-2
-        assert_almost_equal(err, 0.0, rtol, atol)
+        ott.assert_almost_equal(err, 0.0, rtol, atol)
