@@ -6,9 +6,9 @@ For :class:`~openturns.Poisson`'s distribution.
 Parameters
 ----------
 lambda : float, :math:`\lambda > 0`
-    Location parameter of the underlying :class:`~openturns.Poisson`'s distribution
+    Location parameter of the underlying :class:`~openturns.Poisson`'s distribution.
 
-    Be default, :math:`\lambda = 1`.
+    By default, :math:`\lambda = 1`.
 
 Notes
 -----
@@ -46,7 +46,7 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 1 - X
-0.707107 - 2.12132 * X + 0.707107 * X^2)
+0.707107 - 2.12132 * X + 0.707107 * X^2
 >>> print(polynomial_factory.getRecurrenceCoefficients(1))
 [-0.707107,1.41421,-0.707107]RAW"
 
