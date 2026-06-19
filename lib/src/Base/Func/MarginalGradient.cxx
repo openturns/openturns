@@ -97,6 +97,18 @@ Matrix MarginalGradient::gradient(const Point & inP) const
   return result;
 }
 
+/* Accessor for underlying gradient */
+Pointer<GradientImplementation> MarginalGradient::getGradient() const
+{
+  return p_gradient_;
+}
+
+/* Accessor for marginal indices */
+Indices MarginalGradient::getIndices() const
+{
+  return indices_;
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger MarginalGradient::getInputDimension() const
 {

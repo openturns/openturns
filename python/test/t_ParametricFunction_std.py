@@ -131,3 +131,36 @@ g_param = ot.ParametricFunction(g_sym, [0], [0])
 ott.assert_almost_equal(g_param.gradient([1])[0, 0], 0.0)
 g_param.setParameter([1])
 ott.assert_almost_equal(g_param.gradient([1])[0, 0], 1.0)
+
+# ParametricFunction on a marginal function should not perform
+# unnecessary evaluations
+n_calls_marg = 0
+
+
+def f_marg(x):
+    global n_calls_marg
+    n_calls_marg += 1
+    a, b, x0, x1, x2 = x
+    y1 = a + b + x0 + x1 + x2
+    y2 = a - b + x0 + x1 - x2
+    return [y1, y2]
+
+
+f_py_marg = ot.PythonFunction(5, 2, f_marg)
+marginal_f_marg = f_py_marg.getMarginal([0])
+
+# Set (a,b) as parameters
+g_marg = ot.ParametricFunction(marginal_f_marg, [0, 1], [1.0, 2.0])
+x_marg = ot.Point([3.0, 4.0, 5.0])
+
+# parameterGradient should only evaluate for the 2 parameter
+# dimensions = 4 calls (centered FD)
+n_calls_marg = 0
+gradient_marg = g_marg.parameterGradient(x_marg)
+assert n_calls_marg == 4, (
+    f"Expected 4 calls for marginal parameterGradient, got {n_calls_marg}"
+)
+
+# Verify correctness
+ott.assert_almost_equal(gradient_marg[0, 0], 1.0)
+ott.assert_almost_equal(gradient_marg[1, 0], 1.0)
