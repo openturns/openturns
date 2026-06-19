@@ -97,9 +97,6 @@ public:
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const override;
 
-  /** Check if the distribution is elliptical */
-  Bool isElliptical() const override;
-
   /* Interface specific to ZipfMandelbrot */
 
   /** Q accessor */
