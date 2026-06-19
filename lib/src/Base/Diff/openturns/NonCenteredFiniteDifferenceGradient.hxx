@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief Class for the creation of a gradient implementation
- *         form an evaluation implementation by using noncentered
+ *         from an evaluation implementation by using noncentered
  *         finite difference formula.
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @brief This class is for the creation of a gradient implementation
  *
  * This class is for the creation of a gradient implementation
- * form an evaluation implementation by using noncentered
+ * from an evaluation implementation by using noncentered
  * finite difference formula
  */
 class OT_API NonCenteredFiniteDifferenceGradient

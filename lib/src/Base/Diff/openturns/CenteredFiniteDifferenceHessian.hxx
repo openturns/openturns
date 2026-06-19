@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief Class for the creation of a hessian implementation
- *         form an evaluation implementation by using centered
+ *         from an evaluation implementation by using centered
  *         finite difference formula.
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
