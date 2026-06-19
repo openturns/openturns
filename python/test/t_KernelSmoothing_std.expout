@@ -146,14 +146,14 @@ Bounded underlying distribution?  False  bounded reconstruction?  False
  pdf(smoothed)=  0.303756  pdf(exact)= 0.266085
  cdf(smoothed)=  0.205753  cdf(exact)= 0.18406
 Bounded underlying distribution?  False  bounded reconstruction?  True
- pdf(smoothed)=  0.305332  pdf(exact)= 0.266085
- cdf(smoothed)=  0.206806  cdf(exact)= 0.18406
+ pdf(smoothed)=  0.303774  pdf(exact)= 0.266085
+ cdf(smoothed)=  0.20575  cdf(exact)= 0.18406
 Bounded underlying distribution?  True  bounded reconstruction?  False
  pdf(smoothed)=  0.355609  pdf(exact)= 0.597681
  cdf(smoothed)=  0.0871653  cdf(exact)= 0.0852122
 Bounded underlying distribution?  True  bounded reconstruction?  True
- pdf(smoothed)=  0.566138  pdf(exact)= 0.597681
- cdf(smoothed)=  0.0566864  cdf(exact)= 0.0852122
+ pdf(smoothed)=  0.546998  pdf(exact)= 0.597681
+ cdf(smoothed)=  0.05477  cdf(exact)= 0.0852122
 kernel= Beta
 Bounded underlying distribution?  False  bounded reconstruction?  False
  pdf(smoothed)=  0.302157  pdf(exact)= 0.266085
