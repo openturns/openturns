@@ -21,7 +21,6 @@
 
 #include "openturns/IntersectionEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/UnionEvent.hxx"
 #include "openturns/DomainEvent.hxx"
 #include "openturns/ThresholdEvent.hxx"
 
