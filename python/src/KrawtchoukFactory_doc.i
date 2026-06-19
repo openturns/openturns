@@ -6,11 +6,15 @@ For the :class:`~openturns.Binomial` distribution.
 Parameters
 ----------
 n : int, :math:`n > 0`
-    Number of experiment parameter of the :class:`~openturns.Binomial`
+    Parameter :math:`n > 0` of the underlying :class:`~openturns.Binomial`
     distribution.
+    
+    By default, :math:`n = 1`.
 p : float, :math:`0 < p < 1`
-    Success probability parameter of the :class:`~openturns.Binomial`
+    Parameter :math:`0 < p < 1` of the underlying :class:`~openturns.Binomial`
     distribution.
+    
+    By default, :math:`p = 0.5`.
 
 Notes
 -----
@@ -19,30 +23,30 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i < n
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 \leq i < n \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Krawtchouk polynomials come analytically
-and read:
+and read for :math:`i \geq 0`:
 
 .. math::
 
-    \begin{array}{rcl}
-        a_i & = & \displaystyle - \frac{1}
+        a_i & = \displaystyle - \frac{1}
                                        {\sqrt{(i + 1) (n - i) p (1 - p)}} \\
-        b_i & = & \displaystyle \frac{p (n - i) + i (1 - p)}
+        b_i & =  \displaystyle \frac{p (n - i) + i (1 - p)}
                                      {\sqrt{(i + 1) (n - i) p (1 - p)}} \\
-        c_i & = & \displaystyle - \sqrt{(1 - \frac{1}{i + 1})
-                                        (1 + \frac{1}{n - i})}
-    \end{array}, \quad 1 < i
+        c_i & =  \displaystyle - \sqrt{\left(1 - \frac{1}{i + 1}\right)
+                                        \left(1 + \frac{1}{n - i}\right)}
 
-where :math:`n` and :math:`p` are the parameters of the
+where :math:`n` and :math:`p` are the parameters of the underlying
 :class:`~openturns.Binomial` distribution.
 
 .. warning::
 
     The Krawtchouk polynomials are only defined up to a degree :math:`m` equal
     to :math:`n - 1`. Indeed, for :math:`i = n`, some factors in the
-    denominators of the recurrence coefficients would be equal to zero.
+    denominators of the recurrence coefficients are equal to zero.
 
 See also
 --------
@@ -56,7 +60,9 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 -1.73205 + 1.1547 * X
-1.73205 - 3.4641 * X + 1.1547 * X^2)RAW"
+1.73205 - 3.4641 * X + 1.1547 * X^2)
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[1,-1.5,-0.866025]RAW"
 
 // ---------------------------------------------------------------------
 

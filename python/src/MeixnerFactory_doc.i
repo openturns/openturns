@@ -6,11 +6,15 @@ For the :class:`~openturns.Polya` distribution.
 Parameters
 ----------
 r : float, :math:`r > 0`
-    Number of failures parameter of the :class:`~openturns.Polya`
+    Parameter :math:`r` of the underlying :class:`~openturns.Polya`
     distribution.
+    
+    By default, :math:`r = 1`.
 p : float, :math:`0 < p < 1`
-    Success probability parameter of the :class:`~openturns.Polya`
+    Parameter :math:`p` of the underlying :class:`~openturns.Polya`
     distribution.
+    
+    By default, :math:`p = 0.5`.
 
 Notes
 -----
@@ -19,23 +23,23 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i\\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Meixner polynomials come analytically
-and read:
+and read for :math:`i \geq 0`:
 
 .. math::
 
-    \begin{array}{rcl}
-        a_i & = & \displaystyle \frac{p - 1}
+        a_i & =  \displaystyle \frac{p - 1}
                                      {\sqrt{p (i + 1) (i + r)}} \\
-        b_i & = & \displaystyle \frac{p (i + r) + i}
+        b_i & =  \displaystyle \frac{p (i + r) + i}
                                      {\sqrt{p (i + 1) (i + r)}} \\
-        c_i & = & \displaystyle - \frac{\sqrt{p i (i + r - 1)}}
-                                       {\sqrt{p (i + 1) (i + r)}} \\
-    \end{array}, \quad 1 < i
+        c_i & =  \displaystyle - \frac{\sqrt{p i (i + r - 1)}}
+                                       {\sqrt{p (i + 1) (i + r)}}
 
-where :math:`r` and :math:`p` are the parameters of the
+where :math:`r` and :math:`p` are the parameters of the underlying
 :class:`~openturns.Polya` distribution.
 
 See also
@@ -50,30 +54,32 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 0.707107 - 0.707107 * X
-0.5 - 1.25 * X + 0.25 * X^2)RAW"
+0.5 - 1.25 * X + 0.25 * X^2)
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[-0.353553,1.41421,-0.5]RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MeixnerFactory::getP
-"Accessor to the success probability parameter :math:`p`.
+"Accessor to the :math:`p` parameter.
 
 Of the :class:`~openturns.Polya` distribution.
 
 Returns
 -------
 p : float
-    Success probability parameter of the :class:`~openturns.Polya`
+    Parameter :math:`p` of the underlying :class:`~openturns.Polya`
     distribution."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MeixnerFactory::getR
-"Accessor to the number of failures parameter :math:`r`.
+"Accessor to the :math:`r` parameter.
 
 Of the :class:`~openturns.Polya` distribution.
 
 Returns
 -------
 r : int
-    Number of failures parameter of the :class:`~openturns.Polya`
+    Parameter :math:`r` of the underlying :class:`~openturns.Polya`
     distribution."
