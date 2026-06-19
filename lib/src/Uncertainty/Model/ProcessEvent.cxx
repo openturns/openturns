@@ -24,6 +24,7 @@
 
 #include "openturns/ProcessEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -98,6 +99,16 @@ Point ProcessEvent::getRealization() const
 Bool ProcessEvent::isEvent() const
 {
   return true;
+}
+
+Point ProcessEvent::getFrozenRealization(const Point & ) const
+{
+  throw NotYetImplementedException(HERE) << "In ProcessEvent::getFrozenRealization";
+}
+
+Sample ProcessEvent::getFrozenSample(const Sample & ) const
+{
+  throw NotYetImplementedException(HERE) << "In ProcessEvent::getFrozenSample";
 }
 
 /* Method save() stores the object through the StorageManager */
