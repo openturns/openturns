@@ -23,12 +23,12 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 \leq i < n \\
+    P_{i + 1} & = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 0 \leq i < n \\
     P_{-1} & = 0 \\
     P_0 & = 1
 
 The recurrence coefficients for the Krawtchouk polynomials come analytically
-and read for :math:`i \geq 0`:
+and read for :math:`0 \leq i < n`:
 
 .. math::
 
@@ -60,7 +60,7 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 -1.73205 + 1.1547 * X
-1.73205 - 3.4641 * X + 1.1547 * X^2)
+1.73205 - 3.4641 * X + 1.1547 * X^2
 >>> print(polynomial_factory.getRecurrenceCoefficients(1))
 [1,-1.5,-0.866025]RAW"
 
