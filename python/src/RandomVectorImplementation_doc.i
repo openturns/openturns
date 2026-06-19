@@ -21,16 +21,6 @@ OT_RandomVector_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RandomVectorImplementation::getDomain
-"Get the domain failure.
-
-Returns
--------
-domain : :class:`~openturns.Domain`
-    Domain failure used to define the :class:`~openturns.RandomVector`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::RandomVectorImplementation::getProcess
 "Get the stochastic process.
 
