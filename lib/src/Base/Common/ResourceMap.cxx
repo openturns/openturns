@@ -1022,7 +1022,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FaureSequence-InitialSeed", 1);
 
   // HaltonSequence parameters //
-  addAsString("HaltonSequence-Scrambling", "NONE");
+  addAsString("HaltonSequence-Scrambling", "NONE", {"NONE", "REVERSE", "RANDOM"});
   addAsUnsignedInteger("HaltonSequence-InitialSeed", 1);
 
   // HaselgroveSequence parameters //
@@ -1035,7 +1035,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ReverseHaltonSequence-InitialSeed", 1);
 
   // SobolSequence parameters //
+  addAsString("SobolSequence-Scrambling", "NONE", {"NONE", "MULTIDIGIT"});
   addAsUnsignedInteger("SobolSequence-InitialSeed", 1);
+  addAsUnsignedInteger("SobolSequence-MultidigitBits", 31);
+  addAsUnsignedInteger("SobolSequence-MultidigitMultiplier", 16807);
 
   // SobolIndicesExperiment parameters //
   addAsString("SobolIndicesExperiment-SamplingMethod", "MonteCarlo");

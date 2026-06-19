@@ -37,10 +37,12 @@ const Scalar          SobolSequence::Epsilon                  = 1.0 / power2(Max
 #include "SobolSequenceDirections.hxx"
 
 /* Constructor with parameters */
-SobolSequence::SobolSequence(const UnsignedInteger dimension)
+SobolSequence::SobolSequence(const UnsignedInteger dimension,
+                             const String & scrambling)
   : LowDiscrepancySequenceImplementation(dimension)
 {
-  initialize(dimension);
+  // This call will check the value of scrambling and trigger the initialization
+  setScrambling(scrambling);
 }
 
 
@@ -55,7 +57,7 @@ SobolSequence * SobolSequence::clone() const
 void SobolSequence::initialize(const UnsignedInteger dimension)
 {
   LowDiscrepancySequenceImplementation::initialize(dimension);
-  if(!(dimension <= MaximumDimension))
+  if (dimension > MaximumDimension)
     throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumDimension << "], here dimension=" << dimension << ".";
   // copy initial direction numbers
   base_ = Unsigned64BitsIntegerCollection(dimension_ * MaximumBase2Logarithm, 0);
@@ -107,6 +109,7 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 
   // set the seed
   seed_ = ResourceMap::GetAsUnsignedInteger( "SobolSequence-InitialSeed" );
+
 }
 
 
@@ -127,8 +130,22 @@ Point SobolSequence::generate() const
   // for each dimension
   for(UnsignedInteger i = 0; i < dimension_; ++ i )
   {
+    Unsigned64BitsInteger scrambledCoefficient = coefficients_[i];
+
+    if (scrambling_ == "MULTIDIGIT")
+    {
+      // Apply the multi-digit scrambling from Chi et al. (2005):
+      //   y = floor(x * 2^k), the k most-significant bits
+      //   y* = a * y (mod m), m = 2^k - 1
+      //   z = y*/2^k + (x - y/2^k)
+      const Unsigned64BitsInteger y = scrambledCoefficient >> (MaximumBase2Logarithm - multidigitBits_);
+      const Unsigned64BitsInteger yStar = (multidigitMultiplier_ * y) % multidigitModulus_;
+      const Unsigned64BitsInteger mask = ((static_cast<Unsigned64BitsInteger>(1) << multidigitBits_) - 1) << (MaximumBase2Logarithm - multidigitBits_);
+      scrambledCoefficient = (scrambledCoefficient & ~mask) | (yStar << (MaximumBase2Logarithm - multidigitBits_));
+    }
+
     // compute sequence from integer coefficients
-    sequencePoint[i] *= coefficients_[i];
+    sequencePoint[i] *= scrambledCoefficient;
 
     // update integer coefficients for next generation
     coefficients_[i] ^= base_[i * MaximumBase2Logarithm + positionOfLowest0BitOfSeed - 1];
@@ -145,8 +162,42 @@ String SobolSequence::__repr__() const
   OSS oss;
   oss << "class=" << SobolSequence::GetClassName()
       << " coefficients=" << coefficients_
-      << " seed=" << seed_;
+      << " seed=" << seed_
+      << " scrambling=" << scrambling_;
+  if (scrambling_ == "MULTIDIGIT")
+    oss << " multidigitBits=" << multidigitBits_
+        << " multidigitMultiplier=" << multidigitMultiplier_;
   return oss;
+}
+
+
+/* Scrambling accessor */
+void SobolSequence::setScrambling(const String & scrambling)
+{
+  if (scrambling != scrambling_)
+  {
+    if (scrambling != "NONE" &&
+        scrambling != "MULTIDIGIT")
+      throw InvalidArgumentException(HERE) << "Error: valid values for scrambling are \"NONE\" and \"MULTIDIGIT\"";
+    scrambling_ = scrambling;
+    // initialize multidigit scrambling parameters
+    if (scrambling == "MULTIDIGIT")
+      {
+        multidigitBits_ = ResourceMap::GetAsUnsignedInteger("SobolSequence-MultidigitBits");
+        if (!(multidigitBits_ > 0 && multidigitBits_ <= MaximumBase2Logarithm))
+          throw InvalidArgumentException(HERE) << "Error: the \"SobolSequence-MultidigitBits\" key has an invalid value=" << multidigitBits_ << ". It must be strictly positive and less or equal to " << MaximumBase2Logarithm;
+        multidigitModulus_ = (static_cast<Unsigned64BitsInteger>(1) << multidigitBits_) - 1;
+        multidigitMultiplier_ = ResourceMap::GetAsUnsignedInteger("SobolSequence-MultidigitMultiplier");
+        if (multidigitMultiplier_ == 0)
+          throw InvalidArgumentException(HERE) << "Error: the \"SobolSequence-MultidigitMultiplier\" key has an invalid value=" << multidigitMultiplier_ << ". It must be strictly positive.";          
+      }
+    initialize(dimension_);
+  }
+}
+
+String SobolSequence::getScrambling() const
+{
+  return scrambling_;
 }
 
 
@@ -176,6 +227,10 @@ void SobolSequence::save(Advocate & adv) const
   adv.saveAttribute( "base_", base_);
   adv.saveAttribute( "seed_", seed_);
   adv.saveAttribute( "coefficients_", coefficients_);
+  adv.saveAttribute( "scrambling_", scrambling_);
+  adv.saveAttribute( "multidigitBits_", multidigitBits_);
+  adv.saveAttribute( "multidigitModulus_", multidigitModulus_);
+  adv.saveAttribute( "multidigitMultiplier_", multidigitMultiplier_);
 }
 
 
@@ -186,6 +241,14 @@ void SobolSequence::load(Advocate & adv)
   adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
   adv.loadAttribute( "coefficients_", coefficients_);
+  scrambling_ = "NONE";
+  if (adv.hasAttribute("scrambling_"))
+    {
+      adv.loadAttribute( "scrambling_", scrambling_);
+      adv.loadAttribute( "multidigitBits_", multidigitBits_);
+      adv.loadAttribute( "multidigitModulus_", multidigitModulus_);
+      adv.loadAttribute( "multidigitMultiplier_", multidigitMultiplier_);
+    }
 }
 
 

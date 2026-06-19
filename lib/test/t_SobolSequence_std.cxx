@@ -81,6 +81,34 @@ int main(int, char *[])
     Scalar rtol = 10.0 / sampleSize;
     assert_almost_equal(probabilityEstimate, probability, rtol);
 
+    // Test scrambling modes
+    {
+      // Invalid scrambling
+      try
+      {
+        SobolSequence seq(2, "INVALID");
+        // Should not reach here
+        assert_almost_equal(0.0, 1.0);
+      }
+      catch (InvalidArgumentException &)
+      {
+        // Expected
+      }
+    }
+    {
+      // Test MULTIDIGIT scrambling
+      SobolSequence seq(2, "MULTIDIGIT");
+      fullprint << seq << std::endl;
+      seq.generate(5);
+      fullprint << seq << std::endl;
+    }
+    {
+      // Test setScrambling
+      SobolSequence seq(2);
+      assert(seq.getScrambling() == "NONE");
+      seq.setScrambling("MULTIDIGIT");
+      assert(seq.getScrambling() == "MULTIDIGIT");
+    }
   }
 
   catch (TestFailed & ex)

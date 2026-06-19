@@ -60,3 +60,49 @@ print("computed probability =", probabilityEstimate)
 print("expected probability =", probability)
 rtol = 10.0 / sampleSize
 ott.assert_almost_equal(probability, probabilityEstimate, rtol)
+
+# Test scrambling modes
+
+# MULTIDIGIT scrambling
+sequence = ot.SobolSequence(2, "MULTIDIGIT")
+print(sequence)
+sample = sequence.generate(5)
+print(sample)
+
+# Invalid scrambling
+with ott.assert_raises(TypeError):
+    ot.SobolSequence(2, "INVALID")
+
+# Test setScrambling
+sequence = ot.SobolSequence(2)
+print(sequence)
+assert sequence.getScrambling() == "NONE"
+# After changing scrambling, the sequence should be reinitialized
+sequence.setScrambling("MULTIDIGIT")
+assert sequence.getScrambling() == "MULTIDIGIT"
+
+# Test exceptions due to bad ResourceMap values
+old_bits = ot.ResourceMap.GetAsUnsignedInteger("SobolSequence-MultidigitBits")
+old_multiplier = ot.ResourceMap.GetAsUnsignedInteger(
+    "SobolSequence-MultidigitMultiplier"
+)
+try:
+    # Invalid MultidigitBits (too small)
+    ot.ResourceMap.SetAsUnsignedInteger("SobolSequence-MultidigitBits", 0)
+    with ott.assert_raises(TypeError):
+        ot.SobolSequence(2, "MULTIDIGIT")
+
+    # Invalid MultidigitBits (too large)
+    ot.ResourceMap.SetAsUnsignedInteger("SobolSequence-MultidigitBits", 100)
+    with ott.assert_raises(TypeError):
+        ot.SobolSequence(2, "MULTIDIGIT")
+
+    # Invalid MultidigitMultiplier (zero)
+    ot.ResourceMap.SetAsUnsignedInteger("SobolSequence-MultidigitMultiplier", 0)
+    with ott.assert_raises(TypeError):
+        ot.SobolSequence(2, "MULTIDIGIT")
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("SobolSequence-MultidigitBits", old_bits)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "SobolSequence-MultidigitMultiplier", old_multiplier
+    )

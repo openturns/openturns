@@ -82,6 +82,11 @@ Bibliography
     *Log-Transform Kernel Density Estimation of Income Distribution* WP 2015-Nr 6,
     AMSE Aix Marseille School of Economics.
     `pdf <https://www.amse-aixmarseille.fr/sites/default/files/_dt/2012/wp_2015_-_nr_06.pdf>`__
+.. [chi2005] Chi H., Beerli P., Evans D.W., Mascagni M. (2005)
+    *On the Scrambled Sobol Sequence.*
+    In: Sunderam V.S. et al. (eds) Computational Science – ICCS 2005.
+    Lecture Notes in Computer Science, vol 3516. Springer.
+    `pdf <https://doi.org/10.1007/11428862_105>`__
 .. [chihara1978] Chihara, T. S. (1978).
     *An introduction to orthogonal polynomials.* Dover publications.
 .. [chapelle2002] Chapelle, O., Vapnik, V., & Bengio, Y. (2002).
