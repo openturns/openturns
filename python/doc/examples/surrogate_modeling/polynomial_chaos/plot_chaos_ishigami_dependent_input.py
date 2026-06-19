@@ -1,6 +1,6 @@
 """
-Create a FCE for dependent inputs: transformation vs domination
-===============================================================
+Create a FCE for dependent inputs: transformation or not
+========================================================
 """
 
 # %%
@@ -13,7 +13,7 @@ Create a FCE for dependent inputs: transformation vs domination
 # We provide one input sample and one output sample of the Ishigami function. We build two meta models:
 #
 # - Meta model 1: we use an isoprobabilistic transformation that maps the input distribution to another one with independent marginals.
-# - Meta model 2: we use the domination method: the basis of the projection space is not orthonormal to the input distribution.
+# - Meta model 2: we do not any isoprobabilistic transformation: the basis of the projection space is not orthonormal to the input distribution.
 #
 
 
@@ -146,9 +146,9 @@ view = otv.View(graph)
 
 
 # %%
-# Meta model 2: Domination method
-# -------------------------------
-# Now, we want to use the domination method, which means that the basis created by the
+# Meta model 2: No transformation method
+# --------------------------------------
+# Now, we do not want to use any transformation, which means that the basis created by the
 # adaptive strategy is used to project the model. This basis is not orthonormal to
 # :math:`\mu_{\inputRV}`.
 #
@@ -168,7 +168,7 @@ graph.setTitle(f"R2={r2Score * 100:.2f}%, use domination = true")
 view = otv.View(graph)
 
 # %%
-# We can see that the meta model obtained with the domination method is largely better than
+# We can see that the meta model obtained is largely better than
 # the meta model
 # obtained with the Transformation method, even though
 # the multivariate basis of the approximation space is not orthonormal to the input distribution

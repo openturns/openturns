@@ -243,8 +243,6 @@ This instrumental measure is such that:
 - the support of :math:`\tilde{p}` is larger than the support of :math:`\mu_{\inputRV}`,
 - :math:`\tilde{p}` has independent components.
 
-This choice is done in the **domination** strategy.
-
 Once the basis has been chosen, the enumeration function helps to enumerate the
 elements of the basis in a specific order
 (see :ref:`enumeration_multivariate_basis` and :ref:`enumeration_strategy` for more
@@ -266,7 +264,7 @@ Estimate the coefficients
 In this section, we give some elements to estimate the coefficients of the expansion.
 
 The vector of coefficients is the solution of the linear least-squares problem defined in
-:ref:`functional_chaos` by equation :eq:`metaModeleF`. Refer to :ref:`least_squares`
+equation :eq:`metaModeleF`. Refer to :ref:`least_squares`
 for more details on the resolution of the least-squares problem.
 
 The choice of basis of :math:`\cP_n` has a major impact on the conditioning of the
@@ -381,8 +379,8 @@ The orthogonality of the functions implies that:
 for any non-zero :math:`i\neq 0`.
 
 In that case, the Sobol' indices can easily be deduced from the coefficients
-:math:`(a_k)_{k \in I_n, k\neq 0}`: see :class:`~openturns.FunctionalChaosSobolIndices` for
-more details on this topic.
+:math:`(a_k)_{k \in I_n, k\neq 0}`: for more details on this topic, see
+:class:`~openturns.FunctionalChaosSobolIndices`.
 
 .. topic:: API:
 
