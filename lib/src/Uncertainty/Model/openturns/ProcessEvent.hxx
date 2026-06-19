@@ -74,6 +74,12 @@ public:
   /** Whether it is an event */
   Bool isEvent() const override;
 
+  /** Fixed value accessor */
+  Point getFrozenRealization(const Point & fixedPoint) const override;
+
+  /** Fixed sample accessor */
+  Sample getFrozenSample(const Sample & fixedSample) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
