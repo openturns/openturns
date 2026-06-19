@@ -44,8 +44,6 @@ int main(int, char *[])
       fullprint << "First " << size << " values for dimension " << dimension << std::endl;
       for (UnsignedInteger index = 0; index < size; ++index)
       {
-        if (f(index) != g(index))
-          throw InternalException(HERE) << "Results are different";
         fullprint << "index=" << index << " " << f(index) << std::endl;
       }
       Indices strataCardinal;

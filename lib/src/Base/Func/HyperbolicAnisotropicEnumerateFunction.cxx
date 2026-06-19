@@ -82,10 +82,12 @@ String HyperbolicAnisotropicEnumerateFunction::__repr__() const
 void HyperbolicAnisotropicEnumerateFunction::initialize()
 {
   cache_.clear();
-  candidates_.clear();
+  candidates_ = IndiceCache();
+  visited_.clear();
   // insert indice 0, with q-norm 0.0 in the candidate list
-  ValueType zero(Indices(getDimension(), 0), 0.0);
-  candidates_.insert(candidates_.begin(), zero);
+  Indices zeroIndices(getDimension(), 0);
+  visited_.insert(zeroIndices);
+  candidates_.push(ValueType(zeroIndices, 0.0));
 }
 
 
@@ -125,11 +127,11 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
     if (candidates_.empty())
       throw NotDefinedException(HERE) << "Cannot enumerate up to index=" << index << " because of the bounds.";
 
-    // the current indice is the first candidate in the list as we maintain q-norm sorting
-    ValueType current(candidates_.front());
+    // the current indice is the top of the min-heap
+    ValueType current(candidates_.top());
 
     // move it to cache
-    candidates_.pop_front();
+    candidates_.pop();
 
     // detect a norm leap
     if ((cache_.getSize() > 0) && (current.second > qNorm(cache_[cache_.getSize() - 1]))) strataCumulatedCardinal_.add( cache_.getSize() );
@@ -143,28 +145,8 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
       if (nextIndices[j] >= upperBound_[j])
         continue;
       ++ nextIndices[j];
-
-      Scalar nextNorm = qNorm(nextIndices);
-      ValueType next(nextIndices, nextNorm);
-      IndiceCache::iterator it = candidates_.begin();
-
-      // we'll try to insert the indice in the list according to its q-norm
-      while ((it != candidates_.end()) && (it->second < nextNorm)) ++ it;
-
-      // check if the same indice was already added
-      Bool duplicate = false;
-      while ((it != candidates_.end()) && (it->second == nextNorm))
-      {
-        if (it->first == nextIndices)
-        {
-          duplicate = true;
-          break;
-        }
-        ++ it;
-      }
-
-      // insert it in the list if not a duplicate
-      if (!duplicate) candidates_.insert(it, next);
+      if (visited_.insert(nextIndices).second)
+        candidates_.push(ValueType(nextIndices, qNorm(nextIndices)));
     } // loop over neighbours
   }
   return cache_[index];
