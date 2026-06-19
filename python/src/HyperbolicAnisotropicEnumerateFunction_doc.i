@@ -49,15 +49,15 @@ is the result of the hyperbolic quasi-norm.
 >>> for i in range(10):
 ...     print(enumerateFunction(i))
 [0,0]
-[1,0]
 [0,1]
-[2,0]
+[1,0]
 [0,2]
-[3,0]
+[2,0]
 [0,3]
+[3,0]
+[0,4]
 [1,1]
 [4,0]
-[0,4]
 
 In the following example, we create an hyperbolic enumerate function
 in 3 dimensions based on the weights [1,2,4].

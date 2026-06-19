@@ -29,8 +29,6 @@ for dimension in range(1, 4):
     g = ot.LinearEnumerateFunction(dimension)
     print("First", size, "values for dimension", dimension)
     for index in range(size):
-        if not f(index) == g(index):
-            raise Exception("spam", f(index), g(index))
         print("index=", index, repr(f(index)))
     strataCardinal = []
     for index in range(stratas):

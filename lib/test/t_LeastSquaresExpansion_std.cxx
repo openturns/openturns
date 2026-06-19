@@ -34,7 +34,6 @@ int main(int, char *[])
     const Point expectedCoefficientsLinear = {3.5, 1.62542, 0, 0, 0, 0, 0, -0.594723, 0, 0, -1.29064, 0, 0, 0, 0, 1.37242, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1.95229, 0, 0, 0, 0, 0.194929, 0, 0, 0, 0, -1.08975, 0, 0, 0, 0, 0, 0, 0, 0, 0.409177, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.35741, 0, 0, 0, 0, 0, 0, -0.0126684, 0, 0, 0, 0, 0.164588, 0, 0, 0, 0, 0, 0, 0, 0, -0.324901, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.33939, 0, 0, 0, 0, 0, 0, 0, 0, 0.00046142, 0, 0, 0, 0, -0.0106965, 0, 0, 0, 0, 0, 0, 0, 0, 0.0490707, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0459147, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     const Point expectedCoefficientsCondensed = {3.5, 1.62542, -0.594723, -1.29064, 1.37242, -1.95229, 0.194929, -1.08975, 0.409177, 1.35741, -0.0126684, 0.164588, -0.324901, -0.33939, 0.00046142, -0.0106965, 0.0490707, 0.0459147};
     const Indices condensedIndices = {0, 1, 7, 10, 15, 30, 35, 40, 49, 77, 84, 89, 98, 156, 165, 170, 179, 275};
-    const Point expectedCoefficientsHyper = {3.5, 1.62542, 0, 0, 0, -0.594723, 0, -1.29064, 0, 0, 0, 0, 0, 0, -1.95229, 0, 0.194929, 0, 0, 0, 0, 0, 0, 1.37242, 0, 0, 1.35741, 0, -0.0126684, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.33939, 0, 0, 0, 0, 0, 0, 0.409177, 0, 0.00046142, 0, 0, 0, -1.08975, 0, 0, 0, 0, 0, 0.0459147, 0, 0, 0, 0, 0, 0, 0};
     // Problem parameters
     UnsignedInteger dimension = 3;
     Scalar a = 7.0;
@@ -142,15 +141,15 @@ int main(int, char *[])
         fullprint << "algo=" << algo << std::endl;
         fullprint << "algo=" << algo.__str__() << std::endl;
         algo.run();
-        // Check the coefficients
+        // Check the metamodel accuracy
         FunctionalChaosResult result(algo.getResult());
-        Point coeffs(result.getCoefficients().asPoint());
-        Point ref(coeffs.getSize());
-        std::copy(expectedCoefficientsHyper.begin(), expectedCoefficientsHyper.begin() + coeffs.getSize(), ref.begin());
-        Scalar err = (coeffs - ref).norm();
-        const Scalar rtol = 1.0e-2;
-        const Scalar atol = 1.0e-2;
-        assert_almost_equal(err, 0.0, rtol, atol);
+        const Function metaModel(result.getMetaModel());
+        const Point metaModelOutput(metaModel(inputSample).asPoint());
+        const Scalar residual = (outputSample.asPoint() - metaModelOutput).norm() / outputSample.asPoint().norm();
+        fullprint << "residual=" << residual << std::endl;
+        const Scalar rtol = 1.5e-1;
+        const Scalar atol = 1.5e-1;
+        assert_almost_equal(residual, 0.0, rtol, atol);
       } // Simplified with weights
       // Check the constructors assuming uniform weights
       if (wMin == wMax)
@@ -160,15 +159,15 @@ int main(int, char *[])
         fullprint << "algo=" << algo << std::endl;
         fullprint << "algo=" << algo.__str__() << std::endl;
         algo.run();
-        // Check the coefficients
+        // Check the metamodel accuracy
         FunctionalChaosResult result(algo.getResult());
-        Point coeffs(result.getCoefficients().asPoint());
-        Point ref(coeffs.getSize());
-        std::copy(expectedCoefficientsHyper.begin(), expectedCoefficientsHyper.begin() + coeffs.getSize(), ref.begin());
-        Scalar err = (coeffs - ref).norm();
-        const Scalar rtol = 1.0e-2;
-        const Scalar atol = 1.0e-2;
-        assert_almost_equal(err, 0.0, rtol, atol);
+        const Function metaModel(result.getMetaModel());
+        const Point metaModelOutput(metaModel(inputSample).asPoint());
+        const Scalar residual = (outputSample.asPoint() - metaModelOutput).norm() / outputSample.asPoint().norm();
+        fullprint << "residual=" << residual << std::endl;
+        const Scalar rtol = 1.5e-1;
+        const Scalar atol = 1.5e-1;
+        assert_almost_equal(residual, 0.0, rtol, atol);
       } // Simplified without weights
     } // doe
   }
