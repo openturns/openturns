@@ -126,7 +126,7 @@ Field P1LagrangeEvaluation::getField() const
 void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
 {
   const UnsignedInteger nrVertices = mesh.getVerticesNumber();
-  if (nrVertices != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << nrVertices << " vertices";
+  if (nrVertices != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with " << values_.getSize() << " vertices, got " << nrVertices << " vertices";
   mesh_ = mesh;
   nearestNeighbour_.setSample(mesh_.getVertices());
   enclosingSimplex_.setVerticesAndSimplices(mesh_.getVertices(), mesh_.getSimplices());
@@ -273,7 +273,7 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
   {
     const P1LagrangeEvaluationComputeSamplePolicy policy( inS, result, *this );
     TBBImplementation::ParallelFor( 0, size, policy );
-  } // The input sample is different from
+  } // The input sample is different from the mesh vertices
   callsNumber_.fetchAndAdd(size);
   return result;
 }
