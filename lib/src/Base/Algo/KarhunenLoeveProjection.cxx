@@ -57,9 +57,9 @@ KarhunenLoeveProjection * KarhunenLoeveProjection::clone() const
 }
 
 /* Comparison operator */
-Bool KarhunenLoeveProjection::operator ==(const KarhunenLoeveProjection & ) const
+Bool KarhunenLoeveProjection::operator ==(const KarhunenLoeveProjection & other) const
 {
-  return true;
+  return result_ == other.result_;
 }
 
 /* String converter */
