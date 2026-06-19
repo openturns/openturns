@@ -4,13 +4,13 @@ Residual=0.0212678
 RelativeError=0.20229
 Uniform weight, spherical penalization
 Coefficients= [-0.0288004,0.0729819,0.334311,0.57618]
-Residual=0.0294134
+Residual=0.0261761
 Non uniform weight, no penalization
 Coefficients= [-0.244662,-0.45609,0.657895,1.30075]
 Residual=0.0590532
 Non uniform weight, spherical penalization
 Coefficients= [-0.222214,-0.28088,0.59494,1.07289]
-Residual=0.065384
+Residual=0.0601809
 Non uniform weight, non spherical penalization
 Coefficients= [-0.205926,-0.283995,0.575234,1.07306]
-Residual=0.0657827
+Residual=0.0602823
