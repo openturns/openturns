@@ -1,7 +1,7 @@
 %feature("docstring") OT::KrawtchoukFactory
 R"RAW(Krawtchouk specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Binomial` distribution.
+For the :class:`~openturns.Binomial` distribution :math:`\cB(n,p)`.
 
 Parameters
 ----------

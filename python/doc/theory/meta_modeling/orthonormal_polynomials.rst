@@ -34,24 +34,24 @@ Below is a table showing some usual sequences of
 polynomials orthonormal with respect to continuous distribution :math:`\mu`.
 
 .. csv-table::
-   :header: "Ortho. poly.", ":math:`P_n(x)`", "Orthonormal distribution", "Recurrence coefficients :math:`(a_n,b_n,c_n)`"
+   :header: "Ortho. poly.", "Orthonormal distribution", "Recurrence coefficients :math:`(a_n,b_n,c_n)`"
    :widths: auto
 
-   "Hermite", ":math:`{He}_n(x)^{\strut}`", ":math:`\cN(0,1)`", ":math:`\begin{array}{ccc} a_n & = & \frac{1}{\sqrt{n+1}} \\     b_n & = & 0 \\ c_n & = &  - \sqrt{\frac{n}{n+1}} \end{array}`"
-   "Legendre", ":math:`\begin{array}{c} {Le}_n(x) \\ \\ \alpha>-1 \\ \end{array}`", ":math:`\cU(-1,1)`", ":math:`\begin{array}{ccc} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \\     b_n & = & 0 \\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} } \end{array}`"
-   "Laguerre", ":math:`L_n^{(\alpha)}(x)`", "Gamma(k, 1, 0)", ":math:`\begin{array}{ccc}  \omega_{n} & = & \left((n+1)(n+k+1) \right)^{-1/2} \\ a_n & = & \omega_{n} \\     b_n & = & -(2n+k+1)~\omega_{n} \\ c_n & = &  -\sqrt{(n+k)n}~\omega_{n} \end{array}`"
-   "Jacobi", ":math:`\begin{array}{c} J^{(\alpha,\beta)}_n(x) \\ \\ \\ \alpha,\beta>-1 \\ \end{array}`", "Beta(:math:`\alpha+1, \beta+1, -1, 1`)", ":math:`\begin{array}{ccc}  K_{1,n} & = & \frac{2n+\alpha + \beta + 3}{(n+1)(n+\alpha+1)(n+\beta+1)(n+\alpha+\beta+1)} \\ \\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta + 1) K_{1,n}} \\ \\a_n & = & K_{2,n}(2n+\alpha + \beta + 2)  \\   \\  b_n & = & K_{2,n}\frac{(\alpha - \beta)(\alpha + \beta)}{2n+\alpha+\beta} \\ \\ c_n & = & - \frac{2n+\alpha+\beta + 2}{2n+\alpha+\beta} \Big[(n+\alpha)(n+\beta) \\ & & \times (n+\alpha+\beta)n\frac{K_{1,n}}{2n+\alpha+\beta-1}\Big]^{1/2}  \end{array}`"
+   "Hermite", ":math:`{He}_n(x)^{\strut}`", "Normal :math:`\cN(0,1)`", ":math:`\begin{array}{ccc} a_n & = & \frac{1}{\sqrt{n+1}} \\     b_n & = & 0 \\ c_n & = &  - \sqrt{\frac{n}{n+1}} \end{array}`"
+   "Legendre", "Uniform :math:`\cU(-1,1)`", ":math:`\begin{array}{ccc} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \\     b_n & = & 0 \\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} } \end{array}`"
+   "Laguerre (k)", "Gamma(k, 1, 0), :math:`k >-1`", ":math:`\begin{array}{ccc}  \omega_{n} & = & \left((n+1)(n+k+1) \right)^{-1/2} \\ a_n & = & \omega_{n} \\     b_n & = & -(2n+k+1)~\omega_{n} \\ c_n & = &  -\sqrt{(n+k)n}~\omega_{n} \end{array}`"
+   "Jacobi(:math:`\alpha, \beta`)", "Beta(:math:`\alpha, \beta, -1, 1`), :math:`\alpha, \beta >-1`", ":math:`\begin{array}{ccc}  K_{1,n} & = & \frac{2n+\alpha + \beta + 3}{(n+1)(n+\alpha+1)(n+\beta+1)(n+\alpha+\beta+1)} \\ \\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta + 1) K_{1,n}} \\ \\a_n & = & K_{2,n}(2n+\alpha + \beta + 2)  \\   \\  b_n & = & K_{2,n}\frac{(\alpha - \beta)(\alpha + \beta)}{2n+\alpha+\beta} \\ \\ c_n & = & - \frac{2n+\alpha+\beta + 2}{2n+\alpha+\beta} \Big[(n+\alpha)(n+\beta) \\ & & \times (n+\alpha+\beta)n\frac{K_{1,n}}{2n+\alpha+\beta-1}\Big]^{1/2}  \end{array}`"
 
 Furthermore, two families of orthonormal polynomials with respect to
 discrete  distribution are well-known and detailed in the Table below.
 
 .. csv-table::
-   :header: "Ortho. poly.", ":math:`P_n(x)`", "Probability mass function", "Recurrence coefficients :math:`(a_n,b_n,c_n)`"
+   :header: "Ortho. poly.", "Probability mass function", "Recurrence coefficients :math:`(a_n,b_n,c_n)`"
    :widths: auto
 
-   "Charlier", ":math:`\begin{array}{c} Ch^{(\lambda)}_n(x) \\ \\ \lambda>0 \\ \end{array}`", ":math:`\cP(\lambda)`", ":math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}} \\   \\  b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \\ \\ c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \end{array}`"
-   "Krawtchouk\ :math:`^{\dagger}`", ":math:`\begin{array}{c} Kr^{(m,p)}_n(x) \\ \\ m \in \Nset~,~p \in [0,1] \\ \end{array}`", "Bin(m,p)", ":math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \\   \\  b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \\ \\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \end{array}`"
-   "Meixner \ :math:`^{\dagger}`", ":math:`\begin{array}{c} M^{(r,p)}_n(x) \\ \\ r >0~,~p \in [0,1] \\ \end{array}`", "Polya(r,p)", ":math:`\begin{array}{ccc} a_n & = & - \frac{p-1}{\sqrt{p (n + 1) (n + r)}} \\   \\  b_n & = & \frac{p(n+r)+n}{\sqrt{p(n+1)(n+r)}} \\ \\ c_n & = &  - \frac{\sqrt{p n (n + r - 1)}}{\sqrt{p (n + 1) (n + r)}}\end{array}`"
+   "Charlier :math:`(\lambda)`",  "Poisson :math:`\cP(\lambda), \lambda >0`", ":math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}} \\   \\  b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \\ \\ c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \end{array}`"
+   "Krawtchouk\ :math:`^{\dagger}`",  "Binomial :math:`\cB(m,p), m \in \Nset, 0 \leq p \leq 1`", ":math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \\   \\  b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \\ \\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \end{array}`"
+   "Meixner \ :math:`^{\dagger}`",  "Polya :math:`\cP(r,p), r>0, 0 \leq p \leq 1`", ":math:`\begin{array}{ccc} a_n & = & - \frac{p-1}{\sqrt{p (n + 1) (n + r)}} \\   \\  b_n & = & \frac{p(n+r)+n}{\sqrt{p(n+1)(n+r)}} \\ \\ c_n & = &  - \frac{\sqrt{p n (n + r - 1)}}{\sqrt{p (n + 1) (n + r)}}\end{array}`"
 
 
 Notice that the Krawtchouk polynomials are only defined up to the
