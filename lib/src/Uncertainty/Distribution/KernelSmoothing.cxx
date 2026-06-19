@@ -586,7 +586,7 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
     // lower < 0
     if (doLower && (x <= xMin - h * lower)) newSampleData.add(2.0 * xMin - x);
     // upper > 0
-    else if (doUpper && (x >= xMax - h * upper)) newSampleData.add(2.0 * xMax - x);
+    if (doUpper && (x >= xMax - h * upper)) newSampleData.add(2.0 * xMax - x);
   }
   // Now, work on the extended sample
   SampleImplementation newSample(newSampleData.getSize(), 1);
