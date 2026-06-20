@@ -1,7 +1,8 @@
 %feature("docstring") OT::ChebychevFactory
 R"RAW(Chebychev specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Arcsine` distribution.
+For the :class:`~openturns.Arcsine` distribution :math:`\cA(-1,1)` which is a :class:`~openturns.Beta` distribution
+:math:`B(1/2, 1/2, -1,1)`.
 
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
@@ -29,6 +30,8 @@ Examples
 1
 1.41421 * X
 -1.41421 + 2.82843 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[2,0,-1.41421]
 
 >>> polynomial_factory = ot.ChebychevFactory(0.0, 2.0)
 >>> print(polynomial_factory)
