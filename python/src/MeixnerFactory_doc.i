@@ -23,7 +23,7 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i \geq 0\\
+    P_{i + 1} & = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad i \geq 0 \\
     P_{-1} & = 0 \\
     P_0 & = 1
 
