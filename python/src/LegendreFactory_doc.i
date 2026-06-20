@@ -1,7 +1,7 @@
 %feature("docstring") OT::LegendreFactory
 R"RAW(Legendre specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Uniform` distribution.
+For the :class:`~openturns.Uniform` distribution :math:`\cU(-1,1)`.
 
 Notes
 -----
