@@ -35,4 +35,7 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 X
--0.707107 + 0.707107 * X^2)RAW"
+-0.707107 + 0.707107 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[0.707107,0,-0.707107]
+)RAW"
