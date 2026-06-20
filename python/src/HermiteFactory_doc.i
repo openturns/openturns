@@ -38,6 +38,8 @@ Examples
 1
 X
 -0.707107 + 0.707107 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[0.707107,0,-0.707107]
 
 >>> polynomial_factory = ot.HermiteFactory(1.0, 2.0)
 >>> print(polynomial_factory)
