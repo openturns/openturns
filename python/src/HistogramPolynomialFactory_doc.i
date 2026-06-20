@@ -39,7 +39,6 @@ Examples
 1
 -2.56273 + 1.13899 * X
 7.80593 - 7.42767 * X + 1.5268 * X^2
--0.707107 + 0.707107 * X^2
 >>> print(polynomial_factory.getRecurrenceCoefficients(1))
 [1.34049,-3.50519,-1.17691]
 )RAW"
