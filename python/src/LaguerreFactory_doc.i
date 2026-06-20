@@ -56,7 +56,10 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 -1 + X
-1 - 2 * X + 0.5 * X^2)RAW"
+1 - 2 * X + 0.5 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[0.5,-1.5,-0.5]
+)RAW"
 
 // ---------------------------------------------------------------------
 
