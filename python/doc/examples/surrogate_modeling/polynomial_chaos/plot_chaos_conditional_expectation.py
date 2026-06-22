@@ -18,7 +18,7 @@ Reduce the dimension of a model
 # %%
 # Introduction
 # ~~~~~~~~~~~~
-# Let :math:`\inputRV \in \Rset^{\inputDim}` be a random vector with finite mean and 
+# Let :math:`\inputRV \in \Rset^{\inputDim}` be a random vector with finite mean and
 # :math:`\model` be a model:
 #
 # .. math::
@@ -78,8 +78,8 @@ Reduce the dimension of a model
 # .. math::
 #    :label: ModelFCE_ex
 #
-#    g(\inputReal) 
-#    = \sum_{\vect{\alpha} \in \set{J}^P} 
+#    g(\inputReal)
+#    = \sum_{\vect{\alpha} \in \set{J}^P}
 #    a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\inputReal)
 #
 # and the orthonormal basis (which is a tensorized basis) can be written as:
@@ -95,7 +95,7 @@ Reduce the dimension of a model
 # .. math::
 #
 #    \widehat{\model}(\vect{x}_{\vect{u}})
-#    = \sum_{\vect{\alpha} \in \set{J}^P} 
+#    = \sum_{\vect{\alpha} \in \set{J}^P}
 #    \left(a_{\vect{\alpha}} \prod_{i \in \bar{\vect{u}}} \pi_{\alpha_i}^{(i)}(x_i^0)\right)
 #    \prod_{j \in \vect{u}} \pi_{\alpha_j}^{(j)}(x_j).
 #
@@ -110,8 +110,8 @@ Reduce the dimension of a model
 #
 # .. math::
 #
-#   \widehat{\model}(\vect{u})\left(\inputReal_{\vect{u}}\right)  = 
-#   \mathbb{E}_{\vect{X}_{\overline{\vect{u}}}} 
+#   \widehat{\model}(\vect{u})\left(\inputReal_{\vect{u}}\right)  =
+#   \mathbb{E}_{\vect{X}_{\overline{\vect{u}}}}
 #    \left[\model(\inputRV) | \inputRV_{\vect{u}} = \inputReal_{\vect{u}}\right]
 #
 # for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
