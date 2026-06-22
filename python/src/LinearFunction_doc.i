@@ -18,7 +18,7 @@ defined as :
 .. math::
 
     f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
-        & \vect{x} \mapsto \mat{A} ( \vect{x} - \vect{b} ) + \vect{c}
+        & \vect{x} \mapsto \vect{c} + \mat{A} ( \vect{x} - \vect{b} )
 
 where:
 
