@@ -225,125 +225,10 @@ coefficientsHistory : 2-d sequence of float
 %feature("docstring") OT::FunctionalChaosResult::getConditionalExpectation
 R"RAW(Get the conditional expectation of the expansion given one vector input.
 
-This method returns the functional chaos result corresponding to the conditional 
+This method returns the functional chaos result corresponding to the conditional
 expectation of the output given an input vector.
-Indeed, the conditional expectation of a polynomial chaos expansion is, again, 
-a polynomial chaos expansion.
-This is possible only if the marginals of the input distribution are independent.
-Otherwise, an exception is generated.
-An example is provided in :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_conditional_expectation`.
 
-We consider the notations introduced in :any:`functional_chaos`.
-Let :math:`\inputRV \in \Rset^{\inputDim}` be the input and let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
-be a set of marginal indices. 
-Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 
-corresponding to the group of input variables where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
-is the number of input variables in the group.
-Let :math:`\metaModel(\inputRV)` be the polynomial chaos
-expansion of the physical model :math:`\model`.
-This function returns the functional chaos expansion of:
-
-.. math::
-
-    \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right) 
-    = \Expect{\metaModel(\inputRV) | \inputRV_{\vect{u}} = \inputReal_{\vect{u}}}
-
-for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
-
-**Mathematical analysis**
-
-The mathematical derivation is better described in the standard space
-:math:`\standardInputSpace` than in the physical space :math:`\physicalInputSpace` and 
-this is why we consider the former.
-Assume that the basis functions :math:`\{\psi_{\vect{\alpha}}\}_{\vect{\alpha} \in \set{J}^P}` 
-are defined by the tensor product:
-
-.. math::
-
-    \psi_{\vect{\alpha}}(\standardReal)
-    = \prod_{i = 1}^\inputDim \pi_{\alpha_i}^{(i)}(z_i)
-
-for any :math:`\vect{\alpha} \in \set{J}^P` and any 
-:math:`\standardReal \in \standardInputSpace` where 
-:math:`\left\{\pi_k^{(i)}\right\}_{k \geq 0}` is the set of orthonormal  
-polynomials of degree :math:`k` for the :math:`i`-th input marginal. 
-Assume that the PCE to order :math:`P` is:
-
-.. math::
-
-    \widetilde{h}(\standardReal) 
-    = \sum_{\vect{\alpha} \in \set{J}^P} 
-    a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\standardReal)
-
-for any :math:`\standardReal \in \standardInputSpace`. 
-Assume that the input marginals :math:`\{Z_i\}_{i = 1, ..., \inputDim}` are independent. 
-Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` be a group 
-of variables with dimension :math:`\operatorname{card}(\vect{u}) \in \Nset`. 
-Assume that :math:`\standardInputSpace` is the Cartesian product of vectors which 
-have components in the group :math:`\vect{u}` and other components, 
-i.e. assume that:
-
-.. math::
-
-    \standardInputSpace = \standardInputSpace_{\vect{u}} \times \standardInputSpace_{\overline{\vect{u}}}
-
-where :math:`\standardInputSpace_{\vect{u}} \subseteq \Rset^{|\vect{u}|}` 
-and :math:`\standardInputSpace_{\overline{\vect{u}}} \subseteq \Rset^{|\overline{\vect{u}}|}`. 
-Let :math:`\widetilde{h}_{\vect{u}}^{\operatorname{ce}}` be the conditional expectation of the function :math:`\widetilde{h}` 
-given :math:`\standardReal_{\vect{u}}`:
-
-.. math::
-
-    \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
-    = \mathbb{E}_{\standardRV_{\overline{\vect{u}}}} 
-    \left[\widetilde{h}\left(\standardRV\right) | \standardRV_{\vect{u}} 
-    = \standardReal_{\vect{u}}\right]
-
-for any :math:`\standardReal_{\vect{u}} \in \standardInputSpace_{\vect{u}}`. 
-Let :math:`\set{J}_{\vect{u}}^{\operatorname{ce}} \subseteq \set{J}^P` be the 
-set of multi-indices having zero components when the marginal multi-index 
-is not in :math:`\vect{u}`:
-
-.. math::
-
-    \set{J}_{\vect{u}}^{\operatorname{ce}} 
-    = \left\{\vect{\alpha} \in \set{J}^P \; | \; 
-    \alpha_i = 0 \textrm{ if } i \not \in \vect{u}, \; i = 1, ..., \inputDim\right\}.
-
-This set of multi-indices defines the functions that depends on the
-variables in the group :math:`\vect{u}` and *only* them.
-For any :math:`\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}`, let 
-:math:`\psi_{\vect{\alpha}}^{\operatorname{ce}}` be the orthogonal polynomial defined by :
-
-.. math::
-
-    \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
-    = 
-    \begin{cases}
-    \prod_{\substack{i = 1 \\ i \in \vect{u}}}^\inputDim \pi_{\alpha_i}^{(i)} (z_i) & \textrm{if } \alpha_i = 0 \textrm{ for any } i \not \in \vect{u}, \\
-    1 & \textrm{if } \alpha_i = 0 \textrm{ for } i = 1, ..., \inputDim, \\
-    0 & \textrm{otherwise}.
-    \end{cases}
-
-Therefore :
-
-.. math::
-
-    \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
-    = \sum_{\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}}
-    a_{\vect{\alpha}} \psi_{\vect{\alpha}}^{\operatorname{ce}}(\standardReal_{\vect{u}})
-
-for any :math:`\standardReal_{\vect{u}} \in \standardInputSpace_{\vect{u}}`.
-Finally, the conditional expectation of the surrogate model is:
-
-.. math::
-  
-  \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right)
-  = \widetilde{h}_{\vect{u}}^{\operatorname{ce}}(T_{\vect{u}}\left(\inputReal_{\vect{u}}\right))
-
-where :math:`\standardRV_{\vect{u}} = T_{\vect{u}}(\inputRV_{\vect{u}})`
-is the corresponding marginal mapping of the iso-probabilistic mapping
-:math:`\standardRV = T(\inputRV)`.
+Refer to :any:`functional_chaos` to get details on the mathematical result.
 
 Parameters
 ----------
@@ -355,7 +240,38 @@ Returns
 conditionalPCE : :class:`~openturns.FunctionalChaosResult`
     The functional chaos result of the conditional expectation.
     Its input dimension is :math:`\operatorname{card}(\vect{u})` and its output dimension
-    is :math:`\outputDim` (i.e. the output dimension is unchanged).)RAW"
+    is :math:`\outputDim` (i.e. the output dimension is unchanged).
+
+Notes
+-----
+Refer to :any:`functional_chaos` to get details on the mathematical aspects and the notations.
+
+Let :math:`\inputRV \in \Rset^{\inputDim}` be the input random vector distributed according
+to :math:`\mu_{\inputRV}`. It is assumed to have independent marginals. We assume that the functional
+chaos result has been built within the basis :math:`\left(\psi_k\right)_{k \in I_n}`  which is orthonormal
+with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate basis
+orthonormal with respect to  the marginal distributions.
+
+Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
+be a set of marginal indices. 
+Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector 
+corresponding to the group of input variables where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
+is the number of input variables in the group.
+Let :math:`\metaModel(\inputRV)` be the functional chaos
+expansion of the physical model :math:`\model`.
+This function returns the functional chaos expansion of:
+
+.. math::
+
+    \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right) 
+    = \mathbb{E}_{\vect{X}_{\overline{\vect{u}}}} 
+    \left[\metaModel(\inputRV) | \inputRV_{\vect{u}} = \inputReal_{\vect{u}}\right]
+
+for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
+
+An example is provided in :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_conditional_expectation`.
+
+)RAW"
     
 // ---------------------------------------------------------------------
 
