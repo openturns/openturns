@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math
 import openturns as ot
 import openturns.testing as ott
 
@@ -112,3 +113,26 @@ print("Circular variance= %.12g" % distribution.getCircularVariance())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# setMu must update the range
+dist_range = ot.VonMises(0.0, 1.0)
+dist_range.setMu(10.0)
+range_ = dist_range.getRange()
+ott.assert_almost_equal(range_.getLowerBound()[0], 10.0 - math.pi, 1e-12, 1e-12)
+ott.assert_almost_equal(range_.getUpperBound()[0], 10.0 + math.pi, 1e-12, 1e-12)
+
+# computeDDF must not check |x| instead of |x-mu|
+dist_ddf = ot.VonMises(10.0, 2.0)
+# x=9.0: |x| = 9 > pi but |x - mu| = 1 < pi, DDF should be non-zero
+x = 9.0
+ddf_val = dist_ddf.computeDDF([x])
+expected_ddf = -2.0 * math.sin(x - 10.0) * dist_ddf.computePDF([x])
+ott.assert_almost_equal(ddf_val[0], expected_ddf, 1e-12, 1e-14)
+
+# circular variance numerically stable for large kappa
+dist_cv = ot.VonMises(0.0, 5000.0)
+cv = dist_cv.getCircularVariance()
+# For large kappa, circular variance = 1/(2*kappa) + O(1/kappa^2)
+expected_cv = 1.0 / (2.0 * 5000.0)
+# Allow 1e-3 relative tolerance (O(1/kappa^2) correction is ~5e-9 absolute)
+ott.assert_almost_equal(cv, expected_cv, 1e-3, 1e-8)
