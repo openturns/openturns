@@ -156,6 +156,37 @@ Point SobolSequence::generate() const
 }
 
 
+/* Generate a sample of pseudo-random vectors */
+Sample SobolSequence::generate(const UnsignedInteger size) const
+{
+  Sample result(size, dimension_);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    if (seed_ == 0)
+    {
+      ++seed_;
+      // result[k] stays zero-initialized from Sample constructor
+      continue;
+    }
+    const UnsignedInteger positionOfLowest0BitOfSeed = computePositionOfLowest0Bit(seed_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      Unsigned64BitsInteger scrambledCoefficient = coefficients_[i];
+      if (scrambling_ == "MULTIDIGIT")
+      {
+        const Unsigned64BitsInteger y = scrambledCoefficient >> (MaximumBase2Logarithm - multidigitBits_);
+        const Unsigned64BitsInteger yStar = (multidigitMultiplier_ * y) % multidigitModulus_;
+        const Unsigned64BitsInteger mask = ((static_cast<Unsigned64BitsInteger>(1) << multidigitBits_) - 1) << (MaximumBase2Logarithm - multidigitBits_);
+        scrambledCoefficient = (scrambledCoefficient & ~mask) | (yStar << (MaximumBase2Logarithm - multidigitBits_));
+      }
+      result(k, i) = scrambledCoefficient * Epsilon;
+      coefficients_[i] ^= base_[i * MaximumBase2Logarithm + positionOfLowest0BitOfSeed - 1];
+    }
+    ++seed_;
+  }
+  return result;
+}
+
 /* String converter */
 String SobolSequence::__repr__() const
 {

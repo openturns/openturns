@@ -60,6 +60,9 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
     ++logSeed_;
     seedBound_ *= modulus_;
   }
+  // Pre-allocate digit buffers to avoid per-call allocation
+  aI_ = Unsigned64BitsIntegerCollection(logSeed_);
+  aINew_ = Unsigned64BitsIntegerCollection(logSeed_);
   // Binomial coefficients modulo the modulus associated with the current value of the seed
   computeInitialBinomialCoefficients();
 }
@@ -68,55 +71,117 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
 Point FaureSequence::generate() const
 {
   Point realization(dimension_);
-  // First, compute the decomposition of seed_ in base modulus_
-  Unsigned64BitsIntegerCollection aI(logSeed_);
-  UnsignedInteger n = seed_;
+  // Decompose seed_ in base modulus_ into reusable buffer aI_
+  Unsigned64BitsInteger n = seed_;
   for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
-    aI[i] = n % modulus_;
+    aI_[i] = n % modulus_;
     n /= modulus_;
   }
-  // Stores the first component of the point
-  Scalar xI = 0.0;
+  // First component
   Scalar factor = modulusInverse_;
+  Scalar xI = 0.0;
   for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
-    xI += aI[i] * factor;
+    xI += aI_[i] * factor;
     factor *= modulusInverse_;
   }
   realization[0] = xI;
-  // Loop over the dimensions
+  // Loop over remaining dimensions
   for (UnsignedInteger i = 1; i < dimension_; ++i)
   {
-    // Compute the new digits as a matrix/vector multiply using uint64_t
-    Unsigned64BitsIntegerCollection aINew(logSeed_);
-    for (UnsignedInteger j = 0; j < logSeed_; ++j)
-    {
-      Unsigned64BitsInteger aINewJ = 0;
-      // We perform the reduction modulo modulus_ in order to avoid integer overflow as much as possible
-      for (UnsignedInteger k = j; k < logSeed_; ++k) aINewJ = (aINewJ + coefficients_[j + (k * (k + 1)) / 2] * aI[k]) % modulus_;
-      aINew[j] = aINewJ;
-    }
-    // Compute the current component
     Scalar xJ = 0.0;
     factor = modulusInverse_;
     for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {
-      xJ += aINew[j] * factor;
+      Unsigned64BitsInteger aINewJ = 0;
+      // Incremental flat index into the upper-triangular coefficient array
+      UnsignedInteger index = j + (j * (j + 1)) / 2;
+      for (UnsignedInteger k = j; k < logSeed_; ++k)
+      {
+        aINewJ += coefficients_[index] * aI_[k];
+        index += k + 1;
+      }
+      aINew_[j] = aINewJ % modulus_;
+      xJ += aINew_[j] * factor;
       factor *= modulusInverse_;
     }
     realization[i] = xJ;
-    aI = aINew;
-  } // Loop over the dimension
+    std::swap(aI_, aINew_);
+  }
   ++seed_;
-  // Check if the seed has cross its upper bound
+  // Check if the seed has crossed its upper bound
   if (seed_ == seedBound_)
   {
     seedBound_ *= modulus_;
     ++logSeed_;
     updateBinomialCoefficients();
+    if (logSeed_ > aI_.getSize())
+    {
+      aI_.resize(logSeed_);
+      aINew_.resize(logSeed_);
+    }
   }
   return realization;
+}
+
+/* Generate a sample of quasi-random vectors */
+Sample FaureSequence::generate(const UnsignedInteger size) const
+{
+  Sample result(size, dimension_);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    // Decompose seed_ in base modulus_
+    Unsigned64BitsInteger n = seed_;
+    for (UnsignedInteger i = 0; i < logSeed_; ++i)
+    {
+      aI_[i] = n % modulus_;
+      n /= modulus_;
+    }
+    // First component
+    Scalar factor = modulusInverse_;
+    Scalar xI = 0.0;
+    for (UnsignedInteger i = 0; i < logSeed_; ++i)
+    {
+      xI += aI_[i] * factor;
+      factor *= modulusInverse_;
+    }
+    result(k, 0) = xI;
+    // Loop over remaining dimensions
+    for (UnsignedInteger i = 1; i < dimension_; ++i)
+    {
+      Scalar xJ = 0.0;
+      factor = modulusInverse_;
+      for (UnsignedInteger j = 0; j < logSeed_; ++j)
+      {
+        Unsigned64BitsInteger aINewJ = 0;
+        UnsignedInteger index = j + (j * (j + 1)) / 2;
+        for (UnsignedInteger kk = j; kk < logSeed_; ++kk)
+        {
+          aINewJ += coefficients_[index] * aI_[kk];
+          index += kk + 1;
+        }
+        aINew_[j] = aINewJ % modulus_;
+        xJ += aINew_[j] * factor;
+        factor *= modulusInverse_;
+      }
+      result(k, i) = xJ;
+      std::swap(aI_, aINew_);
+    }
+    ++seed_;
+    if (seed_ == seedBound_)
+    {
+      seedBound_ *= modulus_;
+      ++logSeed_;
+      updateBinomialCoefficients();
+      if (logSeed_ > aI_.getSize())
+      {
+        aI_.resize(logSeed_);
+        aINew_.resize(logSeed_);
+      }
+    }
+  }
+  return result;
 }
 
 

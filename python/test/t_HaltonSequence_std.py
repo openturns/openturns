@@ -81,3 +81,22 @@ print("computed probability =", probabilityEstimate)
 print("expected probability =", probability)
 rtol = 10.0 / sampleSize
 ott.assert_almost_equal(probability, probabilityEstimate, rtol)
+
+# Test generate(size) consistency with per-point generate
+sequence = ot.HaltonSequence(5)
+sample_bulk = sequence.generate(100)
+sequence = ot.HaltonSequence(5)
+sample_loop = ot.Sample(0, 5)
+for i in range(100):
+    sample_loop.add(sequence.generate())
+ott.assert_almost_equal(sample_bulk, sample_loop)
+
+# Test with scrambled variants
+for scrambling in ["REVERSE", "RANDOM"]:
+    sequence = ot.HaltonSequence(5, scrambling)
+    sample_bulk = sequence.generate(100)
+    sequence = ot.HaltonSequence(5, scrambling)
+    sample_loop = ot.Sample(0, 5)
+    for i in range(100):
+        sample_loop.add(sequence.generate())
+    ott.assert_almost_equal(sample_bulk, sample_loop)

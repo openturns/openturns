@@ -70,6 +70,21 @@ Point HaselgroveSequence::generate() const
   return realization;
 }
 
+/* Generate a sample of quasi-random vectors */
+Sample HaselgroveSequence::generate(const UnsignedInteger size) const
+{
+  Sample result(size, dimension_);
+  Unsigned64BitsInteger localSeed = seed_;
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    Scalar scratch = 0.0;
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result(k, i) = std::modf(localSeed * base_[i], &scratch);
+    ++localSeed;
+  }
+  seed_ = localSeed;
+  return result;
+}
+
 /* String converter */
 String HaselgroveSequence::__repr__() const
 {

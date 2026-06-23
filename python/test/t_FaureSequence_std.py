@@ -119,3 +119,21 @@ print("computed mean =", computedMean)
 print("expected mean =", gSobolMean)
 rtol = 10.0 / sampleSize
 ott.assert_almost_equal(computedMean, gSobolMean, rtol)
+
+# Test generate(size) consistency with per-point generate
+sequence = ot.FaureSequence(5)
+sample_bulk = sequence.generate(100)
+sequence = ot.FaureSequence(5)
+sample_loop = ot.Sample(0, 5)
+for i in range(100):
+    sample_loop.add(sequence.generate())
+ott.assert_almost_equal(sample_bulk, sample_loop)
+
+# Edge case: generate(size) with seed-boundary crossing
+sequence = ot.FaureSequence(2)
+sample_bulk = sequence.generate(20)
+sequence = ot.FaureSequence(2)
+sample_loop = ot.Sample(0, 2)
+for i in range(20):
+    sample_loop.add(sequence.generate())
+ott.assert_almost_equal(sample_bulk, sample_loop)
