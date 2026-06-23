@@ -48,6 +48,7 @@ public:
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
   Point generate() const override;
+  Sample generate(const UnsignedInteger size) const override;
 
   /** String converter */
   String __repr__() const override;
@@ -82,6 +83,10 @@ private:
 
   /** Number of digits of the seed in base the modulus */
   mutable UnsignedInteger logSeed_;
+
+  /** Reusable digit buffers to avoid per-call allocation */
+  mutable Unsigned64BitsIntegerCollection aI_;
+  mutable Unsigned64BitsIntegerCollection aINew_;
 
 }; /* class FaureSequence */
 

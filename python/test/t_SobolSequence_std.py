@@ -106,3 +106,21 @@ finally:
     ot.ResourceMap.SetAsUnsignedInteger(
         "SobolSequence-MultidigitMultiplier", old_multiplier
     )
+
+# Test generate(size) consistency with per-point generate
+sequence = ot.SobolSequence(5)
+sample_bulk = sequence.generate(100)
+sequence = ot.SobolSequence(5)
+sample_loop = ot.Sample(0, 5)
+for i in range(100):
+    sample_loop.add(sequence.generate())
+ott.assert_almost_equal(sample_bulk, sample_loop)
+
+# Same with MULTIDIGIT scrambling
+sequence = ot.SobolSequence(5, "MULTIDIGIT")
+sample_bulk = sequence.generate(10)
+sequence = ot.SobolSequence(5, "MULTIDIGIT")
+sample_loop = ot.Sample(0, 5)
+for i in range(10):
+    sample_loop.add(sequence.generate())
+ott.assert_almost_equal(sample_bulk, sample_loop)

@@ -70,6 +70,7 @@ public:
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
   Point generate() const override;
+  Sample generate(const UnsignedInteger size) const override;
 
   /** Scrambling accessor */
   void setScrambling(const String & scrambling);
