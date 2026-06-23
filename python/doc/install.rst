@@ -140,6 +140,18 @@ One of the possibility is to install it directly with::
 
     nix-shell -p openturns
 
+Homebrew
+--------
+Install the C++ library from `Homebrew <https://brew.sh/>`_::
+
+    brew install openturns
+
+Vcpkg
+-----
+Install the C++ library from `vcpkg.io <https://vcpkg.io/en/package/openturns>`_::
+
+    vcpkg install openturns
+
 Spack
 -----
 Install the library with `Spack package manager <https://spack.io/>`_::
@@ -151,12 +163,6 @@ Guix
 A package is available for guix::
 
     guix install python-openturns
-
-Vcpkg
------
-Install the C++ library from `vcpkg.io <https://vcpkg.io/en/package/openturns>`_::
-
-    vcpkg install openturns
 
 MSYS2
 -----
