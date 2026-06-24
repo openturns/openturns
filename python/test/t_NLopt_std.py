@@ -114,3 +114,8 @@ result = algo.getResult()
 beta = result.getGeneralisedReliabilityIndex()
 print("beta=%.6f" % beta)
 ott.assert_almost_equal(beta, 1.009255)
+
+# Test getLocalSolver raises when no local solver is set
+algo = ot.NLopt("LD_SLSQP")
+with ott.assert_raises(TypeError):
+    algo.getLocalSolver()
