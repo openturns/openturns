@@ -463,6 +463,8 @@ void NLopt::setLocalSolver(const NLopt & localSolver)
 
 NLopt NLopt::getLocalSolver() const
 {
+  if (p_localSolver_.isNull())
+    throw InvalidArgumentException(HERE) << "No local solver is set";
   return *p_localSolver_;
 }
 
