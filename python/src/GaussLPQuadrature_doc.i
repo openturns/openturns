@@ -15,6 +15,9 @@ orthonormal functions against the measure. The algorithm proceeds by:
 3. Greedy clustering of nearby points
 4. Local refinement via TNC optimization
 
+The Gauss-LP approach was introduced by [ryu2015]_ and extended to
+the multivariate setting with a greedy clustering strategy by [jakeman2018]_.
+
 The following :class:`~openturns.ResourceMap` keys can be set:
 
 - *GaussLPQuadrature-AlphaS*: multiplier for the number of LP candidate points
