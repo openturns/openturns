@@ -351,7 +351,7 @@ There are many ways to use the functional chaos expansion. We present two usual 
 - performing the sensitivity analysis of the expansion,
 - using the conditional expectation of the output given an input vector.
 
-**Functional Expansion as a random vector generator**: we create a random vector
+**Functional Expansion as a random vector generator** : we create a random vector
 :math:`\widetilde{Y}` defined by:
 
 .. math::
@@ -396,7 +396,7 @@ expectation of the output given an input vector. An example is provided in
 :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`.
 
 Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
-be a set of marginal indices. 
+be a set of marginal indices.
 Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector
 corresponding to the group of input variables where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
 is the number of input variables in the group and
