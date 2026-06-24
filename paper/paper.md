@@ -32,9 +32,8 @@ authors:
     orcid: 0000-0002-0450-7947
     affiliation: 1
   - name: Anne Dutfoy
-- name: Anne Dutfoy
-  orcid: 0000-0002-5139-106X
-  affiliation: 1
+    orcid: 0000-0002-5139-106X
+    affiliation: 1
   - name: Régis Lebrun
     affiliation: 2
   - name: Julien Schueller
@@ -45,17 +44,14 @@ authors:
   - name: Loïc Brevault
     affiliation: 4
   - name: Mathieu Balesdent
-- name: Mathieu Balesdent
-  orcid: 0000-0003-4064-3361
-  affiliation: 4
+    orcid: 0000-0003-4064-3361
+    affiliation: 4
   - name: Julien Pelamatti
-- name: Julien Pelamatti
-  orcid: 0000-0002-1769-2715
-  affiliation: 1
+    orcid: 0000-0002-1769-2715
+    affiliation: 1
   - name: Joseph Muré
-- name: Joseph Muré
-  orcid: 0000-0003-4147-1143
-  affiliation: 1
+    orcid: 0000-0003-4147-1143
+    affiliation: 1
 affiliations:
  - name: EDF R&D, France
    index: 1
