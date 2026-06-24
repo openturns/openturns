@@ -92,3 +92,33 @@ ott.assert_almost_equal(
     0.0,
     2e-2,
 )
+
+# 3d mesh example
+dim = 3
+mesh = ot.IntervalMesher([20] * dim).build(ot.Interval(dim))
+c = [2, 3, 5]
+g = ot.SymbolicFunction(
+    [f"x{i + 1}" for i in range(dim)] + ["z"], [" + ".join([f"x{i + 1}*{c[i]}*0.5" for i in range(dim)]) + " + z"]
+)
+print(g)
+model = ot.VertexValuePointToFieldFunction(g, mesh)
+distribution = ot.Normal(1)
+N = 5
+x = distribution.getSample(N)
+y = model(x)
+
+ot.ResourceMap.SetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", N)
+ot.ResourceMap.SetAsBool("FunctionalChaosAlgorithm-Sparse", False)
+algo = ot.PointToFieldFunctionalChaosAlgorithm(x, y, distribution)
+algo.setRecompress(True)
+algo.run()
+result = algo.getResult()
+kl_results = result.getOutputKLResultCollection()
+n_modes = [len(res.getEigenvalues()) for res in kl_results]
+print(f"n_modes={n_modes}")
+
+KLResult = kl_results[0]
+validation = ot.KarhunenLoeveValidation(y, KLResult)
+residual = validation.computeResidualMean().getValues().computeMean().norm()
+print("residual", residual)
+assert residual < 1e-12, "residual too large"
