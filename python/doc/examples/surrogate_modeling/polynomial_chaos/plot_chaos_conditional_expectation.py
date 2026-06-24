@@ -106,7 +106,7 @@ Reduce the dimension of a model
 #
 # The previous parametric FCE fixes some components to some given values. It is also possible to
 # compute the mean of the model :eq:`ModelFCE_ex` with respect to these components. In that case, we
-# get a FCE wich is expressed in the free components. The resulting FCE is:
+# get a FCE which is expressed in the free components. The resulting FCE is:
 #
 # .. math::
 #
@@ -384,7 +384,7 @@ plt.subplots_adjust(wspace=0.4, right=0.7, bottom=0.25)
 # %%
 # In the next cell, we create the conditional expectation function
 # :math:`\Expect{\model(\inputReal) \; | \; \inputRV_1 = \inputReal_1}`.
-# The input random vector satifies the required conditions to use the method.
+# The input random vector satisfies the required conditions to use the method.
 
 # %%
 conditionalPCE = chaosResult.getConditionalExpectation([0])
