@@ -1181,5 +1181,14 @@
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
 
+  <!-- OT::QROrthonormalizationAlgorithm parameters -->
+  <QROrthonormalizationAlgorithm-DefaultDiscretization value_int="128" />
+  <QROrthonormalizationAlgorithm-Epsilon               value_float="1.0e-11" />
+
+  <!-- OT::GaussLPQuadrature parameters -->
+  <GaussLPQuadrature-AlphaS  value_int="100" />
+  <GaussLPQuadrature-Ngauss  value_int="100" />
+  <GaussLPQuadrature-Epsilon value_float="1.0e-5" />
+
   <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>

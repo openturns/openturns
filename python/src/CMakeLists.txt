@@ -557,7 +557,10 @@ ot_add_python_module(experimental experimental_module.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
-                     FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                      QROrthonormalizationAlgorithm.i QROrthonormalizationAlgorithm_doc.i
+                      GaussLPQuadrature.i GaussLPQuadrature_doc.i
+                      FiniteOrthonormalFunctionFactory.i FiniteOrthonormalFunctionFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i
