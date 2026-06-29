@@ -216,7 +216,7 @@ public:
 
   Point operator() (const Point & point) const override
   {
-    if (!((u_ >= 0.0) && (u_ < 1.0))) return Point(1, 0.0);
+    if (!((u_ > 0.0) && (u_ < 1.0))) return Point(1, 0.0);
     const Scalar v = point[0];
     if (!(v > 0.0)) return Point(1, 0.0);
     if (!(v < 1.0)) return Point(1, 1.0);
@@ -287,8 +287,9 @@ Scalar ExtremeValueCopula::computeConditionalQuantile(const Scalar q, const Poin
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
-  // Special case when no contitioning or independent copula
+  // Special case when no conditioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
+  if (y[0] <= 0.0) return q;
   const Scalar res = Brent(SpecFunc::ScalarEpsilon, SpecFunc::ScalarEpsilon, SpecFunc::ScalarEpsilon, 53).solve(ConditionalCDF(pickandFunction_, y[0]), q, SpecFunc::ScalarEpsilon, 1.0 - SpecFunc::ScalarEpsilon);
   return res;
 }
