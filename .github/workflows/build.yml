@@ -2,6 +2,10 @@ on:
   push:
     branches: [ master ]
   pull_request:
+
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -13,7 +17,9 @@ jobs:
       OPENTURNS_NUM_THREADS: 2
       OMP_NUM_THREADS: 1
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
+      with:
+        persist-credentials: false
     - run: |
         brew install openblas swig boost tbb nlopt cminpack ceres-solver dlib hdf5 highs ipopt primesieve spectra pagmo libxml2 nanoflann cuba
         pip3 install matplotlib scipy chaospy pandas dill --break-system-packages
@@ -32,7 +38,9 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
@@ -61,7 +69,9 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Build
         run: ./utils/build_locally.sh aarch64
 
@@ -70,7 +80,9 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Build
         run: ./utils/build_locally.sh coverage
       - name: Upload coverage to Codecov
@@ -85,7 +97,9 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Build
         run: ./utils/build_locally.sh mindeps
 
@@ -94,7 +108,9 @@ jobs:
     env:
       MAKEFLAGS: -j4
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Build
         run: ./utils/build_locally.sh abi3
 
@@ -105,7 +121,9 @@ jobs:
       OPENTURNS_NUM_THREADS: 2
       OMP_NUM_THREADS: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: vmactions/freebsd-vm@v1
         with:
           envs: 'MAKEFLAGS OPENTURNS_NUM_THREADS OMP_NUM_THREADS'
