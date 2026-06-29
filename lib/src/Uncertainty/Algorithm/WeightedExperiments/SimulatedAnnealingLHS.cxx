@@ -64,11 +64,18 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
   spaceFilling_ = spaceFilling;
   if (initialDesign.getSize() == 0) throw InvalidArgumentException(HERE) << "Initial design must not be empty";
   if (initialDesign.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Initial design dimension " << initialDesign.getDimension() << " does not match distribution dimension " << distribution.getDimension();
-  // Transform the initial design into a standard design
   // dummy lhs, only distribution is needed
-  // It is used to
   setLHS(LHSExperiment(distribution, 1));
-  standardInitialDesign_ = transformation_(initialDesign);
+  // Transform the initial design into a standard design
+  // transformation_ is TO (standard->original), we need the FROM direction here
+  {
+    const UnsignedInteger dimension = distribution.getDimension();
+    JointDistribution::DistributionCollection marginals(dimension);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      marginals[j] = distribution.getMarginal(j);
+    const MarginalTransformationEvaluation toStandard(marginals, MarginalTransformationEvaluation::FROM);
+    standardInitialDesign_ = toStandard(initialDesign);
+  }
 }
 
 /* Virtual constructor method */
