@@ -123,7 +123,7 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
   const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

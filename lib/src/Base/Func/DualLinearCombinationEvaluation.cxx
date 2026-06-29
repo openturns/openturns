@@ -218,7 +218,7 @@ Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const UnsignedInteger size = functionsCollection_.getSize();
   DualLinearCombinationEvaluationPointFunctor functor( inP, *this );
-  TBBImplementation::ParallelReduce( 0, size, functor );
+  TBBImplementation::ParallelReduce(0, size, functor, 1024);
   const Point result(functor.accumulator_);
   callsNumber_.increment();
   return result;
