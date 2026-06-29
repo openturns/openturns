@@ -21,7 +21,8 @@
 #ifndef OPENTURNS_EXTREMEVALUECOPULA_HXX
 #define OPENTURNS_EXTREMEVALUECOPULA_HXX
 
-#include "openturns/ArchimedeanCopula.hxx"
+#include "openturns/DistributionImplementation.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
