@@ -71,6 +71,8 @@ quantileRef = copulaRef.computeQuantile(0.5)
 print("Quantile      =", repr(quantile))
 print("Quantile (ref)=", repr(quantileRef))
 print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
+# Get 20% quantile (upper tail)
+ott.assert_almost_equal(copula.computeQuantile(0.2, True), copulaRef.computeQuantile(0.2, True), 1e-4, 1e-4)
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))

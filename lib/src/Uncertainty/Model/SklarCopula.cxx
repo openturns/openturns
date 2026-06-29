@@ -294,8 +294,8 @@ Point SklarCopula::computeQuantile(const Scalar prob,
   const Scalar epsilon = cdfEpsilon_;
   if (!((prob >= -epsilon) && (prob <= 1.0 + epsilon))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   if (dimension == 1) return Point(1, (tail ? 1.0 - prob : prob));
-  Point uq(distribution_.computeQuantile(prob));
-  for (UnsignedInteger i = 0; i < dimension; ++i) uq[i] = tail ? marginalCollection_[i].computeComplementaryCDF(uq[i]) : marginalCollection_[i].computeCDF(uq[i]);
+  Point uq(distribution_.computeQuantile(prob, tail));
+  for (UnsignedInteger i = 0; i < dimension; ++i) uq[i] = marginalCollection_[i].computeCDF(uq[i]);
   return uq;
 }
 
