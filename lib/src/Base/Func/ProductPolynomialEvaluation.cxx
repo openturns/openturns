@@ -242,7 +242,7 @@ Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
   const ProductPolynomialEvaluationComputeSamplePolicy policy( inS, result, polynomials_ );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

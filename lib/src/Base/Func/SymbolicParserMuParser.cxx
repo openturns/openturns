@@ -219,7 +219,7 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
       threadStack_.resize(TBBImplementation::GetThreadsNumber());
     }
     const SymbolicParserMuParserPolicy policy(inS, result, *this);
-    TBBImplementation::ParallelFor(0, size, policy);
+    TBBImplementation::ParallelFor(0, size, policy, smallSize_);
   }
   return result;
 }
