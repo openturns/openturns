@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import cmath
 import openturns as ot
 import openturns.testing as ott
 
@@ -115,3 +116,11 @@ for xi in [-0.2, 0.0, 0.2]:
     ot.RandomGenerator.SetSeed(1)
     validation = ott.DistributionValidation(distribution)
     validation.run()
+
+# Test computeCharacteristicFunction with xi=0 (regression test for missing sigma/u)
+gpd = ot.GeneralizedPareto(1.5, 0.0, 0.5)
+x = 1.2
+cf = gpd.computeCharacteristicFunction(x)
+# Expected: exp(i*u*x) / (1 - i*sigma*x) = exp(0.6i) / (1 - 1.8i)
+expected = cmath.exp(complex(0.0, 0.5 * x)) / complex(1.0, -1.5 * x)
+ott.assert_almost_equal(cf, expected, 1e-14, 0.0)

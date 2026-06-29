@@ -70,8 +70,8 @@ ccdf=0.513417
 survival=0.513417
 Inverse survival=class=Point name=Unnamed dimension=1 values=[0.57694]
 Survival(inverse survival)=0.95
-characteristic function=(0.307692,0.461538)
-log characteristic function=(-0.589327,0.982794)
+characteristic function=(-0.132288,0.38399)
+log characteristic function=(-0.901061,1.90257)
 pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
 pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
 cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
