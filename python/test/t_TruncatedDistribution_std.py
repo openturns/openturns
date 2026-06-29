@@ -319,3 +319,27 @@ trunc_w = ot.TruncatedDistribution(weibull, ot.Interval(-10.0, 10.0))
 point_out = [-5.0]  # inside bounds_, outside getRange()
 ott.assert_almost_equal(trunc_w.computePDFGradient(point_out), [0.0] * 5)
 ott.assert_almost_equal(trunc_w.computeCDFGradient(point_out), [0.0] * 5)
+
+# getMarginal must preserve variable descriptions
+sample = ot.Sample(
+    [
+        [-90.0, 42.0, 1.0, 2.0],
+        [-89.0, 43.0, 1.1, 2.1],
+        [-88.0, 44.0, 0.9, 1.9],
+        [-87.0, 45.0, 1.2, 2.2],
+    ]
+)
+sample.setDescription(["a1", "a3", "P1", "Q"])
+prior = ot.JointDistribution(
+    [
+        ot.Uniform(-100.0, -80.0),
+        ot.Uniform(35.0, 50.0),
+        ot.Uniform(0.0, 2.0),
+        ot.Uniform(1.0, 3.0),
+    ]
+)
+prior.setDescription(sample.getDescription())
+distribution = ot.KernelSmoothing().build(sample)
+truncated = ot.TruncatedDistribution(distribution, prior.getRange())
+marginal = truncated.getMarginal([0, 1])
+assert marginal.getDescription() == ["a1", "a3"], f"Got {list(marginal.getDescription())}"
