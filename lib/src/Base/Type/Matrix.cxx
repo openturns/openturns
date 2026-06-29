@@ -169,8 +169,9 @@ Matrix Matrix::operator+ (const Matrix & m) const
 
 Matrix Matrix::operator+ (const SymmetricMatrix & m) const
 {
-  m.getImplementation()->symmetrize();
-  return Implementation((*getImplementation() + * (m.getImplementation())).clone());
+  MatrixImplementation symmetricImplementation(*m.getImplementation());
+  symmetricImplementation.symmetrize();
+  return Implementation((*getImplementation() + symmetricImplementation).clone());
 }
 
 /* Matrix subtractions (must have the same dimensions) */
@@ -181,8 +182,9 @@ Matrix Matrix::operator- (const Matrix & m) const
 
 Matrix Matrix::operator- (const SymmetricMatrix & m) const
 {
-  m.getImplementation()->symmetrize();
-  return Implementation((*getImplementation() - * (m.getImplementation())).clone());
+  MatrixImplementation symmetricImplementation(*m.getImplementation());
+  symmetricImplementation.symmetrize();
+  return Implementation((*getImplementation() - symmetricImplementation).clone());
 }
 
 /* Matrix multiplications (must have consistent dimensions) */
