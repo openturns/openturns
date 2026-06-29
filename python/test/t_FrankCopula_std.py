@@ -93,6 +93,14 @@ print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 
+# Test computeArchimedeanGeneratorDerivative near 0 (regression test for sign bug)
+t_small = 1e-6
+deriv = copula.computeArchimedeanGeneratorDerivative(t_small)
+# Should be negative (bug was positive sign)
+assert deriv < 0.0
+# As t->0, phi'(t) -> -1/t for any finite theta
+ott.assert_almost_equal(deriv, -1.0 / t_small, 1e-3, 0.0)
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.run()
