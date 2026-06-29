@@ -1599,8 +1599,8 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeDDFPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeDDFPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   return result;
 }
 
@@ -1647,8 +1647,8 @@ Sample DistributionImplementation::computePDFParallel(const Sample & inSample) c
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputePDFPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputePDFPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   return result;
 }
 
@@ -1695,8 +1695,8 @@ Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeLogPDFPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeLogPDFPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   return result;
 }
 
@@ -1931,8 +1931,8 @@ Sample DistributionImplementation::computeQuantileParallel(const Point & prob,
 {
   const UnsignedInteger size = prob.getSize();
   Sample result(size, dimension_);
-  const ComputeQuantilePolicy policy( prob, result, tail, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeQuantilePolicy policy(prob, result, tail, *this);
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   return result;
 }
 
@@ -2083,8 +2083,8 @@ Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & 
 {
   const UnsignedInteger size = sample.getSize();
   Sample outSample(size, getParameterDimension());
-  const ComputeLogPDFGradientPolicy policy( sample, outSample, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeLogPDFGradientPolicy policy(sample, outSample, *this);
+  TBBImplementation::ParallelFor(0, size, policy, 1024);
   return outSample;
 }
 
