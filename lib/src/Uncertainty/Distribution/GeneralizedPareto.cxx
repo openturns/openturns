@@ -224,13 +224,13 @@ Scalar GeneralizedPareto::computeEntropy() const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex GeneralizedPareto::computeCharacteristicFunction(const Scalar x) const
 {
-  if (xi_ == 0.0) return 1.0 / Complex(1.0, -x);
+  if (xi_ == 0.0) return std::exp(Complex(0.0, u_ * x)) / Complex(1.0, -sigma_ * x);
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
 Complex GeneralizedPareto::computeLogCharacteristicFunction(const Scalar x) const
 {
-  if (xi_ == 0.0) return -std::log(Complex(1.0, -x));
+  if (xi_ == 0.0) return Complex(0.0, u_ * x) - std::log(Complex(1.0, -sigma_ * x));
   return std::log(computeCharacteristicFunction(x));
 }
 
