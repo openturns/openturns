@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
 #include <cmath>
 
 #include "openturns/EmpiricalBernsteinCopula.hxx"
@@ -630,8 +631,8 @@ void EmpiricalBernsteinCopula::update()
     Scalar sumLogBeta = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const Scalar xIJ = copulaSample_(i, j);
-      const Scalar r = ceil(binNumber_ * xIJ);
+      const Scalar xIJ = SpecFunc::Clip01(copulaSample_(i, j));
+      const Scalar r = std::clamp(ceil(static_cast<Scalar>(binNumber_) * xIJ), 1.0, static_cast<Scalar>(binNumber_));
       const Scalar s = binNumber_ - r + 1.0;
       const Scalar logBeta = SpecFunc::LogBeta(r, s);
       sumLogBeta += logBeta;
@@ -660,7 +661,7 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
   const UnsignedInteger size = copulaSample_.getSize();
   if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "BernsteinCopula expected " << (dimension * size + 1) << " parameters, got " << parameter.getDimension();
   const Scalar binNumber = parameter[dimension * size];
-  if (binNumber != std::round(binNumber)) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be an integer, got " << binNumber;
+  if ((binNumber < 1.0) || (binNumber != std::round(binNumber))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be a positive integer, got " << binNumber;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -671,6 +672,7 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
     }
   }
   binNumber_ = binNumber;
+  update();
 }
 
 Description EmpiricalBernsteinCopula::getParameterDescription() const
