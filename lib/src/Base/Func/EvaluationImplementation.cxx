@@ -394,6 +394,10 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const Bool isFilled) const
 {
   if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
+  if (firstInputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: firstInputMarginal=" << firstInputMarginal << " must be less than input dimension=" << getInputDimension();
+  if (secondInputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: secondInputMarginal=" << secondInputMarginal << " must be less than input dimension=" << getInputDimension();
+  if (firstInputMarginal == secondInputMarginal) throw InvalidArgumentException(HERE) << "Error: firstInputMarginal and secondInputMarginal must be different, both are " << firstInputMarginal;
+  if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: outputMarginal=" << outputMarginal << " must be less than output dimension=" << getOutputDimension();
   if (xMin.getDimension() != 2 || xMax.getDimension() != 2 || pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
   if (pointNumber[0] < 2 || pointNumber[1] < 2) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
@@ -421,7 +425,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   }
 
   // Discretization of the second component
-  const Scalar nY = pointNumber[1];
+  const UnsignedInteger nY = pointNumber[1];
   Sample y(nY, 1);
   if (useLogY)
   {
