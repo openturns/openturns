@@ -76,8 +76,8 @@ MemoizeEvaluation * MemoizeEvaluation::clone() const
 /** Function implementation accessors */
 void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
 {
-  inputStrategy_.setDimension(evaluation_.getInputDimension());
-  outputStrategy_.setDimension(evaluation_.getOutputDimension());
+  inputStrategy_.setDimension(evaluation.getInputDimension());
+  outputStrategy_.setDimension(evaluation.getOutputDimension());
   // If argument is a MemoizeEvaluation, copy history and cache
   MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(evaluation.getImplementation().get());
   if (p_MemoizeEvaluation)
