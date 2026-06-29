@@ -114,6 +114,9 @@ public:
   void setR(const CorrelationMatrix & R);
   CorrelationMatrix getR() const;
 
+  /** Get the Kendall concordance of the distribution */
+  CorrelationMatrix getKendallTau() const override;
+
 protected:
   /** Compute the mean of the distribution */
   void computeMean() const override;

@@ -347,11 +347,7 @@ void NormalCopula::computeCovariance() const
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix NormalCopula::getKendallTau() const
 {
-  const UnsignedInteger dimension = getDimension();
-  CorrelationMatrix tau(dimension);
-  for (UnsignedInteger i = 1; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j < i; ++j) tau(i, j) = std::asin(correlation_(i, j)) * 2.0 / M_PI;
-  return tau;
+  return normal_.getKendallTau();
 }
 
 /* Compute the entropy of the distribution */

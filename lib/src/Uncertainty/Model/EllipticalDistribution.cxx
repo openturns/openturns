@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/EllipticalDistribution.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/NormalCopula.hxx"
 #include "openturns/NatafEllipticalDistributionEvaluation.hxx"
 #include "openturns/NatafEllipticalDistributionGradient.hxx"
 #include "openturns/NatafEllipticalDistributionHessian.hxx"
@@ -535,6 +536,16 @@ void EllipticalDistribution::setMu(const Point & mu)
 Point EllipticalDistribution::getMu() const
 {
   return mean_;
+}
+
+/* Get the Kendall concordance of the distribution */
+CorrelationMatrix EllipticalDistribution::getKendallTau() const
+{
+  const UnsignedInteger dimension = getDimension();
+  CorrelationMatrix tau(dimension);
+  for (UnsignedInteger i = 1; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j < i; ++j) tau(i, j) = std::asin(R_(i, j)) * 2.0 / M_PI;
+  return tau;
 }
 
 /* Mean computation */
