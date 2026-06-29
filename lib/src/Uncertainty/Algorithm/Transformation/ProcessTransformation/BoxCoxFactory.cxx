@@ -496,12 +496,13 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
   objectiveMemoizeFunction.enableCache();
   OptimizationProblem problem(objectiveMemoizeFunction);
   problem.setMinimization(false);
-  solver_.setProblem(problem);
-  solver_.setStartingPoint(Point(1, 1.0));
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(Point(1, 1.0));
   // run Optimization problem
-  solver_.run();
+  solver.run();
   // Return optimization point
-  const Point optpoint(solver_.getResult().getOptimalPoint());
+  const Point optpoint(solver.getResult().getOptimalPoint());
 
   // Define BoxCox transformation for output sample
   BoxCoxEvaluation myBoxFunction(optpoint, shift);
@@ -557,12 +558,13 @@ BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
   objectiveMemoizeFunction.enableCache();
   OptimizationProblem problem(objectiveMemoizeFunction);
   problem.setMinimization(false);
-  solver_.setProblem(problem);
-  solver_.setStartingPoint(Point(1, 1.0));
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(Point(1, 1.0));
   // run Optimization problem
-  solver_.run();
+  solver.run();
   // Return optimization point
-  const Point optpoint(solver_.getResult().getOptimalPoint());
+  const Point optpoint(solver.getResult().getOptimalPoint());
 
   // Define BoxCox transformation for output sample
   const BoxCoxEvaluation myBoxFunction(optpoint, shift);
