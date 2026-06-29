@@ -477,6 +477,8 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
+  adv.saveAttribute("errorCovariance_", errorCovariance_);
+  adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -485,6 +487,11 @@ void GaussianNonLinearCalibration::load(Advocate & adv)
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
+  if (adv.hasAttribute("errorCovariance_"))
+  {
+    adv.loadAttribute("errorCovariance_", errorCovariance_);
+    adv.loadAttribute("globalErrorCovariance_", globalErrorCovariance_);
+  }
 }
 
 
