@@ -70,7 +70,7 @@ GaussianProcessGradient::GaussianProcessGradient(const Basis & basis,
   }
   if (covarianceModel.getInputDimension() != inputSample.getDimension())
     throw InvalidArgumentException(HERE) << "In GaussianProcessGradient::GaussianProcessGradient, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
-  if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In GaussianProcessGradient::GaussianProcessGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
+  if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In GaussianProcessGradient::GaussianProcessGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the input sample size=" << inputSample.getSize();
   setParameter(Point(getInputDimension()));
 }
 
