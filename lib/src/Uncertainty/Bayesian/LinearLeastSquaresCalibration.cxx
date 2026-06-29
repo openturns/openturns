@@ -209,7 +209,7 @@ LinearLeastSquaresCalibration * LinearLeastSquaresCalibration::clone() const
 /* Method save() stores the object through the StorageManager */
 void LinearLeastSquaresCalibration::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("modelObservations_", modelObservations_);
   adv.saveAttribute("gradientObservations_", gradientObservations_);
   adv.saveAttribute("methodName_", methodName_);
@@ -218,7 +218,7 @@ void LinearLeastSquaresCalibration::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearLeastSquaresCalibration::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("modelObservations_", modelObservations_);
   adv.loadAttribute("gradientObservations_", gradientObservations_);
   adv.loadAttribute("methodName_", methodName_);
