@@ -157,8 +157,9 @@ Evaluation AggregatedEvaluation::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and must be different";
-  FunctionCollection marginalFunctions;
   const UnsignedInteger indicesSize = indices.getSize();
+  if (indicesSize == 0) return EvaluationImplementation::getMarginal(indices);
+  FunctionCollection marginalFunctions;
   const UnsignedInteger size = functionsCollection_.getSize();
   // For each copula, see if there is something to extract
   UnsignedInteger currentPosition = 0;
@@ -198,6 +199,7 @@ Evaluation AggregatedEvaluation::getMarginal(const Indices & indices) const
 /* Input dimension accessor */
 UnsignedInteger AggregatedEvaluation::getInputDimension() const
 {
+  if (functionsCollection_.getSize() == 0) throw InternalException(HERE) << "Error: no function in the collection.";
   return functionsCollection_[0].getInputDimension();
 }
 
