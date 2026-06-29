@@ -119,6 +119,7 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
         smallest = tmp;
         rankSmallest = i;
       }
+      else if (tmp < secondSmallest) secondSmallest = tmp;
     } // Search for the extremums
     // Second, if the coefficient list is too large (it can be by only one term), remove the smallest term to free a place for the next vector.
     UnsignedInteger shift = 0;
