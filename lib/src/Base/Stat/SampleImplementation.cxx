@@ -1634,7 +1634,7 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
 
   const CDFPolicy policy( *this, point, tail );
   ReductionFunctor<CDFPolicy> functor( *this, policy );
-  TBBImplementation::ParallelReduce( 0, size_, functor );
+  TBBImplementation::ParallelReduce(0, size_, functor, 1024);
   return static_cast < Scalar > (functor.accumulator_) / size_;
 }
 
