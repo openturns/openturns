@@ -334,7 +334,7 @@ Scalar FrankCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
   // Independent case
   if (theta_ == 0.0) return -1.0 / t;
   // General case
-  return -theta_ / expm1(-theta_ * t);
+  return -theta_ / expm1(theta_ * t);
 }
 
 /* Compute the seconde derivative of the density generator */
