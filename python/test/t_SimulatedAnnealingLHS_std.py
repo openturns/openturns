@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math
 import openturns as ot
 import openturns.testing as ott
 
@@ -149,3 +150,24 @@ ott.assert_almost_equal(result.getC2(), 0.05473015652160929)
 ott.assert_almost_equal(result.getPhiP(), 3.517772966753692)
 ott.assert_almost_equal(result.getMinDist(), 0.29120439557122074)
 ott.assert_almost_equal(result.getOptimalDesign(), optimal_design)
+
+# Test constructor with initial design and non-uniform distribution (regression test for transformation direction bug)
+ot.RandomGenerator.SetSeed(0)
+dim = 2
+size = 10
+normal_dist = ot.JointDistribution([ot.Normal()] * dim)
+lhs2 = ot.LHSExperiment(normal_dist, size)
+init_design = lhs2.generate()
+init_min_dist = ot.SpaceFillingMinDist().evaluate(init_design)
+sa = ot.SimulatedAnnealingLHS(init_design, normal_dist, ot.SpaceFillingMinDist(), ot.GeometricProfile(10.0, 0.95, 500))
+opt_design = sa.generate()
+result2 = sa.getResult()
+# Optimal design should improve (or at least not degrade) the MinDist criterion
+assert result2.getMinDist() >= init_min_dist, "SA with initial design should improve MinDist"
+# Output design must have expected size and dimension
+assert opt_design.getSize() == size
+assert opt_design.getDimension() == dim
+# All values should be finite (not NaN/inf from wrong transformation)
+mean_point = opt_design.computeMean()
+for i in range(dim):
+    assert math.isfinite(mean_point[i])
