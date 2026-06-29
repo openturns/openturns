@@ -1254,6 +1254,7 @@ struct ComputeKendallPolicy
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
+  if (dimension_ < 2) return CorrelationMatrix(dimension_);
 
   // Use external efficient C implementation of the O(Nlog(N)) or O(N^2) Kendall tau computation depending on the sample size
   const Bool smallCase = size_ < ResourceMap::GetAsUnsignedInteger("Sample-SmallKendallTau");
@@ -1498,22 +1499,23 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(
   for (UnsignedInteger p = 0; p < probSize; ++p)
   {
     const Scalar scalarIndex = probPairs[p].first * size_ - 0.5;
-    UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
-    Scalar beta = scalarIndex - index;
-    // Special case for extremum cases
-    if (scalarIndex >= size_ - 1)
+    // Must check bounds before casting to UnsignedInteger to avoid UB
+    if (scalarIndex <= 0.0)
     {
-      beta = 0.0;
-      index = size_ - 1;
+      pivots[p] = 0;
+      betas[p] = 0.0;
     }
-    else if (scalarIndex <= 0.0)
+    else if (scalarIndex >= size_ - 1)
     {
-      beta = 0.0;
-      // Ensure that index does not overflow
-      index = 0;
+      pivots[p] = size_ - 1;
+      betas[p] = 0.0;
     }
-    pivots[p] = index;
-    betas[p] = beta;
+    else
+    {
+      const UnsignedInteger index = static_cast<UnsignedInteger>(scalarIndex);
+      pivots[p] = index;
+      betas[p] = scalarIndex - index;
+    }
   }
 
   Pointer<SampleImplementation> quantile = new SampleImplementation(probSize, dimension_);
