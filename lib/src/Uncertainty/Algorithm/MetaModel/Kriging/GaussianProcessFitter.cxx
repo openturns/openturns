@@ -748,13 +748,19 @@ void GaussianProcessFitter::setNoise(const CovarianceMatrixCollection & noise)
 void GaussianProcessFitter::setNoise(const Point & noise)
 {
   const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
   if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (!(noise[i] >= 0.0))
       throw InvalidArgumentException(HERE) << "The noise must be nonnegative, got " << noise[i] << " at index " << i;
   noise_.resize(size);
   for (UnsignedInteger i = 0; i < size; ++ i)
-    noise_[i] = CovarianceMatrix(1, {noise[i]});
+  {
+    CovarianceMatrix noiseMatrix(outputDimension);
+    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+      noiseMatrix(j, j) = noise[i];
+    noise_[i] = noiseMatrix;
+  }
 
   // If we update noise, we need to reset
   reset();
