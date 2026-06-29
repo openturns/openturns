@@ -173,6 +173,8 @@ void GaussianProcessRegression::save(Advocate & adv) const
   MetaModelAlgorithm::save(adv);
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "basis_", basis_);
+  adv.saveAttribute( "gaussianProcessFitterResult_", gaussianProcessFitterResult_ );
+  adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "result_", result_);
 }
 
@@ -182,7 +184,17 @@ void GaussianProcessRegression::load(Advocate & adv)
   MetaModelAlgorithm::load(adv);
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "basis_", basis_);
+  const Bool hasGPF = adv.hasAttribute("gaussianProcessFitterResult_");
+  if (hasGPF)
+    adv.loadAttribute( "gaussianProcessFitterResult_", gaussianProcessFitterResult_ );
+  if (adv.hasAttribute("beta_"))
+    adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "result_", result_);
+  if (!hasGPF)
+  {
+    gaussianProcessFitterResult_ = result_.getGaussianProcessFitterResult();
+    beta_ = gaussianProcessFitterResult_.getTrendCoefficients();
+  }
 }
 
 END_NAMESPACE_OPENTURNS
