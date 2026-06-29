@@ -156,28 +156,28 @@ String XMLDoc::__repr__() const
   xmlBuffer * buf;
 
   // Buffer allocation
-  if ( !( buf = xmlBufferCreate() ) )
+  if (!(buf = xmlBufferCreate()))
     return String();
 
   // Context definition
-  if ( !( xctx = xmlSaveToBuffer( buf, NULL, XML_SAVE_NO_DECL ) ) )
+  if (!(xctx = xmlSaveToBuffer(buf, NULL, XML_SAVE_NO_DECL)))
   {
     xmlBufferFree( buf );
     return String();
   }
 
   // Document streaming
-  if ( xmlSaveDoc( xctx, doc_ ) < 0 )
+  if (xmlSaveDoc( xctx, doc_ ) < 0)
   {
-    xmlSaveClose( xctx );
-    xmlBufferFree( buf );
+    xmlSaveClose(xctx);
+    xmlBufferFree(buf);
     return String();
   }
 
   // Context closing (?)
-  if ( xmlSaveClose( xctx ) <= 0)
+  if (xmlSaveClose( xctx ) < 0)
   {
-    xmlBufferFree( buf );
+    xmlBufferFree(buf);
     return String();
   }
 
@@ -214,6 +214,7 @@ Bool XMLDoc::validate(const FileName & dtd) const
   int ok = 0;
   XML::XMLString aDtd = StringToXmlString(dtd);
   xmlDtdPtr theDTD = xmlParseDTD(NULL, aDtd);
+  if (theDTD == NULL) throw XMLParserException(HERE) << "Cannot parse DTD file " << dtd;
   xmlValidCtxtPtr validCtxt = xmlNewValidCtxt();
   if (validCtxt != NULL)
   {
