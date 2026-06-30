@@ -106,6 +106,10 @@ Gaussian process
     GaussianProcess
 
     :template: class.rst_t
+    experimental.CirculantEmbeddingGaussianProcess
+    experimental.P1InterpolatedProcess
+
+    :template: class.rst_t
     ConditionedGaussianProcess
 
 Functional basis process

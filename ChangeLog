@@ -13,6 +13,7 @@
  * TruncatedDistributionFactory (openturns.experimental)
 
 ==== API changes ====
+ * Removed FFT.transform2D, FFT.inverseTransform2D, FFT.transform3D, FFT.inverseTransform3D. Use FFT.transform(data, dimensions) and FFT.inverseTransform(data, dimensions) with a flat array and an Indices specifying the tensor shape instead.
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed deprecated SpecFunc.IsNormal

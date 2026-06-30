@@ -66,37 +66,56 @@ int main(int, char *[])
     const ComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
     fullprint << "FFT back=" << inverseTransformedCollection << std::endl;
 
-    // 2D case now
+    // Check 1D roundtrip
+    for (UnsignedInteger i = 0; i < size; ++i)
+      assert_almost_equal(inverseTransformedCollection[i], collection[i], 1e-13, 1e-13);
+
+    // 2D ND case
     const UnsignedInteger N = 8;
     Normal distribution(N);
     Sample sample(distribution.getSample(2 * N));
 
-    // FFT transform
-    const ComplexMatrix transformedSample(myFFT.transform2D(sample));
+    // FFT transform via ND
+    const UnsignedInteger rows = sample.getSize();
+    const UnsignedInteger cols = sample.getDimension();
+    ComplexCollection sampleFlat(rows * cols);
+    for (UnsignedInteger j = 0; j < cols; ++j)
+      for (UnsignedInteger i = 0; i < rows; ++i)
+        sampleFlat[i + j * rows] = Complex(sample(i, j), 0.0);
+    const ComplexCollection transformedSample(myFFT.transform(sampleFlat, {rows, cols}));
     fullprint << "2D FFT result = " << transformedSample << std::endl;
 
     // Inverse transformation
-    const ComplexMatrix inverseTransformedSample(myFFT.inverseTransform2D(transformedSample));
-    const Matrix inverseTransformedSampleReal(inverseTransformedSample.real());
-    fullprint << "2D FFT back=" << inverseTransformedSampleReal << std::endl;
-    assert_almost_equal(inverseTransformedSample.imag(), Matrix(inverseTransformedSample.getNbRows(), inverseTransformedSample.getNbColumns()));
+    const ComplexCollection inverseTransformedSample(myFFT.inverseTransform(transformedSample, {rows, cols}));
+    fullprint << "2D FFT back=" << inverseTransformedSample << std::endl;
 
-    // 3D case
+    // Check 2D roundtrip
+    for (UnsignedInteger i = 0; i < rows * cols; ++i)
+      assert_almost_equal(inverseTransformedSample[i], sampleFlat[i], 1e-13, 1e-13);
+
+    // 3D ND case
     Tensor tensor(N, N, N);
     for(UnsignedInteger k = 0; k < N; ++k)
       for (UnsignedInteger j = 0; j < N; ++j)
         for (UnsignedInteger i = 0; i < N; ++i)
           tensor(i, j, k) = RandomGenerator::Generate();
 
-    // FFT transform
-    const ComplexTensor transformedTensor(myFFT.transform3D(tensor));
+    // FFT transform via ND
+    ComplexCollection tensorFlat(N * N * N);
+    for (UnsignedInteger k = 0; k < N; ++k)
+      for (UnsignedInteger j = 0; j < N; ++j)
+        for (UnsignedInteger i = 0; i < N; ++i)
+          tensorFlat[i + j * N + k * N * N] = Complex(tensor(i, j, k), 0.0);
+    const ComplexCollection transformedTensor(myFFT.transform(tensorFlat, {N, N, N}));
     fullprint << "3D FFT result = " << transformedTensor << std::endl;
 
     // Inverse transformation
-    const ComplexTensor inverseTransformedTensor(myFFT.inverseTransform3D(transformedTensor));
-    const Tensor inverseTransformedTensorReal(inverseTransformedTensor.real());
-    fullprint << "3D FFT back=" << inverseTransformedTensorReal << std::endl;
-    assert_almost_equal(inverseTransformedTensor.imag(), Tensor(transformedTensor.getNbRows(), transformedTensor.getNbColumns(), transformedTensor.getNbSheets()));
+    const ComplexCollection inverseTransformedTensor(myFFT.inverseTransform(transformedTensor, {N, N, N}));
+    fullprint << "3D FFT back=" << inverseTransformedTensor << std::endl;
+
+    // Check 3D roundtrip
+    for (UnsignedInteger i = 0; i < N * N * N; ++i)
+      assert_almost_equal(inverseTransformedTensor[i], tensorFlat[i], 1e-13, 1e-13);
 
 
   }
