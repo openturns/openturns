@@ -157,7 +157,7 @@ Sample NormalCopula::getSample(const UnsignedInteger size) const
     const Sample normalSample(normal_.getSample(size));
     Sample result(size, dimension);
     const NormalCopulaComputeSamplePolicy policy(normalSample, result);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
