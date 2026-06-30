@@ -421,7 +421,7 @@ Sample JointDistribution::getSample(const UnsignedInteger size) const
     const Sample coreSample(core_.getSample(size));
     Sample result(size, dimension);
     const ComposedDistributionComputeSamplePolicy policy(coreSample, result, distributionCollection_);
-    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel_, 0, size, policy, 1024);
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
