@@ -271,8 +271,8 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
   if (inS == mesh_.getVertices()) result = values_;
   else
   {
-    const P1LagrangeEvaluationComputeSamplePolicy policy( inS, result, *this );
-    TBBImplementation::ParallelFor( 0, size, policy );
+    const P1LagrangeEvaluationComputeSamplePolicy policy(inS, result, *this);
+    TBBImplementation::ParallelFor(0, size, policy, 1024);
   } // The input sample is different from the mesh vertices
   callsNumber_.fetchAndAdd(size);
   return result;
