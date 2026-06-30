@@ -103,36 +103,20 @@ FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
 }
 
 
-/** FFT 2D transformation on complex */
-ComplexMatrix FFT::transform2D(const ComplexMatrix & matrix) const
+/* FFT ND transformation on real data */
+FFT::ComplexCollection FFT::transform(const Point & data,
+    const Indices & dimensions) const
 {
-  return getImplementation()->transform2D(matrix);
+  return getImplementation()->transform(data, dimensions);
 }
 
-
-/** FFT 2D transformation on complex */
-ComplexMatrix FFT::transform2D(const Matrix & matrix) const
+/* FFT ND transformation on complex data */
+FFT::ComplexCollection FFT::transform(const ComplexCollection & data,
+    const Indices & dimensions) const
 {
-  return getImplementation()->transform2D(matrix);
+  return getImplementation()->transform(data, dimensions);
 }
 
-/** FFT 2D transformation on complex */
-ComplexMatrix FFT::transform2D(const Sample & sample) const
-{
-  return getImplementation()->transform2D(sample);
-}
-
-/** FFT 3D transformation on complex */
-ComplexTensor FFT::transform3D(const ComplexTensor & tensor) const
-{
-  return getImplementation()->transform3D(tensor);
-}
-
-/* FFT 3D transformation on real data */
-ComplexTensor FFT::transform3D(const Tensor & tensor) const
-{
-  return getImplementation()->transform3D(tensor);
-}
 
 FFT::ComplexCollection FFT::inverseTransform(const ScalarCollection & collection) const
 {
@@ -181,34 +165,18 @@ FFT::ComplexCollection FFT::inverseTransform(const ComplexCollection & collectio
 }
 
 
-/** IFFT 2D transformation on complex */
-ComplexMatrix FFT::inverseTransform2D(const ComplexMatrix & matrix) const
+/* IFFT ND transformation on data stored as a flat array */
+FFT::ComplexCollection FFT::inverseTransform(const Point & data,
+    const Indices & dimensions) const
 {
-  return getImplementation()->inverseTransform2D(matrix);
+  return getImplementation()->inverseTransform(data, dimensions);
 }
 
-/** IFFT 2D transformation on real matrix */
-ComplexMatrix FFT::inverseTransform2D(const Matrix & matrix) const
+/* IFFT ND transformation on complex data stored as a flat array */
+FFT::ComplexCollection FFT::inverseTransform(const ComplexCollection & data,
+    const Indices & dimensions) const
 {
-  return getImplementation()->inverseTransform2D(matrix);
-}
-
-/** IFFT 2D transformation on sample */
-ComplexMatrix FFT::inverseTransform2D(const Sample & sample) const
-{
-  return getImplementation()->inverseTransform2D(sample);
-}
-
-/* IFFT 3D transformation */
-ComplexTensor FFT::inverseTransform3D(const ComplexTensor & tensor) const
-{
-  return getImplementation()->inverseTransform3D(tensor);
-}
-
-/* IFFT 3D transformation on real tensors*/
-ComplexTensor FFT::inverseTransform3D(const Tensor & tensor) const
-{
-  return getImplementation()->inverseTransform3D(tensor);
+  return getImplementation()->inverseTransform(data, dimensions);
 }
 
 /* String converter */

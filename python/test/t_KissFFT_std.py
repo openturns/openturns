@@ -1,61 +1,69 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+myFFT = ot.KissFFT()
+print("myFFT = ", myFFT)
 
-# for fft, the best implementation is given for N = 2^p
+# 1D case with deterministic data
 size = 16
-
-# collection for test
 collection = ot.ComplexCollection(size)
-
-# Fill the data with artificial values
-
-# Create a complex gaussian sample
 for index in range(size):
     realPart = 0.1 * (index + 1.0) / size
     imagPart = 0.3 * (index + 1.0) / size
     collection[index] = realPart + 1j * imagPart
 
-myFFT = ot.KissFFT()
-print("myFFT = ", myFFT)
-
-# Initial transformation
 print("collection = ", collection)
 
-# FFT transform
 transformedCollection = ot.ComplexCollection(myFFT.transform(collection))
 print("FFT result = ", transformedCollection)
 
-# Inverse transformation
-inverseTransformedCollection = ot.ComplexCollection(
+inverseCollection = ot.ComplexCollection(
     myFFT.inverseTransform(transformedCollection)
 )
-print("FFT back=", inverseTransformedCollection)
+print("FFT back=", inverseCollection)
 
-# 2D case now
+# Verify 1D roundtrip
+for i in range(size):
+    ott.assert_almost_equal(inverseCollection[i].real, collection[i].real, 1e-14, 0.0)
+    ott.assert_almost_equal(inverseCollection[i].imag, collection[i].imag, 1e-14, 0.0)
+
+# 2D case
 N = 8
+ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal(N)
 sample = distribution.getSample(2 * N)
+rows = sample.getSize()
+cols = sample.getDimension()
+sampleFlat = ot.ComplexCollection(
+    [complex(sample[i, j], 0.0) for i in range(rows) for j in range(cols)]
+)
 
-# FFT transform
-transformedSample = myFFT.transform2D(sample)
-print("2D FFT result = ", repr(transformedSample))
+transformedSample = myFFT.transform(sampleFlat, [rows, cols])
+print("2D FFT size = ", transformedSample.getSize())
 
-# Inverse transformation
-inverseTransformedSample = myFFT.inverseTransform2D(transformedSample)
-print("2D FFT back=", repr(inverseTransformedSample.real()))
+inverseSample = myFFT.inverseTransform(transformedSample, [rows, cols])
+print("2D FFT back size = ", inverseSample.getSize())
+
+for i in range(rows * cols):
+    ott.assert_almost_equal(inverseSample[i].real, sampleFlat[i].real, 1e-12, 0.0)
 
 # 3D case
+ot.RandomGenerator.SetSeed(0)
 elements = [ot.RandomGenerator.Generate() for i in range(N * N * N)]
-tensor = ot.ComplexTensor(N, N, N, elements)
+tensorFlat = ot.ComplexCollection(
+    [complex(elements[i + j * N + k * N * N], 0.0)
+     for k in range(N) for j in range(N) for i in range(N)]
+)
 
-# FFT transform
-transformedTensor = myFFT.transform3D(tensor)
-print("3D FFT result = ", repr(transformedTensor))
+transformedTensor = myFFT.transform(tensorFlat, [N, N, N])
+print("3D FFT size = ", transformedTensor.getSize())
 
-# Inverse transformation
-inverseTransformedTensor = myFFT.inverseTransform3D(transformedTensor)
-print("3D FFT back=", repr(inverseTransformedTensor.real()))
+inverseTensor = myFFT.inverseTransform(transformedTensor, [N, N, N])
+print("3D FFT back size = ", inverseTensor.getSize())
+
+for i in range(N * N * N):
+    ott.assert_almost_equal(inverseTensor[i].real, tensorFlat[i].real, 1e-12, 0.0)

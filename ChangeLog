@@ -29,6 +29,8 @@
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
+ * CirculantEmbeddingGaussianProcess (openturns.experimental)
+ * P1InterpolatedProcess (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
 
 ==== API changes ====
