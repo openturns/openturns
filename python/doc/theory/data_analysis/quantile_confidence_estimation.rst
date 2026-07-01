@@ -3,354 +3,396 @@
 Exact quantile confidence interval based on order statistics
 ------------------------------------------------------------
 
-We consider a random variable :math:`X` of dimension 1 and its quantile :math:`x_{\alpha}`
-of level :math:`\alpha` (:math:`\alpha \in [0, 1]`).
-We seek to evaluate an upper bound of :math:`x_{\alpha}` with a confidence greater or equal to
-:math:`\beta`, using order statistics.
+We consider a random variable :math:`X` of dimension 1 and its quantile
+:math:`x_{\alpha}` of level :math:`\alpha` (:math:`\alpha \in [0, 1]`).
+We seek to evaluate an upper bound of :math:`x_{\alpha}` with a confidence
+greater than or equal to :math:`\beta`, using order statistics.
 
-Let :math:`(X_1, \dots, X_\sampleSize)` be some independent copies of :math:`X`.
-Let :math:`X_{(k)}` be the :math:`k` -th order statistics of :math:`(X_1, \dots, X_\sampleSize)` which means that
-:math:`X_{(k)}` is the :math:`k` -th minimum of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`. For
-example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
-and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum. We have:
+Let :math:`(X_1, \dots, X_\sampleSize)` be independent copies of :math:`X`.
+Let :math:`X_{(k)}` be the :math:`k`-th order statistic of
+:math:`(X_1, \dots, X_\sampleSize)` i.e., :math:`X_{(k)}` is the
+:math:`k`-th smallest value of :math:`(X_1, \dots, X_\sampleSize)` for :math:`1 \leq k \leq \sampleSize`.
+For example, :math:`X_{(1)} = \min (X_1, \dots, X_\sampleSize)` is the minimum
+and :math:`X_{(\sampleSize)} = \max (X_1, \dots, X_\sampleSize)` is the maximum.
+We have:
+
+.. math::
+
+    X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}.
+
+The cumulative distribution function of the order statistic :math:`X_{(k)}` is:
 
 .. math::
 
-    X_{(1)} \leq X_{(2)} \leq \dots \leq X_{(\sampleSize)}
+    F_{X_{(k)}}(x)
+    = \sum_{i = k}^{\sampleSize} \binom{\sampleSize}{i}
+    \left(F(x)\right)^i \left(1 - F(x) \right)^{\sampleSize-i}.
 
-The probability density and cumulative distribution functions of the order
-statistics :math:`X_{(k)}` are:
+For any strictly positive integer :math:`\sampleSize` and :math:`\alpha \in [0, 1]`,
+let :math:`F_{(\sampleSize, \alpha)}` be the cumulative distribution function of
+the binomial distribution :math:`\cB(\sampleSize, \alpha)`.
+Let :math:`\overline{F}` be the complementary cumulative distribution function
+(also named survival function in dimension 1):
 
 .. math::
-    :label: DistOrderStat
 
-    F_{X_{(k)}}(x) & = \sum_{i=k}^{\sampleSize} \binom{\sampleSize}{i}\left(F(x)
-    \right)^i \left(1-F(x)
-    \right)^{\sampleSize-i} \\
-    p_{X_{(k)}}(x) & = (\sampleSize-k+1)\binom{\sampleSize}{k-1}\left(F(x)\right)^{k-1}
-    \left(1-F(x)
-    \right)^{\sampleSize-k} p(x)
+    \overline{F}_{(\sampleSize, \alpha)}(k)
+    = 1 - F_{(\sampleSize, \alpha)}(k),
 
-We notice that :math:`F_{X_{(k)}}(x) = \overline{F}_{(\sampleSize,F(x))}(k-1)` where
-:math:`F_{(\sampleSize,F(x))}` is the cumulative
-distribution function of the Binomial distribution :math:`\cB(\sampleSize,F(x))` and
-:math:`\overline{F}_{(\sampleSize,F(x))}(k) = 1 - F_{(\sampleSize,F(x))}(k)` is the
-complementary cumulative distribution fonction (also named survival function in dimension
-1).
+for any integer :math:`k`.
+Then the cumulative distribution function of the :math:`k`-th order statistic
+is:
+
+.. math::
+
+    F_{X_{(k)}}(x) = \overline{F}_{(\sampleSize,F(x))}(k - 1),
+
+for any integer :math:`k \in \llbracket 1, \sampleSize \rrbracket`.
 Therefore:
 
 .. math::
 
-    F_{X_{(k)}}(x_{\alpha}) = \sum_{i=k}^{\sampleSize} \binom{\sampleSize}{i} \alpha^i (1-\alpha)^{\sampleSize-i}
-    = \overline{F}_{(\sampleSize,\alpha)}(k-1)
+    \begin{aligned}
+    F_{X_{(k)}}(x_{\alpha})
+    & = \sum_{i = k}^{\sampleSize} \binom{\sampleSize}{i} \alpha^i (1 - \alpha)^{\sampleSize - i} \\
+    & = \overline{F}_{(\sampleSize, \alpha)}(k - 1).
+    \end{aligned}
 
 Rank for an upper bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let :math:`(x_1, \dots, x_\sampleSize)` be an i.i.d. sample of size :math:`\sampleSize` of
-the random variable :math:`X`.
+Let :math:`(x_1, \dots, x_\sampleSize)` be an i.i.d. sample of size
+:math:`\sampleSize` of the random variable :math:`X`.
 Given a quantile level :math:`\alpha \in [0,1]`, a confidence level
-:math:`\beta \in [0,1]`, and a sample size :math:`\sampleSize`, we seek the smallest
-rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
+:math:`\beta \in [0,1]`, and a sample size :math:`\sampleSize`, we seek the
+smallest rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
 
 .. math::
     :label: EqOrderStatB
 
-    \Prob{x_{\alpha} \leq X_{(k)}} \geq \beta
+    \Prob{x_{\alpha} \leq X_{(k)}} \geq \beta.
 
-As equation :eq:`EqOrderStatB` can be written as:
+The previous equation is equivalent to:
 
 .. math::
     :label: EqOrderStat2B
 
-    1-F_{X_{(k)}}(x_{\alpha})\geq \beta
+    F_{(\sampleSize, \alpha)}(k - 1) \geq \beta.
 
-or even as:
-
-.. math::
-
-    F_{\sampleSize, \alpha}(k-1)\geq \beta
-
-Then, the smallest rank :math:`k_{sol}` such that the previous equation is satisfied is:
+Then, the smallest rank :math:`k_{\text{sol}}` such that the previous equation
+is satisfied is:
 
 .. math::
 
-    k_{sol} & = \min \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\geq \beta \}\\
-            & = 1 + \min \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq \beta \}
+    k_{\text{sol}}
+    = \min \{ k \in \llbracket 1, \sampleSize \rrbracket \,
+            \mid \, F_{(\sampleSize, \alpha)}(k - 1)\geq \beta \}.
 
-An upper bound of :math:`x_{\alpha}` is estimated by the value of :math:`X_{(k_{sol})}`
-on the sample :math:`(x_1, \dots, x_\sampleSize)`.
+If:
 
-Here is a recap of the existence of solutions for this case:
+.. math::
 
-+------------------------+------------------+-------------------------------------+---------------------------------+
-| :math:`k_{sol}`        | :math:`\beta=0`  | :math:`0 < \beta < 1`               | :math:`\beta=1`                 |
-+========================+==================+=====================================+=================================+
-| :math:`\alpha=0`       | 1                | 1                                   | 1                               |
-+------------------------+------------------+-------------------------------------+---------------------------------+
-| :math:`0 < \alpha < 1` | 1                | see :eq:`EqOrderStatBgen`           | :math:`\emptyset`               |
-+------------------------+------------------+-------------------------------------+---------------------------------+
-| :math:`\alpha=1`       | 1                | :math:`\emptyset`                   | :math:`\emptyset`               |
-+------------------------+------------------+-------------------------------------+---------------------------------+
+    1 - \alpha^\sampleSize < \beta,
 
-where:
+then there is no solution.
+Otherwise, the solution :math:`k_{\text{sol}}` is:
 
 .. math::
     :label: EqOrderStatBgen
 
-    k_{sol} & = 1 + F_{\sampleSize,\alpha}^{-1}(\beta)   \quad \text{if} \quad  1-\alpha^\sampleSize \geq \beta \\
-            & = \emptyset   \quad \text{else}
+    k_{\text{sol}} = 1 + F_{(\sampleSize, \alpha)}^{-1}(\beta).
 
+First, the optimal rank :math:`k_{\text{sol}}` is computed.
+Then, the upper bound of :math:`x_{\alpha}` is estimated using the corresponding
+order statistic :math:`x_{(k_{\text{sol}})}` from the sample
+:math:`(x_1, \dots, x_\sampleSize)`.
+
+The following table presents the solution depending on the parameters.
+
++------------------------+------------------+----------------------------+--------------------+
+| :math:`k_{\text{sol}}` | :math:`\beta=0`  | :math:`0 < \beta < 1`      | :math:`\beta=1`    |
++========================+==================+============================+====================+
+| :math:`\alpha=0`       | 1                | 1                          | 1                  |
++------------------------+------------------+----------------------------+--------------------+
+| :math:`0 < \alpha < 1` | 1                | see :eq:`EqOrderStatBgen`  | :math:`\emptyset`  |
++------------------------+------------------+----------------------------+--------------------+
+| :math:`\alpha=1`       | 1                | :math:`\emptyset`          | :math:`\emptyset`  |
++------------------------+------------------+----------------------------+--------------------+
 
 Rank for a lower bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given the same data as previoulsy, we seek the greatest rank :math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
+Given the same data as previously, we seek the greatest rank
+:math:`k \in \llbracket 1, \sampleSize \rrbracket` such that:
 
 .. math::
     :label: EqOrderStatA
 
-    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta
+    \Prob{X_{(k)} \leq x_{\alpha}} \geq \beta.
 
-which can be written as:
-
-.. math::
-    :label: EqOrderStat2A
-
-    F_{X_{(k)}}(x_{\alpha})\geq \beta
-
-and finally as:
+This is equivalent to:
 
 .. math::
 
-    F_{\sampleSize, \alpha}(k - 1)\leq 1 - \beta
+    \overline{F}_{(\sampleSize, \alpha)}(k - 1) \geq \beta.
 
-Then, the greatest rank :math:`k_{sol}` such that the previous equation is satisfied is:
-
+Then, the greatest rank :math:`k_{\text{sol}}` such that the previous equation
+is satisfied is:
 
 .. math::
 
-    k_{sol} & = \max \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\leq \beta \}\\
-            & = 1+\max \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\leq \beta \}
+    k_{\text{sol}}
+    = \max \left\{ k \in \llbracket 1, \sampleSize \rrbracket \,
+             \mid \, \overline{F}_{(\sampleSize, \alpha)}(k - 1) \geq \beta \right\}.
 
-Here is a recap of the existence of solutions for this case:
+If:
 
-+------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-| :math:`k_{sol}`        | :math:`\beta=0`                      | :math:`0 < \beta < 1`                   | :math:`\beta=1`                 |
-+========================+======================================+=========================================+=================================+
-| :math:`\alpha=0`       | :math:`\sampleSize`                  | :math:`\emptyset`                       | :math:`\emptyset`               |
-+------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-| :math:`0 < \alpha < 1` | :math:`\sampleSize`                  | see :eq:`EqOrderStatAgen`               | :math:`\emptyset`               |
-+------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
-| :math:`\alpha=1`       | :math:`\sampleSize`                  |  :math:`\sampleSize`                    | :math:`\sampleSize`             |
-+------------------------+--------------------------------------+-----------------------------------------+---------------------------------+
+.. math::
 
-where:
+    1 - (1 - \alpha)^\sampleSize < \beta,
+
+then there is no solution.
+Otherwise, the solution :math:`k_{\text{sol}}` is:
 
 .. math::
     :label: EqOrderStatAgen
 
-    k_{sol} & = \emptyset \quad \text{if} \quad  (1-\alpha)^\sampleSize > 1 - \beta \\
-            & = 1 + F_{\sampleSize,\alpha}^{-1}(1-\beta)  \quad  \text{otherwise and if} \quad  \exists k_0 \, | \, 1-\beta = F_{(\sampleSize,\alpha}(k_0 - 1) \\
-            & = F_{\sampleSize,\alpha}^{-1}(1-\beta)  \quad  \text{else}
+    k_{\text{sol}} =
+    \begin{cases}
+    1 + \overline{F}_{(\sampleSize, \alpha)}^{-1}(\beta)
+        & \text{if } \exists k_0 \mid \overline{F}_{(\sampleSize, \alpha)}(k_0 - 1) = \beta,\\
+    \overline{F}_{(\sampleSize, \alpha)}^{-1}(\beta) & \text{otherwise}.
+    \end{cases}
 
+The following table presents the solution depending on the parameters.
+
++------------------------+----------------------+----------------------------+----------------------+
+| :math:`k_{\text{sol}}` | :math:`\beta=0`      | :math:`0 < \beta < 1`      | :math:`\beta=1`      |
++========================+======================+============================+======================+
+| :math:`\alpha=0`       | :math:`\sampleSize`  | :math:`\emptyset`          | :math:`\emptyset`    |
++------------------------+----------------------+----------------------------+----------------------+
+| :math:`0 < \alpha < 1` | :math:`\sampleSize`  | see :eq:`EqOrderStatAgen`  | :math:`\emptyset`    |
++------------------------+----------------------+----------------------------+----------------------+
+| :math:`\alpha=1`       | :math:`\sampleSize`  |  :math:`\sampleSize`       | :math:`\sampleSize`  |
++------------------------+----------------------+----------------------------+----------------------+
 
 Ranks for bilateral bounds of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given the same data as previoulsy, we can seek the ranks
-:math:`k_1, k_2 \in \llbracket 1, \sampleSize \rrbracket^2` as solution of different problems.
+Given the previously established data, we seek the ranks
+:math:`k_1, k_2 \in \llbracket 1, \sampleSize \rrbracket^2`.
+Because the optimal interval can be defined in various ways, the solution
+depends on the chosen criterion.
 
-The problem can be:
+Here are the different formulations based on the target objective.
 
-.. math::
-    :label: EqOrderStatC3
-
-    \begin{array}{ll}
-    (k_1, k_2) = & \argmin \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}\\
-                 & \mbox{s.t.} \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
-    \end{array}
-
-
-or:
+**Criterion 1: Symmetric probability tails**
 
 .. math::
-    :label: EqOrderStatC4
+    :label: EqOrderStatSymmetricProbability
 
-    \begin{array}{ll}
-    (k_1, k_2) = & \argmin (k_2-k_1)\\
-                 & \mbox{s.t.} \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \geq \beta
-    \end{array}
+    \begin{cases}
+    \Prob{X_{(k_1)} \leq x_{\alpha}} \geq 1 - \dfrac{1 - \beta}{2}, \\
+    \Prob{x_{\alpha} \leq X_{(k_2)}} \geq 1 - \dfrac{1 - \beta}{2}.
+    \end{cases}
 
-
-or:
-
-.. math::
-    :label: EqOrderStatC1
-
-    \Prob{X_{(k_1)} \leq x_{\alpha} } \geq 1 - \dfrac{1-\beta}{2}\\
-    \Prob{x_{\alpha} \leq X_{(k_2)}} \geq 1 - \dfrac{1-\beta}{2}
-
-
-or with :math:`(k_1, k_2) = (k,\sampleSize-k+1)` and :math:`1 \leq k \leq \sampleSize` the greatest rank such that:
+**Criterion 2: Minimizing the rank interval length**
 
 .. math::
-    :label: EqOrderStatC2
+    :label: EqOrderStatMinRankLength
 
-    \Prob{X_{(k)} \leq x_{\alpha} \leq X_{(\sampleSize-k+1)}} \geq \beta.
+    \begin{aligned}
+    (k_1, k_2) =
+    & \argmin (k_2 - k_1) \\
+    & \text{s.t. } \quad \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}
+      \geq \beta.
+    \end{aligned}
 
-
-The solutions of :eq:`EqOrderStatC3` and :eq:`EqOrderStatC4` are determined numerically, using an optimization algorithm.
-
-The solutions of :eq:`EqOrderStatC1` are respectively defined by:
+**Criterion 3: Minimizing the probability of coverage**
 
 .. math::
+    :label: EqOrderStatMinCoverage
 
-   \overline{F}_{(\sampleSize,\alpha)}(k_1 - 1) \leq \dfrac{1 - \beta}{2} \\
-   F_{(\sampleSize,\alpha)}(k_2 - 1) \geq 1-\dfrac{1 - \beta}{2}
+    \begin{aligned}
+    (k_1, k_2) =
+    & \argmin \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}} \\
+    & \text{s.t. } \quad \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(k_2)}}
+      \geq \beta.
+    \end{aligned}
 
-which leads to the respective solutions:
+**Criterion 4: Symmetric ranks**
+
+Let :math:`k_\alpha` be the rank corresponding to the empirical estimator
+of the quantile :math:`x_{\alpha}`:
 
 .. math::
 
-    k_{1, sol} & = \max \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k-1)\leq \dfrac{1 - \beta}{2} \}\\
-            & = 1 + \max \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\leq \dfrac{1-\beta}{2} \}
+    k_\alpha
+    = \begin{cases}
+    \max(1, \alpha \sampleSize) & \textrm{ if } \alpha \sampleSize \textrm{ is an integer}, \\
+    \min(\sampleSize, \lfloor\alpha \sampleSize\rfloor + 1) & \textrm{ otherwise.}
+    \end{cases}
 
-and
+We search for the smallest :math:`\ell \leq \min(k_\alpha - 1, \sampleSize - k_\alpha + 1)`
+such that:
+
+.. math::
+    :label: EqOrderStatSymmetricRanks
+
+    \Prob{X_{(k_\alpha - \ell)} \leq x_{\alpha} \leq X_{(k_\alpha + \ell)}}
+      \geq \beta.
+
+The solutions to :eq:`EqOrderStatMinCoverage` and :eq:`EqOrderStatMinRankLength`
+are determined numerically, using an optimization algorithm.
+
+The solutions to :eq:`EqOrderStatSymmetricProbability` are such that:
 
 .. math::
 
-    k_{2, sol} & = \min \{ k \in \llbracket 1, \sampleSize \rrbracket \, | \, F_{\sampleSize, \alpha}(k - 1)\geq 1- \dfrac{1 - \beta}{2} \}\\
-            & = 1 + \min \{ k \in \llbracket 1, \sampleSize\rrbracket \, | \, F_{\sampleSize, \alpha}(k)\geq 1 - \dfrac{1 - \beta}{2} \}
+    \begin{aligned}
+    F_{(\sampleSize, \alpha)}(k_1 - 1) \leq \dfrac{1 - \beta}{2}, \\
+    F_{(\sampleSize, \alpha)}(k_2 - 1) \geq 1 - \dfrac{1 - \beta}{2}.
+    \end{aligned}
 
-Then, the previous tables written for the lower and upper bounds can be used to find :math:`k_{1, sol}` and :math:`k_{2, sol}` respectively with
-:math:`\beta \rightarrow \dfrac{1-\beta}{2}` or :math:`\beta \rightarrow 1-\dfrac{1-\beta}{2}`.
+The solutions are:
 
-The solutions of :eq:`EqOrderStatC2` are gathered here:
+.. math::
 
-+------------------------+-----------------------------------------------------------+---------------------------------+-------------------------+
-| :math:`k_{sol}`        | :math:`\beta=0`                                           | :math:`0 < \beta < 1`           | :math:`\beta=1`         |
-+========================+===========================================================+=================================+=========================+
-| :math:`\alpha=0`       | :math:`\Bigl\lfloor \frac{n}{2} \Bigr\rfloor`             | :math:`\emptyset`               | :math:`\emptyset`       |
-+------------------------+-----------------------------------------------------------+---------------------------------+-------------------------+
-| :math:`0 < \alpha < 1` | 1                                                         | :math:`\emptyset` or 1          | :math:`\emptyset`       |
-+------------------------+-----------------------------------------------------------+---------------------------------+-------------------------+
-| :math:`\alpha=1`       | :math:`\Bigl\lfloor \frac{\sampleSize}{2} \Bigr\rfloor`   | :math:`\emptyset`               | :math:`\emptyset`       |
-+------------------------+-------------------------------------------------+---------------------------------+-----------------------------------+
+    k_{1, \text{sol}}
+    = F_{(\sampleSize, \alpha)}^{-1}\left(\dfrac{1 - \beta}{2}\right),
+
+and:
+
+.. math::
+
+    k_{2, \text{sol}}
+    = 1 + F_{(\sampleSize, \alpha)}^{-1}\left(1 - \dfrac{1 - \beta}{2}\right).
 
 Minimum sample size for an upper bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given :math:`\alpha`, :math:`\beta`, and the rank :math:`1 \leq k \leq \sampleSize`, we seek the smallest sample size
+Given :math:`\alpha`, :math:`\beta`, and the rank
+:math:`1 \leq k \leq \sampleSize`, we seek the smallest sample size
 :math:`\sampleSize` such that:
 
 .. math::
-    :label: EqOrderStatBbis
 
-    \Prob{x_{\alpha} \leq X_{(\sampleSize-k+1)}} \geq \beta
+    \Prob{x_{\alpha} \leq X_{(\sampleSize - k + 1)}} \geq \beta.
 
-As equation :eq:`EqOrderStatBbis` can be written as:
+The previous equation is equivalent to:
 
 .. math::
     :label: EqOrderStat2Bbis
 
-    1-F_{X_{(\sampleSize-k+1)}}(x_{\alpha})\geq \beta
+    F_{(\sampleSize, \alpha)}(\sampleSize - k)\geq \beta.
 
-or even as:
+Unlike the formulation leading to equation :eq:`EqOrderStatB`, where the
+sample size is fixed and the rank is the unknown, here the relative rank
+is fixed and the sample size is the variable to determine.
+To determine this minimum sample size, we solve equation :eq:`EqOrderStat2Bbis`
+for the sample size :math:`\sampleSize`.
+An optimization algorithm is used to compute :math:`\sampleSize_{\text{sol}}` from
+the set :math:`\{ k, k + 1, \dots\}`.
+We can reduce the search space to the interval
+:math:`\llbracket k, \sampleSize_2 \rrbracket`, where :math:`\sampleSize_2` is a
+sample size that satisfies equation :eq:`EqOrderStat2Bbis`.
+This value :math:`\sampleSize_2` can be determined using the normal
+approximation of the binomial distribution with the same mean and variance.
 
-.. math::
-
-    F_{\sampleSize, \alpha}(\sampleSize-k)\geq \beta
-
-Note that the problem is defined differently than in equation :eq:`EqOrderStatB`. In order to do so, we solve
-equation :eq:`EqOrderStat2Bbis` with respect to the sample size :math:`\sampleSize`. We use an optimization algorithm to determined
-:math:`n_{sol}` in the interval :math:`\llbracket k, +\infty \llbracket`. We can reduce the research interval to the interval
-:math:`\llbracket k, n_2 \rrbracket` where :math:`n_2` is a size
-that verifies equation :eq:`EqOrderStat2Bbis`. It
-can be determined using the approximation of the binomial distribution by the normal distribution with the same mean and variance.
-
-Once the smallest size :math:`\sampleSize` has been estimated, a sample of size :math:`\sampleSize` can be
-generated from :math:`X` and an upper bound of :math:`x_{\alpha}` is estimated using
-:math:`x_{(n-k+1)}` i.e. the :math:`k`-th observation
-in the decreasing ordered sample :math:`(x_{(\sampleSize)}, \dots, x_{(1)})`.
+Once the smallest size :math:`\sampleSize` has been estimated, a sample of size
+:math:`\sampleSize` can be generated from :math:`X` and an upper bound of
+:math:`x_{\alpha}` is estimated using :math:`x_{(\sampleSize - k + 1)}`.
 
 Minimum sample size for a lower bound of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given the same data as previoulsy, we seek the smallest sample size :math:`\sampleSize`
-such that equation :eq:`EqOrderStatA` is satisfied.
+Given the same data as previously, we seek the smallest sample size
+:math:`\sampleSize` such that equation :eq:`EqOrderStatA` is satisfied.
 
-Here is a recap of the existence of solutions for this case:
+The solution is:
 
-+------------------------+--------------------------------------+---------------------------------------------+---------------------------------+
-|       :math:`n_{sol}`  | :math:`\beta=0`                      | :math:`0 < \beta < 1`                       | :math:`\beta=1`                 |
-+========================+======================================+=============================================+=================================+
-| :math:`\alpha=0`       | :math:`k`                            | :math:`\emptyset`                           | :math:`\emptyset`               |
-+------------------------+--------------------------------------+---------------------------------------------+---------------------------------+
-| :math:`0 < \alpha < 1` | :math:`\argmin \{\sampleSize \geq k | F_{\sampleSize,\alpha}(k-1) \leq 1-\beta \}` | :math:`\emptyset`               |
-+------------------------+--------------------------------------+---------------------------------------------+---------------------------------+
-| :math:`\alpha=1`       | :math:`k`                            | :math:`k`                                   | :math:`k`                       |
-+------------------------+--------------------------------------+---------------------------------------------+---------------------------------+
+.. math::
+
+    \sampleSize_{\text{sol}}
+    = \min \left\{\sampleSize \geq k
+       \mid \overline{F}_{(\sampleSize, \alpha)}(k - 1) \geq \beta \right\}.
+
+The following table presents the solution depending on the parameters.
+
++------------------------------------+-----------------------------------+-----------------------------------+--------------------+
+| :math:`\sampleSize_{\text{sol}}`   | :math:`\beta=0`                   | :math:`0 < \beta < 1`             | :math:`\beta=1`    |
++====================================+===================================+===================================+====================+
+| :math:`\alpha=0`                   | :math:`k`                         | :math:`\emptyset`                 | :math:`\emptyset`  |
++------------------------------------+-----------------------------------+-----------------------------------+--------------------+
+| :math:`0 < \alpha < 1`             | :math:`\sampleSize_{\text{sol}}`  | :math:`\sampleSize_{\text{sol}}`  | :math:`\emptyset`  |
++------------------------------------+-----------------------------------+-----------------------------------+--------------------+
+| :math:`\alpha=1`                   | :math:`k`                         | :math:`k`                         | :math:`k`          |
++------------------------------------+-----------------------------------+-----------------------------------+--------------------+
 
 
 Minimum sample size for bilateral bounds of the quantile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Given two order statistics :math:`(k_1, k_2)` with :math:`1 \leq k_1 < k_2 \leq \sampleSize`, we seek the smallest sample size :math:`\sampleSize`
-such that:
+Given two order statistics :math:`(k_1, k_2)` with
+:math:`1 \leq k_1 < k_2 \leq \sampleSize`, we seek the smallest sample size
+:math:`\sampleSize` such that:
 
 .. math::
     :label: EqOrderMinSizeBil
 
-    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(n-k_2+1)}} \geq \beta
+    \Prob{X_{(k_1)} \leq x_{\alpha} \leq X_{(\sampleSize - k_2 + 1)}} \geq \beta.
 
-As equation :eq:`EqOrderMinSizeBil` can be written as:
+Equation :eq:`EqOrderMinSizeBil` can be rewritten as:
 
 .. math::
     :label: EqOrderMinSizeBilsol
 
-    F_{X_{(\sampleSize-k_2+1)}}(x_{\alpha}) - F_{X_{(k_1)}}(x_{\alpha}) \geq \beta
+    F_{X_{(\sampleSize - k_2 + 1)}}(x_{\alpha})
+    - F_{X_{(k_1)}}(x_{\alpha}) \geq \beta.
 
-or even as:
-
-.. math::
-
-    F_{\sampleSize, \alpha}(\sampleSize-k_2) - F_{\sampleSize, \alpha}(k_1-1)\geq \beta
-
-
-Note that the problem is defined differently than in equation :eq:`EqOrderStatC4`. In order to do so, we solve
-equation :eq:`EqOrderMinSizeBilsol` with respect to the sample size :math:`\sampleSize`. We use an optimization algorithm to determined
-:math:`n_{sol}` in the interval :math:`\llbracket k, +\infty \llbracket`. We can reduce the research interval to the interval
-:math:`\llbracket k, n_2 \rrbracket` where :math:`n_2` is a size
-that verifies equation :eq:`EqOrderStat2Bbis`. It
-can be determined using the approximation of the binomial distribution by the normal distribution with the same mean and variance.
-
-Once the smallest size :math:`\sampleSize` has been estimated, a sample of size :math:`\sampleSize` can be
-generated from :math:`X` and an lower and upper bound of :math:`x_{\alpha}` is estimated using
-:math:`x_{(k_1)}` and :math:`x_{(n-k_2+1)}` i.e. the :math:`k_1`-th observation
-in the ordered sample :math:`(x_{(1)}, \dots, x_{(\sampleSize)})` and the :math:`\sampleSize-k_2`-th observation
-in the decreasing ordered sample :math:`(x_{(\sampleSize)}, \dots, x_{(1)})`.
-
-In the particular case where :math:`(k_1, k_2) = (1,1)`, we seek the smallest sample size :math:`\sampleSize`
-such that:
+This can be equivalently expressed using the binomial distribution:
 
 .. math::
 
-    \Prob{ \min (X_1, \dots, X_\sampleSize) \leq x_{\alpha} \leq  \max (X_1, \dots, X_\sampleSize)} \geq \beta.
+    F_{(\sampleSize, \alpha)}(\sampleSize - k_2)
+    - F_{(\sampleSize, \alpha)}(k_1 - 1) \geq \beta.
 
-Then, equantion :eq:`EqOrderMinSizeBilsol` can be written as:
+Unlike the formulation in equation :eq:EqOrderStatMinRankLength, where the
+sample size is fixed and the ranks are the unknowns, this approach fixes the
+relative ranks to determine the minimum required sample size.
+To find the exact minimum :math:`\sampleSize_{\text{sol}}` that solves equation
+:eq:`EqOrderMinSizeBilsol`, we use an optimization algorithm.
+
+Once the smallest size :math:`\sampleSize` has been computed, a sample of size
+:math:`\sampleSize` can be generated from :math:`X` and a lower and an upper
+bound of :math:`x_{\alpha}` are estimated using :math:`x_{(k_1)}` and
+:math:`x_{(\sampleSize - k_2 + 1)}`.
+
+In the particular case where :math:`(k_1, k_2) = (1,1)`, we seek the smallest
+sample size :math:`\sampleSize` such that:
 
 .. math::
 
-    1-\alpha^\sampleSize - (1-\alpha)^\sampleSize \geq \beta.
+    \Prob{ \min (X_1, \dots, X_\sampleSize)
+    \leq x_{\alpha}
+    \leq \max (X_1, \dots, X_\sampleSize)} \geq \beta.
 
-The optimal :math:`\sampleSize` is determined using an optimization algorithm which research is reduced to the interval:
+Then, equation :eq:`EqOrderMinSizeBilsol` is equivalent to:
 
 .. math::
 
-    \left \lfloor \dfrac{\log (1-\beta)}{\log \gamma} \right \rfloor \leq n \leq \left \lfloor \dfrac{\log \left(\dfrac{1-\beta}{2}\right)}{\log \gamma} \right \rfloor
+    1 - \alpha^\sampleSize - (1 - \alpha)^\sampleSize \geq \beta.
 
-where :math:`\gamma = \max(\alpha, 1-\alpha)`.
+The optimal :math:`\sampleSize` is determined using an optimization algorithm.
+The search space is reduced to the interval:
+
+.. math::
+
+    \left \lfloor \dfrac{\log (1 - \beta)}{\log \gamma} \right \rfloor
+    \leq \sampleSize
+    \leq \left \lfloor \dfrac{\log \left(\dfrac{1 - \beta}{2}\right)}{\log \gamma} \right \rfloor,
+
+where :math:`\gamma = \max(\alpha, 1 - \alpha)`.
 
 .. topic:: API:
 
