@@ -351,7 +351,7 @@ There are many ways to use the functional chaos expansion. We present two usual 
 - performing the sensitivity analysis of the expansion,
 - using the conditional expectation of the output given an input vector.
 
-**Functional Expansion as a random vector generator** : we create a random vector
+**Functional Cahos Expansion as a random vector generator** : we create a random vector
 :math:`\widetilde{Y}` defined by:
 
 .. math::
