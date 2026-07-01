@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/Binomial.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,17 +48,22 @@ public:
   QuantileConfidence * clone() const override;
 
   /** Compute ranks */
-  UnsignedInteger computeUnilateralRank(const UnsignedInteger size, const Bool tail = false) const;
+  UnsignedInteger computeUnilateralRank(const UnsignedInteger size, const Bool lowerBounded = false) const;
   Indices computeBilateralRank(const UnsignedInteger size) const;
 
   /** Compute confidence intervals */
-  Interval computeUnilateralConfidenceInterval(const Sample & sample, const Bool tail = false) const;
-  Interval computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceInterval(const Sample & sample, const Bool lowerBounded = false) const;
+  Interval computeUnilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut, const Bool lowerBounded = false) const;
   Interval computeBilateralConfidenceInterval(const Sample & sample) const;
   Interval computeBilateralConfidenceIntervalWithCoverage(const Sample & sample, Scalar & coverageOut) const;
 
+  /** Compute probability of coverage for a given size and rank */
+  Scalar computeUnilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank, const Bool lowerBounded = false) const;
+  /** Compute probability of coverage for a bilateral interval given size and ranks */
+  Scalar computeBilateralCoverage(const UnsignedInteger size, const UnsignedInteger rank1, const UnsignedInteger rank2) const;
+  
   /** Compute minimum sample size */
-  UnsignedInteger computeUnilateralMinimumSampleSize(const UnsignedInteger rank = 0, const Bool tail = false) const;
+  UnsignedInteger computeUnilateralMinimumSampleSize(const UnsignedInteger rank = 0, const Bool lowerBounded = false) const;
   UnsignedInteger computeBilateralMinimumSampleSize() const;
 
   /** Asymptotic confidence */
@@ -86,6 +92,18 @@ private:
   Scalar alpha_ = 0.0;
   Scalar beta_ = 0.0;
 
+  mutable UnsignedInteger countFEval_ = 0;
+  mutable UnsignedInteger countQEval_ = 0;
+
+  /** Find the smallest ell such that F(ell) > F(k) and ell > k */
+  Bool searchProbabilityJump(const Binomial binomial, const UnsignedInteger size, const UnsignedInteger k, const Scalar pk, const Scalar probabilityEpsilon, UnsignedInteger & ell, Scalar & pEll) const;
+  Indices computeBilateralRankEpsilon(const UnsignedInteger size) const;
+  Indices computeBilateralRankJump(const UnsignedInteger size) const;
+  Indices computeBilateralRankHybrid(const UnsignedInteger size) const;
+  Indices computeBilateralRankBisection(const UnsignedInteger size) const;
+  Indices computeBilateralRankAsymptoticInit(const UnsignedInteger size) const;
+  Indices computeBilateralRankDoubleJump(const UnsignedInteger size) const;
+  Indices computeBilateralRankSymmetric(const UnsignedInteger size) const;
 }; /* class QuantileConfidence */
 
 END_NAMESPACE_OPENTURNS
