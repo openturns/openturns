@@ -16,7 +16,7 @@ Then the sequence :math:`(P_n)_{n \in \Nset}` verifies the relation:
 
 .. math::
 
-    P_{n+1} & = (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}, \quad n \geq  \\
+    P_{n+1} & = (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}, \quad n \geq 0 \\
     P_{-1}  & = 0 \\
     P_{0}  & = 1
 

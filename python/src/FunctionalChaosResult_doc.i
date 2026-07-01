@@ -255,7 +255,7 @@ orthonormal with respect to  the marginal distributions.
 Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
 be a set of marginal indices and :math:`\overline{\vect{u}}` the complementary set.
 Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the random vector
-corresponding to the group of input variables of index in  :math:`\vect{u} `, 
+corresponding to the group of input variables of index in  :math:`\vect{u}`, 
 where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
 is the number of input variables in the group. We denote by :math:`\inputRV_{\overline{\vect{u}}}`
 the complementary random vector.
