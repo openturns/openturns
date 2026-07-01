@@ -570,6 +570,9 @@ ot_add_python_module(experimental experimental_module.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
+                     CurlFreeModel.i CurlFreeModel_doc.i
+                     DivFreeModel.i DivFreeModel_doc.i
+                    )
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i
