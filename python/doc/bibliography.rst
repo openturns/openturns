@@ -474,6 +474,10 @@ Bibliography
     `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
 .. [sankararaman2012] Sankararaman, S. and Mahadevan, S. *Likelihood-based approach to multidisciplinary analysis under uncertainty.*
     Journal of Mechanical Design, 134(3):031008, 2012.
+.. [scheuerer2012] Scheuerer, M. and Schlather, M. (2012).
+    Covariance Models for Divergence-Free and Curl-Free Random Vector Fields.
+    *Stochastic Models*, 28(3), 433-451.
+    DOI: 10.1080/15326349.2012.699756
 .. [santner2003] Santner, T. J., Williams, B. J., Notz, W. I., & Williams, B. J. (2003).
     *The design and analysis of computer experiments*. New York: Springer.
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
