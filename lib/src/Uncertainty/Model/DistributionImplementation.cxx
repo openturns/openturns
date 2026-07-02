@@ -2461,6 +2461,36 @@ Point DistributionImplementation::computeSequentialConditionalQuantile(const Poi
   return result;
 }
 
+/* Compute the quantile of Xi | X1, ..., Xi-1, with custom variable ordering */
+Point DistributionImplementation::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  const UnsignedInteger dim = ordering.getSize();
+  if (!ordering.check(dimension_)) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (q.getDimension() != dim) throw InvalidArgumentException(HERE) << "Cannot compute sequential conditional quantile from an argument of dimension=" << q.getDimension() << ", expected " << dim;
+  for (UnsignedInteger i = 0; i < dim; ++i)
+    if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+  // Check for full identity ordering
+  if ((dim == dimension_) && ordering.isIncreasing() && (ordering[0] == 0)) return computeSequentialConditionalQuantile(q);
+  // General case: compute iteratively by building marginal distributions
+  // for each prefix of the ordering. At step i, we need the quantile of
+  // X_{ordering[i]} | X_{ordering[0]}, ..., X_{ordering[i-1]}.
+  // We obtain it by taking the last component of the SCQ of the marginal
+  // distribution of the first (i+1) variables in the ordering.
+  Point result(dim);
+  for (UnsignedInteger i = 0; i < dim; ++i)
+  {
+    Indices prefix(i + 1);
+    std::copy(ordering.begin(), ordering.begin() + i + 1, prefix.begin());
+    const Distribution marg(getMarginal(prefix));
+    Point localQ(i + 1);
+    std::copy(q.begin(), q.begin() + i + 1, localQ.begin());
+    // Call base class 1-arg SCQ on the marginal to avoid dispatch loops
+    const Point localResult(marg.getImplementation()->DistributionImplementation::computeSequentialConditionalQuantile(localQ));
+    result[i] = localResult[i];
+  }
+  return result;
+}
+
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Point DistributionImplementation::computeConditionalQuantile(const Point & q,
     const Sample & y) const

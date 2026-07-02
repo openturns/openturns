@@ -882,6 +882,11 @@ Point Distribution::computeSequentialConditionalQuantile(const Point & q) const
   return getImplementation()->computeSequentialConditionalQuantile(q);
 }
 
+Point Distribution::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  return getImplementation()->computeSequentialConditionalQuantile(q, ordering);
+}
+
 Point Distribution::computeConditionalQuantile(const Point & q, const Sample & y) const
 {
   return getImplementation()->computeConditionalQuantile(q, y);
