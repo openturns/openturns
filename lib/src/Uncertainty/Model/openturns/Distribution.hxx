@@ -384,6 +384,8 @@ public:
   virtual Scalar computeConditionalQuantile(const Scalar q,
       const Point & y) const;
   virtual Point computeSequentialConditionalQuantile(const Point & q) const;
+  virtual Point computeSequentialConditionalQuantile(const Point & q,
+      const Indices & ordering) const;
   virtual Point computeConditionalQuantile(const Point & q,
       const Sample & y) const;
 

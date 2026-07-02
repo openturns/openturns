@@ -427,6 +427,8 @@ Parameters
 ----------
 p : sequence of float in :math:`[0,1]`, with size :math:`d`
     Values to be taken sequentially as the argument of the conditional quantile.
+ordering : sequence of int, optional
+    Permutation of :math:`[0,\\ldots,d-1]` specifying the variable order.
 
 Returns
 -------
@@ -444,7 +446,8 @@ The sequential conditional quantile function is defined by:
 where :math:`F^{-1}` is the quantile function and
 where :math:`x_1,\ldots,x_{j-1}` are defined recursively as :math:`x_1=F_1^{-1}(p_1)` and for :math:`2\leq j \leq d`,
 :math:`x_j=F_{X_j}^{-1}(p_j|X_1=x_1,\ldots,X_{j-1}=x_{j-1})`: the conditioning part is the set of already
-computed conditional quantiles.)RAW"
+computed conditional quantiles.
+When an *ordering* is given, the variables are processed in the specified order instead of the natural order.)RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalQuantile
 OT_Distribution_computeSequentialConditionalQuantile_doc

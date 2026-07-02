@@ -895,6 +895,26 @@ Point JointDistribution::computeSequentialConditionalQuantile(const Point & q) c
   return result;
 }
 
+Point JointDistribution::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  if (!ordering.check(dimension_)) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  const UnsignedInteger dim = ordering.getSize();
+  if (q.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from ordering size=" << dim;
+  Point result(dim);
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger i = 0; i < dim; ++i)
+      result[i] = distributionCollection_[ordering[i]].computeScalarQuantile(q[i]);
+  }
+  else
+  {
+    const Point coreQuantile(core_.computeSequentialConditionalQuantile(q, ordering));
+    for (UnsignedInteger i = 0; i < dim; ++i)
+      result[i] = distributionCollection_[ordering[i]].computeScalarQuantile(coreQuantile[i]);
+  }
+  return result;
+}
+
 /* Compute the numerical range of the distribution given the parameters values */
 void JointDistribution::computeRange()
 {

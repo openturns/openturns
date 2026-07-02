@@ -142,6 +142,7 @@ public:
   Bool hasIndependentCopula() const override;
 
   /** Compute the sequential conditional quantile */
+  using DistributionImplementation::computeSequentialConditionalQuantile;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1 */
