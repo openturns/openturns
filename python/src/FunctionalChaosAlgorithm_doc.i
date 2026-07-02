@@ -49,11 +49,9 @@ Refer to :any:`functional_chaos` to get more details on functional chaos expansi
 
 Once the expansion is computed, the :class:`~openturns.FunctionalChaosRandomVector`
 class provides methods to get the mean and variance of the PCE.
-Moreover, if the input distribution has independent marginals and if the domination method is not used,
+Moreover, if the input distribution has independent marginals and if the transformation method is used,
 the :class:`~openturns.FunctionalChaosSobolIndices` provides Sobol' indices
 of the input components.
-
-In order to use the domination method, use the :meth:`setUseDomination` method. 
 
 
 **Default settings for the adaptive strategy**
@@ -291,40 +289,36 @@ projectionStrategy : :class:`~openturns.ProjectionStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosAlgorithm::setUseDomination
-"Domination method flag accessor.
+%feature("docstring") OT::FunctionalChaosAlgorithm::setUseTransformation
+"Transformation method flag accessor.
 
 Parameters
 ----------
-useDomination : bool
-    Whether to use the domination method.
+useTransformation : bool
+    Whether to use the transformation method.
 
 Notes
 -----
-The domination method consists in using the basis defined in the argument *adaptiveStrategy* (or its default
-implementation if not specified). No
-isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
-the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
-(select class:`~openturns.LeastSquaresStrategy` for the *projectionStrategy*) and the Sobol' indices will not
+The transformation method consists in using an isoprobabilistic transformation
+that maps the input distribution to the measure of the orthogonal basis.
+The basis is orthonormal with respect to the measure, and Sobol' indices can
 be computed.
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosAlgorithm::getUseDomination
-"Domination method flag accessor.
+%feature("docstring") OT::FunctionalChaosAlgorithm::getUseTransformation
+"Transformation method flag accessor.
 
 Returns
 -------
-useDomination : bool
-    Whether the domination method is used.
+useTransformation : bool
+    Whether the transformation method is used.
 
 Notes
 -----
-The domination method consists in using the basis defined in the argument *adaptiveStrategy* (or its default
-implementation if not specified). No
-isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
-the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
-(select class:`~openturns.LeastSquaresStrategy` for the *projectionStrategy*) and the Sobol' indices will not
+The transformation method consists in using an isoprobabilistic transformation
+that maps the input distribution to the measure of the orthogonal basis.
+The basis is orthonormal with respect to the measure, and Sobol' indices can
 be computed.
 "

@@ -116,8 +116,8 @@ void IntegrationExpansion::run()
   // to the basis
   if (designProxy_.getSampleSize() == 0)
   {
-    if (useDomination_)
-      throw InvalidArgumentException(HERE) << "IntegrationExpansion cannot use domination method";
+    if (!useTransformation_)
+      throw InvalidArgumentException(HERE) << "IntegrationExpansion cannot work without transformation method";
 
     const Distribution measure(basis_.getMeasure());
     const Bool identityTransformation = initializeTransformation(measure);

@@ -334,8 +334,8 @@ FunctionalChaosResult FunctionalChaosResult::getConditionalExpectation(const Ind
   if (!distribution_.hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "FunctionalChaosResult can only compute the conditional expectation for an independent copula.";
 
-  if (getUseDomination())
-    throw NotYetImplementedException(HERE) << "FunctionalChaosResult conditional expectation is not available with domination method";
+  if (!getUseTransformation())
+    throw NotYetImplementedException(HERE) << "FunctionalChaosResult conditional expectation is not available without transformation method";
 
   // Create the conditioned orthogonal basis
   if (!orthogonalBasis_.getImplementation()->isTensorProduct())
@@ -429,7 +429,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "errorHistory_", errorHistory_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
-  adv.saveAttribute( "useDomination_", useDomination_);
+  adv.saveAttribute( "useTransformation_", useTransformation_);
 }
 
 
@@ -456,8 +456,8 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "isLeastSquares_", isLeastSquares_ );
     adv.loadAttribute( "involvesModelSelection_", involvesModelSelection_ );
   }
-  if (adv.hasAttribute("useDomination_"))
-    adv.loadAttribute("useDomination_", useDomination_);
+  if (adv.hasAttribute("useTransformation_"))
+    adv.loadAttribute("useTransformation_", useTransformation_);
 }
 
 IndicesCollection FunctionalChaosResult::getIndicesHistory() const
@@ -604,15 +604,15 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
   return marginalPCE;
 }
 
-/* Domination flag accessor */
-void FunctionalChaosResult::setUseDomination(const Bool useDomination)
+/* Transformation flag accessor */
+void FunctionalChaosResult::setUseTransformation(const Bool useTransformation)
 {
-  useDomination_ = useDomination;
+  useTransformation_ = useTransformation;
 }
 
-Bool FunctionalChaosResult::getUseDomination() const
+Bool FunctionalChaosResult::getUseTransformation() const
 {
-  return useDomination_;
+  return useTransformation_;
 }
 
 END_NAMESPACE_OPENTURNS

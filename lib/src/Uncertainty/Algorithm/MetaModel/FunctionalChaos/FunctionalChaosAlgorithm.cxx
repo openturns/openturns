@@ -254,7 +254,25 @@ Bool FunctionalChaosAlgorithm::initializeTransformation(const Distribution & mea
   Bool identityTransformation = true;
   transformation_ = IdentityFunction(inputDimension);
   inverseTransformation_ = IdentityFunction(inputDimension);
-  if (useDomination_)
+  if (useTransformation_)
+  {
+    // Create the isoprobabilistic transformation
+    // We have two distributions here:
+    // + The distribution of the input, called distribution_
+    // + The distribution defining the inner product in basis, called measure
+    // The projection is done on the basis, ie wrt measure_, so we have to
+    // introduce an isoprobabilistic transformation that maps distribution_ onto
+    // measure
+    //
+    identityTransformation = (distribution_ == measure);
+    if (!identityTransformation)
+    {
+      const DistributionTransformation transformation(distribution_, measure);
+      transformation_ = transformation;
+      inverseTransformation_ = transformation.inverse();
+    }
+  }
+  else
   {
     // compare the numerical range only
     identityTransformation = distribution_.getRange().getLowerBound() == measure.getRange().getLowerBound()
@@ -283,24 +301,6 @@ Bool FunctionalChaosAlgorithm::initializeTransformation(const Distribution & mea
       inverseTransformation_ = LinearFunction(centerInverse, constantInverse, linearInverse);
     }
   }
-  else
-  {
-    // Create the isoprobabilistic transformation
-    // We have two distributions here:
-    // + The distribution of the input, called distribution_
-    // + The distribution defining the inner product in basis, called measure
-    // The projection is done on the basis, ie wrt measure_, so we have to
-    // introduce an isoprobabilistic transformation that maps distribution_ onto
-    // measure
-    //
-    identityTransformation = (distribution_ == measure);
-    if (!identityTransformation)
-    {
-      const DistributionTransformation transformation(distribution_, measure);
-      transformation_ = transformation;
-      inverseTransformation_ = transformation.inverse();
-    }
-  }
   return identityTransformation;
 }
 
@@ -314,8 +314,8 @@ void FunctionalChaosAlgorithm::run()
   const Distribution measure(basis.getMeasure());
 
   // First, compute all the parts that are independent of the marginal output
-  if (useDomination_ && projectionStrategy_.getImplementation()->getClassName() != "LeastSquaresStrategy")
-    throw InvalidArgumentException(HERE) << "FunctionalChaosAlgorithm can only use domination method with LeastSquaresStrategy";
+  if (!useTransformation_ && projectionStrategy_.getImplementation()->getClassName() != "LeastSquaresStrategy")
+    throw InvalidArgumentException(HERE) << "FunctionalChaosAlgorithm can only use non-transformation mode with LeastSquaresStrategy";
   const Bool identityTransformation = initializeTransformation(measure);
 
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
@@ -363,7 +363,7 @@ void FunctionalChaosAlgorithm::run()
     } // Loop over the marginal indices
   } // Loop over the output dimension
 
-  // reset sample between runs because of the domination flag
+  // reset sample between runs because of the transformation flag
   projectionStrategy_.setInputSample(initialInputSample);
 
   // At this point, the map contains all the associations (index, vector coefficient). It remains to present these data into the proper form and to build the associated partial basis
@@ -389,7 +389,7 @@ void FunctionalChaosAlgorithm::run()
   result_.setIsLeastSquares(projectionStrategy_.isLeastSquares());
   result_.setInvolvesModelSelection(adaptiveStrategy_.getImplementation()->involvesModelSelection() ||
                                     projectionStrategy_.getImplementation()->involvesModelSelection());
-  result_.setUseDomination(useDomination_);
+  result_.setUseTransformation(useTransformation_);
 
   // set selection history
   Collection<Point> coefficientsHistory;
@@ -431,19 +431,19 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   coefficients = projectionStrategy_.getCoefficients();
 }
 
-/* Domination flag accessor */
-void FunctionalChaosAlgorithm::setUseDomination(const Bool useDomination)
+/* Transformation flag accessor */
+void FunctionalChaosAlgorithm::setUseTransformation(const Bool useTransformation)
 {
-  if (useDomination != useDomination_)
+  if (useTransformation != useTransformation_)
   {
-    useDomination_ = useDomination;
+    useTransformation_ = useTransformation;
     projectionStrategy_.getImplementation()->proxy_ = DesignProxy();
   }
 }
 
-Bool FunctionalChaosAlgorithm::getUseDomination() const
+Bool FunctionalChaosAlgorithm::getUseTransformation() const
 {
-  return useDomination_;
+  return useTransformation_;
 }
 
 /* Get the functional chaos result */
@@ -458,7 +458,7 @@ void FunctionalChaosAlgorithm::save(Advocate & adv) const
   MetaModelAlgorithm::save(adv);
   adv.saveAttribute( "maximumResidual_", maximumResidual_ );
   adv.saveAttribute( "result_", result_ );
-  adv.saveAttribute( "useDomination_", useDomination_);
+  adv.saveAttribute( "useTransformation_", useTransformation_);
 }
 
 
@@ -468,8 +468,8 @@ void FunctionalChaosAlgorithm::load(Advocate & adv)
   MetaModelAlgorithm::load(adv);
   adv.loadAttribute( "maximumResidual_", maximumResidual_ );
   adv.loadAttribute( "result_", result_ );
-  if (adv.hasAttribute("useDomination_"))
-    adv.loadAttribute("useDomination_", useDomination_);
+  if (adv.hasAttribute("useTransformation_"))
+    adv.loadAttribute("useTransformation_", useTransformation_);
 }
 
 

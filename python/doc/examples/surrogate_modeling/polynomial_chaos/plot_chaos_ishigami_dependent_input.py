@@ -120,7 +120,7 @@ view = otv.View(graph)
 # %%
 # We create the functional chaos algorithm.
 chaos_algo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, input_dist)
-chaos_algo.setUseDomination(False)
+chaos_algo.setUseTransformation(True)
 chaos_algo.run()
 
 # %%
@@ -152,9 +152,9 @@ view = otv.View(graph)
 # adaptive strategy is used to project the model. This basis is not orthonormal to
 # :math:`\mu_{\inputRV}`.
 #
-# We use the :meth:`~openturns.FunctionalChaosAlgorithm.setUseDomination` method.
+# We use the :meth:`~openturns.FunctionalChaosAlgorithm.setUseTransformation` method.
 # We implement the same steps as before, until the validation graph.
-chaos_algo.setUseDomination(True)
+chaos_algo.setUseTransformation(False)
 chaos_algo.run()
 
 chaos_result = chaos_algo.getResult()
