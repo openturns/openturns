@@ -521,6 +521,10 @@ public:
 
   virtual Point computeSequentialConditionalQuantile(const Point & q) const;
 
+  /** Compute the quantile of Xi | X1, ..., Xi-1, with custom variable ordering */
+  virtual Point computeSequentialConditionalQuantile(const Point & q,
+      const Indices & ordering) const;
+
   virtual Point computeConditionalQuantile(const Point & q,
       const Sample & y) const;
 

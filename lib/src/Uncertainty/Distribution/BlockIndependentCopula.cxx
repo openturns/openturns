@@ -597,6 +597,78 @@ Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point &
   return result;
 }
 
+Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  if (!ordering.check(dimension_)) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  const UnsignedInteger dim = ordering.getSize();
+  for (UnsignedInteger i = 0; i < dim; ++i)
+    if (!((q[i] >= 0.0) && (q[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q[" << i << "]=" << q[i] << " outside of [0, 1]";
+  if (hasIndependentCopula())
+  {
+    Point result(dim);
+    for (UnsignedInteger i = 0; i < dim; ++i)
+      result[i] = q[i];
+    return result;
+  }
+  const auto copulaCollection = copulaCollection_;
+  const UnsignedInteger blockCount = copulaCollection.getSize();
+
+  // Build cumulative dimensions for each block
+  Indices cumulatedDim(blockCount + 1, 0);
+  for (UnsignedInteger i = 0; i < blockCount; ++i)
+    cumulatedDim[i + 1] = cumulatedDim[i] + copulaCollection[i].getDimension();
+
+  // Group components by block according to the ordering
+  Collection<Indices> blockLocalIndices(blockCount);
+  Collection<Indices> blockOrderPositions(blockCount);
+  for (UnsignedInteger i = 0; i < dim; ++i)
+  {
+    const UnsignedInteger globalIndex = ordering[i];
+    UnsignedInteger blockIdx = 0;
+    while (globalIndex >= cumulatedDim[blockIdx + 1]) ++blockIdx;
+    blockOrderPositions[blockIdx].add(i);
+    blockLocalIndices[blockIdx].add(globalIndex - cumulatedDim[blockIdx]);
+  }
+
+  // Verify natural order within each block: local positions must be strictly increasing
+  Bool withinBlockNaturalOrder = true;
+  for (UnsignedInteger b = 0; b < blockCount && withinBlockNaturalOrder; ++b)
+  {
+    for (UnsignedInteger j = 1; j < blockLocalIndices[b].getSize(); ++j)
+      if (blockLocalIndices[b][j] <= blockLocalIndices[b][j - 1])
+      {
+        withinBlockNaturalOrder = false;
+        break;
+      }
+  }
+
+  if (withinBlockNaturalOrder)
+  {
+    Point result(dim);
+    for (UnsignedInteger b = 0; b < blockCount; ++b)
+    {
+      const UnsignedInteger n = blockOrderPositions[b].getSize();
+      if (n == 0) continue;
+      // Extract q values for this block's components in the order they appear
+      Point localQ(n);
+      for (UnsignedInteger j = 0; j < n; ++j)
+        localQ[j] = q[blockOrderPositions[b][j]];
+      // Compute block SCQ
+      Point localResult;
+      if (n < copulaCollection[b].getDimension())
+        localResult = copulaCollection[b].getMarginal(blockLocalIndices[b]).computeSequentialConditionalQuantile(localQ);
+      else
+        localResult = copulaCollection[b].computeSequentialConditionalQuantile(localQ);
+      // Place results at the right positions in the output
+      for (UnsignedInteger j = 0; j < n; ++j)
+        result[blockOrderPositions[b][j]] = localResult[j];
+    }
+    return result;
+  }
+  // Fall back to base class
+  return DistributionImplementation::computeSequentialConditionalQuantile(q, ordering);
+}
+
 /* Get the distribution of the marginal distribution corresponding to indices dimensions
 */
 Distribution BlockIndependentCopula::getMarginal(const Indices & indices) const

@@ -128,6 +128,7 @@ public:
   using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
+  Point computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const override;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;

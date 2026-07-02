@@ -120,6 +120,7 @@ public:
   using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
+  Point computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const override;
 
   /** Check if the distribution is a copula */
   Bool isCopula() const override;

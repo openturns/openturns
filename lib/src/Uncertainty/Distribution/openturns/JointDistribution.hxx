@@ -147,6 +147,7 @@ public:
   using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
+  Point computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const override;
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
