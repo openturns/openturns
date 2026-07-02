@@ -136,9 +136,9 @@ public:
   FunctionalChaosResult getMarginal(const UnsignedInteger indexOutput) const;
   FunctionalChaosResult getMarginal(const Indices & indicesOutput) const;
 
-  /** Domination flag accessor */
-  void setUseDomination(const Bool useDomination);
-  Bool getUseDomination() const;
+  /** Transformation flag accessor */
+  void setUseTransformation(const Bool useTransformation);
+  Bool getUseTransformation() const;
 
 protected:
 
@@ -179,8 +179,8 @@ protected:
   /** Is model selection? */
   Bool involvesModelSelection_ = false;
 
-  /** Use domination ? */
-  Bool useDomination_ = false;
+  /** Use transformation ? */
+  Bool useTransformation_ = true;
 
 } ; /* class FunctionalChaosResult */
 

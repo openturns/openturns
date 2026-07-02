@@ -388,36 +388,36 @@ marginalPCE : :class:`~openturns.FunctionalChaosResult`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosResult::setUseDomination
-"Domination method flag accessor.
+%feature("docstring") OT::FunctionalChaosResult::setUseTransformation
+"Transformation method flag accessor.
 
 Parameters
 ----------
-useDomination : bool
-    Whether to use the domination method.
+useTransformation : bool
+    Whether to use the transformation method.
 
 Notes
 -----
-The domination method consists in using the basis defined in the argument *adaptiveStrategy*. No
-isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
-the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
-(:math:`isLeastSquares` must be *True*) and the Sobol' indices will not be computed.
+The transformation method consists in using an isoprobabilistic transformation
+that maps the input distribution to the measure of the orthogonal basis.
+The basis is orthonormal with respect to the measure, and Sobol' indices can
+be computed.
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosResult::getUseDomination
-"Domination method flag accessor.
+%feature("docstring") OT::FunctionalChaosResult::getUseTransformation
+"Transformation method flag accessor.
 
 Returns
 -------
-useDomination : bool
-    Whether to use the domination method.
+useTransformation : bool
+    Whether to use the transformation method.
 
 Notes
 -----
-The domination method consists in using the basis defined in the argument *adaptiveStrategy*. No
-isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
-the *inputDistribution*. As a result, the coefficients must have been computed with a least squares method only
-(:meth:`isLeastSquares` must be *True*) and the Sobol' indices will not be computed.
+The transformation method consists in using an isoprobabilistic transformation
+that maps the input distribution to the measure of the orthogonal basis.
+The basis is orthonormal with respect to the measure, and Sobol' indices can
+be computed.
 "

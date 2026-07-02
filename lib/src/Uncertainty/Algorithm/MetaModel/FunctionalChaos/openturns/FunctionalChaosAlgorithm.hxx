@@ -114,9 +114,9 @@ public:
 
   AdaptiveStrategy getAdaptiveStrategy() const;
 
-  /** Domination flag accessor */
-  virtual void setUseDomination(const Bool useDomination);
-  Bool getUseDomination() const;
+  /** Transformation flag accessor */
+  virtual void setUseTransformation(const Bool useTransformation);
+  Bool getUseTransformation() const;
 
   /** Computes the functional chaos */
   void run() override;
@@ -153,8 +153,8 @@ protected:
   /** Result of the projection */
   FunctionalChaosResult result_;
 
-  /** domination flag */
-  Bool useDomination_ = false;
+  /** transformation flag */
+  Bool useTransformation_ = true;
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   Function transformation_;
