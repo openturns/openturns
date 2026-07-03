@@ -144,6 +144,9 @@ public:
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const override;
 
+  /** Get the shape matrix of the distribution */
+  CorrelationMatrix getShapeMatrix() const override;
+
   /* Interface specific to SklarCopula */
 
   /** Distribution accessor */
