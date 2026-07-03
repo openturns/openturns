@@ -383,3 +383,13 @@ dist_bug1 = ot.JointDistribution([beta_m1, normal_m1], nc_bug1)
 x_bug1 = [0.0, 0.0]
 seq_pdf_bug1 = dist_bug1.computeSequentialConditionalPDF(x_bug1)
 ott.assert_almost_equal(seq_pdf_bug1, [0, 7.65529e-06])
+
+# Fix #3255: getIsoProbabilisticTransformation segfaults with StudentCopula
+d2 = ot.JointDistribution(
+    [ot.Student(3, 1), ot.Student(3, 1)],
+    ot.StudentCopula(3, ot.CorrelationMatrix(2)),
+)
+T2 = d2.getIsoProbabilisticTransformation()
+sample = d2.getSample(5)
+sample_iso = T2(sample)
+ott.assert_almost_equal(sample_iso.computeMean(), [0.0, 0.0], 1.0, 1.0)

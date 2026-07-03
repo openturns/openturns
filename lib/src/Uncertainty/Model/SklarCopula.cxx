@@ -467,6 +467,12 @@ CorrelationMatrix SklarCopula::getKendallTau() const
   return distribution_.getKendallTau();
 }
 
+/* Get the shape matrix of the copula */
+CorrelationMatrix SklarCopula::getShapeMatrix() const
+{
+  return distribution_.getShapeMatrix();
+}
+
 /* Compute the covariance of the copula */
 void SklarCopula::computeCovariance() const
 {
