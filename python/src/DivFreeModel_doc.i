@@ -56,8 +56,8 @@ Examples
 >>> s = [0.5, 0.3]
 >>> t = [0.1, 0.2]
 >>> print(divFreeCov(s, t))
-2x2
-...
+[[ 0.407544  0.0163745 ]
+ [ 0.0163745 0.773696  ]]
 )RAW"
 
 %feature("docstring") OT::DivFreeModel::getCovarianceModel

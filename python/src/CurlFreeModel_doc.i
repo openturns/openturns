@@ -57,8 +57,8 @@ Examples
 >>> s = [0.5, 0.3]
 >>> t = [0.1, 0.2]
 >>> print(curlFreeCov(s, t))
-3x3
-...
+[[  0.773696  -0.0163745 ]
+ [ -0.0163745  0.407544  ]]
 )RAW"
 
 %feature("docstring") OT::CurlFreeModel::getCovarianceModel
