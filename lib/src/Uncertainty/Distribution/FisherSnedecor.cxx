@@ -224,7 +224,7 @@ Point FisherSnedecor::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point FisherSnedecor::getKurtosis() const
 {
-  if (!(d2_ > 8.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is defined only when d2 > 6.";
+  if (!(d2_ > 8.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is defined only when d2 > 8.";
   return Point(1, 3.0 * (d2_ - 4.0) * (16.0 + d2_ * (-16.0 + 4.0 * d2_) + d1_ * (-20.0 + d2_ * (8.0 + d2_) + d1_ * (10.0 + d2_))) / (d1_ * (d1_ + d2_ - 2.0) * (d2_ - 6.0) * (d2_ - 8.0)));
 }
 
@@ -234,7 +234,7 @@ void FisherSnedecor::computeCovariance() const
   if (!(d2_ > 4.0)) throw NotDefinedException(HERE) << "Error: the covariance is defined only when d2 > 4.";
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = 2.0 * d2_ * d2_ * (d1_ + d2_ - 2.0) / (d1_ * (d2_ - 4.0) * std::pow(d2_ - 2, 2));
-  isAlreadyComputedMean_ = true;
+  isAlreadyComputedCovariance_ = true;
 }
 
 /* Parameters value accessor */

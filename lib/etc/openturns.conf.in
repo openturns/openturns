@@ -391,7 +391,10 @@
   <ReverseHaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::SobolSequence parameters -->
+  <SobolSequence-Scrambling value_str="NONE" />
   <SobolSequence-InitialSeed value_int="1" />
+  <SobolSequence-MultidigitBits value_int="31" />
+  <SobolSequence-MultidigitMultiplier value_int="16807" />
 
   <!-- OT::SobolIndicesExperiment parameters -->
   <SobolIndicesExperiment-SamplingMethod value_str="MonteCarlo" />

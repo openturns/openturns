@@ -275,8 +275,8 @@ void LatentVariableModel::setAmplitude(const Point & amplitude)
 void LatentVariableModel::setNuggetFactor(const Scalar nuggetFactor)
 {
   if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "In LatentVariableModel: the nugget factor=" << nuggetFactor << " is negative";
-  latentCovarianceModel_.setNuggetFactor(nuggetFactor_);
   nuggetFactor_ = nuggetFactor;
+  latentCovarianceModel_.setNuggetFactor(nuggetFactor_);
   updateLatentCovarianceMatrix();
 }
 

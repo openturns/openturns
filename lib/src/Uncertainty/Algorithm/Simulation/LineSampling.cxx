@@ -279,6 +279,10 @@ void LineSampling::save(Advocate & adv) const
   adv.saveAttribute("rootStrategy_", rootStrategy_);
   adv.saveAttribute("searchOppositeDirection_", searchOppositeDirection_);
   adv.saveAttribute("adaptiveImportantDirection_", adaptiveImportantDirection_);
+  adv.saveAttribute("storeHistory_", storeHistory_);
+  adv.saveAttribute("alphaHistory_", alphaHistory_);
+  adv.saveAttribute("rootPointsHistory_", rootPointsHistory_);
+  adv.saveAttribute("rootValuesHistory_", rootValuesHistory_);
 }
 
 
@@ -290,6 +294,11 @@ void LineSampling::load(Advocate & adv)
   adv.loadAttribute("rootStrategy_", rootStrategy_);
   adv.loadAttribute("searchOppositeDirection_", searchOppositeDirection_);
   adv.loadAttribute("adaptiveImportantDirection_", adaptiveImportantDirection_);
+  adv.loadAttribute("storeHistory_", storeHistory_);
+  adv.loadAttribute("alphaHistory_", alphaHistory_);
+  adv.loadAttribute("rootPointsHistory_", rootPointsHistory_);
+  adv.loadAttribute("rootValuesHistory_", rootValuesHistory_);
+  standardEvent_ = StandardEvent(getEvent());
 }
 
 

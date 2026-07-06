@@ -210,7 +210,7 @@ Point Pareto::computeCDFGradient(const Point & point) const
   if (x < beta_) return result;
   result[0] =  - alpha_ * std::pow(beta_ / x, alpha_) / beta_;
   result[1] = - std::pow(beta_ / x, alpha_) * std::log(beta_ / x);
-  result[2] = alpha_ * std::pow(-beta_ / x, alpha_) / x;
+  result[2] = -alpha_ * std::pow(beta_ / x, alpha_) / x;
   return result;
 }
 

@@ -117,36 +117,17 @@ g = ot.MemoizeFunction(g)
 g.setOutputDescription(["H (m)"])
 
 # %%
-# We load the input distribution for the flow :math:`Q`.
-Q = fm.Q
-
-# %%
 # Set the parameters to be calibrated.
-
-# %%
-K_s = ot.Dirac(30.0)
-Z_v = ot.Dirac(50.0)
-Z_m = ot.Dirac(55.0)
-K_s.setDescription(["Ks (m^(1/3)/s)"])
-Z_v.setDescription(["Zv (m)"])
-Z_m.setDescription(["Zm (m)"])
-
-# %%
-# We create the joint input distribution of :math:`(Q, K_s, Z_v, Z_m)`.
-
-# %%
-inputRandomVector = ot.JointDistribution([Q, K_s, Z_v, Z_m])
 
 # %%
 # We import some noisy observations of the flow rate (column 0) and the height (column 1) already
 # stored of the  :ref:`flooding model<use-case-flood-model>` in the field *data*.
-Q_H_obs = fm.data
-Qobs = Q_H_obs.getMarginal(0)
-Hobs = Q_H_obs.getMarginal(1)
+Qobs = fm.data.getMarginal(0)
+Hobs = fm.data.getMarginal(1)
 
 # %%
 graph = ot.Graph("Observations", "Q (m3/s)", "h (m)")
-cloud = ot.Cloud(Q_H_obs)
+cloud = ot.Cloud(fm.data)
 # cloud = ot.Cloud(Qobs, Hobs)
 graph.add(cloud)
 view = otv.View(graph)

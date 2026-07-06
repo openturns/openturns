@@ -160,7 +160,7 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
     }
     else
     {
-      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << values_[iRight];
+      throw InvalidArgumentException(HERE) << "Error : input point is greater than the upper bound of the locations=" << locations_[iRight];
     }
   }
   iLeft = FindSegmentIndex(locations_, x, 0, isRegular_);
@@ -237,7 +237,16 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  if (locations.isNonDecreasing())
+
+  Bool strictlyIncreasing = true;
+  for (UnsignedInteger i = 1; i < size; ++ i)
+    if (!(locations[i] > locations[i - 1]))
+    {
+      strictlyIncreasing = false;
+      break;
+    }
+
+  if (strictlyIncreasing)
   {
     locations_ = locations;
   }
@@ -248,6 +257,9 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
     for (UnsignedInteger i = 0; i < size; ++i)
       locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
     std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+    for (UnsignedInteger i = 1; i < size; ++ i)
+      if (!(locationAndIndex[i].first > locationAndIndex[i - 1].first))
+        throw InvalidArgumentException(HERE) << "The locations must be unique";
     for (UnsignedInteger i = 0; i < size; ++i)
       locations_[i] = locationAndIndex[i].first;
     const UnsignedInteger dimension = values_.getDimension();
@@ -295,6 +307,9 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
   for (UnsignedInteger i = 0; i < size; ++i)
     locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
   std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+  for (UnsignedInteger i = 1; i < size; ++ i)
+    if (!(locationAndIndex[i].first > locationAndIndex[i - 1].first))
+      throw InvalidArgumentException(HERE) << "The locations must be unique";
   const UnsignedInteger dimension = values.getDimension();
   locations_ = Point(size);
   values_ = Sample(size, dimension);
@@ -346,7 +361,6 @@ void PiecewiseLinearEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
-  adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
   if (adv.hasAttribute("enableExtrapolation_"))
     adv.loadAttribute( "enableExtrapolation_", enableExtrapolation_ );
   isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));

@@ -217,8 +217,12 @@ void CalibrationResult::load(Advocate & adv)
   }
   else
   {
-    const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
-    bayesian_ = (priorCovariance(0, 0) < std::sqrt(SpecFunc::MaxScalar));
+    bayesian_ = false;
+    if (parameterPrior_.getDimension() > 0)
+    {
+      const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
+      bayesian_ = (priorCovariance(0, 0) < std::sqrt(SpecFunc::MaxScalar));
+    }
     Description colors = DrawableImplementation::BuildDefaultPalette(3);
     priorColor_ = colors[0];
     posteriorColor_ = colors[1];
@@ -462,14 +466,17 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
 
     const Bool upperRightGraph = (j == outputDimension - 1);
     // observation diagonal
-    Sample diagonalPoints(2, 2);
-    diagonalPoints(0, 0) = outputObservations_j.getMin()[0];
-    diagonalPoints(0, 1) = diagonalPoints(0, 0);
-    diagonalPoints(1, 0) = outputObservations_j.getMax()[0];
-    diagonalPoints(1, 1) = diagonalPoints(1, 0);
-    Curve diagonal(diagonalPoints);
-    diagonal.setColor(observationColor_);
-    graph.add(diagonal);
+    if (outputObservations_j.getSize() > 0)
+    {
+      Sample diagonalPoints(2, 2);
+      diagonalPoints(0, 0) = outputObservations_j.getMin()[0];
+      diagonalPoints(0, 1) = diagonalPoints(0, 0);
+      diagonalPoints(1, 0) = outputObservations_j.getMax()[0];
+      diagonalPoints(1, 1) = diagonalPoints(1, 0);
+      Curve diagonal(diagonalPoints);
+      diagonal.setColor(observationColor_);
+      graph.add(diagonal);
+    }
 
     // predictions before
     Cloud priorCloud(outputObservations_j, outputAtPriorMean_.getMarginal(j));

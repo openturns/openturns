@@ -208,7 +208,7 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
   if (useQuantile)
   {
     // We use the robust estimation of dispersion based on inter-quartile
-    hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));
+    hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::cbrt(24.0 * std::sqrt(M_PI) / size) / (2.0 * DistFunc::qNormal(0.75));
 
     // If the resulting bandwidth is zero it is because a majority of values are repeated in the sample
     if (hOpt == 0.0)
@@ -224,7 +224,7 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
   {
     // We use the standard deviation
     const Scalar sigma = sample.computeStandardDeviation()[0];
-    hOpt = sigma * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
+    hOpt = sigma * std::cbrt(24.0 * std::sqrt(M_PI) / size);
     binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / hOpt + 0.5));
   }
 

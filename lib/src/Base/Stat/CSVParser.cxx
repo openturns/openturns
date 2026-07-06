@@ -100,7 +100,9 @@ Sample CSVParser::load() const
     throw FileNotFoundException(HERE) << "CSVParser cannot open file '" << fileName_ << "'";
   if (fieldSeparator_ == decimalSeparator_)
     throw InvalidArgumentException(HERE) << "The field separator must be different from the decimal separator";
-  const int pColumnNameIdx = skippedLinesNumber_ != 0 ? skippedLinesNumber_ - 1 : -1;
+  if (skippedLinesNumber_ > static_cast<UnsignedInteger>(std::numeric_limits<int>::max()))
+    throw InvalidArgumentException(HERE) << "Too many skipped lines";
+  const int pColumnNameIdx = skippedLinesNumber_ != 0 ? static_cast<int>(skippedLinesNumber_ - 1) : -1;
   rapidcsv::LabelParams pLabelParams(pColumnNameIdx, -1);
   rapidcsv::SeparatorParams pSeparatorParams(fieldSeparator_, true);
   rapidcsv::ConverterParams pConverterParams;
@@ -109,7 +111,7 @@ Sample CSVParser::load() const
   const String commentMarkers(ResourceMap::GetAsString("Sample-CommentMarker"));
   if (commentMarkers.size() != 1)
     throw InvalidArgumentException(HERE) << "The entry Sample-CommentMarker must be a string of size 1";
-  if (allowEmptyLines_ && (commentMarkers[0] == fieldSeparator_ || commentMarkers[0] == decimalSeparator_))
+  if (allowComments_ && (commentMarkers[0] == fieldSeparator_ || commentMarkers[0] == decimalSeparator_))
     throw InvalidArgumentException(HERE) << "The comment marker must be different from the field and decimal separators";
   pLineReaderParams.mCommentPrefix = commentMarkers[0];
   pLineReaderParams.mSkipEmptyLines = allowEmptyLines_;
@@ -166,12 +168,13 @@ Sample CSVParser::load() const
   // headers if there exist any non-empty non-special unparsable value on the first row
   Bool haveHeaders = false;
   const Description specList = {"inf", "-inf", "INF", "-INF", "Inf", "-Inf", "nan", "NAN", "NaN"};
-  for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
-    if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specList.contains(doc.GetCell<std::string>(j, 0)))
-    {
-      haveHeaders = true;
-      break;
-    }
+  if (doc.GetRowCount() > 0)
+    for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
+      if (!doc.GetCell<std::string>(j, 0).empty() && std::isnan(result(0, j)) && !specList.contains(doc.GetCell<std::string>(j, 0)))
+      {
+        haveHeaders = true;
+        break;
+      }
 
   // consider failed when no value has been successfully parsed (outside header)
   if (doc.GetRowCount() > (haveHeaders ? 1 : 0) && !oneOk)

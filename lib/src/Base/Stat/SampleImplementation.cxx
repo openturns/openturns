@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <iterator>
 #include <regex>
+#include <limits>
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -180,14 +181,12 @@ bool operator < (const NSI_point & lhs, const NSI_point & rhs)
 
 bool operator > (const NSI_point & lhs, const NSI_point & rhs)
 {
-  return !( lhs <= rhs );
+  return rhs < lhs;
 }
 
 bool operator <= (const NSI_point & lhs, const NSI_point & rhs)
 {
-  return std::lexicographical_compare(lhs.begin(), lhs.end(),
-                                      rhs.begin(), rhs.end(),
-                                      std::less_equal<Scalar>());
+  return !(rhs < lhs);
 }
 
 bool operator >= (const NSI_point & lhs, const NSI_point & rhs)
@@ -245,14 +244,12 @@ bool operator < (const NSI_const_point & lhs, const NSI_const_point & rhs)
 
 bool operator > (const NSI_const_point & lhs, const NSI_const_point & rhs)
 {
-  return !( lhs <= rhs );
+  return rhs < lhs;
 }
 
 bool operator <= (const NSI_const_point & lhs, const NSI_const_point & rhs)
 {
-  return std::lexicographical_compare(lhs.begin(), lhs.end(),
-                                      rhs.begin(), rhs.end(),
-                                      std::less_equal<Scalar>());
+  return !(rhs < lhs);
 }
 
 bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs)
@@ -668,8 +665,11 @@ SampleImplementation & SampleImplementation::add(const Point & point)
                                          << ") expected : "
                                          << getDimension();
   const UnsignedInteger oldSize = size_;
+  const UnsignedInteger newCount = oldSize + 1;
+  if (dimension_ != 0 && newCount > std::numeric_limits<UnsignedInteger>::max() / dimension_)
+    throw InternalException(HERE) << "Error: cannot add point, overflow detected";
+  data_.resize(newCount * dimension_);
   ++ size_;
-  data_.resize(size_ * dimension_);
   std::copy(point.begin(), point.begin() + dimension_, data_.begin() + oldSize * dimension_);
   return *this;
 }

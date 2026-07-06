@@ -120,7 +120,7 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
         } // No elliptical copula
       } // bivariate copula to swap
       // Now, check if the last component is the one conditioned by the others
-      useGenericConditionalMethods_ = (conditioningSize > 0) && (conditioningIndices[conditioningSize - 1] == (fullDimension - 2));
+      useGenericConditionalMethods_ = (conditioningSize > 0) && (conditioningIndices_[conditioningSize - 1] == (fullDimension - 2));
     } // conditioningSize == fullDimension - 1
     else
       useGenericConditionalMethods_ = false;
@@ -465,7 +465,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
     {
       CovarianceMatrix C;
       const Point mu(decompose(distribution_, conditioningIndices_, nonConditioningIndices_, conditioningValues_, C));
-      const Point mY(conditioningValues_ - mu.select(conditioningIndices_));
+      const Point mY(conditioningValues_ - distribution_.getMean().select(conditioningIndices_));
       const Scalar dy = mY.dot(distribution_.getMarginal(conditioningIndices_).getCovariance().solveLinearSystem(mY));
       const Student *p_student = dynamic_cast<Student *>(distribution_.getImplementation().get());
       const Scalar nu = p_student->getNu();

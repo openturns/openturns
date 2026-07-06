@@ -202,7 +202,7 @@ void HiGHS::run()
   result_.setOptimalValue(Point({info.objective_function_value}));
   const UnsignedInteger callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
   result_.setCallsNumber(callsNumber);
-  result_.setIterationNumber(info.simplex_iteration_count);
+  result_.setIterationNumber(info.simplex_iteration_count + info.ipm_iteration_count + info.pdlp_iteration_count + info.qp_iteration_count);
 
 #else
   throw NotYetImplementedException(HERE) << "No HiGHS support";

@@ -58,7 +58,6 @@ void GraphImplementation::InitializeValidLegendPositions()
   ValidLegendPositions.add("center left");
   ValidLegendPositions.add("lower center");
   ValidLegendPositions.add("upper center");
-  ValidLegendPositions.add("upper center");
   ValidLegendPositions.add("center");
   // R strings
   ValidLegendPositions.add("bottomright");
@@ -467,6 +466,12 @@ void GraphImplementation::computeBoundingBox() const
       minBoxes.add(lb);
       maxBoxes.add(ub);
     }
+  }
+  // If no drawable contributed data, fall back to default
+  if (minBoxes.getSize() == 0)
+  {
+    boundingBox_ = Interval(2);
+    return;
   }
   Point min(minBoxes.getMin());
   Point max(maxBoxes.getMax());

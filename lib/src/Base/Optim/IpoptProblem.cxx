@@ -122,8 +122,8 @@ bool IpoptProblem::get_constraints_linearity( int /*m*/,
     LinearityTypeTable const_types)
 {
   // Retrieving number of constraints
-  const UnsignedInteger nbEqualityConstraints = optimProblem_.getEqualityConstraint().getOutputDimension();
-  const UnsignedInteger nbInequalityConstraints = optimProblem_.getInequalityConstraint().getOutputDimension();
+  const UnsignedInteger nbEqualityConstraints = optimProblem_.hasEqualityConstraint() ? optimProblem_.getEqualityConstraint().getOutputDimension() : 0;
+  const UnsignedInteger nbInequalityConstraints = optimProblem_.hasInequalityConstraint() ? optimProblem_.getInequalityConstraint().getOutputDimension() : 0;
 
   // Evaluation of constraints linearity to TMINLP::LinearityType
   UnsignedInteger k = 0;
@@ -233,6 +233,10 @@ bool IpoptProblem::eval_f(int n,
                           bool /*new_x*/,
                           double& obj_value)
 {
+  // Check if maximum calls reached before evaluating
+  if (evaluationInputHistory_.getSize() >= maximumCallsNumber_)
+    return false;
+
   // Convert x to OT::Point
   Point xPoint(n);
   std::copy(x, x + n, xPoint.begin());
@@ -260,7 +264,7 @@ bool IpoptProblem::eval_f(int n,
       return false;
   }
 
-  return (evaluationInputHistory_.getSize() <= maximumCallsNumber_);
+  return true;
 }
 
 

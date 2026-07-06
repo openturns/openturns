@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class LinearLeastSquares
  *
- * The class describes the concept of quadratic response surface
+ * The class describes the concept of linear response surface
  */
 class OT_API LinearLeastSquares
   : public PersistentObject
@@ -95,4 +95,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_QUADRATICLEASTSQUARES_HXX */
+#endif /* OPENTURNS_LINEARLEASTSQUARES_HXX */

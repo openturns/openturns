@@ -64,7 +64,7 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   , trend_(trend)
   , stationaryTrendValue_(trend.getOutputDimension())
 {
-  if (trend.getTrendFunction().getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model input dimension=" << covarianceModel.getInputDimension();
+  if (trend.getTrendFunction().getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getTrendFunction().getInputDimension() << " different from the covariance model input dimension=" << covarianceModel.getInputDimension();
   if (trend.getOutputDimension() != covarianceModel.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getOutputDimension();
   setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());
@@ -226,7 +226,7 @@ Field GaussianProcess::getRealization() const
   }
   // else apply the trend
   values.setDescription(getDescription());
-  return Field(mesh_, trend_(values));
+  return Field(mesh_, trend_.getTrendFunction()(mesh_.getVertices()) + values);
 }
 
 Sample GaussianProcess::getRealizationGibbs() const

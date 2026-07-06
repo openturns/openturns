@@ -442,7 +442,7 @@ Point CompoundDistribution::computeExpectation(const Function & f,
   if (diracDimension == conditioningDimension)
   {
     for (UnsignedInteger i = 0; i < diracDimension; ++i)
-      if (diracValues_[i] > thetaStar[i] + epsilon) return result;
+      if (diracValues_[i] > thetaStar[diracMarginalsIndices_[i]] + epsilon) return result;
     result = f(diracValues_);
     return result;
   }
@@ -455,7 +455,7 @@ Point CompoundDistribution::computeExpectation(const Function & f,
     {
       const Scalar value = diracValues_[i];
       // If the hyper rectangle does not intersect the manifold that supports the total mass, then value = 0
-      if (value > thetaStar[i] + epsilon) return result;
+      if (value > thetaStar[diracMarginalsIndices_[i]] + epsilon) return result;
       theta[diracMarginalsIndices_[i]] = value;
     }
     // Second, the discrete components
@@ -470,7 +470,7 @@ Point CompoundDistribution::computeExpectation(const Function & f,
       {
         const Scalar value = discreteNodes_(i, j);
         currentTheta[discreteMarginalsIndices_[j]] = value;
-        rejectNode = (value > thetaStar[i] + epsilon);
+        rejectNode = (value > thetaStar[discreteMarginalsIndices_[j]] + epsilon);
         if (rejectNode) break;
       }
       // Skip the current integration point if the current sub-manifold is outside of the integration region
@@ -504,7 +504,7 @@ Point CompoundDistribution::computeExpectation(const Function & f,
     {
       const Scalar value = diracValues_[i];
       // If the hyper rectangle does not intersect the manifold that supports the total mass, then cdf = 0
-      if (value > thetaStar[i] + epsilon) return result;
+      if (value > thetaStar[diracMarginalsIndices_[i]] + epsilon) return result;
       theta[diracMarginalsIndices_[i]] = value;
     }
     // Continuous part using Gauss integration
@@ -537,22 +537,22 @@ Point CompoundDistribution::computeExpectation(const Function & f,
   {
     const Scalar value = diracValues_[i];
     // If the hyper rectangle does not intersect the manifold that supports the total mass, then cdf = 0
-    if (value > thetaStar[i] + epsilon) return result;
+    if (value > thetaStar[diracMarginalsIndices_[i]] + epsilon) return result;
     theta[diracMarginalsIndices_[i]] = value;
   }
   // Second, the discrete components
-  // For each combination of the discrete components
-  Sample currentThetas(0, theta);
-  for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
-  {
-    Point currentTheta(theta);
-    // Get the discrete values
-    Bool rejectNode = false;
-    for (UnsignedInteger j = 0; j < discreteDimension; ++j)
+    // For each combination of the discrete components
+    Sample currentThetas(0, theta);
+    for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
     {
-      const Scalar value = discreteNodes_(i, j);
-      currentTheta[discreteMarginalsIndices_[j]] = value;
-      rejectNode = (value > thetaStar[i] + epsilon);
+      Point currentTheta(theta);
+      // Get the discrete values
+      Bool rejectNode = false;
+      for (UnsignedInteger j = 0; j < discreteDimension; ++j)
+      {
+        const Scalar value = discreteNodes_(i, j);
+        currentTheta[discreteMarginalsIndices_[j]] = value;
+        rejectNode = (value > thetaStar[discreteMarginalsIndices_[j]] + epsilon);
       if (rejectNode) break;
     }
     // Skip the current integration point if the current sub-manifold is outside of the integration region

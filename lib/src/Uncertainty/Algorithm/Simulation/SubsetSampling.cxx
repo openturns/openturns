@@ -364,14 +364,14 @@ Scalar SubsetSampling::computeVarianceGamma(Scalar currentFailureProbability, Sc
 {
   const UnsignedInteger N = currentPointSample_.getSize();
   const UnsignedInteger Nc = seedNumber_;
-  Matrix IndicatorMatrice(Nc, N / Nc);
+  Matrix indicatorMatrix(Nc, N / Nc);
   Point correlationSequence(N / Nc - 1);
   Scalar currentFailureProbability2 = currentFailureProbability * currentFailureProbability;
   for (UnsignedInteger i = 0; i < N / Nc; ++ i)
   {
     for (UnsignedInteger j = 0; j < Nc; ++ j)
     {
-      IndicatorMatrice(j, i) = getEvent().getOperator()(currentLevelSample_(i * Nc + j, 0), threshold);
+      indicatorMatrix(j, i) = getEvent().getOperator()(currentLevelSample_(i * Nc + j, 0), threshold);
     }
   }
   for (UnsignedInteger k = 0; k < N / Nc - 1; ++ k)
@@ -380,10 +380,10 @@ Scalar SubsetSampling::computeVarianceGamma(Scalar currentFailureProbability, Sc
     {
       for (UnsignedInteger l = 0; l < N / Nc - k - 1; ++ l)
       {
-        correlationSequence[k] += 1.0 * IndicatorMatrice(j, l) * IndicatorMatrice(j, l + (k + 1));
+        correlationSequence[k] += 1.0 * indicatorMatrix(j, l) * indicatorMatrix(j, l + (k + 1));
       }
     }
-    correlationSequence[k] /= 1.0 * N - 1.0 * (k + 1) * Nc;
+    correlationSequence[k] /= 1.0 * Nc * (N / Nc - k - 1);
     correlationSequence[k] -= currentFailureProbability2;
   }
   const Scalar R0 = currentFailureProbability * (1.0 - currentFailureProbability);
@@ -438,7 +438,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
 
     Sample blockSample(standardEvent_.getFunction()(inputSample));
 
-    for (UnsignedInteger j = 0; j < getBlockSize(); ++ j)
+    for (UnsignedInteger j = 0; j < blockSize; ++ j)
     {
       // 2. accept the new point if in the failure domain
       if (getEvent().getOperator()(blockSample(j, 0), threshold))

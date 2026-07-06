@@ -120,6 +120,7 @@ void Geometric::computeRange()
 /* Get one realization of the distribution */
 Point Geometric::getRealization() const
 {
+  if (p_ == 1.0) return {1.0};
   return Point(1, ceil(std::log(RandomGenerator::Generate()) / log1p(-p_)));
 }
 
@@ -161,6 +162,7 @@ Point Geometric::computePDFGradient(const Point & point) const
 
   const Scalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return Point(1, 0.0);
+  if (p_ == 1.0) return Point(1, 0.0);
   return Point(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
 }
 
@@ -180,6 +182,7 @@ Scalar Geometric::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  if (p_ == 1.0) return 1.0;
   if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));
 }
@@ -209,7 +212,7 @@ Complex Geometric::computeGeneratingFunction(const Complex & z) const
 Sample Geometric::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const SignedInteger kMin = static_cast< SignedInteger > (std::max(0.0, ceil(interval.getLowerBound()[0])));
+  const SignedInteger kMin = static_cast< SignedInteger > (std::max(1.0, ceil(interval.getLowerBound()[0])));
   const SignedInteger kMax = static_cast< SignedInteger > (std::min(getRange().getUpperBound()[0], floor(interval.getUpperBound()[0])));
   Sample result(0, 1);
   for (SignedInteger k = kMin; k <= kMax; ++k)

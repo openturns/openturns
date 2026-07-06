@@ -156,7 +156,7 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   if (!distribution_.hasIndependentCopula())
   {
     const Scalar x = point[0];
-    const Scalar epsilon = std::pow(quantileEpsilon_, 1.0 / 3.0) * (1.0 + std::abs(x));
+    const Scalar epsilon = std::cbrt(quantileEpsilon_) * (1.0 + std::abs(x));
     const Scalar xp = x + epsilon;
     const Scalar xm = x - epsilon;
     return (computeCDF(xp) - computeCDF(xm)) / (xp - xm);

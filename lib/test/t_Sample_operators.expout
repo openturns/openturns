@@ -6,3 +6,15 @@ sample3=class=Sample name=Sample2 implementation=class=SampleImplementation name
 sample4=class=Sample name=Sample2 implementation=class=SampleImplementation name=Sample2 size=3 dimension=2 data=[[20,20],[20,20],[20,20]]
 after a translation of vector=class=Point name=Unnamed dimension=2 values=[5,5] sample1=class=Sample name=Sample1 implementation=class=SampleImplementation name=Sample1 size=3 dimension=2 data=[[15,25],[16,26],[17,27]]
 after a scaling of vector=class=Point name=Unnamed dimension=2 values=[2,2] sample1=class=Sample name=Sample1 implementation=class=SampleImplementation name=Sample1 size=3 dimension=2 data=[[30,50],[32,52],[34,54]]
+row0 = class=Point name=Unnamed dimension=2 values=[1,5]
+row1 = class=Point name=Unnamed dimension=2 values=[1,1]
+row0 < row1 = false (expected 0)
+row1 < row0 = true (expected 1)
+row0 <= row1 = false (expected 0)
+row1 <= row0 = true (expected 1)
+row0 > row1 = true (expected 1)
+row1 > row0 = false (expected 0)
+row0 >= row1 = true (expected 1)
+row1 >= row0 = false (expected 0)
+row0 == row1 = false (expected 0)
+row0 != row1 = true (expected 1)

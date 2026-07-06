@@ -370,3 +370,16 @@ print(
     "Student marginals different nu, Student copula same nu as first marginal, isElliptical?",
     distribution.isElliptical(),
 )
+
+# Test for computeSequentialConditionalPDF early break
+# When marginal PDF is 0 at a point but later conditional PDFs are non-zero,
+# the loop should NOT break early.  Use built-in Beta(2,3) which has PDF=0 at 0.
+beta_m1 = ot.Beta(2.0, 3.0, 0.0, 1.0)
+normal_m1 = ot.Normal(0.0, 1.0)
+R_bug1 = ot.CorrelationMatrix(2)
+R_bug1[0, 1] = 0.5
+nc_bug1 = ot.NormalCopula(R_bug1)
+dist_bug1 = ot.JointDistribution([beta_m1, normal_m1], nc_bug1)
+x_bug1 = [0.0, 0.0]
+seq_pdf_bug1 = dist_bug1.computeSequentialConditionalPDF(x_bug1)
+ott.assert_almost_equal(seq_pdf_bug1, [0, 7.65529e-06])

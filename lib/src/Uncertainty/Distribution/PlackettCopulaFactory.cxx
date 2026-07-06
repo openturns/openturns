@@ -64,7 +64,8 @@ PlackettCopula PlackettCopulaFactory::buildAsPlackettCopula(const Sample & sampl
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a PlackettCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a PlackettCopula distribution from a sample of dimension not equal to 2";
   const Scalar m = sample.computeEmpiricalCDF(sample.computeMedian());
-  const Scalar ratio = 1.0 / (0.5 / m - 1.0);
+  const Scalar denom = 0.5 / m - 1.0;
+  const Scalar ratio = (std::abs(denom) < SpecFunc::Precision) ? 1.0 / SpecFunc::Precision : 1.0 / denom;
 
   PlackettCopula result(ratio * ratio);
   result.setDescription(sample.getDescription());

@@ -458,7 +458,6 @@ Point JointDistribution::computeDDF(const Point & point) const
   Point uPoint(dimension);
   Point pdfMarginal(dimension);
   Point ddfMarginal(dimension);
-  Scalar productPDF = 1.0;
   Point component(1);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -466,7 +465,6 @@ Point JointDistribution::computeDDF(const Point & point) const
     uPoint[i] = distributionCollection_[i].computeCDF(component);
     pdfMarginal[i] = distributionCollection_[i].computePDF(component);
     ddfMarginal[i] = distributionCollection_[i].computeDDF(component)[0];
-    productPDF *= pdfMarginal[i];
   }
   // Initialization with the values of an independent copula
   Scalar pdfCore = 1.0;
@@ -478,8 +476,21 @@ Point JointDistribution::computeDDF(const Point & point) const
     ddfCore = core_.computeDDF(uPoint);
   } // General case
   // Compute the ddf
+  // Use prefix/suffix products to avoid division by zero when pdfMarginal[i] == 0
+  Point prefix(dimension + 1);
+  Point suffix(dimension + 1);
+  prefix[0] = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    prefix[i + 1] = prefix[i] * pdfMarginal[i];
+  suffix[dimension] = 1.0;
+  for (UnsignedInteger i = dimension; i > 0; --i)
+    suffix[i - 1] = suffix[i] * pdfMarginal[i - 1];
   Point ddf(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) if (pdfMarginal[i] > 0.0) ddf[i] = productPDF * (ddfCore[i] * pdfMarginal[i] + pdfCore * ddfMarginal[i] / pdfMarginal[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Scalar productWithout_i = prefix[i] * suffix[i + 1];
+    ddf[i] = productWithout_i * (ddfCore[i] * pdfMarginal[i] * pdfMarginal[i] + pdfCore * ddfMarginal[i]);
+  }
   return ddf;
 }
 
@@ -816,10 +827,7 @@ Point JointDistribution::computeSequentialConditionalPDF(const Point & x) const
       u[i] = distributionCollection_[i].computeCDF(x[i]);
     const Point corePDF(core_.computeSequentialConditionalPDF(u));
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
       result[i] = distributionCollection_[i].computePDF(x[i]) * corePDF[i];
-      if (result[i] == 0.0) break;
-    }
   }
   return result;
 }

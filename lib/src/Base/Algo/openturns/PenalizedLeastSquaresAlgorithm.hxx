@@ -99,9 +99,9 @@ public:
 protected:
 
 private:
-  Scalar penalizationFactor_;
+  Scalar penalizationFactor_ = 0.0;
   CovarianceMatrix penalizationMatrix_;
-  Bool useNormal_;
+  Bool useNormal_ = false;
 
 } ; /* class PenalizedLeastSquaresAlgorithm */
 

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -30,3 +31,12 @@ probability = m.pi / 4.0
 relativeError = abs(probability - probabilityEstimate) / probability
 print("sample size=", sampleSize)
 print("relative error to Pi=%e" % relativeError)
+
+# Test generate(size) consistency with per-point generate
+sequence = ot.HaselgroveSequence(5)
+sample_bulk = sequence.generate(100)
+sequence = ot.HaselgroveSequence(5)
+sample_loop = ot.Sample(0, 5)
+for i in range(100):
+    sample_loop.add(sequence.generate())
+ott.assert_almost_equal(sample_bulk, sample_loop)

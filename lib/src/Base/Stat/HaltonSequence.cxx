@@ -89,30 +89,53 @@ void HaltonSequence::initialize(const UnsignedInteger dimension)
 Point HaltonSequence::generate() const
 {
   Point realization(dimension_);
-  // Loop over the components
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const Unsigned64BitsInteger radix = base_[i];
     Unsigned64BitsInteger currentSeed = seed_;
-    Indices permutation(permutations_[i]);
-    Indices digits(0);
-    while (currentSeed > 0)
-    {
-      digits.add(currentSeed % radix);
-      currentSeed /= radix;
-    } // while
+    const Indices & permutation = permutations_[i];
     Scalar xI = 0.0;
     const Scalar inverseRadix = 1.0 / radix;
     Scalar inverseRadixN = inverseRadix;
-    for (UnsignedInteger j = 0; j < digits.getSize(); ++j)
+    while (currentSeed > 0)
     {
-      xI += permutation[digits[j]] * inverseRadixN;
+      xI += permutation[static_cast<UnsignedInteger>(currentSeed % radix)] * inverseRadixN;
+      currentSeed /= radix;
       inverseRadixN *= inverseRadix;
-    } // j
+    }
     realization[i] = xI;
-  } // i
+  }
   ++seed_;
   return realization;
+}
+
+/* Generate a sample of pseudo-random vectors */
+Sample HaltonSequence::generate(const UnsignedInteger size) const
+{
+  Sample result(size, dimension_);
+  Unsigned64BitsInteger localSeed = seed_;
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const Unsigned64BitsInteger radix = base_[i];
+      Unsigned64BitsInteger currentSeed = localSeed;
+      const Indices & permutation = permutations_[i];
+      Scalar xI = 0.0;
+      const Scalar inverseRadix = 1.0 / radix;
+      Scalar inverseRadixN = inverseRadix;
+      while (currentSeed > 0)
+      {
+        xI += permutation[static_cast<UnsignedInteger>(currentSeed % radix)] * inverseRadixN;
+        currentSeed /= radix;
+        inverseRadixN *= inverseRadix;
+      }
+      result(k, i) = xI;
+    }
+    ++localSeed;
+  }
+  seed_ = localSeed;
+  return result;
 }
 
 /** Permutations accessor */

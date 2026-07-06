@@ -156,6 +156,9 @@ private:
   /** Exception class name */
   const char * className_;
 
+  /** Cached where string */
+  mutable String cachedWhere_;
+
 }; /* class Exception */
 
 /**

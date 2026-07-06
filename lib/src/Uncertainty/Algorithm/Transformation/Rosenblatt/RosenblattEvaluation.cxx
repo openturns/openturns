@@ -57,7 +57,7 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 /* Evaluation */
 Point RosenblattEvaluation::operator () (const Point & inP) const
 {
-  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   callsNumber_.increment();
   const Point q(distribution_.computeSequentialConditionalCDF(inP));
@@ -99,7 +99,7 @@ String RosenblattEvaluation::__str__(const String & ) const
   OSS oss(false);
   oss << RosenblattEvaluation::GetClassName()
       << "(" << distribution_
-      << "->Normal(" << distribution_.getDimension() << ")";
+      << "->Normal(" << distribution_.getDimension() << "))";
   return oss;
 }
 

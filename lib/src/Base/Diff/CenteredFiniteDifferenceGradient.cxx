@@ -74,7 +74,7 @@ String CenteredFiniteDifferenceGradient::__repr__() const
   oss << "class=" << CenteredFiniteDifferenceGradient::GetClassName()
       << " name=" << getName()
       << " epsilon=" << getEpsilon().__repr__()
-      << " evaluation=" << evaluation_.getImplementation()->__repr__();
+      << " evaluation=" << evaluation_.__repr__();
   return oss;
 }
 

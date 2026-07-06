@@ -167,3 +167,8 @@ variance over  1000  realizations =       [ t       v0      v1      ]
  8 : [ 0.8     3.63637 9.17296 ]
  9 : [ 0.9     3.67336 9.13749 ]
 10 : [ 1       3.68291 9.40356 ]
+non-stationary trend field mesh =  Mesh(dimension=1, vertices=3, simplices=2)
+non-stationary trend field values =      [ y0        ]
+0 : [ -0.467408 ]
+1 : [  1.72291  ]
+2 : [  4.41587  ]

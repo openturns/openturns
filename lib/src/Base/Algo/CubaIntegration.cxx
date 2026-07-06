@@ -52,6 +52,7 @@ CubaIntegration * CubaIntegration::clone() const
   return new CubaIntegration(*this);
 }
 
+#ifdef OPENTURNS_HAVE_CUBA
 /*
  * The static routine to compute the integrand, that is provided to the Cuba routine.
  * It calls the function one wants to integrate after changing coordinates and
@@ -76,12 +77,13 @@ int CubaIntegration::ComputeIntegrand(const int *ndim, const double x[], const i
   const Point ptOut(intervalVolume * (*pFunction)(ptIn));
   if (ptOut.getSize() != static_cast<UnsignedInteger>(*ncomp))
   {
-    throw InvalidArgumentException(HERE) << "Error: expected number of components and dimension of the function output do not match, here expected number of components= " << *ncomp << " and dimension of the function output=" << ptOut.getSize();
+    return 1;
   }
   std::copy(ptOut.begin(), ptOut.end(), f);
 
   return 0;
 }
+#endif
 
 /* Compute an approximation of \int_{I}f(x)dx, where I
  * is an multidimensional interval and f a multidimensional function

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief Class for the creation of a gradient implementation
- *         form an evaluation implementation by using centered
+ *         from an evaluation implementation by using centered
  *         finite difference formula.
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FiniteDifferenceHessian
  *
  * This class is for the creation of a gradient implementation
- * form an evaluation implementation by using centered
+ * from an evaluation implementation by using centered
  * finite difference formula
  */
 class OT_API FiniteDifferenceHessian

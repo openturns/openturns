@@ -158,3 +158,13 @@ for dim in range(1, 2):
     validation.skipGradient()
     validation.skipMoments()
     validation.run()
+
+# check Dirichlet computeCDF has no global sample cache
+theta1 = [2.0, 6.0, 3.0, 4.0, 5.0]
+d1 = ot.Dirichlet(theta1)
+theta2 = [10.0, 30.0, 15.0, 20.0, 25.0]
+d2 = ot.Dirichlet(theta2)
+point = [0.15] * 4
+cdf1 = d1.computeCDF(point)
+cdf2 = d2.computeCDF(point)
+assert abs(cdf1 - cdf2) > 1e-8, "Dirichlet CDF should differ for different theta"

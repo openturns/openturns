@@ -316,11 +316,20 @@ Graph GeneralizedParetoFactory::drawMeanResidualLife(const Sample & sample) cons
         xu.add(sample[j]);
 
     const UnsignedInteger n = xu.getSize();
-    mrl(i, 0) = xu.computeMean()[0] - u(i, 0);
-    const Scalar variance = xu.computeCovariance()(0, 0);
-    const Scalar ciLength2 = xq * std::sqrt(variance / n);
-    ciLow(i, 0) = mrl(i, 0) - ciLength2;
-    ciUp(i, 0) = mrl(i, 0) + ciLength2;
+    if (n > 0)
+    {
+      mrl(i, 0) = xu.computeMean()[0] - u(i, 0);
+      const Scalar variance = xu.computeCovariance()(0, 0);
+      const Scalar ciLength2 = xq * std::sqrt(variance / n);
+      ciLow(i, 0) = mrl(i, 0) - ciLength2;
+      ciUp(i, 0) = mrl(i, 0) + ciLength2;
+    }
+    else
+    {
+      mrl(i, 0) = std::numeric_limits<Scalar>::quiet_NaN();
+      ciLow(i, 0) = std::numeric_limits<Scalar>::quiet_NaN();
+      ciUp(i, 0) = std::numeric_limits<Scalar>::quiet_NaN();
+    }
   }
   Curve curveMrl(u, mrl, "mrl");
   curveMrl.setColor("red");

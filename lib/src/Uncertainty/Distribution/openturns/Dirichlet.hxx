@@ -21,6 +21,8 @@
 #ifndef OPENTURNS_DIRICHLET_HXX
 #define OPENTURNS_DIRICHLET_HXX
 
+#include <memory>
+#include <mutex>
 #include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -165,11 +167,14 @@ private:
 
   /** The main parameter set of the distribution */
   Point theta_;
-  Scalar sumTheta_;
-  Scalar normalizationFactor_;
-  mutable Bool isInitializedCDF_;
+  Scalar sumTheta_ = 0.0;
+  Scalar normalizationFactor_ = 0.0;
+  mutable Bool isInitializedCDF_ = false;
   mutable PointCollection integrationNodes_;
   mutable PointCollection integrationWeights_;
+  mutable std::shared_ptr<std::mutex> cacheMutex_{std::make_shared<std::mutex>()};
+  mutable Sample cdfSample_;
+  mutable Bool isInitializedCDFSample_ = false;
 }; /* class Dirichlet */
 
 

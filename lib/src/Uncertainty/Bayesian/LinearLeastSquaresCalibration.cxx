@@ -45,7 +45,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
     const Sample & outputObservations,
     const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , methodName_(methodName)
@@ -58,7 +58,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = outputObservations.getSize();
-  if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
+  if (inputObservations.getDimension() && inputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an input sample of size=" << size << ", got size=" << inputObservations.getSize();
 }
 
 /* Parameter constructor */
@@ -67,7 +67,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
     const Sample & outputObservations,
     const Point & startingPoint,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , methodName_(methodName)
@@ -79,6 +79,8 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
   if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of columns number=" << parameterDimension << ", got columns number=" << gradientObservations.getNbColumns();
   if (gradientObservations.getNbRows() != size * outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of rows number=" << size * outputDimension << ", got rows number=" << gradientObservations.getNbRows();
   if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected an observations gradient of column dimension=" << parameterDimension << ", got column dimension=" << gradientObservations.getNbColumns();
+  if (modelObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected a model observation sample of size=" << size << ", got size=" << modelObservations.getSize();
+  if (modelObservations.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model observation sample of dimension=" << outputDimension << ", got dimension=" << modelObservations.getDimension();
 }
 
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
@@ -128,6 +130,9 @@ Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution
     const UnsignedInteger outputDimension,
     Distribution & error)
 {
+  if (!(r.getDimension() > thetaStar.getDimension()))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate residual variance because residual dimension="
+                                         << r.getDimension() << " is not greater than parameter dimension=" << thetaStar.getDimension();
   const Scalar varianceError = r.normSquare() / (r.getDimension() - thetaStar.getDimension());
   CovarianceMatrix covarianceThetaStar;
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");

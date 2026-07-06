@@ -109,9 +109,12 @@ KarhunenLoeveSVDAlgorithm * KarhunenLoeveSVDAlgorithm::clone() const
 */
 void KarhunenLoeveSVDAlgorithm::run()
 {
+  // Check the sample is not empty
+  const UnsignedInteger size = sample_.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Karhunen-Loeve decomposition from an empty sample";
+  if (!centeredSample_ && size < 2) throw InvalidArgumentException(HERE) << "Error: cannot center a sample of size " << size;
   // Compute the design matrix of the sample
   LOGINFO("Build the Design matrix");
-  const UnsignedInteger size = sample_.getSize();
   const UnsignedInteger kTilde = centeredSample_ ? size : size - 1;
   const UnsignedInteger verticesNumber = sample_.getMesh().getVerticesNumber();
   const UnsignedInteger dimension = sample_.getDimension();
@@ -119,6 +122,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   MatrixImplementation designMatrix(augmentedDimension, kTilde);
   // Compute the empirical mean if the sample is not centered
   Point mean;
+  Point localWeights(sampleWeights_);
   if (!centeredSample_)
   {
     LOGINFO("Noncentered sample: compute mean");
@@ -126,8 +130,8 @@ void KarhunenLoeveSVDAlgorithm::run()
     mean = Point(augmentedDimension);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      mean += sampleWeights_[i] * sample_[i].getImplementation()->getData();
-      sampleWeights_[i] *= unbiasedRatio;
+      mean += localWeights[i] * sample_[i].getImplementation()->getData();
+      localWeights[i] *= unbiasedRatio;
     }
   }
   if (uniformVerticesWeights_)
@@ -139,7 +143,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     {
       Point data = sample_[i].getImplementation()->getData();
       if (!centeredSample_) data -= mean;
-      data *= coeff * std::sqrt(sampleWeights_[i]);
+      data *= coeff * std::sqrt(localWeights[i]);
       std::copy(data.begin(), data.end(), designMatrix.begin() + shift);
       shift += augmentedDimension;
     }
@@ -154,7 +158,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     UnsignedInteger shift = 0;
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
-      const Scalar wI = std::sqrt(sampleWeights_[i]);
+      const Scalar wI = std::sqrt(localWeights[i]);
       Point data = sample_[i].getImplementation()->getData();
       if (!centeredSample_) data -= mean;
       UnsignedInteger baseIndex = 0;
@@ -260,7 +264,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       for (UnsignedInteger i = 1; i <= iMax; ++i)
       {
         AGi = A.genProd(A.genProd(AGi, true, false), false, false);
-        std::copy(AGi.begin(), AGi.end(), H.begin() + i * l);
+        std::copy(AGi.begin(), AGi.end(), H.begin() + i * l * m);
         LOGINFO(OSS() << "H=" << H.getNbRows() << "x" << H.getNbColumns());
       }
       LOGINFO("Create QR decomposition of H");

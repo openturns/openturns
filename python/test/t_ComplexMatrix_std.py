@@ -166,3 +166,51 @@ print("A = ", repr(A))
 print("B = ", repr(B))
 print("identity = ", repr(identity))
 print("ptResult2 = ", repr(ptResult2))
+
+# Non-square matrix * vector
+print("test 12 : non-square matrix multiplication with a point")
+# Wide matrix (2 rows, 3 columns)
+A = ot.ComplexMatrix(2, 3)
+A[0, 0] = 1.0 + 2.0j
+A[1, 0] = 3.0 + 4.0j
+A[0, 1] = 5.0 + 6.0j
+A[1, 1] = 7.0 + 8.0j
+A[0, 2] = 9.0 + 0.0j
+A[1, 2] = 10.0 + 0.0j
+pt = ot.Point([1.0, 2.0, 3.0])
+result = A * pt
+print("wide A (2x3) * pt (3) = ", repr(result))
+ptc = ot.ComplexCollection([1.0 + 0j, 2.0 + 0j, 3.0 + 0j])
+resultc = A * ptc
+print("wide A (2x3) * ptc (3) = ", repr(resultc))
+
+# Tall matrix (3 rows, 2 columns)
+B = ot.ComplexMatrix(3, 2)
+B[0, 0] = 1.0 + 2.0j
+B[1, 0] = 3.0 + 4.0j
+B[2, 0] = 5.0 + 6.0j
+B[0, 1] = 7.0 + 8.0j
+B[1, 1] = 9.0 + 0.0j
+B[2, 1] = 10.0 + 0.0j
+pt2 = ot.Point([1.0, 2.0])
+result2 = B * pt2
+print("tall B (3x2) * pt (2) = ", repr(result2))
+ptc2 = ot.ComplexCollection([1.0 + 0j, 2.0 + 0j])
+resultc2 = B * ptc2
+print("tall B (3x2) * ptc (2) = ", repr(resultc2))
+
+# Edge case: 1x2 matrix
+C = ot.ComplexMatrix(1, 2)
+C[0, 0] = 1.0 + 0j
+C[0, 1] = 2.0 + 0j
+pt3 = ot.Point([3.0, 4.0])
+result3 = C * pt3
+print("narrow C (1x2) * pt (2) = ", repr(result3))
+
+# Edge case: 2x1 matrix
+D = ot.ComplexMatrix(2, 1)
+D[0, 0] = 1.0 + 0j
+D[1, 0] = 2.0 + 0j
+pt4 = ot.Point([5.0])
+result4 = D * pt4
+print("narrow D (2x1) * pt (1) = ", repr(result4))

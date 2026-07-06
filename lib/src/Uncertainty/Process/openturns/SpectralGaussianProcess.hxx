@@ -133,20 +133,20 @@ private:
   SpectralModel spectralModel_;
 
   /** Maximal frequency */
-  Scalar maximalFrequency_;
+  Scalar maximalFrequency_ = 0.0;
 
   /** Number of frequencies on the positive axis */
-  UnsignedInteger nFrequency_;
+  UnsignedInteger nFrequency_ = 0;
 
   /** Frequency step */
-  Scalar frequencyStep_;
+  Scalar frequencyStep_ = 0.0;
 
   /** Cholesky factor  */
   mutable TriangularComplexMatrixPersistentCollection choleskyFactorsCache_;
   Point choleskyFactorsCache1D_;
 
   /** Cache size */
-  mutable UnsignedInteger cacheSize_;
+  mutable UnsignedInteger cacheSize_ = 0;
 
   /** alpha vector - scale factor */
   PersistentComplexCollection alpha_;

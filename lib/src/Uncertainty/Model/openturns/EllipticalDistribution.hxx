@@ -174,10 +174,10 @@ protected:
   TriangularMatrix inverseCholesky_;
 
   /** The normalization factor of the distribution */
-  Scalar normalizationFactor_;
+  Scalar normalizationFactor_ = 0.0;
 
   /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape */
-  Scalar covarianceScalingFactor_;
+  Scalar covarianceScalingFactor_ = 0.0;
 
 private:
   // Class used to wrap the computeRadialCDF() method for interpolation purpose

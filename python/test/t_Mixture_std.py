@@ -176,3 +176,23 @@ validation.run()
 distribution = ot.Mixture([ot.Uniform(0.0, 1.0), ot.Uniform(2.0, 3.0)])
 q = distribution.computeQuantile(0.5)[0]
 print(f"q={q:.6f}")
+
+# getParametersCollection out-of-bounds when atoms return dimension entries (no copula)
+# Dirac atoms return exactly dimension entries from getParametersCollection().
+# The bug accesses index 'dimension' which is out of bounds for dimension=2.
+atoms = ot.DistributionCollection([ot.Dirac([0.0, 1.0]), ot.Dirac([2.0, 3.0])])
+mixture = ot.Mixture(atoms)
+coll = mixture.getParametersCollection()
+print("parameters (Dirac atoms)=", coll)
+
+# computeConditionalPDF used cumulative conditioningPDF instead of per-atom check
+# Verify conditional PDF produces a valid result
+atoms = ot.DistributionCollection(
+    [ot.Normal([0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2)),
+     ot.Normal([3.0, 3.0], [1.0, 1.0], ot.CorrelationMatrix(2))]
+)
+mixture = ot.Mixture(atoms)
+condPDF = mixture.computeConditionalPDF(1.0, [2.0])
+print("conditional PDF (bivariate mixture)=%.6f" % condPDF)
+seqCondPDF = mixture.computeSequentialConditionalPDF([2.0, 1.0])
+print("sequential conditional PDF=", seqCondPDF)

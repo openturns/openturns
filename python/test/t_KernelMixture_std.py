@@ -169,3 +169,12 @@ for i in range(20):
     sample.add(meanPoint)
 distribution2 = ot.KernelMixture(ot.Normal(), sigma, sample)
 ott.assert_almost_equal(distribution2.computePDF(point), 0.000709, 0.01, 0.0)
+
+# Test survival function with bounded kernel
+uniformKernel = ot.Uniform(0.0, 1.0)
+boundedSample = ot.Sample([[0.5, 0.5]])
+boundedBandwidth = [1.0, 1.0]
+boundedDist = ot.KernelMixture(uniformKernel, boundedBandwidth, boundedSample)
+ott.assert_almost_equal(boundedDist.computeSurvivalFunction([0.0, 1.0]), 0.5)
+ott.assert_almost_equal(boundedDist.computeSurvivalFunction([0.0, 0.0]), 1.0)
+ott.assert_almost_equal(boundedDist.computeSurvivalFunction([2.0, 2.0]), 0.0)

@@ -48,3 +48,10 @@ validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.run()
+
+# 1d check
+distribution1d = ot.KPermutationsDistribution(1, 9)
+validation1d = ott.DistributionValidation(distribution1d)
+validation1d.skipMoments()  # slow
+validation1d.skipCorrelation()  # slow
+validation1d.run()

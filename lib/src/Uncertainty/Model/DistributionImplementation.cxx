@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include <algorithm>
+#include <limits>
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
@@ -665,7 +666,7 @@ Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger si
 
 Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
-  static SobolSequence sequence(dimension_);
+  const SobolSequence sequence(dimension_);
   const Sample u(sequence.generate(size));
   Sample result(size, dimension_);
   const DistributionSequentialConditionalQuantilePolicy policy(*this, u, result);
@@ -697,7 +698,7 @@ Point DistributionImplementation::computeDDF(const Point & point) const
   {
     const UnsignedInteger dimension = getDimension();
     Point ddf(dimension);
-    const Scalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
+    const Scalar h = std::cbrt(pdfEpsilon_);
     LOGINFO(OSS() << "h=" << h);
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
@@ -733,7 +734,7 @@ Point DistributionImplementation::computeDDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar DistributionImplementation::computePDF(const Point & point) const
 {
-  const Scalar epsilon = 2.0 * std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar epsilon = 2.0 * std::cbrt(cdfEpsilon_);
   const Sample xSample(((Box(Indices(dimension_, 0)).generate() - Point(dimension_, 0.5)) * Point(dimension_, epsilon)) + point);
   const Sample cdfSample(computeCDF(xSample));
   Scalar pdf = 0.0;
@@ -1158,23 +1159,27 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
   Scalar probability = 1.0;
   if (hasIndependentCopula())
   {
-    for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i).getImplementation()->computeProbabilityGeneral1D(a[i], b[i]);
-  } // independent
+    // independent case
+    for (UnsignedInteger i = 0; i < dimension_; ++ i)
+      probability *= getMarginal(i).getImplementation()->computeProbabilityGeneral1D(a[i], b[i]);
+  }
   else
   {
     // P(\bigcap_i ai < Xi \leq bi) = \sum_c (−1)^n(c) F(c_1,c_2,...,c_n)
     // with c = (c_i, i =1, ..., n), c_i \in [a_i, b_i]
     // and n(c) = Card({c_i == a_i, i = 1, ..., n})
     probability = 0.0;
+    if (dimension_ >= std::numeric_limits<UnsignedInteger>::digits)
+      throw InternalException(HERE) << "Error: dimension too large for inclusion-exclusion probability computation";
     const UnsignedInteger iMax = 1 << dimension_;
     Point probabilities(iMax);
-    for( UnsignedInteger i = 0; i < iMax; ++i )
+    for (UnsignedInteger i = 0; i < iMax; ++ i)
     {
       Bool evenLower = true;
       Point c(b);
-      for( UnsignedInteger j = 0; j < dimension_; ++j )
+      for (UnsignedInteger j = 0; j < dimension_; ++ j)
       {
-        const UnsignedInteger mask = 1 << j;
+        const UnsignedInteger mask = 1L << j;
         if (i & mask)
         {
           c[j] = a[j];
@@ -1318,14 +1323,10 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar T = 0.5 * (b - a);
       const Scalar c = 0.5 * (a + b);
       const Scalar dt = T / N;
-      static Point pdfGrid;
-      if (!pdfGrid.getSize())
-      {
-        Sample locations(Box(Indices(1, 2 * N - 1)).generate());
-        locations *= Point(1, b - a);
-        locations += Point(1, a);
-        pdfGrid = computePDF(locations).getImplementation()->getData();
-      }
+
+      const Sample locations(Box(Indices({2 * N - 1}), range_).generate());
+      const Point pdfGrid(computePDF(locations).getImplementation()->getData());
+
       const Scalar omegaDt = x * dt;
       const Scalar omegaDt2 = omegaDt * omegaDt;
       const Scalar cosOmegaDt = std::cos(omegaDt);
@@ -1438,8 +1439,12 @@ Complex DistributionImplementation::computeGeneratingFunction(const Complex & z)
   // Create the generating function as a univariate polynomial. It will be used as such if the distribution is integral, or as a container for the individual probabilities if the distribution is not integral
   if (!isAlreadyCreatedGeneratingFunction_)
   {
-    generatingFunction_ = UniVariatePolynomial(getProbabilities());
-    isAlreadyCreatedGeneratingFunction_ = true;
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyCreatedGeneratingFunction_)
+    {
+      generatingFunction_ = UniVariatePolynomial(getProbabilities());
+      isAlreadyCreatedGeneratingFunction_ = true;
+    }
   }
   // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
   if (isIntegral())
@@ -1759,6 +1764,8 @@ Sample DistributionImplementation::computePDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
   IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
@@ -1786,6 +1793,8 @@ Sample DistributionImplementation::computeLogPDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
   IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
@@ -1813,6 +1822,8 @@ Sample DistributionImplementation::computeCDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+    if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
   IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
@@ -1828,6 +1839,7 @@ Sample DistributionImplementation::computeComplementaryCDF(const Scalar xMin,
     Sample & grid) const
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the CDF over a regular 1D grid if the dimension is > 1";
+  if (pointNumber <= 1) throw InvalidArgumentException(HERE) << "Error: pointNumber must be > 1";
   Sample result(pointNumber, 2);
   Scalar x = xMin;
   Scalar step = (xMax - xMin) / Scalar(pointNumber - 1.0);
@@ -1859,6 +1871,7 @@ Sample DistributionImplementation::computeQuantile(const Scalar qMin,
     const Bool tail) const
 {
   // First, build the regular grid for the quantile levels
+  if (pointNumber <= 1) throw InvalidArgumentException(HERE) << "Error: pointNumber must be > 1";
   grid = Sample(pointNumber, 1);
   for (UnsignedInteger i = 0; i < pointNumber; ++i) grid(i, 0) = qMin + i * (qMax - qMin) / (pointNumber - 1.0);
   // Use possible parallelization
@@ -1939,9 +1952,9 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // Increment for centered differences
-  const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const Scalar eps = std::cbrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   // Increment for noncentered differences
-  const Scalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const Scalar eps2 = std::sqrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
@@ -2106,9 +2119,9 @@ Point DistributionImplementation::computeCDFGradient(const Point & point) const
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // We will use centered differences
-  const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const Scalar eps = std::cbrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   // Increment for noncentered differences
-  const Scalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const Scalar eps2 = std::sqrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
@@ -3056,7 +3069,11 @@ Point DistributionImplementation::getMean() const
 {
   if (isCopula())
     return Point(getDimension(), 0.5);
-  if (!isAlreadyComputedMean_) computeMean();
+  if (!isAlreadyComputedMean_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedMean_) computeMean();
+  }
   return mean_;
 }
 
@@ -3393,7 +3410,11 @@ void DistributionImplementation::computeCovarianceGeneral() const
 /* Get the covariance of the distribution */
 CovarianceMatrix DistributionImplementation::getCovariance() const
 {
-  if (!isAlreadyComputedCovariance_) computeCovariance();
+  if (!isAlreadyComputedCovariance_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedCovariance_) computeCovariance();
+  }
   return covariance_;
 }
 
@@ -3565,7 +3586,11 @@ void DistributionImplementation::setIntegrationNodesNumber(const UnsignedInteger
 /* Gauss nodes and weights accessor */
 Point DistributionImplementation::getGaussNodesAndWeights(Point & weights) const
 {
-  if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
+  if (!isAlreadyComputedGaussNodesAndWeights_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
+  }
   weights = gaussWeights_;
   return gaussNodes_;
 }
@@ -3840,7 +3865,11 @@ void DistributionImplementation::computeStandardDistribution() const
 /* Get the standard distribution */
 Distribution DistributionImplementation::getStandardDistribution() const
 {
-  if (!isAlreadyComputedStandardDistribution_) computeStandardDistribution();
+  if (!isAlreadyComputedStandardDistribution_)
+  {
+    std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+    if (!isAlreadyComputedStandardDistribution_) computeStandardDistribution();
+  }
   return p_standardDistribution_;
 }
 

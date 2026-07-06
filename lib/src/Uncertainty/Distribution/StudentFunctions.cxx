@@ -298,7 +298,7 @@ Scalar NonCentralStudentCDF(const Scalar nu,
   // Special case when |delta| << 1
   if (std::abs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
-  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - nu);
+  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - delta);
   // Special case when |x| << 1
   if (std::abs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
   // Small nu
@@ -451,7 +451,7 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // Special case when |delta| << 1
   if (std::abs(delta / (4.0 * nu)) < precision) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
-  if (nu > 1.0 / precision) return DistFunc::pNormal(x - nu);
+  if (nu > 1.0 / precision) return DistFunc::pNormal(x - delta);
   // Special case when |x| << 1
   if (std::abs(x) < precision) return DistFunc::pNormal(-delta, tail);
   Scalar t = x;
@@ -628,7 +628,7 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
   const Scalar w = 1.0 / (nu + x2);
   Scalar logFactor = logConstant + halfNup1_2 * std::log(nu * w);
   // Special treatment for very low value to avoid NaNs due to 0.Inf
-  static const Scalar logPrecision(std::log(precision));
+  const Scalar logPrecision = std::log(precision);
   if (logFactor < logPrecision)
   {
     Scalar value = 0.0;

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math
 import openturns as ot
 import openturns.testing as ott
 
@@ -97,8 +98,30 @@ quantile = ot.Point(margins.computeQuantile(0.95))
 print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
-
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.skipTransformation()  # FIXME
 validation.run()
+
+# CDF near theta=1 must use correct first-order expansion
+for theta in [1.0 + 1e-10, 1.0 - 1e-10]:
+    cop = ot.PlackettCopula(theta)
+    a = theta - 1.0
+    for u, v in [(0.3, 0.7), (0.5, 0.5), (0.1, 0.9)]:
+        cdf = cop.computeCDF([u, v])
+        expansion = u * v * (1.0 + a * (1.0 - u) * (1.0 - v))
+        ott.assert_almost_equal(cdf, expansion, 1e-12, 1e-12)
+
+# CDF formula for theta away from 1 (no cancellation)
+for theta in [0.5, 2.0, 5.0]:
+    cop = ot.PlackettCopula(theta)
+    a = theta - 1.0
+    for u, v in [(0.3, 0.7), (0.5, 0.5), (0.1, 0.9)]:
+        cdf = cop.computeCDF([u, v])
+        S = 1.0 + a * (u + v)
+        exact = (S - math.sqrt(S * S - 4.0 * theta * a * u * v)) / (2.0 * a)
+        ott.assert_almost_equal(cdf, exact, 1e-12, 1e-12)
+
+# hasIndependentCopula at theta=0 and theta=1
+assert not ot.PlackettCopula(0.0).hasIndependentCopula()
+assert ot.PlackettCopula(1.0).hasIndependentCopula()

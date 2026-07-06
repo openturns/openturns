@@ -90,6 +90,7 @@ String ConditionedGaussianProcess::__str__(const String & ) const
 void ConditionedGaussianProcess::initialize()
 {
   if (isInitialized_) return;
+  knownValuesIndices_.clear();
   const Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
   CovarianceMatrix covarianceMatrix;

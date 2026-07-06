@@ -99,7 +99,7 @@ void OrderStatisticsMarginalChecker::check() const
   }
   // Third test, find the minimum of F_i - F_{i+1}
 
-  const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::ScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::ScalarEpsilon)));
+  const FiniteDifferenceStep step(BlendedStep(Point(1, std::cbrt(SpecFunc::ScalarEpsilon)), std::sqrt(SpecFunc::ScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
     const OrderStatisticsMarginalCheckerWrapper wrapper(collection_[i - 1], collection_[i]);

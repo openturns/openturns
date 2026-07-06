@@ -174,15 +174,15 @@ Point IteratedQuadrature::integrate(const Function & function,
   {
     // Check the compatibility of the lower bound functions and the upper bound functions
     // First, check the number of such functions
-    if (lowerBounds.getSize() != inputDimension - 1) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " lower bound functions, got " << lowerBounds.getSize();
-    if (upperBounds.getSize() != inputDimension - 1) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " upper bound functions, got " << upperBounds.getSize();
+    if (lowerBounds.getSize() + 1 != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " lower bound functions, got " << lowerBounds.getSize();
+    if (upperBounds.getSize() + 1 != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected " << inputDimension - 1 << " upper bound functions, got " << upperBounds.getSize();
     // Second, check the input and output dimensions of each bound function
     for (UnsignedInteger i = 1; i < inputDimension; ++i)
     {
       const Function lower(lowerBounds[i - 1]);
       if (lower.getInputDimension() != i) throw InvalidArgumentException(HERE) << "Error: expected a lower bound function of rank=" << i - 1 << " to be of input dimension=" << i << ", got " << lower.getInputDimension();
       if (lower.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a lower bound function of rank=" << i - 1 << " to be of output dimension=1, got " << lower.getOutputDimension();
-      const Function upper(lowerBounds[i - 1]);
+      const Function upper(upperBounds[i - 1]);
       if (upper.getInputDimension() != i) throw InvalidArgumentException(HERE) << "Error: expected an upper bound function of rank=" << i - 1 << " to be of input dimension=" << i << ", got " << upper.getInputDimension();
       if (upper.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an upper bound function of rank=" << i - 1 << " to be of output dimension=1, got " << upper.getOutputDimension();
     } // bounds dimensions

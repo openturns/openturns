@@ -138,6 +138,7 @@ Process AggregatedProcess::getMarginal(const UnsignedInteger i) const
 */
 Process AggregatedProcess::getMarginal(const Indices & indices) const
 {
+  if (indices.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must not be empty";
   const UnsignedInteger outputDimension = getOutputDimension();
   if (!indices.check(outputDimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";
   ProcessCollection marginalProcesses(0);

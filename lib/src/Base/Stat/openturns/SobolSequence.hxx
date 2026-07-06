@@ -22,6 +22,8 @@
 #ifndef OPENTURNS_SOBOLSEQUENCE_HXX
 #define OPENTURNS_SOBOLSEQUENCE_HXX
 
+#include "openturns/IndicesCollection.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -56,7 +58,8 @@ public:
 public:
 
   /** Constructor with parameters */
-  explicit SobolSequence(const UnsignedInteger dimension = 1);
+  explicit SobolSequence(const UnsignedInteger dimension = 1,
+                         const String & scrambling = ResourceMap::GetAsString("SobolSequence-Scrambling"));
 
   /** Virtual constructor */
   SobolSequence * clone() const override;
@@ -67,6 +70,11 @@ public:
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
   Point generate() const override;
+  Sample generate(const UnsignedInteger size) const override;
+
+  /** Scrambling accessor */
+  void setScrambling(const String & scrambling);
+  String getScrambling() const;
 
   /** String converter */
   String __repr__() const override;
@@ -84,6 +92,18 @@ protected:
 
   /** Current seed */
   mutable Unsigned64BitsInteger seed_;
+
+  /** Scrambling method */
+  String scrambling_ = "";
+
+  /** Number of bits for multidigit scrambling */
+  UnsignedInteger multidigitBits_ = 0;
+
+  /** Modulus for multidigit LCG: 2^k - 1 */
+  Unsigned64BitsInteger multidigitModulus_ = 0;
+
+  /** Multiplier for multidigit LCG */
+  Unsigned64BitsInteger multidigitMultiplier_ = 0;
 
 private:
   /** return 2^n */

@@ -36,15 +36,7 @@ static const Factory<KernelMixture> Factory_KernelMixture;
 KernelMixture::KernelMixture()
   : DistributionImplementation()
   , p_kernel_(Distribution().getImplementation())
-  , bandwidth_(0)
-  , bandwidthInverse_(0)
-  , normalizationFactor_(0.0)
   , sample_(1, 1)
-  , pdfApproximationCDF_()
-  , cdfApproximation_()
-  , pdfApproximationCCDF_()
-  , ccdfApproximation_()
-  , useApproximatePDFCDF_(false)
 {
   setName("KernelMixture");
   setBandwidth(Point(1, 1.0));
@@ -56,15 +48,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
                              const Sample & sample)
   : DistributionImplementation()
   , p_kernel_(kernel.getImplementation())
-  , bandwidth_(0)
-  , bandwidthInverse_(0)
-  , normalizationFactor_(0.0)
   , sample_(sample)
-  , pdfApproximationCDF_()
-  , cdfApproximation_()
-  , pdfApproximationCCDF_()
-  , ccdfApproximation_()
-  , useApproximatePDFCDF_(false)
 {
   setName("KernelMixture");
   // We check if the given kernel is 1-D (product kernel)
@@ -73,7 +57,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
   setDimension(sample.getDimension());
   // This call set also the range.
   setBandwidth(bandwidth);
-  if ((getDimension() == 1) && (ResourceMap::GetAsBool("KernelMixture-EnableInterpolation")))
+  if ((getDimension() == 1) && ResourceMap::GetAsBool("KernelMixture-EnableInterpolation"))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
     Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
@@ -155,7 +139,7 @@ void KernelMixture::setInternalSample(const Sample & sample)
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has dimension=" << sample.getDimension() << ", expected dimension=" << getDimension() << ".";
   sample_ = sample;
   computeRange();
-  if ((getDimension() == 1) && (sample.getSize() >= ResourceMap::GetAsUnsignedInteger("KernelMixture-SmallSize")) && (sample.getSize() < ResourceMap::GetAsUnsignedInteger("KernelMixture-LargeSize")))
+  if ((getDimension() == 1) && ResourceMap::GetAsBool("KernelMixture-EnableInterpolation"))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
     Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
@@ -165,6 +149,8 @@ void KernelMixture::setInternalSample(const Sample & sample)
     ccdfApproximation_ = coll[3];
     useApproximatePDFCDF_ = true;
   }
+  else
+    useApproximatePDFCDF_ = false;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -359,14 +345,14 @@ Scalar KernelMixture::computeSurvivalFunction(const Point & point) const
     else return ccdfApproximation_(point)[0];
   }
   // Check against the range of the distribution
-  Bool oneTooLarge = true;
-  Bool allTooSmall = false;
+  Bool oneTooLarge = false;
+  Bool allTooSmall = true;
   const Point lower(getRange().getLowerBound());
   const Point upper(getRange().getUpperBound());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    oneTooLarge = oneTooLarge && (point[i] >= upper[i]);
-    allTooSmall = allTooSmall || (point[i] <= lower[i]);
+    oneTooLarge = oneTooLarge || (point[i] >= upper[i]);
+    allTooSmall = allTooSmall && (point[i] <= lower[i]);
   }
   if (oneTooLarge) return 0.0;
   if (allTooSmall) return 1.0;

@@ -1,8 +1,8 @@
 # AGENTS.md
 
-## Configure (only if build/ folder does not exist yet)
+## Configure
 ```bash
-cmake --preset=linux-debug
+cmake --preset=linux-debug  # only if build/ folder does not exist
 ```
 
 ## Build

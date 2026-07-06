@@ -3292,9 +3292,8 @@ Distribution LinearCombinationDistribution::getMarginal(const Indices & indices)
   Matrix marginalWeights(outputDimension, size);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
-    const UnsignedInteger index_i = indices[i];
-    const Matrix row(weights_.getRow(index_i));
-    for (UnsignedInteger j = 0; j < outputDimension; ++j) marginalWeights(i, j) = row(0, j);
+    const Matrix rowIndexI(weights_.getRow(indices[i]));
+    for (UnsignedInteger j = 0; j < size; ++j) marginalWeights(i, j) = rowIndexI(0, j);
   }
   LinearCombinationDistribution::Implementation marginal(new LinearCombinationDistribution(distributionCollection_, marginalWeights, constant_.select(indices)));
   marginal->setDescription(getDescription().select(indices));

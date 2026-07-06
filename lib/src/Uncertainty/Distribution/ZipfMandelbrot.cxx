@@ -152,9 +152,11 @@ Scalar ZipfMandelbrot::computeCDF(const Point & point) const
   const Scalar k = point[0];
 
   if (k < 1 - supportEpsilon_) return 0.0;
-  if (k > n_ - 1 + supportEpsilon_) return 1.0;
+  if (k > n_ - supportEpsilon_) return 1.0;
 
-  Scalar value (getHarmonicNumbers(static_cast<UnsignedInteger>(round(k))) / getHarmonicNumbers(n_));
+  const UnsignedInteger kInt = static_cast< UnsignedInteger >(k);
+  if (kInt == 0) return 0.0;
+  const Scalar value = getHarmonicNumbers(kInt) / getHarmonicNumbers(n_);
   return value;
 }
 
@@ -221,12 +223,6 @@ Scalar ZipfMandelbrot::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return ceil(DistributionImplementation::computeScalarQuantile(prob, tail));
-}
-
-/* Check if the distribution is elliptical */
-Bool ZipfMandelbrot::isElliptical() const
-{
-  return n_ == 1;
 }
 
 /* Q accessor */
@@ -318,6 +314,7 @@ void ZipfMandelbrot::setParameter(const Point & parameter)
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "ZipfMandelbrot expected 3 parameters, got " << parameter.getSize();
   const Scalar w = getWeight();
   if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the ZipfMandelbrot first parameter n must be an integer, got " << parameter[0];
+  if (parameter[0] < 1.0) throw InvalidArgumentException(HERE) << "n must be >= 1, got " << parameter[0];
   *this = ZipfMandelbrot(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }

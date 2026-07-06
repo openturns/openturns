@@ -256,6 +256,9 @@ void DickeyFullerTest::estimateAR1Model()
     sigmaDrift_ = 0.0;
 
     computeNoConstantCharacteristics();
+    if (!(sum_squared_yt_minus_one_ > 0.0))
+      throw InvalidArgumentException(HERE) << "Cannot estimate AR1 model: null sum_squared_yt_minus_one_";
+
     // The rho value is the simplest ratio
     rho_ = sum_yt_yt_minus_one_ / sum_squared_yt_minus_one_;
 
@@ -269,8 +272,8 @@ void DickeyFullerTest::estimateAR1Model()
       error += epsilon * epsilon;
     }
     // Writing the expression of the statistic
-    const Scalar sigmaError = sqrt(error / T_);
-    sigmaRho_ = sigmaError / sqrt(sum_squared_yt_minus_one_);
+    const Scalar sigmaError = std::sqrt(error / T_);
+    sigmaRho_ = sigmaError / std::sqrt(sum_squared_yt_minus_one_);
   }
   lastModel_ = 1;
 }

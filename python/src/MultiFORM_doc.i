@@ -12,7 +12,7 @@ The bulge function can be chosen as:
 
 .. math::
 
-    B_i(u) = s_i (r_i^2 - \|u - u_i^{\ast}\|^2)^2
+    B_i(u) = \begin{cases} s_i (r_i^2 - \|u - u_i^{\ast}\|^2)^2 & \|u - u_i^{\ast}\| \le r_i \\ 0 & \text{elsewhere} \end{cases}
 
 Once these points are found a :any:`form_approximation` is computed with each
 point and the probability of interest is computed as a series system

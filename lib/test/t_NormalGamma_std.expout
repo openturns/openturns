@@ -19,29 +19,29 @@ Point= class=Point name=Unnamed dimension=2 values=[1.5,1.5]
 ddf     =class=Point name=Unnamed dimension=2 values=[-0.218956,-0.127136]
 log pdf=-2.46797
 pdf     =0.0847571
-cdf=0.198227
-ccdf=0.801773
+cdf=0.667242
+ccdf=0.332758
 survival=0.0105935
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.160511,-0.941338]
 Survival(inverse survival)=0.95
 pdf gradient     =class=Point name=Unnamed dimension=4 values=[0.127136,0.00529732,0.0736518,-0.0635678]
 pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[0.127136,0.00529732,0.0736518,-0.0635678]
-cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,0.0135182,-0.00130662]
-cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,0.0135182,-0.00130662]
-quantile=class=Point name=Unnamed dimension=2 values=[2.55849,4.59228]
-cdf(quantile)=0.997715
+cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,-0.0191637,0.0321565]
+cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,-0.0191637,0.0321565]
+quantile=class=Point name=Unnamed dimension=2 values=[1.80617,2.99789]
+cdf(quantile)=0.95
 threshold=0.986085
 Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[Y0,X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) gradientImplementation=MinimumVolumeLevelSetGradient(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) level=3.69414
 beta=0.0248688
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0966867,-1.77733] upper bound=class=Point name=Unnamed dimension=2 values=[2.20341,3.77733] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.985531
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,-315.222] upper bound=class=Point name=Unnamed dimension=2 values=[2.55849,4.59228] finite lower bound=[1,1] finite upper bound=[1,1]
-beta=0.997715
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,-315.222] upper bound=class=Point name=Unnamed dimension=2 values=[1.80617,2.99789] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.975
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.160511,-0.941338] upper bound=class=Point name=Unnamed dimension=2 values=[9.72932,317.222] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.972528
 entropy=1.7654
-mean=class=Point name=Unnamed dimension=2 values=[1,0.75]
-standard deviation=class=Point name=Unnamed dimension=2 values=[0.5,1.03078]
+mean=class=Point name=Unnamed dimension=2 values=[0.75,1]
+standard deviation=class=Point name=Unnamed dimension=2 values=[0.433013,1]
 skewness=class=Point name=Unnamed dimension=2 values=[1.1547,0]
 kurtosis=class=Point name=Unnamed dimension=2 values=[5,6]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.1875,0,0,1]

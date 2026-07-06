@@ -203,8 +203,19 @@ Scalar SolverImplementation::solve(const UniVariateFunction & function,
 {
   if (!(maximumCallsNumber_ >= 2)) throw InternalException(HERE) << "Error: solver needs to evaluate the function at least two times, here maximumFunctionEvaluation=" << maximumCallsNumber_;
   /* We take into account the fact that we use 2 function calls when using the other solve method */
+  const Scalar fInf = function(infPoint);
+  const Scalar fSup = function(supPoint);
   maximumCallsNumber_ -= 2;
-  Scalar root = solve(function, value, infPoint, supPoint, function(infPoint), function(supPoint));
+  Scalar root = 0.0;
+  try
+  {
+    root = solve(function, value, infPoint, supPoint, fInf, fSup);
+  }
+  catch (...)
+  {
+    maximumCallsNumber_ += 2;
+    throw;
+  }
   maximumCallsNumber_ += 2;
   callsNumber_ += 2;
   return root;

@@ -68,3 +68,11 @@ ot.Log.Show(ot.Log.TRACE)
 ot.RandomGenerator.SetSeed(1)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# test sampling with rHypergeometric
+n, k, m = 5, 2, 1
+N = int(1e5)
+sample = ot.Sample([[ot.DistFunc.rHypergeometric(n, k, m)] for _ in range(N)])
+distribution = ot.Hypergeometric(n, k, m)
+result = ot.FittingTest.ChiSquared(sample, distribution, 0.01)
+assert result.getBinaryQualityMeasure()

@@ -135,3 +135,24 @@ validation.run()
 # Check that the PDF is zero where it is given by a fraction with null denominator
 pdf = ot.Uniform(-5.0, 5.0).sqr().computePDF(0.0)
 assert pdf == 0.0, f"Expected a zero value for the PDF, got PDF={pdf}"
+
+# verify PDF at segment endpoints is correctly computed (not excluded by strict <)
+# Increasing function f(x)=x, Uniform(0,1) -> PDF should be 1.0 at both range endpoints
+antecedent = ot.Uniform(0.0, 1.0)
+f_inc = ot.SymbolicFunction(['x'], ['x'])
+d_inc = ot.CompositeDistribution(f_inc, antecedent)
+eps = ot.ResourceMap.GetAsScalar('Distribution-DefaultQuantileEpsilon')
+lb = antecedent.getRange().getLowerBound()[0] + eps
+ub = antecedent.getRange().getUpperBound()[0] - eps
+pdf_lb = d_inc.computePDF([f_inc([lb])[0]])
+pdf_ub = d_inc.computePDF([f_inc([ub])[0]])
+ott.assert_almost_equal(pdf_lb, 1.0)
+ott.assert_almost_equal(pdf_ub, 1.0)
+
+# Decreasing function f(x)=1-x, Uniform(0,1) -> PDF should be 1.0 at both range endpoints
+f_dec = ot.SymbolicFunction(['x'], ['1-x'])
+d_dec = ot.CompositeDistribution(f_dec, antecedent)
+pdf_ub2 = d_dec.computePDF([f_dec([lb])[0]])
+pdf_lb2 = d_dec.computePDF([f_dec([ub])[0]])
+ott.assert_almost_equal(pdf_ub2, 1.0)
+ott.assert_almost_equal(pdf_lb2, 1.0)

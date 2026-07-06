@@ -215,7 +215,7 @@ Scalar Rayleigh::computeScalarQuantile(const Scalar prob,
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (tail) return gamma_ + beta_ * std::sqrt(-2.0 * std::log(prob));
-  return gamma_ + beta_ * std::sqrt(-2.0 * log1p(-prob));
+  return gamma_ + beta_ * std::sqrt(-2.0 * std::log1p(-prob));
 }
 
 Scalar Rayleigh::computeProbability(const Interval & interval) const

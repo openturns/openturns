@@ -48,7 +48,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
     const Sample & inputObservations,
     const Sample & outputObservations,
     const Point & startingPoint)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
@@ -58,7 +58,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = outputObservations.getSize();
-  if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
+  if (inputObservations.getDimension() && inputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an input sample of size=" << size << ", got size=" << inputObservations.getSize();
 
   // Now the automatic selection of the algorithm
   algorithm_ = OptimizationAlgorithm::Build(LeastSquaresProblem());

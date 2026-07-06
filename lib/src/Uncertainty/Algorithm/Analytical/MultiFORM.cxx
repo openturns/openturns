@@ -21,13 +21,193 @@
 #include "openturns/MultiFORM.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
-#include "openturns/SymbolicFunction.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NearestPointProblem.hxx"
 #include "openturns/StandardEvent.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
+#include "openturns/SymmetricTensor.hxx"
+#include "openturns/Function.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
+
+namespace MultiFORMFunctions
+{
+
+class BulgeEvaluation : public EvaluationImplementation
+{
+public:
+  BulgeEvaluation(const Point & u,
+                  const Scalar r,
+                  const Scalar h)
+    : EvaluationImplementation()
+    , u_(u)
+    , h_(h)
+    , rsq_(r * r)
+  {}
+
+  BulgeEvaluation * clone() const override
+  {
+    return new BulgeEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return u_.getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point & x) const override
+  {
+    const Point diff(x - u_);
+    const Scalar d2 = diff.normSquare();
+    if (d2 <= rsq_)
+    {
+      const Scalar v = rsq_ - d2;
+      return Point(1, h_ * v * v);
+    }
+    return Point(1, 0.0);
+  }
+
+  String __repr__() const override
+  {
+    OSS oss;
+    oss << "BulgeEvaluation";
+    return oss;
+  }
+
+private:
+  const Point u_;
+  const Scalar h_;
+  const Scalar rsq_;
+};
+
+class BulgeGradient : public GradientImplementation
+{
+public:
+  BulgeGradient(const Point & u,
+                const Scalar r,
+                const Scalar h)
+    : GradientImplementation()
+    , u_(u)
+    , h_(h)
+    , rsq_(r * r)
+  {}
+
+  BulgeGradient * clone() const override
+  {
+    return new BulgeGradient(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return u_.getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Matrix gradient(const Point & x) const override
+  {
+    const UnsignedInteger dimension = u_.getDimension();
+    const Point diff(x - u_);
+    const Scalar d2 = diff.normSquare();
+    Matrix grad(dimension, 1);
+    if (d2 <= rsq_)
+    {
+      const Scalar v = rsq_ - d2;
+      const Scalar factor = -4.0 * h_ * v;
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+        grad(i, 0) = factor * diff[i];
+    }
+    return grad;
+  }
+
+  String __repr__() const override
+  {
+    OSS oss;
+    oss << "BulgeGradient";
+    return oss;
+  }
+
+private:
+  const Point u_;
+  const Scalar h_;
+  const Scalar rsq_;
+};
+
+class BulgeHessian : public HessianImplementation
+{
+public:
+  BulgeHessian(const Point & u,
+               const Scalar r,
+               const Scalar h)
+    : HessianImplementation()
+    , u_(u)
+    , h_(h)
+    , rsq_(r * r)
+  {}
+
+  BulgeHessian * clone() const override
+  {
+    return new BulgeHessian(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return u_.getDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  SymmetricTensor hessian(const Point & x) const override
+  {
+    const UnsignedInteger dimension = u_.getDimension();
+    const Point diff(x - u_);
+    const Scalar d2 = diff.normSquare();
+    SymmetricTensor hess(dimension, 1);
+    if (d2 <= rsq_)
+    {
+      const Scalar v = rsq_ - d2;
+      // hess_ij = 8 * h * diff_i * diff_j - 4 * h * v * delta_ij
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        for (UnsignedInteger j = 0; j <= i; ++j)
+        {
+          Scalar value = 8.0 * h_ * diff[i] * diff[j];
+          if (i == j) value -= 4.0 * h_ * v;
+          hess(i, j, 0) = value;
+        }
+      }
+    }
+    return hess;
+  }
+
+  String __repr__() const override
+  {
+    OSS oss;
+    oss << "BulgeHessian";
+    return oss;
+  }
+
+private:
+  const Point u_;
+  const Scalar h_;
+  const Scalar rsq_;
+};
+
+} // namespace MultiFORMFunctions
 
 CLASSNAMEINIT(MultiFORM)
 
@@ -81,7 +261,6 @@ void MultiFORM::run()
   const Scalar delta = ResourceMap::GetAsScalar("MultiFORM-DefaultDelta");
   const Scalar gamma2 = gamma * gamma;
   const Scalar delta2 = delta * delta;
-  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
   const Scalar bound = std::acos(1.0 - 0.5 * gamma2);
 
   Collection<Point> designPointCollection;
@@ -97,22 +276,54 @@ void MultiFORM::run()
   Bool designPointValidity = true;
   while (designPointValidity)
   {
+    // Build solver with modified level function (original + bulges)
     OptimizationAlgorithm solver(getNearestPointAlgorithm());
     const LinearCombinationFunction levelFunction(collection, coefficients);
     NearestPointProblem optimizationProblem(levelFunction, standardEvent.getThreshold());
     solver.setProblem(optimizationProblem);
-    setNearestPointAlgorithm(solver);
+
+    // Transform starting point to standard space
     try
     {
-      FORM::run();
+      solver.setStartingPoint(getEvent().getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(solver.getStartingPoint()));
+    }
+    catch (const NotDefinedException &)
+    {
+      solver.setStartingSample(getEvent().getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(solver.getStartingSample()));
+    }
+
+    try
+    {
+      solver.run();
     }
     catch (const Exception & ex)
     {
       LOGWARN(OSS() << "MultiFORM: " << ex.what());
-      break; // then exit while-loop
+      break;
     }
-    const FORMResult formResult(FORM::getResult());
-    const Point standardSpaceDesignPoint(formResult.getStandardSpaceDesignPoint());
+
+    // Get standard space design point
+    Point standardSpaceDesignPoint(solver.getResult().getOptimalPoint());
+    standardSpaceDesignPoint.setName("Standard Space Design Point");
+
+    // Check limit state constraint on the modified level function
+    const Scalar constraintError = solver.getResult().getConstraintError();
+    const Scalar limitStateTolerance = solver.getMaximumConstraintError();
+    const Scalar toleranceFactor = ResourceMap::GetAsScalar("Analytical-LimitStateToleranceFactor");
+
+    if (!(constraintError <= toleranceFactor * limitStateTolerance))
+    {
+      LOGWARN(OSS() << "MultiFORM: design point not on limit state, constraintError=" << constraintError);
+      break;
+    }
+
+    // Build FORM result from the original event
+    const Point origin(standardSpaceDesignPoint.getDimension(), 0.0);
+    const Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
+    const Bool isOriginInFailure = standardEvent.getOperator().compare(value[0], standardEvent.getThreshold());
+
+    FORMResult formResult(standardSpaceDesignPoint, getEvent(), isOriginInFailure);
+    formResult.setOptimizationResult(solver.getResult());
 
     // retrieve some results
     const Scalar beta = formResult.getHasoferReliabilityIndex();
@@ -123,8 +334,13 @@ void MultiFORM::run()
     {
       for (UnsignedInteger j = i + 1; j <= designPointNumber; ++ j)
       {
-        const Scalar v = designPointCollection[i].dot(designPointCollection[j]);
-        designPointValidity = designPointValidity && (std::acos(v / (betaCollection[i] * betaCollection[j])) > bound);
+        if (betaCollection[i] > 0.0 && betaCollection[j] > 0.0)
+        {
+          const Scalar v = designPointCollection[i].dot(designPointCollection[j]);
+          const Scalar rho = v / (betaCollection[i] * betaCollection[j]);
+          const Scalar clampedRho = std::clamp(rho, -1.0, 1.0);
+          designPointValidity = designPointValidity && (std::acos(clampedRho) > bound);
+        }
       }
     }
 
@@ -141,26 +357,18 @@ void MultiFORM::run()
       break;
 
     // bulge parameters
-    const Scalar beta2 = beta * beta;
+    if (gamma2 <= delta2) break;
     const Scalar radius = gamma * beta;
-    const Scalar radius2 = radius * radius;
+    if (radius <= 0.0) break;
     const Matrix gradient(standardEvent.getImplementation()->getFunction().gradient(standardSpaceDesignPoint));
     const Scalar gradientNorm = std::sqrt(gradient.computeGram()(0, 0));
-    Scalar height = delta * beta * gradientNorm / ((gamma2 - delta2) * (gamma2 - delta2) * beta2 * beta2);
-    height *= radius2; //NOTE: cause' our bulge is normalized (max height=1.0)
+    // height at center of the bulge
+    const Scalar height = (beta > 0.0) ? delta * gamma2 * gradientNorm / ((gamma2 - delta2) * (gamma2 - delta2) * beta) : 0.0;
 
-    // create the bulge function: b(u) = h*(1-||u-u*||/r^2)^2
-    const Description inputDescription(Description::BuildDefault(dimension, "u"));
-    OSS formula;
-    formula << height << " * (1.0 - sqrt(";
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      formula << "(" << inputDescription[j] << " - " << standardSpaceDesignPoint[j] << ")^2";
-      if (j < dimension - 1)
-        formula << " + ";
-    }
-    formula << ") / " << radius2 << ")^2";
-    const SymbolicFunction bulge(Description::BuildDefault(dimension, "u"), Description(1, formula));
+    // create the bulge function: h * (r^2 - ||u-p||^2)^2 when ||u-p|| <= r, 0 elsewhere
+    const Function bulge(MultiFORMFunctions::BulgeEvaluation(standardSpaceDesignPoint, radius, height).clone(),
+                         MultiFORMFunctions::BulgeGradient(standardSpaceDesignPoint, radius, height).clone(),
+                         MultiFORMFunctions::BulgeHessian(standardSpaceDesignPoint, radius, height).clone());
 
     // add the bulge function to the level function
     coefficients.add(1.0);

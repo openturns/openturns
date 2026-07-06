@@ -405,6 +405,7 @@ void TruncatedDistribution::computeRange()
     normalizationFactor_ = 1.0 / probability;
 
     // scale quantile epsilon of the inner distribution
+    distribution_.copyOnWrite();
     distribution_.getImplementation()->setQuantileEpsilon(quantileEpsilon_ * probability);
   }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
@@ -532,7 +533,7 @@ Scalar TruncatedDistribution::computeEntropy() const
 Point TruncatedDistribution::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  if (!bounds_.contains(point)) return Point(getParameterDimension(), 0.0);
+  if (!getRange().contains(point)) return Point(getParameterDimension(), 0.0);
   if (getDimension() > 1) return DistributionImplementation::computePDFGradient(point);
   const Point pdfGradientX(distribution_.computePDFGradient(point));
   const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
@@ -556,7 +557,7 @@ Point TruncatedDistribution::computePDFGradient(const Point & point) const
 Point TruncatedDistribution::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  if (!bounds_.contains(point)) return Point(getParameterDimension(), 0.0);
+  if (!getRange().contains(point)) return Point(getParameterDimension(), 0.0);
   if (getDimension() > 1) return DistributionImplementation::computeCDFGradient(point);
   const Point cdfGradientX(distribution_.computeCDFGradient(point));
   const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));

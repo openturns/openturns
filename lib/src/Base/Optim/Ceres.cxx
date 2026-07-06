@@ -56,19 +56,15 @@ Description Ceres::GetAlgorithmNames()
 /* Default constructor */
 Ceres::Ceres(const String & algoName)
   : OptimizationAlgorithmImplementation()
-  , algoName_(algoName)
 {
-  if (!GetAlgorithmNames().contains(algoName))
-    throw InvalidArgumentException(HERE) << "Unknown algorithm name, should be one of " << GetAlgorithmNames();
+  setAlgorithmName(algoName);
 }
 
 Ceres::Ceres(const OptimizationProblem & problem,
              const String & algoName)
   : OptimizationAlgorithmImplementation(problem)
-  , algoName_(algoName)
 {
-  if (!GetAlgorithmNames().contains(algoName))
-    throw InvalidArgumentException(HERE) << "Unknown algorithm name, should be one of " << GetAlgorithmNames();
+  setAlgorithmName(algoName);
   checkProblem(problem);
 }
 
@@ -232,6 +228,7 @@ public:
   {
     if (algorithm_.progressCallback_.first)
       algorithm_.progressCallback_.first(100.0 * summary.iteration / algorithm_.getMaximumIterationNumber(), algorithm_.progressCallback_.second);
+
     if (algorithm_.stopCallback_.first && algorithm_.stopCallback_.first(algorithm_.stopCallback_.second))
       return ceres::SOLVER_ABORT;
     else
@@ -551,6 +548,8 @@ String Ceres::__str__(const String & ) const
 
 void Ceres::setAlgorithmName(const String algoName)
 {
+  if (!GetAlgorithmNames().contains(algoName))
+    throw InvalidArgumentException(HERE) << "Unknown algorithm name, should be one of " << GetAlgorithmNames();
   algoName_ = algoName;
 }
 

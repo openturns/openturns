@@ -275,7 +275,7 @@ Point InverseGamma::computeCDFGradient(const Point & point) const
   if (x <= 0.0) return cdfGradient;
   const Scalar lambdaXInverse = 1.0 / (lambda_ * x);
   const Scalar pdf = computePDF(x);
-  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar eps = std::cbrt(cdfEpsilon_);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
   cdfGradient[1] = pdf * x / lambda_;
   return cdfGradient;

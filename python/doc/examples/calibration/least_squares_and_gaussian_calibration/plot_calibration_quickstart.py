@@ -103,7 +103,7 @@ g.setOutputDescription(["H"])
 # %%
 aInitial = 0.1
 bInitial = 0.5
-thetaPrior = [aInitial, bInitial]
+initialTheta = [aInitial, bInitial]
 
 # %%
 # Create the parametric function
@@ -169,7 +169,7 @@ print("Physical Model Parameters:", g.getParameterDescription())
 
 # %%
 calibratedIndices = [1, 2]
-mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+calibratedFunction = ot.ParametricFunction(g, calibratedIndices, initialTheta)
 
 # %%
 # Plot the Y observations versus the X observations.
@@ -178,7 +178,7 @@ mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
 title = "Before calibration : a = %.4f, b = %.4f" % (aInitial, bInitial)
 graph = ot.Graph(title, "Q", "H")
 # Plot the model before calibration
-curve = mycf.draw(100.0, 4000.0).getDrawable(0)
+curve = calibratedFunction.draw(100.0, 4000.0).getDrawable(0)
 curve.setLegend("Model, before calibration")
 graph.add(curve)
 # Plot the noisy observations
@@ -202,7 +202,7 @@ view = otv.View(graph)
 # between the predictions and the observations.
 
 # %%
-algo = ot.NonLinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior)
+algo = ot.NonLinearLeastSquaresCalibration(calibratedFunction, Qobs, Hobs, initialTheta)
 
 # %%
 # The :meth:`~openturns.NonLinearLeastSquaresCalibration.run` method computes

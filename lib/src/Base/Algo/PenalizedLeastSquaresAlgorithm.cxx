@@ -238,7 +238,12 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use QR decomposition");
     setCoefficients(basisMatrix.solveLinearSystemRect(rightHandSide));
   }
-  Scalar quadraticResidual = (basisMatrix.genVectProd(getCoefficients()) - rightHandSide).normSquare();
+  // Compute fitting residual from data rows only (exclude penalization rows)
+  Point residuals(basisMatrix.genVectProd(getCoefficients()) - rightHandSide);
+  if (penalizationFactor_ > 0.0)
+    for (UnsignedInteger i = sampleSize; i < residuals.getSize(); ++i)
+      residuals[i] = 0.0;
+  const Scalar quadraticResidual = residuals.normSquare();
   // The residual is the mean L2 norm of the fitting
   setResidual(std::sqrt(quadraticResidual) / sampleSize);
 
@@ -274,6 +279,7 @@ void PenalizedLeastSquaresAlgorithm::save(Advocate & adv) const
   ApproximationAlgorithmImplementation::save(adv);
   adv.saveAttribute( "penalizationFactor_", penalizationFactor_ );
   adv.saveAttribute( "penalizationMatrix_", penalizationMatrix_ );
+  adv.saveAttribute( "useNormal_", useNormal_ );
 }
 
 
@@ -283,6 +289,8 @@ void PenalizedLeastSquaresAlgorithm::load(Advocate & adv)
   ApproximationAlgorithmImplementation::load(adv);
   adv.loadAttribute( "penalizationFactor_", penalizationFactor_ );
   adv.loadAttribute( "penalizationMatrix_", penalizationMatrix_ );
+  if (adv.hasAttribute("useNormal_"))
+    adv.loadAttribute( "useNormal_", useNormal_ );
 }
 
 Collection<Indices> PenalizedLeastSquaresAlgorithm::getSelectionHistory(Collection<Point> & coefficientsHistory) const

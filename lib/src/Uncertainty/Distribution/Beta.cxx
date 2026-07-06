@@ -223,8 +223,8 @@ Point Beta::computeCDFGradient(const Point & point) const
   const Scalar cdfShift = DistFunc::pBeta(alpha_ + 1.0, beta_ - 1.0, (x - a_) * iBA);
   const Scalar cdfDiff = cdfShift - cdf;
   const Scalar factor = alpha_ * iBA;
-  static const Scalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
-  static const Scalar i2Eps(0.5 / eps);
+  const Scalar eps = std::cbrt(cdfEpsilon_);
+  const Scalar i2Eps = 0.5 / eps;
   cdfGradient[0] = i2Eps * (DistFunc::pBeta(alpha_ + eps, beta_, (x - a_) / (b_ - a_)) - DistFunc::pBeta(alpha_ - eps, beta_, (x - a_) / (b_ - a_)));
   cdfGradient[1] = i2Eps * (DistFunc::pBeta(alpha_, beta_ + eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(alpha_, beta_ - eps, (x - a_) / (b_ - a_)));
   cdfGradient[3] = factor * cdfDiff;

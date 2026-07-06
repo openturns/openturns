@@ -24,6 +24,7 @@
 #include "openturns/LevelSet.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Mesh.hxx"
+#include "openturns/Field.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 
@@ -68,6 +69,9 @@ public:
                      const Bool project = true) const;
   virtual Mesh build(const LevelSet & levelSet,
                      const Interval & boundingBox,
+                     const Bool project = true) const;
+  virtual Mesh build(const LevelSet & levelSet,
+                     const Field & field,
                      const Bool project = true) const;
 
 protected:

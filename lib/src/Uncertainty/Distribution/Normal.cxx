@@ -117,9 +117,10 @@ Normal::Normal(const Point & mean,
     else
     {
       sigma[i] = std::sqrt(cii);
-      for (UnsignedInteger j = 0; j < i; ++ j)
-        if (sigma[j] > 0.0)
-          R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
+      if (sigma[i] > 0.0)
+        for (UnsignedInteger j = 0; j < i; ++ j)
+          if (sigma[j] > 0.0)
+            R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
     }
   }
   *this = Normal(mean, sigma, R);
@@ -177,8 +178,8 @@ Point Normal::getRealization() const
     }
     return value;
   }
-  // General case
-  return inverseCholesky_.solveLinearSystem(value) + mean_;
+  // General case: use Cholesky factor directly to handle degenerate dimensions
+  return getCholesky() * value + mean_;
 }
 
 Sample Normal::getSample(const UnsignedInteger size) const
@@ -231,6 +232,7 @@ Scalar Normal::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) 
 /* Get the PDF of the distribution */
 Scalar Normal::computePDF(const Scalar x) const
 {
+  if (sigma_[0] == 0.0) return 0.0;
   const Scalar y = (x - mean_[0]) / sigma_[0];
   return DistFunc::dNormal(y) / sigma_[0];
 }
@@ -248,6 +250,7 @@ Scalar Normal::computePDF(const Point & point) const
 /* Get the CDF of the distribution */
 Scalar Normal::computeCDF(const Scalar x) const
 {
+  if (sigma_[0] == 0.0) return (x >= mean_[0] ? 1.0 : 0.0);
   return DistFunc::pNormal((x - mean_[0]) / sigma_[0]);
 }
 
@@ -263,8 +266,18 @@ Scalar Normal::computeCDF(const Point & point) const
   /* Special treatment for independent components */
   if (hasIndependentCopula_)
   {
-    Scalar value = DistFunc::pNormal(u[0]);
-    for (UnsignedInteger i = 1; i < dimension; ++i) value *= DistFunc::pNormal(u[i]);
+    Scalar value = 1.0;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      if (sigma_[i] == 0.0)
+      {
+        if (point[i] < mean_[i]) return 0.0;
+      }
+      else
+      {
+        value *= DistFunc::pNormal(u[i]);
+      }
+    }
     return value;
   }
   // General multivariate case
@@ -276,6 +289,13 @@ Scalar Normal::computeCDF(const Point & point) const
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
     const Scalar xK = point[k];
+    if (sigma_[k] == 0.0)
+    {
+      // Degenerate dimension: Dirac at mean_[k]
+      if (xK < mean_[k]) return 0.0;
+      // If xK >= mean_[k], marginalize (always satisfied)
+      continue;
+    }
     // Early exit if one component is less than its corresponding range lower bound
     if (xK <= lowerBounds[k]) return 0.0;
     // Keep only the indices for which xK is less than its corresponding range upper bound
@@ -396,6 +416,7 @@ Sample Normal::computeCDF(const Sample & sample) const
 
 Scalar Normal::computeComplementaryCDF(const Scalar x) const
 {
+  if (sigma_[0] == 0.0) return (x < mean_[0] ? 1.0 : 0.0);
   return DistFunc::pNormal((x - mean_[0]) / sigma_[0], true);
 }
 
@@ -418,6 +439,9 @@ Scalar Normal::computeEntropy() const
   // the most costly parts:
   // EllipticalDistribution::normalizationFactor_ == 1/sqrt(det(Sigma))
   // logNormalizationFactor_ == log(1/sqrt(2*Pi)^dim)
+  // Degenerate dimensions give infinite entropy
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+    if (sigma_[i] == 0.0) return SpecFunc::LowestScalar;
   return 0.5 * getDimension() - std::log(EllipticalDistribution::normalizationFactor_) - logNormalizationFactor_;
 }
 
@@ -463,16 +487,21 @@ Scalar Normal::computeProbability(const Interval & interval) const
   /* Special treatment for independent components */
   if (hasIndependentCopula_)
   {
-    Scalar lowerCDF = 0.0;
-    if (finiteLower[0]) lowerCDF = DistFunc::pNormal(lower[0]);
-    Scalar upperCDF = 1.0;
-    if (finiteUpper[0]) upperCDF = DistFunc::pNormal(upper[0]);
-    Scalar value = upperCDF - lowerCDF;
-    for (UnsignedInteger i = 1; i < dimension; ++i)
+    Scalar value = 1.0;
+    const Point rawLower(interval.getLowerBound());
+    const Point rawUpper(interval.getUpperBound());
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      lowerCDF = 0.0;
+      if (sigma_[i] == 0.0)
+      {
+        // Degenerate dimension: Dirac at mean_[i]
+        if ((finiteLower[i] && rawLower[i] > mean_[i]) || (finiteUpper[i] && rawUpper[i] < mean_[i])) return 0.0;
+        // Interval contains mean, this dimension contributes factor 1
+        continue;
+      }
+      Scalar lowerCDF = 0.0;
       if (finiteLower[i]) lowerCDF = DistFunc::pNormal(lower[i]);
-      upperCDF = 1.0;
+      Scalar upperCDF = 1.0;
       if (finiteUpper[i]) upperCDF = DistFunc::pNormal(upper[i]);
       value *= upperCDF - lowerCDF;
     }
@@ -530,7 +559,7 @@ Point Normal::computeCDFGradient(const Point & point) const
   {
     Scalar pdf = computePDF(point);
     gradientCDF[0] = -pdf;
-    gradientCDF[1] = -pdf * (point[0] - mean_[0]) / sigma_[0];
+    gradientCDF[1] = (sigma_[0] > 0.0) ? (-pdf * (point[0] - mean_[0]) / sigma_[0]) : 0.0;
     return gradientCDF;
   }
   else
@@ -545,6 +574,7 @@ Scalar Normal::computeScalarQuantile(const Scalar prob,
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  if (sigma_[0] == 0.0) return mean_[0];
   return mean_[0] + sigma_[0] * DistFunc::qNormal(prob, tail);
 } // computeScalarQuantile
 
@@ -561,6 +591,8 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
+  if (sigma_[conditioningDimension] == 0.0) return 0.0;
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
@@ -585,6 +617,11 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
   if (hasIndependentCopula())
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
+      if (sigma_[i] == 0.0)
+      {
+        result[i] = 0.0;
+        continue;
+      }
       const Scalar u = (x[i] - mean_[i]) / sigma_[i];
       result[i] = DistFunc::dNormal(u) / sigma_[i];
     }
@@ -592,7 +629,14 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
   {
     const Point u(inverseCholesky_ * (x - mean_));
     for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      if (sigma_[i] == 0.0)
+      {
+        result[i] = 0.0;
+        continue;
+      }
       result[i] = DistFunc::dNormal(u[i]) * inverseCholesky_(i, i);
+    }
   }
   return result;
 }
@@ -603,6 +647,8 @@ Scalar Normal::computeConditionalCDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
+  if (sigma_[conditioningDimension] == 0.0) return (x >= mean_[conditioningDimension] ? 1.0 : 0.0);
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
     return DistFunc::pNormal((x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
@@ -622,10 +668,16 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
   {
     Point result(dimension_);
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = DistFunc::pNormal((x[i] - mean_[i]) / sigma_[i]);
+    {
+      if (sigma_[i] == 0.0) result[i] = (x[i] >= mean_[i] ? 1.0 : 0.0);
+      else result[i] = DistFunc::pNormal((x[i] - mean_[i]) / sigma_[i]);
+    }
     return result;
   }
-  return DistFunc::pNormal(inverseCholesky_ * (x - mean_));
+  Point result(DistFunc::pNormal(inverseCholesky_ * (x - mean_)));
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    if (sigma_[i] == 0.0) result[i] = (x[i] >= mean_[i] ? 1.0 : 0.0);
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -639,6 +691,8 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
 
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
+  if (sigma_[conditioningDimension] == 0.0) return mean_[conditioningDimension];
   // Special case when no conditioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(q);
   // General case
@@ -660,10 +714,13 @@ Point Normal::computeSequentialConditionalQuantile(const Point & q) const
   {
     Point result(dimension_);
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = mean_[i] + sigma_[i] * DistFunc::qNormal(q[i]);
+    {
+      if (sigma_[i] == 0.0) result[i] = mean_[i];
+      else result[i] = mean_[i] + sigma_[i] * DistFunc::qNormal(q[i]);
+    }
     return result;
   }
-  return mean_ + inverseCholesky_.solveLinearSystem(DistFunc::qNormal(q));
+  return mean_ + getCholesky() * DistFunc::qNormal(q);
 }
 
 /* Get the i-th marginal distribution */
@@ -729,13 +786,20 @@ Scalar Normal::getRoughness() const
 {
   // 0.2820947917738781434740398 = 1 / (2 * sqrt(Pi))
   if (dimension_ == 1)
-    return 0.2820947917738781434740398 / getSigma()[0];
+  {
+    if (sigma_[0] == 0.0) return SpecFunc::MaxScalar;
+    return 0.2820947917738781434740398 / sigma_[0];
+  }
+
+  // Check for degenerate dimensions
+  for (UnsignedInteger d = 0; d < dimension_; ++d)
+    if (sigma_[d] == 0.0) return SpecFunc::MaxScalar;
 
   Scalar roughness = 1.0;
   if (hasIndependentCopula())
   {
     for (UnsignedInteger d = 0; d < dimension_; ++d)
-      roughness *= 0.2820947917738781434740398 / getSigma()[d];
+      roughness *= 0.2820947917738781434740398 / sigma_[d];
     return roughness;
   }
   else

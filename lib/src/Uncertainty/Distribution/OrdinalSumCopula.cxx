@@ -339,12 +339,15 @@ Scalar OrdinalSumCopula::computeProbability(const Interval & interval) const
     xMin = xMax;
   }
   // And the contribution of the last block
-  xMax = Point(dimension, 1.0);
-  const Interval intersection(interval.intersect(Interval(xMin, xMax)));
-  const Point lowerBound(intersection.getLowerBound());
-  const Point upperBound(intersection.getUpperBound());
-  const Interval shiftedInterval(lowerBound - xMin, upperBound - xMin);
-  probability += blockLengths_[size] * copulaCollection_[size].computeProbability(shiftedInterval * (1.0 / blockLengths_[size]));
+  if (blockLengths_.getSize() > size)
+  {
+    xMax = Point(dimension, 1.0);
+    const Interval intersection(interval.intersect(Interval(xMin, xMax)));
+    const Point lowerBound(intersection.getLowerBound());
+    const Point upperBound(intersection.getUpperBound());
+    const Interval shiftedInterval(lowerBound - xMin, upperBound - xMin);
+    probability += blockLengths_[size] * copulaCollection_[size].computeProbability(shiftedInterval * (1.0 / blockLengths_[size]));
+  }
   return probability;
 }
 

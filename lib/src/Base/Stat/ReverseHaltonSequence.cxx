@@ -78,6 +78,35 @@ Point ReverseHaltonSequence::generate() const
 }
 
 
+/* Generate a sample of quasi-random vectors */
+Sample ReverseHaltonSequence::generate(const UnsignedInteger size) const
+{
+  Sample result(size, dimension_);
+  Unsigned64BitsInteger localSeed = seed_;
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      Scalar xI = 0.0;
+      const Unsigned64BitsInteger radix = base_[i];
+      const Scalar inverseRadix = 1.0 / radix;
+      Scalar inverseRadixN = inverseRadix;
+      Unsigned64BitsInteger currentSeed = localSeed;
+      while (currentSeed > 0)
+      {
+        const UnsignedInteger digit = static_cast<UnsignedInteger>(currentSeed % radix);
+        if (digit != 0) xI += (radix - digit) * inverseRadixN;
+        currentSeed /= radix;
+        inverseRadixN *= inverseRadix;
+      }
+      result(k, i) = xI;
+    }
+    ++localSeed;
+  }
+  seed_ = localSeed;
+  return result;
+}
+
 /* String converter */
 String ReverseHaltonSequence::__repr__() const
 {
