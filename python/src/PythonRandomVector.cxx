@@ -151,7 +151,7 @@ UnsignedInteger PythonRandomVector::getDimension() const
     handleException();
   }
 
-  const UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  const UnsignedInteger dim = convert< _PyLong_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -178,7 +178,7 @@ Sample PythonRandomVector::getSample(const UnsignedInteger size) const
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getSample") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getSample" ));
-    ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyInt_ >(size));
+    ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyLong_ >(size));
     ScopedPyObjectPointer result(PyObject_CallMethodObjArgs( pyObj_,
                                  methodName.get(),
                                  sizeArg.get(), NULL ));

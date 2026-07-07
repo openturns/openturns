@@ -215,7 +215,7 @@ UnsignedInteger PythonFieldToPointFunction::getInputDimension() const
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  UnsignedInteger dim = convert< _PyLong_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -226,7 +226,7 @@ UnsignedInteger PythonFieldToPointFunction::getOutputDimension() const
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
+  UnsignedInteger dim = convert< _PyLong_, UnsignedInteger >(result.get());
   return dim;
 }
 

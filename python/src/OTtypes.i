@@ -15,7 +15,7 @@
 %}
 
 %typemap(in) UnsignedInteger {
-  $1 = OT::convert< OT::_PyInt_, OT::UnsignedInteger >($input);
+  $1 = OT::convert< OT::_PyLong_, OT::UnsignedInteger >($input);
 }
 
 %apply UnsignedInteger { OT::Unsigned64BitsInteger };
