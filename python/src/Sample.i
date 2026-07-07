@@ -255,7 +255,7 @@ PyObject * __getitem__(PyObject * args) const
       OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
       if (intValue.isNull())
         OT::handleException();
-      long index = PyInt_AsLong(intValue.get());
+      long index = PyLong_AsLong(intValue.get());
       if (index < 0)
         index += self->getSize();
       if (index < 0)
@@ -322,9 +322,9 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
         PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
-        if (PyInt_Check(elt))
+        if (PyLong_Check(elt))
         {
-          long index2 = PyInt_AsLong(elt);
+          long index2 = PyLong_AsLong(elt);
           if (index2 < 0)
             index2 += self->getDimension();
           if (index2 < 0)
@@ -400,9 +400,9 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
         PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
-        if (PyInt_Check(elt))
+        if (PyLong_Check(elt))
         {
-          long index2 = PyInt_AsLong(elt);
+          long index2 = PyLong_AsLong(elt);
           if (index2 < 0)
             index2 += self->getDimension();
           if (index2 < 0)
@@ -432,9 +432,9 @@ PyObject * __getitem__(PyObject * args) const
     for (Py_ssize_t i = 0; i < size1; ++ i)
     {
       PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq1.get(), i);
-      if (PyInt_Check(elt))
+      if (PyLong_Check(elt))
       {
-        long index1 = PyInt_AsLong(elt);
+        long index1 = PyLong_AsLong(elt);
         if (index1 < 0)
           index1 += self->getSize();
         if (index1 < 0)
@@ -495,9 +495,9 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
         PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
-        if (PyInt_Check(elt))
+        if (PyLong_Check(elt))
         {
-          long index2 = PyInt_AsLong(elt);
+          long index2 = PyLong_AsLong(elt);
           if (index2 < 0)
             index2 += self->getDimension();
           if (index2 < 0)
@@ -588,7 +588,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
       if (intValue.isNull())
         OT::handleException();
-      long index = PyInt_AsLong(intValue.get());
+      long index = PyLong_AsLong(intValue.get());
       if (index < 0)
         index += self->getSize();
       if (index < 0)
@@ -670,9 +670,9 @@ void __setitem__(PyObject * args, PyObject * valObj)
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
         PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
-        if (PyInt_Check(elt))
+        if (PyLong_Check(elt))
         {
-          long index2 = PyInt_AsLong(elt);
+          long index2 = PyLong_AsLong(elt);
           if (index2 < 0)
             index2 += self->getDimension();
           if (index2 < 0)
@@ -754,9 +754,9 @@ void __setitem__(PyObject * args, PyObject * valObj)
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
         PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
-        if (PyInt_Check(elt))
+        if (PyLong_Check(elt))
         {
-          long index2 = PyInt_AsLong(elt);
+          long index2 = PyLong_AsLong(elt);
           if (index2 < 0)
             index2 += self->getDimension();
           if (index2 < 0)
@@ -780,9 +780,9 @@ void __setitem__(PyObject * args, PyObject * valObj)
     for (Py_ssize_t i = 0; i < size1; ++ i)
     {
       PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq1.get(), i);
-      if (PyInt_Check(elt))
+      if (PyLong_Check(elt))
       {
-        long index1 = PyInt_AsLong(elt);
+        long index1 = PyLong_AsLong(elt);
         if (index1 < 0)
           index1 += self->getSize();
         if (index1 < 0)
@@ -841,9 +841,9 @@ void __setitem__(PyObject * args, PyObject * valObj)
       for (Py_ssize_t j = 0; j < size2; ++ j)
       {
         PyObject * elt = OT::Sequence_Fast_GET_ITEM(seq2.get(), j);
-        if (PyInt_Check(elt))
+        if (PyLong_Check(elt))
         {
-          long index2 = PyInt_AsLong(elt);
+          long index2 = PyLong_AsLong(elt);
           if (index2 < 0)
             index2 += self->getDimension();
           if (index2 < 0)

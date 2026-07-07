@@ -70,7 +70,7 @@ PyObject * __getitem__(PyObject * args) const {
       OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
       if (intValue.isNull())
         OT::handleException();
-      long index = PyInt_AsLong(intValue.get());
+      long index = PyLong_AsLong(intValue.get());
       if (index < 0)
         index += self->getSize();
       if (index < 0)
@@ -126,7 +126,7 @@ void __setitem__(PyObject * args, PyObject * valObj) {
       OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
       if (intValue.isNull())
         OT::handleException();
-      long index = PyInt_AsLong(intValue.get());
+      long index = PyLong_AsLong(intValue.get());
       if (index < 0)
         index += self->getSize();
       if (index < 0)
