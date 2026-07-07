@@ -17,8 +17,8 @@ public:
 
   OT::Scalar operator() (const OT::UnsignedInteger i, const OT::UnsignedInteger j) const override
   {
-    OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
-    OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
+    OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyLong_ >(i));
+    OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyLong_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
     OT::handleException();
     const OT::Scalar value = OT::convert<OT::_PyFloat_, OT::Scalar>(result.get());
@@ -41,8 +41,8 @@ public:
 
   void compute(const OT::UnsignedInteger i, const OT::UnsignedInteger j, OT::Matrix* localValues) const override
   {
-    OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
-    OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
+    OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyLong_ >(i));
+    OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyLong_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
     OT::handleException();
     void * ptr = nullptr;

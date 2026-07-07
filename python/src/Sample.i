@@ -269,7 +269,7 @@ PyObject * __getitem__(PyObject * args) const
   PyObject * obj2 = 0;
   if (!PyArg_ParseTuple(args, "OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
 
-  if (OT::isAPython< OT::_PyInt_ >(obj1))
+  if (OT::isAPython< OT::_PyLong_ >(obj1))
   {
     long index1 = 0;
     int ecode1 = SWIG_AsVal_long(obj1, &index1);
@@ -280,7 +280,7 @@ PyObject * __getitem__(PyObject * args) const
     if (index1 < 0)
       throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       // case 1.1: [int/int] => float
       long index2 = 0;
@@ -349,7 +349,7 @@ PyObject * __getitem__(PyObject * args) const
       throw OT::InvalidArgumentException(HERE) << "Sample.__setitem__: PySlice_Unpack failed";
     size1 = PySlice_AdjustIndices(self->getSize(), &start1, &stop1, step1);
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       // case 2.1: [slice/int] => Sample
       long index2 = 0;
@@ -456,7 +456,7 @@ PyObject * __getitem__(PyObject * args) const
       OT::Sequence_Fast_DECREF_ITEM(elt);
     }
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       // case 3.1: [sequence/int] => Sample
       long index2 = 0;
@@ -618,7 +618,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
   PyObject * obj2 = 0;
   if (!PyArg_ParseTuple(args, "OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
 
-  if (OT::isAPython< OT::_PyInt_ >(obj1))
+  if (OT::isAPython< OT::_PyLong_ >(obj1))
   {
     long index1 = 0;
     int ecode1 = SWIG_AsVal_long(obj1, &index1);
@@ -629,7 +629,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
     if (index1 < 0)
       throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       // case 1.1: [int/int] <= float
       long index2 = 0;
@@ -722,7 +722,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       val = &temp;
     }
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       // case 2.1: [slice/int] <= Sample
       long index2 = 0;
@@ -823,7 +823,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       val = &temp;
     }
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       // case 3.1: [sequence/int] <= Sample
       long index2 = 0;

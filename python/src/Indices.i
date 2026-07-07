@@ -19,7 +19,7 @@
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const Indices & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
-       OT::isAPythonBufferOf<OT::UnsignedInteger, 1>($input) || OT::isAPythonSequenceOf<OT::_PyInt_>($input);
+       OT::isAPythonBufferOf<OT::UnsignedInteger, 1>($input) || OT::isAPythonSequenceOf<OT::_PyLong_>($input);
 }
 
 %apply const Indices & { const OT::Indices & };

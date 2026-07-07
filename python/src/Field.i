@@ -91,7 +91,7 @@ PyObject * __getitem__(PyObject * args) const {
 
   if (!PyArg_ParseTuple(args,(char *)"OO:Field___getitem__",&obj1,&obj2)) SWIG_fail;
 
-  if (OT::isAPython< OT::_PyInt_ >(obj1))
+  if (OT::isAPython< OT::_PyLong_ >(obj1))
   {
     ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
     if (!SWIG_IsOK(ecode2)) {
@@ -99,7 +99,7 @@ PyObject * __getitem__(PyObject * args) const {
     }
     arg2 = static_cast< OT::UnsignedInteger >(val2);
 
-    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    if (OT::isAPython< OT::_PyLong_ >(obj2))
     {
       ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
       if (!SWIG_IsOK(ecode3)) {
