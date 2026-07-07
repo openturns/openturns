@@ -18,7 +18,7 @@
 %define OT_COLLECTION_GETITEM(collectionType, elementType)
 PyObject * __getitem__(PyObject * arg) const
 {
-  if (PyInt_Check(arg))
+  if (PyLong_Check(arg))
   {
     long val2 = 0;
     int ecode2 = 0;
@@ -80,7 +80,7 @@ PyObject * __getitem__(PyObject * arg) const
     OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(arg, const_cast<char *>("__int__"), const_cast<char *>("()")));
     if (intValue.isNull())
       OT::handleException();
-    long index = PyInt_AsLong(intValue.get());
+    long index = PyLong_AsLong(intValue.get());
     if (index < 0) {
       index += self->getSize();
     }
@@ -98,7 +98,7 @@ fail:
 %define OT_COLLECTION_SETITEM(collectionType, elementType)
 PyObject * __setitem__(PyObject * arg, PyObject * valObj)
 {
-  if (PyInt_Check(arg))
+  if (PyLong_Check(arg))
   {
     long val2 = 0;
     int ecode2 = 0;
@@ -172,7 +172,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(arg, const_cast<char *>("__int__"), const_cast<char *>("()")));
     if (intValue.isNull())
       OT::handleException();
-    long index = PyInt_AsLong(intValue.get());
+    long index = PyLong_AsLong(intValue.get());
     if (index < 0) {
       index += self->getSize();
     }
