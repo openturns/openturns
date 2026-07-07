@@ -210,7 +210,7 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelHarrisonMcCabe(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.05 p-value=0.142 statistic=0.373225 description=[]
+class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.05 p-value=0.12 statistic=0.373225 description=[]
 )RAW"
 
 // ---------------------------------------------------------------------

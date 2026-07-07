@@ -182,7 +182,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   const UnsignedInteger residualSize = firstSample.getSize();
   if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
-  if (!(breakPoint > 0) && !(breakPoint < 1)) throw InvalidArgumentException(HERE) << "breakPoint should be in ]0,1[";
+  if (!(breakPoint > 0.0) || !(breakPoint < 1.0)) throw InvalidArgumentException(HERE) << "breakPoint should be in ]0,1[";
   const Sample residuals(linearModelResult.getSampleResiduals());
 
   /* Split the sample using the breakPoint*/
@@ -200,12 +200,11 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   /* compute Harrison McCabe statistic */
   const Scalar hmc = sumSelectResiduals / sumSquaredResiduals;
 
-  /* p-value computed by simultation */
+  /* p-value computed by simulation */
   Scalar pValue = 0;
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
-    const Sample sample(Normal().getSample(residualSize));
-    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviation());
+    const Sample standardSample(Normal().getSample(residualSize));
     Scalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
@@ -274,6 +273,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   /* Compute variances */
   const Scalar wPredictedVar = wPredicted.computeVariance()[0];
   const Scalar wVariance = w.computeVariance()[0];
+  if (wVariance == 0.0) throw InvalidArgumentException(HERE) << "Null variance of squared residuals, Breusch-Pagan test is not defined";
   /* Compute the Breusch Pagan statistic */
   const Scalar statistic = residualSize * wPredictedVar / wVariance;
   /* Get the basis size */
