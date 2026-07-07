@@ -58,6 +58,26 @@ public:
   void setMinimumProbability(const Scalar minimumProbability);
   Scalar getMinimumProbability() const;
 
+  /** Adaptation lower bound accessor */
+  void setProposalAdaptationLowerBound(const Scalar lowerBound);
+  Scalar getProposalAdaptationLowerBound() const;
+
+  /** Adaptation upper bound accessor */
+  void setProposalAdaptationUpperBound(const Scalar upperBound);
+  Scalar getProposalAdaptationUpperBound() const;
+
+  /** Adaptation expansion factor accessor */
+  void setProposalAdaptationExpansionFactor(const Scalar expansionFactor);
+  Scalar getProposalAdaptationExpansionFactor() const;
+
+  /** Adaptation shrink factor accessor */
+  void setProposalAdaptationShrinkFactor(const Scalar shrinkFactor);
+  Scalar getProposalAdaptationShrinkFactor() const;
+
+  /** Adaptation period accessor */
+  void setProposalAdaptationPeriod(const UnsignedInteger period);
+  UnsignedInteger getProposalAdaptationPeriod() const;
+
   /** Accessor to the achieved number of steps */
   UnsignedInteger getStepsNumber() const;
 
@@ -118,6 +138,13 @@ private:
   Scalar conditionalProbability_ = 0.0;// target probability at each subset
   Scalar minimumProbability_ = 0.0;// limit on the smallest probability
   WeightedExperiment initialExperiment_; // experiment for first step
+
+  // adaptation parameters
+  Scalar proposalAdaptationLowerBound_ = 0.0;
+  Scalar proposalAdaptationUpperBound_ = 0.0;
+  Scalar proposalAdaptationExpansionFactor_ = 0.0;
+  Scalar proposalAdaptationShrinkFactor_ = 0.0;
+  UnsignedInteger proposalAdaptationPeriod_ = 0;
 
   // some results
   UnsignedInteger numberOfSteps_ = 0;// number of subset steps
