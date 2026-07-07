@@ -413,23 +413,11 @@ and generate the associated graph with `FlameGraph <https://github.com/brendangr
 .. figure:: Figures/perf_welch.png
    :alt: Flame graph of WelchFactory
 
-First retrieve the graphing scripts:
+First you will need to build in debug mode:
 
 ::
 
-    git clone https://github.com/brendangregg/FlameGraph.git /tmp/FlameGraph
-
-You will need to build without parallelization and with debug flags:
-
-::
-
-    cmake -DUSE_TBB=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer" .
-
-You will also want to disable openblas threads or openmp at any other level:
-
-::
-
-    export OMP_NUM_THREADS=1
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer" .
 
 Now you are ready to profile your executable:
 
@@ -444,11 +432,38 @@ Some Linux distros prevent normal users from collecting stats, in that case:
     echo "-1" | sudo tee /proc/sys/kernel/perf_event_paranoid
     echo "0" | sudo tee /proc/sys/kernel/kptr_restrict
 
+Also check if perf is built without libbfd support on your distribution:
+
+::
+
+    $ perf version --build-options
+    perf version 6.8.12
+                 dwarf: [ on  ]  # HAVE_DWARF_SUPPORT
+    dwarf_getlocations: [ on  ]  # HAVE_DWARF_GETLOCATIONS_SUPPORT
+         syscall_table: [ on  ]  # HAVE_SYSCALL_TABLE_SUPPORT
+                libbfd: [ OFF ]  # HAVE_LIBBFD_SUPPORT
+
+If libbfd support is disabled (OFF) you might want to rebuild perf against bfd to speed up perf script:
+
+::
+
+    # debian: sudo aptitude install libpfm4-dev libtraceevent-dev libperl-dev libbabeltrace-ctf-dev systemtap-sdt-dev
+    git clone --depth 1 https://github.com/torvalds/linux.git -b v6.8 /tmp/linux
+    cd /tmp/linux/tools/perf
+    make BUILD_NONDISTRO=1
+    PATH=/tmp/linux/tools/perf:$PATH perf --version
+
+Then retrieve the graphing scripts:
+
+::
+
+    git clone --depth 1 https://github.com/brendangregg/FlameGraph.git /tmp/FlameGraph
+
 At this point you should be able to generate the graph from the perf data:
 
 ::
 
-    perf script -i /tmp/perf.data | /tmp/FlameGraph/stackcollapse-perf.pl | /tmp/FlameGraph/flamegraph.pl > /tmp/perf.svg
+    OPENTURNS_NUM_THREADS=1 OMP_NUM_THREADS=1 PATH=/tmp/linux/tools/perf:$PATH perf script -i /tmp/perf.data | /tmp/FlameGraph/stackcollapse-perf.pl | /tmp/FlameGraph/flamegraph.pl > /tmp/perf.svg
 
 
 
