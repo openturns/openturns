@@ -19,23 +19,19 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 #ifndef OPENTURNS_ACTIVELEARNINGRELIABILITYFUNCTION_HXX
 #define OPENTURNS_ACTIVELEARNINGRELIABILITYFUNCTION_HXX
 
-#include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GaussianProcessRegressionResult.hxx"
+#include "openturns/GaussianProcessConditionalCovariance.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
 
 /**
  * @class ActiveLearningReliabilityFunction
 */
-
-CLASSNAMEINIT(ActiveLearningReliabilityFunction)
-
-static const Factory<ActiveLearningReliabilityFunction> Factory_ActiveLearningReliabilityFunction;
-
 
 class OT_API ActiveLearningReliabilityFunction
   : public EvaluationImplementation
@@ -48,28 +44,43 @@ public:
   ActiveLearningReliabilityFunction();
   
   /** Default constructor */  
-  ActiveLearningReliabilityFunction (const Scalar reliabilityThreshold,
-                                     const Distribution inputDistribution,
-                                     const GaussianProcessRegressionResult & gprResult);
-                                                                         
+  ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
+                                    const GaussianProcessRegressionResult & gprResult,
+                                    const Scalar learningThreshold);
+                                                                       
   /** Virtual constructor */
-  ActiveLearningReliabilityFunction * clone() const override;                                     
+  ActiveLearningReliabilityFunction * clone() const override;
+    
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
 
-  /** Computation of active learning function */
-  virtual Point operator()(const Sample & inputSample) const
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+  
+  /** Accessors */
+  void updateGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult);
+  
+  void setReliabilityThreshold(const Scalar reliabilityThreshold);
+  
+  void setLearningThreshold(const Scalar learningThreshold);
+  
 protected:
- 
-  Scalar reliabilityThreshold_;
-  Distribution inputDistribution_;
-  GaussianProcessRegressionResult gprResult_;
 
-};
+  virtual Scalar computeAsScalar(const Point & x) const;
+  
+  virtual Bool checkConvergenceLearning(const Sample & criterionValues) const;  
+  
+  Point operator()(const Point & x) const override;
+
+  Sample operator()(const Sample & inputSample) const override;
+   
+  Scalar reliabilityThreshold_;
+  Scalar learningThreshold_;
+  GaussianProcessRegressionResult gprResult_;
+  GaussianProcessConditionalCovariance gprCov_;
 
 } ; /* class ActiveLearningReliabilityFunction */
 
 END_NAMESPACE_OPENTURNS
 
-
-
-
-#endif /* OPENTURNS_ACTIVELEARNINGRELIABILITYFUNCTION_HXX
+#endif /* OPENTURNS_ACTIVELEARNINGRELIABILITYFUNCTION_HXX */

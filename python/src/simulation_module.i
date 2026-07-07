@@ -90,6 +90,9 @@
 %include StandardSpaceCrossEntropyImportanceSampling.i
 %include PhysicalSpaceCrossEntropyImportanceSampling.i
 %include LineSampling.i
+%include ActiveLearningReliabilityFunction.i
+%include ActiveLearningUFunction.i
+%include ActiveLearningEFFFunction.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i
