@@ -202,12 +202,13 @@ convert< Bool, _PyBool_ >(Bool inB)
 
 
 /* PyInt */
-struct _PyInt_ {};
+struct _PyLong_ {};
+using _PyInt_ = _PyLong_; // deprecated alias
 
 template <>
 inline
 int
-isAPython< _PyInt_ >(PyObject * pyObj)
+isAPython< _PyLong_ >(PyObject * pyObj)
 {
   return PyLong_Check(pyObj);
 }
@@ -215,7 +216,7 @@ isAPython< _PyInt_ >(PyObject * pyObj)
 template <>
 inline
 const char *
-namePython< _PyInt_ >()
+namePython< _PyLong_ >()
 {
   return "integer";
 }
@@ -234,7 +235,7 @@ static const char* const pyBuf_formats [] =
 template <>
 struct traitsPythonType< UnsignedInteger >
 {
-  typedef _PyInt_ Type;
+  typedef _PyLong_ Type;
   static const int buf_itemsize = sizeof(UnsignedInteger);
   static const int buf_format_idx = 0; // "l"
 };
@@ -242,7 +243,7 @@ struct traitsPythonType< UnsignedInteger >
 template <>
 inline
 bool
-canConvert< _PyInt_, UnsignedInteger >(PyObject *)
+canConvert< _PyLong_, UnsignedInteger >(PyObject *)
 {
   return true;
 }
@@ -250,7 +251,7 @@ canConvert< _PyInt_, UnsignedInteger >(PyObject *)
 template <>
 inline
 UnsignedInteger
-convert< _PyInt_, UnsignedInteger >(PyObject * pyObj)
+convert< _PyLong_, UnsignedInteger >(PyObject * pyObj)
 {
   return PyLong_AsUnsignedLong(pyObj);
 }
@@ -258,7 +259,7 @@ convert< _PyInt_, UnsignedInteger >(PyObject * pyObj)
 template <>
 inline
 SignedInteger
-convert< _PyInt_, SignedInteger >(PyObject * pyObj)
+convert< _PyLong_, SignedInteger >(PyObject * pyObj)
 {
   return PyLong_AsLong(pyObj);
 }
@@ -266,7 +267,7 @@ convert< _PyInt_, SignedInteger >(PyObject * pyObj)
 template <>
 inline
 PyObject *
-convert< UnsignedInteger, _PyInt_ >(UnsignedInteger n)
+convert< UnsignedInteger, _PyLong_ >(UnsignedInteger n)
 {
   return PyLong_FromUnsignedLong(n);
 }
@@ -287,7 +288,7 @@ inline
 int
 isAPython<_NumPyInt_>(PyObject * pyObj)
 {
-  return isAPython< _PyInt_ >(pyObj) || PyObject_HasAttrString(pyObj, "__int__");
+  return isAPython< _PyLong_ >(pyObj) || PyObject_HasAttrString(pyObj, "__int__");
 }
 
 template <>
@@ -295,12 +296,12 @@ inline
 SignedInteger
 convert< _NumPyInt_, SignedInteger >(PyObject * pyObj)
 {
-  if (isAPython<_PyInt_>(pyObj))
-    return convert<_PyInt_, SignedInteger>(pyObj);
+  if (isAPython<_PyLong_>(pyObj))
+    return convert<_PyLong_, SignedInteger>(pyObj);
   ScopedPyObjectPointer intValue(PyObject_CallMethod(pyObj, "__int__", NULL));
   if (intValue.isNull())
     handleException();
-  return convert<_PyInt_, SignedInteger>(intValue.get());
+  return convert<_PyLong_, SignedInteger>(intValue.get());
 }
 
 /* PyFloat */
@@ -919,10 +920,10 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       Sample sample(size, dimension);
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
-        PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i));
+        PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyLong_ >(i));
         for (UnsignedInteger j = 0; j < dimension; ++ j)
         {
-          PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j));
+          PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyLong_ >(j));
           ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs(pyObj, methodObj.get(), askObj.get(), NULL));
           if (elt.get())
           {
@@ -1054,7 +1055,7 @@ convert< Indices, _PySequence_ >(Indices inP)
   PyObject * point = PyTuple_New(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    PyTuple_SetItem(point, i, convert< UnsignedInteger, _PyInt_ >(inP[i]));
+    PyTuple_SetItem(point, i, convert< UnsignedInteger, _PyLong_ >(inP[i]));
   }
   return point;
 }
@@ -1122,10 +1123,10 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
         IndicesCollection indices(size, dimension);
         for (UnsignedInteger i = 0; i < size; ++ i)
         {
-          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i));
+          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyLong_ >(i));
           for (UnsignedInteger j = 0; j < dimension; ++ j)
           {
-            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j));
+            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyLong_ >(j));
             ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs(pyObj, methodObj.get(), askObj.get(), NULL));
             if (elt.get())
               indices(i, j) = checkAndConvert<_NumPyInt_, SignedInteger>(elt.get());
@@ -1157,7 +1158,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
       PyObject * value = Sequence_Fast_GET_ITEM(newPyIndicesObj.get(), j);
-      newIndices[j] = checkAndConvert<_PyInt_, UnsignedInteger>(value);
+      newIndices[j] = checkAndConvert<_PyLong_, UnsignedInteger>(value);
       Sequence_Fast_DECREF_ITEM(value);
     }
     coll[i] = newIndices;
@@ -1292,10 +1293,10 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
         p_implementation = new MatrixImplementation(nbRows, nbColumns);
         for (UnsignedInteger i = 0; i < nbRows; ++ i)
         {
-          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i));
+          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyLong_ >(i));
           for (UnsignedInteger j = 0; j < nbColumns; ++ j)
           {
-            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j));
+            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyLong_ >(j));
             ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs(pyObj, methodObj.get(), askObj.get(), NULL));
             if (elt.get())
             {
@@ -1575,10 +1576,10 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
         ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation(nbRows, nbColumns);
         for (UnsignedInteger i = 0; i < nbRows; ++ i)
         {
-          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i));
+          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyLong_ >(i));
           for (UnsignedInteger j = 0; j < nbColumns; ++ j)
           {
-            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j));
+            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyLong_ >(j));
             ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs(pyObj, methodObj.get(), askObj.get(), NULL));
             if (elt.get())
             {
@@ -1737,13 +1738,13 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
         p_implementation = new ComplexTensorImplementation(nbRows, nbColumns, nbSheets);
         for (UnsignedInteger i = 0; i < nbRows; ++ i)
         {
-          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i));
+          PyTuple_SetItem(askObj.get(), 0, convert< UnsignedInteger, _PyLong_ >(i));
           for (UnsignedInteger j = 0; j < nbColumns; ++ j)
           {
-            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j));
+            PyTuple_SetItem(askObj.get(), 1, convert< UnsignedInteger, _PyLong_ >(j));
             for (UnsignedInteger k = 0; k < nbSheets; ++ k)
             {
-              PyTuple_SetItem(askObj.get(), 2, convert< UnsignedInteger, _PyInt_ >(k));
+              PyTuple_SetItem(askObj.get(), 2, convert< UnsignedInteger, _PyLong_ >(k));
               ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs(pyObj, methodObj.get(), askObj.get(), NULL));
               if (elt.get())
               {
@@ -1773,9 +1774,9 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer sheetsObj(PyObject_CallMethod(pyObj, "getNbSheets", "()"));
     ScopedPyObjectPointer implObj(PyObject_CallMethod(pyObj, "getImplementation", "()"));
     Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >(implObj.get());
-    UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >(colunmsObj.get());
-    UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >(rowsObj.get());
-    UnsignedInteger nbSheets = checkAndConvert< _PyInt_, UnsignedInteger >(sheetsObj.get());
+    UnsignedInteger nbColumns = checkAndConvert< _PyLong_, UnsignedInteger >(colunmsObj.get());
+    UnsignedInteger nbRows = checkAndConvert< _PyLong_, UnsignedInteger >(rowsObj.get());
+    UnsignedInteger nbSheets = checkAndConvert< _PyLong_, UnsignedInteger >(sheetsObj.get());
     p_implementation = new ComplexTensorImplementation(nbRows, nbColumns, nbSheets, *ptr);
   }
   return p_implementation;

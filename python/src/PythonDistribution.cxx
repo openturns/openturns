@@ -71,7 +71,7 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
                             const_cast<char *>( "()" ) ));
   if (dim.isNull())
     handleException();
-  setDimension(checkAndConvert< _PyInt_, UnsignedInteger >( dim.get() ));
+  setDimension(checkAndConvert< _PyLong_, UnsignedInteger >( dim.get() ));
 
   if (!PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDF")))
     throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
@@ -181,7 +181,7 @@ Sample PythonDistribution::getSample(const UnsignedInteger size) const
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSample")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSample"));
-    ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyInt_ >( size ));
+    ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyLong_ >( size ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      sizeArg.get(), NULL));
@@ -574,7 +574,7 @@ Point PythonDistribution::getMoment(const UnsignedInteger n) const
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getMoment" ));
-    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
+    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyLong_ >( n ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      nArg.get(), NULL));
@@ -598,7 +598,7 @@ Point PythonDistribution::getCentralMoment(const UnsignedInteger n) const
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getCentralMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getCentralMoment" ));
-    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
+    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyLong_ >( n ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      nArg.get(), NULL));

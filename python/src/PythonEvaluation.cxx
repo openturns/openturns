@@ -202,7 +202,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
 
     // Second argument
     ScopedPyObjectPointer shapeTuple(PyTuple_New(1));
-    PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyInt_ > (inP.getSize()));
+    PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyLong_ > (inP.getSize()));
 
     // Call openturns.memoryview.Buffer() to create a read-only buffer
     ScopedPyObjectPointer bufferArgs(Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get()));
@@ -306,8 +306,8 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
 
       // Second argument
       ScopedPyObjectPointer shapeTuple(PyTuple_New(2));
-      PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyInt_ > (size));
-      PyTuple_SetItem(shapeTuple.get(), 1, convert< UnsignedInteger, _PyInt_ > (inDim));
+      PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyLong_ > (size));
+      PyTuple_SetItem(shapeTuple.get(), 1, convert< UnsignedInteger, _PyLong_ > (inDim));
 
       // Call openturns.memoryview.Buffer() to create a read-only buffer
       ScopedPyObjectPointer bufferArgs(Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get()));
@@ -404,7 +404,7 @@ UnsignedInteger PythonEvaluation::getInputDimension() const
                                const_cast<char *>("()")));
   if (result.isNull())
     handleException();
-  const UnsignedInteger dim = checkAndConvert< _PyInt_, UnsignedInteger >(result.get());
+  const UnsignedInteger dim = checkAndConvert< _PyLong_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -419,7 +419,7 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
                                const_cast<char *>("()")));
   if (result.isNull())
     handleException();
-  const UnsignedInteger dim = checkAndConvert< _PyInt_, UnsignedInteger >(result.get());
+  const UnsignedInteger dim = checkAndConvert< _PyLong_, UnsignedInteger >(result.get());
   return dim;
 }
 
@@ -449,7 +449,7 @@ Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
   if (PyObject_HasAttrString(pyObj_, "isVariableLinear"))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("isVariableLinear"));
-    ScopedPyObjectPointer indexArg(convert< UnsignedInteger, _PyInt_ >( index ));
+    ScopedPyObjectPointer indexArg(convert< UnsignedInteger, _PyLong_ >( index ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      indexArg.get(), NULL));

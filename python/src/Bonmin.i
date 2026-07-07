@@ -8,15 +8,15 @@ namespace OT {
 template <>
 struct traitsPythonType< OT::OptimizationProblemImplementation::VariableType >
 {
-  typedef _PyInt_ Type;
+  typedef _PyLong_ Type;
 };
 
 template <>
   inline
   OT::OptimizationProblemImplementation::VariableType
-  convert< _PyInt_, OT::OptimizationProblemImplementation::VariableType >(PyObject * pyObj)
+  convert< _PyLong_, OT::OptimizationProblemImplementation::VariableType >(PyObject * pyObj)
   {
-    return (OT::OptimizationProblemImplementation::VariableType) convert< _PyInt_, UnsignedInteger >(pyObj);
+    return (OT::OptimizationProblemImplementation::VariableType) convert< _PyLong_, UnsignedInteger >(pyObj);
   }
 
 
@@ -26,7 +26,7 @@ template <>
 %template(_VariableTypeCollection) OT::Collection<OT::OptimizationProblemImplementation::VariableType>;
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const VariableTypeCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) || OT::isAPythonSequenceOf<OT::_PyInt_>($input);
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) || OT::isAPythonSequenceOf<OT::_PyLong_>($input);
 }
 
 %typemap(in) const VariableTypeCollection & ($1_basetype temp) {

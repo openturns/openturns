@@ -17,7 +17,7 @@ static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, NULL));
   if (result.isNull())
     OT::handleException();
-  return OT::checkAndConvert< OT::_PyInt_, OT::UnsignedInteger >(result.get());
+  return OT::checkAndConvert< OT::_PyLong_, OT::UnsignedInteger >(result.get());
 }
 
 %}
