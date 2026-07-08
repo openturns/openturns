@@ -81,7 +81,8 @@ UnsignedInteger BasisSequence::getSize() const
 /** Extend basis */
 void BasisSequence::add(const Indices & indices)
 {
-  getImplementation()->add( indices );
+  copyOnWrite();
+  getImplementation()->add(indices);
 }
 
 /* Converter to Basis collection */
