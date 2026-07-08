@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include "openturns/WeibullMax.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
