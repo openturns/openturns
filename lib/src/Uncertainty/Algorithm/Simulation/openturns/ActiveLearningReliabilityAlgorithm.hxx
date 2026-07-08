@@ -23,9 +23,13 @@
 #ifndef OPENTURNS_ACTIVELEARNINGRELIABILITYALGORITHM_HXX
 #define OPENTURNS_ACTIVELEARNINGRELIABILITYALGORITHM_HXX
 
-#include "openturns/GaussianProcessFitter.hxx"
-#include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/EventSimulation.hxx"
+#include "openturns/GaussianProcessFitter.hxx"
+#include "openturns/ProbabilitySimulationAlgorithm.hxx"
+#include "openturns/NAIS.hxx"
+#include "openturns/SubsetSampling.hxx"
+#include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
+#include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 */
 
 class OT_API ActiveLearningReliabilityAlgorithm
-  : public SimulationAlgorithm
+  : public EventSimulation
 {
 
   CLASSNAME
@@ -45,19 +49,35 @@ public:
   ActiveLearningReliabilityAlgorithm();
     
   /** Default constructor */  
-  explicit ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                               const EventSimulation & reliabilityAlgorithm);
+  /*ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
+                                               const EventSimulation & reliabilityAlgorithm);*/
+                                               
+  ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
+                                      const ProbabilitySimulationAlgorithm & reliabilityAlgorithm);
 
+  ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
+                                      const NAIS & reliabilityAlgorithm);
+                                      
+  ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
+                                      const SubsetSampling & reliabilityAlgorithm);
+                                      
+  ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
+                                      const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm);
+                                      
+  ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
+                                      const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm);
   /** Virtual constructor */
   ActiveLearningReliabilityAlgorithm * clone() const override;
-  
-protected:
 
-   
+  void run();
+  
+private:
+
   const RandomVector defaultEvent_;
+  Pointer<EventSimulation> defaultSimulationAlgorithm_;
+  Pointer<EventSimulation> currentSimulationAlgorithm_;
   
-  const SimulationAlgorithm defaultSimulationAlgorithm_;
-  
+  GaussianProcessFitter defaultGPFitter_;
   Sample currentInputSample_;
   Sample inputDoE_;
   Sample outputDoE_;
