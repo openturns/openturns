@@ -174,9 +174,9 @@ Binomial BinomialFactory::buildAsBinomial(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (const InvalidArgumentException &)
+  catch (const InvalidArgumentException & ex)
   {
-    throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution from the given parameters";
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution from the given parameters: " << ex.what();
   }
 }
 
