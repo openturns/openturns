@@ -93,6 +93,7 @@
 %include ActiveLearningReliabilityFunction.i
 %include ActiveLearningUFunction.i
 %include ActiveLearningEFFFunction.i
+%include ActiveLearningReliabilityAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i
