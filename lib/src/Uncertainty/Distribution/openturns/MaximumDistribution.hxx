@@ -129,10 +129,10 @@ private:
   Distribution distribution_;
 
   /* Flag to tell if all the components are equal and independent */
-  Bool allSame_;
+  Bool allSame_ = false;
 
   /* Number of variables upon which the maximum is taken */
-  UnsignedInteger variablesNumber_;
+  UnsignedInteger variablesNumber_ = 0;
 
 }; /* class MaximumDistribution */
 
