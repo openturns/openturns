@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/GumbelCopulaFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,8 +63,9 @@ GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Sample & sample) con
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample of dimension not equal to 2";
-  Scalar tau = sample.computeKendallTau().operator()(0, 1);
-  if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample with Kendall tau equal to 1";
+  const Scalar tau = sample.computeKendallTau().operator()(0, 1);
+  if (!(tau >= 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample with negative Kendall tau (tau=" << tau << ")";
+  if (!(tau <= 1.0 - SpecFunc::ScalarEpsilon)) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample with Kendall tau equal to 1";
   GumbelCopula result(1.0 / (1.0 - tau));
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);
