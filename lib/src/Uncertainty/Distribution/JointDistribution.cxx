@@ -296,7 +296,7 @@ void JointDistribution::setDistributionCollection(const DistributionCollection &
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-  setDescription(DeduplicateDecription(description));
+  setDescription(DeduplicateDescription(description));
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 

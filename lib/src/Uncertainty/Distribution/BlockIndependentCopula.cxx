@@ -138,7 +138,7 @@ void BlockIndependentCopula::setCopulaCollection(const DistributionCollection & 
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs
   setDimension(dimension);
-  setDescription(DeduplicateDecription(description));
+  setDescription(DeduplicateDescription(description));
   computeRange();
 }
 
