@@ -69,12 +69,13 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a Trapezoidal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
+  const Scalar mean = sample.computeMean()[0];
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
+
   // starting point
   Point startingPoint(4);
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
-  const Scalar mean = sample.computeMean()[0];
-  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (!(xMax > xMin))
     throw InvalidArgumentException(HERE) << "Error: cannot estimate a Trapezoidal distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
 
@@ -88,6 +89,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   solver.setMaximumAbsoluteError(rhoEnd);
   solver.setMaximumCallsNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   const Scalar delta = (xMax - xMin) / (2.0 + size);
+  if (xMax - xMin < 2.0 * rhoEnd) throw InvalidArgumentException(HERE) << "Error: the sample range is too small to build a Trapezoidal distribution, here range=" << xMax - xMin << " and minimum range=" << 2.0 * rhoEnd;
   startingPoint[0] = xMin + delta;// a
   startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
   startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
@@ -125,9 +127,9 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Point & parameters) con
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (const InvalidArgumentException &)
+  catch (const InvalidArgumentException & ex)
   {
-    throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution from the given parameters: " << parameters;
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution from the given parameters: " << ex.what();
   }
 }
 
