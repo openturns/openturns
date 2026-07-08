@@ -409,7 +409,7 @@ void LinearCombinationDistribution::computeRange()
 Bool LinearCombinationDistribution::operator ==(const LinearCombinationDistribution & other) const
 {
   if (this == &other) return true;
-  return (distributionCollection_ == other.distributionCollection_) && (constant_ == other.constant_);
+  return (distributionCollection_ == other.distributionCollection_) && (constant_ == other.constant_) && (weights_ == other.weights_);
 }
 
 Bool LinearCombinationDistribution::equals(const DistributionImplementation & other) const
