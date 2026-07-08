@@ -59,6 +59,17 @@ NatafEllipticalCopulaEvaluation * NatafEllipticalCopulaEvaluation::clone() const
 {
   return new NatafEllipticalCopulaEvaluation(*this);
 }
+/* Comparison operator */
+Bool NatafEllipticalCopulaEvaluation::operator ==(const NatafEllipticalCopulaEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (standardDistribution_ == other.standardDistribution_) && (inverseCholesky_ == other.inverseCholesky_);
+}
+Bool NatafEllipticalCopulaEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const NatafEllipticalCopulaEvaluation * p_other = dynamic_cast<const NatafEllipticalCopulaEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafEllipticalCopulaEvaluation::__repr__() const

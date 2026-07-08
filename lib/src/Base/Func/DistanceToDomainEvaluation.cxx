@@ -112,4 +112,9 @@ void DistanceToDomainEvaluation::load(Advocate & adv)
   adv.loadAttribute( "domain_", domain_ );
 }
 
+Bool DistanceToDomainEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const DistanceToDomainEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

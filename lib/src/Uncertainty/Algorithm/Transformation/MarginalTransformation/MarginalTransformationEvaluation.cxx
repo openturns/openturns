@@ -308,6 +308,17 @@ MarginalTransformationEvaluation * MarginalTransformationEvaluation::clone() con
 {
   return new MarginalTransformationEvaluation(*this);
 }
+/* Comparison operator */
+Bool MarginalTransformationEvaluation::operator ==(const MarginalTransformationEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (inputDistributionCollection_ == other.inputDistributionCollection_) && (outputDistributionCollection_ == other.outputDistributionCollection_);
+}
+Bool MarginalTransformationEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const MarginalTransformationEvaluation * p_other = dynamic_cast<const MarginalTransformationEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Evaluation */
 Point MarginalTransformationEvaluation::operator () (const Point & inP) const

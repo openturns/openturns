@@ -200,4 +200,9 @@ void InverseBoxCoxEvaluation::load(Advocate & adv)
   adv.loadAttribute( "shift_", shift_ );
 }
 
+Bool InverseBoxCoxEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const InverseBoxCoxEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

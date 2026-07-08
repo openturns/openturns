@@ -60,6 +60,11 @@ Bool Hessian::operator ==(const Hessian & other) const
   return *getImplementation() == *other.getImplementation();
 }
 
+Bool Hessian::operator !=(const Hessian & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String Hessian::__repr__() const
 {

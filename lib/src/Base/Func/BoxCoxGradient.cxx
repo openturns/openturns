@@ -149,4 +149,9 @@ void BoxCoxGradient::load(Advocate & adv)
   p_evaluation_ = evaluation.getImplementation();
 }
 
+Bool BoxCoxGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const BoxCoxGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

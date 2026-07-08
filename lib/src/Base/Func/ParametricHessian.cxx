@@ -58,6 +58,19 @@ ParametricHessian * ParametricHessian::clone() const
   return new ParametricHessian(*this);
 }
 
+/* Comparison operator */
+Bool ParametricHessian::operator ==(const ParametricHessian & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool ParametricHessian::equals(const HessianImplementation & other) const
+{
+  const ParametricHessian * p_other = dynamic_cast<const ParametricHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Hessian operator */
 SymmetricTensor ParametricHessian::hessian(const OT::Point & point) const
 {

@@ -53,6 +53,16 @@ InverseNatafEllipticalDistributionGradient * InverseNatafEllipticalDistributionG
 {
   return new InverseNatafEllipticalDistributionGradient(*this);
 }
+/* Comparison operator */
+Bool InverseNatafEllipticalDistributionGradient::operator ==(const InverseNatafEllipticalDistributionGradient &) const
+{
+  return true;
+}
+Bool InverseNatafEllipticalDistributionGradient::equals(const GradientImplementation & other) const
+{
+  const InverseNatafEllipticalDistributionGradient * p_other = dynamic_cast<const InverseNatafEllipticalDistributionGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafEllipticalDistributionGradient::__repr__() const

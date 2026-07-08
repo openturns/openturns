@@ -67,6 +67,21 @@ BlendedStep * BlendedStep::clone() const
   return new BlendedStep(*this);
 }
 
+
+/* Comparison operator */
+Bool BlendedStep::operator ==(const BlendedStep & other) const
+{
+  if (this == &other) return true;
+  return (epsilon_ == other.epsilon_) && (eta_ == other.eta_);
+}
+
+Bool BlendedStep::equals(const FiniteDifferenceStepImplementation & other) const
+{
+  const BlendedStep * p_other = dynamic_cast<const BlendedStep *>(&other);
+  return p_other && (*this == *p_other);
+}
+
+
 /* Compute step */
 Point BlendedStep::operator()(const Point & inP) const
 {

@@ -129,4 +129,9 @@ void TrendEvaluation::load(Advocate & adv)
   adv.loadAttribute( "function_", function_ );
 }
 
+Bool TrendEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const TrendEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

@@ -165,4 +165,9 @@ void ProductHessian::load(Advocate & adv)
   adv.loadAttribute( "rightHessian_", rightHessian_ );
 }
 
+Bool ProductHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const ProductHessian &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

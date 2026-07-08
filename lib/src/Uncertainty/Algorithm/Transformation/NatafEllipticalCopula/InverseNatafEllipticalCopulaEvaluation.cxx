@@ -59,6 +59,17 @@ InverseNatafEllipticalCopulaEvaluation * InverseNatafEllipticalCopulaEvaluation:
 {
   return new InverseNatafEllipticalCopulaEvaluation(*this);
 }
+/* Comparison operator */
+Bool InverseNatafEllipticalCopulaEvaluation::operator ==(const InverseNatafEllipticalCopulaEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (standardDistribution_ == other.standardDistribution_) && (cholesky_ == other.cholesky_);
+}
+Bool InverseNatafEllipticalCopulaEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const InverseNatafEllipticalCopulaEvaluation * p_other = dynamic_cast<const InverseNatafEllipticalCopulaEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafEllipticalCopulaEvaluation::__repr__() const

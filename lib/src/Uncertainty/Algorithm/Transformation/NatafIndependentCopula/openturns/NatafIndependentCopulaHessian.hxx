@@ -50,6 +50,13 @@ public:
   /** Virtual constructor */
   NatafIndependentCopulaHessian * clone() const override;
 
+  /** Comparison operator */
+  using HessianImplementation::operator ==;
+  Bool operator ==(const NatafIndependentCopulaHessian & other) const;
+protected:
+  Bool equals(const HessianImplementation & other) const override;
+public:
+
   /** Hessian */
   SymmetricTensor hessian(const Point & inP) const override;
 

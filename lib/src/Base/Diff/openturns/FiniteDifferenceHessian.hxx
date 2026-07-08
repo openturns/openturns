@@ -103,6 +103,8 @@ public:
   SymmetricTensor hessian(const Point & inP) const override;
 
 protected:
+  Bool equals(const HessianImplementation & other) const override;
+
   /* The underlying evaluation object */
   Evaluation evaluation_;
 

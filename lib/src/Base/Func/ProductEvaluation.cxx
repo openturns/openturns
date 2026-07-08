@@ -138,6 +138,11 @@ void ProductEvaluation::setParameter(const Point & parameter)
   leftEvaluation_.setParameter(leftParameter);
 }
 
+Bool ProductEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const ProductEvaluation &>(other);
+}
+
 
 /* Parameters description accessor */
 Description ProductEvaluation::getParameterDescription() const

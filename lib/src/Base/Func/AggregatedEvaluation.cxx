@@ -53,6 +53,19 @@ AggregatedEvaluation * AggregatedEvaluation::clone() const
   return new AggregatedEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool AggregatedEvaluation::operator ==(const AggregatedEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (functionsCollection_ == other.functionsCollection_) && (outputDimension_ == other.outputDimension_);
+}
+
+Bool AggregatedEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const AggregatedEvaluation * p_other = dynamic_cast<const AggregatedEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String AggregatedEvaluation::__repr__() const

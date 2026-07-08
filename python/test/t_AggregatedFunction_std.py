@@ -35,3 +35,13 @@ for i in range(myFunction.getOutputDimension()):
 print("Marginal (0,1)=", myFunction.getMarginal([0, 1]))
 print("Marginal (0,2)=", myFunction.getMarginal([0, 2]))
 print("Marginal (1,2)=", myFunction.getMarginal([1, 2]))
+
+# Equality tests
+f1 = ot.AggregatedFunction([functions[0]])
+f2 = ot.AggregatedFunction([functions[0]])
+assert f1 == f2, "same functions should be equal"
+assert f1 != myFunction, "different number of functions"
+f3 = ot.AggregatedFunction([functions[1]])
+assert f1 != f3, "different functions"
+f4 = ot.AggregatedFunction(functions)
+assert myFunction == f4, "same pair of functions"

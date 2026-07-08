@@ -69,6 +69,11 @@ Bool FieldFunction::operator ==(const FieldFunction & ) const
   return true;
 }
 
+Bool FieldFunction::operator !=(const FieldFunction & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String FieldFunction::__repr__() const
 {

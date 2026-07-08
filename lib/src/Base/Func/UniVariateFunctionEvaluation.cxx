@@ -54,6 +54,19 @@ UniVariateFunctionEvaluation * UniVariateFunctionEvaluation::clone() const
   return new UniVariateFunctionEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool UniVariateFunctionEvaluation::operator ==(const UniVariateFunctionEvaluation & other) const
+{
+  if (this == &other) return true;
+  return function_ == other.function_;
+}
+
+Bool UniVariateFunctionEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const UniVariateFunctionEvaluation * p_other = dynamic_cast<const UniVariateFunctionEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String UniVariateFunctionEvaluation::__repr__() const

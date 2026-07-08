@@ -50,6 +50,13 @@ public:
   /** Virtual constructor */
   NatafIndependentCopulaGradient * clone() const override;
 
+  /** Comparison operator */
+  using GradientImplementation::operator ==;
+  Bool operator ==(const NatafIndependentCopulaGradient & other) const;
+protected:
+  Bool equals(const GradientImplementation & other) const override;
+public:
+
   /** Gradient */
   Matrix gradient(const Point & inP) const override;
 

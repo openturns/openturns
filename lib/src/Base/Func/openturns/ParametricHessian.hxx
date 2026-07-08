@@ -54,6 +54,13 @@ public:
   /** Virtual constructor method */
   ParametricHessian * clone() const override;
 
+  /** Comparison operator */
+  using HessianImplementation::operator ==;
+  Bool operator ==(const ParametricHessian & other) const;
+protected:
+  Bool equals(const HessianImplementation & other) const override;
+public:
+
   /** Hessian operator */
   using HessianImplementation::hessian;
   SymmetricTensor hessian(const Point & point) const override;

@@ -182,4 +182,9 @@ void LinearEvaluation::load(Advocate & adv)
   adv.loadAttribute( "linear_", linear_ );
 }
 
+Bool LinearEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const LinearEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

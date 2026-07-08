@@ -58,6 +58,9 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<HessianImplementation>::operator ==;
   Bool operator ==(const Hessian & other) const;
+  /** Comparison operator */
+  using TypedInterfaceObject<HessianImplementation>::operator !=;
+  Bool operator !=(const Hessian & other) const;
 
   /** String converter */
   String __repr__() const override;

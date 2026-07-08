@@ -53,6 +53,17 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 {
   return new InverseRosenblattEvaluation(*this);
 }
+/* Comparison operator */
+Bool InverseRosenblattEvaluation::operator ==(const InverseRosenblattEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (distribution_ == other.distribution_);
+}
+Bool InverseRosenblattEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const InverseRosenblattEvaluation * p_other = dynamic_cast<const InverseRosenblattEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Evaluation */
 Point InverseRosenblattEvaluation::operator () (const Point & inP) const

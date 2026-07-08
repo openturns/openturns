@@ -59,6 +59,19 @@ DualLinearCombinationEvaluation * DualLinearCombinationEvaluation::clone() const
   return new DualLinearCombinationEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool DualLinearCombinationEvaluation::operator ==(const DualLinearCombinationEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (functionsCollection_ == other.functionsCollection_) && (coefficients_ == other.coefficients_);
+}
+
+Bool DualLinearCombinationEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const DualLinearCombinationEvaluation * p_other = dynamic_cast<const DualLinearCombinationEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Description accessor */
 void DualLinearCombinationEvaluation::setDescription(const Description & description)
 {

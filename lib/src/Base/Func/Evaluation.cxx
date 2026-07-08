@@ -60,6 +60,11 @@ Bool Evaluation::operator ==(const Evaluation & other) const
   return *getImplementation() == *other.getImplementation();
 }
 
+Bool Evaluation::operator !=(const Evaluation & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String Evaluation::__repr__() const
 {

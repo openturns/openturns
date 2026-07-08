@@ -51,6 +51,13 @@ public:
   /** Virtual constructor */
   InverseNatafEllipticalDistributionEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const InverseNatafEllipticalDistributionEvaluation &) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const Point & inP) const override;
 

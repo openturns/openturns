@@ -57,6 +57,13 @@ public:
   /** Virtual constructor */
   DualLinearCombinationEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const DualLinearCombinationEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** Description accessor */
   void setDescription(const Description & description) override;
 

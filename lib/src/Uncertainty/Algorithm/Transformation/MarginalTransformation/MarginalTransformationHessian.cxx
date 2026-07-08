@@ -48,6 +48,17 @@ MarginalTransformationHessian * MarginalTransformationHessian::clone() const
 {
   return new MarginalTransformationHessian(*this);
 }
+/* Comparison operator */
+Bool MarginalTransformationHessian::operator ==(const MarginalTransformationHessian & other) const
+{
+  if (this == &other) return true;
+  return (p_evaluation_ == other.p_evaluation_);
+}
+Bool MarginalTransformationHessian::equals(const HessianImplementation & other) const
+{
+  const MarginalTransformationHessian * p_other = dynamic_cast<const MarginalTransformationHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Hessian */
 SymmetricTensor MarginalTransformationHessian::hessian(const Point & inP) const

@@ -68,6 +68,9 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<FieldFunctionImplementation>::operator ==;
   Bool operator ==(const FieldFunction & other) const;
+  /** Comparison operator */
+  using TypedInterfaceObject<FieldFunctionImplementation>::operator !=;
+  Bool operator !=(const FieldFunction & other) const;
 
   /** String converter */
   String __repr__() const override;

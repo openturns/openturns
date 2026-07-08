@@ -55,6 +55,19 @@ ProductPolynomialGradient * ProductPolynomialGradient::clone() const
   return new ProductPolynomialGradient(*this);
 }
 
+/* Comparison operator */
+Bool ProductPolynomialGradient::operator ==(const ProductPolynomialGradient & other) const
+{
+  if (this == &other) return true;
+  return polynomials_ == other.polynomials_;
+}
+
+Bool ProductPolynomialGradient::equals(const GradientImplementation & other) const
+{
+  const ProductPolynomialGradient * p_other = dynamic_cast<const ProductPolynomialGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String ProductPolynomialGradient::__repr__() const

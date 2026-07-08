@@ -57,6 +57,11 @@ public:
   /** Comparison operator */
   Bool operator ==(const GradientImplementation & other) const;
   using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const GradientImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const GradientImplementation & other) const;
 
   /** String converter */
   String __repr__() const override;

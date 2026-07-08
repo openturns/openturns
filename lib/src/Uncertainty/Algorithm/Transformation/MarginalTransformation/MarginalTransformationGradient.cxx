@@ -48,6 +48,17 @@ MarginalTransformationGradient * MarginalTransformationGradient::clone() const
 {
   return new MarginalTransformationGradient(*this);
 }
+/* Comparison operator */
+Bool MarginalTransformationGradient::operator ==(const MarginalTransformationGradient & other) const
+{
+  if (this == &other) return true;
+  return (evaluation_ == other.evaluation_);
+}
+Bool MarginalTransformationGradient::equals(const GradientImplementation & other) const
+{
+  const MarginalTransformationGradient * p_other = dynamic_cast<const MarginalTransformationGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Gradient */
 Matrix MarginalTransformationGradient::gradient(const Point & inP) const

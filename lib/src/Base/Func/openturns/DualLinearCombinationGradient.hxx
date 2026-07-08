@@ -54,6 +54,13 @@ public:
   /** Virtual constructor */
   DualLinearCombinationGradient * clone() const override;
 
+  /** Comparison operator */
+  using GradientImplementation::operator ==;
+  Bool operator ==(const DualLinearCombinationGradient & other) const;
+protected:
+  Bool equals(const GradientImplementation & other) const override;
+public:
+
   /** Gradient method */
   Matrix gradient(const Point & inP) const override;
 

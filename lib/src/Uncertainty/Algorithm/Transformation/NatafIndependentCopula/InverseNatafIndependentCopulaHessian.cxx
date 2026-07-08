@@ -56,6 +56,17 @@ InverseNatafIndependentCopulaHessian * InverseNatafIndependentCopulaHessian::clo
 {
   return new InverseNatafIndependentCopulaHessian(*this);
 }
+/* Comparison operator */
+Bool InverseNatafIndependentCopulaHessian::operator ==(const InverseNatafIndependentCopulaHessian & other) const
+{
+  if (this == &other) return true;
+  return (dimension_ == other.dimension_);
+}
+Bool InverseNatafIndependentCopulaHessian::equals(const HessianImplementation & other) const
+{
+  const InverseNatafIndependentCopulaHessian * p_other = dynamic_cast<const InverseNatafIndependentCopulaHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafIndependentCopulaHessian::__repr__() const

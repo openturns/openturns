@@ -52,6 +52,13 @@ public:
   /** Virtual constructor */
   ProductPolynomialGradient * clone() const override;
 
+  /** Comparison operator */
+  using GradientImplementation::operator ==;
+  Bool operator ==(const ProductPolynomialGradient & other) const;
+protected:
+  Bool equals(const GradientImplementation & other) const override;
+public:
+
   /** String converter */
   String __repr__() const override;
 

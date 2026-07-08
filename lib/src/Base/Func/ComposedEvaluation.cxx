@@ -136,6 +136,11 @@ void ComposedEvaluation::setParameter(const Point & parameter)
   leftFunction_.setParameter(leftParameter);
 }
 
+Bool ComposedEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const ComposedEvaluation &>(other);
+}
+
 /* Parameters description accessor */
 Description ComposedEvaluation::getParameterDescription() const
 {

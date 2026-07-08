@@ -62,6 +62,19 @@ LinearCombinationGradient * LinearCombinationGradient::clone() const
   return new LinearCombinationGradient(*this);
 }
 
+/* Comparison operator */
+Bool LinearCombinationGradient::operator ==(const LinearCombinationGradient & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool LinearCombinationGradient::equals(const GradientImplementation & other) const
+{
+  const LinearCombinationGradient * p_other = dynamic_cast<const LinearCombinationGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* Gradient method */
 Matrix LinearCombinationGradient::gradient(const Point & inP) const

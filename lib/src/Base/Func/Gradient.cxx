@@ -60,6 +60,11 @@ Bool Gradient::operator ==(const Gradient & other) const
   return *getImplementation() == *other.getImplementation();
 }
 
+Bool Gradient::operator !=(const Gradient & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String Gradient::__repr__() const
 {

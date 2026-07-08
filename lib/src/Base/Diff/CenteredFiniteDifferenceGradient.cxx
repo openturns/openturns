@@ -67,6 +67,19 @@ CenteredFiniteDifferenceGradient * CenteredFiniteDifferenceGradient::clone() con
 }
 
 
+/* Comparison operator */
+Bool CenteredFiniteDifferenceGradient::operator ==(const CenteredFiniteDifferenceGradient & ) const
+{
+  return true;
+}
+
+Bool CenteredFiniteDifferenceGradient::equals(const GradientImplementation & other) const
+{
+  const CenteredFiniteDifferenceGradient * p_other = dynamic_cast<const CenteredFiniteDifferenceGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
+
 /* String converter */
 String CenteredFiniteDifferenceGradient::__repr__() const
 {

@@ -48,6 +48,13 @@ public:
   /** Virtual constructor */
   InverseNatafEllipticalDistributionHessian * clone() const override;
 
+  /** Comparison operator */
+  using HessianImplementation::operator ==;
+  Bool operator ==(const InverseNatafEllipticalDistributionHessian &) const;
+protected:
+  Bool equals(const HessianImplementation & other) const override;
+public:
+
   /** String converter */
   String __repr__() const override;
 

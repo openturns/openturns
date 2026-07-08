@@ -160,4 +160,9 @@ void LinearGradient::load(Advocate & adv)
   adv.loadAttribute( "linear_", linear_ );
 }
 
+Bool LinearGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const LinearGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

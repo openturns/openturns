@@ -101,6 +101,12 @@ Bool FiniteDifferenceHessian::operator ==(const FiniteDifferenceHessian & other)
   return (getEpsilon() == other.getEpsilon());
 }
 
+Bool FiniteDifferenceHessian::equals(const HessianImplementation & other) const
+{
+  const FiniteDifferenceHessian * p_other = dynamic_cast<const FiniteDifferenceHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FiniteDifferenceHessian:: __repr__() const
 {

@@ -56,6 +56,7 @@ public:
   /** Comparison operator */
 protected:
   using PersistentObject::operator ==;
+  virtual Bool equals(const FieldToPointFunctionImplementation & other) const;
 public:
   Bool operator ==(const FieldToPointFunctionImplementation & other) const;
 

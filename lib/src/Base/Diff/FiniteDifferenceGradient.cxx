@@ -105,6 +105,12 @@ Bool FiniteDifferenceGradient::operator ==(const FiniteDifferenceGradient & othe
   return (getEpsilon() == other.getEpsilon());
 }
 
+Bool FiniteDifferenceGradient::equals(const GradientImplementation & other) const
+{
+  const FiniteDifferenceGradient * p_other = dynamic_cast<const FiniteDifferenceGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FiniteDifferenceGradient:: __repr__() const
 {

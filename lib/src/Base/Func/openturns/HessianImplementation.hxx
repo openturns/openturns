@@ -54,6 +54,11 @@ public:
   /** Comparison operator */
   Bool operator ==(const HessianImplementation & other) const;
   using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const HessianImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const HessianImplementation & other) const;
 
   /** String converter */
   String __repr__() const override;

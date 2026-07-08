@@ -57,6 +57,17 @@ NatafEllipticalCopulaGradient * NatafEllipticalCopulaGradient::clone() const
 {
   return new NatafEllipticalCopulaGradient(*this);
 }
+/* Comparison operator */
+Bool NatafEllipticalCopulaGradient::operator ==(const NatafEllipticalCopulaGradient & other) const
+{
+  if (this == &other) return true;
+  return (standardDistribution_ == other.standardDistribution_) && (inverseCholesky_ == other.inverseCholesky_);
+}
+Bool NatafEllipticalCopulaGradient::equals(const GradientImplementation & other) const
+{
+  const NatafEllipticalCopulaGradient * p_other = dynamic_cast<const NatafEllipticalCopulaGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafEllipticalCopulaGradient::__repr__() const

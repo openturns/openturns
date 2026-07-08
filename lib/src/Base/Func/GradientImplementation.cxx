@@ -45,9 +45,20 @@ GradientImplementation * GradientImplementation::clone() const
 }
 
 /* Comparison operator */
-Bool GradientImplementation::operator ==(const GradientImplementation & ) const
+Bool GradientImplementation::operator ==(const GradientImplementation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool GradientImplementation::equals(const GradientImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In GradientImplementation::equals";
+}
+
+Bool GradientImplementation::operator !=(const GradientImplementation & other) const
+{
+  return !operator==(other);
 }
 
 /* String converter */

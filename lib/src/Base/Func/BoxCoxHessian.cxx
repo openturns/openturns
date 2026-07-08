@@ -148,4 +148,9 @@ void BoxCoxHessian::load(Advocate & adv)
   p_evaluation_ = evaluation.getImplementation();
 }
 
+Bool BoxCoxHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const BoxCoxHessian &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

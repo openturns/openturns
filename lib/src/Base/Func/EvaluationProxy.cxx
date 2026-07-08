@@ -76,6 +76,11 @@ void EvaluationProxy::setDescription(const Description & description)
   evaluation_.setDescription(description);
 }
 
+Bool EvaluationProxy::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const EvaluationProxy &>(other);
+}
+
 
 /* Description Accessor */
 Description EvaluationProxy::getDescription() const

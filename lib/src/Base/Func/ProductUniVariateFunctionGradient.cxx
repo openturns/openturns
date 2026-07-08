@@ -54,6 +54,19 @@ ProductUniVariateFunctionGradient * ProductUniVariateFunctionGradient::clone() c
   return new ProductUniVariateFunctionGradient(*this);
 }
 
+/* Comparison operator */
+Bool ProductUniVariateFunctionGradient::operator ==(const ProductUniVariateFunctionGradient & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool ProductUniVariateFunctionGradient::equals(const GradientImplementation & other) const
+{
+  const ProductUniVariateFunctionGradient * p_other = dynamic_cast<const ProductUniVariateFunctionGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String ProductUniVariateFunctionGradient::__repr__() const

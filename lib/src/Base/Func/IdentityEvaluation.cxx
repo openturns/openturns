@@ -125,4 +125,9 @@ void IdentityEvaluation::load(Advocate & adv)
   adv.loadAttribute( "dimension_", dimension_ );
 }
 
+Bool IdentityEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const IdentityEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

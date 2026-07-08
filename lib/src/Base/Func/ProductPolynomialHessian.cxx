@@ -53,6 +53,19 @@ ProductPolynomialHessian * ProductPolynomialHessian::clone() const
   return new ProductPolynomialHessian(*this);
 }
 
+/* Comparison operator */
+Bool ProductPolynomialHessian::operator ==(const ProductPolynomialHessian & other) const
+{
+  if (this == &other) return true;
+  return polynomials_ == other.polynomials_;
+}
+
+Bool ProductPolynomialHessian::equals(const HessianImplementation & other) const
+{
+  const ProductPolynomialHessian * p_other = dynamic_cast<const ProductPolynomialHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String ProductPolynomialHessian::__repr__() const
