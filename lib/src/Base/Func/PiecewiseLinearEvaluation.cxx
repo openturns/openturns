@@ -167,11 +167,11 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
 
   const Scalar xLeft = locations_[iLeft];
   const Scalar xRight = locations_[iLeft + 1];
-  const Scalar dx = xLeft - xRight;
+  const Scalar dx = xRight - xLeft;
   const UnsignedInteger dimension = getOutputDimension();
   Point value(dimension);
-  const Scalar alpha = (x - xRight) / dx;
-  const Scalar beta = (xLeft - x) / dx;
+  const Scalar alpha = (xRight - x) / dx;
+  const Scalar beta = (x - xLeft) / dx;
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * values_(iLeft, i) + beta * values_(iLeft + 1, i);
   return value;
 }
@@ -219,9 +219,9 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
 
     const Scalar xLeft = locations_[iLeft];
     const Scalar xRight = locations_[iLeft + 1];
-    const Scalar dx = xLeft - xRight;
-    const Scalar alpha = (x - xRight) / dx;
-    const Scalar beta = (xLeft - x) / dx;
+    const Scalar dx = xRight - xLeft;
+    const Scalar alpha = (xRight - x) / dx;
+    const Scalar beta = (x - xLeft) / dx;
     for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, j) + beta * values_(iLeft + 1, j);
   }
   return output;
