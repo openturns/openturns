@@ -200,10 +200,6 @@ Scalar ExprTk_sign(Scalar v)
   else if (v < 0.0) return -1.0;
   else return 0.0;
 }
-Scalar ExprTk_rint(Scalar v)
-{
-  return ((v < 0.0) ? std::ceil(v - 0.5) : std::floor(v + 0.5));
-}
 }
 
 /* Method that instantiate the parsers */
@@ -218,11 +214,11 @@ SymbolicParserExprTk::ExpressionCollection SymbolicParserExprTk::allocateExpress
   symbol_table.add_constant("e_", 2.71828182845904523536028747135266249775724709369996);
   symbol_table.add_constant("pi_", 3.14159265358979323846264338327950288419716939937510);
   symbol_table.add_function("sign", ExprTk_sign);
-  symbol_table.add_function("rint", ExprTk_rint);
+  symbol_table.add_function("rint", std::rint);
   symbol_table.add_function("ln", std::log);
-  symbol_table.add_function("lngamma", lgamma);
+  symbol_table.add_function("lngamma", std::lgamma);
   symbol_table.add_function("gamma", SpecFunc::Gamma);
-  symbol_table.add_function("cbrt", cbrt);
+  symbol_table.add_function("cbrt", std::cbrt);
   symbol_table.add_function("besselJ0", j0);
   symbol_table.add_function("besselJ1", j1);
   symbol_table.add_function("besselY0", y0);
