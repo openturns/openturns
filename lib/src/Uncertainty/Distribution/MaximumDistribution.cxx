@@ -33,7 +33,6 @@ static const Factory<MaximumDistribution> Factory_MaximumDistribution;
 /* Default constructor */
 MaximumDistribution::MaximumDistribution()
   : DistributionImplementation()
-  , distribution_()
   , allSame_(true)
   , variablesNumber_(1)
 {
@@ -46,7 +45,6 @@ MaximumDistribution::MaximumDistribution()
 /* Parameters constructor */
 MaximumDistribution::MaximumDistribution(const Distribution & distribution)
   : DistributionImplementation()
-  , distribution_()
   , allSame_(false)
   , variablesNumber_(distribution.getDimension())
 {
@@ -58,7 +56,6 @@ MaximumDistribution::MaximumDistribution(const Distribution & distribution)
 /* Parameters constructor */
 MaximumDistribution::MaximumDistribution(const DistributionCollection & collection)
   : DistributionImplementation()
-  , distribution_()
   , allSame_(true)
   , variablesNumber_(collection.getSize())
 {
@@ -67,7 +64,7 @@ MaximumDistribution::MaximumDistribution(const DistributionCollection & collecti
     if (collection[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot take the maximum of a collection of multivariate distributions, here distribution=" << i << " has dimension=" << collection[i].getDimension();
   setName("MaximumDistribution");
   setDimension(1);
-  for (UnsignedInteger i = 0; i < variablesNumber_; ++i)
+  for (UnsignedInteger i = 1; i < variablesNumber_; ++i)
     if (collection[i] != collection[0])
     {
       allSame_ = false;
@@ -81,7 +78,6 @@ MaximumDistribution::MaximumDistribution(const DistributionCollection & collecti
 MaximumDistribution::MaximumDistribution(const Distribution & distribution,
     const UnsignedInteger variablesNumber)
   : DistributionImplementation()
-  , distribution_()
   , allSame_(true)
   , variablesNumber_(variablesNumber)
 {
@@ -131,7 +127,11 @@ MaximumDistribution * MaximumDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void MaximumDistribution::computeRange()
 {
-  if (allSame_) setRange(distribution_.getRange());
+  if (allSame_)
+  {
+    setRange(distribution_.getRange());
+    return;
+  }
   const Point lower(distribution_.getRange().getLowerBound());
   const Point upper(distribution_.getRange().getUpperBound());
   setRange(Interval(*std::max_element(lower.begin(), lower.end()), *std::max_element(upper.begin(), upper.end())));
@@ -290,7 +290,6 @@ void MaximumDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
-  adv.saveAttribute( "allSame_", allSame_ );
   adv.saveAttribute( "variablesNumber_", variablesNumber_ );
 }
 
@@ -300,7 +299,6 @@ void MaximumDistribution::load(Advocate & adv)
   DistributionImplementation::load(adv);
   Distribution distribution;
   adv.loadAttribute( "distribution_", distribution );
-  adv.loadAttribute( "allSame_", allSame_ );
   adv.loadAttribute( "variablesNumber_", variablesNumber_ );
   setDistribution(distribution);
 }
