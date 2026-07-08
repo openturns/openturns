@@ -118,6 +118,7 @@ Matrix IsotropicCovarianceModel::partialGradient(const Point & s,
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   const Point tau(s - t);
   const Scalar tauNorm = tau.norm();
+  if (tauNorm == 0.0) return Matrix(inputDimension_, 1);
   const Point normGradient(tau / tauNorm);
   const Matrix kernelPartialGradient(kernel_.partialGradient(Point(1, tauNorm), Point(1)));
   return Matrix(inputDimension_, 1, normGradient) * kernelPartialGradient(0, 0);
@@ -150,7 +151,7 @@ void IsotropicCovarianceModel::setScale(const Point & scale)
 {
   if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setScale: the scale should have dimension 1, not " << scale.getDimension() << ".";
   if (!(scale[0] > 0.0))
-    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setScale: the scale is << " << scale[0] << " but should be positive";
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setScale: the scale is " << scale[0] << " but should be positive";
   kernel_.setScale(scale);
   scale_ = scale;
 }
@@ -159,7 +160,7 @@ void IsotropicCovarianceModel::setScale(const Point & scale)
 void IsotropicCovarianceModel::setNuggetFactor(const Scalar nuggetFactor)
 {
   if (!(nuggetFactor >= 0.0))
-    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setNuggetFactor: the nuggetFactor is << " << nuggetFactor << " but should be nonnegative";
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setNuggetFactor: the nuggetFactor is " << nuggetFactor << " but should be nonnegative";
   kernel_.setNuggetFactor(nuggetFactor);
   nuggetFactor_ = nuggetFactor;
 }
