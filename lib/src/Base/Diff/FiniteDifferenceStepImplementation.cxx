@@ -51,6 +51,20 @@ FiniteDifferenceStepImplementation * FiniteDifferenceStepImplementation::clone()
   return new FiniteDifferenceStepImplementation(*this);
 }
 
+
+/* Comparison operator */
+Bool FiniteDifferenceStepImplementation::operator ==(const FiniteDifferenceStepImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool FiniteDifferenceStepImplementation::equals(const FiniteDifferenceStepImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In FiniteDifferenceStepImplementation::equals";
+}
+
+
 /* Epsilon accessor */
 void FiniteDifferenceStepImplementation::setEpsilon(const Point & epsilon)
 {

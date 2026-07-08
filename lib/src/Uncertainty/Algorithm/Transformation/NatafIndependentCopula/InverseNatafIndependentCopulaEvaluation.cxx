@@ -50,6 +50,17 @@ InverseNatafIndependentCopulaEvaluation * InverseNatafIndependentCopulaEvaluatio
 {
   return new InverseNatafIndependentCopulaEvaluation(*this);
 }
+/* Comparison operator */
+Bool InverseNatafIndependentCopulaEvaluation::operator ==(const InverseNatafIndependentCopulaEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (dimension_ == other.dimension_);
+}
+Bool InverseNatafIndependentCopulaEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const InverseNatafIndependentCopulaEvaluation * p_other = dynamic_cast<const InverseNatafIndependentCopulaEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafIndependentCopulaEvaluation::__repr__() const

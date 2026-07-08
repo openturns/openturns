@@ -122,6 +122,11 @@ void MarginalEvaluation::load(Advocate & adv)
   adv.loadAttribute("indices_", indices_);
 }
 
+Bool MarginalEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const MarginalEvaluation &>(other);
+}
+
 /* Operator () */
 Point MarginalEvaluation::operator() (const Point & inP) const
 {

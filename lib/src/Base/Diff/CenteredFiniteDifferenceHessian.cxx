@@ -73,6 +73,12 @@ Bool CenteredFiniteDifferenceHessian::operator ==(const CenteredFiniteDifference
   return (getEpsilon() == other.getEpsilon());
 }
 
+Bool CenteredFiniteDifferenceHessian::equals(const HessianImplementation & other) const
+{
+  const CenteredFiniteDifferenceHessian * p_other = dynamic_cast<const CenteredFiniteDifferenceHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String CenteredFiniteDifferenceHessian::__repr__() const
 {

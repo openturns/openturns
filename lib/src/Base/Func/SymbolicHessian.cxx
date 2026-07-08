@@ -301,4 +301,9 @@ void SymbolicHessian::load(Advocate & adv)
   p_evaluation_ = evaluation.getImplementation();
 }
 
+Bool SymbolicHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const SymbolicHessian &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

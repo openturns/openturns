@@ -54,6 +54,16 @@ NatafEllipticalDistributionHessian * NatafEllipticalDistributionHessian::clone()
 {
   return new NatafEllipticalDistributionHessian(*this);
 }
+/* Comparison operator */
+Bool NatafEllipticalDistributionHessian::operator ==(const NatafEllipticalDistributionHessian &) const
+{
+  return true;
+}
+Bool NatafEllipticalDistributionHessian::equals(const HessianImplementation & other) const
+{
+  const NatafEllipticalDistributionHessian * p_other = dynamic_cast<const NatafEllipticalDistributionHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafEllipticalDistributionHessian::__repr__() const

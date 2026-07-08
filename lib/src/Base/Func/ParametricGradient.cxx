@@ -62,6 +62,19 @@ ParametricGradient * ParametricGradient::clone() const
   return new ParametricGradient(*this);
 }
 
+/* Comparison operator */
+Bool ParametricGradient::operator ==(const ParametricGradient & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool ParametricGradient::equals(const GradientImplementation & other) const
+{
+  const ParametricGradient * p_other = dynamic_cast<const ParametricGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Gradient operator */
 Matrix ParametricGradient::gradient(const OT::Point & point) const
 {

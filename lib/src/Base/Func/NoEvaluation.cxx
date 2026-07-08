@@ -49,6 +49,12 @@ Bool NoEvaluation::operator ==(const NoEvaluation & ) const
   return true;
 }
 
+Bool NoEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const NoEvaluation * p_other = dynamic_cast<const NoEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NoEvaluation::__repr__() const
 {

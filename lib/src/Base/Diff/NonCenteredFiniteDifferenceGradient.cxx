@@ -66,6 +66,19 @@ NonCenteredFiniteDifferenceGradient * NonCenteredFiniteDifferenceGradient::clone
 }
 
 
+/* Comparison operator */
+Bool NonCenteredFiniteDifferenceGradient::operator ==(const NonCenteredFiniteDifferenceGradient & ) const
+{
+  return true;
+}
+
+Bool NonCenteredFiniteDifferenceGradient::equals(const GradientImplementation & other) const
+{
+  const NonCenteredFiniteDifferenceGradient * p_other = dynamic_cast<const NonCenteredFiniteDifferenceGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
+
 /* String converter */
 String NonCenteredFiniteDifferenceGradient::__repr__() const
 {

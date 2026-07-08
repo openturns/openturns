@@ -126,4 +126,9 @@ void ConstantGradient::load(Advocate & adv)
   adv.loadAttribute( "constant_", constant_ );
 }
 
+Bool ConstantGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const ConstantGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

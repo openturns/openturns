@@ -58,6 +58,9 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<GradientImplementation>::operator ==;
   Bool operator ==(const Gradient & other) const;
+  /** Comparison operator */
+  using TypedInterfaceObject<GradientImplementation>::operator !=;
+  Bool operator !=(const Gradient & other) const;
 
   /** String converter */
   String __repr__() const override;

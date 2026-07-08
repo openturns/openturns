@@ -51,6 +51,13 @@ public:
   /** Virtual constructor */
   InverseRosenblattEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const InverseRosenblattEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** Evaluation */
   Point operator () (const Point & inP) const override;
 

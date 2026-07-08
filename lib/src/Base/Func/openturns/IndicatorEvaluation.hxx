@@ -54,6 +54,9 @@ public:
   /** Comparison operator */
   using EvaluationImplementation::operator ==;
   Bool operator ==(const IndicatorEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
 
   /** String converter */
   String __repr__() const override;

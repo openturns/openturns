@@ -54,6 +54,16 @@ InverseNatafEllipticalDistributionHessian * InverseNatafEllipticalDistributionHe
 {
   return new InverseNatafEllipticalDistributionHessian(*this);
 }
+/* Comparison operator */
+Bool InverseNatafEllipticalDistributionHessian::operator ==(const InverseNatafEllipticalDistributionHessian &) const
+{
+  return true;
+}
+Bool InverseNatafEllipticalDistributionHessian::equals(const HessianImplementation & other) const
+{
+  const InverseNatafEllipticalDistributionHessian * p_other = dynamic_cast<const InverseNatafEllipticalDistributionHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafEllipticalDistributionHessian::__repr__() const

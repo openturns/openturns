@@ -69,6 +69,18 @@ PiecewiseLinearEvaluation * PiecewiseLinearEvaluation::clone() const
   return new PiecewiseLinearEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool PiecewiseLinearEvaluation::operator ==(const PiecewiseLinearEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (enableExtrapolation_ == other.enableExtrapolation_) && (locations_ == other.locations_) && (values_ == other.values_);
+}
+
+Bool PiecewiseLinearEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const PiecewiseLinearEvaluation * p_other = dynamic_cast<const PiecewiseLinearEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String PiecewiseLinearEvaluation::__repr__() const

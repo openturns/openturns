@@ -254,4 +254,9 @@ void SymbolicGradient::load(Advocate & adv)
   p_evaluation_ = evaluation.getImplementation();
 }
 
+Bool SymbolicGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const SymbolicGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

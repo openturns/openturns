@@ -38,3 +38,13 @@ inPoint[2] = 9.0
 outTensor = myHessian.hessian(inPoint)
 print("myHessian=", repr(myHessian))
 print(myHessian.getName(), "( ", repr(inPoint), " ) = ", repr(outTensor))
+
+# Equality tests
+h1 = ot.ConstantHessian(constant)
+assert h1 == myHessian, "same constant should be equal"
+assert not (h1 != myHessian), "same constant should not be different"
+otherConstant = ot.SymmetricTensor(inputDimension, outputDimension)
+otherConstant[0, 0, 0] = 42.0
+h2 = ot.ConstantHessian(otherConstant)
+assert not (h1 == h2), "different constant should not be equal"
+assert h1 != h2, "different constant should be different"

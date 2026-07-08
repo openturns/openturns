@@ -116,4 +116,9 @@ void IndicatorEvaluation::load(Advocate & adv)
   adv.loadAttribute( "domain_", domain_ );
 }
 
+Bool IndicatorEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const IndicatorEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

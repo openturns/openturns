@@ -53,6 +53,16 @@ NatafEllipticalDistributionGradient * NatafEllipticalDistributionGradient::clone
 {
   return new NatafEllipticalDistributionGradient(*this);
 }
+/* Comparison operator */
+Bool NatafEllipticalDistributionGradient::operator ==(const NatafEllipticalDistributionGradient &) const
+{
+  return true;
+}
+Bool NatafEllipticalDistributionGradient::equals(const GradientImplementation & other) const
+{
+  const NatafEllipticalDistributionGradient * p_other = dynamic_cast<const NatafEllipticalDistributionGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafEllipticalDistributionGradient::__repr__() const

@@ -57,6 +57,20 @@ ConstantStep * ConstantStep::clone() const
   return new ConstantStep(*this);
 }
 
+
+/* Comparison operator */
+Bool ConstantStep::operator ==(const ConstantStep & ) const
+{
+  return true;
+}
+
+Bool ConstantStep::equals(const FiniteDifferenceStepImplementation & other) const
+{
+  const ConstantStep * p_other = dynamic_cast<const ConstantStep *>(&other);
+  return p_other && (*this == *p_other);
+}
+
+
 /* Compute step */
 Point ConstantStep::operator()(const Point & inP) const
 {

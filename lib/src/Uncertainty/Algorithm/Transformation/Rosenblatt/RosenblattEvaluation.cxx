@@ -53,6 +53,17 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 {
   return new RosenblattEvaluation(*this);
 }
+/* Comparison operator */
+Bool RosenblattEvaluation::operator ==(const RosenblattEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (distribution_ == other.distribution_);
+}
+Bool RosenblattEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const RosenblattEvaluation * p_other = dynamic_cast<const RosenblattEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Evaluation */
 Point RosenblattEvaluation::operator () (const Point & inP) const

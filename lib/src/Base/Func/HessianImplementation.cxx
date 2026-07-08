@@ -44,9 +44,20 @@ HessianImplementation * HessianImplementation::clone() const
 }
 
 /* Comparison operator */
-Bool HessianImplementation::operator ==(const HessianImplementation & ) const
+Bool HessianImplementation::operator ==(const HessianImplementation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool HessianImplementation::equals(const HessianImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In HessianImplementation::equals";
+}
+
+Bool HessianImplementation::operator !=(const HessianImplementation & other) const
+{
+  return !operator==(other);
 }
 
 /* String converter */

@@ -58,6 +58,16 @@ NatafEllipticalDistributionEvaluation * NatafEllipticalDistributionEvaluation::c
 {
   return new NatafEllipticalDistributionEvaluation(*this);
 }
+/* Comparison operator */
+Bool NatafEllipticalDistributionEvaluation::operator ==(const NatafEllipticalDistributionEvaluation &) const
+{
+  return true;
+}
+Bool NatafEllipticalDistributionEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const NatafEllipticalDistributionEvaluation * p_other = dynamic_cast<const NatafEllipticalDistributionEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafEllipticalDistributionEvaluation::__repr__() const

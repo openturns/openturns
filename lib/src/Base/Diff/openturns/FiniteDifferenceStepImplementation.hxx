@@ -52,6 +52,10 @@ public:
   /** Virtual constructor */
   FiniteDifferenceStepImplementation * clone() const override;
 
+  /** Comparison operator */
+  Bool operator ==(const FiniteDifferenceStepImplementation & other) const;
+  using PersistentObject::operator ==;
+
   /** Compute value */
   virtual Point operator()(const Point & inP) const;
 
@@ -62,6 +66,8 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  virtual Bool equals(const FiniteDifferenceStepImplementation & other) const;
+
   /* The small increments */
   Point epsilon_;
 

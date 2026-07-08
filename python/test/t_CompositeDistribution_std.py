@@ -156,3 +156,14 @@ pdf_ub2 = d_dec.computePDF([f_dec([lb])[0]])
 pdf_lb2 = d_dec.computePDF([f_dec([ub])[0]])
 ott.assert_almost_equal(pdf_ub2, 1.0)
 ott.assert_almost_equal(pdf_lb2, 1.0)
+
+# Equality tests
+d1 = ot.CompositeDistribution(f, ot.Normal())
+assert d1 == distribution, "same function and antecedent should be equal"
+assert not (d1 != distribution), "same should not be different"
+f2 = ot.SymbolicFunction("x", "x^3")
+d2 = ot.CompositeDistribution(f2, ot.Normal())
+assert not (d1 == d2), "different function should not be equal"
+assert d1 != d2, "different function should be different"
+d3 = ot.CompositeDistribution(f, ot.Uniform())  # different antecedent
+assert not (d1 == d3), "different antecedent should not be equal"

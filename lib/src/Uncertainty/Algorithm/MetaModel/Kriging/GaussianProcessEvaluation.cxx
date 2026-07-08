@@ -78,11 +78,16 @@ GaussianProcessEvaluation * GaussianProcessEvaluation::clone() const
 {
   return new GaussianProcessEvaluation(*this);
 }
-
 /* Comparison operator */
-Bool GaussianProcessEvaluation::operator==(const GaussianProcessEvaluation & ) const
+Bool GaussianProcessEvaluation::operator ==(const GaussianProcessEvaluation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return (basis_ == other.basis_) && (inputSample_ == other.inputSample_) && (covarianceModel_ == other.covarianceModel_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
+}
+Bool GaussianProcessEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const GaussianProcessEvaluation * p_other = dynamic_cast<const GaussianProcessEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* String converter */

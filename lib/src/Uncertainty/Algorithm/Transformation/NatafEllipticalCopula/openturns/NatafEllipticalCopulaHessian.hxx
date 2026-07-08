@@ -53,6 +53,13 @@ public:
   /** Virtual constructor */
   NatafEllipticalCopulaHessian * clone() const override;
 
+  /** Comparison operator */
+  using HessianImplementation::operator ==;
+  Bool operator ==(const NatafEllipticalCopulaHessian & other) const;
+protected:
+  Bool equals(const HessianImplementation & other) const override;
+public:
+
   /** Hessian */
   SymmetricTensor hessian(const Point & inP) const override;
 

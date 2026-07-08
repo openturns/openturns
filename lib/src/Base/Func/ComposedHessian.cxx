@@ -153,4 +153,9 @@ void ComposedHessian::load(Advocate & adv)
   adv.loadAttribute( "rightHessian_", rightHessian_ );
 }
 
+Bool ComposedHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const ComposedHessian &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

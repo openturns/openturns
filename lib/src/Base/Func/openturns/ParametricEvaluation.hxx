@@ -51,6 +51,13 @@ public:
   /** Virtual constructor method */
   ParametricEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const ParametricEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** Evaluation operator */
   using EvaluationImplementation::operator();
   Point operator() (const Point & point) const override;

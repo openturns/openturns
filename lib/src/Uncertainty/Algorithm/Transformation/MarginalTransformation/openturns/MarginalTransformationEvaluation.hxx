@@ -67,6 +67,13 @@ public:
   /** Virtual constructor */
   MarginalTransformationEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const MarginalTransformationEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** Evaluation */
   using EvaluationImplementation::operator();
   Point operator () (const Point & inP) const override;

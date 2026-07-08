@@ -108,4 +108,9 @@ void NullHessian::load(Advocate & adv)
   adv.loadAttribute("outputDimension_", outputDimension_);
 }
 
+Bool NullHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const NullHessian &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

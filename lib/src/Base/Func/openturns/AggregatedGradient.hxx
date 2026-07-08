@@ -55,6 +55,13 @@ public:
   /** Virtual constructor */
   AggregatedGradient * clone() const override;
 
+  /** Comparison operator */
+  using GradientImplementation::operator ==;
+  Bool operator ==(const AggregatedGradient & other) const;
+protected:
+  Bool equals(const GradientImplementation & other) const override;
+public:
+
   /** Gradient method */
   Matrix gradient(const Point & inP) const override;
 

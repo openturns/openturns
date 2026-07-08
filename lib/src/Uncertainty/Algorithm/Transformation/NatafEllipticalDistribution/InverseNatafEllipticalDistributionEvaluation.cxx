@@ -58,6 +58,16 @@ InverseNatafEllipticalDistributionEvaluation * InverseNatafEllipticalDistributio
 {
   return new InverseNatafEllipticalDistributionEvaluation(*this);
 }
+/* Comparison operator */
+Bool InverseNatafEllipticalDistributionEvaluation::operator ==(const InverseNatafEllipticalDistributionEvaluation &) const
+{
+  return true;
+}
+Bool InverseNatafEllipticalDistributionEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const InverseNatafEllipticalDistributionEvaluation * p_other = dynamic_cast<const InverseNatafEllipticalDistributionEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafEllipticalDistributionEvaluation::__repr__() const

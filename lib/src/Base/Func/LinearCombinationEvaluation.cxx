@@ -65,6 +65,19 @@ LinearCombinationEvaluation * LinearCombinationEvaluation::clone() const
   return new LinearCombinationEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool LinearCombinationEvaluation::operator ==(const LinearCombinationEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (functionsCollection_ == other.functionsCollection_) && (coefficients_ == other.coefficients_) && (isZero_ == other.isZero_);
+}
+
+Bool LinearCombinationEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const LinearCombinationEvaluation * p_other = dynamic_cast<const LinearCombinationEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String LinearCombinationEvaluation::__repr__() const

@@ -94,6 +94,11 @@ Bool Function::operator ==(const Function & other) const
   return *getImplementation() == *other.getImplementation();
 }
 
+Bool Function::operator !=(const Function & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String Function::__repr__() const
 {

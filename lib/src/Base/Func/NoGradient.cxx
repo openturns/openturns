@@ -49,6 +49,12 @@ Bool NoGradient::operator ==(const NoGradient & ) const
   return true;
 }
 
+Bool NoGradient::equals(const GradientImplementation & other) const
+{
+  const NoGradient * p_other = dynamic_cast<const NoGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NoGradient::__repr__() const
 {

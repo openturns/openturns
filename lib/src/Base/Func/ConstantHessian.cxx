@@ -126,4 +126,9 @@ void ConstantHessian::load(Advocate & adv)
   adv.loadAttribute( "constant_", constant_ );
 }
 
+Bool ConstantHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const ConstantHessian &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

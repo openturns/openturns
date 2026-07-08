@@ -53,6 +53,13 @@ public:
   /** Virtual constructor */
   ProductPolynomialEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const ProductPolynomialEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** String converter */
   String __repr__() const override;
   String _repr_html_() const override;

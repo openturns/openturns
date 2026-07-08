@@ -58,6 +58,17 @@ NatafIndependentCopulaEvaluation * NatafIndependentCopulaEvaluation::clone() con
 {
   return new NatafIndependentCopulaEvaluation(*this);
 }
+/* Comparison operator */
+Bool NatafIndependentCopulaEvaluation::operator ==(const NatafIndependentCopulaEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (dimension_ == other.dimension_);
+}
+Bool NatafIndependentCopulaEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const NatafIndependentCopulaEvaluation * p_other = dynamic_cast<const NatafIndependentCopulaEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafIndependentCopulaEvaluation::__repr__() const

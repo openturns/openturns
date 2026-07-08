@@ -283,6 +283,11 @@ void SymbolicEvaluation::setCheckOutput(const Bool checkOutput)
   parser_.setCheckOutput(checkOutput);
 }
 
+Bool SymbolicEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const SymbolicEvaluation &>(other);
+}
+
 /* Method save() stores the object through the StorageManager */
 void SymbolicEvaluation::save(Advocate & adv) const
 {

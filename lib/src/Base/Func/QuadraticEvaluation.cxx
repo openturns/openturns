@@ -220,4 +220,9 @@ void QuadraticEvaluation::load(Advocate & adv)
   adv.loadAttribute( "quadratic_", quadratic_ );
 }
 
+Bool QuadraticEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const QuadraticEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

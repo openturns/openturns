@@ -59,6 +59,9 @@ public:
   /** Comparison operator */
   using GradientImplementation::operator ==;
   Bool operator ==(const BoxCoxGradient & other) const;
+protected:
+  Bool equals(const GradientImplementation & other) const override;
+public:
 
   /** String converter */
   String __repr__() const override;

@@ -49,6 +49,10 @@ public:
   /** Virtual constructor */
   ConstantStep * clone() const override;
 
+  /** Comparison operator */
+  using FiniteDifferenceStepImplementation::operator ==;
+  Bool operator ==(const ConstantStep & other) const;
+
   /** Compute step */
   Point operator()(const Point & inP) const override;
 
@@ -57,6 +61,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  Bool equals(const FiniteDifferenceStepImplementation & other) const override;
 };
 
 END_NAMESPACE_OPENTURNS

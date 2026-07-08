@@ -126,4 +126,9 @@ void ProductGradient::load(Advocate & adv)
   adv.loadAttribute( "rightGradient_", rightGradient_ );
 }
 
+Bool ProductGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const ProductGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS
