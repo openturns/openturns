@@ -103,6 +103,8 @@ public:
   Matrix gradient(const Point & inP) const override;
 
 protected:
+  Bool equals(const GradientImplementation & other) const override;
+
   Evaluation evaluation_;
   FiniteDifferenceStep finiteDifferenceStep_;
 

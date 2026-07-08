@@ -49,6 +49,12 @@ Bool NoHessian::operator ==(const NoHessian & ) const
   return true;
 }
 
+Bool NoHessian::equals(const HessianImplementation & other) const
+{
+  const NoHessian * p_other = dynamic_cast<const NoHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String NoHessian::__repr__() const
 {

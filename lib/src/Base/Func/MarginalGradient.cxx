@@ -138,4 +138,9 @@ void MarginalGradient::load(Advocate & adv)
   p_gradient_ = gradient.getImplementation();
 }
 
+Bool MarginalGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const MarginalGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

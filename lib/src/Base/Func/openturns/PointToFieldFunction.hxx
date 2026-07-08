@@ -67,6 +67,9 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<PointToFieldFunctionImplementation>::operator ==;
   Bool operator ==(const PointToFieldFunction & other) const;
+  /** Comparison operator */
+  using TypedInterfaceObject<PointToFieldFunctionImplementation>::operator !=;
+  Bool operator !=(const PointToFieldFunction & other) const;
 
   /** String converter */
   String __repr__() const override;

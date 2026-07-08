@@ -88,6 +88,19 @@ ParametricEvaluation * ParametricEvaluation::clone() const
   return new ParametricEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool ParametricEvaluation::operator ==(const ParametricEvaluation & other) const
+{
+  if (this == &other) return true;
+  return (function_ == other.function_) && (parametersPositions_ == other.parametersPositions_) && (inputPositions_ == other.inputPositions_);
+}
+
+Bool ParametricEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const ParametricEvaluation * p_other = dynamic_cast<const ParametricEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Evaluation operator */
 Point ParametricEvaluation::operator() (const Point & point) const
 {

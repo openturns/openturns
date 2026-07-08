@@ -58,6 +58,9 @@ public:
   /** Comparison operator */
   using PersistentObject::operator ==;
   Bool operator ==(const PointToFieldFunctionImplementation & other) const;
+protected:
+  virtual Bool equals(const PointToFieldFunctionImplementation & other) const;
+public:
 
   /** String converter */
   String __repr__() const override;

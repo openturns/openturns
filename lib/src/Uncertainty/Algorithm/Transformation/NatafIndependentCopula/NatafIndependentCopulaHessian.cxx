@@ -58,6 +58,17 @@ NatafIndependentCopulaHessian * NatafIndependentCopulaHessian::clone() const
 {
   return new NatafIndependentCopulaHessian(*this);
 }
+/* Comparison operator */
+Bool NatafIndependentCopulaHessian::operator ==(const NatafIndependentCopulaHessian & other) const
+{
+  if (this == &other) return true;
+  return (dimension_ == other.dimension_);
+}
+Bool NatafIndependentCopulaHessian::equals(const HessianImplementation & other) const
+{
+  const NatafIndependentCopulaHessian * p_other = dynamic_cast<const NatafIndependentCopulaHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafIndependentCopulaHessian::__repr__() const

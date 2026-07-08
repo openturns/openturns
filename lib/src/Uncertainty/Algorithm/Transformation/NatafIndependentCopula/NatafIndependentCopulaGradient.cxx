@@ -58,6 +58,17 @@ NatafIndependentCopulaGradient * NatafIndependentCopulaGradient::clone() const
 {
   return new NatafIndependentCopulaGradient(*this);
 }
+/* Comparison operator */
+Bool NatafIndependentCopulaGradient::operator ==(const NatafIndependentCopulaGradient & other) const
+{
+  if (this == &other) return true;
+  return (dimension_ == other.dimension_);
+}
+Bool NatafIndependentCopulaGradient::equals(const GradientImplementation & other) const
+{
+  const NatafIndependentCopulaGradient * p_other = dynamic_cast<const NatafIndependentCopulaGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafIndependentCopulaGradient::__repr__() const

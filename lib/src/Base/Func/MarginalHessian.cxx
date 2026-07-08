@@ -125,5 +125,10 @@ void MarginalHessian::load(Advocate & adv)
   p_hessian_ = hessian.getImplementation();
 }
 
+Bool MarginalHessian::equals(const HessianImplementation & other) const
+{
+  return *this == dynamic_cast<const MarginalHessian &>(other);
+}
+
 
 END_NAMESPACE_OPENTURNS

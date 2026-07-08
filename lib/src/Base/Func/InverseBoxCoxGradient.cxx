@@ -148,4 +148,9 @@ void InverseBoxCoxGradient::load(Advocate & adv)
   p_evaluation_ = evaluation.getImplementation();
 }
 
+Bool InverseBoxCoxGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const InverseBoxCoxGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

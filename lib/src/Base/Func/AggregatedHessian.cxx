@@ -61,6 +61,19 @@ AggregatedHessian * AggregatedHessian::clone() const
   return new AggregatedHessian(*this);
 }
 
+/* Comparison operator */
+Bool AggregatedHessian::operator ==(const AggregatedHessian & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool AggregatedHessian::equals(const HessianImplementation & other) const
+{
+  const AggregatedHessian * p_other = dynamic_cast<const AggregatedHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* Hessian method */
 SymmetricTensor AggregatedHessian::hessian(const Point & inP) const

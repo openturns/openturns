@@ -60,6 +60,19 @@ ProductUniVariateFunctionEvaluation * ProductUniVariateFunctionEvaluation::clone
   return new ProductUniVariateFunctionEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool ProductUniVariateFunctionEvaluation::operator ==(const ProductUniVariateFunctionEvaluation & other) const
+{
+  if (this == &other) return true;
+  return functions_ == other.functions_;
+}
+
+Bool ProductUniVariateFunctionEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const ProductUniVariateFunctionEvaluation * p_other = dynamic_cast<const ProductUniVariateFunctionEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String ProductUniVariateFunctionEvaluation::__repr__() const

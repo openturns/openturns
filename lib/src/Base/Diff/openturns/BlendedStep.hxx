@@ -56,6 +56,10 @@ public:
   /** Virtual constructor */
   BlendedStep * clone() const override;
 
+  /** Comparison operator */
+  using FiniteDifferenceStepImplementation::operator ==;
+  Bool operator ==(const BlendedStep & other) const;
+
   /** Compute step */
   Point operator()(const Point & inP) const override;
 
@@ -70,6 +74,8 @@ public:
   Point getEta() const;
 
 protected:
+  Bool equals(const FiniteDifferenceStepImplementation & other) const override;
+
   /** Step offset */
   Point eta_;
 

@@ -53,6 +53,13 @@ public:
   /** Virtual constructor */
   DualLinearCombinationHessian * clone() const override;
 
+  /** Comparison operator */
+  using HessianImplementation::operator ==;
+  Bool operator ==(const DualLinearCombinationHessian & other) const;
+protected:
+  Bool equals(const HessianImplementation & other) const override;
+public:
+
   /** Hessian method */
   SymmetricTensor hessian(const Point & inP) const override;
 

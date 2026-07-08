@@ -63,6 +63,9 @@ protected:
   using PersistentObject::operator ==;
 public:
   Bool operator ==(const FieldFunctionImplementation & other) const;
+protected:
+  virtual Bool equals(const FieldFunctionImplementation & other) const;
+public:
 
   /** String converter */
   String __repr__() const override;

@@ -60,6 +60,19 @@ AggregatedGradient * AggregatedGradient::clone() const
   return new AggregatedGradient(*this);
 }
 
+/* Comparison operator */
+Bool AggregatedGradient::operator ==(const AggregatedGradient & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool AggregatedGradient::equals(const GradientImplementation & other) const
+{
+  const AggregatedGradient * p_other = dynamic_cast<const AggregatedGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* Gradient method */
 Matrix AggregatedGradient::gradient(const Point & inP) const

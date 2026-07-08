@@ -203,6 +203,11 @@ void PointToPointEvaluation::setParameter(const Point & parameter)
   leftFunction_.setParameter(leftParameter);
 }
 
+Bool PointToPointEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const PointToPointEvaluation &>(other);
+}
+
 /* Parameters description accessor */
 Description PointToPointEvaluation::getParameterDescription() const
 {

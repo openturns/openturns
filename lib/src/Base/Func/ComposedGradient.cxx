@@ -115,4 +115,9 @@ void ComposedGradient::load(Advocate & adv)
   adv.loadAttribute( "rightGradient_", rightGradient_ );
 }
 
+Bool ComposedGradient::equals(const GradientImplementation & other) const
+{
+  return *this == dynamic_cast<const ComposedGradient &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

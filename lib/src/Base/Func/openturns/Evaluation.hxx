@@ -61,6 +61,9 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<EvaluationImplementation>::operator ==;
   Bool operator ==(const Evaluation & other) const;
+  /** Comparison operator */
+  using TypedInterfaceObject<EvaluationImplementation>::operator !=;
+  Bool operator !=(const Evaluation & other) const;
 
   /** String converter */
   String __repr__() const override;

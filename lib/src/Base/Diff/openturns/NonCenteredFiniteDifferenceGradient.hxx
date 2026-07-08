@@ -63,6 +63,10 @@ public:
   /** Virtual constructor */
   NonCenteredFiniteDifferenceGradient * clone() const override;
 
+  /** Comparison operator */
+  using FiniteDifferenceGradient::operator ==;
+  Bool operator ==(const NonCenteredFiniteDifferenceGradient & other) const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -78,7 +82,7 @@ public:
   Matrix gradient(const Point & inP) const override;
 
 protected:
-
+  Bool equals(const GradientImplementation & other) const override;
 
 private:
 

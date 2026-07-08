@@ -46,6 +46,14 @@ public:
   /** Constructor from implementation pointer */
   FiniteDifferenceStep(const Implementation & p_implementation);
 #endif
+
+  /** Comparison operator */
+  using TypedInterfaceObject<FiniteDifferenceStepImplementation>::operator ==;
+  Bool operator ==(const FiniteDifferenceStep & other) const;
+  /** Comparison operator */
+  using TypedInterfaceObject<FiniteDifferenceStepImplementation>::operator !=;
+  Bool operator !=(const FiniteDifferenceStep & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -56,6 +64,8 @@ public:
   /** Compute step */
   Point operator()(const Point & inP) const;
 
+protected:
+  Bool equals(const FiniteDifferenceStep & other) const;
 };
 
 END_NAMESPACE_OPENTURNS

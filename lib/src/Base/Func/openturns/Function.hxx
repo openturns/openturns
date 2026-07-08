@@ -79,6 +79,8 @@ public:
   /** Comparison operator */
   using TypedInterfaceObject<FunctionImplementation>::operator ==;
   Bool operator ==(const Function & other) const;
+  using TypedInterfaceObject<FunctionImplementation>::operator !=;
+  Bool operator !=(const Function & other) const;
 
   /** String converter */
   String __repr__() const override;

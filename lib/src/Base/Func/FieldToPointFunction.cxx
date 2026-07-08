@@ -67,6 +67,11 @@ Bool FieldToPointFunction::operator ==(const FieldToPointFunction & other) const
   return *getImplementation() == *other.getImplementation();
 }
 
+Bool FieldToPointFunction::operator !=(const FieldToPointFunction & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String FieldToPointFunction::__repr__() const
 {

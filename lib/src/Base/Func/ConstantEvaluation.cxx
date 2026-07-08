@@ -123,6 +123,11 @@ void ConstantEvaluation::load(Advocate & adv)
   adv.loadAttribute( "constant_", constant_ );
 }
 
+Bool ConstantEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const ConstantEvaluation &>(other);
+}
+
 /* Constant accessor */
 Point ConstantEvaluation::getConstant() const
 {

@@ -79,11 +79,16 @@ GaussianProcessGradient * GaussianProcessGradient::clone() const
 {
   return new GaussianProcessGradient(*this);
 }
-
 /* Comparison operator */
-Bool GaussianProcessGradient::operator==(const GaussianProcessGradient & ) const
+Bool GaussianProcessGradient::operator ==(const GaussianProcessGradient & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return (basis_ == other.basis_) && (inputSample_ == other.inputSample_) && (covarianceModel_ == other.covarianceModel_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
+}
+Bool GaussianProcessGradient::equals(const GradientImplementation & other) const
+{
+  const GaussianProcessGradient * p_other = dynamic_cast<const GaussianProcessGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* String converter */

@@ -57,6 +57,17 @@ InverseNatafEllipticalCopulaGradient * InverseNatafEllipticalCopulaGradient::clo
 {
   return new InverseNatafEllipticalCopulaGradient(*this);
 }
+/* Comparison operator */
+Bool InverseNatafEllipticalCopulaGradient::operator ==(const InverseNatafEllipticalCopulaGradient & other) const
+{
+  if (this == &other) return true;
+  return (standardDistribution_ == other.standardDistribution_) && (cholesky_ == other.cholesky_);
+}
+Bool InverseNatafEllipticalCopulaGradient::equals(const GradientImplementation & other) const
+{
+  const InverseNatafEllipticalCopulaGradient * p_other = dynamic_cast<const InverseNatafEllipticalCopulaGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafEllipticalCopulaGradient::__repr__() const

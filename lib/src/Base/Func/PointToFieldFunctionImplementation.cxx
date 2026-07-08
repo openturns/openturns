@@ -70,6 +70,11 @@ Bool PointToFieldFunctionImplementation::operator ==(const PointToFieldFunctionI
   return true;
 }
 
+Bool PointToFieldFunctionImplementation::equals(const PointToFieldFunctionImplementation & other) const
+{
+  return *this == other;
+}
+
 /* String converter */
 String PointToFieldFunctionImplementation::__repr__() const
 {

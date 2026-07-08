@@ -63,11 +63,30 @@ String FiniteDifferenceStep::__repr__() const
   return oss;
 }
 
+
+/* Comparison operator */
+Bool FiniteDifferenceStep::operator ==(const FiniteDifferenceStep & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+Bool FiniteDifferenceStep::equals(const FiniteDifferenceStep & other) const
+{
+  return *this == other;
+}
+
+
 /* Epsilon accessor */
 void FiniteDifferenceStep::setEpsilon(const Point & epsilon)
 {
   copyOnWrite();
   getImplementation()->setEpsilon(epsilon);
+}
+
+Bool FiniteDifferenceStep::operator !=(const FiniteDifferenceStep & other) const
+{
+  return !operator==(other);
 }
 
 Point FiniteDifferenceStep::getEpsilon() const

@@ -88,6 +88,16 @@ Bool FunctionImplementation::operator ==(const FunctionImplementation & other) c
   return (evaluation_ == other.evaluation_) && (gradient_ == other.gradient_) && (hessian_ == other.hessian_);
 }
 
+Bool FunctionImplementation::equals(const FunctionImplementation & other) const
+{
+  return *this == other;
+}
+
+Bool FunctionImplementation::operator !=(const FunctionImplementation & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String FunctionImplementation::__repr__() const
 {

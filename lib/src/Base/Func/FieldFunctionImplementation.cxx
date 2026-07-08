@@ -70,6 +70,11 @@ Bool FieldFunctionImplementation::operator ==(const FieldFunctionImplementation 
   return true;
 }
 
+Bool FieldFunctionImplementation::equals(const FieldFunctionImplementation & other) const
+{
+  return *this == other;
+}
+
 /* String converter */
 String FieldFunctionImplementation::__repr__() const
 {

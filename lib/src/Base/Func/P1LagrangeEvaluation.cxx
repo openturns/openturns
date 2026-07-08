@@ -117,6 +117,11 @@ void P1LagrangeEvaluation::setField(const Field & field)
   setMesh(field.getMesh());
 }
 
+Bool P1LagrangeEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const P1LagrangeEvaluation &>(other);
+}
+
 Field P1LagrangeEvaluation::getField() const
 {
   return Field(mesh_, values_);

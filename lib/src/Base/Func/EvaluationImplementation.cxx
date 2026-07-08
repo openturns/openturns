@@ -59,9 +59,20 @@ EvaluationImplementation * EvaluationImplementation::clone() const
 
 
 /* Comparison operator */
-Bool EvaluationImplementation::operator ==(const EvaluationImplementation & ) const
+Bool EvaluationImplementation::operator ==(const EvaluationImplementation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool EvaluationImplementation::equals(const EvaluationImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In EvaluationImplementation::equals";
+}
+
+Bool EvaluationImplementation::operator !=(const EvaluationImplementation & other) const
+{
+  return !operator==(other);
 }
 
 /* String converter */

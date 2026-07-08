@@ -61,6 +61,19 @@ ProductUniVariateFunctionHessian * ProductUniVariateFunctionHessian::clone() con
   return new ProductUniVariateFunctionHessian(*this);
 }
 
+/* Comparison operator */
+Bool ProductUniVariateFunctionHessian::operator ==(const ProductUniVariateFunctionHessian & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool ProductUniVariateFunctionHessian::equals(const HessianImplementation & other) const
+{
+  const ProductUniVariateFunctionHessian * p_other = dynamic_cast<const ProductUniVariateFunctionHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String ProductUniVariateFunctionHessian::__repr__() const

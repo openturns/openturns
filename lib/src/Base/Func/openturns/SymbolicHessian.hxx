@@ -56,6 +56,9 @@ public:
   /** Comparison operator */
   using HessianImplementation::operator ==;
   Bool operator ==(const SymbolicHessian & other) const;
+protected:
+  Bool equals(const HessianImplementation & other) const override;
+public:
 
   /** String converter */
   String __repr__() const override;

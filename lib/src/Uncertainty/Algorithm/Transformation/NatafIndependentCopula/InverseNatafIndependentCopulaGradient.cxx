@@ -56,6 +56,17 @@ InverseNatafIndependentCopulaGradient * InverseNatafIndependentCopulaGradient::c
 {
   return new InverseNatafIndependentCopulaGradient(*this);
 }
+/* Comparison operator */
+Bool InverseNatafIndependentCopulaGradient::operator ==(const InverseNatafIndependentCopulaGradient & other) const
+{
+  if (this == &other) return true;
+  return (dimension_ == other.dimension_);
+}
+Bool InverseNatafIndependentCopulaGradient::equals(const GradientImplementation & other) const
+{
+  const InverseNatafIndependentCopulaGradient * p_other = dynamic_cast<const InverseNatafIndependentCopulaGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String InverseNatafIndependentCopulaGradient::__repr__() const

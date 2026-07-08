@@ -62,6 +62,19 @@ DualLinearCombinationGradient * DualLinearCombinationGradient::clone() const
   return new DualLinearCombinationGradient(*this);
 }
 
+/* Comparison operator */
+Bool DualLinearCombinationGradient::operator ==(const DualLinearCombinationGradient & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool DualLinearCombinationGradient::equals(const GradientImplementation & other) const
+{
+  const DualLinearCombinationGradient * p_other = dynamic_cast<const DualLinearCombinationGradient *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* Gradient method */
 Matrix DualLinearCombinationGradient::gradient(const Point & inP) const

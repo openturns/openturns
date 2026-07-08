@@ -88,6 +88,11 @@ void TranslationEvaluation::setConstant(const Point & constant)
   constant_ = constant;
 }
 
+Bool TranslationEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const TranslationEvaluation &>(other);
+}
+
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */

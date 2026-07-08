@@ -53,6 +53,13 @@ public:
   /** Virtual constructor */
   NatafEllipticalCopulaGradient * clone() const override;
 
+  /** Comparison operator */
+  using GradientImplementation::operator ==;
+  Bool operator ==(const NatafEllipticalCopulaGradient & other) const;
+protected:
+  Bool equals(const GradientImplementation & other) const override;
+public:
+
   /** Gradient */
   Matrix gradient(const Point & inP) const override;
 

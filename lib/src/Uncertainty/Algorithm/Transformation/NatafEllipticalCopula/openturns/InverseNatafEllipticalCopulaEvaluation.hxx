@@ -53,6 +53,13 @@ public:
   /** Virtual constructor */
   InverseNatafEllipticalCopulaEvaluation * clone() const override;
 
+  /** Comparison operator */
+  using EvaluationImplementation::operator ==;
+  Bool operator ==(const InverseNatafEllipticalCopulaEvaluation & other) const;
+protected:
+  Bool equals(const EvaluationImplementation & other) const override;
+public:
+
   /** Evaluation */
   Point operator () (const Point & inP) const override;
 

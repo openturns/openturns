@@ -67,6 +67,11 @@ Bool PointToFieldFunction::operator ==(const PointToFieldFunction & ) const
   return true;
 }
 
+Bool PointToFieldFunction::operator !=(const PointToFieldFunction & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String PointToFieldFunction::__repr__() const
 {

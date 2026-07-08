@@ -57,6 +57,17 @@ NatafEllipticalCopulaHessian * NatafEllipticalCopulaHessian::clone() const
 {
   return new NatafEllipticalCopulaHessian(*this);
 }
+/* Comparison operator */
+Bool NatafEllipticalCopulaHessian::operator ==(const NatafEllipticalCopulaHessian & other) const
+{
+  if (this == &other) return true;
+  return (standardDistribution_ == other.standardDistribution_) && (inverseCholesky_ == other.inverseCholesky_);
+}
+Bool NatafEllipticalCopulaHessian::equals(const HessianImplementation & other) const
+{
+  const NatafEllipticalCopulaHessian * p_other = dynamic_cast<const NatafEllipticalCopulaHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NatafEllipticalCopulaHessian::__repr__() const

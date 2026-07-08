@@ -69,6 +69,11 @@ Bool FieldToPointFunctionImplementation::operator ==(const FieldToPointFunctionI
   return true;
 }
 
+Bool FieldToPointFunctionImplementation::equals(const FieldToPointFunctionImplementation & other) const
+{
+  return *this == other;
+}
+
 /* String converter */
 String FieldToPointFunctionImplementation::__repr__() const
 {

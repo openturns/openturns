@@ -25,3 +25,13 @@ inPoint[2] = 9.0
 outMatrix = myGradient.gradient(inPoint)
 print("myGradient=", repr(myGradient))
 print(myGradient.getName(), "( ", repr(inPoint), " ) = ", repr(outMatrix))
+
+# Equality tests
+g1 = ot.ConstantGradient(constant)
+assert g1 == myGradient, "same constant should be equal"
+assert not (g1 != myGradient), "same constant should not be different"
+otherConstant = ot.Matrix(inputDimension, outputDimension)
+otherConstant[0, 0] = 42.0
+g2 = ot.ConstantGradient(otherConstant)
+assert not (g1 == g2), "different constant should not be equal"
+assert g1 != g2, "different constant should be different"

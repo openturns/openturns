@@ -60,6 +60,19 @@ ProductPolynomialEvaluation * ProductPolynomialEvaluation::clone() const
   return new ProductPolynomialEvaluation(*this);
 }
 
+/* Comparison operator */
+Bool ProductPolynomialEvaluation::operator ==(const ProductPolynomialEvaluation & other) const
+{
+  if (this == &other) return true;
+  return polynomials_ == other.polynomials_;
+}
+
+Bool ProductPolynomialEvaluation::equals(const EvaluationImplementation & other) const
+{
+  const ProductPolynomialEvaluation * p_other = dynamic_cast<const ProductPolynomialEvaluation *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* String converter */
 String ProductPolynomialEvaluation::__repr__() const

@@ -63,6 +63,19 @@ LinearCombinationHessian * LinearCombinationHessian::clone() const
   return new LinearCombinationHessian(*this);
 }
 
+/* Comparison operator */
+Bool LinearCombinationHessian::operator ==(const LinearCombinationHessian & other) const
+{
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
+}
+
+Bool LinearCombinationHessian::equals(const HessianImplementation & other) const
+{
+  const LinearCombinationHessian * p_other = dynamic_cast<const LinearCombinationHessian *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 
 /* Hessian method */
 SymmetricTensor LinearCombinationHessian::hessian(const Point & inP) const

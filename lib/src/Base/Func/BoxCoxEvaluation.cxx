@@ -202,4 +202,9 @@ void BoxCoxEvaluation::load(Advocate & adv)
   adv.loadAttribute( "shift_", shift_ );
 }
 
+Bool BoxCoxEvaluation::equals(const EvaluationImplementation & other) const
+{
+  return *this == dynamic_cast<const BoxCoxEvaluation &>(other);
+}
+
 END_NAMESPACE_OPENTURNS

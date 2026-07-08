@@ -61,6 +61,11 @@ public:
   /** Comparison operator */
   Bool operator ==(const EvaluationImplementation & other) const;
   using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const EvaluationImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const EvaluationImplementation & other) const;
 
   /** String converter */
   String __repr__() const override;
