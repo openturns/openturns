@@ -808,7 +808,7 @@ public:
 
 protected:
   /** Filter identical entries */
-  static Description DeduplicateDecription(const Description & description);
+  static Description DeduplicateDescription(const Description & description);
 
   /** Draw the PDF of a discrete distribution */
   virtual Graph drawDiscretePDF(const Scalar xMin,

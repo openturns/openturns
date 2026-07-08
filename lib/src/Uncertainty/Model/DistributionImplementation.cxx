@@ -5277,7 +5277,7 @@ UnsignedInteger DistributionImplementation::getParameterDimension() const
 }
 
 /* Filter identical entries */
-Description DistributionImplementation::DeduplicateDecription(const Description & description)
+Description DistributionImplementation::DeduplicateDescription(const Description & description)
 {
   std::map<String, UnsignedInteger> occurrence;
   UnsignedInteger idx = 0;
