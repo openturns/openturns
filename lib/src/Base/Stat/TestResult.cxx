@@ -117,7 +117,7 @@ Scalar TestResult::getStatistic() const
 Bool TestResult::operator == (const TestResult & other) const
 {
   if (this == &other) return true;
-  return (binaryQualityMeasure_ == other.binaryQualityMeasure_) && (pValue_ == other.pValue_) && (pValueThreshold_ == other.pValueThreshold_) && (testType_ == other.testType_);
+  return (binaryQualityMeasure_ == other.binaryQualityMeasure_) && (pValue_ == other.pValue_) && (pValueThreshold_ == other.pValueThreshold_) && (testType_ == other.testType_) && (statistic_ == other.statistic_) && (description_ == other.description_);
 }
 
 
