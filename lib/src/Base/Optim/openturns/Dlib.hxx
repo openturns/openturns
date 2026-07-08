@@ -56,8 +56,8 @@ public:
 
   /** ACCESSORS */
   // Name of the algorithm
-  String getAlgorithmName();
-  void setAlgorithmName(const String algoName);
+  String getAlgorithmName() const;
+  void setAlgorithmName(const String & algoName);
 
   // wolfeRho parameter, used in line search process
   Scalar getWolfeRho() const;

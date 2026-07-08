@@ -428,12 +428,12 @@ Dlib * Dlib::clone() const
 }
 
 /** ACCESSORS */
-String Dlib::getAlgorithmName()
+String Dlib::getAlgorithmName() const
 {
   return algoName_;
 }
 
-void Dlib::setAlgorithmName(const String algoName)
+void Dlib::setAlgorithmName(const String & algoName)
 {
   if (!GetAlgorithmNames().contains(algoName))
     throw NotYetImplementedException(HERE) << "Unknown Dlib algorithm name: " << algoName;
