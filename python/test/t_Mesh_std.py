@@ -151,3 +151,8 @@ if ot.PlatformInfo.HasFeature("boost"):
     simplices3 = [[0, 1, 2], [3, 4, 5]]
     mesh3 = ot.Mesh(vertices3, simplices3)
     assert intersection == mesh3, "wrong intersection"
+
+# Mesh inequality tests
+assert m1 != m2, "different meshes"
+assert not (m1 != m1), "same mesh"
+assert not (ot.Mesh(m1) != m1), "copy vs original"
