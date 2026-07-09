@@ -55,3 +55,12 @@ try:
     ot.IndicesCollection([["zou"]])
 except Exception:
     print("ok")
+
+# IndicesCollection equality tests
+assert flat1 == ot.IndicesCollection(), "empty == empty"
+assert flat2 == ot.IndicesCollection(coll2), "same from collection"
+assert flat3 == flat2, "copy == original"
+assert strided1 == ot.IndicesCollection(coll4), "strided same collection"
+assert not (flat1 == flat2), "empty != filled"
+assert flat1 != flat2, "empty != filled"
+assert not (flat2 != flat3), "copy != original false"
