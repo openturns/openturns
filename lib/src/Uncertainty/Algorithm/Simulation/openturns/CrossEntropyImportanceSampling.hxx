@@ -69,7 +69,8 @@ public:
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
-  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const override;
+  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getInputSample() const override;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
   /** Method save() stores the object through the StorageManager */

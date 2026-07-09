@@ -351,6 +351,14 @@ Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger se
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
 }
 
+Sample NAIS::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
+}
+
 Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
 {
   if (!keepSample_)
@@ -385,6 +393,7 @@ UnsignedInteger NAIS::getStepsNumber() const
 
 
 // Accessor to naisResult_s
+
 NAISResult NAIS::getResult() const
 {
   return naisResult_;

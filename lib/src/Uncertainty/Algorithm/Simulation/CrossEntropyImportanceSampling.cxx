@@ -337,6 +337,15 @@ Sample CrossEntropyImportanceSampling::getInputSample(const UnsignedInteger step
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
 }
 
+
+Sample CrossEntropyImportanceSampling::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "CrossEntropyImportanceSampling keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
+}
+
 Sample CrossEntropyImportanceSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
 {
   if (!keepSample_)
