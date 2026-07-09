@@ -148,14 +148,8 @@ hess = myFunc.hessian([100.0, 100.0])
 print(hess)
 
 print("no func")
-try:
+with ott.assert_raises(RuntimeError):
     myFunc = ot.PythonFunction(2, 1)
-    outSample = myFunc(a_sample)
-except Exception:
-    # must raise exception
-    print("no function detected : ok.")
-else:
-    raise Exception("no function not detected!")
 
 
 def a_exec2(X):
@@ -170,19 +164,12 @@ def a_exec2(X):
 
 
 myFunc = ot.PythonFunction(1, 1, a_exec2)
-for x in [0.0, 1.0, 2.0]:
-    try:
-        X = [x]
-        myFunc(X)
-    except Exception as exc:
-        # print exc
-        print("exception handling: ok")
-        if x == 0.0:
-            assert "NameError" in str(exc)
-        elif x == 1.0:
-            assert "TypeError" in str(exc)
-        elif x == 2.0:
-            assert "ZeroDivisionError" in str(exc)
+with ott.assert_raises(NameError):
+    myFunc([0.0])
+with ott.assert_raises(TypeError):
+    myFunc([1.0])
+with ott.assert_raises(ZeroDivisionError):
+    myFunc([2.0])
 
 
 def a_exec3(X):
@@ -191,7 +178,7 @@ def a_exec3(X):
 
 
 myFunc = ot.PythonFunction(2, 1, a_exec3)
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(IndexError):
     myFunc([5, 6])
 
 f = ot.PythonFunction(0, 3, lambda x: [42.0] * 3)
@@ -211,6 +198,6 @@ class BFunction(ot.OpenTURNSPythonFunction):
 
 
 bModel = BFunction()
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(AttributeError):
     # when super is not called in init, should not crash
     bFunction = ot.Function(bModel)
