@@ -68,6 +68,17 @@ void GreaterOrEqual::save(Advocate & adv) const
 }
 
 
+Bool GreaterOrEqual::operator ==(const GreaterOrEqual &) const
+{
+  return true;
+}
+
+Bool GreaterOrEqual::equals(const ComparisonOperatorImplementation & other) const
+{
+  const GreaterOrEqual * p_other = dynamic_cast<const GreaterOrEqual *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Method load() reloads the object from the StorageManager */
 void GreaterOrEqual::load(Advocate & adv)
 {

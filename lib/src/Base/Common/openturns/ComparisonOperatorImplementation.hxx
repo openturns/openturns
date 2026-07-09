@@ -56,6 +56,17 @@ public:
   virtual Bool operator() (const Scalar a,
                            const Scalar b) const;
 
+  /** Comparison operator */
+  Bool operator ==(const ComparisonOperatorImplementation & other) const;
+  using PersistentObject::operator ==;
+
+private:
+  virtual Bool equals(const ComparisonOperatorImplementation & other) const;
+
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const ComparisonOperatorImplementation & other) const;
+
   /* Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

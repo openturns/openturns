@@ -68,6 +68,17 @@ void Greater::save(Advocate & adv) const
 }
 
 
+Bool Greater::operator ==(const Greater &) const
+{
+  return true;
+}
+
+Bool Greater::equals(const ComparisonOperatorImplementation & other) const
+{
+  const Greater * p_other = dynamic_cast<const Greater *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Method load() reloads the object from the StorageManager */
 void Greater::load(Advocate & adv)
 {

@@ -40,6 +40,15 @@ class OT_API OT_WARN_UNUSED ComparisonOperator
   CLASSNAME
 public:
 
+  /** Comparison operator */
+  using TypedInterfaceObject<ComparisonOperatorImplementation>::operator ==;
+  Bool operator ==(const ComparisonOperator & other) const;
+
+  /** Comparison operator */
+  using TypedInterfaceObject<ComparisonOperatorImplementation>::operator !=;
+  Bool operator !=(const ComparisonOperator & other) const;
+
+
   /** Default constructor */
   ComparisonOperator();
 
