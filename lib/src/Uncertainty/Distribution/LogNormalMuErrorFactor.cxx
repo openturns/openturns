@@ -62,6 +62,11 @@ Bool LogNormalMuErrorFactor::operator ==(const LogNormalMuErrorFactor & other) c
   return (muLog_ == other.muLog_) && (ef_ == other.ef_) && (gamma_ == other.gamma_);
 }
 
+Bool LogNormalMuErrorFactor::equals(const DistributionParametersImplementation & other) const
+{
+  const LogNormalMuErrorFactor * p_other = dynamic_cast<const LogNormalMuErrorFactor *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution LogNormalMuErrorFactor::getDistribution() const

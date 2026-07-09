@@ -23,6 +23,7 @@
 #include "openturns/BetaFactory.hxx"
 #include "openturns/BetaMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +48,10 @@ BetaMuSigma::BetaMuSigma(const Scalar mu, const Scalar sigma, const Scalar a, co
   , a_(a)
   , b_(b)
 {
-  // Nothing to do
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(mu > a)) throw InvalidArgumentException(HERE) << "mu must be greater than a, here mu=" << mu << " and a=" << a;
+  if (!(mu < b)) throw InvalidArgumentException(HERE) << "mu must be less than b, here mu=" << mu << " and b=" << b;
+  if (!(sigma * sigma < (mu - a) * (b - mu))) throw InvalidArgumentException(HERE) << "sigma is too large, must satisfy sigma^2 < (mu - a) * (b - mu), here sigma=" << sigma << ", mu=" << mu << ", a=" << a << ", b=" << b;
 }
 
 /* Virtual constructor */
@@ -59,9 +63,15 @@ BetaMuSigma * BetaMuSigma::clone() const
 /* Comparison operator */
 Bool BetaMuSigma::operator ==(const BetaMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_) && (a_ == other.a_) && (b_ == other.b_);
 }
 
+Bool BetaMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const BetaMuSigma * p_other = dynamic_cast<const BetaMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution BetaMuSigma::getDistribution() const
@@ -172,7 +182,7 @@ Description BetaMuSigma::getDescription() const
 /* Check if the distribution is elliptical */
 Bool BetaMuSigma::isElliptical() const
 {
-  return b_ == 2.0 * mu_ - a_;
+  return std::abs(b_ - 2.0 * mu_ + a_) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
 }
 
 

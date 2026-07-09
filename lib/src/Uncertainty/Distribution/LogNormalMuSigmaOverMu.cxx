@@ -60,9 +60,15 @@ LogNormalMuSigmaOverMu * LogNormalMuSigmaOverMu::clone() const
 /* Comparison operator */
 Bool LogNormalMuSigmaOverMu::operator ==(const LogNormalMuSigmaOverMu & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigmaOverMu_ == other.sigmaOverMu_) && (gamma_ == other.gamma_);
 }
 
+Bool LogNormalMuSigmaOverMu::equals(const DistributionParametersImplementation & other) const
+{
+  const LogNormalMuSigmaOverMu * p_other = dynamic_cast<const LogNormalMuSigmaOverMu *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution LogNormalMuSigmaOverMu::getDistribution() const

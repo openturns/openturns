@@ -35,6 +35,15 @@ class OT_API DistributionParameters
 {
   CLASSNAME
 public:
+
+  /** Comparison operator */
+  using TypedInterfaceObject<DistributionParametersImplementation>::operator ==;
+  Bool operator ==(const DistributionParameters & other) const;
+
+  /** Comparison operator */
+  using TypedInterfaceObject<DistributionParametersImplementation>::operator !=;
+  Bool operator !=(const DistributionParameters & other) const;
+
   typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 
   /** Default constructor */

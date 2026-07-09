@@ -55,9 +55,15 @@ GumbelMuSigma * GumbelMuSigma::clone() const
 /* Comparison operator */
 Bool GumbelMuSigma::operator ==(const GumbelMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_);
 }
 
+Bool GumbelMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const GumbelMuSigma * p_other = dynamic_cast<const GumbelMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution GumbelMuSigma::getDistribution() const
