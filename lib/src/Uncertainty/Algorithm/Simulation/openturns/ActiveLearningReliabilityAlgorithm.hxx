@@ -71,12 +71,12 @@ public:
 
   void run();
   
-private:
+protected:
 
   const RandomVector defaultEvent_;
-  EventSimulation *defaultSimulationAlgorithm_;
-  EventSimulation *currentSimulationAlgorithm_;
-  
+  Pointer<EventSimulation> defaultSimulationAlgorithm_;
+  Pointer<EventSimulation> currentSimulationAlgorithm_;
+    
   GaussianProcessFitter defaultGPFitter_;
   Sample currentInputSample_;
   Sample inputDoE_;
