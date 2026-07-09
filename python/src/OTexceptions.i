@@ -2,6 +2,7 @@
 
 %{
 #include "openturns/Exception.hxx"
+#include "openturns/PythonWrappingFunctions.hxx"
 %}
 
 namespace std {
@@ -32,6 +33,10 @@ namespace std {
   }
   catch (const OT::InterruptionException &) {
     SWIG_exception(SWIG_RuntimeError, "Interruption in $decl");
+  }
+  catch (const OT::PythonInternalException & ex) {
+    ex.restore();
+    SWIG_fail;
   }
   catch (const OT::Exception & ex) {
     SWIG_exception(SWIG_RuntimeError, ex.__repr__().c_str());
