@@ -79,7 +79,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , defaultGPFitter_(gpFitter)
   {
     defaultSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
-    currentSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
+    currentSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);    
     
     //std::cout<<currentSimulationAlgorithm_->getInputSample()<<std::endl;
   }
@@ -204,7 +204,7 @@ void ActiveLearningReliabilityAlgorithm::run()
   std::cout<< " -------------------------------------------------" <<std::endl;
 
   std::cout<< " ------------------ ->getResult() ------------------" <<std::endl;
-  std::cout<< currentSimulationAlgorithm_->getResult()<<std::endl;
+  std::cout<< currentSimulationAlgorithm_->getResult() <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
   
   std::cout<< " ------------------ Algorithm ------------------" <<std::endl;
@@ -215,6 +215,7 @@ void ActiveLearningReliabilityAlgorithm::run()
   std::cout<< " ------------------ Input Sample ------------------" <<std::endl;
   std::cout<< currentSimulationAlgorithm_->getInputSample(0)<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
+
   
 }
 
