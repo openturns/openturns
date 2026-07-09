@@ -623,6 +623,11 @@ Bool Mesh::operator == (const Mesh & other) const
   return (vertices_ == other.vertices_) && (simplices_ == other.simplices_);
 }
 
+Bool Mesh::operator != (const Mesh & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String Mesh::__repr__() const
 {
