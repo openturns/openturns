@@ -66,6 +66,14 @@ public:
   IndicesCollection(const IndicesCollectionImplementation & i);
 #endif
 
+  /** Comparison operator */
+  using TypedInterfaceObject<IndicesCollectionImplementation>::operator ==;
+  Bool operator ==(const IndicesCollection & other) const;
+
+  /** Comparison operator */
+  using TypedInterfaceObject<IndicesCollectionImplementation>::operator !=;
+  Bool operator !=(const IndicesCollection & other) const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
