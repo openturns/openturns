@@ -25,6 +25,17 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionParameters)
 
+Bool DistributionParameters::operator ==(const DistributionParameters & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+Bool DistributionParameters::operator !=(const DistributionParameters & other) const
+{
+  return !operator==(other);
+}
+
 /* Default constructor */
 DistributionParameters::DistributionParameters()
   : TypedInterfaceObject<DistributionParametersImplementation>(new DistributionParametersImplementation)

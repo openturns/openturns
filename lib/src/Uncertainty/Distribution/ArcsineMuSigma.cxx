@@ -55,9 +55,15 @@ ArcsineMuSigma * ArcsineMuSigma::clone() const
 /* Comparison operator */
 Bool ArcsineMuSigma::operator ==(const ArcsineMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_);
 }
 
+Bool ArcsineMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const ArcsineMuSigma * p_other = dynamic_cast<const ArcsineMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution ArcsineMuSigma::getDistribution() const

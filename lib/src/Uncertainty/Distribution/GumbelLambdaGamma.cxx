@@ -54,9 +54,15 @@ GumbelLambdaGamma * GumbelLambdaGamma::clone() const
 /* Comparison operator */
 Bool GumbelLambdaGamma::operator ==(const GumbelLambdaGamma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
 }
 
+Bool GumbelLambdaGamma::equals(const DistributionParametersImplementation & other) const
+{
+  const GumbelLambdaGamma * p_other = dynamic_cast<const GumbelLambdaGamma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution GumbelLambdaGamma::getDistribution() const
