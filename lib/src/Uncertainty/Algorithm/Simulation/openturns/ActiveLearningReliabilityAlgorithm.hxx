@@ -74,8 +74,8 @@ public:
 private:
 
   const RandomVector defaultEvent_;
-  Pointer<EventSimulation> defaultSimulationAlgorithm_;
-  Pointer<EventSimulation> currentSimulationAlgorithm_;
+  EventSimulation *defaultSimulationAlgorithm_;
+  EventSimulation *currentSimulationAlgorithm_;
   
   GaussianProcessFitter defaultGPFitter_;
   Sample currentInputSample_;

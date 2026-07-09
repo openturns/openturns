@@ -80,9 +80,6 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   {
     defaultSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
     currentSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
-    //NAIS* currentSimulationAlgorithm_ = dynamic_cast<NAIS*>(currentSimulationAlgorithm_);
-    std::cout<<" Type de l'algo au constructeur, NAIS"<<std::endl;    
-    std::cout<<*currentSimulationAlgorithm_<<std::endl;
     
     //std::cout<<currentSimulationAlgorithm_->getInputSample()<<std::endl;
   }
@@ -98,11 +95,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   {
     defaultSimulationAlgorithm_ = new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
     currentSimulationAlgorithm_ = new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-    std::cout<<" Type de l'algo au constructeur, StandardSpaceCrossEntropyImportanceSampling"<<std::endl;
-    std::cout<<*currentSimulationAlgorithm_<<std::endl;
+
   }
-
-
 
 /** Constructor with PhysicalSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
@@ -115,8 +109,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   {
     defaultSimulationAlgorithm_ = new PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
     currentSimulationAlgorithm_ = new PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-    std::cout<<" Type de l'algo au constructeur, PhysicalSpaceCrossEntropyImportanceSampling"<<std::endl;
-    std::cout<<*currentSimulationAlgorithm_<<std::endl;
+
   }
   
      
@@ -131,8 +124,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   {
     defaultSimulationAlgorithm_ = new SubsetSampling(reliabilityAlgorithm);
     currentSimulationAlgorithm_ = new SubsetSampling(reliabilityAlgorithm);
-    std::cout<<" Type de l'algo au constructeur, SubsetSampling"<<std::endl;
-    std::cout<<*currentSimulationAlgorithm_<<std::endl;
+
   }
 
 /** Constructor with ProbabilitySimulationAlgorithm*/   
@@ -147,8 +139,6 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
     defaultSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
     currentSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
 
-    std::cout<<" Type de l'algo au constructeur, Probability Simulation Algorithm"<<std::endl;
-    std::cout<<*currentSimulationAlgorithm_<<std::endl;
   }
                             
 /* Virtual constructor */
@@ -170,6 +160,7 @@ void ActiveLearningReliabilityAlgorithm::run()
 
   std::cout<<"-------------------------Simulation algo-------------------"<<std::endl;
   std::cout<<currentSimulationAlgorithm_<<std::endl;
+  std::cout<<currentSimulationAlgorithm_->getResult()<<std::endl;
   
   /* training of initial GPR */  
   GaussianProcessFitter currentFitter = defaultGPFitter_;
@@ -200,31 +191,31 @@ void ActiveLearningReliabilityAlgorithm::run()
   std::cout<< " ------------------ Simulation algorithm with new event------------------" <<std::endl;
   std::cout<< *currentSimulationAlgorithm_ <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
-    
+  
+  
+  std::cout<< " ------------------ Verification of setter of event completed------------------" <<std::endl;
+  
+  
+  std::cout<< " ------------------ Run of algorithm------------------" <<std::endl;  
   currentSimulationAlgorithm_->run();
   
-  std::cout<< " ------------------ Probability ------------------" <<std::endl;
+  std::cout<< " ------------------ getResult().getProbabilityEstimate() ------------------" <<std::endl;
   std::cout<< currentSimulationAlgorithm_->getResult().getProbabilityEstimate() <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
 
-  std::cout<< " ------------------ Result ------------------" <<std::endl;
+  std::cout<< " ------------------ ->getResult() ------------------" <<std::endl;
   std::cout<< currentSimulationAlgorithm_->getResult()<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
   
   std::cout<< " ------------------ Algorithm ------------------" <<std::endl;
   std::cout<< *currentSimulationAlgorithm_<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
-  
-  ProbabilitySimulationResult probaResults = currentSimulationAlgorithm_->getResult();
+   
 
-  std::cout<< " ------------------ ProbabilitySimulationResult ------------------" <<std::endl;
-
-  std::cout<< probaResults<<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;    
-
-  std::cout<< " ------------------ IputSample ------------------" <<std::endl;
-  std::cout<< currentSimulationAlgorithm_->getInputSample()<<std::endl;
+  std::cout<< " ------------------ Input Sample ------------------" <<std::endl;
+  std::cout<< currentSimulationAlgorithm_->getInputSample(0)<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
+  
 }
 
 
