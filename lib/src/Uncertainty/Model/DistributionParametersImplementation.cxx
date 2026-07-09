@@ -38,6 +38,23 @@ DistributionParametersImplementation::DistributionParametersImplementation()
 }
 
 
+/* Comparison operator */
+Bool DistributionParametersImplementation::operator ==(const DistributionParametersImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool DistributionParametersImplementation::equals(const DistributionParametersImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::equals";
+}
+
+Bool DistributionParametersImplementation::operator !=(const DistributionParametersImplementation & other) const
+{
+  return !operator==(other);
+}
+
 /* Virtual constructor */
 DistributionParametersImplementation * DistributionParametersImplementation::clone() const
 {

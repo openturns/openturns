@@ -49,6 +49,10 @@ public:
   using DistributionParametersImplementation::operator ==;
   Bool operator ==(const BetaMuSigma & other) const;
 
+private:
+  Bool equals(const DistributionParametersImplementation & other) const override;
+
+public:
   /** Build a distribution based on a set of native parameters */
   Distribution getDistribution() const override;
 

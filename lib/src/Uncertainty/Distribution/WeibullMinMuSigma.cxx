@@ -59,9 +59,15 @@ WeibullMinMuSigma * WeibullMinMuSigma::clone() const
 /* Comparison operator */
 Bool WeibullMinMuSigma::operator ==(const WeibullMinMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_) && (gamma_ == other.gamma_);
 }
 
+Bool WeibullMinMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const WeibullMinMuSigma * p_other = dynamic_cast<const WeibullMinMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution WeibullMinMuSigma::getDistribution() const
@@ -86,22 +92,28 @@ Matrix WeibullMinMuSigma::gradient() const
   newParameters[2] = gamma_;
 
   // Use finite difference technique
-  const Scalar epsilon = 1e-5;
   Point pt = Point(3);
+  const Scalar baseEpsilon = 1e-5;
 
-  pt[0] = epsilon;
-  const Scalar dbetadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const Scalar dalphadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar epsMu = baseEpsilon * (1.0 + std::abs(newParameters[0]));
+  pt[0] = epsMu;
+  Point diff = (operator()(newParameters + pt) - operator()(newParameters - pt)) / (2.0 * epsMu);
+  const Scalar dbetadmu = diff[0];
+  const Scalar dalphadmu = diff[1];
 
   pt[0] = 0.;
-  pt[1] = epsilon;
-  const Scalar dbetadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const Scalar dalphadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar epsSigma = baseEpsilon * (1.0 + std::abs(newParameters[1]));
+  pt[1] = epsSigma;
+  diff = (operator()(newParameters + pt) - operator()(newParameters - pt)) / (2.0 * epsSigma);
+  const Scalar dbetadsigma = diff[0];
+  const Scalar dalphadsigma = diff[1];
 
   pt[1] = 0.;
-  pt[2] = epsilon;
-  const Scalar dbetadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const Scalar dalphadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar epsGamma = baseEpsilon * (1.0 + std::abs(newParameters[2]));
+  pt[2] = epsGamma;
+  diff = (operator()(newParameters + pt) - operator()(newParameters - pt)) / (2.0 * epsGamma);
+  const Scalar dbetadgamma = diff[0];
+  const Scalar dalphadgamma = diff[1];
 
   Matrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dbetadmu;
@@ -211,6 +223,7 @@ Point WeibullMinMuSigma::inverse(const Point & inP) const
 void WeibullMinMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  if (!(inP[1] > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << inP[1];
   mu_ = inP[0];
   sigma_ = inP[1];
   gamma_ = inP[2];

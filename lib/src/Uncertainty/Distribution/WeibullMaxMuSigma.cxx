@@ -59,9 +59,15 @@ WeibullMaxMuSigma * WeibullMaxMuSigma::clone() const
 /* Comparison operator */
 Bool WeibullMaxMuSigma::operator ==(const WeibullMaxMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_) && (gamma_ == other.gamma_);
 }
 
+Bool WeibullMaxMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const WeibullMaxMuSigma * p_other = dynamic_cast<const WeibullMaxMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution WeibullMaxMuSigma::getDistribution() const
@@ -110,6 +116,7 @@ Point WeibullMaxMuSigma::inverse(const Point & inP) const
 void WeibullMaxMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  if (!(inP[1] > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << inP[1];
   mu_ = inP[0];
   sigma_ = inP[1];
   gamma_ = inP[2];

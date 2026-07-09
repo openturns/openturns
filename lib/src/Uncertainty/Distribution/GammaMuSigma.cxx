@@ -58,9 +58,15 @@ GammaMuSigma * GammaMuSigma::clone() const
 /* Comparison operator */
 Bool GammaMuSigma::operator ==(const GammaMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_) && (gamma_ == other.gamma_);
 }
 
+Bool GammaMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const GammaMuSigma * p_other = dynamic_cast<const GammaMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution GammaMuSigma::getDistribution() const

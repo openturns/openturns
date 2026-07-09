@@ -37,6 +37,18 @@ class OT_API DistributionParametersImplementation
 {
   CLASSNAME
 public:
+
+  /** Comparison operator */
+  Bool operator ==(const DistributionParametersImplementation & other) const;
+  using PersistentObject::operator ==;
+
+private:
+  virtual Bool equals(const DistributionParametersImplementation & other) const;
+
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const DistributionParametersImplementation & other) const;
+
   typedef Collection<Point>                PointCollection;
   typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 

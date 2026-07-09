@@ -57,9 +57,15 @@ LogNormalMuSigma * LogNormalMuSigma::clone() const
 /* Comparison operator */
 Bool LogNormalMuSigma::operator ==(const LogNormalMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_) && (gamma_ == other.gamma_);
 }
 
+Bool LogNormalMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const LogNormalMuSigma * p_other = dynamic_cast<const LogNormalMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution LogNormalMuSigma::getDistribution() const

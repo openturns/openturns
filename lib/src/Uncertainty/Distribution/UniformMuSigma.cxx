@@ -55,9 +55,15 @@ UniformMuSigma * UniformMuSigma::clone() const
 /* Comparison operator */
 Bool UniformMuSigma::operator ==(const UniformMuSigma & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return (mu_ == other.mu_) && (sigma_ == other.sigma_);
 }
 
+Bool UniformMuSigma::equals(const DistributionParametersImplementation & other) const
+{
+  const UniformMuSigma * p_other = dynamic_cast<const UniformMuSigma *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Build a distribution based on a set of native parameters */
 Distribution UniformMuSigma::getDistribution() const
@@ -120,6 +126,7 @@ Point UniformMuSigma::inverse(const Point & inP) const
 void UniformMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  if (!(inP[1] > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << inP[1];
   mu_ = inP[0];
   sigma_ = inP[1];
 }
