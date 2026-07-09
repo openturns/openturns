@@ -63,6 +63,23 @@ void ComparisonOperatorImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
 }
 
+/* Comparison operator */
+Bool ComparisonOperatorImplementation::operator ==(const ComparisonOperatorImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool ComparisonOperatorImplementation::equals(const ComparisonOperatorImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In ComparisonOperatorImplementation::equals";
+}
+
+Bool ComparisonOperatorImplementation::operator !=(const ComparisonOperatorImplementation & other) const
+{
+  return !operator==(other);
+}
+
 /* Method load() reloads the object from the StorageManager */
 void ComparisonOperatorImplementation::load(Advocate & adv)
 {

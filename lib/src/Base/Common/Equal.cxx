@@ -68,6 +68,17 @@ void Equal::save(Advocate & adv) const
 }
 
 
+Bool Equal::operator ==(const Equal &) const
+{
+  return true;
+}
+
+Bool Equal::equals(const ComparisonOperatorImplementation & other) const
+{
+  const Equal * p_other = dynamic_cast<const Equal *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Method load() reloads the object from the StorageManager */
 void Equal::load(Advocate & adv)
 {

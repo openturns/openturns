@@ -59,6 +59,14 @@ public:
    */
   Bool operator() (const Scalar a, const Scalar b) const override;
 
+  /** Comparison operator */
+  using ComparisonOperatorImplementation::operator ==;
+  Bool operator ==(const GreaterOrEqual & other) const;
+
+private:
+  Bool equals(const ComparisonOperatorImplementation & other) const override;
+
+public:
   /* Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

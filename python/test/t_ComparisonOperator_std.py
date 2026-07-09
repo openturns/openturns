@@ -11,3 +11,9 @@ for op in [ot.Less(), ot.LessOrEqual(), ot.Equal(), ot.GreaterOrEqual(), ot.Grea
 
 # getImplementation() crash #1461
 print(ot.ComparisonOperator().getImplementation())
+
+# ComparisonOperator equality tests
+assert ot.Less() == ot.Less(), "Less == Less"
+assert not (ot.Less() == ot.Greater()), "Less != Greater"
+assert ot.Greater() != ot.LessOrEqual(), "Greater != LessOrEqual"
+assert not (ot.Greater() != ot.Greater()), "Greater == Greater"

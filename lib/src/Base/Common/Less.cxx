@@ -69,6 +69,17 @@ void Less::save(Advocate & adv) const
 }
 
 
+Bool Less::operator ==(const Less &) const
+{
+  return true;
+}
+
+Bool Less::equals(const ComparisonOperatorImplementation & other) const
+{
+  const Less * p_other = dynamic_cast<const Less *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Method load() reloads the object from the StorageManager */
 void Less::load(Advocate & adv)
 {

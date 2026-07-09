@@ -59,5 +59,15 @@ String ComparisonOperator::__repr__() const
   return getImplementation()->__repr__();
 }
 
+Bool ComparisonOperator::operator ==(const ComparisonOperator & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+Bool ComparisonOperator::operator !=(const ComparisonOperator & other) const
+{
+  return !operator==(other);
+}
 
 END_NAMESPACE_OPENTURNS
