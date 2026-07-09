@@ -208,9 +208,9 @@ void EventSimulation::run()
 }
 
 /* Accessor to input sample */
-Sample EventSimulation::getInputSample() const
+Sample EventSimulation::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
 {
-  throw NotYetImplementedException(HERE) << "In EventSimulation::getInputSample()";
+  throw NotYetImplementedException(HERE) << "In EventSimulation::getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH)";
 }
 
 

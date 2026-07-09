@@ -75,8 +75,10 @@ public:
   void load(Advocate & adv) override;
 
   /** Input accessor */
-  virtual Sample getInputSample() const;
 
+  enum SelectSample {EVENT0, EVENT1, BOTH};
+  virtual Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  
 protected:
 
   /** Result accessor */
