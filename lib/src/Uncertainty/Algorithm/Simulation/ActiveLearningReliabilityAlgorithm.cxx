@@ -78,8 +78,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    defaultSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
-    currentSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);    
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new NAIS(reliabilityAlgorithm);
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new NAIS(reliabilityAlgorithm);    
     
     //std::cout<<currentSimulationAlgorithm_->getInputSample()<<std::endl;
   }
@@ -93,8 +93,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    defaultSimulationAlgorithm_ = new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-    currentSimulationAlgorithm_ = new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
 
   }
 
@@ -107,8 +107,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    defaultSimulationAlgorithm_ = new PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-    currentSimulationAlgorithm_ = new PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
 
   }
   
@@ -122,8 +122,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    defaultSimulationAlgorithm_ = new SubsetSampling(reliabilityAlgorithm);
-    currentSimulationAlgorithm_ = new SubsetSampling(reliabilityAlgorithm);
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new SubsetSampling(reliabilityAlgorithm);
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new SubsetSampling(reliabilityAlgorithm);
 
   }
 
@@ -136,8 +136,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    defaultSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
-    currentSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
 
   }
                             
@@ -159,8 +159,8 @@ void ActiveLearningReliabilityAlgorithm::run()
   
 
   std::cout<<"-------------------------Simulation algo-------------------"<<std::endl;
-  std::cout<<currentSimulationAlgorithm_<<std::endl;
-  std::cout<<currentSimulationAlgorithm_->getResult()<<std::endl;
+  std::cout<<p_currentSimulationAlgorithm_<<std::endl;
+  std::cout<<p_currentSimulationAlgorithm_->getResult()<<std::endl;
   
   /* training of initial GPR */  
   GaussianProcessFitter currentFitter = defaultGPFitter_;
@@ -184,39 +184,37 @@ void ActiveLearningReliabilityAlgorithm::run()
 
   
   std::cout<< " ------------------ Simulation algorithm with initial event------------------" <<std::endl;
-  std::cout<< *currentSimulationAlgorithm_ <<std::endl;
+  std::cout<< *p_currentSimulationAlgorithm_ <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
                                                              
-  currentSimulationAlgorithm_->setEvent(currentEvent);
+  p_currentSimulationAlgorithm_->setEvent(currentEvent);
   std::cout<< " ------------------ Simulation algorithm with new event------------------" <<std::endl;
-  std::cout<< *currentSimulationAlgorithm_ <<std::endl;
+  std::cout<< *p_currentSimulationAlgorithm_ <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
-  
-  
+
   std::cout<< " ------------------ Verification of setter of event completed------------------" <<std::endl;
   
-  
+
   std::cout<< " ------------------ Run of algorithm------------------" <<std::endl;  
-  currentSimulationAlgorithm_->run();
-  
+  p_currentSimulationAlgorithm_->run();
+
   std::cout<< " ------------------ getResult().getProbabilityEstimate() ------------------" <<std::endl;
-  std::cout<< currentSimulationAlgorithm_->getResult().getProbabilityEstimate() <<std::endl;
+  std::cout<< p_currentSimulationAlgorithm_->getResult().getProbabilityEstimate() <<std::endl;
+
   std::cout<< " -------------------------------------------------" <<std::endl;
 
   std::cout<< " ------------------ ->getResult() ------------------" <<std::endl;
-  std::cout<< currentSimulationAlgorithm_->getResult() <<std::endl;
+  std::cout<< p_currentSimulationAlgorithm_->getResult() <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
   
   std::cout<< " ------------------ Algorithm ------------------" <<std::endl;
-  std::cout<< *currentSimulationAlgorithm_<<std::endl;
+  std::cout<< *p_currentSimulationAlgorithm_<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
-   
 
   std::cout<< " ------------------ Input Sample ------------------" <<std::endl;
-  std::cout<< currentSimulationAlgorithm_->getInputSample(0)<<std::endl;
+  std::cout<< p_currentSimulationAlgorithm_->getInputSample()<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
 
-  
 }
 
 

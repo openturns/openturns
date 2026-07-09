@@ -562,6 +562,15 @@ Sample SubsetSampling::getOutputSample(const UnsignedInteger step, const Unsigne
   return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
 }
 
+
+Sample SubsetSampling::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
+}
+
 Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const
 {
   Indices result;
