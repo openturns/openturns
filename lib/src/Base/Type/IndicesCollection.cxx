@@ -92,6 +92,17 @@ String IndicesCollection::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+Bool IndicesCollection::operator ==(const IndicesCollection & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+Bool IndicesCollection::operator !=(const IndicesCollection & other) const
+{
+  return !operator==(other);
+}
+
 IndicesCollection::iterator IndicesCollection::begin_at(const UnsignedInteger index)
 {
   // Arguments are checked in implementation
