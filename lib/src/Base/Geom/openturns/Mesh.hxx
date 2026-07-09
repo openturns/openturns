@@ -87,6 +87,8 @@ public:
   /** Comparison operator */
   using PersistentObject::operator ==;
   Bool operator == (const Mesh & rhs) const;
+  using PersistentObject::operator !=;
+  Bool operator != (const Mesh & rhs) const;
 
   /** Check mesh validity, i.e:
       non-overlaping simplices,
