@@ -74,11 +74,14 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Input accessor */
+  virtual Sample getInputSample() const;
+
 protected:
 
   /** Result accessor */
   void setResult(const ProbabilitySimulationResult & result);
-
+  
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
 

@@ -89,6 +89,7 @@ void EventSimulation::setResult(const ProbabilitySimulationResult & result)
   result_ = result;
 }
 
+
 /* Result accessor */
 ProbabilitySimulationResult EventSimulation::getResult() const
 {
@@ -205,6 +206,13 @@ void EventSimulation::run()
     } // stopCallback
   } // while
 }
+
+/* Accessor to input sample */
+Sample EventSimulation::getInputSample() const
+{
+  throw NotYetImplementedException(HERE) << "In EventSimulation::getInputSample()";
+}
+
 
 /* Compute the block sample and the points that realized the event */
 Sample EventSimulation::computeBlockSample()

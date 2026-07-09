@@ -80,6 +80,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   {
     defaultSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
     currentSimulationAlgorithm_ = new NAIS(reliabilityAlgorithm);
+    //NAIS* currentSimulationAlgorithm_ = dynamic_cast<NAIS*>(currentSimulationAlgorithm_);
     std::cout<<" Type de l'algo au constructeur, NAIS"<<std::endl;    
     std::cout<<*currentSimulationAlgorithm_<<std::endl;
     
@@ -191,7 +192,7 @@ void ActiveLearningReliabilityAlgorithm::run()
                                                defaultEvent_.getThreshold());
 
   
-  std::cout<< " ------------------ Simulation algorithm ------------------" <<std::endl;
+  std::cout<< " ------------------ Simulation algorithm with initial event------------------" <<std::endl;
   std::cout<< *currentSimulationAlgorithm_ <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
                                                              
@@ -205,9 +206,7 @@ void ActiveLearningReliabilityAlgorithm::run()
   std::cout<< " ------------------ Probability ------------------" <<std::endl;
   std::cout<< currentSimulationAlgorithm_->getResult().getProbabilityEstimate() <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
-  
 
-  
   std::cout<< " ------------------ Result ------------------" <<std::endl;
   std::cout<< currentSimulationAlgorithm_->getResult()<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
@@ -222,7 +221,10 @@ void ActiveLearningReliabilityAlgorithm::run()
 
   std::cout<< probaResults<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;    
-    
+
+  std::cout<< " ------------------ IputSample ------------------" <<std::endl;
+  std::cout<< currentSimulationAlgorithm_->getInputSample()<<std::endl;
+  std::cout<< " -------------------------------------------------" <<std::endl;
 }
 
 
