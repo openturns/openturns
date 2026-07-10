@@ -8,8 +8,8 @@
 
 OTTypedInterfaceObjectHelper(Field)
 
+%copyctor OT::Field;
 %include openturns/Field.hxx
-
 
 %pythoncode %{
 def _Field__repr_html_(self):
@@ -22,11 +22,6 @@ Field._repr_html_ = _Field__repr_html_
 
 namespace OT {
 %extend Field {
-
-Field(const Field & other)
-{
-  return new OT::Field(other);
-}
 
 Point __getitem__ (SignedInteger index) const
 {
@@ -115,7 +110,6 @@ fail:
   return NULL;
 }
 
-
 void __setitem__(PyObject * args, PyObject * valObj) {
 
   if (!PyTuple_Check(args))
@@ -165,4 +159,3 @@ fail:
 } // Field
 
 } // OT
-

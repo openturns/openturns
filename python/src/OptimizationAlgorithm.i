@@ -11,11 +11,9 @@
 
 OTTypedInterfaceObjectHelper(OptimizationAlgorithm)
 
+%copyctor OT::OptimizationAlgorithm;
 %include openturns/OptimizationAlgorithm.hxx
 namespace OT{ %extend OptimizationAlgorithm {
-
-OptimizationAlgorithm(const OptimizationAlgorithm & other) { return new OT::OptimizationAlgorithm(other); }
-
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {

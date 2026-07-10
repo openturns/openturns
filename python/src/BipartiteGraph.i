@@ -6,6 +6,7 @@
 
 %include BipartiteGraph_doc.i
 
+%copyctor OT::BipartiteGraph;
 %include openturns/BipartiteGraph.hxx
 
 namespace OT {
@@ -42,11 +43,6 @@ void __setitem__ (SignedInteger index,
 UnsignedInteger __len__() const
 {
   return self->getSize();
-}
-
-BipartiteGraph(const BipartiteGraph & other)
-{
-  return new OT::BipartiteGraph(other);
 }
 
 }

@@ -6,12 +6,12 @@
 
 %include IdentityMatrix_doc.i
 
+%copyctor OT::IdentityMatrix;
 %include openturns/IdentityMatrix.hxx
 
 namespace OT {  
 
 %extend IdentityMatrix {
-  IdentityMatrix(const IdentityMatrix & other) { return new OT::IdentityMatrix(other); }
 
 static PyObject * __setitem__(PyObject * , Scalar )
 {

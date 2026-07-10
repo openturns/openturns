@@ -3,18 +3,8 @@
 %{
 #include "openturns/DistributionFactoryImplementation.hxx"
 %}
-
 %include DistributionFactoryImplementation_doc.i
 
+%copyctor OT::DistributionFactoryImplementation;
+
 %include openturns/DistributionFactoryImplementation.hxx
-namespace OT {  
-
-%extend DistributionFactoryImplementation {
-
-DistributionFactoryImplementation(const DistributionFactoryImplementation & other)
-{
-  return new OT::DistributionFactoryImplementation(other);
-}
-
-}
-}

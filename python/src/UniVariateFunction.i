@@ -8,13 +8,6 @@
 
 OTTypedInterfaceObjectHelper(UniVariateFunction)
 
+%copyctor OT::UniVariateFunction;
+
 %include openturns/UniVariateFunction.hxx
-namespace OT {
-
-%extend UniVariateFunction {
-
-UniVariateFunction(const UniVariateFunction & other) { return new OT::UniVariateFunction(other); }
-
-}
-
-}

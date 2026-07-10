@@ -6,14 +6,10 @@
 
 %include CenteredFiniteDifferenceGradient_doc.i
 
+%copyctor OT::CenteredFiniteDifferenceGradient;
 %include openturns/CenteredFiniteDifferenceGradient.hxx
 namespace OT {  
 %extend CenteredFiniteDifferenceGradient {
-
- CenteredFiniteDifferenceGradient(const CenteredFiniteDifferenceGradient & other)
- {
-   return new OT::CenteredFiniteDifferenceGradient(other);
- }
 
  CenteredFiniteDifferenceGradient(const Point & epsilon,
                                   const EvaluationImplementation & evaluation)
@@ -26,7 +22,6 @@ namespace OT {
  {
    return new OT::CenteredFiniteDifferenceGradient(epsilon, evaluation.clone());
  }
-
 
 }
 
