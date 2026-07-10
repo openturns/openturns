@@ -6,9 +6,9 @@
 
 %include GridLayout_doc.i
 
+%copyctor OT::GridLayout;
 %include openturns/GridLayout.hxx
 
-%copyctor OT::GridLayout;
 
 %pythoncode %{
 def _GridLayout__repr_png_(self):

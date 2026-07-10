@@ -6,6 +6,6 @@
 
 %include LevelSetMesher_doc.i
 
+%copyctor OT::LevelSetMesher;
 %include openturns/LevelSetMesher.hxx
 
-%copyctor OT::LevelSetMesher;

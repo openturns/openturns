@@ -6,6 +6,6 @@
 
 %include BoundaryMesher_doc.i
 
+%copyctor OT::BoundaryMesher;
 %include openturns/BoundaryMesher.hxx
 
-%copyctor OT::BoundaryMesher;

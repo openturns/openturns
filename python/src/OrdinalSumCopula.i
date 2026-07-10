@@ -6,6 +6,6 @@
 
 %include OrdinalSumCopula_doc.i
 
+%copyctor OT::OrdinalSumCopula;
 %include openturns/OrdinalSumCopula.hxx
 
-%copyctor OT::OrdinalSumCopula;

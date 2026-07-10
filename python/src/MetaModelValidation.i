@@ -6,6 +6,6 @@
 
 %include MetaModelValidation_doc.i
 
+%copyctor OT::MetaModelValidation;
 %include openturns/MetaModelValidation.hxx
 
-%copyctor OT::MetaModelValidation;

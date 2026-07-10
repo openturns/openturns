@@ -26,9 +26,9 @@ static OT::Bool OptimizationAlgorithmImplementation_StopCallback(void * data) {
 %ignore OT::OptimizationAlgorithmImplementation::setProgressCallback(ProgressCallback callBack, void * data);
 %ignore OT::OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack, void * data);
 
+%copyctor OT::OptimizationAlgorithmImplementation;
 %include openturns/OptimizationAlgorithmImplementation.hxx
 
-%copyctor OT::OptimizationAlgorithmImplementation;
 
 namespace OT{ %extend OptimizationAlgorithmImplementation {
 

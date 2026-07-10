@@ -6,6 +6,6 @@
 
 %include ExpectationSimulationAlgorithm_doc.i
 
+%copyctor OT::ExpectationSimulationAlgorithm;
 %include openturns/ExpectationSimulationAlgorithm.hxx
 
-%copyctor OT::ExpectationSimulationAlgorithm;

@@ -11,6 +11,6 @@
 OTTypedInterfaceObjectHelper(DistributionFactory)
 OTTypedCollectionInterfaceObjectHelper(DistributionFactory)
 
+%copyctor OT::DistributionFactory;
 %include openturns/DistributionFactory.hxx
 
-%copyctor OT::DistributionFactory;

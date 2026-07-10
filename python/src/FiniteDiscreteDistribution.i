@@ -8,9 +8,9 @@
 
 %include FiniteDiscreteDistribution_doc.i
 
-%include openturns/FiniteDiscreteDistribution.hxx
-
 %copyctor OT::FiniteDiscreteDistribution;
+
+%include openturns/FiniteDiscreteDistribution.hxx
 
 %pythoncode %{
 def UserDefined(*args):

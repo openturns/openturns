@@ -48,9 +48,9 @@ namespace OT {
        OT::isAPythonBufferOf<OT::Scalar, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input);
 }
 
+%copyctor OT::CovarianceMatrix;
 %include openturns/CovarianceMatrix.hxx
 
-%copyctor OT::CovarianceMatrix;
 
 namespace OT {  
 

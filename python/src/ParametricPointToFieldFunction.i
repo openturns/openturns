@@ -6,6 +6,6 @@
 
 %include ParametricPointToFieldFunction_doc.i
 
+%copyctor OT::ParametricPointToFieldFunction;
 %include openturns/ParametricPointToFieldFunction.hxx
 
-%copyctor OT::ParametricPointToFieldFunction;

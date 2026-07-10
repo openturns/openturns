@@ -6,6 +6,6 @@
 
 %include CovarianceModelFactoryImplementation_doc.i
 
+%copyctor OT::CovarianceModelFactoryImplementation;
 %include openturns/CovarianceModelFactoryImplementation.hxx
 
-%copyctor OT::CovarianceModelFactoryImplementation;

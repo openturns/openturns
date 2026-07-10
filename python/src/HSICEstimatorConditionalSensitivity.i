@@ -7,6 +7,6 @@
 
 %include HSICEstimatorConditionalSensitivity_doc.i
 
+%copyctor OT::HSICEstimatorConditionalSensitivity;
 %include openturns/HSICEstimatorConditionalSensitivity.hxx
 
-%copyctor OT::HSICEstimatorConditionalSensitivity;
