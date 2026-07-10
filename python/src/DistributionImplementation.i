@@ -16,7 +16,6 @@
 %typemap(in, numinputs=0) OT::Scalar & thresholdOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
 %typemap(argout) OT::Scalar & thresholdOut %{ $result = OT::AppendOutput($result, OT::convert<OT::Scalar, OT::_PyFloat_>(*$1)); %}
 
-
 %{
 #include "openturns/DistributionImplementation.hxx"
 %}
@@ -35,14 +34,12 @@
 %ignore OT::DistributionImplementation::computeProbabilityContinuous1D;
 %ignore OT::DistributionImplementation::computeProbabilityDiscrete;
 
-
+%copyctor OT::DistributionImplementation;
 %include openturns/DistributionImplementation.hxx
 
 namespace OT {
 
 %extend DistributionImplementation {
-
-DistributionImplementation(const DistributionImplementation & other) { return new OT::DistributionImplementation(other); } 
 
 Distribution __rtruediv__(const Scalar s) { return s / (*self); }
 
@@ -76,7 +73,5 @@ Distribution __rmul__(Scalar s)
 {
   return (*self) * s;
 }
-
-
 
 } }

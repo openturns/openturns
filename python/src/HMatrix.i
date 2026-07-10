@@ -64,13 +64,12 @@ private:
 %template(_HMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::HMatrixImplementation>;
 %template() std::pair< size_t, size_t >;
 
+%copyctor OT::HMatrix;
 %include openturns/HMatrix.hxx
 
 namespace OT {
 
 %extend HMatrix {
-
-  HMatrix(const HMatrix & other) { return new OT::HMatrix(other); }
 
   void assembleReal(PyObject * callable, char symmetry) {
     PythonHMatrixRealAssemblyFunction f(callable);

@@ -6,14 +6,10 @@
 
 %include NonCenteredFiniteDifferenceGradient_doc.i
 
+%copyctor OT::NonCenteredFiniteDifferenceGradient;
 %include openturns/NonCenteredFiniteDifferenceGradient.hxx
 namespace OT {  
 %extend NonCenteredFiniteDifferenceGradient {
-
- NonCenteredFiniteDifferenceGradient(const NonCenteredFiniteDifferenceGradient & other)
- {
-   return new OT::NonCenteredFiniteDifferenceGradient(other);
- }
 
  NonCenteredFiniteDifferenceGradient(const Point & epsilon,
                                      const EvaluationImplementation & evaluation)

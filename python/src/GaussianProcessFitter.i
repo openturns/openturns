@@ -6,9 +6,9 @@
 
 %include GaussianProcessFitter_doc.i
 
+%copyctor OT::GaussianProcessFitter;
+
 %ignore OT::GaussianProcessFitter::setCholeskyFactor;
 
 %include openturns/GaussianProcessFitter.hxx
-
-namespace OT{ %extend GaussianProcessFitter { GaussianProcessFitter(const GaussianProcessFitter & other) { return new OT::GaussianProcessFitter(other); } } }
 

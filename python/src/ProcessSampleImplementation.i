@@ -6,16 +6,11 @@
 
 %include ProcessSampleImplementation_doc.i
 
+%copyctor OT::ProcessSampleImplementation;
 %include openturns/ProcessSampleImplementation.hxx
-
 
 namespace OT {
 %extend ProcessSampleImplementation {
-
-ProcessSampleImplementation(const ProcessSampleImplementation & other)
-{
-  return new OT::ProcessSampleImplementation(other);
-}
 
 Field __getitem__ (SignedInteger index) const
 {
@@ -50,4 +45,3 @@ UnsignedInteger __len__() const
 } // ProcessSampleImplementation
 
 } // OT
-

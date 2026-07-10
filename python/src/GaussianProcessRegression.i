@@ -6,6 +6,6 @@
 
 %include GaussianProcessRegression_doc.i
 
-%include openturns/GaussianProcessRegression.hxx
+%copyctor OT::GaussianProcessRegression;
 
-namespace OT{ %extend GaussianProcessRegression { GaussianProcessRegression(const GaussianProcessRegression & other) { return new OT::GaussianProcessRegression(other); } } }
+%include openturns/GaussianProcessRegression.hxx

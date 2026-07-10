@@ -30,6 +30,8 @@ namespace OT {
 
 %include ARMACoefficients_doc.i
 
+%copyctor OT::ARMACoefficients;
+
 %template(SquareMatrixCollection) OT::Collection<OT::SquareMatrix>;
 %template(_SquareMatrixPersistentCollection) OT::PersistentCollection<OT::SquareMatrix>;
 
@@ -43,11 +45,6 @@ ARMACoefficients(PyObject * pyObj)
 {
   OT::Pointer<OT::Collection<OT::SquareMatrix> > p_coll =  OT::buildCollectionFromPySequence<OT::SquareMatrix>( pyObj );
   return new OT::ARMACoefficients( *p_coll );
-}
-
-ARMACoefficients(const ARMACoefficients & other)
-{
-  return new OT::ARMACoefficients(other);
 }
 
 }
