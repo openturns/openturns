@@ -8,6 +8,6 @@
 
 OTTypedInterfaceObjectHelper(SpectralModelFactory)
 
+%copyctor OT::SpectralModelFactory;
 %include openturns/SpectralModelFactory.hxx
 
-%copyctor OT::SpectralModelFactory;

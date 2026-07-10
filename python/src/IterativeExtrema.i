@@ -6,6 +6,6 @@
 
 %include IterativeExtrema_doc.i
 
+%copyctor OT::IterativeExtrema;
 %include openturns/IterativeExtrema.hxx
 
-%copyctor OT::IterativeExtrema;

@@ -8,6 +8,6 @@
 
 OTTypedInterfaceObjectHelper(IterativeAlgorithm)
 
+%copyctor OT::IterativeAlgorithm;
 %include openturns/IterativeAlgorithm.hxx
 
-%copyctor OT::IterativeAlgorithm;

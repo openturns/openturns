@@ -7,6 +7,6 @@
 
 %include HSICEstimatorGlobalSensitivity_doc.i
 
+%copyctor OT::HSICEstimatorGlobalSensitivity;
 %include openturns/HSICEstimatorGlobalSensitivity.hxx
 
-%copyctor OT::HSICEstimatorGlobalSensitivity;

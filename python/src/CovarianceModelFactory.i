@@ -8,6 +8,6 @@
 
 OTTypedInterfaceObjectHelper(CovarianceModelFactory)
 
+%copyctor OT::CovarianceModelFactory;
 %include openturns/CovarianceModelFactory.hxx
 
-%copyctor OT::CovarianceModelFactory;

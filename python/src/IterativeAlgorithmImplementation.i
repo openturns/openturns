@@ -6,6 +6,6 @@
 
 %include IterativeAlgorithmImplementation_doc.i
 
+%copyctor OT::IterativeAlgorithmImplementation;
 %include openturns/IterativeAlgorithmImplementation.hxx
 
-%copyctor OT::IterativeAlgorithmImplementation;

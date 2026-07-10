@@ -6,6 +6,6 @@
 
 %include IterativeThresholdExceedance_doc.i
 
+%copyctor OT::IterativeThresholdExceedance;
 %include openturns/IterativeThresholdExceedance.hxx
 
-%copyctor OT::IterativeThresholdExceedance;

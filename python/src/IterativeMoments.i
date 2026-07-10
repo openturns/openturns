@@ -6,6 +6,6 @@
 
 %include IterativeMoments_doc.i
 
+%copyctor OT::IterativeMoments;
 %include openturns/IterativeMoments.hxx
 
-%copyctor OT::IterativeMoments;

@@ -7,6 +7,6 @@
 
 %include HSICEstimatorTargetSensitivity_doc.i
 
+%copyctor OT::HSICEstimatorTargetSensitivity;
 %include openturns/HSICEstimatorTargetSensitivity.hxx
 
-%copyctor OT::HSICEstimatorTargetSensitivity;

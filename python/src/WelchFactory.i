@@ -6,6 +6,6 @@
 
 %include  WelchFactory_doc.i
 
+%copyctor OT::WelchFactory;
 %include openturns/WelchFactory.hxx
 
-%copyctor OT::WelchFactory;

@@ -6,9 +6,9 @@
 
 %include DrawableImplementation_doc.i
 
+%copyctor OT::DrawableImplementation;
 %include openturns/DrawableImplementation.hxx
 
-%copyctor OT::DrawableImplementation;
 
 %pythoncode %{
 def _DrawableImplementation__repr_png_(self):

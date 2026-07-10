@@ -60,11 +60,15 @@
 %ignore OT::Point::Point(std::initializer_list<Scalar> initList);
 
 %include openturns/Point.hxx
-%copyctor OT::Point;
 
 namespace OT {
 
 %extend Point {
+
+Point(const Point & other)
+{
+  return new OT::Point(other);
+}
 
 Point(PyObject * pyObj)
 {
