@@ -6,6 +6,6 @@
 
 %include NonStationaryCovarianceModelFactory_doc.i
 
+%copyctor OT::NonStationaryCovarianceModelFactory;
 %include openturns/NonStationaryCovarianceModelFactory.hxx
 
-%copyctor OT::NonStationaryCovarianceModelFactory;

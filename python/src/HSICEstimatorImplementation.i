@@ -2,6 +2,6 @@
 
 %include HSICEstimatorImplementation_doc.i
 
+%copyctor OT::HSICEstimatorImplementation;
 %include openturns/HSICEstimatorImplementation.hxx
 
-%copyctor OT::HSICEstimatorImplementation;

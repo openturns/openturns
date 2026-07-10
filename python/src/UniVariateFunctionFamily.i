@@ -11,6 +11,6 @@ OTDefaultCollectionConvertFunctionsMisnamed(UniVariateFunctionFamily, UniVariate
 OTTypedInterfaceObjectImplementationHelper(UniVariateFunctionFamily, UniVariateFunctionFactory)
 OTTypedCollectionInterfaceObjectMisnamedHelper(UniVariateFunctionFamily, FunctionFamilyCollection)
 
+%copyctor OT::UniVariateFunctionFamily;
 %include openturns/UniVariateFunctionFamily.hxx
 
-%copyctor OT::UniVariateFunctionFamily;

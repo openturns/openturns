@@ -11,9 +11,9 @@
 %ignore OT::SplitterImplementation::reset;
 %ignore OT::SplitterImplementation::generate;
 
+%copyctor OT::SplitterImplementation;
 %include openturns/SplitterImplementation.hxx
 
-%copyctor OT::SplitterImplementation;
 
 namespace OT { %extend SplitterImplementation {
 

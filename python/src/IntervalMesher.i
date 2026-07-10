@@ -6,6 +6,6 @@
 
 %include IntervalMesher_doc.i
 
+%copyctor OT::IntervalMesher;
 %include openturns/IntervalMesher.hxx
 
-%copyctor OT::IntervalMesher;

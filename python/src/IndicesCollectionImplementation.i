@@ -4,9 +4,9 @@
 #include "openturns/IndicesCollectionImplementation.hxx"
 %}
 
+%copyctor OT::IndicesCollectionImplementation;
 %include openturns/IndicesCollectionImplementation.hxx
 
-%copyctor OT::IndicesCollectionImplementation;
 
 namespace OT{
 %extend IndicesCollectionImplementation {

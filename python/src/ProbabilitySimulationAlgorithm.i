@@ -6,6 +6,6 @@
 
 %include ProbabilitySimulationAlgorithm_doc.i
 
+%copyctor OT::ProbabilitySimulationAlgorithm;
 %include openturns/ProbabilitySimulationAlgorithm.hxx
 
-%copyctor OT::ProbabilitySimulationAlgorithm;

@@ -6,6 +6,6 @@
 
 %include EventSimulation_doc.i
 
+%copyctor OT::EventSimulation;
 %include openturns/EventSimulation.hxx
 
-%copyctor OT::EventSimulation;

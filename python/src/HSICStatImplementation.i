@@ -8,6 +8,6 @@
 
 %include HSICStatImplementation_doc.i
 
+%copyctor OT::HSICStatImplementation;
 %include openturns/HSICStatImplementation.hxx
 
-%copyctor OT::HSICStatImplementation;

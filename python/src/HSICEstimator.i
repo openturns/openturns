@@ -9,6 +9,6 @@
 
 OTTypedInterfaceObjectHelper(HSICEstimator)
 
+%copyctor OT::HSICEstimator;
 %include openturns/HSICEstimator.hxx
 
-%copyctor OT::HSICEstimator;
