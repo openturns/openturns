@@ -1,7 +1,7 @@
 %feature("docstring") OT::HermiteFactory
 R"RAW(Hermite specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Normal` distribution.
+For the :class:`~openturns.Normal` distribution :math:`\cN(0,1)`.
 
 Notes
 -----
@@ -10,18 +10,18 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+    P_{i + 1} & = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad  i \geq 0 \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Hermite polynomials come analytically and
-read:
+read for :math:`i \geq 0`:
 
 .. math::
 
-    \begin{array}{rcl}
-        a_i & = & \displaystyle \frac{1}{\sqrt{i + 1}} \\
-        b_i & = & 0 \\
-        c_i & = & \displaystyle - \sqrt{\frac{i}{i + 1}}
-    \end{array}, \quad 1 < i
+        a_i & =  \displaystyle \frac{1}{\sqrt{i + 1}} \\
+        b_i & =  0 \\
+        c_i & =  \displaystyle - \sqrt{\frac{i}{i + 1}}
 
 See also
 --------
@@ -35,4 +35,7 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 X
--0.707107 + 0.707107 * X^2)RAW"
+-0.707107 + 0.707107 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[0.707107,0,-0.707107]
+)RAW"

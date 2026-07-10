@@ -1,6 +1,6 @@
 """
-Create a FCE for dependent inputs: transformation vs domination
-===============================================================
+Create a FCE for dependent inputs: transformation or not
+========================================================
 """
 
 # %%
@@ -13,7 +13,7 @@ Create a FCE for dependent inputs: transformation vs domination
 # We provide one input sample and one output sample of the Ishigami function. We build two meta models:
 #
 # - Meta model 1: we use an isoprobabilistic transformation that maps the input distribution to another one with independent marginals.
-# - Meta model 2: we use the domination method: the basis of the projection space is not orthonormal to the input distribution.
+# - Meta model 2: we do not any isoprobabilistic transformation: the basis of the projection space is not orthonormal to the input distribution.
 #
 
 
@@ -120,7 +120,7 @@ view = otv.View(graph)
 # %%
 # We create the functional chaos algorithm.
 chaos_algo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, input_dist)
-chaos_algo.setUseDomination(False)
+chaos_algo.setUseTransformation(True)
 chaos_algo.run()
 
 # %%
@@ -141,20 +141,20 @@ val = ot.MetaModelValidation(outputTest, metamodel_predictions)
 r2Score = val.computeR2Score()[0]
 print(f"r2Score with Transformation method = {r2Score:.6f}")
 graph = val.drawValidation()
-graph.setTitle(f"R2={r2Score * 100:.2f}%, use domination = false")
+graph.setTitle(f"R2={r2Score * 100:.2f}%, with transformation")
 view = otv.View(graph)
 
 
 # %%
-# Meta model 2: Domination method
-# -------------------------------
-# Now, we want to use the domination method, which means that the basis created by the
+# Meta model 2: No transformation method
+# --------------------------------------
+# Now, we do not want to use any transformation, which means that the basis created by the
 # adaptive strategy is used to project the model. This basis is not orthonormal to
 # :math:`\mu_{\inputRV}`.
 #
-# We use the :meth:`~openturns.FunctionalChaosAlgorithm.setUseDomination` method.
+# We use the :meth:`~openturns.FunctionalChaosAlgorithm.setUseTransformation` method.
 # We implement the same steps as before, until the validation graph.
-chaos_algo.setUseDomination(True)
+chaos_algo.setUseTransformation(False)
 chaos_algo.run()
 
 chaos_result = chaos_algo.getResult()
@@ -162,19 +162,19 @@ metamodel_dom = chaos_result.getMetaModel()
 metamodel_dom_predictions = metamodel_dom(inputTest)
 val = ot.MetaModelValidation(outputTest, metamodel_dom_predictions)
 r2Score = val.computeR2Score()[0]
-print(f"r2Score with Domination method = {r2Score:.6f}")
+print(f"r2Score with No transformation method = {r2Score:.6f}")
 graph = val.drawValidation()
-graph.setTitle(f"R2={r2Score * 100:.2f}%, use domination = true")
+graph.setTitle(f"R2={r2Score * 100:.2f}%, no transformation")
 view = otv.View(graph)
 
 # %%
-# We can see that the meta model obtained with the domination method is largely better than
+# We can see that the meta model obtained is largely better than
 # the meta model
 # obtained with the Transformation method, even though
 # the multivariate basis of the approximation space is not orthonormal to the input distribution
 # :math:`\mu_{\inputRV}`.
 # It can be explained by the fact that the multivariate tensorized basis used by the
-# domination method is able to
+# no transformation method is able to
 # capture the tensorized structure of the Ishigami model. This was not the case of the
 # Transformation method which uses a basis in the :math:`\vect{X}` -space which is not tensorized,
 # due to the action of the isoprobabilist transformation.

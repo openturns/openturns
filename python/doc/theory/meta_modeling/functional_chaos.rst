@@ -243,8 +243,6 @@ This instrumental measure is such that:
 - the support of :math:`\tilde{p}` is larger than the support of :math:`\mu_{\inputRV}`,
 - :math:`\tilde{p}` has independent components.
 
-This choice is done in the **domination** strategy.
-
 Once the basis has been chosen, the enumeration function helps to enumerate the
 elements of the basis in a specific order
 (see :ref:`enumeration_multivariate_basis` and :ref:`enumeration_strategy` for more
@@ -266,7 +264,7 @@ Estimate the coefficients
 In this section, we give some elements to estimate the coefficients of the expansion.
 
 The vector of coefficients is the solution of the linear least-squares problem defined in
-:ref:`functional_chaos` by equation :eq:`metaModeleF`. Refer to :ref:`least_squares`
+equation :eq:`metaModeleF`. Refer to :ref:`least_squares`
 for more details on the resolution of the least-squares problem.
 
 The choice of basis of :math:`\cP_n` has a major impact on the conditioning of the
@@ -350,9 +348,11 @@ Usual exploitation of the functional chaos expansion
 There are many ways to use the functional chaos expansion. We present two usual exploitations:
 
 - using the expansion as a random vector generator,
-- performing the sensitivity analysis of the expansion.
+- performing the sensitivity analysis of the expansion,
+- using the conditional expectation of the output given an input vector.
 
-The first usage is to create a random vector :math:`\widetilde{Y}` defined by:
+**Functional Cahos Expansion as a random vector generator** : we create a random vector
+:math:`\widetilde{Y}` defined by:
 
 .. math::
 
@@ -362,7 +362,7 @@ This equation can be used to simulate independent random observations
 from the functional chaos expansion: see the :class:`~openturns.FunctionalChaosRandomVector`
 class for more details on this topic.
 
-The second usage assumes that the input distribution :math:`\mu_{\inputRV}` has
+**Sensitivity analysis** : this exploitation assumes that the input distribution :math:`\mu_{\inputRV}` has
 independent
 marginals and that the basis :math:`\left(\psi_k\right)_{k \in I_n}` is orthonormal
 with respect
@@ -381,8 +381,103 @@ The orthogonality of the functions implies that:
 for any non-zero :math:`i\neq 0`.
 
 In that case, the Sobol' indices can easily be deduced from the coefficients
-:math:`(a_k)_{k \in I_n, k\neq 0}`: see :class:`~openturns.FunctionalChaosSobolIndices` for
-more details on this topic.
+:math:`(a_k)_{k \in I_n, k\neq 0}`: for more details on this topic, see
+:class:`~openturns.FunctionalChaosSobolIndices`.
+
+
+**Conditional expectation** : we still assume that the input distribution :math:`\mu_{\inputRV}` has
+independent marginals and that the basis :math:`\left(\psi_k\right)_{k \in I_n}`  is orthonormal
+with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate basis
+orthonormal with respect to  the marginal distributions.
+
+The objective is to the functional chaos result corresponding to the conditional
+expectation of the output given an input vector. An example is provided in
+:doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_conditional_expectation`, using the method
+:meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`.
+
+Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`
+be a set of marginal indices.
+Let :math:`\inputRV_{\vect{u}} \in \Rset^{|\vect{u}|}` be the vector
+corresponding to the group of input variables where :math:`|\vect{u}| = \operatorname{card}(\vect{u})`
+is the number of input variables in the group and
+:math:`\inputRV_{\bar{\vect{u}}} \in \Rset^{|\bar{\vect{u}}|}`  the complementary group, so that
+we have:
+
+.. math::
+
+    \inputRV = \inputRV_{\vect{u}} \times \inputRV_{\bar{\vect{u}}}
+
+Let :math:`\metaModel(\inputRV)` be the functional chaos
+expansion of the physical model :math:`\model`.
+This function returns the functional chaos expansion of:
+
+.. math::
+
+    \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right)
+    = \mathbb{E}_{\vect{X}_{\overline{\vect{u}}}}
+    \left[\metaModel(\inputRV) | \inputRV_{\vect{u}} = \inputReal_{\vect{u}}\right]
+
+for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
+
+Given the tensorized structure of the basis :math:`(\psi_k)_{k \in I_n}`, we can write is as follows:
+
+.. math::
+    :label: tensBasis
+
+    \psi_{\vect{\alpha}}(\inputReal)
+    = \prod_{i = 1}^\inputDim \pi_{\alpha_i}^{(i)}(x_i)
+
+for any :math:`\vect{\alpha} \in \set{J}^P` and any
+:math:`\inputReal \in \Rset^{\inputDim}` where
+:math:`\left\{\pi_k^{(i)}\right\}_{k \geq 0}` is an orthonormal
+basis with respect to the :math:`i`-th input marginal. Then, the meta model :eq:`metaModelPn` can be
+expressed as:
+
+.. math::
+    :label: tensMM
+
+    \widetilde{h}(\inputReal)
+    = \sum_{\vect{\alpha} \in \set{J}^P}
+    a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\inputReal)
+
+Let :math:`\set{J}_{\vect{u}}^{\operatorname{ce}} \subseteq \set{J}^P` be the
+set of multi-indices having zero components when the marginal multi-index
+is not in :math:`\vect{u}`:
+
+.. math::
+
+    \set{J}_{\vect{u}}^{\operatorname{ce}}
+    = \left\{\vect{\alpha} \in \set{J}^P \; | \;
+    \alpha_i = 0 \textrm{ if } i \not \in \vect{u}, \; i = 1, ..., \inputDim\right\}.
+
+This set of multi-indices defines the functions that depends on the
+variables in the group :math:`\vect{u}` and *only* them.
+For any :math:`\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}`, let
+:math:`\psi_{\vect{\alpha}}^{\operatorname{ce}}` be the orthogonal polynomial defined by:
+
+.. math::
+
+    \psi_{\vect{\alpha}}^{\operatorname{ce}}(\inputReal_{\vect{u}})
+    =
+    \begin{cases}
+    \prod_{\substack{i = 1 \\ i \in \vect{u}}}^\inputDim \pi_{\alpha_i}^{(i)} (x_i) & \textrm{if } \alpha_i
+    = 0 \textrm{ for any } i \not \in \vect{u}, \\
+    1 & \textrm{if } \alpha_i = 0 \textrm{ for } i = 1, ..., \inputDim, \\
+    0 & \textrm{otherwise}.
+    \end{cases}
+
+
+Therefore :
+
+.. math::
+
+    \metaModel_{\vect{u}}\left(\inputReal_{\vect{u}}\right)
+    = \sum_{\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}}
+    a_{\vect{\alpha}} \psi_{\vect{\alpha}}^{\operatorname{ce}}(\inputReal_{\vect{u}})
+
+for any :math:`\standardReal_{\vect{u}} \in \standardInputSpace_{\vect{u}}`.
+
+
 
 .. topic:: API:
 

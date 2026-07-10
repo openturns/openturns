@@ -1,255 +1,128 @@
 """
-Create the Conditional expectation of a PCE
-===========================================
+Reduce the dimension of a model
+===============================
 """
 
 # %%
 #
-# In this example, we compute the conditional expectation of a polynomial
-# chaos expansion of the :ref:`Ishigami function <use-case-ishigami>` using
-# the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`
-# method.
+# In this example, we show different ways to reduce the input dimension of a model by
+# fixing some of its components to some given values:
+#
+# - simply fix some components to given values, using the :class:`~openturns.ParametricFunction`
+#   class,
+# - from a Functional Chaos Expansion, compute the mean of the meta model with respect to the free values,
+#   using the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation` method
+#   of the :class:`~openturns.FunctionalChaosResult` class. This case is valid only of the input random
+#   vector has independent marginals.
 
 # %%
 # Introduction
 # ~~~~~~~~~~~~
-# Let :math:`\inputDim \in \Nset`
-# be the dimension of the input random vector.
-# Let :math:`\Expect{\inputRV} \in \Rset^\inputDim`
-# be the mean of the input random vector :math:`\inputRV`.
-# Let :math:`\model` be the physical model:
+# Let :math:`\inputRV \in \Rset^{\inputDim}` be a random vector with finite mean and
+# :math:`\model` be a model:
 #
 # .. math::
 #     \model : \Rset^\inputDim \rightarrow \Rset.
 #
-# Given :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` a group
-# of input variables, we want to create a new function :math:`\widehat{\model}`:
+# Given :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` a set
+# of indices, we want to create a new function :math:`\widehat{\model}`:
 #
 # .. math::
 #     \widehat{\model}: \Rset^{|\vect{u}|} \rightarrow \Rset
 #
 # where :math:`|\vect{u}| = \operatorname{card}(\vect{u})` is the
-# number of variables in the group.
+# number of the remaining variables.
 #
-# In this example, we experiment two different ways to reduce the
-# input dimension of a polynomial chaos expansion:
+# Let :math:`\overline{\vect{u}}` be the complementary set of input
+# marginal indices:
 #
-# - the parametric function,
-# - the conditional expectation.
+# .. math::
 #
-# The goal of this page is to see how we can create these
-# functions and the difference between them.
+#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \inputDim\}.
 
 # %%
 # Parametric function
 # ~~~~~~~~~~~~~~~~~~~
 #
-# The simplest method to reduce the dimension of the input
-# is to set some input variables to constant values.
-# In this example, all marginal inputs, except those in
-# the conditioning indices are set to the mean of the input random vector.
-#
-# Let :math:`\overline{\vect{u}}` be the complementary set of input
-# marginal indices such that :math:`\vect{u}` and :math:`\overline{\vect{u}}`
-# form a disjoint partition of the full set of variable indices:
-#
-# .. math::
-#
-#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \inputDim\}.
-#
-# The parametric function with reduced dimension is:
+# The first method to reduce the dimension of the input
+# is to set some input variables to fixed values :math:`\vect{x}_{\overline{\vect{u}}}^0`.
+# The parametric function with reduced dimension is defined by:
 #
 # .. math::
 #
 #   \widehat{\model}(\inputReal_{\vect{u}})
 #   = \model\left(\inputReal_{\vect{u}},
 #            \inputReal_{\overline{\vect{u}}}
-#            = \Expect{\inputRV_{\overline{\vect{u}}}}\right)
+#            =  \inputReal_{\overline{\vect{u}}}^0\right)
 #
-# for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
-# The previous function is a parametric function based on the function :math:`\model`
-# where the parameter is :math:`\Expect{\inputRV_{\overline{\vect{u}}}}`.
-# Assuming that the input random vector has an independent copula,
-# computing :math:`\Expect{\inputRV_{\overline{\vect{u}}}}`
-# can be done by selecting the corresponding indices in :math:`\Expect{\inputRV}`.
+# for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`. The fixed values can be the mean
+# of the random vector :math:`\vect{X}_{\overline{\vect{u}}}` if it exists.
+#
+# The :math:`\widehat{\model}` function is a parametric function based on the function :math:`\model`
+# where the parameter is :math:`\inputReal_{\overline{\vect{u}}}^0`.
 # This function can be created using the :class:`~openturns.ParametricFunction`
 # class.
 
 # %%
-# Parametric PCE
+# Parametric FCE
 # ~~~~~~~~~~~~~~
 #
-# If the physical model is a PCE, then the associated parametric model is also a
-# PCE.
-# Its coefficients and the associated functional basis can be computed from
-# the original PCE.
-# A significant fact, however, is that the coefficients of the parametric
-# PCE are *not* the ones of the original PCE: the coefficients of the parametric
-# PCE have to be multiplied by factors which depend on the
-# value of the discarded basis functions on the parameter vector.
-# This feature is not currently available in the library.
-# However, we present it below as this derivation is interesting
-# to understand why the conditional expectation may behave
-# differently from the corresponding parametric PCE.
+# Assume here that the model has a finite variance and that it is expressed as a FunctionalChaos
+# Expansion (FCE). As done previously,
+# we can fix some of
+# its components to some given values so as  to get a model which depends on the free components only.
+#
+# Refer to :any:`functional_chaos` to get details on the mathematical aspects and the notations.
+# The model can be written as:
+#
+# .. math::
+#    :label: ModelFCE_ex
+#
+#    g(\inputReal)
+#    = \sum_{\vect{\alpha} \in \set{J}^P}
+#    a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\inputReal)
+#
+# and the orthonormal basis (which is a tensorized basis) can be written as:
+#
+# .. math::
+#
+#    \psi_{\vect{\alpha}}(\inputReal)
+#    = \prod_{i = 1}^\inputDim \pi_{\alpha_i}^{(i)}(x_i)
+#
+# so that the model conditionned to :math:`\vect{X}_{\bar{\vect{u}}} = \vect{x}_{\bar{\vect{u}}}^0`
+# can be written as:
+#
+# .. math::
+#
+#    \widehat{\model}(\vect{x}_{\vect{u}})
+#    = \sum_{\vect{\alpha} \in \set{J}^P}
+#    \left(a_{\vect{\alpha}} \prod_{i \in \bar{\vect{u}}} \pi_{\alpha_i}^{(i)}(x_i^0)\right)
+#    \prod_{j \in \vect{u}} \pi_{\alpha_j}^{(j)}(x_j).
+#
 
 # %%
-# Let :math:`\cJ^P \subseteq \Nset^{\inputDim}` be the set of
-# multi-indices corresponding to the truncated polynomial chaos expansion
-# up to the :math:`P`-th coefficient.
-# Let :math:`h` be the PCE in the standard space:
+# Conditional expectation of a FCE
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# The previous parametric FCE fixes some components to some given values. It is also possible to
+# compute the mean of the model :eq:`ModelFCE_ex` with respect to these components. In that case, we
+# get a FCE which is expressed in the free components. The resulting FCE is:
 #
 # .. math::
 #
-#     h(\standardReal) = \sum_{\vect{\alpha} \in \cJ^P}
-#         a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\standardReal).
-#
-# Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}` be a group of variables,
-# let :math:`\overline{\vect{u}}` be its complementary set such that
-#
-# .. math::
-#
-#     \vect{u} \; \dot{\cup} \; \overline{\vect{u}} = \{1, ..., \inputDim\}
-#
-# i.e. the groups :math:`\vect{u}` and :math:`\overline{\vect{u}}` create a disjoint partition
-# of the set :math:`\{1, ..., \inputDim\}`.
-# Let :math:`|\vect{u}| \in \Nset` be the number of elements
-# in the group :math:`\vect{u}`.
-# Hence, we have :math:`|\vect{u}| + |\overline{\vect{u}}| = \inputDim`.
-
-# %%
-# Let :math:`\standardReal_{\vect{u}}^{(0)} \in \Rset^{|\vect{u}|}`
-# be a given point.
-# We are interested in the function :
-#
-# .. math::
-#
-#     \widehat{h}(\standardReal_{\overline{\vect{u}}})
-#     = h\left(\standardReal_{\overline{\vect{u}}},
-#     \standardReal_{\vect{u}}^{(0)}\right)
-#
-# for any :math:`\standardReal_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
-# We assume that the polynomial basis are defined by the tensor product:
-#
-# .. math::
-#
-#     \psi_{\vect{\alpha}}\left(\standardReal\right)
-#     = \prod_{i = 1}^{\inputDim}
-#     \pi_{\alpha_i}^{(i)}\left(\standardReal\right)
-#
-# for any :math:`\standardReal \in \standardInputSpace`
-# where :math:`\pi_{\alpha_i}^{(i)}` is the polynomial of degree
-# :math:`\alpha_i` of the :math:`i`-th input standard variable.
-#
-# Let :math:`\vect{u} = (u_i)_{i = 1, ..., |\vect{u}|}` denote the components of the
-# group :math:`\vect{u}` where :math:`|\vect{u}|` is the number of elements in the group.
-# Similarly, let :math:`\overline{\vect{u}} = (\overline{u}_i)_{i = 1, ..., |\overline{\vect{u}}|}` denote the
-# components of the complementary group :math:`\overline{\vect{u}}`.
-# The components of :math:`\standardReal \in \Rset^{\inputDim}`
-# which are in the group :math:`\vect{u}` are :math:`\left(z_{u_i}^{(0)}\right)_{i = 1, ..., |\vect{u}|}`
-# and the complementary components are
-# :math:`\left(z_{\overline{u}_i}\right)_{i = 1, ..., |\overline{\vect{u}}|}`.
-
-# %%
-# Let :math:`\overline{\psi}_{\overline{\vect{\alpha}}}` be the reduced polynomial:
-#
-# .. math::
-#    :label: PCE_CE_1
-#
-#     \overline{\psi}_{\overline{\vect{\alpha}}}(z_{\overline{\vect{u}}})
-#     = \left(\prod_{i = 1}^{|\overline{\vect{u}}|}
-#        \pi_{\alpha_{\overline{u}_i}}^{(\overline{u}_i)}
-#        \left(\standardReal_{\overline{u}_i}\right) \right)
-#
-# where :math:`\overline{\vect{\alpha}} \in \Nset^{|\vect{u}|}` is the reduced multi-index
-# defined from the multi-index :math:`\vect{\alpha}\in \Nset^{\inputDim}`
-# by the equation:
-#
-# .. math::
-#
-#     \overline{\alpha}_i = \alpha_{\overline{u}_i}
-#
-# for :math:`i = 1, ..., |\overline{\vect{u}}|`.
-# The components of the reduced multi-index :math:`\overline{\vect{\alpha}}` which corresponds
-# to the components of the multi-index given by the complementary group :math:`|\vect{u}|`.
-
-# %%
-# We must then gather the reduced multi-indices.
-# Let :math:`\overline{\cJ}^P` be the set of unique reduced multi-indices:
-#
-# .. math::
-#    :label: PCE_CE_2
-#
-#     \overline{\cJ}^P = \left\{\overline{\vect{\alpha}} \in \Nset^{|\vect{u}|}
-#     \; | \; \vect{\alpha} \in \cJ^P\right\}.
-#
-# For any reduced multi-index :math:`\overline{\vect{\alpha}} \in \overline{\cJ}^P`
-# of dimension :math:`|\overline{\vect{u}}|`,
-# we note :math:`\cJ_{\overline{\vect{\alpha}}}^P`
-# the set of corresponding (un-reduced) multi-indices of
-# dimension :math:`\inputDim`:
-#
-# .. math::
-#    :label: PCE_CE_3
-#
-#     \cJ_{\overline{\vect{\alpha}}}^P
-#     = \left\{\vect{\alpha} \in \cJ^P \; |\; \overline{\alpha}_i
-#     = \alpha_{\overline{u}_i}, \; i = 1, ..., |\overline{\vect{u}}|\right\}.
-#
-# Each aggregated coefficient :math:`\overline{a}_{\overline{\vect{\alpha}}} \in \Rset`
-# is defined by the equation:
-#
-# .. math::
-#    :label: PCE_CE_5
-#
-#     \overline{a}_{\overline{\vect{\alpha}}}
-#     = \sum_{\vect{\alpha} \in \cJ^P_{\overline{\vect{\alpha}}}}
-#     a_{\vect{\alpha}} \left(\prod_{i = 1}^{|\vect{u}|}
-#     \pi_{\alpha_{u_i}}^{(u_i)}\left(\standardReal_{u_i}^{(0)}\right) \right).
-#
-# Finally:
-#
-# .. math::
-#    :label: PCE_CE_4
-#
-#     \widehat{h}(\standardReal_{\overline{\vect{u}}})
-#     = \sum_{\overline{\vect{\alpha}} \in \overline{\cJ}^P}
-#     \overline{a}_{\overline{\vect{\alpha}}}
-#     \overline{\psi}(z_{\overline{\vect{u}}})
-#
-# for any :math:`\standardReal_{\overline{\vect{u}}} \in \Rset^{|\overline{\vect{u}}|}`.
-
-# %%
-# The method is the following.
-#
-# - Create the reduced polynomial basis from equation :eq:`PCE_CE_1`.
-# - Create the list of reduced multi-indices from the equation :eq:`PCE_CE_2`, and, for each
-#   reduced multi-index, the list of corresponding multi-indices from the equation :eq:`PCE_CE_3`.
-# - Aggregate the coefficients from the equation :eq:`PCE_CE_5`.
-# - The parametric PCE is defined by the equation :eq:`PCE_CE_4`.
-
-# %%
-# Conditional expectation
-# ~~~~~~~~~~~~~~~~~~~~~~~
-#
-# One method to reduce the input dimension of a function is to
-# consider its conditional expectation.
-# The conditional expectation function is:
-#
-# .. math::
-#
-#   \widehat{\model}(\inputReal_{\vect{u}})
-#   = \Expect{\model(\inputReal)
-#            \; | \; \inputRV_{\vect{u}}
-#            = \inputReal_{\vect{u}}}
+#   \widehat{\model}(\vect{u})\left(\inputReal_{\vect{u}}\right)  =
+#   \mathbb{E}_{\vect{X}_{\overline{\vect{u}}}}
+#    \left[\model(\inputRV) | \inputRV_{\vect{u}} = \inputReal_{\vect{u}}\right]
 #
 # for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
-# In general, there is no dedicated method to create such a conditional expectation
-# in the library.
-# We can, however, efficiently compute the conditional expectation of a polynomial
-# chaos expansion.
-# In turn, this conditional chaos expansion (PCE) is a polynomial chaos expansion
-# which can be computed using the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`
-# method from the :class:`~openturns.FunctionalChaosResult` class.
+#
+# This reduced model is the conditional FCE, computed by the
+# :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`
+# method from the :class:`~openturns.FunctionalChaosResult` class. This method assumes that the input
+# distribution :math:`\mu_{\inputRV}` has
+# independent marginals and that the basis :math:`\left(\psi_k\right)_{k \in I_n}`  is orthonormal
+# with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate basis
+# orthonormal with respect to  the marginal distributions.
 
 # %%
 # Create the PCE
@@ -297,10 +170,6 @@ def meanParametricPCE(chaosResult, indices):
         The reducedInputDimension is equal to inputDimension - indices.getSize().
     """
     distribution = chaosResult.getDistribution()
-    if not distribution.hasIndependentCopula():
-        raise ValueError(
-            "The input distribution has a copula" "which is not independent"
-        )
     # Create the parametric function
     pceFunction = chaosResult.getMetaModel()
     xMean = distribution.getMean()
@@ -451,7 +320,7 @@ print(parametricPCEFunction.getInputDimension())
 # :math:`\widehat{\model}_1(\inputReal_1)`,
 # :math:`\widehat{\model}_2(\inputReal_2)` and
 # :math:`\widehat{\model}_3(\inputReal_3)`.
-# For each marginal index `i`, we we plot the output :math:`Y`
+# For each marginal index `i`, we  plot the output :math:`Y`
 # against the input marginal :math:`X_i` of the sample.
 # Then we plot the parametric function depending on :math:`X_i`.
 
@@ -515,6 +384,7 @@ plt.subplots_adjust(wspace=0.4, right=0.7, bottom=0.25)
 # %%
 # In the next cell, we create the conditional expectation function
 # :math:`\Expect{\model(\inputReal) \; | \; \inputRV_1 = \inputReal_1}`.
+# The input random vector satisfies the required conditions to use the method.
 
 # %%
 conditionalPCE = chaosResult.getConditionalExpectation([0])

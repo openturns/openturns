@@ -44,14 +44,23 @@ This class estimates the parameters of the surrogate model
     \metaModel(\vect{x}) = \vect{c} + \Tr{\mat{L}} ( \vect{x} - \vect{b} )
       + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )} \tens{M} ( \vect{x} - \vect{b} )
 
-for any :math:`\vect{x} \in \Rset^\inputDim`.
+for any :math:`\vect{x} \in \Rset^\inputDim`, where:
+
+where:
+
+- :math:`\mat{L}` is a matrix with :math:`\inputDim` lines and :math:`\outputDim` columns,
+- :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`,
+- :math:`\vect{c}` is a  vector in :math:`\Rset^\outputDim`,
+- :math:`\tens{M}` is a :math:`\Rset^\outputDim \times \Rset^\inputDim \times \Rset^\inputDim` symmetric
+  tensor.
+
 
 Refer to :ref:`least_squares` to get details on general least squares surrogate models and
 to get information on the estimation of
-the symmetric tensor :math:`\tens{M} \in \Rset^{\outputDim \times \inputDim \times \inputDim}`,
-the matrix :math:`\mat{L} \in \cM_{\inputDim, \outputDim}`,
-the center vector :math:`\vect{b}\in \Rset^\inputDim` and
-the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
+the symmetric tensor :math:`\tens{M}`,
+the matrix :math:`\mat{L}`,
+the center vector :math:`\vect{b}` and
+the constant vector :math:`\vect{c}`.
 
 See also
 --------
