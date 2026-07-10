@@ -6,13 +6,7 @@
 
 %include RandomGeneratorState_doc.i
 
+%copyctor OT::RandomGeneratorState;
+
 %include openturns/RandomGeneratorState.hxx
 
-
-namespace OT {
-%extend RandomGeneratorState {
-  RandomGeneratorState(const RandomGeneratorState & other) { return new OT::RandomGeneratorState(other); }
-  Bool __eq__(const RandomGeneratorState & other) { return (*self) == other; }
-
-} //RandomGeneratorState
-} //OT

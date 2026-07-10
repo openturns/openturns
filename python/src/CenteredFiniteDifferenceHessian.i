@@ -6,14 +6,10 @@
 
 %include CenteredFiniteDifferenceHessian_doc.i
 
+%copyctor OT::CenteredFiniteDifferenceHessian;
 %include openturns/CenteredFiniteDifferenceHessian.hxx
 namespace OT {  
 %extend CenteredFiniteDifferenceHessian {
-
- CenteredFiniteDifferenceHessian(const CenteredFiniteDifferenceHessian & other)
- {
-   return new OT::CenteredFiniteDifferenceHessian(other);
- }
 
  CenteredFiniteDifferenceHessian(const Point & epsilon,
                                  const EvaluationImplementation & evaluation)

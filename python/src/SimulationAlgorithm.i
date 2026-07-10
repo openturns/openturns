@@ -27,14 +27,12 @@ static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
 %ignore OT::SimulationAlgorithm::setProgressCallback(ProgressCallback callBack, void * data);
 %ignore OT::SimulationAlgorithm::setStopCallback(StopCallback callBack, void * data);
 
+%copyctor OT::SimulationAlgorithm;
 %include openturns/SimulationAlgorithm.hxx
 
 namespace OT {
 
-
 %extend SimulationAlgorithm {
-
-SimulationAlgorithm(const SimulationAlgorithm & other) { return new OT::SimulationAlgorithm(other); }
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
@@ -56,4 +54,3 @@ void setStopCallback(PyObject * callBack) {
 
 } // SimulationAlgorithm
 } // OT
-

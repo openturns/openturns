@@ -15,8 +15,8 @@
 
 %apply const FieldImplementation & { const OT::FieldImplementation & };
 
+%copyctor OT::FieldImplementation;
 %include openturns/FieldImplementation.hxx
-
 
 namespace OT{
 %extend FieldImplementation {
@@ -46,7 +46,6 @@ void __setitem__ (SignedInteger index,
   self->at(index) = val;
 }
 
-
 UnsignedInteger __len__() const
 {
   return self->getSize();
@@ -71,7 +70,6 @@ Scalar __getitem__(PyObject * args) const {
           }
           arg2 = static_cast< OT::UnsignedInteger >(val2);
 
-
           ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
           if (!SWIG_IsOK(ecode3)) {
             SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FieldImplementation___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
@@ -82,8 +80,6 @@ Scalar __getitem__(PyObject * args) const {
 fail:
           return 0.;
 }
-
-
 
 void __setitem__(PyObject * args, Scalar val) {
 
@@ -112,12 +108,6 @@ void __setitem__(PyObject * args, Scalar val) {
 fail:
           return;
 }
-
-FieldImplementation(const FieldImplementation & other)
-{
-  return new OT::FieldImplementation(other);
-}
-
 
 } // %extend
 } // OT

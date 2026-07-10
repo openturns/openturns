@@ -3,8 +3,6 @@
 %{
 #include "openturns/ProcessSample.hxx"
 
-
-
 namespace OT {
   template <>
   inline
@@ -44,16 +42,11 @@ namespace OT {
 
 OTTypedInterfaceObjectHelper(ProcessSample)
 
+%copyctor OT::ProcessSample;
 %include openturns/ProcessSample.hxx
-
 
 namespace OT {
 %extend ProcessSample {
-
-ProcessSample(const ProcessSample & other)
-{
-  return new OT::ProcessSample(other);
-}
 
 Sample __getitem__(SignedInteger index) const
 {
@@ -218,4 +211,3 @@ UnsignedInteger __len__() const
 } // ProcessSample
 
 } // OT
-

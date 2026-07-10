@@ -6,17 +6,6 @@
 
 %include BlockIndependentCopula_doc.i
 
+%copyctor OT::BlockIndependentCopula;
+
 %include openturns/BlockIndependentCopula.hxx
-
-namespace OT {
-
-%extend BlockIndependentCopula {
-
-BlockIndependentCopula(const BlockIndependentCopula & other)
-{
-  return new OT::BlockIndependentCopula(other);
-}
-
-} // BlockIndependentCopula
- 
-} // OT

@@ -6,12 +6,5 @@
 
 %include VertexValuePointToFieldFunction_doc.i
 
+%copyctor OT::VertexValuePointToFieldFunction;
 %include openturns/VertexValuePointToFieldFunction.hxx
-
-namespace OT {
-%extend VertexValuePointToFieldFunction {
-
-VertexValuePointToFieldFunction(const VertexValuePointToFieldFunction & other) { return new OT::VertexValuePointToFieldFunction(other); }
-
-}}
-
