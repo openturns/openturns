@@ -32,6 +32,9 @@
 #include "openturns/SubsetSampling.hxx"
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
+#include "openturns/ActiveLearningReliabilityFunction.hxx"
+
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -71,74 +74,79 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   
 /** Constructor with NAIS */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                                                        const NAIS & reliabilityAlgorithm)
+                                                                        const NAIS & reliabilityAlgorithm,
+                                                                        const ActiveLearningUFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new NAIS(reliabilityAlgorithm);
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new NAIS(reliabilityAlgorithm);    
-    
-    //std::cout<<currentSimulationAlgorithm_->getInputSample()<<std::endl;
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();  
+    p_activeLearningFunction = activelearningFunction.clone();
+
   }
 
 /** Constructor with StandardSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                                                        const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm)
+                                                                        const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
+                                                                        const ActiveLearningUFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new StandardSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_activeLearningFunction = activelearningFunction.clone();
   }
 
 /** Constructor with PhysicalSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                                                        const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm)
+                                                                        const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
+                                                                        const ActiveLearningUFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new PhysicalSpaceCrossEntropyImportanceSampling(reliabilityAlgorithm);
-
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_activeLearningFunction = activelearningFunction.clone();
   }
   
      
 /** Constructor with SubsetSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                                                        const SubsetSampling & reliabilityAlgorithm)
+                                                                        const SubsetSampling & reliabilityAlgorithm,
+                                                                        const ActiveLearningUFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new SubsetSampling(reliabilityAlgorithm);
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new SubsetSampling(reliabilityAlgorithm);
-
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_activeLearningFunction = activelearningFunction.clone();
   }
 
 /** Constructor with ProbabilitySimulationAlgorithm*/   
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                                                        const ProbabilitySimulationAlgorithm  &reliabilityAlgorithm)
+                                                                        const ProbabilitySimulationAlgorithm  &reliabilityAlgorithm,
+                                                                        const ActiveLearningUFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   {
-    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();//new ProbabilitySimulationAlgorithm(reliabilityAlgorithm);
-
+    p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
+    p_activeLearningFunction = activelearningFunction.clone();
   }
                             
 /* Virtual constructor */
@@ -158,9 +166,9 @@ void ActiveLearningReliabilityAlgorithm::run()
   UnsignedInteger size = inputDoE_.getSize();
   
 
-  std::cout<<"-------------------------Simulation algo-------------------"<<std::endl;
+  /*std::cout<<"-------------------------Simulation algo-------------------"<<std::endl;
   std::cout<<p_currentSimulationAlgorithm_<<std::endl;
-  std::cout<<p_currentSimulationAlgorithm_->getResult()<<std::endl;
+  std::cout<<p_currentSimulationAlgorithm_->getResult()<<std::endl;*/
   
   /* training of initial GPR */  
   GaussianProcessFitter currentFitter = defaultGPFitter_;
@@ -183,7 +191,7 @@ void ActiveLearningReliabilityAlgorithm::run()
                                                defaultEvent_.getThreshold());
 
   
-  std::cout<< " ------------------ Simulation algorithm with initial event------------------" <<std::endl;
+  /*std::cout<< " ------------------ Simulation algorithm with initial event------------------" <<std::endl;
   std::cout<< *p_currentSimulationAlgorithm_ <<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
                                                              
@@ -195,10 +203,10 @@ void ActiveLearningReliabilityAlgorithm::run()
   std::cout<< " ------------------ Verification of setter of event completed------------------" <<std::endl;
   
 
-  std::cout<< " ------------------ Run of algorithm------------------" <<std::endl;  
+  std::cout<< " ------------------ Run of algorithm------------------" <<std::endl;  */
   p_currentSimulationAlgorithm_->run();
 
-  std::cout<< " ------------------ getResult().getProbabilityEstimate() ------------------" <<std::endl;
+  /*std::cout<< " ------------------ getResult().getProbabilityEstimate() ------------------" <<std::endl;
   std::cout<< p_currentSimulationAlgorithm_->getResult().getProbabilityEstimate() <<std::endl;
 
   std::cout<< " -------------------------------------------------" <<std::endl;
@@ -213,8 +221,22 @@ void ActiveLearningReliabilityAlgorithm::run()
 
   std::cout<< " ------------------ Input Sample ------------------" <<std::endl;
   std::cout<< p_currentSimulationAlgorithm_->getInputSample()<<std::endl;
+  std::cout<< " -------------------------------------------------" <<std::endl;*/
+  
+  Sample currentInputSample = p_currentSimulationAlgorithm_->getInputSample();
+   
+  //const Sample activeLearningValues = activelearningFunction_(currentInputSample);
+  
+  std::cout<< " ------------------ AK criterion values ------------------" <<std::endl;
+  std::cout<< p_activeLearningFunction<<std::endl;
   std::cout<< " -------------------------------------------------" <<std::endl;
-
+  
+  p_activeLearningFunction->setGaussianProcessRegression(currentGPRResult);
+  
+  Sample activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
+  std::cout<< " ------------------ AK criterion values ------------------" <<std::endl;
+  std::cout<< activeLearningValues<<std::endl;
+  std::cout<< " -------------------------------------------------" <<std::endl;  
 }
 
 

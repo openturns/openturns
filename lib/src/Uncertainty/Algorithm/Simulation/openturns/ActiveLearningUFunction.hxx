@@ -45,7 +45,11 @@ class OT_API ActiveLearningUFunction
   ActiveLearningUFunction (const Scalar reliabilityThreshold,
                            const GaussianProcessRegressionResult & gprResult,
                            const Scalar learningThreshold);
-
+                           
+  /* Constructor with parameters */
+  ActiveLearningUFunction(const Scalar reliabilityThreshold,
+                          const Scalar learningThreshold);
+                          
   /** Virtual constructor */
   ActiveLearningUFunction * clone() const override;
 
@@ -54,6 +58,9 @@ class OT_API ActiveLearningUFunction
   
   /** Check convergence of learning */
   Bool checkConvergenceLearning(const Sample  & criterionValues) const override;
+  
+  /** String converter */
+  String __repr__() const override;
   
 } ; /* class ActiveLearningUFunction */
 

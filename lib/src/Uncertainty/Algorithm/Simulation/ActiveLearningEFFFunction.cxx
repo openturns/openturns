@@ -51,7 +51,17 @@ ActiveLearningEFFFunction::ActiveLearningEFFFunction(const Scalar reliabilityThr
                                         learningThreshold)
   {
   }
+  
+  
+/* Constructor with parameters */
+ActiveLearningEFFFunction::ActiveLearningEFFFunction(const Scalar reliabilityThreshold,
 
+                                                     const Scalar learningThreshold)
+    : ActiveLearningReliabilityFunction(reliabilityThreshold,
+                                        learningThreshold)
+  {
+  }
+  
 /* Virtual constructor */
 ActiveLearningEFFFunction * ActiveLearningEFFFunction::clone() const
 {
@@ -102,6 +112,15 @@ Bool ActiveLearningEFFFunction::checkConvergenceLearning(const Sample & criterio
   {
     return false;
   } 
+}
+
+/* String converter */
+String ActiveLearningEFFFunction::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << ActiveLearningReliabilityFunction::__repr__();
+  return oss;
 }
 
 

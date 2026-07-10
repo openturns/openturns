@@ -51,10 +51,28 @@ ActiveLearningUFunction::ActiveLearningUFunction(const Scalar reliabilityThresho
   {
   }
 
+/* Constructor with parameters */
+ActiveLearningUFunction::ActiveLearningUFunction(const Scalar reliabilityThreshold,
+                                                 const Scalar learningThreshold)
+    : ActiveLearningReliabilityFunction(reliabilityThreshold,
+                                        learningThreshold)
+  {
+  }
+  
 /* Virtual constructor */
 ActiveLearningUFunction * ActiveLearningUFunction::clone() const
 {
   return new ActiveLearningUFunction(*this);
+}
+
+
+/* String converter */
+String ActiveLearningUFunction::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << ActiveLearningReliabilityFunction::__repr__();
+  return oss;
 }
 
 
