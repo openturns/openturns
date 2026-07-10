@@ -83,8 +83,8 @@ Scalar ActiveLearningUFunction::computeAsScalar(const Point & x) const
   const Scalar sk2 = gprCov_.getConditionalMarginalVariance(x);
   const Scalar sk = std::sqrt(sk2);
     
-  const Scalar u = std::abs(mx - reliabilityThreshold_) / sk;
-    
+  const Scalar u = std::abs(mx - reliabilityThreshold_) / (sk+1e-10);
+
   return u;
 }
 
@@ -102,6 +102,20 @@ Bool ActiveLearningUFunction::checkConvergenceLearning(const Sample & criterionV
     return false;
   } 
 }
+
+/* Return sample corresponding to U criterion*/
+Sample ActiveLearningUFunction::getInfillSample(const Sample & inputSample,
+                                                const Sample & criterionValues) const 
+{
+  Indices indextoReturn(1);
+  indextoReturn[0] = criterionValues.argsort(true)[0];
+ 
+  Sample sampleToReturn = Sample(inputSample.select(indextoReturn));
+
+  return sampleToReturn;
+}
+
+
   
   
 END_NAMESPACE_OPENTURNS

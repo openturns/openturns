@@ -68,8 +68,21 @@ ActiveLearningEFFFunction * ActiveLearningEFFFunction::clone() const
   return new ActiveLearningEFFFunction(*this);
 }
 
+/* Return sample corresponding to EFF criterion*/
+Sample ActiveLearningEFFFunction::getInfillSample(const Sample & inputSample,
+                                                  const Sample & criterionValues) const 
+{
+  Indices indextoReturn(1);
+  
+  indextoReturn[0] = criterionValues.argsort(false)[0];
+  
+  Sample sampleToReturn(inputSample.select(indextoReturn));
+  
+  return sampleToReturn;
+}
 
-/* Compute U criterion for one sample */
+
+/* Compute EFF criterion for one sample */
 Scalar ActiveLearningEFFFunction::computeAsScalar(const Point & x) const
 {
 

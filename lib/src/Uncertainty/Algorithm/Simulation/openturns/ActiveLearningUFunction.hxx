@@ -62,6 +62,9 @@ class OT_API ActiveLearningUFunction
   /** String converter */
   String __repr__() const override;
   
+  /* return infill Sample */
+  Sample getInfillSample(const Sample & inputSample,
+                         const Sample & criterionValues) const override;
 } ; /* class ActiveLearningUFunction */
 
 END_NAMESPACE_OPENTURNS

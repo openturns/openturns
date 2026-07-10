@@ -165,11 +165,6 @@ void ActiveLearningReliabilityAlgorithm::run()
   const Function model(defaultEvent_.getFunction());
   UnsignedInteger size = inputDoE_.getSize();
   
-
-  /*std::cout<<"-------------------------Simulation algo-------------------"<<std::endl;
-  std::cout<<p_currentSimulationAlgorithm_<<std::endl;
-  std::cout<<p_currentSimulationAlgorithm_->getResult()<<std::endl;*/
-  
   /* training of initial GPR */  
   GaussianProcessFitter currentFitter = defaultGPFitter_;
   currentFitter.run();
@@ -189,54 +184,127 @@ void ActiveLearningReliabilityAlgorithm::run()
   ThresholdEvent currentEvent = ThresholdEvent(currentRandomVector,
                                                defaultEvent_.getOperator(),
                                                defaultEvent_.getThreshold());
-
-  
-  /*std::cout<< " ------------------ Simulation algorithm with initial event------------------" <<std::endl;
-  std::cout<< *p_currentSimulationAlgorithm_ <<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;
-                                                             
   p_currentSimulationAlgorithm_->setEvent(currentEvent);
-  std::cout<< " ------------------ Simulation algorithm with new event------------------" <<std::endl;
-  std::cout<< *p_currentSimulationAlgorithm_ <<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;
-
-  std::cout<< " ------------------ Verification of setter of event completed------------------" <<std::endl;
-  
-
-  std::cout<< " ------------------ Run of algorithm------------------" <<std::endl;  */
   p_currentSimulationAlgorithm_->run();
 
-  /*std::cout<< " ------------------ getResult().getProbabilityEstimate() ------------------" <<std::endl;
-  std::cout<< p_currentSimulationAlgorithm_->getResult().getProbabilityEstimate() <<std::endl;
-
-  std::cout<< " -------------------------------------------------" <<std::endl;
-
-  std::cout<< " ------------------ ->getResult() ------------------" <<std::endl;
-  std::cout<< p_currentSimulationAlgorithm_->getResult() <<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;
-  
-  std::cout<< " ------------------ Algorithm ------------------" <<std::endl;
-  std::cout<< *p_currentSimulationAlgorithm_<<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;
-
-  std::cout<< " ------------------ Input Sample ------------------" <<std::endl;
-  std::cout<< p_currentSimulationAlgorithm_->getInputSample()<<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;*/
-  
   Sample currentInputSample = p_currentSimulationAlgorithm_->getInputSample();
    
-  //const Sample activeLearningValues = activelearningFunction_(currentInputSample);
-  
-  std::cout<< " ------------------ AK criterion values ------------------" <<std::endl;
-  std::cout<< p_activeLearningFunction<<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;
-  
   p_activeLearningFunction->setGaussianProcessRegression(currentGPRResult);
   
   Sample activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
-  std::cout<< " ------------------ AK criterion values ------------------" <<std::endl;
-  std::cout<< activeLearningValues<<std::endl;
-  std::cout<< " -------------------------------------------------" <<std::endl;  
+  Sample infillInputSample = p_activeLearningFunction->getInfillSample(currentInputSample, activeLearningValues);
+  
+
+  Bool activeLearningIndicator;
+  activeLearningIndicator = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
+  
+  std::cout<< "----------------------- First probability -----------------------"<<std::endl;  
+  std::cout<<p_currentSimulationAlgorithm_->getResult()<<std::endl;   
+  std::cout<< "----------------------- --------- -----------------------"<<std::endl;
+  
+  std::cout<< "----------------------- is converged before loop? -----------------------"<<std::endl;  
+  std::cout<<activeLearningIndicator<<std::endl;   
+  std::cout<< "----------------------- --------- -----------------------"<<std::endl;
+  
+  int iterationNumber = 0;
+  
+  while (iterationNumber<5)
+  {
+    // Evaluation of infill sample
+    Sample infillOutputSample = model( infillInputSample);
+      
+    // Update of GPR
+    inputDoE_.add(infillInputSample);
+    outputDoE_.add(infillOutputSample);
+    GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
+                                                              outputDoE_,
+                                                              currentFitter.getResult().getCovarianceModel(),
+                                                              currentFitter.getResult().getBasis());
+    newGPfitter.run();
+    
+    GaussianProcessRegression newGPR;
+    newGPR = GaussianProcessRegression(newGPfitter.getResult());
+    newGPR.run();
+      
+    GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
+
+      
+    /* Update of current event with metamodel as function */  
+
+    /*
+    Function newGPRmetamodel =  newGPRResult.getMetaModel();
+    CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
+                                                                  RandomVector(inputDistribution));
+                                                                        
+    ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
+                                             defaultEvent_.getOperator(),
+                                             defaultEvent_.getThreshold());
+                                                   
+    Pointer<EventSimulation> p_newSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+      
+    p_newSimulationAlgorithm_->setEvent(newEvent);
+      
+    p_newSimulationAlgorithm_->run();
+      
+    std::cout<< "----------------------- New probability -----------------------"<<std::endl;  
+    std::cout<<p_newSimulationAlgorithm_->getResult()<<std::endl;   
+    std::cout<< "----------------------- --------- -----------------------"<<std::endl;
+      
+    currentInputSample = p_newSimulationAlgorithm_->getInputSample();*/
+   
+    p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
+    activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
+    std::cout<< "----------------------------U sample---------------------------------------"<<std::endl;
+    std::cout<<      activeLearningValues<<std::endl;
+    infillInputSample = p_activeLearningFunction->getInfillSample(currentInputSample, activeLearningValues);
+    
+    activeLearningIndicator = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
+
+    std::cout<< "----------------------------infill input---------------------------------------"<<std::endl;
+     std::cout<<      infillInputSample<<std::endl;
+    std::cout<< "----------------------------infill output---------------------------------------"<<std::endl;
+    std::cout<<      model(infillInputSample)<<std::endl;
+    std::cout<< "----------------------------size DOE---------------------------------------"<<std::endl;      
+    std::cout<<     inputDoE_.getSize()<<std::endl;
+    std::cout<< "----------------------------Min U---------------------------------------"<<std::endl;
+    std::cout<<(*p_activeLearningFunction)(Sample(infillInputSample));
+    std::cout<<"---------------------------Is AK converged------------------------------"<<std::endl;
+    std::cout<<activeLearningIndicator<<std::endl;
+    std::cout<< "----------------------- --------- -----------------------"<<std::endl;
+    
+    iterationNumber += 1;
+  }
+  // test probability estimation
+  
+  GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
+                                                              outputDoE_,
+                                                              currentFitter.getResult().getCovarianceModel(),
+                                                              currentFitter.getResult().getBasis());
+  newGPfitter.run();
+    
+  GaussianProcessRegression newGPR;
+  newGPR = GaussianProcessRegression(newGPfitter.getResult());
+  newGPR.run();
+      
+  GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
+  Function newGPRmetamodel =  newGPRResult.getMetaModel();
+  CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
+                                                                  RandomVector(inputDistribution));
+                                                                        
+  ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
+                                             defaultEvent_.getOperator(),
+                                             defaultEvent_.getThreshold());
+                                                   
+  Pointer<EventSimulation> p_newSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+      
+  p_newSimulationAlgorithm_->setEvent(newEvent);
+      
+  p_newSimulationAlgorithm_->run();
+      
+  std::cout<< "----------------------- New probability -----------------------"<<std::endl;  
+  std::cout<<p_newSimulationAlgorithm_->getResult()<<std::endl; 
+                                                            
+    
 }
 
 

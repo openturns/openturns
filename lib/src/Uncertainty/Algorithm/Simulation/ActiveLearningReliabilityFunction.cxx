@@ -97,6 +97,12 @@ Bool ActiveLearningReliabilityFunction::checkConvergenceLearning(const Sample & 
   throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::checkConvergenceLearning(const Sample & criterionValues)";
 }
 
+/* Return sample corresponding to  criterion*/
+Sample ActiveLearningReliabilityFunction::getInfillSample(const Sample & inputSample,
+                                                          const Sample & criterionValues) const 
+{
+  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::findSampletoEvaluate(const Sample & inputSample, const Sample & criterionValues) "; 
+}
 
 /* String converter */
 String ActiveLearningReliabilityFunction::__repr__() const
