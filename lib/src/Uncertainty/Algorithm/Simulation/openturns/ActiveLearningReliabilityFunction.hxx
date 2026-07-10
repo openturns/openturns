@@ -71,12 +71,16 @@ public:
   
   Sample operator()(const Sample & inputSample) const override; 
   
+  /* return infill Sample */
+  virtual Sample getInfillSample(const Sample & inputSample,
+                                 const Sample & criterionValues) const ;
+                                 
+  virtual Bool checkConvergenceLearning(const Sample & criterionValues) const;
+  
 protected:
 
   virtual Scalar computeAsScalar(const Point & x) const;
-  
-  virtual Bool checkConvergenceLearning(const Sample & criterionValues) const;  
-  
+
   Point operator()(const Point & x) const override;
 
 

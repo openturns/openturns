@@ -58,6 +58,11 @@ class OT_API ActiveLearningEFFFunction
   /** Check convergence of learning */
   Bool checkConvergenceLearning(const Sample & criterionValues) const override;
   
+  /* return infill Sample */
+  virtual Sample getInfillSample(const Sample & inputSample,
+                                 const Sample & criterionValues) const override;
+                                      
+  
   /** String converter */
   String __repr__() const override;
   
