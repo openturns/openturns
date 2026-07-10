@@ -30,7 +30,9 @@
 #include "openturns/SubsetSampling.hxx"
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
-
+#include "openturns/ActiveLearningReliabilityFunction.hxx"
+#include "openturns/ActiveLearningUFunction.hxx"
+#include "openturns/ActiveLearningEFFFunction.hxx"
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -53,19 +55,25 @@ public:
                                                const EventSimulation & reliabilityAlgorithm);*/
                                                
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                      const ProbabilitySimulationAlgorithm & reliabilityAlgorithm);
+                                      const ProbabilitySimulationAlgorithm & reliabilityAlgorithm,
+                                      const ActiveLearningUFunction & activelearningFunction);
 
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                      const NAIS & reliabilityAlgorithm);
+                                      const NAIS & reliabilityAlgorithm,
+                                      const ActiveLearningUFunction & activelearningFunction);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                      const SubsetSampling & reliabilityAlgorithm);
+                                      const SubsetSampling & reliabilityAlgorithm,
+                                      const ActiveLearningUFunction & activelearningFunction);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                      const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm);
+                                      const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
+                                      const ActiveLearningUFunction & activelearningFunction);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
-                                      const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm);
+                                      const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
+                                      const ActiveLearningUFunction & activelearningFunction);
+                                      
   /** Virtual constructor */
   ActiveLearningReliabilityAlgorithm * clone() const override;
 
@@ -76,7 +84,8 @@ protected:
   const RandomVector defaultEvent_;
   Pointer<EventSimulation> p_defaultSimulationAlgorithm_;
   Pointer<EventSimulation> p_currentSimulationAlgorithm_;
-    
+  Pointer<ActiveLearningReliabilityFunction> p_activeLearningFunction;
+  
   GaussianProcessFitter defaultGPFitter_;
   Sample currentInputSample_;
   Sample inputDoE_;

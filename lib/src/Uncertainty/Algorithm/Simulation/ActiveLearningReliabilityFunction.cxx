@@ -51,6 +51,16 @@ ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scala
     , gprCov_(gprResult)
 {
 }
+
+/* Constructor with parameters */
+ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
+                                                                     const Scalar learningThreshold)
+    : EvaluationImplementation()
+    , reliabilityThreshold_(reliabilityThreshold)
+    , learningThreshold_(learningThreshold)
+{
+}
+
   
 ActiveLearningReliabilityFunction * ActiveLearningReliabilityFunction::clone() const 
 {
@@ -88,8 +98,18 @@ Bool ActiveLearningReliabilityFunction::checkConvergenceLearning(const Sample & 
 }
 
 
+/* String converter */
+String ActiveLearningReliabilityFunction::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " derived from " << EvaluationImplementation::__repr__();
+  return oss;
+}
+
+
 /* update of GPR model */
-void ActiveLearningReliabilityFunction::updateGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult)
+void ActiveLearningReliabilityFunction::setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult)
 {
   gprResult_ = gprResult;
   gprCov_ = GaussianProcessConditionalCovariance(gprResult);

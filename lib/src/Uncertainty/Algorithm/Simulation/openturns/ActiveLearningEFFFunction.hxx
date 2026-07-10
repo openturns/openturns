@@ -45,7 +45,10 @@ class OT_API ActiveLearningEFFFunction
   ActiveLearningEFFFunction (const Scalar reliabilityThreshold,
                              const GaussianProcessRegressionResult & gprResult,
                              const Scalar learningThreshold);
-
+  /* Constructor with parameters */
+  ActiveLearningEFFFunction(const Scalar reliabilityThreshold,
+                          const Scalar learningThreshold);
+                          
   /** Virtual constructor */
   ActiveLearningEFFFunction * clone() const override;
 
@@ -54,7 +57,10 @@ class OT_API ActiveLearningEFFFunction
   
   /** Check convergence of learning */
   Bool checkConvergenceLearning(const Sample & criterionValues) const override;
-
+  
+  /** String converter */
+  String __repr__() const override;
+  
 } ; /* class ActiveLearningEFFFunction */
 
 END_NAMESPACE_OPENTURNS

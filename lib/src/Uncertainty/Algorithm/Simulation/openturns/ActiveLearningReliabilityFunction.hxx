@@ -47,7 +47,9 @@ public:
   ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
                                     const GaussianProcessRegressionResult & gprResult,
                                     const Scalar learningThreshold);
-                                                                       
+  /* Constructor with parameters */
+  ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
+                                    const Scalar learningThreshold);                                                               
   /** Virtual constructor */
   ActiveLearningReliabilityFunction * clone() const override;
     
@@ -58,11 +60,16 @@ public:
   void load(Advocate & adv) override;
   
   /** Accessors */
-  void updateGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult);
+  void setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult);
   
   void setReliabilityThreshold(const Scalar reliabilityThreshold);
   
   void setLearningThreshold(const Scalar learningThreshold);
+  
+  /** String converter */
+  String __repr__() const override;
+  
+  Sample operator()(const Sample & inputSample) const override; 
   
 protected:
 
@@ -72,7 +79,7 @@ protected:
   
   Point operator()(const Point & x) const override;
 
-  Sample operator()(const Sample & inputSample) const override;
+
    
   Scalar reliabilityThreshold_;
   Scalar learningThreshold_;
